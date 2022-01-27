@@ -107,6 +107,8 @@ def _log(level, module_line_func, msg):
 
 def debug(msg):
     """(message)"""
+    module, line, func = _caller()
+    msg = "({}) - {}".format(line, msg)
     return _log(Level.DEBUG, _caller(), msg)
 def info(msg):
     """(message)"""

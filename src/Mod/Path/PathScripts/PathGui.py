@@ -39,6 +39,24 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
+def populateCombobox(form, enumTups, comboBoxesPropertyMap):
+    """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+    ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+    Args:
+        form = UI form
+        enumTups = list of (translated_text, data_string) tuples
+        comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+    """
+    PathLog.track(enumTups)
+
+    # Load appropriate enumerations in each combobox
+    for cb, prop in comboBoxesPropertyMap:
+        box = getattr(form, cb)  # Get the combobox
+        box.clear()  # clear the combobox
+        for text, data in enumTups[prop]:  #  load enumerations
+            box.addItem(text, data)
+
+
 def updateInputField(obj, prop, widget, onBeforeChange=None):
     """updateInputField(obj, prop, widget) ... update obj's property prop with the value of widget.
     The property's value is only assigned if the new value differs from the current value.
@@ -50,6 +68,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     """
     PathLog.track()
     value = widget.property("rawValue")
+    PathLog.track("value: {}".format(value))
     attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, "Value") else attr
 

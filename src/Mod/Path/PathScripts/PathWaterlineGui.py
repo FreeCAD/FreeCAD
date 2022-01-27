@@ -21,70 +21,97 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
-import PathScripts.PathWaterline as PathWaterline
+import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-
-from PySide import QtCore
+import PathScripts.PathWaterline as PathWaterline
 
 __title__ = "Path Waterline Operation UI"
 __author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Waterline operation page controller and command implementation."
 
+translate = FreeCAD.Qt.translate
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Waterline operation.'''
+    """Page controller class for the Waterline operation."""
 
     def initPage(self, obj):
         self.setTitle("Waterline - " + obj.Label)
         self.updateVisibility()
 
     def getForm(self):
-        '''getForm() ... returns UI'''
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpWaterlineEdit.ui")
+        """getForm() ... returns UI"""
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpWaterlineEdit.ui")
+        comboToPropertyMap = [
+            ("algorithmSelect", "Algorithm"),
+            ("boundBoxSelect", "BoundBox"),
+            ("layerMode", "LayerMode"),
+            ("cutPattern", "CutPattern"),
+        ]
+        enumTups = PathWaterline.ObjectWaterline.propertyEnumerations(dataType="raw")
+        PathGui.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        if obj.Algorithm != str(self.form.algorithmSelect.currentText()):
-            obj.Algorithm = str(self.form.algorithmSelect.currentText())
+        if obj.Algorithm != str(self.form.algorithmSelect.currentData()):
+            obj.Algorithm = str(self.form.algorithmSelect.currentData())
 
-        if obj.BoundBox != str(self.form.boundBoxSelect.currentText()):
-            obj.BoundBox = str(self.form.boundBoxSelect.currentText())
+        if obj.BoundBox != str(self.form.boundBoxSelect.currentData()):
+            obj.BoundBox = str(self.form.boundBoxSelect.currentData())
 
-        if obj.LayerMode != str(self.form.layerMode.currentText()):
-            obj.LayerMode = str(self.form.layerMode.currentText())
+        if obj.LayerMode != str(self.form.layerMode.currentData()):
+            obj.LayerMode = str(self.form.layerMode.currentData())
 
-        if obj.CutPattern != str(self.form.cutPattern.currentText()):
-            obj.CutPattern = str(self.form.cutPattern.currentText())
+        if obj.CutPattern != str(self.form.cutPattern.currentData()):
+            obj.CutPattern = str(self.form.cutPattern.currentData())
 
-        PathGui.updateInputField(obj, 'BoundaryAdjustment', self.form.boundaryAdjustment)
+        PathGui.updateInputField(
+            obj, "BoundaryAdjustment", self.form.boundaryAdjustment
+        )
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
-        PathGui.updateInputField(obj, 'SampleInterval', self.form.sampleInterval)
+        PathGui.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.Algorithm, self.form.algorithmSelect)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
-        self.form.boundaryAdjustment.setText(FreeCAD.Units.Quantity(obj.BoundaryAdjustment.Value, FreeCAD.Units.Length).UserString)
+        self.form.boundaryAdjustment.setText(
+            FreeCAD.Units.Quantity(
+                obj.BoundaryAdjustment.Value, FreeCAD.Units.Length
+            ).UserString
+        )
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.sampleInterval.setText(FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString)
+        self.form.sampleInterval.setText(
+            FreeCAD.Units.Quantity(
+                obj.SampleInterval.Value, FreeCAD.Units.Length
+            ).UserString
+        )
 
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
@@ -94,7 +121,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
@@ -110,11 +137,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateVisibility(self, sentObj=None):
-        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
-        Algorithm = self.form.algorithmSelect.currentText()
+        """updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects."""
+        Algorithm = self.form.algorithmSelect.currentData()
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 
-        if Algorithm == 'OCL Dropcutter':
+        if Algorithm == "OCL Dropcutter":
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.boundaryAdjustment.hide()
@@ -123,12 +150,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.stepOver_label.hide()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
-        elif Algorithm == 'Experimental':
+        elif Algorithm == "Experimental":
             self.form.cutPattern.show()
             self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
             self.form.boundaryAdjustment_label.show()
-            if self.form.cutPattern.currentText() == 'None':
+            if self.form.cutPattern.currentData() == "None":
                 self.form.stepOver.hide()
                 self.form.stepOver_label.hide()
             else:
@@ -142,12 +169,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.cutPattern.currentIndexChanged.connect(self.updateVisibility)
 
 
-Command = PathOpGui.SetupOperation('Waterline',
-        PathWaterline.Create,
-        TaskPanelOpPage,
-        'Path_Waterline',
-        QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
-        PathWaterline.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Waterline",
+    PathWaterline.Create,
+    TaskPanelOpPage,
+    "Path_Waterline",
+    QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
+    QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
+    PathWaterline.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathWaterlineGui... done\n")

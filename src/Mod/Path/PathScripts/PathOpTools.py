@@ -21,40 +21,46 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import math
 
-from PySide import QtCore
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "PathOpTools - Tools for Path operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
 
 PrintWireDebug = False
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
+
 
 def debugEdge(label, e):
-    '''debugEdge(label, e) ... prints a python statement to create e
-    Currently lines and arcs are supported.'''
+    """debugEdge(label, e) ... prints a python statement to create e
+    Currently lines and arcs are supported."""
     if not PrintWireDebug:
         return
     p0 = e.valueAt(e.FirstParameter)
     p1 = e.valueAt(e.LastParameter)
     if Part.Line == type(e.Curve):
-        print("%s Part.makeLine((%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f))" % (label, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z))
+        print(
+            "%s Part.makeLine((%.2f, %.2f, %.2f), (%.2f, %.2f, %.2f))"
+            % (label, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z)
+        )
     elif Part.Circle == type(e.Curve):
         r = e.Curve.Radius
         c = e.Curve.Center
@@ -65,26 +71,37 @@ def debugEdge(label, e):
         else:
             first = math.degrees(xu + e.FirstParameter)
         last = first + math.degrees(e.LastParameter - e.FirstParameter)
-        print("%s Part.makeCircle(%.2f, App.Vector(%.2f, %.2f, %.2f), App.Vector(%.2f, %.2f, %.2f), %.2f, %.2f)" % (label, r, c.x, c.y, c.z, a.x, a.y, a.z, first, last))
+        print(
+            "%s Part.makeCircle(%.2f, App.Vector(%.2f, %.2f, %.2f), App.Vector(%.2f, %.2f, %.2f), %.2f, %.2f)"
+            % (label, r, c.x, c.y, c.z, a.x, a.y, a.z, first, last)
+        )
     else:
-        print("%s %s (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f)" % (label, type(e.Curve).__name__, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z))
+        print(
+            "%s %s (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f)"
+            % (label, type(e.Curve).__name__, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z)
+        )
+
 
 def debugWire(label, w):
-    '''debugWire(label, w) ... prints python statements for all edges of w to be added to the object tree in a group.'''
+    """debugWire(label, w) ... prints python statements for all edges of w to be added to the object tree in a group."""
     if not PrintWireDebug:
         return
     print("#%s wire >>>>>>>>>>>>>>>>>>>>>>>>" % label)
-    print("grp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', '%s')" % label)
-    for i,e in enumerate(w.Edges):
+    print(
+        "grp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', '%s')"
+        % label
+    )
+    for i, e in enumerate(w.Edges):
         edge = "%s_e%d" % (label, i)
         debugEdge("%s = " % edge, e)
         print("Part.show(%s, '%s')" % (edge, edge))
         print("grp.addObject(FreeCAD.ActiveDocument.ActiveObject)")
     print("#%s wire <<<<<<<<<<<<<<<<<<<<<<<<" % label)
 
+
 def _orientEdges(inEdges):
-    '''_orientEdges(inEdges) ... internal worker function to orient edges so the last vertex of one edge connects to the first vertex of the next edge.
-    Assumes the edges are in an order so they can be connected.'''
+    """_orientEdges(inEdges) ... internal worker function to orient edges so the last vertex of one edge connects to the first vertex of the next edge.
+    Assumes the edges are in an order so they can be connected."""
     PathLog.track()
     # orient all edges of the wire so each edge's last value connects to the next edge's first value
     e0 = inEdges[0]
@@ -92,21 +109,28 @@ def _orientEdges(inEdges):
     if 1 < len(inEdges):
         last = e0.valueAt(e0.LastParameter)
         e1 = inEdges[1]
-        if not PathGeom.pointsCoincide(last, e1.valueAt(e1.FirstParameter)) and not PathGeom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
-            debugEdge('#  _orientEdges - flip first', e0)
+        if not PathGeom.pointsCoincide(
+            last, e1.valueAt(e1.FirstParameter)
+        ) and not PathGeom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
+            debugEdge("#  _orientEdges - flip first", e0)
             e0 = PathGeom.flipEdge(e0)
 
     edges = [e0]
     last = e0.valueAt(e0.LastParameter)
     for e in inEdges[1:]:
-        edge = e if PathGeom.pointsCoincide(last, e.valueAt(e.FirstParameter)) else PathGeom.flipEdge(e)
+        edge = (
+            e
+            if PathGeom.pointsCoincide(last, e.valueAt(e.FirstParameter))
+            else PathGeom.flipEdge(e)
+        )
         edges.append(edge)
         last = edge.valueAt(edge.LastParameter)
     return edges
 
+
 def _isWireClockwise(w):
-    '''_isWireClockwise(w) ... return True if wire is oriented clockwise.
-    Assumes the edges of w are already properly oriented - for generic access use isWireClockwise(w).'''
+    """_isWireClockwise(w) ... return True if wire is oriented clockwise.
+    Assumes the edges of w are already properly oriented - for generic access use isWireClockwise(w)."""
     # handle wires consisting of a single circle or 2 edges where one is an arc.
     # in both cases, because the edges are expected to be oriented correctly, the orientation can be
     # determined by looking at (one of) the circle curves.
@@ -125,31 +149,33 @@ def _isWireClockwise(w):
     PathLog.track(area)
     return area < 0
 
+
 def isWireClockwise(w):
-    '''isWireClockwise(w) ... returns True if the wire winds clockwise. '''
+    """isWireClockwise(w) ... returns True if the wire winds clockwise."""
     return _isWireClockwise(Part.Wire(_orientEdges(w.Edges)))
 
 
 def orientWire(w, forward=True):
-    '''orientWire(w, forward=True) ... orients given wire in a specific direction.
+    """orientWire(w, forward=True) ... orients given wire in a specific direction.
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
-    If forward = None the orientation is determined by the order in which the edges appear in the wire.'''
-    PathLog.debug('orienting forward: {}'.format(forward))
+    If forward = None the orientation is determined by the order in which the edges appear in the wire."""
+    PathLog.debug("orienting forward: {}".format(forward))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
-            PathLog.track('orientWire - needs flipping')
+            PathLog.track("orientWire - needs flipping")
             return PathGeom.flipWire(wire)
-        PathLog.track('orientWire - ok')
+        PathLog.track("orientWire - ok")
     return wire
 
-def offsetWire(wire, base, offset, forward, Side = None):
-    '''offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
+
+def offsetWire(wire, base, offset, forward, Side=None):
+    """offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
-    '''
-    PathLog.track('offsetWire')
+    """
+    PathLog.track("offsetWire")
 
     if 1 == len(wire.Edges):
         edge = wire.Edges[0]
@@ -159,24 +185,34 @@ def offsetWire(wire, base, offset, forward, Side = None):
             # https://www.freecadweb.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
-            new_edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
-            if base.isInside(new_edge.Vertexes[0].Point, offset/2, True):
+            new_edge = Part.makeCircle(
+                curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z)
+            )
+            if base.isInside(new_edge.Vertexes[0].Point, offset / 2, True):
                 if offset > curve.Radius or PathGeom.isRoughly(offset, curve.Radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
                 if Side:
                     Side[0] = "Inside"
                     print("inside")
-                new_edge = Part.makeCircle(curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z))
-            
+                new_edge = Part.makeCircle(
+                    curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z)
+                )
+
             return Part.Wire([new_edge])
-        
+
         if Part.Circle == type(curve) and not wire.isClosed():
             # Process arc segment
             z = -1 if forward else 1
-            l1 = math.sqrt((edge.Vertexes[0].Point.x - curve.Center.x)**2 + (edge.Vertexes[0].Point.y - curve.Center.y)**2)
-            l2 = math.sqrt((edge.Vertexes[1].Point.x - curve.Center.x)**2 + (edge.Vertexes[1].Point.y - curve.Center.y)**2)
-            
+            l1 = math.sqrt(
+                (edge.Vertexes[0].Point.x - curve.Center.x) ** 2
+                + (edge.Vertexes[0].Point.y - curve.Center.y) ** 2
+            )
+            l2 = math.sqrt(
+                (edge.Vertexes[1].Point.x - curve.Center.x) ** 2
+                + (edge.Vertexes[1].Point.y - curve.Center.y) ** 2
+            )
+
             # Calculate angles based on x-axis (0 - PI/2)
             start_angle = math.acos((edge.Vertexes[0].Point.x - curve.Center.x) / l1)
             end_angle = math.acos((edge.Vertexes[1].Point.x - curve.Center.x) / l2)
@@ -186,26 +222,41 @@ def offsetWire(wire, base, offset, forward, Side = None):
                 start_angle *= -1
             if edge.Vertexes[1].Point.y < curve.Center.y:
                 end_angle *= -1
-            
-            if (edge.Vertexes[0].Point.x > curve.Center.x or edge.Vertexes[1].Point.x > curve.Center.x) and curve.AngleXU < 0:
+
+            if (
+                edge.Vertexes[0].Point.x > curve.Center.x
+                or edge.Vertexes[1].Point.x > curve.Center.x
+            ) and curve.AngleXU < 0:
                 tmp = start_angle
                 start_angle = end_angle
                 end_angle = tmp
 
             # Inside / Outside
-            if base.isInside(edge.Vertexes[0].Point, offset/2, True):
+            if base.isInside(edge.Vertexes[0].Point, offset / 2, True):
                 offset *= -1
                 if Side:
                     Side[0] = "Inside"
 
             # Create new arc
             if curve.AngleXU > 0:
-                edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius+offset), start_angle, end_angle).toShape()
+                edge = Part.ArcOfCircle(
+                    Part.Circle(
+                        curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius + offset
+                    ),
+                    start_angle,
+                    end_angle,
+                ).toShape()
             else:
-                edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius-offset), start_angle, end_angle).toShape()
+                edge = Part.ArcOfCircle(
+                    Part.Circle(
+                        curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius - offset
+                    ),
+                    start_angle,
+                    end_angle,
+                ).toShape()
 
             return Part.Wire([edge])
-        
+
         if Part.Line == type(curve) or Part.LineSegment == type(curve):
             # offsetting a single edge doesn't work because there is an infinite
             # possible planes into which the edge could be offset
@@ -217,7 +268,11 @@ def offsetWire(wire, base, offset, forward, Side = None):
             edge.translate(o)
 
             # offset edde the other way if the result is inside
-            if base.isInside(edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2), offset / 2, True):
+            if base.isInside(
+                edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2),
+                offset / 2,
+                True,
+            ):
                 edge.translate(-2 * o)
 
             # flip the edge if it's not on the right side of the original edge
@@ -229,23 +284,23 @@ def offsetWire(wire, base, offset, forward, Side = None):
             return Part.Wire([edge])
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     owire = orientWire(wire.makeOffset2D(offset), True)
-    debugWire('makeOffset2D_%d' % len(wire.Edges), owire)
+    debugWire("makeOffset2D_%d" % len(wire.Edges), owire)
 
     if wire.isClosed():
-        if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
-            PathLog.track('closed - outside')
+        if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset / 2, True):
+            PathLog.track("closed - outside")
             if Side:
                 Side[0] = "Outside"
             return orientWire(owire, forward)
-        PathLog.track('closed - inside')
+        PathLog.track("closed - inside")
         if Side:
             Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
-        except Exception: # pylint: disable=broad-except
+        except Exception:  # pylint: disable=broad-except
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None
@@ -269,8 +324,8 @@ def offsetWire(wire, base, offset, forward, Side = None):
     # determine the start and end point
     start = edges[0].firstVertex().Point
     end = edges[-1].lastVertex().Point
-    debugWire('wire', wire)
-    debugWire('wedges', Part.Wire(edges))
+    debugWire("wire", wire)
+    debugWire("wedges", Part.Wire(edges))
 
     # find edges that are not inside the shape
     common = base.common(owire)
@@ -281,7 +336,9 @@ def offsetWire(wire, base, offset, forward, Side = None):
         p0 = edge.firstVertex().Point
         p1 = edge.lastVertex().Point
         for p in insideEndpoints:
-            if PathGeom.pointsCoincide(p, p0, 0.01) or PathGeom.pointsCoincide(p, p1, 0.01):
+            if PathGeom.pointsCoincide(p, p0, 0.01) or PathGeom.pointsCoincide(
+                p, p1, 0.01
+            ):
                 return True
         return False
 
@@ -292,15 +349,14 @@ def offsetWire(wire, base, offset, forward, Side = None):
         if not longestWire or longestWire.Length < w.Length:
             longestWire = w
 
-    debugWire('outside', Part.Wire(outside))
-    debugWire('longest', longestWire)
+    debugWire("outside", Part.Wire(outside))
+    debugWire("longest", longestWire)
 
     def isCircleAt(edge, center):
-        '''isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center.'''
+        """isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center."""
         if Part.Circle == type(edge.Curve) or Part.ArcOfCircle == type(edge.Curve):
             return PathGeom.pointsCoincide(edge.Curve.Center, center)
         return False
-
 
     # split offset wire into edges to the left side and edges to the right side
     collectLeft = False
@@ -312,7 +368,7 @@ def offsetWire(wire, base, offset, forward, Side = None):
     # an end point (circle centered at one of the end points of the original wire).
     # should we come to an end point and determine that we've already collected the
     # next side, we're done
-    for e in (owire.Edges + owire.Edges):
+    for e in owire.Edges + owire.Edges:
         if isCircleAt(e, start):
             if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
                 if not collectLeft and leftSideEdges:
@@ -340,8 +396,8 @@ def offsetWire(wire, base, offset, forward, Side = None):
         elif collectRight:
             rightSideEdges.append(e)
 
-    debugWire('left', Part.Wire(leftSideEdges))
-    debugWire('right', Part.Wire(rightSideEdges))
+    debugWire("left", Part.Wire(leftSideEdges))
+    debugWire("right", Part.Wire(rightSideEdges))
 
     # figure out if all the left sided edges or the right sided edges are the ones
     # that are 'outside'. However, we return the full side.
@@ -365,4 +421,3 @@ def offsetWire(wire, base, offset, forward, Side = None):
         edges.reverse()
 
     return orientWire(Part.Wire(edges), None)
-

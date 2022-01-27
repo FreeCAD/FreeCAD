@@ -20,17 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-import time
-
-from PySide import QtCore
-
+import FreeCAD
 from PathScripts.PathUtils import waiting_effects
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
+import time
+
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -42,13 +42,13 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 FeatureTool = 0x0001  # ToolController
@@ -105,7 +105,7 @@ class ObjectOp(object):
             "App::PropertyLinkSubListGlobal",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("PathOp", "The base geometry for this operation"),
+            QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"),
         )
 
     def addOpValues(self, obj, values):
@@ -114,8 +114,8 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "OpStartDepth",
                 "Op Values",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Holds the calculated value for the StartDepth"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Holds the calculated value for the StartDepth"
                 ),
             )
             obj.setEditorMode("OpStartDepth", 1)  # read-only
@@ -124,8 +124,8 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "OpFinalDepth",
                 "Op Values",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Holds the calculated value for the FinalDepth"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Holds the calculated value for the FinalDepth"
                 ),
             )
             obj.setEditorMode("OpFinalDepth", 1)  # read-only
@@ -134,7 +134,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "OpToolDiameter",
                 "Op Values",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the diameter of the tool"),
+                QT_TRANSLATE_NOOP("App::Property", "Holds the diameter of the tool"),
             )
             obj.setEditorMode("OpToolDiameter", 1)  # read-only
         if "stockz" in values:
@@ -142,14 +142,14 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "OpStockZMax",
                 "Op Values",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the max Z value of Stock"),
+                QT_TRANSLATE_NOOP("App::Property", "Holds the max Z value of Stock"),
             )
             obj.setEditorMode("OpStockZMax", 1)  # read-only
             obj.addProperty(
                 "App::PropertyDistance",
                 "OpStockZMin",
                 "Op Values",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Holds the min Z value of Stock"),
+                QT_TRANSLATE_NOOP("App::Property", "Holds the min Z value of Stock"),
             )
             obj.setEditorMode("OpStockZMin", 1)  # read-only
 
@@ -160,29 +160,29 @@ class ObjectOp(object):
             "App::PropertyBool",
             "Active",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathOp", "Make False, to prevent operation from generating code"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Make False, to prevent operation from generating code"
             ),
         )
         obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathOp", "An optional comment for this Operation"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "An optional comment for this Operation"
             ),
         )
         obj.addProperty(
             "App::PropertyString",
             "UserLabel",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("PathOp", "User Assigned Label"),
+            QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"),
         )
         obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"),
+            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
 
@@ -196,7 +196,7 @@ class ObjectOp(object):
                 "App::PropertyVectorList",
                 "Locations",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Base locations for this operation"),
+                QT_TRANSLATE_NOOP("App::Property", "Base locations for this operation"),
             )
 
         if FeatureTool & features:
@@ -204,8 +204,8 @@ class ObjectOp(object):
                 "App::PropertyLink",
                 "ToolController",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
                     "The tool controller that will be used to calculate the path",
                 ),
             )
@@ -213,10 +213,10 @@ class ObjectOp(object):
 
         if FeatureCoolant & features:
             obj.addProperty(
-                "App::PropertyString",
+                "App::PropertyEnumeration",
                 "CoolantMode",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Coolant mode for this operation"),
+                QT_TRANSLATE_NOOP("App::Property", "Coolant mode for this operation"),
             )
 
         if FeatureDepths & features:
@@ -224,16 +224,16 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "StartDepth",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Starting Depth of Tool- first cut depth in Z"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Starting Depth of Tool- first cut depth in Z"
                 ),
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "FinalDepth",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Final Depth of Tool- lowest value in Z"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Final Depth of Tool- lowest value in Z"
                 ),
             )
             if FeatureNoFinalDepth & features:
@@ -245,8 +245,9 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "StartDepth",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Starting Depth internal use only for derived values"
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Starting Depth internal use only for derived values",
                 ),
             )
             obj.setEditorMode("StartDepth", 1)  # read-only
@@ -258,7 +259,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "StepDown",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Incremental Step Down of Tool"),
+                QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
 
         if FeatureFinishDepth & features:
@@ -266,8 +267,8 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "FinishDepth",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Maximum material removed on final pass."
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Maximum material removed on final pass."
                 ),
             )
 
@@ -276,16 +277,17 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "ClearanceHeight",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "The height needed to clear clamps and obstructions"
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The height needed to clear clamps and obstructions",
                 ),
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "SafeHeight",
                 "Depth",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Rapid Safety Height between locations."
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Rapid Safety Height between locations."
                 ),
             )
 
@@ -294,14 +296,14 @@ class ObjectOp(object):
                 "App::PropertyVectorDistance",
                 "StartPoint",
                 "Start Point",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"),
+                QT_TRANSLATE_NOOP("App::Property", "The start point of this path"),
             )
             obj.addProperty(
                 "App::PropertyBool",
                 "UseStartPoint",
                 "Start Point",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Make True, if specifying a Start Point"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Make True, if specifying a Start Point"
                 ),
             )
 
@@ -310,18 +312,23 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "MinDiameter",
                 "Diameter",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Lower limit of the turning diameter"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Lower limit of the turning diameter"
                 ),
             )
             obj.addProperty(
                 "App::PropertyDistance",
                 "MaxDiameter",
                 "Diameter",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathOp", "Upper limit of the turning diameter."
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Upper limit of the turning diameter."
                 ),
             )
+
+        for n in self.opPropertyEnumerations():
+            PathLog.debug("n[0]: {}  n[1]: {}".format(n[0], n[1]))
+            if hasattr(obj, n[0]):
+                setattr(obj, n[0], n[1])
 
         # members being set later
         self.commandlist = None
@@ -347,6 +354,39 @@ class ObjectOp(object):
                 obj.recompute()
                 obj.Proxy = self
 
+    @classmethod
+    def opPropertyEnumerations(self, dataType="data"):
+        """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "CoolantMode": [
+                (translate("Path_Operation", "None"), "None"),
+                (translate("Path_Operation", "Flood"), "Flood"),
+                (translate("Path_Operation", "Mist"), "Mist"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
+
     def setEditorModes(self, obj, features):
         """Editor modes are not preserved during document store/restore, set editor modes for all properties"""
 
@@ -359,6 +399,7 @@ class ObjectOp(object):
                 obj.setEditorMode("OpFinalDepth", 2)
 
     def onDocumentRestored(self, obj):
+        PathLog.track()
         features = self.opFeatures(obj)
         if (
             FeatureBaseGeometry & features
@@ -375,13 +416,28 @@ class ObjectOp(object):
         if FeatureTool & features and not hasattr(obj, "OpToolDiameter"):
             self.addOpValues(obj, ["tooldia"])
 
-        if FeatureCoolant & features and not hasattr(obj, "CoolantMode"):
-            obj.addProperty(
-                "App::PropertyString",
-                "CoolantMode",
-                "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Coolant option for this operation"),
-            )
+        if FeatureCoolant & features:
+            oldvalue = str(obj.CoolantMode) if hasattr(obj, "CoolantMode") else "None"
+            if (
+                hasattr(obj, "CoolantMode")
+                and not obj.getTypeIdOfProperty("CoolantMode")
+                == "App::PropertyEnumeration"
+            ):
+                obj.removeProperty("CoolantMode")
+
+            if not hasattr(obj, "CoolantMode"):
+                obj.addProperty(
+                    "App::PropertyEnumeration",
+                    "CoolantMode",
+                    "Path",
+                    QT_TRANSLATE_NOOP(
+                        "App::Property", "Coolant option for this operation"
+                    ),
+                )
+                for n in self.opPropertyEnumerations():
+                    if n[0] == "CoolantMode":
+                        setattr(obj, n[0], n[1])
+                obj.CoolantMode = oldvalue
 
         if FeatureDepths & features and not hasattr(obj, "OpStartDepth"):
             self.addOpValues(obj, ["start", "final"])
@@ -396,7 +452,7 @@ class ObjectOp(object):
                 "App::PropertyString",
                 "CycleTime",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"),
+                QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
 
         self.setEditorModes(obj, features)
@@ -515,6 +571,8 @@ class ObjectOp(object):
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
 
         if FeatureCoolant & features:
+            PathLog.track()
+            PathLog.debug(obj.getEnumerationsOfProperty("CoolantMode"))
             obj.CoolantMode = job.SetupSheet.CoolantMode
 
         if FeatureDepths & features:
@@ -710,14 +768,6 @@ class ObjectOp(object):
 
         # make sure Base is still valid or clear it
         self.sanitizeBase(obj)
-
-        if FeatureCoolant & self.opFeatures(obj):
-            if not hasattr(obj, "CoolantMode"):
-                PathLog.error(
-                    translate(
-                        "Path", "No coolant property found. Please recreate operation."
-                    )
-                )
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController

@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
-#import PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPropertyBag as PathPropertyBag
@@ -30,23 +30,24 @@ import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathUtil as PathUtil
 import re
 
-from PySide import QtCore, QtGui
 
 __title__ = "Property Bag Editor"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a PropertyBag"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
+
 
 class ViewProvider(object):
-    '''ViewProvider for a PropertyBag.
-    It's sole job is to provide an icon and invoke the TaskPanel on edit.'''
+    """ViewProvider for a PropertyBag.
+    It's sole job is to provide an icon and invoke the TaskPanel on edit."""
 
     def __init__(self, vobj, name):
         PathLog.track(name)
@@ -73,7 +74,7 @@ class ViewProvider(object):
 
     def getDisplayMode(self, mode):
         # pylint: disable=unused-argument
-        return 'Default'
+        return "Default"
 
     def setEdit(self, vobj, mode=0):
         # pylint: disable=unused-argument
@@ -95,18 +96,20 @@ class ViewProvider(object):
     def doubleClicked(self, vobj):
         self.setEdit(vobj)
 
+
 class Delegate(QtGui.QStyledItemDelegate):
-    RoleObject   = QtCore.Qt.UserRole + 1
+    RoleObject = QtCore.Qt.UserRole + 1
     RoleProperty = QtCore.Qt.UserRole + 2
-    RoleEditor   = QtCore.Qt.UserRole + 3
+    RoleEditor = QtCore.Qt.UserRole + 3
 
-
-    #def paint(self, painter, option, index):
+    # def paint(self, painter, option, index):
     #    #PathLog.track(index.column(), type(option))
 
     def createEditor(self, parent, option, index):
         # pylint: disable=unused-argument
-        editor = PathPropertyEditor.Editor(index.data(self.RoleObject), index.data(self.RoleProperty))
+        editor = PathPropertyEditor.Editor(
+            index.data(self.RoleObject), index.data(self.RoleProperty)
+        )
         index.model().setData(index, editor, self.RoleEditor)
         return editor.widget(parent)
 
@@ -125,8 +128,8 @@ class Delegate(QtGui.QStyledItemDelegate):
         # pylint: disable=unused-argument
         widget.setGeometry(option.rect)
 
-class PropertyCreate(object):
 
+class PropertyCreate(object):
     def __init__(self, obj, grp, typ, another):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyCreate.ui")
@@ -144,7 +147,7 @@ class PropertyCreate(object):
         if typ:
             self.form.propertyType.setCurrentText(typ)
         else:
-            self.form.propertyType.setCurrentText('String')
+            self.form.propertyType.setCurrentText("String")
         self.form.createAnother.setChecked(another)
 
         self.form.propertyGroup.currentTextChanged.connect(self.updateUI)
@@ -159,12 +162,12 @@ class PropertyCreate(object):
         if self.propertyIsEnumeration():
             self.form.labelEnum.setEnabled(True)
             self.form.propertyEnum.setEnabled(True)
-            typeSet = self.form.propertyEnum.text().strip() != ''
+            typeSet = self.form.propertyEnum.text().strip() != ""
         else:
             self.form.labelEnum.setEnabled(False)
             self.form.propertyEnum.setEnabled(False)
             if self.form.propertyEnum.text().strip():
-                self.form.propertyEnum.setText('')
+                self.form.propertyEnum.setText("")
 
         ok = self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok)
 
@@ -178,25 +181,35 @@ class PropertyCreate(object):
 
     def propertyName(self):
         return self.form.propertyName.text().strip()
+
     def propertyGroup(self):
         return self.form.propertyGroup.currentText().strip()
+
     def propertyType(self):
-        return PathPropertyBag.SupportedPropertyType[self.form.propertyType.currentText()].strip()
+        return PathPropertyBag.SupportedPropertyType[
+            self.form.propertyType.currentText()
+        ].strip()
+
     def propertyInfo(self):
         return self.form.propertyInfo.toPlainText().strip()
+
     def createAnother(self):
         return self.form.createAnother.isChecked()
+
     def propertyEnumerations(self):
-        return [s.strip() for s in self.form.propertyEnum.text().strip().split(',')]
+        return [s.strip() for s in self.form.propertyEnum.text().strip().split(",")]
+
     def propertyIsEnumeration(self):
-        return self.propertyType() == 'App::PropertyEnumeration'
+        return self.propertyType() == "App::PropertyEnumeration"
 
     def exec_(self, name):
         if name:
             # property exists - this is an edit operation
             self.form.propertyName.setText(name)
             if self.propertyIsEnumeration():
-                self.form.propertyEnum.setText(','.join(self.obj.getEnumerationsOfProperty(name)))
+                self.form.propertyEnum.setText(
+                    ",".join(self.obj.getEnumerationsOfProperty(name))
+                )
             self.form.propertyInfo.setText(self.obj.getDocumentationOfProperty(name))
 
             self.form.labelName.setEnabled(False)
@@ -206,65 +219,80 @@ class PropertyCreate(object):
             self.form.createAnother.setEnabled(False)
 
         else:
-            self.form.propertyName.setText('')
-            self.form.propertyInfo.setText('')
-            self.form.propertyEnum.setText('')
-            #self.form.propertyName.setFocus()
+            self.form.propertyName.setText("")
+            self.form.propertyInfo.setText("")
+            self.form.propertyEnum.setText("")
+            # self.form.propertyName.setFocus()
 
         self.updateUI()
 
         return self.form.exec_()
 
+
 Panel = []
+
 
 class TaskPanel(object):
     ColumnName = 0
-    #ColumnType = 1
-    ColumnVal  = 1
-    #TableHeaders = ['Property', 'Type', 'Value']
-    TableHeaders = ['Property', 'Value']
+    # ColumnType = 1
+    ColumnVal = 1
+    # TableHeaders = ['Property', 'Type', 'Value']
+    TableHeaders = ["Property", "Value"]
 
     def __init__(self, vobj):
-        self.obj   = vobj.Object
+        self.obj = vobj.Object
         self.props = sorted(self.obj.Proxy.getCustomProperties())
-        self.form  = FreeCADGui.PySideUic.loadUi(":panels/PropertyBag.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyBag.ui")
 
         # initialized later
-        self.model    = None
+        self.model = None
         self.delegate = None
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyBag", "Edit PropertyBag"))
+        FreeCAD.ActiveDocument.openTransaction("Edit PropertyBag")
         Panel.append(self)
 
     def updateData(self, topLeft, bottomRight):
         pass
 
-
     def _setupProperty(self, i, name):
         typ = PathPropertyBag.getPropertyTypeName(self.obj.getTypeIdOfProperty(name))
-        val  = PathUtil.getPropertyValueString(self.obj, name)
+        val = PathUtil.getPropertyValueString(self.obj, name)
         info = self.obj.getDocumentationOfProperty(name)
 
-        self.model.setData(self.model.index(i, self.ColumnName), name,      QtCore.Qt.EditRole)
-        #self.model.setData(self.model.index(i, self.ColumnType), typ,       QtCore.Qt.EditRole)
-        self.model.setData(self.model.index(i, self.ColumnVal),  self.obj,  Delegate.RoleObject)
-        self.model.setData(self.model.index(i, self.ColumnVal),  name,      Delegate.RoleProperty)
-        self.model.setData(self.model.index(i, self.ColumnVal),  val,       QtCore.Qt.DisplayRole)
+        self.model.setData(
+            self.model.index(i, self.ColumnName), name, QtCore.Qt.EditRole
+        )
+        # self.model.setData(self.model.index(i, self.ColumnType), typ,       QtCore.Qt.EditRole)
+        self.model.setData(
+            self.model.index(i, self.ColumnVal), self.obj, Delegate.RoleObject
+        )
+        self.model.setData(
+            self.model.index(i, self.ColumnVal), name, Delegate.RoleProperty
+        )
+        self.model.setData(
+            self.model.index(i, self.ColumnVal), val, QtCore.Qt.DisplayRole
+        )
 
-        self.model.setData(self.model.index(i, self.ColumnName), typ,       QtCore.Qt.ToolTipRole)
-        #self.model.setData(self.model.index(i, self.ColumnType), info,      QtCore.Qt.ToolTipRole)
-        self.model.setData(self.model.index(i, self.ColumnVal),  info,      QtCore.Qt.ToolTipRole)
+        self.model.setData(
+            self.model.index(i, self.ColumnName), typ, QtCore.Qt.ToolTipRole
+        )
+        # self.model.setData(self.model.index(i, self.ColumnType), info,      QtCore.Qt.ToolTipRole)
+        self.model.setData(
+            self.model.index(i, self.ColumnVal), info, QtCore.Qt.ToolTipRole
+        )
 
         self.model.item(i, self.ColumnName).setEditable(False)
-        #self.model.item(i, self.ColumnType).setEditable(False)
+        # self.model.item(i, self.ColumnType).setEditable(False)
 
     def setupUi(self):
         PathLog.track()
 
         self.delegate = Delegate(self.form)
-        self.model = QtGui.QStandardItemModel(len(self.props), len(self.TableHeaders), self.form)
+        self.model = QtGui.QStandardItemModel(
+            len(self.props), len(self.TableHeaders), self.form
+        )
         self.model.setHorizontalHeaderLabels(self.TableHeaders)
 
-        for i,name in enumerate(self.props):
+        for i, name in enumerate(self.props):
             self._setupProperty(i, name)
 
         self.form.table.setModel(self.model)
@@ -301,8 +329,8 @@ class TaskPanel(object):
 
     def addCustomProperty(self, obj, dialog):
         name = dialog.propertyName()
-        typ  = dialog.propertyType()
-        grp  = dialog.propertyGroup()
+        typ = dialog.propertyType()
+        grp = dialog.propertyGroup()
         info = dialog.propertyInfo()
         propname = self.obj.Proxy.addCustomProperty(typ, name, grp, info)
         if dialog.propertyIsEnumeration():
@@ -318,17 +346,22 @@ class TaskPanel(object):
             dialog = PropertyCreate(self.obj, grp, typ, more)
             if dialog.exec_(None):
                 # if we block signals the view doesn't get updated, surprise, surprise
-                #self.model.blockSignals(True)
+                # self.model.blockSignals(True)
                 name, info = self.addCustomProperty(self.obj, dialog)
                 index = 0
                 for i in range(self.model.rowCount()):
                     index = i
-                    if self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole) > dialog.propertyName():
+                    if (
+                        self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole)
+                        > dialog.propertyName()
+                    ):
                         break
                 self.model.insertRows(index, 1)
                 self._setupProperty(index, name)
-                self.form.table.selectionModel().setCurrentIndex(self.model.index(index, 0), QtCore.QItemSelectionModel.Rows)
-                #self.model.blockSignals(False)
+                self.form.table.selectionModel().setCurrentIndex(
+                    self.model.index(index, 0), QtCore.QItemSelectionModel.Rows
+                )
+                # self.model.blockSignals(False)
                 more = dialog.createAnother()
             else:
                 more = False
@@ -355,10 +388,14 @@ class TaskPanel(object):
                 # this can happen if the old enumeration value doesn't exist anymore
                 pass
             newVal = PathUtil.getPropertyValueString(obj, nam)
-            self.model.setData(self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole)
+            self.model.setData(
+                self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole
+            )
 
-            #self.model.setData(self.model.index(row, self.ColumnType), info, QtCore.Qt.ToolTipRole)
-            self.model.setData(self.model.index(row, self.ColumnVal),  info, QtCore.Qt.ToolTipRole)
+            # self.model.setData(self.model.index(row, self.ColumnType), info, QtCore.Qt.ToolTipRole)
+            self.model.setData(
+                self.model.index(row, self.ColumnVal), info, QtCore.Qt.ToolTipRole
+            )
 
     def propertyModify(self):
         PathLog.track()
@@ -370,7 +407,6 @@ class TaskPanel(object):
             rows.append(row)
 
             self.propertyModifyIndex(index)
-
 
     def propertyRemove(self):
         PathLog.track()
@@ -387,24 +423,31 @@ class TaskPanel(object):
             self.model.removeRow(row)
 
 
-def Create(name = 'PropertyBag'):
-    '''Create(name = 'PropertyBag') ... creates a new setup sheet'''
-    FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyBag", "Create PropertyBag"))
+def Create(name="PropertyBag"):
+    """Create(name = 'PropertyBag') ... creates a new setup sheet"""
+    FreeCAD.ActiveDocument.openTransaction("Create PropertyBag")
     pcont = PathPropertyBag.Create(name)
     PathIconViewProvider.Attach(pcont.ViewObject, name)
     return pcont
 
-PathIconViewProvider.RegisterViewProvider('PropertyBag', ViewProvider)
+
+PathIconViewProvider.RegisterViewProvider("PropertyBag", ViewProvider)
+
 
 class PropertyBagCreateCommand(object):
-    '''Command to create a property container object'''
+    """Command to create a property container object"""
 
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'MenuText': translate('PathPropertyBag', 'PropertyBag'),
-                'ToolTip': translate('PathPropertyBag', 'Creates an object which can be used to store reference properties.')}
+        return {
+            "MenuText": translate("Path_PropertyBag", "PropertyBag"),
+            "ToolTip": translate(
+                "Path_PropertyBag",
+                "Creates an object which can be used to store reference properties.",
+            ),
+        }
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -414,17 +457,18 @@ class PropertyBagCreateCommand(object):
         obj = Create()
         body = None
         if sel:
-            if 'PartDesign::Body' == sel[0].Object.TypeId:
+            if "PartDesign::Body" == sel[0].Object.TypeId:
                 body = sel[0].Object
-            elif hasattr(sel[0].Object, 'getParentGeoFeatureGroup'):
+            elif hasattr(sel[0].Object, "getParentGeoFeatureGroup"):
                 body = sel[0].Object.getParentGeoFeatureGroup()
         if body:
-            obj.Label = 'Attributes'
+            obj.Label = "Attributes"
             group = body.Group
             group.append(obj)
             body.Group = group
 
+
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_PropertyBag', PropertyBagCreateCommand())
+    FreeCADGui.addCommand("Path_PropertyBag", PropertyBagCreateCommand())
 
 FreeCAD.Console.PrintLog("Loading PathPropertyBagGui ... done\n")

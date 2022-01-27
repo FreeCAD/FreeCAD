@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
+    <width>498</width>
     <height>541</height>
    </rect>
   </property>
@@ -82,7 +82,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the X axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the X axis.&quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -92,7 +92,7 @@
         <item>
          <widget class="Gui::InputField" name="boundBoxExtraOffsetY">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis.&quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -133,16 +133,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Stock</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>BaseBoundBox</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="15" column="1">
@@ -160,26 +150,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile the edges of the selection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>None</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Only</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>First</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Last</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="10" column="0">
@@ -194,36 +164,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Circular</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CircularZigZag</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Line</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Offset</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Spiral</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ZigZag</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="1" column="1" colspan="2">
@@ -231,16 +171,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Planar</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Rotational</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="6" column="0">
@@ -262,16 +192,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Single-pass</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Multi-pass</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="2" column="0">
@@ -293,16 +213,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dropcutter lines are created parallel to this axis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>X</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="9" column="1" colspan="2">

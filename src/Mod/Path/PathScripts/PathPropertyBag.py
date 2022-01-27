@@ -20,31 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
-import PySide
 import re
+import PathScripts.PathLog as PathLog
 
-__title__ = 'Generic property container to store some values.'
-__author__ = 'sliptonic (Brad Collette)'
-__url__ = 'https://www.freecadweb.org'
-__doc__ = 'A generic container for typed properties in arbitrary categories.'
+__title__ = "Generic property container to store some values."
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "https://www.freecadweb.org"
+__doc__ = "A generic container for typed properties in arbitrary categories."
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+
+translate = FreeCAD.Qt.translate
 
 
 SupportedPropertyType = {
-        'Angle'         : 'App::PropertyAngle',
-        'Bool'          : 'App::PropertyBool',
-        'Distance'      : 'App::PropertyDistance',
-        'Enumeration'   : 'App::PropertyEnumeration',
-        'File'          : 'App::PropertyFile',
-        'Float'         : 'App::PropertyFloat',
-        'Integer'       : 'App::PropertyInteger',
-        'Length'        : 'App::PropertyLength',
-        'Percent'       : 'App::PropertyPercent',
-        'String'        : 'App::PropertyString',
-        }
+    "Angle": "App::PropertyAngle",
+    "Bool": "App::PropertyBool",
+    "Distance": "App::PropertyDistance",
+    "Enumeration": "App::PropertyEnumeration",
+    "File": "App::PropertyFile",
+    "Float": "App::PropertyFloat",
+    "Integer": "App::PropertyInteger",
+    "Length": "App::PropertyLength",
+    "Percent": "App::PropertyPercent",
+    "String": "App::PropertyString",
+}
+
 
 def getPropertyTypeName(o):
     for typ in SupportedPropertyType:
@@ -52,14 +60,22 @@ def getPropertyTypeName(o):
             return typ
     raise IndexError()
 
-class PropertyBag(object):
-    '''Property container object.'''
 
-    CustomPropertyGroups       = 'CustomPropertyGroups'
-    CustomPropertyGroupDefault = 'User'
+class PropertyBag(object):
+    """Property container object."""
+
+    CustomPropertyGroups = "CustomPropertyGroups"
+    CustomPropertyGroupDefault = "User"
 
     def __init__(self, obj):
-        obj.addProperty('App::PropertyStringList', self.CustomPropertyGroups, 'Base', PySide.QtCore.QT_TRANSLATE_NOOP('PathPropertyBag', 'List of custom property groups'))
+        obj.addProperty(
+            "App::PropertyStringList",
+            self.CustomPropertyGroups,
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "List of custom property groups"
+            ),
+        )
         self.onDocumentRestored(obj)
 
     def __getstate__(self):
@@ -69,14 +85,14 @@ class PropertyBag(object):
         return None
 
     def __sanitizePropertyName(self, name):
-        if(len(name) == 0):
+        if len(name) == 0:
             return
         clean = name[0]
         for i in range(1, len(name)):
-            if (name[i] == ' '):
+            if name[i] == " ":
                 clean += name[i + 1].upper()
                 i += 1
-            elif(name[i - 1] != ' '):
+            elif name[i - 1] != " ":
                 clean += name[i]
         return clean
 
@@ -85,20 +101,24 @@ class PropertyBag(object):
         obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
 
     def getCustomProperties(self):
-        '''getCustomProperties() ... Return a list of all custom properties created in this container.'''
-        return [p for p in self.obj.PropertiesList if self.obj.getGroupOfProperty(p) in self.obj.CustomPropertyGroups]
+        """getCustomProperties() ... Return a list of all custom properties created in this container."""
+        return [
+            p
+            for p in self.obj.PropertiesList
+            if self.obj.getGroupOfProperty(p) in self.obj.CustomPropertyGroups
+        ]
 
     def addCustomProperty(self, propertyType, name, group=None, desc=None):
-        '''addCustomProperty(propertyType, name, group=None, desc=None) ... adds a custom property and tracks its group.'''
+        """addCustomProperty(propertyType, name, group=None, desc=None) ... adds a custom property and tracks its group."""
         if desc is None:
-            desc = ''
+            desc = ""
         if group is None:
             group = self.CustomPropertyGroupDefault
         groups = self.obj.CustomPropertyGroups
 
         name = self.__sanitizePropertyName(name)
         if not re.match("^[A-Za-z0-9_]*$", name):
-            raise ValueError('Property Name can only contain letters and numbers')
+            raise ValueError("Property Name can only contain letters and numbers")
 
         if not group in groups:
             groups.append(group)
@@ -107,7 +127,7 @@ class PropertyBag(object):
         return name
 
     def refreshCustomPropertyGroups(self):
-        '''refreshCustomPropertyGroups() ... removes empty property groups, should be called after deleting properties.'''
+        """refreshCustomPropertyGroups() ... removes empty property groups, should be called after deleting properties."""
         customGroups = []
         for p in self.obj.PropertiesList:
             group = self.obj.getGroupOfProperty(p)
@@ -116,17 +136,17 @@ class PropertyBag(object):
         self.obj.CustomPropertyGroups = customGroups
 
 
-def Create(name = 'PropertyBag'):
-    obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
+def Create(name="PropertyBag"):
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", name)
     obj.Proxy = PropertyBag(obj)
     return obj
 
+
 def IsPropertyBag(obj):
-    '''Returns True if the supplied object is a property container (or its Proxy).'''
+    """Returns True if the supplied object is a property container (or its Proxy)."""
 
     if type(obj) == PropertyBag:
         return True
-    if hasattr(obj, 'Proxy'):
+    if hasattr(obj, "Proxy"):
         return IsPropertyBag(obj.Proxy)
     return False
-
