@@ -412,7 +412,7 @@ if HAVE_QTNETWORK:
                 self.file_buffers[index] = f
             else:
                 f = self.file_buffers[index]
-            f.write(buffer)
+            f.write(buffer.data())
 
         def __reply_finished(self, item: QueueItem) -> None:
             reply = self.replies.pop(item.index)
