@@ -35,7 +35,7 @@
 # USAGE
 #
 # Once imported, this file provides access to a global object called
-# AM_NETWORK_MANAGER. This is a QThread object running on its own thread, but
+# AM_NETWORK_MANAGER. This is a QObject running on the main thread, but
 # designed to be interacted with from any other application thread. It
 # provides two principal methods: submit_unmonitored_get() and
 # submit_monitored_get(). Use the unmonitored version for small amounts of
@@ -108,7 +108,7 @@ if HAVE_QTNETWORK:
             self.request = request
             self.track_progress = track_progress
 
-    class NetworkManager(QtCore.QThread):
+    class NetworkManager(QtCore.QObject):
         """A single global instance of NetworkManager is instantiated and stored as 
         AM_NETWORK_MANAGER. Outside threads should send GET requests to this class by 
         calling the submit_unmonitored_request() or submit_monitored_request() function, 
@@ -129,11 +129,11 @@ if HAVE_QTNETWORK:
             int, int, os.PathLike
         )  # Index, http response code, filename
 
+        __request_queued = QtCore.Signal()
+
         def __init__(self):
             super().__init__()
 
-            # Set up the incoming request queue: requests get put on this queue, and the main event loop
-            # pulls them off and runs them.
             self.counting_iterator = itertools.count()
             self.queue = queue.Queue()
             self.__last_started_index = 0
@@ -147,19 +147,18 @@ if HAVE_QTNETWORK:
             self.synchronous_result_data: Dict[int, QtCore.QByteArray] = {}
 
             # Make sure we exit nicely on quit
-            QtCore.QCoreApplication.instance().aboutToQuit.connect(self.aboutToQuit)
-
-        def run(self):
-            """Do not call directly: use start() to begin the event loop on a new thread."""
+            QtCore.QCoreApplication.instance().aboutToQuit.connect(self.__aboutToQuit)
 
             # Create the QNAM on this thread:
-            self.thread = QtCore.QThread.currentThread()
             self.QNAM = QtNetwork.QNetworkAccessManager()
             self.QNAM.proxyAuthenticationRequired.connect(self.__authenticate_proxy)
             self.QNAM.authenticationRequired.connect(self.__authenticate_resource)
 
-            # A helper connection for our blocking interface
-            self.completed.connect(self.__synchronous_process_completion)
+            qnam_cache = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.CacheLocation);
+            os.makedirs(qnam_cache,exist_ok=True)
+            self.diskCache = QtNetwork.QNetworkDiskCache()
+            self.diskCache.setCacheDirectory(qnam_cache)
+            self.QNAM.setCache(self.diskCache)
 
             # Set up the proxy, if necesssary:
             noProxyCheck = True
@@ -211,58 +210,42 @@ if HAVE_QTNETWORK:
                 )
                 self.QNAM.setProxy(proxy)
 
-            qnam_cache = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.CacheLocation);
-            os.makedirs(qnam_cache,exist_ok=True)
-            diskCache = QtNetwork.QNetworkDiskCache()
-            diskCache.setCacheDirectory(qnam_cache)
-            self.QNAM.setCache(diskCache)
+            # A helper connection for our blocking interface
+            self.completed.connect(self.__synchronous_process_completion)
 
-            # Start an event loop
-            while True:
-                if QtCore.QThread.currentThread().isInterruptionRequested():
-                    # Support shutting down the entire thread, but this should be very rarely used.
-                    # Callers should generally just call abort() on each network call they want to
-                    # terminate, using requestInterruption() will terminate ALL network requests.
-                    if not HAVE_FREECAD:
-                        print(
-                            "Shutting down all active network requests...", flush=True
+            # Set up our worker connection
+            self.__request_queued.connect(self.__setup_network_request)
+
+        def __aboutToQuit(self):
+            pass
+
+        def __setup_network_request(self):
+            try:
+                item = self.queue.get_nowait()
+                if item:
+                    if item.index in self.__abort_when_found:
+                        self.__abort_when_found.remove(item.index)
+                        return  # Do not do anything with this item, it's been aborted...
+                    reply = self.QNAM.get(item.request)
+
+                    self.__last_started_index = item.index
+                    reply.finished.connect(lambda i=item: self.__reply_finished(i))
+                    reply.redirected.connect(
+                        lambda url, r=reply: self.__on_redirect(r, url)
+                    )
+                    reply.sslErrors.connect(self.__on_ssl_error)
+                    if item.track_progress:
+                        reply.readyRead.connect(
+                            lambda i=item.index: self.__data_incoming(i)
                         )
-                    self.abort_all()
-                    self.queue.join()
-                    if not HAVE_FREECAD:
-                        print("All requests terminated.", flush=True)
-                    return
-                try:
-                    item = self.queue.get_nowait()
-                    if item:
-                        if item.index in self.__abort_when_found:
-                            self.__abort_when_found.remove(item.index)
-                            continue  # Do not do anything with this item, it's been aborted...
-                        reply = self.QNAM.get(item.request)
-
-                        self.__last_started_index = item.index
-                        reply.finished.connect(lambda i=item: self.__reply_finished(i))
-                        reply.redirected.connect(
-                            lambda url, r=reply: self.__on_redirect(r, url)
+                        reply.downloadProgress.connect(
+                            lambda a, b, i=item.index: self.progress_made.emit(
+                                i, a, b
+                            )
                         )
-                        reply.sslErrors.connect(self.__on_ssl_error)
-                        if item.track_progress:
-                            reply.readyRead.connect(
-                                lambda i=item.index: self.__data_incoming(i)
-                            )
-                            reply.downloadProgress.connect(
-                                lambda a, b, i=item.index: self.progress_made.emit(
-                                    i, a, b
-                                )
-                            )
-                        self.replies[item.index] = reply
-                except queue.Empty:
-                    pass
-                QtCore.QCoreApplication.processEvents()
-
-        def aboutToQuit(self):
-            self.requestInterruption()
-
+                    self.replies[item.index] = reply
+            except queue.Empty:
+                pass
 
         def submit_unmonitored_get(self, url: str) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
@@ -277,6 +260,7 @@ if HAVE_QTNETWORK:
                     current_index, self.__create_get_request(url), track_progress=False
                 )
             )
+            self.__request_queued.emit()
             return current_index
 
         def submit_monitored_get(self, url: str) -> int:
@@ -294,6 +278,7 @@ if HAVE_QTNETWORK:
                     current_index, self.__create_get_request(url), track_progress=True
                 )
             )
+            self.__request_queued.emit()
             return current_index
 
         def blocking_get(self, url: str) -> QtCore.QByteArray:
@@ -308,6 +293,7 @@ if HAVE_QTNETWORK:
                     current_index, self.__create_get_request(url), track_progress=False
                 )
             )
+            self.__request_queued.emit()
             while not self.synchronous_complete[current_index]:
                 if QtCore.QThread.currentThread().isInterruptionRequested():
                     return None
@@ -333,14 +319,11 @@ if HAVE_QTNETWORK:
                 QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
             )
             request.setAttribute(
-                QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True
+                QtNetwork.QNetworkRequest.CacheSaveControlAttribute, False
             )
             request.setAttribute(
                 QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                QtNetwork.QNetworkRequest.PreferCache,
-            )
-            request.setAttribute(
-                QtNetwork.QNetworkRequest.BackgroundRequestAttribute, True
+                QtNetwork.QNetworkRequest.AlwaysNetwork,
             )
             return request
 
@@ -453,7 +436,7 @@ if HAVE_QTNETWORK:
 
 else:  # HAVE_QTNETWORK is false:
 
-    class NetworkManager(QtCore.QThread):
+    class NetworkManager(QtCore.QObject):
         """A dummy class to enable an offline mode when the QtNetwork package is not yet installed"""
 
         completed = QtCore.Signal(
@@ -470,26 +453,6 @@ else:  # HAVE_QTNETWORK is false:
             super().__init__()
             self.monitored_queue = queue.Queue()
             self.unmonitored_queue = queue.Queue()
-
-        def run(self):
-            while True:
-                try:
-                    index = self.monitored_queue.get_nowait()
-                    self.progress_complete.emit(
-                        index, 418, "--ERR418--"
-                    )  # Refuse to provide data
-                    self.monitored_queue.task_done()
-                except queue.Empty:
-                    pass
-                try:
-                    index = self.unmonitored_queue.get_nowait()
-                    self.completed.emit(index, 418, None)
-                    self.unmonitored_queue.task_done()
-                except queue.Empty:
-                    pass
-                if QtCore.QThread.currentThread().isInterruptionRequested():
-                    return
-                QtCore.QCoreApplication.processEvents()
 
         def submit_unmonitored_request(self, _) -> int:
             current_index = next(itertools.count())
@@ -517,7 +480,6 @@ def InitializeNetworkManager():
     global AM_NETWORK_MANAGER
     if AM_NETWORK_MANAGER is None:
         AM_NETWORK_MANAGER = NetworkManager()
-        AM_NETWORK_MANAGER.start()
 
 if __name__ == "__main__":
 
