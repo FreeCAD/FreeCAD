@@ -30,7 +30,7 @@ import time
 from typing import Dict, Tuple, List, Union
 
 import FreeCAD
-from NetworkManager import AM_NETWORK_MANAGER
+import NetworkManager
 
 translate = FreeCAD.Qt.translate
 
@@ -166,7 +166,7 @@ class Macro(object):
 
     def fill_details_from_wiki(self, url):
         code = ""
-        p = AM_NETWORK_MANAGER.blocking_get(url)
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
         if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -183,7 +183,7 @@ class Macro(object):
             rawcodeurl = re.findall('rawcodeurl.*?href="(http.*?)">', p)
             if rawcodeurl:
                 rawcodeurl = rawcodeurl[0]
-                u2 = AM_NETWORK_MANAGER.blocking_get(rawcodeurl)
+                u2 = NetworkManager.AM_NETWORK_MANAGER.blocking_get(rawcodeurl)
                 if not u2:
                     FreeCAD.Console.PrintWarning(
                         translate(

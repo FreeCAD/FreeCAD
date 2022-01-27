@@ -52,7 +52,7 @@ import addonmanager_utilities as utils
 from addonmanager_macro import Macro
 
 from AddonManagerRepo import AddonManagerRepo
-from NetworkManager import AM_NETWORK_MANAGER
+import NetworkManager
 
 translate = FreeCAD.Qt.translate
 
@@ -119,7 +119,7 @@ class ConnectionChecker(QtCore.QThread):
             translate("AddonsInstaller", "Checking network connection...\n")
         )
         url = "https://api.github.com/zen"
-        result = AM_NETWORK_MANAGER.blocking_get(url)
+        result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         if not result:
@@ -153,7 +153,7 @@ class UpdateWorker(QtCore.QThread):
 
         # update info lists
         global obsolete, macros_reject_list, mod_reject_list, py2only
-        p = AM_NETWORK_MANAGER.blocking_get(
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json"
         )
         if p:
@@ -254,7 +254,7 @@ class UpdateWorker(QtCore.QThread):
                 self.addon_repo.emit(repo)
 
         # querying official addons
-        p = AM_NETWORK_MANAGER.blocking_get(
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules"
         )
         if not p:
@@ -409,8 +409,8 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                     "AddonManager: "
                     + translate(
                         "AddonsInstaller",
-                        f"Unable to fetch git updates for workbench {wb.name}",
-                    )
+                        "Unable to fetch git updates for workbench {}",
+                    ).format(wb.name)
                 )
             else:
                 try:
@@ -425,7 +425,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                     self.update_status.emit(wb)
                 except Exception:
                     FreeCAD.Console.PrintWarning(
-                        translate("AddonsInstaller", "git fetch failed for {wb.name}")
+                        translate("AddonsInstaller", "git fetch failed for {}").format(wb.name)
                     )
 
     def check_package(self, package: AddonManagerRepo) -> None:
@@ -627,7 +627,7 @@ class FillMacroListWorker(QtCore.QThread):
         Reads only the page https://wiki.freecad.org/Macros_recipes
         """
 
-        p = AM_NETWORK_MANAGER.blocking_get("https://wiki.freecad.org/Macros_recipes")
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get("https://wiki.freecad.org/Macros_recipes")
         if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -817,7 +817,7 @@ class ShowWorker(QtCore.QThread):
             readmeurl = utils.get_readme_html_url(self.repo)
             if not readmeurl:
                 FreeCAD.Console.PrintLog(f"README not found for {url}\n")
-            p = AM_NETWORK_MANAGER.blocking_get(readmeurl)
+            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(readmeurl)
             if not p:
                 FreeCAD.Console.PrintLog(f"Debug: README not found at {readmeurl}\n")
             p = p.data().decode("utf8")
@@ -831,7 +831,7 @@ class ShowWorker(QtCore.QThread):
             readmeurl = utils.get_readme_url(self.repo)
             if not readmeurl:
                 FreeCAD.Console.PrintLog(f"Debug: README not found for {url}\n")
-            p = AM_NETWORK_MANAGER.blocking_get(readmeurl)
+            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(readmeurl)
             if p:
                 p = p.data().decode("utf8")
                 desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
@@ -853,7 +853,7 @@ class ShowWorker(QtCore.QThread):
                 FreeCAD.Console.PrintLog("Debug: README not found at {readmeurl}\n")
                 if desc == "":
                     # fall back to the description text
-                    p = AM_NETWORK_MANAGER.blocking_get(url)
+                    p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
                     if not p:
                         return
                     p = p.data().decode("utf8")
@@ -942,7 +942,7 @@ class ShowWorker(QtCore.QThread):
                         storename = os.path.join(store, wbName + name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
-                            imagedata = AM_NETWORK_MANAGER.blocking_get(path)
+                            imagedata = NetworkManager.AM_NETWORK_MANAGER.blocking_get(path)
                             if not imagedata:
                                 raise Exception
                         except Exception:
@@ -1225,9 +1225,9 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.zipdir = zipdir
         self.bakdir = bakdir
 
-        AM_NETWORK_MANAGER.progress_made.connect(self.update_zip_status)
-        AM_NETWORK_MANAGER.progress_complete.connect(self.finish_zip)
-        self.zip_download_index = AM_NETWORK_MANAGER.submit_monitored_get(zipurl)
+        NetworkManager.AM_NETWORK_MANAGER.progress_made.connect(self.update_zip_status)
+        NetworkManager.AM_NETWORK_MANAGER.progress_complete.connect(self.finish_zip)
+        self.zip_download_index = NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zipurl)
 
     def update_zip_status(self, index: int, bytes_read: int, data_size: int):
         if index == self.zip_download_index:
@@ -1492,7 +1492,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.requests: Dict[
             int, (AddonManagerRepo, UpdateMetadataCacheWorker.RequestType)
         ] = {}
-        AM_NETWORK_MANAGER.completed.connect(self.download_completed)
+        NetworkManager.AM_NETWORK_MANAGER.completed.connect(self.download_completed)
         self.requests_completed = 0
         self.total_requests = 0
         self.store = os.path.join(
@@ -1506,7 +1506,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         for repo in self.repos:
             if repo.url and utils.recognized_git_location(repo):
                 # package.xml
-                index = AM_NETWORK_MANAGER.submit_unmonitored_get(
+                index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
                     utils.construct_git_url(repo, "package.xml")
                 )
                 self.requests[index] = (
@@ -1516,7 +1516,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 self.total_requests += 1
 
                 # metadata.txt
-                index = AM_NETWORK_MANAGER.submit_unmonitored_get(
+                index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
                     utils.construct_git_url(repo, "metadata.txt")
                 )
                 self.requests[index] = (
@@ -1526,7 +1526,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 self.total_requests += 1
 
                 # requirements.txt
-                index = AM_NETWORK_MANAGER.submit_unmonitored_get(
+                index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(
                     utils.construct_git_url(repo, "requirements.txt")
                 )
                 self.requests[index] = (
@@ -1537,9 +1537,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
         while self.requests:
             if current_thread.isInterruptionRequested():
-                AM_NETWORK_MANAGER.completed.disconnect(self.download_completed)
+                NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.download_completed)
                 for request in self.requests.keys():
-                    AM_NETWORK_MANAGER.abort(request)
+                    NetworkManager.AM_NETWORK_MANAGER.abort(request)
                 return
             # 50 ms maximum between checks for interruption
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
@@ -1603,7 +1603,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     icon = repo.Icon
 
         icon_url = utils.construct_git_url(repo, icon)
-        index = AM_NETWORK_MANAGER.submit_unmonitored_get(icon_url)
+        index = NetworkManager.AM_NETWORK_MANAGER.submit_unmonitored_get(icon_url)
         self.requests[index] = (repo, UpdateMetadataCacheWorker.RequestType.ICON)
         self.total_requests += 1
 

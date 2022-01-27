@@ -146,6 +146,9 @@ if HAVE_QTNETWORK:
             self.synchronous_complete: Dict[int, bool] = {}
             self.synchronous_result_data: Dict[int, QtCore.QByteArray] = {}
 
+            # Make sure we exit nicely on quit
+            QtCore.QCoreApplication.instance().aboutToQuit.connect(self.aboutToQuit)
+
         def run(self):
             """Do not call directly: use start() to begin the event loop on a new thread."""
 
@@ -256,6 +259,10 @@ if HAVE_QTNETWORK:
                 except queue.Empty:
                     pass
                 QtCore.QCoreApplication.processEvents()
+
+        def aboutToQuit(self):
+            self.requestInterruption()
+
 
         def submit_unmonitored_get(self, url: str) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
@@ -506,13 +513,17 @@ else:  # HAVE_QTNETWORK is false:
             pass  # Nothing to do
 
 
-AM_NETWORK_MANAGER = NetworkManager()
-AM_NETWORK_MANAGER.start()
-
+def InitializeNetworkManager():
+    global AM_NETWORK_MANAGER
+    if AM_NETWORK_MANAGER is None:
+        AM_NETWORK_MANAGER = NetworkManager()
+        AM_NETWORK_MANAGER.start()
 
 if __name__ == "__main__":
 
     app = QtCore.QCoreApplication()
+
+    InitializeNetworkManager()
 
     count = 0
 
