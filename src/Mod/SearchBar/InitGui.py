@@ -7,12 +7,7 @@ def addToolSearchBox():
   import SearchBoxLight
   global wax, sea
   mw = FreeCADGui.getMainWindow()
-  mbr = mw.findChildren(QtGui.QToolBar, 'File')
-  # The toolbar will be unavailable if this file is loaded during startup, because no workbench is active and no toolbars are visible.
-  if len(mbr) > 0:
-    # Get the first toolbar named 'File', and add 
-    mbr = mbr[0]
-    # Create search box widget
+  if mw:
     sea = SearchBoxLight.SearchBoxLight(getItemGroups   = lambda: __import__('GetItemGroups').getItemGroups(),
                                         getToolTip      = lambda groupId, setParent: __import__('GetItemGroups').getToolTip(groupId, setParent),
                                         getItemDelegate = lambda: __import__('IndentedItemDelegate').IndentedItemDelegate())
@@ -21,8 +16,14 @@ def addToolSearchBox():
     wax.setWhatsThis('Use this search bar to find tools, document objects, preferences and more')
     sea.setWhatsThis('Use this search bar to find tools, document objects, preferences and more')
     wax.setDefaultWidget(sea)
-    #mbr.addWidget(sea)
-    mbr.addAction(wax)
+    ##mbr.addWidget(sea)
+    #mbr.addAction(wax)
+    tbr = QtGui.QToolBar("SearchBar") #QtGui.QDockWidget()
+    # Include FreeCAD in the name so that one can find windows labeled with FreeCAD easily in window managers which allow search through the list of open windows.
+    tbr.setObjectName("SearchBar")
+    tbr.addAction(wax)
+    mw.addToolBar(tbr)
+    tbr.show()
 
 addToolSearchBox()
 import FreeCADGui
