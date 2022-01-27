@@ -419,7 +419,7 @@ class CommandAddonManager:
                 thread = getattr(self, worker)
                 if thread:
                     if not thread.isFinished():
-                        finished = thread.wait(QtCore.QDeadlineTimer(500))
+                        finished = thread.wait(500)
                         if not finished:
                             FreeCAD.Console.PrintWarning(
                                 translate(
