@@ -39,8 +39,11 @@ std::string MetadataPy::representation(void) const
     str << ptr->name();
     str << "), Description=(";
     str << ptr->description();
-    str << "), Maintainer=(";
-    str << ptr->maintainer().front().name << ")]";
+    if (!ptr->maintainer().empty()) {
+        str << "), Maintainer=(";
+        str << ptr->maintainer().front().name;
+    }
+    str << ")]";
 
     return str.str();
 }
@@ -258,7 +261,7 @@ Py::Object MetadataPy::getContent(void) const
     for (const auto& key : keys) {
         Py::List pyContentForKey;
         auto elements = content.equal_range(key);
-        for (auto element = elements.first; element != elements.second; ++element) {
+        for (auto & element = elements.first; element != elements.second; ++element) {
             auto contentMetadataItem = new MetadataPy(new Metadata(element->second));
             pyContentForKey.append(Py::asObject(contentMetadataItem));
         }

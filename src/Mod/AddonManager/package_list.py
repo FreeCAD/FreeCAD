@@ -338,6 +338,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(16, 16)))
 
         self.widget.ui.labelIcon.setText("")
+        self.widget.ui.labelTags.setText("")
         if repo.metadata:
             self.widget.ui.labelDescription.setText(repo.metadata.Description)
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.Version}</i>")
@@ -353,8 +354,16 @@ class PackageListItemDelegate(QStyledItemDelegate):
                     n = len(maintainers)
                     string = translate("AddonsInstaller", "Maintainers:", "", n)
                     for maintainer in maintainers:
-                        string += f"\n{maintainer['name']} <{maintainer['email']}>"
-                self.widget.ui.labelMaintainer.setText(string)
+                        maintainers_string += (
+                            f"\n{maintainer['name']} <{maintainer['email']}>"
+                        )
+                self.widget.ui.labelMaintainer.setText(maintainers_string)
+                if repo.tags:
+                    self.widget.ui.labelTags.setText(
+                        translate("AddonsInstaller", "Tags")
+                        + ": "
+                        + ", ".join(repo.tags)
+                    )
         elif repo.macro and repo.macro.parsed:
             self.widget.ui.labelDescription.setText(repo.macro.comment)
             self.widget.ui.labelVersion.setText(repo.macro.version)
@@ -562,6 +571,9 @@ class PackageListFilter(QSortFilterProxyModel):
                     and re.match(data.macro.comment).hasMatch()
                 ):
                     return True
+                for tag in data.tags:
+                    if re.match(tag).hasMatch():
+                        return True
                 return False
             else:
                 return False
@@ -573,6 +585,15 @@ class PackageListFilter(QSortFilterProxyModel):
                     return True
                 if re.indexIn(desc) != -1:
                     return True
+                if (
+                    data.macro
+                    and data.macro.comment
+                    and re.indexIn(data.macro.comment) != -1
+                ):
+                    return True
+                for tag in data.tags:
+                    if re.indexIn(tag) != -1:
+                        return True
                 return False
             else:
                 return False

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>657</width>
-    <height>64</height>
+    <width>807</width>
+    <height>141</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -112,6 +112,13 @@
          </property>
          <property name="text">
           <string>Version</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelTags">
+         <property name="text">
+          <string>(tags)</string>
          </property>
         </widget>
        </item>

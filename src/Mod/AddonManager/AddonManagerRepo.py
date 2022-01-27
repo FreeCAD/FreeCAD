@@ -96,6 +96,7 @@ class AddonManagerRepo:
         self.rejected = False
         self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
         self.description = None
+        self.tags = set()  # Just a cache, loaded from Metadata
         from addonmanager_utilities import construct_git_url
 
         if "github" in self.url or "gitlab" in self.url or "salsa" in self.url:
@@ -198,9 +199,13 @@ class AddonManagerRepo:
         }
 
     def load_metadata_file(self, file: str) -> None:
-        if os.path.isfile(file):
+        if os.path.exists(file):
             metadata = FreeCAD.Metadata(file)
             self.set_metadata(metadata)
+        else:
+            FreeCAD.Console.PrintMessage(
+                "Internal error: {} does not exist".format(file)
+            )
 
     def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         self.metadata = metadata
@@ -214,6 +219,16 @@ class AddonManagerRepo:
                     self.branch = url["branch"]
                 else:
                     self.branch = "master"
+        self.extract_tags(self.metadata)
+
+    def extract_tags(self, metadata: FreeCAD.Metadata) -> None:
+        for new_tag in metadata.Tag:
+            self.tags.add(new_tag)
+
+        content = metadata.Content
+        for key, value in content.items():
+            for item in value:
+                self.extract_tags(item)
 
     def contains_workbench(self) -> bool:
         """Determine if this package contains (or is) a workbench"""
