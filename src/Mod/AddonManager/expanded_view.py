@@ -17,8 +17,8 @@ class Ui_ExpandedView(object):
     def setupUi(self, ExpandedView):
         if not ExpandedView.objectName():
             ExpandedView.setObjectName(u"ExpandedView")
-        ExpandedView.resize(657, 64)
-        sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Minimum)
+        ExpandedView.resize(807, 141)
+        sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(ExpandedView.sizePolicy().hasHeightForWidth())
@@ -36,6 +36,8 @@ class Ui_ExpandedView(object):
         sizePolicy1.setHeightForWidth(self.labelIcon.sizePolicy().hasHeightForWidth())
         self.labelIcon.setSizePolicy(sizePolicy1)
         self.labelIcon.setMinimumSize(QSize(48, 48))
+        self.labelIcon.setMaximumSize(QSize(48, 48))
+        self.labelIcon.setBaseSize(QSize(48, 48))
 
         self.horizontalLayout_2.addWidget(self.labelIcon)
 
@@ -67,6 +69,11 @@ class Ui_ExpandedView(object):
         self.labelVersion.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout.addWidget(self.labelVersion)
+
+        self.labelTags = QLabel(ExpandedView)
+        self.labelTags.setObjectName(u"labelTags")
+
+        self.horizontalLayout.addWidget(self.labelTags)
 
         self.horizontalSpacer_2 = QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum
@@ -127,6 +134,9 @@ class Ui_ExpandedView(object):
         )
         self.labelVersion.setText(
             QCoreApplication.translate("ExpandedView", u"Version", None)
+        )
+        self.labelTags.setText(
+            QCoreApplication.translate("ExpandedView", u"(tags)", None)
         )
         self.labelDescription.setText(
             QCoreApplication.translate("ExpandedView", u"Description", None)
