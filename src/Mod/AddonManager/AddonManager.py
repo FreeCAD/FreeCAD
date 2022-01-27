@@ -42,7 +42,7 @@ from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
 from AddonManagerRepo import AddonManagerRepo
 
-from NetworkManager import HAVE_QTNETWORK
+from NetworkManager import HAVE_QTNETWORK, InitializeNetworkManager
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
@@ -130,6 +130,8 @@ class CommandAddonManager:
         }
 
     def Activated(self) -> None:
+
+        InitializeNetworkManager()
 
         # display first use dialog if needed
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
