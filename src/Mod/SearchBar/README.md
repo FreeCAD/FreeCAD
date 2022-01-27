@@ -19,6 +19,20 @@ The search bar appars next to the What's this? tool, in FreeCAD's default File t
 
 ![Screenshot of the search bar, with results in its drop-down menu and extra info about the result in a separate pane](screenshot.png)
 
+Installation
+------------
+
+Clone the GIT repository or extract the `.zip` downloaded from GitHub to the following location:
+
+Uninstallation
+--------------
+
+* Remove the folder which was cloned during installation:
+  * Linux: ~/.FreeCAD/Mod/SearchBar
+  * macos: /Users/user_name/Library/Preferences/FreeCAD/Mod/SearchBar
+  * Windows: C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\SearchBar  
+* Optional: Remove the cache (~30MB) ~/.FreeCAD/Cache_SearchBarMod or equivalent on other platforms
+
 Development
 -----------
 
