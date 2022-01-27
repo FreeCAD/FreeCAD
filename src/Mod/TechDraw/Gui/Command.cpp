@@ -95,6 +95,7 @@
 #include "TaskSectionView.h"
 #include "TaskActiveView.h"
 #include "TaskDetail.h"
+#include "TaskProjection.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
 
@@ -1462,6 +1463,38 @@ bool CmdTechDrawExportPageDXF::isActive(void)
     return DrawGuiUtil::needPage(this);
 }
 
+//===========================================================================
+// TechDraw_ProjectShape
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawProjectShape)
+
+CmdTechDrawProjectShape::CmdTechDrawProjectShape()
+  : Command("TechDraw_ProjectShape")
+{
+    sAppModule      = "TechDraw";
+    sGroup        = QT_TR_NOOP("TechDraw");
+    sMenuText     = QT_TR_NOOP("Project shape...");
+    sToolTipText  = sMenuText;
+    sWhatsThis    = "TechDraw_ProjectShape";
+    sStatusTip    = sToolTipText;
+    sPixmap         = "actions/TechDraw_ProjectShape";
+}
+
+void CmdTechDrawProjectShape::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        Gui::Control().showDialog(new TaskDlgProjection());
+    }
+}
+
+bool CmdTechDrawProjectShape::isActive(void)
+{
+    return true;
+}
+
 void CreateTechDrawCommands(void)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1484,4 +1517,5 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
     rcCmdMgr.addCommand(new CmdTechDrawBalloon());
+    rcCmdMgr.addCommand(new CmdTechDrawProjectShape());
 }

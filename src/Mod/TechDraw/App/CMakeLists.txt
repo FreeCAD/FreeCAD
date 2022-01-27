@@ -132,6 +132,8 @@ SET(Draw_SRCS
     DrawTileWeld.h
     DrawWeldSymbol.cpp
     DrawWeldSymbol.h
+    FeatureProjection.cpp
+    FeatureProjection.h
     )
 
 SET(TechDraw_SRCS
@@ -157,6 +159,10 @@ SET(TechDraw_SRCS
     ArrowPropEnum.h
     Preferences.cpp
     Preferences.h
+    TechDrawExport.cpp
+    TechDrawExport.h
+    ProjectionAlgos.cpp
+    ProjectionAlgos.h
 )
 
 SET(Geometry_SRCS

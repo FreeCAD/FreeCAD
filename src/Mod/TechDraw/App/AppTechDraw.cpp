@@ -65,6 +65,8 @@
 
 #include "CosmeticExtension.h"
 
+#include "FeatureProjection.h"
+
 namespace TechDraw {
     extern PyObject* initModule();
 }
@@ -129,6 +131,8 @@ PyMOD_INIT_FUNC(TechDraw)
 
     TechDraw::CosmeticExtension     ::init();
     TechDraw::CosmeticExtensionPython::init();
+
+    TechDraw::FeatureProjection::init();
 
    // are these python init calls required?  some modules don't have them
    // Python Types
