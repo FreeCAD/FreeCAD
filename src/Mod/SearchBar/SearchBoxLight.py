@@ -13,7 +13,7 @@ class SearchBoxLight(QtGui.QLineEdit):
     self.getItemDelegate = getItemDelegate
     self.maxVisibleRows = maxVisibleRows
 
-    # Call parent cosntructor
+    # Call parent constructor
     super(SearchBoxLight, self).__init__(parent)
     # Connect signals and slots
     self.textChanged.connect(self.filterModel)
