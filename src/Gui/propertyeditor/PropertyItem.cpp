@@ -552,10 +552,10 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::TextColorRole && linked)
+        if (role == Qt::ForegroundRole && linked)
             return QVariant::fromValue(QColor(0x20,0xaa,0x20));
 
-        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
+        if (role == Qt::BackgroundRole || role == Qt::ForegroundRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
