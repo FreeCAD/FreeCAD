@@ -342,7 +342,7 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item>
+           <item row="0" column="0">
             <widget class="QCheckBox" name="tiledBackground">
              <property name="toolTip">
               <string>Background of the main window will consist of tiles of a special image.
@@ -350,6 +350,25 @@ See the FreeCAD Wiki for details about the image.</string>
              </property>
              <property name="text">
               <string>Enable tiled background</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::PrefCheckBox" name="EnableCursorBlinking">
+             <property name="toolTip">
+              <string>The text cursor will be blinking</string>
+             </property>
+             <property name="text">
+              <string>Enable cursor blinking</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="prefEntry" stdset="0">
+              <cstring>EnableCursorBlinking</cstring>
+             </property>
+             <property name="prefPath" stdset="0">
+              <cstring>General</cstring>
              </property>
             </widget>
            </item>
@@ -625,6 +644,7 @@ horizontal space in Python console</string>
  <tabstops>
   <tabstop>Languages</tabstop>
   <tabstop>RecentFiles</tabstop>
+  <tabstop>EnableCursorBlinking</tabstop>
   <tabstop>SplashScreen</tabstop>
   <tabstop>PythonWordWrap</tabstop>
   <tabstop>PythonBlockCursor</tabstop>
