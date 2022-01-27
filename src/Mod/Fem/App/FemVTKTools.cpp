@@ -95,21 +95,23 @@ namespace Fem
 
 template<class TReader> vtkDataSet* readVTKFile(const char*fileName)
 {
-  vtkSmartPointer<TReader> reader =
-    vtkSmartPointer<TReader>::New();
-  reader->SetFileName(fileName);
-  reader->Update();
-  reader->GetOutput()->Register(reader);
-  return vtkDataSet::SafeDownCast(reader->GetOutput());
+    vtkSmartPointer<TReader> reader =
+      vtkSmartPointer<TReader>::New();
+    reader->SetFileName(fileName);
+    reader->Update();
+    auto output = reader->GetOutput();
+    if (output)
+        output->Register(reader);
+    return vtkDataSet::SafeDownCast(output);
 }
 
 template<class TWriter> void writeVTKFile(const char* filename, vtkSmartPointer<vtkUnstructuredGrid> dataset)
 {
-  vtkSmartPointer<TWriter> writer =
-    vtkSmartPointer<TWriter>::New();
-  writer->SetFileName(filename);
-  writer->SetInputData(dataset);
-  writer->Write();
+    vtkSmartPointer<TWriter> writer =
+      vtkSmartPointer<TWriter>::New();
+    writer->SetFileName(filename);
+    writer->SetInputData(dataset);
+    writer->Write();
 }
 
 
@@ -207,17 +209,25 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     if(f.hasExtension("vtu"))
     {
         vtkSmartPointer<vtkDataSet> dataset  = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
+        if (!dataset.Get()) {
+            Base::Console().Error("Failed to load file %s\n", filename);
+            return nullptr;
+        }
         importVTKMesh(dataset, mesh);
     }
     else if(f.hasExtension("vtk"))
     {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkDataSetReader>(filename);
+        if (!dataset.Get()) {
+            Base::Console().Error("Failed to load file %s\n", filename);
+            return nullptr;
+        }
         importVTKMesh(dataset, mesh);
     }
     else
     {
         Base::Console().Error("file name extension is not supported\n");
-        return NULL;
+        return nullptr;
     }
     //Mesh should link to the part feature, in order to set up FemConstraint
 
