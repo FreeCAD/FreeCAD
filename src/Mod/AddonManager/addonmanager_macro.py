@@ -171,8 +171,8 @@ class Macro(object):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    f"Unable to open macro wiki page at {url}",
-                )
+                    "Unable to open macro wiki page at {}",
+                ).format(url)
                 + "\n"
             )
             return
@@ -188,8 +188,8 @@ class Macro(object):
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            f"Unable to open macro code URL {rawcodeurl}",
-                        )
+                            "Unable to open macro code URL {rawcodeurl}",
+                        ).format(rawcodeurl)
                         + "\n"
                     )
                     return
@@ -221,8 +221,8 @@ class Macro(object):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    f"Unable to retrieve a description from the wiki for macro {self.name}",
-                )
+                    "Unable to retrieve a description from the wiki for macro {}",
+                ).format(self.name)
                 + "\n"
             )
             desc = "No description available"
@@ -322,8 +322,8 @@ class Macro(object):
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
-                        f"Failed to remove macro file '{dst_file}': it might not exist, or its permissions changed",
-                    )
+                        "Failed to remove macro file '{}': it might not exist, or its permissions changed",
+                    ).format(dst_file)
                     + "\n"
                 )
         return True

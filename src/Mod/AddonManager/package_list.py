@@ -31,11 +31,12 @@ from PySide2.QtWidgets import *
 from enum import IntEnum
 import threading
 
-from addonmanager_utilities import translate  # this needs to be as is for pylupdate
 from AddonManagerRepo import AddonManagerRepo
 
 from compact_view import Ui_CompactView
 from expanded_view import Ui_ExpandedView
+
+translate = FreeCAD.Qt.translate
 
 
 class ListDisplayStyle(IntEnum):
@@ -201,20 +202,17 @@ class PackageListItemModel(QAbstractListModel):
         if role == Qt.ToolTipRole:
             tooltip = ""
             if self.repos[row].repo_type == AddonManagerRepo.RepoType.PACKAGE:
-                tooltip = (
-                    translate("AddonsInstaller", "Click for details about package")
-                    + f" '{self.repos[row].display_name}'"
-                )
+                tooltip = translate(
+                    "AddonsInstaller", "Click for details about package {}"
+                ).format(self.repos[row].display_name)
             elif self.repos[row].repo_type == AddonManagerRepo.RepoType.WORKBENCH:
-                tooltip = (
-                    translate("AddonsInstaller", "Click for details about workbench")
-                    + f" '{self.repos[row].display_name}'"
-                )
+                tooltip = translate(
+                    "AddonsInstaller", "Click for details about workbench {}"
+                ).format(self.repos[row].display_name)
             elif self.repos[row].repo_type == AddonManagerRepo.RepoType.MACRO:
-                tooltip = (
-                    translate("AddonsInstaller", "Click for details about macro")
-                    + f" '{self.repos[row].display_name}'"
-                )
+                tooltip = translate(
+                    "AddonsInstaller", "Click for details about macro {}"
+                ).format(self.repos[row].display_name)
             return tooltip
         elif role == PackageListItemModel.DataAccessRole:
             return self.repos[row]
@@ -345,19 +343,18 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.Version}</i>")
             if self.displayStyle == ListDisplayStyle.EXPANDED:
                 maintainers = repo.metadata.Maintainer
-                maintainers_string = ""
+                string = ""
                 if len(maintainers) == 1:
-                    maintainers_string = (
+                    string = (
                         translate("AddonsInstaller", "Maintainer")
                         + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
                     )
                 elif len(maintainers) > 1:
-                    maintainers_string = translate("AddonsInstaller", "Maintainers:")
+                    n = len(maintainers)
+                    string = translate("AddonsInstaller", "Maintainers:", "", n)
                     for maintainer in maintainers:
-                        maintainers_string += (
-                            f"\n{maintainer['name']} <{maintainer['email']}>"
-                        )
-                self.widget.ui.labelMaintainer.setText(maintainers_string)
+                        string += f"\n{maintainer['name']} <{maintainer['email']}>"
+                self.widget.ui.labelMaintainer.setText(string)
         elif repo.macro and repo.macro.parsed:
             self.widget.ui.labelDescription.setText(repo.macro.comment)
             self.widget.ui.labelVersion.setText(repo.macro.version)

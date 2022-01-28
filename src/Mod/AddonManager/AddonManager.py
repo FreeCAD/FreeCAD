@@ -34,7 +34,6 @@ from typing import Dict
 from PySide2 import QtGui, QtCore, QtWidgets
 import FreeCADGui
 
-from addonmanager_utilities import translate  # this needs to be as is for pylupdate
 from addonmanager_workers import *
 import addonmanager_utilities as utils
 import AddonManager_rc
@@ -43,6 +42,8 @@ from package_details import PackageDetails
 from AddonManagerRepo import AddonManagerRepo
 
 from NetworkManager import HAVE_QTNETWORK, InitializeNetworkManager
+
+translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
@@ -238,9 +239,12 @@ class CommandAddonManager:
             )
         else:
             QtWidgets.QMessageBox.critical(
-                None, 
-                translate("AddonsInstaller", "Missing dependency"), 
-                translate("AddonsInstaller", "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable."),
+                None,
+                translate("AddonsInstaller", "Missing dependency"),
+                translate(
+                    "AddonsInstaller",
+                    "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.",
+                ),
             )
 
     def launch(self) -> None:
@@ -424,8 +428,8 @@ class CommandAddonManager:
                             FreeCAD.Console.PrintWarning(
                                 translate(
                                     "AddonsInstaller",
-                                    f"Worker process {worker} is taking a long time to stop...\n",
-                                )
+                                    "Worker process {} is taking a long time to stop...\n",
+                                ).format(worker)
                             )
 
     def wait_on_other_workers(self) -> None:
@@ -763,13 +767,10 @@ class CommandAddonManager:
         """enables the update button"""
 
         if number_of_updates:
-            self.dialog.buttonUpdateAll.setText(
-                translate("AddonsInstaller", "Apply")
-                + " "
-                + str(number_of_updates)
-                + " "
-                + translate("AddonsInstaller", "update(s)")
+            s = translate(
+                "AddonsInstaller", "Apply {} update(s)", "", number_of_updates
             )
+            self.dialog.buttonUpdateAll.setText(s.format(number_of_updates))
             self.dialog.buttonUpdateAll.setEnabled(True)
         else:
             self.dialog.buttonUpdateAll.setText(
@@ -784,9 +785,9 @@ class CommandAddonManager:
             addon_repo.icon = self.get_icon(addon_repo)
         for repo in self.item_model.repos:
             if repo.name == addon_repo.name:
-                FreeCAD.Console.PrintLog(
-                    f"Possible duplicate addon: ignoring second addition of {addon_repo.name}\n"
-                )
+                # FreeCAD.Console.PrintLog(
+                #    f"Possible duplicate addon: ignoring second addition of {addon_repo.name}\n"
+                # )
                 return
         self.item_model.append_item(addon_repo)
 
@@ -907,8 +908,8 @@ class CommandAddonManager:
         if bad_packages:
             message = translate(
                 "AddonsInstaller",
-                "The Addon {repo.name} requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
-            )
+                "The Addon {} requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+            ).format(repo.name)
             if len(bad_packages) < 15:
                 for dep in bad_packages:
                     message += f"\n  * {dep}"
@@ -951,13 +952,13 @@ class CommandAddonManager:
                 name = missing_wbs[0]
                 message = translate(
                     "AddonsInstaller",
-                    f"Installing {addon} requires '{name}', which is not installed in your copy of FreeCAD.",
-                )
+                    "Installing {} requires '{}', which is not installed in your copy of FreeCAD.",
+                ).format(addon, name)
             else:
                 message = translate(
                     "AddonsInstaller",
-                    f"Installing {addon} requires the following workbenches, which are not installed in your copy of FreeCAD:\n",
-                )
+                    "Installing {} requires the following workbenches, which are not installed in your copy of FreeCAD:\n",
+                ).format(addon)
                 for wb in missing_wbs:
                     message += "  - " + wb + "\n"
             QtWidgets.QMessageBox.critical(
@@ -1068,8 +1069,8 @@ class CommandAddonManager:
             + "\n\n"
             + translate(
                 "AddonsInstaller",
-                f"Dependencies could not be installed. Continue with installation of {repo.name} anyway?",
-            ),
+                "Dependencies could not be installed. Continue with installation of {} anyway?",
+            ).format(repo.name),
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
         if result == QtWidgets.QMessageBox.Yes:
@@ -1088,8 +1089,8 @@ class CommandAddonManager:
             + f"\n\n{command}\n\n"
             + translate(
                 "AddonsInstaller",
-                f"Continue with installation of {repo.name} anyway?",
-            ),
+                "Continue with installation of {} anyway?",
+            ).format(repo.name),
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
         if result == QtWidgets.QMessageBox.Yes:
@@ -1273,8 +1274,10 @@ class CommandAddonManager:
                 result = "".join([repo.name + "\n" for repo in repos])
             else:
                 result = translate(
-                    "AddonsInstaller", f"{num_updates} total, see Report view for list"
-                )
+                    "AddonsInstaller",
+                    "{} total, see Report view for list",
+                    "Describes the number of updates that were completed ('{}' is replaced by the number of updates)",
+                ).format(num_updates)
                 for repo in repos:
                     FreeCAD.Console.PrintMessage(f"{message}: {repo.name}\n")
             return result
@@ -1360,9 +1363,9 @@ class CommandAddonManager:
         """Update the progress bar, showing it if it's hidden"""
 
         if current_value < 0:
-            FreeCAD.Console.PrintWarning(
-                f"Addon Manager: Internal error, current progress value is negative in region {self.current_progress_region}"
-            )
+            current_value = 0
+        elif current_value > max_value:
+            current_value = max_value
 
         self.show_progress_widgets()
         region_size = 100.0 / self.number_of_progress_regions
@@ -1496,8 +1499,8 @@ class CommandAddonManager:
                             FreeCAD.Console.PrintMessage(
                                 translate(
                                     "AddonsInstaller",
-                                    f"Macro {macro_filename} has local changes in the macros directory, so is not being removed by this uninstall process.\n",
-                                )
+                                    "Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.\n",
+                                ).format(macro_filename)
                             )
 
             if os.path.exists(clonedir):
