@@ -78,6 +78,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_shapeHints = new SoShapeHints();
     m_shapeHints->ref();
     m_shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    m_shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     m_coordinates = new SoCoordinate3();
     m_coordinates->ref();
     m_materialBinding = new SoMaterialBinding();
