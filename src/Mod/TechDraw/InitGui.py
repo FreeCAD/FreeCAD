@@ -42,6 +42,8 @@ class TechDrawWorkbench(Workbench):
     def Initialize(self):
         # load the module
 
+        import TechDrawGui
+
         try:
             import TechDrawTools
         except ImportError as err:
