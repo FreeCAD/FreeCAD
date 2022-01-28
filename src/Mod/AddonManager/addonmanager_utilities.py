@@ -24,7 +24,6 @@
 import os
 import re
 import ctypes
-import ssl
 from typing import Union, Optional
 
 import urllib
@@ -38,20 +37,6 @@ from PySide2 import QtCore, QtWidgets
 import FreeCAD
 import FreeCADGui
 
-# check for SSL support
-
-ssl_ctx = None
-try:
-    import ssl
-except ImportError:
-    pass
-else:
-    try:
-        # ssl_ctx = ssl.create_default_context(cafile=certifi.where())
-        # ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-    except AttributeError:
-        pass
 
 #  @package AddonManager_utilities
 #  \ingroup ADDONMANAGER
@@ -59,15 +44,7 @@ else:
 #  @{
 
 
-def translate(context, text, disambig=None):
-    "Main translation function"
-
-    try:
-        _encoding = QtWidgets.QApplication.UnicodeUTF8
-    except AttributeError:
-        return QtWidgets.QApplication.translate(context, text, disambig)
-    else:
-        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
+translate = FreeCAD.Qt.translate
 
 
 def symlink(source, link_name):

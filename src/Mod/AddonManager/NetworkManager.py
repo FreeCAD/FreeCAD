@@ -109,9 +109,9 @@ if HAVE_QTNETWORK:
             self.track_progress = track_progress
 
     class NetworkManager(QtCore.QObject):
-        """A single global instance of NetworkManager is instantiated and stored as 
-        AM_NETWORK_MANAGER. Outside threads should send GET requests to this class by 
-        calling the submit_unmonitored_request() or submit_monitored_request() function, 
+        """A single global instance of NetworkManager is instantiated and stored as
+        AM_NETWORK_MANAGER. Outside threads should send GET requests to this class by
+        calling the submit_unmonitored_request() or submit_monitored_request() function,
         as needed. See the documentation of those functions for details."""
 
         # Connect to complete for requests with no progress monitoring (e.g. small amounts of data)
@@ -154,8 +154,10 @@ if HAVE_QTNETWORK:
             self.QNAM.proxyAuthenticationRequired.connect(self.__authenticate_proxy)
             self.QNAM.authenticationRequired.connect(self.__authenticate_resource)
 
-            qnam_cache = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.CacheLocation);
-            os.makedirs(qnam_cache,exist_ok=True)
+            qnam_cache = QtCore.QStandardPaths.writableLocation(
+                QtCore.QStandardPaths.CacheLocation
+            )
+            os.makedirs(qnam_cache, exist_ok=True)
             self.diskCache = QtNetwork.QNetworkDiskCache()
             self.diskCache.setCacheDirectory(qnam_cache)
             self.QNAM.setCache(self.diskCache)
@@ -239,9 +241,7 @@ if HAVE_QTNETWORK:
                             lambda i=item.index: self.__data_incoming(i)
                         )
                         reply.downloadProgress.connect(
-                            lambda a, b, i=item.index: self.progress_made.emit(
-                                i, a, b
-                            )
+                            lambda a, b, i=item.index: self.progress_made.emit(i, a, b)
                         )
                     self.replies[item.index] = reply
             except queue.Empty:
@@ -462,8 +462,8 @@ else:  # HAVE_QTNETWORK is false:
         def submit_monitored_request(self, _) -> int:
             current_index = next(itertools.count())
             self.monitored_queue.put(current_index)
-            return current_index        
-        
+            return current_index
+
         def blocking_get(self, _: str) -> QtCore.QByteArray:
             return None
 
@@ -480,6 +480,7 @@ def InitializeNetworkManager():
     global AM_NETWORK_MANAGER
     if AM_NETWORK_MANAGER is None:
         AM_NETWORK_MANAGER = NetworkManager()
+
 
 if __name__ == "__main__":
 

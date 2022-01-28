@@ -65,7 +65,7 @@ try:
     have_git = hasattr(git, "Repo")
     if not have_git:
         FreeCAD.Console.PrintMessage(
-            "'import git' gave strange results (no Repo attribute)..."
+            "'import git' gave strange results (no Repo attribute)... do you have GitPython installed?"
         )
 except ImportError:
     pass
@@ -115,9 +115,7 @@ class ConnectionChecker(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
-        FreeCAD.Console.PrintLog(
-            translate("AddonsInstaller", "Checking network connection...\n")
-        )
+        FreeCAD.Console.PrintLog("Checking network connection...\n")
         url = "https://api.github.com/zen"
         result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
         if QtCore.QThread.currentThread().isInterruptionRequested():
@@ -425,7 +423,9 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                     self.update_status.emit(wb)
                 except Exception:
                     FreeCAD.Console.PrintWarning(
-                        translate("AddonsInstaller", "git fetch failed for {}").format(wb.name)
+                        translate("AddonsInstaller", "git fetch failed for {}").format(
+                            wb.name
+                        )
                     )
 
     def check_package(self, package: AddonManagerRepo) -> None:
@@ -460,8 +460,8 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
-                        f"Failed to read metadata from {installed_metadata_file}",
-                    )
+                        "Failed to read metadata from {name}",
+                    ).format(name=installed_metadata_file)
                     + "\n"
                 )
 
@@ -482,8 +482,8 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    f"Failed to fetch code for macro '{macro_wrapper.macro.name}'",
-                )
+                    "Failed to fetch code for macro '{name}'",
+                ).format(name=macro_wrapper.macro.name)
                 + "\n"
             )
             return
@@ -540,7 +540,7 @@ class FillMacroListWorker(QtCore.QThread):
         if not self.current_thread.isInterruptionRequested():
             self.status_message_signal.emit(
                 translate(
-                    "AddonInstaller",
+                    "AddonsInstaller",
                     "Retrieving macros from FreeCAD/FreeCAD-Macros Git repository",
                 )
             )
@@ -549,7 +549,7 @@ class FillMacroListWorker(QtCore.QThread):
         if not self.current_thread.isInterruptionRequested():
             self.status_message_signal.emit(
                 translate(
-                    "AddonInstaller",
+                    "AddonsInstaller",
                     "Retrieving macros from FreeCAD wiki",
                 )
             )
@@ -627,7 +627,9 @@ class FillMacroListWorker(QtCore.QThread):
         Reads only the page https://wiki.freecad.org/Macros_recipes
         """
 
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get("https://wiki.freecad.org/Macros_recipes")
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
+            "https://wiki.freecad.org/Macros_recipes"
+        )
         if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -701,7 +703,11 @@ class CacheMacroCode(QtCore.QThread):
                     worker.requestInterruption()
                     if not worker.wait(100):
                         FreeCAD.Console.PrintWarning(
-                            f"Addon Manager: a worker process failed to halt ({worker.macro.name})"
+                            translate(
+                                "AddonsInstaller",
+                                "Addon Manager: a worker process failed to halt ({name})",
+                            ).format(name=worker.macro.name)
+                            + "\n"
                         )
                 return
             # Ensure our signals propagate out by running an internal thread-local event loop
@@ -716,7 +722,11 @@ class CacheMacroCode(QtCore.QThread):
             worker.wait(50)
             if not worker.isFinished():
                 FreeCAD.Console.PrintError(
-                    f"Addon Manager: a worker process failed to complete while fetching {worker.macro.name}\n"
+                    translate(
+                        "AddonsInstaller",
+                        "Addon Manager: a worker process failed to complete while fetching {name}",
+                    ).format(name=worker.macro.name)
+                    + "\n"
                 )
 
         self.repo_queue.join()
@@ -729,8 +739,8 @@ class CacheMacroCode(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    f"Out of {num_macros} macros, {num_failed} timed out while processing",
-                )
+                    "Out of {num_macros} macros, {num_failed} timed out while processing",
+                ).format(num_macros=num_macros, num_failed=num_failed)
             )
 
     def update_and_advance(self, repo: AddonManagerRepo) -> None:
@@ -760,8 +770,8 @@ class CacheMacroCode(QtCore.QThread):
             self.status_message.emit(
                 translate(
                     "AddonsInstaller",
-                    f"Getting metadata from macro {next_repo.macro.name}",
-                )
+                    "Getting metadata from macro {}",
+                ).format(next_repo.macro.name)
             )
             worker.start()
         except queue.Empty:
@@ -773,8 +783,8 @@ class CacheMacroCode(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    f"Timeout while fetching metadata for macro {macro_name}",
-                )
+                    "Timeout while fetching metadata for macro {}",
+                ).format(macro_name)
                 + "\n"
             )
             worker.blockSignals(True)
@@ -782,7 +792,10 @@ class CacheMacroCode(QtCore.QThread):
             worker.wait(100)
             if worker.isRunning():
                 FreeCAD.Console.PrintError(
-                    f"Failed to kill process for macro {macro_name}!\n"
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to kill process for macro {}!\n",
+                    ).format(macro_name)
                 )
             with self.lock:
                 self.failed.append(macro_name)
@@ -808,7 +821,7 @@ class ShowWorker(QtCore.QThread):
         u = None
         url = self.repo.url
         self.status_message.emit(
-            translate("AddonsInstaller", "Retrieving info from") + " " + str(url)
+            translate("AddonsInstaller", "Retrieving info from {}").format(str(url))
         )
         desc = ""
         regex = utils.get_readme_regex(self.repo)
@@ -942,7 +955,9 @@ class ShowWorker(QtCore.QThread):
                         storename = os.path.join(store, wbName + name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
-                            imagedata = NetworkManager.AM_NETWORK_MANAGER.blocking_get(path)
+                            imagedata = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
+                                path
+                            )
                             if not imagedata:
                                 raise Exception
                         except Exception:
@@ -1227,12 +1242,14 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
         NetworkManager.AM_NETWORK_MANAGER.progress_made.connect(self.update_zip_status)
         NetworkManager.AM_NETWORK_MANAGER.progress_complete.connect(self.finish_zip)
-        self.zip_download_index = NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zipurl)
+        self.zip_download_index = (
+            NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zipurl)
+        )
 
     def update_zip_status(self, index: int, bytes_read: int, data_size: int):
         if index == self.zip_download_index:
             locale = QtCore.QLocale()
-            if data_size > 10 * 1024 * 1024: # To avoid overflows, show MB instead
+            if data_size > 10 * 1024 * 1024:  # To avoid overflows, show MB instead
                 MB_read = bytes_read / 1024 / 1024
                 MB_total = data_size / 1024 / 1024
                 self.progress_made.emit(MB_read, MB_total)
@@ -1242,7 +1259,11 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 self.status_message.emit(
                     translate(
                         "AddonsInstaller",
-                        f"Downloading: {mbytes_str}MB of {mbytes_total_str}MB ({percent}%)",
+                        "Downloading: {mbytes_str}MB of {mbytes_total_str}MB ({percent}%)",
+                    ).format(
+                        mbytes_str=mbytes_str,
+                        mbytes_total_str=mbytes_total_str,
+                        percent=percent,
                     )
                 )
             elif data_size > 0:
@@ -1253,7 +1274,11 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 self.status_message.emit(
                     translate(
                         "AddonsInstaller",
-                        f"Downloading: {bytes_str} of {bytes_total_str} bytes ({percent}%)",
+                        "Downloading: {bytes_str} of {bytes_total_str} bytes ({percent}%)",
+                    ).format(
+                        bytes_str=bytes_str,
+                        bytes_total_str=bytes_total_str,
+                        percent=percent,
                     )
                 )
             else:
@@ -1262,8 +1287,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 self.status_message.emit(
                     translate(
                         "AddonsInstaller",
-                        f"Downloading: {bytes_str}MB of unknown total",
-                    )
+                        "Downloading: {bytes_str}MB of unknown total",
+                    ).format(bytes_str=bytes_str)
                 )
 
     def finish_zip(self, index: int, response_code: int, filename: os.PathLike):
@@ -1273,8 +1298,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 self.repo,
                 translate(
                     "AddonsInstaller",
-                    f"Error: Error while downloading ZIP file for {self.repo.display_name}",
-                ),
+                    "Error: Error while downloading ZIP file for {}",
+                ).format(self.repo.display_name),
             )
             return
 
@@ -1298,8 +1323,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.repo,
             translate(
                 "AddonsInstaller",
-                f"Successfully installed {self.repo.display_name} from ZIP file",
-            ),
+                "Successfully installed {} from ZIP file",
+            ).format(self.repo.display_name),
         )
 
     def update_metadata(self):
@@ -1412,8 +1437,8 @@ class DependencyInstallationWorker(QtCore.QThread):
                 self.emit.failure(
                     translate(
                         "AddonsInstaller",
-                        f"Installation of Python package {pymod} failed",
-                    ),
+                        "Installation of Python package {} failed",
+                    ).format(pymod),
                     proc.stderr,
                 )
                 return
@@ -1431,8 +1456,8 @@ class DependencyInstallationWorker(QtCore.QThread):
                 self.emit.failure(
                     translate(
                         "AddonsInstaller",
-                        f"Installation of Python package {pymod} failed",
-                    ),
+                        "Installation of Python package {} failed",
+                    ).format(pymod),
                     proc.stderr,
                 )
                 return
@@ -1537,7 +1562,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
         while self.requests:
             if current_thread.isInterruptionRequested():
-                NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(self.download_completed)
+                NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(
+                    self.download_completed
+                )
                 for request in self.requests.keys():
                     NetworkManager.AM_NETWORK_MANAGER.abort(request)
                 return
@@ -1581,7 +1608,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         metadata = FreeCAD.Metadata(new_xml_file)
         repo.metadata = metadata
         self.status_message.emit(
-            translate("AddonsInstaller", f"Downloaded package.xml for {repo.name}")
+            translate("AddonsInstaller", "Downloaded package.xml for {}").format(
+                repo.name
+            )
         )
 
         # Grab a new copy of the icon as well: we couldn't enqueue this earlier because
@@ -1609,8 +1638,8 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     def process_metadata_txt(self, repo: AddonManagerRepo, data: QtCore.QByteArray):
         self.status_message.emit(
-            translate(
-                "AddonsInstaller", f"Downloaded metadata.txt for {repo.display_name}"
+            translate("AddonsInstaller", "Downloaded metadata.txt for {}").format(
+                repo.display_name
             )
         )
         f = io.StringIO(data.data().decode("utf8"))
@@ -1659,8 +1688,8 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.status_message.emit(
             translate(
                 "AddonsInstaller",
-                f"Downloaded requirements.txt for {repo.display_name}",
-            )
+                "Downloaded requirements.txt for {}",
+            ).format(repo.display_name)
         )
         f = io.StringIO(data.data().decode("utf8"))
         lines = f.readlines()
@@ -1683,7 +1712,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     def process_icon(self, repo: AddonManagerRepo, data: QtCore.QByteArray):
         self.status_message.emit(
-            translate("AddonsInstaller", f"Downloaded icon for {repo.display_name}")
+            translate("AddonsInstaller", "Downloaded icon for {}").format(
+                repo.display_name
+            )
         )
         cache_file = repo.get_cached_icon_filename()
         with open(cache_file, "wb") as icon_file:

@@ -113,18 +113,18 @@ class PackageDetails(QWidget):
             if version and date:
                 installed_version_string += (
                     translate(
-                        "AddonsInstaller", f"Version {version} installed on {date}"
-                    )
+                        "AddonsInstaller", "Version {version} installed on {date}"
+                    ).format(version=version, date=date)
                     + ". "
                 )
             elif version:
                 installed_version_string += (
-                    translate("AddonsInstaller", f"Version {version} installed") + ". "
-                )
+                    translate("AddonsInstaller", "Version {version} installed") + ". "
+                ).format(version=version)
             elif date:
                 installed_version_string += (
-                    translate("AddonsInstaller", f"Installed on {date}") + ". "
-                )
+                    translate("AddonsInstaller", "Installed on {date}") + ". "
+                ).format(date=date)
             else:
                 installed_version_string += (
                     translate("AddonsInstaller", "Installed") + ". "
