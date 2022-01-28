@@ -60,6 +60,7 @@ class PackageDetails(QWidget):
         self.repo = None
 
         self.ui.buttonBack.clicked.connect(self.back.emit)
+        self.ui.buttonBack.clicked.connect(self.clear_web_view)
         self.ui.buttonRefresh.clicked.connect(self.refresh)
         self.ui.buttonExecute.clicked.connect(lambda: self.execute.emit(self.repo))
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
@@ -68,14 +69,15 @@ class PackageDetails(QWidget):
         self.ui.buttonCheckForUpdate.clicked.connect(
             lambda: self.check_for_update.emit(self.repo)
         )
-        self.ui.webView.loadFinished.connect(self.load_started)
+        self.ui.webView.loadStarted.connect(self.load_started)
+        self.ui.webView.loadProgress.connect(self.load_progress)
+        self.ui.webView.loadFinished.connect(self.load_finished)
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
         
-        self.ui.labelPageLoading.show()
-        self.ui.webView.hide()
-
         self.repo = repo
+        self.ui.progressBar.setRange(0,0)
+        self.ui.progressBar.show()
 
         if self.worker is not None:
             if not self.worker.isFinished():
@@ -328,36 +330,49 @@ class PackageDetails(QWidget):
         url = utils.get_readme_html_url(repo)
         self.ui.webView.load(QUrl(url))
 
+    def run_javascript(self):
+        """Modify the page for a README to optimize for viewing in a smaller window"""
+
+        s = """
+( function() {
+    url = new URL (window.location);
+    if (url.hostname === "github.com") {
+        // The header bar interferes with the calculation of the location of the article
+        var headerBar = document.getElementsByClassName("Header-box");
+        for (var bar of headerBar) {
+            bar.remove();
+        }
+        var articles = document.getElementsByTagName("article");
+        if (articles.length > 0) {
+            article = articles[0];
+            article.scrollIntoView();
+        }
+    } else if (url.hostname === "wiki.freecad.org" || url.hostname === "wiki.freecadweb.org") {
+        const panel = document.getElementById('mw-panel');
+        if (panel) {
+            panel.remove();
+        }
+
+        const content = document.getElementById('content');
+        if (content) {
+            content.style.marginLeft = 0;
+        }
+
+        const heading = document.getElementById('firstHeading');
+        if (heading) {
+            heading.scrollIntoView(true);
+        }
+    }
+}
+) ()
+"""
+        self.ui.webView.page().runJavaScript(s)
+
     def show_macro(self, repo: AddonManagerRepo) -> None:
         """loads information of a given macro"""
 
         self.ui.webView.load(QUrl(repo.macro.url))
-        self.inject_macro_page_cleanup()
-
-    def inject_macro_page_cleanup(self):
-        """Modify the page for a macro to eliminate the Wiki sidebar and scroll to the first heading"""
-
-        s = """
-( function() {
-    const panel = document.getElementById('mw-panel');
-    panel.remove();
-
-    const content = document.getElementById('content');
-    content.style.marginLeft = "0px";
-
-    const heading = document.getElementById('firstHeading');
-    heading.scrollIntoView();
-}
-) ()
-"""
-        script = QWebEngineScript()
-        script.setName("removeSidebar")
-        script.setSourceCode(s)
-        script.setInjectionPoint(QWebEngineScript.DocumentReady)
-        script.setRunsOnSubFrames(True)
-        script.setWorldId(QWebEngineScript.ApplicationWorld)
-        self.ui.webView.page().scripts().insert(script)
-
+        
 
     def cache_readme(self, repo: AddonManagerRepo, readme: str) -> None:
         cache_path = PackageDetails.cache_path(repo)
@@ -366,9 +381,23 @@ class PackageDetails(QWidget):
         with open(readme_cache_file, "wb") as f:
             f.write(readme.encode())
 
+    def clear_web_view(self):
+        self.ui.webView.setHtml("<html><body><h1>Loading...</h1></body></html>")
+        self.ui.webView.page().scripts().clear()
+
     def load_started(self):
-        self.ui.labelPageLoading.hide()
-        self.ui.webView.show()
+        self.ui.progressBar.setRange(0,100)
+        self.ui.progressBar.setValue(0)
+
+    def load_progress(self, progress:int):
+        self.ui.progressBar.setValue(progress)
+
+    def load_finished(self, load_succeeded:bool):
+        self.ui.progressBar.hide()
+        if load_succeeded:
+            QTimer.singleShot(500,self.run_javascript)
+        else:
+            self.ui.webView.setHtml("<html><body><p>" + translate("AddonsInstaller","Failed to load the page at {}").format(self.ui.webView.url()) + "</p></body></html>")
 
 class Ui_PackageDetails(object):
     def setupUi(self, PackageDetails):
@@ -441,15 +470,29 @@ class Ui_PackageDetails(object):
 
         self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
-        self.labelPageLoading = QLabel(PackageDetails)
-        self.labelPageLoading.setObjectName("labelPageLoading")
-
-        self.verticalLayout_2.addWidget(self.labelPageLoading)
+        
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
 
         self.webView = QWebEngineView(PackageDetails)
         self.webView.setObjectName("webView")
+        self.webView.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_2.addWidget(self.webView)
+
+        
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Ignored)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+
+        self.progressBar = QProgressBar(PackageDetails)
+        self.progressBar.setObjectName("progressBar")
+        self.progressBar.resize(500,18)
+        self.progressBar.setSizePolicy(sizePolicy2)
+        self.progressBar.setTextVisible(False)
+
+        self.verticalLayout_2.addWidget(self.progressBar)
 
         self.retranslateUi(PackageDetails)
 
@@ -483,13 +526,6 @@ class Ui_PackageDetails(object):
             QCoreApplication.translate(
                 "AddonsInstaller",
                 "Delete cached version of this README and re-download",
-                None,
-            )
-        )
-        self.labelPageLoading.setText(
-            QCoreApplication.translate (
-                "AddonsInstaller",
-                "Loading README page...",
                 None,
             )
         )
