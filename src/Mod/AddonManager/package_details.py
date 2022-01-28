@@ -332,6 +332,32 @@ class PackageDetails(QWidget):
         """loads information of a given macro"""
 
         self.ui.webView.load(QUrl(repo.macro.url))
+        self.inject_macro_page_cleanup()
+
+    def inject_macro_page_cleanup(self):
+        """Modify the page for a macro to eliminate the Wiki sidebar and scroll to the first heading"""
+
+        s = """
+( function() {
+    const panel = document.getElementById('mw-panel');
+    panel.remove();
+
+    const content = document.getElementById('content');
+    content.style.marginLeft = "0px";
+
+    const heading = document.getElementById('firstHeading');
+    heading.scrollIntoView();
+}
+) ()
+"""
+        script = QWebEngineScript()
+        script.setName("removeSidebar")
+        script.setSourceCode(s)
+        script.setInjectionPoint(QWebEngineScript.DocumentReady)
+        script.setRunsOnSubFrames(True)
+        script.setWorldId(QWebEngineScript.ApplicationWorld)
+        self.ui.webView.page().scripts().insert(script)
+
 
     def cache_readme(self, repo: AddonManagerRepo, readme: str) -> None:
         cache_path = PackageDetails.cache_path(repo)
