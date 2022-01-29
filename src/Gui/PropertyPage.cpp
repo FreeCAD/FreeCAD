@@ -180,6 +180,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefSlider         *>();
     loadPrefWidgets<Gui::PrefColorButton    *>();
     loadPrefWidgets<Gui::PrefUnitSpinBox    *>();
+    loadPrefWidgets<Gui::PrefQuantitySpinBox*>();
 }
 
 void PreferenceUiForm::saveSettings()
@@ -200,6 +201,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefSlider         *>();
     savePrefWidgets<Gui::PrefColorButton    *>();
     savePrefWidgets<Gui::PrefUnitSpinBox    *>();
+    savePrefWidgets<Gui::PrefQuantitySpinBox*>();
 }
 
 // ----------------------------------------------------------------
