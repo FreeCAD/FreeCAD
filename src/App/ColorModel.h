@@ -142,9 +142,9 @@ public:
   ColorModelBlueWhiteRed () : ColorModel(5)
   {
     colors[0] = Color(0, 0, 1);
-    colors[1] = Color(85.0/255, 170.0/255, 1);
+    colors[1] = Color(float(85.0 / 255), float(170.0 / 255), 1);
     colors[2] = Color(1, 1, 1);
-    colors[3] = Color(1, 85.0/255, 0);
+    colors[3] = Color(1, float(85.0 / 255), 0);
     colors[4] = Color(1, 0, 0);
   }
 };
@@ -155,7 +155,7 @@ public:
   ColorModelBlueWhite () : ColorModel(3)
   {
     colors[0] = Color(0, 0, 1);
-    colors[1] = Color(85.0/255, 170.0/255, 1);
+    colors[1] = Color(float(85.0 / 255), float(170.0 / 255), 1);
     colors[2] = Color(1, 1, 1);
   }
 };
@@ -166,7 +166,7 @@ public:
   ColorModelWhiteRed () : ColorModel(3)
   {
     colors[0] = Color(1, 1, 1);
-    colors[1] = Color(1, 85.0/255, 0);
+    colors[1] = Color(1, float(85.0 / 255), 0);
     colors[2] = Color(0, 1, 0);
   }
 };
