@@ -973,6 +973,70 @@ bool CmdTechDrawExtensionDrawCosmCircle::isActive(void)
 }
 
 //===========================================================================
+// TechDraw_ExtensionDrawCosmCircle3Points
+//===========================================================================
+
+void execDrawCosmCircle3Points(Gui::Command* cmd) {
+    //draw a cosmetic circle through 3 points
+    std::vector<Gui::SelectionObject> selection;
+    TechDraw::DrawViewPart* objFeat;
+    if (!_checkSel(cmd, selection, objFeat, "TechDraw Cosmetic Circle 3 Points"))
+        return;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle 3 Points"));
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
+    std::vector<Base::Vector3d> vertexPoints;
+    vertexPoints = _getVertexPoints(SubNames, objFeat);
+    if (vertexPoints.size() >= 3)
+    {
+        double scale = objFeat->getScale();
+        Base::Vector3d circleCenter = _circleCenter(vertexPoints[0],
+            vertexPoints[1],
+            vertexPoints[2]);
+        float circleRadius = (vertexPoints[0] - circleCenter).Length();
+        TechDraw::BaseGeomPtr theCircle =
+            std::make_shared<TechDraw::Circle>(circleCenter / scale, circleRadius / scale);
+        std::string cicleTag = objFeat->addCosmeticEdge(theCircle);
+        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
+        _setLineAttributes(circleEdge);
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
+        cmd->getSelection().clearSelection();
+        Gui::Command::commitCommand();
+    }
+}
+
+DEF_STD_CMD_A(CmdTechDrawExtensionDrawCosmCircle3Points)
+
+CmdTechDrawExtensionDrawCosmCircle3Points::CmdTechDrawExtensionDrawCosmCircle3Points()
+    : Command("TechDraw_ExtensionDrawCosmCircle3Points")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add Cosmetic Circle 3 Points");
+    sToolTipText    = QT_TR_NOOP("Add a cosmetic circle based on three vertexes:<br>\
+- Specify the line attributes (optional)<br>\
+- Select 3 vertexes<br>\
+- Click this tool");
+    sWhatsThis      = "TechDraw_ExtensionDrawCosmCircle3Points";
+    sStatusTip      = sMenuText;
+    sPixmap         = "TechDraw_ExtensionDrawCosmCircle3Points";
+}
+
+void CmdTechDrawExtensionDrawCosmCircle3Points::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    //Base::Console().Message("Cosmetic Circle 3 Points started\n");
+    execDrawCosmCircle3Points(this);
+}
+
+bool CmdTechDrawExtensionDrawCosmCircle3Points::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
 // TechDraw_ExtensionDrawCirclesGroup
 //===========================================================================
 
@@ -1012,6 +1076,9 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
     case 1:                 //draw cosmetic arc
         execDrawCosmArc(this);
         break;
+    case 2:                 //draw cosmetic circle 3 points
+        execDrawCosmCircle3Points(this);
+        break;
     default:
         Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
@@ -1031,6 +1098,10 @@ Gui::Action* CmdTechDrawExtensionDrawCirclesGroup::createAction(void)
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmArc"));
     p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
+    QAction* p3 = pcAction->addAction(QString());
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmCircle3Points"));
+    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle3Points"));
+    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle3Points"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1070,6 +1141,14 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
 - Select vertex 3 (end angle)<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
+    QAction* arc3 = a[2];
+    arc3->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points", "Add Cosmetic Circle 3 Points"));
+    arc3->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
+"Add a cosmetic circle based on three vertexes:<br>\
+- Specify the line attributes (optional)<br>\
+- Select three vertexes<br>\
+- Click this tool"));
+    arc3->setStatusTip(arc3->text());
 }
 
 bool CmdTechDrawExtensionDrawCirclesGroup::isActive(void)
@@ -1963,6 +2042,7 @@ void CreateTechDrawCommandsExtensions(void)
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCirclesGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmCircle());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmArc());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmCircle3Points());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLinePPGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLineParallel());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLinePerpendicular());
