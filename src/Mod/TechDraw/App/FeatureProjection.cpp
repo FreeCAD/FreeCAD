@@ -47,7 +47,7 @@ using namespace TechDraw;
 PROPERTY_SOURCE(TechDraw::FeatureProjection, Part::Feature)
 
 
-FeatureProjection::FeatureProjection() 
+FeatureProjection::FeatureProjection()
 {
     static const char *group = "Projection";
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Shape to project");
