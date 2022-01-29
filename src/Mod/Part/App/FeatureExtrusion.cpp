@@ -558,9 +558,8 @@ void FaceMakerExtrusion::Build()
 
 }
 
-
 void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
+    this->FaceMakerClass.setValue("Part::FaceMakerCheese"); //default for newly created features
 }
