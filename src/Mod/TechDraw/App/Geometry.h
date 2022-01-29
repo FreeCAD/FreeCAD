@@ -93,7 +93,7 @@ using BSplinePtr = std::shared_ptr<BSpline>;
 class Generic;
 using GenericPtr = std::shared_ptr<Generic>;
 
-class TechDrawExport BaseGeom
+class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
 {
     public:
         BaseGeom();
@@ -132,10 +132,22 @@ class TechDrawExport BaseGeom
         bool closed(void);
         BaseGeomPtr copy();
         std::string dump();
+        std::vector<Base::Vector3d> intersection(TechDraw::BaseGeomPtr geom2);
 
         //Uniqueness
         boost::uuids::uuid getTag() const;
         virtual std::string getTagAsString(void) const;
+
+private:
+        void intersectionLL(TechDraw::BaseGeomPtr geom1,
+                            TechDraw::BaseGeomPtr geom2,
+                            std::vector<Base::Vector3d>& interPoints);
+        void intersectionCL(TechDraw::BaseGeomPtr geom1,
+                            TechDraw::BaseGeomPtr geom2,
+                            std::vector<Base::Vector3d>& interPoints);
+        void intersectionCC(TechDraw::BaseGeomPtr geom1,
+                            TechDraw::BaseGeomPtr geom2,
+                            std::vector<Base::Vector3d>& interPoints);
 
 protected:
         int m_source;         //0 - geom, 1 - cosmetic edge, 2 - centerline
