@@ -361,8 +361,8 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
 
     bool bFwd = fabs(params.lengthFwd) > Precision::Confusion();
     bool bRev = fabs(params.lengthRev) > Precision::Confusion();
-    // only if there is a 2nd direction and the negated angle is not equal to the first one
-    // we don't need to add the source shape as loft section
+    // only if there is a 2nd direction and the negated angle is equal to the first one
+    // we can omit the source shape as loft section
     bool bMid = !bFwd || !bRev || -1.0 * params.taperAngleFwd != params.taperAngleRev;
 
     if (shape.IsNull())
@@ -386,10 +386,10 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     int numEdges = 0;
     int numInnerWires = 0;
 
-    // we need to find out what are ounter wires and what are inner ones
-    // methods like checking the center of mass etc. don't help us here
-    // therefore build a prism with every wire, then subtract every prism the others
-    // if the subtraction changes the initial prism, the subtracted prism has an inner wire
+    // We need to find out what are outer wires and what are inner ones
+    // methods like checking the center of mass etc. don't help us here.
+    // As solution we build a prism with every wire, then subtract every prism from each other.
+    // If the subtraction changes the initial prism, the subtracted prism has an inner wire.
     std::vector<TopoDS_Shape> resultPrisms;
     std::vector<bool> isInnerWire;
     TopoDS_Shape singlePrism;
@@ -443,9 +443,9 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
                                  The first input one will now be taken as outer one.\n");
     }
 
-    // at first create an offset wire for reversed part of extrusion
+    // at first create offset wires for the reversed part of extrusion
+    // it is important that these wires are the first loft section
     if (bRev) {
-        // this offsetWire must be the first loft section
         // create an offset for all source wires
         rows = 0;
         for (auto& wireVector : wiresections) {
@@ -474,7 +474,8 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         }
     }
 
-    // Add the source wire as middle section. It is important to add them after the reversed part. 
+    // add the source wire as middle section
+    // it is important to add them after the reversed part
     if (bMid) {
         // transfer all source wires as they are to the array from which we build the shells
         rows = 0;
@@ -486,9 +487,9 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         }
     }
 
-    // finally add the forward extrusion offset wire
+    // finally add the forward extrusion offset wires
+    // these wires must be the last loft section
     if (bFwd) {
-        // this offsetWire must be the last loft section
         rows = 0;
         for (auto& wireVector : wiresections) {
             for (auto& singleWire : wireVector) {
@@ -617,7 +618,7 @@ void Extrusion::createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                          TopoDS_Wire& result) {
 
     // if the wire consists of a single edge which has applied a placement
-    // then this placement must be reset because otherwise the
+    // then this placement must be reset because otherwise
     // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement
     gp_Trsf tempTransform;
     tempTransform.SetTranslation(translation);
@@ -685,8 +686,8 @@ void Extrusion::createTaperedPrismOffset(TopoDS_Wire sourceWire,
     }
     else {
         // this happens usually if type == TopAbs_COMPOUND and means the angle is too small
-        // FIXME: since this is a common mistake users will quickly do, issue a warning dialog
-        // Standard_Failure::Raise or App::DocumentObjectExecReturn will not output the message to the user
+        // since this is a common mistake users will quickly do, issue a warning dialog
+        // FIXME: Standard_Failure::Raise or App::DocumentObjectExecReturn don't output the message to the user
         result = TopoDS_Wire();
         if (isSecond)
             Base::Console().Error("Extrusion: type of against extrusion end face is not supported.\n" \
