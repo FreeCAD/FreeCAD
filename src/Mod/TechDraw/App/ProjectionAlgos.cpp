@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -134,13 +134,13 @@ void ProjectionAlgos::execute(void)
     HI = build3dCurves(shapes.IsoLineHCompound());// isoparamtriques   invisibly
 }
 
-string ProjectionAlgos::getSVG(ExtractionType type, 
-                               double tolerance, 
-                               XmlAttributes V_style, 
-                               XmlAttributes V0_style, 
-                               XmlAttributes V1_style, 
-                               XmlAttributes H_style, 
-                               XmlAttributes H0_style, 
+string ProjectionAlgos::getSVG(ExtractionType type,
+                               double tolerance,
+                               XmlAttributes V_style,
+                               XmlAttributes V0_style,
+                               XmlAttributes V1_style,
+                               XmlAttributes H_style,
+                               XmlAttributes H0_style,
                                XmlAttributes H1_style)
 {
     stringstream result;
@@ -157,7 +157,7 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         BRepMesh_IncrementalMesh(H,tolerance);
         result  << "<g";
         for (const auto& attribute : H_style)
-            result << "   " << attribute.first << "=\"" 
+            result << "   " << attribute.first << "=\""
                    << attribute.second << "\"\n";
         result << "  >" << endl
                << output.exportEdges(H)
@@ -174,7 +174,7 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         BRepMesh_IncrementalMesh(HO,tolerance);
         result  << "<g";
         for (const auto& attribute : H0_style)
-            result << "   " << attribute.first << "=\"" 
+            result << "   " << attribute.first << "=\""
                    << attribute.second << "\"\n";
         result << "  >" << endl
                << output.exportEdges(HO)
@@ -190,7 +190,7 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         BRepMesh_IncrementalMesh(VO,tolerance);
         result  << "<g";
         for (const auto& attribute : V0_style)
-            result << "   " << attribute.first << "=\"" 
+            result << "   " << attribute.first << "=\""
                    << attribute.second << "\"\n";
         result << "  >" << endl
                << output.exportEdges(VO)
@@ -206,7 +206,7 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         BRepMesh_IncrementalMesh(V,tolerance);
         result  << "<g";
         for (const auto& attribute : V_style)
-            result << "   " << attribute.first << "=\"" 
+            result << "   " << attribute.first << "=\""
                    << attribute.second << "\"\n";
         result << "  >" << endl
                << output.exportEdges(V)
@@ -222,7 +222,7 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         BRepMesh_IncrementalMesh(V1,tolerance);
         result  << "<g";
         for (const auto& attribute : V1_style)
-            result << "   " << attribute.first << "=\"" 
+            result << "   " << attribute.first << "=\""
                    << attribute.second << "\"\n";
         result << "  >" << endl
                << output.exportEdges(V1)
@@ -239,7 +239,7 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         BRepMesh_IncrementalMesh(H1,tolerance);
         result  << "<g";
         for (const auto& attribute : H1_style)
-            result << "   " << attribute.first << "=\"" 
+            result << "   " << attribute.first << "=\""
                    << attribute.second << "\"\n";
         result << "  >" << endl
                << output.exportEdges(H1)
