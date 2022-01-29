@@ -87,7 +87,6 @@ class CommandAddonManager:
         "update_metadata_cache_worker",
         "load_macro_metadata_worker",
         "update_all_worker",
-        "update_check_single_worker",
         "dependency_installation_worker",
     ]
 
@@ -370,9 +369,6 @@ class CommandAddonManager:
         # connect slots
         self.dialog.rejected.connect(self.reject)
         self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
-        self.dialog.buttonCheckForUpdates.clicked.connect(
-            self.manually_check_for_updates
-        )
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
         self.dialog.buttonPauseUpdate.clicked.connect(self.stop_update)
@@ -384,7 +380,6 @@ class CommandAddonManager:
         self.packageDetails.update.connect(self.update)
         self.packageDetails.back.connect(self.on_buttonBack_clicked)
         self.packageDetails.update_status.connect(self.status_updated)
-        self.packageDetails.check_for_update.connect(self.check_for_update)
 
         # center the dialog over the FreeCAD window
         mw = FreeCADGui.getMainWindow()
@@ -759,7 +754,7 @@ class CommandAddonManager:
 
     def status_updated(self, repo: AddonManagerRepo) -> None:
         self.item_model.reload_item(repo)
-        if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        if repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             self.packages_with_updates.append(repo)
             self.enable_updates(len(self.packages_with_updates))
 
@@ -881,7 +876,7 @@ class CommandAddonManager:
 
         missing_external_addons = []
         for dep in deps.required_external_addons:
-            if dep.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if dep.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
                 missing_external_addons.append(dep)
 
         # Now check the loaded addons to see if we are missing an internal workbench:
@@ -1181,61 +1176,15 @@ class CommandAddonManager:
     def update(self, repo: AddonManagerRepo) -> None:
         self.install(repo)
 
-    def check_for_update(self, repo: AddonManagerRepo) -> None:
-        """Check a single repo for available updates asynchronously"""
-
-        if (
-            hasattr(self, "update_check_single_worker")
-            and self.update_check_single_worker
-        ):
-            if self.update_check_single_worker.isRunning():
-                self.update_check_single_worker.blockSignals(True)
-                self.update_check_single_worker.requestInterrupt()
-                self.update_check_single_worker.wait()
-
-        self.update_check_single_worker = CheckSingleWorker(repo.name)
-        self.update_check_single_worker.updateAvailable.connect(
-            lambda update_available: self.mark_repo_update_available(
-                repo, update_available
-            )
-        )
-        self.update_check_single_worker.start()
-
     def mark_repo_update_available(
         self, repo: AddonManagerRepo, available: bool
     ) -> None:
         if available:
-            repo.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
+            repo.set_status(AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE)
         else:
-            repo.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
+            repo.set_status(AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
-
-    def manually_check_for_updates(self) -> None:
-        if hasattr(self, "check_worker"):
-            thread = self.check_worker
-            if thread:
-                if not thread.isFinished():
-                    self.do_next_startup_phase()
-                    return
-        self.dialog.buttonCheckForUpdates.setText(
-            translate("AddonsInstaller", "Checking for updates...")
-        )
-        self.dialog.buttonCheckForUpdates.setEnabled(False)
-        self.show_progress_widgets()
-        self.current_progress_region = 1
-        self.number_of_progress_regions = 1
-        self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
-        self.check_worker.finished.connect(self.manual_update_check_complete)
-        self.check_worker.progress_made.connect(self.update_progress_bar)
-        self.check_worker.update_status.connect(self.status_updated)
-        self.check_worker.start()
-
-    def manual_update_check_complete(self) -> None:
-        self.dialog.buttonUpdateAll.show()
-        self.dialog.buttonCheckForUpdates.hide()
-        self.enable_updates(len(self.packages_with_updates))
-        self.hide_progress_widgets()
 
     def update_all(self) -> None:
         """Asynchronously apply all available updates: individual failures are noted, but do not stop other updates"""
@@ -1325,11 +1274,9 @@ class CommandAddonManager:
         for installed_repo in self.subupdates_succeeded:
             if not installed_repo.repo_type == AddonManagerRepo.RepoType.MACRO:
                 self.restart_required = True
-                installed_repo.update_status = (
-                    AddonManagerRepo.UpdateStatus.PENDING_RESTART
-                )
+                installed_repo.set_status(AddonManagerRepo.UpdateStatus.PENDING_RESTART)
             else:
-                installed_repo.update_status = (
+                installed_repo.set_status(
                     AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
                 )
             self.item_model.reload_item(installed_repo)
@@ -1404,10 +1351,10 @@ class CommandAddonManager:
             QtWidgets.QMessageBox.Close,
         )
         if repo.repo_type != AddonManagerRepo.RepoType.MACRO:
-            repo.update_status = AddonManagerRepo.UpdateStatus.PENDING_RESTART
+            repo.set_status(AddonManagerRepo.UpdateStatus.PENDING_RESTART)
             self.restart_required = True
         else:
-            repo.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
+            repo.set_status(AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
 
@@ -1504,13 +1451,19 @@ class CommandAddonManager:
                             )
 
             # Second, run the Addon's "uninstall.py" script, if it exists
-            uninstall_script = os.path.join(clonedir,"uninstall.py")
+            uninstall_script = os.path.join(clonedir, "uninstall.py")
             if os.path.exists(uninstall_script):
                 try:
-                    with open(uninstall_script, 'r') as f:
+                    with open(uninstall_script, "r") as f:
                         exec(f.read())
                 except Exception:
-                    FreeCAD.Console.PrintError(translate("AddonsInstaller","Execution of Addon's uninstall.py script failed. Proceeding with uninstall...") + "\n")
+                    FreeCAD.Console.PrintError(
+                        translate(
+                            "AddonsInstaller",
+                            "Execution of Addon's uninstall.py script failed. Proceeding with uninstall...",
+                        )
+                        + "\n"
+                    )
 
             if os.path.exists(clonedir):
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)

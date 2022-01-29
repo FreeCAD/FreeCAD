@@ -23,9 +23,12 @@
 import FreeCAD
 
 import os
-from typing import Dict, Set, List
+from urllib.parse import urlparse
+from typing import Dict, Set
+from threading import Lock
 
 from addonmanager_macro import Macro
+import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
@@ -54,6 +57,7 @@ class AddonManagerRepo:
         NO_UPDATE_AVAILABLE = 2
         UPDATE_AVAILABLE = 3
         PENDING_RESTART = 4
+        CANNOT_CHECK = 5  # If we don't have git, etc.
 
         def __lt__(self, other):
             if self.__class__ is other.__class__:
@@ -71,6 +75,8 @@ class AddonManagerRepo:
                 return "Update available"
             elif self.value == 4:
                 return "Restart required"
+            elif self.value == 5:
+                return "Can't check"
 
     class Dependencies:
         def __init__(self):
@@ -90,16 +96,32 @@ class AddonManagerRepo:
         self.display_name = self.name
         self.url = url.strip()
         self.branch = branch.strip()
-        self.update_status = status
         self.python2 = False
         self.obsolete = False
         self.rejected = False
         self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
         self.description = None
         self.tags = set()  # Just a cache, loaded from Metadata
+
+        # To prevent multiple threads from running git actions on this repo at the same time
+        self.git_lock = Lock()
+
+        # To prevent multiple threads from accessing the status at the same time
+        self.status_lock = Lock()
+        self.set_status(status)
+
         from addonmanager_utilities import construct_git_url
 
-        if "github" in self.url or "gitlab" in self.url or "salsa" in self.url:
+        # The url should never end in ".git", so strip it if it's there
+        parsed_url = urlparse(self.url)
+        if parsed_url.path.endswith(".git"):
+            self.url = parsed_url.scheme + parsed_url.path[:-4]
+            if parsed_url.query:
+                self.url += "?" + parsed_url.query
+            if parsed_url.fragment:
+                self.url += "#" + parsed_url.fragment
+
+        if utils.recognized_git_location(self):
             self.metadata_url = construct_git_url(self, "package.xml")
         else:
             self.metadata_url = None
@@ -334,3 +356,11 @@ class AddonManagerRepo:
         for dep in self.blocks:
             if dep in all_repos:
                 deps.blockers[dep] = all_repos[dep]
+
+    def status(self):
+        with self.status_lock:
+            return self.update_status
+
+    def set_status(self, status):
+        with self.status_lock:
+            self.update_status = status
