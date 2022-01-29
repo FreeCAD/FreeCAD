@@ -190,7 +190,7 @@ void SoFCColorLegend::setColorModel( App::ColorGradient::TColorModel tModel )
 {
   _cColRamp.setColorModel( tModel );
   App::ColorModel model = _cColRamp.getColorModel();
-  int uCtColors = (int)model._usColors;
+  int uCtColors = (int)model.getCountColors();
 
   // don't know why the parameter range isn't between [-1,+1]
   float fMinX=  4.0f, fMaxX=4.5f;
@@ -225,7 +225,7 @@ void SoFCColorLegend::setColorModel( App::ColorGradient::TColorModel tModel )
   mat->diffuseColor.setNum(2*uCtColors);
   for ( int k=0; k<uCtColors; k++ )
   {
-    App::Color col = model._pclColors[uCtColors-k-1];
+    App::Color col = model.colors[uCtColors-k-1];
     mat->diffuseColor.set1Value(2*k, col.r, col.g, col.b);
     mat->diffuseColor.set1Value(2*k+1, col.r, col.g, col.b);
   }

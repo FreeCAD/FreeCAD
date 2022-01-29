@@ -250,7 +250,7 @@ void SoFCColorGradient::setColorStyle (App::ColorGradient::TStyle tStyle)
 void SoFCColorGradient::rebuildGradient()
 {
     App::ColorModel model = _cColGrad.getColorModel();
-    int uCtColors = (int)model._usColors;
+    int uCtColors = (int)model.getCountColors();
 
     coords->point.setNum(2*uCtColors);
     for ( int i=0; i<uCtColors; i++ )
@@ -285,7 +285,7 @@ void SoFCColorGradient::rebuildGradient()
     mat->diffuseColor.setNum(2*uCtColors);
     for ( int k=0; k<uCtColors; k++ )
     {
-        App::Color col = model._pclColors[uCtColors-k-1];
+        App::Color col = model.colors[uCtColors-k-1];
         mat->diffuseColor.set1Value(2*k, col.r, col.g, col.b);
         mat->diffuseColor.set1Value(2*k+1, col.r, col.g, col.b);
     }
