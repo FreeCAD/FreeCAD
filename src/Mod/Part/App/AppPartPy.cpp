@@ -793,7 +793,7 @@ private:
     }
     Py::Object show(const Py::Tuple& args)
     {
-        PyObject *pcObj = 0;
+        PyObject *pcObj = nullptr;
         char *name = "Shape";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
             throw Py::Exception();
@@ -806,8 +806,7 @@ private:
         // copy the data
         pcFeature->Shape.setValue(pShape->getTopoShapePtr()->getShape());
         pcDoc->recompute();
-
-        return Py::None();
+        return Py::asObject(pcFeature->getPyObject());
     }
     Py::Object getFacets(const Py::Tuple& args)
     {
