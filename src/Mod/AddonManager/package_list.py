@@ -226,7 +226,7 @@ class PackageListItemModel(QAbstractListModel):
         row = index.row()
         self.write_lock.acquire()
         if role == PackageListItemModel.StatusUpdateRole:
-            self.repos[row].update_status = value
+            self.repos[row].set_status(value)
             self.dataChanged.emit(
                 self.index(row, 2),
                 self.index(row, 2),
@@ -408,13 +408,13 @@ class PackageListItemDelegate(QStyledItemDelegate):
         """Get a single-line string listing details about the installed version and date"""
 
         result = ""
-        if repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+        if repo.status() == AddonManagerRepo.UpdateStatus.UNCHECKED:
             result = translate("AddonsInstaller", "Installed")
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+        elif repo.status() == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Up-to-date")
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        elif repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Update available")
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+        elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
             result = translate("AddonsInstaller", "Pending restart")
         return result
 
@@ -424,7 +424,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
         result = ""
 
         installed_version_string = ""
-        if repo.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+        if repo.status() != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
             if repo.installed_version:
                 installed_version_string = (
                     "\n" + translate("AddonsInstaller", "Installed version") + ": "
@@ -453,20 +453,20 @@ class PackageListItemDelegate(QStyledItemDelegate):
             )
             available_version_string += repo.metadata.Version
 
-        if repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+        if repo.status() == AddonManagerRepo.UpdateStatus.UNCHECKED:
             result = translate("AddonsInstaller", "Installed")
             result += installed_version_string
             result += installed_date_string
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+        elif repo.status() == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Up-to-date")
             result += installed_version_string
             result += installed_date_string
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        elif repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Update available")
             result += installed_version_string
             result += installed_date_string
             result += available_version_string
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+        elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
             result = translate("AddonsInstaller", "Pending restart")
 
         return result
@@ -530,18 +530,18 @@ class PackageListFilter(QSortFilterProxyModel):
                 return False
 
         if self.status == StatusFilter.INSTALLED:
-            if data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
                 return False
         elif self.status == StatusFilter.NOT_INSTALLED:
-            if data.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if data.status() != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
                 return False
         elif self.status == StatusFilter.UPDATE_AVAILABLE:
-            if data.update_status != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+            if data.status() != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
                 return False
 
         # If it's not installed, check to see if it's Py2 only
         if (
-            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
             and self.hide_py2
             and data.python2
         ):
@@ -549,7 +549,7 @@ class PackageListFilter(QSortFilterProxyModel):
 
         # If it's not installed, check to see if it's marked obsolete
         if (
-            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
             and self.hide_obsolete
             and data.obsolete
         ):
