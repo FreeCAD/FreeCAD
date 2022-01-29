@@ -123,6 +123,12 @@ public: //mode enumerations
 protected:
     static void makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
 
+    static void createTaperedPrismOffset(TopoDS_Wire sourceWire,
+                                         const gp_Vec& translation,
+                                         double offset,
+                                         int numEdges,
+                                         bool isSecond,
+                                         TopoDS_Wire& result);
 
 protected:
     virtual void setupObject() override;
