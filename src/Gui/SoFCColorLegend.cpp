@@ -55,7 +55,7 @@ SoFCColorLegend::SoFCColorLegend() : _fPosX(4.0f), _fPosY(4.0f)
   labels = new SoSeparator;
   labels->ref();
 
-  setColorModel( App::ColorGradient::TRIA );
+  setColorModel(0);
   setRange(-0.5f,0.5f,1);
 }
 
@@ -186,9 +186,9 @@ void SoFCColorLegend::setRange( float fMin, float fMax, int prec )
   _cColRamp.setRange(fMin, fMax);
 }
 
-void SoFCColorLegend::setColorModel( App::ColorGradient::TColorModel tModel )
+void SoFCColorLegend::setColorModel(std::size_t index)
 {
-  _cColRamp.setColorModel( tModel );
+  _cColRamp.setColorModel(index);
   App::ColorModel model = _cColRamp.getColorModel();
   int uCtColors = (int)model.getCountColors();
 

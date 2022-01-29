@@ -31,15 +31,57 @@
 using namespace App;
 
 
+ColorModelPack ColorModelPack::createRedGreenBlue()
+{
+    ColorModelPack pack{ColorModelBlueGreenRed(),
+                        ColorModelGreenYellowRed(),
+                        ColorModelBlueCyanGreen(),
+                        "Red-Yellow-Green-Cyan-Blue"};
+    return pack;
+}
+
+ColorModelPack ColorModelPack::createBlueGreenRed()
+{
+    ColorModelPack pack{ColorModelRedGreenBlue(),
+                        ColorModelGreenCyanBlue(),
+                        ColorModelRedYellowGreen(),
+                        "Blue-Cyan-Green-Yellow-Red"};
+    return pack;
+}
+
+ColorModelPack ColorModelPack::createWhiteBlack()
+{
+    ColorModelPack pack{ColorModelBlackWhite(),
+                        ColorModelGrayWhite(),
+                        ColorModelBlackGray(),
+                        "White-Black"};
+    return pack;
+}
+
+ColorModelPack ColorModelPack::createBlackWhite()
+{
+    ColorModelPack pack{ColorModelWhiteBlack(),
+                        ColorModelGrayBlack(),
+                        ColorModelWhiteGray(),
+                        "Black-White"};
+    return pack;
+}
+
+ColorModelPack ColorModelPack::createRedWhiteBlue()
+{
+    ColorModelPack pack{ColorModelBlueWhiteRed(),
+                        ColorModelWhiteRed(),
+                        ColorModelBlueWhite(),
+                        "Red-White-Blue"};
+    return pack;
+}
 
 ColorField::ColorField ()
-  : colorModel(ColorModelTria())
 {
-    set(ColorModelTria(), -1.0f, 1.0f, 13);
+    set(ColorModelBlueGreenRed(), -1.0f, 1.0f, 13);
 }
 
 ColorField::ColorField (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
-  : colorModel(ColorModelTria())
 {
     set(rclModel, fMin, fMax, usCt);
 }
@@ -124,27 +166,41 @@ void ColorField::interpolate (Color clCol1, std::size_t usInd1, Color clCol2, st
 
 
 ColorGradient::ColorGradient ()
-:  tColorModel(TRIA),
-   tStyle(ZERO_BASED),
+:  tStyle(ZERO_BASED),
    outsideGrayed(false),
-   totalModel(ColorModelTria()),
-   topModel(ColorModelTriaTop()),
-   bottomModel(ColorModelTriaBottom())
+   tColorModel(0)
 {
+    createStandardPacks();
     setColorModel();
     set(-1.0f, 1.0f, 13, ZERO_BASED, false);
 }
 
 ColorGradient::ColorGradient (float fMin, float fMax, std::size_t usCtColors, TStyle tS, bool bOG)
-:  tColorModel(TRIA),
-   tStyle(tS),
+:  tStyle(tS),
    outsideGrayed(false),
-   totalModel(ColorModelTria()),
-   topModel(ColorModelTriaTop()),
-   bottomModel(ColorModelTriaBottom())
+   tColorModel(0)
 {
+    createStandardPacks();
     setColorModel();
     set(fMin, fMax, usCtColors, tS, bOG);
+}
+
+void ColorGradient::createStandardPacks()
+{
+    modelPacks.push_back(ColorModelPack::createRedGreenBlue());
+    modelPacks.push_back(ColorModelPack::createBlueGreenRed());
+    modelPacks.push_back(ColorModelPack::createRedWhiteBlue());
+    modelPacks.push_back(ColorModelPack::createWhiteBlack());
+    modelPacks.push_back(ColorModelPack::createBlackWhite());
+}
+
+std::vector<std::string> ColorGradient::getColorModelNames() const
+{
+    std::vector<std::string> names;
+    names.reserve(modelPacks.size());
+    for (const auto& it : modelPacks)
+        names.push_back(it.description);
+    return names;
 }
 
 void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG)
@@ -163,20 +219,20 @@ void ColorGradient::rebuild ()
     {
         case FLOW:
         {
-            colorField1.set(totalModel, _fMin, _fMax, ctColors);
+            colorField1.set(currentModelPack.totalModel, _fMin, _fMax, ctColors);
             break;
         }
         case ZERO_BASED:
         {
             if ((_fMin < 0.0f) && (_fMax > 0.0f))
             {
-                colorField1.set(bottomModel, _fMin, 0.0f, ctColors / 2);
-                colorField2.set(topModel, 0.0f, _fMax, ctColors / 2);
+                colorField1.set(currentModelPack.bottomModel, _fMin, 0.0f, ctColors / 2);
+                colorField2.set(currentModelPack.topModel, 0.0f, _fMax, ctColors / 2);
             }
             else if (_fMin >= 0.0f)
-                colorField1.set(topModel, 0.0f, _fMax, ctColors);
+                colorField1.set(currentModelPack.topModel, 0.0f, _fMax, ctColors);
             else
-                colorField1.set(bottomModel, _fMin, 0.0f, ctColors);
+                colorField1.set(currentModelPack.bottomModel, _fMin, 0.0f, ctColors);
             break;
         }
     }
@@ -199,7 +255,7 @@ std::size_t ColorGradient::getMinColors () const
     return 2;
 }
 
-void ColorGradient::setColorModel (TColorModel tModel)
+void ColorGradient::setColorModel (std::size_t tModel)
 {
     tColorModel = tModel;
     setColorModel();
@@ -208,52 +264,23 @@ void ColorGradient::setColorModel (TColorModel tModel)
 
 void ColorGradient::setColorModel ()
 {
-    switch (tColorModel)
-    {
-        case TRIA:
-        {
-            totalModel  = ColorModelTria();
-            topModel    = ColorModelTriaTop();
-            bottomModel = ColorModelTriaBottom();
-            break;
-        }
-        case INVERSE_TRIA:
-        {
-            totalModel  = ColorModelInverseTria();
-            topModel    = ColorModelInverseTriaTop();
-            bottomModel = ColorModelInverseTriaBottom();
-            break;
-        }
-        case GRAY:
-        {
-            totalModel  = ColorModelGray();
-            topModel    = ColorModelGrayTop();
-            bottomModel = ColorModelGrayBottom();
-            break;
-        }
-        case INVERSE_GRAY:
-        {
-            totalModel  = ColorModelInverseGray();
-            topModel    = ColorModelInverseGrayTop();
-            bottomModel = ColorModelInverseGrayBottom();
-            break;
-        }
-    }
+    if (tColorModel < modelPacks.size())
+        currentModelPack = modelPacks[tColorModel];
 
     switch (tStyle)
     {
-        case FLOW:
-        {
-            colorField1.setColorModel(totalModel);
-            colorField2.setColorModel(bottomModel);
-            break;
-        }
-        case ZERO_BASED:
-        {
-            colorField1.setColorModel(topModel);
-            colorField2.setColorModel(bottomModel);
-            break;
-        }
+    case FLOW:
+    {
+        colorField1.setColorModel(currentModelPack.totalModel);
+        colorField2.setColorModel(currentModelPack.bottomModel);
+        break;
+    }
+    case ZERO_BASED:
+    {
+        colorField1.setColorModel(currentModelPack.topModel);
+        colorField2.setColorModel(currentModelPack.bottomModel);
+        break;
+    }
     }
 }
 

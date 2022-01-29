@@ -81,10 +81,9 @@ protected:
 
   virtual ~SoFCColorGradient();
   /**
-   * Sets the color model of the underlying color gradient to \a tModel. \a tModel either can
-   * be \c TRIA, \c INVERSE_TRIA, \c GRAY or \c INVERSE_GRAY
+   * Sets the color model of the underlying color gradient to \a index.
    */
-  void setColorModel (App::ColorGradient::TColorModel tModel);
+  void setColorModel (std::size_t index);
   /**
    * Sets the color style of the underlying color gradient to \a tStyle. \a tStyle either can
    * be \c FLOW or \c ZERO_BASED

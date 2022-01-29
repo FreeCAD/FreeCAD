@@ -51,8 +51,9 @@ public:
 
     /** @name Color model */
     //@{
-    void setColorModel( App::ColorGradient::TColorModel tModel);
-    App::ColorGradient::TColorModel colorModel() const;
+    void setColorModel(std::size_t tModel);
+    std::size_t colorModel() const;
+    void setColorModelNames(const std::vector<std::string>&);
     //@}
     /** @name Color style */
     //@{

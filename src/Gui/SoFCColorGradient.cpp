@@ -57,7 +57,7 @@ SoFCColorGradient::SoFCColorGradient() : _fMaxX(4.5f), _fMinX(4.0f), _fMaxY(4.0f
     labels->ref();
 
     _cColGrad.setStyle(App::ColorGradient::FLOW);
-    setColorModel( App::ColorGradient::TRIA );
+    setColorModel(0);
     setRange(-0.5f, 0.5f, 1);
 }
 
@@ -235,9 +235,9 @@ std::vector<float> SoFCColorGradient::getMarkerValues(float fMin, float fMax, in
     return labels;
 }
 
-void SoFCColorGradient::setColorModel( App::ColorGradient::TColorModel tModel )
+void SoFCColorGradient::setColorModel(std::size_t index)
 {
-    _cColGrad.setColorModel( tModel );
+    _cColGrad.setColorModel(index);
     rebuildGradient();
 }
 
@@ -324,6 +324,7 @@ bool SoFCColorGradient::customize()
     QWidget* parent = Gui::getMainWindow()->activeWindow();
     Gui::Dialog::DlgSettingsColorGradientImp dlg(parent);
 
+    dlg.setColorModelNames( _cColGrad.getColorModelNames() );
     dlg.setColorModel( _cColGrad.getColorModelType() );
     dlg.setColorStyle( _cColGrad.getStyle() );
     dlg.setOutGrayed( _cColGrad.isOutsideGrayed() );

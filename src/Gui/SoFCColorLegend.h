@@ -52,10 +52,9 @@ public:
    */
   void setRange( float fMin, float fMax, int prec=3 );
   /**
-   * Sets the color model of the underlying color ramp to \a tModel. \a tModel either can
-   * be \c TRIA, \c INVERSE_TRIA or \c GRAY
+   * Sets the color model of the underlying color ramp to \a index.
    */
-  void setColorModel (App::ColorGradient::TColorModel tModel);
+  void setColorModel (std::size_t index);
 
   unsigned short getColorIndex (float fVal) const { return _cColRamp.getColorIndex(fVal);  }
   App::Color getColor (float fVal) const { return _cColRamp.getColor(fVal); }

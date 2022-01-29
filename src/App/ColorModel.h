@@ -53,6 +53,7 @@ protected:
 class AppExport ColorModel
 {
 public:
+  ColorModel() = default;
   ColorModel (std::size_t usCt) {
     colors.resize(usCt);
   }
@@ -65,134 +66,182 @@ public:
   std::vector<Color>  colors;
 };
 
-class AppExport ColorModelTria : public ColorModel
+class AppExport ColorModelBlueGreenRed : public ColorModel
 {
 public:
-  ColorModelTria () : ColorModel(5)
+  ColorModelBlueGreenRed () : ColorModel(5)
   {
-    colors[0] = Color( 0, 0, 1);
-    colors[1] = Color( 0, 1, 1);
-    colors[2] = Color( 0, 1, 0);
-    colors[3] = Color( 1, 1, 0);
-    colors[4] = Color( 1, 0, 0);
+    colors[0] = Color(0, 0, 1);
+    colors[1] = Color(0, 1, 1);
+    colors[2] = Color(0, 1, 0);
+    colors[3] = Color(1, 1, 0);
+    colors[4] = Color(1, 0, 0);
   }
 };
 
-class AppExport ColorModelTriaBottom : public ColorModel
+class AppExport ColorModelBlueCyanGreen : public ColorModel
 {
 public:
-  ColorModelTriaBottom () : ColorModel(3)
+  ColorModelBlueCyanGreen () : ColorModel(3)
   {
-    colors[0] = Color( 0, 0, 1);
-    colors[1] = Color( 0, 1, 1);
-    colors[2] = Color( 0, 1, 0);
+    colors[0] = Color(0, 0, 1);
+    colors[1] = Color(0, 1, 1);
+    colors[2] = Color(0, 1, 0);
   }
 };
 
-class AppExport ColorModelTriaTop : public ColorModel
+class AppExport ColorModelGreenYellowRed : public ColorModel
 {
 public:
-  ColorModelTriaTop () : ColorModel(3)
+  ColorModelGreenYellowRed () : ColorModel(3)
   {
-    colors[0] = Color( 0, 1, 0);
-    colors[1] = Color( 1, 1, 0);
-    colors[2] = Color( 1, 0, 0);
+    colors[0] = Color(0, 1, 0);
+    colors[1] = Color(1, 1, 0);
+    colors[2] = Color(1, 0, 0);
   }
 };
 
-class AppExport ColorModelInverseTria : public ColorModel
+class AppExport ColorModelRedGreenBlue : public ColorModel
 {
 public:
-  ColorModelInverseTria () : ColorModel(5)
+  ColorModelRedGreenBlue () : ColorModel(5)
   {
-    colors[0] = Color( 1, 0, 0);
-    colors[1] = Color( 1, 1, 0);
-    colors[2] = Color( 0, 1, 0);
-    colors[3] = Color( 0, 1, 1);
-    colors[4] = Color( 0, 0, 1);
+    colors[0] = Color(1, 0, 0);
+    colors[1] = Color(1, 1, 0);
+    colors[2] = Color(0, 1, 0);
+    colors[3] = Color(0, 1, 1);
+    colors[4] = Color(0, 0, 1);
   }
 };
 
-class AppExport ColorModelInverseTriaTop : public ColorModel
+class AppExport ColorModelGreenCyanBlue : public ColorModel
 {
 public:
-  ColorModelInverseTriaTop () : ColorModel(3)
+  ColorModelGreenCyanBlue () : ColorModel(3)
   {
-    colors[2] = Color( 0, 0, 1);
-    colors[1] = Color( 0, 1, 1);
-    colors[0] = Color( 0, 1, 0);
+    colors[0] = Color(0, 1, 0);
+    colors[1] = Color(0, 1, 1);
+    colors[2] = Color(0, 0, 1);
   }
 };
 
-class AppExport ColorModelInverseTriaBottom : public ColorModel
+class AppExport ColorModelRedYellowGreen : public ColorModel
 {
 public:
-  ColorModelInverseTriaBottom () : ColorModel(3)
+  ColorModelRedYellowGreen () : ColorModel(3)
   {
-    colors[2] = Color( 0, 1, 0);
-    colors[1] = Color( 1, 1, 0);
-    colors[0] = Color( 1, 0, 0);
+    colors[0] = Color(1, 0, 0);
+    colors[1] = Color(1, 1, 0);
+    colors[2] = Color(0, 1, 0);
   }
 };
 
-class AppExport ColorModelGray : public ColorModel
+class AppExport ColorModelBlueWhiteRed : public ColorModel
 {
 public:
-  ColorModelGray () : ColorModel(2)
+  ColorModelBlueWhiteRed () : ColorModel(5)
   {
-    colors[0] = Color( 0, 0, 0);
-    colors[1] = Color( 1, 1, 1);
+    colors[0] = Color(0, 0, 1);
+    colors[1] = Color(85.0/255, 170.0/255, 1);
+    colors[2] = Color(1, 1, 1);
+    colors[3] = Color(1, 85.0/255, 0);
+    colors[4] = Color(1, 0, 0);
   }
 };
 
-class AppExport ColorModelGrayBottom : public ColorModel
+class AppExport ColorModelBlueWhite : public ColorModel
 {
 public:
-  ColorModelGrayBottom () : ColorModel(2)
+  ColorModelBlueWhite () : ColorModel(3)
   {
-    colors[0] = Color( 0.0f, 0.0f, 0.0f);
-    colors[1] = Color( 0.5f, 0.5f, 0.5f);
+    colors[0] = Color(0, 0, 1);
+    colors[1] = Color(85.0/255, 170.0/255, 1);
+    colors[2] = Color(1, 1, 1);
   }
 };
 
-class AppExport ColorModelGrayTop : public ColorModel
+class AppExport ColorModelWhiteRed : public ColorModel
 {
 public:
-  ColorModelGrayTop () : ColorModel(2)
+  ColorModelWhiteRed () : ColorModel(3)
   {
-    colors[0] = Color( 0.5f, 0.5f, 0.5f);
-    colors[1] = Color( 1.0f, 1.0f, 1.0f);
+    colors[0] = Color(1, 1, 1);
+    colors[1] = Color(1, 85.0/255, 0);
+    colors[2] = Color(0, 1, 0);
   }
 };
 
-class AppExport ColorModelInverseGray : public ColorModel
+class AppExport ColorModelBlackWhite : public ColorModel
 {
 public:
-  ColorModelInverseGray () : ColorModel(2)
+  ColorModelBlackWhite () : ColorModel(2)
   {
-    colors[0] = Color( 1, 1, 1);
-    colors[1] = Color( 0, 0, 0);
+    colors[0] = Color(0, 0, 0);
+    colors[1] = Color(1, 1, 1);
   }
 };
 
-class AppExport ColorModelInverseGrayBottom : public ColorModel
+class AppExport ColorModelBlackGray : public ColorModel
 {
 public:
-  ColorModelInverseGrayBottom () : ColorModel(2)
+  ColorModelBlackGray () : ColorModel(2)
   {
-    colors[0] = Color( 1.0f, 1.0f, 1.0f);
-    colors[1] = Color( 0.5f, 0.5f, 0.5f);
+    colors[0] = Color(0.0f, 0.0f, 0.0f);
+    colors[1] = Color(0.5f, 0.5f, 0.5f);
   }
 };
 
-class AppExport ColorModelInverseGrayTop : public ColorModel
+class AppExport ColorModelGrayWhite : public ColorModel
 {
 public:
-  ColorModelInverseGrayTop () : ColorModel(2)
+  ColorModelGrayWhite () : ColorModel(2)
   {
-    colors[0] = Color( 0.5f, 0.5f, 0.5f);
-    colors[1] = Color( 0.0f, 0.0f, 0.0f);
+    colors[0] = Color(0.5f, 0.5f, 0.5f);
+    colors[1] = Color(1.0f, 1.0f, 1.0f);
   }
+};
+
+class AppExport ColorModelWhiteBlack : public ColorModel
+{
+public:
+  ColorModelWhiteBlack () : ColorModel(2)
+  {
+    colors[0] = Color(1, 1, 1);
+    colors[1] = Color(0, 0, 0);
+  }
+};
+
+class AppExport ColorModelWhiteGray : public ColorModel
+{
+public:
+  ColorModelWhiteGray () : ColorModel(2)
+  {
+    colors[0] = Color(1.0f, 1.0f, 1.0f);
+    colors[1] = Color(0.5f, 0.5f, 0.5f);
+  }
+};
+
+class AppExport ColorModelGrayBlack : public ColorModel
+{
+public:
+  ColorModelGrayBlack () : ColorModel(2)
+  {
+    colors[0] = Color(0.5f, 0.5f, 0.5f);
+    colors[1] = Color(0.0f, 0.0f, 0.0f);
+  }
+};
+
+struct AppExport ColorModelPack
+{
+  ColorModel totalModel = ColorModelBlueGreenRed();
+  ColorModel topModel = ColorModelGreenYellowRed();
+  ColorModel bottomModel = ColorModelBlueCyanGreen();
+  std::string description;
+  static ColorModelPack createRedGreenBlue();
+  static ColorModelPack createBlueGreenRed();
+  static ColorModelPack createWhiteBlack();
+  static ColorModelPack createBlackWhite();
+  static ColorModelPack createRedWhiteBlue();
 };
 
 class AppExport ColorField
@@ -273,7 +322,6 @@ class AppExport ColorGradient
 {
 public:
   enum TStyle { FLOW, ZERO_BASED };
-  enum TColorModel { TRIA, INVERSE_TRIA, GRAY, INVERSE_GRAY };
 
   ColorGradient ();
   ColorGradient (float fMin, float fMax, std::size_t usCtColors, TStyle tS, bool bOG = false);
@@ -290,9 +338,10 @@ public:
   TStyle getStyle () const { return tStyle; }
   void setOutsideGrayed (bool bGrayed) { outsideGrayed = bGrayed; }
   bool isOutsideGrayed () const { return outsideGrayed; }
-  void setColorModel (TColorModel tModel);
-  TColorModel getColorModelType () const { return tColorModel; }
+  void setColorModel (std::size_t tModel);
+  std::size_t getColorModelType () const { return tColorModel; }
   inline const ColorModel& getColorModel () const;
+  std::vector<std::string> getColorModelNames() const;
   float getMinValue () const { return _fMin; }
   float getMaxValue () const { return _fMax; }
 
@@ -300,13 +349,17 @@ public:
   inline std::size_t getColorIndex (float fVal) const;
 
 protected:
+  void createStandardPacks();
+
+protected:
   ColorField     colorField1, colorField2;
-  TColorModel    tColorModel;
   TStyle         tStyle;
   float          _fMin, _fMax;
   std::size_t    ctColors;
   bool           outsideGrayed;
-  ColorModel     totalModel, topModel, bottomModel;
+  std::size_t    tColorModel;
+  ColorModelPack currentModelPack;
+  std::vector<ColorModelPack> modelPacks;
 
   void  rebuild ();
   void  setColorModel ();
@@ -467,15 +520,15 @@ inline const ColorModel& ColorGradient::getColorModel () const
   if ( tStyle == ZERO_BASED )
   {
     if ( _fMax <= 0.0f )
-      return bottomModel;
+      return currentModelPack.bottomModel;
     else if ( _fMin >= 0.0f )
-      return topModel;
+      return currentModelPack.topModel;
     else
-      return totalModel;
+      return currentModelPack.totalModel;
   }
   else
   {
-    return totalModel;
+    return currentModelPack.totalModel;
   }
 }
 

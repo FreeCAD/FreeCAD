@@ -63,36 +63,22 @@ DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgSettingsColorGradientImp::setColorModel( App::ColorGradient::TColorModel tModel)
+void DlgSettingsColorGradientImp::setColorModel(std::size_t index)
 {
-    switch (tModel)
-    {
-    case App::ColorGradient::TRIA:
-        ui->comboBoxModel->setCurrentIndex(0);
-        break;
-    case App::ColorGradient::INVERSE_TRIA:
-        ui->comboBoxModel->setCurrentIndex(1);
-        break;
-    case App::ColorGradient::GRAY:
-        ui->comboBoxModel->setCurrentIndex(2);
-        break;
-    case App::ColorGradient::INVERSE_GRAY:
-        ui->comboBoxModel->setCurrentIndex(3);
-        break;
-    }
+    ui->comboBoxModel->setCurrentIndex(index);
 }
 
-App::ColorGradient::TColorModel DlgSettingsColorGradientImp::colorModel() const
+std::size_t DlgSettingsColorGradientImp::colorModel() const
 {
-    int item = ui->comboBoxModel->currentIndex();
-    if ( item == 0 )
-        return App::ColorGradient::TRIA;
-    else if ( item == 1 )
-        return App::ColorGradient::INVERSE_TRIA;
-    else if ( item == 2 )
-        return App::ColorGradient::GRAY;
-    else
-        return App::ColorGradient::INVERSE_GRAY;
+    return static_cast<std::size_t>(ui->comboBoxModel->currentIndex());
+}
+
+void DlgSettingsColorGradientImp::setColorModelNames(const std::vector<std::string>& names)
+{
+    ui->comboBoxModel->clear();
+    for (const auto& it : names) {
+        ui->comboBoxModel->addItem(QString::fromStdString(it));
+    }
 }
 
 void DlgSettingsColorGradientImp::setColorStyle( App::ColorGradient::TStyle tStyle )
