@@ -410,7 +410,6 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     GProp_GProps tempProperties;
     Standard_Real momentOfInertiaInitial;
     Standard_Real momentOfInertiaFinal;
-    std::vector<bool>::iterator itInner = isInnerWire.begin();
     bool isInner;
     for (auto itOuter = resultPrisms.begin(); itOuter != resultPrisms.end(); ++itOuter) {
         isInner = false;
