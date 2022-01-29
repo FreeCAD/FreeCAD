@@ -437,10 +437,12 @@ public:
     void detachDocument();
 
 private:
-    /** Checks if a new document was created */
+    /** Called when a new document was created */
     virtual void slotCreatedDocument(const App::Document& Doc);
-    /** Checks if the given document is about to be closed */
+    /** Called when a document is about to be closed */
     virtual void slotDeletedDocument(const App::Document& Doc);
+    /** Called when a document is activated */
+    virtual void slotActivateDocument(const App::Document& Doc);
     /** Checks if a new object was added. */
     virtual void slotCreatedObject(const App::DocumentObject& Obj);
     /** Checks if the given object is about to be removed. */
@@ -460,6 +462,7 @@ private:
     typedef boost::signals2::connection Connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
+    Connection connectApplicationActivateDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;

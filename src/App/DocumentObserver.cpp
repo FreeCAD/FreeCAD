@@ -656,15 +656,13 @@ DocumentObserver::DocumentObserver() : _document(nullptr)
         (&DocumentObserver::slotCreatedDocument, this, sp::_1));
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
         (&DocumentObserver::slotDeletedDocument, this, sp::_1));
+    this->connectApplicationActivateDocument = App::GetApplication().signalActiveDocument.connect(std::bind
+        (&DocumentObserver::slotActivateDocument, this, sp::_1));
 }
 
-DocumentObserver::DocumentObserver(Document* doc) : _document(nullptr)
+DocumentObserver::DocumentObserver(Document* doc) : DocumentObserver()
 {
     // Connect to application and given document
-    this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(std::bind
-        (&DocumentObserver::slotCreatedDocument, this, sp::_1));
-    this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
-        (&DocumentObserver::slotDeletedDocument, this, sp::_1));
     attachDocument(doc);
 }
 
@@ -673,6 +671,7 @@ DocumentObserver::~DocumentObserver()
     // disconnect from application and document
     this->connectApplicationCreatedDocument.disconnect();
     this->connectApplicationDeletedDocument.disconnect();
+    this->connectApplicationActivateDocument.disconnect();
     detachDocument();
 }
 
@@ -717,6 +716,10 @@ void DocumentObserver::slotCreatedDocument(const App::Document& /*Doc*/)
 }
 
 void DocumentObserver::slotDeletedDocument(const App::Document& /*Doc*/)
+{
+}
+
+void DocumentObserver::slotActivateDocument(const App::Document& /*Doc*/)
 {
 }
 
