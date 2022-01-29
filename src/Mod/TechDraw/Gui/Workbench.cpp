@@ -121,6 +121,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmArc";
+    *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
     *toolcenter << "TechDraw_ExtensionLineParallel";
     *toolcenter << "TechDraw_ExtensionLinePerpendicular";
 
@@ -293,6 +294,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
 //    *extcenter << "TechDraw_ExtensionDrawCosmCircle";
 //    *extcenter << "TechDraw_ExtensionDrawCosmArc";
+//    *extcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 //    *extcenter << "TechDraw_ExtensionLineParallel";
 //    *extcenter << "TechDraw_ExtensionLinePerpendicular";
@@ -429,6 +431,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
 //    *extcenter << "TechDraw_ExtensionDrawCosmCircle";
 //    *extcenter << "TechDraw_ExtensionDrawCosmArc";
+//    *extcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 //    *extcenter << "TechDraw_ExtensionLineParallel";
 //    *extcenter << "TechDraw_ExtensionLinePerpendicular";
