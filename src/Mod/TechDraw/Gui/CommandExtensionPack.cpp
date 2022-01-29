@@ -83,10 +83,6 @@ namespace TechDrawGui {
     void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
     void _setLineAttributes(TechDraw::CenterLine* cosEdge);
     void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color);
-    void _intersection(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
-    void _intersectionLL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
-    void _intersectionCL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
-    void _intersectionCC(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
     float _getAngle(Base::Vector3d center, Base::Vector3d point);
     std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat);
     bool _checkSel(Gui::Command* cmd,
@@ -828,7 +824,7 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
-            _intersection(geom1, geom2, interPoints);
+            interPoints = geom1->intersection(geom2);
             if (!interPoints.empty()) {
                 double scale = objFeat->getScale();
                 std::string id1 = objFeat->addCosmeticVertex(interPoints[0] / scale);
@@ -1850,130 +1846,6 @@ namespace TechDrawGui {
         if (angle < 0.0)
             angle = 360 + angle;
         return angle;
-    }
-
-    void _intersection(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints) {
-        // find intersection vertex(es) between two edges
-#define unknown 0
-#define isLine 1
-#define isCircle 2
-        int edge1(unknown), edge2(unknown);
-        if (geom1->geomType == TechDraw::CIRCLE ||
-            geom1->geomType == TechDraw::ARCOFCIRCLE)
-            edge1 = isCircle;
-        else if (geom1->geomType == TechDraw::GENERIC)
-            edge1 = isLine;
-        if (geom2->geomType == TechDraw::CIRCLE ||
-            geom2->geomType == TechDraw::ARCOFCIRCLE)
-            edge2 = isCircle;
-        else if (geom2->geomType == TechDraw::GENERIC)
-            edge2 = isLine;
-        if (edge1 == isLine && edge2 == isLine)
-            _intersectionLL(geom1, geom2, interPoints);
-        else if (edge1 == isCircle && edge2 == isLine)
-            _intersectionCL(geom1, geom2, interPoints);
-        else if (edge1 == isLine && edge2 == isCircle)
-            _intersectionCL(geom2, geom1, interPoints);
-        else if (edge1 == isCircle && edge2 == isCircle)
-            _intersectionCC(geom2, geom1, interPoints);
-    }
-
-    void _intersectionLL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints) {
-        // find intersection vertex of two lines
-        // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-        TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
-        TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
-        Base::Vector3d startPnt1 = gen1->points.at(0);
-        Base::Vector3d endPnt1 = gen1->points.at(1);
-        Base::Vector3d startPnt2 = gen2->points.at(0);
-        Base::Vector3d endPnt2 = gen2->points.at(1);
-        Base::Vector3d dir1 = endPnt1 - startPnt1;
-        Base::Vector3d dir2 = endPnt2 - startPnt2;
-        float a1 = -dir1.y;
-        float b1 = dir1.x;
-        float c1 = -startPnt1.x * dir1.y + startPnt1.y * dir1.x;
-        float a2 = -dir2.y;
-        float b2 = dir2.x;
-        float c2 = -startPnt2.x * dir2.y + startPnt2.y * dir2.x;
-        float denom = a1 * b2 - a2 * b1;
-        if (abs(denom) >= 0.01) {
-            float xIntersect = (c1 * b2 - c2 * b1) / denom;
-            float yIntersect = (a1 * c2 - a2 * c1) / denom;
-            yIntersect = -yIntersect;
-            Base::Vector3d interPoint(xIntersect, yIntersect, 0.0);
-            interPoints.push_back(interPoint);
-        }
-    }
-
-    void _intersectionCL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints) {
-        // find intersection vertex(es) between one circle and one line
-        // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-        TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
-        TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
-        Base::Vector3d cirleCenter = gen1->center;
-        Base::Vector3d startPnt = gen2->points.at(0);
-        Base::Vector3d endPnt = gen2->points.at(1);
-        Base::Vector3d dir = endPnt - startPnt;
-        float r0 = gen1->radius;
-        float x0 = cirleCenter.x;
-        float y0 = cirleCenter.y;
-        float a = -dir.y;
-        float b = dir.x;
-        float c = -startPnt.x * dir.y + startPnt.y * dir.x;
-        float d = c - a * x0 - b * y0;
-        float ab = a * a + b * b;
-        float rootArg = r0 * r0 * ab - d * d;
-        if (rootArg > 0) {
-            if (rootArg < 0.01) {
-                float x1 = x0 + a * d / ab;
-                float y1 = -y0 + b * d / ab;
-                Base::Vector3d interPoint1(x1, y1, 0.0);
-                interPoints.push_back(interPoint1);
-            }
-            else {
-                float root = sqrt(rootArg);
-                float x1 = x0 + (a * d + b * root) / ab;
-                float y1 = -y0 - (b * d - a * root) / ab;
-                float x2 = x0 + (a * d - b * root) / ab;
-                float y2 = -y0 - (b * d + a * root) / ab;
-                Base::Vector3d interPoint1(x1, y1, 0.0);
-                interPoints.push_back(interPoint1);
-                Base::Vector3d interPoint2(x2, y2, 0.0);
-                interPoints.push_back(interPoint2);
-            }
-        }
-    }
-
-    void _intersectionCC(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints) {
-        // find intersection vertex(es) between two circles
-        // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-        TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
-        TechDraw::CirclePtr gen2 = std::static_pointer_cast<TechDraw::Circle>(geom2);
-        Base::Vector3d Center1 = gen1->center;
-        Base::Vector3d Center2 = gen2->center;
-        float r1 = gen1->radius;
-        float r2 = gen2->radius;
-        float d12 = (Center2 - Center1).Length();
-        Base::Vector3d m = (Center2 - Center1).Normalize();
-        Base::Vector3d n(-m.y, m.x, 0.0);
-        float d0 = (r1 * r1 - r2 * r2 + d12 * d12) / (2 * d12);
-        float rootArg = r1 * r1 - d0 * d0;
-        if (rootArg > 0) {
-            if (rootArg < 0.1) {
-                Base::Vector3d interPoint1 = -Center1 + m * d0;
-                interPoint1.y = -interPoint1.y;
-                interPoints.push_back(interPoint1);
-            }
-            else {
-                float e0 = sqrt(rootArg);
-                Base::Vector3d interPoint1 = Center1 + m * d0 + n * e0;
-                interPoint1.y = -interPoint1.y;
-                interPoints.push_back(interPoint1);
-                Base::Vector3d interPoint2 = Center1 + m * d0 - n * e0;
-                interPoint2.y = -interPoint2.y;
-                interPoints.push_back(interPoint2);
-            }
-        }
     }
 
     Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3) {
