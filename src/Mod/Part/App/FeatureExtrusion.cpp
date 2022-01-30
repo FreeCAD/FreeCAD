@@ -416,7 +416,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         for (auto itInner = resultPrisms.begin(); itInner != resultPrisms.end(); ++itInner) {
             if (itOuter == itInner)
                 continue;
-            // get center of mass of first shape
+            // get MomentOfInertia of first shape
             BRepGProp::VolumeProperties(*itInner, tempProperties);
             momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
             BRepAlgoAPI_Cut mkCut(*itInner, *itOuter);
@@ -440,6 +440,13 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         isInnerWire[0] = false;
         Base::Console().Warning("Extrusion: could not determine what structure is the outer one.\n\
                                  The first input one will now be taken as outer one.\n");
+    }
+
+    // we can have the case of nested inner wires, therefore check for inner wires in inner wires
+    // these will become outer ones, inner of inner of inner reamin inner and so on
+    if (numInnerWires > 1) {
+        std::vector<bool> toCheck = isInnerWire; // all inner wires need to be checked
+        checkInnerWires(isInnerWire, params, toCheck, true, resultPrisms);
     }
 
     // at first create offset wires for the reversed part of extrusion
@@ -539,51 +546,41 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         if (params.solid) {
             // we only need to cut if we have inner wires
             if (numInnerWires > 0) {
-                TopoDS_Shape result;
-                BRep_Builder builder;
-                TopoDS_Compound compOuter;
-                TopoDS_Shape outerCutShape;
-                // when there is more than one outer wire make a compound of the outer shells
-                rows = 0;
-                if ((numWires - numInnerWires) > 1) {
-                    builder.MakeCompound(compOuter);
-                    for (auto it = shells.begin(); it != shells.end(); ++it) {
-                        if (!isInnerWire[rows])
-                            builder.Add(compOuter, *it);
-                        ++rows;
+                // we take every outer wire prism and cut subsequently all inner wires prisms from it
+                // every resulting shape is the final drafted extrusion shape
+                std::vector<bool>::iterator isInnerWireIterator = isInnerWire.begin();
+                std::vector<bool>::iterator isInnerWireIteratorLoop;
+                for (auto itOuter = shells.begin(); itOuter != shells.end(); ++itOuter) {
+                    if (*isInnerWireIterator == true) {
+                        ++isInnerWireIterator;
+                        continue;
                     }
-                    outerCutShape = compOuter;
-                }
-                else { // take the shell directly without a compound
-                    for (auto it = shells.begin(); it != shells.end(); ++it) {
-                        if (!isInnerWire[rows]) {
-                            outerCutShape = *it;
-                            break;
+                    isInnerWireIteratorLoop = isInnerWire.begin();
+                    for (auto itInner = shells.begin(); itInner != shells.end(); ++itInner) {
+                        if (itOuter == itInner || *isInnerWireIteratorLoop == false) {
+                            ++isInnerWireIteratorLoop;
+                            continue;
                         }
-                        ++rows;
+                        // get MomentOfInertia of first shape
+                        BRepGProp::VolumeProperties(*itInner, tempProperties);
+                        momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
+                        BRepAlgoAPI_Cut mkCut(*itOuter, *itInner);
+                        if (!mkCut.IsDone())
+                            Standard_Failure::Raise("Extrusion: Final cut out failed");
+                        BRepGProp::VolumeProperties(mkCut.Shape(), tempProperties);
+                        momentOfInertiaFinal = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
+                        // if the whole shape was cut away the resulting shape is not Null but its MomentOfInertia is 0.0
+                        // therefore we have a valid cut if the MomentOfInertia is not zero and changed
+                        if ((momentOfInertiaInitial != momentOfInertiaFinal)
+                            && (momentOfInertiaFinal > Precision::Confusion())) {
+                            // immediately update the outer shape since more inner wire prism might cut it
+                            *itOuter = mkCut.Shape();
+                        }
+                        ++isInnerWireIteratorLoop;
                     }
+                    drafts.push_back(*itOuter);
+                    ++isInnerWireIterator;
                 }
-                // now the compound of the inner, no matter if we only have one inner
-                TopoDS_Compound compInner;
-                builder.MakeCompound(compInner);
-                rows = 0;
-                for (auto it = shells.begin(); it != shells.end(); ++it) {
-                    if (isInnerWire[rows])
-                        builder.Add(compInner, *it);
-                    ++rows;
-                }
-                // cut the inner from the outer
-                BRepAlgoAPI_Cut mkCutFinal(outerCutShape, compInner);
-                if (!mkCutFinal.IsDone())
-                    Standard_Failure::Raise("Extrusion: Cut of inner structures failed");
-                result = mkCutFinal.Shape();
-                // de-assemble the result to return every solid independently
-                for (TopoDS_Iterator anExp(result); anExp.More(); anExp.Next()) {
-                    if (anExp.Value().ShapeType() == TopAbs_SOLID)
-                        drafts.push_back(anExp.Value());
-                }
-                if (drafts.empty()) // should never happen, we already checked the success of the cut of solids
-                    Standard_Failure::Raise("Extrusion: The extrusion result is no solid shape");
             } else
                 // we already have the results
                 for (auto it = shells.begin(); it != shells.end(); ++it)
@@ -608,6 +605,75 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         throw Base::CADKernelError("Extrusion: A fatal error occurred when making the loft");
     }
 }
+
+void Extrusion::checkInnerWires (std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
+                                 std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms)
+{
+    GProp_GProps tempProperties;
+    Standard_Real momentOfInertiaInitial;
+    Standard_Real momentOfInertiaFinal;
+    int numCheckWires = 0;
+    std::vector<bool>::iterator isInnerWireIterator = isInnerWire.begin();
+    std::vector<bool>::iterator toCheckIterator = checklist.begin();
+    // create an array with false used later to store what can be cancelled from the checklist
+    std::vector<bool> toDisable;
+    for (auto numChecks : checklist)
+        toDisable.push_back(false);
+    int outer = -1;
+    // we cut every prism to be checked from the other to be checked ones
+    // if nothing happens, a prism can be cancelled from the checklist
+    for (auto itOuter = prisms.begin(); itOuter != prisms.end(); ++itOuter) {
+        ++outer;
+        if (*toCheckIterator == false) {
+            ++isInnerWireIterator;
+            ++toCheckIterator;
+            continue;
+        }
+        auto toCheckIteratorInner = checklist.begin();
+        bool saveIsInnerWireIterator = *isInnerWireIterator;
+        for (auto itInner = prisms.begin(); itInner != prisms.end(); ++itInner) {
+            if (itOuter == itInner || *toCheckIteratorInner == false) {
+                ++toCheckIteratorInner;
+                continue;
+            }
+            // get MomentOfInertia of first shape
+            BRepGProp::VolumeProperties(*itInner, tempProperties);
+            momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
+            BRepAlgoAPI_Cut mkCut(*itInner, *itOuter);
+            if (!mkCut.IsDone())
+                Standard_Failure::Raise("Extrusion: Cut out failed");
+            BRepGProp::VolumeProperties(mkCut.Shape(), tempProperties);
+            momentOfInertiaFinal = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
+            // if the whole shape was cut away the resulting shape is not Null but its MomentOfInertia is 0.0
+            // therefore we have an inner wire if the MomentOfInertia is not zero and changed
+            if ((momentOfInertiaInitial != momentOfInertiaFinal)
+                && (momentOfInertiaFinal > Precision::Confusion())) {
+                *isInnerWireIterator = !forInner;
+                ++numCheckWires;
+                *toCheckIterator = true;
+                break;
+            }
+            ++toCheckIteratorInner;
+        }
+        if (saveIsInnerWireIterator == *isInnerWireIterator)
+            // nothing was changed and we can remove it from the list to be checked
+            // but we cannot do this before the foor loop was fully run
+            toDisable[outer] = true;
+        ++isInnerWireIterator;
+        ++toCheckIterator;
+    }
+
+    // cancel prisms from the checklist whose wire state did not change
+    size_t i = 0;
+    for (auto disable : toDisable) {
+        if (disable)
+            checklist[i] = false;
+        ++i;
+    }
+    // recursively call the function until all wires are checked
+    if (numCheckWires > 1)
+        checkInnerWires(isInnerWire, params, checklist, !forInner, prisms);
+};
 
 void Extrusion::createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                          const gp_Vec& translation,
