@@ -408,16 +408,11 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     // finally check reecursively for inner wires
     checkInnerWires(isInnerWire, params, checklist, false, resultPrisms);
 
-    // if all wires are inner ones, we take the first one and issue a warning
+    // count the number of inner wires
     int numInnerWires = 0;
     for (auto isInner : isInnerWire) {
         if (isInner)
             ++numInnerWires;
-    }
-    if ((numWires - numInnerWires) == 0) {
-        isInnerWire[0] = false;
-        Base::Console().Warning("Extrusion: could not determine what structure is the outer one.\n\
-                                 The first input one will now be taken as outer one.\n");
     }
 
     // at first create offset wires for the reversed part of extrusion
@@ -642,6 +637,16 @@ void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionP
             checklist[i] = false;
         ++i;
     }
+
+    // if all wires are inner ones, we take the first one and issue a warning
+    if (numCheckWires == isInnerWire.size()) {
+        isInnerWire[0] = false;
+        checklist[0] = false;
+        --numCheckWires;
+        Base::Console().Warning("Extrusion: could not determine what structure is the outer one.\n\
+                                 The first input one will now be taken as outer one.\n");
+    }
+
     // recursively call the function until all wires are checked
     if (numCheckWires > 1)
         checkInnerWires(isInnerWire, params, checklist, !forInner, prisms);
