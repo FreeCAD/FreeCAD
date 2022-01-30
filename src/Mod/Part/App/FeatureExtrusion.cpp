@@ -382,16 +382,15 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     std::vector<std::vector<TopoDS_Shape>> extrusionSections(wiresections.size(), std::vector<TopoDS_Shape>());
     size_t rows = 0;
     int numEdges = 0;
-    int numInnerWires = 0;
 
     // We need to find out what are outer wires and what are inner ones
     // methods like checking the center of mass etc. don't help us here.
     // As solution we build a prism with every wire, then subtract every prism from each other.
-    // If the subtraction changes the initial prism, the subtracted prism has an inner wire.
-    std::vector<TopoDS_Shape> resultPrisms;
-    std::vector<bool> isInnerWire;
-    TopoDS_Shape singlePrism;
+    // If the moment of inertia changes by a subtraction, we have an inner wire prism.
+    // 
     // first build the prisms
+    std::vector<TopoDS_Shape> resultPrisms;
+    TopoDS_Shape singlePrism;
     for (auto& wireVector : wiresections) {
         for (auto& singleWire : wireVector) {
             BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(singleWire));
@@ -403,48 +402,22 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
             resultPrisms.push_back(singlePrism);
         }
     }
-    // now subtract them
-    // if the moment of inertia changes, we have an inner wire
-    GProp_GProps tempProperties;
-    Standard_Real momentOfInertiaInitial;
-    Standard_Real momentOfInertiaFinal;
-    bool isInner;
-    for (auto itOuter = resultPrisms.begin(); itOuter != resultPrisms.end(); ++itOuter) {
-        isInner = false;
-        for (auto itInner = resultPrisms.begin(); itInner != resultPrisms.end(); ++itInner) {
-            if (itOuter == itInner)
-                continue;
-            // get MomentOfInertia of first shape
-            BRepGProp::VolumeProperties(*itInner, tempProperties);
-            momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
-            BRepAlgoAPI_Cut mkCut(*itInner, *itOuter);
-            if (!mkCut.IsDone())
-                Standard_Failure::Raise("Extrusion: Cut out failed");
-            BRepGProp::VolumeProperties(mkCut.Shape(), tempProperties);
-            momentOfInertiaFinal = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
-            // if the whole shape was cut away the resulting shape is not Null but its MomentOfInertia is 0.0
-            // therefore we have an inner wire if the MomentOfInertia is not zero and changed
-            if ((momentOfInertiaInitial != momentOfInertiaFinal)
-                && (momentOfInertiaFinal > Precision::Confusion())) {
-                isInner = true;
-                ++numInnerWires;
-                break;
-            }
-        }
-        isInnerWire.push_back(isInner);
-    }
+    // create an array with false to store later which wires are inner ones
+    std::vector<bool> isInnerWire(resultPrisms.size(), false);
+    std::vector<bool> checklist(resultPrisms.size(), true);
+    // finally check reecursively for inner wires
+    checkInnerWires(isInnerWire, params, checklist, false, resultPrisms);
+
     // if all wires are inner ones, we take the first one and issue a warning
+    int numInnerWires = 0;
+    for (auto isInner : isInnerWire) {
+        if (isInner)
+            ++numInnerWires;
+    }
     if ((numWires - numInnerWires) == 0) {
         isInnerWire[0] = false;
         Base::Console().Warning("Extrusion: could not determine what structure is the outer one.\n\
                                  The first input one will now be taken as outer one.\n");
-    }
-
-    // we can have the case of nested inner wires, therefore check for inner wires in inner wires
-    // these will become outer ones, inner of inner of inner reamin inner and so on
-    if (numInnerWires > 1) {
-        std::vector<bool> toCheck = isInnerWire; // all inner wires need to be checked
-        checkInnerWires(isInnerWire, params, toCheck, true, resultPrisms);
     }
 
     // at first create offset wires for the reversed part of extrusion
@@ -546,6 +519,9 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
             if (numInnerWires > 0) {
                 // we take every outer wire prism and cut subsequently all inner wires prisms from it
                 // every resulting shape is the final drafted extrusion shape
+                GProp_GProps tempProperties;
+                Standard_Real momentOfInertiaInitial;
+                Standard_Real momentOfInertiaFinal;
                 std::vector<bool>::iterator isInnerWireIterator = isInnerWire.begin();
                 std::vector<bool>::iterator isInnerWireIteratorLoop;
                 for (auto itOuter = shells.begin(); itOuter != shells.end(); ++itOuter) {

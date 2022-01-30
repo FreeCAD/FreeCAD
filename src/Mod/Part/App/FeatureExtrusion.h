@@ -123,6 +123,12 @@ public: //mode enumerations
 protected:
     static void makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
 
+    /**
+     * @brief checkInnerWires: Checks what wires are inner ones by taking a set of prisms created with every wire.
+     * The prisms are cut from each other. If the moment of inertia thereby changes, the prism wire is an inner wire.
+     * Inner wires can have nested inner wires that are then in fact outer wires.
+     * Therefore checkInnerWires is called recursively until all wires are checked.
+     */
     static void checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
                                 std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms);
 
