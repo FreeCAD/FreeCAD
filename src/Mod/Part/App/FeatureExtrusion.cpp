@@ -587,7 +587,7 @@ void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const gp_Dir dir
     GProp_GProps tempProperties;
     Standard_Real momentOfInertiaInitial;
     Standard_Real momentOfInertiaFinal;
-    int numCheckWires = 0;
+    size_t numCheckWires = 0;
     std::vector<bool>::iterator isInnerWireIterator = isInnerWire.begin();
     std::vector<bool>::iterator toCheckIterator = checklist.begin();
     // create an array with false used later to store what can be cancelled from the checklist
