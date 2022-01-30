@@ -53,8 +53,8 @@
 
 #include "FeatureExtrusion.h"
 #include <App/Application.h>
-#include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include "Part2DObject.h"
 
 using namespace Part;
@@ -406,7 +406,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     std::vector<bool> isInnerWire(resultPrisms.size(), false);
     std::vector<bool> checklist(resultPrisms.size(), true);
     // finally check reecursively for inner wires
-    checkInnerWires(isInnerWire, params, checklist, false, resultPrisms);
+    checkInnerWires(isInnerWire, params.dir, checklist, false, resultPrisms);
 
     // count the number of inner wires
     int numInnerWires = 0;
@@ -575,7 +575,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     }
 }
 
-void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
+void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const gp_Dir direction,
                                 std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms)
 {
     // store the number of wires to be checked
@@ -611,12 +611,12 @@ void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionP
             }
             // get MomentOfInertia of first shape
             BRepGProp::VolumeProperties(*itInner, tempProperties);
-            momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
+            momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), direction));
             BRepAlgoAPI_Cut mkCut(*itInner, *itOuter);
             if (!mkCut.IsDone())
                 Standard_Failure::Raise("Extrusion: Cut out failed");
             BRepGProp::VolumeProperties(mkCut.Shape(), tempProperties);
-            momentOfInertiaFinal = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
+            momentOfInertiaFinal = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), direction));
             // if the whole shape was cut away the resulting shape is not Null but its MomentOfInertia is 0.0
             // therefore we have an inner wire if the MomentOfInertia is not zero and changed
             if ((momentOfInertiaInitial != momentOfInertiaFinal)
@@ -673,7 +673,7 @@ void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionP
 
     // recursively call the function until all wires are checked
     if (numCheckWires > 1)
-        checkInnerWires(isInnerWire, params, checklist, !forInner, prisms);
+        checkInnerWires(isInnerWire, direction, checklist, !forInner, prisms);
 };
 
 void Extrusion::createTaperedPrismOffset(TopoDS_Wire sourceWire,

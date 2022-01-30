@@ -129,9 +129,13 @@ protected:
      * Inner wires can have nested inner wires that are then in fact outer wires.
      * Therefore checkInnerWires is called recursively until all wires are checked.
      */
-    static void checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
+    static void checkInnerWires(std::vector<bool>& isInnerWire, const gp_Dir direction,
                                 std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms);
 
+    /**
+     * @brief createTaperedPrismOffset: creates an offset wire from the sourceWire in the specified
+     * translation. isSecond determines if the wire is used for the 2nd extrusion direction.
+     */
     static void createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                          const gp_Vec& translation,
                                          double offset,
