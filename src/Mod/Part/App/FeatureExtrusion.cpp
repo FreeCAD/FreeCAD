@@ -375,13 +375,11 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
 
     // to store the sections for the loft
     std::list<TopoDS_Wire> list_of_sections;
-    std::vector<std::vector<TopoDS_Shape>> extrusionSections;
 
     // we need for all found wires an offset copy of them
     // we store them in an array
     TopoDS_Wire offsetWire;
-    for (auto& wire : wiresections)
-        extrusionSections.push_back(std::vector<TopoDS_Shape>());
+    std::vector<std::vector<TopoDS_Shape>> extrusionSections(wiresections.size(), std::vector<TopoDS_Shape>());
     size_t rows = 0;
     int numEdges = 0;
     int numInnerWires = 0;
@@ -606,8 +604,8 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
     }
 }
 
-void Extrusion::checkInnerWires (std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
-                                 std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms)
+void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
+                                std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms)
 {
     GProp_GProps tempProperties;
     Standard_Real momentOfInertiaInitial;
@@ -616,9 +614,7 @@ void Extrusion::checkInnerWires (std::vector<bool>& isInnerWire, const Extrusion
     std::vector<bool>::iterator isInnerWireIterator = isInnerWire.begin();
     std::vector<bool>::iterator toCheckIterator = checklist.begin();
     // create an array with false used later to store what can be cancelled from the checklist
-    std::vector<bool> toDisable;
-    for (auto numChecks : checklist)
-        toDisable.push_back(false);
+    std::vector<bool> toDisable(checklist.size(), false);
     int outer = -1;
     // we cut every prism to be checked from the other to be checked ones
     // if nothing happens, a prism can be cancelled from the checklist
