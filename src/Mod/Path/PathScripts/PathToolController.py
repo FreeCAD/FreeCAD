@@ -131,6 +131,7 @@ class ToolController:
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "SpindleDir": [
+                (translate("Path_ToolController", "None"), "None"),
                 (translate("Path_ToolController", "Forward"), "Forward"),
                 (translate("Path_ToolController", "Reverse"), "Reverse"),
             ],  # this is the direction that the profile runs

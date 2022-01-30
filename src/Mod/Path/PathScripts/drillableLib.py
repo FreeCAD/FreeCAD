@@ -4,11 +4,39 @@ import Part
 import numpy
 import math
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+
+def checkForBlindHole(baseshape, selectedFace):
+    """
+    check for blind holes, returns the bottom face if found, none
+    if the hole is a thru-hole
+    """
+    circularFaces = [
+        f
+        for f in baseshape.Faces
+        if len(f.OuterWire.Edges) == 1
+        and type(f.OuterWire.Edges[0].Curve) == Part.Circle
+    ]
+
+    circularFaceEdges = [f.OuterWire.Edges[0] for f in circularFaces]
+    commonedges = [
+        i for i in selectedFace.Edges for x in circularFaceEdges if i.isSame(x)
+    ]
+
+    bottomface = None
+    for f in circularFaces:
+        for e in f.Edges:
+            for i in commonedges:
+                if e.isSame(i):
+                    bottomface = f
+                break
+
+    return bottomface
 
 
 def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
@@ -69,15 +97,23 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     if not matchToolDiameter and not matchVector:
         return True
 
-    elif matchToolDiameter and tooldiameter / 2 > candidate.Surface.Radius:
+    if matchToolDiameter and tooldiameter / 2 > candidate.Surface.Radius:
         PathLog.debug("The tool is larger than the target")
         return False
 
-    elif matchVector and not (compareVecs(getSeam(candidate).Curve.Direction, vector)):
+    if matchVector and not (compareVecs(getSeam(candidate).Curve.Direction, vector)):
         PathLog.debug("The feature is not aligned with the given vector")
         return False
-    else:
+
+    bottomface = checkForBlindHole(obj, candidate)
+    PathLog.track(bottomface)
+    if bottomface is None:  # thru hole
         return True
+    else:
+        PathLog.track(bottomface.normalAt(0,0))
+        result = compareVecs(bottomface.normalAt(0, 0), App.Vector(0, 0, 1), exact=True)
+        PathLog.track(result)
+        return result
 
 
 def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
@@ -94,6 +130,7 @@ def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0,
     )
 
     if candidate.ShapeType == "Face":
+        PathLog.track()
         if not type(candidate.Surface) == Part.Plane:
             PathLog.debug("Drilling on non-planar faces not supported")
             return False
@@ -117,6 +154,10 @@ def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0,
                 )
             )
             return False
+        if vector is not None: # Check for blind hole alignment
+            if not compareVecs(candidate.normalAt(0,0), vector, exact=True):
+                PathLog.track(False)
+                return False
 
     else:  # edge
         edge = candidate
@@ -131,11 +172,11 @@ def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0,
     if not matchToolDiameter and not matchVector:
         return True
 
-    elif matchToolDiameter and tooldiameter / 2 > edge.Curve.Radius:
+    if matchToolDiameter and tooldiameter / 2 > edge.Curve.Radius:
         PathLog.debug("The tool is larger than the target")
         return False
 
-    elif matchVector and not (compareVecs(edge.Curve.Axis, vector)):
+    if matchVector and not (compareVecs(edge.Curve.Axis, vector)):
         PathLog.debug("The feature is not aligned with the given vector")
         return False
     else:
@@ -187,18 +228,22 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
         # raise TypeError("{}".format(e))
 
 
-def compareVecs(vec1, vec2):
+def compareVecs(vec1, vec2, exact=False):
     """
-    compare the two vectors to see if they are aligned for drilling
+    compare the two vectors to see if they are aligned for drilling.
+    if exact is True, vectors must match direction. Otherwise,
     alignment can indicate the vectors are the same or exactly opposite
     """
 
     angle = vec1.getAngle(vec2)
     angle = 0 if math.isnan(angle) else math.degrees(angle)
     PathLog.debug("vector angle: {}".format(angle))
-    return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06) or numpy.isclose(
-        angle, 180, rtol=1e-05, atol=1e-06
-    )
+    if exact:
+        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06)
+    else:
+        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06) or numpy.isclose(
+            angle, 180, rtol=1e-05, atol=1e-06
+        )
 
 
 def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
