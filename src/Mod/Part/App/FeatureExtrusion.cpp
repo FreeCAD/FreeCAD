@@ -531,7 +531,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
                             continue;
                         }
                         // get MomentOfInertia of first shape
-                        BRepGProp::VolumeProperties(*itInner, tempProperties);
+                        BRepGProp::VolumeProperties(*itOuter, tempProperties);
                         momentOfInertiaInitial = tempProperties.MomentOfInertia(gp_Ax1(gp_Pnt(), params.dir));
                         BRepAlgoAPI_Cut mkCut(*itOuter, *itInner);
                         if (!mkCut.IsDone())
