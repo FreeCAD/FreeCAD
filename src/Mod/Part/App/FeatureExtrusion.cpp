@@ -578,6 +578,12 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
 void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionParameters& params,
                                 std::vector<bool>& checklist, bool forInner, std::vector<TopoDS_Shape> prisms)
 {
+    // store the number of wires to be checked
+    size_t numCheckWiresInitial = 0;
+    for (auto checks : checklist) {
+        if (checks)
+            ++numCheckWiresInitial;
+    }
     GProp_GProps tempProperties;
     Standard_Real momentOfInertiaInitial;
     Standard_Real momentOfInertiaFinal;
@@ -638,13 +644,31 @@ void Extrusion::checkInnerWires(std::vector<bool>& isInnerWire, const ExtrusionP
         ++i;
     }
 
-    // if all wires are inner ones, we take the first one and issue a warning
+    // if all wires are inner ones, we take the first one as outer and issue a warning
     if (numCheckWires == isInnerWire.size()) {
         isInnerWire[0] = false;
         checklist[0] = false;
         --numCheckWires;
         Base::Console().Warning("Extrusion: could not determine what structure is the outer one.\n\
                                  The first input one will now be taken as outer one.\n");
+    }
+
+    // There can be cases with several wires all intersecting each other.
+    // Then it is impossible to find out what wire is an inner one
+    // and we can only treat all wires in the checklist as outer ones.
+    if (numCheckWiresInitial == numCheckWires) {
+        i = 0;
+        for (auto checks : checklist) {
+            if (checks) {
+                isInnerWire[i] = false;
+                checklist[i] = false;
+                --numCheckWires;
+            }
+            ++i;
+        }
+        Base::Console().Warning("Extrusion: too many self-intersection structures!\n\
+                                 Impossible to determine what structure is an inner one.\n\
+                                 All undeterminable structures will therefore be taken as outer ones.\n");
     }
 
     // recursively call the function until all wires are checked
