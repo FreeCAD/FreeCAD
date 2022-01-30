@@ -155,7 +155,7 @@ CmdTechDrawExtensionInsertDiameter::CmdTechDrawExtensionInsertDiameter()
 void CmdTechDrawExtensionInsertDiameter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execInsertPrefixChar(this, "⌀");
+    execInsertPrefixChar(this, "⌀");   
 }
 
 bool CmdTechDrawExtensionInsertDiameter::isActive(void)
@@ -192,6 +192,62 @@ void CmdTechDrawExtensionInsertSquare::activated(int iMsg)
 }
 
 bool CmdTechDrawExtensionInsertSquare::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_ExtensionRemovePrefixChar
+//===========================================================================
+
+void execRemovePrefixChar(Gui::Command* cmd) {
+    // remove a prefix character from the format specifier
+    std::vector<Gui::SelectionObject> selection;
+    if (_checkSelection(cmd, selection, "TechDraw Remove Prefix")) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Prefix"));
+        for (auto selected : selection)
+        {
+            auto object = selected.getObject();
+            if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                std::string formatSpec = dim->FormatSpec.getStrValue();
+                int pos = formatSpec.find("%.");
+                if (pos != 0)
+                {
+                    formatSpec = formatSpec.substr(pos);
+                    dim->FormatSpec.setValue(formatSpec);
+                }
+            }
+        }
+        Gui::Command::commitCommand();
+    }
+}
+
+DEF_STD_CMD_A(CmdTechDrawExtensionRemovePrefixChar)
+
+CmdTechDrawExtensionRemovePrefixChar::CmdTechDrawExtensionRemovePrefixChar()
+    : Command("TechDraw_ExtensionRemovePrefixChar")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Remove Prefix");
+    sToolTipText    = QT_TR_NOOP("Remove prefix symbols at the beginning of the dimension text:<br>\
+- Select one or more dimensions<br>\
+- Click this tool");
+    sWhatsThis      = "TechDraw_ExtensionRemovePrefixChar";
+    sStatusTip      = sMenuText;
+    sPixmap         = "TechDraw_ExtensionRemovePrefixChar";
+}
+
+void CmdTechDrawExtensionRemovePrefixChar::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    execRemovePrefixChar(this);
+}
+
+bool CmdTechDrawExtensionRemovePrefixChar::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -236,6 +292,9 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
     case 1:                 //insert "〼" as prefix
         execInsertPrefixChar(this, "〼");
         break;
+    case 2:                 //remove prefix characters
+        execRemovePrefixChar(this);
+        break;
     default:
         Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
@@ -255,6 +314,10 @@ Gui::Action* CmdTechDrawExtensionInsertPrefixGroup::createAction(void)
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionInsertSquare"));
     p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionInsertSquare"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionInsertSquare"));
+    QAction* p3 = pcAction->addAction(QString());
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionRemovePrefixChar"));
+    p3->setObjectName(QString::fromLatin1("TechDraw_ExtensionRemovePrefixChar"));
+    p3->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionRemovePrefixChar"));
 
     _pcAction = pcAction;
     languageChange();
@@ -289,6 +352,13 @@ void CmdTechDrawExtensionInsertPrefixGroup::languageChange()
 - Select one or more dimensions<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
+    QAction* arc3 = a[2];
+    arc3->setText(QApplication::translate("TechDraw_ExtensionremovePrefixChar", "Remove Prefix"));
+    arc3->setToolTip(QApplication::translate("TechDraw_ExtensionremovePrefixChar",
+"Remove prefix symbols at the beginning of the dimension text:<br>\
+- Select one or more dimensions<br>\
+- Click this tool"));
+    arc3->setStatusTip(arc3->text());
 }
 
 bool CmdTechDrawExtensionInsertPrefixGroup::isActive(void)
@@ -2263,6 +2333,7 @@ void CreateTechDrawCommandsExtensionDims(void)
     rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertPrefixGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertDiameter());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertSquare());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionRemovePrefixChar());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionIncreaseDecreaseGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionIncreaseDecimal());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDecreaseDecimal());

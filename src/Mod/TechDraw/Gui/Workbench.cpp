@@ -140,6 +140,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionInsertDiameter";
     *tooldimensions << "TechDraw_ExtensionInsertSquare";
+    *tooldimensions << "TechDraw_ExtensionRemovePrefixChar";
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionIncreaseDecimal";
     *tooldimensions << "TechDraw_ExtensionDecreaseDecimal";
@@ -316,6 +317,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
 //    *extdimensions << "TechDraw_ExtensionInsertDiameter";
 //    *extdimensions << "TechDraw_ExtensionInsertSquare";
+//    *extdimensions << "TechDraw_ExtensionRemovePrefixChar";
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
 //    *extdimensions << "TechDraw_ExtensionIncreaseDecimal";
 //    *extdimensions << "TechDraw_ExtensionDecreaseDecimal";
@@ -453,6 +455,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
 //    *extdimensions << "TechDraw_ExtensionInsertDiameter";
 //    *extdimensions << "TechDraw_ExtensionInsertSquare";
+//    *extdimensions << "TechDraw_ExtensionRemovePrefixChar";
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
 //    *extdimensions << "TechDraw_ExtensionIncreaseDecimal";
 //    *extdimensions << "TechDraw_ExtensionDecreaseDecimal";

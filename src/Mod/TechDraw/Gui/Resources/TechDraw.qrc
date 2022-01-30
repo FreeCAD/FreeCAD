@@ -53,6 +53,7 @@
         <file>icons/TechDraw_ExtensionThreadBoltBottom.svg</file>
         <file>icons/TechDraw_ExtensionInsertDiameter.svg</file>
         <file>icons/TechDraw_ExtensionInsertSquare.svg</file>
+        <file>icons/TechDraw_ExtensionRemovePrefixChar.svg</file>
         <file>icons/TechDraw_ExtensionCreateHorizChainDimension.svg</file>
         <file>icons/TechDraw_ExtensionCreateVertChainDimension.svg</file>
         <file>icons/TechDraw_ExtensionCreateObliqueChainDimension.svg</file>
