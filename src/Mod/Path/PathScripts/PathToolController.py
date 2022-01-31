@@ -277,6 +277,8 @@ class ToolController:
                     args["spindledirection"] = SpindleDirection.CW
                 else:
                     args["spindledirection"] = SpindleDirection.CCW
+        elif obj.SpindleDir == "None":
+            args["spindledirection"] = SpindleDirection.OFF
         else:
             if obj.SpindleDir == "Forward":
                 args["spindledirection"] = SpindleDirection.CW

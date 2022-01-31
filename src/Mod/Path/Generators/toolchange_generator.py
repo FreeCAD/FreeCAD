@@ -22,9 +22,7 @@
 
 
 import PathScripts.PathLog as PathLog
-import math
 import Path
-import FreeCAD
 from enum import Enum
 
 __title__ = "Toolchange Path Generator"
@@ -33,7 +31,7 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Generates the rotation toolpath"
 
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -59,7 +57,8 @@ def generate(
     )
 
     if spindledirection is not SpindleDirection.OFF and spindlespeed == 0:
-        raise ValueError("Turning on spindle with zero speed is invalid")
+        spindledirection = SpindleDirection.OFF
+        # raise ValueError("Turning on spindle with zero speed is invalid")
 
     if spindlespeed < 0:
         raise ValueError("Spindle speed must be a positive value")
@@ -74,4 +73,5 @@ def generate(
     else:
         commands.append(Path.Command(spindledirection.value, {"S": spindlespeed}))
 
+    PathLog.track(commands)
     return commands

@@ -21,15 +21,13 @@
 # ***************************************************************************
 
 import Path
-import FreeCAD
 import Generators.toolchange_generator as generator
 from Generators.toolchange_generator import SpindleDirection
 
 import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
-import numpy as np
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule(PathLog.thisModule())
 
 
@@ -67,7 +65,9 @@ class TestPathToolChangeGenerator(PathTestUtils.PathTestBase):
 
         # speed zero with spindle on
         args["spindlespeed"] = 0
-        self.assertRaises(ValueError, generator.generate, **args)
+        results = generator.generate(**args)
+        self.assertTrue(len(results) == 2)
+        PathLog.track(results)
 
         # negative spindlespeed
         args["spindlespeed"] = -10

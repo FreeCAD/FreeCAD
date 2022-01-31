@@ -33,10 +33,11 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 class TestPathDrillable(PathTestUtils.PathTestBase):
     def setUp(self):
         self.doc = App.open(App.getHomePath() + "/Mod/Path/PathTests/Drilling_1.FCStd")
-        self.obj = self.doc.getObject("Pocket010")
+        self.obj = self.doc.getObject("Pocket011")
 
     def tearDown(self):
         App.closeDocument(self.doc.Name)
@@ -68,16 +69,10 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
             TypeError, lambda: drillableLib.isDrillable(self.obj.Shape, candidate)
         )
 
-        # # partial cylinder
-        # candidate = self.obj.getSubObject("Face10")
-        # self.assertRaises(
-        #     TypeError, lambda: drillableLib.isDrillable(self.obj.Shape, candidate)
-        # )
-
         # Test cylinder faces
 
         # thru-hole
-        candidate = self.obj.getSubObject("Face25")
+        candidate = self.obj.getSubObject("Face30")
 
         # Typical drilling
         self.assertTrue(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -93,7 +88,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # off-axis hole
-        candidate = self.obj.getSubObject("Face42")
+        candidate = self.obj.getSubObject("Face44")
 
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -106,26 +101,26 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         # Passing explicit vector
         self.assertTrue(
             drillableLib.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, 1, 0)
+                self.obj.Shape, candidate, vector=App.Vector(0, -1, 0)
             )
         )
 
         # Drilling with smaller bit
         self.assertTrue(
             drillableLib.isDrillable(
-                self.obj.Shape, candidate, tooldiameter=10, vector=App.Vector(0, 1, 0)
+                self.obj.Shape, candidate, tooldiameter=10, vector=App.Vector(0, -1, 0)
             )
         )
 
         # Drilling with bit too large
         self.assertFalse(
             drillableLib.isDrillable(
-                self.obj.Shape, candidate, tooldiameter=30, vector=App.Vector(0, 1, 0)
+                self.obj.Shape, candidate, tooldiameter=30, vector=App.Vector(0, -1, 0)
             )
         )
 
         # ellipse hole
-        candidate = self.obj.getSubObject("Face20")
+        candidate = self.obj.getSubObject("Face29")
 
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -136,7 +131,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # raised cylinder
-        candidate = self.obj.getSubObject("Face30")
+        candidate = self.obj.getSubObject("Face32")
 
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -146,9 +141,8 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
             drillableLib.isDrillable(self.obj.Shape, candidate, vector=None)
         )
 
-
         # cylinder on slope
-        candidate = self.obj.getSubObject("Face26")
+        candidate = self.obj.getSubObject("Face24")
         # Typical drilling
         self.assertTrue(drillableLib.isDrillable(self.obj.Shape, candidate))
 
@@ -158,7 +152,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # Circular Faces
-        candidate = self.obj.getSubObject("Face51")
+        candidate = self.obj.getSubObject("Face54")
 
         # Typical drilling
         self.assertTrue(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -186,7 +180,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # off-axis circular face hole
-        candidate = self.obj.getSubObject("Face54")
+        candidate = self.obj.getSubObject("Face58")
 
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -199,12 +193,12 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         # Passing explicit vector
         self.assertTrue(
             drillableLib.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, 1, 0)
+                self.obj.Shape, candidate, vector=App.Vector(0, -1, 0)
             )
         )
 
         # raised face
-        candidate = self.obj.getSubObject("Face45")
+        candidate = self.obj.getSubObject("Face49")
         # Typical drilling
         self.assertTrue(drillableLib.isDrillable(self.obj.Shape, candidate))
 
@@ -214,7 +208,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # interrupted Face
-        candidate = self.obj.getSubObject("Face46")
+        candidate = self.obj.getSubObject("Face50")
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
 
@@ -224,7 +218,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # donut face
-        candidate = self.obj.getSubObject("Face44")
+        candidate = self.obj.getSubObject("Face48")
         # Typical drilling
         self.assertTrue(drillableLib.isDrillable(self.obj.Shape, candidate))
 
@@ -235,7 +229,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
 
         # Test edges
         # circular edge
-        candidate = self.obj.getSubObject("Edge53")
+        candidate = self.obj.getSubObject("Edge55")
 
         # Typical drilling
         self.assertTrue(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -259,11 +253,13 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
 
         # Drilling with bit too large
         self.assertFalse(
-            drillableLib.isDrillable(self.obj.Shape, candidate, tooldiameter=30)
+            drillableLib.isDrillable(
+                self.obj.Shape, candidate, tooldiameter=30, vector=None
+            )
         )
 
         # off-axis circular edge
-        candidate = self.obj.getSubObject("Edge72")
+        candidate = self.obj.getSubObject("Edge74")
 
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
@@ -281,7 +277,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # incomplete circular edge
-        candidate = self.obj.getSubObject("Edge108")
+        candidate = self.obj.getSubObject("Edge39")
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
 
@@ -291,7 +287,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # elliptical edge
-        candidate = self.obj.getSubObject("Edge54")
+        candidate = self.obj.getSubObject("Edge56")
         # Typical drilling
         self.assertFalse(drillableLib.isDrillable(self.obj.Shape, candidate))
 
@@ -300,14 +296,15 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
             drillableLib.isDrillable(self.obj.Shape, candidate, vector=None)
         )
 
-
     def test20(self):
         """Test getDrillableTargets"""
         results = drillableLib.getDrillableTargets(self.obj)
         self.assertEqual(len(results), 15)
 
         results = drillableLib.getDrillableTargets(self.obj, vector=None)
-        self.assertEqual(len(results), 18)
+        self.assertEqual(len(results), 20)
 
-        results = drillableLib.getDrillableTargets(self.obj, ToolDiameter= 20, vector=None)
+        results = drillableLib.getDrillableTargets(
+            self.obj, ToolDiameter=20, vector=None
+        )
         self.assertEqual(len(results), 5)
