@@ -50,8 +50,11 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->checkBoxReversed->setToolTip(tr("Reverses pocket direction"));
 
     // set the history path
+    ui->lengthEdit->setEntryName(QByteArray("Length"));
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength"));
+    ui->lengthEdit2->setEntryName(QByteArray("Length2"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
+    ui->offsetEdit->setEntryName(QByteArray("Offset"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
 
     setupDialog();

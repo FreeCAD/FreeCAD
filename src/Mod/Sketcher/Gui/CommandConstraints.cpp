@@ -6866,6 +6866,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
         ui_Datum.labelEdit->setValue(init_val);
         ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+        ui_Datum.labelEdit->setEntryName(QByteArray("DatumValue"));
         ui_Datum.labelEdit->setToLastUsedValue();
         ui_Datum.labelEdit->selectNumber();
         ui_Datum.labelEdit->setSingleStep(0.05);

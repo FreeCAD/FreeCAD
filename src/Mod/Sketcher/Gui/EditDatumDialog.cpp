@@ -91,6 +91,7 @@ void EditDatumDialog::exec(bool atCursor)
         }
         double datum = Constr->getValue();
 
+        ui_ins_datum->labelEdit->setEntryName(QByteArray("DatumValue"));
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
             dlg.setWindowTitle(tr("Insert angle"));
