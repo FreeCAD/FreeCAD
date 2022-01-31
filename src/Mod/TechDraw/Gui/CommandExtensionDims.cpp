@@ -58,6 +58,7 @@
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
+# include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/QGVPage.h> //needed ?
 
@@ -638,12 +639,13 @@ void execPosVertChainDimension(Gui::Command* cmd) {
             return;
         }
         float xMaster = validDimension[0]->X.getValue();
+        double fontSize = Preferences::dimFontSizeMM();
         for (auto dim : validDimension) {
             dim->X.setValue(xMaster);
             pointPair pp = dim->getLinearPoints();
             Base::Vector3d p1 = pp.first;
             Base::Vector3d p2 = pp.second;
-            dim->Y.setValue((p1.y + p2.y) / -2.0);
+            dim->Y.setValue((p1.y + p2.y) / -2.0 + 0.5 * fontSize);
         }
         Gui::Command::commitCommand();
     }
@@ -948,12 +950,13 @@ void execCascadeVertDimension(Gui::Command* cmd) {
         float dimDistance = activeDimAttributes.getCascadeSpacing();
         if (signbit(xMaster))
             dimDistance = -dimDistance;
+        double fontSize = Preferences::dimFontSizeMM();
         for (auto dim : validDimension) {
             dim->X.setValue(xMaster);
             pointPair pp = dim->getLinearPoints();
             Base::Vector3d p1 = pp.first;
             Base::Vector3d p2 = pp.second;
-            dim->Y.setValue((p1.y + p2.y) / -2.0);
+            dim->Y.setValue((p1.y + p2.y) / -2.0 + 0.5 * fontSize);
             xMaster = xMaster + dimDistance;
         }
         Gui::Command::commitCommand();
@@ -1271,6 +1274,7 @@ void execCreateVertChainDimension(Gui::Command* cmd) {
         if (allVertexes.size() > 1) {
             std::sort(allVertexes.begin(), allVertexes.end(), sortY);
             float xMaster = 0.0;
+            double fontSize = Preferences::dimFontSizeMM();
             for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
                 TechDraw::DrawViewDimension* dim;
                 dim = _createLinDimension(cmd, objFeat, allVertexes[n].name, allVertexes[n + 1].name, "DistanceY");
@@ -1279,7 +1283,7 @@ void execCreateVertChainDimension(Gui::Command* cmd) {
                 if (n == 0)
                     xMaster = mid.x;
                 dim->X.setValue(xMaster);
-                dim->Y.setValue(-mid.y);
+                dim->Y.setValue(-mid.y + 0.5 * fontSize);
             }
         }
     }
@@ -1338,7 +1342,8 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
             Base::Vector3d dirMaster = pMaster - allVertexes[1].point;
             Base::Vector3d origin(0.0, 0.0, 0.0);
             Base::Vector3d delta = _getTrianglePoint(pMaster, dirMaster, origin);
-            delta = delta.Normalize() * 7.0;
+            float dimDistance = activeDimAttributes.getCascadeSpacing();
+            delta = delta.Normalize() * dimDistance;
             double scale = objFeat->getScale();
             for (dimVertex oldVertex : allVertexes) {
                 Base::Vector3d nextPoint = _getTrianglePoint(pMaster, dirMaster, oldVertex.point);
@@ -1363,13 +1368,14 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
                     carrierVertexes.push_back(oldVertex);
             }
             std::sort(carrierVertexes.begin(), carrierVertexes.end(), sortX);
+            double fontSize = Preferences::dimFontSizeMM();
             for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
                 TechDraw::DrawViewDimension* dim;
                 dim = _createLinDimension(cmd, objFeat, carrierVertexes[n].name, carrierVertexes[n + 1].name, "Distance");
                 TechDraw::pointPair pp = dim->getLinearPoints();
                 Base::Vector3d mid = (pp.first + pp.second) / 2.0 + delta;
                 dim->X.setValue(mid.x);
-                dim->Y.setValue(-mid.y);
+                dim->Y.setValue(-mid.y + 0.5 * fontSize);
             }
         }
         objFeat->refreshCEGeoms();
@@ -1623,13 +1629,14 @@ void execCreateVertCoordDimension(Gui::Command* cmd) {
             float xMaster = allVertexes[0].point.x + dimDistance;
             if (signbit(xMaster))
                 dimDistance = -dimDistance;
+            double fontSize = Preferences::dimFontSizeMM();
             for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
                 TechDraw::DrawViewDimension* dim;
                 dim = _createLinDimension(cmd, objFeat, allVertexes[0].name, allVertexes[n + 1].name, "DistanceY");
                 TechDraw::pointPair pp = dim->getLinearPoints();
                 Base::Vector3d mid = (pp.first + pp.second) / 2.0;
                 dim->X.setValue(xMaster + dimDistance * n);
-                dim->Y.setValue(-mid.y);
+                dim->Y.setValue(-mid.y + 0.5 * fontSize);
             }
         }
     }
@@ -1721,13 +1728,14 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
             if (firstVertex.point.x > secondVertex.point.x) {
                 std::reverse(carrierVertexes.begin(), carrierVertexes.end());
             }
+            double fontSize = Preferences::dimFontSizeMM();
             for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
                 TechDraw::DrawViewDimension* dim;
                 dim = _createLinDimension(cmd, objFeat, carrierVertexes[0].name, carrierVertexes[n + 1].name, "Distance");
                 TechDraw::pointPair pp = dim->getLinearPoints();
                 Base::Vector3d mid = (pp.first + pp.second) / 2.0 + delta * (n + 1);
                 dim->X.setValue(mid.x);
-                dim->Y.setValue(-mid.y);
+                dim->Y.setValue(-mid.y + 0.5 * fontSize);
             }
         }
         objFeat->refreshCEGeoms();
