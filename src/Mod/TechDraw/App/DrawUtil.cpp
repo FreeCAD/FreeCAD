@@ -596,9 +596,9 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
     double C2 = A2*p2.x + B2*p2.y;
 
     double det = A1*B2 - A2*B1;
-    if(det == 0){
+    if (fpCompare(det, 0.0, Precision::Confusion())) {
         Base::Console().Message("Lines are parallel\n");
-    }else{
+    } else {
         double x = (B2*C1 - B1*C2)/det;
         double y = (A1*C2 - A2*C1)/det;
         result.x = x;
@@ -623,7 +623,7 @@ Base::Vector2d DrawUtil::Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
     double C2 = A2*p2.x + B2*p2.y;
 
     double det = A1*B2 - A2*B1;
-    if(det == 0){
+    if (fpCompare(det, 0.0, Precision::Confusion())) {
         Base::Console().Message("Lines are parallel\n");
     }else{
         double x = (B2*C1 - B1*C2)/det;
@@ -825,6 +825,20 @@ bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
     else
         return false;
 }
+
+int DrawUtil::countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape)
+{
+    int count = 0;
+    TopExp_Explorer Ex(shape, subShape);
+    while (Ex.More())
+    {
+        count++;
+        Ex.Next();
+    }
+    return count;
+}
+
+
 
 // Supplementary mathematical functions
 // ====================================
