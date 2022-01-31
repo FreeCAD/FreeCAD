@@ -43,7 +43,7 @@ public Q_SLOTS:
     void onOKClicked();
     void onCancelClicked();
     void onItemClicked(QListWidgetItem* item);
-    void onDirectorySelected(const QString& newDir);
+    void onDirectoryChanged(const QString& newDir);
 
 Q_SIGNALS:
     void symbolSelected(QString symbolPath,
