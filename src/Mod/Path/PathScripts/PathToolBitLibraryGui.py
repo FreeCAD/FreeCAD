@@ -79,9 +79,7 @@ def checkWorkingDir():
     if ret == qm.No:
         return False
 
-    msg = translate(
-        "Path_ToolBit", "Choose a writable location for your toolbits", None
-    )
+    msg = translate("Path_ToolBit", "Choose a writable location for your toolbits")
     while not dirOK():
         workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(
             None, msg, PathPreferences.filePath()
@@ -665,7 +663,7 @@ class ToolBitLibrary(object):
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_ToolBit", "Save toolbit library", None),
+            translate("Path_ToolBit", "Save toolbit library"),
             PathPreferences.lastPathToolLibrary(),
             "{}".format(TooltableTypeJSON),
         )
@@ -794,7 +792,7 @@ class ToolBitLibrary(object):
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_ToolBit", "Save toolbit library", None),
+            translate("Path_ToolBit", "Save toolbit library"),
             PathPreferences.lastPathToolLibrary(),
             "{};;{}".format(TooltableTypeJSON, TooltableTypeLinuxCNC),
         )

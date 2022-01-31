@@ -200,7 +200,7 @@ def GetNewToolFile(parent=None):
     if foo and foo[0]:
         if not isValidFileName(foo[0]):
             msgBox = QtGui.QMessageBox()
-            msg = translate("Path", "Invalid Filename", None)
+            msg = translate("Path", "Invalid Filename")
             msgBox.setText(msg)
             msgBox.exec_()
         else:

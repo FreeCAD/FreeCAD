@@ -30,13 +30,14 @@ __doc__ = "Class and implementation of 3D Surface operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 import FreeCAD
-from PySide import QtCore
+
+translate = FreeCAD.Qt.translate
 
 # OCL must be installed
 try:
     import ocl
 except ImportError:
-    msg = QtCore.QCoreApplication.translate(
+    msg = translate(
         "PathSurface", "This operation requires OpenCamLib to be installed."
     )
     FreeCAD.Console.PrintError(msg + "\n")
@@ -61,8 +62,6 @@ Part = LazyLoader("Part", globals(), "Part")
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-
-translate = FreeCAD.Qt.translate
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -111,12 +110,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # Set enumeration lists for enumeration properties
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
-
-            # if warn:
-            #     newPropMsg = translate("PathSurface", "New property added to")
-            #     newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
-            #     newPropMsg += translate("PathSurface", "Check default value(s).")
-            #     FreeCAD.Console.PrintWarning(newPropMsg + "\n")
 
         self.propertiesReady = True
 

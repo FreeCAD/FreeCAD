@@ -426,7 +426,7 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            PathLog.error(translate("Path", "Didn't find job %s") % jobname)
+            PathLog.error(translate("Path", "Didn't find job {}".format(jobname)))
             return None
     else:
         jobs = GetJobs()
