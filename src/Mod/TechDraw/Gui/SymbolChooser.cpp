@@ -78,6 +78,9 @@ void SymbolChooser::setUiPrimary()
     ui->lwSymbols->setWrapping(true);
     ui->lwSymbols->setDragEnabled(true);
     ui->lwSymbols->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->lwSymbols->setGridSize(QSize(75, 85));
+    ui->lwSymbols->setIconSize(QSize(45, 45));
+    ui->lwSymbols->setResizeMode(QListView::Adjust);
     ui->lwSymbols->setAcceptDrops(false);
 }
 
