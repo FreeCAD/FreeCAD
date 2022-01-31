@@ -508,7 +508,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
     }
 
     return -1;
-}
+} 
 
 //removes all DPGI - used when deleting DPG
 int DrawProjGroup::purgeProjections()
@@ -1231,72 +1231,31 @@ void DrawProjGroup::updateSecondaryDirs()
     recomputeChildren();
 }
 
-void DrawProjGroup::rotateRight()
-{
-//Front -> Right -> Rear -> Left -> Front
+void DrawProjGroup::rotate(const std::string &rotationdirection) {
     std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Left");
+    if(rotationdirection == "Right") newDirs = getDirsFromFront("Left"); // Front -> Right -> Rear -> Left -> Front
+    else if(rotationdirection == "Left") newDirs = getDirsFromFront("Right"); // Front -> Left -> Rear -> Right -> Front
+    else if(rotationdirection == "Up") newDirs = getDirsFromFront("Bottom"); // Front -> Top -> Rear -> Bottom -> Front
+    else if(rotationdirection == "Down") newDirs = getDirsFromFront("Top"); // Front -> Bottom -> Rear -> Top -> Front
+
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
     anchor->XDirection.setValue(newDirs.second);
+
     updateSecondaryDirs();
 }
 
-void DrawProjGroup::rotateLeft()
+void DrawProjGroup::spin(const std::string &spindirection)
 {
-//Front -> Left -> Rear -> Right -> Front
-    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Right");
-    DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-    updateSecondaryDirs();
-}
+    double angle;
+    if(spindirection == "CW") angle = M_PI / 2.0; // Top -> Right -> Bottom -> Left -> Top
+    if(spindirection == "CCW") angle = - M_PI / 2.0; // Top -> Left -> Bottom -> Right -> Top
 
-void DrawProjGroup::rotateUp()
-{
-//Front -> Top -> Rear -> Bottom -> Front
-    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Bottom");
     DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::rotateDown()
-{
-//Front -> Bottom -> Rear -> Top -> Front
-    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Top");
-    DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::spinCW()
-{
-//Top -> Right -> Bottom -> Left -> Top
-    DrawProjGroupItem* anchor = getAnchor();
-    double angle = M_PI / 2.0;
     Base::Vector3d org(0.0,0.0,0.0);
     Base::Vector3d curRot = anchor->getXDirection();
     Base::Vector3d curDir = anchor->Direction.getValue();
     Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
-    anchor->XDirection.setValue(newRot);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::spinCCW()
-{
-//Top -> Left -> Bottom -> Right -> Top
-    DrawProjGroupItem* anchor = getAnchor();
-    double angle = M_PI / 2.0;
-    Base::Vector3d org(0.0,0.0,0.0);
-    Base::Vector3d curRot = anchor->getXDirection();
-    Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
     anchor->XDirection.setValue(newRot);
 
     updateSecondaryDirs();
