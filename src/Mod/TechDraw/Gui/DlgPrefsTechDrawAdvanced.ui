@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>333</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -268,7 +268,7 @@ Only change unless you know what you are doing!</string>
            <cstring>debugDetail</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/debugDetail</cstring>
+           <cstring>Mod/TechDraw/debug</cstring>
           </property>
          </widget>
         </item>
@@ -547,7 +547,7 @@ Each unit is approx. 0.1 mm wide</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -599,8 +599,6 @@ Each unit is approx. 0.1 mm wide</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
