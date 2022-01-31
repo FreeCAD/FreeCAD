@@ -124,6 +124,8 @@ class TechDrawExport DrawUtil {
         static bool isCrazy(TopoDS_Edge e);
         static Base::Vector3d getFaceCenter(TopoDS_Face f);
         static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
+        static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
+
 
         // Supplementary mathematical functions
         static int sgn(double x);

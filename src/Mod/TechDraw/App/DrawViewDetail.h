@@ -75,6 +75,7 @@ public:
                     DrawViewPart* baseView,
                     DrawViewSection* sectionAlias);
     double getFudgeRadius(void);
+    TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir);
 
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
