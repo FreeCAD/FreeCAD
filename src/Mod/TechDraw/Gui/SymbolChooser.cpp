@@ -48,8 +48,8 @@ SymbolChooser::SymbolChooser(QWidget *parent,
     m_source(source)
 {
     ui->setupUi(this);
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
-            this, SLOT(onDirectorySelected(const QString&)));
+    connect(ui->fcSymbolDir, SIGNAL(fileNameChanged(const QString&)),
+            this, SLOT(onDirectoryChanged(const QString&)));
     connect(ui->lwSymbols, SIGNAL(itemClicked(QListWidgetItem*)),    //double click?
             this, SLOT(onItemClicked(QListWidgetItem*)));
 
@@ -119,9 +119,10 @@ void SymbolChooser::onItemClicked(QListWidgetItem* item)
     accept();
 }
 
-void SymbolChooser::onDirectorySelected(const QString& newDir)
+void SymbolChooser::onDirectoryChanged(const QString& newDir)
 {
-//    Base::Console().Message("SC::onDirectorySelected(%s)\n", qPrintable(newDir));
+    ui->lwSymbols->clear(); // Remove all previous symbols
+//    Base::Console().Message("SC::onDirectoryChanged(%s)\n", qPrintable(newDir));
     m_symbolDir = newDir + QString::fromUtf8("/");
     loadSymbolNames(m_symbolDir);
 }
