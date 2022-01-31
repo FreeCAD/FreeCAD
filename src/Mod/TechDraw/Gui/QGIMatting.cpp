@@ -81,7 +81,7 @@ QGIMatting::QGIMatting() :
 void QGIMatting::draw()
 {
     prepareGeometryChange();
-    double radiusFudge = 1.5;       //keep slightly larger than fudge in App/DVDetail to prevent bleed through
+    double radiusFudge = 1.15;       //keep slightly larger than fudge in App/DVDetail (1.1) to prevent bleed through
     m_width = m_radius * radiusFudge;
     m_height = m_radius * radiusFudge;
     QRectF outline(-m_width,-m_height,2.0 * m_width,2.0 * m_height);
