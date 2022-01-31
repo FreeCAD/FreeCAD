@@ -98,6 +98,10 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
     connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
 
+    connect(ui->manualUpdate, SIGNAL(clicked(bool)), this, SLOT(manualUpdateClicked()));
+    connect(ui->autoUpdate, SIGNAL(clicked(bool)), this, SLOT(autoUpdateClicked()));
+    
+
     setUiPrimary();
 }
 
@@ -133,6 +137,9 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
     connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
     connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
+
+    connect(ui->manualUpdate, SIGNAL(clicked(bool)), this, SLOT(manualUpdateClicked()));
+    connect(ui->autoUpdate, SIGNAL(clicked(bool)), this, SLOT(autoUpdateClicked()));
 
     m_dirName = m_section->SectionDirection.getValueAsString();
     saveSectionState();
@@ -318,9 +325,27 @@ void TaskSectionView::enableAll(bool b)
     ui->sbOrgZ->setEnabled(b);
 }
 
+void TaskSectionView::autoUpdateClicked() {
+    apply(); // should update when autoupdate initially set to true
+}
+
+void TaskSectionView::manualUpdateClicked() {
+    apply(true);
+}
+
 //******************************************************************************
-bool TaskSectionView::apply(void)
+bool TaskSectionView::apply(void) {
+    return apply(false); // manualUpdate should be false
+}
+
+bool TaskSectionView::apply(bool manualUpdate)
 {
+    bool keepUpdated = ui->autoUpdate->isChecked();
+    // only cancels update if both autoUpdate is false and the update isn't triggered a manual update
+    if(!keepUpdated and !manualUpdate) {
+        return false;
+    }
+
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
     if (m_dirName.empty()) {
         std::string msg = 

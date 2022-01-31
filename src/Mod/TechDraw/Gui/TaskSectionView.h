@@ -60,6 +60,8 @@ protected Q_SLOTS:
     void onXChanged();
     void onYChanged();
     void onZChanged();
+    void autoUpdateClicked();
+    void manualUpdateClicked();
 
 protected:
     void changeEvent(QEvent *e);
@@ -67,6 +69,7 @@ protected:
     void restoreSectionState();
 
     bool apply(void);
+    bool apply(bool manualUpdate);
     void applyQuick(std::string dir);
     void applyAligned(void);
 

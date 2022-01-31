@@ -429,9 +429,54 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+        <widget class="Gui::PrefCheckBox" name="autoUpdate">
+         <property name="toolTip">
+             <string>Executes a recomputation of active document after every property task change</string>
+         </property>
+         <property name="text">
+             <string>Auto update</string>
+         </property>
+        </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="manualUpdate">
+          <property name="toolTip">
+           <string>Forces recomputation of active document</string>
+          </property>
+          <property name="text">
+           <string>Update</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
