@@ -214,20 +214,14 @@ void TaskProjGroup::rotateButtonClicked(void)
     if ( multiView && ui ) {
         const QObject *clicked = sender();
 
+        //change Front View Dir by 90
+        if ( clicked == ui->butTopRotate ) multiView->rotate("Up");
+        else if (clicked == ui->butDownRotate) multiView->rotate("Down");
+        else if (clicked == ui->butRightRotate) multiView->rotate("Right");
+        else if (clicked == ui->butLeftRotate) multiView->rotate("Left");
+        else if (clicked == ui->butCWRotate ) multiView->spin("CW");
+        else if (clicked == ui->butCCWRotate) multiView->spin("CCW"); 
 
-        if ( clicked == ui->butTopRotate ) {          //change Front View Dir by 90
-            multiView->rotateUp();
-        } else if ( clicked == ui->butDownRotate) {
-            multiView->rotateDown();
-        } else if ( clicked == ui->butRightRotate) {
-            multiView->rotateRight();
-        } else if ( clicked == ui->butLeftRotate) {
-            multiView->rotateLeft();
-        } else if ( clicked == ui->butCWRotate ) {
-            multiView->spinCW();
-        } else if ( clicked == ui->butCCWRotate) {
-            multiView->spinCCW();
-        }
         setUiPrimary();
     }
 }

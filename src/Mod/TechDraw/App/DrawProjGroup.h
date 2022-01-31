@@ -124,12 +124,8 @@ public:
 
     void updateSecondaryDirs();
 
-    void rotateRight(void);
-    void rotateLeft(void);
-    void rotateUp(void);
-    void rotateDown(void);
-    void spinCW(void);
-    void spinCCW(void);
+    void rotate(const std::string &rotationdirection);
+    void spin(const std::string &spindirection);
     
     void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
