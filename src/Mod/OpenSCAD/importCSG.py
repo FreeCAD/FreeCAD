@@ -450,16 +450,16 @@ def p_offset_action(p):
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object
-        subobj = p[6]
+        subobj = p[6][0]
     else:
         subobj = fuse(p[6],"Offset Union")
     if 'r' in p[3]:
         offset = float(p[3]['r'])
     if 'delta' in p[3]:
         offset = float(p[3]['delta'])
-    if subobj[0].Shape.Volume == 0 :
+    if subobj.Shape.Volume == 0 :
        newobj=doc.addObject("Part::Offset2D",'Offset2D')
-       newobj.Source = subobj[0]
+       newobj.Source = subobj
        newobj.Value = offset
        if 'r' in p[3]:
            newobj.Join = 0
@@ -470,7 +470,7 @@ def p_offset_action(p):
        newobj.Shape = subobj[0].Shape.makeOffset(offset)
     newobj.Document.recompute()
     if gui:
-        subobj[0].ViewObject.hide()
+        subobj.ViewObject.hide()
 #        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
 #            GetBool('useViewProviderTree'):
 #            from OpenSCADFeatures import ViewProviderTree
@@ -646,6 +646,7 @@ def p_difference_action(p):
             mycut.Base.ViewObject.hide()
             mycut.Tool.ViewObject.hide()
         if printverbose: print("Push Resulting Cut")
+        mycut.Shape = mycut.Base.Shape.cut(mycut.Tool.Shape)
         p[0] = [mycut]
     if printverbose: print("End Cut")
 
@@ -673,6 +674,7 @@ def p_intersection_action(p):
         mycommon = p[5][0]
     else : # 1 child
         mycommon = placeholder('group',[],'{}')
+    mycommon.Shape = mycommon.Base.Shape.common(mycommon.Tool.Shape)
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
@@ -1182,7 +1184,8 @@ def p_circle_action(p) :
         Draft._Circle(mycircle)
         mycircle.Radius = r
         mycircle.MakeFace = True
-        #mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
+        mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
+        FreeCAD.ActiveDocument.recompute()
         #mycircle = doc.addObject('Part::Circle',p[1]) #would not create a face
         #mycircle.Radius = r
     else :
