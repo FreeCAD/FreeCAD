@@ -445,7 +445,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_3">
+         <widget class="Gui::PrefQuantitySpinBox" name="gui::prefdoublespinbox_3">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -779,7 +779,7 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
+   <class>Gui::PrefQuantitySpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
