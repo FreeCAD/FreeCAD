@@ -233,8 +233,8 @@ SET(PartGui_SRCS
     TaskDimension.h
     TaskCheckGeometry.cpp
     TaskCheckGeometry.h
-    TaskAttacher.h 
-    TaskAttacher.cpp 
+    TaskAttacher.h
+    TaskAttacher.cpp
 )
 
 if(FREECAD_USE_PCH)
