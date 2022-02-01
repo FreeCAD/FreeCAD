@@ -4,6 +4,21 @@
 <context>
     <name>AddonsInstaller</name>
     <message>
+        <location filename="package_details.py" line="112"/>
+        <source>Version {version} installed on {date}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="package_details.py" line="117"/>
+        <source>Version {version} installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="package_details.py" line="121"/>
+        <source>Installed on {date}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="567"/>
         <source>Installed</source>
         <translation type="unfinished"></translation>
@@ -121,18 +136,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="package_list.py" line="180"/>
-        <source>Click for details about package</source>
+        <location filename="package_list.py" line="207"/>
+        <source>Click for details about package {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="package_list.py" line="185"/>
-        <source>Click for details about workbench</source>
+        <location filename="package_list.py" line="211"/>
+        <source>Click for details about workbench {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="package_list.py" line="190"/>
-        <source>Click for details about macro</source>
+        <location filename="package_list.py" line="215"/>
+        <source>Click for details about macro {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -143,6 +158,11 @@
     <message>
         <location filename="package_list.py" line="330"/>
         <source>Maintainers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="package_list.py" line="364"/>
+        <source>Tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -173,6 +193,21 @@
     <message>
         <location filename="package_list.py" line="414"/>
         <source>Pending restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="package_list.py" line="180"/>
+        <source>Click for details about package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="package_list.py" line="185"/>
+        <source>Click for details about workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="package_list.py" line="190"/>
+        <source>Click for details about macro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -292,8 +327,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_workers.py" line="391"/>
+        <source>Retrieving info from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="addonmanager_workers.py" line="419"/>
         <source>Failed to read metadata from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="426"/>
+        <source>git fetch failed for {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -357,23 +402,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="1403"/>
-        <source>Retrieving package metadata...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="1405"/>
-        <source>Failed to execute pip. Returned error was:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="addonmanager_workers.py" line="651"/>
         <source>Retrieving description...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="391"/>
-        <source>Retrieving info from</source>
+        <location filename="addonmanager_workers.py" line="824"/>
+        <source>Retrieving info from {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -497,6 +532,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_workers.py" line="1403"/>
+        <source>Retrieving package metadata...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1405"/>
+        <source>Failed to execute pip. Returned error was:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1611"/>
+        <source>Downloaded package.xml for {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1641"/>
+        <source>Downloaded metadata.txt for {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1715"/>
+        <source>Downloaded icon for {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="addonmanager_utilities.py" line="332"/>
         <source>Failed to repair missing .git directory</source>
         <translation type="unfinished"></translation>
@@ -547,11 +607,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AddonManager.py" line="241"/>
-        <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="AddonManager.py" line="324"/>
         <source>Starting up...</source>
         <translation type="unfinished"></translation>
@@ -587,6 +642,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="AddonManager.py" line="243"/>
+        <source>Checking for updates...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="773"/>
+        <source>Apply {} update(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="86"/>
         <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
         <translation type="unfinished"></translation>
@@ -602,18 +667,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AddonManager.py" line="243"/>
-        <source>Checking for updates...</source>
+        <location filename="AddonManager.py" line="241"/>
+        <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AddonManager.py" line="262"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="534"/>
-        <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -649,6 +709,11 @@
     <message>
         <location filename="AddonManager.py" line="502"/>
         <source>Macro successfully removed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="534"/>
+        <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -711,6 +776,14 @@
         <source>Installation of macro failed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="AddonManager.py" line="1280"/>
+        <source>{} total, see Report view for list</source>
+        <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="AddonManager.py" line="1178"/>
         <source>Succeeded</source>
@@ -749,6 +822,11 @@
     <message>
         <location filename="AddonManager.py" line="1460"/>
         <source>Are you sure you want to uninstall this Addon?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1513"/>
+        <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
