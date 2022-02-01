@@ -188,7 +188,7 @@ class EditorPanel:
         """imports a tooltable from a file"""
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
-            translate("Path_ToolTable", "Open tooltable", None),
+            translate("Path_ToolTable", "Open tooltable"),
             None,
             "{};;{};;{}".format(
                 self.TLM.TooltableTypeJSON,
@@ -205,7 +205,7 @@ class EditorPanel:
         """export a tooltable to a file"""
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("Path_ToolTable", "Save tooltable", None),
+            translate("Path_ToolTable", "Save tooltable"),
             None,
             "{};;{};;{}".format(
                 self.TLM.TooltableTypeJSON,

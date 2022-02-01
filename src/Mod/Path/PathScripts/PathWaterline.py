@@ -22,7 +22,6 @@
 # ***************************************************************************
 
 from __future__ import print_function
-from PySide import QtCore
 import FreeCAD
 
 __title__ = "Path Waterline Operation"
@@ -31,11 +30,13 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Waterline operation."
 __contributors__ = ""
 
+translate = FreeCAD.Qt.translate
+
 # OCL must be installed
 try:
     import ocl
 except ImportError:
-    msg = QtCore.QCoreApplication.translate(
+    msg = translate(
         "path_waterline", "This operation requires OpenCamLib to be installed."
     )
     FreeCAD.Console.PrintError(msg + "\n")
@@ -64,7 +65,6 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-translate = FreeCAD.Qt.translate
 
 
 class ObjectWaterline(PathOp.ObjectOp):
