@@ -41,7 +41,7 @@ class TaskMoveView:
     def __init__(self):
         import os
         self._uiPath = App.getHomePath()
-        self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/Gui/TaskMoveView.ui")
+        self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
         self.form.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Move View to a different Page"))
@@ -69,7 +69,7 @@ class TaskMoveView:
     def pickView(self):
 #        print("pickView")
         _dlgPath = App.getHomePath()
-        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/Gui/DlgPageChooser.ui")
+        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         dlg.lPrompt.setText(QT_TRANSLATE_NOOP("MoveView", "Select View to move from list."))
         dlg.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Select View"))
@@ -88,7 +88,7 @@ class TaskMoveView:
     def pickFromPage(self):
 #        print("pickFromPage")
         _dlgPath = App.getHomePath()
-        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/Gui/DlgPageChooser.ui")
+        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         dlg.lPrompt.setText(QT_TRANSLATE_NOOP("MoveView", "Select From Page."))
         dlg.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Select Page"))
@@ -107,7 +107,7 @@ class TaskMoveView:
     def pickToPage(self):
 #        print("pickToPage")
         _dlgPath = App.getHomePath()
-        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/Gui/DlgPageChooser.ui")
+        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         dlg.lPrompt.setText(QT_TRANSLATE_NOOP("MoveView", "Select To Page."))
         dlg.setWindowTitle(QT_TRANSLATE_NOOP("MoveView", "Select Page"))
