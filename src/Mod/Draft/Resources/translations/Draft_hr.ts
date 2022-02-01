@@ -730,11 +730,6 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <translation>Područje ovog objekta</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblik ovog objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Osnovni objekt korišten kod ovog objekta</translation>
@@ -743,6 +738,11 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>PAT datoteka korištena kod ovog objekta</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblik ovog objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1153,6 +1153,16 @@ izvan mjerne linije</translation>
       <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Boja linije</translation>
+    </message>
+    <message>
+      <location filename="view_base.py" line="106"/>
+      <source>Defines an SVG pattern.</source>
+      <translation type="unfinished">Defines an SVG pattern.</translation>
+    </message>
+    <message>
+      <location filename="view_base.py" line="116"/>
+      <source>Defines the size of the SVG pattern.</source>
+      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1595,7 +1605,7 @@ Prvo stvorite grupu da biste koristili ovaj alat.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Upravljajte ili stvarajte stilove bilješki</translation>
     </message>
   </context>
   <context>
@@ -1728,8 +1738,20 @@ Niz se može pretvoriti u polarni ili kružni niz promjenom njegovog tipa.
     <name>Draft_BezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="64"/>
+      <source>BÃ©zier curve</source>
+      <translation type="unfinished">BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
       <translation>Bezierova krivulja</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="67"/>
+      <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1743,8 +1765,18 @@ CTRL za privući, SHIFT za ograničiti.</translation>
     <name>Draft_BezierTools</name>
     <message>
       <location filename="gui_beziers.py" line="475"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
       <translation>Bezier alati</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="478"/>
+      <source>Create various types of BÃ©zier curves.</source>
+      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1805,8 +1837,22 @@ Rezultirajući klon može se skalirati u svakom od svoja tri smjera.</translatio
     <name>Draft_CubicBezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="242"/>
+      <source>Cubic BÃ©zier curve</source>
+      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
       <translation>Kubična Bezierova krivulja</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="245"/>
+      <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2158,6 +2204,27 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <translation>Pomaci odabranog objekta.
 Također može stvoriti pomak kopiju izvornog objekta.
 CTRL za privuci, SHIFT za ograničiti. Držite ALT i kliknite za stvaranje kopije svakim klikom.
+
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_OrthoArray</name>
+    <message>
+      <location filename="gui_orthoarray.py" line="65"/>
+      <source>Array</source>
+      <translation>Polje</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Stvara kopije odabranog objekta i postavlja kopije u ortogonalni uzorak,
+što znači da kopije slijede navedeni smjer u X, Y, Z osi.
+
+Niz se može pretvoriti u polarni ili kružni niz promjenom njegovog tipa.
 
 </translation>
     </message>
@@ -2885,14 +2952,6 @@ Zatim ga možete koristiti za spremanje drugog položaja kamere i stanja objekat
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgAddProperty</name>
-    <message>
-      <location filename="gui_groups.py" line="452"/>
-      <source>Group</source>
-      <translation>Grupa</translation>
-    </message>
-  </context>
-  <context>
     <name>ImportAirfoilDAT</name>
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
@@ -2959,6 +3018,11 @@ Zatim ga možete koristiti za spremanje drugog položaja kamere i stanja objekat
       <location filename="init_tools.py" line="50"/>
       <source>Arc tools</source>
       <translation>Alati luka</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="58"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3109,14 +3173,14 @@ Zatim ga možete koristiti za spremanje drugog položaja kamere i stanja objekat
       <translation>Automatski</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="722"/>
-      <source>active command:</source>
-      <translation>aktivna naredba:</translation>
-    </message>
-    <message>
       <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Prazno</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="722"/>
+      <source>active command:</source>
+      <translation>aktivna naredba:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="724"/>
@@ -4219,6 +4283,11 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
       <translation>Spajnje sloja:</translation>
     </message>
     <message>
+      <location filename="view_base.py" line="402"/>
+      <source>Please load the Draft Workbench to enable editing this object</source>
+      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="46"/>
       <source>Draft</source>
       <translation>Skica</translation>
@@ -5064,8 +5133,8 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
-      <source>Bezier curve has been closed</source>
-      <translation>Bezierova krivulja je zatvorena</translation>
+      <source>BÃ©zier curve has been closed</source>
+      <translation type="unfinished">BÃ©zier curve has been closed</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5086,6 +5155,11 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
       <translation>Kliknite i povucite za određivanje slijedećeg čvora</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="332"/>
+      <source>Bezier curve has been closed</source>
+      <translation>Bezierova krivulja je zatvorena</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
@@ -5428,6 +5502,11 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
       <translation>Naziv grupe</translation>
     </message>
     <message>
+      <location filename="gui_groups.py" line="392"/>
+      <source>Group</source>
+      <translation>Grupa</translation>
+    </message>
+    <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
       <translation>Odaberite objekt za pomak</translation>
@@ -5586,6 +5665,14 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
       <translation>uspješno izvezeno</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Grupa</translation>
     </message>
   </context>
   <context>

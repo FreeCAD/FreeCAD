@@ -69,7 +69,7 @@
     </message>
     <message>
       <source>Decimation...</source>
-      <translation>Desetkanje ...</translation>
+      <translation>Desetkanje ...</translation>
     </message>
     <message>
       <source>Decimates a mesh</source>
@@ -372,7 +372,7 @@
     </message>
     <message>
       <source>Refinement...</source>
-      <translation>Dodelava ...</translation>
+      <translation>Dodelava ...</translation>
     </message>
     <message>
       <source>Refine existing mesh</source>
@@ -1307,7 +1307,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     </message>
     <message>
       <source>Running gmsh...</source>
-      <translation>Zaganjanje Gmsh-ja ...</translation>
+      <translation>Zaganjanje Gmsh-ja ...</translation>
     </message>
     <message>
       <source>Failed to start</source>
@@ -1564,7 +1564,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     </message>
     <message>
       <source>Parameters...</source>
-      <translation>Določilke ...</translation>
+      <translation>Določilke ...</translation>
     </message>
     <message>
       <source>Plane</source>

@@ -4,6 +4,21 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="package_details.py" line="112"/>
+      <source>Version {version} installed on {date}</source>
+      <translation type="unfinished">Version {version} installed on {date}</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="117"/>
+      <source>Version {version} installed</source>
+      <translation type="unfinished">Version {version} installed</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="121"/>
+      <source>Installed on {date}</source>
+      <translation type="unfinished">Installed on {date}</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Telepítve</translation>
@@ -122,19 +137,19 @@
       <translation>A szűrő alapértelmezett kifejezése érvénytelen</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="180"/>
-      <source>Click for details about package</source>
-      <translation>Kattintson a csomag részleteiért</translation>
+      <location filename="package_list.py" line="207"/>
+      <source>Click for details about package {}</source>
+      <translation type="unfinished">Click for details about package {}</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="185"/>
-      <source>Click for details about workbench</source>
-      <translation>Kattintson a munkafelület részleteiért</translation>
+      <location filename="package_list.py" line="211"/>
+      <source>Click for details about workbench {}</source>
+      <translation type="unfinished">Click for details about workbench {}</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="190"/>
-      <source>Click for details about macro</source>
-      <translation>Kattintson a makró részleteiért</translation>
+      <location filename="package_list.py" line="215"/>
+      <source>Click for details about macro {}</source>
+      <translation type="unfinished">Click for details about macro {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -145,6 +160,11 @@
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
       <translation>Közreműködők:</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="364"/>
+      <source>Tags</source>
+      <translation type="unfinished">Tags</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
@@ -175,6 +195,21 @@
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
       <translation>Újraindításra várva</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="180"/>
+      <source>Click for details about package</source>
+      <translation>Kattintson a csomag részleteiért</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="185"/>
+      <source>Click for details about workbench</source>
+      <translation>Kattintson a munkafelület részleteiért</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="190"/>
+      <source>Click for details about macro</source>
+      <translation>Kattintson a makró részleteiért</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
@@ -294,9 +329,19 @@
       <translation>Nem lehet letölteni a git-frissítéseket a munkafelületekhez</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="391"/>
+      <source>Retrieving info from</source>
+      <translation>Információ beolvasása ettől</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="419"/>
       <source>Failed to read metadata from</source>
       <translation>Nem sikerült beolvasni a metaadatokat innen</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="426"/>
+      <source>git fetch failed for {}</source>
+      <translation type="unfinished">git fetch failed for {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
@@ -359,24 +404,14 @@
       <translation>Makro kód ellenörzése...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation>A csomag metaadatainak lekérése...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation>A kép a képben végrehajtás sikertelen volt. Hiba történt:</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Leírások lekérdezése...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="391"/>
-      <source>Retrieving info from</source>
-      <translation>Információ beolvasása ettől</translation>
+      <location filename="addonmanager_workers.py" line="824"/>
+      <source>Retrieving info from {}</source>
+      <translation type="unfinished">Retrieving info from {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -499,6 +534,31 @@
       <translation type="unfinished">Error: Unable to locate ZIP from</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation>A csomag metaadatainak lekérése...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation>A kép a képben végrehajtás sikertelen volt. Hiba történt:</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1611"/>
+      <source>Downloaded package.xml for {}</source>
+      <translation type="unfinished">Downloaded package.xml for {}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1641"/>
+      <source>Downloaded metadata.txt for {}</source>
+      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1715"/>
+      <source>Downloaded icon for {}</source>
+      <translation type="unfinished">Downloaded icon for {}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_utilities.py" line="332"/>
       <source>Failed to repair missing .git directory</source>
       <translation>Nem sikerült kijavítani a hiányzó .git könyvtárat</translation>
@@ -549,11 +609,6 @@
       <translation type="unfinished">Missing dependency</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="241"/>
-      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
       <translation>Elkezd...</translation>
@@ -589,6 +644,16 @@
       <translation>Gyorsítótár frissítése...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Frissítés keresése...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Az itt telepíthető bővítmények hivatalosan nem részei a FreeCAD-nek, és azokat nem vizsgáljfelül a FreeCAD csapata. Győződjön meg róla, hogy ismeri, amit telepíteni akar!</translation>
@@ -604,19 +669,14 @@
       <translation>A módosítások érvénybe léptetéséhez újra kell indítania a FreeCAD programot. A FreeCAD újraindításához nyomja meg az Ok gombot, vagy a Mégse gombra indítsa újra később.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Frissítés keresése...</translation>
+      <location filename="AddonManager.py" line="241"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Alkalmaz</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="534"/>
-      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation>Bővítménykezelő: Kihagyom a frissítések keresését, mert az Automatikus ellenőrzés felhasználói beállítás Hamis értékre van állítva</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="263"/>
@@ -652,6 +712,11 @@
       <location filename="AddonManager.py" line="502"/>
       <source>Macro successfully removed.</source>
       <translation>Makró sikeresen törölve.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="534"/>
+      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
+      <translation>Bővítménykezelő: Kihagyom a frissítések keresését, mert az Automatikus ellenőrzés felhasználói beállítás Hamis értékre van állítva</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="542"/>
@@ -713,6 +778,15 @@
       <source>Installation of macro failed</source>
       <translation>A makró telepítése sikertelen</translation>
     </message>
+    <message numerus="yes">
+      <location filename="AddonManager.py" line="1280"/>
+      <source>{} total, see Report view for list</source>
+      <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
+      <translation type="unfinished">
+        <numerusform>{} total, see Report view for list</numerusform>
+        <numerusform>{} total, see Report view for list</numerusform>
+      </translation>
+    </message>
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
@@ -752,6 +826,11 @@
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
       <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

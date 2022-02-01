@@ -3865,7 +3865,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="258"/>
       <source>Select this to not import any invisible objects.</source>
-      <translation type="unfinished">Select this to not import any invisible objects.</translation>
+      <translation>Selezionare questa opzione per non importare oggetti invisibili.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="261"/>
@@ -3875,7 +3875,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="274"/>
       <source>Reduce number of objects using Link array</source>
-      <translation type="unfinished">Reduce number of objects using Link array</translation>
+      <translation>Riduce il numero di oggetti usando l'array Link</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="277"/>
@@ -3896,7 +3896,7 @@ during file reading (slower but higher details).</translation>
       <location filename="../../DlgImportExportStep.ui" line="306"/>
       <location filename="../../DlgImportExportStep.ui" line="309"/>
       <source>Show progress bar when importing</source>
-      <translation type="unfinished">Show progress bar when importing</translation>
+      <translation>Mostra barra di avanzamento durante l'importazione</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="322"/>
@@ -3921,12 +3921,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="365"/>
       <source>Assembly per document</source>
-      <translation type="unfinished">Assembly per document</translation>
+      <translation>Assemblaggio per documento</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="370"/>
       <source>Assembly per document in sub-directory</source>
-      <translation type="unfinished">Assembly per document in sub-directory</translation>
+      <translation>Assemblaggio per documento nella sotto-directory</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="375"/>
@@ -3936,7 +3936,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="380"/>
       <source>Object per document in sub-directory</source>
-      <translation type="unfinished">Object per document in sub-directory</translation>
+      <translation>Oggetto per documento nella sottodirectory</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="207"/>
@@ -5501,14 +5501,14 @@ mean the checked object is unusable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>Thread singolo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>Esegue il controllo della geometria in un singolo thread. Questo è più lento,
+ma più stabile. Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
@@ -5541,8 +5541,8 @@ the check geometry tool.  Default: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Mostra il contenuto della forma avanzata. Le modifiche avranno effetto la prossima volta che userai 
+lo strumento della geometria di controllo. Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
@@ -5559,7 +5559,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>Controlla tipi di argomenti errati. Predefinito: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1149"/>
@@ -5569,7 +5569,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation type="unfinished">Check for self-intersections.  Default: true</translation>
+      <translation>Controlla auto-intersezioni. Predefinito: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
@@ -5579,17 +5579,17 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
+      <translation>Controlla i bordi troppo piccoli. Predefinito: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1165"/>
       <source>  Nonrecoverable face</source>
-      <translation type="unfinished">  Nonrecoverable face</translation>
+      <translation>  Faccia non recuperabile</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
+      <translation>Controlla le facce non recuperabili. Predefinito: vero</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1173"/>
@@ -5604,7 +5604,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1181"/>
       <source>  Incompatibility of face</source>
-      <translation type="unfinished">  Incompatibility of face</translation>
+      <translation>  Incompatibilità della faccia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1182"/>

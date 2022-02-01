@@ -51,7 +51,7 @@
     <message>
       <location filename="TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation type="unfinished">User hub</translation>
+      <translation>მომხმარებლების ცენტრალური ქსელი</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="52"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation type="unfinished">Power users hub</translation>
+      <translation>გამოცდილი მომხმარებლების საერთო ქსელი</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="54"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation type="unfinished">Developers hub</translation>
+      <translation>დეველოპერების საერთო ქსელი</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="56"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation type="unfinished">Workbenches documentation</translation>
+      <translation>დაზგის დოკუმენტაცია</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="60"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation type="unfinished">Getting help from the community</translation>
+      <translation>დახმარების საზოგადოებისგან მიღება</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation type="unfinished">Available addons</translation>
+      <translation>ხელმისაწვდომი დამატებები</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="66"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation type="unfinished">Recent commits</translation>
+      <translation>ბოლოდროინდელი კომიტები</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="70"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <translation>ყველა კომიტის GitHub-ზე ნახვა</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="72"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="TranslationTexts.py" line="83"/>
       <source>Open start page preferences</source>
-      <translation type="unfinished">Open start page preferences</translation>
+      <translation>საწყისი გვერდის მორგება</translation>
     </message>
   </context>
   <context>
@@ -237,7 +237,7 @@
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Displays the start page in a browser view</source>
-      <translation type="unfinished">Displays the start page in a browser view</translation>
+      <translation>საწყისი გვერდის ჩაშენებულ ბრაუზერში ჩვენება</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation type="unfinished">Start page options</translation>
+      <translation>საწყისი გვერდის ჩასწორება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation type="unfinished">Start page template</translation>
+      <translation>საწყისი გვერდის ნიმუში</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -270,17 +270,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>მაგალითების საქაღალდის შემცველობის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation type="unfinished">Show additional folder</translation>
+      <translation>დამატებითი საქაღალდის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <translation>გნებავთ პირველ გვერდზე მაგალითების ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
@@ -297,7 +297,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
       <source>Show notepad</source>
-      <translation type="unfinished">Show notepad</translation>
+      <translation>ბლოკნოტის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
@@ -317,12 +317,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
       <source>Fonts and colors</source>
-      <translation type="unfinished">Fonts and colors</translation>
+      <translation>ფონტები და ფერები</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="197"/>
       <source>The background of the main start page area</source>
-      <translation type="unfinished">The background of the main start page area</translation>
+      <translation>მთავარი საწყისი გვერდის ფონი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="217"/>
@@ -337,7 +337,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="248"/>
       <source>In external browser</source>
-      <translation type="unfinished">In external browser</translation>
+      <translation>გარე ბრაუზერში</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
@@ -347,7 +347,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
       <source>The color of the version text</source>
-      <translation type="unfinished">The color of the version text</translation>
+      <translation>ვერსიის ტექსტის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="299"/>
@@ -357,7 +357,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>არასავალდებულო სურათი ფონზე საჩვენებლად</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
@@ -367,27 +367,27 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
       <source>Page background color</source>
-      <translation type="unfinished">Page background color</translation>
+      <translation>გვერდის ფონის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="351"/>
       <source>The color of the text on the main pages</source>
-      <translation type="unfinished">The color of the text on the main pages</translation>
+      <translation>მთავარი გვერდების ტექსტის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="371"/>
       <source>Background image</source>
-      <translation type="unfinished">Background image</translation>
+      <translation>ფონის გამოსახულება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="378"/>
       <source>Page text color</source>
-      <translation type="unfinished">Page text color</translation>
+      <translation>გვერდის ტექსტის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="391"/>
       <source>The color of the links</source>
-      <translation type="unfinished">The color of the links</translation>
+      <translation>ბმულების ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="417"/>
@@ -397,12 +397,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="437"/>
       <source>Box background color</source>
-      <translation type="unfinished">Box background color</translation>
+      <translation>ველის ფონის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="450"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>პანელების მიღმა ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
@@ -417,12 +417,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="509"/>
       <source>Background text color</source>
-      <translation type="unfinished">Background text color</translation>
+      <translation>ფონის ტექსტის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="516"/>
       <source>Use FreeCAD style sheet</source>
-      <translation type="unfinished">Use FreeCAD style sheet</translation>
+      <translation>FreeCAD-ის სტილების გამოყენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="523"/>
@@ -437,7 +437,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="538"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="551"/>
@@ -452,7 +452,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="572"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>ახალი ხატულის ფაილისთვის გრადიენტის გამოყენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
@@ -477,17 +477,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
-      <translation type="unfinished">Switch workbench after loading</translation>
+      <translation>ჩატვირთვის შემდეგ დაზგის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>საწყისი გვერდის დახურვა ჩატვირთვის შემდეგ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>დახურვა და ფაილის გახსნაზე გადართვა</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>

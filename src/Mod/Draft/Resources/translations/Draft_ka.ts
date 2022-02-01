@@ -34,10 +34,10 @@
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>შესაქმნელად მასივის ტიპი.
+- ორთო: განათავსებს ასლებს გლობალური X, Y, Z ღერძების მიმართულებით.
+- პოლარული: ათავსებს ასლებს წრიული რკალის გასწვრივ, მითითებულ კუთხამდე და გარკვეული ორიენტირებით, რომელიც განსაზღვრულია ცენტრით და ღერძით.
+- წრიული: ათავსებს ასლებს კონცენტრირებულ წრიულ ფენებში საბაზისო ობიექტის გარშემო.</translation>
     </message>
     <message>
       <location filename="array.py" line="109"/>
@@ -62,17 +62,17 @@
     <message>
       <location filename="array.py" line="150"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>ინტერვალების დაცილება და ორიენტაცია X ღერძის მიმართულებით</translation>
     </message>
     <message>
       <location filename="array.py" line="160"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>ინტერვალების დაცილება და ორიენტაცია Y ღერძის მიმართულებით</translation>
     </message>
     <message>
       <location filename="array.py" line="170"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>ინტერვალების დაცილება და ორიენტაცია Z ღერძის მიმართულებითv</translation>
     </message>
     <message>
       <location filename="array.py" line="185"/>
@@ -139,8 +139,8 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</trans
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>მასივში ელემენტების საერთო რაოდენობა.
+ეს თვისება არის მხოლოდ წაკითხვადი, რადგან რიცხვი დამოკიდებულია მასივის პარამეტრებზე.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>ობიექტი და მისი კონკრეტული ქვეელემენტები,
+რომელსაც ამ განზომილების ობიექტი ზომავს.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+არსებობს სხვადასხვა შესაძლებლობა:
+- ობიექტი და მისი ერთ-ერთი წიბო.
+- ობიექტი და მისი ორი წვერო.
+- რკალის ობიექტი და მისი წიბო.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -254,13 +254,13 @@ There are various possibilities:
 - An object, and two of its vertices.
 - An arc object, and its edge.
 </source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>ობიექტი და მისი კონკრეტული ქვეელემენტები,
+რომელსაც ამ განზომილების ობიექტი ზომავს.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.
+არსებობს სხვადასხვა შესაძლებლობა:
+- ობიექტი და მისი ერთ-ერთი წიბო.
+- ობიექტი და მისი ორი წვერო.
+- რკალის ობიექტი და მისი წიბო.
 </translation>
     </message>
     <message>
@@ -320,13 +320,11 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>გაზომილი მნიშვნელობა.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+მხოლოდ წაკითხვადი. მნიშვნელობა გამოითვლება თვისებებიდან "დაწყება" და "დასრულება".
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+თუ „ასოცირებული გეომეტრია“ არის რკალი ან წრე, მაშინ ეს მნიშვნელობა იქნება რადიუსი ან დიამეტრი, რომელიც დამოკიდებულია „დიამეტრი“ თვისებაზე.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
@@ -380,8 +378,8 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>ამ ობიექტის მიერ ნაჩვენები ტექსტი.
+ეს არის სტრიქონების სია; ამ სიის თითოეული ელემენტი გამოჩნდება ახალ სტრიქონში.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
@@ -515,11 +513,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>ამ ჭდის ტექსტი.
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+ეს თვისება მხოლოდ წაკითხვადია, რადგან საბოლოო ტექსტი დამოკიდებულია „ჭდის ტიპზე“,
+და ობიექტზე, განსაზღვრული როგორც "სამიზნე".
+"მომხმარებლის ტექსტი" ნაჩვენებია მხოლოდ იმ შემთხვევაში, თუ "ჭდის ტიპი" დაყენებულია "მომხმარებლის ტექსტი“-ზე.</translation>
     </message>
     <message>
       <location filename="label.py" line="216"/>
@@ -578,7 +576,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>საბაზისო ობიექტი, რომელიც დადუბლირდება</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
@@ -665,8 +663,8 @@ This property is read-only, as the number depends on the points contained within
       <location filename="shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>ხაზის სეგმენტების სიგრძე ელიფსების ან B-სპლაინების ხაზის სეგმენტებად
+                     ტესელაციისის დროს</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="111"/>
@@ -703,9 +701,9 @@ This property is read-only, as the number depends on the points contained within
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
+      <translation>ელიფსური რკალის ბოლო კუთხე
 
-                (for a full circle, give it same value as First Angle)</translation>
+            (სრული წრეწირისთვის მიუთითეთ იგივე მნიშვნელობა, რაც პირველი კუთხეა)</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="52"/>
@@ -723,11 +721,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>ობიექტის ფართობი</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>ობიექტის ფორმა</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული საბაზისო ობიექტი</translation>
@@ -736,6 +729,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული PAT ფაილი</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>ობიექტის ფორმა</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -755,7 +753,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>თუ გამორთულია, ზედაპირებზე დაშტრიხვა გადატარდება როგორც არის. (არა-XY ზედაპირებისთვის არასწორი შედეგები შეიძლება მოგცეთ)</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
@@ -963,7 +961,7 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>არის პოლიხაზი დახურული, თუ არა</translation>
     </message>
     <message>
       <location filename="wire.py" line="57"/>
@@ -998,7 +996,7 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>თითოეული წიბოს ქვედანაყოფების რიცხვი</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="137"/>
@@ -1049,9 +1047,9 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>გაზომვის გამოხატვის ერთეული.
+სისტემის ნაგულისხმევად დატოვეთ ცარიელი.
+გამოიყენეთ „თაღოვანი“ აშშ-ის თაღოვანი ნოტაციისთვის</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="230"/>
@@ -1148,6 +1146,16 @@ beyond the dimension line</source>
       <translation>ხაზის ფერი</translation>
     </message>
     <message>
+      <location filename="view_base.py" line="106"/>
+      <source>Defines an SVG pattern.</source>
+      <translation type="unfinished">Defines an SVG pattern.</translation>
+    </message>
+    <message>
+      <location filename="view_base.py" line="116"/>
+      <source>Defines the size of the SVG pattern.</source>
+      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+    </message>
+    <message>
       <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>ტექსტის ზომა</translation>
@@ -1218,7 +1226,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>ობიექტების ჩვენება/დამალვის სტატუსის ჩაწერა</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
@@ -1432,12 +1440,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>&amp;Modification</source>
-      <translation>&amp;მოდიფიკაცია</translation>
+      <translation>&amp;ჩასწორება</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>&amp;Utilities</source>
-      <translation>&amp;უტილიტები</translation>
+      <translation>&amp;ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="65"/>
@@ -1500,7 +1508,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_utils.py" line="154"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>მასშტაბირებად ნაწილში ახალი ობიექტის ჩასმა შეუძლებელია</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="402"/>
@@ -1525,9 +1533,9 @@ The array can be turned into a polar or a circular array by changing its type.</
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-It creates a construction group if it doesn't exist.</translation>
+      <translation>ამატებს არჩეულ ობიექტებს სამშენებლო ჯგუფს,
+და ცვლის მათ იერსახეს მშენებლობის სტილში.
+ის ქმნის სამშენებლო ჯგუფს, თუ ის არ არსებობს.</translation>
     </message>
   </context>
   <context>
@@ -1572,8 +1580,8 @@ It creates a construction group if it doesn't exist.</translation>
       <location filename="gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>მონიშნული ობიექტების არსებულ ჯგუფში შეტანა, ან ყველა ჯგუფიდან გამოტანა.
+ამ ხელსაწყოს გამოსაყენებლად ჯერ შექმენით ჯგუფი.</translation>
     </message>
   </context>
   <context>
@@ -1586,7 +1594,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>შენიშვნების სტილების მართვა ან შექმნა</translation>
     </message>
   </context>
   <context>
@@ -1718,8 +1726,20 @@ The array can be turned into a polar or a circular array by changing its type.</
     <name>Draft_BezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="64"/>
+      <source>BÃ©zier curve</source>
+      <translation type="unfinished">BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
       <translation>ბეზიეს მრუდი</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="67"/>
+      <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1733,8 +1753,18 @@ CTRL to snap, SHIFT to constrain.</translation>
     <name>Draft_BezierTools</name>
     <message>
       <location filename="gui_beziers.py" line="475"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
       <translation>ბეზიეს ხელსაწყოები</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="478"/>
+      <source>Create various types of BÃ©zier curves.</source>
+      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1795,8 +1825,22 @@ The resulting clone can be scaled in each of its three directions.</source>
     <name>Draft_CubicBezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="242"/>
+      <source>Cubic BÃ©zier curve</source>
+      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
       <translation>კუბური ბეზიეს მრუდი</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="245"/>
+      <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -1988,12 +2032,12 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>მონიშნულ ზედაპირებზე დაშტრიხვის შექმნა</translation>
     </message>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>მონიშნული ობიექტების ზედაპირის დაშტრიხვა</translation>
     </message>
   </context>
   <context>
@@ -2018,14 +2062,14 @@ otherwise it will try to heal all objects in the active document.</translation>
     <message>
       <location filename="gui_join.py" line="66"/>
       <source>Join</source>
-      <translation>შეუერთდით</translation>
+      <translation>შეერთება</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>აერთიანებს არჩეულ ხაზებს ან პოლიხაზებს ერთ ობიექტში.
+ოპერაცია წარმატებისთვის ხაზებს უნდა ჰქონდეთ ზიარი საწყისი ან ბოლო საერთო წერტილი.</translation>
     </message>
   </context>
   <context>
@@ -2068,8 +2112,8 @@ will be used to provide information to the label.</translation>
       <location filename="gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>ამატებს ფენას დოკუმენტს.
+ამ ფენაში დამატებულ ობიექტებს შეუძლიათ ჰქონდეთ ისეთი ერთნაირი ვიზუალური თვისებები, როგორიცაა ხაზის ფერი, ხაზის სიგანე და ფორმის ფერი.</translation>
     </message>
   </context>
   <context>
@@ -2145,6 +2189,25 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <translation type="unfinished">Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_OrthoArray</name>
+    <message>
+      <location filename="gui_orthoarray.py" line="65"/>
+      <source>Array</source>
+      <translation>მასივი</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</translation>
     </message>
   </context>
   <context>
@@ -2254,7 +2317,7 @@ Select the base object, and then select the compound or the sketch to create the
     <message>
       <location filename="gui_pointarray.py" line="141"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>ბზინვის შეფერილობის კოეფიციენტი</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="144"/>
@@ -2511,7 +2574,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
-      <translation type="unfinished">Set snapping to endpoints of an edge.</translation>
+      <translation>მიბმის დაყენება წიბოს ბოლო წერტილში.</translation>
     </message>
   </context>
   <context>
@@ -2576,7 +2639,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
-      <translation type="unfinished">Set snapping to the midpoint of an edge.</translation>
+      <translation>მიბმის დაყენება წიბოს შუა წერტილში.</translation>
     </message>
   </context>
   <context>
@@ -2705,7 +2768,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>მონიშნული ობიექტების ქვეელემენტების გამოკვეთა მათი გადაადგილების, ბრუნვისა და მასშტაბის ხელსაწყოებით ჩასასწორებლად.</translation>
     </message>
   </context>
   <context>
@@ -2718,7 +2781,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>მრავალხაზიანი ანოტაციის შექმნა. მისაბმელად - CTRL.</translation>
     </message>
   </context>
   <context>
@@ -2732,8 +2795,8 @@ then draw a line to specify the distance and direction of stretching.</translati
       <location filename="gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>კონსტრუქციის რეჟიმის ჩართ/გამორთ.
+როცა ჩართულია, შემდეგი შექმნილი ობიექტები დაემატება კონსტრუქციულ ჯგუფში და დაიხატება მითითებული ფერითა და თვისებებით.</translation>
     </message>
   </context>
   <context>
@@ -2748,9 +2811,9 @@ When this is active, the following objects created will be included in the const
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
-      <translation type="unfinished">Toggles the Continue mode.
-When this is active, any drawing tool that is terminated will automatically start again.
-This can be used to draw several objects one after the other in succession.</translation>
+      <translation>გაგრძელების რეჟიმის ჩართ/გამორთ.
+როცა ჩართულია, ნებისმიერი ნახაზის ინსტრუმენტი, რომელიც დასრულდება, ავტომატურად დაიწყება ხელახლა.
+შეიძლება გამოყენებულ იქნას ზედიზედ რამდენიმე ობიექტის მიყოლებით შესაქმნელად.</translation>
     </message>
   </context>
   <context>
@@ -2758,7 +2821,7 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>ჩვენების ნორმალურ/კარკასულ რეჟიმებს შორის გადართვა</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
@@ -2811,10 +2874,9 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>გარდაქმნის შერჩეულ ობიექტებს უფრო რთულ ფორმებად.
+ოპერაციის შედეგი დამოკიდებულია ობიექტების ტიპებზე, რომლებიც შეიძლება ზედიზედ რამდენჯერმე გარდაიქმნას.
+მაგალითად, შეუძლია შეაერთოს შერჩეული ობიექტები ერთში, გადაიყვანოს მარტივი კიდეები პოლიხაზებად, მჭიდროდ განლაგებული წიბოები გადაიყვანოს ზედაპირებში და მრავალკუთხედებში და რამდენიმე ზედაპირი შეაერთოს ერთში.</translation>
     </message>
   </context>
   <context>
@@ -2858,14 +2920,6 @@ Then you can use it to save a different camera position and objects' states any 
       <translation type="unfinished">Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgAddProperty</name>
-    <message>
-      <location filename="gui_groups.py" line="452"/>
-      <source>Group</source>
-      <translation>ჯგუფი</translation>
     </message>
   </context>
   <context>
@@ -2924,17 +2978,22 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="InitGui.py" line="124"/>
       <source>&amp;Modification</source>
-      <translation>&amp;მოდიფიკაცია</translation>
+      <translation>&amp;ჩასწორება</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="127"/>
       <source>&amp;Utilities</source>
-      <translation>&amp;უტილიტები</translation>
+      <translation>&amp;ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="50"/>
       <source>Arc tools</source>
       <translation>თაღის შექმნის ხელსაწყოები</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="58"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3085,14 +3144,14 @@ Then you can use it to save a different camera position and objects' states any 
       <translation>ავტო</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="722"/>
-      <source>active command:</source>
-      <translation>აქტიური ბრძანება:</translation>
-    </message>
-    <message>
       <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>არცერთი</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="722"/>
+      <source>active command:</source>
+      <translation>აქტიური ბრძანება:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="724"/>
@@ -3273,7 +3332,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+      <translation>თუ მონიშნულია, ობიექტები გადატანის ნაცვლად კოპირდება. მორგება -&gt; მონახაზი -&gt; გლობალური კოპირების რეჟიმი ამ რეჟიმის შემდეგ ბრძანებებში შესანარჩუნებლად</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="797"/>
@@ -3323,7 +3382,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
-      <translation type="unfinished">Open a FileChooser for font file</translation>
+      <translation>ფონტის ფაილის ასარჩევი ფანჯრის გახსნა</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="807"/>
@@ -3548,7 +3607,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>შეცდომა DWG-ის კონვერტაციის დროს. სცადეთ გადაიტანოთ DWG ფაილი დირექტორიაში სახელით ჰარეეების და არაინგლისური სიმბოლოების გარეშე, ან სცადეთ შენახვა DWG-ის ფორმატის უფრო ძველ ვერსიაში.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
@@ -3569,7 +3628,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
+      <translation>მონიშნული მოხაზულობები სიბრტყეს უნდა აღწერენ
 </translation>
     </message>
     <message>
@@ -3580,7 +3639,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>აქტიური დოკუმენტის გარეშე. გაუქმება.</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="151"/>
@@ -3590,7 +3649,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>მყარი ობიექტი არ შექმნილა</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="276"/>
@@ -4106,7 +4165,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="shapestring.py" line="76"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>ShapeString: სტრიქონს პოლიხაზები არ გააჩნია</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="160"/>
@@ -4151,7 +4210,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="draft_annotation.py" line="105"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
+      <translation>თვიება 'ScaleMultiplier' დამატებულია</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="130"/>
@@ -4189,6 +4248,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>ფენების შერწყმა:</translation>
     </message>
     <message>
+      <location filename="view_base.py" line="402"/>
+      <source>Please load the Draft Workbench to enable editing this object</source>
+      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="46"/>
       <source>Draft</source>
       <translation>წყალშიგი</translation>
@@ -4201,17 +4265,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+      <translation>შეყვანილი მნიშვნელობის მასშტაბის ფაქტორად გადაქცევა შეუძლებელია</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>შეყვანილი მნიშვნელობის მასშტაბის ფაქტორად გადაქცევა შეუძლებელია</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>მასშტაბის ხელით დაყენება</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="159"/>
@@ -4221,7 +4285,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>დააყენეთ მასშტაბი, რომელიც გამოიყენება მონახაზის ანოტაციის ხელსაწყოების მიერ</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4236,7 +4300,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="utils.py" line="652"/>
       <source>Wires:</source>
-      <translation>მოღუნული ხაზები:</translation>
+      <translation>პოლიხაზები:</translation>
     </message>
     <message>
       <location filename="utils.py" line="653"/>
@@ -4311,77 +4375,77 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>მიბმის ჩაკეტვა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>მიბმის ბოლო წერტილი</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>მიბმის შუა წერტილი</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>მიბმის ცენტრი</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>მიბის კუთხე</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>კვეთის მიბმა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>მართკუთხად მიმაგრება</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>გაფართოების მიბმა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>პარალელურად მიბმა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>სპეციალური მიბმა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>ახლოს მიბმა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>მიბმის ორთო</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>ბადის მიბმა</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>სამუშაო დაფის მიმაგრება</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>მიბმის ზომები</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -4396,7 +4460,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="gui_utils.py" line="161"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>მასშტაბირებად ნაწილში ახალი ობიექტის ჩასმა შეუძლებელია</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="267"/>
@@ -4606,7 +4670,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_shapestring.py" line="88"/>
       <source>Pick ShapeString location point:</source>
-      <translation type="unfinished">Pick ShapeString location point:</translation>
+      <translation>აირჩიეთ ShapeString-ის მდებარეობის წერტილი:</translation>
     </message>
     <message>
       <location filename="gui_shapestrings.py" line="141"/>
@@ -4699,7 +4763,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_edit_draft_objects.py" line="722"/>
       <source>Selection is not a Knot</source>
-      <translation type="unfinished">Selection is not a Knot</translation>
+      <translation>მონიშნული ელემენტი კვანძი არაა</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="749"/>
@@ -4809,7 +4873,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_pointarray.py" line="104"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
+      <translation>ამ ბრძანების გამოძახებამდე აირჩიეთ ორი ობიექტი: საბაზისო ობიექტი და წერტილი.</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="122"/>
@@ -5009,7 +5073,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_scale.py" line="340"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
+      <translation>ამ ობიექტის ტიპის პირდაპირ მასშტაბირება შეუძლებელია. გთხოვთ, გამოიყენოთ კლონირების მეთოდი.</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="401"/>
@@ -5019,12 +5083,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(ჩართ)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(გამორთ)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
@@ -5033,8 +5097,8 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
-      <source>Bezier curve has been closed</source>
-      <translation type="unfinished">Bezier curve has been closed</translation>
+      <source>BÃ©zier curve has been closed</source>
+      <translation type="unfinished">BÃ©zier curve has been closed</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5044,7 +5108,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_splines.py" line="147"/>
       <source>Pick next point, or finish (A) or close (O)</source>
-      <translation type="unfinished">Pick next point, or finish (A) or close (O)</translation>
+      <translation>აირჩიეთ შემდეგი წერტილი, დაასრულეთ (A) ან დახურეთ (O)</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="451"/>
@@ -5054,12 +5118,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>შემდეგი კვანძის შესაქმნელად დააწკაპუნეთ და გადაათრიეთ</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="332"/>
+      <source>Bezier curve has been closed</source>
+      <translation>ბეზიეს რკალი დაიხურა</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
       <source>Click and drag to define next knot, or finish (A) or close (O)</source>
-      <translation type="unfinished">Click and drag to define next knot, or finish (A) or close (O)</translation>
+      <translation>დააწკაპუნეთ და გადაათრიეთ შემდეგი კვანძის შესაქმნელად, დასასრულებლად(A) ან დასახურად(O)</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
@@ -5397,6 +5466,11 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>ჯგუფის სახელი</translation>
     </message>
     <message>
+      <location filename="gui_groups.py" line="392"/>
+      <source>Group</source>
+      <translation>ჯგუფი</translation>
+    </message>
+    <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
       <translation>აირჩიეთ წასანაცვლებელი ობიექტი</translation>
@@ -5404,7 +5478,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>წანაცვლება ერთ ჯერზე მხოლოდ ერთ ობიექტზე მუშაობს.</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="92"/>
@@ -5558,6 +5632,14 @@ The final angle will be the base angle plus this amount.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>ჯგუფი</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_Snap</name>
     <message>
       <location filename="gui_snapper.py" line="1529"/>
@@ -5667,7 +5749,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>სტილების json ფაილიდან შემოტანა</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
@@ -5693,7 +5775,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="180"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>საზომი ერთეულების სტრიქონებს შორის მანძილი</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
@@ -5824,7 +5906,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="387"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>გაფართოების ხაზების სიგრძე</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
@@ -5957,8 +6039,8 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskPanel_CircularArray.ui" line="186"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation type="unfinished">Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</translation>
+      <translation>მანძილი მასივის ერთ რგოლში ერთი ელემენტიდან იმავე რგოლში არსებულ მომდევნო ელემენტამდე.
+არ შეიძლება იყოს ნულის ტოლი.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="179"/>
@@ -5987,8 +6069,8 @@ It cannot be zero.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
       <source>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>მრგვალი ფენების ან რგოლების რაოდენობა შესაქმნელად, ორიგინალური ობიექტის ასლის ჩათვლით.
+ეს უნდა იყოს მინიმუმ 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
@@ -6134,8 +6216,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</translation>
+      <translation>ელემენტების რაოდენობა მასივში მითითებული მიმართულებით, ორიგინალური ობიექტის ასლის ჩათვლით.
+რიცხვი უნდა იყოს მინიმუმ 1 თითოეული მიმართულებით.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
@@ -6282,7 +6364,7 @@ It must be at least 2.</source>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="115"/>
       <source>Text to be made into ShapeString</source>
-      <translation type="unfinished">Text to be made into ShapeString</translation>
+      <translation>ტექსტი გარდაიქმნება ShapeString-ად</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="122"/>
@@ -6473,7 +6555,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source> lines</source>
-      <translation> ხაზები</translation>
+      <translation> ხაზი</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="241"/>
@@ -6841,7 +6923,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="120"/>
       <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
-      <translation type="unfinished">The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</translation>
+      <translation>ათწილადების რაოდენობა შიდა კოორდინატების ოპერაციებში (მაგ. 3 = 0,001). მნიშვნელობები 6-დან 8-მდე, როგორც წესი, განიხილება საუკეთესო კომპრომისად FreeCAD-ის მომხმარებლებს შორის.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="143"/>
@@ -6858,12 +6940,12 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation type="unfinished">If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</translation>
+      <translation>თუ ეს პარამეტრი მონიშნულია, ფენების ჩამოსაშლელი სია ასევე აჩვენებს ჯგუფებს, რაც საშუალებას მოგცემთ ავტომატურად დაამატოთ ობიექტები ჯგუფებშიც.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
-      <translation type="unfinished">Show groups in layers list drop-down button</translation>
+      <translation>ფენების ჩამოსაშლელ სიაში ჯგუფების ჩვენება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
@@ -6874,23 +6956,23 @@ Values with differences below this value will be treated as same. This value wil
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</translation>
+      <translation>ხაზების ხაზვისას ფოკუსის X კოორდინატის მაგიერ სიგრძეზე დასმა.
+ეს საშუალებას გაზლევთ მიუთითოთ მიმართულება და აკრიფოთ მანძილი.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>ფოკუსის დაყენება სიგრძეზე X კოორდინატის ნაცვლად</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation type="unfinished">If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</translation>
+      <translation>როცა ეს ჩართულია, არსებულ ობიექტზე ან ზედაპრზე მონახაზის ობიექტის შექნისას მას "მხარდაჭერა"-ის თვისებაც მიემაგრება. ეს ნაგულისხმევად იყო ჩართული FreeCAD-ის 0.19 ვერსიამდე</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
       <source>Set the Support property when possible</source>
-      <translation type="unfinished">Set the Support property when possible</translation>
+      <translation>"მხარდაჭერის" თვისების დამატება, როცა შესაძლებელია</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="263"/>
@@ -6908,13 +6990,13 @@ Otherwise, they will appear as wireframe</translation>
       <location filename="../ui/preferences-draft.ui" line="283"/>
       <source>Normally, after copying objects, the copies get selected.
 If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</translation>
+      <translation>ჩვეულებრივ ობიექტების კოპირების შემდეგ მოინიშნება ასლები.
+თუ ეს ჩართულია, მოინიშნება საწყისი ობიექტები.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="287"/>
       <source>Select base objects after copying</source>
-      <translation type="unfinished">Select base objects after copying</translation>
+      <translation>კოპირების შემდეგ საბაზისო ობიექტების მონიშვნა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="300"/>
@@ -6958,7 +7040,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="387"/>
       <source>This is the default group name for construction geometry</source>
-      <translation type="unfinished">This is the default group name for construction geometry</translation>
+      <translation>გეომეტრიის კონსტრუქტორის ნაგულისხმევი ჯგუფის სახელი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="390"/>
@@ -7058,7 +7140,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="257"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>შაბლონების დახატვის გარჩევადობა. ნაგულისხმევი მნიშვნელობა 128-ა. მაღალი მნიშვნელობები იძლევა უკეთეს გარჩევადობას, ქვედა მნიშვნელობები აჩქარებს დახატვას</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="280"/>
@@ -7341,7 +7423,7 @@ such as "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>SVG ობიექტების ფერების FreeCAD-ში შემოტანის არჩეული მეთოდი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
@@ -7362,8 +7444,8 @@ such as "Arial:Bold"</translation>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>თუ მონიშნულია, არ მოხდება ერთეულების კონვერტაცია.
+SVG ფაილში ერთი ერთეული ითარგმნება როგორც ერთი მილიმეტრი. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
@@ -7383,7 +7465,7 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation type="unfinished">Translated (for print &amp; display)</translation>
+      <translation>გადატანა (დასათვალიერებლად &amp; დასაბეჭდად)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="146"/>
@@ -7410,9 +7492,9 @@ One unit in the SVG file will translate as one millimeter. </translation>
       <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </source>
-      <translation type="unfinished">Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </translation>
+      <translation>Open CASCADE-ის 6.8 ვერსიაზე ძველი ვერსიებს არ აქვთ რკალის პროექციის მხარდაჭერა.
+ამ შემთხვევაში რკალი დისკრეტირებული იქნება მცირე ხაზის სეგმენტებად.
+ეს მნიშვნელობა არის სეგმენტის მაქსიმალური სიგრძე. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
@@ -7448,8 +7530,8 @@ This value is the maximum segment length. </translation>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</translation>
+      <translation>გამოიყენება Python შემომტანი. წინააღმდეგ შემთხვევაში გამოიყენება უფრო ახალი, C++-ზე დაწერილი.
+შენიშვნა: C++ შემომტანი უფრო სწრაფია, მაგრამ ჯერ ბოლომდე ფუნქციონალური არაა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
@@ -7460,8 +7542,8 @@ Note: C++ importer is faster, but is not as featureful yet</translation>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>გამოიყენება Python გამტანი. წინააღმდეგ შემთხვევაში გამოიყენება უფრო ახალი, C++-ზე დაწერილი.
+შენიშვნა: C++ გამტანი უფრო სწრაფია, მაგრამ ჯერ ბოლომდე ფუნქციონალური არაა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
@@ -7478,9 +7560,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation type="unfinished">Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</translation>
+      <translation>მიეცით უფლება FreeCAD-ს ჩამოტვირთოს Python კონვერტორი DXF შეტანისთვის და გატანისთვის. თქვენ ასევე შეგიძლიათ ამის გაკეთება ხელით, "dxf_library" სამუშაო მაგიდის დაყენებით დამატებების მმართველიდან.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
@@ -7517,7 +7597,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>თუ გამორთულია, წერტილები არ იქნება შემოტანილი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -7590,17 +7670,17 @@ from the Addon Manager.</translation>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>მასშტაბის ფაქტორი DXF ფაილების იმპორტისას.
+ფაქტორი არის გარდაქმნა თქვენი DXF ფაილის საზომ ერთეულსა და მილიმეტრებს შორის.
+მაგალითი: ფაილებისთვის მილიმეტრებში: 1, სანტიმეტრებში: 10,
+                              მეტრებში: 1000, ინჩებში: 25.4, ფუტებში: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </translation>
+      <translation>ფერები იქნება ამოღებული DXF ობიექტებიდან მათი წვდომადობის მიხედვით.
+წინააღმდეგ შემთხვევაში გამოყენებული იქნება ნაგულისხმევი ფერები. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
@@ -7656,12 +7736,12 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>დაშტრიხვა გარდაიქმება მარტივ პოლიხაზად</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Import hatch boundaries as wires</translation>
+      <translation>დაშტრიხვის საზღვრების პოლიხაზებად შემოტანა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
@@ -7678,7 +7758,7 @@ as closed wires with correct width</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
-      <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
+      <translation>ელიფსის გატანა ცუდადაა მხარდაჭერილი. გთხოვთ გაიტანოთ, როგორც პოლიხაზი.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="489"/>
@@ -7694,8 +7774,8 @@ as closed wires with correct width</source>
       <location filename="../ui/preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>პოლიხაზის თითოეული სეგმენტის მაქსიმალური სიგრძე.
+თუ დაყენებულია '0', მთელი სპლაინი განიხილება, როგორც სწორი სეგმენტი.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
@@ -7711,7 +7791,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</translat
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes</translation>
+      <translation>3D ობიექტების, როგორც პოლიხაზების გატანა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="587"/>
@@ -7829,7 +7909,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="269"/>
       <source>If checked, a grid will appear when drawing</source>
-      <translation type="unfinished">If checked, a grid will appear when drawing</translation>
+      <translation>თუ ჩართულია, ხაზვისას ბადე გამოჩნდება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="272"/>
@@ -7912,7 +7992,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source> lines</source>
-      <translation> ხაზები</translation>
+      <translation> ხაზი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="506"/>
@@ -7947,7 +8027,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;აყენებს ობიექტების მაქიმალურ რაოდენობას, რომელიც&lt;/p&gt;&lt;p&gt;ერთდროულად შეიძლება ჩასწორდეს&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="645"/>
@@ -7977,7 +8057,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>The path to your ODA (formerly Teigha) File Converter executable</source>
-      <translation type="unfinished">The path to your ODA (formerly Teigha) File Converter executable</translation>
+      <translation>მისამართი ODA(ძველი სახელი Teigha) გადამყვანის გამშვებ ფაილებამდე</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>

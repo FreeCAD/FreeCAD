@@ -93,7 +93,7 @@
     <message>
       <location filename="../../Command.cpp" line="1700"/>
       <source>Additive helix</source>
-      <translation>Hinzuzufügende Wendel</translation>
+      <translation>+ Wendel</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1701"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../Command.cpp" line="1601"/>
       <source>Additive loft</source>
-      <translation>Zu addierende Ausformung</translation>
+      <translation>+ Ausformung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1602"/>
@@ -647,7 +647,7 @@
     <message>
       <location filename="../../Command.cpp" line="1770"/>
       <source>Subtractive helix</source>
-      <translation>Abzuziehende Wendel</translation>
+      <translation>Wendel</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1771"/>
@@ -665,7 +665,7 @@
     <message>
       <location filename="../../Command.cpp" line="1651"/>
       <source>Subtractive loft</source>
-      <translation>Abziehbare Ausformung</translation>
+      <translation>Ausformung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1652"/>
@@ -720,7 +720,7 @@
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <location filename="../../CommandPrimitive.cpp" line="71"/>
       <source>Create an additive primitive</source>
-      <translation>Hinzuzufügende Grundkörper</translation>
+      <translation>Grundkörper hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
@@ -740,7 +740,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Cone</source>
-      <translation>Hinzuzufügender Kegel</translation>
+      <translation>Kegel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
@@ -755,7 +755,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="223"/>
       <source>Additive Prism</source>
-      <translation>Hinzuzufügendes Prisma</translation>
+      <translation>+ Prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="227"/>
@@ -774,7 +774,7 @@
       <location filename="../../CommandPrimitive.cpp" line="244"/>
       <location filename="../../CommandPrimitive.cpp" line="245"/>
       <source>Create a subtractive primitive</source>
-      <translation>Erzeuge einen abzuziehenden Grundkörper</translation>
+      <translation>Grundkörper abziehen</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="355"/>
@@ -814,7 +814,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="383"/>
       <source>Subtractive Wedge</source>
-      <translation>Abzuziehender Keil</translation>
+      <translation>Keil</translation>
     </message>
   </context>
   <context>
@@ -4536,12 +4536,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Create an additive feature</source>
-      <translation>Hinzuzufügende Objekte</translation>
+      <translation>Objekte hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Create a subtractive feature</source>
-      <translation>Abzuziehende Objekte</translation>
+      <translation>Objekte abziehen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>

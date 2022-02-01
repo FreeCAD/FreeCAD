@@ -179,7 +179,7 @@
     <message>
       <location filename="commands.py" line="270"/>
       <source>Constraint sectionprint</source>
-      <translation>Contrainte d'empreinte de la section</translation>
+      <translation>Contrainte d'empreinte de section</translation>
     </message>
     <message>
       <location filename="commands.py" line="274"/>
@@ -3994,7 +3994,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="22"/>
       <source>Available result types:</source>
-      <translation type="unfinished">Available result types:</translation>
+      <translation>Types de résultats disponibles :</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="45"/>

@@ -564,7 +564,7 @@ ali s podprvine "NOglišč", "NRobov" ali "NPloskev", če je določeno.</transla
     <message>
       <location filename="draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Vsili usklajeni vzorec postavitve tudi, ko so razpostavljeni predmeti razširjeni</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
@@ -718,11 +718,6 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <translation>Površina tega predmeta</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblika tega objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Izhodiščni predmet tega predmeta</translation>
@@ -731,6 +726,11 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>Datoteka PAT, ki jo uporablja ta predmet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblika tega objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1143,6 +1143,16 @@ preko kotnice</translation>
       <translation>Barva črte</translation>
     </message>
     <message>
+      <location filename="view_base.py" line="106"/>
+      <source>Defines an SVG pattern.</source>
+      <translation type="unfinished">Defines an SVG pattern.</translation>
+    </message>
+    <message>
+      <location filename="view_base.py" line="116"/>
+      <source>Defines the size of the SVG pattern.</source>
+      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+    </message>
+    <message>
       <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
       <translation>Velikost pisave</translation>
@@ -1218,7 +1228,7 @@ preko kotnice</translation>
     <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation>Snovalni pripomočki</translation>
+      <translation>Izrisovalni pripomočki</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1402,22 +1412,22 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="init_tools.py" line="145"/>
       <source>Draft creation tools</source>
-      <translation>Orodja za ustvarjanje osnutkov</translation>
+      <translation>Orodja za izdelavo izrisa</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="148"/>
       <source>Draft annotation tools</source>
-      <translation>Orodja za opisovanje osnutkov</translation>
+      <translation>Orodja za opisovanje izrisov</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="151"/>
       <source>Draft modification tools</source>
-      <translation>Orodja za preoblikovanje osnutkov</translation>
+      <translation>Orodja za preoblikovanje izrisov</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="166"/>
       <source>&amp;Drafting</source>
-      <translation>Priprava &amp;osnutka</translation>
+      <translation>&amp;Izrisovanje</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="168"/>
@@ -1575,12 +1585,12 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="80"/>
       <source>Annotation styles...</source>
-      <translation>Pripisni slogi ...</translation>
+      <translation>Pripisni slogi ...</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Uredi ali ustvari sloge pripisov</translation>
     </message>
   </context>
   <context>
@@ -1635,8 +1645,8 @@ CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Ustvari krožni lok z določitvijo 3 točk.
+CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     </message>
   </context>
   <context>
@@ -1692,7 +1702,7 @@ Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s sprememb
     <message>
       <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Izberite skupino, v kateroželite dodati vse predmete osnutka in arhitekture.</translation>
+      <translation>Izberite skupino, v katero želite dodati vse predmete izrisa (Draft) in arhitekture (Arch).</translation>
     </message>
   </context>
   <context>
@@ -1712,8 +1722,20 @@ Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s sprememb
     <name>Draft_BezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="64"/>
+      <source>BÃ©zier curve</source>
+      <translation type="unfinished">BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
       <translation>Bezierova krivulja</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="67"/>
+      <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1727,8 +1749,18 @@ CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     <name>Draft_BezierTools</name>
     <message>
       <location filename="gui_beziers.py" line="475"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
       <translation>Bezierjeva orodja</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="478"/>
+      <source>Create various types of BÃ©zier curves.</source>
+      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1788,8 +1820,22 @@ Dobljeni klon je mogoče prevelikostiti v vseh treh smereh.</translation>
     <name>Draft_CubicBezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="242"/>
+      <source>Cubic BÃ©zier curve</source>
+      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
       <translation>Kubična bezierjeva kribulja</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="245"/>
+      <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -1835,16 +1881,16 @@ You may also select an 'App::MeasureDistance' object before launching this comma
 to turn it into a 'Draft Dimension' object.</source>
       <translation>Ustvari koto.
 
-- Izberite tri točke, da ustvarite eostavno premo koto.
+- Izberite tri točke, da ustvarite enostavno premo koto.
 - Izberite ravno črto, da ustvarite premo koto, vezano na to črto.
-- Izberite lok ali krog, da ustvarite pomerno ali premerno koto, vezano na ta lok.
+- Izberite lok ali krog, da ustvarite polmerno ali premerno koto, vezano na ta lok.
 - Izberite dve ravni črti, da ustvarite kotno koto med njima.
 CTRL za pripenjanje, PREMAKNI za omejitev, ALT da izberete rob ali lok.
 
-Preden zažene ta ukaz lahko izberete eno samo črto ali en kroni lok,
+Preden zažene ta ukaz lahko izberete eno samo črto ali en krožni lok,
 da ustvarite odgovarjajočo vezano koto.
 Lahko pa, preden zaženete ta ukaz, izberete predmet "App::IzmeriRazdaljo",
-ki se spremeni v predmet "OsnutkovaKota".</translation>
+ki se spremeni v predmet "IzrisnaKota".</translation>
     </message>
   </context>
   <context>
@@ -1869,16 +1915,16 @@ Npr. površja razbije v enostavnjše ploskve in črtovja, ter nato na robove. Pr
     <message>
       <location filename="gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation>Osnutek v očrt</translation>
+      <translation>Izris (Draft) v očrt (Sketch)</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation>Dvosmerno pretvarjanje med predmeti Osnutka in Očrti.
-Številni predmeti Osnutka se bodo pretvorili v posamezne neomejene Očrte,
-medtem ko bo en sam očrt z nepovezanimi sledmi pretvorjen v več posamičnih premetov Osnutka.</translation>
+      <translation>Dvosmerno pretvarjanje med predmeti izrisa (Draft) in očrti (Sketch).
+Številni izrisni predmeti se bodo pretvorili v posamezne neomejene očrte,
+medtem ko bo en sam očrt z nepovezanimi sledmi pretvorjen v več posamičnih premetov izrisa (Draft).</translation>
     </message>
   </context>
   <context>
@@ -1999,7 +2045,7 @@ If other objects are selected they are ignored.</source>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation>Popravi okvarjene predmete Osnutka, shranjene s starejšo različico programa.
+      <translation>Popravi okvarjene predmete Izrisa, shranjene s starejšo različico programa.
 Če je izbran predmet, se bo skušalo popraviti prav ta predmet,
 sicer pa se bo popravljalo vse predmete v dejavnem dokumentu.</translation>
     </message>
@@ -2138,6 +2184,25 @@ CTRL za pripenjanje, PREMAKNI za omejitev. Držite ALT in z vsakim klikom ustvar
     </message>
   </context>
   <context>
+    <name>Draft_OrthoArray</name>
+    <message>
+      <location filename="gui_orthoarray.py" line="65"/>
+      <source>Array</source>
+      <translation>Razpostavitev</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Ustvari kopije izbranega predmeta in jih postavi v pravokotnem vzorcu,
+to pomeni da kopije sledijo določeni smeri v X, Y in Z oseh.
+
+Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s spremembo njene vrste.</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_PathArray</name>
     <message>
       <location filename="gui_patharray.py" line="73"/>
@@ -2234,7 +2299,7 @@ Select the base object, and then select the compound or the sketch to create the
 
 Točke morajo biti pred uporabo tega orodja združene v sestav.
 Če želita ustvariti tak sestav, izberite različne točke in nato uporabite orodje Sestav delov,
-lahko uporabite tudi orodje Nadgraditev osnutka in z njim ustvarite "Zbir", ali pa ustvarite očrt in mu dodate enostavne točke.
+lahko uporabite tudi orodje Nadgraditev izrisa in z njim ustvarite "Zbir", ali pa ustvarite očrt in mu dodate enostavne točke.
 
 Izberite izhodiščni predmet in nato sestav oz. očrt, da ustvarite razpostavitev točk.</translation>
     </message>
@@ -2284,7 +2349,7 @@ Razpostavitev lahko spremenite v pravokotno ali v obročno tako, da spremite nje
       <location filename="gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
-      <translation>Ustvari pravilni mnogokotnik (trikotnik, kvadrat, petkotnik, ...) z določitvijo števila stranic in polmera očrtanega kroga.
+      <translation>Ustvari pravilni mnogokotnik (trikotnik, kvadrat, petkotnik, ...) z določitvijo števila stranic in polmera očrtanega kroga.
 CTRL za pripenjanje, PREMAKNI za omejitev</translation>
     </message>
   </context>
@@ -2368,8 +2433,8 @@ those that are at the same level as this object, including the upper group that 
       <location filename="gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
-      <translation>Izberite ploskev polnega telesa, na kateri želite ustvariti delovno ravnino za očrtovanje Osnutkov.
-Izberete lahko tudi tri oglišča ali nadomestek Delavne ravnine.</translation>
+      <translation>Izberite ploskev polnega telesa, na kateri želite ustvariti delovno ravnino za očrtovanje izrisnih predmetov.
+Izberete lahko tudi tri oglišča ali nadomestno delavno ravnino.</translation>
     </message>
   </context>
   <context>
@@ -2449,7 +2514,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
       <translation>Nastavi naklon izbrane črte s spreminjanjem vrednosti Z enemu od oglišč.
 Če izberete črtovje, bo sprememba naklona uveljavljena na vsakem njegovem odseku.
 
-Naklon vedno spremeni vrednost Z, zato ta ukaz dobro deluje le pri ravnih črtah, narisanih v ravnini XY.
+Naklon vedno spremeni vrednost Z, zato ta ukaz dobro deluje le pri ravnih črtah izrisa, narisanih v ravnini XY.
 Izbrani predmeti, ki niso posamezne črte, bodo prezrti.</translation>
     </message>
   </context>
@@ -2771,7 +2836,7 @@ Možnost je namenjena delu s sklenjenimi oblikami in telesi, saj nima vpliva na 
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation>Vklopi/izklopi mrežo osnutka.</translation>
+      <translation>Vklopi/izklopi mrežo izrisa.</translation>
     </message>
   </context>
   <context>
@@ -2852,14 +2917,6 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgAddProperty</name>
-    <message>
-      <location filename="gui_groups.py" line="452"/>
-      <source>Group</source>
-      <translation>Skupina</translation>
-    </message>
-  </context>
-  <context>
     <name>ImportAirfoilDAT</name>
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
@@ -2885,27 +2942,27 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
     <message>
       <location filename="InitGui.py" line="104"/>
       <source>Draft creation tools</source>
-      <translation>Orodja za ustvarjanje osnutkov</translation>
+      <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft annotation tools</source>
-      <translation>Orodja za opisovanje osnutkov</translation>
+      <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="110"/>
       <source>Draft modification tools</source>
-      <translation>Orodja za preoblikovanje osnutkov</translation>
+      <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="113"/>
       <source>Draft utility tools</source>
-      <translation>Snovalni pripomočki</translation>
+      <translation>Izrisovalni pripomočki</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="118"/>
       <source>&amp;Drafting</source>
-      <translation>Priprava &amp;osnutka</translation>
+      <translation>&amp;Izrisovanje</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="121"/>
@@ -2929,6 +2986,11 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="58"/>
       <source>Bezier tools</source>
       <translation>Bezierjeva orodja</translation>
     </message>
@@ -2940,7 +3002,7 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
     <message>
       <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
-      <translation>Pripenjanje v osnutku</translation>
+      <translation>Pripenjanje pri izrisovanju</translation>
     </message>
   </context>
   <context>
@@ -3053,7 +3115,7 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
     <message>
       <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
-      <translation>Ukazna vrstica osnutkov</translation>
+      <translation>Izrisovalna ukazna vrstica</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="369"/>
@@ -3076,19 +3138,19 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
       <translation>Samodejno</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="722"/>
-      <source>active command:</source>
-      <translation>dejaven ukaz:</translation>
-    </message>
-    <message>
       <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Brez</translation>
     </message>
     <message>
+      <location filename="DraftGui.py" line="722"/>
+      <source>active command:</source>
+      <translation>dejaven ukaz:</translation>
+    </message>
+    <message>
       <location filename="DraftGui.py" line="724"/>
       <source>Active Draft command</source>
-      <translation>Dejaven ukaz osnutka</translation>
+      <translation>Dejaven izrisovalni ukaz</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="725"/>
@@ -3189,7 +3251,7 @@ Odoznačite, če želite uporabljati koordinatni sistem delavne ravnine</transla
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation>Označite, če želite, da se predmet prikaže kot poln, sicer bo videti kot žični model.
-Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike dela" omogočena</translation>
+Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi delove osnovnike" omogočena</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="761"/>
@@ -3264,7 +3326,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation>Če je označeno, se predmete kopira namesto premika. Prednastavitve -&gt; Osnutek -&gt; Splošni način kopiranja, da ohranite ta način pri sledečih ukazih</translation>
+      <translation>Če je označeno, se predmete kopira namesto premika. Prednastavitve -&gt; Izris (Draft) -&gt; Splošni način kopiranja, da ohranite ta način pri sledečih ukazih</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="797"/>
@@ -3621,7 +3683,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="upgrade.py" line="486"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation>Najden 1 nedoločilovni predmet: spreminjanje v osnutek</translation>
+      <translation>Najden 1 nedoločilovni predmet: spreminjanje v izris</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="497"/>
@@ -3651,7 +3713,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="upgrade.py" line="531"/>
       <source>Found 1 object: draftifying it</source>
-      <translation>Najden 1 predmet: spreminjanje v osnutek</translation>
+      <translation>Najden 1 predmet: spreminjanje v izris</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="536"/>
@@ -4147,7 +4209,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
-      <translation>preseljen slog "Besedila osnutka" v "Besedilo"</translation>
+      <translation>preseljen slog "Besedila izrisa" v "Besedilo"</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="358"/>
@@ -4180,6 +4242,11 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
       <translation>Združevanje sloja:</translation>
     </message>
     <message>
+      <location filename="view_base.py" line="402"/>
+      <source>Please load the Draft Workbench to enable editing this object</source>
+      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="46"/>
       <source>Draft</source>
       <translation>Ugrez</translation>
@@ -4192,7 +4259,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+      <translation>Vnešenega ni mogoče pretvoriti v količnik velikosti</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
@@ -4202,7 +4269,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Merilo po meri</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="159"/>
@@ -4212,7 +4279,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Nastavi pripisnim orodjem izrisa merilo</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4302,82 +4369,82 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Zaklep pripenjanja</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Pripenjanje na krajišče</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Pripenjanje na razpolovišče</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Pripenjanje na središče</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Pripenjanje na kot</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Pripenjanje na sečišče</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Pripenjanje na pravokotnico</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Pripenjanje na podaljšek</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Pripenjanje na vzporednost</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Posebno pripenjanje</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Pripenjanje na bližino</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Pripenjanje na pravokotnost</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Pripenjanje na mrežo</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Pripenjanje na delavno ravnino</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Pripenjanje na kote</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
       <source>Toggle Draft Grid</source>
-      <translation>Preklopi mrežo osnutka</translation>
+      <translation>Preklopi izrisovalno mrežo</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="81"/>
@@ -4617,7 +4684,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Knjižnic za uvoz/izvoz DXF, ki jih FreeCAD potrebuje za ravnanje
 z zapisom DXF, na tem sistemu ni mogoče najti.
 Lahko omogočite FreeCADu prenos teh knjižnic:
-  1 - naložite delovno okolje za osnutke
+  1 - naložite izrisovalno delovno okolje (Draft)
   2 - meni Uredi &gt; Prednastavitve &gt; Uvozi-Izvozi &gt; DXF &gt; Omogoči prenose
 ali pa jih ročno prejmite, kot je to razloženo na
 https://github.com/yorikvanhavre/Draft-dxf-importer.
@@ -4811,7 +4878,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation>Ni dejavne orodne vrstice Osnutka.</translation>
+      <translation>Ni dejavne izrisovalne (Draft) orodne vrstice.</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="93"/>
@@ -5011,12 +5078,12 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(Vključeno)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(Izključeno)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
@@ -5025,8 +5092,8 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
-      <source>Bezier curve has been closed</source>
-      <translation>Bezierjeva krivulja je bila sklenjena</translation>
+      <source>BÃ©zier curve has been closed</source>
+      <translation type="unfinished">BÃ©zier curve has been closed</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5047,6 +5114,11 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
       <translation>Za določitev novega vozla kliknite in povlecite</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="332"/>
+      <source>Bezier curve has been closed</source>
+      <translation>Bezierjeva krivulja je bila sklenjena</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
@@ -5121,12 +5193,12 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_draft2sketch.py" line="114"/>
       <source>Convert to Draft</source>
-      <translation>Pretvori v osnutek</translation>
+      <translation>Pretvori v izris</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="143"/>
       <source>Convert Draft/Sketch</source>
-      <translation>Pretvori osnutek/očrt</translation>
+      <translation>Pretvori izris/očrt</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="51"/>
@@ -5156,7 +5228,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_edit.py" line="306"/>
       <source>Select a Draft object to edit</source>
-      <translation>Za urejanje izberite predmet osnutka</translation>
+      <translation>Za urejanje izberite izrisni predmet</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="562"/>
@@ -5206,7 +5278,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation>Teh predmetov ni mogoče prirezati, le črtovja osnutka in loki imajo to možnost.</translation>
+      <translation>Teh predmetov ni mogoče prirezati, le izrisna črtovja in loki imajo to možnost.</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="488"/>
@@ -5389,6 +5461,11 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Ime skupine</translation>
     </message>
     <message>
+      <location filename="gui_groups.py" line="392"/>
+      <source>Group</source>
+      <translation>Skupina</translation>
+    </message>
+    <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
       <translation>Izberite predmet za odmikanje</translation>
@@ -5550,6 +5627,14 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Skupina</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_Snap</name>
     <message>
       <location filename="gui_snapper.py" line="1529"/>
@@ -5559,7 +5644,7 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     <message>
       <location filename="gui_snapper.py" line="1530"/>
       <source>Toggle Draft Grid</source>
-      <translation>Preklopi mrežo osnutka</translation>
+      <translation>Preklopi izrisovalno mrežo</translation>
     </message>
   </context>
   <context>
@@ -5634,7 +5719,7 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
-      <translation>Dodaj nov ...</translation>
+      <translation>Dodaj nov ...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
@@ -6505,7 +6590,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation>Shrani trenutni slog kot prednastavitev ...</translation>
+      <translation>Shrani trenutni slog kot prednastavitev ...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
@@ -6798,7 +6883,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="32"/>
       <source>General Draft Settings</source>
-      <translation>Splošne nastavitve osnutkov</translation>
+      <translation>Splošne nastavitve izrisa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="40"/>
@@ -6860,7 +6945,7 @@ Vrednosti z odstopanjem, manjšim od te vrednosti bodo obravnavane kot enake. Ta
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation>Možnosti snovalnih orodij</translation>
+      <translation>Možnosti izrisnih (Draft) orodij</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="230"/>
@@ -6877,7 +6962,7 @@ To omogoča, da nakažete smer in vtipkate dolžino.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation>Če je nastavljena ta možnost, bo pri ustvarjanju očrtov na ploskev drugega predmeta lastnost "Podpora" očrta nastavljena na osnovni predmet. Takšno obnašanje je bilo običajno pred FreeCADom 0.19</translation>
+      <translation>Če je nastavljena ta možnost, bo pri ustvarjanju izrisovalnih predmetov na obstoječo ploskev drugega predmeta lastnost "Podpora" izrisnega predmeta nastavljena na osnovni predmet. Takšno obnašanje je bilo običajno pred FreeCADom 0.19</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
@@ -6924,13 +7009,13 @@ v nasprotnem primeru se bodo ukazi zagnali v načinu brez kopiranja</translation
       <location filename="../ui/preferences-draft.ui" line="320"/>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation>Prisili Snovalna orodja, da namesto osnutkovih predmetov ustvarijo Osnovnike.
-Vedite, da ta možnost ni popolnoma podprta in da številnih predmetov ne bo mogoče urejati s Preoblikovalniki osnutkov.</translation>
+      <translation>Prisili izrisovalna orodja, da namesto izrisnih (Draft) predmetov ustvarijo delove (Part) osnovnike.
+Vedite, da ta možnost ni popolnoma podprta in da številnih predmetov ne bo mogoče urejati s Preoblikovalniki izrisa.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="324"/>
       <source>Use Part Primitives when available</source>
-      <translation>Uporabi osnovne oblike delov, ko so na voljo</translation>
+      <translation>Uporabi delove osnovnike, ko so na voljo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
@@ -6985,7 +7070,7 @@ Vedite, da ta možnost ni popolnoma podprta in da številnih predmetov ne bo mog
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
       <source>Draft classic style</source>
-      <translation>Klasični slog osnutkov</translation>
+      <translation>Običajni slog izrisa (Draft)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="59"/>
@@ -7145,9 +7230,9 @@ Vedite, da ta možnost ni popolnoma podprta in da številnih predmetov ne bo mog
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation>To je privzeto ime pisave vseh besedil in mer osnutka.
+      <translation>To je privzeto ime pisave vseh izrisovih (Draft) besedil in mer.
 Lahko je ime pisave (npr. "Arial"), privzeti slog (npr. "sans", "serif" ali "s
-stalno širno"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
+stalno širino"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
 "Arial:krepko")</translation>
     </message>
     <message>
@@ -7615,7 +7700,7 @@ Vedite, da to lahko traja dlje časa!</translation>
       <location filename="../ui/preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation>Predmeti istih plasti bodo združeni v osnutkovne zbire,
+      <translation>Predmeti istih plasti bodo združeni v izrisove (draft) zbire,
 kar bo pohitrilo prikaz, vendar jih bo težje urejati </translation>
     </message>
     <message>
@@ -7628,7 +7713,7 @@ kar bo pohitrilo prikaz, vendar jih bo težje urejati </translation>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Uvožena besedila bodo namesto velikosti, ki jo imajo v
-dokumentu DXF, prevzela privzeto velikost besedila v osnutkih</translation>
+dokumentu DXF, prevzela privzeto velikost izrisovega (Draft) besedila</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
@@ -7638,7 +7723,7 @@ dokumentu DXF, prevzela privzeto velikost besedila v osnutkih</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation>Če je to označeno, bodo plasti iz DXF-ja uvožene kot Plasti osnutka</translation>
+      <translation>Če je to označeno, bodo plasti iz DXF-ja uvožene kot izrisove (Draft) plasti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="425"/>
@@ -7806,12 +7891,12 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="222"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Prikaži orodno vrstico za pripenjanje</translation>
+      <translation>Prikaži izrisovo (Draft) orodno vrstico za pripenjanje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="242"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation>Skrij orodno vrstico za pripenjanje po uporabi</translation>
+      <translation>Po uporabi skrij izrisovo (Draft) orodno vrstico za pripenjanje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="263"/>
@@ -7831,7 +7916,7 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="291"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Če je označeno, bo mreža vedno prikazana, ko je dejavno delovno okolje za osnutke. V nasprotnem primeru bo prikazana samo ob uporabi ukaza</translation>
+      <translation>Če je označeno, bo mreža vedno prikazana, ko je dejavno izrisovalno (Draft) delovno okolje. V nasprotnem primeru bo vidna le pri uporabi ukaza</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="294"/>
@@ -7924,7 +8009,7 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
-      <translation>Prednastavitve urejanja osnutka</translation>
+      <translation>Prednastavitve izrisnega (Draft) urejanja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="570"/>
@@ -7939,12 +8024,12 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nastavi največje število predmetov, ki jih lahko urejevalnik osnutkov&lt;/p&gt;&lt;p&gt;obdeluje istočasno&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nastavi največje število predmetov, ki jih lahko izrisni (Draft) urejevalnik &lt;/p&gt;&lt;p&gt;obdeluje istočasno&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="645"/>
       <source>Draft edit pick radius</source>
-      <translation>Polmer izbiranja pri urejanju osnutka</translation>
+      <translation>Polmer izbiranja pri urejanju izrisa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="668"/>
@@ -8194,7 +8279,7 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="931"/>
       <source>Draft Statusbar</source>
-      <translation>Vrstica stanja osnutka</translation>
+      <translation>Izrisova (Draft) vrstica stanja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="951"/>
@@ -8204,12 +8289,12 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
-      <translation>Gradnik pripenjanja osnutka</translation>
+      <translation>Irisov (Draft) gradnik pripenjanja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="970"/>
       <source>Enable draft statusbar annotation scale widget</source>
-      <translation>Omogoči gradnik velikosti opisov v osnutkovi vrstici stanja</translation>
+      <translation>Omogoči gradnik merila opisov v izrisovi (Draft) vrstici stanja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="973"/>

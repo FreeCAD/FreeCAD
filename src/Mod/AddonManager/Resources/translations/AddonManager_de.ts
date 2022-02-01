@@ -4,6 +4,21 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="package_details.py" line="112"/>
+      <source>Version {version} installed on {date}</source>
+      <translation type="unfinished">Version {version} installed on {date}</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="117"/>
+      <source>Version {version} installed</source>
+      <translation type="unfinished">Version {version} installed</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="121"/>
+      <source>Installed on {date}</source>
+      <translation type="unfinished">Installed on {date}</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Installiert</translation>
@@ -107,7 +122,7 @@
       <location filename="package_details.py" line="431"/>
       <source>Delete cached version of this README and re-download</source>
       <translation type="unfinished">
-        <numerusform>Lösche die zwischengespeicherte Version dieses READMEs und lade sie erneut</numerusform>
+        <numerusform>Lösche die zwischengespeicherte Version dieses READMEs und lade sie erneut herunter</numerusform>
         <numerusform>Delete cached version of this README and re-download</numerusform>
       </translation>
     </message>
@@ -122,19 +137,19 @@
       <translation>Filter regulärer Ausdruck ist ungültig</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="180"/>
-      <source>Click for details about package</source>
-      <translation>Für Details zum Paket klicken</translation>
+      <location filename="package_list.py" line="207"/>
+      <source>Click for details about package {}</source>
+      <translation type="unfinished">Click for details about package {}</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="185"/>
-      <source>Click for details about workbench</source>
-      <translation>Für Details zum Arbeitsbereich klicken</translation>
+      <location filename="package_list.py" line="211"/>
+      <source>Click for details about workbench {}</source>
+      <translation type="unfinished">Click for details about workbench {}</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="190"/>
-      <source>Click for details about macro</source>
-      <translation>Für Details zum Makro klicken</translation>
+      <location filename="package_list.py" line="215"/>
+      <source>Click for details about macro {}</source>
+      <translation type="unfinished">Click for details about macro {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -145,6 +160,11 @@
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
       <translation>Maintainer:</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="364"/>
+      <source>Tags</source>
+      <translation type="unfinished">Tags</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
@@ -175,6 +195,21 @@
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
       <translation>Ausstehender Neustart</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="180"/>
+      <source>Click for details about package</source>
+      <translation>Für Details zum Paket klicken</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="185"/>
+      <source>Click for details about workbench</source>
+      <translation>Für Details zum Arbeitsbereich klicken</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="190"/>
+      <source>Click for details about macro</source>
+      <translation>Für Details zum Makro klicken</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
@@ -294,14 +329,24 @@
       <translation>Git-Updates für Workbench können nicht abgerufen werden</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="391"/>
+      <source>Retrieving info from</source>
+      <translation>Informationen werden abgerufen von</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="419"/>
       <source>Failed to read metadata from</source>
       <translation>Fehler beim Laden der Metadaten von</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="426"/>
+      <source>git fetch failed for {}</source>
+      <translation type="unfinished">git fetch failed for {}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+      <translation>git fetch fehlgeschlagen für {wb.name}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
@@ -359,24 +404,14 @@
       <translation>Makro-Code wird zwischengespeichert...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation>Paket-Metadaten werden abgerufen...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation>Pip konnte nicht ausgeführt werden. Fehlermeldung war:</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Beschreibung wird abgerufen...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="391"/>
-      <source>Retrieving info from</source>
-      <translation>Informationen werden abgerufen von</translation>
+      <location filename="addonmanager_workers.py" line="824"/>
+      <source>Retrieving info from {}</source>
+      <translation type="unfinished">Retrieving info from {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -496,7 +531,32 @@
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
+      <translation>Fehler: ZIP-Datei konnte nicht gefunden werden unter</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation>Paket-Metadaten werden abgerufen...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation>Pip konnte nicht ausgeführt werden. Fehlermeldung war:</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1611"/>
+      <source>Downloaded package.xml for {}</source>
+      <translation type="unfinished">Downloaded package.xml for {}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1641"/>
+      <source>Downloaded metadata.txt for {}</source>
+      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1715"/>
+      <source>Downloaded icon for {}</source>
+      <translation type="unfinished">Downloaded icon for {}</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
@@ -546,12 +606,7 @@
     <message>
       <location filename="AddonManager.py" line="240"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="241"/>
-      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Fehlende Abhängigkeit</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
@@ -589,6 +644,16 @@
       <translation>Cache wird aktualisiert...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Nach Updates suchen...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Stellen Sie sicher, dass Sie wissen, was Sie installieren!</translation>
@@ -604,19 +669,14 @@
       <translation>Sie müssen FreeCAD neu starten, um die Änderungen anzuwenden. Drücken Sie Ok, um FreeCAD jetzt neu zu starten, oder Abbrechen, um später neu zu starten.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Nach Updates suchen...</translation>
+      <location filename="AddonManager.py" line="241"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation>QtNetwork konnte nicht importiert werden - siehe Berichtsansicht für Details. Der Addon Manager ist nicht verfügbar.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Übernehmen</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="534"/>
-      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation>Programmerweiterungs-Manager: Überspringen der Aktualisierungsprüfung, weil die Benutzereinstellung AutoCheck auf „false“ gesetzt ist</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="263"/>
@@ -654,6 +714,11 @@
       <translation>Das Makro wurde erfolgreich entfernt.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="534"/>
+      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
+      <translation>Programmerweiterungs-Manager: Überspringen der Aktualisierungsprüfung, weil die Benutzereinstellung AutoCheck auf „false“ gesetzt ist</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Neustart erforderlich</translation>
@@ -676,7 +741,7 @@
     <message>
       <location filename="AddonManager.py" line="915"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Zu viel aufzulisten</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="893"/>
@@ -691,17 +756,17 @@
     <message>
       <location filename="AddonManager.py" line="1061"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Python kann nicht ausgeführt werden</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1081"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>Pip kann nicht ausgeführt werden</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1102"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Paketinstallation fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1105"/>
@@ -712,6 +777,15 @@
       <location filename="AddonManager.py" line="703"/>
       <source>Installation of macro failed</source>
       <translation>Installation des Makros fehlgeschlagen</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="AddonManager.py" line="1280"/>
+      <source>{} total, see Report view for list</source>
+      <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
+      <translation type="unfinished">
+        <numerusform>{} total, see Report view for list</numerusform>
+        <numerusform>{} total, see Report view for list</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1178"/>
@@ -746,12 +820,17 @@
     <message>
       <location filename="AddonManager.py" line="1457"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Entfernen bestätigen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
-      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
+      <translation>Soll dieses Addon wirklich deinstalliert werden?</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

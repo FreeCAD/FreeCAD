@@ -6,42 +6,42 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>Copia vista</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
       <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
+      <translation>Copia una vista in una seconda pagina</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>Copia vista in una seconda pagina</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
       <source>Select View to copy from list.</source>
-      <translation type="unfinished">Select View to copy from list.</translation>
+      <translation>Selezionare la vista da copiare dall'elenco.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Seleziona vista</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Seleziona dalla pagina.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Seleziona pagina</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Selezione alla pagina.</translation>
     </message>
   </context>
   <context>
@@ -49,42 +49,42 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Sposta vista</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Sposta una vista in una nuova pagina</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Sposta la vista in una pagina diversa</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Selezionare la vista da spostare dall'elenco.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Seleziona vista</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Seleziona dalla pagina.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Seleziona pagina</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Selezione alla pagina.</translation>
     </message>
   </context>
   <context>

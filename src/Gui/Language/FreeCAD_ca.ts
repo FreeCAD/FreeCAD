@@ -8063,7 +8063,7 @@ Voleu desar-lo amb un nom diferent?</translation>
     </message>
     <message>
       <source>&amp;Open...</source>
-      <translation>&amp;Obrir...</translation>
+      <translation>&amp;Obre...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>

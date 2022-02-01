@@ -718,11 +718,6 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <translation>Bu nesnenin alanı</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Bu nesnenin şekli</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Bu nesnenin kullandığı temel alınan nesne</translation>
@@ -731,6 +726,11 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>Bu nesnenin kullandığı PAT dosyası</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Bu nesnenin şekli</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1141,6 +1141,16 @@ dışındaki mesafesi</translation>
       <location filename="view_label.py" line="185"/>
       <source>Line color</source>
       <translation>Çizgi rengi</translation>
+    </message>
+    <message>
+      <location filename="view_base.py" line="106"/>
+      <source>Defines an SVG pattern.</source>
+      <translation type="unfinished">Defines an SVG pattern.</translation>
+    </message>
+    <message>
+      <location filename="view_base.py" line="116"/>
+      <source>Defines the size of the SVG pattern.</source>
+      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1713,8 +1723,20 @@ Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürüle
     <name>Draft_BezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="64"/>
+      <source>BÃ©zier curve</source>
+      <translation type="unfinished">BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
       <translation>Bezier eğri</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="67"/>
+      <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1728,8 +1750,18 @@ Nokta yakalamak için CTRL, sınırlamak için SHIFT.</translation>
     <name>Draft_BezierTools</name>
     <message>
       <location filename="gui_beziers.py" line="475"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
       <translation>Bezier araçları</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="478"/>
+      <source>Create various types of BÃ©zier curves.</source>
+      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1790,8 +1822,22 @@ Ortaya çıkan klon, üç yönünün her birinde ölçeklenebilir.</translation>
     <name>Draft_CubicBezCurve</name>
     <message>
       <location filename="gui_beziers.py" line="242"/>
+      <source>Cubic BÃ©zier curve</source>
+      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
       <translation>Kübik bezier eğrisi</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="245"/>
+      <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
+After the curve is created you can go back to edit each control point and set the properties of each knot.
+CTRL to snap, SHIFT to constrain.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2140,6 +2186,25 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <translation>Seçili nesnenin ofsetini oluşturur. 
 Orijinal nesnenin bir ofset kopyasını da oluşturabilir.
 Yakalamak için CTRL, sınırlamak için SHIFT. Her tıklamayla bir kopya oluşturmak için ALT tuşunu basılı tutun ve tıklayın.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_OrthoArray</name>
+    <message>
+      <location filename="gui_orthoarray.py" line="65"/>
+      <source>Array</source>
+      <translation>Dizi</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Seçilen nesnenin kopyalarını oluşturur ve kopyaları ortogonal bir modele yerleştirir,
+kopyaların X, Y, Z eksenlerinde belirtilen yönü takip ettiği anlamına gelir.
+
+Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürülebilir.</translation>
     </message>
   </context>
   <context>
@@ -2855,14 +2920,6 @@ Ardından, ihtiyacınız olan her an farklı bir kamera konumunu ve nesnelerin d
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgAddProperty</name>
-    <message>
-      <location filename="gui_groups.py" line="452"/>
-      <source>Group</source>
-      <translation>Grup</translation>
-    </message>
-  </context>
-  <context>
     <name>ImportAirfoilDAT</name>
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
@@ -2929,6 +2986,11 @@ Ardından, ihtiyacınız olan her an farklı bir kamera konumunu ve nesnelerin d
       <location filename="init_tools.py" line="50"/>
       <source>Arc tools</source>
       <translation>Yay Araçları</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="58"/>
+      <source>BÃ©zier tools</source>
+      <translation type="unfinished">BÃ©zier tools</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3079,14 +3141,14 @@ Ardından, ihtiyacınız olan her an farklı bir kamera konumunu ve nesnelerin d
       <translation>Otomatik</translation>
     </message>
     <message>
-      <location filename="DraftGui.py" line="722"/>
-      <source>active command:</source>
-      <translation>Etkin söz dizisi:</translation>
-    </message>
-    <message>
       <location filename="gui_groups.py" line="299"/>
       <source>None</source>
       <translation>Hiçbiri</translation>
+    </message>
+    <message>
+      <location filename="DraftGui.py" line="722"/>
+      <source>active command:</source>
+      <translation>Etkin söz dizisi:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="724"/>
@@ -4183,6 +4245,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Merging layer:</translation>
     </message>
     <message>
+      <location filename="view_base.py" line="402"/>
+      <source>Please load the Draft Workbench to enable editing this object</source>
+      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="46"/>
       <source>Draft</source>
       <translation>Taslak</translation>
@@ -5028,8 +5095,8 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
-      <source>Bezier curve has been closed</source>
-      <translation>Bezier eğrisi kapatıldı</translation>
+      <source>BÃ©zier curve has been closed</source>
+      <translation type="unfinished">BÃ©zier curve has been closed</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5050,6 +5117,11 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
       <translation>Sonraki düğümü tanımlamak için tıklayın ve sürükleyin</translation>
+    </message>
+    <message>
+      <location filename="gui_beziers.py" line="332"/>
+      <source>Bezier curve has been closed</source>
+      <translation>Bezier eğrisi kapatıldı</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
@@ -5392,6 +5464,11 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
       <translation>Grup adı</translation>
     </message>
     <message>
+      <location filename="gui_groups.py" line="392"/>
+      <source>Group</source>
+      <translation>Grup</translation>
+    </message>
+    <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
       <translation>Ötelemek için bir nesneyi seçin</translation>
@@ -5550,6 +5627,14 @@ Son açı, taban açısı artı bu miktar olacaktır.</translation>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
       <translation>başarıyla dışa aktarıldı</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <location filename="gui_groups.py" line="452"/>
+      <source>Group</source>
+      <translation>Grup</translation>
     </message>
   </context>
   <context>

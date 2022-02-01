@@ -211,7 +211,7 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>მობრუნების ჩართვა</translation>
+      <translation>მოძრაობითი გადატანის ჩართვა</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
@@ -389,7 +389,7 @@
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation type="unfinished">Scroll middle mouse button</translation>
+      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
     </message>
   </context>
   <context>
@@ -404,7 +404,7 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>დააჭირეთ შუა+მარცხენა ან შუა+მარჯვენა ღილაკებს</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
@@ -525,7 +525,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD-ის შექმნა შეუძლებელი იქნება ამ ადამიანების წვლილის გარეშე</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -1034,11 +1034,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>მალსახმობი '%1' უკვე მინიჭებულია '%2'-ზე.</translation>
     </message>
     <message>
       <source>Do you want to override it?</source>
-      <translation type="unfinished">Do you want to override it?</translation>
+      <translation>გნებავთ გადააწეროთ?</translation>
     </message>
   </context>
   <context>
@@ -1406,7 +1406,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>&lt;Tab&gt;-ის დაჭერით შეიტანილი შეწევის ზომა</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
@@ -1414,7 +1414,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>&lt;Tab&gt;-ის დაჭერისას ჩასმული ჰარეების რაოდენობა</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
@@ -1426,15 +1426,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>მონიშნული ტიპის კოდის ტექსტის ფონტის ზომა</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>მონიშნულ ტიპზე გადასატარებელი ფერისა და ფონტის პარამეტრები</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>მონიშნული ტიპის კოდის ტექსტის ფონტის ოჯახი</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -1442,7 +1442,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>კოდის ხაზები დაინომრება</translation>
     </message>
   </context>
   <context>
@@ -1505,7 +1505,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>რამდენი ფაილი უნდა იყოს „უკანასკნელი ფაილები“-ის სიაში</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -1848,11 +1848,11 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation type="unfinished">The macro '%1' already exists. Do you want to overwrite?</translation>
+      <translation>მაკრო '%1' უკვე არსებობს. გსურთ გადააწეროთ?</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation type="unfinished">The macro directory doesn't exist. Please, choose another one.</translation>
+      <translation>მაკროს საქაღალდე არ არსებობს. გთხოვთ, სხვა აირჩიოთ.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
@@ -1927,9 +1927,9 @@ Note: your changes will be applied when you next switch workbenches
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation type="unfinished">Access denied to '%1'
+      <translation>'%1'-ზე წვდომა აკრძალულია
 
-Specify another directory, please.</translation>
+გთხოვთ მიუთითოთ სხვა საქაღალდე.</translation>
     </message>
     <message>
       <source>HTML files</source>
@@ -1968,7 +1968,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>ჩაწერეთ მოსაძებნი ჯგუფის სახელი</translation>
     </message>
     <message>
       <source>Search Group</source>
@@ -2003,7 +2003,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
       <source>Match whole string only</source>
-      <translation type="unfinished">Match whole string only</translation>
+      <translation>მხოლოდ მთელი სტრიქონის დამთხვევის შემთხვევაში</translation>
     </message>
     <message>
       <source>Find Next</source>
@@ -2202,7 +2202,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation type="unfinished">No destination is defined.</translation>
+      <translation>მიმართულება აღწერილი არაა.</translation>
     </message>
     <message>
       <source>Project file</source>
@@ -2292,11 +2292,11 @@ Specify another directory, please.</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation type="unfinished">Redirect internal Python errors to report view</translation>
+      <translation>Python-ის შიდა შეცდომების ანგარიშის ხედში ჩვენება</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation type="unfinished">Redirect internal Python output to report view</translation>
+      <translation>Python-ის შიდა გამომავლების ანგარიშის ხედში ჩვენება</translation>
     </message>
     <message>
       <source>Python interpreter</source>
@@ -2304,7 +2304,7 @@ Specify another directory, please.</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation type="unfinished">Log messages will be recorded</translation>
+      <translation>შეტყობიბენენის ჩაიწერება ჟურნალში</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
@@ -2322,7 +2322,7 @@ on-screen while displaying the error</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>შეცდომის ანგარიშის ხედის ჩვენება</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
@@ -2332,7 +2332,7 @@ on-screen while displaying the warning</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>გაფრთხილების ანგარიშის ხედის ჩვენება</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
@@ -2356,19 +2356,19 @@ on-screen while displaying the log message</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation type="unfinished">Font color for normal messages in Report view panel</translation>
+      <translation>ანგარიშის ნახვის პანელის ნორმალური ელემენტების ფონტის ფერი</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation type="unfinished">Font color for log messages in Report view panel</translation>
+      <translation>ანგარიშის ნახვის პანელის ჟურნალის ელემენტების ფონტის ფერი</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation type="unfinished">Font color for warning messages in Report view panel</translation>
+      <translation>ანგარიშის ნახვის პანელის გაფრთხილების ელემენტების ფონტის ფერი</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>ანგარიშის ნახვის პანელის შეცდომის ელემენტების ფონტის ფერი</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
@@ -2384,15 +2384,15 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>ჟურნალში ანგარიშებისთვის დროის მიწერა</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>ჟურნალში ელემენტებისთვის დროის მიწერა</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>ნორმალური შეტყობინებები ასევე ჩაიწერება ჟურნალში</translation>
     </message>
     <message>
       <source>Record normal messages</source>
@@ -2588,7 +2588,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation type="unfinished">Render types of transparent objects</translation>
+      <translation>გამჭვირვალე ობიექტების რენდერის ტიპები</translation>
     </message>
     <message>
       <source>One pass</source>
@@ -2620,11 +2620,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>გამოკვეთის ინტენსიურობა</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
+      <translation>ობიექტები ნაჩვენები იქნება ორთოგრაფიულ პროექციაში</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
@@ -2638,7 +2638,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>ღერძების კვეთის ყოველთვის ჩვენება</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2666,7 +2666,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>მომრგვალების გამოყენებული ტიპი</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -2815,7 +2815,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation type="unfinished">The maximum value must be higher than the minimum value.</translation>
+      <translation>მაქსიმალური მნიშვნელობა მინიმალურზე დიდი უნდა იყოს.</translation>
     </message>
   </context>
   <context>
@@ -2852,11 +2852,11 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation type="unfinished">Save thumbnail into project file when saving document</translation>
+      <translation>დოკუმენტის შენახვისას პროექტის ფაილში მინიატურის ჩამატება</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
+      <translation>დოკუმენტის ხელახალი შენახვისას სარეზერვო ფაილების მაქსიმალური რაოდენობა</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2872,7 +2872,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation type="unfinished">Using Undo/Redo on documents</translation>
+      <translation>დაბრუნება/გამეორების დოკუმენტებზე გამოყენება</translation>
     </message>
     <message>
       <source>Authoring and License</source>
@@ -2916,7 +2916,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
-      <translation type="unfinished">Run AutoRecovery at startup</translation>
+      <translation>გაშვებისას ფაილების ავტომატური აღდგენა</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
@@ -2924,15 +2924,15 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>გენერირებულ მინიატურაში პროგრამის ლოგოს ჩამატება</translation>
     </message>
     <message>
       <source>The application will create a new document when started</source>
-      <translation type="unfinished">The application will create a new document when started</translation>
+      <translation>დაწყებისას აპლიკაცია შექმნის ახალ დოკუმენტს</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
+      <translation>FCStd ფაილებს შეკუმშვის დონე</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
@@ -2960,11 +2960,11 @@ automatically run a file recovery when it is started.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>რამდენად ხშირად ჩაიწერება აღდგენის ფაილი</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>მინიატურა შეინახება დოკუმენტის შენახვისას</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2978,11 +2978,11 @@ Common sizes are 128, 256 and 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>მინიატურას დაემატება პროგრამის ლოგო</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>რამდენი სარეზერვო ფაილი შეინახება დოკუმენტის შენახვისას</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -3000,7 +3000,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
-      <translation type="unfinished">Allow objects to have same label/name</translation>
+      <translation>ნების დართვა, ობიექტებს იგივე ჭდე/სახელი ჰქონდეთ</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -3032,7 +3032,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>კომპანიის სახელის ნაგულისხმევი მნიშვნელობა ახალი ფაილებისთვის</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
@@ -3064,7 +3064,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>ბმული, სადაც ლიცენზიების შესახებ უფო მეტი რამ წერია</translation>
     </message>
   </context>
   <context>
@@ -3307,7 +3307,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;რესურსების შესანარჩუნებლად, FreeCAD არ ტვირთავს დაზგებს, სანამ ისინი არ გამოიყენება. მათი ჩატვირთვამ შეიძლება უზრუნველყოს წვდომა დამატებით პარამეტრებზე, რომლებიც დაკავშირებულია მათ ფუნქციონირებასთან.&lt;/p&gt;&lt;p&gt;თქვენს ინსტალაციაში ხელმისაწვდომია შემდეგი დაზგები:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
@@ -3330,7 +3330,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>ჩაიტვირთება ავტომატურად FreeCAD-ის გაშვებისას</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
@@ -3361,7 +3361,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation type="unfinished">Show script commands in python console</translation>
+      <translation>სკრიპტის ბრძანებების Python-ის კონსოლში ჩვენება</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
@@ -3397,11 +3397,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Variables defined by macros are created as local variables</source>
-      <translation type="unfinished">Variables defined by macros are created as local variables</translation>
+      <translation>მაკროებით განსაზღვრული ცვლადები იქმნება როგორც ლოკალური ცვლადები</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation type="unfinished">Commands executed by macro scripts are shown in Python console</translation>
+      <translation>მაკროს სკრიპტების მიერ გაშვებული ბრძანებების თანამიმდევრობა ნაჩვენებია Python-ის კონსოლში</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands</source>
@@ -3413,7 +3413,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>The directory in which the application will search for macros</source>
-      <translation type="unfinished">The directory in which the application will search for macros</translation>
+      <translation>საქაღალდე, რომელშიც აპლიკაცია მოძებნის მაკროებს</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
@@ -3421,11 +3421,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>ბოლოს გახსნილი მაკროების სიის ზომა</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>რამდენი მაკრო უნდა იყოს ჩამოთვლილი ბოლო მაკროების სიაში</translation>
     </message>
     <message>
       <source>Shortcut count</source>
@@ -3468,7 +3468,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <translation>ეკრანის კუთხე, რომელშიც ნავიგაციის კუბ გამოჩნდება</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -3502,7 +3502,7 @@ Select a set and then press the button to view said configurations.</translation
     </message>
     <message>
       <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
+      <translation>ნავიგაციის პარამეტრების ნაკრები</translation>
     </message>
     <message>
       <source>Orbit style</source>
@@ -3648,7 +3648,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>კუბის ზედაპირზე დაწკაპუნებისას უახლოეს შესაძლო მდგომარეობამდე მობრუნება</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
@@ -3784,19 +3784,19 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
-      <translation type="unfinished">Unit system that should be used for all parts the application</translation>
+      <translation>საზომი ერთეულები, რომელიც უნდა იყოს გამოყენებული აპლიკაციის ყველა ნაწილისთვის</translation>
     </message>
     <message>
       <source>Minimum fractional inch to be displayed</source>
-      <translation type="unfinished">Minimum fractional inch to be displayed</translation>
+      <translation>დუიმის მინიმალური ჩვენებად ნაწილი</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>მშენებლობა ა. შ. შ.-ში(ფუტი-დუიმი/კვ. ფტ/კუბ. ფტ.)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>იმპერიული საზომი ერთეულები სამოქალაქო ინჟინერიისთვის(ფუტები, ფუტები/წმ)</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
@@ -3815,11 +3815,11 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Enable selection highlighting</source>
-      <translation type="unfinished">Enable selection highlighting</translation>
+      <translation>მონიშნულის გამოკვეთის ჩართვა</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
-      <translation type="unfinished">Enable preselection highlighting</translation>
+      <translation>გამოკვეთა თაგუნის გადატარებით</translation>
     </message>
     <message>
       <source>Background color</source>
@@ -3847,23 +3847,23 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+      <translation>წინასწარი მონიშვნისა და ფერის მიხედვით გამოკვეთის ჩართვა</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>მონიშვნისა და განსაზღვრული ფერით გამოკვეთის ჩართვა</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>მოდელის ხედის ფონის ფერი</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>ფონს მონიშნული ფერ ექნება</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>ფერის გრადიენტი მიიღებს შერჩეულ ფერს, როგორც შუა ფერს</translation>
     </message>
     <message>
       <source>Bottom color</source>
@@ -3925,11 +3925,11 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>შეიყვანეთ წყაროს მნიშვნელობა საზომი ერთეული</translation>
     </message>
     <message>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>შედეგის საზომი ერთეული</translation>
     </message>
     <message>
       <source>Result</source>
@@ -3961,7 +3961,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
-      <translation type="unfinished">Decimals for the Quantity</translation>
+      <translation>რაოდენობის განმსაზღვრელი რიცხვის მეათედების სიზუსტე</translation>
     </message>
     <message>
       <source>Unit category:</source>
@@ -3969,11 +3969,11 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>რაოდენობის საზომი ერთეული</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
-      <translation type="unfinished">Copy the result into the clipboard</translation>
+      <translation>შედეგის მიმოცვლის ბაფერში კოპირება</translation>
     </message>
   </context>
   <context>
@@ -4121,7 +4121,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>დარწმუნებული ხართ, რომ გსურთ წაშალოთ ყველა დროებითი საქაღალდე?</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -4366,7 +4366,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Do you really want to remove this parameter group?</source>
-      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
+      <translation>დარწმუნებული ხართ რომ გნებავთ ამ პარამეტრების ამ ჯგუფის წაშლა?</translation>
     </message>
   </context>
   <context>
@@ -4428,7 +4428,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>მობრუნება:</translation>
+      <translation>მოძრაობითი გადატანა:</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -4496,7 +4496,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation type="unfinished">Shift click for opposite direction</translation>
+      <translation>მიმართულების შესაცვლელად გამოიყენეთ Shift+წკაპი</translation>
     </message>
     <message>
       <source>Selected points</source>
@@ -4554,7 +4554,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::Dialog::RemoteDebugger</name>
     <message>
       <source>Attach to remote debugger</source>
-      <translation type="unfinished">Attach to remote debugger</translation>
+      <translation>დისტანციურ დებაგერზე მიმაგრება</translation>
     </message>
     <message>
       <source>winpdb</source>
@@ -4861,7 +4861,7 @@ originally selected prior to opening this dialog</translation>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
-      <translation type="unfinished">Selects and locates this object in the tree view</translation>
+      <translation>ამ ობიექტის ხის ხედში პოვნა და მონშვნა</translation>
     </message>
     <message>
       <source>To python console</source>
@@ -4869,7 +4869,7 @@ originally selected prior to opening this dialog</translation>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
+      <translation>ამ ობიექტის და მისი ქვეელემენტების Python-ის კონსოლში ჩვენება.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -4893,7 +4893,7 @@ originally selected prior to opening this dialog</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>დოკუმენტში ამ ქვეფორმის ცალკეულ ასლის შექმნა</translation>
     </message>
     <message>
       <source>Picked object list</source>
@@ -4915,7 +4915,7 @@ originally selected prior to opening this dialog</translation>
     <name>Gui::EditorView</name>
     <message>
       <source>Modified file</source>
-      <translation>მოდიფიცირებული ფაილი</translation>
+      <translation>შეცვლილი ფაილი</translation>
     </message>
     <message>
       <source>%1.
@@ -5046,7 +5046,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
+      <translation>გადაათრიეთ ეკრანი ორი თითით ან დააჭირეთ მაუსის მარჯვენა ღილაკს.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
@@ -5093,7 +5093,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>თქვენს სისტემაში Graphviz აღმოჩენილი არაა.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
@@ -5101,11 +5101,11 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>გნებავთ მისამართის მითითება, თუ ის უკვე დაყენებულია?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
-      <translation type="unfinished">Graphviz installation path</translation>
+      <translation>მისამართი Graphviz-ის გამშვებ ფაილებამდე</translation>
     </message>
     <message>
       <source>Graphviz failed</source>
@@ -5113,7 +5113,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation type="unfinished">Graphviz failed to create an image file</translation>
+      <translation>Graphviz-მა ვერ შეძლო გამოსახულების შექმნა</translation>
     </message>
   </context>
   <context>
@@ -5143,7 +5143,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation type="unfinished">Scroll middle mouse button</translation>
+      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
     </message>
   </context>
   <context>
@@ -5161,7 +5161,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
-      <translation type="unfinished">Direction must not be the null vector</translation>
+      <translation>მიმართულება ვერ იქნება ნულოვანი ვექტორი</translation>
     </message>
     <message>
       <source>X</source>
@@ -5230,7 +5230,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation type="unfinished">Toggles this dockable window</translation>
+      <translation>მიმაგრებადი ფანჯრის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -5259,7 +5259,7 @@ Do you want to save the document now?</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation type="unfinished">The alignment is already in progress.</translation>
+      <translation>სწორება უკვე მიმდინარეობს.</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
@@ -5279,7 +5279,7 @@ Do you want to save the document now?</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
-      <translation type="unfinished">The alignment has finished</translation>
+      <translation>სწორება დასრულებულია</translation>
     </message>
     <message>
       <source>The alignment has been canceled</source>
@@ -5329,7 +5329,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
-      <translation type="unfinished">Point picked at (%1,%2,%3)</translation>
+      <translation>არჩეული წერტილი (%1,%2,%3)</translation>
     </message>
     <message>
       <source>No point was picked</source>
@@ -5519,7 +5519,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
-      <translation type="unfinished">Unhandled PyCXX exception.</translation>
+      <translation>PyCXX-ის დაუმუშავებელი შეცდომა.</translation>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
@@ -5591,7 +5591,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
-      <translation type="unfinished">Saves Python history across %1 sessions</translation>
+      <translation>Python-ის ისტორიის შენახვა %1 სესიის განმავლობაში</translation>
     </message>
   </context>
   <context>
@@ -5651,7 +5651,7 @@ Do you want to exit without saving your data?</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation type="unfinished">Scroll middle mouse button</translation>
+      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
     </message>
   </context>
   <context>
@@ -5735,11 +5735,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Automatic python modules documentation</source>
-      <translation type="unfinished">Automatic python modules documentation</translation>
+      <translation>Python-ის მოდულების ავტომატურად გენერირებული დოკუმენტაცია</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+      <translation>ბრაუზერის გახსნა Python-ის მოდულების დოკუმენტაციის საჩვენებლად</translation>
     </message>
   </context>
   <context>
@@ -5764,7 +5764,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation>შემობრუნების ზრდადობა:</translation>
+      <translation>მოძრაობითი გადატანის ბიჯი:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
@@ -5886,7 +5886,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>გსურთ შეინახოთ თქვენი ცვლილებები გამოსვლამდე?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -6173,7 +6173,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation type="unfinished">Show hidden tree view items</translation>
+      <translation>ხის დამალული ელემენტების ჩვენება</translation>
     </message>
     <message>
       <source>Hide item</source>
@@ -6213,7 +6213,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>მონიშნული ობიექტის თავიდან გამოთვლა</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
@@ -6296,11 +6296,11 @@ Do you want to specify another directory?</translation>
     <name>NetworkAccessManager</name>
     <message>
       <source>&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</source>
-      <translation type="unfinished">&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;შეიყვანეთ მომხმარებლის სახელი და პაროლი %1-თვის %2-დან&lt;/qt&gt;</translation>
     </message>
     <message>
       <source>&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</source>
-      <translation type="unfinished">&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;%1 პროქსისთან მიერთების საშუალება:&lt;/qt&gt;</translation>
     </message>
   </context>
   <context>
@@ -6390,7 +6390,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Input in line %1 is not a number</source>
-      <translation type="unfinished">Input in line %1 is not a number</translation>
+      <translation>ხაზზე %1 შეყვანილი სტრიქონი რიცხვს არ წარმოადგენს</translation>
     </message>
   </context>
   <context>
@@ -6658,7 +6658,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Unable to open your system browser.</source>
-      <translation type="unfinished">Unable to open your system browser.</translation>
+      <translation>სისტემური ბრაუზერის გაშვების შეცდომა.</translation>
     </message>
     <message>
       <source>Options...</source>
@@ -6670,7 +6670,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Not enough memory available to display the data.</source>
-      <translation type="unfinished">Not enough memory available to display the data.</translation>
+      <translation>არ არის საკმარისი მეხსიერება მონაცემთა საჩვენებლად.</translation>
     </message>
     <message>
       <source>Cannot find file %1</source>
@@ -6678,7 +6678,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
-      <translation type="unfinished">Cannot find file %1 neither in %2 nor in %3</translation>
+      <translation>ვერ ვიპოვე ფაილი %1, ვერც %2 და ვერც %3</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
@@ -6694,7 +6694,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     </message>
     <message>
       <source>The document is not closable for the moment.</source>
-      <translation type="unfinished">The document is not closable for the moment.</translation>
+      <translation>დოკუმენტი ამ მომენტისთვის დახურვადი არაა.</translation>
     </message>
     <message>
       <source>No OpenGL</source>
@@ -6702,7 +6702,7 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     </message>
     <message>
       <source>This system does not support OpenGL</source>
-      <translation type="unfinished">This system does not support OpenGL</translation>
+      <translation>ამ სისტემას არ აქვს OpenGL-ის მხარდაჭერა</translation>
     </message>
     <message>
       <source>Help</source>
@@ -6764,7 +6764,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
-      <translation type="unfinished">Save a copy of the document under new filename...</translation>
+      <translation>დოკუმენტის ასლის ახალი სახელით შენახვა...</translation>
     </message>
     <message>
       <source>Frozen views</source>
@@ -6784,7 +6784,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
-      <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+      <translation>სისტემური მაკროების წაშლა აკრძალულია</translation>
     </message>
     <message>
       <source>Origin</source>
@@ -6796,7 +6796,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>%1 ცარიელი არაა. წავშალო მისი შემცველობაც?</translation>
     </message>
     <message>
       <source>Export failed</source>
@@ -6808,7 +6808,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>მობრუნება:</translation>
+      <translation>მოძრაობითი გადატანა:</translation>
     </message>
     <message>
       <source>Rotation:</source>
@@ -6886,7 +6886,7 @@ Please check the Report View for more details.</source>
     </message>
     <message>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>შედარებითი ბმულის შექმნის შეცდომა</translation>
     </message>
     <message>
       <source>Unlink failed</source>
@@ -6916,7 +6916,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>The property '%1' already exists in '%2'</source>
-      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+      <translation>%2-ს უკვე აქვს თვისება %1</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -6924,7 +6924,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
-      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+      <translation>%1-თვის თვისების დამატება: %2</translation>
     </message>
     <message>
       <source>Save dependent files</source>
@@ -6964,7 +6964,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>გსურთ შეინახოთ დოკუმენტის ცვლილებები მის დახურვამდე?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
@@ -6982,7 +6982,7 @@ Choose 'Abort' to abort</translation>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>ნაპოვნია განმეორებადი მისამართი. ამან შეიძლება გამოიწვიოს არსებული დოკუმენტის არასასურველი გადაწერა!
 
 </translation>
     </message>
@@ -6994,9 +6994,9 @@ Choose 'Abort' to abort</translation>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+მეტის გასაგებად, გთხოვთ გაეცნოთ ანგარიშს...</translation>
     </message>
     <message>
       <source>
@@ -7079,7 +7079,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation type="unfinished">Selection not allowed by filter</translation>
+      <translation>მონიშვნა უარყოფილია ფილტრის მიერ</translation>
     </message>
   </context>
   <context>
@@ -7202,7 +7202,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>კოორდინატების ღერძების ჩვენების ჩართ/გამორთ</translation>
+      <translation>ღერძების ჩვენების ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
@@ -7262,7 +7262,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
-      <translation type="unfinished">Opens the command line in the console</translation>
+      <translation>ბრძანების ხაზის კონსოლში გახსნა</translation>
     </message>
   </context>
   <context>
@@ -7363,7 +7363,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation type="unfinished">Opens a dialog to let you execute a recorded macro</translation>
+      <translation>ხსნის ფანჯარას, რომელიც საშუალებას მოგცემთ შეასრულოთ ჩაწერილი მაკრო</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -7442,7 +7442,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>List of available dock panels</source>
-      <translation type="unfinished">List of available dock panels</translation>
+      <translation>ხელმისაწვდომი მიმაგრებადი ზოლების სია</translation>
     </message>
   </context>
   <context>
@@ -7487,11 +7487,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
-      <translation type="unfinished">Toggles the selected object's edit mode</translation>
+      <translation>მონიშნული ობიექტის ჩასწორების რეჟიმის ჩართ/გამორთ</translation>
     </message>
     <message>
       <source>Activates or Deactivates the selected object's edit mode</source>
-      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
+      <translation>მონიშნული ობიექტის ჩასწორების რეჟიმის ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
@@ -7506,7 +7506,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation type="unfinished">Export an object in the active document</translation>
+      <translation>ობიექტის აქტიურ დოკუმენტში გატანა</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -7514,7 +7514,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>ჯერ აირჩიეთ გასატანი ობიექტები.</translation>
     </message>
   </context>
   <context>
@@ -7540,7 +7540,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation type="unfinished">Recompute feature or document</translation>
+      <translation>დოკუმენტის ან თვისების გადათვლა</translation>
     </message>
   </context>
   <context>
@@ -7555,7 +7555,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>შეწირულობა FreeCAD-ის განვითარებისთვის</translation>
     </message>
   </context>
   <context>
@@ -7570,11 +7570,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Frequently Asked Questions on the FreeCAD website</source>
-      <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+      <translation>ხშირად დასმული კითხვები FreeCAD-ის ვებგვერდზე</translation>
     </message>
     <message>
       <source>Frequently Asked Questions</source>
-      <translation type="unfinished">Frequently Asked Questions</translation>
+      <translation>ხშირად დასმული კითხვები</translation>
     </message>
   </context>
   <context>
@@ -7589,7 +7589,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+      <translation>FreeCAD-ის ფორუმი, სადაც შეგიძლიათ მიიღოთ დახმარება სხვა მომხმარებლებისგან</translation>
     </message>
     <message>
       <source>The FreeCAD Forum</source>
@@ -7604,11 +7604,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Python scripting documentation</source>
-      <translation type="unfinished">Python scripting documentation</translation>
+      <translation>Python-ზე სკრიპტების შექმნის დოკუმენტაცია</translation>
     </message>
     <message>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+      <translation>Python-ის სკრიპტების დოკუმენტაცია FreeCAD-ის ვებგვერდზე</translation>
     </message>
     <message>
       <source>PowerUsers documentation</source>
@@ -7657,7 +7657,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
-      <translation type="unfinished">Freezes the current view position</translation>
+      <translation>ხედის მიმდინარე პოზიციის გაყინვა</translation>
     </message>
   </context>
   <context>
@@ -7672,7 +7672,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>ობიექტების დასალაგებლად ახალი ჯგუფის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -7717,7 +7717,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation type="unfinished">Import a file in the active document</translation>
+      <translation>ფაილის აქტიურ დოკუმენტში შემოტანა</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -7751,7 +7751,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>მონიშნული გარე ბმულ(ებ)-ის შემოტანა</translation>
     </message>
   </context>
   <context>
@@ -7766,7 +7766,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>აქტიური დოკუმენტის ყველა ბმულის შემოტანა</translation>
     </message>
   </context>
   <context>
@@ -7781,7 +7781,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>მონიშნულ ობიექტ(ებ)-ამდე ბმულის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -7841,7 +7841,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>მოქმედებები ბმულზე გადასვლისას</translation>
     </message>
   </context>
   <context>
@@ -7856,7 +7856,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
-      <translation type="unfinished">Select all links to the current selected object</translation>
+      <translation>მონიშნული ობიექტის ყველა ბმულის მონიშვნა</translation>
     </message>
   </context>
   <context>
@@ -7871,7 +7871,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
-      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+      <translation>აირჩიეთ მიბმული ობიექტი და გადაერთეთ მისი მფლობელ დოკუმენტზე</translation>
     </message>
   </context>
   <context>
@@ -7912,11 +7912,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation type="unfinished">Attach to remote debugger...</translation>
+      <translation>დისტანციურ დებაგერზე მიმაგრება...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation type="unfinished">Attach to a remotely running debugger</translation>
+      <translation>დისტანციურ დებაგერზე მიმაგრება</translation>
     </message>
   </context>
   <context>
@@ -8028,7 +8028,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation type="unfinished">Cannot merge project with itself.</translation>
+      <translation>პროექტის შერწყმა თავის თავთან შეუძლებელია.</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
@@ -8077,7 +8077,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>The website where the help is maintained</source>
-      <translation type="unfinished">The website where the help is maintained</translation>
+      <translation>ვებგვერდი, სადაც ხელმისაწვდომია დახმარება</translation>
     </message>
   </context>
   <context>
@@ -8123,7 +8123,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>ახალი ნაწილის შექმნა და მისი აქტიურად მონიშვნა</translation>
     </message>
   </context>
   <context>
@@ -8153,7 +8153,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation type="unfinished">Place the selected objects</translation>
+      <translation>მონიშნული ობიექტების მოთავსება</translation>
     </message>
   </context>
   <context>
@@ -8232,7 +8232,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation type="unfinished">Utility to extract or create project files</translation>
+      <translation>პროექტის ფაილების შექმნის ან დაშლის ხელსაწყო</translation>
     </message>
   </context>
   <context>
@@ -8247,7 +8247,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>The official Python website</source>
-      <translation type="unfinished">The official Python website</translation>
+      <translation>Python-ის ოფიციალური ვებგვერდი</translation>
     </message>
   </context>
   <context>
@@ -8318,7 +8318,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Redoes a previously undone action</source>
-      <translation type="unfinished">Redoes a previously undone action</translation>
+      <translation>გაუქმებული მოქმედების გამეორება</translation>
     </message>
   </context>
   <context>
@@ -8333,7 +8333,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation type="unfinished">Recomputes the current active document</translation>
+      <translation>აქტიური დოკუმენტის გადათვლა</translation>
     </message>
   </context>
   <context>
@@ -8528,7 +8528,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Sets the display properties of the selected object</source>
-      <translation type="unfinished">Sets the display properties of the selected object</translation>
+      <translation>ადგენს მონიშნული ობიექტის ჩვენების თვისებებს</translation>
     </message>
   </context>
   <context>
@@ -8659,7 +8659,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation type="unfinished">Toggle between navigation and edit mode</translation>
+      <translation>ნავიგაციისა და ჩასწორების რეჟიმებს შორის გადართვა</translation>
     </message>
   </context>
   <context>
@@ -8674,7 +8674,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation type="unfinished">Toggles visibility of all objects in the active document</translation>
+      <translation>აქტიურ დოკუმენტში ყველა ობიექტის ხილვადობის ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
@@ -8749,7 +8749,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation type="unfinished">Transform the selected object in the 3d view</translation>
+      <translation>მონიშნული ობიექტის გარდაქმნა 3D ხედში</translation>
     </message>
   </context>
   <context>
@@ -8764,7 +8764,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>ხის მონიშნული ელემენტების ჩაკეცვა</translation>
     </message>
   </context>
   <context>
@@ -8794,7 +8794,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>მონიშნული ობიექტის ყველა ასლის მონიშვნა</translation>
     </message>
   </context>
   <context>
@@ -8839,7 +8839,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
-      <translation type="unfinished">Start the units calculator</translation>
+      <translation>საზომი ერთეულების კალკულატორის გაშვება</translation>
     </message>
   </context>
   <context>
@@ -8850,7 +8850,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>განსაზღვრავს ქცევას ობიექტის ხიდან ჩასწორებისას</translation>
     </message>
   </context>
   <context>
@@ -8895,7 +8895,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation type="unfinished">Creates a new view window for the active document</translation>
+      <translation>ქმნისა ქტიური დოკუმენტის ხედის ახალ ფანჯარას</translation>
     </message>
   </context>
   <context>
@@ -8985,7 +8985,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation type="unfinished">Fits the selected content on the screen</translation>
+      <translation>მონიშნულის ეკრანის ზომებში ჩატევა</translation>
     </message>
   </context>
   <context>
@@ -9015,7 +9015,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>საწყისი ხედის ნაგულისხმევა დაყენება</translation>
     </message>
   </context>
   <context>
@@ -9105,7 +9105,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation type="unfinished">Switch stereo viewing to quad buffer</translation>
+      <translation>სტერეოხედის ოთხმაგ ბაფერზე გადართვა</translation>
     </message>
   </context>
   <context>
@@ -9120,7 +9120,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+      <translation>სტერეოხედის წითელ/ალისფერზე გადართვა</translation>
     </message>
   </context>
   <context>
@@ -9210,7 +9210,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>ხედის საათის მიმართულებით 90°-ით შებრუნება</translation>
     </message>
   </context>
   <context>
@@ -9341,7 +9341,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>მთავარი ფანჯრის მთელ ეკრანზე ჩვენება</translation>
     </message>
   </context>
   <context>
@@ -9371,7 +9371,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation type="unfinished">Switches to perspective view mode</translation>
+      <translation>პერსპექტივის ხედის რეჟიმზე გადართვა</translation>
     </message>
   </context>
   <context>
@@ -9382,7 +9382,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation type="unfinished">Expand active document and collapse all others</translation>
+      <translation>აქტიური დოკუმენტის გაფართოება და ყველა დანარჩენის ჩაკეცვა</translation>
     </message>
     <message>
       <source>TreeView</source>
@@ -9408,7 +9408,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdTreeMultiDocument</name>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation type="unfinished">Display all documents in the tree view</translation>
+      <translation>დოკუმენტის ხის ფანჯარაში ყველა დოკუმენტის ჩვენება</translation>
     </message>
     <message>
       <source>TreeView</source>
@@ -9592,7 +9592,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation type="unfinished">Creates a screenshot of the active view</translation>
+      <translation>მიმდინარე ხედის სურათად ჩაწერა</translation>
     </message>
   </context>
   <context>
@@ -9756,7 +9756,7 @@ Do you still want to proceed?</translation>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation type="unfinished">This will discard all the changes since last file save.</translation>
+      <translation>ფაილის ბოლო შენახვის შემდეგ ყველა ცვლილების გაუქმება.</translation>
     </message>
     <message>
       <source>Revert document</source>
@@ -9786,7 +9786,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation type="unfinished">Set View to Orthographic mode</translation>
+      <translation>ხედის ორთოგრაფიულ რეჟიმზე დაყენება</translation>
     </message>
   </context>
   <context>
@@ -9797,7 +9797,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation type="unfinished">Set View to Perspective mode</translation>
+      <translation>ხედის პერსპექტიულ პროექციაზე დაყენება</translation>
     </message>
   </context>
   <context>
@@ -9808,7 +9808,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation type="unfinished">Zoom so that model fills the view</translation>
+      <translation>ხედიის ზომებამდე გადიდება</translation>
     </message>
   </context>
   <context>
@@ -9908,7 +9908,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <source>Choose the style of the Task Panel</source>
-      <translation type="unfinished">Choose the style of the Task Panel</translation>
+      <translation>აირჩიეთ მონაცემების პანელის სტილი</translation>
     </message>
     <message>
       <source>Default</source>

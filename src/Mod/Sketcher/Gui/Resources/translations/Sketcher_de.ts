@@ -1508,7 +1508,7 @@ Die Eigenschaft 'Support' wird gelöscht.</translation>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation>Beenden Sie im Bearbeitungsmodus die aktive Operation (Zeichnung, Einschränkung, etc.).</translation>
+      <translation>Beendet den aktiven Vorgang im Bearbeitungsmodus (Zeichnung, Einschränkung, etc.).</translation>
     </message>
   </context>
   <context>

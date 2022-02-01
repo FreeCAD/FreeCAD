@@ -211,7 +211,7 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>Habilitar traducciones</translation>
+      <translation>Habilitar traslaciones</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
@@ -796,7 +796,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>CheckBox</source>
-      <translation>CasillaSelección</translation>
+      <translation>Casilla de selección</translation>
     </message>
   </context>
   <context>
@@ -1452,7 +1452,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>Start up</source>
-      <translation>Comenzar</translation>
+      <translation>Inicio</translation>
     </message>
     <message>
       <source>Enable splash screen at start up</source>
@@ -1460,7 +1460,7 @@ Si no está marcado, entonces la propiedad debe tener un nombre único y se acce
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Carga automática del módulo después de iniciar:</translation>
+      <translation>Módulo a cargar automáticamente después de iniciar:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1533,23 +1533,22 @@ this according to your screen size or personal taste</source>
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
       <translation>Personaliza cómo se muestra la vista de árbol en el panel (se requiere reiniciar).
 
-'Vista Combinada': combina la vista de árbol y la vista de propiedad en un panel.
-'Vista de Árbol y Vista de Propiedades': divide la vista de árbol y la vista de propiedades en un panel separado.
-'Ambos': mantiene los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
+'Vista combinada': combina la vista de árbol y la vista de propiedad en un panel.
+'Vista de árbol y vista de propiedades': divide la vista de árbol y la vista de propiedades en un panel separado.
+'Ambas': mantiene los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation>Una pantalla de Bienvenida es una pequeña ventana de carga que se muestra
+      <translation>Una pantalla de bienvenida es una pequeña ventana de carga que se muestra
 cuando se inicia FreeCAD. Si esta opción está marcada, FreeCAD mostrará
 la pantalla de bienvenida</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Elija qué banco de trabajo se activará y se mostrará
-después de que FreeCAD inicie</translation>
+      <translation>Elige cuál entorno de trabajo se activará y mostrará al iniciar FreeCAD</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
@@ -1586,15 +1585,15 @@ espacio horizontal disponible en la consola de Python</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Vista Combinada</translation>
+      <translation>Vista combinada</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>Vista del Árbol y Vista de Propiedades</translation>
+      <translation>Vista de árbol y vista de propiedades</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation>Ambos</translation>
+      <translation>Ambas</translation>
     </message>
   </context>
   <context>
@@ -2258,11 +2257,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Record warnings</source>
-      <translation>Guardar advertencias</translation>
+      <translation>Grabar advertencias</translation>
     </message>
     <message>
       <source>Record error messages</source>
-      <translation>Guardar mensajes de error</translation>
+      <translation>Grabar mensajes de error</translation>
     </message>
     <message>
       <source>Colors</source>
@@ -2306,75 +2305,76 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
-      <translation>Las advertencias se registrarán</translation>
+      <translation>Las advertencias se grabarán</translation>
     </message>
     <message>
       <source>Error messages will be recorded</source>
-      <translation>Los mensajes de registro serán grabados</translation>
+      <translation>Los mensajes de error serán grabados</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation>Cuando ha ocurrido un error, el diálogo de Vista de Informe se hace visible en pantalla mostrando el error</translation>
+      <translation>Cuando ha ocurrido un error, el diálogo de la Vista de Informe se hace visible en pantalla mostrando el error</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation>Mostrar vista de informe en errores</translation>
+      <translation>Mostrar la vista de informes en caso de errores</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation>Cuando ha ocurrido una advertencia, el diálogo de Vista de Informe se hace visible en pantalla mostrando la advertencia</translation>
+      <translation>Cuando ha ocurrido una advertencia, el cuadro de diálogo de Informe se hace visible
+en pantalla mientras se muestra la advertencia</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation>Mostrar vista de informe en advertencias</translation>
+      <translation>Mostrar vista de informes en caso de advertencias</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Cuando se emite un mensaje normal, el diálogo de Vista de Informe se hace visible en pantalla mostrando el mensaje</translation>
+      <translation>Cuando ha ocurrido un mensaje normal, el cuadro de diálogo de Ver informes se hace visible
+en pantalla mientras se muestra el mensaje</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation>Mostrar vista de informe en mensaje normal</translation>
+      <translation>Mostrar vista de informe en caso de mensaje normal</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Cuando se emite un mensaje de registro, el diálogo de Vista de Informe se hace visible en pantalla mostrando el mensaje de registro</translation>
+      <translation>Cuando se ha producido un mensaje de registro, el cuadro de diálogo de Ver informes se hace visible
+en pantalla mientras se muestra el mensaje de registro</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation>Mostrar vista de informe en mensaje de registro</translation>
+      <translation>Mostrar vista de informe en caso de mensaje de registro</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Color de fuente para los mensajes normales en el panel de Vista de Informe</translation>
+      <translation>Color de fuente para los mensajes normales en el panel de vista del informe</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation>Color de fuente para los mensajes de registro en el panel de Vista de Informe</translation>
+      <translation>Color de fuente para los mensajes de registro en el panel de vista del informe</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation>Color de fuente para mensajes de avertencia en el panel de Vista de Informe</translation>
+      <translation>Color de fuente para mensajes de advertencia en el panel de vista de informe</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation>Color de fuente para los mensajes de error en el panel de Vista de Informe</translation>
+      <translation>Color de fuente para mensajes de error en el panel de vista del informe</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>La salida interna de Python se redirigirá
-desde la consola de Python al panel de la vista de informe</translation>
+      <translation>La salida interna de Python se redirigirá desde la consola de Python al panel de vista de informe</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>La salida interna de Python se redirigirá
-desde la consola de Python al panel de la vista de informe</translation>
+      <translation>Los mensajes de errores internos de Python serán redireccionados desde la consola de Python al panel de vista de informes</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
@@ -2828,7 +2828,7 @@ del objeto 3D que se muestra actualmente.</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
-      <translation>Crear un documento nuevo al iniciar</translation>
+      <translation>Crear nuevo documento al iniciar</translation>
     </message>
     <message>
       <source>Storage</source>
@@ -2844,15 +2844,15 @@ del objeto 3D que se muestra actualmente.</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation>Guardar la imagen en miniatura dentro del archivo de proyecto cuando se guarda un documento</translation>
+      <translation>Guardar miniatura en el archivo del proyecto al guardar el documento</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Número máximo de archivos de copia de seguridad a tener a la hora de volver a guardar el documento</translation>
+      <translation>Número máximo de archivos de copia de seguridad a tener al momento de volver a guardar el documento</translation>
     </message>
     <message>
       <source>Document objects</source>
-      <translation>Objetos de documento</translation>
+      <translation>Objetos del documento</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
@@ -2860,11 +2860,11 @@ del objeto 3D que se muestra actualmente.</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Máximos pasos de deshacer/rehacer</translation>
+      <translation>Máximo de pasos de deshacer/rehacer</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Usando Deshacer/Rehacer en los documentos</translation>
+      <translation>Usar Deshacer/Rehacer en documentos</translation>
     </message>
     <message>
       <source>Authoring and License</source>
@@ -2912,7 +2912,7 @@ del objeto 3D que se muestra actualmente.</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation>Guardar información de autorrecuperación cada</translation>
+      <translation>Guardar información de auto-recuperación cada</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
@@ -2928,11 +2928,11 @@ del objeto 3D que se muestra actualmente.</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation>Todos los cambios en los documentos se almacenan para que se puedan deshacer/rehacer</translation>
+      <translation>Todos los cambios en los documentos son almacenados para que se puedan deshacer/rehacer</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
-      <translation>Cuántos pasos de Deshacer/Rehacer deben ser grabados</translation>
+      <translation>Cuántos pasos de deshacer/rehacer deben ser grabados</translation>
     </message>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
@@ -2947,16 +2947,15 @@ Esta operación puede aumentar ligeramente el tiempo de recálculo.</translation
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation>Si hay un archivo de recuperación disponible, la aplicación
-ejecutará automáticamente un archivo de recuperación cuando se inicie.</translation>
+      <translation>Si hay un archivo de recuperación disponible, la aplicación automáticamente ejecutará un archivo de recuperación cuando se inicie.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation>Con qué frecuencia se escribe un archivo de recuperación</translation>
+      <translation>Cada cuánto se escribe el archivo de recuperación</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation>Una miniatura se almacenará cuando se guarde el documento</translation>
+      <translation>Una miniatura será almacenada cuando se guarde el documento</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2965,16 +2964,16 @@ ejecutará automáticamente un archivo de recuperación cuando se inicie.</trans
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation>Establece el tamaño de la miniatura que se almacena en el documento.
+      <translation>Fija el tamaño de la miniatura que es almacenada en el documento.
 Los tamaños comunes son 128, 256 y 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation>El logotipo del programa se añadirá a la miniatura</translation>
+      <translation>El logo del programa se añadirá a la miniatura</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation>Cuántos archivos de copia de seguridad serán guardados al guardar el documento</translation>
+      <translation>Cuántos archivos de copia de seguridad se conservarán cuando se guarde el documento</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -3019,15 +3018,15 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
-      <translation>El campo 'Última modificación por' se establecerá al autor especificado al guardar el archivo</translation>
+      <translation>El campo "Última modificación por" será asignado al autor especificado cuando se guarde el archivo</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation>Nombre de empresa predeterminado a usar para nuevos archivos</translation>
+      <translation>Nombre de organización predeterminado a usar en archivos nuevos</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation>Licencia predeterminada para nuevos documentos</translation>
+      <translation>Licencia predeterminada para documentos nuevos</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -3344,15 +3343,15 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Macro recording settings</source>
-      <translation>Configuración de la grabación de macros</translation>
+      <translation>Configuración de grabación de macros</translation>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Comandos de registro</translation>
+      <translation>Registro de comandos</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Mostrar comandos de archivos de guión en la consola de Python</translation>
+      <translation>Mostrar comandos de scripts en la consola de Python</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
@@ -3364,7 +3363,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Gui commands</source>
-      <translation>Comandos de interfaz de usuario</translation>
+      <translation>Comandos de la interfaz gráfica de usuario</translation>
     </message>
     <message>
       <source>Record as comment</source>
@@ -3380,19 +3379,19 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Ejecutar macro en entorno local</translation>
+      <translation>Ejecutar macros en entorno local</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
-      <translation>Grabar comandos GUI</translation>
+      <translation>Grabar los comandos GUI</translation>
     </message>
     <message>
       <source>Variables defined by macros are created as local variables</source>
-      <translation>Las variables definidas por macros se crean como variables locales</translation>
+      <translation>Las variables definidas por macros son creadas como variables locales</translation>
     </message>
     <message>
       <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>Los comandos ejecutados por scripts de macro se muestran en la consola de Python</translation>
+      <translation>Los comandos ejecutados por scripts de macros se muestran en la consola de Python</translation>
     </message>
     <message>
       <source>Recorded macros will also contain user interface commands</source>
@@ -3412,19 +3411,19 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation>Tamaño de la lista de macros reciente</translation>
+      <translation>Tamaño de la lista de macros recientes</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation>Cuántas macros debería aparecer en la lista de macros recientes</translation>
+      <translation>Cuántas macros deben aparecer en la lista de macros recientes</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation>Contador de accesos directos</translation>
+      <translation>Contador de atajos</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation>Cuántas macros recientes deben tener accesos directos</translation>
+      <translation>Cuántas macros recientes deben tener atajos</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
@@ -3670,7 +3669,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+      <translation>Autoexpande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
@@ -3682,7 +3681,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation>Añadir casillas de selección en el árbol del documentos</translation>
+      <translation>Añadir casillas de selección en el árbol de documentos</translation>
     </message>
   </context>
   <context>
@@ -3733,7 +3732,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Mínimo pulgadas fraccionarias:</translation>
+      <translation>Fracción de pulgada mínima:</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -3769,7 +3768,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>Número de decimales que deberían mostrarse en números y cotas</translation>
+      <translation>Número de decimales que deben mostrarse para números y cotas</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
@@ -3777,7 +3776,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Minimum fractional inch to be displayed</source>
-      <translation>Pulgada fraccional mínima que se mostrará</translation>
+      <translation>Fracción de pulgada mínima que se mostrará</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
@@ -4417,7 +4416,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>Traducción:</translation>
+      <translation>Traslación:</translation>
     </message>
     <message>
       <source>Z:</source>
@@ -4717,7 +4716,7 @@ originally selected prior to opening this dialog</source>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Vista Combinada</translation>
+      <translation>Vista combinada</translation>
     </message>
     <message>
       <source>Model</source>
@@ -5949,7 +5948,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation>Africano</translation>
+      <translation>Afrikáans</translation>
     </message>
     <message>
       <source>Norwegian</source>
@@ -6398,7 +6397,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Vista Combinada</translation>
+      <translation>Vista combinada</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6791,7 +6790,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Translation:</source>
-      <translation>Traducción:</translation>
+      <translation>Traslación:</translation>
     </message>
     <message>
       <source>Rotation:</source>
@@ -9488,7 +9487,7 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+      <translation>Autoexpande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
     </message>
   </context>
   <context>

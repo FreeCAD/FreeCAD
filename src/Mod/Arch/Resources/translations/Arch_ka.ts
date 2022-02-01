@@ -181,7 +181,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="590"/>
       <source>Turn cutting on when activating this level</source>
-      <translation type="unfinished">Turn cutting on when activating this level</translation>
+      <translation>ამ დონის აქტივაციისას ჭრის ჩართვა</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="ArchSpace.py" line="278"/>
       <source>The finishing of the ceiling of this space</source>
-      <translation type="unfinished">The finishing of the ceiling of this space</translation>
+      <translation>ამ ფართის ჭერის გაწყობა</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="280"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="928"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
-      <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
+      <translation>თუ ჩართულია, ნაჩვენები ხედები სექციის სიბრტყეში ამოიჭრება.</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="930"/>
@@ -811,7 +811,7 @@
     <message>
       <location filename="ArchWindow.py" line="553"/>
       <source>The preset number this window is based on</source>
-      <translation type="unfinished">The preset number this window is based on</translation>
+      <translation>პრესეტის ნომერი, რომელზეც ეს ფანჯარაა დაფუძნებული</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="556"/>
@@ -1261,7 +1261,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="256"/>
       <source>Centers the profile over the edges or not</source>
-      <translation type="unfinished">Centers the profile over the edges or not</translation>
+      <translation>პროფილის წიბოებს შუა გასწორების ჩართ/გამორთ</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="260"/>
@@ -1302,7 +1302,7 @@
     <message>
       <location filename="ArchReference.py" line="388"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>თუ ჩართულია, ფერების წამოღება მიბმული ფაილიდან ხშირად განახლდება</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="249"/>
@@ -1757,7 +1757,7 @@
     <message>
       <location filename="ArchStructure.py" line="1358"/>
       <source>If true the element are aligned with axes</source>
-      <translation type="unfinished">If true the element are aligned with axes</translation>
+      <translation>თუ ჩართულია, ელემენტი ღერძებთან იქნება სწორებული</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="206"/>
@@ -2122,7 +2122,7 @@
     <message>
       <location filename="ArchPanel.py" line="1244"/>
       <source>Specifies the scale applied to each panel view.</source>
-      <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
+      <translation>განსაზღვრავს მასშტაბს, რომელიც გამოიყენება პანელის თითოეულ ხედზე.</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1247"/>
@@ -2936,7 +2936,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="1638"/>
       <source>Hole wire</source>
-      <translation>ნახვრეტის მოღუნული ხაზი</translation>
+      <translation>ნახვრეტის პოლიხაზი</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1639"/>
@@ -2966,7 +2966,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="1651"/>
       <source>Wires</source>
-      <translation>მოღუნული ხაზები</translation>
+      <translation>პოლიხაზები</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1648"/>
@@ -3076,12 +3076,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchEquipment.py" line="244"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation>ამ ოპერაციას შეიძლება დიდი დრო დასჭირდეს. გავაგრძელოთ?</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="251"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>ბადეს აქვს 500-ზე მეტი წახნაგი. ამას რამდენიმე წუთი დასჭირდება...</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="252"/>
@@ -3141,7 +3141,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
-      <translation>&amp;არქიტექტურული</translation>
+      <translation>&amp;არქიტექტურა</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -3156,7 +3156,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
-      <translation>მოდიფიკაცია</translation>
+      <translation>ჩასწორება</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="192"/>
@@ -4124,7 +4124,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="82"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
+      <translation>ობიექტის ხაზზე გაჭრა ჩვეულებრივი სამუშაო მაგიდით</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
@@ -4501,7 +4501,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchReference.py" line="741"/>
       <source>Creates an external reference object</source>
-      <translation type="unfinished">Creates an external reference object</translation>
+      <translation>გარე ობიექტზე ბმულის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -4872,7 +4872,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
-      <translation>&amp;არქიტექტურული</translation>
+      <translation>&amp;არქიტექტურა</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="193"/>
@@ -4897,7 +4897,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
-      <translation>მოდიფიკაცია</translation>
+      <translation>ჩასწორება</translation>
     </message>
   </context>
   <context>
@@ -4905,7 +4905,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="121"/>
       <source>&amp;Arch</source>
-      <translation>&amp;არქიტექტურული</translation>
+      <translation>&amp;არქიტექტურა</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="124"/>
@@ -4920,7 +4920,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="130"/>
       <source>Modification</source>
-      <translation>მოდიფიკაცია</translation>
+      <translation>ჩასწორება</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="132"/>
@@ -5321,7 +5321,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>გატანისას დასაგენერირებლად ეს ცარიელი დატოვეთ</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="38"/>
@@ -5678,7 +5678,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="316"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation type="unfinished">If this is checked, conversion is faster but the result might still contain triangulated faces</translation>
+      <translation>თუ ჩართულია, კონვერტაცია უფრო სწრაფია, მაგრამ შედეგი შეიძლება მაინც შეიცავდეს ტრიანგულირებულ ზედაპირებს</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="319"/>
@@ -5821,7 +5821,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="742"/>
       <source>Include unit when sending measurements to clipboard</source>
-      <translation type="unfinished">Include unit when sending measurements to clipboard</translation>
+      <translation>აზომვის მნიშვნელობების ბაფერში კოპირებისას საზომი ერთეულების მიყოლება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="14"/>
@@ -5884,7 +5884,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="139"/>
       <source>This is the default color for new Wall objects</source>
-      <translation type="unfinished">This is the default color for new Wall objects</translation>
+      <translation>ეს არის ახალი კედლების ნაგულისხმევი ფერი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="164"/>
@@ -6494,14 +6494,13 @@ Use this to force all objects to be exported as BREP geometry.</translation>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
-are decomposed into flat facets.
-If this is checked, an additional calculation is done to join coplanar facets.</translation>
+      <translation>მრუდი ფორმები, რომლებიც არ შეიძლება წარმოდგენილი იყოს მრუდების სახით IFC-ში დაიშლება ბრტყელ ნაწილებად.
+თუ ჩართულია, კომპლანარული წახნაგების შესაერთებლად დამატებითი გამოთვლა გაკეთდება.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="149"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation type="unfinished">Join coplanar facets when triangulating</translation>
+      <translation>ტრიანგულაციის კომპლანარული წახნაგების შეერთება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="162"/>

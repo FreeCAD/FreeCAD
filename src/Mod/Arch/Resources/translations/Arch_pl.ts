@@ -4479,7 +4479,7 @@ Jeśli Bieg = 0, wówczas Bieg jest obliczany tak, aby wysokość była taka sam
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Tworzy różne rodzaje prętów zbrojeniowych, w tym pręty w kształcie U, L i strzemiona</translation>
     </message>
   </context>
   <context>

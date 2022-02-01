@@ -4,6 +4,21 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="package_details.py" line="112"/>
+      <source>Version {version} installed on {date}</source>
+      <translation type="unfinished">Version {version} installed on {date}</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="117"/>
+      <source>Version {version} installed</source>
+      <translation type="unfinished">Version {version} installed</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="121"/>
+      <source>Installed on {date}</source>
+      <translation type="unfinished">Installed on {date}</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
       <translation>Nameščeno</translation>
@@ -124,19 +139,19 @@
       <translation>Regularni izraz sita je neveljaven</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="180"/>
-      <source>Click for details about package</source>
-      <translation>Kliknite za podrobnosti o paketu</translation>
+      <location filename="package_list.py" line="207"/>
+      <source>Click for details about package {}</source>
+      <translation type="unfinished">Click for details about package {}</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="185"/>
-      <source>Click for details about workbench</source>
-      <translation>Kliknite za podrobnosti o delovnem okolju</translation>
+      <location filename="package_list.py" line="211"/>
+      <source>Click for details about workbench {}</source>
+      <translation type="unfinished">Click for details about workbench {}</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="190"/>
-      <source>Click for details about macro</source>
-      <translation>Kliknite za podrobnosti o makru</translation>
+      <location filename="package_list.py" line="215"/>
+      <source>Click for details about macro {}</source>
+      <translation type="unfinished">Click for details about macro {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -147,6 +162,11 @@
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
       <translation>Vzdrževalci:</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="364"/>
+      <source>Tags</source>
+      <translation type="unfinished">Tags</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
@@ -177,6 +197,21 @@
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
       <translation>Čakanje na ponovni zagon</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="180"/>
+      <source>Click for details about package</source>
+      <translation>Kliknite za podrobnosti o paketu</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="185"/>
+      <source>Click for details about workbench</source>
+      <translation>Kliknite za podrobnosti o delovnem okolju</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="190"/>
+      <source>Click for details about macro</source>
+      <translation>Kliknite za podrobnosti o makru</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
@@ -252,7 +287,7 @@
       <location filename="addonmanager_workers.py" line="115"/>
       <source>Checking network connection...
 </source>
-      <translation>Preverjanje omrežne povezave ...
+      <translation>Preverjanje omrežne povezave ...
 </translation>
     </message>
     <message>
@@ -296,14 +331,24 @@
       <translation>Ni mogoče pridobiti git posodobitev za delovno okolje</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="391"/>
+      <source>Retrieving info from</source>
+      <translation>Pridobivanje podatkov iz</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="419"/>
       <source>Failed to read metadata from</source>
       <translation>Spodletelo branje metapodatkov s</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="426"/>
+      <source>git fetch failed for {}</source>
+      <translation type="unfinished">git fetch failed for {}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+      <translation>spodletelo pridobivanje git-a za {wb.name}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
@@ -358,27 +403,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
-      <translation>Pridobivanje kode makra ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation>Pridobivanje metapodatkov paketa ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation>Izvršitev "slike v sliki" je spodletela. Vrnjena napaka:</translation>
+      <translation>Pridobivanje kode makra ...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
-      <translation>Pridobivanje opisov ...</translation>
+      <translation>Pridobivanje opisov ...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="391"/>
-      <source>Retrieving info from</source>
-      <translation>Pridobivanje podatkov iz</translation>
+      <location filename="addonmanager_workers.py" line="824"/>
+      <source>Retrieving info from {}</source>
+      <translation type="unfinished">Retrieving info from {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -473,7 +508,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="915"/>
       <source>Retrieving macro description...</source>
-      <translation>Pridobivanje opisov makrov ...</translation>
+      <translation>Pridobivanje opisov makrov ...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="653"/>
@@ -498,7 +533,32 @@
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
+      <translation>Napaka: Ni mogoče najti ZIP-a od</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation>Pridobivanje metapodatkov paketa ...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation>Izvršitev "slike v sliki" je spodletela. Vrnjena napaka:</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1611"/>
+      <source>Downloaded package.xml for {}</source>
+      <translation type="unfinished">Downloaded package.xml for {}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1641"/>
+      <source>Downloaded metadata.txt for {}</source>
+      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1715"/>
+      <source>Downloaded icon for {}</source>
+      <translation type="unfinished">Downloaded icon for {}</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
@@ -538,7 +598,7 @@
     <message>
       <location filename="AddonManager.py" line="192"/>
       <source>Checking for connection to GitHub...</source>
-      <translation>Preverjanje povezave do GitHub-a ...</translation>
+      <translation>Preverjanje povezave do GitHub-a ...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="213"/>
@@ -548,17 +608,12 @@
     <message>
       <location filename="AddonManager.py" line="240"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="241"/>
-      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Manjkajoča odvisnost</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
-      <translation>Pričenjanje ...</translation>
+      <translation>Pričenjanje ...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
@@ -588,7 +643,17 @@
     <message>
       <location filename="AddonManager.py" line="659"/>
       <source>Updating cache...</source>
-      <translation>Posodabljanje krajevnega predpomnilnika ...</translation>
+      <translation>Posodabljanje krajevnega predpomnilnika ...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Preverjam za posodobitve...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -606,19 +671,14 @@
       <translation>Za uveljavitev sprememb je potrebno FreeCAD ponovno zaganti. Za takojšen ponovni zagon klinite V redu, če želite ponovno zagnati kasneje, pa kliknite Prekliči.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Preverjam za posodobitve...</translation>
+      <location filename="AddonManager.py" line="241"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation>QtNetwork-a ni mogoče uvoziti - za več podrobnosti preberite Poročevalni pogled. Upravljalnik dodatkov ni na voljo.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Uveljavi</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="534"/>
-      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation>Upravljalnik dodatkov: Preskakovanje preverjanja posodobitev, ker je v prednastavitvah samodejno preverjanje neokljukano</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="263"/>
@@ -656,6 +716,11 @@
       <translation>Makro uspešno odstranjen.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="534"/>
+      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
+      <translation>Upravljalnik dodatkov: Preskakovanje preverjanja posodobitev, ker je v prednastavitvah samodejno preverjanje neokljukano</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Potreben ponovni zagon</translation>
@@ -678,7 +743,7 @@
     <message>
       <location filename="AddonManager.py" line="915"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Preveč za navedbo</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="893"/>
@@ -693,27 +758,38 @@
     <message>
       <location filename="AddonManager.py" line="1061"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Pythona ni mogoče izvesti</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1081"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>Slike v sliki ni mogoče izvesti</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1102"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Namestitev paketa spodletela</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1105"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Za podrobnejši zapisnik o napaki poglejte Poročevalni pogled.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
       <source>Installation of macro failed</source>
       <translation>Nameščanje makrov spodletelo</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="AddonManager.py" line="1280"/>
+      <source>{} total, see Report view for list</source>
+      <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
+      <translation type="unfinished">
+        <numerusform>{} total, see Report view for list</numerusform>
+        <numerusform>{} total, see Report view for list</numerusform>
+        <numerusform>{} total, see Report view for list</numerusform>
+        <numerusform>{} total, see Report view for list</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1178"/>
@@ -748,12 +824,17 @@
     <message>
       <location filename="AddonManager.py" line="1457"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Potrdi odstranitev</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
-      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
+      <translation>Ali ste prepričani, da želite odmestiti ta Dodatek?</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>
@@ -827,12 +908,12 @@
     <message>
       <location filename="../../AddonManager.ui" line="92"/>
       <source>Configure...</source>
-      <translation>Nastavi ...</translation>
+      <translation>Nastavi ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Downloading info...</source>
-      <translation>Prenašanje podatkov ...</translation>
+      <translation>Prenašanje podatkov ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="127"/>

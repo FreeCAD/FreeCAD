@@ -1207,7 +1207,7 @@
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>Wrong selection type</source>
-      <translation type="unfinished">Wrong selection type</translation>
+      <translation>Tipo di selezione errato</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>

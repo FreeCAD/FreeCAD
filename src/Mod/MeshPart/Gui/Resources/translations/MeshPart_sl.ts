@@ -42,7 +42,7 @@
     </message>
     <message>
       <source>Curve on mesh...</source>
-      <translation>Krivulja na ploskovju ...</translation>
+      <translation>Krivulja na ploskovju ...</translation>
     </message>
     <message>
       <source>Creates an approximated curve on top of a mesh.

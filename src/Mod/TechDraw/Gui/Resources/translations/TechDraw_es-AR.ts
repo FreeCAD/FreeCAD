@@ -6,17 +6,17 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>Copiar vista</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
       <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
+      <translation>Copiar vista a una segunda página</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>Copia la vista a una segunda página</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecciona página</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Mover vista</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
@@ -59,7 +59,7 @@
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Mover vista a una página diferente</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
@@ -79,7 +79,7 @@
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecciona página</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>

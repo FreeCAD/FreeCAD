@@ -248,7 +248,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation>Prevelikostenje ploskovja ...</translation>
+      <translation>Prevelikostenje ploskovja ...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="258"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation>Merilo ploskovja ...</translation>
+      <translation>Velikost ploskovja ...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="228"/>

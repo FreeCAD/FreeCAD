@@ -89,7 +89,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="521"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+      <translation>OpenSCAD-ის კოდის ჩასმით და OpenSCAD-ის გაშვებით OpenSCAD-ის ელემენტის დამატება</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>ბილიკი OpenSCAD-ის გამშვებ ფაილებამდე</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="65"/>

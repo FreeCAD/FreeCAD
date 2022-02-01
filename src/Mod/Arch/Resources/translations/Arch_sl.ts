@@ -226,7 +226,7 @@
     <message>
       <location filename="ArchComponent.py" line="204"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
-      <translation>Izbirna standardna (OmniClass, ...) koda te sestavine</translation>
+      <translation>Izbirna standardna (OmniClass, ...) koda te sestavine</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="206"/>
@@ -2269,12 +2269,12 @@
     <message>
       <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
-      <translation>Dodaj lastnost ...</translation>
+      <translation>Dodaj lastnost ...</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="2002"/>
       <source>Add property set...</source>
-      <translation>Dodaj nabor lastnosti ...</translation>
+      <translation>Dodaj nabor lastnosti ...</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="2003"/>
@@ -2448,7 +2448,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="importOBJ.py" line="94"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation>Najdena oblika, ki vsebuje krivulje. Trikotenje ...</translation>
+      <translation>Najdena oblika, ki vsebuje krivulje. Trikotenje</translation>
     </message>
     <message>
       <location filename="importOBJ.py" line="366"/>
@@ -3153,7 +3153,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="192"/>
       <source>&amp;Draft</source>
-      <translation>&amp;Osnutek</translation>
+      <translation>&amp;Izris</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="193"/>
@@ -3339,7 +3339,7 @@ Ustvarjanje etaže prekinjeno.</translation>
     <message>
       <location filename="ArchWall.py" line="476"/>
       <source>Wall Presets...</source>
-      <translation>Prednastavitve stene ...</translation>
+      <translation>Prednastavitve stene ...</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="477"/>
@@ -3680,7 +3680,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation>Izbiranje orodja ...</translation>
+      <translation>Izbiranje orodja ...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4480,7 +4480,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Ustvari najrazličnejše vrste ojačitev, tudi U-je, L-je in stremena</translation>
     </message>
   </context>
   <context>
@@ -4786,17 +4786,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="113"/>
       <source>Draft creation tools</source>
-      <translation>Orodja za ustvarjanje osnutkov</translation>
+      <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
       <source>Draft annotation tools</source>
-      <translation>Orodja za opisovanje osnutkov</translation>
+      <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="115"/>
       <source>Draft modification tools</source>
-      <translation>Orodja za preoblikovanje osnutkov</translation>
+      <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="149"/>
@@ -4849,17 +4849,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="162"/>
       <source>Draft creation tools</source>
-      <translation>Orodja za ustvarjanje osnutkov</translation>
+      <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="165"/>
       <source>Draft annotation tools</source>
-      <translation>Orodja za opisovanje osnutkov</translation>
+      <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="168"/>
       <source>Draft modification tools</source>
-      <translation>Orodja za preoblikovanje osnutkov</translation>
+      <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
@@ -4874,7 +4874,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="192"/>
       <source>&amp;Draft</source>
-      <translation>&amp;Osnutek</translation>
+      <translation>&amp;Izris</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -4917,7 +4917,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="132"/>
       <source>&amp;Draft</source>
-      <translation>&amp;Osnutek</translation>
+      <translation>&amp;Izris</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="133"/>
@@ -4940,7 +4940,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset...</source>
-      <translation>Izberite prednastavitev ...</translation>
+      <translation>Izberite prednastavitev ...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="44"/>
@@ -4950,7 +4950,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing...</source>
-      <translation>Kopiraj obstoječe ...</translation>
+      <translation>Kopiraj obstoječe ...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -5005,7 +5005,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
-      <translation>Standardna koda (MasterFormat, Omniclass ...) tee snovi</translation>
+      <translation>Standardna koda (MasterFormat, Omniclass ...) te snovi</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="204"/>
@@ -5264,7 +5264,7 @@ Pustite prazno, če želite uporabiti vse predmete v dokumentu</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;S tem se izvozi izid v datoteko CSV ali Markdown.. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opomba glede CSV izvoza:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Datoteko CSV lahko z LibreOffice ohranite povezano z desnim klikom v vrstico z zavihki Delavni listi -&amp;gt; Nov delovni list -&amp;gt; Iz datoteke -&amp;gt; Povezava (Opomba: od LibreOffice v6.x dalje je nova pot: Delovni listi -&amp;gt; Vstavi delovni list ... -&amp;gt; Iz datoteke -&amp;gt; Prebrskaj ...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;S tem se izvozi izid v datoteko CSV ali Markdown.. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opomba glede CSV izvoza:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Datoteko CSV lahko z LibreOffice ohranite povezano z desnim klikom v vrstico z zavihki Delavni listi -&amp;gt; Nov delovni list -&amp;gt; Iz datoteke -&amp;gt; Povezava (Opomba: od LibreOffice v6.x dalje je nova pot: Delovni listi -&amp;gt; Vstavi delovni list ... -&amp;gt; Iz datoteke -&amp;gt; Prebrskaj ...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
@@ -5408,7 +5408,7 @@ Pustite prazno, če želite uporabiti vse predmete v dokumentu</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>Kopiraj obstoječe ...</translation>
+      <translation>Kopiraj obstoječe ...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -5591,12 +5591,12 @@ Pustite prazno, če želite uporabiti vse predmete v dokumentu</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Če je to označeno, predmet, ki postane seštevek ali odštevek arhitekurnega predmeta, prevzame barvo pomožnih črt osnutka.</translation>
+      <translation>Če je to označeno, predmet, ki postane seštevek ali odštevek arhitekturnega predmeta, prevzame barvo pomožnih črt izrisa.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="83"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation>Uporabite slog pomožnih črt osnukta pri podsestavinah</translation>
+      <translation>Uporabite izrisov (Draft) slog pomožnih črt pri podsestavinah</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="114"/>

@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>Plane...</source>
-      <translation>Ravnina ...</translation>
+      <translation>Ravnina ...</translation>
     </message>
     <message>
       <source>Approximate a plane</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Wire from mesh boundary...</source>
-      <translation>Žičje iz robov ploskovja ...</translation>
+      <translation>Črtovje iz robov ploskovja ...</translation>
     </message>
     <message>
       <source>Create wire from mesh boundaries</source>
@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Mesh segmentation...</source>
-      <translation>Razčlenitev ploskovja ...</translation>
+      <translation>Razčlenitev ploskovja ...</translation>
     </message>
     <message>
       <source>Create mesh segments</source>
@@ -144,7 +144,7 @@
     </message>
     <message>
       <source>Manual segmentation...</source>
-      <translation>Ročna razčlenitev ...</translation>
+      <translation>Ročna razčlenitev ...</translation>
     </message>
     <message>
       <source>Create mesh segments manually</source>

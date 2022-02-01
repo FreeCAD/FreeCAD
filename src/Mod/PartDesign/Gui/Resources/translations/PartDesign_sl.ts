@@ -6,7 +6,7 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation>Evolventni zobnik ...</translation>
+      <translation>Evolventni zobnik ...</translation>
     </message>
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
@@ -19,7 +19,7 @@
     <message>
       <location filename="SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation>Verižnik ...</translation>
+      <translation>Verižnik ...</translation>
     </message>
     <message>
       <location filename="SprocketFeature.py" line="66"/>
@@ -32,7 +32,7 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation>Čarovnik za snovanje gredi ...</translation>
+      <translation>Čarovnik za snovanje gredi ...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../Command.cpp" line="195"/>
       <source>Create a datum line</source>
-      <translation>Ustvari referenčno črto</translation>
+      <translation>Ustvari sklicno črto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -1646,7 +1646,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
       <translation>- izberite predmet, ki ga želite poudariti
-- dvoklinite na predmet, če želite videti osnutke</translation>
+- dvoklinite na predmet, če želite videti nagibe</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
@@ -4559,12 +4559,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation>Verižnik ...</translation>
+      <translation>Verižnik ...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation>Evolventni zobnik ...</translation>
+      <translation>Evolventni zobnik ...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>

@@ -299,7 +299,7 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation>Vnesite izraz ...</translation>
+      <translation>Vnesite izraz ...</translation>
     </message>
     <message>
       <source>Expression: </source>
@@ -1669,7 +1669,7 @@ ukazni mizi, se prelomijo</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>Dodatki ...</translation>
+      <translation>Dodatki ...</translation>
     </message>
     <message>
       <source>Toolbar</source>
@@ -1955,7 +1955,7 @@ Navedite drugo mapo.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation>Poišči ...</translation>
+      <translation>Poišči ...</translation>
     </message>
     <message>
       <source>Sorted</source>
@@ -4100,7 +4100,7 @@ Prednostni je sistem, nastavljen v splošnih prednastavitvah.</translation>
     </message>
     <message>
       <source>Cleanup...</source>
-      <translation>Počisti ...</translation>
+      <translation>Počisti ...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -5469,7 +5469,7 @@ Kako želite nadaljevati?</translation>
     </message>
     <message>
       <source>Expression...</source>
-      <translation>Izraz ...</translation>
+      <translation>Izraz ...</translation>
     </message>
     <message>
       <source>Auto expand</source>
@@ -5540,7 +5540,7 @@ Ali želite končati ne da bi shranili podatke?</translation>
     </message>
     <message>
       <source>Insert file name...</source>
-      <translation>Vstavite ime datoteke ...</translation>
+      <translation>Vstavite ime datoteke ...</translation>
     </message>
     <message>
       <source>Save History</source>
@@ -6154,7 +6154,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation>Iskanje ...</translation>
+      <translation>Iskanje ...</translation>
     </message>
     <message>
       <source>Search for objects</source>
@@ -6278,7 +6278,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Preferences...</source>
-      <translation>Prednastavitve ...</translation>
+      <translation>Prednastavitve ...</translation>
     </message>
     <message>
       <source>Quit %1</source>
@@ -6477,7 +6477,7 @@ Ali želite navesti drugo mapo?</translation>
     </message>
     <message>
       <source>Printing...</source>
-      <translation>Tiskanje ...</translation>
+      <translation>Tiskanje ...</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
@@ -6659,7 +6659,7 @@ Odprite brskalnik in vtipkajte: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Options...</source>
-      <translation>Možnosti ...</translation>
+      <translation>Možnosti ...</translation>
     </message>
     <message>
       <source>Out of memory</source>
@@ -6973,7 +6973,7 @@ Izberite "Prekini" za prekinitev</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation>Povozi barve ...</translation>
+      <translation>Povozi barve ...</translation>
     </message>
     <message>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
@@ -6993,7 +6993,7 @@ Izberite "Prekini" za prekinitev</translation>
 Please check report view for more...</source>
       <translation>
 
-Za več informacij poglejte poročevalni pogled ...</translation>
+Za več informacij poglejte poročevalni pogled ...</translation>
     </message>
     <message>
       <source>
@@ -7356,7 +7356,7 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     <name>StdCmdDlgMacroExecute</name>
     <message>
       <source>Macros ...</source>
-      <translation>Makri …</translation>
+      <translation>Makri ...</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
@@ -7386,7 +7386,7 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>&amp;Snemanje makra …</translation>
+      <translation>&amp;Snemanje makra ...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
@@ -7405,7 +7405,7 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>&amp;Uredi določilke …</translation>
+      <translation>&amp;Uredi določilke ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
@@ -7420,7 +7420,7 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Prednastavitve …</translation>
+      <translation>&amp;Prednastavitve ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
@@ -7909,7 +7909,7 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation>Priloži k oddaljenemu razhroščevalniku ...</translation>
+      <translation>Priloži k oddaljenemu razhroščevalniku ...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
@@ -8161,7 +8161,7 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
       <source>&amp;Print...</source>
-      <translation>&amp;Natisni ...</translation>
+      <translation>&amp;Natisni ...</translation>
     </message>
     <message>
       <source>Print the document</source>

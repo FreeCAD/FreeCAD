@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>&amp;Draft View</source>
-      <translation>&amp;Pogled osnutka</translation>
+      <translation>&amp;Izrisni pogled</translation>
     </message>
     <message>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Vstavi pogled osnutka izbranih objektov v dejavno risbo</translation>
+      <translation>Vstavi izrisni pogled izbranih predmeov v dejavno risbo</translation>
     </message>
   </context>
   <context>
@@ -564,7 +564,7 @@ Ali želite nadaljevati?</translation>
     </message>
     <message>
       <source>Make axonometric...</source>
-      <translation>Izdelaj aksonometrijo ...</translation>
+      <translation>Izdelaj aksonometrijo ...</translation>
     </message>
     <message>
       <source>Edit axonometric settings...</source>

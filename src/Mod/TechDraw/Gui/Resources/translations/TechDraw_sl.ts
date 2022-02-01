@@ -6,42 +6,42 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>Kopiraj pogled</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
       <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
+      <translation>Kopiraj pogled na drugo stran</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>Kopiraj pogled na drugo stran</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
       <source>Select View to copy from list.</source>
-      <translation type="unfinished">Select View to copy from list.</translation>
+      <translation>Pogled za kopiranje izberite s seznama.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Izberite pogled</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Izberite s strani.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Izberite stran</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Izberite na stran.</translation>
     </message>
   </context>
   <context>
@@ -49,42 +49,42 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Premakni pogled</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Premakni pogled na novo stran</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Premakni pogled na drugo stran</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Pogled za prestavitev izberite s seznama.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Izberite pogled</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Izberite s strani.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Izberite stran</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Izberite na stran.</translation>
     </message>
   </context>
   <context>
@@ -359,11 +359,11 @@
     </message>
     <message>
       <source>Insert Draft Workbench Object</source>
-      <translation>Vstavi predmet iz delovnega okolja Osnutek</translation>
+      <translation>Vstavi predmet iz izrisnega (Draft) delovnega okolja</translation>
     </message>
     <message>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Vstavi Pogled predmeta iz delovnega okolja Osnutek</translation>
+      <translation>Vstavi Pogled predmeta iz izrisnega (Draft) delovnega okolja</translation>
     </message>
   </context>
   <context>
@@ -875,7 +875,7 @@
     </message>
     <message>
       <source>Create DraftView</source>
-      <translation>Ustvari PogledOsnutka</translation>
+      <translation>Ustvari izrisni (Draft) pogled</translation>
     </message>
     <message>
       <source>Create ArchView</source>
@@ -1257,7 +1257,7 @@
     </message>
     <message>
       <source>There were no DraftWB objects in the selection.</source>
-      <translation>V izboru ni bilo nobenega predmeta delovnega okolja Osnutki.</translation>
+      <translation>V izboru ni bilo nobenega predmeta izrisnega (Draft) delovnega okolja.</translation>
     </message>
     <message>
       <source>Please select only 1 Arch Section.</source>

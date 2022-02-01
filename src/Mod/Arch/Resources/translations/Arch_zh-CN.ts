@@ -56,7 +56,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>材质名称: 从你的材料列表中引用，它将材料名称与实体索引联系起来，以便在从其他文件引用该对象时使用</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="561"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>如果启用了这个功能，这个对象的创建者的名字将保存在FreeCAD文件中，允许以轻量级模式在其他文件中引用它。</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="563"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="585"/>
       <source>Cut the view above this level</source>
-      <translation type="unfinished">Cut the view above this level</translation>
+      <translation>在这一层上切割视图</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="587"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>打开自动大小设置时使用的外边距</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>如果可用，使用材质颜色作为物体的形状颜色</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="66"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="ArchFence.py" line="66"/>
       <source>A single fence post</source>
-      <translation>一根篱笆桩</translation>
+      <translation>一个栅栏柱</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="70"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="ArchMaterial.py" line="296"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>材料被切割时的颜色</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="719"/>
@@ -406,7 +406,7 @@
     <message>
       <location filename="ArchSchedule.py" line="106"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
-      <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
+      <translation>如果开启，则在需要时重新创建包含结果的电子表格</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="108"/>
@@ -681,7 +681,7 @@
     <message>
       <location filename="ArchPipe.py" line="207"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
-      <translation type="unfinished">The wall thickness of this pipe, if not based on a profile</translation>
+      <translation>管道的壁厚，如果不是基于剖面</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="356"/>
@@ -751,27 +751,27 @@
     <message>
       <location filename="ArchTruss.py" line="188"/>
       <source>The direction of the rods</source>
-      <translation type="unfinished">The direction of the rods</translation>
+      <translation>杆子的方向</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="192"/>
       <source>The diameter or side of the rods</source>
-      <translation type="unfinished">The diameter or side of the rods</translation>
+      <translation>杆的直径或侧面</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="196"/>
       <source>The number of rod sections</source>
-      <translation type="unfinished">The number of rod sections</translation>
+      <translation>杆截面的数量</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="200"/>
       <source>If the truss has a rod at its endpoint or not</source>
-      <translation type="unfinished">If the truss has a rod at its endpoint or not</translation>
+      <translation>桁架的端点是否有杆</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="203"/>
       <source>How to draw the rods</source>
-      <translation type="unfinished">How to draw the rods</translation>
+      <translation>如何绘制杆</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="538"/>
@@ -1041,12 +1041,12 @@
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>下方地板的厚度</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>上方地板的厚度</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>

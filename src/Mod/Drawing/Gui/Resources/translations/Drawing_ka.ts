@@ -121,7 +121,7 @@
     </message>
     <message>
       <source>Open &amp;browser view</source>
-      <translation>ბრა_უზერში გახსნა</translation>
+      <translation>ბრაუზერში გახსნა</translation>
     </message>
     <message>
       <source>Opens the selected page in a browser view</source>

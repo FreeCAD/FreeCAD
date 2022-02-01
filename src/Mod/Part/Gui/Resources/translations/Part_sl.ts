@@ -6,7 +6,7 @@
     <message>
       <location filename="Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation>Pripetek ...</translation>
+      <translation>Pripetek ...</translation>
     </message>
     <message>
       <location filename="Commands.py" line="83"/>
@@ -2074,7 +2074,7 @@ na svoje X, Y in Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="1458"/>
       <source>Chamfer...</source>
-      <translation>Prisekaj ...</translation>
+      <translation>Prisekaj ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1459"/>
@@ -2164,7 +2164,7 @@ na svoje X, Y in Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="658"/>
       <source>Split objects...</source>
-      <translation>Razcepi predmete ...</translation>
+      <translation>Razcepi predmete ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="659"/>
@@ -2582,7 +2582,7 @@ na svoje X, Y in Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="2449"/>
       <source>Create projection on surface...</source>
-      <translation>Naredi preslikavo na površje ...</translation>
+      <translation>Naredi preslikavo na površje ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
@@ -3421,7 +3421,7 @@ Opomba: Postavitev je izražena glede na lasten prostor predmeta, ki se pripenja
     <message>
       <location filename="../../DlgExtrusion.cpp" line="182"/>
       <source>Selecting...</source>
-      <translation>Izbiranje ...</translation>
+      <translation>Izbiranje ...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="423"/>
@@ -4691,7 +4691,7 @@ velikost dobljene datoteke STEP.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="443"/>
       <source>Selecting... (line or arc)</source>
-      <translation>Izbiranje ... (daljica ali lok)</translation>
+      <translation>Izbiranje ... (daljica ali lok)</translation>
     </message>
   </context>
   <context>
@@ -5436,7 +5436,7 @@ predmeta, ki se pripenja.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="699"/>
       <source>Selecting...</source>
-      <translation>Izbiranje ...</translation>
+      <translation>Izbiranje ...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="703"/>
@@ -5667,7 +5667,7 @@ Posamezne OLV preverbe:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="402"/>
       <source>Check is running...</source>
-      <translation>Preverjanje poteka ...</translation>
+      <translation>Preverjanje poteka ...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>

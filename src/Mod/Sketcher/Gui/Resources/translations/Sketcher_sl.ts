@@ -829,7 +829,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5574"/>
       <source>Create a draft line in the sketch</source>
-      <translation>Ustvari snovalno črto v očrtovalniku</translation>
+      <translation>Ustvari v očrtu izrisno daljico</translation>
     </message>
   </context>
   <context>
@@ -1227,7 +1227,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Map sketch to face...</source>
-      <translation>Preslikaj očrt na ploskev ...</translation>
+      <translation>Preslikaj očrt na ploskev ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="509"/>
@@ -1350,7 +1350,7 @@ preko X ali Y osi, oz. preko izhodiščne točke.</translation>
     <message>
       <location filename="../../Command.cpp" line="381"/>
       <source>Reorient sketch...</source>
-      <translation>Preusmeri očrt ...</translation>
+      <translation>Preusmeri očrt ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="382"/>
@@ -1510,7 +1510,7 @@ To bo izbrisalo lastnosti "Podpore", če sploh obstajajo.</translation>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation>V urejevalnem načinu prekini dejavno opravilo (risanje, omejevanje, ...).</translation>
+      <translation>V urejevalnem načinu prekini dejavno opravilo (risanje, omejevanje, ...).</translation>
     </message>
   </context>
   <context>
@@ -1598,14 +1598,14 @@ na gnani oz. sklicni način</translation>
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>Validate sketch...</source>
-      <translation>Preveri veljavnost očrta ...</translation>
+      <translation>Preveri veljavnost očrta ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="720"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
       <translation>Preveri, ali ima očrt manjkajoča sovpadanja,
-neveljavna omejila, izrojene geometrije, ...</translation>
+neveljavna omejila, izrojene geometrije, ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="734"/>
@@ -1936,7 +1936,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="137"/>
       <source>Toggle draft from/to draft</source>
-      <translation>Preklopi med oznutek iz/v osnutek</translation>
+      <translation>Preklopi  izris iz  /  v izris</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="320"/>

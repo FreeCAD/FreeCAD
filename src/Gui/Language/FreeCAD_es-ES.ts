@@ -2375,8 +2375,7 @@ desde la consola de Python al panel de la vista de informe</translation>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>La salida interna de Python se redirigirá
-desde la consola de Python al panel de la vista de informe</translation>
+      <translation>Los mensajes de errores internos de Python serán redireccionados desde la consola de Python al panel de vista de informes</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>

@@ -3914,7 +3914,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="360"/>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Document unic</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="365"/>

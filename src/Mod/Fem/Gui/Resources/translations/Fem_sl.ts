@@ -1036,7 +1036,7 @@
     <message>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation>Uveljavi spremembe določilk neposredno in ne le pri preračunu ...</translation>
+      <translation>Uveljavi spremembe določilk neposredno in ne le pri preračunu ...</translation>
     </message>
   </context>
   <context>
@@ -2998,7 +2998,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="49"/>
       <source>choose...</source>
-      <translation>izberite ...</translation>
+      <translation>izberite ...</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="57"/>

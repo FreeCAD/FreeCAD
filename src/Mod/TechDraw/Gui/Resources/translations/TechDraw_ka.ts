@@ -6,7 +6,7 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>ხედის კოპირება</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>ხედის მეორე გვერდზე კოპირება</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
@@ -26,22 +26,22 @@
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>აირჩიეთ ხედი</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>მონიშვნა დაწყებული გვერდიდან.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>აირჩიეთ გვერდი</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>მონიშვნა გვერდამდე.</translation>
     </message>
   </context>
   <context>
@@ -49,12 +49,12 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>ხედის გადატანა</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>ხედის ახალ გვერდზე გადატანა</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
@@ -69,22 +69,22 @@
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>აირჩიეთ ხედი</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>მონიშვნა დაწყებული გვერდიდან.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>აირჩიეთ გვერდი</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>მონიშვნა გვერდამდე.</translation>
     </message>
   </context>
   <context>
@@ -105,7 +105,7 @@
     <name>CmdMidpoints</name>
     <message>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>შუაწერტილის წვეროების დამატება</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Insert Angle Dimension</source>
-      <translation type="unfinished">Insert Angle Dimension</translation>
+      <translation>კუთხური ზომის მითითება</translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     </message>
     <message>
       <source>Insert Clip Group</source>
-      <translation type="unfinished">Insert Clip Group</translation>
+      <translation>კვეთების ჯგუფის ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -252,7 +252,7 @@
     </message>
     <message>
       <source>Add View to Clip Group</source>
-      <translation type="unfinished">Add View to Clip Group</translation>
+      <translation>კვეთების ჯგუფში ხედის ჩამატება</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@
     </message>
     <message>
       <source>Remove View from Clip Group</source>
-      <translation type="unfinished">Remove View from Clip Group</translation>
+      <translation>კვეთების ჯგუფიდან ხედის წაშლა</translation>
     </message>
   </context>
   <context>
@@ -274,7 +274,7 @@
     </message>
     <message>
       <source>Remove Cosmetic Object</source>
-      <translation type="unfinished">Remove Cosmetic Object</translation>
+      <translation>დამხმარე ობიექტის წაშლა</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
     </message>
     <message>
       <source>Insert Cosmetic Vertex</source>
-      <translation type="unfinished">Insert Cosmetic Vertex</translation>
+      <translation>დამხმარე წვეროს ჩასმა</translation>
     </message>
     <message>
       <source>Add Cosmetic Vertex</source>
@@ -423,15 +423,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt bottom view</source>
-      <translation type="unfinished">Cosmetic thread bolt bottom view</translation>
+      <translation>კოსმეტიკური კუთხვილის ხრახნის ფსკერის ხედი</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>კოსმეტიკური ხრახნის ქვედა ხედის დახატვა
+  - აირჩიეთ ბევრი წრეწირი
+  - დააწექით ღილაკს</translation>
     </message>
   </context>
   <context>
@@ -442,15 +442,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt side view</source>
-      <translation type="unfinished">Cosmetic thread bolt side view</translation>
+      <translation>კოსმეტიკური კუთხვილის ხრახნის გვერდხედი</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>კოსმეტიკური ხრახნის გვერდხედის დახატვა
+  - აირჩიეთ ორი პარალელური ხაზი
+  - დააწექით ღილაკს</translation>
     </message>
   </context>
   <context>
@@ -461,15 +461,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole bottom view</source>
-      <translation type="unfinished">Cosmetic thread hole bottom view</translation>
+      <translation>კოსმეტიკური კუთხვილის ხვრელის ფსკერის ხედი</translation>
     </message>
     <message>
       <source>Draw cosmetic hole thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic hole thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>კოსმეტიკური კუთხვილის ქვედა ხედის დახატვა
+  - აირჩიეთ ბევრი წრეწირი
+  - დააწექით ღილაკს</translation>
     </message>
   </context>
   <context>
@@ -480,15 +480,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole side view</source>
-      <translation type="unfinished">Cosmetic thread hole side view</translation>
+      <translation>კოსმეტიკური კუთხვილის ხვრელის გვერდხედი</translation>
     </message>
     <message>
       <source>Draw cosmetic thread hole side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic thread hole side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>კოსმეტიკური კუთხვილის გვერდხედის დახატვა
+  - აირჩიეთ ორი პარალელური ხაზი
+  - დააწექით ღილაკს</translation>
     </message>
   </context>
   <context>
@@ -529,7 +529,7 @@
     </message>
     <message>
       <source>Apply Geometric Hatch to Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to Face</translation>
+      <translation>ზედაპირზე გეომეტრიული დაშტრიხვის გადატარება</translation>
     </message>
   </context>
   <context>
@@ -540,7 +540,7 @@
     </message>
     <message>
       <source>Hatch a Face using Image File</source>
-      <translation type="unfinished">Hatch a Face using Image File</translation>
+      <translation>ზედაპირის დაშტრიხვა გამოსახულების ფაილის მიხედვით</translation>
     </message>
   </context>
   <context>
@@ -551,7 +551,7 @@
     </message>
     <message>
       <source>Insert Horizontal Dimension</source>
-      <translation type="unfinished">Insert Horizontal Dimension</translation>
+      <translation>ჰორიზონტალური ზომის ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -640,7 +640,7 @@
     </message>
     <message>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>შუაწერტილის წვეროების დამატება</translation>
     </message>
   </context>
   <context>
@@ -662,11 +662,11 @@
     </message>
     <message>
       <source>Insert Page using Template</source>
-      <translation type="unfinished">Insert Page using Template</translation>
+      <translation>ახალი გვერდის ჩამატება შაბლონის გამოყენებით</translation>
     </message>
     <message>
       <source>Select a Template File</source>
-      <translation type="unfinished">Select a Template File</translation>
+      <translation>აირჩიეთ შაბლონის ფაილი</translation>
     </message>
     <message>
       <source>Template (*.svg *.dxf)</source>
@@ -729,7 +729,7 @@
     </message>
     <message>
       <source>Insert Rich Text Annotation</source>
-      <translation type="unfinished">Insert Rich Text Annotation</translation>
+      <translation>ფორმატირებული ანოტაციის დამატება</translation>
     </message>
   </context>
   <context>
@@ -859,7 +859,7 @@
     </message>
     <message>
       <source>Create Clip</source>
-      <translation type="unfinished">Create Clip</translation>
+      <translation>კვეთის შექმნა</translation>
     </message>
     <message>
       <source>ClipGroupAdd</source>
@@ -867,7 +867,7 @@
     </message>
     <message>
       <source>ClipGroupRemove</source>
-      <translation type="unfinished">ClipGroupRemove</translation>
+      <translation>კვეთების ჯგუფის წაშლა</translation>
     </message>
     <message>
       <source>Create Symbol</source>
@@ -875,11 +875,11 @@
     </message>
     <message>
       <source>Create DraftView</source>
-      <translation type="unfinished">Create DraftView</translation>
+      <translation>DraftView-ის შექმნა</translation>
     </message>
     <message>
       <source>Create ArchView</source>
-      <translation type="unfinished">Create ArchView</translation>
+      <translation>ArchView-ის შექმნა</translation>
     </message>
     <message>
       <source>Create spreadsheet view</source>
@@ -891,7 +891,7 @@
     </message>
     <message>
       <source>Add Midpont Vertices</source>
-      <translation type="unfinished">Add Midpont Vertices</translation>
+      <translation>შუაწერტილის წვეროების დამატება</translation>
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
@@ -907,11 +907,11 @@
     </message>
     <message>
       <source>Create Hatch</source>
-      <translation type="unfinished">Create Hatch</translation>
+      <translation>დაშტრიხვის შექმნა</translation>
     </message>
     <message>
       <source>Create GeomHatch</source>
-      <translation type="unfinished">Create GeomHatch</translation>
+      <translation>გეომ-დაშტრიხვის შექმნა</translation>
     </message>
     <message>
       <source>Create Image</source>
@@ -923,7 +923,7 @@
     </message>
     <message>
       <source>Drag Dimension</source>
-      <translation type="unfinished">Drag Dimension</translation>
+      <translation>ზომის გადათრევა</translation>
     </message>
     <message>
       <source>Create Balloon</source>
@@ -1082,15 +1082,15 @@
     </message>
     <message>
       <source>Bullet list (CTRL+-)</source>
-      <translation type="unfinished">Bullet list (CTRL+-)</translation>
+      <translation>დანომრილი სია (CTRL+-)</translation>
     </message>
     <message>
       <source>Ordered list (CTRL+=)</source>
-      <translation type="unfinished">Ordered list (CTRL+=)</translation>
+      <translation>დალაგებული სია (CTRL+=)</translation>
     </message>
     <message>
       <source>Decrease indentation (CTRL+,)</source>
-      <translation type="unfinished">Decrease indentation (CTRL+,)</translation>
+      <translation>შეწევის შემცირება(CTRL+,)</translation>
     </message>
     <message>
       <source>Decrease indentation</source>
@@ -1098,7 +1098,7 @@
     </message>
     <message>
       <source>Increase indentation (CTRL+.)</source>
-      <translation type="unfinished">Increase indentation (CTRL+.)</translation>
+      <translation>შეწევის გაზრდა(CTRL+.)</translation>
     </message>
     <message>
       <source>Increase indentation</source>
@@ -1106,11 +1106,11 @@
     </message>
     <message>
       <source>Text foreground color</source>
-      <translation type="unfinished">Text foreground color</translation>
+      <translation>ტექსტის ფერი</translation>
     </message>
     <message>
       <source>Text background color</source>
-      <translation type="unfinished">Text background color</translation>
+      <translation>ტექსტის ფონის ფერი</translation>
     </message>
     <message>
       <source>Background</source>
@@ -1150,7 +1150,7 @@
     </message>
     <message>
       <source>Remove character formatting</source>
-      <translation type="unfinished">Remove character formatting</translation>
+      <translation>სიმბოლოს ფორმატირების მოშორება</translation>
     </message>
     <message>
       <source>Remove all formatting</source>
@@ -1217,7 +1217,7 @@
     </message>
     <message>
       <source>Select one Clip group and one View.</source>
-      <translation type="unfinished">Select one Clip group and one View.</translation>
+      <translation>აირჩიეთ ერთი კვეთების ჯგუფი და ერთი ხედი.</translation>
     </message>
     <message>
       <source>Select exactly one View to add to group.</source>
@@ -1225,19 +1225,19 @@
     </message>
     <message>
       <source>Select exactly one Clip group.</source>
-      <translation type="unfinished">Select exactly one Clip group.</translation>
+      <translation>აირჩიეთ მხოლოდ ერთი კვეთების ჯგუფი.</translation>
     </message>
     <message>
       <source>Clip and View must be from same Page.</source>
-      <translation type="unfinished">Clip and View must be from same Page.</translation>
+      <translation>კვეთი და ხედი ერთ გვერდზე უნდა იყვნენ.</translation>
     </message>
     <message>
       <source>Select exactly one View to remove from Group.</source>
-      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
+      <translation>აირჩიეთ ზუსტად ერთი ხედი ჯგუფიდან წასაშლელად.</translation>
     </message>
     <message>
       <source>View does not belong to a Clip</source>
-      <translation type="unfinished">View does not belong to a Clip</translation>
+      <translation>ხედი არ მიეკუთვნება კვეთს</translation>
     </message>
     <message>
       <source>Choose an SVG file to open</source>
@@ -1289,7 +1289,7 @@
     </message>
     <message>
       <source>Ellipse Curve Warning</source>
-      <translation type="unfinished">Ellipse Curve Warning</translation>
+      <translation>ელიფსის რკალის გაფრთხლება</translation>
     </message>
     <message>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
@@ -1297,7 +1297,7 @@
     </message>
     <message>
       <source>BSpline Curve Warning</source>
-      <translation type="unfinished">BSpline Curve Warning</translation>
+      <translation>B-სპლაინის რკალის გაფრთხილება</translation>
     </message>
     <message>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
@@ -1433,7 +1433,7 @@
     </message>
     <message>
       <source>No View in Selection.</source>
-      <translation type="unfinished">No View in Selection.</translation>
+      <translation>მონიშნულში ხედი არ არსებობს.</translation>
     </message>
     <message>
       <source>You must select a View and/or lines.</source>
@@ -1449,15 +1449,15 @@
     </message>
     <message>
       <source>Replace Hatch?</source>
-      <translation type="unfinished">Replace Hatch?</translation>
+      <translation>შევცვალო დაშტრიხვა?</translation>
     </message>
     <message>
       <source>Some Faces in selection are already hatched.  Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched.  Replace?</translation>
+      <translation>ზოგიერთი ზედაპირი უკვე დაშტრიხულია. ჩავანაცვლო?</translation>
     </message>
     <message>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>TechDraw-ის გვერდი ნაპოვნი არაა</translation>
     </message>
     <message>
       <source>Need a TechDraw Page for this command</source>
@@ -1477,7 +1477,7 @@
     </message>
     <message>
       <source>No Faces to hatch in this selection</source>
-      <translation type="unfinished">No Faces to hatch in this selection</translation>
+      <translation>მონიშნულებში დასაშტრიხი ზედაპირები ნაპოვნი არაა</translation>
     </message>
     <message>
       <source>No page found</source>
@@ -1605,11 +1605,11 @@
     </message>
     <message>
       <source>Edit Cosmetic Line</source>
-      <translation type="unfinished">Edit Cosmetic Line</translation>
+      <translation>დამხმარე ხაზის ჩასწორება</translation>
     </message>
     <message>
       <source>New Detail View</source>
-      <translation type="unfinished">New Detail View</translation>
+      <translation>ნაწილის ახალი ხედი</translation>
     </message>
     <message>
       <source>Edit Detail View</source>
@@ -1625,7 +1625,7 @@
     </message>
     <message>
       <source>Selection is empty</source>
-      <translation type="unfinished">Selection is empty</translation>
+      <translation>მონიშნული ცარიელია</translation>
     </message>
     <message>
       <source>No object selected</source>
@@ -1633,15 +1633,15 @@
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>
-      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+      <translation>TechDraw-ის კუთხვილის ხვრელის გვერდი</translation>
     </message>
     <message>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>TechDraw-ის კუთხვილის ხრახნის გვერდი</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>TechDraw-ის კუთხვილის ხვრელის ფსკერი</translation>
     </message>
     <message>
       <source>TechDraw Tread Bolt Bottom</source>
@@ -1720,7 +1720,7 @@ it has a tile weld that would become broken.</translation>
     </message>
     <message>
       <source>Width of generated view</source>
-      <translation type="unfinished">Width of generated view</translation>
+      <translation>გენერირებული ხედის სიგანე</translation>
     </message>
     <message>
       <source>Height</source>
@@ -1758,7 +1758,7 @@ the top and left view border</translation>
     </message>
     <message>
       <source>Width of lines in generated view</source>
-      <translation type="unfinished">Width of lines in generated view</translation>
+      <translation>გენერირებული ხედში ხაზების სიგანე</translation>
     </message>
     <message>
       <source>Render Mode</source>
@@ -1986,17 +1986,17 @@ Only change unless you know what you are doing!</translation>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about to many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>64x64 პიქსელიანი SVG ფილების ლიმიტი, რომელიც გამოიყენება ერთი ზედაპირის დასაშტრიხად.
+დიდი მასშტაბის შემთხვევაში, შეიძლება ბევრ SVG ფილის ქონის შეცდომა გამოაგდოს.
+ამის შემდეგ თქვენ უნდა გაზარდოთ ფილების რიცხვის ლიმიტი.</translation>
     </message>
     <message>
       <source>Max SVG Hatch Tiles</source>
-      <translation type="unfinished">Max SVG Hatch Tiles</translation>
+      <translation>SVG დაშტრიხვის ფრაგმენტების მაქს. რაოდენობა</translation>
     </message>
     <message>
       <source>Max PAT Hatch Segments</source>
-      <translation type="unfinished">Max PAT Hatch Segments</translation>
+      <translation>PAT დაშტრიხვის სეგმენტების მაქს. რაოდენობა</translation>
     </message>
     <message>
       <source>Maximum hatch line segments to use
@@ -2195,7 +2195,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Show Center Marks</source>
-      <translation type="unfinished">Show Center Marks</translation>
+      <translation>ცენტრის სანიშნების ჩვენება</translation>
     </message>
     <message>
       <source>Detail View Outline Shape</source>
@@ -2243,11 +2243,11 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Line style of detail highlight on base view</source>
-      <translation type="unfinished">Line style of detail highlight on base view</translation>
+      <translation>ბაზისურ ხედზე მდებარე დეტალის გამოკვეთის ხაზის სტილი</translation>
     </message>
     <message>
       <source>Detail Highlight Style</source>
-      <translation type="unfinished">Detail Highlight Style</translation>
+      <translation>ნაწილის გამოკვეთის სტილი</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2314,7 +2314,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Background color around pages</source>
-      <translation type="unfinished">Background color around pages</translation>
+      <translation>გვერდების გარშემო ფონის ფერი</translation>
     </message>
     <message>
       <source>Hatch</source>
@@ -2334,11 +2334,11 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>გეომეტრიული დაშტრიხვა</translation>
     </message>
     <message>
       <source>Geometric hatch pattern color</source>
-      <translation type="unfinished">Geometric hatch pattern color</translation>
+      <translation>გეომეტრიული დაშტრიხვის შაბლონის ფერი</translation>
     </message>
     <message>
       <source>Centerline</source>
@@ -2417,7 +2417,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Standard and Style</source>
-      <translation type="unfinished">Standard and Style</translation>
+      <translation>სტანდარტი და სტილი</translation>
     </message>
     <message>
       <source>Arrowhead style</source>
@@ -2469,7 +2469,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Alternate Decimals</source>
-      <translation type="unfinished">Alternate Decimals</translation>
+      <translation>მძიმის შემდეგ ციფრების რაოდენობა</translation>
     </message>
     <message>
       <source>Font Size</source>
@@ -2526,7 +2526,7 @@ This can slow down the response time.</translation>
     </message>
     <message>
       <source>Keep Page Up To Date</source>
-      <translation type="unfinished">Keep Page Up To Date</translation>
+      <translation>გვერდის ავტომატური განახლება</translation>
     </message>
     <message>
       <source>Automatically distribute secondary views
@@ -2618,7 +2618,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Template Directory</source>
-      <translation type="unfinished">Template Directory</translation>
+      <translation>შაბლონების საქაღალდე</translation>
     </message>
     <message>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
@@ -2626,11 +2626,11 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Hatch Pattern File</source>
-      <translation type="unfinished">Hatch Pattern File</translation>
+      <translation>დაშტრიხვის შაბლონის ფაილი</translation>
     </message>
     <message>
       <source>Default SVG or bitmap file for hatching</source>
-      <translation type="unfinished">Default SVG or bitmap file for hatching</translation>
+      <translation>ნაგულისხმევი SVG ან რასტრული გამოსახულება დაშტრიხვისთვის</translation>
     </message>
     <message>
       <source>Line Group File</source>
@@ -2654,7 +2654,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Default PAT pattern definition file for geometric hatching</source>
-      <translation type="unfinished">Default PAT pattern definition file for geometric hatching</translation>
+      <translation>ნაგულისხმევი PAT შაბლონიგამოსახულების დაშტრიხვისთვის</translation>
     </message>
     <message>
       <source>Pattern Name</source>
@@ -2774,7 +2774,7 @@ Fast, but result is a collection of short straight lines.</translation>
     </message>
     <message>
       <source>Default scale for new pages</source>
-      <translation type="unfinished">Default scale for new pages</translation>
+      <translation>ახალი გვერდების ნაგულისხმევი მასშტაბი</translation>
     </message>
     <message>
       <source>View Scale Type</source>
@@ -2818,7 +2818,7 @@ Fast, but result is a collection of short straight lines.</translation>
     </message>
     <message>
       <source>Center Mark Scale</source>
-      <translation type="unfinished">Center Mark Scale</translation>
+      <translation>ცენტრის სანიშნის მასშტაბი</translation>
     </message>
     <message>
       <source>Size of center marks. Multiplier of vertex size.</source>
@@ -2826,7 +2826,7 @@ Fast, but result is a collection of short straight lines.</translation>
     </message>
     <message>
       <source>Template Edit Mark</source>
-      <translation type="unfinished">Template Edit Mark</translation>
+      <translation>შაბლონის ჩასწორების ნიშანი</translation>
     </message>
     <message>
       <source>Multiplier for size of welding symbols</source>
@@ -2849,7 +2849,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
       <source>Toggle &amp;Keep Updated</source>
-      <translation type="unfinished">Toggle &amp;Keep Updated</translation>
+      <translation>განახლებადობის &amp;ჩართ/გამორთ</translation>
     </message>
     <message>
       <source>Toggle &amp;Frames</source>
@@ -2962,7 +2962,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>&apos;ტექსტის&apos; ფონტის ზომა</translation>
     </message>
     <message>
       <source>Bubble Shape:</source>
@@ -3264,7 +3264,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Click to drag detail highlight to new position</source>
-      <translation type="unfinished">Click to drag detail highlight to new position</translation>
+      <translation>დეტალის გამოკვეთის გადასათრევად დააწკაპუნეთ</translation>
     </message>
     <message>
       <source>Drag Highlight</source>
@@ -3276,7 +3276,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>x position of detail highlight within view</source>
-      <translation type="unfinished">x position of detail highlight within view</translation>
+      <translation>ხედზე დეტალის გამოკვეთის X მდებარეობა</translation>
     </message>
     <message>
       <source>scale factor for detail view</source>
@@ -3308,7 +3308,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>y position of detail highlight within view</source>
-      <translation type="unfinished">y position of detail highlight within view</translation>
+      <translation>ხედზე დეტალის გამოკვეთის Y მდებარეობა</translation>
     </message>
     <message>
       <source>Page: scale factor of page is used
@@ -3451,7 +3451,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>&apos;ტექსტის&apos; ფონტის ზომა</translation>
     </message>
     <message>
       <source>Drawing Style:</source>
@@ -3489,15 +3489,15 @@ be used instead if the dimension value</translation>
     <name>TechDrawGui::TaskGeomHatch</name>
     <message>
       <source>Apply Geometric Hatch to Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to Face</translation>
+      <translation>ზედაპირზე გეომეტრიული დაშტრიხვის გადატარება</translation>
     </message>
     <message>
       <source>Define your pattern</source>
-      <translation type="unfinished">Define your pattern</translation>
+      <translation>აღწერეთ თქვენი შაბლონი</translation>
     </message>
     <message>
       <source>The PAT file containing your pattern</source>
-      <translation type="unfinished">The PAT file containing your pattern</translation>
+      <translation>თქვენი შაბლონის შემცველი PAT ფაილი</translation>
     </message>
     <message>
       <source>Pattern File</source>
@@ -3521,34 +3521,34 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Name of pattern within file</source>
-      <translation type="unfinished">Name of pattern within file</translation>
+      <translation>შაბლონის სახელი ფაილში</translation>
     </message>
     <message>
       <source>Color of pattern lines</source>
-      <translation type="unfinished">Color of pattern lines</translation>
+      <translation>დაშტრიხვის შაბლონის ფერი</translation>
     </message>
     <message>
       <source>Enlarges/shrinks the pattern</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern</translation>
+      <translation>შაბლონის გადიდება/დაპატარავება</translation>
     </message>
     <message>
       <source>Thickness of lines within the pattern</source>
-      <translation type="unfinished">Thickness of lines within the pattern</translation>
+      <translation>ამ შაბლონში ხაზების სისქე</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskHatch</name>
     <message>
       <source>Apply Hatch to Face</source>
-      <translation type="unfinished">Apply Hatch to Face</translation>
+      <translation>ზედაპირზე დაშტრიხვის გადატარება</translation>
     </message>
     <message>
       <source>Define your pattern</source>
-      <translation type="unfinished">Define your pattern</translation>
+      <translation>აღწერეთ თქვენი შაბლონი</translation>
     </message>
     <message>
       <source>The PAT file containing your pattern</source>
-      <translation type="unfinished">The PAT file containing your pattern</translation>
+      <translation>თქვენი შაბლონის შემცველი PAT ფაილი</translation>
     </message>
     <message>
       <source>Pattern File</source>
@@ -3556,7 +3556,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Color of pattern lines</source>
-      <translation type="unfinished">Color of pattern lines</translation>
+      <translation>დაშტრიხვის შაბლონის ფერი</translation>
     </message>
     <message>
       <source>Line Color</source>
@@ -3564,7 +3564,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Enlarges/shrinks the pattern</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern</translation>
+      <translation>შაბლონის გადიდება/დაპატარავება</translation>
     </message>
     <message>
       <source>Pattern Scale</source>
@@ -3832,7 +3832,7 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <source>Scale Denominator</source>
-      <translation type="unfinished">Scale Denominator</translation>
+      <translation>მასშტაბის მნიშვნელი</translation>
     </message>
     <message>
       <source>Adjust Primary Direction</source>
@@ -3984,7 +3984,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Start Rich Text Editor</source>
-      <translation type="unfinished">Start Rich Text Editor</translation>
+      <translation>ტექსტის ფორმატირება</translation>
     </message>
     <message>
       <source>Show Frame</source>

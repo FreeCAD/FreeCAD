@@ -26,7 +26,7 @@
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Επιλέξτε Προβολή</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Μετακίνηση προβολής</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
@@ -69,7 +69,7 @@
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Επιλέξτε Προβολή</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>

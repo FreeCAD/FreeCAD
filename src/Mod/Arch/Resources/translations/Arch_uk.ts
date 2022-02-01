@@ -4483,7 +4483,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Створюйте різні типи арматурних прутів, включаючи U-подібні, L-подібні та стременові</translation>
     </message>
   </context>
   <context>

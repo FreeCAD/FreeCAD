@@ -1175,7 +1175,7 @@ Do you want to continue?</translation>
       <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>სიბრტყე სწორებულია მიბმული ობიექტის XY ლოკალურ სიბრტყესთან.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="133"/>
@@ -1187,7 +1187,7 @@ Do you want to continue?</translation>
       <location filename="../../AttacherTexts.cpp" line="134"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>სიბრტყე სწორებულია მიბმული ობიექტის XZ ლოკალურ სიბრტყესთან.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="136"/>
@@ -1199,7 +1199,7 @@ Do you want to continue?</translation>
       <location filename="../../AttacherTexts.cpp" line="137"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>სიბრტყე სწორებულია მიბმული ობიექტის YZ ლოკალურ სიბრტყესთან.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="139"/>
@@ -1384,7 +1384,7 @@ Do you want to continue?</translation>
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>X', Y' და Z' ღერძები დაემთხვევა ობიექტის შესაბამისად X, Z და -Y ღერძებს.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="61"/>
@@ -1396,7 +1396,7 @@ Do you want to continue?</translation>
       <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>X', Y' და Z' ღერძები დაემთხვევა ობიექტის შესაბამისად Y, Z და X ღერძებს.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="64"/>
@@ -2771,12 +2771,12 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1612"/>
       <source>Sweep...</source>
-      <translation type="unfinished">Sweep...</translation>
+      <translation>შლილი...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1613"/>
       <source>Utility to sweep</source>
-      <translation type="unfinished">Utility to sweep</translation>
+      <translation>შლილის ხელსაწყო</translation>
     </message>
   </context>
   <context>
@@ -2993,7 +2993,7 @@ of projection.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>შლილი</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="199"/>
@@ -3041,7 +3041,7 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>მიმაგრების წანაცვლება (ლოკალური კოორდინატები):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -3084,22 +3084,22 @@ of projection.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>X ღერძის გარშემო შემობრუნება
+შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ სივრცეში.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="312"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Y ღერძის გარშემო შემობრუნება
+შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ სივრცეში.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Z ღერძის გარშემო შემობრუნება
+შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ სივრცეში.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -4968,7 +4968,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>მიმართულების ვექტორის X კომპონენტი</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -4978,7 +4978,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>მიმართულების ვექტორის Y კომპონენტი</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="176"/>
@@ -4988,7 +4988,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>მიმართულების ვექტორის Z კომპონენტი</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
@@ -5211,7 +5211,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskSweep.cpp" line="411"/>
       <location filename="../../TaskSweep.cpp" line="419"/>
       <source>Sweep path</source>
-      <translation type="unfinished">Sweep path</translation>
+      <translation>შლილის ტრაექტორია</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="281"/>
@@ -5236,7 +5236,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="316"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
+      <translation>%1-ის გამოყენება პროფილად და ტრაექტორიად შეუძლებელია.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="354"/>
@@ -5257,7 +5257,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskSweep.cpp" line="411"/>
       <location filename="../../TaskSweep.cpp" line="419"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>მონიშნული შლილის ტრაექტორია არასწორია.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="431"/>
@@ -5267,7 +5267,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>შლილი</translation>
     </message>
   </context>
   <context>
@@ -5311,7 +5311,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>მიმაგრების წანაცვლება (ლოკალური კოორდინატები):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5357,27 +5357,24 @@ of object being attached.</translation>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>X ღერძის გარშემო შემობრუნება
+შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="313"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Y ღერძის გარშემო შემობრუნება
+შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="340"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Z ღერძის გარშემო შემობრუნება
+შენიშვნა: მდებარეობა გამოიხატება მისამაგრებელი ობიექტის ლოკალურ კოორდინატების სისტემაში.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
@@ -5507,14 +5504,14 @@ mean the checked object is unusable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>ერთ ნაკადად</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>გეომეტრიის შემოწმების ერთ ნაკადად გაშვება. ეს უფრო ნელია,
+მაგრამ უფრო სტაბილური. ნაგულისხმევად: გამორთულია</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
@@ -5882,12 +5879,12 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>შლილი</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation type="unfinished">Sweep Path</translation>
+      <translation>შლილის ტრაექტორია</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -6043,7 +6040,7 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation>შეუერთდით</translation>
+      <translation>შეერთება</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
