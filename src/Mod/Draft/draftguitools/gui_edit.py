@@ -331,15 +331,13 @@ class Edit(gui_base_original.Modifier):
         # self.alignWorkingPlane()
 
 
-    def numericInput(self, v, numy=None, numz=None):
+    def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.
 
         This function gets called by the toolbar
         or by the mouse click and activate the update function.
         """
-        if numy:
-            v = App.Vector(v, numy, numz)
-        self.endEditing(self.obj, self.editing, v)
+        self.endEditing(self.obj, self.editing, App.Vector(numx, numy, numz))
         App.ActiveDocument.recompute()
 
 
