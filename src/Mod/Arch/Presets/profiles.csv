@@ -658,12 +658,12 @@ American Wide Flange,W27x178,H,357.886,706.12,18.415,30.226
 
 # Category,Name,R,width,height
 
-North America Lumber,1x2in,R,19,28
+North America Lumber,1x2in,R,19,38
 North America Lumber,1x3in,R,19,64
 North America Lumber,1x4in,R,19,89
-North America Lumber,1x6in,R,19,89
-North America Lumber,1x8in,R,19,140
-North America Lumber,1x10in,R,19,184
+North America Lumber,1x6in,R,19,140
+North America Lumber,1x8in,R,19,184
+North America Lumber,1x10in,R,19,235
 North America Lumber,1x12in,R,19,286
 North America Lumber,2x2in,R,38,38
 North America Lumber,2x3in,R,38,64
@@ -679,7 +679,7 @@ North America Lumber,8x8in,R,184,184
 
 # Eurocode timber
 
-Eurocode timber,22x100 ,R,22,100
+Eurocode timber,22x100,R,22,100
 Eurocode timber,38x100,R,38,100
 Eurocode timber,38x150,R,38,150
 Eurocode timber,38x175,R,38,175
