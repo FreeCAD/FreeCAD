@@ -76,9 +76,9 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
 class _CommandCutLine:
     "the Arch CutPlane command definition"
     def GetResources(self):
-       return {'Pixmap'  : 'Arch_CutLine',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut with a line"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut an object with a line with normal workplane")}
+        return {"Pixmap": "Arch_CutLine",
+                "MenuText": QtCore.QT_TRANSLATE_NOOP("Arch_CutLine", "Cut with line"),
+                "ToolTip": QtCore.QT_TRANSLATE_NOOP("Arch_CutLine", "Cut an object with a line")}
 
     def IsActive(self):
         return len(FreeCADGui.Selection.getSelection()) > 1
