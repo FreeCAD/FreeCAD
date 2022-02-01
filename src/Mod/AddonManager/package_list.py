@@ -344,15 +344,15 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.Version}</i>")
             if self.displayStyle == ListDisplayStyle.EXPANDED:
                 maintainers = repo.metadata.Maintainer
-                string = ""
+                maintainers_string = ""
                 if len(maintainers) == 1:
-                    string = (
+                    maintainers_string = (
                         translate("AddonsInstaller", "Maintainer")
                         + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
                     )
                 elif len(maintainers) > 1:
                     n = len(maintainers)
-                    string = translate("AddonsInstaller", "Maintainers:", "", n)
+                    maintainers_string = translate("AddonsInstaller", "Maintainers:", "", n)
                     for maintainer in maintainers:
                         maintainers_string += (
                             f"\n{maintainer['name']} <{maintainer['email']}>"
