@@ -29,25 +29,25 @@
 
 #include "Workbench.h"
 #include "WorkbenchPy.h"
-#include "PythonWorkbenchPy.h"
-#include "MenuManager.h"
-#include "ToolBarManager.h"
-#include "DockWindowManager.h"
-#include "Application.h"
 #include "Action.h"
+#include "Application.h"
 #include "Command.h"
 #include "Control.h"
+#include "DockWindowManager.h"
+#include "MainWindow.h"
+#include "MenuManager.h"
+#include "PythonWorkbenchPy.h"
+#include "Selection.h"
+#include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Window.h"
-#include "Selection.h"
-#include "MainWindow.h"
-#include <Gui/ComboView.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskWatcher.h>
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Interpreter.h>
+#include <Gui/ComboView.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/TaskView/TaskWatcher.h>
 
 using namespace Gui;
 
@@ -651,7 +651,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator"
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Std_SelBoundingBox"
           << "Separator" << view3d << zoom
-          << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
+          << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane" << "Part_CuttingView"
           << "Std_TextureMapping"
 #ifdef BUILD_VR
           << "Std_ViewVR"
