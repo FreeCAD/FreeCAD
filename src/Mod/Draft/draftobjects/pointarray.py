@@ -119,6 +119,7 @@ class PointArray(DraftLink):
         """Run when the object is created or recomputed."""
 
         pt_list, count = get_point_list(obj.PointObject)
+        obj.Count = count
         pls = build_placements(obj.Base, pt_list, obj.ExtraPlacement)
 
         return super(PointArray, self).buildShape(obj, obj.Placement, pls)
