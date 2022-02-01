@@ -11,6 +11,34 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
+def checkForBlindHole(baseshape, selectedFace):
+    """
+    check for blind holes, returns the bottom face if found, none
+    if the hole is a thru-hole
+    """
+    circularFaces = [
+        f
+        for f in baseshape.Faces
+        if len(f.OuterWire.Edges) == 1
+        and type(f.OuterWire.Edges[0].Curve) == Part.Circle
+    ]
+
+    circularFaceEdges = [f.OuterWire.Edges[0] for f in circularFaces]
+    commonedges = [
+        i for i in selectedFace.Edges for x in circularFaceEdges if i.isSame(x)
+    ]
+
+    bottomface = None
+    for f in circularFaces:
+        for e in f.Edges:
+            for i in commonedges:
+                if e.isSame(i):
+                    bottomface = f
+                break
+
+    return bottomface
+
+
 def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
     """
     checks if a candidate cylindrical face is drillable
@@ -69,9 +97,19 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     if not matchToolDiameter and not matchVector:
         return True
 
-    elif matchToolDiameter and tooldiameter / 2 > candidate.Surface.Radius:
+    if matchToolDiameter and tooldiameter / 2 > candidate.Surface.Radius:
         PathLog.debug("The tool is larger than the target")
         return False
+
+    bottomface = checkForBlindHole(obj, candidate)
+    PathLog.track("candidate is a blind hole")
+
+    if (
+        bottomface is not None and matchVector
+    ):  # blind holes only drillable at exact vector
+        result = compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
+        PathLog.track(result)
+        return result
 
     elif matchVector and not (compareVecs(getSeam(candidate).Curve.Direction, vector)):
         PathLog.debug("The feature is not aligned with the given vector")
@@ -80,7 +118,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
         return True
 
 
-def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
+def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
     """
     checks if a flat face or edge is drillable
     """
@@ -93,36 +131,57 @@ def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0,
         )
     )
 
-    if candidate.ShapeType == "Face":
-        if not type(candidate.Surface) == Part.Plane:
-            PathLog.debug("Drilling on non-planar faces not supported")
-            return False
+    PathLog.track()
+    if not type(candidate.Surface) == Part.Plane:
+        PathLog.debug("Drilling on non-planar faces not supported")
+        return False
 
-        if (
-            len(candidate.Edges) == 1 and type(candidate.Edges[0].Curve) == Part.Circle
-        ):  # Regular circular face
-            edge = candidate.Edges[0]
-        elif (
-            len(candidate.Edges) == 2
-            and type(candidate.Edges[0].Curve) == Part.Circle
-            and type(candidate.Edges[1].Curve) == Part.Circle
-        ):  # process a donut
-            e1 = candidate.Edges[0]
-            e2 = candidate.Edges[1]
-            edge = e1 if e1.Curve.Radius < e2.Curve.Radius else e2
-        else:
-            PathLog.debug(
-                "expected a Face with one or two circular edges got a face with {} edges".format(
-                    len(candidate.Edges)
-                )
+    if (
+        len(candidate.Edges) == 1 and type(candidate.Edges[0].Curve) == Part.Circle
+    ):  # Regular circular face
+        edge = candidate.Edges[0]
+    elif (
+        len(candidate.Edges) == 2
+        and type(candidate.Edges[0].Curve) == Part.Circle
+        and type(candidate.Edges[1].Curve) == Part.Circle
+    ):  # process a donut
+        e1 = candidate.Edges[0]
+        e2 = candidate.Edges[1]
+        edge = e1 if e1.Curve.Radius < e2.Curve.Radius else e2
+    else:
+        PathLog.debug(
+            "expected a Face with one or two circular edges got a face with {} edges".format(
+                len(candidate.Edges)
             )
+        )
+        return False
+    if vector is not None:  # Check for blind hole alignment
+        if not compareVecs(candidate.normalAt(0, 0), vector, exact=True):
             return False
+    if matchToolDiameter and edge.Curve.Radius < tooldiameter / 2:
+        PathLog.track()
+        return False
+    else:
+        return True
 
-    else:  # edge
-        edge = candidate
-        if not (isinstance(edge.Curve, Part.Circle) and edge.isClosed()):
-            PathLog.debug("expected a closed circular edge")
-            return False
+
+def isDrillableEdge(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
+    """
+    checks if an edge is drillable
+    """
+
+    matchToolDiameter = tooldiameter is not None
+    matchVector = vector is not None
+    PathLog.debug(
+        "\n match tool diameter {} \n match vector {}".format(
+            matchToolDiameter, matchVector
+        )
+    )
+
+    edge = candidate
+    if not (isinstance(edge.Curve, Part.Circle) and edge.isClosed()):
+        PathLog.debug("expected a closed circular edge")
+        return False
 
     if not hasattr(edge.Curve, "Radius"):
         PathLog.debug("The Feature edge has no radius - Ellipse.")
@@ -131,11 +190,11 @@ def isDrillableCircle(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0,
     if not matchToolDiameter and not matchVector:
         return True
 
-    elif matchToolDiameter and tooldiameter / 2 > edge.Curve.Radius:
+    if matchToolDiameter and tooldiameter / 2 > edge.Curve.Radius:
         PathLog.debug("The tool is larger than the target")
         return False
 
-    elif matchVector and not (compareVecs(edge.Curve.Axis, vector)):
+    if matchVector and not (compareVecs(edge.Curve.Axis, vector)):
         PathLog.debug("The feature is not aligned with the given vector")
         return False
     else:
@@ -175,30 +234,38 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
         raise TypeError("expected a Face or Edge. Got a {}".format(candidate.ShapeType))
 
     try:
-        if candidate.ShapeType == "Face" and isinstance(
-            candidate.Surface, Part.Cylinder
-        ):
-            return isDrillableCylinder(obj, candidate, tooldiameter, vector)
+        if candidate.ShapeType == "Face":
+            if isinstance(candidate.Surface, Part.Cylinder):
+                return isDrillableCylinder(obj, candidate, tooldiameter, vector)
+            else:
+                return isDrillableFace(obj, candidate, tooldiameter, vector)
+        if candidate.ShapeType == "Edge":
+            return isDrillableEdge(obj, candidate, tooldiameter, vector)
         else:
-            return isDrillableCircle(obj, candidate, tooldiameter, vector)
+            return False
+
     except TypeError as e:
         PathLog.debug(e)
         return False
         # raise TypeError("{}".format(e))
 
 
-def compareVecs(vec1, vec2):
+def compareVecs(vec1, vec2, exact=False):
     """
-    compare the two vectors to see if they are aligned for drilling
+    compare the two vectors to see if they are aligned for drilling.
+    if exact is True, vectors must match direction. Otherwise,
     alignment can indicate the vectors are the same or exactly opposite
     """
 
     angle = vec1.getAngle(vec2)
     angle = 0 if math.isnan(angle) else math.degrees(angle)
     PathLog.debug("vector angle: {}".format(angle))
-    return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06) or numpy.isclose(
-        angle, 180, rtol=1e-05, atol=1e-06
-    )
+    if exact:
+        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06)
+    else:
+        return numpy.isclose(angle, 0, rtol=1e-05, atol=1e-06) or numpy.isclose(
+            angle, 180, rtol=1e-05, atol=1e-06
+        )
 
 
 def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
