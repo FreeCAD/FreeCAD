@@ -932,7 +932,7 @@ Base::Vector2d Geom2dCircle::getCircleCenter (const Base::Vector2d &p1, const Ba
     double vv =  v*v;
     double ww =  w*w;
 
-    if (abs(uu * vv * ww) < 0.01)
+    if (abs(uu * vv * ww) < Precision::Confusion())
         THROWM(Base::ValueError,"Two points are coincident");
 
     double uv = -(u*v);
@@ -945,7 +945,7 @@ Base::Vector2d Geom2dCircle::getCircleCenter (const Base::Vector2d &p1, const Ba
 
     double wx = w0 + w1 + w2;
 
-    if( abs(wx) < 0.01)
+    if( abs(wx) < Precision::Confusion())
         THROWM(Base::ValueError,"Points are collinear");
 
     double x = (w0*p1.x + w1*p2.x + w2*p3.x)/wx;
