@@ -83,7 +83,7 @@ Py::Object Translate::translate(const Py::Tuple& args)
     char *source;
     char *disambiguation = nullptr;
     int n=-1;
-    if (!PyArg_ParseTuple(args.ptr(), "ss|si", &context, &source, &disambiguation, &n))
+    if (!PyArg_ParseTuple(args.ptr(), "ss|zi", &context, &source, &disambiguation, &n))
         throw Py::Exception();
 
     QString str = QCoreApplication::translate(context, source, disambiguation, n);
