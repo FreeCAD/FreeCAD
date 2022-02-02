@@ -27,5 +27,5 @@ jobs:
       with:
         check_filenames: true
         ignore_words_file: .github/codespellignore
-        skip: ./.git,*.po,*.ts,*,svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/CXX,./src/zipios++,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
+        skip: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/CXX,./src/zipios++,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
         path: ${{ steps.changed-files.outputs.all_changed_files }}
