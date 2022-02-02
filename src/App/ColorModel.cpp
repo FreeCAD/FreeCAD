@@ -27,6 +27,7 @@
 #endif
 
 #include "ColorModel.h"
+#include <Base/Exception.h>
 
 using namespace App;
 
@@ -107,7 +108,10 @@ void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::s
 {
     colorModel = rclModel;
     this->fMin = std::min<float>(fMin, fMax);
-    this->fMax = std::max<float>(this->fMin + CCR_EPS, fMax);
+    this->fMax = std::max<float>(fMin, fMax);
+    if (this->fMax <= this->fMin) {
+        throw Base::ValueError("Maximum must be higher than minimum");
+    }
     ctColors = std::max<std::size_t>(usCt, colorModel.getCountColors());
     rebuild();
 }
@@ -206,7 +210,10 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
 void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG)
 {
     _fMin = std::min<float>(fMin, fMax);
-    _fMax = std::max<float>(_fMin + CCR_EPS, fMax);
+    _fMax = std::max<float>(fMin, fMax);
+    if (_fMax <= _fMin) {
+        throw Base::ValueError("Maximum must be higher than minimum");
+    }
     ctColors = std::max<std::size_t>(usCt, getMinColors());
     tStyle = tS;
     outsideGrayed = bOG;
