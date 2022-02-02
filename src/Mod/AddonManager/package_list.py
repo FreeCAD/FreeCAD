@@ -338,11 +338,11 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(16, 16)))
 
         self.widget.ui.labelIcon.setText("")
-        self.widget.ui.labelTags.setText("")
         if repo.metadata:
             self.widget.ui.labelDescription.setText(repo.metadata.Description)
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.Version}</i>")
             if self.displayStyle == ListDisplayStyle.EXPANDED:
+                self.widget.ui.labelTags.setText("")
                 maintainers = repo.metadata.Maintainer
                 maintainers_string = ""
                 if len(maintainers) == 1:
