@@ -2678,7 +2678,7 @@ bool Document::saveToFile(const char* filename) const
     if (policy) {
         // if saving the project data succeeded rename to the actual file name
         int count_bak = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
+            ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",5);
         bool backup = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
         if (!backup) {
