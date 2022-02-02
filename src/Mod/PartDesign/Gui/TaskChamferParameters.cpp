@@ -67,6 +67,12 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
 
     setUpUI(pcChamfer);
+
+    bool useAllEdges = pcChamfer->UseAllEdges.getValue();
+    ui->checkBoxUseAllEdges->setChecked(useAllEdges);
+    ui->buttonRefAdd->setEnabled(!useAllEdges);
+    ui->buttonRefRemove->setEnabled(!useAllEdges);
+    ui->listWidgetReferences->setEnabled(!useAllEdges);
     QMetaObject::invokeMethod(ui->chamferSize, "setFocus", Qt::QueuedConnection);
 
     std::vector<std::string> strings = pcChamfer->Base.getSubValues();
@@ -91,6 +97,8 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
         this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->checkBoxUseAllEdges, SIGNAL(toggled(bool)),
+            this, SLOT(onCheckBoxUseAllEdgesToggled(bool)));
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
@@ -147,6 +155,7 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->sizeLabel->setMinimumWidth(minWidth);
     ui->size2Label->setMinimumWidth(minWidth);
     ui->angleLabel->setMinimumWidth(minWidth);
+
 }
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -188,6 +197,16 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             DressUpView->highlightReferences(true);
         }
     }
+}
+
+void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    ui->buttonRefRemove->setEnabled(!checked);
+    ui->buttonRefAdd->setEnabled(!checked);
+    ui->listWidgetReferences->setEnabled(!checked);
+    pcChamfer->UseAllEdges.setValue(checked);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
 void TaskChamferParameters::clearButtons(const selectionModes notThis)
