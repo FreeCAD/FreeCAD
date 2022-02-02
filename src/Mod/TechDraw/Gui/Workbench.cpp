@@ -189,7 +189,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ClipGroupRemove";
     *draw << "Separator";
     *draw << "TechDraw_MoveView";
-    *draw << "TechDraw_CopyView";
+    *draw << "TechDraw_ShareView";
     *draw << dimensions;
     *draw << toolattrib;
     *draw << toolcenter;
@@ -236,7 +236,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_ArchView";
     *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_MoveView";
-    *views << "TechDraw_CopyView";
+    *views << "TechDraw_ShareView";
     *views << "TechDraw_ProjectShape";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
@@ -373,7 +373,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_DraftView";
     *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_MoveView";
-    *views << "TechDraw_CopyView";
+    *views << "TechDraw_ShareView";
     *views << "TechDraw_ProjectShape";
 
 
