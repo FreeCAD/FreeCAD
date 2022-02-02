@@ -108,7 +108,7 @@ int PropertyPostDataObject::getDataType() {
 PyObject *PropertyPostDataObject::getPyObject(void)
 {
     //TODO: fetch the vtk python object from the data set and return it
-    return new PyObject();
+    return Py::new_reference_to(Py::None());
 }
 
 void PropertyPostDataObject::setPyObject(PyObject * /*value*/)
