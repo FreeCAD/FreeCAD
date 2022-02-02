@@ -61,6 +61,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/DlgCheckableMessageBox.h>
 #include <Gui/MainWindow.h>
 
 #include <QDomDocument>
@@ -559,7 +560,8 @@ void DocumentRecovery::on_buttonCleanup_clicked()
 
     DocumentRecoveryHandler handler;
     handler.checkForPreviousCrashes(std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3));
-    QMessageBox::information(this, tr("Finished"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Transient deleted"), tr("Transient directories deleted."));
+    reject();
 }
 
 void DocumentRecovery::cleanup(QDir& tmp, const QList<QFileInfo>& dirs, const QString& lockFile)
