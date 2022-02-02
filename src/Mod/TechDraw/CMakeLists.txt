@@ -18,9 +18,9 @@ endif(BUILD_GUI)
 set(TechDraw_ToolsScripts
     TechDrawTools/__init__.py
     TechDrawTools/CommandMoveView.py
-    TechDrawTools/CommandCopyView.py
+    TechDrawTools/CommandShareView.py
     TechDrawTools/TaskMoveView.py
-    TechDrawTools/TaskCopyView.py
+    TechDrawTools/TaskShareView.py
     TechDrawTools/TDToolsUtil.py
     TechDrawTools/TDToolsMovers.py
 )

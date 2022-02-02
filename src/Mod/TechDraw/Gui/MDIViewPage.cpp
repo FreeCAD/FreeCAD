@@ -507,10 +507,8 @@ void MDIViewPage::fixOrphans(bool force)
                 }
             } else if (numParentPages > 1) {
                 //DrawView belongs to multiple DrawPages
-                //this is a problem - not supposed to happen
                 //check if this MDIViewPage corresponds to any parent DrawPage
                 //if not, delete the QGItem
-                Base::Console().Warning("%s belongs to multiple Pages\n", obj->getNameInDocument());
                 std::vector<TechDraw::DrawPage*> pPages = qv->getViewObject()->findAllParentPages();
                 bool found = false;
                 for (auto p: pPages) {
