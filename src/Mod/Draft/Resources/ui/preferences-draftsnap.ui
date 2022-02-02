@@ -455,9 +455,6 @@
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="suffix">
-           <string>mm</string>
-          </property>
           <property name="decimals">
            <number>4</number>
           </property>
@@ -466,6 +463,9 @@
           </property>
           <property name="value">
            <double>1.000000000000000</double>
+          </property>
+          <property name="unit">
+           <string notr="true">mm</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>gridSpacing</cstring>
