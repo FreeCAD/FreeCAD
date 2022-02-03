@@ -71,7 +71,7 @@
 
 using namespace Gui;
 
-// FCApplication Methods						// Methods structure
+// Application methods structure
 PyMethodDef Application::Methods[] = {
   {"activateWorkbench",(PyCFunction) Application::sActivateWorkbenchHandler, METH_VARARGS,
    "activateWorkbench(name) -> bool\n"
@@ -393,19 +393,19 @@ PyMethodDef Application::Methods[] = {
    "Remove all children from a group node.\n"
    "\n"
    "node : object"},
-  {NULL, NULL, 0, NULL}		/* Sentinel */
+  {nullptr, nullptr, 0, nullptr}    /* Sentinel */
 };
 
 PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
 {
-	if (!PyArg_ParseTuple(args, ""))
-		return nullptr;
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
-	Document *pcDoc = Instance->editDocument();
-	if (pcDoc)
-		return pcDoc->getPyObject();
-	else
-		Py_Return;
+    Document *pcDoc = Instance->editDocument();
+    if (pcDoc)
+        return pcDoc->getPyObject();
+    else
+        Py_Return;
 }
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
