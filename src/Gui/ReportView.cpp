@@ -349,14 +349,12 @@ public:
             Base::PyGILStateLocker lock;
             default_stdout = PySys_GetObject(const_cast<char*>("stdout"));
             replace_stdout = new OutputStdout();
-            redirected_stdout = false;
         }
 
         if (!default_stderr) {
             Base::PyGILStateLocker lock;
             default_stderr = PySys_GetObject(const_cast<char*>("stderr"));
             replace_stderr = new OutputStderr();
-            redirected_stderr = false;
         }
     }
     ~Data()
@@ -382,11 +380,11 @@ public:
     static PyObject* replace_stderr;
 };
 
-bool ReportOutput::Data::redirected_stdout = false;
+bool ReportOutput::Data::redirected_stdout = true;
 PyObject* ReportOutput::Data::default_stdout = 0;
 PyObject* ReportOutput::Data::replace_stdout = 0;
 
-bool ReportOutput::Data::redirected_stderr = false;
+bool ReportOutput::Data::redirected_stderr = true;
 PyObject* ReportOutput::Data::default_stderr = 0;
 PyObject* ReportOutput::Data::replace_stderr = 0;
 
@@ -427,6 +425,15 @@ ReportOutput::ReportOutput(QWidget* parent)
 
     // scroll to bottom at startup to make sure that last appended text is visible
     ensureCursorVisible();
+    
+    if (d->redirected_stdout){
+        d->redirected_stdout = false;
+        onToggleRedirectPythonStdout();
+    }
+    if (d->redirected_stderr){
+        d->redirected_stderr = false;
+        onToggleRedirectPythonStderr();
+    }
 }
 
 /**
