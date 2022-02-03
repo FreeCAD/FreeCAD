@@ -526,39 +526,6 @@ void Matrix_gauss(Matrix a, Matrix b)
     }
   }
 }
-/* ------------------------------------------------------------------------
-   Matrix_identity(Matrix a)
-
-   Puts an identity matrix in matrix a
-   ------------------------------------------------------------------------ */
-
-void Matrix_identity (Matrix a)
-{
-  int i;
-  for (i = 0; i < 16; i++) a[i] = 0;
-  a[0] = 1;
-  a[5] = 1;
-  a[10] = 1;
-  a[15] = 1;
-}
-
-/* ------------------------------------------------------------------------
-   Matrix_invert(Matrix a, Matrix inva)
-
-   Inverts Matrix a and places the result in inva.
-   Relies on the Gaussian Elimination code above. (See Numerical recipes).
-   ------------------------------------------------------------------------ */
-void Matrix_invert (Matrix a, Matrix inva)
-{
-
-  double  temp[16];
-  int     i;
-
-  for (i = 0; i < 16; i++)
-    temp[i] = a[i];
-  Matrix_identity(inva);
-  Matrix_gauss(temp,inva);
-}
 
 void  Matrix4D::inverseOrthogonal()
 {
@@ -579,7 +546,6 @@ void Matrix4D::inverseGauss ()
                                 0 ,0 ,0 ,1 };
   getGLMatrix(matrix);
 
-//  Matrix_invert(matrix, inversematrix);
   Matrix_gauss(matrix,inversematrix);
 
   setGLMatrix(inversematrix);
