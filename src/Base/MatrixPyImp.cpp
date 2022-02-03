@@ -185,7 +185,7 @@ PyObject* MatrixPy::number_multiply_handler(PyObject *self, PyObject *other)
         }
 
         if (PyNumber_Check(other)) {
-            double v = PyFloat_AsDouble(self);
+            double v = PyFloat_AsDouble(other);
             a.scale(v,v,v);
             return new MatrixPy(a);
         }
