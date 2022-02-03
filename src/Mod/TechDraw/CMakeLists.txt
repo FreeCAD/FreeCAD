@@ -58,37 +58,11 @@ fc_target_copy_resource(TechDraw_Data
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_LineGroupFile})
 
-fc_target_copy_resource(TechDraw_Data
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/TechDraw
-    ${TechDraw_ToolsScripts}
-)
-
-fc_target_copy_resource(TechDraw_Data
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/TechDraw/TechDrawTools
-    ${TechDraw_ToolsGui}
-)
-
 INSTALL(
     FILES
         ${TechDraw_Scripts}
     DESTINATION
         Mod/TechDraw
-)
-
-INSTALL(
-    FILES
-        ${TechDraw_ToolsScripts}
-    DESTINATION
-        Mod/TechDraw/TechDrawTools
-)
-
-INSTALL(
-    FILES
-        ${TechDraw_ToolsGui}
-    DESTINATION
-        Mod/TechDraw/TechDrawTools/Gui
 )
 
 INSTALL(
@@ -136,6 +110,33 @@ INSTALL(
         PATTERN "*.svg*"
 )
 
+if(BUILD_GUI)
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw
+    ${TechDraw_ToolsScripts}
+)
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw/TechDrawTools
+    ${TechDraw_ToolsGui}
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsScripts}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsGui}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools/Gui
+)
+endif(BUILD_GUI)
 
 #unit test files
 SET(TDTest_SRCS
