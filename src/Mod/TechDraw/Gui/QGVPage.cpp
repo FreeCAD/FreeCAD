@@ -121,6 +121,7 @@
 #define DC_NS_URI "http://purl.org/dc/elements/1.1/"
 #define RDF_NS_URI "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 #define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
+#define SODIPODI_NS_URI "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -943,6 +944,8 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
         QString::fromUtf8(RDF_NS_URI));
     exportDocElem.setAttribute(QString::fromUtf8("xmlns:inkscape"),
         QString::fromUtf8(INKSCAPE_NS_URI));
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:sodipodi"),
+        QString::fromUtf8(SODIPODI_NS_URI));
 
     // Create the root group which will host the drawing group and the template group
     QDomElement rootGroup = exportDoc.createElement(QString::fromUtf8("g"));
