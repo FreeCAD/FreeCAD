@@ -79,7 +79,7 @@
 
 // doc in super
 void
-SmSwitchboard::initClass(void)
+SmSwitchboard::initClass()
 {
   SO_NODE_INIT_CLASS(SmSwitchboard, SoGroup, SoGroup);
 }
@@ -89,7 +89,7 @@ SO_NODE_SOURCE(SmSwitchboard)
 /*!
   Default constructor.
 */
-SmSwitchboard::SmSwitchboard(void)
+SmSwitchboard::SmSwitchboard()
 {
   SO_NODE_CONSTRUCTOR(SmSwitchboard);
 
@@ -115,7 +115,7 @@ SmSwitchboard::SmSwitchboard(int numchildren)
 /*!
   Destructor.
 */
-SmSwitchboard::~SmSwitchboard(void) // virtual, protected
+SmSwitchboard::~SmSwitchboard() // virtual, protected
 {
 }
 
@@ -204,7 +204,7 @@ SmSwitchboard::handleEvent(SoHandleEventAction *action)
 void
 SmSwitchboard::search(SoSearchAction * action)
 {
-  SoNode::search(action);
+  SoNode::search(action); // clazy:exclude=skipped-base-method
   if (action->isFound()) return;
   SmSwitchboard::doAction(action);
 }

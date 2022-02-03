@@ -30,7 +30,7 @@ class iisTaskPanelScheme;
 class IISTASKPANEL_EXPORT iisTaskPanel : public QWidget
 {
 public:
-	iisTaskPanel(QWidget *parent = 0);
+	iisTaskPanel(QWidget *parent = nullptr);
 	~iisTaskPanel();
 
 	void addWidget(QWidget *w);

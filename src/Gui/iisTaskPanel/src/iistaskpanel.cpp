@@ -12,7 +12,7 @@
 
 
 iisTaskPanel::iisTaskPanel(QWidget *parent) :
-	QWidget(parent), mySpacer(0)
+	QWidget(parent), mySpacer(nullptr)
 {
 	myScheme = iisTaskPanelScheme::defaultScheme();
 
@@ -85,7 +85,7 @@ void iisTaskPanel::removeStretch()
 {
 	if (mySpacer) {
 		layout()->removeItem(mySpacer);
-		delete mySpacer; mySpacer = 0;
+		delete mySpacer; mySpacer = nullptr;
 	}
 }
 

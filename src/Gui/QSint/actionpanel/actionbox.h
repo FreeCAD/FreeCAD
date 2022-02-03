@@ -169,13 +169,13 @@ class QSINT_EXPORT ActionBox : public QFrame
 public:
     /** Constructor.
       */
-    explicit ActionBox(QWidget *parent = 0);
+    explicit ActionBox(QWidget *parent = nullptr);
     /** Constructor.
       */
-    explicit ActionBox(const QString & headerText, QWidget *parent = 0);
+    explicit ActionBox(const QString & headerText, QWidget *parent = nullptr);
     /** Constructor.
       */
-    explicit ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent = 0);
+    explicit ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent = nullptr);
 
     /** Sets icon of the ActionBox to \a icon.
       */
@@ -199,7 +199,7 @@ public:
 
       \since 0.2
       */
-    ActionLabel* createItem(QAction * action, QLayout * l = 0);
+    ActionLabel* createItem(QAction * action, QLayout * l = nullptr);
 
     /** Creates action items from the \a actions list and returns the list of action items.
       \since 0.2
@@ -208,19 +208,19 @@ public:
 
     /** Adds an action with \a text to the ActionBox and returns action item.
       */
-    ActionLabel* createItem(const QString & text = QString(), QLayout * l = 0);
+    ActionLabel* createItem(const QString & text = QString(), QLayout * l = nullptr);
     /** Adds an action with \a icon and \a text to the ActionBox and returns action item.
 
       This function acts just like previous one. See the description above.
       */
-    ActionLabel* createItem(const QPixmap & icon, const QString & text, QLayout * l = 0);
+    ActionLabel* createItem(const QPixmap & icon, const QString & text, QLayout * l = nullptr);
 
     /** Adds a spacer and returns spacer item.
 
       By default, a spacer is added to the default vertical layout.
       You can add a spacer to the specified layout passing it as \a l parameter.
       */
-    QSpacerItem* createSpacer(QLayout * l = 0);
+    QSpacerItem* createSpacer(QLayout * l = nullptr);
 
     /** Creates empty horizontal layout.
 
@@ -240,7 +240,7 @@ public:
       By default, widget is added to the default vertical layout.
       You can add widget to the specified layout passing it as \a l parameter.
       */
-    void addWidget(QWidget * w, QLayout * l = 0);
+    void addWidget(QWidget * w, QLayout * l = nullptr);
 
     virtual QSize minimumSizeHint() const;
 

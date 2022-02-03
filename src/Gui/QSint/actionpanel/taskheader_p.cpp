@@ -31,7 +31,7 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
   m_buttonOver(false),
   m_fold(true),
   m_opacity(0.1),
-  myButton(0)
+  myButton(nullptr)
 {
     setProperty("class", "header");
 
@@ -79,9 +79,9 @@ void TaskHeader::setExpandable(bool expandable)
             return;
 
         myButton->removeEventFilter(this);
-        myButton->setParent(0);
+        myButton->setParent(nullptr);
         delete myButton;
-        myButton = 0;
+        myButton = nullptr;
         changeIcons();
     }
 }

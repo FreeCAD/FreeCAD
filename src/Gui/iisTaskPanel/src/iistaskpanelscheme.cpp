@@ -7,7 +7,7 @@
 
 #include "iistaskpanelscheme.h"
 
-iisTaskPanelScheme* iisTaskPanelScheme::myDefaultScheme = 0;
+iisTaskPanelScheme* iisTaskPanelScheme::myDefaultScheme = nullptr;
 
 iisTaskPanelScheme::iisTaskPanelScheme(QObject *parent)
 	: QObject(parent)

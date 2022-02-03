@@ -25,7 +25,7 @@ class IISTASKPANEL_EXPORT iisTaskHeader : public QFrame
 	Q_OBJECT
 
 public:
-	iisTaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent = 0);
+	iisTaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent = nullptr);
 
 	void setScheme(iisTaskPanelScheme *scheme);
 	virtual ~iisTaskHeader();

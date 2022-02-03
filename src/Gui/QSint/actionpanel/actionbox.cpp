@@ -132,7 +132,7 @@ QPixmap ActionBox::icon() const
 ActionLabel* ActionBox::createItem(QAction * action, QLayout * l)
 {
     if (!action)
-        return 0;
+        return nullptr;
 
     ActionLabel *act = createItem("", l);
     act->setDefaultAction(action);

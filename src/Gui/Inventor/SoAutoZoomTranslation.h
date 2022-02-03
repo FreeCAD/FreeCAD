@@ -42,7 +42,7 @@ public:
     SoSFFloat scaleFactor;
 
 protected:
-    virtual ~SoAutoZoomTranslation() {};
+    virtual ~SoAutoZoomTranslation() {}
     virtual void doAction(SoAction * action);
     virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
     virtual void getMatrix(SoGetMatrixAction * action);

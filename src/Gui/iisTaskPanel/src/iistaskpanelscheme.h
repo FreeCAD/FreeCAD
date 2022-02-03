@@ -28,7 +28,7 @@ struct IISTASKPANEL_EXPORT iisIconLabelScheme
 class IISTASKPANEL_EXPORT iisTaskPanelScheme : public QObject
 {
 public:
-	iisTaskPanelScheme(QObject *parent = 0);
+	iisTaskPanelScheme(QObject *parent = nullptr);
 	~iisTaskPanelScheme();
 
 	static iisTaskPanelScheme* defaultScheme();

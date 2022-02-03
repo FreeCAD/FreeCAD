@@ -15,7 +15,7 @@
 class IISTASKPANEL_EXPORT iisWinXPTaskPanelScheme : public iisTaskPanelScheme
 {
 public:
-	iisWinXPTaskPanelScheme(QObject *parent=0);
+	iisWinXPTaskPanelScheme(QObject *parent=nullptr);
 	~iisWinXPTaskPanelScheme();
 
 	static iisTaskPanelScheme* defaultScheme();
@@ -28,7 +28,7 @@ protected:
 class IISTASKPANEL_EXPORT iisWinXPTaskPanelScheme2 : public iisTaskPanelScheme
 {
 public:
-	iisWinXPTaskPanelScheme2(QObject *parent=0);
+	iisWinXPTaskPanelScheme2(QObject *parent=nullptr);
 	~iisWinXPTaskPanelScheme2();
 
 	static iisTaskPanelScheme* defaultScheme();
