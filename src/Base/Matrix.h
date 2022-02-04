@@ -157,6 +157,11 @@ public:
   /// scale for the x,y,z value
   void scale        (const Vector3f& rclVct);
   void scale        (const Vector3d& rclVct);
+  /// uniform scale
+  void scale        (float scalexyz)
+  { scale(Vector3f(scalexyz, scalexyz, scalexyz)); }
+  void scale        (double scalexyz)
+  { scale(Vector3d(scalexyz, scalexyz, scalexyz)); }
   /// Check for scaling factor, 0: not scale, 1: uniform scale, or else -1
   int hasScale(double tol=0.0) const;
   /// Rotate around the X axis (in transformed space) for the given value in radians
