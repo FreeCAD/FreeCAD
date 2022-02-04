@@ -351,3 +351,136 @@ class ParameterTestCase(unittest.TestCase):
         #remove all
         TestPar = FreeCAD.ParamGet("System parameter:Test")
         TestPar.Clear()
+
+class MatrixTestCase(unittest.TestCase):
+    def setUp(self):
+        self.mat = FreeCAD.Matrix()
+
+    def testScalar(self):
+        res = self.mat * 0.0
+        for i in range(16):
+            self.assertEqual(res.A[i], 0.0)
+
+    def testAddition(self):
+        res1 = self.mat * 2.0
+        res2 = self.mat + self.mat
+        for i in range(16):
+            self.assertEqual(res1.A[i], res2.A[i])
+
+    def testMinus(self):
+        res = self.mat - self.mat
+        for i in range(16):
+            self.assertEqual(res.A[i], 0.0)
+
+    def testVector(self):
+        vec = FreeCAD.Vector(1, 1, 1)
+        vec = self.mat * vec
+        self.assertEqual(vec.x, 1.0)
+        self.assertEqual(vec.y, 1.0)
+        self.assertEqual(vec.z, 1.0)
+
+    def testRotation(self):
+        rot = FreeCAD.Rotation()
+        res = self.mat * rot
+        self.assertEqual(type(res), FreeCAD.Matrix)
+
+    def testPlacement(self):
+        plm = FreeCAD.Placement()
+        res = self.mat * plm
+        self.assertEqual(type(res), FreeCAD.Matrix)
+
+    def testMatrix(self):
+        mat = FreeCAD.Matrix()
+        res = self.mat * mat
+        self.assertEqual(type(res), FreeCAD.Matrix)
+
+    def testAnything(self):
+        with self.assertRaises(NotImplementedError):
+            self.mat * "string"
+
+    def testUnity(self):
+        mat = FreeCAD.Matrix(2,0,0,0, 0,1,0,0, 0,0,2,0, 0,0,0,-1)
+        self.assertFalse(mat.isUnity())
+        mat.unity()
+        self.assertTrue(mat.isUnity())
+
+    def testPower(self):
+        mat = FreeCAD.Matrix(2,0,0,0, 0,1,0,0, 0,0,2,0, 0,0,0,-1)
+        with self.assertRaises(NotImplementedError):
+            mat ** "string"
+
+        mat2 = mat ** 0
+        self.assertTrue(mat2.isUnity())
+        self.assertEqual(mat ** -1, mat.inverse())
+        self.assertEqual(mat ** 1, mat)
+        self.assertEqual(mat ** 2, mat * mat)
+        self.assertEqual(mat ** 3, mat * mat * mat)
+        mat.nullify()
+        with self.assertRaises(RuntimeError):
+            mat ** -1
+
+    def testScale(self):
+        self.mat.scale(1., 2., 3.)
+        self.assertEqual(self.mat.determinant(), 6.0)
+        self.assertEqual(self.mat.hasScale(), -1)
+        self.mat.unity()
+        self.assertEqual(self.mat.hasScale(), 0)
+        self.mat.scale(2., 2., 2.)
+        self.assertEqual(self.mat.hasScale(), 1)
+        self.mat.rotateX(1.0)
+        self.assertEqual(self.mat.hasScale(), 1)
+
+    def testNull(self):
+        self.assertFalse(self.mat.isNull())
+        self.mat.nullify()
+        self.assertTrue(self.mat.isNull())
+
+    def testUnity(self):
+        self.assertTrue(self.mat.isUnity())
+        self.mat.nullify()
+        self.assertFalse(self.mat.isUnity())
+        self.mat.unity()
+        self.assertTrue(self.mat.isUnity())
+
+    def testColRow(self):
+        with self.assertRaises(TypeError):
+            self.mat.col("string")
+        with self.assertRaises(TypeError):
+            self.mat.row("string")
+        self.assertEqual(type(self.mat.col(0)), FreeCAD.Vector)
+        self.assertEqual(type(self.mat.row(0)), FreeCAD.Vector)
+        self.mat.setCol(0, FreeCAD.Vector(1,0,0))
+        self.mat.setRow(0, FreeCAD.Vector(1,0,0))
+
+    def testTrace(self):
+        self.mat.scale(2., 2., 2.)
+        self.assertEqual(self.mat.trace(), FreeCAD.Vector(2., 2., 2.))
+
+    def testNumberProtocol(self):
+        with self.assertRaises(NotImplementedError):
+            self.mat / 2.0
+        with self.assertRaises(NotImplementedError):
+            self.mat % 2.0
+        with self.assertRaises(NotImplementedError):
+            divmod(self.mat, 2.0)
+        with self.assertRaises(NotImplementedError):
+            float(self.mat)
+        with self.assertRaises(NotImplementedError):
+            int(self.mat)
+        with self.assertRaises(NotImplementedError):
+            self.mat | self.mat
+        with self.assertRaises(NotImplementedError):
+            self.mat & self.mat
+        with self.assertRaises(NotImplementedError):
+            self.mat ^ self.mat
+        with self.assertRaises(NotImplementedError):
+            self.mat << 2
+        with self.assertRaises(NotImplementedError):
+            self.mat >> 2
+        with self.assertRaises(NotImplementedError):
+            ~self.mat
+        with self.assertRaises(NotImplementedError):
+            abs(self.mat)
+        self.assertEqual(+self.mat, self.mat)
+        self.assertEqual(-self.mat, self.mat * -1)
+        self.assertTrue(bool(self.mat))
