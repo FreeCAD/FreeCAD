@@ -862,6 +862,20 @@ int Matrix4D::hasScale(double tol) const
     // scaling factors are the column vector length. We use square distance and
     // ignore the actual scaling signess
     //
+    // Note: In general using the column vectors to get the scaling factors makes
+    // sense if a scaling matrix was multiplied from the left side. If a scaling
+    // matrix was multiplied from the right side then the row vectors must be used.
+    // However, since this function checks for _uniform_ scaling it doesn't make a
+    // difference if row or column vectors are used.
+
+    // TODO:
+    // The int should be replaced with an enum class that tells the calling
+    // instance whether:
+    // * a uniform scaling was applied
+    // * a non-uniform scaling from the right side was applied
+    // * a non-uniform scaling from the left side was applied
+    // * no scaling at all
+
     if (tol == 0.0)
         tol = 1e-9;
     double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();
