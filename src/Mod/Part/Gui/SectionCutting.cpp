@@ -161,19 +161,19 @@ SectionCut::SectionCut(Gui::View3DInventor* view, QWidget* parent)
     }
     // the case of an empty box and having cuts will be handles later by startCutting(true)
 
-    connect(ui->groupBoxX, SIGNAL(toggled(bool)), this, SLOT(onGroupBoxXtoggled(bool)));
-    connect(ui->groupBoxY, SIGNAL(toggled(bool)), this, SLOT(onGroupBoxYtoggled(bool)));
-    connect(ui->groupBoxZ, SIGNAL(toggled(bool)), this, SLOT(onGroupBoxZtoggled(bool)));
-    connect(ui->cutX, SIGNAL(valueChanged(double)), this, SLOT(onCutXvalueChanged(double)));
-    connect(ui->cutY, SIGNAL(valueChanged(double)), this, SLOT(onCutYvalueChanged(double)));
-    connect(ui->cutZ, SIGNAL(valueChanged(double)), this, SLOT(onCutZvalueChanged(double)));
-    connect(ui->cutXHS, SIGNAL(sliderMoved(int)), this, SLOT(onCutXHSsliderMoved(int)));
-    connect(ui->cutYHS, SIGNAL(sliderMoved(int)), this, SLOT(onCutYHSsliderMoved(int)));
-    connect(ui->cutZHS, SIGNAL(sliderMoved(int)), this, SLOT(onCutZHSsliderMoved(int)));
-    connect(ui->flipX, SIGNAL(clicked()), this, SLOT(onFlipXclicked()));
-    connect(ui->flipY, SIGNAL(clicked()), this, SLOT(onFlipYclicked()));
-    connect(ui->flipZ, SIGNAL(clicked()), this, SLOT(onFlipZclicked()));
-    connect(ui->RefreshCutPB, SIGNAL(clicked()), this, SLOT(onRefreshCutPBclicked()));
+    connect(ui->groupBoxX, &QGroupBox::toggled, this, &SectionCut::onGroupBoxXtoggled);
+    connect(ui->groupBoxY, &QGroupBox::toggled, this, &SectionCut::onGroupBoxYtoggled);
+    connect(ui->groupBoxZ, &QGroupBox::toggled, this, &SectionCut::onGroupBoxZtoggled);
+    connect(ui->cutX, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutXvalueChanged);
+    connect(ui->cutY, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutYvalueChanged);
+    connect(ui->cutZ, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutZvalueChanged);
+    connect(ui->cutXHS, &QSlider::sliderMoved, this, &SectionCut::onCutXHSsliderMoved);
+    connect(ui->cutYHS, &QSlider::sliderMoved, this, &SectionCut::onCutYHSsliderMoved);
+    connect(ui->cutZHS, &QSlider::sliderMoved, this, &SectionCut::onCutZHSsliderMoved);
+    connect(ui->flipX, &QPushButton::clicked, this, &SectionCut::onFlipXclicked);
+    connect(ui->flipY, &QPushButton::clicked, this, &SectionCut::onFlipYclicked);
+    connect(ui->flipZ, &QPushButton::clicked, this, &SectionCut::onFlipZclicked);
+    connect(ui->RefreshCutPB, &QPushButton::clicked, this, &SectionCut::onRefreshCutPBclicked);
     
     // if there is a cut, perform it
     if (hasBoxX || hasBoxY || hasBoxZ) {
@@ -393,13 +393,12 @@ void SectionCut::startCutting(bool isInitial)
         else
             Base::Console().Error("SectionCut error: there are no objects in the document that can be cut\n");
         // block signals to be able to reset the cut group boxes without calling startCutting again
-        QSignalBlocker blockX(ui->groupBoxX);
-        QSignalBlocker blockY(ui->groupBoxY);
-        QSignalBlocker blockZ(ui->groupBoxZ);
+        blockSignals(true);
         ui->groupBoxX->setChecked(false);
         ui->groupBoxY->setChecked(false);
         ui->groupBoxZ->setChecked(false);
         ui->RefreshCutPB->setEnabled(true);
+        blockSignals(false);
         return;
     }
     
@@ -708,22 +707,19 @@ void SectionCut::reject()
     }
 }
 
-void SectionCut::onGroupBoxXtoggled(bool on)
+void SectionCut::onGroupBoxXtoggled()
 {
-    Q_UNUSED(on);
     // reset the cut
     startCutting();
 }
 
-void SectionCut::onGroupBoxYtoggled(bool on)
+void SectionCut::onGroupBoxYtoggled()
 {
-    Q_UNUSED(on);
     startCutting();
 }
 
-void SectionCut::onGroupBoxZtoggled(bool on)
+void SectionCut::onGroupBoxZtoggled()
 {
-    Q_UNUSED(on);
     startCutting();
 }
 

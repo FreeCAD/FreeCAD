@@ -42,9 +42,9 @@ public:
     ~SectionCut();
 
 protected Q_SLOTS:
-    void onGroupBoxXtoggled(bool);
-    void onGroupBoxYtoggled(bool);
-    void onGroupBoxZtoggled(bool);
+    void onGroupBoxXtoggled();
+    void onGroupBoxYtoggled();
+    void onGroupBoxZtoggled();
     void onCutXvalueChanged(double);
     void onCutYvalueChanged(double);
     void onCutZvalueChanged(double);
