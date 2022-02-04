@@ -88,6 +88,8 @@ public:
   inline Vector3d  operator *  (const Vector3d& rclVct) const;
   inline void multVec(const Vector3d & src, Vector3d & dst) const;
   inline void multVec(const Vector3f & src, Vector3f & dst) const;
+  inline Matrix4D  operator *  (double) const;
+  inline Matrix4D& operator *= (double);
   /// Comparison
   inline bool      operator != (const Matrix4D& rclMtrx) const;
   /// Comparison
@@ -133,8 +135,12 @@ public:
   //@{
   /// Makes unity matrix
   void setToUnity();
+  /// Checks if this is the unit matrix
+  bool isUnity() const;
   /// Makes a null matrix
   void nullify();
+  /// Checks if this is the null matrix
+  bool isNull() const;
   /// moves the coordinatesystem for the x,y,z value
   void move         (float x, float y, float z)
   { move(Vector3f(x,y,z)); }
@@ -344,6 +350,28 @@ inline void Matrix4D::multVec(const Vector3f & src, Vector3f & dst) const
   dst.Set(static_cast<float>(x),
           static_cast<float>(y),
           static_cast<float>(z));
+}
+
+inline Matrix4D  Matrix4D::operator *  (double scalar) const
+{
+    Matrix4D  matrix;
+    for (unsigned short i = 0; i < 4; i++) {
+        for (unsigned short j = 0; j < 4; j++) {
+            matrix.dMtrx4D[i][j] = dMtrx4D[i][j] * scalar;
+        }
+    }
+
+    return matrix;
+}
+
+inline Matrix4D& Matrix4D::operator *= (double scalar)
+{
+    for (unsigned short i = 0; i < 4; i++) {
+        for (unsigned short j = 0; j < 4; j++) {
+            dMtrx4D[i][j] *= scalar;
+        }
+    }
+    return *this;
 }
 
 inline bool Matrix4D::operator== (const Matrix4D& rclMtrx) const

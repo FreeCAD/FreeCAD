@@ -186,8 +186,7 @@ PyObject* MatrixPy::number_multiply_handler(PyObject *self, PyObject *other)
 
         if (PyNumber_Check(other)) {
             double v = PyFloat_AsDouble(other);
-            a.scale(v,v,v);
-            return new MatrixPy(a);
+            return new MatrixPy(a * v);
         }
     }
 
@@ -210,14 +209,14 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
 
     long b = Py::Int(other);
-    if (!b)
+    if (b == 0)
         return new MatrixPy(Matrix4D());
 
     if (b < 0) {
         if (fabs(a.determinant()) > DBL_EPSILON)
             a.inverseGauss();
         else {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
+            PyErr_SetString(PyExc_RuntimeError, "Cannot invert singular matrix");
             return nullptr;
         }
         b = -b;
@@ -266,7 +265,7 @@ PyObject* MatrixPy::move(PyObject * args)
     Base::Vector3d vec;
     PyObject *pcVecObj;
 
-    if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {   // convert args: Python->C
+    if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {
         vec.x = x;
         vec.y = y;
         vec.z = z;
@@ -302,7 +301,7 @@ PyObject* MatrixPy::scale(PyObject * args)
     Base::Vector3d vec;
     PyObject *pcVecObj;
 
-    if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {   // convert args: Python->C
+    if (PyArg_ParseTuple(args, "ddd", &x,&y,&z)) {
         vec.x = x;
         vec.y = y;
         vec.z = z;
@@ -340,10 +339,32 @@ PyObject* MatrixPy::hasScale(PyObject * args)
     return Py::new_reference_to(Py::Int(getMatrixPtr()->hasScale(tol)));
 }
 
+PyObject* MatrixPy::nullify(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+      return nullptr;
+    PY_TRY {
+        getMatrixPtr()->nullify();
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* MatrixPy::isNull(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+      return nullptr;
+    PY_TRY {
+        bool ok = getMatrixPtr()->isNull();
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    PY_CATCH;
+}
+
 PyObject* MatrixPy::unity(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-      return nullptr;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+      return nullptr;
     PY_TRY {
         getMatrixPtr()->setToUnity();
     }
@@ -352,29 +373,33 @@ PyObject* MatrixPy::unity(PyObject * args)
     Py_Return;
 }
 
+PyObject* MatrixPy::isUnity(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+      return nullptr;
+    PY_TRY {
+        bool ok = getMatrixPtr()->isUnity();
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    PY_CATCH;
+}
+
 PyObject* MatrixPy::transform(PyObject * args)
 {
     Base::Vector3d vec;
     Matrix4D mat;
     PyObject *pcVecObj,*pcMatObj;
 
-    if (PyArg_ParseTuple(args, "O!O!: a transform point (Vector) and a transform matrix (Matrix) is needed",
-        &(Base::VectorPy::Type), &pcVecObj, &(MatrixPy::Type), &pcMatObj) ) {   // convert args: Python->C
-        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(pcVecObj);
-        Base::Vector3d* val = pcObject->getVectorPtr();
-        vec.Set(val->x,val->y,val->z);
-        mat = *(static_cast<MatrixPy*>(pcMatObj)->getMatrixPtr());
-        // clears the error from the first PyArg_ParseTuple()6
-        PyErr_Clear();
-    }
-    else
-        return nullptr;                                 // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "O!O!: a transform point (Vector) and a transform matrix (Matrix) is needed",
+        &(Base::VectorPy::Type), &pcVecObj, &(MatrixPy::Type), &pcMatObj))
+        return nullptr;
 
-    PY_TRY {
-        getMatrixPtr()->transform(vec,mat);
-    }
-    PY_CATCH;
+    Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(pcVecObj);
+    Base::Vector3d* val = pcObject->getVectorPtr();
+    vec.Set(val->x,val->y,val->z);
+    mat = *(static_cast<MatrixPy*>(pcMatObj)->getMatrixPtr());
 
+    getMatrixPtr()->transform(vec,mat);
     Py_Return;
 }
 
@@ -388,7 +413,7 @@ PyObject* MatrixPy::col(PyObject * args)
         return Py::new_reference_to(Py::Vector(v));
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "int expected");
+    PyErr_SetString(PyExc_TypeError, "int expected");
     return nullptr;
 }
 
@@ -404,7 +429,7 @@ PyObject* MatrixPy::setCol(PyObject * args)
         Py_Return;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "int and Vector expected");
+    PyErr_SetString(PyExc_TypeError, "int and Vector expected");
     return nullptr;
 }
 
@@ -418,7 +443,7 @@ PyObject* MatrixPy::row(PyObject * args)
         return Py::new_reference_to(Py::Vector(v));
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "int expected");
+    PyErr_SetString(PyExc_TypeError, "int expected");
     return nullptr;
 }
 
@@ -434,7 +459,7 @@ PyObject* MatrixPy::setRow(PyObject * args)
         Py_Return;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "int and Vector expected");
+    PyErr_SetString(PyExc_TypeError, "int and Vector expected");
     return nullptr;
 }
 
@@ -459,7 +484,7 @@ PyObject* MatrixPy::setTrace(PyObject * args)
         Py_Return;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "Vector expected");
+    PyErr_SetString(PyExc_TypeError, "Vector expected");
     return nullptr;
 }
 
@@ -963,16 +988,26 @@ PyObject * MatrixPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*othe
     return nullptr;
 }
 
-PyObject * MatrixPy::number_negative_handler (PyObject* /*self*/)
+PyObject * MatrixPy::number_negative_handler (PyObject* self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return nullptr;
+    if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "arg must be Matrix");
+        return nullptr;
+    }
+
+    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    return new MatrixPy(a * -1);
 }
 
-PyObject * MatrixPy::number_positive_handler (PyObject* /*self*/)
+PyObject * MatrixPy::number_positive_handler (PyObject* self)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return nullptr;
+    if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "arg must be Matrix");
+        return nullptr;
+    }
+
+    Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+    return new MatrixPy(a);
 }
 
 PyObject * MatrixPy::number_absolute_handler (PyObject* /*self*/)

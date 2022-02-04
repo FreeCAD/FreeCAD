@@ -99,12 +99,42 @@ void Matrix4D::setToUnity ()
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 1.0;
 }
 
+bool Matrix4D::isUnity() const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i == j) {
+                if (dMtrx4D[i][j] != 1.0)
+                    return false;
+            }
+            else {
+                if (dMtrx4D[i][j] != 0.0)
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 void Matrix4D::nullify()
 {
     dMtrx4D[0][0] = 0.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;
     dMtrx4D[1][0] = 0.0; dMtrx4D[1][1] = 0.0; dMtrx4D[1][2] = 0.0; dMtrx4D[1][3] = 0.0;
     dMtrx4D[2][0] = 0.0; dMtrx4D[2][1] = 0.0; dMtrx4D[2][2] = 0.0; dMtrx4D[2][3] = 0.0;
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 0.0;
+}
+
+bool Matrix4D::isNull() const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (dMtrx4D[i][j] != 0.0)
+                return false;
+        }
+    }
+
+    return true;
 }
 
 double Matrix4D::determinant() const
