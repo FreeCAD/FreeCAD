@@ -315,13 +315,19 @@ PyObject* MatrixPy::scale(PyObject * args)
         }
         // clears the error from previous PyArg_ParseTuple()
         PyErr_Clear();
+        if (PyArg_ParseTuple(args, "d", &x)) {
+            vec.x = vec.y = vec.z = x;
+            break;
+        }
+        // clears the error from previous PyArg_ParseTuple()
+        PyErr_Clear();
         if (PyArg_ParseTuple(args, "O!", &PyTuple_Type, &pcVecObj)) {
             vec = getVectorFromTuple<double>(pcVecObj);
             break;
         }
         // clears the error from previous PyArg_ParseTuple()
         PyErr_Clear();
-        if (PyArg_ParseTuple(args, "O!;three floats, or a tuple, or a vector is needed",
+        if (PyArg_ParseTuple(args, "O!;one or three floats, or a tuple, or a vector is needed",
         &(Base::VectorPy::Type), &pcVecObj)) {
             Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(pcVecObj);
             Base::Vector3d* val = pcObject->getVectorPtr();
