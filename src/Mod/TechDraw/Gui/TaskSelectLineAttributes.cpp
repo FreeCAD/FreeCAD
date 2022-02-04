@@ -49,26 +49,24 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
+#include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskSelectLineAttributes.h> 
-
+#include "ui_TaskSelectLineAttributes.h"
+#include "TaskSelectLineAttributes.h"
 #include "DrawGuiStd.h"
+#include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
-#include "QGIView.h"
 #include "QGIPrimPath.h"
-#include "MDIViewPage.h"
+#include "QGIView.h"
+#include "Rez.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
-#include "Rez.h"
-
-#include "TaskSelectLineAttributes.h"
 
 using namespace Gui;
 using namespace TechDraw;
