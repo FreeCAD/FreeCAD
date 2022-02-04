@@ -51,7 +51,7 @@ class ConsoleTestCase(unittest.TestCase):
             thread.start_new(adder,())
 
         time.sleep(3)
-        self.failUnless(self.count==10,"Synchronization of threads failed")
+        self.assertEqual(self.count, 10, "Synchronization of threads failed")
         FreeCAD.Console.PrintMessage(str(self.count)+"\n")
 
     def testAsynchronPrintFromThread(self):
@@ -81,18 +81,18 @@ class ConsoleTestCase(unittest.TestCase):
 #        FreeCAD.SetStatus("Console","Err",1)
 #        FreeCAD.SetStatus("Console","Wrn",1)
 #        FreeCAD.SetStatus("Console","Msg",1)
-#        self.failUnless(FreeCAD.GetStatus("Console","Msg")==1,"Set and read status failed (Console,Msg)")
-#        self.failUnless(FreeCAD.GetStatus("Console","Err")==1,"Set and read status failed (Console,Err)")
-#        self.failUnless(FreeCAD.GetStatus("Console","Wrn")==1,"Set and read status failed (Console,Wrn)")
-#        self.failUnless(FreeCAD.GetStatus("Console","Log")==1,"Set and read status failed (Console,Log)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Msg"),1,"Set and read status failed (Console,Msg)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Err"),1,"Set and read status failed (Console,Err)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Wrn"),1,"Set and read status failed (Console,Wrn)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Log"),1,"Set and read status failed (Console,Log)")
 #        FreeCAD.SetStatus("Console","Log",0)
 #        FreeCAD.SetStatus("Console","Err",0)
 #        FreeCAD.SetStatus("Console","Wrn",0)
 #        FreeCAD.SetStatus("Console","Msg",0)
-#        self.failUnless(FreeCAD.GetStatus("Console","Msg")==0,"Set and read status failed (Console,Msg)")
-#        self.failUnless(FreeCAD.GetStatus("Console","Err")==0,"Set and read status failed (Console,Err)")
-#        self.failUnless(FreeCAD.GetStatus("Console","Wrn")==0,"Set and read status failed (Console,Wrn)")
-#        self.failUnless(FreeCAD.GetStatus("Console","Log")==0,"Set and read status failed (Console,Log)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Msg"),0,"Set and read status failed (Console,Msg)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Err"),0,"Set and read status failed (Console,Err)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Wrn"),0,"Set and read status failed (Console,Wrn)")
+#        self.assertEqual(FreeCAD.GetStatus("Console","Log"),0,"Set and read status failed (Console,Log)")
 #        FreeCAD.SetStatus("Console","Log",SLog)
 #        FreeCAD.SetStatus("Console","Err",SErr)
 #        FreeCAD.SetStatus("Console","Wrn",SWrn)
@@ -109,10 +109,10 @@ class ParameterTestCase(unittest.TestCase):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testGroup\n")
         # check on Group creation
         Temp = self.TestPar.GetGroup("44")
-        self.failUnless(self.TestPar.HasGroup("44"),"Test on created group failed")
+        self.assertTrue(self.TestPar.HasGroup("44"),"Test on created group failed")
         # check on Deletion
         self.TestPar.RemGroup("44")
-        self.failUnless(self.TestPar.HasGroup("44"),"A referenced group must not be deleted")
+        self.assertTrue(self.TestPar.HasGroup("44"),"A referenced group must not be deleted")
         Temp = 0
 
     # check on special conditions
@@ -121,40 +121,40 @@ class ParameterTestCase(unittest.TestCase):
         #Temp = FreeCAD.ParamGet("System parameter:Test/44")
         # check on Int
         self.TestPar.SetInt("44",4711)
-        self.failUnless(self.TestPar.GetInt("44") == 4711,"In and out error at Int")
+        self.assertEqual(self.TestPar.GetInt("44"), 4711,"In and out error at Int")
         # check on Deletion
         self.TestPar.RemInt("44")
-        self.failUnless(self.TestPar.GetInt("44",1) == 1,"Deletion error at Int")
+        self.assertEqual(self.TestPar.GetInt("44",1), 1,"Deletion error at Int")
 
 
     def testBool(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testBool\n")
         # check on Int
         self.TestPar.SetBool("44",1)
-        self.failUnless(self.TestPar.GetBool("44") == 1,"In and out error at Bool")
+        self.assertEqual(self.TestPar.GetBool("44"), 1,"In and out error at Bool")
         # check on Deletion
         self.TestPar.RemBool("44")
-        self.failUnless(self.TestPar.GetBool("44",0) == 0,"Deletion error at Bool")
+        self.assertEqual(self.TestPar.GetBool("44",0), 0,"Deletion error at Bool")
 
     def testFloat(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testFloat\n")
         #Temp = FreeCAD.ParamGet("System parameter:Test/44")
         # check on Int
         self.TestPar.SetFloat("44",4711.4711)
-        self.failUnless(self.TestPar.GetFloat("44") == 4711.4711,"In and out error at Float")
+        self.assertEqual(self.TestPar.GetFloat("44"), 4711.4711,"In and out error at Float")
         # check on Deletion
         self.TestPar.RemFloat("44")
-        self.failUnless(self.TestPar.GetFloat("44",1.1) == 1.1,"Deletion error at Float")
+        self.assertEqual(self.TestPar.GetFloat("44",1.1), 1.1,"Deletion error at Float")
 
     def testString(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testFloat\n")
         #Temp = FreeCAD.ParamGet("System parameter:Test/44")
         # check on Int
         self.TestPar.SetString("44","abcdefgh")
-        self.failUnless(self.TestPar.GetString("44") == "abcdefgh","In and out error at String")
+        self.assertEqual(self.TestPar.GetString("44"), "abcdefgh","In and out error at String")
         # check on Deletion
         self.TestPar.RemString("44")
-        self.failUnless(self.TestPar.GetString("44","hallo") == "hallo","Deletion error at String")
+        self.assertEqual(self.TestPar.GetString("44","hallo"), "hallo","Deletion error at String")
 
     def testAngle(self):
         v1 = FreeCAD.Vector(0,0,0.000001)
@@ -171,7 +171,7 @@ class ParameterTestCase(unittest.TestCase):
     def testMatrix(self):
         m=FreeCAD.Matrix(4,2,1,0,1,1,1,0,0,0,1,0,0,0,0,1)
         u=m.multiply(m.inverse())
-        self.failUnless(u==FreeCAD.Matrix(),"Invalid inverse of matrix")
+        self.assertEqual(u, FreeCAD.Matrix(),"Invalid inverse of matrix")
 
     def testRotAndMoveMatrix(self):
         m1=FreeCAD.Matrix()
@@ -184,10 +184,10 @@ class ParameterTestCase(unittest.TestCase):
         m3.move(10,5,-3)
         m4=FreeCAD.Matrix()
         m4.rotateY(.2)
-        self.failUnless(not m1==m3*m4,"Wrong multiplication order")
-        self.failUnless(m1==m4*m3    ,"Wrong multiplication order")
-        self.failUnless(m2==m3*m4    ,"Wrong multiplication order")
-        self.failUnless(not m2==m4*m3,"Wrong multiplication order")
+        self.assertNotEqual(m1, m3*m4, "Wrong multiplication order")
+        self.assertEqual(m1, m4*m3   , "Wrong multiplication order")
+        self.assertEqual(m2, m3*m4   , "Wrong multiplication order")
+        self.assertNotEqual(m2, m4*m3, "Wrong multiplication order")
 
     def testRotation(self):
         r=FreeCAD.Rotation(1,0,0,0) # 180 deg around (1,0,0)
@@ -299,19 +299,19 @@ class ParameterTestCase(unittest.TestCase):
     def testBounding(self):
         b=FreeCAD.BoundBox()
         b.setVoid()
-        self.failUnless(not b.isValid(),"Bbox is not invalid")
+        self.assertFalse(b.isValid(),"Bbox is not invalid")
         b.add(0,0,0)
-        self.failUnless(b.isValid(),"Bbox is invalid")
-        self.failUnless(b.XLength==0,"X length > 0")
-        self.failUnless(b.YLength==0,"Y length > 0")
-        self.failUnless(b.ZLength==0,"Z length > 0")
-        self.failUnless(b.Center==FreeCAD.Vector(0,0,0),"Center is not at (0,0,0)")
-        self.failUnless(b.isInside(b.Center),"Center is not inside Bbox")
+        self.assertTrue(b.isValid(), "Bbox is invalid")
+        self.assertEqual(b.XLength, 0, "X length > 0")
+        self.assertEqual(b.YLength, 0, "Y length > 0")
+        self.assertEqual(b.ZLength, 0, "Z length > 0")
+        self.assertEqual(b.Center, FreeCAD.Vector(0,0,0), "Center is not at (0,0,0)")
+        self.assertTrue(b.isInside(b.Center), "Center is not inside Bbox")
         b.add(2,2,2)
-        self.failUnless(b.isInside(b.getIntersectionPoint(b.Center,FreeCAD.Vector(0,1,0))),"Intersection point is not inside Bbox")
-        self.failUnless(b.intersect(b),"Bbox doesn't intersect with itself")
-        self.failUnless(not b.intersected(FreeCAD.BoundBox(4,4,4,6,6,6)).isValid(),"Bbox should not intersect with Bbox outside")
-        self.failUnless(b.intersected(FreeCAD.BoundBox(-2,-2,-2,2,2,2)).Center == b.Center,"Bbox is not a full subset")
+        self.assertTrue(b.isInside(b.getIntersectionPoint(b.Center,FreeCAD.Vector(0,1,0))),"Intersection point is not inside Bbox")
+        self.assertTrue(b.intersect(b),"Bbox doesn't intersect with itself")
+        self.assertFalse(b.intersected(FreeCAD.BoundBox(4,4,4,6,6,6)).isValid(),"Bbox should not intersect with Bbox outside")
+        self.assertEqual(b.intersected(FreeCAD.BoundBox(-2,-2,-2,2,2,2)).Center, b.Center,"Bbox is not a full subset")
 
     def testNesting(self):
         # Parameter testing
@@ -344,7 +344,7 @@ class ParameterTestCase(unittest.TestCase):
         self.TestPar.Export(TempPath)
         Temp = self.TestPar.GetGroup("ImportTest")
         Temp.Import(TempPath)
-        self.failUnless(Temp.GetFloat("ExTest") == 4711.4711,"ExportImport error")
+        self.assertEqual(Temp.GetFloat("ExTest"), 4711.4711,"ExportImport error")
         Temp = 0
 
     def tearDown(self):
