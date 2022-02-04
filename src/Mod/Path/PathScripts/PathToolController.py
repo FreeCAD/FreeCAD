@@ -162,6 +162,7 @@ class ToolController:
 
         commands = ""
         commands += "(" + obj.Label + ")"+'\n'
+        commands += 'M5\n'
         commands += 'M6 T'+str(obj.ToolNumber)+'\n'
 
         # If a toolbit is used, check to see if spindlepower is allowed.
