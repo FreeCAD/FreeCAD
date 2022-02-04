@@ -24,7 +24,7 @@
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
-from PySide2.QtWebEngineWidgets import *
+
 
 import os
 
@@ -33,10 +33,24 @@ import FreeCAD
 import addonmanager_utilities as utils
 from addonmanager_workers import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from AddonManagerRepo import AddonManagerRepo
+import NetworkManager
 
 translate = FreeCAD.Qt.translate
 
 show_javascript_console_output = False
+
+try:
+    from PySide2.QtWebEngineWidgets import *
+    HAS_QTWEBENGINE = True
+except Exception:
+    FreeCAD.Console.PrintWarning(
+        translate(
+            "AddonsInstaller",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until dependency is resolved.",
+        )
+        + "\n"
+    )
+    HAS_QTWEBENGINE = False
 
 
 class PackageDetails(QWidget):
@@ -67,16 +81,17 @@ class PackageDetails(QWidget):
         self.ui.buttonCheckForUpdate.clicked.connect(
             lambda: self.check_for_update.emit(self.repo)
         )
-        self.ui.webView.loadStarted.connect(self.load_started)
-        self.ui.webView.loadProgress.connect(self.load_progress)
-        self.ui.webView.loadFinished.connect(self.load_finished)
+        if HAS_QTWEBENGINE:
+            self.ui.webView.loadStarted.connect(self.load_started)
+            self.ui.webView.loadProgress.connect(self.load_progress)
+            self.ui.webView.loadFinished.connect(self.load_finished)
 
-        loading_html_file = os.path.join(os.path.dirname(__file__), "loading.html")
-        with open(loading_html_file, "r", errors="ignore") as f:
-            html = f.read()
-            self.ui.loadingLabel.setHtml(html)
-            self.ui.loadingLabel.show()
-            self.ui.webView.hide()
+            loading_html_file = os.path.join(os.path.dirname(__file__), "loading.html")
+            with open(loading_html_file, "r", errors="ignore") as f:
+                html = f.read()
+                self.ui.loadingLabel.setHtml(html)
+                self.ui.loadingLabel.show()
+                self.ui.webView.hide()
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
 
@@ -84,9 +99,15 @@ class PackageDetails(QWidget):
         # expensive refetch unless reload is true
         if self.repo != repo or reload:
             self.repo = repo
-            self.ui.loadingLabel.show()
-            self.ui.webView.hide()
-            self.ui.progressBar.show()
+
+            if HAS_QTWEBENGINE:
+                self.ui.loadingLabel.show()
+                self.ui.webView.hide()
+                self.ui.progressBar.show()
+            else:
+                self.ui.missingWebViewLabel.setStyleSheet(
+                    "color:" + utils.warning_color_string()
+                )
 
             if self.worker is not None:
                 if not self.worker.isFinished():
@@ -286,8 +307,13 @@ class PackageDetails(QWidget):
     def show_workbench(self, repo: AddonManagerRepo) -> None:
         """loads information of a given workbench"""
         url = utils.get_readme_html_url(repo)
-        self.ui.webView.load(QUrl(url))
-        self.ui.urlBar.setText(url)
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(url))
+            self.ui.urlBar.setText(url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+            text = readme_data.data().decode("utf8")
+            self.ui.textBrowserReadMe.setHtml(text)
 
     def show_package(self, repo: AddonManagerRepo) -> None:
         """Show the details for a package (a repo with a package.xml metadata file)"""
@@ -301,14 +327,24 @@ class PackageDetails(QWidget):
                     break
         if not readme_url:
             readme_url = utils.get_readme_html_url(repo)
-        self.ui.webView.load(QUrl(readme_url))
-        self.ui.urlBar.setText(readme_url)
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(readme_url))
+            self.ui.urlBar.setText(readme_url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(readme_url)
+            text = readme_data.data().decode("utf8")
+            self.ui.textBrowserReadMe.setHtml(text)
 
     def show_macro(self, repo: AddonManagerRepo) -> None:
         """loads information of a given macro"""
 
-        self.ui.webView.load(QUrl(repo.macro.url))
-        self.ui.urlBar.setText(repo.macro.url)
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(repo.macro.url))
+            self.ui.urlBar.setText(repo.macro.url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(repo.macro.url)
+            text = readme_data.data().decode("utf8")
+            self.ui.textBrowserReadMe.setHtml(text)
 
         # We need to populate the macro information... may as well do it while the user reads the wiki page
         self.worker = GetMacroDetailsWorker(repo)
@@ -404,34 +440,39 @@ class PackageDetails(QWidget):
         self.ui.webView.setHtml(html)
 
 
-class RestrictedWebPage(QWebEnginePage):
-    """A class that follows links to FreeCAD wiki pages, but opens all other clicked links in the system web browser"""
+if HAS_QTWEBENGINE:
 
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
+    class RestrictedWebPage(QWebEnginePage):
+        """A class that follows links to FreeCAD wiki pages, but opens all other clicked links in the system web browser"""
 
-    def acceptNavigationRequest(self, url, _type, isMainFrame):
-        if _type == QWebEnginePage.NavigationTypeLinkClicked:
+        def __init__(self, parent):
+            super().__init__(parent)
+            self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
 
-            # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
-            if url.host() == "wiki.freecad.org" or url.host() == "wiki.freecadweb.org":
-                return super().acceptNavigationRequest(url, _type, isMainFrame)
-            else:
-                QDesktopServices.openUrl(url)
-                return False
-        return super().acceptNavigationRequest(url, _type, isMainFrame)
+        def acceptNavigationRequest(self, url, _type, isMainFrame):
+            if _type == QWebEnginePage.NavigationTypeLinkClicked:
 
-    def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):
-        global show_javascript_console_output
-        if show_javascript_console_output:
-            tag = translate("AddonsInstaller", "Page JavaScript reported")
-            if level == QWebEnginePage.InfoMessageLevel:
-                FreeCAD.Console.PrintMessage(f"{tag} {lineNumber}: {message}\n")
-            elif level == QWebEnginePage.WarningMessageLevel:
-                FreeCAD.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
-            elif level == QWebEnginePage.ErrorMessageLevel:
-                FreeCAD.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
+                # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
+                if (
+                    url.host() == "wiki.freecad.org"
+                    or url.host() == "wiki.freecadweb.org"
+                ):
+                    return super().acceptNavigationRequest(url, _type, isMainFrame)
+                else:
+                    QDesktopServices.openUrl(url)
+                    return False
+            return super().acceptNavigationRequest(url, _type, isMainFrame)
+
+        def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):
+            global show_javascript_console_output
+            if show_javascript_console_output:
+                tag = translate("AddonsInstaller", "Page JavaScript reported")
+                if level == QWebEnginePage.InfoMessageLevel:
+                    FreeCAD.Console.PrintMessage(f"{tag} {lineNumber}: {message}\n")
+                elif level == QWebEnginePage.WarningMessageLevel:
+                    FreeCAD.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
+                elif level == QWebEnginePage.ErrorMessageLevel:
+                    FreeCAD.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
 
 
 class Ui_PackageDetails(object):
@@ -503,30 +544,43 @@ class Ui_PackageDetails(object):
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
 
-        self.webView = QWebEngineView(PackageDetails)
-        self.webView.setObjectName("webView")
-        self.webView.setSizePolicy(sizePolicy1)
-        self.webView.setPage(RestrictedWebPage(PackageDetails))
+        if HAS_QTWEBENGINE:
+            self.webView = QWebEngineView(PackageDetails)
+            self.webView.setObjectName("webView")
+            self.webView.setSizePolicy(sizePolicy1)
+            self.webView.setPage(RestrictedWebPage(PackageDetails))
 
-        self.verticalLayout_2.addWidget(self.webView)
+            self.verticalLayout_2.addWidget(self.webView)
 
-        self.loadingLabel = QWebEngineView(PackageDetails)
-        self.loadingLabel.setObjectName("loadingLabel")
-        self.loadingLabel.setSizePolicy(sizePolicy1)
+            self.loadingLabel = QWebEngineView(PackageDetails)
+            self.loadingLabel.setObjectName("loadingLabel")
+            self.loadingLabel.setSizePolicy(sizePolicy1)
 
-        self.verticalLayout_2.addWidget(self.loadingLabel)
+            self.verticalLayout_2.addWidget(self.loadingLabel)
 
-        self.progressBar = QProgressBar(PackageDetails)
-        self.progressBar.setObjectName("progressBar")
-        self.progressBar.setTextVisible(False)
+            self.progressBar = QProgressBar(PackageDetails)
+            self.progressBar.setObjectName("progressBar")
+            self.progressBar.setTextVisible(False)
 
-        self.verticalLayout_2.addWidget(self.progressBar)
+            self.verticalLayout_2.addWidget(self.progressBar)
 
-        self.urlBar = QLineEdit(PackageDetails)
-        self.urlBar.setObjectName("urlBar")
-        self.urlBar.setReadOnly(True)
+            self.urlBar = QLineEdit(PackageDetails)
+            self.urlBar.setObjectName("urlBar")
+            self.urlBar.setReadOnly(True)
 
-        self.verticalLayout_2.addWidget(self.urlBar)
+            self.verticalLayout_2.addWidget(self.urlBar)
+        else:
+            self.missingWebViewLabel = QLabel(PackageDetails)
+            self.missingWebViewLabel.setObjectName("missingWebViewLabel")
+            self.missingWebViewLabel.setWordWrap(True)
+            self.verticalLayout_2.addWidget(self.missingWebViewLabel)
+
+            self.textBrowserReadMe = QTextBrowser(PackageDetails)
+            self.textBrowserReadMe.setObjectName("textBrowserReadMe")
+            self.textBrowserReadMe.setOpenExternalLinks(True)
+            self.textBrowserReadMe.setOpenLinks(True)
+
+            self.verticalLayout_2.addWidget(self.textBrowserReadMe)
 
         self.retranslateUi(PackageDetails)
 
@@ -556,5 +610,15 @@ class Ui_PackageDetails(object):
                 "AddonsInstaller", "Return to package list", None
             )
         )
+        if not HAS_QTWEBENGINE:
+            self.missingWebViewLabel.setText(
+                "<h3>"
+                + QCoreApplication.translate(
+                    "AddonsInstaller",
+                    "QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.",
+                    None,
+                )
+                + "</h3>"
+            )
 
     # retranslateUi
