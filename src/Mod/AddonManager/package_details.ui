@@ -74,6 +74,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="buttonChangeBranch">
+       <property name="text">
+        <string>Change branch</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

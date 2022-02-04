@@ -13,6 +13,8 @@ SET(AddonManager_SRCS
     AddonManager.ui
     AddonManagerOptions.ui
     ALLOWED_PYTHON_PACKAGES.txt
+    change_branch.py
+    change_branch.ui
     first_run.ui
     compact_view.py
     dependency_resolution_dialog.ui

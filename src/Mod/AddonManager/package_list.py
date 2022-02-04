@@ -353,7 +353,9 @@ class PackageListItemDelegate(QStyledItemDelegate):
                     )
                 elif len(maintainers) > 1:
                     n = len(maintainers)
-                    maintainers_string = translate("AddonsInstaller", "Maintainers:", "", n)
+                    maintainers_string = translate(
+                        "AddonsInstaller", "Maintainers:", "", n
+                    )
                     for maintainer in maintainers:
                         maintainers_string += (
                             f"\n{maintainer['name']} <{maintainer['email']}>"

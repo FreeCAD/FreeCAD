@@ -433,21 +433,32 @@ class UpdateChecker:
                 with wb.git_lock:
                     utils.repair_git_repo(wb.url, clonedir)
             with wb.git_lock:
-                gitrepo = git.Git(clonedir)
+                gitrepo = git.Repo(clonedir)
                 try:
-                    gitrepo.fetch()
-                except Exception:
+                    if gitrepo.head.is_detached:
+                        # By definition, in a detached-head state we cannot
+                        # update, so don't even bother checking.
+                        wb.set_status(AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
+                        if hasattr(gitrepo.head, "ref"):
+                            wb.branch = gitrepo.head.ref.name
+                        else:
+                            wb.branch = gitrepo.head.name
+                        return
+                    gitrepo.git.fetch()
+                except Exception as e:
                     FreeCAD.Console.PrintWarning(
                         "AddonManager: "
                         + translate(
                             "AddonsInstaller",
                             "Unable to fetch git updates for workbench {}",
                         ).format(wb.name)
+                        + "\n"
                     )
+                    FreeCAD.Console.PrintWarning(str(e) + "\n")
                     wb.set_status(AddonManagerRepo.UpdateStatus.CANNOT_CHECK)
                 else:
                     try:
-                        if "git pull" in gitrepo.status():
+                        if "git pull" in gitrepo.git.status():
                             wb.set_status(
                                 AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
                             )
@@ -460,12 +471,22 @@ class UpdateChecker:
                             translate(
                                 "AddonsInstaller", "git fetch failed for {}"
                             ).format(wb.name)
+                            + "\n"
                         )
                         wb.set_status(AddonManagerRepo.UpdateStatus.CANNOT_CHECK)
 
     def check_package(self, package: AddonManagerRepo) -> None:
         clonedir = self.moddir + os.sep + package.name
         if os.path.exists(clonedir):
+
+            # First, try to just do a git-based update, which will give the most accurate results:
+            if have_git and not NOGIT:
+                self.check_workbench(package)
+                if package.status() != AddonManagerRepo.UpdateStatus.CANNOT_CHECK:
+                    # It worked, just exit now
+                    return
+
+            # If we were unable to do a git-based update, try using the package.xml file instead:
             installed_metadata_file = os.path.join(clonedir, "package.xml")
             if not os.path.isfile(installed_metadata_file):
                 # If there is no package.xml file, then it's because the package author added it after the last time
@@ -1020,7 +1041,9 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if self.repo.git_lock.locked():
             FreeCAD.Console.PrintMessage("Waiting for lock to be released to us...\n")
             if not self.repo.git_lock.acquire(timeout=2):
-                FreeCAD.Console.PrintError("Timeout waiting for a lock on the git process, failed to clone repo\n")
+                FreeCAD.Console.PrintError(
+                    "Timeout waiting for a lock on the git process, failed to clone repo\n"
+                )
                 return
             else:
                 self.repo.git_lock.release()

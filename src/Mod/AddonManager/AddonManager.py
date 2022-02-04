@@ -757,6 +757,8 @@ class CommandAddonManager:
         if repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             self.packages_with_updates.append(repo)
             self.enable_updates(len(self.packages_with_updates))
+        elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+            self.restart_required = True
 
     def enable_updates(self, number_of_updates: int) -> None:
         """enables the update button"""
