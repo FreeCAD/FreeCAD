@@ -76,7 +76,7 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
-    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Base", App::Prop_None,
+    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Chamfer", App::Prop_None,
              "Chamfer all edges if true, else use only those edges in Base property.\n"
              "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
 

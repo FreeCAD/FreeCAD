@@ -53,10 +53,10 @@ const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Radius,(1.0));
+    ADD_PROPERTY_TYPE(Radius, (1.0), "Fillet", App::Prop_None, "Fillet radius.");
     Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
-    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Base", App::Prop_None,
+    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Fillet", App::Prop_None,
       "Fillet all edges if true, else use only those edges in Base property.\n"
       "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
 }
