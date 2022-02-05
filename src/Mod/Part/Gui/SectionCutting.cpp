@@ -72,7 +72,7 @@ enum Refresh : bool
     ZRange = true
 };
 
-SectionCut::SectionCut(Gui::View3DInventor* view, QWidget* parent)
+SectionCut::SectionCut(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_SectionCut)
 {
