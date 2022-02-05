@@ -194,40 +194,40 @@ void TaskExtrudeParameters::connectSlots()
 {
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
-            this, SLOT(onLength2Changed(double)));
-    connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffsetChanged(double)));
-    connect(ui->taperEdit, SIGNAL(valueChanged(double)),
-        this, SLOT(onTaperChanged(double)));
-    connect(ui->taperEdit2, SIGNAL(valueChanged(double)),
-        this, SLOT(onTaper2Changed(double)));
-    connect(ui->directionCB, SIGNAL(activated(int)),
-            this, SLOT(onDirectionCBChanged(int)));
-    connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
-            this, SLOT(onAlongSketchNormalChanged(bool)));
-    connect(ui->checkBoxDirection, SIGNAL(toggled(bool)),
-            this, SLOT(onDirectionToggled(bool)));
-    connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onXDirectionEditChanged(double)));
-    connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onYDirectionEditChanged(double)));
-    connect(ui->ZDirectionEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onZDirectionEditChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplaneChanged(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
-    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(clicked()),
-            this, SLOT(onButtonFace()));
-    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
-            this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->lengthEdit, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onLengthChanged);
+    connect(ui->lengthEdit2, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onLength2Changed);
+    connect(ui->offsetEdit, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onOffsetChanged);
+    connect(ui->taperEdit, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onTaperChanged);
+    connect(ui->taperEdit2, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onTaper2Changed);
+    connect(ui->directionCB, QOverload<int>::of(&QComboBox::activated),
+        this, &TaskExtrudeParameters::onDirectionCBChanged);
+    connect(ui->checkBoxAlongDirection, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onAlongSketchNormalChanged);
+    connect(ui->checkBoxDirection, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onDirectionToggled);
+    connect(ui->XDirectionEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onXDirectionEditChanged);
+    connect(ui->YDirectionEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onYDirectionEditChanged);
+    connect(ui->ZDirectionEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+        this, &TaskExtrudeParameters::onZDirectionEditChanged);
+    connect(ui->checkBoxMidplane, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onMidplaneChanged);
+    connect(ui->checkBoxReversed, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onReversedChanged);
+    connect(ui->changeMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this, &TaskExtrudeParameters::onModeChanged);
+    connect(ui->buttonFace, &QPushButton::clicked,
+        this, &TaskExtrudeParameters::onButtonFace);
+    connect(ui->lineFaceName, &QLineEdit::textEdited,
+        this, &TaskExtrudeParameters::onFaceName);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onUpdateView);
 }
 
 void TaskExtrudeParameters::tryRecomputeFeature()
