@@ -68,6 +68,7 @@
 #include "DlgProjectionOnSurface.h"
 #include "DlgRevolution.h"
 #include "Mirroring.h"
+#include "SectionCutting.h"
 #include "TaskCheckGeometry.h"
 #include "TaskDimension.h"
 #include "TaskLoft.h"
@@ -2468,6 +2469,69 @@ bool CmdPartProjectionOnSurface::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+//===========================================================================
+// Part_SectionCut
+//===========================================================================
+
+DEF_STD_CMD_AC(CmdPartSectionCut)
+
+CmdPartSectionCut::CmdPartSectionCut()
+    : Command("Part_SectionCut")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Persistent section cut");
+    sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
+    sWhatsThis = "Part_SectionCut";
+    sStatusTip = sToolTipText;
+    eType = Alter3DView;
+}
+
+Gui::Action* CmdPartSectionCut::createAction(void)
+{
+    Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
+#if 0
+    pcAction->setCheckable(true);
+#endif
+    return pcAction;
+}
+
+void CmdPartSectionCut::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    static QPointer<PartGui::SectionCut> sectionCut = nullptr;
+    if (!sectionCut) {
+        Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+        if (view) {
+            sectionCut = PartGui::SectionCut::makeDockWidget(view);
+        }
+    }
+}
+
+bool CmdPartSectionCut::isActive(void)
+{
+#if 0
+    Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        Gui::Action* action = qobject_cast<Action*>(_pcAction);
+        if (action->isChecked() != view->hasClippingPlane())
+            action->setChecked(view->hasClippingPlane());
+        return true;
+    }
+    else {
+        Gui::Action* action = qobject_cast<Action*>(_pcAction);
+        if (action->isChecked())
+            action->setChecked(false);
+        return false;
+    }
+#else
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    return view ? true : false;
+#endif
+}
+
+//---------------------------------------------------------------
+
 void CreatePartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2518,4 +2582,5 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
+    rcCmdMgr.addCommand(new CmdPartSectionCut());
 }
