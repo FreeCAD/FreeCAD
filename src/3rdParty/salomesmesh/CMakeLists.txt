@@ -20,6 +20,13 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     endif ()
 
     unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-cast-function-type" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-cast-function-type")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-cast-function-type")
+    endif ()
+
+    unset(_flag_found CACHE)
     check_cxx_compiler_flag("-Wno-maybe-uninitialized" _flag_found)
     if (_flag_found)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-maybe-uninitialized")
