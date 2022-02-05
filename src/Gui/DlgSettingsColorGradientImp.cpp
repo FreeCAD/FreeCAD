@@ -122,10 +122,10 @@ bool DlgSettingsColorGradientImp::isOutInvisible() const
 void DlgSettingsColorGradientImp::setRange( float fMin, float fMax )
 {
     ui->floatLineEditMax->blockSignals(true);
-    ui->floatLineEditMax->setText(QLocale().toString(fMax, 'f', numberOfDecimals()));
+    ui->floatLineEditMax->setText(QLocale().toString(fMax, 'g', numberOfDecimals()));
     ui->floatLineEditMax->blockSignals(false);
     ui->floatLineEditMin->blockSignals(true);
-    ui->floatLineEditMin->setText(QLocale().toString(fMin, 'f', numberOfDecimals()));
+    ui->floatLineEditMin->setText(QLocale().toString(fMin, 'g', numberOfDecimals()));
     ui->floatLineEditMin->blockSignals(false);
 }
 

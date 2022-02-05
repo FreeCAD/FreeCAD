@@ -18,9 +18,9 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the TechDraw CopyView Task Dialog."""
+"""Provides the TechDraw ShareView Task Dialog."""
 
-__title__ = "TechDrawTools.TaskCopyView"
+__title__ = "TechDrawTools.TaskShareView"
 __author__ = "WandererFan"
 __url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
@@ -37,13 +37,14 @@ from TechDrawTools import TDToolsMovers
 
 import os
 
-class TaskCopyView:
+class TaskShareView:
     def __init__(self):
         self._uiPath = App.getHomePath()
-        self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/Gui/TaskMoveView.ui")
+        self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(QT_TRANSLATE_NOOP("CopyView", "Copy View to a second Page"))
+        self.form.setWindowTitle(QT_TRANSLATE_NOOP("ShareView", "Share View with another Page"))
+        self.form.lViewName.setText(QT_TRANSLATE_NOOP("ShareView", "View to share"))
 
         self.form.pbView.clicked.connect(self.pickView)
         self.form.pbFromPage.clicked.connect(self.pickFromPage)
@@ -68,10 +69,10 @@ class TaskCopyView:
     def pickView(self):
 #        print("pickView")
         _dlgPath = App.getHomePath()
-        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/Gui/DlgPageChooser.ui")
+        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("CopyView", "Select View to copy from list."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("CopyView", "Select View"))
+        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("ShareView", "Select View to share from list."))
+        dlg.setWindowTitle(QT_TRANSLATE_NOOP("ShareView", "Select View"))
 
         views = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawView")]
         for v in views:
@@ -87,10 +88,10 @@ class TaskCopyView:
     def pickFromPage(self):
 #        print("pickFromPage")
         _dlgPath = App.getHomePath()
-        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/Gui/DlgPageChooser.ui")
+        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("CopyView", "Select From Page."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("CopyView", "Select Page"))
+        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("ShareView", "Select From Page."))
+        dlg.setWindowTitle(QT_TRANSLATE_NOOP("ShareView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
@@ -106,10 +107,10 @@ class TaskCopyView:
     def pickToPage(self):
 #        print("pickToPage")
         _dlgPath = App.getHomePath()
-        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/Gui/DlgPageChooser.ui")
+        _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
-        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("CopyView", "Select To Page."))
-        dlg.setWindowTitle(QT_TRANSLATE_NOOP("CopyView", "Select Page"))
+        dlg.lPrompt.setText(QT_TRANSLATE_NOOP("ShareView", "Select To Page."))
+        dlg.setWindowTitle(QT_TRANSLATE_NOOP("ShareView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:

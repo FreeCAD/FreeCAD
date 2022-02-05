@@ -27,8 +27,8 @@ class IISTASKPANEL_EXPORT iisTaskBox : public QFrame
 	Q_OBJECT
 
 public:
-	iisTaskBox(const QString &title, bool expandable = true, QWidget *parent = 0);
-	iisTaskBox(const QPixmap &icon, const QString &title, bool expandable = true, QWidget *parent = 0);
+	iisTaskBox(const QString &title, bool expandable = true, QWidget *parent = nullptr);
+	iisTaskBox(const QPixmap &icon, const QString &title, bool expandable = true, QWidget *parent = nullptr);
 	virtual ~iisTaskBox();
 
 	void setScheme(iisTaskPanelScheme *pointer);

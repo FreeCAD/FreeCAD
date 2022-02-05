@@ -12,7 +12,7 @@ iisIconLabel::iisIconLabel(const QIcon &icon, const QString &title, QWidget *par
     : QWidget(parent),
     myPixmap(icon),
     myText(title),
-    mySchemePointer(0),
+    mySchemePointer(nullptr),
     m_over(false),
     m_pressed(false),
     m_changeCursorOver(true),

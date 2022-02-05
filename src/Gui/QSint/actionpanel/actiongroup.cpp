@@ -79,7 +79,7 @@ QBoxLayout* ActionGroup::groupLayout()
 ActionLabel* ActionGroup::addAction(QAction *action, bool addToLayout, bool addStretch)
 {
     if (!action)
-        return 0;
+        return nullptr;
 
     ActionLabel* label = new ActionLabel(action, this);
     myGroup->addActionLabel(label, addToLayout, addStretch);
@@ -90,7 +90,7 @@ ActionLabel* ActionGroup::addAction(QAction *action, bool addToLayout, bool addS
 ActionLabel* ActionGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch)
 {
     if (!label)
-        return 0;
+        return nullptr;
 
     myGroup->addActionLabel(label, addToLayout, addStretch);
 

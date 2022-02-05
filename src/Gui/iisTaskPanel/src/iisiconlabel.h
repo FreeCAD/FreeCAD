@@ -20,7 +20,7 @@ class IISTASKPANEL_EXPORT iisIconLabel : public QWidget
 	Q_OBJECT
 
 public:
-	iisIconLabel(const QIcon &icon, const QString &title, QWidget *parent = 0);
+	iisIconLabel(const QIcon &icon, const QString &title, QWidget *parent = nullptr);
 	virtual ~iisIconLabel();
 
 	void setColors(const QColor &color, const QColor &colorOver, const QColor &colorOff);

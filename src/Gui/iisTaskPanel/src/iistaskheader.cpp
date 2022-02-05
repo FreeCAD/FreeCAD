@@ -22,7 +22,7 @@ iisTaskHeader::iisTaskHeader(const QIcon &icon, const QString &title, bool expan
     m_buttonOver(false),
     m_fold(true),
     m_opacity(0.1),
-    myButton(0)
+    myButton(nullptr)
 {
     myTitle = new iisIconLabel(icon, title, this);
     myTitle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);

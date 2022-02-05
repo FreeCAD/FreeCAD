@@ -178,3 +178,17 @@ class PartTestNormals(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+class PartTestCircle2D(unittest.TestCase):
+    def testValidCircle(self):
+        p1 = App.Base.Vector2d(0.01, 0.01)
+        p2 = App.Base.Vector2d(0.02, 0.02)
+        p3 = App.Base.Vector2d(0.01, -0.01)
+        Part.Geom2d.Circle2d.getCircleCenter(p1, p2, p3)
+
+    def testCollinearPoints(self):
+        p1 = App.Base.Vector2d(0.01, 0.01)
+        p2 = App.Base.Vector2d(0.02, 0.02)
+        p3 = App.Base.Vector2d(0.04, 0.0399)
+        with self.assertRaises(ValueError):
+            Part.Geom2d.Circle2d.getCircleCenter(p1, p2, p3)

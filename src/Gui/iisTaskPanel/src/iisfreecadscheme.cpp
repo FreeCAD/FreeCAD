@@ -26,7 +26,7 @@
 #include <QStyle>
 
 
-iisFreeCADTaskPanelScheme* iisFreeCADTaskPanelScheme::myDefaultXPScheme = 0;
+iisFreeCADTaskPanelScheme* iisFreeCADTaskPanelScheme::myDefaultXPScheme = nullptr;
 
 iisFreeCADTaskPanelScheme::iisFreeCADTaskPanelScheme(QObject *parent)
 	: iisTaskPanelScheme(parent)

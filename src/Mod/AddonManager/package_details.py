@@ -25,19 +25,32 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+
 import os
-import shutil
-from datetime import date, timedelta
 
 import FreeCAD
 
 import addonmanager_utilities as utils
-from addonmanager_workers import ShowWorker, GetMacroDetailsWorker
+from addonmanager_workers import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from AddonManagerRepo import AddonManagerRepo
-
-import inspect
+import NetworkManager
 
 translate = FreeCAD.Qt.translate
+
+show_javascript_console_output = False
+
+try:
+    from PySide2.QtWebEngineWidgets import *
+    HAS_QTWEBENGINE = True
+except Exception:
+    FreeCAD.Console.PrintWarning(
+        translate(
+            "AddonsInstaller",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until dependency is resolved.",
+        )
+        + "\n"
+    )
+    HAS_QTWEBENGINE = False
 
 
 class PackageDetails(QWidget):
@@ -57,9 +70,10 @@ class PackageDetails(QWidget):
 
         self.worker = None
         self.repo = None
+        self.status_update_thread = None
 
         self.ui.buttonBack.clicked.connect(self.back.emit)
-        self.ui.buttonRefresh.clicked.connect(self.refresh)
+        self.ui.buttonBack.clicked.connect(self.clear_web_view)
         self.ui.buttonExecute.clicked.connect(lambda: self.execute.emit(self.repo))
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
         self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
@@ -67,34 +81,71 @@ class PackageDetails(QWidget):
         self.ui.buttonCheckForUpdate.clicked.connect(
             lambda: self.check_for_update.emit(self.repo)
         )
+        if HAS_QTWEBENGINE:
+            self.ui.webView.loadStarted.connect(self.load_started)
+            self.ui.webView.loadProgress.connect(self.load_progress)
+            self.ui.webView.loadFinished.connect(self.load_finished)
+
+            loading_html_file = os.path.join(os.path.dirname(__file__), "loading.html")
+            with open(loading_html_file, "r", errors="ignore") as f:
+                html = f.read()
+                self.ui.loadingLabel.setHtml(html)
+                self.ui.loadingLabel.show()
+                self.ui.webView.hide()
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
 
-        self.repo = repo
+        # If this is the same repo we were already showing, we do not have to do the
+        # expensive refetch unless reload is true
+        if self.repo != repo or reload:
+            self.repo = repo
 
-        if self.worker is not None:
-            if not self.worker.isFinished():
-                self.worker.requestInterruption()
-                self.worker.wait()
+            if HAS_QTWEBENGINE:
+                self.ui.loadingLabel.show()
+                self.ui.webView.hide()
+                self.ui.progressBar.show()
+            else:
+                self.ui.missingWebViewLabel.setStyleSheet(
+                    "color:" + utils.warning_color_string()
+                )
 
-        # Always load bare macros from scratch, we need to grab their code, which isn't cached
-        force_reload = reload
-        if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
-            force_reload = True
+            if self.worker is not None:
+                if not self.worker.isFinished():
+                    self.worker.requestInterruption()
+                    self.worker.wait()
 
-        self.check_and_clean_cache(force_reload)
+            if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+                self.show_macro(repo)
+                self.ui.buttonExecute.show()
+            elif repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
+                self.show_workbench(repo)
+                self.ui.buttonExecute.hide()
+            elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+                self.show_package(repo)
+                self.ui.buttonExecute.hide()
 
-        if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
-            self.show_macro(repo)
-            self.ui.buttonExecute.show()
-        elif repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
-            self.show_workbench(repo)
-            self.ui.buttonExecute.hide()
-        elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
-            self.show_package(repo)
-            self.ui.buttonExecute.hide()
+        if self.status_update_thread is not None:
+            if not self.status_update_thread.isFinished():
+                self.status_update_thread.requestInterruption()
+                self.status_update_thread.wait()
 
-        if repo.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+        if repo.status() == AddonManagerRepo.UpdateStatus.UNCHECKED:
+            self.status_update_thread = QThread()
+            self.status_update_worker = CheckSingleUpdateWorker(repo, self)
+            self.status_update_worker.moveToThread(self.status_update_thread)
+            self.status_update_thread.finished.connect(
+                self.status_update_worker.deleteLater
+            )
+            self.check_for_update.connect(self.status_update_worker.do_work)
+            self.status_update_worker.update_status.connect(self.display_repo_status)
+            self.status_update_thread.start()
+            self.check_for_update.emit(self.repo)
+
+        self.display_repo_status(self.repo.update_status)
+
+    def display_repo_status(self, status):
+        repo = self.repo
+        if status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
 
             version = repo.installed_version
             date = ""
@@ -125,7 +176,7 @@ class PackageDetails(QWidget):
                     translate("AddonsInstaller", "Installed") + ". "
                 )
 
-            if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+            if status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
                 if repo.metadata:
                     installed_version_string += (
                         "<b>"
@@ -151,21 +202,19 @@ class PackageDetails(QWidget):
                         )
                         + ".</b>"
                     )
-            elif (
-                repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
-            ):
+            elif status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
                 installed_version_string += (
                     translate("AddonsInstaller", "This is the latest version available")
                     + "."
                 )
-            elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+            elif status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
                 installed_version_string += (
                     translate(
                         "AddonsInstaller", "Updated, please restart FreeCAD to use"
                     )
                     + "."
                 )
-            elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+            elif status == AddonManagerRepo.UpdateStatus.UNCHECKED:
 
                 pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                 autocheck = pref.GetBool("AutoCheck", False)
@@ -181,7 +230,7 @@ class PackageDetails(QWidget):
 
             installed_version_string += "</h3>"
             self.ui.labelPackageDetails.setText(installed_version_string)
-            if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+            if repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
                 self.ui.labelPackageDetails.setStyleSheet(
                     "color:" + utils.attention_color_string()
                 )
@@ -206,27 +255,27 @@ class PackageDetails(QWidget):
             self.ui.labelPackageDetails.hide()
             self.ui.labelInstallationLocation.hide()
 
-        if repo.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+        if status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
             self.ui.buttonInstall.show()
             self.ui.buttonUninstall.hide()
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+        elif status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        elif status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.show()
             self.ui.buttonCheckForUpdate.hide()
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+        elif status == AddonManagerRepo.UpdateStatus.UNCHECKED:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.show()
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+        elif status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
@@ -255,127 +304,175 @@ class PackageDetails(QWidget):
         else:
             self.ui.labelWarningInfo.hide()
 
-    @classmethod
-    def cache_path(self, repo: AddonManagerRepo) -> str:
-        cache_path = FreeCAD.getUserCachePath()
-        full_path = os.path.join(cache_path, "AddonManager", repo.name)
-        return full_path
-
-    def check_and_clean_cache(self, force: bool = False) -> None:
-        cache_path = PackageDetails.cache_path(self.repo)
-        readme_cache_file = os.path.join(cache_path, "README.html")
-        readme_images_path = os.path.join(cache_path, "Images")
-        download_interrupted_sentinel = os.path.join(
-            readme_images_path, "download_in_progress"
-        )
-        download_interrupted = os.path.isfile(download_interrupted_sentinel)
-        if os.path.isfile(readme_cache_file):
-            pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-            days_between_updates = pref.GetInt("DaysBetweenUpdates", 2 ^ 32)
-            timestamp = os.path.getmtime(readme_cache_file)
-            last_cache_update = date.fromtimestamp(timestamp)
-            delta_update = timedelta(days=days_between_updates)
-            if (
-                date.today() >= last_cache_update + delta_update
-                or download_interrupted
-                or force
-            ):
-                if force:
-                    FreeCAD.Console.PrintLog(
-                        f"Forced README cache update for {self.repo.name}\n"
-                    )
-                elif download_interrupted:
-                    FreeCAD.Console.PrintLog(
-                        f"Restarting interrupted README download for {self.repo.name}\n"
-                    )
-                else:
-                    FreeCAD.Console.PrintLog(
-                        f"Cache expired, downloading README for {self.repo.name} again\n"
-                    )
-                os.remove(readme_cache_file)
-                if os.path.isdir(readme_images_path):
-                    shutil.rmtree(readme_images_path)
-
-    def refresh(self):
-        self.check_and_clean_cache(force=True)
-        self.show_repo(self.repo)
-
-    def show_cached_readme(self, repo: AddonManagerRepo) -> bool:
-        """Attempts to show a cached readme, returns true if there was a cache, or false if not"""
-
-        cache_path = PackageDetails.cache_path(repo)
-        readme_cache_file = os.path.join(cache_path, "README.html")
-        if os.path.isfile(readme_cache_file):
-            with open(readme_cache_file, "rb") as f:
-                data = f.read()
-                self.ui.textBrowserReadMe.setText(data.decode())
-                return True
-        return False
-
     def show_workbench(self, repo: AddonManagerRepo) -> None:
         """loads information of a given workbench"""
-
-        if not self.show_cached_readme(repo):
-            self.ui.textBrowserReadMe.setText(
-                translate(
-                    "AddonsInstaller", "Fetching README.md from package repository"
-                )
-            )
-            self.worker = ShowWorker(repo, PackageDetails.cache_path(repo))
-            self.worker.readme_updated.connect(
-                lambda desc: self.cache_readme(repo, desc)
-            )
-            self.worker.readme_updated.connect(
-                lambda desc: self.ui.textBrowserReadMe.setText(desc)
-            )
-            self.worker.update_status.connect(self.update_status.emit)
-            self.worker.update_status.connect(self.show)
-            self.worker.start()
+        url = utils.get_readme_html_url(repo)
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(url))
+            self.ui.urlBar.setText(url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+            text = readme_data.data().decode("utf8")
+            self.ui.textBrowserReadMe.setHtml(text)
 
     def show_package(self, repo: AddonManagerRepo) -> None:
         """Show the details for a package (a repo with a package.xml metadata file)"""
 
-        if not self.show_cached_readme(repo):
-            self.ui.textBrowserReadMe.setText(
-                translate(
-                    "AddonsInstaller", "Fetching README.md from package repository"
-                )
-            )
-            self.worker = ShowWorker(repo, PackageDetails.cache_path(repo))
-            self.worker.readme_updated.connect(
-                lambda desc: self.cache_readme(repo, desc)
-            )
-            self.worker.readme_updated.connect(
-                lambda desc: self.ui.textBrowserReadMe.setText(desc)
-            )
-            self.worker.update_status.connect(self.update_status.emit)
-            self.worker.update_status.connect(self.show)
-            self.worker.start()
+        readme_url = None
+        if repo.metadata:
+            urls = repo.metadata.Urls
+            for url in urls:
+                if url["type"] == "readme":
+                    readme_url = url["location"]
+                    break
+        if not readme_url:
+            readme_url = utils.get_readme_html_url(repo)
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(readme_url))
+            self.ui.urlBar.setText(readme_url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(readme_url)
+            text = readme_data.data().decode("utf8")
+            self.ui.textBrowserReadMe.setHtml(text)
 
     def show_macro(self, repo: AddonManagerRepo) -> None:
         """loads information of a given macro"""
 
-        if not self.show_cached_readme(repo):
-            self.ui.textBrowserReadMe.setText(
-                translate(
-                    "AddonsInstaller", "Fetching README.md from package repository"
-                )
-            )
-            self.worker = GetMacroDetailsWorker(repo)
-            self.worker.readme_updated.connect(
-                lambda desc: self.cache_readme(repo, desc)
-            )
-            self.worker.readme_updated.connect(
-                lambda desc: self.ui.textBrowserReadMe.setText(desc)
-            )
-            self.worker.start()
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(repo.macro.url))
+            self.ui.urlBar.setText(repo.macro.url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(repo.macro.url)
+            text = readme_data.data().decode("utf8")
+            self.ui.textBrowserReadMe.setHtml(text)
 
-    def cache_readme(self, repo: AddonManagerRepo, readme: str) -> None:
-        cache_path = PackageDetails.cache_path(repo)
-        readme_cache_file = os.path.join(cache_path, "README.html")
-        os.makedirs(cache_path, exist_ok=True)
-        with open(readme_cache_file, "wb") as f:
-            f.write(readme.encode())
+        # We need to populate the macro information... may as well do it while the user reads the wiki page
+        self.worker = GetMacroDetailsWorker(repo)
+        self.worker.start()
+
+    def run_javascript(self):
+        """Modify the page for a README to optimize for viewing in a smaller window"""
+
+        s = """
+( function() {
+    const url = new URL (window.location);
+    const body = document.getElementsByTagName("body")[0];
+    if (url.hostname === "github.com") {
+        const articles = document.getElementsByTagName("article");
+        if (articles.length > 0) {
+            const article = articles[0];
+            body.appendChild (article);
+            body.style.padding = "1em";
+            let sibling = article.previousSibling;
+            while (sibling) {
+                sibling.remove();
+                sibling = article.previousSibling;
+            }
+        }
+    } else if (url.hostname === "gitlab.com" || 
+               url.hostname === "framagit.org" || 
+               url.hostname === "salsa.debian.org") {
+        // These all use the GitLab page display...
+        const articles = document.getElementsByTagName("article");
+        if (articles.length > 0) {
+            const article = articles[0];
+            body.appendChild (article);
+            body.style.padding = "1em";
+            let sibling = article.previousSibling;
+            while (sibling) {
+                sibling.remove();
+                sibling = article.previousSibling;
+            }
+        }
+    } else if (url.hostname === "wiki.freecad.org" || 
+               url.hostname === "wiki.freecadweb.org") {
+        const first_heading = document.getElementById('firstHeading');
+        const body_content = document.getElementById('bodyContent');
+        const new_node = document.createElement("div");
+        new_node.appendChild(first_heading);
+        new_node.appendChild(body_content);
+        body.appendChild(new_node);
+        let sibling = new_node.previousSibling;
+        while (sibling) {
+            sibling.remove();
+            sibling = new_node.previousSibling;
+        }
+    }
+}
+) ()
+"""
+        self.ui.webView.page().runJavaScript(s)
+
+    def clear_web_view(self):
+        self.ui.webView.setHtml("<html><body><h1>Loading...</h1></body></html>")
+
+    def load_started(self):
+        self.ui.progressBar.show()
+        self.ui.progressBar.setValue(0)
+
+    def load_progress(self, progress: int):
+        self.ui.progressBar.setValue(progress)
+
+    def load_finished(self, load_succeeded: bool):
+        self.ui.loadingLabel.hide()
+        self.ui.webView.show()
+        self.ui.progressBar.hide()
+        url = self.ui.webView.url()
+        if load_succeeded:
+            # It says it succeeded, but it might have only succeeded in loading a "Page not found" page!
+            title = self.ui.webView.title()
+            path_components = url.path().split("/")
+            expected_content = path_components[-1]
+            if url.host() == "github.com" and expected_content not in title:
+                self.show_error_for(url)
+            elif title == "":
+                self.show_error_for(url)
+            else:
+                self.run_javascript()
+        else:
+            self.show_error_for(url)
+
+    def show_error_for(self, url: QUrl) -> None:
+        m = translate(
+            "AddonsInstaller", "Could not load README data from URL {}"
+        ).format(url.toString())
+        html = f"<html><body><p>{m}</p></body></html>"
+        self.ui.webView.setHtml(html)
+
+
+if HAS_QTWEBENGINE:
+
+    class RestrictedWebPage(QWebEnginePage):
+        """A class that follows links to FreeCAD wiki pages, but opens all other clicked links in the system web browser"""
+
+        def __init__(self, parent):
+            super().__init__(parent)
+            self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
+
+        def acceptNavigationRequest(self, url, _type, isMainFrame):
+            if _type == QWebEnginePage.NavigationTypeLinkClicked:
+
+                # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
+                if (
+                    url.host() == "wiki.freecad.org"
+                    or url.host() == "wiki.freecadweb.org"
+                ):
+                    return super().acceptNavigationRequest(url, _type, isMainFrame)
+                else:
+                    QDesktopServices.openUrl(url)
+                    return False
+            return super().acceptNavigationRequest(url, _type, isMainFrame)
+
+        def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):
+            global show_javascript_console_output
+            if show_javascript_console_output:
+                tag = translate("AddonsInstaller", "Page JavaScript reported")
+                if level == QWebEnginePage.InfoMessageLevel:
+                    FreeCAD.Console.PrintMessage(f"{tag} {lineNumber}: {message}\n")
+                elif level == QWebEnginePage.WarningMessageLevel:
+                    FreeCAD.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
+                elif level == QWebEnginePage.ErrorMessageLevel:
+                    FreeCAD.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
 
 
 class Ui_PackageDetails(object):
@@ -391,14 +488,8 @@ class Ui_PackageDetails(object):
         self.buttonBack.setIcon(
             QIcon.fromTheme("back", QIcon(":/icons/button_left.svg"))
         )
-        self.buttonRefresh = QToolButton(PackageDetails)
-        self.buttonRefresh.setObjectName("buttonRefresh")
-        self.buttonRefresh.setIcon(
-            QIcon.fromTheme("refresh", QIcon(":/icons/view-refresh.svg"))
-        )
 
         self.layoutDetailsBackButton.addWidget(self.buttonBack)
-        self.layoutDetailsBackButton.addWidget(self.buttonRefresh)
 
         self.horizontalSpacer = QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum
@@ -449,12 +540,47 @@ class Ui_PackageDetails(object):
 
         self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
-        self.textBrowserReadMe = QTextBrowser(PackageDetails)
-        self.textBrowserReadMe.setObjectName("textBrowserReadMe")
-        self.textBrowserReadMe.setOpenExternalLinks(True)
-        self.textBrowserReadMe.setOpenLinks(True)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
 
-        self.verticalLayout_2.addWidget(self.textBrowserReadMe)
+        if HAS_QTWEBENGINE:
+            self.webView = QWebEngineView(PackageDetails)
+            self.webView.setObjectName("webView")
+            self.webView.setSizePolicy(sizePolicy1)
+            self.webView.setPage(RestrictedWebPage(PackageDetails))
+
+            self.verticalLayout_2.addWidget(self.webView)
+
+            self.loadingLabel = QWebEngineView(PackageDetails)
+            self.loadingLabel.setObjectName("loadingLabel")
+            self.loadingLabel.setSizePolicy(sizePolicy1)
+
+            self.verticalLayout_2.addWidget(self.loadingLabel)
+
+            self.progressBar = QProgressBar(PackageDetails)
+            self.progressBar.setObjectName("progressBar")
+            self.progressBar.setTextVisible(False)
+
+            self.verticalLayout_2.addWidget(self.progressBar)
+
+            self.urlBar = QLineEdit(PackageDetails)
+            self.urlBar.setObjectName("urlBar")
+            self.urlBar.setReadOnly(True)
+
+            self.verticalLayout_2.addWidget(self.urlBar)
+        else:
+            self.missingWebViewLabel = QLabel(PackageDetails)
+            self.missingWebViewLabel.setObjectName("missingWebViewLabel")
+            self.missingWebViewLabel.setWordWrap(True)
+            self.verticalLayout_2.addWidget(self.missingWebViewLabel)
+
+            self.textBrowserReadMe = QTextBrowser(PackageDetails)
+            self.textBrowserReadMe.setObjectName("textBrowserReadMe")
+            self.textBrowserReadMe.setOpenExternalLinks(True)
+            self.textBrowserReadMe.setOpenLinks(True)
+
+            self.verticalLayout_2.addWidget(self.textBrowserReadMe)
 
         self.retranslateUi(PackageDetails)
 
@@ -462,7 +588,7 @@ class Ui_PackageDetails(object):
 
     # setupUi
 
-    def retranslateUi(self, PackageDetails):
+    def retranslateUi(self, _):
         self.buttonBack.setText("")
         self.buttonInstall.setText(
             QCoreApplication.translate("AddonsInstaller", "Install", None)
@@ -484,12 +610,15 @@ class Ui_PackageDetails(object):
                 "AddonsInstaller", "Return to package list", None
             )
         )
-        self.buttonRefresh.setToolTip(
-            QCoreApplication.translate(
-                "AddonsInstaller",
-                "Delete cached version of this README and re-download",
-                None,
+        if not HAS_QTWEBENGINE:
+            self.missingWebViewLabel.setText(
+                "<h3>"
+                + QCoreApplication.translate(
+                    "AddonsInstaller",
+                    "QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.",
+                    None,
+                )
+                + "</h3>"
             )
-        )
 
     # retranslateUi

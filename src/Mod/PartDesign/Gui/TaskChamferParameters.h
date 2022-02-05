@@ -52,6 +52,7 @@ private Q_SLOTS:
     void onFlipDirection(bool);
     void onRefDeleted(void);
     void onAddAllEdges(void);
+    void onCheckBoxUseAllEdgesToggled(bool checked);
 
 protected:
     virtual void clearButtons(const selectionModes notThis);

@@ -31,7 +31,6 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
-import PathScripts.PathToolController as PathToolController
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -194,7 +193,7 @@ class ToolControllerEditor(object):
         self.obj = obj
 
         comboToPropertyMap = [("spindleDirection", "SpindleDir")]
-        enumTups = PathToolController.ToolController.propertyEnumerations(
+        enumTups = PathScripts.PathToolController.ToolController.propertyEnumerations(
             dataType="raw"
         )
 

@@ -31,8 +31,6 @@
 #include <string>
 #include <vector>
 
-#define CCR_EPS  1.0e-5f
-
 namespace App
 {
 
@@ -377,22 +375,22 @@ public:
   bool operator == (const ColorLegend &rclCL) const;
   bool operator != (const ColorLegend &rclCL) const { return !(*this == rclCL); }
 
-  void resize (unsigned long ulN);
-  bool addMin (const std::string &rclName);
-  bool addMax (const std::string &rclName);
-  bool remove (unsigned long ulPos);
+  void resize (std::size_t ulN);
+  std::size_t addMin (const std::string &rclName);
+  std::size_t addMax (const std::string &rclName);
+  bool remove (std::size_t ulPos);
   void removeFirst ();
   void removeLast ();
 
-  Color getColor (unsigned long ulPos) const;
-  uint32_t  getPackedColor (unsigned long ulPos) const;
-  bool setColor (unsigned long ulPos, float ucRed, float ucGreen, float ucBlue);
-  bool setColor (unsigned long ulPos, unsigned long ulColor);
-  float getValue (unsigned long ulPos) const;
-  bool setValue (unsigned long ulPos, float fVal);
-  std::string getText (unsigned long ulPos) const;
-  bool setText (unsigned long ulPos, const std::string &rclName);
-  unsigned long hasNumberOfFields () const { return (unsigned long)colorFields.size(); }
+  Color getColor (std::size_t ulPos) const;
+  uint32_t  getPackedColor (std::size_t ulPos) const;
+  bool setColor (std::size_t ulPos, float ucRed, float ucGreen, float ucBlue);
+  bool setColor (std::size_t ulPos, unsigned long ulColor);
+  float getValue (std::size_t ulPos) const;
+  bool setValue (std::size_t ulPos, float fVal);
+  std::string getText (std::size_t ulPos) const;
+  bool setText (std::size_t ulPos, const std::string &rclName);
+  std::size_t hasNumberOfFields () const { return colorFields.size(); }
   void setOutsideGrayed (bool bOS) { outsideGrayed = bOS; }
   bool isOutsideGrayed () const { return outsideGrayed; }
   inline float  getMinValue () const;
@@ -452,12 +450,12 @@ inline std::size_t ColorLegend::getColorIndex (float fVal) const
 
 inline float ColorLegend::getMinValue () const
 {
-  return *values.begin();
+  return values.front();
 }
 
 inline float ColorLegend::getMaxValue () const
 {
-  return *(values.end()-1);
+  return values.back();
 }
 
 inline Color ColorGradient::getColor (float fVal) const

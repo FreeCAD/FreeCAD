@@ -32,7 +32,7 @@
 class IISTASKPANEL_EXPORT iisFreeCADTaskPanelScheme : public iisTaskPanelScheme
 {
 public:
-    iisFreeCADTaskPanelScheme(QObject *parent=0);
+    iisFreeCADTaskPanelScheme(QObject *parent=nullptr);
     ~iisFreeCADTaskPanelScheme();
 
     static iisTaskPanelScheme* defaultScheme();

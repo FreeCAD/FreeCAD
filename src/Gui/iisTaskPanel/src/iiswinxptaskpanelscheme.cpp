@@ -7,7 +7,7 @@
 
 #include "iiswinxptaskpanelscheme.h"
 
-iisWinXPTaskPanelScheme* iisWinXPTaskPanelScheme::myDefaultXPScheme = 0;
+iisWinXPTaskPanelScheme* iisWinXPTaskPanelScheme::myDefaultXPScheme = nullptr;
 
 iisWinXPTaskPanelScheme::iisWinXPTaskPanelScheme(QObject *parent)
 	: iisTaskPanelScheme(parent)
@@ -55,7 +55,7 @@ iisTaskPanelScheme* iisWinXPTaskPanelScheme::defaultScheme()
 
 
 
-iisWinXPTaskPanelScheme2* iisWinXPTaskPanelScheme2::myDefaultXPScheme = 0;
+iisWinXPTaskPanelScheme2* iisWinXPTaskPanelScheme2::myDefaultXPScheme = nullptr;
 
 iisWinXPTaskPanelScheme2::iisWinXPTaskPanelScheme2(QObject *parent)
 	: iisTaskPanelScheme(parent)

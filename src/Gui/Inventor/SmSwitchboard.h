@@ -45,8 +45,8 @@ class GuiExport SmSwitchboard : public SoGroup {
   SO_NODE_HEADER(SmSwitchboard);
 
 public:
-  static void initClass(void);
-  SmSwitchboard(void);
+  static void initClass();
+  SmSwitchboard();
   SmSwitchboard(int numchildren);
 
   SoMFBool enable;
@@ -61,7 +61,7 @@ public:
   virtual void search(SoSearchAction * action);
 
 protected:
-  virtual ~SmSwitchboard(void);
+  virtual ~SmSwitchboard();
 
 };
 

@@ -40,6 +40,7 @@ public:
     Fillet();
 
     App::PropertyQuantityConstraint Radius;
+    App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{

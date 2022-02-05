@@ -20,6 +20,7 @@ SET(AddonManager_SRCS
     NetworkManager.py
     package_list.py
     package_details.py
+    loading.html
 )
 
 SOURCE_GROUP("" FILES ${AddonManager_SRCS})

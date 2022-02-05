@@ -175,25 +175,24 @@ void SoFCColorGradient::setViewportSize( const SbVec2s& size )
     }
 }
 
-void SoFCColorGradient::setRange( float fMin, float fMax, int prec )
+void SoFCColorGradient::setRange(float fMin, float fMax, int prec)
 {
     _cColGrad.setRange(fMin, fMax);
 
     SoMFString label;
 
-    float fFac = (float)pow(10.0, (double)prec);
+    float eps = std::pow(10.0f, static_cast<float>(-prec));
+    float value = std::min<float>(fabs(fMin), fabs(fMax));
+    std::ios::fmtflags flags = value < eps ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
+                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
 
     int i=0;
     std::vector<float> marks = getMarkerValues(fMin, fMax, _cColGrad.getCountColors());
-    for ( std::vector<float>::iterator it = marks.begin(); it != marks.end(); ++it )
-    {
+    for (const auto& it : marks) {
         std::stringstream s;
         s.precision(prec);
-        s.setf(std::ios::fixed | std::ios::showpoint | std::ios::showpos);
-        float fValue = *it;
-        if ( fabs(fValue*fFac) < 1.0 )
-            fValue = 0.0f;
-        s << fValue;
+        s.setf(flags);
+        s << it;
         label.set1Value(i++, s.str().c_str());
     }
 

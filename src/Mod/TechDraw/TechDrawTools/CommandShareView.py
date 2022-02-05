@@ -18,9 +18,9 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the TechDraw CopyView GuiCommand."""
+"""Provides the TechDraw ShareView GuiCommand."""
 
-__title__ = "TechDrawTools.CommandCopyView"
+__title__ = "TechDrawTools.CommandShareView"
 __author__ = "WandererFan"
 __url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
@@ -33,8 +33,8 @@ import FreeCADGui as Gui
 
 import TechDrawTools
 
-class CommandCopyView:
-    """Copies a View from current Page to a different Page."""
+class CommandShareView:
+    """Shares a View on current Page to another Page."""
 
     def __init__(self):
         """Initialize variables for the command that must exist at all times."""
@@ -42,10 +42,10 @@ class CommandCopyView:
 
     def GetResources(self):
         """Return a dictionary with data that will be used by the button or menu item."""
-        return {'Pixmap': 'actions/TechDraw_CopyView.svg',
+        return {'Pixmap': 'actions/TechDraw_ShareView.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("CopyView", "Copy View"),
-                'ToolTip': QT_TRANSLATE_NOOP("CopyView", "Copy a View to a second Page")}
+                'MenuText': QT_TRANSLATE_NOOP("ShareView", "Share View"),
+                'ToolTip': QT_TRANSLATE_NOOP("ShareView", "Share a View on a second Page")}
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""
@@ -71,7 +71,7 @@ class CommandCopyView:
         if len(pages) > 1:
             toPageName = pages[1].Name
 
-        self.ui  = TechDrawTools.TaskCopyView()
+        self.ui  = TechDrawTools.TaskShareView()
 
         self.ui.setValues(vName, fromPageName, toPageName)
         Gui.Control.showDialog(self.ui)
@@ -86,5 +86,5 @@ class CommandCopyView:
 
 #
 # The command must be "registered" with a unique name by calling its class.
-Gui.addCommand('TechDraw_CopyView', CommandCopyView())
+Gui.addCommand('TechDraw_ShareView', CommandShareView())
 

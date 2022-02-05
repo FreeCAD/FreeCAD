@@ -99,12 +99,42 @@ void Matrix4D::setToUnity ()
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 1.0;
 }
 
+bool Matrix4D::isUnity() const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i == j) {
+                if (dMtrx4D[i][j] != 1.0)
+                    return false;
+            }
+            else {
+                if (dMtrx4D[i][j] != 0.0)
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 void Matrix4D::nullify()
 {
     dMtrx4D[0][0] = 0.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;
     dMtrx4D[1][0] = 0.0; dMtrx4D[1][1] = 0.0; dMtrx4D[1][2] = 0.0; dMtrx4D[1][3] = 0.0;
     dMtrx4D[2][0] = 0.0; dMtrx4D[2][1] = 0.0; dMtrx4D[2][2] = 0.0; dMtrx4D[2][3] = 0.0;
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 0.0;
+}
+
+bool Matrix4D::isNull() const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (dMtrx4D[i][j] != 0.0)
+                return false;
+        }
+    }
+
+    return true;
 }
 
 double Matrix4D::determinant() const
@@ -832,6 +862,20 @@ int Matrix4D::hasScale(double tol) const
     // scaling factors are the column vector length. We use square distance and
     // ignore the actual scaling signess
     //
+    // Note: In general using the column vectors to get the scaling factors makes
+    // sense if a scaling matrix was multiplied from the left side. If a scaling
+    // matrix was multiplied from the right side then the row vectors must be used.
+    // However, since this function checks for _uniform_ scaling it doesn't make a
+    // difference if row or column vectors are used.
+
+    // TODO:
+    // The int should be replaced with an enum class that tells the calling
+    // instance whether:
+    // * a uniform scaling was applied
+    // * a non-uniform scaling from the right side was applied
+    // * a non-uniform scaling from the left side was applied
+    // * no scaling at all
+
     if (tol == 0.0)
         tol = 1e-9;
     double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();

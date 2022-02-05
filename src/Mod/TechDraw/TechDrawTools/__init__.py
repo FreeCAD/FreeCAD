@@ -31,7 +31,7 @@ __date__    = "2022-01-11"
 
 from .TDToolsMovers import *
 from .TDToolsUtil import *
-from .CommandCopyView import CommandCopyView
+from .CommandShareView import CommandShareView
 from .CommandMoveView import CommandMoveView
-from .TaskCopyView import TaskCopyView
+from .TaskShareView import TaskShareView
 from .TaskMoveView import TaskMoveView

@@ -352,6 +352,9 @@ def upgrade(objects, delete=False, force=None):
         except Part.OCCError:
             return None
         else:
+            if (len(objectslist) > 1) and (len(wires) == len(objectslist)):
+                # we still have the same number of objects, we actually didn't join anything!
+                return makeCompound(objectslist)
             for wire in wires:
                 newobj = doc.addObject("Part::Feature", "Wire")
                 newobj.Shape = wire
@@ -504,7 +507,10 @@ def upgrade(objects, delete=False, force=None):
             elif len(objects) > 1 and len(edges) > 1:
                 result = makeWires(objects)
                 if result:
-                    _msg(translate("draft","Found several wires or edges: wiring them"))
+                    if result == True:
+                        _msg(translate("draft","Found several wires or edges: wiring them"))
+                    else:
+                        _msg(translate("draft","Found several non-treatable objects: creating compound"))
             # special case, we have only one open wire. We close it,
             # unless it has only 1 edge!
             elif len(objects) == 1 and len(openwires) == 1:

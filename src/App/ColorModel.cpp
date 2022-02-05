@@ -27,6 +27,7 @@
 #endif
 
 #include "ColorModel.h"
+#include <Base/Exception.h>
 
 using namespace App;
 
@@ -105,9 +106,14 @@ ColorField& ColorField::operator = (const ColorField &rclCF)
 
 void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
 {
+    auto bounds = std::minmax(fMin, fMax);
+    if (bounds.second <= bounds.first) {
+        throw Base::ValueError("Maximum must be higher than minimum");
+    }
+
+    this->fMin = bounds.first;
+    this->fMax = bounds.second;
     colorModel = rclModel;
-    this->fMin = std::min<float>(fMin, fMax);
-    this->fMax = std::max<float>(this->fMin + CCR_EPS, fMax);
     ctColors = std::max<std::size_t>(usCt, colorModel.getCountColors());
     rebuild();
 }
@@ -205,8 +211,13 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
 
 void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG)
 {
-    _fMin = std::min<float>(fMin, fMax);
-    _fMax = std::max<float>(_fMin + CCR_EPS, fMax);
+    auto bounds = std::minmax(fMin, fMax);
+    if (bounds.second <= bounds.first) {
+        throw Base::ValueError("Maximum must be higher than minimum");
+    }
+
+    _fMin = bounds.first;
+    _fMax = bounds.second;
     ctColors = std::max<std::size_t>(usCt, getMinColors());
     tStyle = tS;
     outsideGrayed = bOG;
@@ -325,7 +336,7 @@ bool ColorLegend::operator == (const ColorLegend &rclCL) const
           outsideGrayed == rclCL.outsideGrayed;
 }
 
-float ColorLegend::getValue (unsigned long ulPos) const
+float ColorLegend::getValue (std::size_t ulPos) const
 {
     if (ulPos < values.size())
         return values[ulPos];
@@ -333,7 +344,7 @@ float ColorLegend::getValue (unsigned long ulPos) const
         return 0.0f;
 }
 
-bool ColorLegend::setValue (unsigned long ulPos, float fVal)
+bool ColorLegend::setValue (std::size_t ulPos, float fVal)
 {
     if (ulPos < values.size())
     {
@@ -344,7 +355,7 @@ bool ColorLegend::setValue (unsigned long ulPos, float fVal)
         return false;
 }
 
-Color ColorLegend::getColor (unsigned long ulPos) const
+Color ColorLegend::getColor (std::size_t ulPos) const
 {
     if (ulPos < colorFields.size())
         return colorFields[ulPos];
@@ -353,13 +364,13 @@ Color ColorLegend::getColor (unsigned long ulPos) const
 }
 
 // color as: 0x00rrggbb
-uint32_t ColorLegend::getPackedColor (unsigned long ulPos) const
+uint32_t ColorLegend::getPackedColor (std::size_t ulPos) const
 {
     Color clRGB = getColor(ulPos);
     return clRGB.getPackedValue();
 }
 
-std::string ColorLegend::getText (unsigned long ulPos) const
+std::string ColorLegend::getText (std::size_t ulPos) const
 {
     if (ulPos < names.size())
         return names[ulPos];
@@ -367,10 +378,10 @@ std::string ColorLegend::getText (unsigned long ulPos) const
         return "";
 }
 
-bool ColorLegend::addMin (const std::string &rclName)
+std::size_t ColorLegend::addMin (const std::string &rclName)
 {
     names.push_front(rclName);
-    values.push_front(*values.begin() - 1.0f);
+    values.push_front(values.front() - 1.0f);
 
     Color clNewRGB;
     clNewRGB.r = ((float)rand() / (float)RAND_MAX);
@@ -379,13 +390,13 @@ bool ColorLegend::addMin (const std::string &rclName)
 
     colorFields.push_front(clNewRGB);
 
-    return true;
+    return colorFields.size() - 1;
 }
 
-bool ColorLegend::addMax (const std::string &rclName)
+std::size_t ColorLegend::addMax (const std::string &rclName)
 {
     names.push_back(rclName);
-    values.push_back(*(values.end()-1) + 1.0f);
+    values.push_back(values.back() + 1.0f);
 
     Color clNewRGB;
     clNewRGB.r = ((float)rand() / (float)RAND_MAX);
@@ -394,10 +405,10 @@ bool ColorLegend::addMax (const std::string &rclName)
 
     colorFields.push_back(clNewRGB);
 
-    return true;
+    return colorFields.size() - 1;
 }
 
-bool ColorLegend::remove (unsigned long ulPos)
+bool ColorLegend::remove (std::size_t ulPos)
 {
     if (ulPos < colorFields.size())
     {
@@ -431,7 +442,7 @@ void ColorLegend::removeLast ()
     }
 }
 
-void ColorLegend::resize (unsigned long ulCt)
+void ColorLegend::resize (std::size_t ulCt)
 {
     if ((ulCt < 2) || (ulCt == colorFields.size()))
         return;
@@ -450,7 +461,7 @@ void ColorLegend::resize (unsigned long ulCt)
     }
 }
 
-bool ColorLegend::setColor (unsigned long ulPos, float ucRed, float ucGreen, float ucBlue)
+bool ColorLegend::setColor (std::size_t ulPos, float ucRed, float ucGreen, float ucBlue)
 {
     if (ulPos < names.size())
     {
@@ -462,7 +473,7 @@ bool ColorLegend::setColor (unsigned long ulPos, float ucRed, float ucGreen, flo
 }
 
 // color as 0x00rrggbb
-bool ColorLegend::setColor (unsigned long ulPos, unsigned long ulColor)
+bool ColorLegend::setColor (std::size_t ulPos, unsigned long ulColor)
 {
     unsigned char ucRed   = (unsigned char)((ulColor & 0x00ff0000) >> 16);
     unsigned char ucGreen = (unsigned char)((ulColor & 0x0000ff00) >> 8);
@@ -470,13 +481,13 @@ bool ColorLegend::setColor (unsigned long ulPos, unsigned long ulColor)
     return setColor(ulPos, ucRed, ucGreen, ucBlue);
 }
 
-bool ColorLegend::setText (unsigned long ulPos, const std::string &rclName)
+bool ColorLegend::setText (std::size_t ulPos, const std::string &rclName)
 {
     if (ulPos < names.size())
     {
         names[ulPos] = rclName;
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
