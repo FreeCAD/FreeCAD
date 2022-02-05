@@ -23,6 +23,8 @@
 #ifndef _ShapeExtractor_h_
 #define _ShapeExtractor_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 
@@ -50,7 +52,6 @@ public:
     static std::vector<TopoDS_Shape> getXShapes(const App::Link* xLink);
     static std::vector<TopoDS_Shape> getShapesFromObject(const App::DocumentObject* docObj);
     static TopoDS_Shape getShapesFused(const std::vector<App::DocumentObject*> links);
-    static std::vector<TopoDS_Shape> extractDrawableShapes(const TopoDS_Shape shapeIn);
 
     static bool is2dObject(App::DocumentObject* obj);
     static bool isEdgeType(App::DocumentObject* obj);
@@ -58,7 +59,6 @@ public:
     static bool isDraftPoint(App::DocumentObject* obj);
     static Base::Vector3d getLocation3dFromFeat(App::DocumentObject* obj);
     static bool prefAdd2d(void);
-
 
 protected:
 
