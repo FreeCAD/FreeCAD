@@ -1,4 +1,4 @@
-name: Bug Report
+name: 🐛 Report a Bug
 description: File a bug report
 title: "[Bug] <title>"
 labels: ["🐛 bug", "needs triage"]
@@ -8,14 +8,15 @@ body:
       value: |
         NOTE: Please do not submit issues right now, migration from Mantis is in progress. This notice will be removed when we are ready to accept issue submissions here. In the meantime please visit the [FreeCAD Forum](https://forum.freecad.org) to discuss problems you are encountering.
   - type: checkboxes
-  attributes:
-    label: Is there an existing issue for this?
-    description: Please search to see if an issue already exists for the bug you encountered.
-    options:
-    - label: I have searched the existing issues
-      required: true
+    id: existing_issue
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+      - label: I have searched the existing issues
+        required: true
   - type: input
-    id: description
+    id: forum_link
     attributes:
       label: Forums discussion
       description: Please start a discussion about your issue at [the FreeCAD Forum](https://forum.freecad.org) and wait for confirmation there before creating an issue
@@ -40,6 +41,28 @@ body:
       render: shell
     validations:
       required: true
+  - type: dropdown
+    id: wb
+    attributes:
+      label: Subproject(s) affected?
+      options:
+        - Addon Manager
+        - Arch
+        - Core
+        - Draft
+        - Expressions
+        - FEM
+        - File formats
+        - GCS
+        - OpenSCAD
+        - Part
+        - PartDesign
+        - Path
+        - Project Tools & Websites
+        - Sketcher
+        - Spreadsheet
+        - Techdraw
+        - Other (specify in description)
   - type: textarea
     id: description
     attributes:
@@ -49,14 +72,15 @@ body:
     validations:
       required: true
   - type: textarea
-  attributes:
-    label: Anything else?
-    description: |
-      Links? References? Anything that will give us more context about the issue you are encountering!
+    id: anything_else
+    attributes:
+      label: Anything else?
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
 
-      Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in. To attach a FCStd file, ZIP it first (GitHub won't recognize the extension otherwise).
-  validations:
-    required: false
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in. To attach a FCStd file, ZIP it first (GitHub won't recognize the extension otherwise).
+    validations:
+      required: false
   - type: checkboxes
     id: terms
     attributes:
