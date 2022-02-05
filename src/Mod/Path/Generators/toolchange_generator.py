@@ -66,6 +66,7 @@ def generate(
     commands = []
 
     commands.append(Path.Command(f"({toollabel})"))
+    commands.append(Path.Command("M5"))
     commands.append(Path.Command("M6", {"T": int(toolnumber)}))
 
     if spindledirection is SpindleDirection.OFF:
