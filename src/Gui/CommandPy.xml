@@ -93,5 +93,29 @@ Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcut
 getAction() -> list of QAction</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="createCustomCommand" Static='true'>
+      <Documentation>
+        <UserDocu>Create a custom command for a macro
+createCustomCommand(macrofile, menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText) -> str
+--
+Only the macrofile argument is required, and should be the name of the macro file. All other arguments are
+passed on to the command creation routines if they are provided. All arguments except the first accept None.
+
+Returns the name of the created custom command.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCustomCommand" Static='true'>
+      <Documentation>
+        <UserDocu>Remove the custom command if it exists
+removeCustomCommand(name) -> bool
+--
+Given the name of a custom command, this removes that command. It is not an error
+to remove a non-existent command, the function simply does nothing in that case.
+
+Returns True if something was removed, or False if not.
+        </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
