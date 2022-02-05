@@ -883,6 +883,13 @@ public:
      */
     const Command* checkAcceleratorForConflicts(const char* accel, const Command *ignore = nullptr) const;
 
+    /**
+     * Returns the first available command name for a new macro (e.g. starting from 1,
+     * examines the existing user preferences for Std_Macro_%1 and returns the lowest
+     * available numbered string).
+     */
+    std::string newMacroName() const;
+
 private:
     /// Destroys all commands in the manager and empties the list.
     void clearCommands();

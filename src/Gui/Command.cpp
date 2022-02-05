@@ -1769,6 +1769,29 @@ void CommandManager::removeCommand(Command* pCom)
     }
 }
 
+std::string CommandManager::newMacroName() const
+{
+    CommandManager& commandManager = Application::Instance->commandManager();
+    std::vector<Command*> macros = commandManager.getGroupCommands("Macros");
+
+    bool used = true;
+    int id = 0;
+    std::ostringstream name;
+    while (used) {
+        used = false;
+        name << "Std_Macro_" << id++;
+
+        for (const auto& macro : macros) {
+            if (name.str() == std::string(macro->getName())) {
+                used = true;
+                break;
+            }
+        }
+    }
+
+    return name.str();
+}
+
 void CommandManager::clearCommands()
 {
     for ( std::map<std::string,Command*>::iterator it = _sCommands.begin(); it != _sCommands.end(); ++it )
