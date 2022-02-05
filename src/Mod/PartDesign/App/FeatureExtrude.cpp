@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRepFeat_MakePrism.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Dir.hxx>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
