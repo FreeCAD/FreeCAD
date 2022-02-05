@@ -107,7 +107,7 @@ ColorField& ColorField::operator = (const ColorField &rclCF)
 void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
 {
     auto bounds = std::minmax(fMin, fMax);
-    if (bounds.first <= bounds.second) {
+    if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
@@ -212,7 +212,7 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
 void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG)
 {
     auto bounds = std::minmax(fMin, fMax);
-    if (bounds.first <= bounds.second) {
+    if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
