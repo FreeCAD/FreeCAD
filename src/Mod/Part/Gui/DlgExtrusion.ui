@@ -298,9 +298,6 @@ If both lengths are zero, magnitude of direction is used.</string>
        <property name="maximum">
         <double>89.999999000000003</double>
        </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
       </widget>
      </item>
      <item row="1" column="1">
@@ -322,9 +319,6 @@ If both lengths are zero, magnitude of direction is used.</string>
        </property>
        <property name="maximum">
         <double>89.999999000000003</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
        </property>
       </widget>
      </item>
