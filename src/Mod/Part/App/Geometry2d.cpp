@@ -940,9 +940,9 @@ Base::Vector2d Geom2dCircle::getCircleCenter (const Base::Vector2d &p1, const Ba
     double vw = -(v*w);
     double uw = -(u*w);
 
-    double w0 = (2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-    double w1 = (2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-    double w2 = (2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
+    double w0 = (2 * sqrt(abs(uu * ww - uw * uw)) * uw / (uu * ww));
+    double w1 = (2 * sqrt(abs(uu * vv - uv * uv)) * uv / (uu * vv));
+    double w2 = (2 * sqrt(abs(vv * ww - vw * vw)) * vw / (vv * ww));
 
     double wx = w0 + w1 + w2;
 
