@@ -1861,7 +1861,7 @@ bool CmdPartDesignSubtractiveHelix::isActive(void)
 //===========================================================================
 
 bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
-        Gui::SelectionObject &selected)
+        Gui::SelectionObject &selected, bool &useAllEdges)
 {
     // No PartDesign feature without Body past FreeCAD 0.16
     App::Document *doc = cmd->getDocument();
@@ -1912,13 +1912,16 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
     }
 
     // if 1 Part::Feature object selected, but no subobjects, select all edges for the user
-    if (selection[0].getSubNames().size() == 0){
-        int count = TopShape.countSubElements("Edge");
+    // but only for fillet and chamfer (not for draft or thickness)
+    if (selection[0].getSubNames().size() == 0 && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)){
+        useAllEdges = true;
+        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
+        int count = TopShape.countSubElements(edgeTypeName.c_str());
         std::string docName = App::GetApplication().getDocumentName(base->getDocument());
         std::string objName = base->getNameInDocument();
         for (int ii = 0; ii < count; ii++){
             std::ostringstream edgeName;
-            edgeName << "Edge" << ii+1;
+            edgeName << edgeTypeName << ii+1;
             Gui::Selection().addSelection(docName.c_str(), objName.c_str(), edgeName.str().c_str());
         }
         selection = cmd->getSelection().getSelectionEx();
@@ -1930,7 +1933,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 }
 
 void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
-        Part::Feature *base, const std::vector<std::string> & SubNames)
+        Part::Feature *base, const std::vector<std::string> & SubNames, const bool useAllEdges)
 {
     if (SubNames.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1953,6 +1956,9 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     FCMD_OBJ_CMD(body,"newObject('PartDesign::"<<which<<"','"<<FeatName<<"')");
     auto Feat = body->getDocument()->getObject(FeatName.c_str());
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
+    if (useAllEdges && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)){
+        FCMD_OBJ_CMD(Feat,"UseAllEdges = True");
+    }
     cmd->doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base);
 
@@ -1968,15 +1974,16 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
 {
+    bool useAllEdges = false;
     Gui::SelectionObject selected;
-    if (!dressupGetSelected ( cmd, which, selected))
+    if (!dressupGetSelected ( cmd, which, selected, useAllEdges))
         return;
 
     Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
 
     std::vector<std::string> SubNames = std::vector<std::string>(selected.getSubNames());
 
-    finishDressupFeature (cmd, which, base, SubNames);
+    finishDressupFeature (cmd, which, base, SubNames, useAllEdges);
 }
 
 //===========================================================================
@@ -2057,7 +2064,8 @@ void CmdPartDesignDraft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::SelectionObject selected;
-    if (!dressupGetSelected ( this, "Draft", selected))
+    bool useAllEdges = false;
+    if (!dressupGetSelected ( this, "Draft", selected, useAllEdges))
         return;
 
     Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
@@ -2084,7 +2092,7 @@ void CmdPartDesignDraft::activated(int iMsg)
         i++;
     }
 
-    finishDressupFeature (this, "Draft", base, SubNames);
+    finishDressupFeature (this, "Draft", base, SubNames, useAllEdges);
 }
 
 bool CmdPartDesignDraft::isActive(void)
@@ -2114,7 +2122,8 @@ void CmdPartDesignThickness::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::SelectionObject selected;
-    if (!dressupGetSelected ( this, "Thickness", selected))
+    bool useAllEdges = false;
+    if (!dressupGetSelected ( this, "Thickness", selected, useAllEdges))
         return;
 
     Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
@@ -2133,7 +2142,7 @@ void CmdPartDesignThickness::activated(int iMsg)
         i++;
     }
 
-    finishDressupFeature (this, "Thickness", base, SubNames);
+    finishDressupFeature (this, "Thickness", base, SubNames, useAllEdges);
 }
 
 bool CmdPartDesignThickness::isActive(void)

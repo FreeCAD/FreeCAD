@@ -429,7 +429,6 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters()
 bool TaskDlgDressUpParameters::accept()
 {
     getDressUpView()->highlightReferences(false);
-
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
     str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = (" 

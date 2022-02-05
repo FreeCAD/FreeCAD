@@ -80,6 +80,7 @@ protected:
     bool KeyEvent(QEvent *e);
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
+
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;
