@@ -82,9 +82,6 @@ SectionCut::SectionCut(Gui::View3DInventor* view, QWidget* parent)
     ui->cutY->setRange(-INT_MAX, INT_MAX);
     ui->cutZ->setRange(-INT_MAX, INT_MAX);
 
-    view = view;
-    Gui::View3DInventorViewer* viewer = view->getViewer();
-
     // get all objects in the document
     doc = Gui::Application::Instance->activeDocument()->getDocument();
     if (!doc) {
