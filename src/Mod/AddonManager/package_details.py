@@ -41,12 +41,13 @@ show_javascript_console_output = False
 
 try:
     from PySide2.QtWebEngineWidgets import *
+
     HAS_QTWEBENGINE = True
 except Exception:
     FreeCAD.Console.PrintWarning(
         translate(
             "AddonsInstaller",
-            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until dependency is resolved.",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.",
         )
         + "\n"
     )
@@ -73,7 +74,6 @@ class PackageDetails(QWidget):
         self.status_update_thread = None
 
         self.ui.buttonBack.clicked.connect(self.back.emit)
-        self.ui.buttonBack.clicked.connect(self.clear_web_view)
         self.ui.buttonExecute.clicked.connect(lambda: self.execute.emit(self.repo))
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
         self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
@@ -102,8 +102,13 @@ class PackageDetails(QWidget):
 
             if HAS_QTWEBENGINE:
                 self.ui.loadingLabel.show()
+                self.ui.slowLoadLabel.hide()
+                self.ui.webView.setHtml("<html><body>Loading...</body></html>")
                 self.ui.webView.hide()
                 self.ui.progressBar.show()
+                self.timeout = QTimer.singleShot(
+                    6000, self.long_load_running
+                )  # Six seconds
             else:
                 self.ui.missingWebViewLabel.setStyleSheet(
                     "color:" + utils.warning_color_string()
@@ -403,9 +408,6 @@ class PackageDetails(QWidget):
 """
         self.ui.webView.page().runJavaScript(s)
 
-    def clear_web_view(self):
-        self.ui.webView.setHtml("<html><body><h1>Loading...</h1></body></html>")
-
     def load_started(self):
         self.ui.progressBar.show()
         self.ui.progressBar.setValue(0)
@@ -415,9 +417,16 @@ class PackageDetails(QWidget):
 
     def load_finished(self, load_succeeded: bool):
         self.ui.loadingLabel.hide()
+        self.ui.slowLoadLabel.hide()
         self.ui.webView.show()
         self.ui.progressBar.hide()
         url = self.ui.webView.url()
+        if (
+            hasattr(self, "timeout")
+            and hasattr(self.timeout, "isActive")
+            and self.timeout.isActive()
+        ):
+            self.timeout.stop()
         if load_succeeded:
             # It says it succeeded, but it might have only succeeded in loading a "Page not found" page!
             title = self.ui.webView.title()
@@ -431,6 +440,12 @@ class PackageDetails(QWidget):
                 self.run_javascript()
         else:
             self.show_error_for(url)
+
+    def long_load_running(self):
+        if hasattr(self.ui, "webView") and self.ui.webView.isHidden():
+            self.ui.slowLoadLabel.show()
+            self.ui.loadingLabel.hide()
+            self.ui.webView.show()
 
     def show_error_for(self, url: QUrl) -> None:
         m = translate(
@@ -558,6 +573,11 @@ class Ui_PackageDetails(object):
 
             self.verticalLayout_2.addWidget(self.loadingLabel)
 
+            self.slowLoadLabel = QLabel(PackageDetails)
+            self.slowLoadLabel.setObjectName("slowLoadLabel")
+
+            self.verticalLayout_2.addWidget(self.slowLoadLabel)
+
             self.progressBar = QProgressBar(PackageDetails)
             self.progressBar.setObjectName("progressBar")
             self.progressBar.setTextVisible(False)
@@ -619,6 +639,13 @@ class Ui_PackageDetails(object):
                     None,
                 )
                 + "</h3>"
+            )
+        else:
+            self.slowLoadLabel.setText(
+                QCoreApplication.translate(
+                    "AddonsInstaller",
+                    "The page is taking a long time to load... showing the data we have so far...",
+                )
             )
 
     # retranslateUi
