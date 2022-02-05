@@ -1,0 +1,48 @@
+name: Feature Request
+description: Submit an idea for a new feature
+title: "[Feature Request] <title>"
+labels: ["feature", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NOTE: Please do not submit requests right now, migration from Mantis is in progress. This notice will be removed when we are ready to accept submissions here. In the meantime please visit the [FreeCAD Forum](https://forum.freecad.org) to discuss problems you are encountering.
+  - type: checkboxes
+  attributes:
+    label: Is there an existing request for this?
+    description: Please search to see if this feature has already been requested.
+    options:
+    - label: I have searched the existing issues
+      required: true
+  - type: input
+    id: description
+    attributes:
+      label: Forums discussion
+      description: Please start a discussion about your idea at [the FreeCAD Forum](https://forum.freecad.org) and wait for confirmation there before creating an issue
+      placeholder: Paste link to forum discussion here
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Idea description
+      description: Please include as much detail as possible so that developers understand the idea
+      placeholder: Description of the feature
+    validations:
+      required: true
+  - type: textarea
+    id: full_version
+    attributes:
+      label: Full version info
+      description: Please use the About FreeCAD dialog to copy your full version information and paste it here.
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/master/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
