@@ -435,11 +435,14 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     bool isMidplaneVisible = false;
     bool isReversedEnabled = false;
     bool isFaceEditEnabled = false;
+    bool isTaperEditVisible = false;
+    bool isTaperEdit2Visible = false;
 
     if (mode == Modes::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
+        isTaperEditVisible = true;
         isMidplaneVisible = true;
         isMidplaneEnabled = true;
         // Reverse only makes sense if Midplane is not true
@@ -472,6 +475,8 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     else if (mode == Modes::TwoDimensions) {
         isLengthEditVisible = true;
         isLengthEdit2Visible = true;
+        isTaperEditVisible = true;
+        isTaperEdit2Visible = true;
         isReversedEnabled = true;
     }
 
@@ -487,6 +492,14 @@ void TaskExtrudeParameters::setCheckboxes(Modes mode, Type type)
     ui->offsetEdit->setVisible(isOffsetEditVisible);
     ui->offsetEdit->setEnabled(isOffsetEditVisible && isOffsetEditEnabled);
     ui->labelOffset->setVisible(isOffsetEditVisible);
+
+    ui->taperEdit->setVisible(isTaperEditVisible);
+    ui->taperEdit->setEnabled(isTaperEditVisible);
+    ui->labelTaperAngle->setVisible(isTaperEditVisible);
+
+    ui->taperEdit2->setVisible(isTaperEdit2Visible);
+    ui->taperEdit2->setEnabled(isTaperEdit2Visible);
+    ui->labelTaperAngle2->setVisible(isTaperEdit2Visible);
 
     ui->checkBoxMidplane->setEnabled(isMidplaneEnabled);
     ui->checkBoxMidplane->setVisible(isMidplaneVisible);
