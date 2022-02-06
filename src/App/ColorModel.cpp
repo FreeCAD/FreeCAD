@@ -106,14 +106,13 @@ ColorField& ColorField::operator = (const ColorField &rclCF)
 
 void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
 {
-    fMin = std::min<float>(fMin, fMax);
-    fMax = std::max<float>(fMin, fMax);
-    if (fMax <= fMin) {
+    auto bounds = std::minmax(fMin, fMax);
+    if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
-    this->fMin = fMin;
-    this->fMax = fMax;
+    this->fMin = bounds.first;
+    this->fMax = bounds.second;
     colorModel = rclModel;
     ctColors = std::max<std::size_t>(usCt, colorModel.getCountColors());
     rebuild();
@@ -212,14 +211,13 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
 
 void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG)
 {
-    fMin = std::min<float>(fMin, fMax);
-    fMax = std::max<float>(fMin, fMax);
-    if (fMax <= fMin) {
+    auto bounds = std::minmax(fMin, fMax);
+    if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
-    _fMin = fMin;
-    _fMax = fMax;
+    _fMin = bounds.first;
+    _fMax = bounds.second;
     ctColors = std::max<std::size_t>(usCt, getMinColors());
     tStyle = tS;
     outsideGrayed = bOG;

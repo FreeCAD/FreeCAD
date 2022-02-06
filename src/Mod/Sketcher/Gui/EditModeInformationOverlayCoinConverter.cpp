@@ -114,10 +114,14 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         controlPolygon.coordinates.clear();
         controlPolygon.indices.clear();
 
+        size_t nvertices;
+
         if (spline->isPeriodic())
-            controlPolygon.coordinates.reserve(poles.size()+1);
+            nvertices = poles.size()+1;
         else
-            controlPolygon.coordinates.reserve(poles.size());
+            nvertices = poles.size();
+
+        controlPolygon.coordinates.reserve(nvertices);
 
         for (auto & v : poles)
             controlPolygon.coordinates.emplace_back(v);
@@ -125,7 +129,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         if (spline->isPeriodic())
             controlPolygon.coordinates.emplace_back(poles[0]);
 
-        controlPolygon.indices.push_back(poles.size()); // single continuous polygon starting at index 0
+        controlPolygon.indices.push_back(nvertices); // single continuous polygon starting at index 0
     }
     else if constexpr (calculation == CalculationType::BSplineCurvatureComb ) {
 

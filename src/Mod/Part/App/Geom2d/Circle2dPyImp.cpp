@@ -143,6 +143,24 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
+PyObject* Circle2dPy::getCircleCenter(PyObject *args)
+{
+    PyObject* p1;
+    PyObject* p2;
+    PyObject* p3;
+    if (!PyArg_ParseTuple(args, "O!O!O!", Base::Vector2dPy::type_object(), &p1
+                                        , Base::Vector2dPy::type_object(), &p2
+                                        , Base::Vector2dPy::type_object(), &p3))
+        return nullptr;
+
+    Base::Vector2d v1 = Py::toVector2d(p1);
+    Base::Vector2d v2 = Py::toVector2d(p2);
+    Base::Vector2d v3 = Py::toVector2d(p3);
+
+    Base::Vector2d cnt = Geom2dCircle::getCircleCenter(v1, v2, v3);
+    return Py::new_reference_to(Base::Vector2dPy::create(cnt));
+}
+
 Py::Float Circle2dPy::getRadius(void) const
 {
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());

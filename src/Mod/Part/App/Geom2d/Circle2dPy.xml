@@ -31,6 +31,11 @@ Part.Geom2d.Circle2d(Point1,Point2,Point3)
     Creates a circle defined by three non-linear points
    </UserDocu>
     </Documentation>
+    <Methode Name="getCircleCenter" Static="true">
+      <Documentation>
+        <UserDocu>Get the circle center defined by three points</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Radius" ReadOnly="false">
       <Documentation>
         <UserDocu>The radius of the circle.</UserDocu>

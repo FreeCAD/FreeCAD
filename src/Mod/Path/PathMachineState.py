@@ -28,7 +28,6 @@ __contributors__ = ""
 
 import PathScripts.PathLog as PathLog
 import FreeCAD
-from dataclasses import dataclass, field
 from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll, CmdMoveDrill
 
 if True:
@@ -38,39 +37,39 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-@dataclass
 class MachineState:
-    WCSLIST = [
-        "G53",
-        "G54",
-        "G55",
-        "G56",
-        "G57",
-        "G58",
-        "G59",
-        "G59.1",
-        "G59.2",
-        "G59.3",
-        "G59.4",
-        "G59.5",
-        "G59.6",
-        "G59.7",
-        "G59.8",
-        "G59.9",
-    ]
+    def __init__(self):
+        self.WCSLIST = [
+            "G53",
+            "G54",
+            "G55",
+            "G56",
+            "G57",
+            "G58",
+            "G59",
+            "G59.1",
+            "G59.2",
+            "G59.3",
+            "G59.4",
+            "G59.5",
+            "G59.6",
+            "G59.7",
+            "G59.8",
+            "G59.9",
+        ]
 
-    X: float = field(default=0)
-    Y: float = field(default=0)
-    Z: float = field(default=0)
-    A: float = field(default=0)
-    B: float = field(default=0)
-    C: float = field(default=0)
-    F: float = field(default=None)
-    Coolant: bool = field(default=False)
-    WCS: str = field(default="G54")
-    Spindle: str = field(default="off")
-    S: int = field(default=0)
-    T: int = field(default=None)
+        self.X = 0.0  #: float = field(default=0)
+        self.Y = 0.0  #: float = field(default=0)
+        self.Z = 0.0  #: float = field(default=0)
+        self.A = 0.0  #: float = field(default=0)
+        self.B = 0.0  #: float = field(default=0)
+        self.C = 0.0  #: float = field(default=0)
+        self.F = 0.0  #: float = field(default=None)
+        self.Coolant = False  #: bool = field(default=False)
+        self.WCS = "G54"  #: str = field(default="G54")
+        self.Spindle = "off"  #: str = field(default="off")
+        self.S = 0  #: int = field(default=0)
+        self.T = None  #: int = field(default=None)
 
     def addCommand(self, command):
         """Processes a command and updates the internal state of the machine. Returns true if the command has alterned the machine state"""
@@ -110,18 +109,18 @@ class MachineState:
         Returns a dictionary of the current machine state
         """
         state = {}
-        state['X'] = self.X
-        state['Y'] = self.Y
-        state['Z'] = self.Z
-        state['A'] = self.A
-        state['B'] = self.B
-        state['C'] = self.C
-        state['F'] = self.F
-        state['Coolant'] = self.Coolant
-        state['WCS'] = self.WCS
-        state['Spindle'] = self.Spindle
-        state['S'] = self.S
-        state['T'] = self.T
+        state["X"] = self.X
+        state["Y"] = self.Y
+        state["Z"] = self.Z
+        state["A"] = self.A
+        state["B"] = self.B
+        state["C"] = self.C
+        state["F"] = self.F
+        state["Coolant"] = self.Coolant
+        state["WCS"] = self.WCS
+        state["Spindle"] = self.Spindle
+        state["S"] = self.S
+        state["T"] = self.T
 
         return state
 

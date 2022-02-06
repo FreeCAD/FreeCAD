@@ -38,7 +38,7 @@ class SectionCut : public QDialog
 
 public:
     static SectionCut* makeDockWidget(Gui::View3DInventor*);
-    SectionCut(Gui::View3DInventor* view, QWidget* parent = nullptr);
+    SectionCut(QWidget* parent = nullptr);
     ~SectionCut();
 
 protected Q_SLOTS:
