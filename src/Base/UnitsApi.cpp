@@ -133,7 +133,7 @@ void UnitsApi::setSchema(UnitSystem s)
 
 QString UnitsApi::toString(const Base::Quantity& q, const QuantityFormat& f)
 {
-    QString value = QString::fromLatin1("'%1 %2'").arg(q.getValue(), 0, f.toFormat(), f.precision+1)
+    QString value = QString::fromLatin1("'%1 %2'").arg(q.getValue(), 0, f.toFormat(), f.precision)
                                                   .arg(q.getUnit().getString());
     return value;
 }
@@ -145,7 +145,7 @@ QString UnitsApi::toNumber(const Base::Quantity& q, const QuantityFormat& f)
 
 QString UnitsApi::toNumber(double d, const QuantityFormat& f)
 {
-    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision+1);
+    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision);
     return number;
 }
 
