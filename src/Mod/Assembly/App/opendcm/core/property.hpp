@@ -62,15 +62,15 @@ namespace dcm {
  * The connection of data type and identifier is achieved through the property structs, which all follow
  * the same concept: Identifier is the struct type, the stored data is exposed as 'type' typedef. The data
  * type can be every c++ type (including classes and structs) which is default constructable. They don't need
- * to be assignable or copyable by default, thats only nesseccary if you want to change the hole stored
+ * to be assignable or copyable by default, that's only necessary if you want to change the hole stored
  * object by assigning. If not, the data object can be uncopyable and it should be used by
- * retrieving it's reference with get-methods.
+ * retrieving its reference with get-methods.
  *
  * Propertys are further designed to fit in the concept of compile-time modularisation. To allow the extension
- * of all data-holding entities with new data types, propertys store their own purpose. Thats
+ * of all data-holding entities with new data types, propertys store their own purpose. That's
  * done by extending the property struct with a second typedef which is named kind and which specifies of which
  * kind the property is. That means, that this typedef defines when the property shall be used and for which
- * context it is designed for. Dependend on the propertys kind, it will be added to different places inside the dcm.
+ * context it is designed for. Depending on the propertys kind, it will be added to different places inside the dcm.
  * A property of kind @ref vertex_property will added to vertices, a property of kind @ref object_property to all
  * objects and so on.
  *
@@ -78,7 +78,7 @@ namespace dcm {
  * constructor. Therefore a interface for setting default values is added to the property. If you want
  * to assign a default value you just need to add a struct default_value which returns the wanted default
  * value with the operator(). If you don't want a default value, just don't add the struct. The implementation
- * assignes the default value to the property, therefore it should only be used with assignalble types.
+ * assigns the default value to the property, therefore it should only be used with assignable types.
  *
  *
  * A property implementation for storing integers at a graph edge with the identifier
@@ -104,16 +104,16 @@ namespace dcm {
  * @endcode
  *
  *
- * If you want to use properties in your class you should derive from PropertyOwner class, as it doas all the
- * hanling needed and gives you get and set functions which work with the designed identifiers.
+ * If you want to use properties in your class you should derive from PropertyOwner class, as it does all the
+ * handling needed and gives you get and set functions which work with the designed identifiers.
  *
  * @{ */
 
 /**
  * @brief Exception for property errors
  *
- * This exception is thrown when a property related error is detected, for example if a objects is ask for a
- * property which it does not own. This exceptions own the error-code range from 300-399.
+ * This exception is thrown when a property related error is detected, for example if an object is asked for a
+ * property which it does not own. These exceptions own the error-code range from 300-399.
  **/
 struct property_error : virtual boost::exception { };
 
@@ -131,7 +131,7 @@ struct vertex_property {};
  *
  * This is a identifier structure for edge properties. Every property with this struct as 'kind' type
  * will be added to all local edges of a cluster. It is accessible through local edge
- * descriptors, or global one by getting it's holding local edge first. Note that global edges don't
+ * descriptors, or global one by getting its holding local edge first. Note that global edges don't
  * have properties, as the properties are intended for use inside boost graph algorithms and therefore
  * only needed in local edges. @see property_map
  */
@@ -140,8 +140,8 @@ struct edge_property {};
 /**
  * @brief Identifier for cluster properties
  *
- * A ClusterGraph has it's own properties, and ever property with this identifier as 'kind' type will be
- * added to it. This is intended for internal dcm usage, its possible to give the abstract cluster a meaning
+ * A ClusterGraph has its own properties, and every property with this identifier as 'kind' type will be
+ * added to it. This is intended for internal dcm usage, it's possible to give the abstract cluster a meaning
  * by adding special properties to it. It can be accessed by special ClusterGraph functions designed for this
  * purpose.
  **/
@@ -150,8 +150,8 @@ struct cluster_property {};
 /**
  *@brief Identifier for general object properties
  *
- * Aproperty with this struct as 'kind' type will be added to all existing objects, no matter of individual
- * type. Use this only for general, sharable properties. To add a property to a single object, use it's
+ * A property with this struct as 'kind' type will be added to all existing objects, no matter of individual
+ * type. Use this only for general, sharable properties. To add a property to a single object, use its
  * type as 'kind'.
  **/
 struct object_property {};
@@ -159,7 +159,7 @@ struct object_property {};
 /**
  *@brief Identifier for system setting properties
  *
- * Aproperty with this struct as 'kind' type will be added to the system class. Use this for user settings,
+ * A property with this struct as 'kind' type will be added to the system class. Use this for user settings,
  * which are just properties which are accessed horugh "setting" functions.
  **/
 struct setting_property {};
@@ -200,7 +200,7 @@ struct edge_selector {
  * @brief Select property information trait depending on property type
  *
  * Allows generic access to property information like descriptor or property sequence by exposing
- * a specific selector type ( @ref vertex_selector or @ref edge_selector ) dependend on the supplied
+ * a specific selector type ( @ref vertex_selector or @ref edge_selector ) depending on the supplied
  * property.
  **/
 template< typename Kind, typename Graph>
@@ -286,7 +286,7 @@ struct ensure_properties {
 };
 
 /**
- * @brief Property vector to a fusion sequence of the propety storage types
+ * @brief Property vector to a fusion sequence of the property storage types
  *
  * Properties are passed around as mpl sequences, mostly vectors. To store actual values, they need to
  * be transformed into fusion sequences. However, only the storage type needs to be in the vector, not
@@ -372,7 +372,7 @@ public:
     typedef typename Property::type&  reference;
     typedef boost::lvalue_property_map_tag category;
 
-    //expose cutom types for easy access
+    //expose custom types for easy access
     typedef Property property;
     typedef typename dcm::details::property_selector<typename Property::kind, Graph>::sequence_type sequence;
     typedef typename dcm::details::property_selector<typename Property::kind, Graph>::property_distance distance;
@@ -458,7 +458,7 @@ PropertyOwner<PropertyList>::PropertyOwner() {
 };
 
 /**
- * @brief Convienience specialization to ease interaction with system class
+ * @brief Convenience specialization to ease interaction with system class
  *
  * Normally property lists are retrieved from the system class, however, there are no empty lists. If no
  * property is supplied for a PropertyOwner derived class, a mpl::void_ type will be retrieved. To
@@ -499,7 +499,7 @@ void PropertyOwner<PropertyList>::setProperty(typename Prop::type value) {
 
 
 
-//now create some standart properties
+//now create some standard properties
 //***********************************
 
 /**
@@ -513,7 +513,7 @@ struct empty_prop {
 /**
  * @brief Add a type to clusters
  *
- * Allows to specify special types to ClusterGraphs and make a it possibe to distuingish between
+ * Allows to specify special types to ClusterGraphs and make a it possible to distinguish between
  * different purposes. The cluster types need to be int.
  **/
 struct type_prop {
@@ -525,7 +525,7 @@ struct type_prop {
 /**
  * @brief Was the cluster changed?
  *
- * Adds a boolean to the cluster which indicates if the cluster was changedsince the last
+ * Adds a boolean to the cluster which indicates if the cluster was changed since the last
  * processing. It should be set to true if vertices and edges were added or removed, Subclusters
  * created or deleted and so on.
  **/

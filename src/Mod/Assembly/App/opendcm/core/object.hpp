@@ -47,8 +47,8 @@ namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
 
 /* Preprocessor implementation of emit signal. As we need many overloads with different number of
- * templated parameters we use boost preprocessor to do the hard repetive work. The definition and
- * implementation are definded first as they need to be known before usage
+ * templated parameters we use boost preprocessor to do the hard repetitive work. The definition and
+ * implementation are defined first as they need to be known before usage
  * */
 #define EMIT_ARGUMENTS(z, n, data) \
     BOOST_PP_CAT(data, n)
@@ -71,7 +71,7 @@ namespace dcm {
  *
  **/
 
-//few standart signal names
+//few standard signal names
 struct remove {};
 
 typedef int Connection;
@@ -85,8 +85,8 @@ struct SignalOwner {
     * @brief Connects a slot to a specified signal.
     *
     * Slots are boost::functions which get called when the signal is emitted. Any valid boost::function
-    * which ressembles the signal tyes signature can be registert. It is important that the signal type
-    * was registerd to this object on creation by the appropriate template parameter.
+    * which ressembles the signal types signature can be registered. It is important that the signal type
+    * was registered to this object on creation by the appropriate template parameter.
     *
     * @tparam S the signal which should be intercepted
     * @param function boost::function which resembles the signal type's signature

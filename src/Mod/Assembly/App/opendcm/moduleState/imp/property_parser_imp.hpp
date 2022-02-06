@@ -76,7 +76,7 @@ prop_par<Sys, PropertyList>::prop_par() : prop_par<Sys, PropertyList>::base_type
                    typename fusion::result_of::as_vector<parent_rules_sequence>::type,
                    mpl::int_<0> >(sub_rules, parent_rules);
 
-    //we need to specialy treat empty sequences
+    //we need to especially treat empty sequences
     initalizeLastRule(parent_rules, prop);
 };
 

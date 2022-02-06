@@ -292,11 +292,11 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
                 int offset_rot = mes.setParameterMap(cm.getNormQuaternionMap(), rotation);
                 //set translation as map to the parameter vector
                 int offset = mes.setParameterMap(cm.getTranslationMap(), general);
-                //write initail values to the parameter maps
+                //write initial values to the parameter maps
                 //remember the parameter offset as all downstream geometry must use this offset
                 cm.setParameterOffset(offset_rot, rotation);
                 cm.setParameterOffset(offset, general);
-                //wirte initial values
+                //write initial values
                 cm.initMaps();
             }
             else
@@ -369,12 +369,12 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
 
             if(!has_cycle) {
 #ifdef USE_LOGGING
-		BOOST_LOG_SEV(log, solving)<< "non-cyclic system dedected: solve rotation only";
+		BOOST_LOG_SEV(log, solving)<< "non-cyclic system detected: solve rotation only";
 #endif
 		//cool, lets do uncylic. first all rotational constraints with rotational parameters
 		mes.setAccess(rotation);
 
-		//rotations need to be calculated in a scaled manner. thats because the normals used for
+		//rotations need to be calculated in a scaled manner. that's because the normals used for
 		//rotation calculation are always 1, no matter how big the part is. This can lead to problems
 		//when for example two rotated faces have a precision error on the parallel normals but a distance
 		//at the outer edges is far bigger than the precision as the distance from normal origin to outer edge

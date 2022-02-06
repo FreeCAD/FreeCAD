@@ -192,7 +192,7 @@ struct Equation : public EQ {
     typename boost::enable_if< mpl::is_sequence<T>, typename pushed_seq<T, Derived>::type >::type operator &(T& val);
     */
 
-    //set default option values, neeeded for repedability and to prevent unexpected behaviour
+    //set default option values, needed for repeatability and to prevent unexpected behaviour
     virtual void setDefault() {};
 };
 
