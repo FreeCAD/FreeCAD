@@ -67,6 +67,10 @@ PyMethodDef UnitsApi::Methods[] = {
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"
     },
+    {"toNumber",  UnitsApi::sToNumber, METH_VARARGS,
+     "toNumber(Quantity or float, [format='g', decimals=-1]) -> str\n\n"
+     "Convert a quantity or float to a string"
+    },
 
     {nullptr, nullptr, 0, nullptr}      /* Sentinel */
 };
@@ -168,4 +172,46 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
     res[2] = Py::String(uus.toUtf8(),"utf-8");
 
     return Py::new_reference_to(res);
+}
+
+PyObject* UnitsApi::sToNumber(PyObject * /*self*/, PyObject *args)
+{
+    double value;
+    char* format = "g";
+    int decimals;
+
+    do {
+        PyObject* q;
+        if (PyArg_ParseTuple(args, "O!|si", &(QuantityPy::Type), &q, &format, &decimals)) {
+            value = static_cast<QuantityPy*>(q)->getQuantityPtr()->getValue();
+            break;
+        }
+
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "d|si", &value, &format, &decimals)) {
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "toNumber(Quantity or float, [format='g', decimals=-1])");
+        return nullptr;
+    }
+    while (false);
+
+    if (strlen(format) != 1) {
+        PyErr_SetString(PyExc_ValueError, "Format string hasn't length of 1");
+        return nullptr;
+    }
+
+    bool ok;
+    QuantityFormat qf;
+    qf.format = QuantityFormat::toFormat(format[0], &ok);
+    qf.precision = decimals;
+
+    if (!ok) {
+        PyErr_SetString(PyExc_ValueError, "Invalid format string");
+        return nullptr;
+    }
+
+    QString string = toNumber(value, qf);
+    return Py::new_reference_to(Py::String(string.toStdString()));
 }
