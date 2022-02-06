@@ -1530,13 +1530,19 @@ Gui--ColorButton:pressed {
 }
 
 /* Pushbutton style for "..." inside Placement cell which launches Placement tool */
-Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton {
+Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
+Gui--PropertyEditor--PropertyEditor > QWidget > PushButton {
     background-color: #232932;
     border: 1px solid #232932;
     min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
     border-radius: 0px;
     margin: 0px; /* reset */
     padding: 0px; /* reset */
+}
+
+Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
+    text-align:left;
+    padding-left: 2px;
 }
 
 /* Fix for Expressions description QFrame that is "broken" with initial reset */
