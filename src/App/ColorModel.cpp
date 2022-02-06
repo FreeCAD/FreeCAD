@@ -298,15 +298,18 @@ void ColorGradient::setColorModel ()
 ColorLegend::ColorLegend ()
 : outsideGrayed(false)
 {
-    // default  green, red
+    // default  blue, green, red
+    colorFields.emplace_back(0, 0, 1);
     colorFields.emplace_back(0, 1, 0);
     colorFields.emplace_back(1, 0, 0);
 
     names.push_back("Min");
+    names.push_back("Mid");
     names.push_back("Max");
 
     values.push_back(-1.0f);
-    values.push_back(0.0f);
+    values.push_back(-0.333f);
+    values.push_back(0.333f);
     values.push_back(1.0f);
 }
 
