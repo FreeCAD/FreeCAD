@@ -1070,7 +1070,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
             // Warning: GeoId list might have changed
             // as the consequence of deleting pole circles and
             // particularly B-spline GeoID might have changed.
-        };
+        }
     }
     catch (const Base::CADKernelError& e) {
       e.ReportException();
