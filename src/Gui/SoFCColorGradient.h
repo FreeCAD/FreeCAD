@@ -25,6 +25,7 @@
 #define GUI_SOFCCOLORGRADIENT_H
 
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbBox2f.h>
 #include "SoFCColorBar.h"
 #include <App/ColorModel.h>
 #include <vector>
@@ -97,11 +98,12 @@ protected:
 private:
   /** Sets the new labels. */
   void setMarkerLabel( const SoMFString& label );
+  void modifyPoints(const SbBox2f&);
 
 private:
   SoCoordinate3* coords;
   SoSeparator* labels;
-  float _fMaxX, _fMinX, _fMaxY, _fMinY;
+  SbBox2f _bbox;
   bool  _bOutInvisible;
   int _precision;
   App::ColorGradient _cColGrad;
