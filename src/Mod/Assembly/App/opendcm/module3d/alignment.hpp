@@ -27,8 +27,8 @@
 namespace dcm {
 
 namespace details {
-//we need a custom orientation type to allow coincidents with points. We can't use the ci_orietation
-//as some geometries are supporte by align but not by coincident
+//we need a custom orientation type to allow coincidents with points. We can't use the ci_orientation
+//as some geometries are supported by align but not by coincident
 struct al_orientation : public Equation<al_orientation, Direction, 6, rotation> {
 
     using Equation::operator=;
@@ -106,7 +106,7 @@ struct al_orientation::type< Kernel, tag::plane3D, tag::plane3D > : public ci_or
 
 template< typename Kernel >
 struct al_orientation::type< Kernel, tag::plane3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::plane3D, tag::cylinder3D > {
-    //we missuse the scale method to change whatever direction was set to the only valid one: perpendicular
+    //we misuse the scale method to change whatever direction was set to the only valid one: perpendicular
     void setScale(typename Kernel::number_type scale) {
         fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::plane3D >::values).second = perpendicular;
     };

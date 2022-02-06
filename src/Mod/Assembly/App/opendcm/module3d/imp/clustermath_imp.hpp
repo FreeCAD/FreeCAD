@@ -331,7 +331,7 @@ ClusterMath<Sys>::map_downstream::map_downstream(details::ClusterMath<Sys>& cm, 
 
 template<typename Sys>
 void ClusterMath<Sys>::map_downstream::operator()(Geom g) {
-    //allow iteration over all maped geometries
+    //allow iteration over all mapped geometries
     m_clusterMath.addGeometry(g);
     //set the offsets so that geometry knows where it is in the parameter map
     g->m_offset = m_clusterMath.getParameterOffset(general);
@@ -346,7 +346,7 @@ template<typename Sys>
 void ClusterMath<Sys>::map_downstream::operator()(std::shared_ptr<Cluster> c) {
     //we transform the GLOBAL geometries to local ones in the subcluster! therefore
     //we are not interested in the successive transformations, we only transform the
-    //global geometries with the cluster transform we want them to be local in, and thats
+    //global geometries with the cluster transform we want them to be local in, and that's
     //the one supplied in the constructor
     //m_transform *= c->template getClusterProperty<math_prop>().getTransform().inverse();
 };
@@ -524,7 +524,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
 
 
     //when fixed, the geometries never get recalculated. therefore we have to do a calculate now
-    //to alow the adoption of the scale. and no shift should been set.
+    //to allow the adoption of the scale. and no shift should been set.
     if(isFixed) {
         m_transform*=typename Kernel::Transform3D::Scaling(1./(scale*SKALEFAKTOR));
         m_ssrTransform*=typename Kernel::Transform3D::Scaling(1./(scale*SKALEFAKTOR));
@@ -540,7 +540,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
         return;
     }
 
-    //if this is our scale then just applie the midpoint as shift
+    //if this is our scale then just apply the midpoint as shift
     if(Kernel::isSame(scale, m_scale, 1e-10)) {
 
     }
@@ -575,7 +575,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
 
         //TODO: it's possible that for this case we get too far away from the outer points.
         //	    The m_scale for "midpoint outside the bounding box" may be bigger than the
-        //      scale to applie, so it results in an error.
+        //      scale to apply, so it results in an error.
         //get the closest point
         typedef typename Vec::iterator iter;
         for(iter it = m_points.begin(); it != m_points.end(); it++) {
@@ -660,7 +660,7 @@ template<typename Sys>
 typename ClusterMath<Sys>::Scalar ClusterMath<Sys>::calcThreePoints(const typename ClusterMath<Sys>::Kernel::Vector3& p1,
         const typename ClusterMath<Sys>::Kernel::Vector3& p2, const typename ClusterMath<Sys>::Kernel::Vector3& p3) {
 
-    //Three points form a triangle with it's minimal scale at the center of it's outer circle.
+    //Three points form a triangle with its minimal scale at the center of its outer circle.
     //Arbitrary scale values can be achieved by moving perpendicular to the triangle plane.
     typename Kernel::Vector3 d = p2-p1;
     typename Kernel::Vector3 e = p3-p1;

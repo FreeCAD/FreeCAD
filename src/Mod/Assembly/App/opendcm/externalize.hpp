@@ -21,7 +21,7 @@
 #define DCM_EXTERNALIZE_H
 
 #ifdef _WIN32
-	//warning about to long decoraded names, won't affect the code correctness
+	//warning about excessively long decorated names, won't affect the code correctness
 	#pragma warning( disable : 4503 )
 #endif
 

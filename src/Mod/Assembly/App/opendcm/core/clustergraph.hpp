@@ -87,8 +87,8 @@ typedef boost::adjacency_list_traits<boost::listS, boost::listS, boost::undirect
  * @brief A type to be used as identifier for vertices and edges
  *
  * Vertices and edges need to be identified in a stable(safe/load), unique(over multiple clusters) and
- * comparable manner. The bgl vertex and edge discriptors don't fulfill this need as they have a direct
- * relation to the graphs storage. Therefore they change value on moving entitiys to different clusters or
+ * comparable manner. The bgl vertex and edge descriptors don't fulfill this need as they have a direct
+ * relation to the graphs storage. Therefore they change value on moving entities to different clusters or
  * clone actions. This class is used to overcome this problem.
  **/
 typedef int universalID;
@@ -134,8 +134,8 @@ struct IDgen {
     /**
      * @brief Set the current value for incremental creation
      *
-     * ID's are created incrementaly and if a specific startingpoint is wished it can be set here by
-     * supplying the last created ID or the amount of totaly created ID's
+     * ID's are created incrementally and if a specific startingpoint is wished, it can be set here by
+     * supplying the last created ID or the amount of totally created ID's
      *
      * @param id The last created ID
      * @return void
@@ -187,8 +187,8 @@ typedef details::universalID 				GlobalVertex;
 /**
  * @brief Identifier for global edge
  *
- * To overcome the locality of the bgl edge discriptors a global alternative is introduced. This descriptor
- * is unique over clusters and stable on moves and clones. It holds it's source and target also as global
+ * To overcome the locality of the bgl edge descriptors a global alternative is introduced. This descriptor
+ * is unique over clusters and stable on moves and clones. It holds its source and target also as global
  * descriptors of type GlobalVertex and has a unique ID in form of a universalID assigned.
  **/
 struct 	GlobalEdge {
@@ -240,9 +240,9 @@ public:
      * @brief mpl::vector with all edge properties
      *
      * The edge properties supplied as template argument to the ClusterGraph are extended with graph
-     * specific properties, for example a edge_index_prop. These extra properties are intendet to be
-     * used with boost graph algorithms as property maps. They need to be in specefied by the ClusterGraph
-     * as they are used within it's implementation. If the graph specific properties are already a part
+     * specific properties, for example a edge_index_prop. These extra properties are intended to be
+     * used with boost graph algorithms as property maps. They need to be in specified by the ClusterGraph
+     * as they are used within its implementation. If the graph specific properties are already a part
      * of the given property sequence, nothing happens, they are not added twice.
      **/
     typedef typename details::ensure_properties<edge_prop, details::bgl_e_props>::type   edge_properties;
@@ -250,9 +250,9 @@ public:
      * @brief mpl::vector with all vertex properties
      *
      * The vertex properties supplied as template argument to the ClusterGraph are extended with graph
-     * specific properties as vertex_index_prop. These extra properties are intendet to be
-     * used with boost graph algorithms as property maps. They need to be in specefied by the ClusterGraph
-     * as they are used within it's implementation.If the graph specific properties are already a part
+     * specific properties as vertex_index_prop. These extra properties are intended to be
+     * used with boost graph algorithms as property maps. They need to be in specified by the ClusterGraph
+     * as they are used within its implementation.If the graph specific properties are already a part
      * of the given property sequence, nothing happens, they are not added twice.
      **/
     typedef typename details::ensure_properties<vertex_prop, details::bgl_v_props>::type vertex_properties;
@@ -260,8 +260,8 @@ public:
     /**
      * @brief The property bundle for GlobalEdges
      *
-     * A local edge in a cluster can hold multiple gloabal ones. Therefor we need an extra bundle for
-     * the GlobalEdges. This bundle holds the objects which are added to that global edge and it's identifier.
+     * A local edge in a cluster can hold multiple global ones. Therefor we need an extra bundle for
+     * the GlobalEdges. This bundle holds the objects which are added to that global edge and its identifier.
      * Note that global edges don't have properties, these are only for local ones.
      **/
     typedef fusion::vector< typename details::sps<objects>::type, GlobalEdge > edge_bundle_single;
@@ -274,7 +274,7 @@ public:
      **/
     typedef fusion::vector< typename details::pts<edge_properties>::type, std::vector< edge_bundle_single > > edge_bundle;
     /**
-     * @brief Iteator to access all edge_bundle_single stored in a edge_bundle
+     * @brief Iterator to access all edge_bundle_single stored in a edge_bundle
      **/
     typedef typename std::vector< edge_bundle_single >::iterator edge_single_iterator;
     /**
@@ -310,7 +310,7 @@ public:
         template<typename T>
         result_type operator()(T& bundle) const;
     };
-    
+
     struct global_vertex_extractor  {
         typedef GlobalVertex result_type;
         ClusterGraph& graph;
@@ -379,7 +379,7 @@ public:
      *
      * This constructor creates a new cluster, but uses the given cluster as parent. It will therefore
      * create a tree-like relationship. Be aware, that the new cluster is not added to the parents
-     * subcluster list, that has to be done manualy. The new cluster shares the parents ID generator.
+     * subcluster list, that has to be done manually. The new cluster shares the parents ID generator.
      *
      * @param g the parent cluster graph
      **/
@@ -391,12 +391,12 @@ public:
     ~ClusterGraph() {};
 
     /**
-     * @brief Copys the Clustergraph into a new one
+     * @brief Copies the Clustergraph into a new one
      *
-     * Copys this cluster and all subclusters into the give one, which is cleared bevore copying. Be
+     * Copies this cluster and all subclusters into the given one, which is cleared before copying. Be
      * aware that all objects and properties are only copied, and as some are shared pointers (namely
      * all objects) you may have to clone them. If needed this can be done with the supplied functor,
-     * which receives all copied objects to his function operator which returns the new object.
+     * which receives all copied objects to its function operator which returns the new object.
      * @param into The Graph that should be a copy of this
      * @param functor The function objects which gets the graph objects and returns the ones for the
      * copied graph
@@ -423,10 +423,10 @@ public:
     /**
      * @brief Set different behaviour for changed markers
      *
-     * Some methods of the ClusterGraph set it's changed_prop to true. Thats sensible, as they change
+     * Some methods of the ClusterGraph set its changed_prop to true. That's sensible, as they change
      * the graph. However, there are situations where you want to use the methods but don't want the change
      * marked. For example recreations while cloning. This method can be used to disable the changed setting.
-     * @param on Turn change markers on or of
+     * @param on Turn change markers on or off
      * @return void
      **/
     void setCopyMode(bool on);
@@ -461,9 +461,9 @@ public:
     /**
      * @brief Creates a new subcluster
      *
-     * As clusters can be stacked in a tree like manner, this function can be used to create new
+     * As clusters can be stacked in a tree-like manner, this function can be used to create new
      * children. It automatically adds it to the subcluster list and adds it to the graph. The new
-     * subcluster is fully defined by its object and the vertex descriptor which is it's position
+     * subcluster is fully defined by its object and the vertex descriptor which is its position
      * in the current cluster.
      *
      * @return :pair< std::shared_ptr< ClusterGraph >, LocalVertex > Subcluster and its descriptor
@@ -473,8 +473,8 @@ public:
     /**
      * @brief Returns the parent cluster
      *
-     * In the stacked cluster hirarchy most clusters have a parent which can be accessed with this function.
-     * However, the toplevel cluster dos nothave a parent and a empty shared_ptr is returned.
+     * In the stacked cluster hierarchy, most clusters have a parent which can be accessed with this function.
+     * However, the toplevel cluster doesn't have a parent and an empty shared_ptr is returned.
      *
      * @return :shared_ptr< ClusterGraph > the parent cluster or empty pointer
      **/
@@ -512,7 +512,7 @@ public:
      * @brief Iterators for all subclusters
      *
      * A pair with two \ref cluster_iterator is returned which point to the first cluster and
-     * to one after the last. #this allows full iteration over all subclusters
+     * to one after the last. This allows full iteration over all subclusters
      *
      * @return :pair< cluster_iterator, cluster_iterator >
      **/
@@ -546,7 +546,7 @@ public:
     bool isCluster(const dcm::LocalVertex v) const;
 
     /**
-     * @brief Get the cluster corresponding the discriptor
+     * @brief Get the cluster corresponding the descriptor
      *
      * A subcluster is added as normal vertex to the parent cluster. There is no way to access
      * the clusters object with global or local descriptors only. Therefore this
@@ -554,12 +554,12 @@ public:
      * a cluster an empty pointer is returned.
      *
      * @param v The vertex for which the cluster is wanted
-     * @return std::shared_ptr<ClusterGraph> the coresponding cluster orempty pointer
+     * @return std::shared_ptr<ClusterGraph> the corresponding cluster or empty pointer
      **/
     std::shared_ptr<ClusterGraph> getVertexCluster(LocalVertex v);
 
     /**
-     * @brief Get the vertex descrptor which descripes the clusters position in the graph
+     * @brief Get the vertex descriptor which describes the clusters position in the graph
      *
      * This function is the inverse to \ref getVertexCluster
      *
@@ -586,11 +586,11 @@ public:
     void clearClusters();
 
     /**
-     * @brief Remove a subcluster and applys the functor to all removed edges and vertices
+     * @brief Remove a subcluster and applies the functor to all removed edges and vertices
      *
-     * All downstream elements of the local vertex v will be removed after the functor is applied to there
+     * All downstream elements of the local vertex v will be removed after the functor is applied to their
      * edges and vertices. Note that the LocalVertex which represents the cluster to delete is not passed
-     * to the functor. When ever the cluster is changed it will be passed to the functor, so that it need
+     * to the functor. When ever the cluster is changed it will be passed to the functor, so that it needs
      * to have three overloads: operator()(GlobalEdge), operator()(GlobalVertex), operator()(ClusterGraph&)
      *
      * @param v Local vertex which is a cluster and which should be deleted
@@ -621,15 +621,15 @@ public:
      * @brief Add a vertex to the local cluster with given global identifier
      *
      * Sometimes it is needed to add a vertex with given global identifier. As the global vertex can not
-     * be changed after creation, this method can be used to specify the global vertex by which this 
-     * graph vertex can be identified. The given global vertex is not checked, you need to ensure that 
+     * be changed after creation, this method can be used to specify the global vertex by which this
+     * graph vertex can be identified. The given global vertex is not checked, you need to ensure that
      * it is a unique id or the already existing vertex is returned.
      * The ID generator is changed so that it creates only identifier bigger than v.
-     * 
+     *
      * @return fusion::vector<LocalVertex, GlobalVertex> the local and global vertex descriptor
      **/
     fusion::vector<LocalVertex, GlobalVertex> addVertex(GlobalVertex v);
-    
+
     /**
      * @brief Iterators of all global vertices in this cluster
      *
@@ -643,7 +643,7 @@ public:
     /**
      * @brief Returns the edge between the local vertices
      *
-     * This function is the same as boost::edge(source, target, Graph) and only added for convienience.
+     * This function is the same as boost::edge(source, target, Graph) and only added for convenience.
      *
      * @param source LocalEdge as edge source
      * @param target LocalEdge as edge target
@@ -657,25 +657,25 @@ public:
      *
      * Add an edge that connects the two vertices and in the local clustergraph and assign the GlobalEdge to it. The
      * LocalVertex parameters should not represent a cluster which would result in the functions failure. If there's
-     * already a local edge between the vertices a new global edge will be added and returned. Failure will be
-     * recocnisable by a false value in the returned type sequence.
+     * already a local edge between the vertices, a new global edge will be added and returned. Failure will be
+     * recognizable by a false value in the returned type sequence.
      *
      * @param source The first vertex the edge should connect
      * @param target The second vertex the edge should connect
-     * @return fusion::vector<LocalEdge, GlobalEdge, success> with the local and global descriptors of the edge and an bool
-     * value indicationg the successful creation.
+     * @return fusion::vector<LocalEdge, GlobalEdge, success> with the local and global descriptors of the edge and
+     * a bool value indicating the successful creation.
      **/
     fusion::vector<LocalEdge, GlobalEdge, bool> addEdge(LocalVertex source, LocalVertex target);
 
     /**
      * @brief Add a edge between two vertices, defined by global descriptors.
      *
-     * Adds an edge between vertices which are not nesseccarily in this local cluster and have therefore to be
+     * Adds an edge between vertices which are not necessarily in this local cluster and have therefore to be
      * identified with global descriptors. The only condition for source and target vertex is that both must be
-     * in the local cluster or any of its subclusters. If thats not the case, the function will fail. On success
+     * in the local cluster or any of its subclusters. If that's not the case, the function will fail. On success
      * a new GlobalEdge will be created, but not necessarily a local one. If the vertices are in different cluster
-     * which are already connected the global edge will be added to this connecting local edge. Thats the one returned
-     * in the seqence. Note that it's possible that the local edge belongs to another subcluster and therefore can't be
+     * which are already connected the global edge will be added to this connecting local edge. That's the one returned
+     * in the sequence. Note that it's possible that the local edge belongs to another subcluster and therefore can't be
      * used in the local cluster. This case is indicated by the scope return value.
      *
      * @param source The first vertex the edge should connect
@@ -717,8 +717,8 @@ public:
      * @brief Get the local edge which holds the specified global edge.
      *
      * Note that GlobalEdge must be in a local edge of this cluster, means the connected vertices must be in this
-     * or one of it's subclusters (but not the same). Also if the containing LocalEdge is not in this cluster, but in one of it's
-     * subclusters, the function fails and the returned edge is invalid.
+     * or one of its subclusters (but not the same). Also if the containing LocalEdge is not in this cluster, but in one
+     * of its subclusters, the function fails and the returned edge is invalid.
      *
      * @param e GlobalEdge for which the containing local one is wanted
      * @return std:pair< LocalEdge, bool > with the containing LocalEdge and a bool indicator if function was successful.
@@ -729,7 +729,7 @@ public:
      * @brief Get the local edge which holds the specified global one and the subcluster in which it is valid.
      *
      * The function only fails when the global edge is hold by a local one upstream in the cluster
-     * herarchy.
+     * hierarchy.
      *
      * @param e GlobalEdge for which the containing local one is wanted
      * @return fusion::vector<LocalEdge, ClusterGraph*, bool> with the containing LocalEdge, the cluster which holds it and a bool indicator if function was successful.
@@ -737,7 +737,7 @@ public:
     fusion::vector<LocalEdge, ClusterGraph*, bool> getLocalEdgeGraph(GlobalEdge e);
 
     /**
-     * @brief Get the GlobalVertex assiociated with this local one.
+     * @brief Get the GlobalVertex associated with this local one.
      *
      * @param v LocalVertex
      * @return GlobalVertex
@@ -745,21 +745,21 @@ public:
     GlobalVertex getGlobalVertex(LocalVertex v) const;
 
     /**
-     * @brief Get the LocalVertex which corresponds to the golab one
+     * @brief Get the LocalVertex which corresponds to the global one
      *
-     * The GlobalVertex has to be in this cluster or any of it's subclusters. If its in a subcluster, the returned
-     * LocalVertex will represent this cluster. If the GlobalVertex is not in this clusters scope the function fails.
+     * The GlobalVertex has to be in this cluster or any of its subclusters. If it's in a subcluster, the returned
+     * LocalVertex will represent this cluster. If the GlobalVertex isn't in this cluster's scope, the function fails.
      *
      * @param vertex GlobalVertex for which the local one shall be returned
-     * @return std::pair< LocalVertex, bool > The LocalVertex containing the global one and an success indicator
+     * @return std::pair< LocalVertex, bool > The LocalVertex containing the global one and a success indicator
      **/
     std::pair<LocalVertex, bool> getLocalVertex(GlobalVertex vertex);
 
     /**
      * @brief Get the local vertex which holds the specified global one and the subcluster in which it is valid.
      *
-     * The function only fails when the global vertex is hold by a local one upstream in the cluster
-     * herarchy.
+     * The function only fails when the global vertex is held by a local one upstream in the cluster
+     * hierarchy.
      *
      * @param v GlobalVertex for which the containing local one is wanted
      * @return fusion::vector<LocalVertex, ClusterGraph*, bool> with the containing LocalVertex, the cluster which holds it and a bool indicator if function was successful.
@@ -780,12 +780,12 @@ private:
 
 public:
     /**
-    * @brief Removes a vertex from the local cluster and applys functor to removed edges
+    * @brief Removes a vertex from the local cluster and applies functor to removed edges
     *
     * Removes the vertex from the local graph and invalidates the global vertex id. Also all edges connecting
     * to this vertex will be removed after the functor was applied to them. The functor needs to implement
     * operato()(GlobalEdge e). Remark that there is no checking done if the vertex is a cluster, so you
-    * need to make sure it's not, as removing a clustervertex will not delete the coresponding cluster.
+    * need to make sure it's not, as removing a clustervertex will not delete the corresponding cluster.
     *
     * @param id Local Vertex which should be removed from the graph
     * @param f functor whose operator(GlobalEdge) is called for every removed edge
@@ -796,11 +796,11 @@ public:
     void removeVertex(LocalVertex id) ;
 
     /**
-    * @brief Removes a vertex from the cluster or it's subclusters and applys functor to removed edges
+    * @brief Removes a vertex from the cluster or its subclusters and applies functor to removed edges
     *
     * Removes the vertex from the graph or subclusters and invalidates the global vertex id. Also all edges connecting
     * to this vertex will be removed (upstream and downstream) after the functor was applied to them. The functor
-    * needs to implement operato()(LocalEdge edge).
+    * needs to implement operator()(LocalEdge edge).
     *
     * @param id Global Vertex which should be removed from the graph
     * @param f functor whose operator(LocalEdge) is called on every removed edge
@@ -811,7 +811,7 @@ public:
     void removeVertex(GlobalVertex id);
 
     /**
-    * @brief Removes a global Edge from the cluster or it's subclusters
+    * @brief Removes a global Edge from the cluster or its subclusters
     *
     * Removes the edge from the graph or subclusters and invalidates the global edge id. If the local edge holds
     * only this global one it will be removed also.
@@ -828,7 +828,7 @@ public:
     * operator()(GlobalEdge). If no functor is needed just use boost::remove_edge.
     *
     * @param id Global Edge which should be removed from the graph
-    * @param f functor whoms operator(GlobalEdge) is called
+    * @param f functor whose operator(GlobalEdge) is called
     * @return bool indicates if the global id could be removed
     **/
     template<typename Functor>
@@ -844,8 +844,8 @@ public:
     * @brief Get the desired object at the specified vertex or edge
     *
     * This function allows to access the objects stored in the graph. If no object of the desired type
-    * was set before, a empty shared_ptr will be returned. Accessing the object at a local edge is a special
-    * case, as it can hold many global edges, each with it's own objetcs. Using a LocalEdge as key will
+    * was set before, an empty shared_ptr will be returned. Accessing the object at a local edge is a special
+    * case, as it can hold many global edges, each with its own objects. Using a LocalEdge as key will
     * always return the object for the first GlobalEdge.
     *
     * @tparam Obj the object type which shall be returned
@@ -860,7 +860,7 @@ public:
      *
      * Sets the given value at the given key. Note that every entity can hold only one object, so setting
      * a new value resets all other objects which were set before. Setting the object at a local edge is a special
-     * case, as it can hold many global edges, each with it's own objects. Using a LocalEdge as key will
+     * case, as it can hold many global edges, each with its own objects. Using a LocalEdge as key will
      * always set the object for the first GlobalEdge.
      *
      * @tparam Obj the object type which shall be set
@@ -875,22 +875,22 @@ public:
      * @brief Get iterator range for all GlobalEdge objects hold by this local edge
      *
      * LocalEdge's can hold multiple global ones and the iterators can be used to access a specific object type in
-     * all global edges hold by this local edge.
+     * all global edges held by this local edge.
      *
      * @tparam Obj the object type over which it shall be iterated
      * @param k the LocalEdge over which all Objects should be iterated.
-     * @return pair< begin, end > the iterator rang from begin (first element) to end (first undefined element)
+     * @return pair< begin, end > the iterator range from begin (first element) to end (first undefined element)
      **/
     template<typename Obj>
     std::pair< object_iterator<Obj>, object_iterator<Obj> > getObjects(LocalEdge k);
 
     /**
-     * @brief Applys the functor to each occurrence of an object
+     * @brief Applies the functor to each occurrence of an object
      *
-     * Each valid object of the given type is extractet and passed to the function object. Vertices
+     * Each valid object of the given type is extracted and passed to the function object. Vertices
      * and edges are searched for valid object pointers, it happens in this order. When a recursive
-     * search is specified, all subclusters are searched too, but the cluster is passt to the Functor
-     * first. So make sure a function overload for clusters exist in this case.
+     * search is specified, all subclusters are searched too, but the cluster is passed to the Functor
+     * first. So make sure a function overload for clusters exists in this case.
      *
      * @tparam Obj the object type for which the functor shall be used
      * @param f the functor to which all valid objects get passed to.
@@ -900,11 +900,11 @@ public:
     void for_each(Functor& f, bool recursive = false);
 
     /**
-     * @brief Applys the functor to each object
+     * @brief Applies the functor to each object
      *
-     * Each valid object of any type is extractet and passed to the function object. Vertices
+     * Each valid object of any type is extracted and passed to the function object. Vertices
      * and edges are searched for valid object pointers, it happens in this order. When a recursive
-     * search is specified, all subclusters are searched too, but the cluster is passt to the Functor
+     * search is specified, all subclusters are searched too, but the cluster is passed to the Functor
      * first. So make sure a function overload for clusters exist in this case.
      *
      * @param f the functor to which all valid objects get passed to.
@@ -921,7 +921,7 @@ public:
     * @brief Get the desired property at the specified vertex or edge
     *
     * This function allows to access the properties stored in the graph. If no property of the desired type
-    * was set before, a default construced will be returned. Accessing the property at a global edge will return
+    * was set before, a default construct will be returned. Accessing the property at a global edge will return
     * the property of the holding local edge.
     *
     * @tparam property the property type which shall be returned
@@ -936,7 +936,7 @@ public:
      *
      * Sets the given value at the given key. Note that every entity can hold one of each property, as opposed
      * to objects. Setting the property at a local edge is a special case, as it can hold many global edges,
-     * each with it's own propertys. Using a LocalEdge as key will always set the property for the first GlobalEdge.
+     * each with its own properties. Using a LocalEdge as key will always set the property for the first GlobalEdge.
      *
      * @tparam property the property type which shall be set
      * @param k local or global Vertex/Edge descriptor for which the property should be set
@@ -992,7 +992,7 @@ public:
      * @brief Move a vertex to a subcluster
      *
      * This function moves the LocalVertex to the subcluster and reconnects all other vertices and clusters. The
-     * moved vertex will hold it's global descriptor but get a new local one assigned (the one returned). The same
+     * moved vertex will hold its global descriptor but get a new local one assigned (the one returned). The same
      * stands for all edges which use the moved vertex: global descriptors stay the same, but they are moved to new
      * local edges. It's allowed to move cluster vertices with this function.
      * The specified cluster has of course to be a valid and direct subcluster, the move vertex also has to be in the
@@ -1009,8 +1009,8 @@ public:
     /**
      * @brief Move a vertex to the parent cluster.
      *
-     * This function moves a vertex one step up in the subcluster hierarchie and reconnects all other vertices and clusters.
-     * The moved vertex will hold it's global descriptor but get a new local one assigned (the one returned). The same
+     * This function moves a vertex one step up in the subcluster hierarchy and reconnects all other vertices and clusters.
+     * The moved vertex will hold its global descriptor but get a new local one assigned (the one returned). The same
      * stands for all edges which use the moved vertex: global descriptors stay the same, but they are moved to new
      * local edges. Note that this function is the inverse of moveToSubcluster, and doing Pseudocode:
      * moveToParent(moveToSubcluster(v)) does nothing (only the local descriptor of the moved vertex is
@@ -1028,7 +1028,7 @@ public:
 
     ClusterMap	  m_clusters;
     int test;
-    
+
 protected:
     boost::weak_ptr<ClusterGraph> m_parent;
     details::IDpointer 	  m_id;
@@ -1043,7 +1043,7 @@ protected:
      * */
     std::pair<LocalVertex, bool> getContainingVertex(GlobalVertex id, bool recursive = true);
 
-    /* Searches the local vertex holding the specified global one in this and all it's subclusters.
+    /* Searches the local vertex holding the specified global one in this and all its subclusters.
      * If found, the holding local vertex and the graph in which it is valid will be returned.
      * */
     fusion::vector<LocalVertex, std::shared_ptr<ClusterGraph>, bool> getContainingVertexGraph(GlobalVertex id);
@@ -1054,7 +1054,7 @@ protected:
      * */
     std::pair<LocalEdge, bool> getContainingEdge(GlobalEdge id);
 
-    /* Searches the local edge holding the specified global one in this and all it's subclusters.
+    /* Searches the local edge holding the specified global one in this and all its subclusters.
      * If found, the holding local edge and the graph in which it is valid will be returned.
      * */
     fusion::vector<LocalEdge, ClusterGraph*, bool> getContainingEdgeGraph(GlobalEdge id);

@@ -279,13 +279,13 @@ struct Module3D {
             sys.m_sheduler.addProcessJob(new SystemSolver());
         };
         static void system_copy(const Sys& from, Sys& into) {
-            //nothing to to as all objects and properties are copyed with the clustergraph
+            //nothing to to as all objects and properties are copied with the clustergraph
         };
     };
 };
 
 namespace details {
-//allow direct access to the stored geometry in a Geometry3D, copyed from boost variant get
+//allow direct access to the stored geometry in a Geometry3D, copied from boost variant get
 template <typename T>
 struct get_visitor {
 private:

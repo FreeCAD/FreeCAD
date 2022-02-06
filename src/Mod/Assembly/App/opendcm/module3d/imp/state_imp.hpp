@@ -56,7 +56,7 @@ struct geom_visitor : public boost::static_visitor<std::string> {
     template<typename T>
     std::string operator()(T& i) const {
 
-        //we use stings in case new geometry gets added and the weights shift, meaning: backwards
+        //we use strings in case new geometry gets added and the weights shift, meaning: backwards
         //compatible
         std::string type;
 
