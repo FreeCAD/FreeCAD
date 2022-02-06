@@ -27,6 +27,8 @@
 #include <QItemEditorFactory>
 #include <QObject>
 #include <QPointer>
+#include <QPushButton>
+#include <QItemEditorFactory>
 #include <vector>
 
 #include <App/PropertyStandard.h>
@@ -845,6 +847,18 @@ protected:
 
 private:
     PropertyStringListItem* m_enum;
+};
+
+class PropertyEnumButton : public QPushButton
+{
+    Q_OBJECT
+public:
+    PropertyEnumButton(QWidget *parent = nullptr)
+        :QPushButton(parent)
+    {}
+
+Q_SIGNALS:
+    void picked();
 };
 
 /**
