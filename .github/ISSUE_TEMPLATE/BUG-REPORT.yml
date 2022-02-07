@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        NOTE: Please do not submit issues right now, migration from Mantis is in progress. This notice will be removed when we are ready to accept issue submissions here. In the meantime please visit the [FreeCAD Forum](https://forum.freecad.org) to discuss problems you are encountering.
+        Thank you for taking the time to file a bug report! Please make sure you've posted about your issue in the FreeCAD Forums before submitting here.
   - type: checkboxes
     id: existing_issue
     attributes:
