@@ -1016,8 +1016,11 @@ PyObject* FemMeshPy::addGroup(PyObject *args)
     int theId = -1;
     if (!PyArg_ParseTuple(args, "etet|i","utf-8", &Name, "utf-8", &typeString, &theId))
         return 0;
+
     std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
     std::string EncodedTypeString = std::string(typeString);
+    PyMem_Free(typeString);
 
     int retId = -1;
 
