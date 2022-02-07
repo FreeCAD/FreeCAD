@@ -194,33 +194,33 @@ void TaskExtrudeParameters::connectSlots()
 {
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->lengthEdit, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+    connect(ui->lengthEdit, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
         this, &TaskExtrudeParameters::onLengthChanged);
-    connect(ui->lengthEdit2, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+    connect(ui->lengthEdit2, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
         this, &TaskExtrudeParameters::onLength2Changed);
-    connect(ui->offsetEdit, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+    connect(ui->offsetEdit, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
         this, &TaskExtrudeParameters::onOffsetChanged);
-    connect(ui->taperEdit, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+    connect(ui->taperEdit, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
         this, &TaskExtrudeParameters::onTaperChanged);
-    connect(ui->taperEdit2, QOverload<double>::of(&Gui::PrefQuantitySpinBox::valueChanged),
+    connect(ui->taperEdit2, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
         this, &TaskExtrudeParameters::onTaper2Changed);
-    connect(ui->directionCB, QOverload<int>::of(&QComboBox::activated),
+    connect(ui->directionCB, qOverload<int>(&QComboBox::activated),
         this, &TaskExtrudeParameters::onDirectionCBChanged);
     connect(ui->checkBoxAlongDirection, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onAlongSketchNormalChanged);
     connect(ui->checkBoxDirection, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onDirectionToggled);
-    connect(ui->XDirectionEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+    connect(ui->XDirectionEdit, qOverload<double>(&QDoubleSpinBox::valueChanged),
         this, &TaskExtrudeParameters::onXDirectionEditChanged);
-    connect(ui->YDirectionEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+    connect(ui->YDirectionEdit, qOverload<double>(&QDoubleSpinBox::valueChanged),
         this, &TaskExtrudeParameters::onYDirectionEditChanged);
-    connect(ui->ZDirectionEdit, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+    connect(ui->ZDirectionEdit, qOverload<double>(&QDoubleSpinBox::valueChanged),
         this, &TaskExtrudeParameters::onZDirectionEditChanged);
     connect(ui->checkBoxMidplane, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onMidplaneChanged);
     connect(ui->checkBoxReversed, &QCheckBox::toggled,
         this, &TaskExtrudeParameters::onReversedChanged);
-    connect(ui->changeMode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+    connect(ui->changeMode, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &TaskExtrudeParameters::onModeChanged);
     connect(ui->buttonFace, &QPushButton::clicked,
         this, &TaskExtrudeParameters::onButtonFace);

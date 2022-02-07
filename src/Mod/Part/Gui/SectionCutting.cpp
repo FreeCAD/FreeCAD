@@ -161,9 +161,9 @@ SectionCut::SectionCut(QWidget* parent)
     connect(ui->groupBoxX, &QGroupBox::toggled, this, &SectionCut::onGroupBoxXtoggled);
     connect(ui->groupBoxY, &QGroupBox::toggled, this, &SectionCut::onGroupBoxYtoggled);
     connect(ui->groupBoxZ, &QGroupBox::toggled, this, &SectionCut::onGroupBoxZtoggled);
-    connect(ui->cutX, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutXvalueChanged);
-    connect(ui->cutY, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutYvalueChanged);
-    connect(ui->cutZ, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutZvalueChanged);
+    connect(ui->cutX, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutXvalueChanged);
+    connect(ui->cutY, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutYvalueChanged);
+    connect(ui->cutZ, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &SectionCut::onCutZvalueChanged);
     connect(ui->cutXHS, &QSlider::sliderMoved, this, &SectionCut::onCutXHSsliderMoved);
     connect(ui->cutYHS, &QSlider::sliderMoved, this, &SectionCut::onCutYHSsliderMoved);
     connect(ui->cutZHS, &QSlider::sliderMoved, this, &SectionCut::onCutZHSsliderMoved);
