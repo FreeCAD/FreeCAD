@@ -33,9 +33,6 @@ def translate(context,text):
     except AttributeError:
         u = QtGui.QApplication.translate(context, text, None)
 
-    if sys.version_info.major < 3:
-        u = u.encode("utf8")
-
     return u.replace(chr(39), "&rsquo;")
 
 T_TITLE = translate("StartPage", "Start")
