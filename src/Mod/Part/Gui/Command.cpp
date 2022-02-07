@@ -2484,7 +2484,7 @@ CmdPartSectionCut::CmdPartSectionCut()
     sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
     sWhatsThis = "Part_SectionCut";
     sStatusTip = sToolTipText;
-    eType = Alter3DView;
+    eType = AlterDoc | Alter3DView;
 }
 
 Gui::Action* CmdPartSectionCut::createAction(void)
