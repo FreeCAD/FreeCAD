@@ -390,7 +390,7 @@ def select(op):
     opsel["Helix"] = drillselect
     opsel["MillFace"] = pocketselect
     opsel["Pocket"] = pocketselect
-    opsel["Pocket3D"] = pocketselect
+    opsel["Pocket 3D"] = pocketselect
     opsel["Pocket Shape"] = pocketselect
     opsel["Profile Edges"] = eselect  # (depreciated)
     opsel["Profile Faces"] = fselect  # (depreciated)
