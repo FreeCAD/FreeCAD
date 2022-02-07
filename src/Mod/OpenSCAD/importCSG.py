@@ -479,6 +479,12 @@ def p_offset_action(p):
 #            newobj.ViewObject.Proxy = 0
     p[0] = [newobj]
 
+def checkObjShape(obj) :
+    if printverbose: print('Check Object Shape')
+    if obj.Shape.isNull() == True :
+       if printverbose: print('Shape is Null - recompute')
+       obj.recompute()
+
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
     p[0] = [ CGALFeatureObj(p[1],p[5]) ]
@@ -609,6 +615,9 @@ def fuse(lst,name):
        myfuse = doc.addObject('Part::Fuse',name)
        myfuse.Base = lst[0]
        myfuse.Tool = lst[1]
+       checkObjShape(myfuse.Base)
+       checkObjShape(myfuse.Tool)
+       myfuse.Shape = myfuse.Base.Shape.fuse(myfuse.Tool.Shape)
        if gui:
            myfuse.Base.ViewObject.hide()
            myfuse.Tool.ViewObject.hide()
@@ -640,8 +649,14 @@ def p_difference_action(p):
         if (len(p[5]) > 2 ):
            if printverbose: print("Need to Fuse Extra First")
            mycut.Tool = fuse(p[5][1:],'union')
+           checkObjShape(myfuse.Base)
+           checkObjShape(myfuse.Tool)
+           for o in p[5][1:]: 
+               checkObjShape(o)
+               mycut.Tool.Shape = mycut.Tool.cut(o.Shape)
         else :
            mycut.Tool = p[5][1]
+        mycut.Shape = mycut.Base.Shape.cut(mycut.Tool.Shape)
         if gui:
             mycut.Base.ViewObject.hide()
             mycut.Tool.ViewObject.hide()
@@ -667,6 +682,8 @@ def p_intersection_action(p):
        mycommon = doc.addObject('Part::Common',p[1])
        mycommon.Base = p[5][0]
        mycommon.Tool = p[5][1]
+       checkObjShape(mycommon.Base)
+       checkObjShape(mycommon.Tool)
        if gui:
            mycommon.Base.ViewObject.hide()
            mycommon.Tool.ViewObject.hide()
