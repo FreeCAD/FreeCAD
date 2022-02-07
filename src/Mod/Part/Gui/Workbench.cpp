@@ -137,6 +137,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Loft"
           << "Part_Sweep"
           << "Part_Section"
+          << "Part_SectionCut"
           << "Part_CrossSections"
           << "Part_Offset"
           << "Part_Offset2D"
