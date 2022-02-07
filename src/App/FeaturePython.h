@@ -85,6 +85,8 @@ public:
     /// Set sub-element visibility
     int setElementVisible(const char *, bool);
 
+    bool editProperty(const char *propName);
+
 private:
     App::DocumentObject* object;
     bool has__object__;
@@ -106,7 +108,8 @@ private:
     FC_PY_ELEMENT(canLoadPartial)\
     FC_PY_ELEMENT(hasChildElement)\
     FC_PY_ELEMENT(isElementVisible)\
-    FC_PY_ELEMENT(setElementVisible)
+    FC_PY_ELEMENT(setElementVisible)\
+    FC_PY_ELEMENT(editProperty)\
 
 #define FC_PY_ELEMENT_DEFINE(_name) \
     Py::Object py_##_name;
@@ -302,6 +305,11 @@ public:
         if(ret>=0)
             return ret;
         return FeatureT::canLoadPartial();
+    }
+
+    virtual void editProperty(const char *propName) override {
+        if (!imp->editProperty(propName))
+            FeatureT::editProperty(propName);
     }
 
     PyObject *getPyObject(void) override {

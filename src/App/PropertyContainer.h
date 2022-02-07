@@ -222,6 +222,8 @@ public:
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
 
+  virtual void editProperty(const char * /*propName*/) {}
+
   const char *getPropertyPrefix() const {
       return _propertyPrefix.c_str();
   }

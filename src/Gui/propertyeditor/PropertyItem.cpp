@@ -1461,9 +1461,8 @@ void PropertyVectorItem::propertyBound()
 
 // ---------------------------------------------------------------
 
-VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
+PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
   : QWidget(parent)
-  , decimals(decimals)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -1479,18 +1478,51 @@ VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
-    setFocusProxy(lineEdit);
+    connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClick()));
+
+    // QAbstractItemView will call selectAll() if a QLineEdit is the focus
+    // proxy. Since the QLineEdit here is read-only and not meant for editing,
+    // do not set it as focus proxy. Otherwise, the text won't even shown for
+    // most stylesheets (which contain a trick to hide the content of a selected
+    // read-only/disabled editor widgets).
+    //
+    // setFocusProxy(lineEdit);
 }
 
-VectorListWidget::~VectorListWidget()
+PropertyEditorWidget::~PropertyEditorWidget()
 {
 }
 
-void VectorListWidget::resizeEvent(QResizeEvent* e)
+void PropertyEditorWidget::resizeEvent(QResizeEvent* e)
 {
     button->setFixedWidth(e->size().height());
     button->setFixedHeight(e->size().height());
+}
+
+void PropertyEditorWidget::showValue(const QVariant &d)
+{
+    lineEdit->setText(d.toString());
+}
+
+
+QVariant PropertyEditorWidget::value() const
+{
+    return variant;
+}
+
+void PropertyEditorWidget::setValue(const QVariant& val)
+{
+    variant = val;
+    showValue(variant);
+    valueChanged(variant);
+}
+
+// ---------------------------------------------------------------
+
+VectorListWidget::VectorListWidget(int decimals, QWidget *parent)
+    :PropertyEditorWidget(parent), decimals(decimals)
+{
+    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
 
 void VectorListWidget::buttonClicked()
@@ -1522,19 +1554,6 @@ void VectorListWidget::showValue(const QVariant& d)
     }
     lineEdit->setText(data);
 }
-
-QVariant VectorListWidget::value() const
-{
-    return variant;
-}
-
-void VectorListWidget::setValue(const QVariant& val)
-{
-    variant = val;
-    showValue(variant);
-    valueChanged(variant);
-}
-
 // ---------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
