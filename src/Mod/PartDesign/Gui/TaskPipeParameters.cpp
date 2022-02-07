@@ -1075,7 +1075,7 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool new
     buttonGroup->addButton(scaling->ui->buttonRefRemove,
                            StateHandlerTaskPipe::refSectionRemove);
 
-    connect(buttonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled),
+    connect(buttonGroup, qOverload<QAbstractButton *, bool>(&QButtonGroup::buttonToggled),
             this, &TaskDlgPipeParameters::onButtonToggled);
 }
 

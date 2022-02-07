@@ -1740,7 +1740,7 @@ ButtonGroup::ButtonGroup(QObject *parent)
 {
     QButtonGroup::setExclusive(false);
 
-    connect(this, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked),
+    connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
             [=](QAbstractButton *button) {
         if (exclusive()) {
             for (auto btn : buttons()) {
