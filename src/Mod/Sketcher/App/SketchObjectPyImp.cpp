@@ -1068,19 +1068,20 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
     PyObject *pcObj1, *pcObj2;
     int geoId1, geoId2, posId1;
     int trim=true;
+    int nofAngles = 1;
     PyObject* createCorner = Py_False;
     double radius;
 
     // Two Lines, radius
-    if (PyArg_ParseTuple(args, "iiO!O!d|iO!", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2,
-          &radius, &trim, &PyBool_Type, &createCorner)) {
+    if (PyArg_ParseTuple(args, "iiO!O!d|iO!i", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2,
+        &radius, &trim, &PyBool_Type, &createCorner, &nofAngles)) {
         // The i for &trim should probably have been a bool like &createCorner, but we'll leave it an int for backward
         // compatibility (and because python will accept a bool there anyway)
 
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pcObj2)->value();
 
-        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim, PyObject_IsTrue(createCorner))) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim, PyObject_IsTrue(createCorner), nofAngles)) {
             std::stringstream str;
             str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
             << "(" << v2.x << ", " << v2.y << ", " << v2.z << ")";
@@ -1092,9 +1093,9 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
 
     PyErr_Clear();
     // Point, radius
-    if (PyArg_ParseTuple(args, "iid|iO!", &geoId1, &posId1, &radius, &trim, &PyBool_Type, &createCorner)) {
+    if (PyArg_ParseTuple(args, "iid|iO!i", &geoId1, &posId1, &radius, &trim, &PyBool_Type, &createCorner, &nofAngles)) {
         if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim,
-              PyObject_IsTrue(createCorner))) {
+              PyObject_IsTrue(createCorner), nofAngles)) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1 << " )";
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1104,8 +1105,8 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
     }
 
     PyErr_SetString(PyExc_TypeError, "fillet() method accepts:\n"
-    "-- int,int,Vector,Vector,float,[bool],[bool]\n"
-    "-- int,int,float,[bool],[bool]\n");
+    "-- int,int,Vector,Vector,float,[bool],[bool],int\n"
+    "-- int,int,float,[bool],[bool],int\n");
     return 0;
 }
 

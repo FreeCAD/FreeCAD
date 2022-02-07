@@ -6638,7 +6638,7 @@ bool CmdSketcherCreateDraftLine::isActive(void)
     return false;
 }
 
-// ======================================================================================
+// Fillet and Chamfer ===================================================================
 
 namespace SketcherGui {
     class FilletSelection : public Gui::SelectionFilterGate
@@ -6685,12 +6685,13 @@ namespace SketcherGui {
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
+
     enum FilletType {
-        SimpleFillet,
-        ConstraintPreservingFillet
+        Fillet,
+        Chamfer
     };
 
-    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
+    DrawSketchHandlerFillet(FilletType filletType) :filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
@@ -6703,11 +6704,25 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
+        sketchgui->toolSettings->widget->setSettings(11);
+        if (filletType == Chamfer) {
+            sketchgui->toolSettings->widget->setParameterVisible(1, 1);
+        }
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
         setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
     }
+    virtual void deactivated(ViewProviderSketch*)
+    {
+        sketchgui->toolSettings->widget->setSettings(0);
+    }
 
+    virtual void registerPressedKey(bool pressed, int key)
+    {
+        if ((key == SoKeyboardEvent::RIGHT_SHIFT || key == SoKeyboardEvent::LEFT_SHIFT) && pressed) {
+            //Modifier key should switch between the 2 modes : Keep corner point or not.
+        }
+    }
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
@@ -6722,6 +6737,7 @@ public:
     virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         bool construction=false;
+        //Case 1 : User selected a point. In this case the fillet will be made at this point (if there are two lines intersecting)
         int VtId = getPreselectPoint();
         if (Mode == STATUS_SEEK_First && VtId != -1) {
             int GeoId;
@@ -6731,30 +6747,36 @@ public:
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                 (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
 
-                // guess fillet radius
                 double radius=-1;
-                std::vector<int> GeoIdList;
-                std::vector<Sketcher::PointPos> PosIdList;
-                sketchgui->getSketchObject()->getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
-                if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
-                    const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
-                    const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
-                    if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                        geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
-                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geom2);
-                        Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
-                        Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
-                        if (PosIdList[0] == Sketcher::PointPos::end)
-                            dir1 *= -1;
-                        if (PosIdList[1] == Sketcher::PointPos::end)
-                            dir2 *= -1;
-                        double l1 = dir1.Length();
-                        double l2 = dir2.Length();
-                        double angle = dir1.GetAngle(dir2);
-                        radius = (l1 < l2 ? l1 : l2) * 0.2 * sin(angle/2);
+                if (sketchgui->toolSettings->widget->isSettingSet[0]) {
+                    radius = sketchgui->toolSettings->widget->toolParameters[0];
+                }
+                else {
+                    // guess fillet radius
+                    std::vector<int> GeoIdList;
+                    std::vector<Sketcher::PointPos> PosIdList;
+                    sketchgui->getSketchObject()->getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+                    if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
+                        const Part::Geometry* geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
+                        const Part::Geometry* geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
+                        construction = Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
+                        if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                            geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            const Part::GeomLineSegment* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
+                            const Part::GeomLineSegment* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
+                            Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
+                            Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
+                            if (PosIdList[0] == Sketcher::PointPos::end)
+                                dir1 *= -1;
+                            if (PosIdList[1] == Sketcher::PointPos::end)
+                                dir2 *= -1;
+                            double l1 = dir1.Length();
+                            double l2 = dir2.Length();
+                            double angle = dir1.GetAngle(dir2);
+                            radius = (l1 < l2 ? l1 : l2) * 0.2 * sin(angle / 2);
+                        }
                     }
+
                 }
                 if (radius < 0)
                     return false;
@@ -6762,13 +6784,33 @@ public:
                 int currentgeoid= getHighestCurveIndex();
                 // create fillet at point
                 try {
-                    bool pointFillet = (filletType == 1);
+                    //nofAngles add support for chamfer and poly-chamfer and inward-poly-chamfer and inward-fillet. 1 is normal fillet
+                    //-1 is inward fillet, 2 and -2 are chamfer, 3 is a two edge chamfer, -3 is two edge inward chamfer and so on.
+                    int nofAngles = 1;
+                    if (filletType == Chamfer) {
+                        nofAngles = 2;
+                        if (sketchgui->toolSettings->widget->isSettingSet[1]) {
+                            nofAngles = max(static_cast <int>(floor(sketchgui->toolSettings->widget->toolParameters[1])) + 1, 2);
+                        }
+                    }
+                    if (sketchgui->toolSettings->widget->isCheckBoxChecked(2)) {
+                        nofAngles = -nofAngles;
+                    }
+                    bool pointFillet = sketchgui->toolSettings->widget->isCheckBoxChecked(1);
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, static_cast<int>(PosId), radius, "True",
-                        pointFillet ? "True":"False");
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s,%d)", GeoId, static_cast<int>(PosId), radius, "True",
+                        pointFillet ? "True":"False", nofAngles);
 
                     if (construction) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
+                    }
+
+                    //add constraint if user typed in some dimensions in tool widget
+                    if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2]) {
+                        if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                currentgeoid + 1, radius);
+                        }
                     }
 
                     Gui::Command::commitCommand();
@@ -6779,10 +6821,12 @@ public:
                 }
 
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                sketchgui->toolSettings->widget->setParameterFocus(0);
             }
             return true;
         }
 
+        //Case 2 : User selected a curve. Then the fillet will be made between this curve and next selected curve
         int GeoId = getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
@@ -6820,7 +6864,12 @@ public:
                         const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
+                        if (sketchgui->toolSettings->widget->isSettingSet[0]) {
+                            radius = sketchgui->toolSettings->widget->toolParameters[0];
+                        }
+                        else {
+                            radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
+                        }
                         if (radius < 0)
                             return false;
 
@@ -6840,13 +6889,38 @@ public:
 
                     // create fillet between lines
                     try {
-                        bool pointFillet = (filletType == 1);
+                        int nofAngles = 1;
+                        if (filletType == Chamfer) {
+                            nofAngles = 2;
+                            if (sketchgui->toolSettings->widget->isSettingSet[1]) {
+                                nofAngles = static_cast <int>(floor(sketchgui->toolSettings->widget->toolParameters[1])) + 1;
+                            }
+                        }
+                        if (sketchgui->toolSettings->widget->isCheckBoxChecked(2)) {
+                            nofAngles = -nofAngles;
+                        }
+                        bool pointFillet = sketchgui->toolSettings->widget->isCheckBoxChecked(1);
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s,%d)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
                                   secondPos.x, secondPos.y, radius,
-                                  "True", pointFillet ? "True":"False");
+                                  "True", pointFillet ? "True":"False", nofAngles);
+
+                        //Set the fillet as construction if the selected lines were construction lines.
+                        if (construction) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ",
+                                currentgeoid + 1);
+                        }
+
+                        //add constraint if user typed in some dimensions in tool widget
+                        if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2]) {
+                            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1 && radius > 0 ) {
+                                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                    currentgeoid + 1, radius);
+                            }
+                        }
+
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
@@ -6867,13 +6941,7 @@ public:
                     }
 
                     tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-                    if(construction) {
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ",
-                            currentgeoid+1);
-                    }
-
-
+                    sketchgui->toolSettings->widget->setParameterFocus(0);
                     Gui::Selection().clearSelection();
                     Mode = STATUS_SEEK_First;
                 }
@@ -6912,7 +6980,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::Fillet));
 }
 
 bool CmdSketcherCreateFillet::isActive(void)
@@ -6920,34 +6988,35 @@ bool CmdSketcherCreateFillet::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+// Chamfer ===============================================================================
 
-DEF_STD_CMD_A(CmdSketcherCreatePointFillet)
+DEF_STD_CMD_A(CmdSketcherCreateChamfer)
 
-CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
-  : Command("Sketcher_CreatePointFillet")
+CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
+    : Command("Sketcher_CreateChamfer")
 {
-    sAppModule      = "Sketcher";
-    sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Create corner-preserving fillet");
-    sToolTipText    = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
-    sWhatsThis      = "Sketcher_CreatePointFillet";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateFillet";
-    sAccel          = "G, F, P";
-    eType           = ForEdit;
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create chamfer");
+    sToolTipText = QT_TR_NOOP("Create a chamfer between two lines or at a coincident point");
+    sWhatsThis = "Sketcher_CreateChamfer";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateChamfer";
+    sAccel = "";
+    eType = ForEdit;
 }
 
-void CmdSketcherCreatePointFillet::activated(int iMsg)
+void CmdSketcherCreateChamfer::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::Chamfer));
 }
 
-bool CmdSketcherCreatePointFillet::isActive(void)
+bool CmdSketcherCreateChamfer::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
+
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateFillets'
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateFillets)
@@ -6973,11 +7042,12 @@ CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
  */
 void CmdSketcherCompCreateFillets::activated(int iMsg)
 {
-    if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
-    } else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
-    } else {
+    switch (iMsg) {
+    case 0: //fillet tool
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::Fillet)); break;
+    case 1: //fillet with point tool
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::Chamfer)); break;
+    default:
         return;
     }
 
@@ -6996,11 +7066,11 @@ Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* oldFillet = pcAction->addAction(QString());
-    oldFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    QAction* filletAction = pcAction->addAction(QString());
+    filletAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
 
-    QAction* pointFillet = pcAction->addAction(QString());
-    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    QAction* chamferAction = pcAction->addAction(QString());
+    chamferAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateChamfer"));
 
     _pcAction = pcAction;
     languageChange();
@@ -7022,7 +7092,7 @@ void CmdSketcherCompCreateFillets::updateAction(int mode)
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
     a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
-    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateChamfer"));
     getAction()->setIcon(a[index]->icon());
 }
 
@@ -7035,14 +7105,15 @@ void CmdSketcherCompCreateFillets::languageChange()
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
-    QAction* oldFillet = a[0];
-    oldFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Sketch fillet"));
-    oldFillet->setToolTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
-    oldFillet->setStatusTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
-    QAction* pointFillet = a[1];
-    pointFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Constraint-preserving sketch fillet"));
-    pointFillet->setToolTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
-    pointFillet->setStatusTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+    QAction* filletAction = a[0];
+    filletAction->setText(QApplication::translate("CmdSketcherCompCreateFillets","Sketch fillet"));
+    filletAction->setToolTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    filletAction->setStatusTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    QAction* chamferAction = a[1];
+    chamferAction->setText(QApplication::translate("CmdSketcherCompCreateFillets", "Sketch chamfer"));
+    chamferAction->setToolTip(QApplication::translate("Sketcher_CreateChamfer", "Create a chamfer between two lines"));
+    chamferAction->setStatusTip(QApplication::translate("Sketcher_CreateChamfer", "Create a chamfer between two lines"));
+
 }
 
 bool CmdSketcherCompCreateFillets::isActive(void)
@@ -8922,7 +8993,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
-    rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());
+    rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());

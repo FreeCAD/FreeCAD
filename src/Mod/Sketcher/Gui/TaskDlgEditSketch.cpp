@@ -64,7 +64,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
-    //TODO: find a way to showGroupBox to be able to collapse/expand from tasksketchertool.cpp
+    //TODO: find a way to showGroupBox to be able to collapse/expand from tasksketchertool.cpp. Then we can hide at start with : 
     //sketchView->toolSettings->hideGroupBox();
     if (!hGrp->GetBool("ExpandedMessagesWidget",true))
         Messages->hideGroupBox();

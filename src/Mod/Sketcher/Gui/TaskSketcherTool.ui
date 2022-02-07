@@ -143,15 +143,63 @@
     </layout>
    </item>
    
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxPreserveFilletChamferCorner">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+        <property name="toolTip">
+         <string>Preserve corner and most constraints when using Fillet or Chamfer</string>
+        </property>
+        <property name="text">
+         <string>Preserve Fillet or Chamfer corner and most constraints</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreserveFilletChamferCorner</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+    </widget>
+   </item>
+   
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxTS2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Checkbox 2 toolTip</string>
+     </property>
+     <property name="text">
+      <string>Checkbox 2</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>checkBoxPreserveFilletChamferCorner</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

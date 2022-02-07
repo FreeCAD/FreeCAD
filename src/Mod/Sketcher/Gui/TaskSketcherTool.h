@@ -52,17 +52,21 @@ public:
     ~SketcherToolWidget();
 
     bool eventFilter(QObject* object, QEvent* event);
-    
+
+    void loadSettings();
 
     void setparameter(double val, int i);
     void setLabel(const QString& atext, int i);
     void setUnit(Base::Unit unit, int i);
     void setParameterActive(bool val, int i);
+    void setParameterVisible(bool val, int i);
     void setParameterFocus(int i);
     void setSettings(int toolSelected);
+    bool isCheckBoxChecked(int i);
     bool isWidgetActive;
     std::vector<double> toolParameters;
     std::vector<bool> isSettingSet;
+    bool desactiveParametersOnSet;
 
 //Q_SIGNALS:
 public Q_SLOTS:
@@ -70,7 +74,8 @@ public Q_SLOTS:
     void emitSetparameterTwo(double val);
     void emitSetparameterThree(double val);
     void emitSetparameterFour(double val);
-    void emitSetparameterFive(double val);
+    void emitSetparameterFive(double val); 
+    void emitTogglePreserveFilletChamferCorner(bool val);
 
 protected:
     void changeEvent(QEvent *e);

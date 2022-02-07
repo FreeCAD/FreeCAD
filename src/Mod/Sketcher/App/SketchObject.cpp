@@ -1745,7 +1745,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     return 0;
 }
 
-int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner)
+int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, int nAngles)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -1766,7 +1766,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 
             Base::Vector3d midPnt1 = (lineSeg1->getStartPoint() + lineSeg1->getEndPoint()) / 2 ;
             Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2 ;
-            return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner);
+            return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, nAngles);
         }
     }
 
@@ -1775,7 +1775,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 
 int SketchObject::fillet(int GeoId1, int GeoId2,
                          const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
-                         double radius, bool trim, bool createCorner)
+                         double radius, bool trim, bool createCorner, int nAngles)
 {
     if (GeoId1 < 0 || GeoId1 > getHighestCurveIndex() ||
         GeoId2 < 0 || GeoId2 > getHighestCurveIndex())
@@ -1815,8 +1815,13 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         dist1.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
         dist2.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
-        Part::Geometry *newgeo = arc.get();
-        filletId = addGeometry(newgeo);
+
+        if (nAngles != 1) {
+            filletId = makeChamfers(arc.get(), nAngles);
+        }
+        else { //Case fillet
+            filletId = addGeometry(arc.get());
+        }
 
         if (trim) {
             PointPos PosId1 = (filletCenter-intersection)*dir1 > 0 ? PointPos::start : PointPos::end;
@@ -1843,14 +1848,26 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             tangent2->Second = filletId;
 
             if (dist1.Length() < dist2.Length()) {
-                tangent1->SecondPos = PointPos::start;
-                tangent2->SecondPos = PointPos::end;
+                if (nAngles < 0) {
+                    tangent1->SecondPos = PointPos::end;
+                    tangent2->SecondPos = PointPos::start;
+                }
+                else {
+                    tangent1->SecondPos = PointPos::start;
+                    tangent2->SecondPos = PointPos::end;
+                }
                 movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true),false,true);
             }
             else {
-                tangent1->SecondPos = PointPos::end;
-                tangent2->SecondPos = PointPos::start;
+                if (nAngles < 0) {
+                    tangent1->SecondPos = PointPos::start;
+                    tangent2->SecondPos = PointPos::end;
+                }
+                else {
+                    tangent1->SecondPos = PointPos::end;
+                    tangent2->SecondPos = PointPos::start;
+                }
                 movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true),false,true);
             }
@@ -2231,8 +2248,13 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         // add arc to sketch geometry
         int filletId;
-        Part::Geometry *newgeo = arc;
-        filletId = addGeometry(newgeo);
+        if (nAngles != 1) {
+            filletId = makeChamfers(arc, nAngles);
+        }
+        else { //Case fillet
+            filletId = addGeometry(arc);
+        }
+
         if (filletId < 0) {
             delete arc;
             return -1;
@@ -2283,14 +2305,26 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             //Base::Console().Log("dists_refpoint_to_arc_sp_ep: (%f);(%f)",dist1,dist2);
 
             if (dist1 < dist2) {
-                tangent1->SecondPos = PointPos::start;
-                tangent2->SecondPos = PointPos::end;
+                if (nAngles < 0) {
+                    tangent1->SecondPos = PointPos::end;
+                    tangent2->SecondPos = PointPos::start;
+                }
+                else {
+                    tangent1->SecondPos = PointPos::start;
+                    tangent2->SecondPos = PointPos::end;
+                }
                 movePoint(GeoId1, curve1PosId, arc->getStartPoint(true),false,true);
                 movePoint(GeoId2, curve2PosId, arc->getEndPoint(true),false,true);
             }
             else {
-                tangent1->SecondPos = PointPos::end;
-                tangent2->SecondPos = PointPos::start;
+                if (nAngles < 0) {
+                    tangent1->SecondPos = PointPos::start;
+                    tangent2->SecondPos = PointPos::end;
+                }
+                else {
+                    tangent1->SecondPos = PointPos::end;
+                    tangent2->SecondPos = PointPos::start;
+                }
                 movePoint(GeoId1, curve1PosId, arc->getEndPoint(true),false,true);
                 movePoint(GeoId2, curve2PosId, arc->getStartPoint(true),false,true);
             }
@@ -2315,6 +2349,126 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
     }
     return -1;
 }
+
+int SketchObject::makeChamfers(Part::GeomArcOfCircle* arc, int nAngles) {
+    std::vector<Part::Geometry*> newGeometries;
+    Part::GeomArcOfCircle* arcToUse = arc;
+    double startAngle, endAngle, filletAngle, angular_diff;
+    arc->getRange(startAngle, endAngle, /*emulateCCWXY=*/true);
+
+    /*if (nAngles == -2) {
+        nAngles = 2;
+    }*/
+    if (nAngles < 0) { //case of inward fillet or chamfer. 
+        Part::GeomArcOfCircle* inwardArc = new Part::GeomArcOfCircle();
+        inwardArc->setRadius(arc->getRadius());
+        inwardArc->setCenter(arc->getCenter());
+        inwardArc->setRange(endAngle, startAngle, /*emulateCCWXY=*/true);
+        if (nAngles != -1) { //not the case of an inward fillet 
+            //Set the arc as construction.
+            GeometryFacade::setConstruction(inwardArc, true);
+        }
+        newGeometries.push_back(inwardArc);
+        arcToUse = inwardArc;
+    }
+    else {
+        GeometryFacade::setConstruction(arc, true);
+        newGeometries.push_back(arc);
+    }
+
+    int absnAngles = abs(nAngles);
+
+
+    if (absnAngles > 1) {
+        //We need to create the points with the angular difference, then we'll create lines, then the constraints.
+        //We adapt the logic of the regular polygon (Mod\Sketcher\ProfileLib\regularPolygon.py).
+        //Get the total angle of the fillet :
+        filletAngle = endAngle - startAngle;
+        angular_diff = filletAngle / (absnAngles - 1); //number of side = nAngles-1
+
+        //Create a list of the points
+        Base::Vector3d diffVec = arcToUse->getStartPoint(/*emulateCCW=*/true) - arcToUse->getCenter();
+        std::vector<Base::Vector3d> listOfPoints;
+        listOfPoints.push_back(arcToUse->getStartPoint(/*emulateCCW=*/true));
+        for (int i = 1; i < absnAngles - 1; i++) {
+            double cos_v = cos(angular_diff * i);
+            double sin_v = sin(angular_diff * i);
+            Base::Vector3d pointToAdd(cos_v * diffVec.x - sin_v * diffVec.y,
+                cos_v * diffVec.y + sin_v * diffVec.x,
+                0);
+            pointToAdd = pointToAdd + arcToUse->getCenter();
+            listOfPoints.push_back(pointToAdd);
+
+        }
+        listOfPoints.push_back(arcToUse->getEndPoint(/*emulateCCW=*/true));
+
+        //create lines from points.
+        for (int i = 0; i < listOfPoints.size() - 1; i++) {
+            Part::GeomLineSegment* linei = new Part::GeomLineSegment();
+            linei->setPoints(listOfPoints[i], listOfPoints[i + 1]);
+            newGeometries.push_back(linei);
+        }
+    }
+
+    int lastGeoId = addGeometry(std::move(newGeometries));
+    int filletId = lastGeoId - absnAngles + 1;
+
+    //Create constraints
+    std::vector<Constraint*> newConstraints;
+    if (absnAngles > 1) {
+
+        //0- start of first line with the arc start
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::Coincident;
+        newConstr->First = filletId;
+        newConstr->FirstPos = PointPos::start;
+        newConstr->Second = filletId + 1; //id of the first line
+        newConstr->SecondPos = PointPos::start;
+        newConstraints.push_back(newConstr);
+
+        for (int i = 1; i < newGeometries.size() - 1; i++) { //-1 because last line is not concerned
+            //1- constraints of coincident of one line end with next line start
+            Sketcher::Constraint* newConstr1 = new Sketcher::Constraint();
+            newConstr1->Type = Sketcher::Coincident;
+            newConstr1->First = filletId + i;
+            newConstr1->FirstPos = PointPos::end;
+            newConstr1->Second = filletId + i + 1;
+            newConstr1->SecondPos = PointPos::start;
+            newConstraints.push_back(newConstr1);
+
+            //2- Coincidence of line end with arc.
+            Sketcher::Constraint* newConstr2 = new Sketcher::Constraint();
+            newConstr2->Type = Sketcher::PointOnObject;
+            newConstr2->First = filletId + i;
+            newConstr2->FirstPos = PointPos::end;
+            newConstr2->Second = filletId;
+            newConstr2->SecondPos = Sketcher::PointPos::none;
+            newConstraints.push_back(newConstr2);
+
+            //3-constraint of equal of line with next line. So in the end all lines are equal together.
+            Sketcher::Constraint* newConstr3 = new Sketcher::Constraint();
+            newConstr3->Type = Sketcher::Equal;
+            newConstr3->First = filletId + i;
+            newConstr3->FirstPos = Sketcher::PointPos::none;
+            newConstr3->Second = filletId + i + 1;
+            newConstr3->SecondPos = Sketcher::PointPos::none;
+            newConstraints.push_back(newConstr3);
+
+        }
+        //4 - End of last line with arc end.
+        Sketcher::Constraint* newConstr4 = new Sketcher::Constraint();
+        newConstr4->Type = Sketcher::Coincident;
+        newConstr4->First = lastGeoId;
+        newConstr4->FirstPos = PointPos::end;
+        newConstr4->Second = filletId;
+        newConstr4->SecondPos = PointPos::end;
+        newConstraints.push_back(newConstr4);
+    }
+    this->addConstraints(std::move(newConstraints));
+    return filletId;
+}
+
+
 
 int SketchObject::extend(int GeoId, double increment, PointPos endpoint) {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())

@@ -53,6 +53,8 @@ SketcherToolWidget::SketcherToolWidget(QWidget *parent, ViewProviderSketch* sket
     ui->setupUi(this);
     
     // connecting the needed signals
+    connect(ui->checkBoxPreserveFilletChamferCorner, SIGNAL(toggled(bool)),
+        this, SLOT(emitTogglePreserveFilletChamferCorner(bool)));
     connect(ui->parameterOne, SIGNAL(valueChanged(double)),
         this, SLOT(emitSetparameter(double)));
     connect(ui->parameterTwo, SIGNAL(valueChanged(double)),
@@ -128,7 +130,9 @@ bool SketcherToolWidget::eventFilter(QObject* object, QEvent* event)
     return false;
 }
 
-
+void SketcherToolWidget::emitTogglePreserveFilletChamferCorner(bool val) {
+    ui->checkBoxPreserveFilletChamferCorner->onSave();
+}
 void SketcherToolWidget::emitSetparameter(double val)
 {
     isSettingSet[0] = 1;
@@ -136,7 +140,7 @@ void SketcherToolWidget::emitSetparameter(double val)
     QMetaObject::invokeMethod(ui->parameterTwo, "setFocus", Qt::QueuedConnection);
     ui->parameterTwo->setEnabled(1);
 
-    //Make a mousemove to update geometry.
+    //Make a mousemove to update geometry when parameter is set.
     if(isWidgetActive) {
         sketchView->mouseMove(sketchView->prvMoveCursorPos, sketchView->prvMoveViewer);
     }
@@ -146,8 +150,14 @@ void SketcherToolWidget::emitSetparameterTwo(double val)
     isSettingSet[1] = 1;
     toolParameters[1] = val;
     QMetaObject::invokeMethod(ui->parameterThree, "setFocus", Qt::QueuedConnection);
-    ui->parameterOne->setEnabled(0);
-    ui->parameterTwo->setEnabled(0);
+    if (desactiveParametersOnSet) {
+        ui->parameterOne->setEnabled(0);
+        ui->parameterTwo->setEnabled(0);
+    }
+    else {
+        //case of chamfer
+        QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+    }
     ui->parameterThree->setEnabled(1);
     ui->parameterFour->setEnabled(1);
 
@@ -185,13 +195,23 @@ void SketcherToolWidget::emitSetparameterFive(double val)
     }
 }
 
+bool SketcherToolWidget::isCheckBoxChecked(int i) {
+    if (i == 1) {
+        return ui->checkBoxPreserveFilletChamferCorner->isChecked();
+    }
+    else if (i == 2) {
+        return ui->checkBoxTS2->isChecked();
+    }
+    return 0;
+}
+
 void SketcherToolWidget::setSettings(int toolSelected)
 {
     //reset and hide all settings (case 0)
     isWidgetActive = 0;
+    desactiveParametersOnSet = 1;
     toolParameters.clear();
     isSettingSet.clear();
-
 
     ui->label->setVisible(0);
     ui->label2->setVisible(0);
@@ -215,6 +235,8 @@ void SketcherToolWidget::setSettings(int toolSelected)
     ui->parameterThree->setVisible(0);
     ui->parameterFour->setVisible(0);
     ui->parameterFive->setVisible(0);
+    ui->checkBoxPreserveFilletChamferCorner->setVisible(0);
+    ui->checkBoxTS2->setVisible(0);
     //sketchView->toolSettings->hideGroupBox();
 
     //Give the focus back to the viewproviderSketcher
@@ -461,8 +483,39 @@ void SketcherToolWidget::setSettings(int toolSelected)
             isSettingSet[0] = 0; //setUnit triggers ValuedChanged.
             break;
         }
+        case 11: //Fillet
+        {
+            toolParameters.resize(2, 0);
+            isSettingSet.resize(2, 0);
+            desactiveParametersOnSet = 0;
+
+            ui->label->setVisible(1);
+            ui->label->setText(QApplication::translate("TaskSketcherTool_Fillet", "Radius"));
+            ui->label2->setText(QApplication::translate("TaskSketcherTool_Fillet", "Number Of Lines"));
+
+            ui->parameterTwo->setValue(Base::Quantity(1, Base::Unit::Length)); //TODO : Unit should be none.
+            ui->parameterOne->setVisible(1);
+            ui->parameterOne->setEnabled(1);
+            ui->parameterTwo->setEnabled(1);
+
+            ui->checkBoxPreserveFilletChamferCorner->setVisible(1);
+            ui->checkBoxPreserveFilletChamferCorner->setText(QApplication::translate("TaskSketcherTool_Fillet", "Preserve corner and most constraints"));
+            ui->checkBoxTS2->setVisible(1);
+            ui->checkBoxTS2->setChecked(0);
+            ui->checkBoxTS2->setText(QApplication::translate("TaskSketcherTool_Fillet", "Inward"));
+
+            QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+            isWidgetActive = 1;
+            break;
+        }
+
     }
 
+}
+
+void SketcherToolWidget::loadSettings()
+{
+    ui->checkBoxPreserveFilletChamferCorner->onRestore();
 }
 
 void SketcherToolWidget::setparameter(double val, int i)
@@ -548,6 +601,42 @@ void SketcherToolWidget::setParameterActive(bool val, int i)
     else if (i == 4) {
         ui->parameterFive->setEnabled(val);
     }
+    else if (i == 5) {
+        ui->checkBoxPreserveFilletChamferCorner->setEnabled(val);
+    }
+    else if (i == 6) {
+        ui->checkBoxTS2->setEnabled(val);
+    }
+}
+
+void SketcherToolWidget::setParameterVisible(bool val, int i)
+{
+    if (i == 0) {
+        ui->label->setVisible(val);
+        ui->parameterOne->setVisible(val);
+    }
+    else if (i == 1) {
+        ui->label2->setVisible(val);
+        ui->parameterTwo->setVisible(val);
+    }
+    else if (i == 2) {
+        ui->label3->setVisible(val);
+        ui->parameterThree->setVisible(val);
+    }
+    else if (i == 3) {
+        ui->label4->setVisible(val);
+        ui->parameterFour->setVisible(val);
+    }
+    else if (i == 4) {
+        ui->label5->setVisible(val);
+        ui->parameterFive->setVisible(val);
+    }
+    else if (i == 5) {
+        ui->checkBoxPreserveFilletChamferCorner->setVisible(val);
+    }
+    else if (i == 6) {
+        ui->checkBoxTS2->setVisible(val);
+    }
 }
 
 void SketcherToolWidget::setParameterFocus(int i)
@@ -591,6 +680,7 @@ TaskSketcherTool::TaskSketcherTool(ViewProviderSketch *sketchView)
     widget = new SketcherToolWidget(this, sketchView);
     this->groupLayout()->addWidget(widget);
 
+    widget->loadSettings();
 
     Gui::Selection().Attach(this);
 
