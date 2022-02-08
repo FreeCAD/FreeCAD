@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -979,7 +980,7 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Insert knot");
-    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter with the given multiplicity. If a knot already exists at that parameter, it's multiplicity is increased by the value.");
+    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.");
     sWhatsThis      = "Sketcher_BSplineInsertKnot";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineInsertKnot";
@@ -1039,7 +1040,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         const auto& mults = bsp->getMultiplicities();
         QInputDialog knotDialog(Gui::getMainWindow());
         knotDialog.setInputMode(QInputDialog::DoubleInput);
-        knotDialog.setDoubleDecimals(8);
+        knotDialog.setDoubleDecimals(Base::UnitsApi::getDecimals());
         knotDialog.setWindowTitle(QObject::tr("Knot parameter"));
         // use values from `knots` and `weights` and insert in label
         std::stringstream knotList;
@@ -1055,6 +1056,8 @@ void CmdSketcherInsertKnot::activated(int iMsg)
                                 .arg(QString::fromUtf8(multList.str().c_str())));
         // use an appropriate middle value from `knots`
         knotDialog.setDoubleValue(0.5 * (knots.front() + knots.back()));
+        // set step size dependent on the knot range
+        knotDialog.setDoubleStep(0.001 * (knots.back() - knots.front()));
         // use min/max from `knots`
         knotDialog.setDoubleRange(knots.front(), knots.back());
 
