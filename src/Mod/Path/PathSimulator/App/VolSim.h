@@ -29,6 +29,8 @@
 #include <vector>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Path/App/Command.h>
+#include <BRepBndLib.hxx>
+
 
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP		1
