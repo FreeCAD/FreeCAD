@@ -41,9 +41,9 @@ class GuiExport SoFCColorLegend : public SoFCColorBarBase {
   SO_NODE_HEADER(Gui::SoFCColorLegend);
 
 public:
-  static void initClass(void);
-  static void finish(void);
-  SoFCColorLegend(void);
+  static void initClass();
+  static void finish();
+  SoFCColorLegend();
 
   void setLegendLabels(const App::ColorLegend& legend, int prec=3);
 
@@ -61,9 +61,9 @@ public:
   App::Color getColor (float fVal) const { return _currentLegend.getColor(fVal); }
   void setOutsideGrayed (bool bVal) { _currentLegend.setOutsideGrayed(bVal); }
   bool isVisible (float) const { return false; }
-  float getMinValue (void) const { return _currentLegend.getMinValue(); }
-  float getMaxValue (void) const { return _currentLegend.getMaxValue(); }
-  std::size_t countColors (void) const { return _currentLegend.hasNumberOfFields(); }
+  float getMinValue () const { return _currentLegend.getMinValue(); }
+  float getMaxValue () const { return _currentLegend.getMaxValue(); }
+  std::size_t countColors () const { return _currentLegend.hasNumberOfFields(); }
 
   bool customize() { return false; }
   const char* getColorBarName() const { return "Color Legend"; }

@@ -73,7 +73,7 @@ SoFCColorLegend::~SoFCColorLegend()
 }
 
 // doc from parent
-void SoFCColorLegend::initClass(void)
+void SoFCColorLegend::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCColorLegend,SoFCColorBarBase,"Separator");
 }
