@@ -909,7 +909,7 @@ public:
         availableConstraint = AvailableConstraint_FIRST;
         previousOnSketchPos = Base::Vector2d(0.f, 0.f);
         sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_1",
-            "Select any geometry you want to constrain."), 5);
+            "Select any geometry you want to constrain."), 6);
 
         // Constrain icon size in px
         qreal pixelRatio = devicePixelRatio();
@@ -1004,12 +1004,12 @@ public:
                 if (selLine.size() == 1) {
                     createDistanceXYConstrain(0, 0, -1, selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                        "Left Click to validate 'DistanceX'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                        "Left Click to validate 'DistanceX'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                 }
                 else {
                     createDistanceXYConstrain(0, 0, -1, selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_2",
-                        "Left Click to validate 'DistanceX'. \n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'.\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 5);
+                        "Left Click to validate 'DistanceX'. \n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'.\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 6);
                 }
             }
             else if (onSketchPos.y > minY && onSketchPos.y < maxY 
@@ -1018,12 +1018,12 @@ public:
                 if (selLine.size() == 1) {
                     createDistanceXYConstrain(0, 1, -1, selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                        "Left Click to validate 'DistanceY'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                        "Left Click to validate 'DistanceY'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                 }
                 else {
                     createDistanceXYConstrain(0, 1, -1, selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_2",
-                        "Left Click to validate 'DistanceY'. \n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'.\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 5);
+                        "Left Click to validate 'DistanceY'. \n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'.\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 6);
                 }
             }
             else if ( ( ((onSketchPos.y < minY || onSketchPos.y > maxY) && (onSketchPos.x < minX || onSketchPos.x > maxX))
@@ -1032,12 +1032,12 @@ public:
                 if (selLine.size() == 1) {
                     createDistanceConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                 }
                 else {
                     createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_2",
-                        "Left Click to validate 'Distance'. \n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'.\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 5);
+                        "Left Click to validate 'Distance'. \n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'.\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 6);
                 }
 
             }
@@ -1245,7 +1245,7 @@ public:
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
             if (continuousMode) {
                 sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_1",
-                    "Select any geometry you want to constrain."), 5);
+                    "Select any geometry you want to constrain."), 6);
                 Gui::Selection().clearSelection();
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Constrain contextually"));
                 isItDone = 0;
@@ -1350,14 +1350,14 @@ protected:
                         sketchgui->toolSettings->widget->setSettings(9);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_1",
-                        "Left Click to validate 'Lock'. \n\nPress SHIFT to alternate between 'Lock', 'DistanceX to origin' and 'DistanceY to origin'.\n\nOr select a : \n   - Point: distance, coincidence\n   - Curve: distance, pointOnObject"), 5);
+                        "Left Click to validate 'Lock'. \n\nPress SHIFT to alternate between 'Lock', 'DistanceX to origin' and 'DistanceY to origin'.\n\nOr select a : \n   - Point: distance, coincidence\n   - Curve: distance, pointOnObject"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'DistanceX to origin' constraint"));
                     createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, Sketcher::GeoEnum::RtPnt, Sketcher::PointPos::start, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_14",
-                        "Left Click to validate 'Distance(X/Y) to origin'. \n\nPress SHIFT to alternate between 'Lock' and 'Distance(X/Y) to origin'.\n\nOr select a : \n   - Point: distance, coincidence\n   - Curve: distance, pointOnObject"), 5);
+                        "Left Click to validate 'Distance(X/Y) to origin'. \n\nPress SHIFT to alternate between 'Lock' and 'Distance(X/Y) to origin'.\n\nOr select a : \n   - Point: distance, coincidence\n   - Curve: distance, pointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1367,26 +1367,26 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
                     createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_2",
-                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance' and 'Coincident'\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 5);
+                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance' and 'Coincident'\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
                     createHorizontalConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_THIRD) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
                     createVerticalConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal'  and 'VerticalY'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal'  and 'VerticalY'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_FOURTH) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Coincident constraint")); 
                     createCoincidenceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_21",
-                        "Left Click to validate 'Coincidence'.\n\nPress SHIFT to alternate between 'Distance' and 'Coincident'\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 5);
+                        "Left Click to validate 'Coincidence'.\n\nPress SHIFT to alternate between 'Distance' and 'Coincident'\n\nOr select a : \n   - Point: coincidence, pointOnObject\n   - Curve: pointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1396,20 +1396,20 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance constraint"));
                     createDistanceConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos); // line to be on second parameter
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_3",
-                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance', 'PointOnObject' and 'Symmetry'\n\nOr select a : \n   - Point: both points will be pointOnObject on the line"), 5);
+                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance', 'PointOnObject' and 'Symmetry'\n\nOr select a : \n   - Point: both points will be pointOnObject on the line"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add PointToObject constraint"));
                     createPointOnObjectConstrain(selPoints[0].GeoId, selPoints[0].PosId, selLine[0].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_22",
-                        "Left Click to validate 'PointToObject'.\n\nPress SHIFT to alternate between 'Distance', 'PointOnObject' and 'Symmetry'\n\nOr select a : \n   - Point: both points will be pointOnObject on the line"), 5);
+                        "Left Click to validate 'PointToObject'.\n\nPress SHIFT to alternate between 'Distance', 'PointOnObject' and 'Symmetry'\n\nOr select a : \n   - Point: both points will be pointOnObject on the line"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_THIRD) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraint"));
                     createSymmetryConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, selPoints[0].GeoId, selPoints[0].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_22",
-                        "Left Click to validate 'Symmetry'.\n\nPress SHIFT to alternate between 'Distance', 'PointOnObject' and 'Symmetry'\n\nOr select a : \n   - Point: both points will be pointOnObject on the line"), 5);
+                        "Left Click to validate 'Symmetry'.\n\nPress SHIFT to alternate between 'Distance', 'PointOnObject' and 'Symmetry'\n\nOr select a : \n   - Point: both points will be pointOnObject on the line"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1421,13 +1421,13 @@ protected:
                     createCoincidenceConstrain(selPoints[1].GeoId, selPoints[1].PosId, selPoints[2].GeoId, selPoints[2].PosId);
                     selAllowed = 1;
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Coincident'. \n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Align on X'  and 'Align on Y'.\n\nOr select a : \n   - Point: Coincident, PointOnObject"), 5);
+                        "Left Click to validate 'Coincident'. \n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Align on X'  and 'Align on Y'.\n\nOr select a : \n   - Point: Coincident, PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
                     createSymmetryConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, selPoints[2].GeoId, selPoints[2].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Symmetry'. \n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Align on X'  and 'Align on Y'.\n\nOr select a : \n   - Point: Coincident, PointOnObject\n   - Curve: PointOnObject"), 5);
+                        "Left Click to validate 'Symmetry'. \n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Align on X'  and 'Align on Y'.\n\nOr select a : \n   - Point: Coincident, PointOnObject\n   - Curve: PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_THIRD) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Horizontal' constraints"));
@@ -1435,7 +1435,7 @@ protected:
                         createHorizontalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_FOURTH) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
@@ -1443,7 +1443,7 @@ protected:
                         createVerticalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal'  and 'VerticalY'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal'  and 'VerticalY'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1455,7 +1455,7 @@ protected:
                         createCoincidenceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Coincident'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: Coincident, PointOnObject\n   - Curve: PointOnObject"), 5);
+                        "Left Click to validate 'Coincident'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: Coincident, PointOnObject\n   - Curve: PointOnObject"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
@@ -1464,7 +1464,7 @@ protected:
                         createHorizontalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal' and 'Vertical'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_THIRD) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'Vertical' constraints"));
@@ -1472,7 +1472,7 @@ protected:
                         createVerticalConstrain(selPoints[i].GeoId, selPoints[i].PosId, selPoints[i + 1].GeoId, selPoints[i + 1].PosId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal'  and 'VerticalY'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Coincident', 'Symmetry', 'Horizontal'  and 'VerticalY'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1484,13 +1484,13 @@ protected:
                     createPointOnObjectConstrain(selPoints[1].GeoId, selPoints[1].PosId, selLine[0].GeoId);
                     selAllowed = 1;
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'PointOnObject'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject, Distance"), 5);
+                        "Left Click to validate 'PointOnObject'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject, Distance"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraint"));
                     createSymmetryConstrain(selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, selLine[0].GeoId, selLine[0].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Symmetry'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject, Distance"), 5);
+                        "Left Click to validate 'Symmetry'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject, Distance"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_THIRD) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraints"));
@@ -1498,7 +1498,7 @@ protected:
                         createDistanceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Distance'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject, Distance"), 5);
+                        "Left Click to validate 'Distance'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject, Distance"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1511,7 +1511,7 @@ protected:
                     }
                     selAllowed = 1;
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'PointOnObject'. \n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'PointOnObject'. \n\nOr select a : \n   - Point: PointOnObject"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraints"));
@@ -1519,7 +1519,7 @@ protected:
                         createDistanceConstrain(selPoints[i].GeoId, selPoints[i].PosId, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'Distance'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject"), 5);
+                        "Left Click to validate 'Distance'. \n\nPress SHIFT to alternate between 'PointOnObject', 'Symmetry' and 'Distance'.\n\nOr select a : \n   - Point: PointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1540,11 +1540,11 @@ protected:
                             createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
                             selAllowed = 1;
                             sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_8",
-                                "Left Click to validate 'Radius'.\n\nPress SHIFT to alternate between 'Radius' and 'Diameter'.\n\nOr select a : \n   - Line: distance, tangency\n   - Circle: Distance, equality"), 5);
+                                "Left Click to validate 'Radius'.\n\nPress SHIFT to alternate between 'Radius' and 'Diameter'.\n\nOr select a : \n   - Line: distance, tangency\n   - Circle: Distance, equality"), 6);
                         }
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'PointOnObject'. \n\nOr select a : \n   - Point: add the point to be PointOnObject"), 5);
+                        "Left Click to validate 'PointOnObject'. \n\nOr select a : \n   - Point: add the point to be PointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1557,7 +1557,7 @@ protected:
                     }
                     selAllowed = 1;
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_5",
-                        "Left Click to validate 'PointOnObject'. \n\nOr select a : \n   - Point: add the point to be PointOnObject"), 5);
+                        "Left Click to validate 'PointOnObject'. \n\nOr select a : \n   - Point: add the point to be PointOnObject"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1571,7 +1571,7 @@ protected:
                         restartCommand(QT_TRANSLATE_NOOP("Command", "Add length constraint"));
                         createDistanceConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
                         sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                            "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                            "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                         selAllowed = 1;
                     }
                     if (availableConstraint == AvailableConstraint_SECOND) {
@@ -1583,27 +1583,27 @@ protected:
                             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Horizontal constraint"));
                             createHorizontalConstrain(selLine[0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
                             sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_23",
-                                "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                                "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                         }
                     }
                     if (availableConstraint == AvailableConstraint_THIRD) {
                         restartCommand(QT_TRANSLATE_NOOP("Command", "Add Vertical constraint"));
                         createVerticalConstrain(selLine[0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
                         sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_24",
-                            "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                            "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                     }
                     if (availableConstraint == AvailableConstraint_FOURTH) {
                         restartCommand(QT_TRANSLATE_NOOP("Command", "Add Block constraint"));
                         createBlockConstrain(selLine[0].GeoId);
                         sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_25",
-                            "Left Click to validate 'Block'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                            "Left Click to validate 'Block'.\n\nPress SHIFT to alternate between 'Distance(X/Y)', 'Horizontal', 'Vertical' and 'Block'.\n\nOr select a : \n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                         availableConstraint = AvailableConstraint_RESET;
                     }
                 }
                 else {
                     //But axis can still be selected
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_7",
-                        "Axis selected.\n\nSelect a :\n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 5);
+                        "Axis selected.\n\nSelect a :\n   - Point: distance, pointOnObject\n   - Line: angle, distance, equality\n   - Curve: tangent"), 6);
                     selAllowed = 1;
                 }
             }
@@ -1614,7 +1614,7 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Angle constraint"));
                     createAngleConstrain(selLine[0].GeoId, selLine[1].GeoId, onSketchPos);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                        "Left Click to validate 'Angle'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                        "Left Click to validate 'Angle'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
@@ -1627,7 +1627,7 @@ protected:
                         restartCommand(QT_TRANSLATE_NOOP("Command", "Add Equality constraint"));
                         createEqualityConstrain(selLine[0].GeoId, selLine[1].GeoId);
                         sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_18",
-                            "Left Click to validate 'Equality'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                            "Left Click to validate 'Equality'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                     }
                     
                 }
@@ -1641,7 +1641,7 @@ protected:
                             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Vertical constraint"));
                             createVerticalConstrain(selLine[selLine[0].GeoId == Sketcher::GeoEnum::VAxis ? 1 : 0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
                             sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_26",
-                                "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Angle' and 'Vertical'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                                "Left Click to validate 'Vertical'.\n\nPress SHIFT to alternate between 'Angle' and 'Vertical'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                             availableConstraint = AvailableConstraint_RESET;
                         }
                     }
@@ -1653,7 +1653,7 @@ protected:
                             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Horizontal constraint"));
                             createHorizontalConstrain(selLine[selLine[0].GeoId == Sketcher::GeoEnum::HAxis ? 1 : 0].GeoId, Sketcher::PointPos::none, GeoEnum::GeoUndef, Sketcher::PointPos::none);
                             sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_17",
-                                "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Angle' and 'Horizontal'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                                "Left Click to validate 'Horizontal'.\n\nPress SHIFT to alternate between 'Angle' and 'Horizontal'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                             availableConstraint = AvailableConstraint_RESET;
                         }
                     }
@@ -1666,7 +1666,7 @@ protected:
                             restartCommand(QT_TRANSLATE_NOOP("Command", "Add parallel constraint"));
                             createParallelConstrain(selLine[0].GeoId, selLine[1].GeoId);
                             sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_17",
-                                "Left Click to validate 'Parallel'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                                "Left Click to validate 'Parallel'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                         }
                     }
                 }
@@ -1674,13 +1674,13 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
                     createPerpendicularConstrain(selLine[0].GeoId, selLine[1].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_18",
-                        "Left Click to validate 'Perpendicular'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                        "Left Click to validate 'Perpendicular'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_FIFTH) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Tangent constraint"));
                     createTangentConstrain(selLine[0].GeoId, selLine[1].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_18",
-                        "Left Click to validate 'Tangent'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                        "Left Click to validate 'Tangent'.\n\nPress SHIFT to alternate between 'Angle', 'Equality', 'Parallel', 'Perpendicular' and 'Tangent'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                 }
             }
             else if (selPoints.size() == 0 && selLine.size() > 2 && selCircleArc.size() == 0 && selEllipseAndCo.size() == 0) {
@@ -1691,7 +1691,7 @@ protected:
                         createEqualityConstrain(selLine[i].GeoId, selLine[i + 1].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                        "Left Click to validate 'Equality'.\n\nPress SHIFT to alternate between 'Equality', 'Parallel', 'Parallel and Equality'\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: all lines tangent to the curve"), 5);
+                        "Left Click to validate 'Equality'.\n\nPress SHIFT to alternate between 'Equality', 'Parallel', 'Parallel and Equality'\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: all lines tangent to the curve"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
@@ -1700,7 +1700,7 @@ protected:
                         createParallelConstrain(selLine[i].GeoId, selLine[i + 1].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_19",
-                        "Left Click to validate 'Parallel'.\n\nPress SHIFT to alternate between 'Equality', 'Parallel', 'Parallel and Equality'\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: all lines tangent to the curve"), 5);
+                        "Left Click to validate 'Parallel'.\n\nPress SHIFT to alternate between 'Equality', 'Parallel', 'Parallel and Equality'\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: all lines tangent to the curve"), 6);
                 }
                 if (availableConstraint == AvailableConstraint_THIRD) {
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add 'parallel' and 'equality' constraints"));
@@ -1709,7 +1709,7 @@ protected:
                         createParallelConstrain(selLine[i].GeoId, selLine[i + 1].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_20",
-                        "Left Click to validate 'Parallel' and 'Equality'.\n\nPress SHIFT to alternate between 'Equality', 'Parallel', 'Parallel and Equality'\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: all lines tangent to the curve"), 5);
+                        "Left Click to validate 'Parallel' and 'Equality'.\n\nPress SHIFT to alternate between 'Equality', 'Parallel', 'Parallel and Equality'\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: all lines tangent to the curve"), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1721,7 +1721,7 @@ protected:
                         createTangentConstrain(selCircleArc[0].GeoId, selLine[i].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_13",
-                        "Left Click to validate 'Tangency'.\n\nOr select a : \n   - Line: add line to the tangency"), 5);
+                        "Left Click to validate 'Tangency'.\n\nOr select a : \n   - Line: add line to the tangency"), 6);
                     selAllowed = 1;
                     availableConstraint = AvailableConstraint_RESET;
                 }
@@ -1734,7 +1734,7 @@ protected:
                         createTangentConstrain(selEllipseAndCo[0].GeoId, selLine[i].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_13",
-                        "Left Click to validate 'Tangency'.\n\nOr select a : \n   - Line: add line to the tangency"), 5);
+                        "Left Click to validate 'Tangency'.\n\nOr select a : \n   - Line: add line to the tangency"), 6);
                     selAllowed = 1;
                     availableConstraint = AvailableConstraint_RESET;
                 }
@@ -1745,7 +1745,7 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Tangency constraint"));
                     createTangentConstrain(selCircleArc[0].GeoId, selLine[0].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_7",
-                        "Left Click to validate 'Tangency'.\n\nPress SHIFT to alternate between 'Tangency', 'Distance' and 'Perpendicular'.\n\nOr select a : \n   - Line: both lines tangent to the curve\n   - Curve: both curves tangent to the line"), 5);
+                        "Left Click to validate 'Tangency'.\n\nPress SHIFT to alternate between 'Tangency', 'Distance' and 'Perpendicular'.\n\nOr select a : \n   - Line: both lines tangent to the curve\n   - Curve: both curves tangent to the line"), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
@@ -1759,7 +1759,7 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Symmetry constraints"));
                     createSymmetryConstrain(selCircleArc[0].GeoId, Sketcher::PointPos::mid, selCircleArc[1].GeoId, Sketcher::PointPos::mid, selLine[0].GeoId, selLine[0].PosId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_13",
-                        "Left Click to validate 'Symmetry'.\n\nPress SHIFT to alternate between 'Tangency' and 'Symmetry'."), 5);
+                        "Left Click to validate 'Symmetry'.\n\nPress SHIFT to alternate between 'Tangency' and 'Symmetry'."), 6);
                     selAllowed = 1;
                 }
                 if (availableConstraint == AvailableConstraint_SECOND) {
@@ -1767,7 +1767,7 @@ protected:
                     createTangentConstrain(selCircleArc[0].GeoId, selLine[0].GeoId);
                     createTangentConstrain(selCircleArc[1].GeoId, selLine[0].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_7",
-                        "Left Click to validate 'Tangency'.\n\nPress SHIFT to alternate between 'Tangency' and 'Symmetry'."), 5);
+                        "Left Click to validate 'Tangency'.\n\nPress SHIFT to alternate between 'Tangency' and 'Symmetry'."), 6);
                     availableConstraint = AvailableConstraint_RESET;
                 }
             }
@@ -1777,7 +1777,7 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Tangency constraint"));
                     createTangentConstrain(selEllipseAndCo[0].GeoId, selLine[0].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_7",
-                        "Left Click to validate 'Tangency'.\n\nPress SHIFT to alternate between 'Tangency', 'Distance' and 'Perpendicular'.\n\nOr select a : \n   - Line: both lines tangent to the curve\n   - Curve: both curves tangent to the line"), 5);
+                        "Left Click to validate 'Tangency'.\n\nPress SHIFT to alternate between 'Tangency', 'Distance' and 'Perpendicular'.\n\nOr select a : \n   - Line: both lines tangent to the curve\n   - Curve: both curves tangent to the line"), 6);
                     selAllowed = 1;
                     availableConstraint = AvailableConstraint_RESET;
                 }
@@ -1789,7 +1789,7 @@ protected:
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
                 createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
                 sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_8",
-                    "Left Click to validate 'Radius'.\n\nPress SHIFT to alternate between 'Radius' and 'Diameter'.\n\nOr select a : \n   - Line: distance, tangency\n   - Circle: Distance, equality"), 5);
+                    "Left Click to validate 'Radius'.\n\nPress SHIFT to alternate between 'Radius' and 'Diameter'.\n\nOr select a : \n   - Line: distance, tangency\n   - Circle: Distance, equality"), 6);
                 selAllowed = 1;
             }
             else if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 2 && selEllipseAndCo.size() == 0) {
@@ -1808,7 +1808,7 @@ protected:
                         createEqualityConstrain(selCircleArc[i].GeoId, selCircleArc[i + 1].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_8",
-                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance' and 'Equality'.\n\nOr select a : \n   - Line: tangency\n   - Circle: equality"), 5);
+                        "Left Click to validate 'Distance'.\n\nPress SHIFT to alternate between 'Distance' and 'Equality'.\n\nOr select a : \n   - Line: tangency\n   - Circle: equality"), 6);
                     selAllowed = 1;
                     availableConstraint = AvailableConstraint_RESET;
                 }
@@ -1822,7 +1822,7 @@ protected:
                         createEqualityConstrain(selCircleArc[i].GeoId, selCircleArc[i + 1].GeoId);
                     }
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_9",
-                        "Left Click to validate 'Equality'.\n\nOr select a : \n   - Line: all circles tangent to it\n   - Circle: add to the equality"), 5);
+                        "Left Click to validate 'Equality'.\n\nOr select a : \n   - Line: all circles tangent to it\n   - Circle: add to the equality"), 6);
                     selAllowed = 1;
                     availableConstraint = AvailableConstraint_RESET;
                 }
@@ -1834,7 +1834,7 @@ protected:
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Tangency constraint"));
                     createTangentConstrain(selCircleArc[0].GeoId, selEllipseAndCo[0].GeoId);
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually10",
-                        "Left Click to validate 'Tangency'."), 5);
+                        "Left Click to validate 'Tangency'."), 6);
                     selAllowed = 1;
                     availableConstraint = AvailableConstraint_RESET;
                 }
@@ -1845,7 +1845,7 @@ protected:
                 //One ellipse or arc of ellipse/hyperbola/parabola - no constrain to attribute
                 selAllowed = 1;
                 sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_11",
-                    "Ellipse, parabola, hyperbola selected.\n\nSelect a : \n   - Line/circle: tangency\n   - Ellipse, parabola, hyperbola (same type as current): Equality"), 5);
+                    "Ellipse, parabola, hyperbola selected.\n\nSelect a : \n   - Line/circle: tangency\n   - Ellipse, parabola, hyperbola (same type as current): Equality"), 6);
             }
             else if (selPoints.size() == 0 && selLine.size() == 0 && selCircleArc.size() == 0 && selEllipseAndCo.size() > 1) {
                 //only ellipse or arc of of same kind, then equality of all radius.
@@ -1866,7 +1866,7 @@ protected:
                     }
                     selAllowed = 1;
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_12",
-                        "Left Click to validate 'Equality'."), 5);
+                        "Left Click to validate 'Equality'."), 6);
                 }
             }
         }
@@ -2509,7 +2509,7 @@ protected:
                     parallel = 1;
                     restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
                     sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually_6",
-                        "Left Click to validate 'Distance(X/Y)'.\n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 5);
+                        "Left Click to validate 'Distance(X/Y)'.\n\nPress SHIFT to alternate between 'Distance(X/Y)' and 'Equality'\n\nIf 0 is applied it will be replaced by parallel constraint (90 for perpendicular).\n\nOr select a : \n   - Line: equality, parallel\n   - Curve: both lines tangent to the curve"), 6);
                     if ((selLine[0].GeoId == Sketcher::GeoEnum::VAxis || selLine[0].GeoId == Sketcher::GeoEnum::HAxis)) {
                         createDistanceConstrain(selLine[1].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
                     }

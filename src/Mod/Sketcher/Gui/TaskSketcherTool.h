@@ -66,7 +66,7 @@ public:
     bool isWidgetActive;
     std::vector<double> toolParameters;
     std::vector<bool> isSettingSet;
-    bool desactiveParametersOnSet;
+    bool unitChangeTriggeredValueChanged;
 
 //Q_SIGNALS:
 public Q_SLOTS:
@@ -74,7 +74,8 @@ public Q_SLOTS:
     void emitSetparameterTwo(double val);
     void emitSetparameterThree(double val);
     void emitSetparameterFour(double val);
-    void emitSetparameterFive(double val); 
+    void emitSetparameterFive(double val);
+    void emitSetparameterSix(double val);
     void emitTogglePreserveFilletChamferCorner(bool val);
 
 protected:
