@@ -42,9 +42,9 @@ class GuiExport SoFCColorGradient : public SoFCColorBarBase {
   SO_NODE_HEADER(Gui::SoFCColorGradient);
 
 public:
-  static void initClass(void);
-  static void finish(void);
-  SoFCColorGradient(void);
+  static void initClass();
+  static void finish();
+  SoFCColorGradient();
 
   /**
    * Sets the range of the colorbar from the maximum \a fMax to the minimum \a fMin.
@@ -63,9 +63,9 @@ public:
    */
   bool isVisible (float fVal) const;
   /** Returns the current minimum of the parameter range. */
-  float getMinValue (void) const { return _cColGrad.getMinValue(); }
+  float getMinValue () const { return _cColGrad.getMinValue(); }
   /** Returns the current maximum of the parameter range. */
-  float getMaxValue (void) const { return _cColGrad.getMaxValue(); }
+  float getMaxValue () const { return _cColGrad.getMaxValue(); }
   /**
    * Opens a dialog to customize the current settings of the color gradient bar.
    * Returns true if the settings have been changed, false otherwise.

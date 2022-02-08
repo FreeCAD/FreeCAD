@@ -72,7 +72,7 @@ SoFCColorGradient::~SoFCColorGradient()
 }
 
 // doc from parent
-void SoFCColorGradient::initClass(void)
+void SoFCColorGradient::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCColorGradient,SoFCColorBarBase,"Separator");
 }

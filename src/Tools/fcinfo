@@ -198,8 +198,6 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
     def clean(self,value):
 
         value = value.strip()
-        if sys.version_info.major < 3:
-            value = value.encode("utf8")
         return value
 
 
