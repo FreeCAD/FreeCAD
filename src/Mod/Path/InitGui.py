@@ -173,25 +173,25 @@ class PathWorkbench(Workbench):
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist
+            QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist
         )
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist
+            QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist
         )
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "New Operations"),
+            QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + engravecmdgroup + threedcmdgroup,
         )
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist
+            QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist
         )
         if extracmdlist:
             self.appendToolbar(
-                QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist
+                QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist
             )
 
         self.appendMenu(
-            [QT_TRANSLATE_NOOP("Path", "&Path")],
+            [QT_TRANSLATE_NOOP("Workbench", "&Path")],
             projcmdlist
             + ["Path_ExportTemplate", "Separator"]
             + toolcmdlist
@@ -205,41 +205,41 @@ class PathWorkbench(Workbench):
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Path Dressup"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Path Dressup"),
             ],
             dressupcmdlist,
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Supplemental Commands"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Supplemental Commands"),
             ],
             prepcmdlist,
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Path Modification"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Path Modification"),
             ],
             modcmdlist,
         )
         if specialcmdlist:
             self.appendMenu(
                 [
-                    QT_TRANSLATE_NOOP("Path", "&Path"),
-                    QT_TRANSLATE_NOOP("Path", "Specialty Operations"),
+                    QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                    QT_TRANSLATE_NOOP("Workbench", "Specialty Operations"),
                 ],
                 specialcmdlist,
             )
         if extracmdlist:
-            self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
+            self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&Path")], extracmdlist)
 
-        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], ["Separator"])
+        self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&Path")], ["Separator"])
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Utils"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Utils"),
             ],
             ["Path_PropertyBag"],
         )
