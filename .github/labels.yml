@@ -12,7 +12,7 @@
 🚜 PartDesign:
 - 'src/Mod/PartDesign/**/*'
 
-':pencil2: Sketcher':
+✏️ Sketcher:
 - 'src/Mod/Sketcher/**/*'
 
 📐 Draft:
@@ -27,7 +27,7 @@
 🧱 Part:  
 - 'src/Mod/Part/**/*'
 
-🥅Mesh:
+🥅 Mesh:
 - 'src/Mod/Mesh/**/*'
 
 Spreadsheet:
