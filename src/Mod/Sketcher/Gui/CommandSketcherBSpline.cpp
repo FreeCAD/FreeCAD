@@ -1056,8 +1056,10 @@ void CmdSketcherInsertKnot::activated(int iMsg)
                                 .arg(QString::fromUtf8(multList.str().c_str())));
         // use an appropriate middle value from `knots`
         knotDialog.setDoubleValue(0.5 * (knots.front() + knots.back()));
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
         // set step size dependent on the knot range
         knotDialog.setDoubleStep(0.001 * (knots.back() - knots.front()));
+#endif
         // use min/max from `knots`
         knotDialog.setDoubleRange(knots.front(), knots.back());
 
