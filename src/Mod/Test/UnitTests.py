@@ -152,3 +152,33 @@ class UnitBasicCases(unittest.TestCase):
         length = FreeCAD.Units.Quantity(1, "m")
         self.assertEqual(length.Value, 1000)
         self.assertEqual(length.Unit, FreeCAD.Units.Length)
+
+    def testToString(self):
+        value = FreeCAD.Units.toNumber(1023, 'g', 2)
+        self.assertEqual(float(value), 1000)
+
+        value = FreeCAD.Units.toNumber(1023, 'g', 3)
+        self.assertEqual(float(value), 1020)
+
+        value = FreeCAD.Units.toNumber(1023, 'f', 2)
+        self.assertEqual(float(value), 1023)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 1)
+        self.assertEqual(float(value), 1000)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 2)
+        self.assertEqual(float(value), 1020)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 3)
+        self.assertEqual(float(value), 1023)
+
+        q = FreeCAD.Units.Quantity("1023")
+        value = FreeCAD.Units.toNumber(q, 'f', 2)
+        self.assertEqual(float(value), 1023)
+
+        with self.assertRaises(TypeError):
+            FreeCAD.Units.toNumber("1023", 'g', 2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Units.toNumber(1023, 'gg', 2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Units.toNumber(1023, 's', 2)

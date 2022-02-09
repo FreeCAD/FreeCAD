@@ -199,7 +199,7 @@ public:
             mpl::vector2<changed_prop, type_prop>  >::type cluster_properties;
 	    
     //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
-    //should not access the settings via the proeprty getter and setter functions.
+    //should not access the settings via the property getter and setter functions.
     typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> OptionOwner;
     std::shared_ptr<OptionOwner> m_options;
 

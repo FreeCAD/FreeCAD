@@ -955,8 +955,12 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O|detet", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
             throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
         }
+
         std::string patName = std::string(pPatName);
+        PyMem_Free(pPatName);
         std::string patFile = std::string(pPatFile);
+        PyMem_Free(pPatFile);
+
         if (PyObject_TypeCheck(pFace, &(TopoShapeFacePy::Type))) {
             const TopoDS_Shape& sh = static_cast<TopoShapePy*>(pFace)->getTopoShapePtr()->getShape();
             face = TopoDS::Face(sh);

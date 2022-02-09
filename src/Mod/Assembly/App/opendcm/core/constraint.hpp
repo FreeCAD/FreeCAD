@@ -190,7 +190,7 @@ public:
             template< typename T >
             typename boost::enable_if<typename has_option<T>::type, void>::type
             operator()(EquationSet<T>& val) const;
-            //if the equation has no otpion we do nothing!
+            //if the equation has no option we do nothing!
             template< typename T >
             typename boost::enable_if<mpl::not_<typename has_option<T>::type>, void>::type
             operator()(EquationSet<T>& val) const;

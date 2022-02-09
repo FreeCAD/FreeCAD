@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -979,7 +980,7 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Insert knot");
-    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter with the given multiplicity. If a knot already exists at that parameter, it's multiplicity is increased by the value.");
+    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.");
     sWhatsThis      = "Sketcher_BSplineInsertKnot";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineInsertKnot";
@@ -1033,13 +1034,39 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     try {
         // TODO: Get param from user input by clicking on desired spot
         // Get param from user input into a box
-        bool paramPicked;
-        // TODO: get min/max values from the BSpline
-        double param = QInputDialog::getDouble(
-            Gui::getMainWindow(), QObject::tr("Knot parameter"),
-            QObject::tr("Please provide the parameter where the knot is to be inserted."),
-            0.5, -DBL_MAX, DBL_MAX, 8, &paramPicked);
-        if (paramPicked) {
+        const Part::GeomBSplineCurve *bsp =
+            static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+        const auto& knots = bsp->getKnots();
+        const auto& mults = bsp->getMultiplicities();
+        QInputDialog knotDialog(Gui::getMainWindow());
+        knotDialog.setInputMode(QInputDialog::DoubleInput);
+        knotDialog.setDoubleDecimals(Base::UnitsApi::getDecimals());
+        knotDialog.setWindowTitle(QObject::tr("Knot parameter"));
+        // use values from `knots` and `weights` and insert in label
+        std::stringstream knotList;
+        for (auto knot : knots)
+            knotList << " " << knot << ",";
+        std::stringstream multList;
+        for (auto mult : mults)
+            multList << " " << mult << ",";
+        knotDialog.setLabelText(QObject::tr("Please provide the parameter where the knot is to be inserted.\n"
+                                            "Current knots: %1\n"
+                                            "Multiplicities: %2\n")
+                                .arg(QString::fromUtf8(knotList.str().c_str()))
+                                .arg(QString::fromUtf8(multList.str().c_str())));
+        // use an appropriate middle value from `knots`
+        knotDialog.setDoubleValue(0.5 * (knots.front() + knots.back()));
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
+        // set step size dependent on the knot range
+        knotDialog.setDoubleStep(0.001 * (knots.back() - knots.front()));
+#endif
+        // use min/max from `knots`
+        knotDialog.setDoubleRange(knots.front(), knots.back());
+
+        int ret = knotDialog.exec();
+
+        if (ret == QDialog::Accepted) {
+            double param = knotDialog.doubleValue();
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "insertBSplineKnot(%d, %lf, %d) ",
                                   GeoId, param, 1);

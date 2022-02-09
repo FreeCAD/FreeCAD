@@ -44,6 +44,7 @@ public:
     App::PropertyQuantityConstraint Size2;
     App::PropertyAngle Angle;
     App::PropertyBool FlipDirection;
+    App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{

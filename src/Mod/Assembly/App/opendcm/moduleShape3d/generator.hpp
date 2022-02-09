@@ -179,7 +179,7 @@ struct segment3D {
                 std::shared_ptr<Constraint3D> c2 = base::m_system->createConstraint3D(g1,g3, details::fixed);
                 c1->disable(); //required by fixed constraint
                 base::append(c1);
-                c2->disable(); //requiered by fixed constraint
+                c2->disable(); //required by fixed constraint
                 base::append(c2);
             }
             else if(base::m_geometries->size() == 2) {
@@ -217,7 +217,7 @@ struct segment3D {
                     std::shared_ptr<Constraint3D> c2 = base::m_system->createConstraint3D(g1,g3, details::fixed);
                     c1->disable(); //required by fixed constraint
                     base::append(c1);
-                    c2->disable(); //requiered by fixed constraint
+                    c2->disable(); //required by fixed constraint
                     base::append(c2);
 
                 }

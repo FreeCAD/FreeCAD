@@ -556,39 +556,6 @@ void Matrix_gauss(Matrix a, Matrix b)
     }
   }
 }
-/* ------------------------------------------------------------------------
-   Matrix_identity(Matrix a)
-
-   Puts an identity matrix in matrix a
-   ------------------------------------------------------------------------ */
-
-void Matrix_identity (Matrix a)
-{
-  int i;
-  for (i = 0; i < 16; i++) a[i] = 0;
-  a[0] = 1;
-  a[5] = 1;
-  a[10] = 1;
-  a[15] = 1;
-}
-
-/* ------------------------------------------------------------------------
-   Matrix_invert(Matrix a, Matrix inva)
-
-   Inverts Matrix a and places the result in inva.
-   Relies on the Gaussian Elimination code above. (See Numerical recipes).
-   ------------------------------------------------------------------------ */
-void Matrix_invert (Matrix a, Matrix inva)
-{
-
-  double  temp[16];
-  int     i;
-
-  for (i = 0; i < 16; i++)
-    temp[i] = a[i];
-  Matrix_identity(inva);
-  Matrix_gauss(temp,inva);
-}
 
 void  Matrix4D::inverseOrthogonal()
 {
@@ -609,7 +576,6 @@ void Matrix4D::inverseGauss ()
                                 0 ,0 ,0 ,1 };
   getGLMatrix(matrix);
 
-//  Matrix_invert(matrix, inversematrix);
   Matrix_gauss(matrix,inversematrix);
 
   setGLMatrix(inversematrix);
@@ -862,6 +828,20 @@ int Matrix4D::hasScale(double tol) const
     // scaling factors are the column vector length. We use square distance and
     // ignore the actual scaling signess
     //
+    // Note: In general using the column vectors to get the scaling factors makes
+    // sense if a scaling matrix was multiplied from the left side. If a scaling
+    // matrix was multiplied from the right side then the row vectors must be used.
+    // However, since this function checks for _uniform_ scaling it doesn't make a
+    // difference if row or column vectors are used.
+
+    // TODO:
+    // The int should be replaced with an enum class that tells the calling
+    // instance whether:
+    // * a uniform scaling was applied
+    // * a non-uniform scaling from the right side was applied
+    // * a non-uniform scaling from the left side was applied
+    // * no scaling at all
+
     if (tol == 0.0)
         tol = 1e-9;
     double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();

@@ -145,7 +145,7 @@ struct dummy_accessor {
     void finalize(T& t) {};
 };
 
-//dummy geometry traits for boost blank, wil bever be used
+//dummy geometry traits for boost blank, will never be used
 template<>
 struct geometry_traits<boost::blank> {
     typedef tag::direction3D tag;

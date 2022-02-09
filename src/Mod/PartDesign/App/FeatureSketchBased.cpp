@@ -776,7 +776,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
                 BRepAdaptor_Curve adapt(edge);
                 // create a plane (pnt,dir) that goes through the intersection point and is built of
                 // the vectors of the sketch normal and the rotation axis
-                const gp_Dir& normal = BRepAdaptor_Surface(face).Plane().Axis().Direction();
+                gp_Dir normal = BRepAdaptor_Surface(face).Plane().Axis().Direction();
                 gp_Dir dir = line.Direction().Crossed(normal);
                 gp_Pnt pnt = distss.PointOnShape1(i);
 
@@ -803,7 +803,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
                     // create a plane (pnt,dir) that goes through the intersection point and is built of
                     // the vectors of the sketch normal and the rotation axis
                     BRepAdaptor_Surface adapt(face);
-                    const gp_Dir& normal = adapt.Plane().Axis().Direction();
+                    gp_Dir normal = adapt.Plane().Axis().Direction();
                     gp_Dir dir = line.Direction().Crossed(normal);
                     gp_Pnt pnt = distss.PointOnShape1(i);
 

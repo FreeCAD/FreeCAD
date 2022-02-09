@@ -41,9 +41,9 @@ struct obj_parser : public qi::grammar<IIterator, qi::unused_type(typename detai
     static void setProperties(std::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq);
 };
 
-//when objects should not be generated we need to get a empy rule, as obj_rule_init
-//trys always to access the rules attribute and when the parser_generator trait is not
-//specialitzed it's impossible to have the attribute type right in the unspecialized trait
+//when objects should not be generated we need to get an empty rule, as obj_rule_init
+//always tries to access the rules attribute and when the parser_generator trait is not
+//specialized it's impossible to have the attribute type right in the unspecialized trait
 template<typename Sys, typename seq, typename state>
 struct obj_parser_fold : mpl::fold< seq, state,
         mpl::if_< parser_parse<mpl::_2, Sys>,

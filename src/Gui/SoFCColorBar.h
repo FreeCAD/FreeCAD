@@ -50,8 +50,8 @@ class GuiExport SoFCColorBarBase : public SoSeparator, public App::ValueFloatToR
   SO_NODE_ABSTRACT_HEADER(Gui::SoFCColorBarBase);
 
 public:
-  static void initClass(void);
-  static void finish(void);
+  static void initClass();
+  static void finish();
 
   virtual void GLRenderBelowPath ( SoGLRenderAction *action );
 
@@ -86,12 +86,12 @@ public:
    *
    * This method must be implemented in subclasses.
    */
-  virtual float getMinValue (void) const = 0;
+  virtual float getMinValue () const = 0;
   /** Returns the current maximum of the parameter range.
    *
    * This method must be implemented in subclasses.
    */
-  virtual float getMaxValue (void) const = 0;
+  virtual float getMaxValue () const = 0;
   /**
    * Opens a dialog to customize the current settings of the color bar.
    * Returns true if the settings have been changed, false otherwise.
@@ -113,7 +113,7 @@ protected:
    */
   virtual void setViewportSize( const SbVec2s& size ) = 0;
 
-  SoFCColorBarBase (void);
+  SoFCColorBarBase ();
   virtual ~SoFCColorBarBase ();
 
 private:
@@ -132,9 +132,9 @@ class GuiExport SoFCColorBar : public SoFCColorBarBase, public Base::Subject<int
   SO_NODE_HEADER(Gui::SoFCColorBar);
 
 public:
-  static void initClass(void);
-  static void finish(void);
-  SoFCColorBar(void);
+  static void initClass();
+  static void finish();
+  SoFCColorBar();
 
   /**
    * Returns the currently active color bar object.
@@ -164,11 +164,11 @@ public:
   /**
    * Returns the current minimum of the parameter range of the currently active color bar.
    */
-  float getMinValue (void) const;
+  float getMinValue () const;
   /**
    * Returns the current maximum of the parameter range of the currently active color bar.
    */
-  float getMaxValue (void) const;
+  float getMaxValue () const;
   /**
    * Customizes the currently active color bar.
    */

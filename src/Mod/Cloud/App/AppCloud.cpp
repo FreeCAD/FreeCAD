@@ -67,53 +67,69 @@ PyMOD_INIT_FUNC(Cloud)
 Py::Object Cloud::Module::sCloudURL(const Py::Tuple& args)
 {
     char *URL;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&URL))     // convert args: Python->C
-        return Py::None();
-    if (this->URL.getStrValue() != URL) {
-                this->URL.setValue(URL);
-    }
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&URL))
+        throw Py::Exception();
+
+    std::string strURL = URL;
+    PyMem_Free(URL);
+    if (this->URL.getStrValue() != strURL)
+        this->URL.setValue(strURL);
+
     return Py::None();
 }
 
 Py::Object Cloud::Module::sCloudTokenAuth(const Py::Tuple& args)
 {
     char *TokenAuth;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TokenAuth))     // convert args: Python->C
-        return Py::None();
-    if (this->TokenAuth.getStrValue() != TokenAuth) {
-           this->TokenAuth.setValue(TokenAuth);
-    }
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TokenAuth))
+        throw Py::Exception();
+
+    std::string strTokenAuth = TokenAuth;
+    PyMem_Free(TokenAuth);
+    if (this->TokenAuth.getStrValue() != strTokenAuth)
+        this->TokenAuth.setValue(strTokenAuth);
+
     return Py::None();
 }
 
 Py::Object Cloud::Module::sCloudTokenSecret(const Py::Tuple& args)
 {
     char *TokenSecret;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TokenSecret))     // convert args: Python->C
-        return Py::None();
-    if (this->TokenSecret.getStrValue() != TokenSecret) {
-             this->TokenSecret.setValue(TokenSecret);
-    }
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TokenSecret))
+        throw Py::Exception();
+
+    std::string strTokenSecret = TokenSecret;
+    PyMem_Free(TokenSecret);
+    if (this->TokenSecret.getStrValue() != strTokenSecret)
+        this->TokenSecret.setValue(strTokenSecret);
+
     return Py::None();
 }
 
 Py::Object Cloud::Module::sCloudTCPPort(const Py::Tuple& args)
 {
     char *TCPPort;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TCPPort))     // convert args: Python->C
-        return Py::None();
-    if (this->TCPPort.getStrValue() != TCPPort) {
-            this->TCPPort.setValue(TCPPort);
-    }
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &TCPPort))
+        throw Py::Exception();
+
+    std::string strTCPPort = TCPPort;
+    PyMem_Free(TCPPort);
+    if (this->TCPPort.getStrValue() != strTCPPort)
+        this->TCPPort.setValue(strTCPPort);
+
     return Py::None();
 }
 
 Py::Object Cloud::Module::sCloudSave(const Py::Tuple& args)
 {
     char *pDoc;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &pDoc))     // convert args: Python->C
-        return Py::None();
-    cloudSave(pDoc);   
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &pDoc))
+        throw Py::Exception();
+
+    std::string strpDoc = pDoc;
+    PyMem_Free(pDoc);
+    cloudSave(strpDoc.c_str());
+
     return Py::None();
 }
 
@@ -121,31 +137,41 @@ Py::Object Cloud::Module::sCloudSave(const Py::Tuple& args)
 Py::Object Cloud::Module::sCloudRestore(const Py::Tuple& args)
 {
     char *pDoc;
-    if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &pDoc))     // convert args: Python->C
-        return Py::None();
-    cloudRestore(pDoc);
+    if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &pDoc))
+        throw Py::Exception();
+
+    std::string strpDoc = pDoc;
+    PyMem_Free(pDoc);
+    cloudRestore(strpDoc.c_str());
+
     return Py::None();
 }
 
 Py::Object Cloud::Module::sCloudProtocolVersion(const Py::Tuple& args)
 {
     char *ProtocolVersion;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &ProtocolVersion))     // convert args: Python->C
-        return Py::None();
-    if (this->ProtocolVersion.getStrValue() != ProtocolVersion) {
-            this->ProtocolVersion.setValue(ProtocolVersion);
-    }
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &ProtocolVersion))
+        throw Py::Exception();
+
+    std::string strProtocolVersion = ProtocolVersion;
+    PyMem_Free(ProtocolVersion);
+    if (this->ProtocolVersion.getStrValue() != strProtocolVersion)
+        this->ProtocolVersion.setValue(strProtocolVersion);
+
     return Py::None();
 }
 
 Py::Object Cloud::Module::sCloudRegion(const Py::Tuple& args)
 {
     char *Region;
-    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &Region))     // convert args: Python->C
-        return Py::None();
-    if (this->Region.getStrValue() != Region) {
-            this->Region.setValue(Region);
-    }
+    if (!PyArg_ParseTuple(args.ptr(), "et","utf-8", &Region))
+        throw Py::Exception();
+
+    std::string strRegion = Region;
+    PyMem_Free(Region);
+    if (this->Region.getStrValue() != strRegion)
+        this->Region.setValue(strRegion);
+
     return Py::None();
 }
 

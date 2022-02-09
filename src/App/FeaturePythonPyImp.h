@@ -31,6 +31,7 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #elif defined(__GNUC__) || defined(__GNUG__)
+# pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
@@ -44,28 +45,14 @@
         virtual ~_class_(); \
     };
 
-#if PY_VERSION_HEX >= 0x03080000
-#define PYTHON_TYPE_IMP(_class_, _subclass_) \
-    PyTypeObject _class_::Type = { \
-        PyVarObject_HEAD_INIT(&PyType_Type, 0) \
-        ""#_class_"",  \
-        sizeof(_class_),  \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT, \
-        ""#_class_"", \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        &_subclass_::Type, \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
-    }; \
-    _class_::_class_(Base::BaseClass *pcObject, PyTypeObject *T) \
-        : _subclass_(reinterpret_cast<_subclass_::PointerType>(pcObject), T) \
-    { \
-    } \
-    _class_::~_class_() \
-    { \
-    }
-
+#if PY_VERSION_HEX >= 0x03090000
+#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+#elif PY_VERSION_HEX >= 0x03080000
+#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #else
+#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+#endif \
+
 #define PYTHON_TYPE_IMP(_class_, _subclass_) \
     PyTypeObject _class_::Type = { \
         PyVarObject_HEAD_INIT(&PyType_Type, 0) \
@@ -76,7 +63,7 @@
         ""#_class_"", \
         0, 0, 0, 0, 0, 0, 0, 0, 0, \
         &_subclass_::Type, \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
+        PYTHON_TYPE_SLOTS \
     }; \
     _class_::_class_(Base::BaseClass *pcObject, PyTypeObject *T) \
         : _subclass_(reinterpret_cast<_subclass_::PointerType>(pcObject), T) \
@@ -85,7 +72,6 @@
     _class_::~_class_() \
     { \
     }
-#endif
 
 namespace App
 {

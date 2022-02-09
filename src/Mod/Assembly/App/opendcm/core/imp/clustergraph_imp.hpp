@@ -274,8 +274,8 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(std::
 
     //first copy all vertices and edges, but be aware that the objects in the new graph
     //are also copys only and point to the old graph. there is a bug in older boost version
-    //(<1.5 i believe) that breaks vertex_all propety map for bundled properties, so we
-    //have to create our own copie functors
+    //(<1.5 i believe) that breaks vertex_all property map for bundled properties, so we
+    //have to create our own copier functors
     into->clear();
     vertex_copier<Graph> vc(*this, *into);
     edge_copier<Graph> ec(*this, *into);
@@ -552,14 +552,14 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addEdge(LocalVertex
     bool done;
     boost::tie(e, done) = boost::edge(source, target, *this);
 
-    //if done=true the edge alredy existed
+    //if done=true the edge already existed
     if(!done)
         boost::tie(e, done) = boost::add_edge(source, target, *this);
 
     if(!done)
         return fusion::make_vector(LocalEdge(), GlobalEdge(), false);
 
-    //init the bundle corecctly for new edge
+    //init the bundle correctly for new edge
     GlobalEdge global = { fusion::at_c<0> ((*this) [source]), fusion::at_c<0> ((*this) [target]), m_id->generate() };
     edge_bundle_single s;
     fusion::at_c<1> (s) = global;
@@ -599,7 +599,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addEdge(GlobalVerte
     if(!d3)
         return fusion::make_vector(LocalEdge(), GlobalEdge(), false, false);
 
-    //init the bundle corectly for new edge
+    //init the bundle correctly for new edge
     GlobalEdge global = { source, target, m_id->generate() };
     edge_bundle_single s;
     fusion::at_c<1> (s) = global;
@@ -670,7 +670,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::downstreamRemo
 
     std::pair<LocalVertex, bool> res = getContainingVertex(v);
 
-    //we don't throw, as this function gets invoked recursivly and it may happen that the
+    //we don't throw, as this function gets invoked recursively and it may happen that the
     //vertex to remove is only in the top layers, not the button ones
     if(!res.second)
         return;
@@ -1188,7 +1188,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::apply_to_bundle(Glo
     fusion::vector<LocalVertex, std::shared_ptr<ClusterGraph>, bool> res = getContainingVertexGraph(k);
 
     if(!fusion::at_c<2> (res)) {
-        //TODO: Throw (propeties return reference, but can't init a reference temporarily)
+        //TODO: Throw (properties return reference, but can't init a reference temporarily)
     }
 
     return fusion::at_c<1> (res)->template apply_to_bundle<functor> (k, f);
