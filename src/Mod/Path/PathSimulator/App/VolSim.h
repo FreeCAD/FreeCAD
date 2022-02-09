@@ -30,7 +30,6 @@
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Path/App/Command.h>
 
-
 #define SIM_EPSILON 0.00001
 #define SIM_TESSEL_TOP		1
 #define SIM_TESSEL_BOT		2
