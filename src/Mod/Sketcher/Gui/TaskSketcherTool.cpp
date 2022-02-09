@@ -530,7 +530,7 @@ void SketcherToolWidget::setSettings(int toolSelected)
             isWidgetActive = 1;
             break;
         }
-        case 12: //Slot : DrawSketchHandlerOblong
+        case 12: //Slot
         {
             toolParameters.resize(5, 0);
             isSettingSet.resize(5, 0);
@@ -636,6 +636,39 @@ void SketcherToolWidget::setSettings(int toolSelected)
             isSettingSet[4] = 0; //setUnit triggers ValuedChanged.
             ui->parameterSix->setVisible(1);
             ui->parameterSix->setEnabled(0);
+
+            setParameterFocus(0);
+            isWidgetActive = 1;
+            break;
+        }
+        case 15: //Round corner rectangle : DrawSketchHandlerOblong
+        {
+            toolParameters.resize(5, 0);
+            isSettingSet.resize(5, 0);
+
+            ui->label->setVisible(1);
+            ui->label2->setVisible(1);
+            ui->label3->setVisible(1);
+            ui->label4->setVisible(1);
+            ui->label5->setVisible(1);
+            ui->notice->setVisible(1);
+            ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
+            ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
+            ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (along x axis)"));
+            ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (along y axis)"));
+            ui->label5->setText(QApplication::translate("TaskSketcherTool_Frame", "Thickness"));
+            ui->notice->setText(QApplication::translate("TaskSketcherTool_Frame", "Positive thickness is inward, negative outward."));
+
+            ui->parameterOne->setVisible(1);
+            ui->parameterOne->setEnabled(1);
+            ui->parameterTwo->setVisible(1);
+            ui->parameterTwo->setEnabled(1);
+            ui->parameterThree->setVisible(1);
+            ui->parameterThree->setEnabled(0);
+            ui->parameterFour->setVisible(1);
+            ui->parameterFour->setEnabled(0);
+            ui->parameterFive->setVisible(1);
+            ui->parameterFive->setEnabled(0);
 
             setParameterFocus(0);
             isWidgetActive = 1;

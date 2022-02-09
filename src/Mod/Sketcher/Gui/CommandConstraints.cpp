@@ -868,9 +868,7 @@ void CmdSketcherConstraint::activated(int /*iMsg*/)
 class DrawSketchHandlerConstrainContextual : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerConstrainContextual()
-    {
-    }
+    DrawSketchHandlerConstrainContextual(){}
     virtual ~DrawSketchHandlerConstrainContextual() {}
 
     enum DistanceType {

@@ -519,37 +519,26 @@ public:
         }
         else if (Mode==STATUS_SEEK_Second) {
             if(constructionMethod == Diagonal) {
-                float dx, dy;
+                //recalculate secondpoint in case mouse moved too fast for mousemove to catch it.
+                secondPoint = onSketchPos;
                 if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    dx = sketchgui->toolSettings->widget->toolParameters[2];
+                    float dx = sketchgui->toolSettings->widget->toolParameters[2];
                     if (onSketchPos.x - firstPoint.x < 0) {
                         dx = -dx;
                     }
                     secondPoint.x = firstPoint.x + dx;
                 }
-                else {
-                    dx = onSketchPos.x - firstPoint.x;
-                    secondPoint.x = onSketchPos.x;
-                }
                 if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dy = sketchgui->toolSettings->widget->toolParameters[3];
+                    float dy = sketchgui->toolSettings->widget->toolParameters[3];
                     if (onSketchPos.y - firstPoint.y < 0) {
                         dy = -dy;
                     }
                     secondPoint.y = firstPoint.y + dy;
                 }
-                else {
-                    dy = onSketchPos.y - firstPoint.y;
-                    secondPoint.y = onSketchPos.y;
-                }
-                SbString text;
-                text.sprintf(" (%.1f x %.1f)", dx, dy);
-                setPositionText(onSketchPos, text);
 
                 EditCurve[2] = secondPoint;
-                EditCurve[1] = Base::Vector2d(secondPoint.x , firstPoint.y);
+                EditCurve[1] = Base::Vector2d(secondPoint.x, firstPoint.y);
                 EditCurve[3] = Base::Vector2d(firstPoint.x, secondPoint.y);
-
             }
             else if (constructionMethod == CenterAndCorner) {
                 float dx, dy;
@@ -854,8 +843,6 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
-            sketchgui->toolSettings->widget->setSettings(0);
-
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
@@ -982,9 +969,7 @@ public:
         , EditCurve(37)
     {
     }
-    virtual ~DrawSketchHandlerOblong() {
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerOblong() {}
     /// mode table
     enum BoxMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -1431,7 +1416,6 @@ public:
                 tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
             
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
@@ -1504,6 +1488,477 @@ bool CmdSketcherCreateOblong::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+/* Create frame =======================================================*/
+
+class DrawSketchHandlerFrame : public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerFrame(): Mode(STATUS_SEEK_First), thickness(0), EditCurve(5) {}
+    virtual ~DrawSketchHandlerFrame() {}
+
+    enum BoxMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_SEEK_Third,     /**< enum value ----. */
+        STATUS_End
+    };
+
+    virtual void activated(ViewProviderSketch*)
+    {
+        setCrosshairCursor("Sketcher_Pointer_Frame");
+        sketchgui->toolSettings->widget->setSettings(15);
+
+        // Constrain icon size in px
+        qreal pixelRatio = devicePixelRatio();
+        const unsigned long defaultCrosshairColor = 0xFFFFFF;
+        unsigned long color = getCrosshairColor();
+        auto colorMapping = std::map<unsigned long, unsigned long>();
+        colorMapping[defaultCrosshairColor] = color;
+
+        qreal fullIconWidth = 32 * pixelRatio;
+        qreal iconWidth = 16 * pixelRatio;
+        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
+            icon = Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateFrame", QSizeF(iconWidth, iconWidth));
+        QPainter cursorPainter;
+        cursorPainter.begin(&cursorPixmap);
+        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.end();
+        int hotX = 8;
+        int hotY = 8;
+        cursorPixmap.setDevicePixelRatio(pixelRatio);
+        // only X11 needs hot point coordinates to be scaled
+        if (qGuiApp->platformName() == QLatin1String("xcb")) {
+            hotX *= pixelRatio;
+            hotY *= pixelRatio;
+        }
+        setCursor(cursorPixmap, hotX, hotY, false);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+                pressButton(onSketchPos);
+                releaseButton(onSketchPos);
+            }
+        }
+        else if (Mode == STATUS_SEEK_Second) {
+            float dx = onSketchPos.x - firstPoint.x;
+            float dy = onSketchPos.y - firstPoint.y;
+            secondPoint = onSketchPos;
+            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                dx = sketchgui->toolSettings->widget->toolParameters[2];
+                if (onSketchPos.x - firstPoint.x < 0) {
+                    dx = -dx;
+                }
+                secondPoint.x = firstPoint.x + dx;
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                dy = sketchgui->toolSettings->widget->toolParameters[3];
+                if (onSketchPos.y - firstPoint.y < 0) {
+                    dy = -dy;
+                }
+                secondPoint.y = firstPoint.y + dy;
+            }
+
+            EditCurve[0] = firstPoint;
+            EditCurve[2] = secondPoint;
+            EditCurve[1] = Base::Vector2d(secondPoint.x, firstPoint.y);
+            EditCurve[3] = Base::Vector2d(firstPoint.x, secondPoint.y);
+            EditCurve[4] = firstPoint;
+
+            SbString text;
+            text.sprintf(" (%.1f x %.1f)", dx, dy);
+            setPositionText(onSketchPos, text);
+            drawEdit(EditCurve);
+        }
+        else if (Mode == STATUS_SEEK_Third) {
+            double dx, dy, minX, minY, maxX, maxY;
+            minX = min(firstPoint.x, secondPoint.x);
+            maxX = max(firstPoint.x, secondPoint.x);
+            minY = min(firstPoint.y, secondPoint.y);
+            maxY = max(firstPoint.y, secondPoint.y);
+
+            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                thickness = -sketchgui->toolSettings->widget->toolParameters[4];
+            }
+            else {
+                dx = min(abs(onSketchPos.x - minX), abs(onSketchPos.x - maxX));
+                dy = min(abs(onSketchPos.y - minY), abs(onSketchPos.y - maxY));
+                if (onSketchPos.x - minX > 0 && onSketchPos.x - maxX < 0 && !(onSketchPos.y - minY > 0 && onSketchPos.y - maxY < 0) ) {
+                    thickness = dy;
+                }
+                else if (onSketchPos.y - minY > 0 && onSketchPos.y - maxY < 0 && !(onSketchPos.x - minX > 0 && onSketchPos.x - maxX < 0)) {
+                    thickness = dx;
+                }
+                else if (onSketchPos.y - minY > 0 && onSketchPos.y - maxY < 0 && onSketchPos.x - minX > 0 && onSketchPos.x - maxX < 0) {
+                    thickness = -min(dx, dy);
+                }
+                else {
+                    thickness = max(dx, dy);
+                }
+            }
+
+            thirdPoint.x = firstPoint.x == minX ? minX - thickness : maxX + thickness;
+            thirdPoint.y = firstPoint.y == minY ? minY - thickness : maxY + thickness;
+            fourthPoint.x = secondPoint.x == minX ? minX - thickness : maxX + thickness;
+            fourthPoint.y = secondPoint.y == minY ? minY - thickness : maxY + thickness;
+
+            EditCurve.resize(10);
+            EditCurve[0] = firstPoint;
+            EditCurve[1] = Base::Vector2d(secondPoint.x, firstPoint.y);
+            EditCurve[2] = secondPoint;
+            EditCurve[3] = Base::Vector2d(firstPoint.x, secondPoint.y);
+            EditCurve[4] = firstPoint;
+            EditCurve[5] = thirdPoint;
+            EditCurve[6] = Base::Vector2d(fourthPoint.x, thirdPoint.y);
+            EditCurve[7] = fourthPoint;
+            EditCurve[8] = Base::Vector2d(thirdPoint.x, fourthPoint.y);
+            EditCurve[9] = thirdPoint;
+
+            SbString text;
+            text.sprintf(" (%.1fT)", -thickness);
+            setPositionText(onSketchPos, text);
+
+            drawEdit(EditCurve);
+            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                pressButton(onSketchPos);
+                releaseButton(onSketchPos);
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_First) {
+            firstPoint = onSketchPos;
+            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                firstPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                firstPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+            }
+
+            sketchgui->toolSettings->widget->setParameterActive(0, 0);
+            sketchgui->toolSettings->widget->setParameterActive(0, 1);
+            sketchgui->toolSettings->widget->setParameterActive(1, 2);
+            sketchgui->toolSettings->widget->setParameterActive(1, 3);
+            sketchgui->toolSettings->widget->setParameterFocus(2);
+            Mode = STATUS_SEEK_Second;
+        }
+        else if (Mode == STATUS_SEEK_Second) {
+            //recalculate secondpoint in case mouse moved too fast for mousemove to catch it.
+            secondPoint = onSketchPos;
+            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                float dx = sketchgui->toolSettings->widget->toolParameters[2];
+                if (onSketchPos.x - firstPoint.x < 0) {
+                    dx = -dx;
+                }
+                secondPoint.x = firstPoint.x + dx;
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                float dy = sketchgui->toolSettings->widget->toolParameters[3];
+                if (onSketchPos.y - firstPoint.y < 0) {
+                    dy = -dy;
+                }
+                secondPoint.y = firstPoint.y + dy;
+            }
+
+            EditCurve[0] = firstPoint;
+            EditCurve[2] = secondPoint;
+            EditCurve[1] = Base::Vector2d(secondPoint.x, firstPoint.y);
+            EditCurve[3] = Base::Vector2d(firstPoint.x, secondPoint.y);
+            EditCurve[4] = firstPoint;
+            drawEdit(EditCurve);
+
+            sketchgui->toolSettings->widget->setParameterActive(0, 2);
+            sketchgui->toolSettings->widget->setParameterActive(0, 3);
+            sketchgui->toolSettings->widget->setParameterActive(1, 4);
+            sketchgui->toolSettings->widget->setParameterFocus(4);
+            Mode = STATUS_SEEK_Third;
+        }
+        else {
+            double dx, dy, minX, minY, maxX, maxY;
+            minX = min(firstPoint.x, secondPoint.x);
+            maxX = max(firstPoint.x, secondPoint.x);
+            minY = min(firstPoint.y, secondPoint.y);
+            maxY = max(firstPoint.y, secondPoint.y);
+
+            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                thickness = -sketchgui->toolSettings->widget->toolParameters[4];
+            }
+            else {
+                dx = min(abs(onSketchPos.x - minX), abs(onSketchPos.x - maxX));
+                dy = min(abs(onSketchPos.y - minY), abs(onSketchPos.y - maxY));
+                if (onSketchPos.x - minX > 0 && onSketchPos.x - maxX < 0 && !(onSketchPos.y - minY > 0 && onSketchPos.y - maxY < 0)) {
+                    thickness = dy;
+                }
+                else if (onSketchPos.y - minY > 0 && onSketchPos.y - maxY < 0 && !(onSketchPos.x - minX > 0 && onSketchPos.x - maxX < 0)) {
+                    thickness = dx;
+                }
+                else if (onSketchPos.y - minY > 0 && onSketchPos.y - maxY < 0 && onSketchPos.x - minX > 0 && onSketchPos.x - maxX < 0) {
+                    thickness = -min(dx, dy);
+                }
+                else {
+                    thickness = max(dx, dy);
+                }
+            }
+
+            thirdPoint.x = firstPoint.x == minX ? minX - thickness : maxX + thickness;
+            thirdPoint.y = firstPoint.y == minY ? minY - thickness : maxY + thickness;
+            fourthPoint.x = secondPoint.x == minX ? minX - thickness : maxX + thickness;
+            fourthPoint.y = secondPoint.y == minY ? minY - thickness : maxY + thickness;
+
+            EditCurve.resize(10);
+            EditCurve[0] = firstPoint;
+            EditCurve[1] = Base::Vector2d(secondPoint.x, firstPoint.y);
+            EditCurve[2] = secondPoint;
+            EditCurve[3] = Base::Vector2d(firstPoint.x, secondPoint.y);
+            EditCurve[4] = firstPoint;
+            EditCurve[5] = thirdPoint;
+            EditCurve[6] = Base::Vector2d(fourthPoint.x, thirdPoint.y);
+            EditCurve[7] = fourthPoint;
+            EditCurve[8] = Base::Vector2d(thirdPoint.x, fourthPoint.y);
+            EditCurve[9] = thirdPoint;
+            Mode = STATUS_End;
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        if (Mode == STATUS_End) {
+            unsetCursor();
+            resetPositionText();
+            int firstCurve = getHighestCurveIndex() + 1;
+
+            try {
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "geoList = []\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "%s.addGeometry(geoList,%s)\n"
+                    "conList = []\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                    "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                    "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                    "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                    "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                    "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                    "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                    "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                    "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                    "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                    "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                    "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                    "%s.addConstraint(conList)\n"
+                    "del geoList, conList\n",
+                    EditCurve[0].x, EditCurve[0].y, EditCurve[1].x, EditCurve[1].y, // rectangle 1 line 1
+                    EditCurve[1].x, EditCurve[1].y, EditCurve[2].x, EditCurve[2].y, // rectangle 1 line 2
+                    EditCurve[2].x, EditCurve[2].y, EditCurve[3].x, EditCurve[3].y, // rectangle 1 line 3
+                    EditCurve[3].x, EditCurve[3].y, EditCurve[0].x, EditCurve[0].y, // rectangle 1 line 4
+                    EditCurve[5].x, EditCurve[5].y, EditCurve[6].x, EditCurve[6].y, // rectangle 2 line 1
+                    EditCurve[6].x, EditCurve[6].y, EditCurve[7].x, EditCurve[7].y, // rectangle 2 line 2
+                    EditCurve[7].x, EditCurve[7].y, EditCurve[8].x, EditCurve[8].y, // rectangle 2 line 3
+                    EditCurve[8].x, EditCurve[8].y, EditCurve[5].x, EditCurve[5].y, // rectangle 2 line 4
+                    EditCurve[5].x, EditCurve[5].y, EditCurve[0].x, EditCurve[0].y, // support line 1
+                    EditCurve[6].x, EditCurve[6].y, EditCurve[1].x, EditCurve[1].y, // support line 2
+                    EditCurve[7].x, EditCurve[7].y, EditCurve[2].x, EditCurve[2].y, // support line 3
+                    EditCurve[8].x, EditCurve[8].y, EditCurve[3].x, EditCurve[3].y, // support line 4
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                    geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                    firstCurve, firstCurve + 1, // coincident1
+                    firstCurve + 1, firstCurve + 2, // coincident2
+                    firstCurve + 2, firstCurve + 3, // coincident3
+                    firstCurve + 3, firstCurve, // coincident4
+                    firstCurve + 4, firstCurve + 5, // coincident5
+                    firstCurve + 5, firstCurve + 6, // coincident6
+                    firstCurve + 6, firstCurve + 7, // coincident7
+                    firstCurve + 7, firstCurve + 4, // coincident8
+
+                    firstCurve + 8, firstCurve, // coincident9
+                    firstCurve + 8, firstCurve + 4, // coincident10
+                    firstCurve + 9, firstCurve + 1, // coincident11
+                    firstCurve + 9, firstCurve + 5, // coincident12
+                    firstCurve + 10, firstCurve + 2, // coincident13
+                    firstCurve + 10, firstCurve + 6, // coincident14
+                    firstCurve + 11, firstCurve + 3, // coincident15
+                    firstCurve + 11, firstCurve + 7, // coincident16
+
+                    firstCurve, // horizontal1
+                    firstCurve + 2, // horizontal2
+                    firstCurve + 1, // vertical1
+                    firstCurve + 3, // vertical2
+                    firstCurve + 4, // horizontal3
+                    firstCurve + 6, // horizontal4
+                    firstCurve + 5, // vertical3
+                    firstCurve + 7, // vertical4
+                    firstCurve + 8, firstCurve + 9, // Perpendicular of support lines
+                    firstCurve + 9, firstCurve + 10, // Perpendicular of support lines
+                    firstCurve + 10, firstCurve + 11, // Perpendicular of support lines
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                if (geometryCreationMode != Construction) {
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", firstCurve + 8);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", firstCurve + 9);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", firstCurve + 10);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", firstCurve + 11);
+                }
+
+                //add constraint if user typed in some dimensions in tool widget
+                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] + sketchgui->toolSettings->widget->isSettingSet[4]  != 0) {
+                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                            firstCurve, 1, firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                            firstCurve + 3, 1, firstCurve + 3, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                        int GeoId1 = firstCurve + 3;
+                        int GeoId2 = firstCurve + 7;
+                        if (secondPoint.x - firstPoint.x < 0) {
+                            GeoId1 = firstCurve + 1;
+                            GeoId2 = firstCurve + 5;
+                        }
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+                            GeoId1, 1, GeoId2, 1, sketchgui->toolSettings->widget->toolParameters[4]);
+                    }
+                }
+
+                Gui::Command::commitCommand();
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("Failed to add frame: %s\n", e.what());
+                Gui::Command::abortCommand();
+            }
+
+            // add auto constraints at the start of the first side
+            if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::start);
+                sugConstr1.clear();
+            }
+
+            // add auto constraints at the end of the second side
+            if (sugConstr2.size() > 0) {
+                createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::end);
+                sugConstr2.clear();
+            }
+
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
+
+            if (continuousMode) {
+                // This code enables the continuous creation mode.
+                sketchgui->toolSettings->widget->setSettings(15);
+                Mode = STATUS_SEEK_First;
+                EditCurve.clear();
+                drawEdit(EditCurve);
+                EditCurve.resize(5);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else {
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            }
+        }
+        return true;
+    }
+protected:
+    BoxMode Mode;
+    Base::Vector2d firstPoint, secondPoint, thirdPoint, fourthPoint;
+    double thickness;
+    std::vector<Base::Vector2d> EditCurve;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+};
+
+DEF_STD_CMD_AU(CmdSketcherCreateFrame)
+
+CmdSketcherCreateFrame::CmdSketcherCreateFrame()
+    : Command("Sketcher_CreateFrame")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create a frame");
+    sToolTipText = QT_TR_NOOP("Create a rectangle frame in the sketch");
+    sWhatsThis = "Sketcher_CreateFrame";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateFrame";
+    sAccel = "G, F";
+    eType = ForEdit;
+}
+
+void CmdSketcherCreateFrame::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFrame());
+}
+
+void CmdSketcherCreateFrame::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame"));
+        break;
+    case Construction:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame_Constr"));
+        break;
+    }
+}
+
+bool CmdSketcherCreateFrame::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
 /* Rectangles Comp command =========================================*/
 
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateRectangles)
@@ -1528,6 +1983,8 @@ void CmdSketcherCompCreateRectangles::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBox(DrawSketchHandlerBox::CenterAndCorner));
     else if (iMsg == 2)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOblong());
+    else if (iMsg == 3)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFrame());
     else
         return;
 
@@ -1552,6 +2009,8 @@ Gui::Action* CmdSketcherCompCreateRectangles::createAction(void)
     arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
     QAction* arc3 = pcAction->addAction(QString());
     arc3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+    QAction* arc4 = pcAction->addAction(QString());
+    arc4->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1576,12 +2035,14 @@ void CmdSketcherCompCreateRectangles::updateAction(int mode)
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
         a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
         a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -1608,6 +2069,10 @@ void CmdSketcherCompCreateRectangles::languageChange()
     rectangle3->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Rounded rectangle"));
     rectangle3->setToolTip(QApplication::translate("Sketcher_CreateOblong", "Create a rounded rectangle"));
     rectangle3->setStatusTip(rectangle3->toolTip());
+    QAction* rectangle4 = a[3];
+    rectangle4->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Frame"));
+    rectangle4->setToolTip(QApplication::translate("Sketcher_CreateFrame", "Create a frame"));
+    rectangle4->setStatusTip(rectangle3->toolTip());
 }
 
 bool CmdSketcherCompCreateRectangles::isActive(void)
@@ -3139,9 +3604,7 @@ class DrawSketchHandlerCircle : public DrawSketchHandler
 {
 public:
     DrawSketchHandlerCircle() : Mode(STATUS_SEEK_First),EditCurve(34){}
-    virtual ~DrawSketchHandlerCircle(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerCircle(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -3408,9 +3871,7 @@ public:
       , editCurve(33), fixedAxisLength(0)
     {
     }
-    virtual ~DrawSketchHandlerEllipse(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerEllipse(){}
     /// Mode table, describes what step of the process we are in
     enum SelectMode {
         STATUS_SEEK_PERIAPSIS,  /**< enum value, looking for click to set periapsis. */
@@ -10139,6 +10600,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
+    rcCmdMgr.addCommand(new CmdSketcherCreateFrame());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateTriangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateSquare());

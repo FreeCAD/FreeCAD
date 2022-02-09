@@ -143,6 +143,8 @@
         <file>icons/geometry/Sketcher_CreateLine_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateOblong.svg</file>
         <file>icons/geometry/Sketcher_CreateOblong_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateFrame.svg</file>
+        <file>icons/geometry/Sketcher_CreateFrame_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon.svg</file>
         <file>icons/geometry/Sketcher_CreateOctagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateParabolic_Arc.svg</file>
