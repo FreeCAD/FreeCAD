@@ -1044,11 +1044,21 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         knotDialog.setWindowTitle(QObject::tr("Knot parameter"));
         // use values from `knots` and `weights` and insert in label
         std::stringstream knotList;
-        for (auto knot : knots)
-            knotList << " " << knot << ",";
+        {
+            auto it = knots.cbegin();
+            knotList << "(" << (*it++);
+            for (; it != knots.cend(); ++it)
+                knotList << ", " << (*it);
+            knotList << ")";
+        }
         std::stringstream multList;
-        for (auto mult : mults)
-            multList << " " << mult << ",";
+        {
+            auto it = mults.cbegin();
+            multList << "(" << (*it++);
+            for (; it != mults.cend(); ++it)
+                multList << ", " << (*it);
+            multList << ")";
+        }
         knotDialog.setLabelText(QObject::tr("Please provide the parameter where the knot is to be inserted.\n"
                                             "Current knots: %1\n"
                                             "Multiplicities: %2\n")
