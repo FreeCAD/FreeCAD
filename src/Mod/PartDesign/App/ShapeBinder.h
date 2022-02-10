@@ -99,6 +99,11 @@ public:
     App::PropertyInteger _Version;
     App::PropertyEnumeration BindCopyOnChange;
     App::PropertyBool Refine;
+    App::PropertyFloat Offset;
+    App::PropertyEnumeration OffsetJoinType;
+    App::PropertyBool OffsetFill;
+    App::PropertyBool OffsetOpenResult;
+    App::PropertyBool OffsetIntersection;
 
     enum UpdateOption {
         UpdateNone = 0,
