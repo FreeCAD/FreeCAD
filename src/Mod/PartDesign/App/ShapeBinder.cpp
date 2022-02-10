@@ -307,6 +307,13 @@ SubShapeBinder::SubShapeBinder()
     Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Offsetting", App::Prop_None, "2D offset face or wires, 0.0 = no offset");
+    ADD_PROPERTY_TYPE(OffsetJoinType, ((long)0), "Offsetting", App::Prop_None, "Arcs, Tangent, Intersection");
+    static const char*JoinTypeEnum[] = {"Arcs", "Tangent", "Intersection", 0};
+    OffsetJoinType.setEnums(JoinTypeEnum);
+    ADD_PROPERTY_TYPE(OffsetFill, (false),"Offsetting", App::Prop_None, "True = make face between original wire and offset.");
+    ADD_PROPERTY_TYPE(OffsetOpenResult, (false), "Offsetting", App::Prop_None, "False = make closed offset from open wire.");
+    ADD_PROPERTY_TYPE(OffsetIntersection, (false), "Offsetting", App::Prop_None, "False = offset child wires independently.");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
     ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object binding");
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, 
@@ -704,6 +711,21 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
         } 
         
+        if (!fused && result.hasSubShape(TopAbs_EDGE)
+                && Offset.getValue() != 0.0){
+            try {
+                result = result.makeOffset2D(Offset.getValue(),
+                                             OffsetJoinType.getValue(),
+                                             OffsetFill.getValue(),
+                                             OffsetOpenResult.getValue(),
+                                             OffsetIntersection.getValue());
+            }catch(...){
+                std::ostringstream msg;
+                msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
+                Base::Console().Error(msg.str().c_str());
+            }
+        }
+
         if(!fused && MakeFace.getValue()
                 && !result.hasSubShape(TopAbs_FACE)
                 && result.hasSubShape(TopAbs_EDGE))
