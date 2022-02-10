@@ -38,6 +38,7 @@
 #include "MainWindow.h"
 #include "PreferencePackManager.h"
 #include "Language/Translator.h"
+#include "ViewParams.h"
 
 
 using namespace Gui::Dialog;
@@ -128,6 +129,7 @@ void DlgGeneralImp::saveSettings()
                           SetASCII("AutoloadModule", startWbName.toLatin1());
 
     ui->SubstituteDecimal->onSave();
+    ui->appFontSize->onSave();
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
@@ -243,6 +245,8 @@ void DlgGeneralImp::loadSettings()
         index = comboView?2:1;
     }
     ui->treeMode->setCurrentIndex(index);
+
+    ui->appFontSize->onRestore();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
@@ -409,5 +413,10 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
     }
 }
 
+// This function right now is more of a stub for future UI PRs.
+void DlgGeneralImp::attachObserver()
+{
+    ViewParams::init();
+}
 
 #include "moc_DlgGeneralImp.cpp"

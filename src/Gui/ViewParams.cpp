@@ -21,6 +21,12 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QFont>
+# include <QApplication>
+# include <QEvent>
+# include <QWidget>
+#endif
 #include <App/Application.h>
 #include "ViewParams.h"
 
@@ -32,8 +38,11 @@ ViewParams::ViewParams() {
     handle->Attach(this);
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    _name = handle->Get##_type(#_name,_def);
+    _##_name = handle->Get##_type(#_name,_def);\
+    funcs[#_name] = &ViewParams::update##_name;
 
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2 FC_VIEW_PARAM
     FC_VIEW_PARAMS
 }
 
@@ -43,13 +52,10 @@ ViewParams::~ViewParams() {
 void ViewParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
     if(!sReason)
         return;
-#undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    if(strcmp(sReason,#_name)==0) {\
-        _name = handle->Get##_type(#_name,_def);\
-        return;\
-    }
-    FC_VIEW_PARAMS
+    auto it = funcs.find(sReason);
+    if(it == funcs.end())
+        return;
+    it->second(this);
 }
 
 ViewParams *ViewParams::instance() {
@@ -59,3 +65,32 @@ ViewParams *ViewParams::instance() {
     return inst;
 }
 
+void ViewParams::init() {
+    instance()->onDefaultFontSizeChanged();
+}
+
+int ViewParams::appDefaultFontSize() {
+    static int defaultSize;
+    if (!defaultSize) {
+        QFont font;
+        defaultSize = font.pointSize();
+    }
+    return defaultSize;
+}
+
+void ViewParams::onDefaultFontSizeChanged() {
+    int defaultSize = appDefaultFontSize();
+    int fontSize = instance()->getDefaultFontSize();
+    if (fontSize <= 0)
+        fontSize = defaultSize;
+    else if (fontSize < 8)
+        fontSize = 8;
+    QFont font = QApplication::font();
+    if (font.pointSize() != fontSize) {
+        font.setPointSize(fontSize);
+        QApplication::setFont(font);
+        QEvent e(QEvent::ApplicationFontChange);
+        for (auto w : QApplication::allWidgets())
+            QApplication::sendEvent(w, &e);
+    }
+}
