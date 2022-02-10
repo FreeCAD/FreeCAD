@@ -102,6 +102,7 @@ class PackageList(QWidget):
 
         self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
         self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
+        self.item_filter.setHideNewerFreeCADRequired(pref.GetBool("HideNewerFreeCADRequired", True))
 
     def on_listPackages_clicked(self, index: QModelIndex):
         source_selection = self.item_filter.mapToSource(index)
@@ -489,6 +490,7 @@ class PackageListFilter(QSortFilterProxyModel):
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
         self.hide_obsolete = False
         self.hide_py2 = False
+        self.hide_newer_freecad_required = False
 
     def setPackageFilter(
         self, type: int
@@ -508,6 +510,10 @@ class PackageListFilter(QSortFilterProxyModel):
 
     def setHideObsolete(self, hide_obsolete: bool) -> None:
         self.hide_obsolete = hide_obsolete
+        self.invalidateFilter()
+
+    def setHideNewerFreeCADRequired(self, hide_nfr: bool) -> None:
+        self.hide_newer_freecad_required = hide_nfr
         self.invalidateFilter()
 
     def lessThan(self, left, right) -> bool:
@@ -554,6 +560,28 @@ class PackageListFilter(QSortFilterProxyModel):
             and data.obsolete
         ):
             return False
+
+        # If it's not installed, check to see if it's for a newer version of FreeCAD
+        if (
+            data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_newer_freecad_required
+            and data.metadata
+        ):
+            # Only hide if ALL content items require a newer version, otherwise
+            # it's possible that this package actually provides versions of itself
+            # for newer and older versions
+
+            first_supported_version = data.metadata.getFirstSupportedFreeCADVersion()
+            if first_supported_version is not None:
+                required_version = first_supported_version.split(".")
+                fc_major = int(FreeCAD.Version()[0])
+                fc_minor = int(FreeCAD.Version()[1])
+
+                if int(required_version[0]) > fc_major:
+                    return False
+                elif int(required_version[0]) == fc_major and len(required_version) > 1:
+                    if int(required_version[1]) > fc_minor:
+                        return False
 
         name = data.display_name
         desc = data.description
