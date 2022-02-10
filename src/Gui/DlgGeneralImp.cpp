@@ -141,6 +141,7 @@ void DlgGeneralImp::saveSettings()
                           SetASCII("AutoloadModule", startWbName.toLatin1());
 
     ui->SubstituteDecimal->onSave();
+    ui->UseCFormat->onSave();
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
@@ -211,6 +212,7 @@ void DlgGeneralImp::loadSettings()
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
 
     ui->SubstituteDecimal->onRestore();
+    ui->UseCFormat->onRestore();
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();

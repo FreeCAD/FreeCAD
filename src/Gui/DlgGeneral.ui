@@ -105,6 +105,23 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="1">
+          <widget class="Gui::PrefCheckBox" name="UseCFormat">
+           <property name="toolTip">
+            <string>If enabled, FreeCAD with use C/POSIX number formatting
+C/POSIX locale is a cross-platform English-like format</string>
+           </property>
+           <property name="text">
+            <string>Use C/POSIX locale (needs restart)</string>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>UseCNumberFormat</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>General</cstring>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>

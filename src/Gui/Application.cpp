@@ -2099,6 +2099,9 @@ void Application::runApplication(void)
         mainApp.installEventFilter(filter);
     }
 
+    if (hGrp->GetBool("UseCNumberFormat", false))
+        QLocale::setDefault(QLocale::c());
+
     // set text cursor blinking state
     int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
     qApp->setCursorFlashTime(blinkTime);
