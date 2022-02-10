@@ -251,6 +251,19 @@ std::string Translator::locale(const std::string& lang) const
     return loc;
 }
 
+bool Translator::setLocale(const std::string& language) const
+{
+    auto loc = QLocale::c(); //Defaulting to POSIX locale
+    auto bcp47 = locale(language);
+    if (!bcp47.empty())
+        loc  = QLocale(QString::fromStdString(bcp47));
+    QLocale::setDefault(loc);
+#ifdef FC_DEBUG
+    Base::Console().Log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+#endif
+    return (loc.language() != loc.C);
+}
+
 QStringList Translator::directories() const
 {
     QStringList list; 

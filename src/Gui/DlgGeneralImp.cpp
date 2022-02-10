@@ -135,6 +135,7 @@ void DlgGeneralImp::saveSettings()
                           SetASCII("AutoloadModule", startWbName.toLatin1());
 
     ui->SubstituteDecimal->onSave();
+    ui->UseLocaleFormatting->onSave();
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
@@ -148,6 +149,8 @@ void DlgGeneralImp::saveSettings()
         hGrp->SetASCII("Language", current.constData());
         Translator::instance()->activateLanguage(current.constData());
     }
+    if (ui->UseLocaleFormatting->isChecked())
+        Translator::instance()->setLocale(current.constData());
 
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
     int pixel = size.toInt();
@@ -190,14 +193,15 @@ void DlgGeneralImp::loadSettings()
     ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
 
     ui->SubstituteDecimal->onRestore();
+    ui->UseLocaleFormatting->onRestore();
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    QString langToStr = QLocale::languageToString(QLocale().language());
-    QByteArray language = hGrp->GetASCII("Language", langToStr.toLatin1()).c_str();
+    auto langToStr = Translator::instance()->activeLanguage();
+    QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
