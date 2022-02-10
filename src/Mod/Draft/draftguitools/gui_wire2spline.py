@@ -27,7 +27,7 @@
 These tools work on polylines and B-splines which have multiple points.
 
 Essentially, the points of the original object are extracted
-and passed to the `makeWire` or `makeBSpline` functions,
+and passed to the `make_wire` or `make_bspline` functions,
 depending on the desired result.
 """
 ## @package gui_wire2spline
@@ -89,17 +89,17 @@ class WireToBSpline(gui_base_original.Modifier):
                         self.closed = self.obj.Closed
                         n = None
                         if utils.getType(self.obj) == 'Wire':
-                            n = Draft.makeBSpline(self.Points,
-                                                  closed=self.closed,
-                                                  placement=self.pl)
+                            n = Draft.make_bspline(self.Points,
+                                                   closed=self.closed,
+                                                   placement=self.pl)
                         elif utils.getType(self.obj) == 'BSpline':
                             self.bs2wire = True
-                            n = Draft.makeWire(self.Points,
-                                               closed=self.closed,
-                                               placement=self.pl,
-                                               face=None,
-                                               support=None,
-                                               bs2wire=self.bs2wire)
+                            n = Draft.make_wire(self.Points,
+                                                closed=self.closed,
+                                                placement=self.pl,
+                                                face=None,
+                                                support=None,
+                                                bs2wire=self.bs2wire)
                         if n:
                             Draft.formatObject(n, self.obj)
                             self.doc.recompute()

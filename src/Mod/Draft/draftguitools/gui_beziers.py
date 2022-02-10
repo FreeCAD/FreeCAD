@@ -197,7 +197,7 @@ class BezCurve(gui_lines.Line):
             try:
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = 'Draft.makeBezCurve'
+                _cmd = 'Draft.make_bezcurve'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '
@@ -437,7 +437,7 @@ class CubicBezCurve(gui_lines.Line):
                 # to be committed through the `draftutils.todo.ToDo` class.
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = 'Draft.makeBezCurve'
+                _cmd = 'Draft.make_bezcurve'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '
