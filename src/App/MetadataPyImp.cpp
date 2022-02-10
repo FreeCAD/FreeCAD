@@ -274,7 +274,7 @@ PyObject* MetadataPy::getGenericMetadata(PyObject* args)
 {
     const char* name;
     if (!PyArg_ParseTuple(args, "s!", &name))
-        return NULL;
+        return nullptr;
     auto gm = (*getMetadataPtr())[name];
     auto pyGenericMetadata = new Py::List;
     for (const auto& item : gm) {
@@ -288,6 +288,77 @@ PyObject* MetadataPy::getGenericMetadata(PyObject* args)
         pyGenericMetadata->append(pyItem);
     }
     return pyGenericMetadata->ptr();
+}
+
+Py::Object  MetadataPy::getFreeCADMin() const
+{
+    return Py::String(getMetadataPtr()->freecadmin().str());
+}
+
+void MetadataPy::setFreeCADMin(Py::Object args)
+{
+    char* version = nullptr;
+    PyObject* p = args.ptr();
+    if (!PyArg_ParseTuple(p, "s", &version))
+        return;
+    getMetadataPtr()->setFreeCADMin(App::Meta::Version(version));
+}
+
+Py::Object  MetadataPy::getFreeCADMax() const
+{
+    return Py::String(getMetadataPtr()->freecadmax().str());
+}
+
+void MetadataPy::setFreeCADMax(Py::Object args)
+{
+    char* version = nullptr;
+    PyObject* p = args.ptr();
+    if (!PyArg_ParseTuple(p, "s", &version))
+        return;
+    getMetadataPtr()->setFreeCADMax(App::Meta::Version(version));
+}
+
+PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject* args)
+{
+    // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
+    if (getMetadataPtr()->freecadmin() != App::Meta::Version())
+        return Py::new_reference_to(Py::String(getMetadataPtr()->freecadmin().str()));
+
+    auto content = getMetadataPtr()->content();
+    auto result = App::Meta::Version();
+    for (const auto& item : content) {
+        auto minVersion = item.second.freecadmin();
+        if (minVersion != App::Meta::Version())
+            if (result == App::Meta::Version() || minVersion < result)
+                result = minVersion;
+    }
+    if (result != App::Meta::Version())
+        return Py::new_reference_to(Py::String(result.str()));
+    else
+        Py_INCREF(Py_None);
+        return Py_None;
+}
+
+PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject* args)
+{
+    // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
+    if (getMetadataPtr()->freecadmax() != App::Meta::Version())
+        return Py::new_reference_to(Py::String(getMetadataPtr()->freecadmax().str()));
+
+    auto content = getMetadataPtr()->content();
+    auto result = App::Meta::Version();
+    for (const auto& item : content) {
+        auto maxVersion = item.second.freecadmax();
+        if (maxVersion != App::Meta::Version())
+            if (result == App::Meta::Version() || maxVersion > result)
+                result = maxVersion;
+    }
+    if (result != App::Meta::Version())
+        return Py::new_reference_to(Py::String(result.str()));
+    else
+        Py_INCREF(Py_None);
+        return Py_None;
+
 }
 
 PyObject* MetadataPy::getCustomAttributes(const char* /*attr*/) const
