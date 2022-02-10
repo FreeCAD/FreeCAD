@@ -1920,13 +1920,11 @@ void Application::runApplication(void)
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
-#ifdef Q_OS_UNIX
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
     // and issue #0002891
     // http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
     setlocale(LC_NUMERIC, "C");
-#endif
 
     // check if a single or multiple instances can run
     it = cfg.find("SingleInstance");
@@ -2070,6 +2068,13 @@ void Application::runApplication(void)
     if (hGrp->GetBool("SubstituteDecimalSeparator", false)) {
         KeyboardFilter* filter = new KeyboardFilter(&mainApp);
         mainApp.installEventFilter(filter);
+    }
+
+    if (hGrp->GetBool("UseLocaleFormatting", false)) {
+        Translator::instance()->setLocale(hGrp->GetASCII(("Language"), Translator::instance()->activeLanguage().c_str()));
+    }
+    else {
+        Translator::instance()->setLocale("C");
     }
 
     // set text cursor blinking state
