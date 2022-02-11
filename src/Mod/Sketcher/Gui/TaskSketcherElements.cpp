@@ -752,7 +752,8 @@ void TaskSketcherElements::slotElementsChanged(void)
         (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.getIcon(construction, false) :
         none.getIcon(construction, false),
         type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
-                                                                (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)) +
+                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
         type == Part::GeomLineSegment::getClassTypeId()     ? ( isNamingBoxChecked ?
                                                                 (tr("Line") + QString::fromLatin1("(Edge%1)").arg(i)) +
