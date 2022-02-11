@@ -828,6 +828,7 @@ def p_linear_extrude_with_transform(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
+    checkObjShape(obj)
     if t != 0.0 or s[0] != 1.0 or s[1] != 1.0:
         newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
