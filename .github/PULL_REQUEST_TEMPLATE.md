@@ -6,7 +6,7 @@ Thank you for creating a pull request to contribute to FreeCAD! To ease integrat
 - [ ]  All FreeCAD unit tests are confirmed to pass by running `./bin/FreeCAD --run-test 0`
 - [ ]  All commit messages are [well-written](https://chris.beams.io/posts/git-commit/) ex: `Fixes typo in Draft Move command text`
 - [ ]  Your pull request is well written and has a good description, and its title starts with the module name, ex: `Draft: Fixed typos`
-- [ ]  Commit messages include `issue #<id>` or `fixes #<id>` where `<id>` is the [FreeCAD bug tracker issue number](https://freecadweb.org/wiki/tracker#GitHub_and_MantisBT) in case a particular commit solves or is related to an existing issue on the tracker. Ex: `Draft: fix typos - fixes #0004805`
+- [ ]  Commit messages include `issue #<id>` or `fixes #<id>` where `<id>` is the issue ID number from our [Issues database](https://github.com/FreeCAD/FreeCAD/issues) in case a particular commit solves or is related to an existing issue. Ex: `Draft: fix typos - fixes #4805`
 
 And please remember to update the Wiki with the features added or changed once this PR is merged.  
 **Note**: If you don't have wiki access, then please mention your contribution on the [0.20 Changelog Forum Thread](https://forum.freecadweb.org/viewtopic.php?f=10&t=56135).
