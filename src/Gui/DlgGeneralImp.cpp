@@ -45,6 +45,7 @@
 
 #include "DlgCreateNewPreferencePackImp.h"
 #include "DlgPreferencePackManagementImp.h"
+#include "DlgRevertToBackupConfigImp.h"
 
 
 using namespace Gui::Dialog;
@@ -96,6 +97,14 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
 
     ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
     connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgGeneralImp::onManagePreferencePacksClicked);
+
+    // If there are any saved config file backs, show the revert button, otherwise hide it:
+    const auto & backups = Application::Instance->prefPackManager()->configBackups();
+    if (backups.empty())
+        ui->RevertToSavedConfig->setEnabled(false);
+    else
+        ui->RevertToSavedConfig->setEnabled(true);
+    connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
 }
 
 /**
@@ -377,6 +386,17 @@ void DlgGeneralImp::saveAsNewPreferencePack()
     newPreferencePackDialog->setPreferencePackNames(packs);
     connect(newPreferencePackDialog.get(), &DlgCreateNewPreferencePackImp::accepted, this, &DlgGeneralImp::newPreferencePackDialogAccepted);
     newPreferencePackDialog->open();
+}
+
+void DlgGeneralImp::revertToSavedConfig()
+{
+    revertToBackupConfigDialog = std::make_unique<DlgRevertToBackupConfigImp>(this);
+    connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, [this]() {
+        auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
+        if (parentDialog)
+            parentDialog->reload();
+        });
+    revertToBackupConfigDialog->open();
 }
 
 void DlgGeneralImp::newPreferencePackDialogAccepted() 

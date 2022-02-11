@@ -184,6 +184,11 @@ namespace Gui {
 
         std::vector<TemplateFile> templateFiles(bool rescan = false);
 
+        /**
+         * Get a list of all available config file backups. Backups are currently stored for one week.
+         */
+        std::vector<boost::filesystem::path> configBackups() const;
+
     private:
 
         void FindPreferencePacksInPackage(const boost::filesystem::path& mod);
