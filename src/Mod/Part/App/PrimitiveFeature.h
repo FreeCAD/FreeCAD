@@ -421,6 +421,10 @@ public:
     }
     //@}
 
+protected:
+    void Restore(Base::XMLReader &reader);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+
 private:
     static App::PropertyQuantityConstraint::Constraints angleRange;
 };

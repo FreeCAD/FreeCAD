@@ -1062,3 +1062,28 @@ void Ellipse::onChanged(const App::Property* prop)
     }
     Part::Primitive::onChanged(prop);
 }
+
+void Ellipse::Restore(Base::XMLReader &reader)
+{
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> lock(App::Property::User1, &Angle2, false);
+    Primitive::Restore(reader);
+
+    if (Angle2.testStatus(App::Property::User1)) {
+        double tmp = Angle1.getValue();
+        Angle1.setValue(Angle2.getValue());
+        Angle2.setValue(tmp);
+    }
+}
+
+void Ellipse::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Angle2.getTypeId() == type && strcmp(PropName, "Angle0") == 0) {
+        Angle2.Restore(reader);
+        // set the flag to swap Angle1/Angle2 afterwards
+        Angle2.setStatus(App::Property::User1, true);
+    }
+    else {
+        Primitive::handleChangedPropertyName(reader, TypeName, PropName);
+    }
+}
