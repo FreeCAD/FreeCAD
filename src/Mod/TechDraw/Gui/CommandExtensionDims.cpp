@@ -2280,6 +2280,9 @@ namespace TechDrawGui {
         dim->References2D.setValues(objs, subs);
         cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
         dim->recomputeFeature();
+        //Horrible hack to force Tree update
+        double x = objFeat->X.getValue();
+        objFeat->X.setValue(x);
         return dim;
     }
 
