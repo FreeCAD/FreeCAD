@@ -326,6 +326,7 @@ class ObjectOp(object):
             )
 
         for n in self.opPropertyEnumerations():
+            PathLog.debug("n: {}".format(n))
             PathLog.debug("n[0]: {}  n[1]: {}".format(n[0], n[1]))
             if hasattr(obj, n[0]):
                 setattr(obj, n[0], n[1])
@@ -356,7 +357,7 @@ class ObjectOp(object):
 
     @classmethod
     def opPropertyEnumerations(self, dataType="data"):
-        """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        """opPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
         Notes:
@@ -623,6 +624,7 @@ class ObjectOp(object):
 
     def _setBaseAndStock(self, obj, ignoreErrors=False):
         job = PathUtils.findParentJob(obj)
+
         if not job:
             if not ignoreErrors:
                 PathLog.error(translate("Path", "No parent job found for operation."))

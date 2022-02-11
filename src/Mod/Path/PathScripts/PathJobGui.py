@@ -662,7 +662,7 @@ class TaskPanel:
         )
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
         ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
         Args:
             form = UI form

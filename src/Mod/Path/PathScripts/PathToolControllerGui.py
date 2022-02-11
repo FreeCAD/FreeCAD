@@ -197,7 +197,7 @@ class ToolControllerEditor(object):
             dataType="raw"
         )
 
-        self.populateCombobox(self.form, enumTups, comboToPropertyMap)
+        PathGui.populateCombobox(self.form, enumTups, comboToPropertyMap)
         self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
         self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
         self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
@@ -233,21 +233,6 @@ class ToolControllerEditor(object):
         # not found, return unchanged
         combo.setCurrentIndex(index)
         return
-
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
 
     def updateUi(self):
         tc = self.obj
