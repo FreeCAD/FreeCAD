@@ -46,8 +46,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     """Base class for proxy objects of all pocket operations."""
 
     @classmethod
-    def pocketPropertyEnumerations(self, dataType="data"):
-        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+    def pocketPropertyEnumerations(cls, dataType="data"):
+        """pocketPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
         Notes:
