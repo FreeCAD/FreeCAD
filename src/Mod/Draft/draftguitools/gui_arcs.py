@@ -319,7 +319,7 @@ class Arc(gui_base_original.Creator):
                 else:
                     # Insert a Draft circle
                     _base = DraftVecUtils.toString(self.center)
-                    _cmd = 'Draft.makeCircle'
+                    _cmd = 'Draft.make_circle'
                     _cmd += '('
                     _cmd += 'radius=' + str(self.rad) + ', '
                     _cmd += 'placement=pl, '
@@ -371,7 +371,7 @@ class Arc(gui_base_original.Creator):
                 else:
                     # Insert a Draft circle
                     _base = DraftVecUtils.toString(self.center)
-                    _cmd = 'Draft.makeCircle'
+                    _cmd = 'Draft.make_circle'
                     _cmd += '('
                     _cmd += 'radius=' + str(self.rad) + ', '
                     _cmd += 'placement=pl, '
