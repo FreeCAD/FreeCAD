@@ -59,21 +59,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
 
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
-
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
         PathLog.track()
@@ -99,7 +84,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(
+            FreeCAD.Units.Quantity(
+                obj.OffsetExtra.Value, FreeCAD.Units.Length
+            ).UserString
+        )
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
