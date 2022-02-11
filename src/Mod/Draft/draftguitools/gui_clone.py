@@ -93,7 +93,7 @@ class Clone(gui_base_original.Modifier):
             n = 0
             for obj in Gui.Selection.getSelection():
                 if obj not in nonRepeatList:
-                    _cmd = "Draft.clone"
+                    _cmd = "Draft.make_clone"
                     _cmd += "("
                     _cmd += "FreeCAD.ActiveDocument."
                     _cmd += 'getObject("' + obj.Name + '")'
