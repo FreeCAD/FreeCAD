@@ -1876,7 +1876,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
             builder.addBoundingBox(Base::Vector3f(box.MinX,box.MinY, box.MinZ),
                                    Base::Vector3f(box.MaxX,box.MaxY, box.MaxZ));
             sprintf(szBuf, "(%lu,%lu,%lu)", uX, uY, uZ);
-            builder.addText(box.CalcCenter(), szBuf);
+            builder.addText(box.GetCenter(), szBuf);
         }
         builder.addSingleArrow(pnt-20.0f*dir, pnt+10.0f*dir);
         builder.close();
