@@ -318,7 +318,7 @@ void MetadataPy::setFreeCADMax(Py::Object args)
     getMetadataPtr()->setFreeCADMax(App::Meta::Version(version));
 }
 
-PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject* args)
+PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject*)
 {
     // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
     if (getMetadataPtr()->freecadmin() != App::Meta::Version())
@@ -339,7 +339,7 @@ PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject* args)
         return Py_None;
 }
 
-PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject* args)
+PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
 {
     // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
     if (getMetadataPtr()->freecadmax() != App::Meta::Version())
