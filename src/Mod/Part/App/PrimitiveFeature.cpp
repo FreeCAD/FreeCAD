@@ -1009,10 +1009,10 @@ Ellipse::Ellipse()
 {
     ADD_PROPERTY(MajorRadius,(4.0f));
     ADD_PROPERTY(MinorRadius,(4.0f));
-    ADD_PROPERTY(Angle0,(0.0f));
-    Angle0.setConstraints(&angleRange);
-    ADD_PROPERTY(Angle1,(360.0f));
+    ADD_PROPERTY(Angle1,(0.0f));
     Angle1.setConstraints(&angleRange);
+    ADD_PROPERTY(Angle2,(360.0f));
+    Angle2.setConstraints(&angleRange);
 }
 
 Ellipse::~Ellipse()
@@ -1021,8 +1021,8 @@ Ellipse::~Ellipse()
 
 short Ellipse::mustExecute() const
 {
-    if (Angle0.isTouched() ||
-        Angle1.isTouched() ||
+    if (Angle1.isTouched() ||
+        Angle2.isTouched() ||
         MajorRadius.isTouched() ||
         MinorRadius.isTouched())
         return 1;
@@ -1040,8 +1040,8 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
     ellipse.SetMajorRadius(this->MajorRadius.getValue());
     ellipse.SetMinorRadius(this->MinorRadius.getValue());
 
-    BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle0.getValue()),
-                                                Base::toRadians<double>(this->Angle1.getValue()));
+    BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle1.getValue()),
+                                                Base::toRadians<double>(this->Angle2.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
 
@@ -1051,7 +1051,7 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
 void Ellipse::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle0 || prop == &Angle1){
+        if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle1 || prop == &Angle2){
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
