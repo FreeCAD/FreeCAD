@@ -33,8 +33,9 @@
 #include <TopoDS_Face.hxx>
 #include <BRep_Builder.hxx>
 #include <TopoDS_Compound.hxx>
-class gp_Dir;
+#include <Mod/Part/PartGlobal.h>
 
+class gp_Dir;
 class BRepBuilderAPI_MakeShape;
 
 namespace Part

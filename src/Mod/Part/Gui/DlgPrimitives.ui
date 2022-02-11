@@ -1972,21 +1972,21 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="Angle0">
+             <widget class="QLabel" name="Angle1">
               <property name="text">
                <string>Angle 1:</string>
               </property>
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="Angle1">
+             <widget class="QLabel" name="Angle2">
               <property name="text">
                <string>Angle 2:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="circleAngle0">
+             <widget class="Gui::QuantitySpinBox" name="circleAngle1">
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -1996,7 +1996,7 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="circleAngle1">
+             <widget class="Gui::QuantitySpinBox" name="circleAngle2">
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
@@ -2538,8 +2538,8 @@
   <tabstop>spiralRotation</tabstop>
   <tabstop>spiralRadius</tabstop>
   <tabstop>circleRadius</tabstop>
-  <tabstop>circleAngle0</tabstop>
   <tabstop>circleAngle1</tabstop>
+  <tabstop>circleAngle2</tabstop>
   <tabstop>buttonCircleFromThreePoints</tabstop>
   <tabstop>ellipseMajorRadius</tabstop>
   <tabstop>ellipseMinorRadius</tabstop>

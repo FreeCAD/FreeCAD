@@ -38,8 +38,8 @@ public:
     virtual ~Circle();
 
     App::PropertyLength Radius;
-    App::PropertyAngle Angle0;
     App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
 
     /** @name methods override feature */
     //@{
@@ -51,6 +51,10 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderCircleParametric";
     }
+
+protected:
+    void Restore(Base::XMLReader &reader);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
 
 private:
     static App::PropertyQuantityConstraint::Constraints angleRange;

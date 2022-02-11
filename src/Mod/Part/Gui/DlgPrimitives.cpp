@@ -185,8 +185,8 @@ public:
         return QString::fromLatin1(
             "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
             "App.ActiveDocument.%1.Radius=%2\n"
-            "App.ActiveDocument.%1.Angle0=%3\n"
-            "App.ActiveDocument.%1.Angle1=%4\n"
+            "App.ActiveDocument.%1.Angle1=%3\n"
+            "App.ActiveDocument.%1.Angle2=%4\n"
             "App.ActiveDocument.%1.Placement=%5\n")
             .arg(name)
             .arg(circle->Radius(),0,'g',Base::UnitsApi::getDecimals())
@@ -279,8 +279,8 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     ui->helixAngle->setRange(-90, 90);
     // circle
     ui->circleRadius->setRange(0, INT_MAX);
-    ui->circleAngle0->setRange(0, 360);
     ui->circleAngle1->setRange(0, 360);
+    ui->circleAngle2->setRange(0, 360);
     // ellipse
     ui->ellipseMajorRadius->setRange(0, INT_MAX);
     ui->ellipseMinorRadius->setRange(0, INT_MAX);
@@ -563,16 +563,16 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::Circle* circle = static_cast<Part::Circle*>(feature);
             ui->circleRadius->setValue(circle->Radius.getQuantityValue());
             ui->circleRadius->bind(circle->Radius);
-            ui->circleAngle0->setValue(circle->Angle0.getQuantityValue());
-            ui->circleAngle0->bind(circle->Angle0);
             ui->circleAngle1->setValue(circle->Angle1.getQuantityValue());
             ui->circleAngle1->bind(circle->Angle1);
+            ui->circleAngle2->setValue(circle->Angle2.getQuantityValue());
+            ui->circleAngle2->bind(circle->Angle2);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCircle(QWidget*)));
             connectSignalMapper(ui->circleRadius, SIGNAL(valueChanged(double)), mapper);
-            connectSignalMapper(ui->circleAngle0, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->circleAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui->circleAngle2, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Ellipse::getClassTypeId()) {
             Part::Ellipse* ell = static_cast<Part::Ellipse*>(feature);
@@ -957,14 +957,14 @@ QString DlgPrimitives::createCircle(const QString& objectName, const QString& pl
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius=%2\n"
-        "App.ActiveDocument.%1.Angle0=%3\n"
-        "App.ActiveDocument.%1.Angle1=%4\n"
+        "App.ActiveDocument.%1.Angle1=%3\n"
+        "App.ActiveDocument.%1.Angle2=%4\n"
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->circleRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->circleAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->circleAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->circleAngle2->value()))
         .arg(placement)
         .arg(tr("Circle"));
 }
@@ -1325,13 +1325,13 @@ QString DlgPrimitives::changeCircle(const QString& objectName, const QString& pl
 {
     return QString::fromLatin1(
         "%1.Radius=%2\n"
-        "%1.Angle0=%3\n"
-        "%1.Angle1=%4\n"
+        "%1.Angle1=%3\n"
+        "%1.Angle2=%4\n"
         "%1.Placement=%5\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->circleRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->circleAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->circleAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->circleAngle2->value()))
         .arg(placement);
 }
 
@@ -1736,11 +1736,11 @@ void DlgPrimitives::onChangeCircle(QWidget* widget)
     if (widget == ui->circleRadius) {
         circle->Radius.setValue(ui->circleRadius->value().getValue());
     }
-    else if (widget == ui->circleAngle0) {
-        circle->Angle0.setValue(ui->circleAngle0->value().getValue());
-    }
     else if (widget == ui->circleAngle1) {
         circle->Angle1.setValue(ui->circleAngle1->value().getValue());
+    }
+    else if (widget == ui->circleAngle2) {
+        circle->Angle2.setValue(ui->circleAngle2->value().getValue());
     }
 
     circle->recomputeFeature();

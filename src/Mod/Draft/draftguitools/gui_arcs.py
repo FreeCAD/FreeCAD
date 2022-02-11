@@ -358,8 +358,8 @@ class Arc(gui_base_original.Creator):
                     _cmd += 'addObject("Part::Circle", "Circle")'
                     _cmd_list = ['circle = ' + _cmd,
                                  'circle.Radius = ' + str(self.rad),
-                                 'circle.Angle0 = ' + str(sta),
-                                 'circle.Angle1 = ' + str(end),
+                                 'circle.Angle1 = ' + str(sta),
+                                 'circle.Angle2 = ' + str(end),
                                  'pl = FreeCAD.Placement()',
                                  'pl.Rotation.Q = ' + rot,
                                  'pl.Base = ' + _base,
