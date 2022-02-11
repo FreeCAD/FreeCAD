@@ -35,6 +35,8 @@ from addonmanager_workers import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from AddonManagerRepo import AddonManagerRepo
 import NetworkManager
 
+from typing import Optional
+
 translate = FreeCAD.Qt.translate
 
 show_javascript_console_output = False
@@ -286,6 +288,7 @@ class PackageDetails(QWidget):
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
 
+        required_version = self.requires_newer_freecad()
         if repo.obsolete:
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(
@@ -306,8 +309,43 @@ class PackageDetails(QWidget):
             self.ui.labelWarningInfo.setStyleSheet(
                 "color:" + utils.warning_color_string()
             )
+        elif required_version:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon requires FreeCAD ") 
+                + required_version
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet(
+                "color:" + utils.warning_color_string()
+            )
+
         else:
             self.ui.labelWarningInfo.hide()
+
+    def requires_newer_freecad(self) -> Optional[str]:
+        # If it's not installed, check to see if it's for a newer version of FreeCAD
+        if (
+            self.repo.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.repo.metadata
+        ):
+            # Only hide if ALL content items require a newer version, otherwise
+            # it's possible that this package actually provides versions of itself
+            # for newer and older versions
+
+            first_supported_version = self.repo.metadata.getFirstSupportedFreeCADVersion()
+            if first_supported_version is not None:
+                required_version = first_supported_version.split(".")
+                fc_major = int(FreeCAD.Version()[0])
+                fc_minor = int(FreeCAD.Version()[1])
+
+                if int(required_version[0]) > fc_major:
+                    return first_supported_version
+                elif int(required_version[0]) == fc_major and len(required_version) > 1:
+                    if int(required_version[1]) > fc_minor:
+                        return first_supported_version
+        return None
 
     def show_workbench(self, repo: AddonManagerRepo) -> None:
         """loads information of a given workbench"""

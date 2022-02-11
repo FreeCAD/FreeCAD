@@ -123,6 +123,22 @@ installed addons will be checked for available updates
     </widget>
    </item>
    <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidenewerfreecadrequired">
+     <property name="text">
+      <string>Hide Addons that require a newer version of FreeCAD</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefPath" stdset="0">
+      <string>Addons</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <string>HideNewerFreeCADRequired</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Custom repositories (one per line):</string>
