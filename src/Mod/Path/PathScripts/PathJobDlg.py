@@ -348,11 +348,14 @@ class JobTemplateExport:
                     job.Stock.Height,
                 )
             elif stockType == PathStock.StockType.CreateCylinder:
-                seHint = translate("Path_Job", "Cylinder: %.2f x %.2f") % (
+                seHint = translate("Path_Job:", "Cylinder: %.2f x %.2f") % (
                     job.Stock.Radius,
                     job.Stock.Height,
                 )
-            else:
+            elif stockType == PathStock.StockType.Unknown:
+                seHint = "-"
+
+            else:  # Existing Solid
                 seHint = "-"
                 PathLog.error(translate("Path_Job", "Unsupported stock type"))
             self.dialog.stockExtentHint.setText(seHint)
