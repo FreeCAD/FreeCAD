@@ -563,7 +563,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Drawing view")
         _msg("  page={}".format(page.TypeId))
         _msg("  template={}".format(page.Template))
-        obj = Draft.makeDrawingView(prism, page, otherProjection=None)
+        obj = Draft.make_drawing_view(prism, page, otherProjection=None)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_mirror(self):

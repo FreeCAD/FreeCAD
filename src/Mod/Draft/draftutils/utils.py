@@ -167,23 +167,23 @@ def get_param_type(param):
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "UiMode", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "dimstyle", "gridSize","gridTransparency"):
+                 "snapStyle", "dimstyle", "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "template", "snapModes",
-                   "FontFile", "ClonePrefix","overrideUnit",
+                   "FontFile", "ClonePrefix", "overrideUnit",
                    "labeltype") or "inCommandShortcut" in param:
         return "string"
     elif param in ("textheight", "tolerance", "gridSpacing",
                    "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot","HatchPatternSize"):
+                   "dimovershoot", "extovershoot", "HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "saveonexit", "maxSnap",
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit","coloredGridAxes",
+                   "DiscretizeEllipses", "showUnit", "coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
         return "bool"
     elif param in ("color", "constructioncolor",
@@ -509,14 +509,14 @@ def is_clone(obj, objtype=None, recursive=False):
         if `obj` is not even a clone.
     """
     if isinstance(objtype, list):
-        return any([isClone(obj, t, recursive) for t in objtype])
+        return any([is_clone(obj, t, recursive) for t in objtype])
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
             if objtype:
                 if getType(obj.Objects[0]) == objtype:
                     return True
             elif recursive and (getType(obj.Objects[0]) == "Clone"):
-                return isClone(obj.Objects[0], objtype, recursive)
+                return is_clone(obj.Objects[0], objtype, recursive)
     elif hasattr(obj, "CloneOf"):
         if obj.CloneOf:
             if objtype:
