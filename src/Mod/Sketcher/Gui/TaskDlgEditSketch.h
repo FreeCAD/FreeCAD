@@ -32,6 +32,7 @@
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
+#include "TaskSketcherTool.h"
 #include <boost_signals2.hpp>
 
 typedef boost::signals2::connection Connection;
@@ -65,6 +66,7 @@ public:
     /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Close; }
+    TaskSketcherTool* toolSettings;
 
 protected:
     void slotUndoDocument(const App::Document&);

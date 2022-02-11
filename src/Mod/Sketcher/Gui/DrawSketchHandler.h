@@ -27,6 +27,8 @@
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Gui/Selection.h>
+#include "TaskSketcherTool.h"
+#include "TaskDlgEditSketch.h"
 
 class QPixmap;
 
@@ -155,6 +157,7 @@ protected:
     int getPreselectCurve(void) const;
     int getPreselectCross(void) const;
 
+    TaskSketcherTool* toolSettings;
 
     /**
      * Returns constraints icons scaled to width.

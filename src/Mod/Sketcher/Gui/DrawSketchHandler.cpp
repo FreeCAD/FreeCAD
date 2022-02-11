@@ -46,6 +46,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/View3DInventor.h>
+#include <Gui/Control.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -112,9 +113,11 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
 //**************************************************************************
 // Construction/Destruction
 
-DrawSketchHandler::DrawSketchHandler() : sketchgui(0) {}
+DrawSketchHandler::DrawSketchHandler() : sketchgui(0), toolSettings(qobject_cast<TaskDlgEditSketch*>(Gui::Control().activeDialog())->toolSettings) {}
 
-DrawSketchHandler::~DrawSketchHandler() {}
+DrawSketchHandler::~DrawSketchHandler() {
+    toolSettings->widget->setSettings(0);
+}
 
 void DrawSketchHandler::quit(void)
 {

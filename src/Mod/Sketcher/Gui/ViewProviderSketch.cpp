@@ -396,7 +396,6 @@ void ViewProviderSketch::purgeHandler(void)
 {
     deactivateHandler();
     Gui::Selection().clearSelection();
-    toolSettings->widget->setSettings(0);
 
     // ensure that we are in sketch only selection mode
     Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();

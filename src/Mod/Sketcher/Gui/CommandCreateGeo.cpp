@@ -48,6 +48,7 @@
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/Control.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
@@ -243,9 +244,7 @@ class DrawSketchHandlerLine: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerLine():Mode(STATUS_SEEK_First),EditCurve(2){}
-    virtual ~DrawSketchHandlerLine(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerLine(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -256,7 +255,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_Line");
-        sketchgui->toolSettings->widget->setSettings(5);
+        toolSettings->widget->setSettings(5);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -267,7 +266,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -280,11 +279,11 @@ public:
             setPositionText(onSketchPos, text);
 
             EditCurve[1] = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                EditCurve[1].x = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                EditCurve[1].x = toolSettings->widget->toolParameters[2];
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                EditCurve[1].y = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                EditCurve[1].y = toolSettings->widget->toolParameters[3];
             }
 
             drawEdit(EditCurve);
@@ -292,7 +291,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] == 2) {
+            if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -303,33 +302,33 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                EditCurve[0].x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                EditCurve[0].x = toolSettings->widget->toolParameters[0];
             }
             else {
                 EditCurve[0].x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                EditCurve[0].y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                EditCurve[0].y = toolSettings->widget->toolParameters[1];
             }
             else {
                 EditCurve[0].y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else {
             EditCurve[1] = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                EditCurve[1].x = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                EditCurve[1].x = toolSettings->widget->toolParameters[2];
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                EditCurve[1].y = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                EditCurve[1].y = toolSettings->widget->toolParameters[3];
             }
             drawEdit(EditCurve);
             Mode = STATUS_End;
@@ -365,18 +364,18 @@ public:
             
             int firstCurve = getHighestCurveIndex();
             //add constraint if user typed in some dimensions in tool widget
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                if (toolSettings->widget->isSettingSet[1] == 1) {
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[2]);
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::end, toolSettings->widget->toolParameters[2]);
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[3]);
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::end, toolSettings->widget->toolParameters[3]);
                 }
             }
 
@@ -400,7 +399,7 @@ public:
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(5);
+                toolSettings->widget->setSettings(5);
                 Mode=STATUS_SEEK_First;
                 EditCurve.resize(2);
                 applyCursor();
@@ -476,9 +475,7 @@ public:
     DrawSketchHandlerBox(ConstructionMethod constrMethod = Diagonal):   Mode(STATUS_SEEK_First),
                                                                         EditCurve(5),
                                                                         constructionMethod(constrMethod){}
-    virtual ~DrawSketchHandlerBox(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerBox(){}
 
     /// mode table
     enum BoxMode {
@@ -490,7 +487,7 @@ public:
     virtual void activated(ViewProviderSketch* sketchgui)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_Box");
-        sketchgui->toolSettings->widget->setSettings(1);
+        toolSettings->widget->setSettings(1);
 
     }
 
@@ -501,13 +498,13 @@ public:
             setPositionText(onSketchPos);
             /*//If mouse move and settings haven't been typed in, then update the values in the widget
             //issue is that this triggers onSetParameters. And it doesn't feel very useful?
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 0){
-                sketchgui->toolSettings->widget->setparameter(onSketchPos.x, 0);
+            if (toolSettings->widget->isSettingSet[0] == 0){
+                toolSettings->widget->setparameter(onSketchPos.x, 0);
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 0) {
-                sketchgui->toolSettings->widget->setparameter(onSketchPos.y, 1);
+            if (toolSettings->widget->isSettingSet[1] == 0) {
+                toolSettings->widget->setparameter(onSketchPos.y, 1);
             }*/
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -521,15 +518,15 @@ public:
             if(constructionMethod == Diagonal) {
                 //recalculate secondpoint in case mouse moved too fast for mousemove to catch it.
                 secondPoint = onSketchPos;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    float dx = sketchgui->toolSettings->widget->toolParameters[2];
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    float dx = toolSettings->widget->toolParameters[2];
                     if (onSketchPos.x - firstPoint.x < 0) {
                         dx = -dx;
                     }
                     secondPoint.x = firstPoint.x + dx;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    float dy = sketchgui->toolSettings->widget->toolParameters[3];
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    float dy = toolSettings->widget->toolParameters[3];
                     if (onSketchPos.y - firstPoint.y < 0) {
                         dy = -dy;
                     }
@@ -542,16 +539,16 @@ public:
             }
             else if (constructionMethod == CenterAndCorner) {
                 float dx, dy;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    dx = sketchgui->toolSettings->widget->toolParameters[2]/2;
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    dx = toolSettings->widget->toolParameters[2]/2;
                     secondPoint.x = center.x + dx;
                 }
                 else {
                     dx = onSketchPos.x - center.x;
                     secondPoint.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dy = sketchgui->toolSettings->widget->toolParameters[3]/2;
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    dy = toolSettings->widget->toolParameters[3]/2;
                     secondPoint.y = center.y + dy;
                 }
                 else {
@@ -568,7 +565,7 @@ public:
                 EditCurve[3] = Base::Vector2d(secondPoint.x,EditCurve[0].y);
                 EditCurve[4] = EditCurve[0];
                 // is user input length and width then validate the square.
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
@@ -588,14 +585,14 @@ public:
     {
         if (Mode==STATUS_SEEK_First){
             if(constructionMethod == Diagonal) {
-                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    firstPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    firstPoint.x = toolSettings->widget->toolParameters[0];
                 }
                 else {
                     firstPoint.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    firstPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+                if (toolSettings->widget->isSettingSet[1] == 1) {
+                    firstPoint.y = toolSettings->widget->toolParameters[1];
                 }
                 else {
                     firstPoint.y = onSketchPos.y;
@@ -604,33 +601,33 @@ public:
                 EditCurve[4] = firstPoint;
             }
             else if (constructionMethod == CenterAndCorner) {
-                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    center.x = sketchgui->toolSettings->widget->toolParameters[0];
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    center.x = toolSettings->widget->toolParameters[0];
                 }
                 else {
                     center.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    center.y = sketchgui->toolSettings->widget->toolParameters[1];
+                if (toolSettings->widget->isSettingSet[1] == 1) {
+                    center.y = toolSettings->widget->toolParameters[1];
                 }
                 else {
                     center.y = onSketchPos.y;
                 }
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else { //Mode==STATUS_SEEK_Second
             if(constructionMethod == Diagonal) {
                 //recalculate secondpoint in case mouse moved too fast for mousemove to catch it.
                 float dx, dy;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    dx = sketchgui->toolSettings->widget->toolParameters[2];
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    dx = toolSettings->widget->toolParameters[2];
                     if (onSketchPos.x - firstPoint.x < 0) {
                         dx = -dx;
                     }
@@ -639,8 +636,8 @@ public:
                 else {
                     secondPoint.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dy = sketchgui->toolSettings->widget->toolParameters[3];
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    dy = toolSettings->widget->toolParameters[3];
                     if (onSketchPos.y - firstPoint.y < 0) {
                         dy = -dy;
                     }
@@ -657,14 +654,14 @@ public:
                 Mode = STATUS_End;
             }
             else if (constructionMethod == CenterAndCorner) {
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    secondPoint.x = center.x + sketchgui->toolSettings->widget->toolParameters[2] / 2;
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    secondPoint.x = center.x + toolSettings->widget->toolParameters[2] / 2;
                 }
                 else {
                     secondPoint.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    secondPoint.y = center.y + sketchgui->toolSettings->widget->toolParameters[3] / 2;
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    secondPoint.y = center.y + toolSettings->widget->toolParameters[3] / 2;
                 }
                 else {
                     secondPoint.y = onSketchPos.y;
@@ -728,20 +725,20 @@ public:
                         Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 //add constraint if user typed in some dimensions in tool widget
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                        if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                            distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                    if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                        if (toolSettings->widget->isSettingSet[0] == 1) {
+                            distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                            distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                        if (toolSettings->widget->isSettingSet[1] == 1) {
+                            distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                        if (toolSettings->widget->isSettingSet[2] == 1) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                                firstCurve, 1, firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                                firstCurve, 1, firstCurve, 2, toolSettings->widget->toolParameters[2]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                        if (toolSettings->widget->isSettingSet[3] == 1) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                                firstCurve + 3, 1, firstCurve + 3, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                                firstCurve + 3, 1, firstCurve + 3, 2, toolSettings->widget->toolParameters[3]);
                         }
                     }
 
@@ -788,20 +785,20 @@ public:
                         Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 //add constraint if user typed in some dimensions in tool widget
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                        if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                            distanceXYorPointOnObject(0, firstCurve + 4, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                    if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                        if (toolSettings->widget->isSettingSet[0] == 1) {
+                            distanceXYorPointOnObject(0, firstCurve + 4, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                            distanceXYorPointOnObject(1, firstCurve + 4, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                        if (toolSettings->widget->isSettingSet[1] == 1) {
+                            distanceXYorPointOnObject(1, firstCurve + 4, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                        if (toolSettings->widget->isSettingSet[2] == 1) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                                firstCurve + 3, 1, firstCurve + 3, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                                firstCurve + 3, 1, firstCurve + 3, 2, toolSettings->widget->toolParameters[2]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                        if (toolSettings->widget->isSettingSet[3] == 1) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                                firstCurve, 1, firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                                firstCurve, 1, firstCurve, 2, toolSettings->widget->toolParameters[3]);
                         }
                     }
 
@@ -848,7 +845,7 @@ public:
             if(continuousMode){
             // This code enables the continuous creation mode.
 
-                sketchgui->toolSettings->widget->setSettings(1);
+                toolSettings->widget->setSettings(1);
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -981,7 +978,7 @@ public:
     virtual void activated(ViewProviderSketch*)
     {
         setCrosshairCursor("Sketcher_Pointer_Oblong");
-        sketchgui->toolSettings->widget->setSettings(2);
+        toolSettings->widget->setSettings(2);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -992,14 +989,14 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
         }
         else if (Mode == STATUS_SEEK_Second) {
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                lengthX = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                lengthX = toolSettings->widget->toolParameters[2];
                 if (onSketchPos.x - StartPos.x < 0) {
                     lengthX = -lengthX;
                 }
@@ -1009,8 +1006,8 @@ public:
                 lengthX = onSketchPos.x - StartPos.x;
                 EndPos.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                lengthY = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                lengthY = toolSettings->widget->toolParameters[3];
                 if (onSketchPos.y - StartPos.y < 0) {
                     lengthY = -lengthY;
                 }
@@ -1078,8 +1075,8 @@ public:
             }
         }
         else if (Mode == STATUS_SEEK_Third) {
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                radius = min(sketchgui->toolSettings->widget->toolParameters[4] , min(abs(lengthX / 2), abs(lengthY / 2)));
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                radius = min(toolSettings->widget->toolParameters[4] , min(abs(lengthX / 2), abs(lengthY / 2)));
             }
             else {
                 double dx, dy, minX, minY, maxX, maxY;
@@ -1152,7 +1149,7 @@ public:
             setPositionText(onSketchPos, text);
 
             drawEdit(EditCurve);
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+            if (toolSettings->widget->isSettingSet[4] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -1163,29 +1160,29 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                StartPos.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                StartPos.x = toolSettings->widget->toolParameters[0];
             }
             else {
                 StartPos.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                StartPos.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                StartPos.y = toolSettings->widget->toolParameters[1];
             }
             else {
                 StartPos.y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                lengthX = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                lengthX = toolSettings->widget->toolParameters[2];
                 if (onSketchPos.x - StartPos.x < 0) {
                     lengthX = -lengthX;
                 }
@@ -1195,8 +1192,8 @@ public:
                 lengthX = onSketchPos.x - StartPos.x;
                 EndPos.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                lengthY = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                lengthY = toolSettings->widget->toolParameters[3];
                 if (onSketchPos.y - StartPos.y < 0) {
                     lengthY = -lengthY;
                 }
@@ -1207,15 +1204,15 @@ public:
                 EndPos.y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
-            sketchgui->toolSettings->widget->setParameterActive(1, 4);
-            sketchgui->toolSettings->widget->setParameterFocus(4);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(1, 4);
+            toolSettings->widget->setParameterFocus(4);
             Mode = STATUS_SEEK_Third;
         }
         else {
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                radius = min(sketchgui->toolSettings->widget->toolParameters[4], min(abs(lengthX / 2), abs(lengthY / 2)));
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                radius = min(toolSettings->widget->toolParameters[4], min(abs(lengthX / 2), abs(lengthY / 2)));
             }
             else {
                 double dx, dy, minX, minY, maxX, maxY;
@@ -1372,22 +1369,22 @@ public:
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, signX == signY ? firstCurve + 1 : firstCurve + 7, signX == signY ? Sketcher::PointPos::start : Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, signX == signY ? firstCurve + 1 : firstCurve + 7, signX == signY ? Sketcher::PointPos::start : Sketcher::PointPos::end, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, signX == signY ? firstCurve + 7 : firstCurve + 1, signX == signY ? Sketcher::PointPos::end : Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, signX == signY ? firstCurve + 7 : firstCurve + 1, signX == signY ? Sketcher::PointPos::end : Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            signX == signY ? firstCurve + 1 : firstCurve + 3, 1, signX == signY ? firstCurve + 5 : firstCurve + 7, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                            signX == signY ? firstCurve + 1 : firstCurve + 3, 1, signX == signY ? firstCurve + 5 : firstCurve + 7, 2, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            signX == signY ? firstCurve + 3 : firstCurve + 1, 1, signX == signY ? firstCurve + 7 : firstCurve + 5, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                            signX == signY ? firstCurve + 3 : firstCurve + 1, 1, signX == signY ? firstCurve + 7 : firstCurve + 5, 2, toolSettings->widget->toolParameters[3]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    if (toolSettings->widget->isSettingSet[4] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                             firstCurve, radius);
                     }
@@ -1421,7 +1418,7 @@ public:
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(2);
+                toolSettings->widget->setSettings(2);
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -1506,7 +1503,7 @@ public:
     virtual void activated(ViewProviderSketch*)
     {
         setCrosshairCursor("Sketcher_Pointer_Frame");
-        sketchgui->toolSettings->widget->setSettings(15);
+        toolSettings->widget->setSettings(15);
 
         // Constrain icon size in px
         qreal pixelRatio = devicePixelRatio();
@@ -1542,7 +1539,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -1551,15 +1548,15 @@ public:
             float dx = onSketchPos.x - firstPoint.x;
             float dy = onSketchPos.y - firstPoint.y;
             secondPoint = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                dx = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                dx = toolSettings->widget->toolParameters[2];
                 if (onSketchPos.x - firstPoint.x < 0) {
                     dx = -dx;
                 }
                 secondPoint.x = firstPoint.x + dx;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                dy = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                dy = toolSettings->widget->toolParameters[3];
                 if (onSketchPos.y - firstPoint.y < 0) {
                     dy = -dy;
                 }
@@ -1584,8 +1581,8 @@ public:
             minY = min(firstPoint.y, secondPoint.y);
             maxY = max(firstPoint.y, secondPoint.y);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                thickness = -sketchgui->toolSettings->widget->toolParameters[4];
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                thickness = -toolSettings->widget->toolParameters[4];
             }
             else {
                 dx = min(abs(onSketchPos.x - minX), abs(onSketchPos.x - maxX));
@@ -1626,7 +1623,7 @@ public:
             setPositionText(onSketchPos, text);
 
             drawEdit(EditCurve);
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+            if (toolSettings->widget->isSettingSet[4] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -1638,32 +1635,32 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             firstPoint = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                firstPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                firstPoint.x = toolSettings->widget->toolParameters[0];
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                firstPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                firstPoint.y = toolSettings->widget->toolParameters[1];
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
             //recalculate secondpoint in case mouse moved too fast for mousemove to catch it.
             secondPoint = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                float dx = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                float dx = toolSettings->widget->toolParameters[2];
                 if (onSketchPos.x - firstPoint.x < 0) {
                     dx = -dx;
                 }
                 secondPoint.x = firstPoint.x + dx;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                float dy = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                float dy = toolSettings->widget->toolParameters[3];
                 if (onSketchPos.y - firstPoint.y < 0) {
                     dy = -dy;
                 }
@@ -1677,10 +1674,10 @@ public:
             EditCurve[4] = firstPoint;
             drawEdit(EditCurve);
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
-            sketchgui->toolSettings->widget->setParameterActive(1, 4);
-            sketchgui->toolSettings->widget->setParameterFocus(4);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(1, 4);
+            toolSettings->widget->setParameterFocus(4);
             Mode = STATUS_SEEK_Third;
         }
         else {
@@ -1690,8 +1687,8 @@ public:
             minY = min(firstPoint.y, secondPoint.y);
             maxY = max(firstPoint.y, secondPoint.y);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                thickness = -sketchgui->toolSettings->widget->toolParameters[4];
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                thickness = -toolSettings->widget->toolParameters[4];
             }
             else {
                 dx = min(abs(onSketchPos.x - minX), abs(onSketchPos.x - maxX));
@@ -1840,22 +1837,22 @@ public:
                 }
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] + sketchgui->toolSettings->widget->isSettingSet[4]  != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] + toolSettings->widget->isSettingSet[4]  != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            firstCurve, 1, firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                            firstCurve, 1, firstCurve, 2, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            firstCurve + 3, 1, firstCurve + 3, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                            firstCurve + 3, 1, firstCurve + 3, 2, toolSettings->widget->toolParameters[3]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    if (toolSettings->widget->isSettingSet[4] == 1) {
                         int GeoId1 = firstCurve + 3;
                         int GeoId2 = firstCurve + 7;
                         if (secondPoint.x - firstPoint.x < 0) {
@@ -1863,7 +1860,7 @@ public:
                             GeoId2 = firstCurve + 5;
                         }
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
-                            GeoId1, 1, GeoId2, 1, sketchgui->toolSettings->widget->toolParameters[4]);
+                            GeoId1, 1, GeoId2, 1, toolSettings->widget->toolParameters[4]);
                     }
                 }
 
@@ -1893,7 +1890,7 @@ public:
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(15);
+                toolSettings->widget->setSettings(15);
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -2101,9 +2098,7 @@ public:
       , firstsegment(true)
     {
     }
-    virtual ~DrawSketchHandlerLineSet() {
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
     enum SELECT_MODE {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -2215,7 +2210,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
-        sketchgui->toolSettings->widget->setSettings(5);
+        toolSettings->widget->setSettings(5);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -2227,21 +2222,21 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
         }
         else if (Mode==STATUS_SEEK_Second){
             if (SegmentMode == SEGMENT_MODE_Line) {
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    EditCurve[EditCurve.size() - 1].x = sketchgui->toolSettings->widget->toolParameters[2];
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    EditCurve[EditCurve.size() - 1].x = toolSettings->widget->toolParameters[2];
                 }
                 else {
                     EditCurve[EditCurve.size() - 1].x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    EditCurve[EditCurve.size() - 1].y = sketchgui->toolSettings->widget->toolParameters[3];
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    EditCurve[EditCurve.size() - 1].y = toolSettings->widget->toolParameters[3];
                 }
                 else {
                     EditCurve[EditCurve.size() - 1].y = onSketchPos.y;
@@ -2282,14 +2277,14 @@ public:
             else if (SegmentMode == SEGMENT_MODE_Arc) {
                 
                 Base::Vector2d secondPoint; //replace onSketchPos if parameters are typed in tool settings
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    secondPoint.x = sketchgui->toolSettings->widget->toolParameters[2];
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    secondPoint.x = toolSettings->widget->toolParameters[2];
                 }
                 else {
                     secondPoint.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    secondPoint.y = sketchgui->toolSettings->widget->toolParameters[3];
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    secondPoint.y = toolSettings->widget->toolParameters[3];
                 }
                 else {
                     secondPoint.y = onSketchPos.y;
@@ -2369,7 +2364,7 @@ public:
                     return;
                 }
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+            if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -2380,25 +2375,25 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                EditCurve[0].x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                EditCurve[0].x = toolSettings->widget->toolParameters[0];
             }
             else {
                 EditCurve[0].x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                EditCurve[0].y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                EditCurve[0].y = toolSettings->widget->toolParameters[1];
             }
             else {
                 EditCurve[0].y = onSketchPos.y;
             }
             // EditCurve[0] may be overwritten if previousCurve is found
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
 
             virtualsugConstr1 = sugConstr1; // store original autoconstraints.
 
@@ -2442,13 +2437,12 @@ public:
                 EditCurve.clear();
                 drawEdit(EditCurve);
 
-                sketchgui->toolSettings->widget->setSettings(0);
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
                 if(continuousMode){
                     // This code enables the continuous creation mode.
-                    sketchgui->toolSettings->widget->setSettings(5);
+                    toolSettings->widget->setSettings(5);
                     Mode=STATUS_SEEK_First;
                     SegmentMode=SEGMENT_MODE_Line;
                     TransitionMode=TRANSITION_MODE_Free;
@@ -2608,13 +2602,12 @@ public:
                 EditCurve.clear();
                 drawEdit(EditCurve);
 
-                sketchgui->toolSettings->widget->setSettings(0);
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
                 if(continuousMode){
                     // This code enables the continuous creation mode.
-                    sketchgui->toolSettings->widget->setSettings(5);
+                    toolSettings->widget->setSettings(5);
                     Mode=STATUS_SEEK_First;
                     SegmentMode=SEGMENT_MODE_Line;
                     TransitionMode=TRANSITION_MODE_Free;
@@ -2639,35 +2632,35 @@ public:
             }
             else {
                 //Constraint if user tool setting was used to create the point.
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
                     if (firstCurve == lastCurve) { //First point constrained only in case of the first curve
-                        if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                            distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                        if (toolSettings->widget->isSettingSet[0] == 1) {
+                            distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                         }
-                        if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                            distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                        if (toolSettings->widget->isSettingSet[1] == 1) {
+                            distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                         }
                     }
                     bool firstCstrCreated = 0;
 
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         if (SegmentMode == SEGMENT_MODE_Arc) {
-                            distanceXYorPointOnObject(0, lastCurve, (startAngle > endAngle) ? Sketcher::PointPos::start : Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[2]);
+                            distanceXYorPointOnObject(0, lastCurve, (startAngle > endAngle) ? Sketcher::PointPos::start : Sketcher::PointPos::end, toolSettings->widget->toolParameters[2]);
                         }
                         else {
-                            distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[2]);
+                            distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::end, toolSettings->widget->toolParameters[2]);
                         }
                         firstCstrCreated = 1;
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1
+                    if (toolSettings->widget->isSettingSet[3] == 1
                         && ((TransitionMode != TRANSITION_MODE_Perpendicular_L && TransitionMode != TRANSITION_MODE_Perpendicular_R) || !firstCstrCreated)
                         && (TransitionMode != TRANSITION_MODE_Tangent || SegmentMode == SEGMENT_MODE_Arc || !firstCstrCreated)) {
                         //complex if to avoid over-constraining due to tangent and perpendicular constraints
                         if (SegmentMode == SEGMENT_MODE_Arc) {
-                            distanceXYorPointOnObject(1, lastCurve, (startAngle > endAngle) ? Sketcher::PointPos::start : Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[3]);
+                            distanceXYorPointOnObject(1, lastCurve, (startAngle > endAngle) ? Sketcher::PointPos::start : Sketcher::PointPos::end, toolSettings->widget->toolParameters[3]);
                         }
                         else {
-                            distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[3]);
+                            distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::end, toolSettings->widget->toolParameters[3]);
                         }
                     }
                 }
@@ -2713,8 +2706,7 @@ public:
                 applyCursor();
 
                 //reset the tool parameters
-                sketchgui->toolSettings->widget->setSettings(0);
-                sketchgui->toolSettings->widget->setSettings(6);
+                toolSettings->widget->setSettings(6);
 
                 Mode = STATUS_SEEK_Second;
                 if (SegmentMode == SEGMENT_MODE_Arc) {
@@ -2739,7 +2731,6 @@ public:
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
-        sketchgui->toolSettings->widget->setSettings(0);
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -2754,7 +2745,7 @@ public:
                 DrawSketchHandler::quit();
             }
             else {
-                sketchgui->toolSettings->widget->setSettings(5);
+                toolSettings->widget->setSettings(5);
                 // This code disregards existing data and enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 SegmentMode=SEGMENT_MODE_Line;
@@ -2882,9 +2873,7 @@ public:
       , arcAngle(0)
     {
     }
-    virtual ~DrawSketchHandlerArc(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerArc(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -2896,7 +2885,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_Arc");
-        sketchgui->toolSettings->widget->setSettings(3);
+        toolSettings->widget->setSettings(3);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -2907,7 +2896,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -2918,9 +2907,9 @@ public:
             double dy_ = onSketchPos.y - CenterPoint.y;
             float angle = atan2f(dy_, dx_);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                dx_ = cos(angle) * sketchgui->toolSettings->widget->toolParameters[2];
-                dy_ = sin(angle) * sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                dx_ = cos(angle) * toolSettings->widget->toolParameters[2];
+                dy_ = sin(angle) * toolSettings->widget->toolParameters[2];
             }
 
             for (int i=0; i < 16; i++) {
@@ -2978,24 +2967,24 @@ public:
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve.resize(34);
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                CenterPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                CenterPoint.x = toolSettings->widget->toolParameters[0];
             }
             else {
                 CenterPoint.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                CenterPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                CenterPoint.y = toolSettings->widget->toolParameters[1];
             }
             else {
                 CenterPoint.y = onSketchPos.y;
             }
             EditCurve[0] = CenterPoint;
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode==STATUS_SEEK_Second){
@@ -3003,9 +2992,9 @@ public:
             ry = onSketchPos.y - CenterPoint.y;
             startAngle = atan2f(ry, rx);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                rx = cos(startAngle) * sketchgui->toolSettings->widget->toolParameters[2];
-                ry = sin(startAngle) * sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                rx = cos(startAngle) * toolSettings->widget->toolParameters[2];
+                ry = sin(startAngle) * toolSettings->widget->toolParameters[2];
             }
 
             EditCurve.resize(31);
@@ -3015,7 +3004,7 @@ public:
             EditCurve[30] = CenterPoint;
             arcAngle = 0.;
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 2);
             Mode = STATUS_SEEK_Third;
         }
         else {
@@ -3056,16 +3045,16 @@ public:
                           geometryCreationMode==Construction?"True":"False"); //arcAngle > 0 ? 0 : 1);
 
             //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                            firstCurve, sketchgui->toolSettings->widget->toolParameters[2]);
+                            firstCurve, toolSettings->widget->toolParameters[2]);
                     }
                 }
 
@@ -3097,12 +3086,11 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(3);
+                toolSettings->widget->setSettings(3);
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -3168,9 +3156,7 @@ public:
       , arcPos2(Sketcher::PointPos::none)
     {
     }
-    virtual ~DrawSketchHandler3PointArc(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandler3PointArc(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -3182,7 +3168,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
-        sketchgui->toolSettings->widget->setSettings(5);
+        toolSettings->widget->setSettings(5);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -3193,20 +3179,20 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                SecondPoint.x = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                SecondPoint.x = toolSettings->widget->toolParameters[2];
             }
             else {
                 SecondPoint.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                SecondPoint.y = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                SecondPoint.y = toolSettings->widget->toolParameters[3];
             }
             else {
                 SecondPoint.y = onSketchPos.y;
@@ -3237,7 +3223,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+            if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -3323,14 +3309,14 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                FirstPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                FirstPoint.x = toolSettings->widget->toolParameters[0];
             }
             else {
                 FirstPoint.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                FirstPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                FirstPoint.y = toolSettings->widget->toolParameters[1];
             }
             else {
                 FirstPoint.y = onSketchPos.y;
@@ -3341,31 +3327,31 @@ public:
             // 17 is circle halfway point (1+32/2)
             EditCurve[17] = FirstPoint;
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode==STATUS_SEEK_Second){
             // 30 point arc and center point
             EditCurve.resize(31);
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                SecondPoint.x = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                SecondPoint.x = toolSettings->widget->toolParameters[2];
             }
             else {
                 SecondPoint.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                SecondPoint.y = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                SecondPoint.y = toolSettings->widget->toolParameters[3];
             }
             else {
                 SecondPoint.y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
             Mode = STATUS_SEEK_Third;
         }
         else {
@@ -3397,18 +3383,18 @@ public:
                           geometryCreationMode==Construction?"True":"False");
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, arcPos1, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, arcPos1, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, arcPos1, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, arcPos1, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, arcPos2, sketchgui->toolSettings->widget->toolParameters[2]);
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, arcPos2, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, arcPos2, sketchgui->toolSettings->widget->toolParameters[3]);
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, arcPos2, toolSettings->widget->toolParameters[3]);
                     }
                 }
 
@@ -3439,12 +3425,11 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(5);
+                toolSettings->widget->setSettings(5);
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -3615,7 +3600,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_Circle");
-        sketchgui->toolSettings->widget->setSettings(3);
+        toolSettings->widget->setSettings(3);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -3626,15 +3611,15 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
             double rx0, ry0;
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                rx0 = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                rx0 = toolSettings->widget->toolParameters[2];
                 ry0 = 0;
             }
             else {
@@ -3664,7 +3649,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+            if (toolSettings->widget->isSettingSet[2] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -3676,23 +3661,23 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                EditCurve[0].x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                EditCurve[0].x = toolSettings->widget->toolParameters[0];
             }
             else {
                 EditCurve[0].x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                EditCurve[0].y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                EditCurve[0].y = toolSettings->widget->toolParameters[1];
             }
             else {
                 EditCurve[0].y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         } 
         else {
@@ -3707,8 +3692,8 @@ public:
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
             double rx, ry;
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                rx = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                rx = toolSettings->widget->toolParameters[2];
                 ry = 0;
             }
             else {
@@ -3728,14 +3713,14 @@ public:
                           geometryCreationMode==Construction?"True":"False");
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                             firstCurve, rx);
                     }
@@ -3762,12 +3747,11 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(3);
+                toolSettings->widget->setSettings(3);
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -3893,14 +3877,14 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
-        sketchgui->toolSettings->widget->setSettings(7);
+        toolSettings->widget->setSettings(7);
         setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
-            sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+            toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
                 "x of Center Point"), 0);
-            sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+            toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
                 "y of Center Point"), 1);
         } else {
             method = PERIAPSIS_APOAPSIS_B;
@@ -3922,19 +3906,19 @@ public:
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
             } 
             else if (mode == STATUS_SEEK_APOAPSIS) {
                 double dx, dy;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                if (toolSettings->widget->isSettingSet[2] == 1) {
                     double dx1 = onSketchPos.x - periapsis.x;
                     double dy1 = onSketchPos.y - periapsis.y;
 
-                    dx = sketchgui->toolSettings->widget->toolParameters[2] * 2 * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
-                    dy = sketchgui->toolSettings->widget->toolParameters[2] * 2 * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dx = toolSettings->widget->toolParameters[2] * 2 * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dy = toolSettings->widget->toolParameters[2] * 2 * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
                 }
                 else {
                     dx = onSketchPos.x - periapsis.x;
@@ -3942,9 +3926,9 @@ public:
                 }
                 double length = sqrt(dx * dx + dy * dy);
 
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dx = cos(sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
-                    dy = sin(sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    dx = cos(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                    dy = sin(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
                 }
                 apoapsis.x = periapsis.x + dx;
                 apoapsis.y = periapsis.y + dy;
@@ -3966,18 +3950,18 @@ public:
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
             } 
             else if (mode == STATUS_SEEK_B) {
                 Base::Vector2d pointAtRadius = onSketchPos;
-                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                if (toolSettings->widget->isSettingSet[4] == 1) {
                     //get a point at distance SettingSet[4]
                     double theta = atan((periapsis.x - apoapsis.x) / (periapsis.y - apoapsis.y));
-                    pointAtRadius.x = apoapsis.x - sketchgui->toolSettings->widget->toolParameters[4] * cos(theta);
-                    pointAtRadius.y = apoapsis.y + sketchgui->toolSettings->widget->toolParameters[4] * sin(theta);
+                    pointAtRadius.x = apoapsis.x - toolSettings->widget->toolParameters[4] * cos(theta);
+                    pointAtRadius.y = apoapsis.y + toolSettings->widget->toolParameters[4] * sin(theta);
                 }
                 solveEllipse(pointAtRadius);
                 approximateEllipse();
@@ -3993,7 +3977,7 @@ public:
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                if (toolSettings->widget->isSettingSet[4] == 1) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
@@ -4006,19 +3990,19 @@ public:
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
             } 
             else if (mode == STATUS_SEEK_PERIAPSIS) {
                 double dx, dy;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                if (toolSettings->widget->isSettingSet[2] == 1) {
                     double dx1 = onSketchPos.x - centroid.x;
                     double dy1 = onSketchPos.y - centroid.y;
 
-                    dx = sketchgui->toolSettings->widget->toolParameters[2] * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
-                    dy = sketchgui->toolSettings->widget->toolParameters[2] * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dx = toolSettings->widget->toolParameters[2] * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dy = toolSettings->widget->toolParameters[2] * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
                 }
                 else {
                     dx = onSketchPos.x - centroid.x;
@@ -4026,9 +4010,9 @@ public:
                 }
                 length1 = sqrt(dx * dx + dy * dy);
 
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dx = cos(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length1;
-                    dy = sin(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length1;
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    dx = cos(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length1;
+                    dy = sin(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length1;
                 }
                 periapsis.x = centroid.x + dx;
                 periapsis.y = centroid.y + dy;
@@ -4048,18 +4032,18 @@ public:
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
             } 
             else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
                 Base::Vector2d pointAtRadius = onSketchPos;
-                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                if (toolSettings->widget->isSettingSet[4] == 1) {
                     //get a point at distance SettingSet[4]
                     double theta = atan((periapsis.x - centroid.x) / (periapsis.y - centroid.y));
-                    pointAtRadius.x = centroid.x - sketchgui->toolSettings->widget->toolParameters[4] * cos(theta);
-                    pointAtRadius.y = centroid.y + sketchgui->toolSettings->widget->toolParameters[4] * sin(theta);
+                    pointAtRadius.x = centroid.x - toolSettings->widget->toolParameters[4] * cos(theta);
+                    pointAtRadius.y = centroid.y + toolSettings->widget->toolParameters[4] * sin(theta);
                 }
 
                 //find length2
@@ -4083,7 +4067,7 @@ public:
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                if (toolSettings->widget->isSettingSet[4] == 1) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
@@ -4102,28 +4086,28 @@ public:
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 periapsis = onSketchPos;
-                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    periapsis.x = sketchgui->toolSettings->widget->toolParameters[0];
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    periapsis.x = toolSettings->widget->toolParameters[0];
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    periapsis.y = sketchgui->toolSettings->widget->toolParameters[1];
+                if (toolSettings->widget->isSettingSet[1] == 1) {
+                    periapsis.y = toolSettings->widget->toolParameters[1];
                 }
 
-                sketchgui->toolSettings->widget->setParameterActive(0, 0);
-                sketchgui->toolSettings->widget->setParameterActive(0, 1);
-                sketchgui->toolSettings->widget->setParameterActive(1, 2);
-                sketchgui->toolSettings->widget->setParameterActive(1, 3);
-                sketchgui->toolSettings->widget->setParameterFocus(2);
+                toolSettings->widget->setParameterActive(0, 0);
+                toolSettings->widget->setParameterActive(0, 1);
+                toolSettings->widget->setParameterActive(1, 2);
+                toolSettings->widget->setParameterActive(1, 3);
+                toolSettings->widget->setParameterFocus(2);
                 mode = STATUS_SEEK_APOAPSIS;
             }
             else if (mode == STATUS_SEEK_APOAPSIS) {
                 double dx, dy;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                if (toolSettings->widget->isSettingSet[2] == 1) {
                     double dx1 = onSketchPos.x - periapsis.x;
                     double dy1 = onSketchPos.y - periapsis.y;
 
-                    dx = sketchgui->toolSettings->widget->toolParameters[2] * 2 * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
-                    dy = sketchgui->toolSettings->widget->toolParameters[2] * 2 * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dx = toolSettings->widget->toolParameters[2] * 2 * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dy = toolSettings->widget->toolParameters[2] * 2 * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
                 }
                 else {
                     dx = onSketchPos.x - periapsis.x;
@@ -4131,17 +4115,17 @@ public:
                 }
                 double length = sqrt(dx * dx + dy * dy);
 
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dx = cos(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
-                    dy = sin(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    dx = cos(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                    dy = sin(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
                 }
                 apoapsis.x = periapsis.x + dx;
                 apoapsis.y = periapsis.y + dy;
 
-                sketchgui->toolSettings->widget->setParameterActive(0, 2);
-                sketchgui->toolSettings->widget->setParameterActive(0, 3);
-                sketchgui->toolSettings->widget->setParameterActive(1, 4);
-                sketchgui->toolSettings->widget->setParameterFocus(4);
+                toolSettings->widget->setParameterActive(0, 2);
+                toolSettings->widget->setParameterActive(0, 3);
+                toolSettings->widget->setParameterActive(1, 4);
+                toolSettings->widget->setParameterFocus(4);
                 mode = STATUS_SEEK_B;
             }
             else {
@@ -4151,46 +4135,46 @@ public:
         else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 centroid = onSketchPos;
-                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    centroid.x = sketchgui->toolSettings->widget->toolParameters[0];
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    centroid.x = toolSettings->widget->toolParameters[0];
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    centroid.y = sketchgui->toolSettings->widget->toolParameters[1];
+                if (toolSettings->widget->isSettingSet[1] == 1) {
+                    centroid.y = toolSettings->widget->toolParameters[1];
                 }
 
-                sketchgui->toolSettings->widget->setParameterActive(0, 0);
-                sketchgui->toolSettings->widget->setParameterActive(0, 1);
-                sketchgui->toolSettings->widget->setParameterActive(1, 2);
-                sketchgui->toolSettings->widget->setParameterActive(1, 3);
-                sketchgui->toolSettings->widget->setParameterFocus(2);
+                toolSettings->widget->setParameterActive(0, 0);
+                toolSettings->widget->setParameterActive(0, 1);
+                toolSettings->widget->setParameterActive(1, 2);
+                toolSettings->widget->setParameterActive(1, 3);
+                toolSettings->widget->setParameterFocus(2);
 
                 mode = STATUS_SEEK_PERIAPSIS;
             }
             else if (mode == STATUS_SEEK_PERIAPSIS) {
                 double dx, dy;
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                if (toolSettings->widget->isSettingSet[2] == 1) {
                     double dx1 = onSketchPos.x - centroid.x;
                     double dy1 = onSketchPos.y - centroid.y;
 
-                    dx = sketchgui->toolSettings->widget->toolParameters[2] * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
-                    dy = sketchgui->toolSettings->widget->toolParameters[2] * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dx = toolSettings->widget->toolParameters[2] * dx1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                    dy = toolSettings->widget->toolParameters[2] * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
                 }
                 else {
                     dx = onSketchPos.x - centroid.x;
                     dy = onSketchPos.y - centroid.y;
                 }
                 double length = sqrt(dx * dx + dy * dy);
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    dx = cos(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
-                    dy = sin(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    dx = cos(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                    dy = sin(-toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
                 }
                 periapsis.x = centroid.x + dx;
                 periapsis.y = centroid.y + dy;
 
-                sketchgui->toolSettings->widget->setParameterActive(0, 2);
-                sketchgui->toolSettings->widget->setParameterActive(0, 3);
-                sketchgui->toolSettings->widget->setParameterActive(1, 4);
-                sketchgui->toolSettings->widget->setParameterFocus(4);
+                toolSettings->widget->setParameterActive(0, 2);
+                toolSettings->widget->setParameterActive(0, 3);
+                toolSettings->widget->setParameterActive(1, 4);
+                toolSettings->widget->setParameterFocus(4);
                 mode = STATUS_SEEK_B;
             }
             else {
@@ -4215,13 +4199,13 @@ public:
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
             if(continuousMode){
-                sketchgui->toolSettings->widget->setSettings(7);
+                toolSettings->widget->setSettings(7);
                 if (constrMethod == 0) {
                     method = CENTER_PERIAPSIS_B;
                     mode = STATUS_SEEK_CENTROID;
-                    sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+                    toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
                         "x of Center Point"), 0);
-                    sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+                    toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
                         "y of Center Point"), 0);
                 } else {
                     method = PERIAPSIS_APOAPSIS_B;
@@ -4698,63 +4682,63 @@ private:
                     firstAxis = currentgeoid + 2;
                     secondAxis = currentgeoid + 1;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] + sketchgui->toolSettings->widget->isSettingSet[4] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, currentgeoid, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] + toolSettings->widget->isSettingSet[4] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, currentgeoid, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, currentgeoid, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, currentgeoid, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            currentgeoid, 3, firstAxis, 1, sketchgui->toolSettings->widget->toolParameters[2]);
+                            currentgeoid, 3, firstAxis, 1, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                        if (sketchgui->toolSettings->widget->toolParameters[3] == 0) {
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
+                        if (toolSettings->widget->toolParameters[3] == 0) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", firstAxis);
                         }
-                        else if (sketchgui->toolSettings->widget->toolParameters[3] == 90) {
+                        else if (toolSettings->widget->toolParameters[3] == 90) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", firstAxis);
                         }
                         else {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                firstAxis, Sketcher::GeoEnum::HAxis, sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180);
+                                firstAxis, Sketcher::GeoEnum::HAxis, toolSettings->widget->toolParameters[3] * M_PI / 180);
                         }
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    if (toolSettings->widget->isSettingSet[4] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            currentgeoid, 3, secondAxis, 1, sketchgui->toolSettings->widget->toolParameters[4]);
+                            currentgeoid, 3, secondAxis, 1, toolSettings->widget->toolParameters[4]);
                     }
                 }
             }
             else if (method == PERIAPSIS_APOAPSIS_B) {
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] + sketchgui->toolSettings->widget->isSettingSet[4] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstAxis, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] + toolSettings->widget->isSettingSet[4] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstAxis, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstAxis, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstAxis, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            currentgeoid, 3, firstAxis, 1, sketchgui->toolSettings->widget->toolParameters[2]);
+                            currentgeoid, 3, firstAxis, 1, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                        if (sketchgui->toolSettings->widget->toolParameters[3] == 0) {
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
+                        if (toolSettings->widget->toolParameters[3] == 0) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", firstAxis);
                         }
-                        else if (sketchgui->toolSettings->widget->toolParameters[3] == 90) {
+                        else if (toolSettings->widget->toolParameters[3] == 90) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", firstAxis);
                         }
                         else {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                firstAxis, Sketcher::GeoEnum::HAxis, sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180);
+                                firstAxis, Sketcher::GeoEnum::HAxis, toolSettings->widget->toolParameters[3] * M_PI / 180);
                         }
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1 && length1 > length2) {
+                    if (toolSettings->widget->isSettingSet[4] == 1 && length1 > length2) {
                         //ellipse by 3 points do not support changing swapping and big radius so sedond radius cannot be bigger than first
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            currentgeoid, 3, secondAxis, 1, sketchgui->toolSettings->widget->toolParameters[4]);
+                            currentgeoid, 3, secondAxis, 1, toolSettings->widget->toolParameters[4]);
                     }
                 }
             }
@@ -6567,9 +6551,7 @@ class DrawSketchHandler3PointCircle : public DrawSketchHandler
 public:
     DrawSketchHandler3PointCircle()
       : Mode(STATUS_SEEK_First),EditCurve(2),radius(1),N(32.0){}
-    virtual ~DrawSketchHandler3PointCircle(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandler3PointCircle(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -6581,7 +6563,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
-        sketchgui->toolSettings->widget->setSettings(5);
+        toolSettings->widget->setSettings(5);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -6593,7 +6575,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -6601,14 +6583,14 @@ public:
         else if (Mode == STATUS_SEEK_Second) {
             try
             {
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    SecondPoint.x = sketchgui->toolSettings->widget->toolParameters[2];
+                if (toolSettings->widget->isSettingSet[2] == 1) {
+                    SecondPoint.x = toolSettings->widget->toolParameters[2];
                 }
                 else {
                     SecondPoint.x = onSketchPos.x;
                 }
-                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    SecondPoint.y = sketchgui->toolSettings->widget->toolParameters[3];
+                if (toolSettings->widget->isSettingSet[3] == 1) {
+                    SecondPoint.y = toolSettings->widget->toolParameters[3];
                 }
                 else {
                     SecondPoint.y = onSketchPos.y;
@@ -6640,7 +6622,7 @@ public:
                         renderSuggestConstraintsCursor(sugConstr2);
                         return;
                     }
-                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                     pressButton(onSketchPos);
                     releaseButton(onSketchPos);
                 }
@@ -6694,42 +6676,42 @@ public:
             // N point curve + center + endpoint
             EditCurve.resize(N+2);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                FirstPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                FirstPoint.x = toolSettings->widget->toolParameters[0];
             }
             else {
                 FirstPoint.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                FirstPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                FirstPoint.y = toolSettings->widget->toolParameters[1];
             }
             else {
                 FirstPoint.y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                SecondPoint.x = sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                SecondPoint.x = toolSettings->widget->toolParameters[2];
             }
             else {
                 SecondPoint.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                SecondPoint.y = sketchgui->toolSettings->widget->toolParameters[3];
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                SecondPoint.y = toolSettings->widget->toolParameters[3];
             }
             else {
                 SecondPoint.y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
             Mode = STATUS_SEEK_Third;
         }
         else {
@@ -6786,12 +6768,11 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(5);
+                toolSettings->widget->setSettings(5);
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -6950,14 +6931,12 @@ class DrawSketchHandlerPoint: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerPoint() : selectionDone(false) {}
-    virtual ~DrawSketchHandlerPoint() {
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerPoint() {}
 
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Create_Point");
-        sketchgui->toolSettings->widget->setSettings(4);
+        toolSettings->widget->setSettings(4);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -6967,7 +6946,7 @@ public:
             renderSuggestConstraintsCursor(sugConstr);
             return;
         }
-        if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+        if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
             pressButton(onSketchPos);
             releaseButton(onSketchPos);
         }
@@ -6976,14 +6955,14 @@ public:
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
-        if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-            EditPoint.x = sketchgui->toolSettings->widget->toolParameters[0];
+        if (toolSettings->widget->isSettingSet[0] == 1) {
+            EditPoint.x = toolSettings->widget->toolParameters[0];
         }
         else {
             EditPoint.x = onSketchPos.x;
         }
-        if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-            EditPoint.y = sketchgui->toolSettings->widget->toolParameters[1];
+        if (toolSettings->widget->isSettingSet[1] == 1) {
+            EditPoint.y = toolSettings->widget->toolParameters[1];
         }
         else {
             EditPoint.y = onSketchPos.y;
@@ -7006,12 +6985,12 @@ public:
                           EditPoint.x,EditPoint.y);
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, toolSettings->widget->toolParameters[1]);
                     }
                 }
 
@@ -7030,12 +7009,11 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(4);
+                toolSettings->widget->setSettings(4);
                 applyCursor();
                 /* It is ok not to call to purgeHandler
                 * in continuous creation mode because the
@@ -7204,17 +7182,13 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        sketchgui->toolSettings->widget->setSettings(11);
+        toolSettings->widget->setSettings(11);
         if (filletType == Chamfer) {
-            sketchgui->toolSettings->widget->setParameterVisible(1, 1);
+            toolSettings->widget->setParameterVisible(1, 1);
         }
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
         setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
-    }
-    virtual void deactivated(ViewProviderSketch*)
-    {
-        sketchgui->toolSettings->widget->setSettings(0);
     }
 
     virtual void registerPressedKey(bool pressed, int key)
@@ -7248,8 +7222,8 @@ public:
                 (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
 
                 double radius=-1;
-                if (sketchgui->toolSettings->widget->isSettingSet[0]) {
-                    radius = sketchgui->toolSettings->widget->toolParameters[0];
+                if (toolSettings->widget->isSettingSet[0]) {
+                    radius = toolSettings->widget->toolParameters[0];
                 }
                 else {
                     // guess fillet radius
@@ -7289,14 +7263,14 @@ public:
                     int nofAngles = 1;
                     if (filletType == Chamfer) {
                         nofAngles = 2;
-                        if (sketchgui->toolSettings->widget->isSettingSet[1]) {
-                            nofAngles = max(static_cast <int>(floor(sketchgui->toolSettings->widget->toolParameters[1])) + 1, 2);
+                        if (toolSettings->widget->isSettingSet[1]) {
+                            nofAngles = max(static_cast <int>(floor(toolSettings->widget->toolParameters[1])) + 1, 2);
                         }
                     }
-                    if (sketchgui->toolSettings->widget->isCheckBoxChecked(2)) {
+                    if (toolSettings->widget->isCheckBoxChecked(2)) {
                         nofAngles = -nofAngles;
                     }
-                    bool pointFillet = sketchgui->toolSettings->widget->isCheckBoxChecked(1);
+                    bool pointFillet = toolSettings->widget->isCheckBoxChecked(1);
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s,%d)", GeoId, static_cast<int>(PosId), radius, "True",
                         pointFillet ? "True":"False", nofAngles);
@@ -7306,8 +7280,8 @@ public:
                     }
 
                     //add constraint if user typed in some dimensions in tool widget
-                    if (sketchgui->toolSettings->widget->isSettingSet[0]) {
-                        if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                    if (toolSettings->widget->isSettingSet[0]) {
+                        if (toolSettings->widget->isSettingSet[0] == 1) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                                 currentgeoid + 1, radius);
                         }
@@ -7321,7 +7295,7 @@ public:
                 }
 
                 tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-                sketchgui->toolSettings->widget->setParameterFocus(0);
+                toolSettings->widget->setParameterFocus(0);
             }
             return true;
         }
@@ -7364,8 +7338,8 @@ public:
                         const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        if (sketchgui->toolSettings->widget->isSettingSet[0]) {
-                            radius = sketchgui->toolSettings->widget->toolParameters[0];
+                        if (toolSettings->widget->isSettingSet[0]) {
+                            radius = toolSettings->widget->toolParameters[0];
                         }
                         else {
                             radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
@@ -7392,14 +7366,14 @@ public:
                         int nofAngles = 1;
                         if (filletType == Chamfer) {
                             nofAngles = 2;
-                            if (sketchgui->toolSettings->widget->isSettingSet[1]) {
-                                nofAngles = static_cast <int>(floor(sketchgui->toolSettings->widget->toolParameters[1])) + 1;
+                            if (toolSettings->widget->isSettingSet[1]) {
+                                nofAngles = static_cast <int>(floor(toolSettings->widget->toolParameters[1])) + 1;
                             }
                         }
-                        if (sketchgui->toolSettings->widget->isCheckBoxChecked(2)) {
+                        if (toolSettings->widget->isCheckBoxChecked(2)) {
                             nofAngles = -nofAngles;
                         }
-                        bool pointFillet = sketchgui->toolSettings->widget->isCheckBoxChecked(1);
+                        bool pointFillet = toolSettings->widget->isCheckBoxChecked(1);
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s,%d)",
                                   firstCurve, secondCurve,
@@ -7414,8 +7388,8 @@ public:
                         }
 
                         //add constraint if user typed in some dimensions in tool widget
-                        if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2]) {
-                            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1 && radius > 0 ) {
+                        if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2]) {
+                            if (toolSettings->widget->isSettingSet[0] == 1 && radius > 0 ) {
                                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                                     currentgeoid + 1, radius);
                             }
@@ -7441,7 +7415,7 @@ public:
                     }
 
                     tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-                    sketchgui->toolSettings->widget->setParameterFocus(0);
+                    toolSettings->widget->setParameterFocus(0);
                     Gui::Selection().clearSelection();
                     Mode = STATUS_SEEK_First;
                 }
@@ -8601,9 +8575,7 @@ public:
         , dx(0), dy(0), r(0)
         , EditCurve(35)
     {}
-    virtual ~DrawSketchHandlerSlot() {
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerSlot() {}
     /// mode table
     enum BoxMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -8627,7 +8599,7 @@ public:
     virtual void activated(ViewProviderSketch*)
     {
         setCrosshairCursor("Sketcher_Pointer_Slot");
-        sketchgui->toolSettings->widget->setSettings(12);
+        toolSettings->widget->setSettings(12);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -8636,7 +8608,7 @@ public:
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -8648,12 +8620,12 @@ public:
         }
         else if (Mode == STATUS_SEEK_Second) {
 
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+            if (toolSettings->widget->isSettingSet[2] == 1) {
                 double dx1 = onSketchPos.x - StartPos.x;
                 double dy1 = onSketchPos.y - StartPos.y;
 
-                dx = sketchgui->toolSettings->widget->toolParameters[2] * dx1 /sqrt(dx1*dx1 + dy1*dy1);
-                dy = sketchgui->toolSettings->widget->toolParameters[2] * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
+                dx = toolSettings->widget->toolParameters[2] * dx1 /sqrt(dx1*dx1 + dy1*dy1);
+                dy = toolSettings->widget->toolParameters[2] * dy1 / sqrt(dx1 * dx1 + dy1 * dy1);
             }
             else {
                 dx = onSketchPos.x - StartPos.x;
@@ -8672,9 +8644,9 @@ public:
             double length = sqrt(dx * dx + dy * dy);
             r = length / 5; //radius choosen at 1/5 of length
 
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                dx = cos(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
-                dy = sin(-sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                dx = cos(toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
+                dy = sin(toolSettings->widget->toolParameters[3] * M_PI / 180) * length;
             }
             else{
                 if (QApplication::keyboardModifiers() == Qt::ControlModifier)
@@ -8686,8 +8658,8 @@ public:
                     SnapDir = SNAP_DIR_Horz;
                     if (SnapMode == SNAP_MODE_Straight) {
                         dy = 0;
-                        if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                            dx = sketchgui->toolSettings->widget->toolParameters[2];
+                        if (toolSettings->widget->isSettingSet[2] == 1) {
+                            dx = toolSettings->widget->toolParameters[2];
                         }
                     }
                 }
@@ -8695,8 +8667,8 @@ public:
                     SnapDir = SNAP_DIR_Vert;
                     if (SnapMode == SNAP_MODE_Straight) {
                         dx = 0;
-                        if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                            dy = sketchgui->toolSettings->widget->toolParameters[2];
+                        if (toolSettings->widget->isSettingSet[2] == 1) {
+                            dy = toolSettings->widget->toolParameters[2];
                         }
                     }
                 }
@@ -8735,7 +8707,7 @@ public:
                 return;
             }
 
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+            if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -8750,8 +8722,8 @@ public:
             An angle ∠ABC is greater than ninety degrees iff AB^2 + BC^2 < AC^2.*/
 
             double L = sqrt(dx * dx + dy * dy); //distance between the two centers
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                r = sketchgui->toolSettings->widget->toolParameters[4];
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                r = toolSettings->widget->toolParameters[4];
             }
             else {
                 double L1 = sqrt(pow(onSketchPos.x - StartPos.x, 2) + pow(onSketchPos.y - StartPos.y, 2)); //distance between first center and onSketchPos
@@ -8806,7 +8778,7 @@ public:
 
             drawEdit(EditCurve);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+            if (toolSettings->widget->isSettingSet[4] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -8818,27 +8790,27 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                StartPos.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                StartPos.x = toolSettings->widget->toolParameters[0];
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                StartPos.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                StartPos.y = toolSettings->widget->toolParameters[1];
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
             SecondPos.x = StartPos.x + dx;
             SecondPos.y = StartPos.y + dy;
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
-            sketchgui->toolSettings->widget->setParameterActive(1, 4);
-            sketchgui->toolSettings->widget->setParameterFocus(4);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(1, 4);
+            toolSettings->widget->setParameterFocus(4);
             Mode = STATUS_SEEK_Third;
         }
         else {
@@ -8943,32 +8915,32 @@ public:
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] + +sketchgui->toolSettings->widget->isSettingSet[4] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] + +toolSettings->widget->isSettingSet[4] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            firstCurve, 3, firstCurve + 1, 3, sketchgui->toolSettings->widget->toolParameters[2]);
+                            firstCurve, 3, firstCurve + 1, 3, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                        if (sketchgui->toolSettings->widget->toolParameters[3] == 0 ) {
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
+                        if (toolSettings->widget->toolParameters[3] == 0 ) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", firstCurve + 2);
                         }
-                        else if (sketchgui->toolSettings->widget->toolParameters[3] == 90 ) {
+                        else if (toolSettings->widget->toolParameters[3] == 90 ) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", firstCurve + 2);
                         }
                         else {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                Sketcher::GeoEnum::HAxis, firstCurve + 2, sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180);
+                                Sketcher::GeoEnum::HAxis, firstCurve + 2, toolSettings->widget->toolParameters[3] * M_PI / 180);
                         }
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    if (toolSettings->widget->isSettingSet[4] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                            firstCurve, sketchgui->toolSettings->widget->toolParameters[4]);
+                            firstCurve, toolSettings->widget->toolParameters[4]);
                     }
                 }
 
@@ -9001,7 +8973,7 @@ public:
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(12);
+                toolSettings->widget->setSettings(12);
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -9095,7 +9067,7 @@ public:
     virtual void activated(ViewProviderSketch*)
     {
         setCrosshairCursor("Sketcher_Pointer_Slot");
-        sketchgui->toolSettings->widget->setSettings(13);
+        toolSettings->widget->setSettings(13);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -9104,7 +9076,7 @@ public:
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -9115,12 +9087,12 @@ public:
             }
         }
         else if (Mode == STATUS_SEEK_Second) {
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+            if (toolSettings->widget->isSettingSet[2] == 1) {
                 double dx2 = onSketchPos.x - CenterPos.x;
                 double dy2 = onSketchPos.y - CenterPos.y;
 
-                dx1 = sketchgui->toolSettings->widget->toolParameters[2] * dx2 / sqrt(dx2 * dx2 + dy2 * dy2);
-                dy1 = sketchgui->toolSettings->widget->toolParameters[2] * dy2 / sqrt(dx2 * dx2 + dy2 * dy2);
+                dx1 = toolSettings->widget->toolParameters[2] * dx2 / sqrt(dx2 * dx2 + dy2 * dy2);
+                dy1 = toolSettings->widget->toolParameters[2] * dy2 / sqrt(dx2 * dx2 + dy2 * dy2);
             }
             else {
                 dx1 = onSketchPos.x - CenterPos.x;
@@ -9131,8 +9103,8 @@ public:
             ra = sqrt(dx1 * dx1 + dy1 * dy1);
 
             //Start angle
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                startAngle = sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180;
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                startAngle = toolSettings->widget->toolParameters[3] * M_PI / 180;
                 dx1 = cos(startAngle) * ra;
                 dy1 = sin(startAngle) * ra;
             }
@@ -9163,7 +9135,7 @@ public:
                 return;
             }
 
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+            if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -9172,8 +9144,8 @@ public:
             dx2 = onSketchPos.x - CenterPos.x;
             dy2 = onSketchPos.y - CenterPos.y;
 
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                arcAngle = sketchgui->toolSettings->widget->toolParameters[4] * M_PI / 180;
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                arcAngle = toolSettings->widget->toolParameters[4] * M_PI / 180;
                 dx2 = cos(startAngle + arcAngle) * ra;
                 dy2 = sin(startAngle + arcAngle) * ra;
             }
@@ -9237,14 +9209,14 @@ public:
                 return;
             }
 
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+            if (toolSettings->widget->isSettingSet[4] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
         }
         else if (Mode == STATUS_SEEK_Fourth) {
-            if (sketchgui->toolSettings->widget->isSettingSet[5] == 1) {
-                r = sketchgui->toolSettings->widget->toolParameters[5];
+            if (toolSettings->widget->isSettingSet[5] == 1) {
+                r = toolSettings->widget->toolParameters[5];
             }
             else {
                 //radius at sketch pos
@@ -9293,7 +9265,7 @@ public:
 
             drawEdit(EditCurve);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[5] == 1) {
+            if (toolSettings->widget->isSettingSet[5] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -9305,27 +9277,27 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             CenterPos = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                CenterPos.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                CenterPos.x = toolSettings->widget->toolParameters[0];
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                CenterPos.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                CenterPos.y = toolSettings->widget->toolParameters[1];
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
             arcAngle = 0.;
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
-            sketchgui->toolSettings->widget->setParameterActive(1, 4);
-            sketchgui->toolSettings->widget->setParameterFocus(4);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(1, 4);
+            toolSettings->widget->setParameterFocus(4);
             Mode = STATUS_SEEK_Third;
         }
         else if (Mode == STATUS_SEEK_Third) {
@@ -9336,9 +9308,9 @@ public:
                 startAngle += arcAngle;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 4);
-            sketchgui->toolSettings->widget->setParameterActive(1, 5);
-            sketchgui->toolSettings->widget->setParameterFocus(5);
+            toolSettings->widget->setParameterActive(0, 4);
+            toolSettings->widget->setParameterActive(1, 5);
+            toolSettings->widget->setParameterFocus(5);
             Mode = STATUS_SEEK_Fourth;
         }
         else {
@@ -9407,20 +9379,20 @@ public:
 
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[5] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[5] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                            firstCurve, 3 , firstCurve + 2, 3, sketchgui->toolSettings->widget->toolParameters[2]);
+                            firstCurve, 3 , firstCurve + 2, 3, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[5] == 1) {
+                    if (toolSettings->widget->isSettingSet[5] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                            firstCurve + 2, sketchgui->toolSettings->widget->toolParameters[5]);
+                            firstCurve + 2, toolSettings->widget->toolParameters[5]);
                     }
                 }
 
@@ -9457,7 +9429,7 @@ public:
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(13);
+                toolSettings->widget->setSettings(13);
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -9552,7 +9524,7 @@ public:
     virtual void activated(ViewProviderSketch*)
     {
         setCrosshairCursor("Sketcher_Pointer_Slot");
-        sketchgui->toolSettings->widget->setSettings(14);
+        toolSettings->widget->setSettings(14);
 
     }
 
@@ -9562,7 +9534,7 @@ public:
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -9573,12 +9545,12 @@ public:
             }
         }
         else if (Mode == STATUS_SEEK_Second) {
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+            if (toolSettings->widget->isSettingSet[2] == 1) {
                 double dx2 = onSketchPos.x - CenterPos.x;
                 double dy2 = onSketchPos.y - CenterPos.y;
 
-                dx1 = sketchgui->toolSettings->widget->toolParameters[2] * dx2 / sqrt(dx2 * dx2 + dy2 * dy2);
-                dy1 = sketchgui->toolSettings->widget->toolParameters[2] * dy2 / sqrt(dx2 * dx2 + dy2 * dy2);
+                dx1 = toolSettings->widget->toolParameters[2] * dx2 / sqrt(dx2 * dx2 + dy2 * dy2);
+                dy1 = toolSettings->widget->toolParameters[2] * dy2 / sqrt(dx2 * dx2 + dy2 * dy2);
             }
             else {
                 dx1 = onSketchPos.x - CenterPos.x;
@@ -9589,8 +9561,8 @@ public:
             r = sqrt(dx1 * dx1 + dy1 * dy1);
 
             //Start angle
-            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                startAngle = sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180;
+            if (toolSettings->widget->isSettingSet[3] == 1) {
+                startAngle = toolSettings->widget->toolParameters[3] * M_PI / 180;
                 dx1 = cos(startAngle) * r;
                 dy1 = sin(startAngle) * r;
             }
@@ -9620,7 +9592,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+            if (toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -9631,15 +9603,15 @@ public:
             dx2 = onSketchPos.x - CenterPos.x;
             dy2 = onSketchPos.y - CenterPos.y;
 
-            if (sketchgui->toolSettings->widget->isSettingSet[5] == 1) {
-                r2 = sketchgui->toolSettings->widget->toolParameters[5];
+            if (toolSettings->widget->isSettingSet[5] == 1) {
+                r2 = toolSettings->widget->toolParameters[5];
             }
             else {
                 r2 = sqrt(pow(dx2, 2) + pow(dy2, 2));
             }
 
-            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                arcAngle = sketchgui->toolSettings->widget->toolParameters[4] * M_PI / 180;
+            if (toolSettings->widget->isSettingSet[4] == 1) {
+                arcAngle = toolSettings->widget->toolParameters[4] * M_PI / 180;
                 dx2 = cos(startAngle + arcAngle) * r2;
                 dy2 = sin(startAngle + arcAngle) * r2;
             }
@@ -9677,7 +9649,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[4] + sketchgui->toolSettings->widget->isSettingSet[5] == 2) {
+            if (toolSettings->widget->isSettingSet[4] + toolSettings->widget->isSettingSet[5] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -9689,27 +9661,27 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             CenterPos = onSketchPos;
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                CenterPos.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                CenterPos.x = toolSettings->widget->toolParameters[0];
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                CenterPos.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                CenterPos.y = toolSettings->widget->toolParameters[1];
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterActive(1, 3);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterActive(1, 3);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else if (Mode == STATUS_SEEK_Second) {
             arcAngle = 0.;
-            sketchgui->toolSettings->widget->setParameterActive(0, 2);
-            sketchgui->toolSettings->widget->setParameterActive(0, 3);
-            sketchgui->toolSettings->widget->setParameterActive(1, 4);
-            sketchgui->toolSettings->widget->setParameterActive(1, 5);
-            sketchgui->toolSettings->widget->setParameterFocus(4);
+            toolSettings->widget->setParameterActive(0, 2);
+            toolSettings->widget->setParameterActive(0, 3);
+            toolSettings->widget->setParameterActive(1, 4);
+            toolSettings->widget->setParameterActive(1, 5);
+            toolSettings->widget->setParameterFocus(4);
             Mode = STATUS_SEEK_Third;
         }
         else if (Mode == STATUS_SEEK_Third) {
@@ -9780,44 +9752,36 @@ public:
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[5] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[5] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                            firstCurve, sketchgui->toolSettings->widget->toolParameters[2]);
+                            firstCurve, toolSettings->widget->toolParameters[2]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                        if (sketchgui->toolSettings->widget->toolParameters[3] == 0 ) {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", firstCurve + 2);
-                        }
-                        else if (sketchgui->toolSettings->widget->toolParameters[3] == 90 ) {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", firstCurve + 2);
-                        }
-                        else {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                firstCurve + 2, Sketcher::GeoEnum::HAxis, sketchgui->toolSettings->widget->toolParameters[3] * M_PI / 180);
-                        }
-                    }
-                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
-                        if (sketchgui->toolSettings->widget->toolParameters[4] == 0) {
+                    if (toolSettings->widget->isSettingSet[3] == 1) {
+                        if (toolSettings->widget->toolParameters[3] == 0 ) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", firstCurve + 3);
                         }
-                        else if (sketchgui->toolSettings->widget->toolParameters[4] == 90) {
+                        else if (toolSettings->widget->toolParameters[3] == 90 ) {
                             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%d)) ", firstCurve + 3);
                         }
                         else {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                firstCurve + 2, firstCurve + 3, sketchgui->toolSettings->widget->toolParameters[4] * M_PI / 180);
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                                Sketcher::GeoEnum::HAxis, 1, firstCurve + 3, 2, toolSettings->widget->toolParameters[3] * M_PI / 180);
                         }
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[5] == 1) {
+                    if (toolSettings->widget->isSettingSet[4] == 1) {
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                            firstCurve + 3, 1, firstCurve + 2, 2, toolSettings->widget->toolParameters[4] * M_PI / 180);
+                    }
+                    if (toolSettings->widget->isSettingSet[5] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                            firstCurve + 1, sketchgui->toolSettings->widget->toolParameters[5]);
+                            firstCurve + 1, toolSettings->widget->toolParameters[5]);
                     }
                 }
 
@@ -9854,7 +9818,7 @@ public:
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(14);
+                toolSettings->widget->setSettings(14);
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
@@ -10040,9 +10004,7 @@ public:
         EditCurve(Corners+1)
     {
     }
-    virtual ~DrawSketchHandlerRegularPolygon(){
-        sketchgui->toolSettings->widget->setSettings(0);
-    }
+    virtual ~DrawSketchHandlerRegularPolygon(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -10053,7 +10015,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
-        sketchgui->toolSettings->widget->setSettings(3);
+        toolSettings->widget->setSettings(3);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
@@ -10065,7 +10027,7 @@ public:
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] == 2) {
+            if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] == 2) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
             }
@@ -10075,9 +10037,9 @@ public:
             double ry = onSketchPos.y - StartPos.y;
             float angle = atan2f(ry, rx);
 
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                rx = cos(angle) * sketchgui->toolSettings->widget->toolParameters[2];
-                ry = sin(angle) * sketchgui->toolSettings->widget->toolParameters[2];
+            if (toolSettings->widget->isSettingSet[2] == 1) {
+                rx = cos(angle) * toolSettings->widget->toolParameters[2];
+                ry = sin(angle) * toolSettings->widget->toolParameters[2];
             }
 
             Base::Vector2d dV = Base::Vector2d(rx,ry);
@@ -10109,23 +10071,23 @@ public:
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
-            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                StartPos.x = sketchgui->toolSettings->widget->toolParameters[0];
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                StartPos.x = toolSettings->widget->toolParameters[0];
             }
             else {
                 StartPos.x = onSketchPos.x;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                StartPos.y = sketchgui->toolSettings->widget->toolParameters[1];
+            if (toolSettings->widget->isSettingSet[1] == 1) {
+                StartPos.y = toolSettings->widget->toolParameters[1];
             }
             else {
                 StartPos.y = onSketchPos.y;
             }
 
-            sketchgui->toolSettings->widget->setParameterActive(0, 0);
-            sketchgui->toolSettings->widget->setParameterActive(0, 1);
-            sketchgui->toolSettings->widget->setParameterActive(1, 2);
-            sketchgui->toolSettings->widget->setParameterFocus(2);
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(0, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
         else {
@@ -10154,16 +10116,16 @@ public:
 
                 //add constraint if user typed in some dimensions in tool widget
                 int lastCurve = getHighestCurveIndex(); //last geoID is the circle
-                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                    if (toolSettings->widget->isSettingSet[0] == 1) {
+                        distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[1]);
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                            lastCurve, sketchgui->toolSettings->widget->toolParameters[2]);
+                            lastCurve, toolSettings->widget->toolParameters[2]);
                     }
                 }
 
@@ -10190,13 +10152,12 @@ public:
                 tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             }
 
-            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                sketchgui->toolSettings->widget->setSettings(3);
+                toolSettings->widget->setSettings(3);
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
