@@ -284,8 +284,8 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     // ellipse
     ui->ellipseMajorRadius->setRange(0, INT_MAX);
     ui->ellipseMinorRadius->setRange(0, INT_MAX);
-    ui->ellipseAngle0->setRange(0, 360);
     ui->ellipseAngle1->setRange(0, 360);
+    ui->ellipseAngle2->setRange(0, 360);
     // vertex
     ui->vertexX->setMaximum(INT_MAX);
     ui->vertexY->setMaximum(INT_MAX);
@@ -580,17 +580,17 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui->ellipseMajorRadius->bind(ell->MajorRadius);
             ui->ellipseMinorRadius->setValue(ell->MinorRadius.getQuantityValue());
             ui->ellipseMinorRadius->bind(ell->MinorRadius);
-            ui->ellipseAngle0->setValue(ell->Angle0.getQuantityValue());
-            ui->ellipseAngle0->bind(ell->Angle0);
             ui->ellipseAngle1->setValue(ell->Angle1.getQuantityValue());
             ui->ellipseAngle1->bind(ell->Angle1);
+            ui->ellipseAngle2->setValue(ell->Angle2.getQuantityValue());
+            ui->ellipseAngle2->bind(ell->Angle2);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipse(QWidget*)));
             connectSignalMapper(ui->ellipseMajorRadius, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->ellipseMinorRadius, SIGNAL(valueChanged(double)), mapper);
-            connectSignalMapper(ui->ellipseAngle0, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->ellipseAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui->ellipseAngle2, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Vertex::getClassTypeId()) {
             Part::Vertex* v = static_cast<Part::Vertex*>(feature);
@@ -975,15 +975,15 @@ QString DlgPrimitives::createEllipse(const QString& objectName, const QString& p
         "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
         "App.ActiveDocument.%1.MajorRadius=%2\n"
         "App.ActiveDocument.%1.MinorRadius=%3\n"
-        "App.ActiveDocument.%1.Angle0=%4\n"
-        "App.ActiveDocument.%1.Angle1=%5\n"
+        "App.ActiveDocument.%1.Angle1=%4\n"
+        "App.ActiveDocument.%1.Angle2=%5\n"
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle2->value()))
         .arg(placement)
         .arg(tr("Ellipse"));
 }
@@ -1340,14 +1340,14 @@ QString DlgPrimitives::changeEllipse(const QString& objectName, const QString& p
     return QString::fromLatin1(
         "%1.MajorRadius=%2\n"
         "%1.MinorRadius=%3\n"
-        "%1.Angle0=%4\n"
-        "%1.Angle1=%5\n"
+        "%1.Angle1=%4\n"
+        "%1.Angle2=%5\n"
         "%1.Placement=%6\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle2->value()))
         .arg(placement);
 }
 
@@ -1757,11 +1757,11 @@ void DlgPrimitives::onChangeEllipse(QWidget* widget)
     else if (widget == ui->ellipseMinorRadius) {
         ell->MinorRadius.setValue(ui->ellipseMinorRadius->value().getValue());
     }
-    else if (widget == ui->ellipseAngle0) {
-        ell->Angle0.setValue(ui->ellipseAngle0->value().getValue());
-    }
     else if (widget == ui->ellipseAngle1) {
         ell->Angle1.setValue(ui->ellipseAngle1->value().getValue());
+    }
+    else if (widget == ui->ellipseAngle2) {
+        ell->Angle2.setValue(ui->ellipseAngle2->value().getValue());
     }
 
     ell->recomputeFeature();

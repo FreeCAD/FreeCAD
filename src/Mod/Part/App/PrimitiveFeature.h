@@ -406,8 +406,8 @@ public:
 
     App::PropertyLength MajorRadius;
     App::PropertyLength MinorRadius;
-    App::PropertyAngle Angle0;
     App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
 
     /** @name methods override feature */
     //@{
