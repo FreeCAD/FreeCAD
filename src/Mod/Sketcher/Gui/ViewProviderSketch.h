@@ -536,6 +536,8 @@ public:
     boost::signals2::signal<void ()> signalElementsChanged;
     //@}
 
+    bool ctrlIsPressed;
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;

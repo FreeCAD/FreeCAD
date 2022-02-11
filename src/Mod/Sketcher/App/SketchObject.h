@@ -294,6 +294,10 @@ public:
     /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
     int addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool moveonly = false, bool clone=false, int csize=2, int rsize=1, bool constraindisplacement = false, double perpscale = 1.0);
 
+    //ctrl-X ctrl-C ctrl-V support
+    std::string exportSelectedAsString(std::vector<std::string> SubNames);
+    bool pasteGeometriesInClipboard(QString importedData);
+
     int removeAxesAlignment(const std::vector<int> &geoIdList);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!

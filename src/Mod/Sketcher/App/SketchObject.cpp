@@ -4077,6 +4077,175 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     return Geometry.getSize()-1;
 }
 
+std::string SketchObject::exportSelectedAsString(std::vector<std::string> SubNames) {
+    if (SubNames.empty()) { return ""; }
+    //First we need listOfGeoId and sort them.
+    std::vector<int> listOfGeoId;
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        int GeoId = -1;
+        // only handle non-external edges
+        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
+            GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+            if (GeoId >= 0) {
+                listOfGeoId.push_back(GeoId);
+            }
+        }
+        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
+            // only if it is a GeomPoint
+            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
+            Sketcher::PointPos PosId;
+            this->getGeoVertexIndex(VtId, GeoId, PosId);
+            if (this->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                if (GeoId >= 0) {
+                    listOfGeoId.push_back(GeoId);
+                }
+            }
+        }
+    }
+    sort(listOfGeoId.begin(), listOfGeoId.end());
+
+    //Export selected geometries as a formated string.
+
+    if (listOfGeoId.size() < 1) { return ""; }
+    else {
+        Base::StringWriter writer;
+        Part::PropertyGeometryList geoToCopy;
+        std::vector< Part::Geometry* > newVals;
+
+        for (size_t i = 0; i < listOfGeoId.size(); i++) {
+            const Part::Geometry* Geo = this->getGeometry(listOfGeoId[i]);
+            Part::Geometry* geoNew = Geo->copy();
+            newVals.push_back(geoNew);
+        }
+        geoToCopy.setValues(std::move(newVals));
+        geoToCopy.Save(writer);
+
+        //add constraints to the stream string.
+        Sketcher::PropertyConstraintList constToCopy;
+        std::vector< Sketcher::Constraint* > newConstrVals;
+        const std::vector< Sketcher::Constraint* >& vals = this->Constraints.getValues();
+        for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin(); it != vals.end(); ++it) {
+            for (size_t i = 0; i < listOfGeoId.size(); i++) {
+                if ((*it)->First == listOfGeoId[i] || (*it)->Second == listOfGeoId[i] || (*it)->Third == listOfGeoId[i]) {
+                    //We need to check that all the geoId are from selected geometries or axis/root point.
+                    bool isFirstOk = 0;
+                    bool isSecondOk = 0;
+                    bool isThirdOk = 0;
+                    if ((*it)->First == listOfGeoId[i] || (*it)->First == GeoEnum::GeoUndef || (*it)->First == GeoEnum::RtPnt || (*it)->First == GeoEnum::VAxis || (*it)->First == GeoEnum::HAxis) {
+                        isFirstOk = 1;
+                    }
+                    else {
+                        for (size_t j = 0; j < listOfGeoId.size(); j++) {
+                            if ((*it)->First == listOfGeoId[j]) {
+                                isFirstOk = 1;
+                            }
+                        }
+                    }
+                    if ((*it)->Second == listOfGeoId[i] || (*it)->Second == GeoEnum::GeoUndef || (*it)->Second == GeoEnum::RtPnt || (*it)->Second == GeoEnum::VAxis || (*it)->Second == GeoEnum::HAxis) {
+                        isSecondOk = 1;
+                    }
+                    else {
+                        for (size_t j = 0; j < listOfGeoId.size(); j++) {
+                            if ((*it)->Second == listOfGeoId[j]) {
+                                isSecondOk = 1;
+                            }
+                        }
+                    }
+                    if ((*it)->Third == listOfGeoId[i] || (*it)->Third == GeoEnum::GeoUndef || (*it)->Third == GeoEnum::RtPnt || (*it)->Third == GeoEnum::VAxis || (*it)->Third == GeoEnum::HAxis) {
+                        isThirdOk = 1;
+                    }
+                    else {
+                        for (size_t j = 0; j < listOfGeoId.size(); j++) {
+                            if ((*it)->Third == listOfGeoId[j]) {
+                                isThirdOk = 1;
+                            }
+                        }
+                    }
+
+                    if (isFirstOk && isSecondOk && isThirdOk) {
+                        //make a copy of the constraint in order to change the geoIds. Because the exported geoId are lost and we'll use the index of the copied geometries
+                        Constraint* temp = (*it)->copy();
+                        bool isFirstSet = 0;
+                        bool isSecondSet = 0;
+                        bool isThirdSet = 0;
+                        for (size_t j = 0; j < listOfGeoId.size(); j++) {
+                            if (temp->First == listOfGeoId[j] && !isFirstSet) {
+                                temp->First = j;
+                                isFirstSet = 1;//to prevent changing the value several times
+                            }
+                            if (temp->Second == listOfGeoId[j] && !isSecondSet) {
+                                temp->Second = j;
+                                isSecondSet = 1;
+                            }
+                            if (temp->Third == listOfGeoId[j] && !isThirdSet) {
+                                temp->Third = j;
+                                isThirdSet = 1;
+                            }
+                        }
+                        newConstrVals.push_back(temp);
+                    }
+                    break;//don't want to copy twice a constraint if another geoID is involved.(and if notOk now it wont be later either)
+                }
+            }
+        }
+        constToCopy.setValues(std::move(newConstrVals));
+        constToCopy.Save(writer);
+        return writer.getString();
+    }
+    return "";
+}
+
+bool SketchObject::pasteGeometriesInClipboard(QString Data) {
+    bool somethingHappenned = 0;
+    std::string importedData = Data.toStdString();
+    int importedFirstGeoId = getHighestCurveIndex()+1;
+
+    std::string geoString;
+    if (importedData.find("</GeometryList>", 0) != std::string::npos) {
+        geoString = importedData.substr(0, importedData.find("</GeometryList>", 0) + 16);
+    }
+    else {return false;}
+
+    std::istringstream istream(geoString);
+    Base::XMLReader reader("importingGeo", istream);
+    Part::PropertyGeometryList geoToCopy;
+    geoToCopy.Restore(reader);
+
+    const std::vector< Part::Geometry* >& vals = geoToCopy.getValues();
+    for (size_t i = 0; i < vals.size(); i++) {
+        Part::Geometry* geocopy = vals[i]->copy();
+        addGeometry(geocopy);
+    }
+
+    if (importedData.find("<ConstraintList", 0) != std::string::npos) {
+        std::string constrString;
+        constrString = importedData.substr(importedData.find("<ConstraintList", 0), importedData.size() - importedData.find("<ConstraintList", 0));
+        
+        std::istringstream istream2(constrString);
+        Base::XMLReader reader2("importingConstraints", istream2);
+        Sketcher::PropertyConstraintList constToCopy;
+        constToCopy.Restore(reader2);
+
+        const std::vector< Sketcher::Constraint* >& newConstrVals = constToCopy.getValuesForce();
+        
+        for (size_t i = 0; i < newConstrVals.size(); i++) {
+            Sketcher::Constraint* constraintToAdd = newConstrVals[i]->copy();
+            //update the geoIds of the constraints
+            if (constraintToAdd->First != GeoEnum::GeoUndef && constraintToAdd->First != GeoEnum::RtPnt && constraintToAdd->First != GeoEnum::VAxis && constraintToAdd->First != GeoEnum::HAxis) {
+                constraintToAdd->First += importedFirstGeoId;
+            }
+            if (constraintToAdd->Second != GeoEnum::GeoUndef && constraintToAdd->Second != GeoEnum::RtPnt && constraintToAdd->Second != GeoEnum::VAxis && constraintToAdd->Second != GeoEnum::HAxis) {
+            constraintToAdd->Second += importedFirstGeoId;
+            }
+            if (constraintToAdd->Third != GeoEnum::GeoUndef && constraintToAdd->Third != GeoEnum::RtPnt && constraintToAdd->Third != GeoEnum::VAxis && constraintToAdd->Third != GeoEnum::HAxis) {
+            constraintToAdd->Third += importedFirstGeoId;
+            }
+            addConstraint(constraintToAdd);
+        }
+    }
+    return somethingHappenned;
+}
+
 int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, bool moveonly /*=false*/,
                           bool clone /*=false*/, int csize/*=2*/, int rsize/*=1*/, bool constraindisplacement /*= false*/,
                           double perpscale /*= 1.0*/)
