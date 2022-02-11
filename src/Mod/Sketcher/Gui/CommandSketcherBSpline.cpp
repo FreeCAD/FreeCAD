@@ -972,6 +972,97 @@ bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
+class DrawSketchHandlerBSplineInsertKnot: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerBSplineInsertKnot(const Part::GeomBSplineCurve* _bsp)
+        : bsp(_bsp)
+    {}
+
+    ~DrawSketchHandlerBSplineInsertKnot() override {}
+
+    void activated(ViewProviderSketch *) override
+    {
+        // TODO: create the dialog box here
+        const auto& knots = bsp->getKnots();
+        const auto& mults = bsp->getMultiplicities();
+        knotDialog = new QInputDialog(Gui::getMainWindow());
+        knotDialog->setModal(false);
+        knotDialog->setInputMode(QInputDialog::DoubleInput);
+        knotDialog->setDoubleDecimals(Base::UnitsApi::getDecimals());
+        knotDialog->setWindowTitle(QObject::tr("Knot parameter?"));
+        // use values from `knots` and `weights` and insert in label
+        std::stringstream knotList;
+        for (auto knot : knots)
+            knotList << " " << knot << ",";
+        std::stringstream multList;
+        for (auto mult : mults)
+            multList << " " << mult << ",";
+        knotDialog->setLabelText(QObject::tr("Please provide the parameter where the knot is to be inserted.\n"
+                                            "Current knots: %1\n"
+                                            "Multiplicities: %2\n")
+                                .arg(QString::fromUtf8(knotList.str().c_str()))
+                                .arg(QString::fromUtf8(multList.str().c_str())));
+        // use an appropriate middle value from `knots`
+        knotDialog->setDoubleValue(0.5 * (knots.front() + knots.back()));
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
+        // set step size dependent on the knot range
+        knotDialog->setDoubleStep(0.001 * (knots.back() - knots.front()));
+#endif
+        // use min/max from `knots`
+        knotDialog->setDoubleRange(knots.front(), knots.back());
+
+        auto drawTempPointAt = [=](double param)
+        {
+
+        };
+
+        auto insertKnotAt = [=](double param)
+        {
+            QMessageBox::information(
+                Gui::getMainWindow(), QObject::tr("To be inserted"),
+                QObject::tr("Knot to be inserted at %1.")
+                .arg(QString::number(param)));
+
+            sketchgui->purgeHandler();
+        };
+
+        // TODO: connect the spinbox of the dialog to the main drawing
+        // QObject::connect(&knotDialog, &QInputDialog::doubleValueChanged,
+        //                  this, drawTempPointAt);
+        // TODO: connect the dialog box's accept to the knot insertion command
+        // QObject::connect(&knotDialog, &QInputDialog::doubleValueSelected,
+        //                  this, insertKnotAt);
+
+        knotDialog->open();
+    }
+
+    void deactivated(ViewProviderSketch *) override
+    {
+        delete knotDialog;
+    }
+
+    void mouseMove(Base::Vector2d onSketchPos) override
+    {
+        // TODO: when a distance function is ready for bsplines here we can suggest a good parameter
+    }
+
+    bool pressButton(Base::Vector2d onSketchPos) override
+    {
+        // TODO: when a distance function is ready for bsplines here we can suggest a good parameter
+        return true;
+    }
+
+    bool releaseButton(Base::Vector2d onSketchPos) override
+    {
+        return true;
+    }
+
+protected:
+    const Part::GeomBSplineCurve *bsp;
+    QInputDialog* knotDialog;
+};
+
 DEF_STD_CMD_A(CmdSketcherInsertKnot)
 
 CmdSketcherInsertKnot::CmdSketcherInsertKnot()
@@ -1036,6 +1127,9 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         // Get param from user input into a box
         const Part::GeomBSplineCurve *bsp =
             static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+
+        ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(bsp));
+
         const auto& knots = bsp->getKnots();
         const auto& mults = bsp->getMultiplicities();
         QInputDialog knotDialog(Gui::getMainWindow());
@@ -1073,19 +1167,19 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         // use min/max from `knots`
         knotDialog.setDoubleRange(knots.front(), knots.back());
 
-        int ret = knotDialog.exec();
+        // int ret = knotDialog.exec();
 
-        if (ret == QDialog::Accepted) {
-            double param = knotDialog.doubleValue();
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                  "insertBSplineKnot(%d, %lf, %d) ",
-                                  GeoId, param, 1);
-            applied = true;
+        // if (ret == QDialog::Accepted) {
+        //     double param = knotDialog.doubleValue();
+        //     Gui::cmdAppObjectArgs(selection[0].getObject(),
+        //                           "insertBSplineKnot(%d, %lf, %d) ",
+        //                           GeoId, param, 1);
+        //     applied = true;
 
-            // Warning: GeoId list might have changed
-            // as the consequence of deleting pole circles and
-            // particularly B-spline GeoID might have changed.
-        }
+        //     // Warning: GeoId list might have changed
+        //     // as the consequence of deleting pole circles and
+        //     // particularly B-spline GeoID might have changed.
+        // }
     }
     catch (const Base::CADKernelError& e) {
       e.ReportException();
