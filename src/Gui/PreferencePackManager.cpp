@@ -130,8 +130,6 @@ void PreferencePack::applyConfigChanges() const
     }
 }
 
-
-
 PreferencePackManager::PreferencePackManager()
 {
     auto modPath = fs::path(App::Application::getUserAppDataDir()) / "Mod";
@@ -526,4 +524,16 @@ void Gui::PreferencePackManager::DeleteOldBackups() const
             }
         }
     }
+}
+
+std::vector<boost::filesystem::path> Gui::PreferencePackManager::configBackups() const
+{
+    std::vector<boost::filesystem::path> results;
+    auto backupDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks" / "Backups";
+    if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
+        for (const auto& backup : fs::directory_iterator(backupDirectory)) {
+            results.push_back(backup);
+        }
+    }
+    return results;
 }

@@ -328,6 +328,7 @@ SET(Gui_UIC_SRCS
     DlgProjectUtility.ui
     DlgPropertyLink.ui
     DlgReportView.ui
+    DlgRevertToBackupConfig.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
@@ -423,6 +424,7 @@ SET(Dialog_CPP_SRCS
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
+    DlgRevertToBackupConfigImp.cpp
     DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     DlgCheckableMessageBox.cpp
@@ -462,6 +464,7 @@ SET(Dialog_HPP_SRCS
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
+    DlgRevertToBackupConfigImp.h
     DlgCheckableMessageBox.h
     DlgExpressionInput.h
     TaskDlgRelocation.h
@@ -506,6 +509,7 @@ SET(Dialog_SRCS
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
+    DlgRevertToBackupConfig.ui
     DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
