@@ -780,7 +780,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             qMultiValueStr = formatPrefix + qUserString + formatSuffix;
         }
         return qMultiValueStr.toStdString();
-    } else {
+    } else {  //not multivalue schema
         if (formatSpecifier.isEmpty()) {
             Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
                                     qPrintable(qFormatSpec), getNameInDocument());
@@ -937,6 +937,9 @@ std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValu
     return tolerances;
 }
 
+//partial = 0 full text for multi-value schemas
+//partial = 1 value only
+//partial = 2 unit only
 std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
     QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());

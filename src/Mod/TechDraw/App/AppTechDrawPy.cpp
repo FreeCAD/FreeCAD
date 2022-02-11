@@ -709,7 +709,18 @@ private:
                         double parentX = dvp->X.getValue() + grandParentX;
                         double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
-                        std::string sDimText = dvd->getFormattedDimensionValue();
+                        std::string sDimText;
+                        //this is the same code as in QGIViewDimension::updateDim
+                        if (dvd->isMultiValueSchema()) {
+                            sDimText = dvd->getFormattedDimensionValue(0); //don't format multis
+                        } else {
+                            sDimText = dvd->getFormattedDimensionValue(1); //just the number pref/spec/suf
+                            if (dvd->showUnits()) {
+                                std::string unitText = dvd->getFormattedDimensionValue(
+                                            2);
+                                sDimText += " " + unitText;
+                            }
+                        }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();
