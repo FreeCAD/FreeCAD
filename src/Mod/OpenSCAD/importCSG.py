@@ -35,6 +35,7 @@ printverbose = False
 import FreeCAD
 import io
 import os
+import tempfile
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -178,7 +179,8 @@ def processcsg(filename):
     # Build the parser
     if printverbose: print('Load Parser')
     # No debug out otherwise Linux has protection exception
-    parser = yacc.yacc(debug=False)
+    temp = tempfile.gettempdir()
+    parser = yacc.yacc(debug=False,outputdir=temp)
     if printverbose: print('Parser Loaded')
     # Give the lexer some input
     #f=open('test.scad', 'r')
