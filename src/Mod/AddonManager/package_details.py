@@ -200,7 +200,10 @@ class PackageDetails(QWidget):
                 if repo.metadata:
                     installed_version_string += (
                         "<b>"
-                        + translate("AddonsInstaller", "On branch {}, update available to version").format(repo.branch)
+                        + translate(
+                            "AddonsInstaller",
+                            "On branch {}, update available to version",
+                        ).format(repo.branch)
                         + " "
                     )
                     installed_version_string += repo.metadata.Version
@@ -234,12 +237,18 @@ class PackageDetails(QWidget):
 
                 if detached_head:
                     installed_version_string += (
-                        translate("AddonsInstaller", "Git tag '{}' checked out, no updates possible").format(branch)
+                        translate(
+                            "AddonsInstaller",
+                            "Git tag '{}' checked out, no updates possible",
+                        ).format(branch)
                         + "."
                     )
                 else:
                     installed_version_string += (
-                        translate("AddonsInstaller", "This is the latest version available for branch {}").format(branch)
+                        translate(
+                            "AddonsInstaller",
+                            "This is the latest version available for branch {}",
+                        ).format(branch)
                         + "."
                     )
             elif status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
@@ -341,7 +350,7 @@ class PackageDetails(QWidget):
             self.ui.labelWarningInfo.show()
             self.ui.labelWarningInfo.setText(
                 "<h1>"
-                + translate("AddonsInstaller", "WARNING: This addon requires FreeCAD ") 
+                + translate("AddonsInstaller", "WARNING: This addon requires FreeCAD ")
                 + required_version
                 + "</h1>"
             )
@@ -362,7 +371,9 @@ class PackageDetails(QWidget):
             # it's possible that this package actually provides versions of itself
             # for newer and older versions
 
-            first_supported_version = self.repo.metadata.getFirstSupportedFreeCADVersion()
+            first_supported_version = (
+                self.repo.metadata.getFirstSupportedFreeCADVersion()
+            )
             if first_supported_version is not None:
                 required_version = first_supported_version.split(".")
                 fc_major = int(FreeCAD.Version()[0])
@@ -380,6 +391,11 @@ class PackageDetails(QWidget):
         and in runs where the GitPython import is available."""
 
         self.ui.buttonChangeBranch.hide()
+
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        show_switcher = pref.GetBool("ShowBranchSwitcher", False)
+        if not show_switcher:
+            return
 
         # Is this repo installed? If not, return.
         if self.repo.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:

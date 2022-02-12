@@ -96,6 +96,18 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                 # This is the one we are already on... just return
                 return
 
+            result = QtWidgets.QMessageBox.critical(
+                self,
+                translate("AddonsInstaller", "DANGER: Developer feature"),
+                translate(
+                    "AddonsInstaller",
+                    "DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?",
+                ),
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
+                QtWidgets.QMessageBox.Cancel,
+            )
+            if result == QtWidgets.QMessageBox.Cancel:
+                return
             if self.item_model.repo.is_dirty():
                 result = QtWidgets.QMessageBox.critical(
                     self,
@@ -107,7 +119,7 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
                     QtWidgets.QMessageBox.Cancel,
                 )
-                if result ==  QtWidgets.QMessageBox.Cancel:
+                if result == QtWidgets.QMessageBox.Cancel:
                     return
 
             if isinstance(ref, git.TagReference):
