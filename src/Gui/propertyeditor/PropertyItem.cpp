@@ -2951,6 +2951,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver
         QComboBox *cb = new QComboBox(parent);
         cb->setFrame(false);
         cb->setDisabled(isReadOnly());
+        cb->addItems(commonModes);
         QObject::connect(cb, SIGNAL(activated(int)), receiver, method);
         return cb;
     }
