@@ -1851,26 +1851,29 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & ge
 {
     const std::vector<Sketcher::Constraint *> &constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
-    int constrId = 0;
-
     std::vector<constrIconQueueItem> iconQueue;
 
-    for (std::vector<Sketcher::Constraint *>::const_iterator it=constraints.begin();
-         it != constraints.end(); ++it, ++constrId) {
+    int maxNumberOfConstraints = std::min(editModeScenegraphNodes.constrGroup->getNumChildren(), static_cast<int>(constraints.size()));
+
+    for (int constrId = 0; constrId < maxNumberOfConstraints; ++constrId) {
+        Sketcher::Constraint* constraint = constraints[constrId];
 
         // Check if Icon Should be created
         bool multipleIcons = false;
 
-        QString icoType = iconTypeFromConstraint(*it);
+        QString icoType = iconTypeFromConstraint(constraint);
         if (icoType.isEmpty())
             continue;
 
-        switch((*it)->Type) {
+        if (constraint->Type != vConstrType[constrId])
+            break;
+
+        switch(constraint->Type) {
 
         case Tangent:
             {   // second icon is available only for colinear line segments
-                const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId((*it)->First);
-                const Part::Geometry *geo2 = geolistfacade.getGeometryFromGeoId((*it)->Second);
+                const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(constraint->First);
+                const Part::Geometry *geo2 = geolistfacade.getGeometryFromGeoId(constraint->Second);
                 if (geo1 && geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                     geo2 && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     multipleIcons = true;
@@ -1880,9 +1883,9 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & ge
         case Horizontal:
         case Vertical:
             {   // second icon is available only for point alignment
-                if ((*it)->Second != GeoEnum::GeoUndef &&
-                    (*it)->FirstPos != Sketcher::PointPos::none &&
-                    (*it)->SecondPos != Sketcher::PointPos::none) {
+                if (constraint->Second != GeoEnum::GeoUndef &&
+                    constraint->FirstPos != Sketcher::PointPos::none &&
+                    constraint->SecondPos != Sketcher::PointPos::none) {
                     multipleIcons = true;
                 }
             }
@@ -1892,7 +1895,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & ge
             break;
         case Perpendicular:
             // second icon is available only when there is no common point
-            if ((*it)->FirstPos == Sketcher::PointPos::none && (*it)->Third == GeoEnum::GeoUndef)
+            if (constraint->FirstPos == Sketcher::PointPos::none && constraint->Third == GeoEnum::GeoUndef)
                 multipleIcons = true;
             break;
         case Equal:
@@ -1931,11 +1934,11 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & ge
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
-        thisIcon.visible = (*it)->isInVirtualSpace == ViewProviderSketchCoinAttorney::isShownVirtualSpace(viewProvider);
+        thisIcon.visible = constraint->isInVirtualSpace == ViewProviderSketchCoinAttorney::isShownVirtualSpace(viewProvider);
 
-        if ((*it)->Type==Symmetric) {
-            Base::Vector3d startingpoint = geolistfacade.getPoint((*it)->First, (*it)->FirstPos);
-            Base::Vector3d endpoint = geolistfacade.getPoint((*it)->Second,(*it)->SecondPos);
+        if (constraint->Type==Symmetric) {
+            Base::Vector3d startingpoint = geolistfacade.getPoint(constraint->First, constraint->FirstPos);
+            Base::Vector3d endpoint = geolistfacade.getPoint(constraint->Second, constraint->SecondPos);
 
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
@@ -1947,10 +1950,10 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & ge
         }
 
         if (multipleIcons) {
-            if ((*it)->Name.empty())
+            if (constraint->Name.empty())
                 thisIcon.label = QString::number(constrId + 1);
             else
-                thisIcon.label = QString::fromUtf8((*it)->Name.c_str());
+                thisIcon.label = QString::fromUtf8(constraint->Name.c_str());
             iconQueue.push_back(thisIcon);
 
             // Note that the second translation is meant to be applied after the first.
@@ -1969,10 +1972,10 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & ge
             }
         }
         else {
-            if ((*it)->Name.empty())
+            if (constraint->Name.empty())
                 thisIcon.label = QString();
             else
-                thisIcon.label = QString::fromUtf8((*it)->Name.c_str());
+                thisIcon.label = QString::fromUtf8(constraint->Name.c_str());
         }
 
         iconQueue.push_back(thisIcon);
