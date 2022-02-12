@@ -1987,7 +1987,7 @@ class FindUnifiedRegions:
                         tfBB_Area = tfBB.XLength * tfBB.YLength
                         # self._showShape(topFace, 'topFaceAlt_2_{}'.format(fNum))
                         if tfBB_Area < (fBB_Area * 0.9):
-                            msg = "Faild to extract processing region for Face {}\n".format(
+                            msg = "Failed to extract processing region for Face {}\n".format(
                                 fNum
                             )
                             FreeCAD.Console.PrintError(msg)
