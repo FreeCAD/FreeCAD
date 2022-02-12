@@ -285,6 +285,34 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
     </layout>
    </item>
    <item>
+    <widget class="QGroupBox" name="advanced">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Advanced Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="guiprefcheckboxShowBranchSwitcher">
+        <property name="text">
+         <string>Show option to change branches (Requires GitPython)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ShowBranchSwitcher</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Addons</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
