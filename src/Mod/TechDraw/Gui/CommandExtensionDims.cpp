@@ -156,7 +156,7 @@ CmdTechDrawExtensionInsertDiameter::CmdTechDrawExtensionInsertDiameter()
 void CmdTechDrawExtensionInsertDiameter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execInsertPrefixChar(this, "⌀");   
+    execInsertPrefixChar(this, "⌀");
 }
 
 bool CmdTechDrawExtensionInsertDiameter::isActive(void)

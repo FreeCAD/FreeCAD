@@ -1640,7 +1640,7 @@ CmdTechDrawExtendShortenLineGroup::CmdTechDrawExtendShortenLineGroup()
 
 void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
+    // Base::Console().Message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg != nullptr) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1772,7 +1772,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
                         std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
                 if ((nextEdge->points.at(0)-facePoints.back()).Length() < 0.01)
                     facePoints.push_back(nextEdge->points.at(1));
-                else 
+                else
                     facePoints.push_back(nextEdge->points.at(0));
             }
             facePoints.push_back(facePoints.front());
@@ -1789,10 +1789,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
             }
             faceArea = abs(faceArea)/2.0;
             totalArea = totalArea + faceArea;
-            totalPoints = totalPoints + facePoints.size();      
+            totalPoints = totalPoints + facePoints.size();
         }
     }
-    // if area calculation was successfull, wie start the command
+    // if area calculation was successful, start the command
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Face Area"));
     // at first we create the balloon
     std::string balloonName  = _createBalloon(this, objFeat);
@@ -1800,15 +1800,15 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(this->getDocument()->getObject(balloonName.c_str()));
     if (!balloon)
         throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
-    // the balloon has been created successfull
-    // we calculate needed variables
+    // the balloon has been created successfully
+    // calculate needed variables
     double scale = objFeat->getScale();
     totalArea = totalArea*10*10; // Todo: get factor cm->mm if cm set
     std::stringstream balloonText;
     balloonText << " " << totalArea << " cm2 ";
     xCenter = (xCenter/totalPoints)/scale;
     yCenter = (yCenter/totalPoints)/scale;
-    // we set the attributes in the data tab's fields 
+    // set the attributes in the data tab's fields
     balloon->SourceView.setValue(objFeat);
     balloon->BubbleShape.setValue("Rectangle");
     balloon->EndType.setValue("None");
@@ -1820,14 +1820,14 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     balloon->ShapeScale.setValue(0.75);
     balloon->ScaleType.setValue("Page");
     balloon->Text.setValue(balloonText.str());
-    // we look for the ballons's view provider
+    // look for the ballons's view provider
     TechDraw::DrawPage* page = objFeat->findParentPage();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
     auto viewProvider = static_cast<ViewProviderBalloon*>(guiDoc->getViewProvider(balloon));
     if (viewProvider)
     {
-        // view provider successfull found,
-        // we set the attributes in the view tab's fields
+        // view provider successfully found,
+        // set the attributes in the view tab's fields
         viewProvider->Fontsize.setValue(2.0);
         viewProvider->LineWidth.setValue(0.75);
         viewProvider->LineVisible.setValue(false);
@@ -1868,7 +1868,7 @@ namespace TechDrawGui {
         std::string pageName = viewPage->getDrawPage()->getNameInDocument();
         cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
                        featName.c_str());
-        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", 
+        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), featName.c_str());
         return featName;
     }
