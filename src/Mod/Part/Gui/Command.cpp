@@ -2501,33 +2501,13 @@ void CmdPartSectionCut::activated(int iMsg)
     Q_UNUSED(iMsg);
     static QPointer<PartGui::SectionCut> sectionCut = nullptr;
     if (!sectionCut) {
-        Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-        if (view) {
-            sectionCut = PartGui::SectionCut::makeDockWidget(view);
-        }
+        sectionCut = PartGui::SectionCut::makeDockWidget(Gui::getMainWindow());
     }
 }
 
 bool CmdPartSectionCut::isActive(void)
 {
-#if 0
-    Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    if (view) {
-        Gui::Action* action = qobject_cast<Action*>(_pcAction);
-        if (action->isChecked() != view->hasClippingPlane())
-            action->setChecked(view->hasClippingPlane());
-        return true;
-    }
-    else {
-        Gui::Action* action = qobject_cast<Action*>(_pcAction);
-        if (action->isChecked())
-            action->setChecked(false);
-        return false;
-    }
-#else
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    return view ? true : false;
-#endif
+    return hasActiveDocument();
 }
 
 //---------------------------------------------------------------

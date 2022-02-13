@@ -26,8 +26,6 @@
 #include <QDialog>
 #include <App/DocumentObject.h>
 
-namespace Gui { class View3DInventor; }
-
 namespace PartGui {
 
 class Ui_SectionCut;
@@ -37,7 +35,7 @@ class SectionCut : public QDialog
     Q_OBJECT
 
 public:
-    static SectionCut* makeDockWidget(Gui::View3DInventor*);
+    static SectionCut* makeDockWidget(QWidget* parent = nullptr);
     SectionCut(QWidget* parent = nullptr);
     ~SectionCut();
 

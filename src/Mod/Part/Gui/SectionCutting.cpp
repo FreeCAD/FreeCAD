@@ -663,10 +663,10 @@ void SectionCut::startCutting(bool isInitial)
     }
 }
 
-SectionCut* SectionCut::makeDockWidget(Gui::View3DInventor* view)
+SectionCut* SectionCut::makeDockWidget(QWidget* parent)
 {
     // embed this dialog into a QDockWidget
-    SectionCut* sectionCut = new SectionCut(view);
+    SectionCut* sectionCut = new SectionCut(parent);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // the dialog is designed that you can see the tree, thus put it to the right side
     QDockWidget* dw = pDockMgr->addDockWindow("Section Cutting", sectionCut, Qt::RightDockWidgetArea);
