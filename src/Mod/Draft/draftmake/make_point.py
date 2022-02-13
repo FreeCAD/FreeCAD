@@ -37,9 +37,9 @@ if App.GuiUp:
     from draftviewproviders.view_point import ViewProviderPoint
 
 
-def make_point(X=0, Y=0, Z=0, color=None, name = "Point", point_size= 5):
-    """ makePoint(x,y,z ,[color(r,g,b),point_size]) or
-        makePoint(Vector,color(r,g,b),point_size]) -
+def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
+    """ make_point(x, y, z, [color(r, g, b), point_size]) or
+        make_point(Vector, color(r, g, b), point_size])
 
     Creates a Draft Point in the current document.
 

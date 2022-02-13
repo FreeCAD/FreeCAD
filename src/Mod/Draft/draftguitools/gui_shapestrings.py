@@ -122,7 +122,7 @@ class ShapeString(gui_base_original.Creator):
         try:
             qr, sup, points, fil = self.getStrings()
             Gui.addModule("Draft")
-            _cmd = 'Draft.makeShapeString'
+            _cmd = 'Draft.make_shapestring'
             _cmd += '('
             _cmd += 'String=' + String + ', '
             _cmd += 'FontFile=' + FFile + ', '

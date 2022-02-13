@@ -137,12 +137,12 @@ class ShapeStringTaskPanel:
             qr, sup, points, fil = self.sourceCmd.getStrings()
             Gui.addModule("Draft")
             self.sourceCmd.commit(translate("draft", "Create ShapeString"),
-                                  ['ss=Draft.makeShapeString(String='+String+',FontFile='+FFile+',Size='+Size+',Tracking='+Tracking+')',
+                                  ['ss=Draft.make_shapestring(String=' + String + ', FontFile=' + FFile + ', Size=' + Size + ', Tracking=' + Tracking + ')',
                                    'plm=FreeCAD.Placement()',
-                                   'plm.Base='+DraftVecUtils.toString(ssBase),
-                                   'plm.Rotation.Q='+qr,
+                                   'plm.Base=' + DraftVecUtils.toString(ssBase),
+                                   'plm.Rotation.Q=' + qr,
                                    'ss.Placement=plm',
-                                   'ss.Support='+sup,
+                                   'ss.Support=' + sup,
                                    'Draft.autogroup(ss)'])
         except Exception:
             _err("Draft_ShapeString: error delaying commit\n")
