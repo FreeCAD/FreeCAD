@@ -61,6 +61,8 @@ class PathWorkbench(Workbench):
         # Add preferences pages - before loading PathGui to properly order pages of Path group
         from PathScripts import PathPreferencesPathJob, PathPreferencesPathDressup
 
+        translate = FreeCAD.Qt.translate
+
         FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
         FreeCADGui.addPreferencePage(
             PathPreferencesPathDressup.DressupPreferencesPage, "Path"
@@ -141,7 +143,8 @@ class PathWorkbench(Workbench):
         FreeCADGui.addCommand(
             "Path_EngraveTools",
             PathCommandGroup(
-                engravecmdlist, QT_TRANSLATE_NOOP("Path_EngraveTools", "Engraving Operations")
+                engravecmdlist,
+                QT_TRANSLATE_NOOP("Path_EngraveTools", "Engraving Operations"),
             ),
         )
 
@@ -172,12 +175,8 @@ class PathWorkbench(Workbench):
                 if not PathPreferences.suppressOpenCamLibWarning():
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
-        self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist
-        )
-        self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist
-        )
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + engravecmdgroup + threedcmdgroup,
@@ -257,6 +256,24 @@ class PathWorkbench(Workbench):
             PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
         )
         Log("Loading Path workbench... done\n")
+
+        # Warn user if current schema doesn't use minute for time in velocity
+        velString = FreeCAD.Units.Quantity(
+            1, FreeCAD.Units.Velocity
+        ).getUserPreferred()[2][3:]
+
+        if velString != "min":
+            current_schema = FreeCAD.Units.listSchemas(FreeCAD.Units.getSchema())
+
+            msg = translate(
+                "Path",
+                f"The currently selected unit schema: \n     '{current_schema}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+            )
+            header = translate("Path", "Warning")
+            msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
+
+            msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
+            msgbox.exec_()
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
