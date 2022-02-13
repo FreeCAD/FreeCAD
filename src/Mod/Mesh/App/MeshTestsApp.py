@@ -192,6 +192,15 @@ class MeshSplitTestCases(unittest.TestCase):
         self.assertFalse(self.mesh.hasCorruptedFacets())
         self.assertTrue(self.mesh.isSolid())
 
+    def testFindNearest(self):
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((-2,2,-6),(0,0,1))), 0)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.5,0.5,0.5),(0,0,1))), 1)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.5,0.5,0.5),(0,0,1),-math.pi/2)), 0)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0, 1))),
+                         len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1))))
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0, 1), math.pi/2)),
+                         len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1), math.pi/2)))
+
 class MeshGeoTestCases(unittest.TestCase):
     def setUp(self):
         # set up a planar face with 2 triangles
