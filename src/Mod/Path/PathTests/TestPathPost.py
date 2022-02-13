@@ -20,30 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import PathScripts
-import PathScripts.post
-import PathScripts.PathProfileContour
-import PathScripts.PathJob
-import PathScripts.PathPost
-import PathScripts.PathToolController
-import PathScripts.PathUtil
-import PathScripts.PostUtils as PostUtils
 import difflib
 import unittest
+
+import FreeCAD
 import Path
+import PathScripts
+import PathScripts.PathJob
+import PathScripts.PathPost
+import PathScripts.PathProfileContour
+import PathScripts.PathToolController
+import PathScripts.PathUtil
+import PathScripts.post
+import PathScripts.PostUtils as PostUtils
 
 WriteDebugOutput = False
 
 
-class PathPostTestCases(unittest.TestCase):
+class TestPathPostTestCases(unittest.TestCase):
+    """Test some of the output of the postprocessors.
+
+    At the moment this is just getting started, and only tests
+    the linuxcnc postprocessor.  There is one test for a metric
+    output and one test which adds the --inches option.
+    """
+
     def setUp(self):
-        testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/boxtest.fcstd"
+        """Set up the postprocessor tests."""
+        testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/boxtest1.fcstd"
         self.doc = FreeCAD.open(testfile)
         self.job = FreeCAD.ActiveDocument.getObject("Job")
         self.postlist = []
         currTool = None
-        for obj in self.job.Group:
+        for obj in self.job.Operations.Group:
             if not isinstance(obj.Proxy, PathScripts.PathToolController.ToolController):
                 tc = PathScripts.PathUtil.toolControllerForOp(obj)
                 if tc is not None:
@@ -52,18 +61,28 @@ class PathPostTestCases(unittest.TestCase):
                 self.postlist.append(obj)
 
     def tearDown(self):
-        FreeCAD.closeDocument("boxtest")
+        """Tear down after the postprocessor tests."""
+        FreeCAD.closeDocument("boxtest1")
 
     def testLinuxCNC(self):
+        """
+        Test the linuxcnc postprocessor in metric mode (default).
+
+        Returns
+        -------
+        None.
+
+        """
         from PathScripts.post import linuxcnc_post as postprocessor
 
         args = (
-            "--no-header --no-line-numbers --no-comments --no-show-editor --precision=2"
+            # "--no-header --no-comments --no-show-editor --precision=2"
+            "--no-header --no-show-editor"
         )
         gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
 
         referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_00.ngc"
+            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_01.ngc"
         )
         with open(referenceFile, "r") as fp:
             refGCode = fp.read()
@@ -80,9 +99,20 @@ class PathPostTestCases(unittest.TestCase):
             self.fail("linuxcnc output doesn't match: " + msg)
 
     def testLinuxCNCImperial(self):
+        """
+        Test the linuxcnc postprocessor using the --inches option.
+
+        This uses the same file and job as the testLinuxCNC test but
+        adds the --inches option.
+
+        Returns
+        -------
+        None.
+
+        """
         from PathScripts.post import linuxcnc_post as postprocessor
 
-        args = "--no-header --no-line-numbers --no-comments --no-show-editor --precision=2 --inches"
+        args = "--no-header --no-comments --no-show-editor --precision=2 --inches"
         gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
 
         referenceFile = (
@@ -102,33 +132,19 @@ class PathPostTestCases(unittest.TestCase):
             )
             self.fail("linuxcnc output doesn't match: " + msg)
 
-    def testCentroid(self):
-        from PathScripts.post import centroid_post as postprocessor
-
-        args = "--no-header --no-line-numbers --no-comments --no-show-editor --axis-precision=2 --feed-precision=2"
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_centroid_00.ngc"
-        )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testCentroid.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
-
 
 class TestPathPostUtils(unittest.TestCase):
-    def testSplitArcs(self):
+    """Test the utility functions in the PostUtils.py file."""
 
+    def testSplitArcs(self):
+        """
+        Tests the PostUtils.splitArcs function.
+
+        Returns
+        -------
+        None.
+
+        """
         commands = [
             Path.Command("G1 X-7.5 Y5.0 Z0.0"),
             Path.Command("G2 I2.5 J0.0 K0.0 X-5.0 Y7.5 Z0.0"),
@@ -148,7 +164,5 @@ class TestPathPostUtils(unittest.TestCase):
         )
 
         results = PostUtils.splitArcs(testpath)
-        # self.assertTrue(len(results.Commands) == 117)
-        self.assertTrue(
-            len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
-        )
+        self.assertTrue(len(results.Commands) == 41)
+        self.assertTrue(len([c for c in results.Commands if c.Name in ['G2', 'G3']]) == 0)
