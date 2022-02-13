@@ -69,6 +69,12 @@ bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base:
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes,
                                        FacetIndex &rulFacet) const
 {
+    return NearestFacetOnRay(rclPt, rclDir, Mathf::PI, rclRes, rulFacet);
+}
+
+bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxAngle,
+                                       Base::Vector3f &rclRes, FacetIndex &rulFacet) const
+{
     Base::Vector3f clProj, clRes;
     bool bSol = false;
     FacetIndex ulInd = 0;
@@ -76,13 +82,15 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     // slow execution with no grid
     MeshFacetIterator  clFIter(_rclMesh);
     for (clFIter.Init(); clFIter.More(); clFIter.Next()) {
-        if (clFIter->Foraminate( rclPt, rclDir, clRes ) == true) {
-            if (bSol == false) { // first solution
+        if (clFIter->Foraminate(rclPt, rclDir, clRes, fMaxAngle)) {
+            if (bSol == false) {
+                // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = clFIter.Position();
             }
-            else {  // is closer to the point
+            else {
+                // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = clFIter.Position();

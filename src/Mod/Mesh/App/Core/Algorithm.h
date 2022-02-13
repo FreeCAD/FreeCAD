@@ -75,6 +75,17 @@ public:
    * Searches for the nearest facet to the ray defined by
    * (\a rclPt, \a rclDir).
    * The point \a rclRes holds the intersection point with the ray and the
+   * nearest facet with index \a rulFacet. The angle between the ray and the normal of the triangle
+   * must be less than or equal to \a fMaxAngle.
+   * \note This method tests all facets so it should only be used
+   * occasionally.
+   */
+  bool NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxAngle, Base::Vector3f &rclRes,
+                          FacetIndex &rulFacet) const;
+  /**
+   * Searches for the nearest facet to the ray defined by
+   * (\a rclPt, \a rclDir).
+   * The point \a rclRes holds the intersection point with the ray and the
    * nearest facet with index \a rulFacet.
    * \note This method is optimized by using a grid. So this method can be
    * used for a lot of tests.

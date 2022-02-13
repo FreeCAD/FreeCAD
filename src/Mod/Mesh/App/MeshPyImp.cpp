@@ -1830,7 +1830,8 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
 {
     PyObject* pnt_p;
     PyObject* dir_p;
-    if (!PyArg_ParseTuple(args, "OO", &pnt_p, &dir_p))
+    double maxAngle = MeshCore::Mathd::PI;
+    if (!PyArg_ParseTuple(args, "OO|d", &pnt_p, &dir_p, &maxAngle))
         return nullptr;
 
     try {
@@ -1854,7 +1855,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
         if (alg.NearestFacetOnRay(pnt,  dir, grid, res, index) ||
             alg.NearestFacetOnRay(pnt, -dir, grid, res, index)) {
 #else
-        if (alg.NearestFacetOnRay(pnt, dir, res, index)) {
+        if (alg.NearestFacetOnRay(pnt, dir, static_cast<float>(maxAngle), res, index)) {
 #endif
             Py::Tuple tuple(3);
             tuple.setItem(0, Py::Float(res.x));
