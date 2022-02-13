@@ -211,8 +211,14 @@ App::DocumentObjectExecReturn *Pad::execute()
             }
         }
         else {
-            generatePrism(prism, sketchshape, method, dir, L, L2,
-                          TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane, hasReversed);
+            if (hasTaperedAngle()) {
+                if (hasReversed)
+                    dir.Reverse();
+                generateTaperedPrism(prism, sketchshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane);
+            }
+            else {
+                generatePrism(prism, sketchshape, method, dir, L, L2, hasMidplane, hasReversed);
+            }
         }
 
         if (prism.IsNull())

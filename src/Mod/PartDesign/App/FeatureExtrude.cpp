@@ -126,21 +126,24 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     return extrudeDirection;
 }
 
+bool FeatureExtrude::hasTaperedAngle() const
+{
+    return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular()) ||
+           fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
+}
+
 void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                                    const TopoDS_Shape& sketchshape,
                                    const std::string& method,
                                    const gp_Dir& direction,
                                    const double L,
                                    const double L2,
-                                   const double angle,
-                                   const double angle2,
                                    const bool midplane,
                                    const bool reversed)
 {
     if (method == "Length" || method == "TwoLengths" || method == "ThroughAll") {
         double Ltotal = L;
         double Loffset = 0.;
-        gp_Dir directionTaper = direction;
         if (method == "ThroughAll")
             Ltotal = getThroughAllLength();
 
@@ -177,25 +180,15 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                 throw Base::ValueError("Cannot create a pocket with a depth of zero.");
         }
 
-        // now we can create either a tapered or linear prism.
-        // If tapered, we create is using Part's draft extrusion method. If linear we create a prism.
-        if (fabs(angle) > Base::toRadians(Precision::Angular()) || fabs(angle2) > Base::toRadians(Precision::Angular())) {
-            // prism is tapered
-            if (reversed)
-                directionTaper.Reverse();
-            generateTaperedPrism(prism, sketchshape, method, directionTaper, L, L2, angle, angle2, midplane);
-        }
-        else {
-            // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
-            // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
-            // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785#p560785
-            // It is better not to use BRepFeat_MakePrism here even if we have a support because the
-            // resulting shape creates problems with Pocket
-            BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), 0, 1); // finite prism
-            if (!PrismMaker.IsDone())
-                throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
-            prism = PrismMaker.Shape();
-        }
+        // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
+        // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
+        // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785#p560785
+        // It is better not to use BRepFeat_MakePrism here even if we have a support because the
+        // resulting shape creates problems with Pocket
+        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), 0, 1); // finite prism
+        if (!PrismMaker.IsDone())
+            throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
+        prism = PrismMaker.Shape();
     }
     else {
         std::stringstream str;

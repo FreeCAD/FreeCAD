@@ -219,8 +219,14 @@ App::DocumentObjectExecReturn *Pocket::execute()
         }
         else {
             TopoDS_Shape prism;
-            generatePrism(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(),
-                          Midplane.getValue(), Reversed.getValue());
+            if (hasTaperedAngle()) {
+                if (Reversed.getValue())
+                    dir.Reverse();
+                generateTaperedPrism(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), Midplane.getValue());
+            }
+            else {
+                generatePrism(prism, profileshape, method, dir, L, L2, Midplane.getValue(), Reversed.getValue());
+            }
 
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");

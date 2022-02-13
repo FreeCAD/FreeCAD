@@ -66,6 +66,7 @@ public:
 
 protected:
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector);
+    bool hasTaperedAngle() const;
 
     /**
       * Generates an extrusion of the input sketchshape and stores it in the given \a prism
@@ -76,8 +77,6 @@ protected:
                        const gp_Dir& direction,
                        const double L,
                        const double L2,
-                       const double angle,
-                       const double angle2,
                        const bool midplane,
                        const bool reversed);
 
