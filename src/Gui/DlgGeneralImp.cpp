@@ -44,10 +44,7 @@
 #include "DlgPreferencesImp.h"
 
 #include "DlgCreateNewPreferencePackImp.h"
-
-// Only needed until PreferencePacks can be managed from the AddonManager:
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include "DlgPreferencePackManagementImp.h"
 
 
 using namespace Gui::Dialog;
@@ -97,19 +94,8 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     recreatePreferencePackMenu();
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
 
-    // Future work: the Add-On Manager will be modified to include a section for Preference Packs, at which point this
-    // button will be modified to open the Add-On Manager to that tab.
-    auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
-
-    // If that directory hasn't been created yet, just send the user to the preferences directory
-    if (!(fs::exists(savedPreferencePacksDirectory) && fs::is_directory(savedPreferencePacksDirectory))) {
-        savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir());
-        ui->ManagePreferencePacks->hide();
-    }
-    
-    QString pathToSavedPacks(QString::fromStdString(savedPreferencePacksDirectory.string()));
-    ui->ManagePreferencePacks->setToolTip(tr("Open the directory of saved user preference packs"));
-    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, [pathToSavedPacks]() { QDesktopServices::openUrl(QUrl::fromLocalFile(pathToSavedPacks)); });
+    ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
+    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgGeneralImp::onManagePreferencePacksClicked);
 }
 
 /**
@@ -353,6 +339,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
 
     // Populate the Preference Packs list
+    Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
 
     ui->PreferencePacks->setRowCount(packs.size());
@@ -405,8 +392,17 @@ void DlgGeneralImp::newPreferencePackDialogAccepted()
         });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
     Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
-    Application::Instance->prefPackManager()->rescan();
     recreatePreferencePackMenu();
+}
+
+void DlgGeneralImp::onManagePreferencePacksClicked()
+{
+    if (!this->preferencePackManagementDialog) {
+        this->preferencePackManagementDialog = std::make_unique<DlgPreferencePackManagementImp>(this);
+        connect(this->preferencePackManagementDialog.get(), &DlgPreferencePackManagementImp::packVisibilityChanged,
+            this, &DlgGeneralImp::recreatePreferencePackMenu);
+    }
+    this->preferencePackManagementDialog->show();
 }
 
 void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
