@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/nodes/SoPickStyle.h>
 # include <cfloat>
 # include <QMessageBox>
 # include <Precision.hxx>
@@ -975,76 +976,49 @@ bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
 class DrawSketchHandlerBSplineInsertKnot: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerBSplineInsertKnot(const Part::GeomBSplineCurve* _bsp)
-        : bsp(_bsp)
-    {}
+    DrawSketchHandlerBSplineInsertKnot(Sketcher::SketchObject* _Obj, int _GeoId)
+        : Obj(_Obj)
+        , GeoId(_GeoId)
+    {
+        auto bsp = static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+        guessParam = bsp->getFirstParameter();
+
+        // TODO: Use bounding box or closestParameter
+        minX = -100.00;
+        maxX =  100.00;
+        paramSlope = (bsp->getLastParameter() - bsp->getFirstParameter()) / (maxX - minX);
+    }
 
     ~DrawSketchHandlerBSplineInsertKnot() override {}
 
     void activated(ViewProviderSketch *) override
     {
-        // TODO: create the dialog box here
-        const auto& knots = bsp->getKnots();
-        const auto& mults = bsp->getMultiplicities();
-        knotDialog = new QInputDialog(Gui::getMainWindow());
-        knotDialog->setModal(false);
-        knotDialog->setInputMode(QInputDialog::DoubleInput);
-        knotDialog->setDoubleDecimals(Base::UnitsApi::getDecimals());
-        knotDialog->setWindowTitle(QObject::tr("Knot parameter?"));
-        // use values from `knots` and `weights` and insert in label
-        std::stringstream knotList;
-        for (auto knot : knots)
-            knotList << " " << knot << ",";
-        std::stringstream multList;
-        for (auto mult : mults)
-            multList << " " << mult << ",";
-        knotDialog->setLabelText(QObject::tr("Please provide the parameter where the knot is to be inserted.\n"
-                                            "Current knots: %1\n"
-                                            "Multiplicities: %2\n")
-                                .arg(QString::fromUtf8(knotList.str().c_str()))
-                                .arg(QString::fromUtf8(multList.str().c_str())));
-        // use an appropriate middle value from `knots`
-        knotDialog->setDoubleValue(0.5 * (knots.front() + knots.back()));
-#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
-        // set step size dependent on the knot range
-        knotDialog->setDoubleStep(0.001 * (knots.back() - knots.front()));
-#endif
-        // use min/max from `knots`
-        knotDialog->setDoubleRange(knots.front(), knots.back());
-
-        auto drawTempPointAt = [=](double param)
-        {
-
-        };
-
-        auto insertKnotAt = [=](double param)
-        {
-            QMessageBox::information(
-                Gui::getMainWindow(), QObject::tr("To be inserted"),
-                QObject::tr("Knot to be inserted at %1.")
-                .arg(QString::number(param)));
-
-            sketchgui->purgeHandler();
-        };
-
-        // TODO: connect the spinbox of the dialog to the main drawing
-        // QObject::connect(&knotDialog, &QInputDialog::doubleValueChanged,
-        //                  this, drawTempPointAt);
-        // TODO: connect the dialog box's accept to the knot insertion command
-        // QObject::connect(&knotDialog, &QInputDialog::doubleValueSelected,
-        //                  this, insertKnotAt);
-
-        knotDialog->open();
+        // TODO: Make a separate cursor for insert knot
+        setCrosshairCursor("Sketcher_Pointer_Create_Point");
     }
 
     void deactivated(ViewProviderSketch *) override
     {
-        delete knotDialog;
     }
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
-        // TODO: when a distance function is ready for bsplines here we can suggest a good parameter
+        auto bsp = static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+
+        // get closest parameter using OCC
+        // TODO: This is called every time we move the cursor. Can get overwhelming.
+        Base::Vector3d onSketchPos3d(onSketchPos.x, onSketchPos.y, 0.0);
+        SbString text;
+        text.sprintf(" %.3f", guessParam);
+        // FIXME: Sometimes the "closest" point is on the other end of the B-Spline.
+        // Find when it happens and fix it?
+        bsp->closestParameter(onSketchPos3d, guessParam);
+
+        Base::Vector3d pointOnCurve = bsp->value(guessParam);
+
+        // TODO: Also draw a point at our position instead of just text
+        setPositionText(Base::Vector2d(pointOnCurve.x, pointOnCurve.y), text);
+        applyCursor();
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -1055,12 +1029,97 @@ public:
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
+        Q_UNUSED(onSketchPos);
+
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot (incomplete)"));
+
+        bool applied = false;
+        boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
+
+        try {
+            Gui::cmdAppObjectArgs(Obj, "insertBSplineKnot(%d, %lf, %d) ",
+                                  GeoId, guessParam, 1);
+            applied = true;
+
+            // Warning: GeoId list might have changed
+            // as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+        catch (const Base::CADKernelError& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("CAD Kernel Error"),
+                                     QObject::tr(e.getMessage().c_str()));
+            }
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("Input Error"),
+                                     QObject::tr(e.getMessage().c_str()));
+            }
+        }
+
+        int newGeoId = 0;
+        bool newGeoIdFound = false;
+
+        if (applied)
+        {
+            // find new geoid for B-spline as GeoId might have changed
+            const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
+
+            for (std::vector<Part::Geometry *>::const_iterator geo = gvals.begin(); geo != gvals.end(); geo++, newGeoId++) {
+                if ((*geo) && (*geo)->getTag() == bsplinetag) {
+                    newGeoIdFound = true;
+                    break;
+                }
+            }
+
+            if (newGeoIdFound) {
+                try {
+                    // add internalalignment for new pole
+                    Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", newGeoId);
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+            }
+        }
+
+        if (applied)
+            Gui::Command::commitCommand();
+        else
+            Gui::Command::abortCommand();
+
+        tryAutoRecomputeIfNotSolve(Obj);
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+        if (continuousMode && newGeoIdFound) {
+            // This code enables the continuous creation mode.
+
+            // The new entities created changed the B-Spline's GeoId
+            GeoId = newGeoId;
+
+            applyCursor();
+            /* It is ok not to call to purgeHandler
+             * in continuous creation mode because the
+             * handler is destroyed by the quit() method on pressing the
+             * right button of the mouse */
+        }
+        else {
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+
         return true;
     }
 
 protected:
-    const Part::GeomBSplineCurve *bsp;
-    QInputDialog* knotDialog;
+    Sketcher::SketchObject* Obj;
+    int GeoId;
+    double guessParam;
 };
 
 DEF_STD_CMD_A(CmdSketcherInsertKnot)
@@ -1128,7 +1187,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         const Part::GeomBSplineCurve *bsp =
             static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
 
-        ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(bsp));
+        ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
 
         const auto& knots = bsp->getKnots();
         const auto& mults = bsp->getMultiplicities();
