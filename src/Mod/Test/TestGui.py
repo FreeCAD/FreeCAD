@@ -166,7 +166,7 @@ class TestInsertFeatureCmd:
 
     def GetResources(self):
         return {'Pixmap'  : 'Std_Tool1',
-                'MenuText': 'Insert a TestFeauture',
+                'MenuText': 'Insert a TestFeature',
                 'ToolTip' : 'Insert a TestFeature in the active Document'}
 
 #---------------------------------------------------------------------------
