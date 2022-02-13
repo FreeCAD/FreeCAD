@@ -2,16 +2,16 @@
 A Windows installer for FreeCAD
 
 To build the installer you can do the following:
-1. Get the latest zip-file of the whole installer source code "FC-standard-installer.zip"
-   from https://github.com/donovaly/FreeCADInstProj/releases
+1. Get the latest zip-file of the whole installer source code "FC-standard-installer.zip" from</br>
+   https://github.com/donovaly/FreeCADInstProj/releases
 2. Extract it to e.g. the path "C:\FreeCAD\Installer"
-3. Open the file Settings.nsh with a text editor
-   (the editor jEdit (jedit.org) can be recommended to edit NSIS files)
+3. Open the file Settings.nsh with a text editor</br>
+   (the editor jEdit (jedit.org) can be recommended to edit NSIS files)</br>
    and adapt there the following paths to the ones on your PC, e.g.:</br>
    !define FILES_FREECAD "C:\FreeCAD\Installer\FreeCAD"</br>
    !define FILES_DEPS "C:\FreeCAD\Installer\MSVCRedist"
-4. Specify in Settings.nsh if it should be an installer for 32bit by commenting the line </br>
-  !define MULTIUSER_USE_PROGRAMFILES64
+4. Specify in Settings.nsh if it should be an installer for 32bit by commenting the line</br>
+   !define MULTIUSER_USE_PROGRAMFILES64
 5. Install the latest version 3.x of NSIS (https://nsis.sourceforge.io/Download)
 6. Download these special release files of NSIS that support large strings:</br>
    https://nsis.sourceforge.io/Special_Builds#Large_strings</br>
