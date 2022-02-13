@@ -200,7 +200,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 supportface = TopoDS_Face();
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
-            Extrude(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -219,8 +219,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
         }
         else {
             TopoDS_Shape prism;
-            Extrude(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(),
-                    Midplane.getValue(), Reversed.getValue());
+            generatePrism(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(),
+                          Midplane.getValue(), Reversed.getValue());
 
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");

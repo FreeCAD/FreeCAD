@@ -190,7 +190,7 @@ App::DocumentObjectExecReturn *Pad::execute()
                     supportface = TopoDS_Face();
 
                 PrismMode mode = PrismMode::None;
-                Extrude(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
                 base.Nullify();
             }
             else {
@@ -207,12 +207,12 @@ App::DocumentObjectExecReturn *Pad::execute()
                 if (!Ex.More())
                     supportface = TopoDS_Face();
                 PrismMode mode = PrismMode::None;
-                Extrude(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
             }
         }
         else {
-            Extrude(prism, sketchshape, method, dir, L, L2,
-                    TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane, hasReversed);
+            generatePrism(prism, sketchshape, method, dir, L, L2,
+                          TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane, hasReversed);
         }
 
         if (prism.IsNull())

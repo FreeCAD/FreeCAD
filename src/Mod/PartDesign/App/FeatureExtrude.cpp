@@ -126,16 +126,16 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     return extrudeDirection;
 }
 
-void FeatureExtrude::Extrude(TopoDS_Shape& prism,
-    const TopoDS_Shape& sketchshape,
-    const std::string& method,
-    const gp_Dir& direction,
-    const double L,
-    const double L2,
-    const double angle,
-    const double angle2,
-    const bool midplane,
-    const bool reversed)
+void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
+                                   const TopoDS_Shape& sketchshape,
+                                   const std::string& method,
+                                   const gp_Dir& direction,
+                                   const double L,
+                                   const double L2,
+                                   const double angle,
+                                   const double angle2,
+                                   const bool midplane,
+                                   const bool reversed)
 {
     if (method == "Length" || method == "TwoLengths" || method == "ThroughAll") {
         double Ltotal = L;
@@ -205,15 +205,15 @@ void FeatureExtrude::Extrude(TopoDS_Shape& prism,
     }
 }
 
-void FeatureExtrude::Extrude(TopoDS_Shape& prism,
-    const std::string& method,
-    const TopoDS_Shape& baseshape,
-    const TopoDS_Shape& profileshape,
-    const TopoDS_Face& supportface,
-    const TopoDS_Face& uptoface,
-    const gp_Dir& direction,
-    PrismMode Mode,
-    Standard_Boolean Modify)
+void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
+                                   const std::string& method,
+                                   const TopoDS_Shape& baseshape,
+                                   const TopoDS_Shape& profileshape,
+                                   const TopoDS_Face& supportface,
+                                   const TopoDS_Face& uptoface,
+                                   const gp_Dir& direction,
+                                   PrismMode Mode,
+                                   Standard_Boolean Modify)
 {
     if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
         BRepFeat_MakePrism PrismMaker;
@@ -240,24 +240,26 @@ void FeatureExtrude::Extrude(TopoDS_Shape& prism,
 }
 
 void FeatureExtrude::generateTaperedPrism(TopoDS_Shape& prism,
-    const TopoDS_Shape& sketchshape,
-    const std::string& method,
-    const gp_Dir& direction,
-    const double L,
-    const double L2,
-    const double angle,
-    const double angle2,
-    const bool midplane)
+                                          const TopoDS_Shape& sketchshape,
+                                          const std::string& method,
+                                          const gp_Dir& direction,
+                                          const double L,
+                                          const double L2,
+                                          const double angle,
+                                          const double angle2,
+                                          const bool midplane)
 {
     std::list<TopoDS_Shape> drafts;
     bool isSolid = true; // in PD we only generate solids, while Part Extrude can also create only shells
     bool isPartDesign = true; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
-    if (method == "ThroughAll")
+    if (method == "ThroughAll") {
         Part::ExtrusionHelper::makeDraft(sketchshape, direction, getThroughAllLength(),
             0.0, Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
-    else if (method == "TwoLengths")
+    }
+    else if (method == "TwoLengths") {
         Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, L2,
             Base::toRadians(angle), Base::toRadians(angle2), isSolid, drafts, isPartDesign);
+    }
     else if (method == "Length") {
         if (midplane) {
             Part::ExtrusionHelper::makeDraft(sketchshape, direction, L / 2, L / 2,
