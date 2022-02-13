@@ -72,7 +72,7 @@ void TimeInfo::setCurrent()
 #endif
 }
 
-void TimeInfo::setTime_t (uint64_t seconds)
+void TimeInfo::setTime_t (int64_t seconds)
 {
     timebuffer.time = seconds;
 }
@@ -95,7 +95,7 @@ float TimeInfo::diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd )
     int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
     int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
 
-    return float(ds) + float(dms) * 0.001;
+    return float(ds) + float(dms) * 0.001f;
 }
 
 TimeInfo TimeInfo::null()
