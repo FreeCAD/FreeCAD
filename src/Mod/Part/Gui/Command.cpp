@@ -2508,7 +2508,8 @@ void CmdPartSectionCut::activated(int iMsg)
 
 bool CmdPartSectionCut::isActive(void)
 {
-    return hasActiveDocument();
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    return view ? true : false;
 }
 
 //---------------------------------------------------------------
