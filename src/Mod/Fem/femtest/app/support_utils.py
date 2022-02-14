@@ -228,17 +228,21 @@ def compare_files(
     file1 = open(file_name1, "r")
     f1 = file1.readlines()
     file1.close()
+
+    # TODO: add support for variable values in the reference file
+    # instead of using this workaround
+
     # workaround to compare geos of elmer test and temporary file path
     # (not only names change, path changes with operating system)
     lf1 = [l for l in f1 if not (
-        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ")
+        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ") or l.startswith("General.NumThreads")
     )]
     lf1 = force_unix_line_ends(lf1)
     file2 = open(file_name2, "r")
     f2 = file2.readlines()
     file2.close()
     lf2 = [l for l in f2 if not (
-        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ")
+        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ") or l.startswith("General.NumThreads")
     )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
