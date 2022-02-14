@@ -45,17 +45,20 @@
 #include <LibraryVersions.h>
 #include <zlib.h>
 #include <boost/version.hpp>
+#include <boost/filesystem.hpp>
 
 #include "Splashscreen.h"
 #include "ui_AboutApplication.h"
 #include <Base/Console.h>
 #include <CXX/WrapPython.h>
 #include <App/Application.h>
+#include <App/Metadata.h>
 #include <Gui/MainWindow.h>
 
 
 using namespace Gui;
 using namespace Gui::Dialog;
+namespace fs = boost::filesystem;
 
 namespace Gui {
 /** Displays all messages at startup inside the splash screen.
@@ -690,17 +693,11 @@ void AboutDialog::on_copyButton_clicked()
     QString deskSess = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("DESKTOP_SESSION"),QString::fromLatin1(""));
     QString deskInfo = QString::fromLatin1("");
 
-    if (!(deskEnv == QString::fromLatin1("") && deskSess == QString::fromLatin1("")))
-    {
+    if (!(deskEnv == QString::fromLatin1("") && deskSess == QString::fromLatin1(""))) {
         if (deskEnv == QString::fromLatin1("") || deskSess == QString::fromLatin1(""))
-        {
             deskInfo = QString::fromLatin1(" (") + deskEnv + deskSess + QString::fromLatin1(")");
-
-        }
         else
-        {
             deskInfo = QString::fromLatin1(" (") + deskEnv + QString::fromLatin1("/") + deskSess + QString::fromLatin1(")");
-        }
     }
 
     str << "OS: " << QSysInfo::prettyProductName() << deskInfo << '\n';
@@ -727,11 +724,11 @@ void AboutDialog::on_copyButton_clicked()
     if (it != config.end())
         str << "Hash: " << it->second.c_str() << '\n';
     // report also the version numbers of the most important libraries in FreeCAD
-    str << "Python version: " << PY_VERSION << '\n';
-    str << "Qt version: " << QT_VERSION_STR << '\n';
-    str << "Coin version: " << COIN_VERSION << '\n';
+    str << "Python " << PY_VERSION << ", ";
+    str << "Qt " << QT_VERSION_STR << ", ";
+    str << "Coin " << COIN_VERSION << ", ";
 #if defined(HAVE_OCC_VERSION)
-    str << "OCC version: "
+    str << "OCC "
         << OCC_VERSION_MAJOR << "."
         << OCC_VERSION_MINOR << "."
         << OCC_VERSION_MAINTENANCE
@@ -744,6 +741,26 @@ void AboutDialog::on_copyButton_clicked()
     str << "Locale: " << loc.languageToString(loc.language()) << "/"
         << loc.countryToString(loc.country())
         << " (" << loc.name() << ")\n";
+
+    // Add installed module information:
+    auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
+    bool firstMod = true;
+    if (fs::exists(modDir) && fs::is_directory(modDir)) {
+        for (const auto& mod : fs::directory_iterator(modDir)) {
+            if (firstMod) {
+                firstMod = false;
+                str << "Installed mods: \n";
+            }
+            str << "  * " << QString::fromStdString(mod.path().leaf().string());
+            auto metadataFile = mod.path() / "package.xml";
+            if (fs::exists(metadataFile)) {
+                App::Metadata metadata(metadataFile);
+                if (metadata.version() != App::Meta::Version())
+                    str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
+            }
+            str << "\n";
+        }
+    }
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
