@@ -24,7 +24,7 @@
 #define PARTGUI_SECTIONCUTTING_H
 
 #include <QDialog>
-#include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 
 namespace PartGui {
 
@@ -59,8 +59,8 @@ public:
 
 private:
     Ui_SectionCut* ui;
-    std::vector<App::DocumentObject*> ObjectsListVisible;
-    App::Document* doc; //pointer to active document
+    std::vector<App::DocumentObjectT> ObjectsListVisible;
+    App::Document* doc = nullptr; // pointer to active document
     bool hasBoxX = false;
     bool hasBoxY = false;
     bool hasBoxZ = false;
