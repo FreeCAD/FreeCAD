@@ -137,7 +137,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Loft"
           << "Part_Sweep"
           << "Part_Section"
-          << "Part_SectionCut"
           << "Part_CrossSections"
           << "Part_Offset"
           << "Part_Offset2D"
@@ -165,6 +164,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         Gui::MenuItem* face = new Gui::MenuItem();
         face->setCommand("Part_ColorPerFace");
         view->insertItem(appr, face);
+        appr = view->findItem("Std_ToggleClipPlane");
+        appr = view->afterItem(appr);
+        Gui::MenuItem* cut = new Gui::MenuItem();
+        cut->setCommand("Part_SectionCut");
+        view->insertItem(appr, cut);
     }
 
     return root;
