@@ -24,6 +24,7 @@
 #define SKETCHER_GeoEnum_H
 
 #include <functional>
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace Sketcher
 {
@@ -96,7 +97,7 @@ enum class PointPos : int {
  * ordered containers.
  *
  */
-class GeoElementId
+class SketcherExport GeoElementId
 {
 public:
     /** @brief default constructor initialises object to an undefined (invalid) element.
@@ -133,10 +134,6 @@ public:
 inline constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
 {
 }
-
-inline constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
-inline constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
-inline constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
 
 } // namespace Sketcher
 
