@@ -83,7 +83,12 @@ SectionCut::SectionCut(QWidget* parent)
     ui->cutZ->setRange(-INT_MAX, INT_MAX);
 
     // get all objects in the document
-    doc = Gui::Application::Instance->activeDocument()->getDocument();
+    auto docGui = Gui::Application::Instance->activeDocument();
+    if (!docGui) {
+        Base::Console().Error("SectionCut error: there is no document\n");
+        return;
+    }
+    doc = docGui->getDocument();
     if (!doc) {
         Base::Console().Error("SectionCut error: there is no document\n");
         return;
@@ -94,12 +99,10 @@ SectionCut::SectionCut(QWidget* parent)
         Base::Console().Error("SectionCut error: there are no objects in the document\n");
         return;
     }
-    // empty the ObjectsListVisible
-    ObjectsListVisible.clear();
     // now store those that are currently visible
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->Visibility.getValue())
-            ObjectsListVisible.push_back((*it));
+            ObjectsListVisible.push_back(*it);
     }
 
     // we can have existing cut boxes take their values
@@ -108,7 +111,7 @@ SectionCut::SectionCut(QWidget* parent)
     if (doc->getObject(BoxZName)) {
         hasBoxZ = true;
         ui->groupBoxZ->setChecked(true);
-        Part::Box* pcBox = static_cast<Part::Box*>(doc->getObject(BoxZName));
+        Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
         if (!pcBox) {
             Base::Console().Error("SectionCut error: cut box is incorrectly named, cannot proceed\n");
             return;
@@ -118,7 +121,7 @@ SectionCut::SectionCut(QWidget* parent)
     if (doc->getObject(BoxYName)) {
         hasBoxY = true;
         ui->groupBoxY->setChecked(true);
-        Part::Box* pcBox = static_cast<Part::Box*>(doc->getObject(BoxYName));
+        Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
         if (!pcBox) {
             Base::Console().Error("SectionCut error: cut box is incorrectly named, cannot proceed\n");
             return;
@@ -128,7 +131,7 @@ SectionCut::SectionCut(QWidget* parent)
     if (doc->getObject(BoxXName)) {
         hasBoxX = true;
         ui->groupBoxX->setChecked(true);
-        Part::Box* pcBox = static_cast<Part::Box*>(doc->getObject(BoxXName));
+        Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
         if (!pcBox) {
             Base::Console().Error("SectionCut error: cut box is incorrectly named, cannot proceed\n");
             return;
@@ -204,106 +207,72 @@ void SectionCut::startCutting(bool isInitial)
         // refresh documents list
         onRefreshCutPBclicked();
 
-    // we will reuse it several times
-    std::vector<App::DocumentObject*>::iterator it;
+    App::DocumentObject* anObject;
+    std::vector<App::DocumentObjectT>::iterator it;
+
+    // lambda function to delete objects
+    auto deleteObject = [&](const char* objectName) {
+        anObject = doc->getObject(objectName);
+        // the deleted object might have been visible before, thus check and delete it from the list
+        auto found = std::find_if(ObjectsListVisible.begin(), ObjectsListVisible.end(), [anObject](const App::DocumentObjectT& obj) {
+            return (obj.getObject() == anObject);
+        });
+        if (found != ObjectsListVisible.end())
+            ObjectsListVisible.erase(found);
+        doc->removeObject(objectName);
+    };
 
     // delete the objects we might have already created to cut
     // we must do this because we support several cuts at once and
     // it is dangerous to deal with the fact that the user is free
     // to uncheck cutting planes and to add/remove objects while this dialog is open
     // We must remove in this order because the tree hierary of the features is Z->Y->X and Cut->Box
-    App::DocumentObject* anObject;
-    if (doc->getObject(CutZName)) {
-        anObject = doc->getObject(CutZName);
-        // the deleted object might have been visible before, thus check and delete it from the list
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
-        doc->removeObject(CutZName);
-    }
-    if (doc->getObject(BoxZName)) {
-        anObject = doc->getObject(BoxZName);
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
-        doc->removeObject(BoxZName);
-    }
-    if (doc->getObject(CutYName)) {
-        anObject = doc->getObject(CutYName);
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
-        doc->removeObject(CutYName);
-    }
-    if (doc->getObject(BoxYName)) {
-        anObject = doc->getObject(BoxYName);
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
-        doc->removeObject(BoxYName);
-    }
-    if (doc->getObject(CutXName)) {
-        anObject = doc->getObject(CutXName);
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
-        doc->removeObject(CutXName);
-    }
-    if (doc->getObject(BoxXName)) {
-        anObject = doc->getObject(BoxXName);
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
-        doc->removeObject(BoxXName);
-    }
+    
+    if (doc->getObject(CutZName))
+        deleteObject(CutZName);
+    if (doc->getObject(BoxZName))
+        deleteObject(BoxZName);
+    if (doc->getObject(CutYName))
+        deleteObject(CutYName);
+    if (doc->getObject(BoxYName))
+        deleteObject(BoxYName);
+    if (doc->getObject(CutXName))
+        deleteObject(CutXName);
+    if (doc->getObject(BoxXName))
+        deleteObject(BoxXName);
     if (doc->getObject(CompoundName)) {
         auto compoundObject = doc->getObject(CompoundName);
-        Part::Compound* pcCompoundDel = static_cast<Part::Compound*>(compoundObject);
+        Part::Compound* pcCompoundDel = dynamic_cast<Part::Compound*>(compoundObject);
+        if (!pcCompoundDel) {
+            Base::Console().Error("SectionCut error: compound is incorrectly named, cannot proceed\n");
+            return;
+        }
         std::vector<App::DocumentObject*> compoundObjects;
         pcCompoundDel->Links.getLinks(compoundObjects);
         // first delete the compound
-        for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it) == anObject) {
-                ObjectsListVisible.erase((it));
-                break;
-            }
-        }
+        auto foundObj = std::find_if(ObjectsListVisible.begin(), ObjectsListVisible.end(), [anObject](const App::DocumentObjectT& obj) {
+            return (obj.getObject() == anObject);
+        });
+        if (foundObj != ObjectsListVisible.end())
+            ObjectsListVisible.erase(foundObj);
         doc->removeObject(CompoundName);
         // now delete the objects that have been part of the compound
-        for (it = compoundObjects.begin(); it != compoundObjects.end(); it++) {
-            for (auto itOV = ObjectsListVisible.begin(); itOV != ObjectsListVisible.end(); ++itOV) {
-                if ((*itOV) == doc->getObject((*it)->getNameInDocument())) {
-                    ObjectsListVisible.erase((itOV));
-                    break;
-                }
-            }
-            doc->removeObject((*it)->getNameInDocument());
+        for (auto itCompound = compoundObjects.begin(); itCompound != compoundObjects.end(); itCompound++) {
+            anObject = doc->getObject((*itCompound)->getNameInDocument());
+            auto foundObjInner = std::find_if(ObjectsListVisible.begin(), ObjectsListVisible.end(), [anObject](const App::DocumentObjectT& objInner) {
+                return (objInner.getObject() == anObject);
+            });
+            if (foundObjInner != ObjectsListVisible.end())
+                ObjectsListVisible.erase((foundObjInner));
+            doc->removeObject((*itCompound)->getNameInDocument());
         }
     }
 
     // make all objects visible that have been visible when the dialog was called
     // because we made them invisible when we created cuts
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        if ((*it)->isValid()) // a formerly visible object might have been deleted
-            (*it)->Visibility.setValue(true);
+        if (it->getObject()) // a formerly visible object might have been deleted
+            it->getObject()->Visibility.setValue(true);
         else {
             // we must refresh the ObjectsListVisible list
             onRefreshCutPBclicked();
@@ -320,8 +289,8 @@ void SectionCut::startCutting(bool isInitial)
     std::vector<App::DocumentObject*> ObjectsListCut;
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
         // we need all Link objects in App::Parts for example for Assembly 4
-        if ((*it)->getTypeId() == Base::Type::fromName("App::Part")) {
-            App::Part* pcPart = static_cast<App::Part*>((*it));
+        if (it->getObject()->getTypeId() == Base::Type::fromName("App::Part")) {
+            App::Part* pcPart = static_cast<App::Part*>(it->getObject());
             bool isLinkAssembly = false;
             // collect all its link objects
             auto groupObjects = pcPart->Group.getValue();
@@ -344,15 +313,15 @@ void SectionCut::startCutting(bool isInitial)
             }   
         }
         // get all shapes that are also Part::Features
-        if ((*it)->getPropertyByName("Shape")
-            && (*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
+        if (it->getObject()->getPropertyByName("Shape")
+            && it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
             // sort out 2D objects, datums, App:Parts, compounds and objects that are part of a PartDesign body
-            if (!(*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Part2DObject"))
-                && !(*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))
-                && !(*it)->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Feature"))
-                && !(*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Compound"))
-                && (*it)->getTypeId() != Base::Type::fromName("App::Part"))
-                ObjectsListCut.push_back((*it));
+            if (!it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Part2DObject"))
+                && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))
+                && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Feature"))
+                && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Compound"))
+                && it->getObject()->getTypeId() != Base::Type::fromName("App::Part"))
+                ObjectsListCut.push_back(it->getObject());
         }
     }
     
@@ -362,13 +331,13 @@ void SectionCut::startCutting(bool isInitial)
     std::vector<App::DocumentObject*>::iterator it3;
     // check list of visible objects and not cut list because we want to repove from the cut list
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Boolean"))
-            || (*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiCommon"))
-            || (*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiFuse"))
-            || (*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Thickness"))
-            || (*it)->getTypeId().isDerivedFrom(Base::Type::fromName("Part::FilletBase")) ) {
+        if ( it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Boolean"))
+            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiCommon"))
+            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiFuse"))
+            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Thickness"))
+            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::FilletBase")) ) {
             // get possible links
-            auto subObjectList = (*it)->getOutList();
+            auto subObjectList = it->getObject()->getOutList();
             // if there links, delete them
             if (!subObjectList.empty()) {
                 for (it2 = subObjectList.begin(); it2 != subObjectList.end(); ++it2) {
@@ -425,10 +394,10 @@ void SectionCut::startCutting(bool isInitial)
     }
     Part::Compound* pcCompound = static_cast<Part::Compound*>(CutCompound);
     // fill it with all found elements with the copies of the elements
-    int i = 0;
-    for (it = ObjectsListCut.begin(), i = 0; it != ObjectsListCut.end(); ++it, i++) {
+    int count = 0;
+    for (auto itCuts = ObjectsListCut.begin(); itCuts != ObjectsListCut.end(); ++itCuts, count++) {
         // first create a link with a unique name
-        std::string newName = (*it)->getNameInDocument();
+        std::string newName = (*itCuts)->getNameInDocument();
         newName = newName + "_CutLink";
         
         auto newObject = doc->addObject("App::Link", newName.c_str());
@@ -438,14 +407,14 @@ void SectionCut::startCutting(bool isInitial)
         }
         App::Link* pcLink = static_cast<App::Link*>(newObject);
         // set the object to the created empty link object
-        pcLink->LinkedObject.setValue((*it));
+        pcLink->LinkedObject.setValue((*itCuts));
         // we want to get the link at the same position as the original
         pcLink->LinkTransform.setValue(true); 
         // add the link to the compound
-        pcCompound->Links.set1Value(i, newObject);
+        pcCompound->Links.set1Value(count, newObject);
 
         // hide the objects since only the cut should later be visible
-        (*it)->Visibility.setValue(false);
+        (*itCuts)->Visibility.setValue(false);
     }
 
     // compute the filled compound
@@ -453,7 +422,7 @@ void SectionCut::startCutting(bool isInitial)
 
     // make all objects invisible so that only the compound remains
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        (*it)->Visibility.setValue(false);
+        it->getObject()->Visibility.setValue(false);
     }
 
     // the area in which we can cut is the size of the compound
@@ -689,8 +658,8 @@ SectionCut::~SectionCut()
         // make all objects visible that have been visible when the dialog was called
         // because we made them invisible when we created cuts
         for (auto it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-            if ((*it)->isValid()) // a formerly visible object might have been deleted
-                (*it)->Visibility.setValue(true);
+            if (it->getObject()) // a formerly visible object might have been deleted
+                it->getObject()->Visibility.setValue(true);
         }
     }
 }
@@ -1180,7 +1149,12 @@ void SectionCut::onFlipXclicked()
         startCutting();
         return;
     }
-    Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    if (!pcBox) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxXName)
+            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
+        return;
+    }
     // get its placement and size
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
@@ -1214,7 +1188,12 @@ void SectionCut::onFlipXclicked()
             startCutting();
             return;
         }
-        Part::Cut* pcCutY = static_cast<Part::Cut*>(CutFeatureY);
+        Part::Cut* pcCutY = dynamic_cast<Part::Cut*>(CutFeatureY);
+        if (!pcCutY) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutYName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCutY->recomputeFeature(true);
     }
     else if ((!hasBoxY && hasBoxZ) || (hasBoxY && hasBoxZ)) { // at least Z
@@ -1227,11 +1206,21 @@ void SectionCut::onFlipXclicked()
             startCutting();
             return;
         }
-        Part::Cut* pcCutZ = static_cast<Part::Cut*>(CutFeatureZ);
+        Part::Cut* pcCutZ = dynamic_cast<Part::Cut*>(CutFeatureZ);
+        if (!pcCutZ) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCutZ->recomputeFeature(true);
     }
-    else { // only do this when no other box to save recomputes
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutObject);
+    else { // only do this when there is no other box to save recomputes
+        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+        if (!pcCut) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutXName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCut->recomputeFeature(true);
     }     
 }
@@ -1259,7 +1248,12 @@ void SectionCut::onFlipYclicked()
         startCutting();
         return;
     }
-    Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    if (!pcBox) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxYName)
+            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
+        return;
+    }
     // get its placement and size
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
@@ -1285,11 +1279,21 @@ void SectionCut::onFlipYclicked()
     // we only need to check for Z since the hierarchy is always Z->Y->X
     if (hasBoxZ) {
         auto CutFeatureZ = doc->getObject(CutZName);
-        Part::Cut* pcCutZ = static_cast<Part::Cut*>(CutFeatureZ);
+        Part::Cut* pcCutZ = dynamic_cast<Part::Cut*>(CutFeatureZ);
+        if (!pcCutZ) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCutZ->recomputeFeature(true);
     }
     else {
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutObject);
+        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+        if (!pcCut) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutYName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCut->recomputeFeature(true);
     }
 }
@@ -1307,7 +1311,7 @@ void SectionCut::onFlipZclicked()
         return;
     }
     // we must move the box in z-direction by its Height
-        // get the cut box
+    // first get the cut box
     auto CutBox = doc->getObject(BoxZName);
     // there should be a box, but maybe the user deleted it meanwhile
     if (!CutBox) {
@@ -1317,7 +1321,12 @@ void SectionCut::onFlipZclicked()
         startCutting();
         return;
     }
-    Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    if (!pcBox) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxZName)
+            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
+        return;
+    }
     // get its placement and size
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
@@ -1338,7 +1347,12 @@ void SectionCut::onFlipZclicked()
         startCutting();
         return;
     }
-    Part::Cut* pcCut = static_cast<Part::Cut*>(CutObject);
+    Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+    if (!pcCut) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+            + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+        return;
+    }
     pcCut->recomputeFeature(true);
 }
 
@@ -1346,11 +1360,12 @@ void SectionCut::onFlipZclicked()
 void SectionCut::onRefreshCutPBclicked()
 {
     // get document
-    doc = Gui::Application::Instance->activeDocument()->getDocument();
-    if (!doc) {
+    auto docGui = Gui::Application::Instance->activeDocument();
+    if (!docGui) {
         Base::Console().Error("SectionCut error: there is no document\n");
         return;
     }
+    doc = docGui->getDocument();
     // get all objects in the document
     std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
     if (ObjectsList.empty()) {
@@ -1361,8 +1376,9 @@ void SectionCut::onRefreshCutPBclicked()
     ObjectsListVisible.clear();
     // now store those that are currently visible
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
-        if ((*it)->Visibility.getValue())
-            ObjectsListVisible.push_back((*it));
+        if ((*it)->Visibility.getValue()) {
+            ObjectsListVisible.push_back(*it);
+        }
     }
     // reset defaults
     hasBoxX = false;
@@ -1394,11 +1410,19 @@ void SectionCut::onRefreshCutPBclicked()
 
 SbBox3f SectionCut::getViewBoundingBox()
 {
+    SbBox3f Box;
     auto docGui = Gui::Application::Instance->activeDocument();
-    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(docGui->getActiveView());
+    if (!docGui) {
+        Base::Console().Error("SectionCut error: there is no active document\n");
+        return Box; // return an empty box
+    }
+    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(docGui->getActiveView());
+    if (!view) {
+        Base::Console().Error("SectionCut error: could not get the active view\n");
+        return Box; // return an empty box
+    }
     Gui::View3DInventorViewer* viewer = view->getViewer();
     SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-    SbBox3f Box;
     if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
         return Box; // return an empty box
     // get scene bounding box
