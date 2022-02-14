@@ -1282,6 +1282,16 @@
       <translation>Linksom</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="114"/>
+      <source>Engraving Operations</source>
+      <translation>Graveer operaties</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="131"/>
+      <source>3D Operations</source>
+      <translation>3D-bewerkingen</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="136"/>
       <source>Project Setup</source>
       <translation>Projectinstelling</translation>
@@ -1297,19 +1307,9 @@
       <translation>Nieuwe bewerkingen</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="151"/>
-      <source>Path Modification</source>
-      <translation>Padwijziging</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="141"/>
       <source>Helpful Tools</source>
       <translation>Nuttig gereedschap</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>&amp;Path</source>
-      <translation>&amp;Pad</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="147"/>
@@ -1317,24 +1317,24 @@
       <translation>Padverkleding</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="114"/>
-      <source>Engraving Operations</source>
-      <translation>Graveer operaties</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="131"/>
-      <source>3D Operations</source>
-      <translation>3D-bewerkingen</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="149"/>
       <source>Supplemental Commands</source>
       <translation>Aanvullende commando's</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="151"/>
+      <source>Path Modification</source>
+      <translation>Padwijziging</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="154"/>
       <source>Specialty Operations</source>
       <translation>Gespecialiseerde operaties</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="159"/>
+      <source>&amp;Path</source>
+      <translation>&amp;Pad</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="159"/>
@@ -2043,114 +2043,6 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Voor de geopende randen, controleer de eind diepte voor deze bewerking.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSlot</name>
-    <message>
-      <location filename="PathSlot.py" line="101"/>
-      <source>New property added to</source>
-      <translation>Nieuwe eigenschap toegevoegd aan</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="103"/>
-      <source>Check default value(s).</source>
-      <translation>Controleer standaardwaarde).</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="431"/>
-      <source>No Base Geometry object in the operation.</source>
-      <translation>Geen Basis Geometrie object in de bewerking.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="441"/>
-      <source>Custom points are identical.</source>
-      <translation type="unfinished">Custom points are identical.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="449"/>
-      <source>Custom points not at same Z height.</source>
-      <translation>Aangepaste punten niet op dezelfde Z-hoogte.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="501"/>
-      <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation>Huidige Verlengde Radius resulteerd in een negatieve boogstraal.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="519"/>
-      <source>No path extensions available for full circles.</source>
-      <translation>Geen pad verlengingen beschikbaar voor volledige cirkels.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="674"/>
-      <source>operation collides with model.</source>
-      <translation>bewerking botst met model.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="926"/>
-      <source>Verify slot path start and end points.</source>
-      <translation>Begin- en eindpunten van slot controleren.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="752"/>
-      <source>The selected face is inaccessible.</source>
-      <translation type="unfinished">The selected face is inaccessible.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="769"/>
-      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation>Alleen een hoekpunt geselecteerd. Voeg een ander vlak of rand toe aan de Basis Geometrie.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="794"/>
-      <source>A single selected face must have four edges minimum.</source>
-      <translation>Een enkel geselecteerd vlak moet minimaal vier randen hebben.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="853"/>
-      <source>No parallel edges identified.</source>
-      <translation>Geen parallelle randen gevonden.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="878"/>
-      <source>value error.</source>
-      <translation>onjuiste waarde.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="942"/>
-      <source>Current tool larger than arc diameter.</source>
-      <translation>Huidige gereedschap groter dan boogdiameter.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1027"/>
-      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation>Mislukt, slot van de rand accepteert alleen lijnen, bogen en cirkels.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1047"/>
-      <source>Failed to determine point 1 from</source>
-      <translation>Fout bij het bepalen van punt 1 van</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1058"/>
-      <source>Failed to determine point 2 from</source>
-      <translation>Fout bij het bepalen van punt 2 van</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1072"/>
-      <source>Selected geometry not parallel.</source>
-      <translation>Geselecteerde geometrie is niet parallel.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1192"/>
-      <source>The selected face is not oriented vertically:</source>
-      <translation>Het geselecteerde vlak is niet verticaal georiënteerd:</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1713"/>
-      <source>Current offset value produces negative radius.</source>
-      <translation>Huidige Verlengde Radius resulteerd in een negatieve boogstraal.</translation>
     </message>
   </context>
   <context>
@@ -3519,7 +3411,7 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="PathJob.py" line="263"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="264"/>
@@ -3560,6 +3452,14 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="PathJobDlg.py" line="357"/>
       <source>Unsupported stock type</source>
       <translation>Niet-ondersteund stocktype</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Job:</name>
+    <message>
+      <location filename="PathJobDlg.py" line="351"/>
+      <source>Cylinder: %.2f x %.2f</source>
+      <translation>Cilinder: %.2f x %.2f</translation>
     </message>
   </context>
   <context>
@@ -4103,6 +4003,161 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
   <context>
     <name>Path_Slot</name>
     <message>
+      <location filename="PathSlot.py" line="109"/>
+      <source>New property added to</source>
+      <translation>Nieuwe eigenschap toegevoegd aan</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="111"/>
+      <source>Check default value(s).</source>
+      <translation>Controleer standaardwaarde).</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="258"/>
+      <source>Line</source>
+      <translation>Lijn</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="259"/>
+      <source>ZigZag</source>
+      <translation type="unfinished">ZigZag</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="262"/>
+      <source>Single-pass</source>
+      <translation type="unfinished">Single-pass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="263"/>
+      <source>Multi-pass</source>
+      <translation>Meerdere-passages</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="266"/>
+      <source>Start to End</source>
+      <translation type="unfinished">Start to End</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="267"/>
+      <source>Perpendicular</source>
+      <translation>Loodrecht</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="282"/>
+      <source>Center of Mass</source>
+      <translation type="unfinished">Center of Mass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="284"/>
+      <source>Center of BoundBox</source>
+      <translation type="unfinished">Center of BoundBox</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="287"/>
+      <source>Lowest Point</source>
+      <translation type="unfinished">Lowest Point</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="288"/>
+      <source>Highest Point</source>
+      <translation type="unfinished">Highest Point</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="277"/>
+      <source>Long Edge</source>
+      <translation type="unfinished">Long Edge</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="278"/>
+      <source>Short Edge</source>
+      <translation type="unfinished">Short Edge</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="289"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="608"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation>Geen Basis Geometrie object in de bewerking.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="617"/>
+      <source>Custom points are identical.</source>
+      <translation type="unfinished">Custom points are identical.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="624"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Aangepaste punten niet op dezelfde Z-hoogte.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="700"/>
+      <source>No path extensions available for full circles.</source>
+      <translation>Geen pad verlengingen beschikbaar voor volledige cirkels.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="876"/>
+      <source>operation collides with model.</source>
+      <translation>bewerking botst met model.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1146"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Begin- en eindpunten van slot controleren.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="973"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1018"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation>Een enkel geselecteerd vlak moet minimaal vier randen hebben.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1075"/>
+      <source>No parallel edges identified.</source>
+      <translation>Geen parallelle randen gevonden.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1099"/>
+      <source>value error.</source>
+      <translation>onjuiste waarde.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1161"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Huidige gereedschap groter dan boogdiameter.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1267"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Fout bij het bepalen van punt 1 van</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1277"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Fout bij het bepalen van punt 2 van</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1290"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>Geselecteerde geometrie is niet parallel.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1411"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>Het geselecteerde vlak is niet verticaal georiënteerd:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1939"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Huidige Verlengde Radius resulteerd in een negatieve boogstraal.</translation>
+    </message>
+    <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
       <translation>Sleuf</translation>
@@ -4421,6 +4476,11 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <translation>Gereedschapsregelaar toevoegen</translation>
     </message>
     <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Geen</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation type="unfinished">Forward</translation>
@@ -4511,6 +4571,59 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     </message>
   </context>
   <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="InitGui.py" line="176"/>
+      <source>Project Setup</source>
+      <translation>Projectinstelling</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="179"/>
+      <source>Tool Commands</source>
+      <translation>Gereedschapscommando's</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="182"/>
+      <source>New Operations</source>
+      <translation>Nieuwe bewerkingen</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="223"/>
+      <source>Path Modification</source>
+      <translation>Padwijziging</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="190"/>
+      <source>Helpful Tools</source>
+      <translation>Nuttig gereedschap</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="241"/>
+      <source>&amp;Path</source>
+      <translation>&amp;Pad</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="209"/>
+      <source>Path Dressup</source>
+      <translation>Padverkleding</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="216"/>
+      <source>Supplemental Commands</source>
+      <translation>Aanvullende commando's</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="231"/>
+      <source>Specialty Operations</source>
+      <translation>Gespecialiseerde operaties</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="242"/>
+      <source>Utils</source>
+      <translation>Hulpmiddelen</translation>
+    </message>
+  </context>
+  <context>
     <name>path_waterline</name>
     <message>
       <location filename="PathWaterline.py" line="41"/>
@@ -4560,7 +4673,7 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
     <message>
       <location filename="PathWaterline.py" line="112"/>
       <source>Off</source>
-      <translation type="unfinished">Off</translation>
+      <translation>Uit</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
@@ -4626,6 +4739,114 @@ Als het nodig is de FinalDepth handmatig aan te geven, doe dat in een andere bew
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation>Meerdere-passages</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSlot</name>
+    <message>
+      <location filename="PathSlot.py" line="101"/>
+      <source>New property added to</source>
+      <translation>Nieuwe eigenschap toegevoegd aan</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="103"/>
+      <source>Check default value(s).</source>
+      <translation>Controleer standaardwaarde).</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="431"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation>Geen Basis Geometrie object in de bewerking.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation type="unfinished">Custom points are identical.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="449"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Aangepaste punten niet op dezelfde Z-hoogte.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="501"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation>Huidige Verlengde Radius resulteerd in een negatieve boogstraal.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="519"/>
+      <source>No path extensions available for full circles.</source>
+      <translation>Geen pad verlengingen beschikbaar voor volledige cirkels.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="674"/>
+      <source>operation collides with model.</source>
+      <translation>bewerking botst met model.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="769"/>
+      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
+      <translation>Alleen een hoekpunt geselecteerd. Voeg een ander vlak of rand toe aan de Basis Geometrie.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="794"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation>Een enkel geselecteerd vlak moet minimaal vier randen hebben.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="853"/>
+      <source>No parallel edges identified.</source>
+      <translation>Geen parallelle randen gevonden.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="878"/>
+      <source>value error.</source>
+      <translation>onjuiste waarde.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="926"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Begin- en eindpunten van slot controleren.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="942"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Huidige gereedschap groter dan boogdiameter.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1027"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation>Mislukt, slot van de rand accepteert alleen lijnen, bogen en cirkels.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1047"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Fout bij het bepalen van punt 1 van</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1058"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Fout bij het bepalen van punt 2 van</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1072"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>Geselecteerde geometrie is niet parallel.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1192"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>Het geselecteerde vlak is niet verticaal georiënteerd:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1713"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Huidige Verlengde Radius resulteerd in een negatieve boogstraal.</translation>
     </message>
   </context>
   <context>

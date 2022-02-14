@@ -1282,6 +1282,16 @@
       <translation>CCW</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="114"/>
+      <source>Engraving Operations</source>
+      <translation>Operazioni di incisione</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="131"/>
+      <source>3D Operations</source>
+      <translation>Operazioni 3D</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="136"/>
       <source>Project Setup</source>
       <translation>Imposta Progetto</translation>
@@ -1297,19 +1307,9 @@
       <translation>Nuove operazioni</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="151"/>
-      <source>Path Modification</source>
-      <translation>Modifica Percorso</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="141"/>
       <source>Helpful Tools</source>
       <translation>Strumenti utili</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>&amp;Path</source>
-      <translation>&amp;Percorso</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="147"/>
@@ -1317,24 +1317,24 @@
       <translation>Ottimizzazione del percorso</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="114"/>
-      <source>Engraving Operations</source>
-      <translation>Operazioni di incisione</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="131"/>
-      <source>3D Operations</source>
-      <translation>Operazioni 3D</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="149"/>
       <source>Supplemental Commands</source>
       <translation>Comandi supplementari</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="151"/>
+      <source>Path Modification</source>
+      <translation>Modifica Percorso</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="154"/>
       <source>Specialty Operations</source>
       <translation>Operazioni di specializzazione</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="159"/>
+      <source>&amp;Path</source>
+      <translation>&amp;Percorso</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="159"/>
@@ -2042,114 +2042,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Per i bordi aperti, controllare la profondità finale per questa operazione.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSlot</name>
-    <message>
-      <location filename="PathSlot.py" line="101"/>
-      <source>New property added to</source>
-      <translation>Nuovo set di proprietà</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="103"/>
-      <source>Check default value(s).</source>
-      <translation>Controlla i valori predefiniti.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="431"/>
-      <source>No Base Geometry object in the operation.</source>
-      <translation>Nessun oggetto Geometria di base nell'operazione.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="441"/>
-      <source>Custom points are identical.</source>
-      <translation>I punti personalizzati sono identici.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="449"/>
-      <source>Custom points not at same Z height.</source>
-      <translation>I punti personalizzati non sono alla stessa altezza Z.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="501"/>
-      <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation>Il valore del raggio di estensione corrente produce un raggio d'arco negativo.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="519"/>
-      <source>No path extensions available for full circles.</source>
-      <translation>Per i cerchi completi non è disponibile nessuna estensione di percorso.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="674"/>
-      <source>operation collides with model.</source>
-      <translation>l'operazione collide con il modello.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="926"/>
-      <source>Verify slot path start and end points.</source>
-      <translation>Verifica i punti di inizio e fine del percorso dell'asola.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="752"/>
-      <source>The selected face is inaccessible.</source>
-      <translation>La faccia selezionata è inaccessibile.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="769"/>
-      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation>Un solo vertice selezionato. Aggiungere un'altra funzione alla Geometria base.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="794"/>
-      <source>A single selected face must have four edges minimum.</source>
-      <translation>Una singola faccia selezionata deve avere almeno quattro bordi.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="853"/>
-      <source>No parallel edges identified.</source>
-      <translation>Non è stato identificato nessun bordo parallelo.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="878"/>
-      <source>value error.</source>
-      <translation>errore di valore.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="942"/>
-      <source>Current tool larger than arc diameter.</source>
-      <translation>Lo strumento corrente è più grande del diametro dell'arco.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1027"/>
-      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation>Fallito, asola dal bordo accetta solo linee, archi e cerchi.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1047"/>
-      <source>Failed to determine point 1 from</source>
-      <translation>Impossibile determinare il punto 1 da</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1058"/>
-      <source>Failed to determine point 2 from</source>
-      <translation>Impossibile determinare il punto 2 da</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1072"/>
-      <source>Selected geometry not parallel.</source>
-      <translation>La geometria selezionata non è parallela.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1192"/>
-      <source>The selected face is not oriented vertically:</source>
-      <translation>La faccia selezionata non è orientata verticalmente:</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1713"/>
-      <source>Current offset value produces negative radius.</source>
-      <translation>L'offset corrente produce un raggio negativo.</translation>
     </message>
   </context>
   <context>
@@ -3073,17 +2965,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupRampEntry.py" line="133"/>
       <source>RampMethod1</source>
-      <translation type="unfinished">RampMethod1</translation>
+      <translation>Metodo rampa 1</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="134"/>
       <source>RampMethod2</source>
-      <translation type="unfinished">RampMethod2</translation>
+      <translation>Metodo rampa 2</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="135"/>
       <source>RampMethod3</source>
-      <translation type="unfinished">RampMethod3</translation>
+      <translation>Metodo rampa 3</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="136"/>
@@ -3093,17 +2985,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupRampEntry.py" line="140"/>
       <source>Horizontal Feed Rate</source>
-      <translation type="unfinished">Horizontal Feed Rate</translation>
+      <translation>Velocità di avanzamento orizzontale</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="144"/>
       <source>Vertical Feed Rate</source>
-      <translation type="unfinished">Vertical Feed Rate</translation>
+      <translation>Velocità di avanzamento verticale</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="148"/>
       <source>Ramp Feed Rate</source>
-      <translation type="unfinished">Ramp Feed Rate</translation>
+      <translation>Velocità di avanzamento in rampa</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="151"/>
@@ -3518,17 +3410,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJob.py" line="263"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="264"/>
       <source>Lathe</source>
-      <translation type="unfinished">Lathe</translation>
+      <translation>Tornio</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="265"/>
       <source>Multiaxis</source>
-      <translation type="unfinished">Multiaxis</translation>
+      <translation>Multiasse</translation>
     </message>
     <message>
       <location filename="PathJobDlg.py" line="63"/>
@@ -3562,6 +3454,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
   </context>
   <context>
+    <name>Path_Job:</name>
+    <message>
+      <location filename="PathJobDlg.py" line="351"/>
+      <source>Cylinder: %.2f x %.2f</source>
+      <translation>Cilindro: %.2f x %.2f</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_MillFace</name>
     <message>
       <location filename="PathMillFaceGui.py" line="91"/>
@@ -3592,12 +3492,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathOp.py" line="371"/>
       <source>Flood</source>
-      <translation type="unfinished">Flood</translation>
+      <translation>Refrigerante</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="372"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>Liquido refrigerante a nebbia</translation>
     </message>
   </context>
   <context>
@@ -4102,6 +4002,161 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Slot</name>
     <message>
+      <location filename="PathSlot.py" line="109"/>
+      <source>New property added to</source>
+      <translation>Nuovo set di proprietà</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="111"/>
+      <source>Check default value(s).</source>
+      <translation>Controlla i valori predefiniti.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="258"/>
+      <source>Line</source>
+      <translation>Linea</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="259"/>
+      <source>ZigZag</source>
+      <translation type="unfinished">ZigZag</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="262"/>
+      <source>Single-pass</source>
+      <translation type="unfinished">Single-pass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="263"/>
+      <source>Multi-pass</source>
+      <translation>Multi-pass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="266"/>
+      <source>Start to End</source>
+      <translation type="unfinished">Start to End</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="267"/>
+      <source>Perpendicular</source>
+      <translation>Perpendicolare</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="282"/>
+      <source>Center of Mass</source>
+      <translation type="unfinished">Center of Mass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="284"/>
+      <source>Center of BoundBox</source>
+      <translation type="unfinished">Center of BoundBox</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="287"/>
+      <source>Lowest Point</source>
+      <translation type="unfinished">Lowest Point</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="288"/>
+      <source>Highest Point</source>
+      <translation type="unfinished">Highest Point</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="277"/>
+      <source>Long Edge</source>
+      <translation type="unfinished">Long Edge</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="278"/>
+      <source>Short Edge</source>
+      <translation type="unfinished">Short Edge</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="289"/>
+      <source>Vertex</source>
+      <translation>Vertice</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="608"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation>Nessun oggetto Geometria di base nell'operazione.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="617"/>
+      <source>Custom points are identical.</source>
+      <translation>I punti personalizzati sono identici.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="624"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>I punti personalizzati non sono alla stessa altezza Z.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="700"/>
+      <source>No path extensions available for full circles.</source>
+      <translation>Per i cerchi completi non è disponibile nessuna estensione di percorso.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="876"/>
+      <source>operation collides with model.</source>
+      <translation>l'operazione collide con il modello.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1146"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Verifica i punti di inizio e fine del percorso dell'asola.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="973"/>
+      <source>The selected face is inaccessible.</source>
+      <translation>La faccia selezionata è inaccessibile.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1018"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation>Una singola faccia selezionata deve avere almeno quattro bordi.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1075"/>
+      <source>No parallel edges identified.</source>
+      <translation>Non è stato identificato nessun bordo parallelo.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1099"/>
+      <source>value error.</source>
+      <translation>errore di valore.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1161"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Lo strumento corrente è più grande del diametro dell'arco.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1267"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Impossibile determinare il punto 1 da</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1277"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Impossibile determinare il punto 2 da</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1290"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>La geometria selezionata non è parallela.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1411"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>La faccia selezionata non è orientata verticalmente:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1939"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>L'offset corrente produce un raggio negativo.</translation>
+    </message>
+    <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
       <translation>Scanalatura</translation>
@@ -4140,7 +4195,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="460"/>
       <source>CenterOfMass</source>
-      <translation type="unfinished">CenterOfMass</translation>
+      <translation>Centro di massa</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="461"/>
@@ -4150,7 +4205,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="462"/>
       <source>XminYmin</source>
-      <translation type="unfinished">XminYmin</translation>
+      <translation>Xmin Ymin</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="463"/>
@@ -4420,6 +4475,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Aggiungi un Controllo utensile</translation>
     </message>
     <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Nessuno</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation type="unfinished">Forward</translation>
@@ -4510,6 +4570,59 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
   </context>
   <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="InitGui.py" line="176"/>
+      <source>Project Setup</source>
+      <translation>Imposta Progetto</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="179"/>
+      <source>Tool Commands</source>
+      <translation>Comandi dell'utensile</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="182"/>
+      <source>New Operations</source>
+      <translation>Nuove operazioni</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="223"/>
+      <source>Path Modification</source>
+      <translation>Modifica Percorso</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="190"/>
+      <source>Helpful Tools</source>
+      <translation>Strumenti utili</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="241"/>
+      <source>&amp;Path</source>
+      <translation>&amp;Percorso</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="209"/>
+      <source>Path Dressup</source>
+      <translation>Ottimizzazione del percorso</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="216"/>
+      <source>Supplemental Commands</source>
+      <translation>Comandi supplementari</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="231"/>
+      <source>Specialty Operations</source>
+      <translation>Operazioni di specializzazione</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="242"/>
+      <source>Utils</source>
+      <translation>Utilità</translation>
+    </message>
+  </context>
+  <context>
     <name>path_waterline</name>
     <message>
       <location filename="PathWaterline.py" line="41"/>
@@ -4539,7 +4652,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="106"/>
       <source>CenterOfMass</source>
-      <translation type="unfinished">CenterOfMass</translation>
+      <translation>Centro di massa</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="107"/>
@@ -4549,7 +4662,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="108"/>
       <source>XminYmin</source>
-      <translation type="unfinished">XminYmin</translation>
+      <translation>Xmin Ymin</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="109"/>
@@ -4559,7 +4672,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="112"/>
       <source>Off</source>
-      <translation type="unfinished">Off</translation>
+      <translation>Non attivo</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
@@ -4625,6 +4738,114 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation>Multi-pass</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSlot</name>
+    <message>
+      <location filename="PathSlot.py" line="101"/>
+      <source>New property added to</source>
+      <translation>Nuovo set di proprietà</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="103"/>
+      <source>Check default value(s).</source>
+      <translation>Controlla i valori predefiniti.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="431"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation>Nessun oggetto Geometria di base nell'operazione.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation>I punti personalizzati sono identici.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="449"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>I punti personalizzati non sono alla stessa altezza Z.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="501"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation>Il valore del raggio di estensione corrente produce un raggio d'arco negativo.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="519"/>
+      <source>No path extensions available for full circles.</source>
+      <translation>Per i cerchi completi non è disponibile nessuna estensione di percorso.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="674"/>
+      <source>operation collides with model.</source>
+      <translation>l'operazione collide con il modello.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation>La faccia selezionata è inaccessibile.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="769"/>
+      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
+      <translation>Un solo vertice selezionato. Aggiungere un'altra funzione alla Geometria base.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="794"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation>Una singola faccia selezionata deve avere almeno quattro bordi.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="853"/>
+      <source>No parallel edges identified.</source>
+      <translation>Non è stato identificato nessun bordo parallelo.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="878"/>
+      <source>value error.</source>
+      <translation>errore di valore.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="926"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Verifica i punti di inizio e fine del percorso dell'asola.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="942"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Lo strumento corrente è più grande del diametro dell'arco.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1027"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation>Fallito, asola dal bordo accetta solo linee, archi e cerchi.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1047"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Impossibile determinare il punto 1 da</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1058"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Impossibile determinare il punto 2 da</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1072"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>La geometria selezionata non è parallela.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1192"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>La faccia selezionata non è orientata verticalmente:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1713"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>L'offset corrente produce un raggio negativo.</translation>
     </message>
   </context>
   <context>

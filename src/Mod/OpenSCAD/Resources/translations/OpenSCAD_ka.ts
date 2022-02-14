@@ -102,7 +102,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="129"/>
       <source>Color Shapes by validity and type</source>
-      <translation type="unfinished">Color Shapes by validity and type</translation>
+      <translation>მონახაზების შეფერადება სისწორისა და ტიპის მიხედვით</translation>
     </message>
   </context>
   <context>
@@ -118,7 +118,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="291"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>მდებარეობების განშლა</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="294"/>
@@ -222,12 +222,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="324"/>
       <source>Remove Objects and their Children</source>
-      <translation type="unfinished">Remove Objects and their Children</translation>
+      <translation>ობიექტების და მათი ქვეობიექტების წაშლა</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="327"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
+      <translation>წაშლის მონიშნულ ობიექტებს და ყველა ქვეობიექტს, რომლებიც არ არის ბმული სხვა ობიექტებიდან</translation>
     </message>
   </context>
   <context>
@@ -315,7 +315,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>დებაგის ინფორმაციის კონსოლში გამოტანა</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="90"/>
@@ -325,12 +325,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>ხის ხედში ViewProvider-ის გამოყენება</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation type="unfinished">If this is checked, Multmatrix Object will be Parametric</translation>
+      <translation>თუ ჩართულია, Multimatrix-ის ობიექტი პარამეტრული იქნება</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="113"/>
@@ -341,12 +341,12 @@
       <location filename="../ui/openscadprefs-base.ui" line="130"/>
       <location filename="../ui/openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>მრავალკუთხედის, პრიზმის ან წაკვეთილი ფიგურის ზედაპირების მაქსიმალური რაოდენობა. თუ fn უფრო დიდია, ვიდრე ეს მნიშვნელობა, ობიექტი მიჩნეული იქნება წრიულად. ლიმიტის მოსახსნელად მიუთითეთ 0</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation type="unfinished">Maximum number of faces for polygons (fn)</translation>
+      <translation>მრავალკუთხედების ზედაპირების უდიდესი რიცხვი (fn)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>

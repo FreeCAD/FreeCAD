@@ -56,7 +56,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Eine MaterialName:SolidIndexesListen-Karte, die materielle Namen mit festen Indizes enthält, die verwendet werden sollen, wenn dieses Objekt von anderen Dateien referenziert wird</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -2888,6 +2888,21 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Wählen Sie die Oberfläche eines vorhandenen Objekts oder wählen Sie eine Vorgabe</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation type="unfinished">No window found. Cannot continue.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation>Fensteroptionen</translation>
@@ -4106,6 +4121,19 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>Erstellt ein Vorhang-Fassaden-Objekt von der ausgewählten Linie oder von Grund auf</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation type="unfinished">Cut with line</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation type="unfinished">Cut an object with a line</translation>
     </message>
   </context>
   <context>

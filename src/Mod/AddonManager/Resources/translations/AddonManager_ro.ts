@@ -89,6 +89,40 @@
       <translation type="unfinished">Fetching README.md from package repository</translation>
     </message>
     <message>
+      <location filename="package_details.py" line="354"/>
+      <source>WARNING: This addon requires FreeCAD </source>
+      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="package_details.py" line="431"/>
+      <source>Delete cached version of this README and re-download</source>
+      <translation type="unfinished">
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="563"/>
+      <source>Could not load README data from URL {}</source>
+      <translation type="unfinished">Could not load README data from URL {}</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="577"/>
+      <source>Success</source>
+      <translation type="unfinished">Success</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="600"/>
+      <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
+      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="636"/>
+      <source>Page JavaScript reported</source>
+      <translation type="unfinished">Page JavaScript reported</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="407"/>
       <source>Install</source>
       <translation type="unfinished">Install</translation>
@@ -114,17 +148,22 @@
       <translation type="unfinished">Run Macro</translation>
     </message>
     <message>
+      <location filename="package_details.py" line="786"/>
+      <source>Change Branch</source>
+      <translation type="unfinished">Change Branch</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
       <translation type="unfinished">Return to package list</translation>
     </message>
     <message numerus="yes">
-      <location filename="package_details.py" line="431"/>
-      <source>Delete cached version of this README and re-download</source>
+      <location filename="package_details.py" line="800"/>
+      <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
       <translation type="unfinished">
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
       </translation>
     </message>
     <message>
@@ -350,6 +389,16 @@
       <translation type="unfinished">git fetch failed for {wb.name}</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="433"/>
+      <source>Raw markdown displayed</source>
+      <translation>Marcaj brut afișat</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="435"/>
+      <source>Python Markdown library is missing.</source>
+      <translation>Lipsește biblioteca Python Markdown.</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
       <translation type="unfinished">git pull failed for {wb.name}</translation>
@@ -395,6 +444,11 @@
       <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="651"/>
+      <source>Retrieving description...</source>
+      <translation>Recuperez descrierea...</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="665"/>
       <source>This macro is already installed.</source>
       <translation>Acest macro este deja instalat.</translation>
@@ -403,26 +457,6 @@
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
       <translation type="unfinished">Caching macro code...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="651"/>
-      <source>Retrieving description...</source>
-      <translation>Recuperez descrierea...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="824"/>
-      <source>Retrieving info from {}</source>
-      <translation type="unfinished">Retrieving info from {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="433"/>
-      <source>Raw markdown displayed</source>
-      <translation>Marcaj brut afișat</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="435"/>
-      <source>Python Markdown library is missing.</source>
-      <translation>Lipsește biblioteca Python Markdown.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="700"/>
@@ -463,6 +497,11 @@
       <location filename="addonmanager_workers.py" line="799"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Un macro a fost instalat și este disponibil sub meniul Macro -&gt; Macros</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="824"/>
+      <source>Retrieving info from {}</source>
+      <translation type="unfinished">Retrieving info from {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="835"/>
@@ -590,6 +629,74 @@
       <translation type="unfinished">Failed to connect to URL</translation>
     </message>
     <message>
+      <location filename="change_branch.py" line="101"/>
+      <source>DANGER: Developer feature</source>
+      <translation type="unfinished">DANGER: Developer feature</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="114"/>
+      <source>There are local changes</source>
+      <translation type="unfinished">There are local changes</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="192"/>
+      <source>Branch</source>
+      <comment>git terminology</comment>
+      <translation type="unfinished">Branch</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="178"/>
+      <source>Tag</source>
+      <comment>git terminology</comment>
+      <translation type="unfinished">Tag</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="261"/>
+      <source>Kind</source>
+      <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
+      <translation type="unfinished">
+        <numerusform>Kind</numerusform>
+        <numerusform>Kind</numerusform>
+        <numerusform>Kind</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="265"/>
+      <source>Local name</source>
+      <comment>Table header for git ref name</comment>
+      <translation type="unfinished">Local name</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="271"/>
+      <source>Tracking</source>
+      <comment>Table header for git remote tracking branch name name</comment>
+      <translation type="unfinished">
+        <numerusform>Tracking</numerusform>
+        <numerusform>Tracking</numerusform>
+        <numerusform>Tracking</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="277"/>
+      <source>Local updated</source>
+      <comment>Table header for git update time of local branch</comment>
+      <translation type="unfinished">
+        <numerusform>Local updated</numerusform>
+        <numerusform>Local updated</numerusform>
+        <numerusform>Local updated</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="283"/>
+      <source>Remote updated</source>
+      <comment>Table header for git update time of remote branch</comment>
+      <translation type="unfinished">
+        <numerusform>Remote updated</numerusform>
+        <numerusform>Remote updated</numerusform>
+        <numerusform>Remote updated</numerusform>
+      </translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="191"/>
       <source>Checking connection</source>
       <translation type="unfinished">Checking connection</translation>
@@ -645,16 +752,6 @@
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Verifica actualizări...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Programele de tip addon ce pot fi instalate aici nu fac parte oficial din FreeCAD, și nu sunt revizionate de echipa FreeCAD. Asigurați-vă că programele instalate sunt sigure!</translation>
@@ -673,6 +770,11 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Verifica actualizări...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -723,6 +825,11 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Repornire necesară</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -795,6 +902,11 @@
       <translation type="unfinished">Succeeded</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
       <translation type="unfinished">All packages updates failed:</translation>
@@ -828,11 +940,6 @@
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
       <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

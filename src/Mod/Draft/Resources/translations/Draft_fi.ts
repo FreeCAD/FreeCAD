@@ -207,7 +207,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Luotavien kopioiden määrä.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
@@ -723,11 +723,6 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">The PAT file used by this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Tämän objektin muoto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation type="unfinished">The pattern name used by this object</translation>
@@ -736,6 +731,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Tämän objektin muoto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -789,7 +789,7 @@ Leave this property empty to create copies along the entire 'Path Object'.</tran
     <message>
       <location filename="patharray.py" line="200"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Luotavien kopioiden määrä</translation>
     </message>
     <message>
       <location filename="patharray.py" line="219"/>
@@ -1342,17 +1342,17 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Tallenna tyyli</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Tämän uuden tyylin nimi:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Varoitus</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
@@ -1510,7 +1510,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="view_layer.py" line="407"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Lisää uusi taso</translation>
     </message>
   </context>
   <context>
@@ -1566,7 +1566,7 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_groups.py" line="75"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>Siirrä ryhmään</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="77"/>
@@ -1594,7 +1594,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Toteuta nykyinen tyyli</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
@@ -2098,7 +2098,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="gui_layers.py" line="52"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Taso</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="55"/>
@@ -2403,7 +2403,7 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Valitse ryhmä</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="192"/>
@@ -2442,12 +2442,12 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_setstyle.py" line="55"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>Aseta tyyli</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>Asettaa oletustyylit</translation>
     </message>
   </context>
   <context>
@@ -2474,7 +2474,7 @@ These projections can be used to create technical drawings with the TechDraw Wor
     <message>
       <location filename="gui_shapestrings.py" line="68"/>
       <source>Shape from text</source>
-      <translation type="unfinished">Shape from text</translation>
+      <translation>Muoto tekstistä</translation>
     </message>
     <message>
       <location filename="gui_shapestrings.py" line="70"/>
@@ -2549,7 +2549,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
-      <translation type="unfinished">Show dimensions</translation>
+      <translation>Näytä mitat</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="529"/>
@@ -2756,7 +2756,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>Alielementin korostus</translation>
     </message>
     <message>
       <location filename="gui_subelements.py" line="64"/>
@@ -2921,7 +2921,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Ei löytynyt tarpeeksi koordinaatteja</translation>
     </message>
   </context>
   <context>
@@ -3080,7 +3080,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="790"/>
       <source>Select edge</source>
-      <translation type="unfinished">Select edge</translation>
+      <translation>Valitse reuna</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="131"/>
@@ -3281,7 +3281,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
-      <translation type="unfinished">&amp;Undo (CTRL+Z)</translation>
+      <translation>&amp;Kumoa (CTRL+Z)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="783"/>
@@ -3586,7 +3586,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>LibreDWG-virhe</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3606,12 +3606,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>ODA-tiedostomuunninta ei löydy</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>QCAD-virhe</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
@@ -3701,6 +3701,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Found several wires or edges: wiring them</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
@@ -3719,11 +3724,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -3878,7 +3878,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_fillet.py" line="132"/>
       <source>Two elements are needed.</source>
-      <translation type="unfinished">Two elements are needed.</translation>
+      <translation>Tarvitaan kaksi elementtiä.</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="139"/>
@@ -3913,12 +3913,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_orthoarray.py" line="119"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>Väärä syöte: täytyy olla kokonaisluku.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="205"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>Väärä syöte: täytyy olla vektori.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="438"/>
@@ -3928,7 +3928,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>Väärä syöte: täytyy olla numero.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="173"/>
@@ -3958,7 +3958,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>Väärä syöte: täytyy olla kokonaisluku.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="343"/>
@@ -4008,12 +4008,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>Tasot</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="47"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>Taso</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="157"/>
@@ -4049,13 +4049,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_sketch.py" line="103"/>
       <source>No shape found
 </source>
-      <translation type="unfinished">No shape found
+      <translation>Muotoa ei löytynyt
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Muotoa ei löytynyt</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -4164,7 +4164,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="pointarray.py" line="160"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation type="unfinished">added property 'ExtraPlacement'</translation>
+      <translation>lisätty ominaisuus 'ExtraPlacement'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="284"/>
@@ -4229,7 +4229,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="view_layer.py" line="469"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Lisää uusi taso</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="454"/>
@@ -4299,7 +4299,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="utils.py" line="653"/>
       <source>Edges:</source>
-      <translation type="unfinished">Edges:</translation>
+      <translation>Reunat:</translation>
     </message>
     <message>
       <location filename="utils.py" line="654"/>
@@ -4449,7 +4449,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="gui_utils.py" line="81"/>
       <source>No graphical interface</source>
-      <translation type="unfinished">No graphical interface</translation>
+      <translation>Ei graafista käyttöliittymää</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="161"/>
@@ -4479,7 +4479,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="gui_utils.py" line="668"/>
       <source>unable to load texture</source>
-      <translation type="unfinished">unable to load texture</translation>
+      <translation>tekstuuria ei voi ladata</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="738"/>
@@ -4713,7 +4713,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_ellipses.py" line="138"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>Luo ellipsi</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="202"/>
@@ -4798,7 +4798,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Reuna on liian lyhyt!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -4828,7 +4828,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>JSON-tiedosto (*.json)</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="314"/>
@@ -5088,7 +5088,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Luo 2D-näkymä</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
@@ -5413,17 +5413,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_groups.py" line="65"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Lisää ryhmään</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Lisää uusi ryhmä</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Valitse ryhmä</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="193"/>
@@ -5438,7 +5438,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_groups.py" line="305"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Lisää uusi taso</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="359"/>
@@ -5453,12 +5453,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Lisää ryhmä</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Ryhmän nimi</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="392"/>
@@ -5543,7 +5543,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>Luo teksti</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="79"/>
@@ -5590,7 +5590,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="gui_lineops.py" line="73"/>
       <source>No active command.</source>
-      <translation type="unfinished">No active command.</translation>
+      <translation>Ei aktiivista komentoa.</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="92"/>
@@ -6354,7 +6354,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="101"/>
       <source>Font file</source>
-      <translation type="unfinished">Font file</translation>
+      <translation>Fonttitiedosto</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="115"/>
@@ -6575,7 +6575,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
       <source>Style settings</source>
-      <translation type="unfinished">Style settings</translation>
+      <translation>Tyylin asetukset</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
@@ -6740,7 +6740,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
       <source>Text font</source>
-      <translation type="unfinished">Text font</translation>
+      <translation>Tekstin fontti</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="244"/>
@@ -6755,7 +6755,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="264"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Tekstin koko</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
@@ -6850,7 +6850,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>PAT-tiedosto:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="37"/>
@@ -7222,7 +7222,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Fonttiperhe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="47"/>
@@ -7491,7 +7491,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
       <source>OCA</source>
-      <translation type="unfinished">OCA</translation>
+      <translation>OCA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
@@ -7506,7 +7506,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
       <source>DXF</source>
-      <translation type="unfinished">DXF</translation>
+      <translation>DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="35"/>
@@ -7844,21 +7844,21 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="142"/>
       <location filename="../ui/preferences-draftsnap.ui" line="197"/>
       <source>Shift</source>
-      <translation type="unfinished">Shift</translation>
+      <translation>Shift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <location filename="../ui/preferences-draftsnap.ui" line="147"/>
       <location filename="../ui/preferences-draftsnap.ui" line="202"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="97"/>
       <location filename="../ui/preferences-draftsnap.ui" line="152"/>
       <location filename="../ui/preferences-draftsnap.ui" line="207"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="109"/>
@@ -8036,12 +8036,12 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
       <source>DWG</source>
-      <translation type="unfinished">DWG</translation>
+      <translation>DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
       <source>DWG conversion</source>
-      <translation type="unfinished">DWG conversion</translation>
+      <translation>DWG-muunnos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
@@ -8061,7 +8061,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Käyttöliittymän asetukset</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -8201,7 +8201,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="579"/>
       <source>Select Edge</source>
-      <translation type="unfinished">Select Edge</translation>
+      <translation>Valitse reuna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="601"/>

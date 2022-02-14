@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="100"/>
       <source>Create image plane...</source>
-      <translation>Erstellen Sie eine Bildebene...</translation>
+      <translation>Bildebene erstellen...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Ein ebenes Bild im 3D-Raum erstellen</translation>
+      <translation>Erstellt ein ebenes Bild im 3D-Raum</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Open image view</source>
-      <translation>Öffne Bildansicht</translation>
+      <translation>Öffnet eine Bildansicht</translation>
     </message>
   </context>
   <context>

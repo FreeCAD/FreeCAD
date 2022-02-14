@@ -1961,7 +1961,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="277"/>
       <source>Left handed</source>
-      <translation>Lewostronny</translation>
+      <translation>Lewostronnie</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="288"/>

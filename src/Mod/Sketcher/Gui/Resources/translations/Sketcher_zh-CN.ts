@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="216"/>
       <source>Tie the end point of the element with next element's starting point</source>
-      <translation type="unfinished">Tie the end point of the element with next element's starting point</translation>
+      <translation>将元素的终点与下一个元素的起点链接起来</translation>
     </message>
   </context>
   <context>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1796"/>
       <source>Block constraint: block the selected edge from moving</source>
-      <translation type="unfinished">Block constraint: block the selected edge from moving</translation>
+      <translation>阻止约束：阻止所选边缘移动</translation>
     </message>
   </context>
   <context>

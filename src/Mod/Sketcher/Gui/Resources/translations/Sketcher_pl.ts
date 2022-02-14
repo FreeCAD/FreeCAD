@@ -2296,7 +2296,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Can't map the sketch to selected object. %1.</source>
-      <translation>Nie można mapować rysunku do wybranego obiektu. %1.</translation>
+      <translation>Nie można odwzorować szkicu dla wybranego obiektu. %1.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="172"/>
@@ -3462,12 +3462,12 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6621"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation>Ten obiekt należy do innej zawartości, nie można go połączyć.</translation>
+      <translation>Ten obiekt należy do innej zawartości, nie można stworzyć powiązania.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6624"/>
       <source>This object belongs to another part, can't link.</source>
-      <translation>Ten obiekt należy do innej części, nie można połączyć.</translation>
+      <translation>Ten obiekt należy do innej części, nie można stworzyć powiązania.</translation>
     </message>
   </context>
   <context>
@@ -4904,7 +4904,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="152"/>
       <source>Enable/Update</source>
-      <translation>Włącz/Zaktualizuj</translation>
+      <translation>Włącz / Zaktualizuj</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="159"/>
@@ -5324,7 +5324,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
       <location filename="../../CommandCreateGeo.cpp" line="7720"/>
       <location filename="../../CommandCreateGeo.cpp" line="7721"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation>Utwórz regularny wielokąt przez jego środek i przez jeden narożnik</translation>
+      <translation>Utwórz regularny wielokąt przez podanie punktu środka i jednego narożnika</translation>
     </message>
   </context>
   <context>
@@ -5418,7 +5418,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source> (incompatible with selection)</source>
-      <translation> (niezgodny z wyborem)</translation>
+      <translation> (niezgodność z zaznaczeniem)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="600"/>
@@ -5445,12 +5445,12 @@ Wybierz metodę, aby dołączyć ten szkic do wybranych obiektów.</translation>
     <message>
       <location filename="../../Command.cpp" line="619"/>
       <source>Select the method to attach this sketch to selected objects.</source>
-      <translation>Wybierz metodę, aby dołączyć ten rysunek do wybranych obiektów.</translation>
+      <translation>Wybierz metodę, aby dołączyć ten szkic do wybranych obiektów.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Map sketch</source>
-      <translation>Mapuj rysunek</translation>
+      <translation>Dołącz szkic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>

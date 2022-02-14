@@ -1564,7 +1564,7 @@ do gładszego wyglądu.
     </message>
     <message>
       <source>Parameters...</source>
-      <translation>Parametry...</translation>
+      <translation>Parametry ...</translation>
     </message>
     <message>
       <source>Plane</source>

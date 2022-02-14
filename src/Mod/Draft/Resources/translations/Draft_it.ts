@@ -724,11 +724,6 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <translation>Il file PAT usato da questo oggetto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma di questo oggetto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Il nome del motivo usato da questo oggetto</translation>
@@ -737,6 +732,11 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>La scala del motivo usata da questo oggetto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma di questo oggetto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1139,12 +1139,12 @@ beyond the dimension line</source>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Definisce un modello di tratteggio SVG.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Definisce la dimensione del modello SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1717,7 +1717,7 @@ La Serie può essere trasformata in una serie polare o circolare cambiandone il 
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Curva di Bezier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1728,8 +1728,8 @@ La Serie può essere trasformata in una serie polare o circolare cambiandone il 
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una curva di Bezier di grado N. Maggiore il numero di punti, maggiore è il grado.
+CTRL per agganciare, MAIUSC per vincolare.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1744,7 +1744,7 @@ CTRL per snap, MAIUSC per vincolare.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Strumenti Bezier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1754,7 +1754,7 @@ CTRL per snap, MAIUSC per vincolare.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Crea differenti tipologie di curve Bezier.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1816,7 +1816,7 @@ Il clone risultante può essere scalato in ciascuna delle tre direzioni.</transl
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Curva di bezier cubica</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1828,9 +1828,9 @@ Il clone risultante può essere scalato in ciascuna delle tre direzioni.</transl
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una curva di Bezier composta da segmenti di 2° grado (quadratico) e 3° grado (cubico). Fai clic e trascina per definire ogni segmento.
+Dopo aver creato la curva puoi tornare a modificare ogni punto di controllo e impostare le proprietà di ogni nodo.
+CTRL per agganciare, MAIUSC per vincolare.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2985,7 +2985,7 @@ Quindi lo si può usare per salvare una diversa posizione della fotocamera e gli
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Strumenti Bezier</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3698,6 +3698,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Trovate numerose polilinee o bordi: connessione degli stessi</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Trovati diversi oggetti non trattabili: creazione di composti</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>provando: chiuderlo</translation>
@@ -3716,11 +3721,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Punti trovati: creazione composto</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Trovati diversi oggetti non trattabili: creazione di composti</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4241,7 +4241,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Carica l'ambiente di lavoro Draft per abilitare la modifica di questo oggetto</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5087,7 +5087,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>La curva di Bezier è stata chiusa</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>

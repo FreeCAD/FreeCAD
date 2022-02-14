@@ -489,7 +489,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="152"/>
       <source>Out Of Enum Range:</source>
-      <translation type="unfinished">Out Of Enum Range:</translation>
+      <translation>列挙範囲外:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -573,22 +573,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1481"/>
       <source>Reset selection</source>
-      <translation type="unfinished">Reset selection</translation>
+      <translation>選択をリセット</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1485"/>
       <source>Toggle direct dimensions</source>
-      <translation type="unfinished">Toggle direct dimensions</translation>
+      <translation>直接寸法の切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1490"/>
       <source>Toggle orthogonal dimensions</source>
-      <translation type="unfinished">Toggle orthogonal dimensions</translation>
+      <translation>直交寸法の切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1495"/>
       <source>Clear all dimensions</source>
-      <translation type="unfinished">Clear all dimensions</translation>
+      <translation>すべての寸法をクリア</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="977"/>
@@ -629,7 +629,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="116"/>
       <source>Attachment editor</source>
-      <translation type="unfinished">Attachment editor</translation>
+      <translation>添付エディタ</translation>
     </message>
   </context>
   <context>
@@ -1189,7 +1189,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="136"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>オブジェクトのYZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
@@ -1362,7 +1362,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Y Z</translation>
+      <translation>オブジェクトのX Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
@@ -1374,7 +1374,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="58"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Z Y</translation>
+      <translation>オブジェクトの X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -1386,7 +1386,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="61"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's Y Z X</translation>
+      <translation>オブジェクトの Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
@@ -1826,7 +1826,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2163"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>選択したオブジェクトの個々の面の色を設定します。</translation>
     </message>
   </context>
   <context>
@@ -1844,7 +1844,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2233"/>
       <source>Measure the angle between two edges.</source>
-      <translation type="unfinished">Measure the angle between two edges.</translation>
+      <translation>2 つのエッジ間の角度を測定します。</translation>
     </message>
   </context>
   <context>
@@ -1862,7 +1862,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2292"/>
       <source>Clear all dimensions from the screen.</source>
-      <translation type="unfinished">Clear all dimensions from the screen.</translation>
+      <translation>スクリーンからすべての寸法をクリアします。</translation>
     </message>
   </context>
   <context>
@@ -1882,9 +1882,9 @@ Do you want to continue?</source>
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
-      <translation type="unfinished">Measure the linear distance between two points;
-if edges or faces are picked, it will measure
-between two vertices of them.</translation>
+      <translation>2点間の線形距離を測定します;
+エッジまたは面がピックされている場合、それらの2つの頂点の間で
+を測定します。</translation>
     </message>
   </context>
   <context>
@@ -1903,8 +1903,8 @@ between two vertices of them.</translation>
       <location filename="../../Command.cpp" line="2262"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
-      <translation type="unfinished">Recalculate the dimensions
-if the measured points have moved.</translation>
+      <translation>測定点が移動した場合、寸法
+を再計算します。</translation>
     </message>
   </context>
   <context>
@@ -1917,14 +1917,14 @@ if the measured points have moved.</translation>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>3D の切り替え</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2358"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation type="unfinished">Toggle on and off all direct dimensions,
-including angular.</translation>
+      <translation>角度を含む
+全ての直接寸法をオンまたはオフに切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -1943,8 +1943,8 @@ including angular.</translation>
       <location filename="../../Command.cpp" line="2321"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation type="unfinished">Toggle on and off all currently visible dimensions,
-direct, orthogonal, and angular.</translation>
+      <translation>現在表示されているすべての寸法、
+直接、直交、および角度を切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -1964,9 +1964,9 @@ direct, orthogonal, and angular.</translation>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation type="unfinished">Toggle on and off all orthogonal dimensions,
-meaning that a direct dimension will be decomposed
-into its X, Y, and Z components.</translation>
+      <translation>すべての直交寸法をオンとオフに切り替えます。
+つまり、直接寸法が
+の X、Y、Z 成分に分解されます。</translation>
     </message>
   </context>
   <context>
@@ -2107,7 +2107,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="780"/>
       <source>Compound tools</source>
-      <translation type="unfinished">Compound tools</translation>
+      <translation>複合ツール</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="781"/>
@@ -2291,12 +2291,12 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Create shape element copy</source>
-      <translation type="unfinished">Create shape element copy</translation>
+      <translation>シェイプ要素のコピーを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="330"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation type="unfinished">Create a non-parametric copy of the selected shape element</translation>
+      <translation>選択したシェイプ要素の非パラメトリックコピーを作成</translation>
     </message>
   </context>
   <context>
@@ -2543,12 +2543,12 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Create points object from mesh</source>
-      <translation type="unfinished">Create points object from mesh</translation>
+      <translation>メッシュから点オブジェクトを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Create selectable points object from selected mesh object</source>
-      <translation type="unfinished">Create selectable points object from selected mesh object</translation>
+      <translation>選択したメッシュオブジェクトから選択可能な点オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -2579,7 +2579,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="2449"/>
       <source>Create projection on surface...</source>
-      <translation type="unfinished">Create projection on surface...</translation>
+      <translation>表面に投影を作成...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
@@ -2587,10 +2587,10 @@ into its X, Y, and Z components.</translation>
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation type="unfinished">Project edges, wires, or faces of one object
-onto a face of another object.
-The camera view determines the direction
-of projection.</translation>
+      <translation>1 つのオブジェクト
+のプロジェクトのエッジ、ワイヤ、または面が別のオブジェクトの面にあります。
+カメラビューは投影の方向
+を決定します。</translation>
     </message>
   </context>
   <context>
@@ -2839,12 +2839,12 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="301"/>
       <source>Create transformed copy</source>
-      <translation type="unfinished">Create transformed copy</translation>
+      <translation>変換されたコピーを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="302"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation type="unfinished">Create a non-parametric copy with transformed placement</translation>
+      <translation>変換された配置で非パラメトリックコピーを作成</translation>
     </message>
   </context>
   <context>
@@ -2853,12 +2853,12 @@ of projection.</translation>
       <location filename="../../Command.cpp" line="147"/>
       <location filename="../../Command.cpp" line="188"/>
       <source>Part Box Create</source>
-      <translation type="unfinished">Part Box Create</translation>
+      <translation>部品ボックス作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>Part Cut</source>
-      <translation type="unfinished">Part Cut</translation>
+      <translation>部品切断</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="408"/>
@@ -2868,7 +2868,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Fusion</source>
-      <translation type="unfinished">Fusion</translation>
+      <translation>融合</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="921"/>
@@ -2883,7 +2883,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
       <source>Import Part</source>
-      <translation type="unfinished">Import Part</translation>
+      <translation>部品をインポート</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
@@ -2898,22 +2898,22 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Make face</source>
-      <translation type="unfinished">Make face</translation>
+      <translation>面を作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1657"/>
       <source>Make Offset</source>
-      <translation type="unfinished">Make Offset</translation>
+      <translation>オフセットを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
       <source>Make 2D Offset</source>
-      <translation type="unfinished">Make 2D Offset</translation>
+      <translation>2D オフセットを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>Make Thickness</source>
-      <translation type="unfinished">Make Thickness</translation>
+      <translation>厚みを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2102"/>
@@ -2923,17 +2923,17 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="72"/>
       <source>Create Part Cylinder</source>
-      <translation type="unfinished">Create Part Cylinder</translation>
+      <translation>部品シリンダーを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="137"/>
       <source>Convert mesh</source>
-      <translation type="unfinished">Convert mesh</translation>
+      <translation>メッシュを変換</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="196"/>
       <source>Points from mesh</source>
-      <translation type="unfinished">Points from mesh</translation>
+      <translation>メッシュからの点</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="373"/>
@@ -2953,7 +2953,7 @@ of projection.</translation>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="432"/>
       <source>Change face colors</source>
-      <translation type="unfinished">Change face colors</translation>
+      <translation>面の色を変更</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="202"/>
@@ -2994,7 +2994,7 @@ of projection.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="199"/>
       <source>Edit Mirror</source>
-      <translation type="unfinished">Edit Mirror</translation>
+      <translation>ミラーを編集</translation>
     </message>
   </context>
   <context>
@@ -3042,60 +3042,60 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation type="unfinished">In x-direction:</translation>
+      <translation>X 方向:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="152"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>Y 方向:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="261"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>注記: 配置はアタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="184"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>Z 方向:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="216"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>X軸周り:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="229"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Y軸周り:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="242"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Z軸周り:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>X 軸周りの回転
+注: 配置は、アタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="312"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Y 軸周りの回転
+注: 配置は、アタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Z軸周りの回転
+注: 配置は、アタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -3430,7 +3430,7 @@ Note: The placement is expressed in local space of object being attached.</trans
       <location filename="../../DlgExtrusion.cpp" line="475"/>
       <source>Creating Extrusion failed.
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
+      <translation>押し出し失敗。
 %1</translation>
     </message>
     <message>
@@ -3469,7 +3469,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction vector is zero-length. It must be non-zero.</translation>
+      <translation>押出方向ベクトルの長さはゼロです。0以外でなければなりません。</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
@@ -3677,7 +3677,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation type="unfinished">Solids and shells will be exported as trimmed surface</translation>
+      <translation>ソリッドとシェルはトリムされたサーフェスとしてエクスポートされます</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3687,7 +3687,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation type="unfinished">Solids will be exported as manifold solid B-Rep object, shells as shell</translation>
+      <translation>ソリッドはマニホールドソリッドB-Repオブジェクト、シェルとしてエクスポートされます</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
@@ -3702,7 +3702,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
       <source>Blank entities will not be imported</source>
-      <translation type="unfinished">Blank entities will not be imported</translation>
+      <translation>空白のエンティティはインポートされません</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="109"/>
@@ -3712,7 +3712,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="119"/>
       <source>If not empty, field contents will be used in the IGES file header</source>
-      <translation type="unfinished">If not empty, field contents will be used in the IGES file header</translation>
+      <translation>空でない場合、IGESファイルヘッダにフィールドの内容が使用されます。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="122"/>
@@ -3755,12 +3755,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="64"/>
       <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>エクスポート時に不可視オブジェクトをスキップするにはチェックを外してください。これは、不可視STEPスタイルをサポートしていないCADで役立ちます。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="67"/>
       <source>Export invisible objects</source>
-      <translation type="unfinished">Export invisible objects</translation>
+      <translation>非表示オブジェクトをエクスポート</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="80"/>
@@ -3790,7 +3790,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="126"/>
       <source>Use legacy exporter</source>
-      <translation type="unfinished">Use legacy exporter</translation>
+      <translation>従来のエクスポーターを使用</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="139"/>
@@ -3798,20 +3798,20 @@ Please check one or more edge entities first.</source>
 a single object. Please note that when import back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>単一のオブジェクトのエクスポート時に配置情報を保持するには、このオプションをオンにします。 
+STEPファイルをインポートして戻す場合は、
+配置プロパティ内にある配置は維持されず、
+形状ジオメトリにエンコードされます</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="145"/>
       <source>Export single object placement</source>
-      <translation type="unfinished">Export single object placement</translation>
+      <translation>単一のオブジェクト配置をエクスポート</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="174"/>
       <source>If not empty, field contents will be used in the STEP file header.</source>
-      <translation type="unfinished">If not empty, field contents will be used in the STEP file header.</translation>
+      <translation>空でない場合は、STEP ファイルヘッダーでフィールドの内容が使用されます。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="177"/>
@@ -3842,8 +3842,7 @@ it inside the Placement property.</translation>
       <location filename="../../DlgImportExportStep.ui" line="222"/>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, no Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>チェックされている場合、ファイル読み込み中にコンパウンドのマージを行ないません（処理は遅くなりますが高精度になります）。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="226"/>
@@ -3853,58 +3852,58 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="242"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part.</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part.</translation>
+      <translation>グループコンテナとして App::LinkGroup を使用する場合はこれを選択します。それ以外は App::Part を使用します。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="245"/>
       <source>Use LinkGroup</source>
-      <translation type="unfinished">Use LinkGroup</translation>
+      <translation>LinkGroupを使用</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="258"/>
       <source>Select this to not import any invisible objects.</source>
-      <translation type="unfinished">Select this to not import any invisible objects.</translation>
+      <translation>非表示オブジェクトをインポートしない場合に選択します。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="261"/>
       <source>Import invisible objects</source>
-      <translation type="unfinished">Import invisible objects</translation>
+      <translation>非表示オブジェクトをインポート</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="274"/>
       <source>Reduce number of objects using Link array</source>
-      <translation type="unfinished">Reduce number of objects using Link array</translation>
+      <translation>Link配列を使用したオブジェクトの数を減らす</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="277"/>
       <source>Reduce number of objects</source>
-      <translation type="unfinished">Reduce number of objects</translation>
+      <translation>オブジェクトの数を減らす</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="290"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation type="unfinished">Expand compound shape with multiple solids</translation>
+      <translation>複数のソリッドでコンパウンドシェイプを展開</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="293"/>
       <source>Expand compound shape</source>
-      <translation type="unfinished">Expand compound shape</translation>
+      <translation>複合形状を展開</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="306"/>
       <location filename="../../DlgImportExportStep.ui" line="309"/>
       <source>Show progress bar when importing</source>
-      <translation type="unfinished">Show progress bar when importing</translation>
+      <translation>インポート時に進捗バーを表示する</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="322"/>
       <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation type="unfinished">Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</translation>
+      <translation>インスタンス名を使用しないでください。意味のない自動生成されたインスタンス名を持つ従来のSTEPファイルには役立ちます。</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="325"/>
       <source>Ignore instance names</source>
-      <translation type="unfinished">Ignore instance names</translation>
+      <translation>インスタンス名を無視</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="340"/>
@@ -3919,31 +3918,30 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="365"/>
       <source>Assembly per document</source>
-      <translation type="unfinished">Assembly per document</translation>
+      <translation>ドキュメントごとのアセンブリ数</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="370"/>
       <source>Assembly per document in sub-directory</source>
-      <translation type="unfinished">Assembly per document in sub-directory</translation>
+      <translation>サブディレクトリ内のドキュメントごとのアセンブリ数</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="375"/>
       <source>Object per document</source>
-      <translation type="unfinished">Object per document</translation>
+      <translation>ドキュメントごとのオブジェクト</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="380"/>
       <source>Object per document in sub-directory</source>
-      <translation type="unfinished">Object per document in sub-directory</translation>
+      <translation>サブディレクトリ内のドキュメントごとのオブジェクト</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="207"/>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation type="unfinished">This parameter indicates whether parametric curves (curves in parametric space of surface)
-should be written into the STEP file. This parameter can be set to off in order to minimize
-the size of the resulting STEP file.</translation>
+      <translation>このパラメータは、パラメトリック曲線（サーフェスのパラメトリック空間の曲線）かどうかを示し、
+STEPファイルに書き込む必要があります。このパラメータは、結果としてのSTEPファイルのサイズを最小化するためにオフに設定できます。</translation>
     </message>
   </context>
   <context>
@@ -4240,7 +4238,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="448"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>回転角度:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="513"/>
@@ -4255,25 +4253,25 @@ the size of the resulting STEP file.</translation>
       <location filename="../../DlgPrimitives.ui" line="553"/>
       <location filename="../../DlgPrimitives.ui" line="1439"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>最初の方向の角度:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="560"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>最初の方向の角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="579"/>
       <location filename="../../DlgPrimitives.ui" line="1465"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>2番目の方向の角度:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="586"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>2番目の方向の角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="640"/>
@@ -4472,12 +4470,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Projection on surface</source>
-      <translation type="unfinished">Projection on surface</translation>
+      <translation>サーフェスに投影する</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
       <source>Select projection surface</source>
-      <translation type="unfinished">Select projection surface</translation>
+      <translation>投影面を選択</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
@@ -4487,12 +4485,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add wire</source>
-      <translation type="unfinished">Add wire</translation>
+      <translation>ワイヤーを追加</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add edge</source>
-      <translation type="unfinished">Add edge</translation>
+      <translation>エッジを追加</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
@@ -4502,22 +4500,22 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
       <source>Show faces</source>
-      <translation type="unfinished">Show faces</translation>
+      <translation>面を表示</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show Edges</source>
-      <translation type="unfinished">Show Edges</translation>
+      <translation>エッジを表示</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
       <source>Extrude height</source>
-      <translation type="unfinished">Extrude height</translation>
+      <translation>押し出しの高さ</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="116"/>
       <source>Solid depth</source>
-      <translation type="unfinished">Solid depth</translation>
+      <translation>ソリッドの深さ</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="141"/>
@@ -4527,7 +4525,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get current camera direction</source>
-      <translation type="unfinished">Get current camera direction</translation>
+      <translation>現在のカメラ方向を取得する</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -4547,17 +4545,17 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="134"/>
       <source>Projection Object</source>
-      <translation type="unfinished">Projection Object</translation>
+      <translation>投影オブジェクト</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="162"/>
       <source>Have no active document!!!</source>
-      <translation type="unfinished">Have no active document!!!</translation>
+      <translation>アクティブなドキュメントがありません!!!</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>Can not create a projection object!!!</source>
-      <translation type="unfinished">Can not create a projection object!!!</translation>
+      <translation>投影オブジェクトを作成できません！</translation>
     </message>
   </context>
   <context>
@@ -4785,12 +4783,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>シェイプの外観</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape view properties</source>
-      <translation type="unfinished">Default Shape view properties</translation>
+      <translation>既定のシェイプビューのプロパティ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4805,12 +4803,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="61"/>
       <source>Use random color instead</source>
-      <translation type="unfinished">Use random color instead</translation>
+      <translation>代わりにランダムな色を使用</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>ランダム</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
@@ -4841,22 +4839,22 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>頂点の色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="158"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>新しい頂点の既定の色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="184"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>頂点のサイズ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="191"/>
       <source>The default size for new vertices</source>
-      <translation type="unfinished">The default size for new vertices</translation>
+      <translation>新しい頂点のデフォルトサイズ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="219"/>
@@ -4871,12 +4869,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="252"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>バウンディングボックスのフォントサイズ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="259"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>3D ビュー内のバウンディングボックスのフォントサイズ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="293"/>
@@ -4884,10 +4882,8 @@ the size of the resulting STEP file.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>サーフェスの底部側は、上側と同様にレンダリングされます。
+もしここがチェックされていないと、オプション「バックライトの色を有効」（セクション表示 -&gt; 3Dビュー の設定）に依存します。バックライトの色が用いられるか黒くなります。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="299"/>
@@ -4897,7 +4893,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="333"/>
       <source>Default Annotation color</source>
-      <translation type="unfinished">Default Annotation color</translation>
+      <translation>デフォルトの注釈色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="347"/>
@@ -4907,7 +4903,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="354"/>
       <source>Text color for document annotations</source>
-      <translation type="unfinished">Text color for document annotations</translation>
+      <translation>ドキュメント注釈のテキストの色</translation>
     </message>
   </context>
   <context>
@@ -4946,13 +4942,13 @@ will be used or black.</translation>
       <location filename="../../Location.ui" line="106"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>パッド方向にカスタムベクトルを使用してください
+スケッチ平面の法線ベクトルが使用されます</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation axis</source>
-      <translation type="unfinished">Rotation axis</translation>
+      <translation>回転軸</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="118"/>
@@ -4962,7 +4958,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>方向ベクトルの x 成分</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -4972,7 +4968,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>方向ベクトルの Y 成分</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="176"/>
@@ -4982,7 +4978,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>方向ベクトルのz成分</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
@@ -5310,12 +5306,12 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation type="unfinished">In x-direction:</translation>
+      <translation>X 方向:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="152"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>Y 方向:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="171"/>
@@ -5323,55 +5319,52 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskAttacher.ui" line="269"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>注記: 配置は、アタッチされているオブジェクトのローカル座標系
+で表されます。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="188"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>Z 方向:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="224"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>X軸周り:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="237"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Y軸周り:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="250"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Z軸周り:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="286"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>X 軸周りの回転
+注: 配置は、アタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="313"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Y 軸周りの回転
+注: 配置は、アタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="340"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Z軸周りの回転
+注: 配置は、アタッチされているオブジェクトのローカル空間で表されます。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
@@ -5501,36 +5494,35 @@ mean the checked object is unusable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>シングルスレッド</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>単一スレッドでジオメトリチェックを実行します。これは遅くなりますが、
+安定性が向上します。デフォルト: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>エラーを記録</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>レポートビューにエラーを記録します。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>シェイプの内容を展開</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。デフォルト：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
@@ -5548,108 +5540,108 @@ the check geometry tool.  Default: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
       <source>
 Individual BOP Checks:</source>
-      <translation type="unfinished">
-Individual BOP Checks:</translation>
+      <translation>
+個別BOPチェック:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
       <source>  Bad type</source>
-      <translation type="unfinished">  Bad type</translation>
+      <translation>  不正なタイプ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>不正な引数タイプをチェックします。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1149"/>
       <source>  Self-intersect</source>
-      <translation type="unfinished">  Self-intersect</translation>
+      <translation>  自己交差</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation type="unfinished">Check for self-intersections.  Default: true</translation>
+      <translation>自己交差を確認します。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
       <source>  Too small edge</source>
-      <translation type="unfinished">  Too small edge</translation>
+      <translation>  エッジが小さすぎます</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
+      <translation>小さすぎるエッジをチェックします。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1165"/>
       <source>  Nonrecoverable face</source>
-      <translation type="unfinished">  Nonrecoverable face</translation>
+      <translation>  回復不能な面</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
+      <translation>回復不能な面を確認します。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1173"/>
       <source>  Continuity</source>
-      <translation type="unfinished">  Continuity</translation>
+      <translation>  連続性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1174"/>
       <source>Check for continuity.  Default: true</source>
-      <translation type="unfinished">Check for continuity.  Default: true</translation>
+      <translation>連続性をチェックします。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1181"/>
       <source>  Incompatibility of face</source>
-      <translation type="unfinished">  Incompatibility of face</translation>
+      <translation>  面の互換性なし</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1182"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation type="unfinished">Check for incompatible faces.  Default: true</translation>
+      <translation>互換性のない面を確認します。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>  Incompatibility of vertex</source>
-      <translation type="unfinished">  Incompatibility of vertex</translation>
+      <translation>  頂点の非互換性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1190"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation type="unfinished">Check for incompatible vertices.  Default: true</translation>
+      <translation>互換性のない頂点をチェックします。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1197"/>
       <source>  Incompatibility of edge</source>
-      <translation type="unfinished">  Incompatibility of edge</translation>
+      <translation>  エッジの非互換性</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1198"/>
       <source>Check for incompatible edges.  Default: true</source>
-      <translation type="unfinished">Check for incompatible edges.  Default: true</translation>
+      <translation>互換性のないエッジを確認します。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
       <source>  Invalid curve on surface</source>
-      <translation type="unfinished">  Invalid curve on surface</translation>
+      <translation>  サーフェス上の無効な曲線</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1206"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
-      <translation type="unfinished">Check for invalid curves on surfaces.  Default: true</translation>
+      <translation>サーフェス上の無効な曲線をチェックします。デフォルト: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1269"/>
       <source>Run check</source>
-      <translation type="unfinished">Run check</translation>
+      <translation>チェックを実行</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1275"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>結果</translation>
     </message>
   </context>
   <context>
@@ -5657,12 +5649,12 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="383"/>
       <source>Check Geometry Results</source>
-      <translation type="unfinished">Check Geometry Results</translation>
+      <translation>ジオメトリーの結果を確認</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="402"/>
       <source>Check is running...</source>
-      <translation type="unfinished">Check is running...</translation>
+      <translation>チェックを実行しています...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>
@@ -5689,7 +5681,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3D view to select them</source>
-      <translation type="unfinished">Click on the faces in the 3D view to select them</translation>
+      <translation>3D ビューの面をクリックして選択します</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
@@ -5699,7 +5691,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="87"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>部品のすべての面の色をリセット</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="90"/>
@@ -5710,8 +5702,7 @@ Individual BOP Checks:</translation>
       <location filename="../../TaskFaceColors.ui" line="97"/>
       <source>When checked, the you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>オンにすると、3D ビューで選択範囲をドラッグして複数の面を選択できます</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
@@ -5906,7 +5897,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>チューブ</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
@@ -5921,12 +5912,12 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="85"/>
       <source>Outer radius</source>
-      <translation type="unfinished">Outer radius</translation>
+      <translation>外側の半径</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
       <source>Inner radius</source>
-      <translation type="unfinished">Inner radius</translation>
+      <translation>内側の半径</translation>
     </message>
   </context>
   <context>

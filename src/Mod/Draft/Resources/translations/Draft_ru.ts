@@ -729,11 +729,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>PAT-файл, используется данным объектом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Название штриховки, используемой этим объектом</translation>
@@ -742,6 +737,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Масштабирование штриховки, используемой этим объектом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1719,7 +1719,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Кривая Безье</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1730,8 +1730,8 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создает кривую Безье N-степени. Чем больше точек вы укажете, тем выше будет степень.
+CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1746,7 +1746,7 @@ CTRL для привязки, SHIFT для ограничения.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Инструменты кривой Безье</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1817,7 +1817,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Кубическая кривая Безье</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -2985,7 +2985,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Инструменты кривой Безье</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3698,6 +3698,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Found several wires or edges: wiring them</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
@@ -3716,11 +3721,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

@@ -730,11 +730,6 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <translation>Objektu honek darabilen PAT fitxategia</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Objektu honen forma</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Objektu honek darabilen eredu-izena</translation>
@@ -743,6 +738,11 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Objektu honek darabilen eredu-eskala</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Objektu honen forma</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1147,12 +1147,12 @@ haratago duen luzera</translation>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>SVG eredu bat definitzen du.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>SVG ereduaren tamaina definitzen du.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1542,12 +1542,12 @@ Eraikutzan-talde bat sortzen du, lehendik ez badago.</translation>
     <message>
       <location filename="gui_groups.py" line="361"/>
       <source>Add a new named group</source>
-      <translation type="unfinished">Add a new named group</translation>
+      <translation>Gehitu izendun talde berria</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="365"/>
       <source>Add a new group with a given name.</source>
-      <translation type="unfinished">Add a new group with a given name.</translation>
+      <translation>Gehitu talde berria emandako izen batekin.</translation>
     </message>
   </context>
   <context>
@@ -1593,7 +1593,7 @@ Sortu talde bat tresna hau erabili nahi baduzu.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Kudeatu edo sortu oharpen-estiloak</translation>
     </message>
   </context>
   <context>
@@ -1648,8 +1648,8 @@ Ctrl atxikitzeko, Shift murrizteko.</translation>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Arku zirkular bat sortzen du hiru puntu erabilita.
+Ctrl atxikitzeko, Shift murrizteko.</translation>
     </message>
   </context>
   <context>
@@ -1726,7 +1726,7 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Bezier kurba</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1737,8 +1737,8 @@ Matrizearen mota aldatu daiteke, polarra edo zirkularra izan dadin.</translation
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>N graduko Bezier kurba bat sortzen du. Puntu gehiago aukeratzen badira, gradua altuagoa izango da.
+Ctrl atxikitzeko, Shift murrizteko.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1753,7 +1753,7 @@ Ctrl atxikitzeko, Shift murrizteko.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezier tresnak</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1763,7 +1763,7 @@ Ctrl atxikitzeko, Shift murrizteko.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Sortu Bezier kurben hainbat mota.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1825,7 +1825,7 @@ Sortutako klona hiru norabideetan eskalatu daiteke.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Bezier kurba kubikoa</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1837,9 +1837,9 @@ Sortutako klona hiru norabideetan eskalatu daiteke.</translation>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>2. graduko segmentuekin (kuadratikoak) eta 3. gradukoekin (kubikoak) egindako Bezier kurba bat sortzen du. Klik eta arrastatu segmentu bakoitza definitzeko.
+Kurba sortu ondoren, atzera egin eta kontrol-puntu bakoitza editatu daiteke eta adabegi bakoitzaren propietateak ezarri daitezke.
+Ctrl atxikitzeko, Shift murrizteko.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2427,7 +2427,7 @@ Hautapena talde bateko objektu sinple bat bada, objektu "anaiak" hautatuko dira,
     <message>
       <location filename="gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>Hautatutako taldeen edukiak hautatzen ditu. Taldekoak ez diren objektuak hautatuetarako, haiek dauden taldeko edukiak hautatzen dira.</translation>
     </message>
   </context>
   <context>
@@ -2996,7 +2996,7 @@ Ondoren, kameraren kokapen desberdina eta objektuen egoera desberdinak gorde dai
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezier tresnak</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3710,6 +3710,11 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <translation>Hainbat alanbre edo ertz aurkitu dira: haiek hari bihurtzen</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Tratatu ezin daitezkeen hainbat objektu aurkitu dira: konposatua sortzen</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>saiatzen: hura ixten</translation>
@@ -3728,11 +3733,6 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Puntuak aurkitu dira: konposatuak sortzen</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Tratatu ezin daitezkeen hainbat objektu aurkitu dira: konposatua sortzen</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4268,7 +4268,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+      <translation>Sarrera ezin izan da eskala-faktore bihurtu</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
@@ -4278,7 +4278,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Ezarri eskala pertsonalizatua</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="159"/>
@@ -4288,12 +4288,12 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Ezarri zirriborro-oharpenen tresnek erabilitako eskala</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
       <source>Solids:</source>
-      <translation type="unfinished">Solids:</translation>
+      <translation>Solidoak:</translation>
     </message>
     <message>
       <location filename="utils.py" line="651"/>
@@ -4303,17 +4303,17 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="utils.py" line="652"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>Alanbreak:</translation>
     </message>
     <message>
       <location filename="utils.py" line="653"/>
       <source>Edges:</source>
-      <translation type="unfinished">Edges:</translation>
+      <translation>Ertzak:</translation>
     </message>
     <message>
       <location filename="utils.py" line="654"/>
       <source>Vertices:</source>
-      <translation type="unfinished">Vertices:</translation>
+      <translation>Erpinak:</translation>
     </message>
     <message>
       <location filename="utils.py" line="658"/>
@@ -4328,7 +4328,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="utils.py" line="699"/>
       <source>different types</source>
-      <translation type="unfinished">different types</translation>
+      <translation>mota anitz</translation>
     </message>
     <message>
       <location filename="utils.py" line="709"/>
@@ -4338,12 +4338,12 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="utils.py" line="712"/>
       <source>has a different value</source>
-      <translation type="unfinished">has a different value</translation>
+      <translation>beste balio bat du</translation>
     </message>
     <message>
       <location filename="utils.py" line="715"/>
       <source>doesn't exist in one of the objects</source>
-      <translation type="unfinished">doesn't exist in one of the objects</translation>
+      <translation>ez da existitzen objektuetako batean</translation>
     </message>
     <message>
       <location filename="utils.py" line="827"/>
@@ -4358,22 +4358,22 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="utils.py" line="977"/>
       <source>Wrong input: unknown document.</source>
-      <translation type="unfinished">Wrong input: unknown document.</translation>
+      <translation>Okerreko sarrera: dokumentu ezezaguna.</translation>
     </message>
     <message>
       <location filename="utils.py" line="1055"/>
       <source>This function will be deprecated in </source>
-      <translation type="unfinished">This function will be deprecated in </translation>
+      <translation>Funtzio hau zaharkituta geratuko da hemen: </translation>
     </message>
     <message>
       <location filename="utils.py" line="1059"/>
       <source>Please use </source>
-      <translation type="unfinished">Please use </translation>
+      <translation>Erabili </translation>
     </message>
     <message>
       <location filename="utils.py" line="1059"/>
       <source>This function will be deprecated. </source>
-      <translation type="unfinished">This function will be deprecated. </translation>
+      <translation>Funtzio hau zaharkituta geratuko da laster. </translation>
     </message>
     <message>
       <location filename="init_tools.py" line="169"/>
@@ -5462,12 +5462,12 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Gehitu taldea</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Taldearen izena</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="392"/>

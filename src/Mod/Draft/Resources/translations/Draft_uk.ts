@@ -729,11 +729,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>Файл PAT, який використовується цим об’єктом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма цього об'єкта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Назва шаблону, що використовується цим об'єктом</translation>
@@ -742,6 +737,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1146,12 +1146,12 @@ beyond the dimension line</source>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Визначає шаблон SVG.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Визначає розмір шаблону SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1725,7 +1725,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Крива Без'є</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1736,8 +1736,8 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Створює криву Безьє N-ступеня. Чим більше точок ви виберете, тим вищий ступінь.
+CTRL для прив'язки, SHIFT для обмеження.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1752,7 +1752,7 @@ CTRL для прив'язки, SHIFT для обмеження.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Інструменти для побудови кривої Безьє</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1762,7 +1762,7 @@ CTRL для прив'язки, SHIFT для обмеження.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Створіть різні типи кривих Безьє.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1824,7 +1824,7 @@ The resulting clone can be scaled in each of its three directions.</source>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Кубічна крива Безьє</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1836,9 +1836,9 @@ The resulting clone can be scaled in each of its three directions.</source>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Створює криву Безьє з двох градусів (квадратичний) та 3-х градусів (кубічних) сегментів. Натисніть і потягніть для визначення кожного відрізку.
+Після створення кривої ви зможете повернутися до редагування кожної контрольної точки і встановити властивості кожного вузла.
+CTRL для створення знімків, SHIFT для обмеження.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2989,7 +2989,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Інструменти для побудови кривої Безьє</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3703,6 +3703,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Знайдено декілька каркасів або ребер: під’єднайте їх</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Знайти кілька непридатних об’єктів: створення сполучення</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>намагається: закрити</translation>
@@ -3721,11 +3726,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Знайдені точки: створення сполучення</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Знайти кілька непридатних об’єктів: створення сполучення</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4246,7 +4246,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Будь ласка, завантажте робочий стіл Draft щоб увімкнути редагування цього об'єкту</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5095,7 +5095,7 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>Криву Безьє було закрито</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5296,17 +5296,17 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Забагато точок перетину.</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="76"/>
       <source>Select an object to join</source>
-      <translation type="unfinished">Select an object to join</translation>
+      <translation>Оберіть обʼєкт для зʼєднання</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="99"/>
       <source>Join lines</source>
-      <translation type="unfinished">Join lines</translation>
+      <translation>Об'єднати рядки</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="110"/>
@@ -5316,7 +5316,7 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>Сплайн було замкнено</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="183"/>
@@ -5326,17 +5326,17 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_selectplane.py" line="147"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
+      <translation>Виберіть поверхню, 3 вершини або WP проксі для визначення рисуючої площини</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="269"/>
       <source>Working plane aligned to global placement of</source>
-      <translation type="unfinished">Working plane aligned to global placement of</translation>
+      <translation>Робоча площина вирівнений до глобального розташування</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="518"/>
       <source>Dir</source>
-      <translation type="unfinished">Dir</translation>
+      <translation>Директорія</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="534"/>
@@ -5346,32 +5346,32 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Клацніть будь-де на лінії, щоб розділити її.</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>Розділити лінію</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Скруглення радіус</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Радіус скруглення</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="113"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Введіть радіус.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="132"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Видалити оригінальні об’єкти:</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="137"/>
@@ -5516,22 +5516,22 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_arcs.py" line="336"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>Створити коло</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>Створити дугу (частина)</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="390"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>Створити дугу</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="467"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>Виберіть кут апертури</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="514"/>
@@ -5541,37 +5541,37 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_texts.py" line="75"/>
       <source>Pick location point</source>
-      <translation type="unfinished">Pick location point</translation>
+      <translation>Вкажіть точку розташування</translation>
     </message>
     <message>
       <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>Створити текст</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Оберіть об'єкт для обертання</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="100"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Вибрати центр обертання</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="389"/>
       <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
+      <translation>Базовий кут</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="390"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>Базовий кут, з якого ви хочете розпочати обертання</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="393"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Оберіть базовий кут</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="402"/>
@@ -5582,18 +5582,18 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
       <location filename="gui_rotate.py" line="403"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>Кількість обертання, яке бажаєте виконати.
+Остаточний кут буде базовим кутом плюс це сума.</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>Кут повороту</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>
       <source>No active command.</source>
-      <translation type="unfinished">No active command.</translation>
+      <translation>Немає активної команди.</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="92"/>
@@ -5603,12 +5603,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="gui_lineops.py" line="118"/>
       <source>Close line</source>
-      <translation type="unfinished">Close line</translation>
+      <translation>Закрити лінію</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="144"/>
       <source>Undo line</source>
-      <translation type="unfinished">Undo line</translation>
+      <translation>Скасувати лінію</translation>
     </message>
   </context>
   <context>
@@ -5616,17 +5616,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="importOCA.py" line="362"/>
       <source>OCA error: couldn't determine character encoding</source>
-      <translation type="unfinished">OCA error: couldn't determine character encoding</translation>
+      <translation>Помилка OCA: Не вдалося визначити кодування символів</translation>
     </message>
     <message>
       <location filename="importOCA.py" line="447"/>
       <source>OCA: found no data to export</source>
-      <translation type="unfinished">OCA: found no data to export</translation>
+      <translation>OCA: не знайдено даних для експорту</translation>
     </message>
     <message>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
-      <translation type="unfinished">successfully exported</translation>
+      <translation>успішно експортовано</translation>
     </message>
   </context>
   <context>
@@ -5681,12 +5681,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="gui_lineops.py" line="151"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Скасувати останній сегмент</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="152"/>
       <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation type="unfinished">Undoes the last drawn segment of the line being drawn.</translation>
+      <translation>Скасовує останній розмальований сегмент лінії, що малюється.</translation>
     </message>
   </context>
   <context>
@@ -6401,55 +6401,55 @@ It must be at least 2.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
-      <translation type="unfinished">Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</translation>
+      <translation>Виберіть обличчя або робочий простір проксі або три вершини.
+Або виберіть один із наведених нижче параметрів</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation type="unfinished">Sets the working plane to the XY plane (ground plane)</translation>
+      <translation>Встановлює робочу площину XY (базова площина)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
       <source>Top (XY)</source>
-      <translation type="unfinished">Top (XY)</translation>
+      <translation>Верхня (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>Встановлює робочу площину на площину XZ (передня площина)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
       <source>Front (XZ)</source>
-      <translation type="unfinished">Front (XZ)</translation>
+      <translation>Передній (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>Встановлює робочу площину на площину YZ (бічна площина)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
       <source>Side (YZ)</source>
-      <translation type="unfinished">Side (YZ)</translation>
+      <translation>Напрямок (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>Встановлює робочу площину, яка стоїть перед поточним виглядом</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation type="unfinished">Align to view</translation>
+      <translation>Вирівняти для перегляду</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation type="unfinished">The working plane will align to the current
-view each time a command is started</translation>
+      <translation>Робоча площина буде вирівнюватись поточному
+погляду кожного разу при запуску команди</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
@@ -6461,9 +6461,9 @@ view each time a command is started</translation>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>Необов'язкове відступ для призначення робочої площини
+над її базовим положенням. Використовуйте це разом з одним з кнопок
+вище</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="99"/>
@@ -6476,37 +6476,36 @@ of the buttons above</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation type="unfinished">If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</translation>
+      <translation>Якщо буде обрано, робоча площина буде
+центрована на поточному виді під час натискання однієї з кнопок
+</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="111"/>
       <source>Center plane on view</source>
-      <translation type="unfinished">Center plane on view</translation>
+      <translation>Центрувати площину на екрані</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="135"/>
       <source>Or select a single vertex to move the current
 working plane without changing its orientation.
 Then, press the button below</source>
-      <translation type="unfinished">Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</translation>
+      <translation>Або виберіть одну вершину, щоб перемістити поточний
+робочу площу, не змінюючи його орієнтації.
+Потім натисніть кнопку нижче</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="147"/>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</translation>
+      <translation>Переміщує робочу площину, не змінюючи її орієнтацію. Якщо жодної точки не обрано, площина
+буде переміщено до центру подання</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
       <source>Move working plane</source>
-      <translation type="unfinished">Move working plane</translation>
+      <translation>Перемістити робочу площу</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="161"/>
@@ -6960,36 +6959,36 @@ This allows to point the direction and type the distance.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>Встановіть фокус на Довжину, а не на координаті X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation type="unfinished">If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</translation>
+      <translation>Якщо ця опція встановлена, під час створення об'єктів Креслення на існуючому обличчі від іншого об'єкта, властивість "Підтримка" об'єкту Креслення буде встановлена в базовий об'єкт. Це була стандартна поведінка до FreeCAD 0.19</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
       <source>Set the Support property when possible</source>
-      <translation type="unfinished">Set the Support property when possible</translation>
+      <translation>Встановлювати властивість підтримки, коли це можливо</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>Якщо позначено цей пункт, об'єкти будуть бути заповнені за замовчуванням.
+В іншому випадку вони будуть відображатися як каркасний</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
       <source>Fill objects with faces whenever possible</source>
-      <translation type="unfinished">Fill objects with faces whenever possible</translation>
+      <translation>Заповніть об’єкти поверхнями, якщо це можливо</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="283"/>
       <source>Normally, after copying objects, the copies get selected.
 If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</translation>
+      <translation>Як правило, після копіювання об'єктів, копії будуть обрані.
+Якщо позначено цей параметр, замість цього буде обрано базові об'єкти.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="287"/>
@@ -7000,8 +6999,8 @@ If this option is checked, the base objects will be selected instead.</translati
       <location filename="../ui/preferences-draft.ui" line="300"/>
       <source>If this is checked, copy mode will be kept across command,
 otherwise commands will always start in no-copy mode</source>
-      <translation type="unfinished">If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</translation>
+      <translation>Якщо позначено цей пункт, режим копіювання буде зберігатися в команді.
+Інакше команди завжди будуть починатися в режимі no-copy</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="304"/>
@@ -7012,18 +7011,18 @@ otherwise commands will always start in no-copy mode</translation>
       <location filename="../ui/preferences-draft.ui" line="320"/>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation type="unfinished">Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</translation>
+      <translation>Примусово створювати примітиви креслення замість об'єктів креслення.
+Зверніть увагу, що це не повністю підтримується, і багато об'єктів не будуть редагуватися в Draft Modifiers.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="324"/>
       <source>Use Part Primitives when available</source>
-      <translation type="unfinished">Use Part Primitives when available</translation>
+      <translation>Використовуйте Частину Прімітиви, якщо вони доступні</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
       <source>Prefix labels of Clones with:</source>
-      <translation type="unfinished">Prefix labels of Clones with:</translation>
+      <translation>Мітки префікса Клонів з:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="372"/>
@@ -7068,7 +7067,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="34"/>
       <source>Snap symbols style</source>
-      <translation type="unfinished">Snap symbols style</translation>
+      <translation>Стиль символів прив'язки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
@@ -7078,7 +7077,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="59"/>
       <source>Bitsnpieces style</source>
-      <translation type="unfinished">Bitsnpieces style</translation>
+      <translation>Стиль Bitsnpieces</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="80"/>
@@ -7093,7 +7092,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="111"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>Відмітьте цей пункт, якщо хочете використовувати колір/лінійність з панелі інструментів за замовчуванням</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="114"/>
@@ -7103,12 +7102,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="131"/>
       <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation type="unfinished">If checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
+      <translation>Якщо прапорець встановлено, під час створення операції з малюванням віджет, який показуватиме поточну орієнтацію площини</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="134"/>
       <source>Show Working Plane tracker</source>
-      <translation type="unfinished">Show Working Plane tracker</translation>
+      <translation>Показати робочу область стеження</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="151"/>
@@ -7123,57 +7122,59 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="194"/>
       <source>Alternate SVG patterns location</source>
-      <translation type="unfinished">Alternate SVG patterns location</translation>
+      <translation>Додаткове розташування шаблонів SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="220"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
-      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+      <translation>Тут можна вказати каталог з користувацькими SVG файлами, що містять &lt;pattern&gt; визначення, які будуть додані до стандартних шаблонів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>
       <source>SVG pattern resolution</source>
-      <translation type="unfinished">SVG pattern resolution</translation>
+      <translation>Роздільна здатність SVG шаблонів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="257"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>Роздільна здатність малювання шаблонів. За замовчуванням значення 128. Більше значень дають кращі роздільні здатності, менші значення роблять креслення швидше</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="280"/>
       <source>SVG pattern default size</source>
-      <translation type="unfinished">SVG pattern default size</translation>
+      <translation>Розмір SVG шаблону за змовчуванням</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="300"/>
       <source>The default size for SVG patterns</source>
-      <translation type="unfinished">The default size for SVG patterns</translation>
+      <translation>Розмір за замовчуванням для шаблонів SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
+      <translation>Відмітьте цей пункт, якщо ви хочете зберегти кольори поверхонь при зменшенні та оновленні (тільки розділення Поверхонь та зробити Каркас)
+
+make Shell</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
+      <translation>Зберегти кольори обличчя під час зниження / оновлення</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
+      <translation>Відмітьте цей пункт, якщо ви хочете, щоб імена поверхонь виходили з назви об’єкта і навпаки під час виконання понизити ( тільки розділення Поверхонь та зробити Каркас)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
+      <translation>Зберегти назви поверхонь під час пониження/оновлення</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
-      <translation type="unfinished">Drawing view line definitions</translation>
+      <translation>Визначення вигляду лінії креслення</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="375"/>
@@ -7291,22 +7292,22 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
       <source>Extension line overshoot</source>
-      <translation type="unfinished">Extension line overshoot</translation>
+      <translation>Розширення виносної лінії </translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="244"/>
       <source>The default length of extension line above dimension line</source>
-      <translation type="unfinished">The default length of extension line above dimension line</translation>
+      <translation>Довжина за замовчуванням подовжувальної лінії вище розмірної лінії</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
       <source>Dimension line overshoot</source>
-      <translation type="unfinished">Dimension line overshoot</translation>
+      <translation>Перевищення розмірної лінії</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="280"/>
       <source>The default distance the dimension line is extended past extension lines</source>
-      <translation type="unfinished">The default distance the dimension line is extended past extension lines</translation>
+      <translation>Відстань за замовчуванням, розмірна лінія продовжена за виносні лінії</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
@@ -7356,7 +7357,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="395"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation type="unfinished">This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</translation>
+      <translation>Це орієнтація текстів розмірів, коли ці розміри вертикальні. За замовчуванням - стандарт ISO.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="405"/>
@@ -7381,27 +7382,27 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
       <source>Show the unit suffix in dimensions</source>
-      <translation type="unfinished">Show the unit suffix in dimensions</translation>
+      <translation>Показати суфікс одиниці у розмірах</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="475"/>
       <source>Override unit</source>
-      <translation type="unfinished">Override unit</translation>
+      <translation>Перевизначити одиницю</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>Якщо залишити це поле порожнім, розміри буде показано в поточній одиниці, визначеній у FreeCAD. Додаючи сюди одиниці вимірювання, наприклад m або см, ви можете змусити нові розміри показуватися в цій одиниці.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
-      <translation type="unfinished">ShapeString settings</translation>
+      <translation>Налаштування Контуру рядка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
-      <translation type="unfinished">Default ShapeString font file</translation>
+      <translation>Файл шрифту Контуру рядка за замовчуванням</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="534"/>
@@ -7421,7 +7422,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>Метод вибору для імпорту кольору SVG об’єктів у FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
@@ -7442,8 +7443,8 @@ such as "Arial:Bold"</source>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>Якщо позначено, перетворення одиниць не відбуватиметься.
+Одна одиниця у файлі SVG буде перекладатися як один міліметр.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
@@ -7458,7 +7459,7 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>Стиль SVG файлу для запису при експорті ескізу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
@@ -7473,7 +7474,7 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation type="unfinished">All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>Всі білі лінії будуть з'являтися в чорних у SVG для кращої читабельності проти білих фонів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="161"/>
@@ -7483,16 +7484,16 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="181"/>
       <source>Max segment length for discretized arcs</source>
-      <translation type="unfinished">Max segment length for discretized arcs</translation>
+      <translation>Максимальна довжина сегмента для дискретизованих дуг</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="204"/>
       <source>Versions of Open CASCADE older than version 6.8 don't support arc projection.
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </source>
-      <translation type="unfinished">Versions of Open CASCADE older than version 6.8 don't support arc projection.
-In this case arcs will be discretized into small line segments.
-This value is the maximum segment length. </translation>
+      <translation>Версії Open CASCADE старіші за версію 6.8 не підтримують проект дуги.
+У цьому випадку дуги будуть розріджені у невеликі відрізки.
+Це значення є максимальною довжиною сегмента. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
@@ -7502,7 +7503,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation type="unfinished">Check this if you want the areas (3D faces) to be imported too.</translation>
+      <translation>Позначте цей пункт, якщо ви хочете також імпортувати області (3D поверх).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -7517,19 +7518,19 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>Цей діалог налаштувань буде показано при імпорті/експорті DXF файлів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>Показувати цей діалог під час імпортування та експорту</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</translation>
+      <translation>імпортер Python використовується, інакше використовуються новіші C++.
+Примітка: імпортер C++ швидший, але ще не настільки функціональний</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
@@ -7540,27 +7541,27 @@ Note: C++ importer is faster, but is not as featureful yet</translation>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Викор. експортер Python, в іншому випадку використовується новіший С++.
+Примітка: експортер C++ швидший, але ще не настільки функціональний</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
-      <translation type="unfinished">Use legacy python exporter</translation>
+      <translation>Використовувати класичний експортер python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation type="unfinished">Automatic update (legacy importer only)</translation>
+      <translation>Автоматичне оновлення (тільки попередній імпорт)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="96"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation type="unfinished">Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</translation>
+      <translation>Дозволити FreeCAD завантажувати конвертер Python для імпорту та експорту DXF.
+Ви також можете зробити це вручну встановивши робоче середовище "dxf_library"
+з менеджера Addon.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
@@ -7679,8 +7680,8 @@ Example: for files in millimeters: 1, in centimeters: 10,
       <location filename="../ui/preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </translation>
+      <translation>Кольори будуть отримані з об'єктів DXF, коли це можливо.
+В іншому випадку будуть застосовуватися кольори за замовчуванням. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
@@ -7691,8 +7692,8 @@ Otherwise default colors will be applied. </translation>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD спробує об’єднати об’єкти, що збігаються, у каркаси.
+Зверніть увагу, що це може зайняти деякий час!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
@@ -7703,8 +7704,8 @@ Note that this can take a while!</translation>
       <location filename="../ui/preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </translation>
+      <translation>Об'єкти з тих самих шарів будуть об'єднані в Блоки Чернетки,
+показуючи швидше, але роблячи їх менш зручними для редагування</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>

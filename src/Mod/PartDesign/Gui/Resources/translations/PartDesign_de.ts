@@ -1061,7 +1061,7 @@
     <message>
       <location filename="../../DlgActiveBody.ui" line="14"/>
       <source>Active Body Required</source>
-      <translation>Aktiver Körper benötigt</translation>
+      <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="20"/>
@@ -3707,14 +3707,14 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Um PartDesign verwenden zu können, benötigen Sie einen aktiven Körper im Dokument. Bitte aktivieren (Doppelklick) Sie einen Körper oder erstellen Sie einen Neuen.
+      <translation>Um PartDesign verwenden zu können, ist ein aktiver Körper im Dokument erforderlich. Bitte einen Körper aktivieren (Doppelklick) oder einen neuen erstellen.
 
-Wenn Sie ein älteres Dokument mit PartDesign-Objekten ohne Körper haben, verwenden Sie die Migrationsfunktion in PartDesign, um sie in einen Körper umzuwandeln.</translation>
+Wenn ein älteres Dokument mit PartDesign-Objekten ohne Körper vorliegt, wird die PartDesign-Funktion Migrieren verwendet, um sie in einen Körper abzulegen.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="177"/>
       <source>Active Body Required</source>
-      <translation>Aktiver Körper benötigt</translation>
+      <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="178"/>
@@ -4053,37 +4053,37 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation>Motorrad 420</translation>
+      <translation>Motorcycle 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation>Motorrad 425</translation>
+      <translation>Motorcycle 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation>Motorrad 428</translation>
+      <translation>Motorcycle 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation>Motorrad 520</translation>
+      <translation>Motorcycle 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation>Motorrad 525</translation>
+      <translation>Motorcycle 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation>Motorrad 530</translation>
+      <translation>Motorcycle 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation>Motorrad 630</translation>
+      <translation>Motorcycle 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>

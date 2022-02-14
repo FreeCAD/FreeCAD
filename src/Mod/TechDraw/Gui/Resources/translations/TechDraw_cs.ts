@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs" sourcelanguage="en">
   <context>
-    <name>CopyView</name>
-    <message>
-      <location filename="CommandCopyView.py" line="47"/>
-      <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
-    </message>
-    <message>
-      <location filename="CommandCopyView.py" line="50"/>
-      <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="46"/>
-      <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="73"/>
-      <source>Select View to copy from list.</source>
-      <translation type="unfinished">Select View to copy from list.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="74"/>
-      <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="92"/>
-      <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="111"/>
-      <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
-    </message>
-  </context>
-  <context>
     <name>MoveView</name>
     <message>
       <location filename="CommandMoveView.py" line="47"/>
@@ -85,6 +42,97 @@
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
       <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation type="unfinished">Share View</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation type="unfinished">Share a View on a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation type="unfinished">Share View with another Page</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation type="unfinished">View to share</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation type="unfinished">Select View to share from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation type="unfinished">Copy View</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation type="unfinished">Copy a View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation type="unfinished">Copy View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation type="unfinished">Select View to copy from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
     </message>
   </context>
   <context>
@@ -1621,7 +1669,7 @@
     </message>
     <message>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>TechDraw Osy kružnic</translation>
     </message>
     <message>
       <source>Selection is empty</source>
@@ -1984,13 +2032,13 @@ Změňte pouze, pokud víte co děláte!</translation>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about to many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>Omezení počtu dlaždic SVG o velikosti 64x64 pixelů použitých pro šrafování jedné plochy.
+U velkých měřítek se může objevit chyba týkající se příliš velkého počtu dlaždic SVG.
+Pak je třeba limit dlaždic zvýšit.</translation>
     </message>
     <message>
       <source>Max SVG Hatch Tiles</source>
-      <translation type="unfinished">Max SVG Hatch Tiles</translation>
+      <translation>Max. SVG šrafování dlaždic</translation>
     </message>
     <message>
       <source>Max PAT Hatch Segments</source>

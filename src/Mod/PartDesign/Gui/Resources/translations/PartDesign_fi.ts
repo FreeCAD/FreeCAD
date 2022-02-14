@@ -837,13 +837,13 @@
     <message>
       <location filename="../../Command.cpp" line="448"/>
       <source>Create Clone</source>
-      <translation type="unfinished">Create Clone</translation>
+      <translation>Luo klooni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="645"/>
       <location filename="../../Command.cpp" line="1159"/>
       <source>Make copy</source>
-      <translation type="unfinished">Make copy</translation>
+      <translation>Tee kopio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="669"/>
@@ -987,7 +987,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module:</source>
-      <translation type="unfinished">Module:</translation>
+      <translation>Moduuli:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>

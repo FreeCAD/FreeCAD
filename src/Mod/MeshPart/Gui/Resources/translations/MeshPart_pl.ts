@@ -374,7 +374,7 @@ Wartość w zakresie 0,1-1.</translation>
     </message>
     <message>
       <source>Elements per edge:</source>
-      <translation>Ilość elementów na krawędź:</translation>
+      <translation>Liczba elementów na krawędź:</translation>
     </message>
     <message>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -384,7 +384,7 @@ Wartość w zakresie 0,2–10.</translation>
     </message>
     <message>
       <source>Elements per curvature radius:</source>
-      <translation>Ilość elementów na promień krzywizny:</translation>
+      <translation>Liczba elementów na promień krzywizny:</translation>
     </message>
     <message>
       <source>Whether optimization of surface shape will be done</source>

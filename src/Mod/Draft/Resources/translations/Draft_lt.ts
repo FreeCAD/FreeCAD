@@ -733,11 +733,6 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">The PAT file used by this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Šio kūno pavidalas</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation type="unfinished">The pattern name used by this object</translation>
@@ -746,6 +741,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Šio kūno pavidalas</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3710,6 +3710,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Found several wires or edges: wiring them</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
@@ -3728,11 +3733,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

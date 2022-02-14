@@ -210,7 +210,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>作成するコピーの数。</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
@@ -719,11 +719,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>このオブジェクトで使用されるPATファイル</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>このオブジェクトの形</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>このオブジェクトで使用されているパターン名</translation>
@@ -732,6 +727,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>このオブジェクトで使用されるパターンスケール</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>オブジェクトの形</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1334,12 +1334,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>スタイルを保存</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>この新しいスタイルの名前:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
@@ -1349,12 +1349,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>名前が存在します。上書きしますか？</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>エラー：json モジュールが見つかりません。スタイルを保存できません。</translation>
     </message>
     <message>
       <location filename="gui_hatch.py" line="48"/>
@@ -3677,6 +3677,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>複数のワイヤー、エッジが見つかりました：ワイヤー化します</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>複数の修復不能なオブジェクトが見つかりました：コンパウンドを作成します</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>試行中：閉じています</translation>
@@ -3695,11 +3700,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>点が見つかりました：コンパウドを作成します</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>複数の修復不能なオブジェクトが見つかりました：コンパウンドを作成します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

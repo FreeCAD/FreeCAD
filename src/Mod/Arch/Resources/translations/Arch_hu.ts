@@ -2888,6 +2888,21 @@ Building creation aborted.</source>
       <translation>Válasszon egy felületet a meglévő objektumon vagy válasszon egy előre beállítottat</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation type="unfinished">No window found. Cannot continue.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation>Ablak beállítások</translation>
@@ -4106,6 +4121,19 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>Függönyfal objektumlétrehozás a kijelölt vonalból vagy vázlatból</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation type="unfinished">Cut with line</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation type="unfinished">Cut an object with a line</translation>
     </message>
   </context>
   <context>

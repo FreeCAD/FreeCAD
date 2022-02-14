@@ -732,11 +732,6 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <translation>Ruta usada por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma de este objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Nombre del patrón utilizado por este objeto</translation>
@@ -745,6 +740,11 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Escala del patrón usado por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma de este objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1149,12 +1149,12 @@ más allá de la línea de dimensión</translation>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Define un patrón SVG.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Define el tamaño del patrón SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1650,8 +1650,8 @@ CTRL para ajustar, MAYÚS para restringir.</translation>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea un arco circular tomando 3 puntos.
+CTRL para ajustar, SHIFT para restringir.</translation>
     </message>
   </context>
   <context>
@@ -1728,7 +1728,7 @@ La matriz puede convertirse en una matriz polar o circular cambiando su tipo.</t
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Curva Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1739,8 +1739,8 @@ La matriz puede convertirse en una matriz polar o circular cambiando su tipo.</t
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una curva Bézier de grado n. Mientras más puntos tome, mayor será el grado.
+CTRL para ajustar, SHIFT para restringir.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1755,7 +1755,7 @@ CTRL para cortar, MAYÚS para restringir.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Herramientas Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1765,7 +1765,7 @@ CTRL para cortar, MAYÚS para restringir.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Crea varios tipos de curvas Bézier.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1827,7 +1827,7 @@ El clon resultante puede escalarse en cada una de sus tres direcciones.</transla
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Curva de Bézier cúbica</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1839,9 +1839,9 @@ El clon resultante puede escalarse en cada una de sus tres direcciones.</transla
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una curva Bézier hecha de segmentos de segundo grado (cuadrático) y de tercer grado (cúbicos). Haga clic y arrastre para definir cada segmento.
+Después de crear la curva puede volver a editar cada punto de control y establecer las propiedades de cada uno de ellos.
+CTRL para ajustar, MAYÚS para restringir.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2995,7 +2995,7 @@ Entonces puedes usarlo para guardar una posición diferente de la cámara y esta
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Herramientas Bézier</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3708,6 +3708,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Encontradas varios alambres o aristas: uniéndolas</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Encontraron varios objetos no tratables: crear composición</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>intentando: cerrarlo</translation>
@@ -3726,11 +3731,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Puntos encontrados: creando composición</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Encontraron varios objetos no tratables: crear composición</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4249,7 +4249,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Por favor cargue el Banco de Trabajo del Borrador para permitir la edición de este objeto</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4264,7 +4264,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+      <translation>No se puede convertir la entrada en un factor de escala</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
@@ -4274,7 +4274,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Establecer escala personalizada</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="159"/>
@@ -4284,7 +4284,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Establecer la escala utilizada por las herramientas de anotación de borrador</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4374,77 +4374,77 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Adherir bloqueo</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Adherir punto final</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Adherir en punto medio</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Ajustar Centro</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Ajustar Ángulo</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Ajustar Intersección</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Ajustar Perpendicular</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Ajustar Extensión</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Ajustar Paralelo</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Ajustar Especial</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Ajustar Cercano</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Ajustar Ortogonal</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Ajustar Cuadrícula</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Ajustar Plano de Trabajo</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Ajustar Dimensiones</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -5081,12 +5081,12 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(ENCENDIDO)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(APAGADO)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
@@ -5096,7 +5096,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>La curva Bezier ha sido cerrada</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>

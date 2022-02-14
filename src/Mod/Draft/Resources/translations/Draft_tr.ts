@@ -728,11 +728,6 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <translation>Bu nesnenin kullandığı PAT dosyası</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Bu nesnenin şekli</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Bu nesnenin kullandığı desen adı</translation>
@@ -741,6 +736,11 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Bu nesnenin kullandığı desen ölçeği</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Bu nesnenin şekli</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1145,12 +1145,12 @@ dışındaki mesafesi</translation>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Bir SVG deseni tanımlar.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>SVG modelinin boyutunu tanımlar.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -3704,6 +3704,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Birkaç kenar bulundu: onlar Telleniyor (kafesleniyor)</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Birkaç iyileştirilemeyen nesne bulundu: Bileşik oluşturuluyor</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>deneniyor: kapatılıyor</translation>
@@ -3722,11 +3727,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Bulunan noktalar: bileşik oluşturuluyor</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Birkaç iyileştirilemeyen nesne bulundu: Bileşik oluşturuluyor</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4372,32 +4372,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Kilit Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Bitiş Noktası Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Orta Nokta Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Merkez Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Açı Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Kesişim Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
@@ -4422,27 +4422,27 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Yakın Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Orto Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Izgara Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Çalışma Düzlemi Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Boyutlar Çıtçıtı</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -5081,12 +5081,12 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(Açık)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(Kapalı)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
@@ -5096,7 +5096,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>BÃ©zier eğrisi kapatıldı</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>

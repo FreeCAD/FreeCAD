@@ -3066,17 +3066,17 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="216"/>
       <source>Around x-axis:</source>
-      <translation>W okolicy osi X:</translation>
+      <translation>Wokół osi X:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="229"/>
       <source>Around y-axis:</source>
-      <translation>W okolicy osi Y:</translation>
+      <translation>Wokół osi Y:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="242"/>
       <source>Around z-axis:</source>
-      <translation>W okolicy osi Z:</translation>
+      <translation>Wokół osi Z:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -3637,7 +3637,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Nie zaznaczono krawędzi do sfazowania. 
-Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
+Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     </message>
   </context>
   <context>
@@ -5337,17 +5337,17 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="224"/>
       <source>Around x-axis:</source>
-      <translation>W okolicy osi X:</translation>
+      <translation>Wokół osi X:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="237"/>
       <source>Around y-axis:</source>
-      <translation>W okolicy osi Y:</translation>
+      <translation>Wokół osi Y:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="250"/>
       <source>Around z-axis:</source>
-      <translation>W okolicy osi Z:</translation>
+      <translation>Wokół osi Z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="286"/>
