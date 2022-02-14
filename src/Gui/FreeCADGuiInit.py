@@ -143,6 +143,10 @@ def InitApplications():
 
     for Dir in ModDirs:
         if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
+            stopFile = os.path.join(Dir, "ADDON_DISABLED")
+            if os.path.exists(stopFile):
+                Msg(f'NOTICE: Addon "{Dir}" disabled by presence of ADDON_DISABLED stopfile\n')
+                continue
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
                 meta = FreeCAD.Metadata(MetadataFile)
@@ -179,6 +183,9 @@ def InitApplications():
         import freecad
         freecad.gui = FreeCADGui
         for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
+            stopFile = os.path.join(Dir, "ADDON_DISABLED")
+            if os.path.exists(stopFile):
+                continue
             if freecad_module_ispkg:
                 Log('Init: Initializing ' + freecad_module_name + '\n')
                 try:
