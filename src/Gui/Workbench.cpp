@@ -370,6 +370,38 @@ void Workbench::createLinkMenu(MenuItem *item) {
     *item << linkMenu;
 }
 
+std::vector<std::pair<std::string, std::string>> Workbench::staticMenuItems;
+
+void Workbench::addPermanentMenuItem(const std::string& cmd, const std::string& after)
+{
+    staticMenuItems.emplace_back(cmd, after);
+}
+
+void Workbench::removePermanentMenuItem(const std::string& cmd)
+{
+    auto it = std::find_if(staticMenuItems.begin(), staticMenuItems.end(), [cmd](const std::pair<std::string, std::string>& p) {
+        return (p.first == cmd);
+    });
+
+    if (it != staticMenuItems.end())
+        staticMenuItems.erase(it);
+}
+
+void  Workbench::addPermanentMenuItems(MenuItem* mb) const
+{
+    for (const auto& it : staticMenuItems) {
+        MenuItem* par = mb->findParentOf(it.second);
+        if (par) {
+            Gui::MenuItem* item = par->findItem(it.second);
+            item = par->afterItem(item);
+
+            Gui::MenuItem* add = new Gui::MenuItem();
+            add->setCommand(it.first);
+            par->insertItem(item, add);
+        }
+    }
+}
+
 void Workbench::activated()
 {
 }
@@ -395,6 +427,7 @@ bool Workbench::activate()
     delete dw;
 
     MenuItem* mb = setupMenuBar();
+    addPermanentMenuItems(mb);
     MenuManager::getInstance()->setup( mb );
     delete mb;
 
