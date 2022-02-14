@@ -364,3 +364,24 @@ class AddonManagerRepo:
     def set_status(self, status):
         with self.status_lock:
             self.update_status = status
+
+    def is_disabled(self):
+        # Check for existence of disabling stopfile:
+        stopfile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED")
+        if os.path.exists(stopfile):
+            return True
+        else:
+            return False
+
+    def disable(self):
+        stopfile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED")
+        with open(stopfile,"w") as f:
+            f.write("The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file.")
+
+    def enable(self):
+        stopfile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED")
+        try:
+            os.unlink(stopfile)
+        except Exception:
+            pass
+

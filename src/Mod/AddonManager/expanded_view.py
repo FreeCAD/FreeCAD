@@ -60,6 +60,7 @@ class Ui_ExpandedView(object):
 
         self.labelVersion = QLabel(ExpandedView)
         self.labelVersion.setObjectName(u"labelVersion")
+        self.labelVersion.setTextFormat(Qt.RichText)
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
@@ -110,6 +111,7 @@ class Ui_ExpandedView(object):
 
         self.labelStatus = QLabel(ExpandedView)
         self.labelStatus.setObjectName(u"labelStatus")
+        self.labelStatus.setTextFormat(Qt.RichText)
         self.labelStatus.setAlignment(
             Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter
         )
