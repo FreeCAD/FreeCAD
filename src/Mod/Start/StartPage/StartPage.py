@@ -502,6 +502,7 @@ def handle():
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
+    HTML = HTML.replace("UL_WORKBENCHES", UL_WORKBENCHES)
 
     # Detect additional addons that are not a workbench
 
