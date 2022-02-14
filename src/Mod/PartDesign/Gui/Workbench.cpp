@@ -581,6 +581,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
 
+    Gui::MenuItem* view = root->findItem("&View");
+    if (view) {
+        Gui::MenuItem* appr = view->findItem("Std_RandomColor");
+        appr = view->afterItem(appr);
+        Gui::MenuItem* face = new Gui::MenuItem();
+        face->setCommand("Part_ColorPerFace");
+        view->insertItem(appr, face);
+    }
+
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
     // not deployed either hence the check for the existence of the command.
