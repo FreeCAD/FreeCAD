@@ -332,11 +332,13 @@ PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject*)
             if (result == App::Meta::Version() || minVersion < result)
                 result = minVersion;
     }
-    if (result != App::Meta::Version())
+    if (result != App::Meta::Version()) {
         return Py::new_reference_to(Py::String(result.str()));
-    else
+    }
+    else {
         Py_INCREF(Py_None);
         return Py_None;
+    }
 }
 
 PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
@@ -353,12 +355,13 @@ PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
             if (result == App::Meta::Version() || maxVersion > result)
                 result = maxVersion;
     }
-    if (result != App::Meta::Version())
+    if (result != App::Meta::Version()) {
         return Py::new_reference_to(Py::String(result.str()));
-    else
+    }
+    else {
         Py_INCREF(Py_None);
         return Py_None;
-
+    }
 }
 
 PyObject* MetadataPy::getCustomAttributes(const char* /*attr*/) const
