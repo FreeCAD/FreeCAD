@@ -95,6 +95,8 @@ class PackageDetails(QWidget):
             lambda: self.check_for_update.emit(self.repo)
         )
         self.ui.buttonChangeBranch.clicked.connect(self.change_branch_clicked)
+        self.ui.buttonEnable.clicked.connect(self.enable_clicked)
+        self.ui.buttonDisable.clicked.connect(self.disable_clicked)
         if HAS_QTWEBENGINE:
             self.ui.webView.loadStarted.connect(self.load_started)
             self.ui.webView.loadProgress.connect(self.load_progress)
@@ -165,6 +167,7 @@ class PackageDetails(QWidget):
     def display_repo_status(self, status):
         repo = self.repo
         self.set_change_branch_button_state()
+        self.set_disable_button_state()
         if status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
 
             version = repo.installed_version
@@ -357,6 +360,16 @@ class PackageDetails(QWidget):
             self.ui.labelWarningInfo.setStyleSheet(
                 "color:" + utils.warning_color_string()
             )
+        elif repo.is_disabled():
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h2>"
+                + translate("AddonsInstaller", "WARNING: This addon is currently installed, but disabled. Use the 'enable' button to re-enable.")
+                + "</h2>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet(
+                "color:" + utils.warning_color_string()
+            )
 
         else:
             self.ui.labelWarningInfo.hide()
@@ -418,6 +431,17 @@ class PackageDetails(QWidget):
         # If all four above checks passed, then it's possible for us to switch
         # branches, if there are any besides the one we are on: show the button
         self.ui.buttonChangeBranch.show()
+
+    def set_disable_button_state(self):
+        self.ui.buttonEnable.hide()
+        self.ui.buttonDisable.hide()
+        status = self.repo.status()
+        if status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            disabled = self.repo.is_disabled()
+            if disabled:
+                self.ui.buttonEnable.show()
+            else:
+                self.ui.buttonDisable.show()
 
     def show_workbench(self, repo: AddonManagerRepo) -> None:
         """loads information of a given workbench"""
@@ -571,6 +595,34 @@ class PackageDetails(QWidget):
         change_branch_dialog.branch_changed.connect(self.branch_changed)
         change_branch_dialog.exec()
 
+    def enable_clicked(self) -> None:
+        self.repo.enable()
+        self.set_disable_button_state()
+        self.update_status.emit(self.repo)
+        self.ui.labelWarningInfo.show()
+        self.ui.labelWarningInfo.setText(
+            "<h3>"
+            + translate("AddonsInstaller", "This Addon will be enabled next time you restart FreeCAD.")
+            + "</h3>"
+        )
+        self.ui.labelWarningInfo.setStyleSheet(
+            "color:" + utils.bright_color_string()
+        )
+
+    def disable_clicked(self) -> None:
+        self.repo.disable()
+        self.set_disable_button_state()
+        self.update_status.emit(self.repo)
+        self.ui.labelWarningInfo.show()
+        self.ui.labelWarningInfo.setText(
+            "<h3>"
+            + translate("AddonsInstaller", "This Addon will be disabled next time you restart FreeCAD.")
+            + "</h3>"
+        )
+        self.ui.labelWarningInfo.setStyleSheet(
+            "color:" + utils.attention_color_string()
+        )
+
     def branch_changed(self, name: str) -> None:
         QMessageBox.information(
             self,
@@ -693,6 +745,16 @@ class Ui_PackageDetails(object):
 
         self.layoutDetailsBackButton.addWidget(self.buttonExecute)
 
+        self.buttonDisable = QPushButton(PackageDetails)
+        self.buttonDisable.setObjectName("buttonDisable")
+
+        self.layoutDetailsBackButton.addWidget(self.buttonDisable)
+
+        self.buttonEnable = QPushButton(PackageDetails)
+        self.buttonEnable.setObjectName("buttonEnable")
+
+        self.layoutDetailsBackButton.addWidget(self.buttonEnable)
+
         self.verticalLayout_2.addLayout(self.layoutDetailsBackButton)
 
         self.labelPackageDetails = QLabel(PackageDetails)
@@ -783,6 +845,12 @@ class Ui_PackageDetails(object):
         )
         self.buttonChangeBranch.setText(
             QCoreApplication.translate("AddonsInstaller", "Change Branch", None)
+        )
+        self.buttonEnable.setText(
+            QCoreApplication.translate("AddonsInstaller", "Enable", None)
+        )
+        self.buttonDisable.setText(
+            QCoreApplication.translate("AddonsInstaller", "Disable", None)
         )
         self.buttonBack.setToolTip(
             QCoreApplication.translate(

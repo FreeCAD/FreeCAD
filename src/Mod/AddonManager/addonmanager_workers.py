@@ -1222,7 +1222,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if os.path.isfile(package_xml):
             self.repo.load_metadata_file(package_xml)
             self.repo.installed_version = self.repo.metadata.Version
-            self.repo.updated_timestamp = datetime.now().timestamp()
+            self.repo.updated_timestamp = os.path.getmtime(package_xml)
 
 
 class DependencyInstallationWorker(QtCore.QThread):

@@ -36,6 +36,8 @@ from AddonManagerRepo import AddonManagerRepo
 from compact_view import Ui_CompactView
 from expanded_view import Ui_ExpandedView
 
+import addonmanager_utilities as utils
+
 translate = FreeCAD.Qt.translate
 
 
@@ -419,6 +421,11 @@ class PackageListItemDelegate(QStyledItemDelegate):
             result = translate("AddonsInstaller", "Update available")
         elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
             result = translate("AddonsInstaller", "Pending restart")
+            
+        if repo.is_disabled():
+            style = "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
+            result += f"<span {style}> [" + translate("AddonsInstaller","DISABLED") + "]</span>"
+
         return result
 
     def get_expanded_update_string(self, repo: AddonManagerRepo) -> str:
@@ -430,18 +437,18 @@ class PackageListItemDelegate(QStyledItemDelegate):
         if repo.status() != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
             if repo.installed_version:
                 installed_version_string = (
-                    "\n" + translate("AddonsInstaller", "Installed version") + ": "
+                    "<br/>" + translate("AddonsInstaller", "Installed version") + ": "
                 )
                 installed_version_string += repo.installed_version
             else:
-                installed_version_string = "\n" + translate(
+                installed_version_string = "<br/>" + translate(
                     "AddonsInstaller", "Unknown version"
                 )
 
         installed_date_string = ""
         if repo.updated_timestamp:
             installed_date_string = (
-                "\n" + translate("AddonsInstaller", "Installed on") + ": "
+                "<br/>" + translate("AddonsInstaller", "Installed on") + ": "
             )
             installed_date_string += (
                 QDateTime.fromTime_t(repo.updated_timestamp)
@@ -452,7 +459,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
         available_version_string = ""
         if repo.metadata:
             available_version_string = (
-                "\n" + translate("AddonsInstaller", "Available version") + ": "
+                "<br/>" + translate("AddonsInstaller", "Available version") + ": "
             )
             available_version_string += repo.metadata.Version
 
@@ -471,6 +478,10 @@ class PackageListItemDelegate(QStyledItemDelegate):
             result += available_version_string
         elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
             result = translate("AddonsInstaller", "Pending restart")
+            
+        if repo.is_disabled():
+            style = "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
+            result += f"<br/><span {style}>[" + translate("AddonsInstaller","DISABLED") + "]</span>"
 
         return result
 
