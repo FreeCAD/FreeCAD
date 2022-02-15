@@ -258,22 +258,23 @@ class PathWorkbench(Workbench):
         Log("Loading Path workbench... done\n")
 
         # Warn user if current schema doesn't use minute for time in velocity
-        velString = FreeCAD.Units.Quantity(
-            1, FreeCAD.Units.Velocity
-        ).getUserPreferred()[2][3:]
+        if not PathPreferences.suppressVelocity():
+            velString = FreeCAD.Units.Quantity(
+                1, FreeCAD.Units.Velocity
+            ).getUserPreferred()[2][3:]
 
-        if velString != "min":
-            current_schema = FreeCAD.Units.listSchemas(FreeCAD.Units.getSchema())
+            if velString != "min":
+                current_schema = FreeCAD.Units.listSchemas(FreeCAD.Units.getSchema())
 
-            msg = translate(
-                "Path",
-                f"The currently selected unit schema: \n     '{current_schema}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
-            )
-            header = translate("Path", "Warning")
-            msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
+                msg = translate(
+                    "Path",
+                    f"The currently selected unit schema: \n     '{current_schema}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+                )
+                header = translate("Path", "Warning")
+                msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
 
-            msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
-            msgbox.exec_()
+                msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
+                msgbox.exec_()
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
