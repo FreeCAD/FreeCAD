@@ -25,14 +25,10 @@
 #ifndef _PreComp_
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoCamera.h>
-//# include <Inventor/nodes/SoClipPlane.h>
-//# include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-//# include <Inventor/sensors/SoTimerSensor.h>
 # include <QDialog>
 # include <QDockWidget>
 # include <QDoubleSpinBox>
-//# include <QPointer>
 # include <QSlider>
 #endif
 
