@@ -109,33 +109,33 @@ SectionCut::SectionCut(QWidget* parent)
     // the flip state cannot be readout of the box position, therefore readout the position
     // is if it was unflipped
     if (doc->getObject(BoxZName)) {
-        hasBoxZ = true;
-        ui->groupBoxZ->setChecked(true);
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
         if (!pcBox) {
             Base::Console().Error("SectionCut error: cut box is incorrectly named, cannot proceed\n");
             return;
         }
+        hasBoxZ = true;
+        ui->groupBoxZ->setChecked(true);
         ui->cutZ->setValue(pcBox->Height.getValue() - fabs(pcBox->Placement.getValue().getPosition().z));
     }
     if (doc->getObject(BoxYName)) {
-        hasBoxY = true;
-        ui->groupBoxY->setChecked(true);
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
         if (!pcBox) {
             Base::Console().Error("SectionCut error: cut box is incorrectly named, cannot proceed\n");
             return;
         }
+        hasBoxY = true;
+        ui->groupBoxY->setChecked(true);
         ui->cutY->setValue(pcBox->Width.getValue() - fabs(pcBox->Placement.getValue().getPosition().y));
     }
     if (doc->getObject(BoxXName)) {
-        hasBoxX = true;
-        ui->groupBoxX->setChecked(true);
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
         if (!pcBox) {
             Base::Console().Error("SectionCut error: cut box is incorrectly named, cannot proceed\n");
             return;
         }
+        hasBoxX = true;
+        ui->groupBoxX->setChecked(true);
         ui->cutX->setValue(pcBox->Length.getValue() - fabs(pcBox->Placement.getValue().getPosition().x));
     }
 
@@ -725,7 +725,12 @@ void SectionCut::onCutXvalueChanged(double val)
     // there is not yet a cut and we do nothing
     if (!CutBox)
         return;
-    Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    if (!pcBox) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxXName)
+            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
+        return;
+    }
     // get its placement and size
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
@@ -833,7 +838,12 @@ void SectionCut::onCutXvalueChanged(double val)
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::YValue, Refresh::ZValue,
             Refresh::notXRange, Refresh::YRange, Refresh::ZRange);
         // recompute the cut
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutObject);
+        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+        if (!pcCut) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCut->recomputeFeature(true);
     }
 }
@@ -890,7 +900,12 @@ void SectionCut::onCutYvalueChanged(double val)
     auto CutBox = doc->getObject(BoxYName);
     if (!CutBox)
         return;
-    Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    if (!pcBox) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxYName)
+            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
+        return;
+    }
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
     if (!ui->flipY->isChecked())
@@ -947,7 +962,12 @@ void SectionCut::onCutYvalueChanged(double val)
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue, Refresh::ZValue,
             Refresh::notXRange, Refresh::notYRange, Refresh::ZRange);
         // recompute the cut
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutObject);
+        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+        if (!pcCut) {
+            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+            return;
+        }
         pcCut->recomputeFeature(true);
         // refresh X limits
         // this is done by
@@ -1032,7 +1052,12 @@ void SectionCut::onCutZvalueChanged(double val)
     auto CutBox = doc->getObject(BoxZName);
     if (!CutBox)
         return;
-    Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    if (!pcBox) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxZName)
+            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
+        return;
+    }
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
     if (!ui->flipZ->isChecked())
@@ -1049,7 +1074,12 @@ void SectionCut::onCutZvalueChanged(double val)
         startCutting();
         return;
     }
-    Part::Cut* pcCut = static_cast<Part::Cut*>(CutObject);
+    Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+    if (!pcCut) {
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+            + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
+        return;
+    }
     pcCut->recomputeFeature(true);
     // refresh X and Y limits
     // this is done e.g. for X by
