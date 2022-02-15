@@ -294,10 +294,14 @@ if HAVE_QTNETWORK:
                 )
             )
             self.__request_queued.emit()
-            while not self.synchronous_complete[current_index]:
+            while True:
                 if QtCore.QThread.currentThread().isInterruptionRequested():
                     return None
                 QtCore.QCoreApplication.processEvents()
+                with self.synchronous_lock:
+                    if self.synchronous_complete[current_index]:
+                        break
+
 
             with self.synchronous_lock:
                 self.synchronous_complete.pop(current_index)
