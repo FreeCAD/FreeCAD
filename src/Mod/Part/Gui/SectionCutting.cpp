@@ -697,7 +697,8 @@ void SectionCut::onGroupBoxZtoggled()
     startCutting();
 }
 
-void SectionCut::onCutXvalueChanged(double val)
+// helper function for the onFlip_clicked signal
+void SectionCut::CutValueHelper(double value, QDoubleSpinBox* SpinBox, QSlider* Slider)
 {
     // there might be no document
     if (!Gui::Application::Instance->activeDocument()) {
@@ -711,24 +712,30 @@ void SectionCut::onCutXvalueChanged(double val)
     }
     // update slider position and tooltip
     // the slider value is % of the cut range
-    ui->cutXHS->blockSignals(true);
-    ui->cutXHS->setValue(
-        int((val - ui->cutX->minimum())
-            / (ui->cutX->maximum() - ui->cutX->minimum()) * 100.0));
-    ui->cutXHS->setToolTip(QString::number(val, 'g', Base::UnitsApi::getDecimals()));
-    ui->cutXHS->blockSignals(false);
+    Slider->blockSignals(true);
+    Slider->setValue(
+        int((value - SpinBox->minimum())
+            / (SpinBox->maximum() - SpinBox->minimum()) * 100.0));
+    Slider->setToolTip(QString::number(value, 'g', Base::UnitsApi::getDecimals()));
+    Slider->blockSignals(false);
 
     // we cannot cut to the edge because then the result is an empty shape
         // we chose purposely not to simply set the range for cutX previously
         // because everything is allowed just not the min/max
-    if (ui->cutX->value() == ui->cutX->maximum()) {
-        ui->cutX->setValue(ui->cutX->maximum() - 0.1);
+    if (SpinBox->value() == SpinBox->maximum()) {
+        SpinBox->setValue(SpinBox->maximum() - 0.1);
         return;
     }
-    if (ui->cutX->value() == ui->cutX->minimum()) {
-        ui->cutX->setValue(ui->cutX->minimum() + 0.1);
+    if (SpinBox->value() == SpinBox->minimum()) {
+        SpinBox->setValue(SpinBox->minimum() + 0.1);
         return;
     }
+}
+
+void SectionCut::onCutXvalueChanged(double val)
+{
+    CutValueHelper(val, ui->cutX, ui->cutXHS);
+
     // get the cut box
     auto CutBox = doc->getObject(BoxXName);
     // when the value has been set after resetting the compound bounding box
@@ -881,34 +888,8 @@ void SectionCut::onCutXHSsliderMoved(int val)
 
 void SectionCut::onCutYvalueChanged(double val)
 {
-    // there might be no document
-    if (!Gui::Application::Instance->activeDocument()) {
-        noDocumentActions();
-        return;
-    }
-    // refresh objects and return in case the document was changed
-    if (doc != Gui::Application::Instance->activeDocument()->getDocument()) {
-        onRefreshCutPBclicked();
-        return;
-    }
-    // update slider position and tooltip
-    // the slider value is % of the cut range
-    ui->cutYHS->blockSignals(true);
-    ui->cutYHS->setValue(
-        int((val - ui->cutY->minimum())
-            / (ui->cutY->maximum() - ui->cutY->minimum()) * 100.0));
-    ui->cutYHS->setToolTip(QString::number(val, 'g', Base::UnitsApi::getDecimals()));
-    ui->cutYHS->blockSignals(false);
+    CutValueHelper(val, ui->cutY, ui->cutYHS);
 
-    // we cannot cut to the edge because then the result is an empty shape
-    if (ui->cutY->value() == ui->cutY->maximum()) {
-        ui->cutY->setValue(ui->cutY->maximum() - 0.1);
-        return;
-    }
-    if (ui->cutY->value() == ui->cutY->minimum()) {
-        ui->cutY->setValue(ui->cutY->minimum() + 0.1);
-        return;
-    }
     auto CutBox = doc->getObject(BoxYName);
     if (!CutBox)
         return;
@@ -1035,34 +1016,8 @@ void SectionCut::onCutYHSsliderMoved(int val)
 
 void SectionCut::onCutZvalueChanged(double val)
 {
-    // there might be no document
-    if (!Gui::Application::Instance->activeDocument()) {
-        noDocumentActions();
-        return;
-    }
-    // refresh objects and return in case the document was changed
-    if (doc != Gui::Application::Instance->activeDocument()->getDocument()) {
-        onRefreshCutPBclicked();
-        return;
-    }
-    // update slider position and tooltip
-    // the slider value is % of the cut range
-    ui->cutZHS->blockSignals(true);
-    ui->cutZHS->setValue(
-        int((val - ui->cutZ->minimum())
-            / (ui->cutZ->maximum() - ui->cutZ->minimum()) * 100.0));
-    ui->cutZHS->setToolTip(QString::number(val, 'g', Base::UnitsApi::getDecimals()));
-    ui->cutZHS->blockSignals(false);
+    CutValueHelper(val, ui->cutZ, ui->cutZHS);
 
-    // we cannot cut to the edge because then the result is an empty shape
-    if (ui->cutZ->value() == ui->cutZ->maximum()) {
-        ui->cutZ->setValue(ui->cutZ->maximum() - 0.1);
-        return;
-    }
-    if (ui->cutZ->value() == ui->cutZ->minimum()) {
-        ui->cutZ->setValue(ui->cutZ->minimum() + 0.1);
-        return;
-    }
     auto CutBox = doc->getObject(BoxZName);
     if (!CutBox)
         return;
