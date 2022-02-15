@@ -528,7 +528,7 @@ class UpdateChecker:
                 macro_wrapper.macro.fill_details_from_file(
                     macro_wrapper.macro.src_filename
                 )
-            if not macro_wrapper.macro.parsed and macro_wrapper.macro.on_wiki:
+            elif not macro_wrapper.macro.parsed and macro_wrapper.macro.on_wiki:
                 mac = macro_wrapper.macro.name.replace(" ", "_")
                 mac = mac.replace("&", "%26")
                 mac = mac.replace("+", "%2B")
@@ -647,7 +647,7 @@ class FillMacroListWorker(QtCore.QThread):
         except Exception as e:
             FreeCAD.Console.PrintWarning(
                 translate(
-                    "AddonsInstaller", "An error occurred fetching macros from GitHub"
+                    "AddonsInstaller", "An error occurred updating macros from GitHub"
                 )
                 + f":\n{e}\n"
             )
