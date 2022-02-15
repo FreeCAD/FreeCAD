@@ -41,6 +41,10 @@ import AddonManager_rc
 from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
 from AddonManagerRepo import AddonManagerRepo
+from install_to_toolbar import (
+    ask_to_install_toolbar_button,
+    remove_custom_toolbar_button,
+)
 
 from NetworkManager import HAVE_QTNETWORK, InitializeNetworkManager
 
@@ -840,8 +844,27 @@ class CommandAddonManager:
             path += "_workbench_icon.svg"
             default_icon = QtGui.QIcon(":/icons/document-package.svg")
         elif repo.repo_type == AddonManagerRepo.RepoType.MACRO:
-            path += "_macro_icon.svg"
-            default_icon = QtGui.QIcon(":/icons/document-python.svg")
+            if repo.macro and repo.macro.icon:
+                if os.path.isabs(repo.macro.icon):
+                    path = repo.macro.icon
+                    default_icon = QtGui.QIcon(":/icons/document-python.svg")
+                else:
+                    path = os.path.join(
+                        os.path.dirname(repo.macro.src_filename), repo.macro.icon
+                    )
+                    default_icon = QtGui.QIcon(":/icons/document-python.svg")
+            elif repo.macro and repo.macro.xpm:
+                cache_path = FreeCAD.getUserCachePath()
+                am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
+                os.makedirs(am_path, exist_ok=True)
+                path = os.path.join(am_path, repo.name + "_icon.xpm")
+                if not os.path.exists(path):
+                    with open(path, "w") as f:
+                        f.write(repo.macro.xpm)
+                default_icon = QtGui.QIcon(repo.macro.xpm)
+            else:
+                path += "_macro_icon.svg"
+                default_icon = QtGui.QIcon(":/icons/document-python.svg")
         elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             # The cache might not have been downloaded yet, check to see if it's there...
             if os.path.isfile(repo.get_cached_icon_filename()):
@@ -1400,6 +1423,8 @@ class CommandAddonManager:
             repo.set_status(AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
+        if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+            ask_to_install_toolbar_button(repo)
 
     def on_installation_failed(self, _: AddonManagerRepo, message: str) -> None:
         self.hide_progress_widgets()
@@ -1529,13 +1554,24 @@ class CommandAddonManager:
         elif repo.repo_type == AddonManagerRepo.RepoType.MACRO:
             macro = repo.macro
             if macro.remove():
+                remove_custom_toolbar_button(repo)
+                FreeCAD.Console.PrintMessage(
+                    translate("AddonsInstaller", "Successfully uninstalled {}").format(
+                        repo.name
+                    )
+                    + "\n"
+                )
                 self.item_model.update_item_status(
                     repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED
                 )
                 self.packageDetails.show_repo(repo)
             else:
-                self.dialog.textBrowserReadMe.setText(
-                    translate("AddonsInstaller", "Macro could not be removed.")
+                FreeCAD.Console.PrintMessage(
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to uninstall {}. Please remove manually.",
+                    ).format(repo.name)
+                    + "\n"
                 )
 
 

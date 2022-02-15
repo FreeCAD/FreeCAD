@@ -3,26 +3,29 @@ IF (BUILD_GUI)
 ENDIF (BUILD_GUI)
 
 SET(AddonManager_SRCS
-    Init.py
-    InitGui.py
+    add_toolbar_button_dialog.ui
     AddonManager.py
-    AddonManagerRepo.py
+    AddonManager.ui
     addonmanager_macro.py
     addonmanager_utilities.py
     addonmanager_workers.py
-    AddonManager.ui
     AddonManagerOptions.ui
+    AddonManagerRepo.py
     ALLOWED_PYTHON_PACKAGES.txt
     change_branch.py
     change_branch.ui
-    first_run.ui
     compact_view.py
     dependency_resolution_dialog.ui
     expanded_view.py
-    NetworkManager.py
-    package_list.py
-    package_details.py
+    first_run.ui
+    Init.py
+    InitGui.py
+    install_to_toolbar.py
     loading.html
+    NetworkManager.py
+    package_details.py
+    package_list.py
+    select_toolbar_dialog.ui
 )
 
 SOURCE_GROUP("" FILES ${AddonManager_SRCS})
