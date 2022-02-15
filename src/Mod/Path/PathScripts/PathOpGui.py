@@ -1388,15 +1388,25 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation."""
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
-    if obj.Proxy:
-        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
-        obj.ViewObject.Visibility = False
-        FreeCAD.ActiveDocument.commitTransaction()
+    try:
+        obj = res.objFactory(res.name, obj=None, parentJob=res.job)
+        if obj.Proxy:
+            obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
+            obj.ViewObject.Visibility = False
+            FreeCAD.ActiveDocument.commitTransaction()
 
-        obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
-        return obj
+            obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
+            return obj
+    except PathUtils.PathNoTCExistsException:
+        msg = translate('PathOp', 'No suitable tool controller found.\nAborting op creation')
+        diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
+        diag.setWindowModality(QtCore.Qt.ApplicationModal)
+        diag.exec_()
+    except PathOp.PathNoTCException:
+        PathLog.warning(translate('PathOp', 'No tool controller, aborting op creation'))
+
     FreeCAD.ActiveDocument.abortTransaction()
+    FreeCAD.ActiveDocument.recompute()
     return None
 
 

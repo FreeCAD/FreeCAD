@@ -68,6 +68,13 @@ FeatureDiameters = 0x4000  # Turning Diameters
 
 FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges
 
+class PathNoTCException(Exception):
+    '''PathNoTCException is raised when no TC was selected or matches the input
+    criteria. This can happen intentionally by the user when they cancel the TC
+    selection dialog.'''
+
+    def __init__(self):
+        super().__init__('No Tool Controller found')
 
 class ObjectOp(object):
     """
@@ -568,7 +575,7 @@ class ObjectOp(object):
             else:
                 obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:
-                return None
+                raise PathNoTCException()
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
 
         if FeatureCoolant & features:
