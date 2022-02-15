@@ -228,12 +228,13 @@ class PackageDetails(QWidget):
             elif status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
                 detached_head = False
                 branch = repo.branch
-                if have_git:
+                if have_git and repo.repo_type != AddonManagerRepo.RepoType.MACRO:
                     basedir = FreeCAD.getUserAppDataDir()
                     moddir = os.path.join(basedir, "Mod", repo.name)
-                    gitrepo = git.Repo(moddir)
-                    branch = gitrepo.head.ref.name
-                    detached_head = gitrepo.head.is_detached
+                    if os.path.exists(os.path.join(moddir,".git")):
+                        gitrepo = git.Repo(moddir)
+                        branch = gitrepo.head.ref.name
+                        detached_head = gitrepo.head.is_detached
 
                 if detached_head:
                     installed_version_string += (
