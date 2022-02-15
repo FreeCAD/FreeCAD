@@ -209,7 +209,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # move to hole location
 
-            command = Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
+            startPoint = edge.Vertexes[0].Point
+
+            command = Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
             self.commandlist.append(command)
             machine.addCommand(command)
 
@@ -217,9 +219,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             self.commandlist.append(command)
             machine.addCommand(command)
 
-            command = Path.Command("G1", {"Z": obj.StartDepth.Value})
-            self.commandlist.append(command)
-            machine.addCommand(command)
+            # command = Path.Command("G1", {"Z": obj.StartDepth.Value})
+            # self.commandlist.append(command)
+            # machine.addCommand(command)
 
             # Technical Debt:  We are assuming the edges are aligned.
             # This assumption should be corrected and the necessary rotations
