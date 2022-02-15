@@ -146,14 +146,10 @@ class PackageDetails(QWidget):
                 self.show_package(repo)
                 self.ui.buttonExecute.hide()
 
-        if self.status_update_thread is not None:
-            if not self.status_update_thread.isFinished():
-                self.status_update_thread.requestInterruption()
-                self.status_update_thread.wait()
-
         if repo.status() == AddonManagerRepo.UpdateStatus.UNCHECKED:
-            self.status_update_thread = QThread()
-            self.status_update_worker = CheckSingleUpdateWorker(repo, self)
+            if not self.status_update_thread:
+                self.status_update_thread = QThread()
+            self.status_update_worker = CheckSingleUpdateWorker(repo)
             self.status_update_worker.moveToThread(self.status_update_thread)
             self.status_update_thread.finished.connect(
                 self.status_update_worker.deleteLater
