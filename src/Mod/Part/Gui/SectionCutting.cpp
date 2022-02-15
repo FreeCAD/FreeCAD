@@ -185,14 +185,18 @@ SectionCut::SectionCut(QWidget* parent)
 // actions to be done when document was closed
 void SectionCut::noDocumentActions()
 {
-    blockSignals(true);
+    ui->groupBoxX->blockSignals(true);
+    ui->groupBoxY->blockSignals(true);
+    ui->groupBoxZ->blockSignals(true);
     doc = nullptr;
     // reset the cut group boxes
     ui->groupBoxX->setChecked(false);
     ui->groupBoxY->setChecked(false);
     ui->groupBoxZ->setChecked(false);
     ui->RefreshCutPB->setEnabled(true);
-    blockSignals(false);
+    ui->groupBoxX->blockSignals(false);
+    ui->groupBoxY->blockSignals(false);
+    ui->groupBoxZ->blockSignals(false);
 }
 
 void SectionCut::startCutting(bool isInitial)
@@ -359,12 +363,16 @@ void SectionCut::startCutting(bool isInitial)
         else
             Base::Console().Error("SectionCut error: there are no objects in the document that can be cut\n");
         // block signals to be able to reset the cut group boxes without calling startCutting again
-        blockSignals(true);
+        ui->groupBoxX->blockSignals(true);
+        ui->groupBoxY->blockSignals(true);
+        ui->groupBoxZ->blockSignals(true);
         ui->groupBoxX->setChecked(false);
         ui->groupBoxY->setChecked(false);
         ui->groupBoxZ->setChecked(false);
         ui->RefreshCutPB->setEnabled(true);
-        blockSignals(false);
+        ui->groupBoxX->blockSignals(false);
+        ui->groupBoxY->blockSignals(false);
+        ui->groupBoxZ->blockSignals(false);
         return;
     }
     
@@ -703,10 +711,12 @@ void SectionCut::onCutXvalueChanged(double val)
     }
     // update slider position and tooltip
     // the slider value is % of the cut range
+    ui->cutXHS->blockSignals(true);
     ui->cutXHS->setValue(
         int((val - ui->cutX->minimum())
             / (ui->cutX->maximum() - ui->cutX->minimum()) * 100.0));
     ui->cutXHS->setToolTip(QString::number(val, 'g', Base::UnitsApi::getDecimals()));
+    ui->cutXHS->blockSignals(false);
 
     // we cannot cut to the edge because then the result is an empty shape
         // we chose purposely not to simply set the range for cutX previously
@@ -883,10 +893,12 @@ void SectionCut::onCutYvalueChanged(double val)
     }
     // update slider position and tooltip
     // the slider value is % of the cut range
+    ui->cutYHS->blockSignals(true);
     ui->cutYHS->setValue(
         int((val - ui->cutY->minimum())
             / (ui->cutY->maximum() - ui->cutY->minimum()) * 100.0));
     ui->cutYHS->setToolTip(QString::number(val, 'g', Base::UnitsApi::getDecimals()));
+    ui->cutYHS->blockSignals(false);
 
     // we cannot cut to the edge because then the result is an empty shape
     if (ui->cutY->value() == ui->cutY->maximum()) {
@@ -1035,10 +1047,12 @@ void SectionCut::onCutZvalueChanged(double val)
     }
     // update slider position and tooltip
     // the slider value is % of the cut range
+    ui->cutZHS->blockSignals(true);
     ui->cutZHS->setValue(
         int((val - ui->cutZ->minimum())
             / (ui->cutZ->maximum() - ui->cutZ->minimum()) * 100.0));
     ui->cutZHS->setToolTip(QString::number(val, 'g', Base::UnitsApi::getDecimals()));
+    ui->cutZHS->blockSignals(false);
 
     // we cannot cut to the edge because then the result is an empty shape
     if (ui->cutZ->value() == ui->cutZ->maximum()) {
@@ -1367,21 +1381,21 @@ void SectionCut::onRefreshCutPBclicked()
     // we can have existing cuts
     if (doc->getObject(CutZName)) {
         hasBoxZ = true;
-        blockSignals(true);
+        ui->groupBoxZ->blockSignals(true);
         ui->groupBoxZ->setChecked(true);
-        blockSignals(false);
+        ui->groupBoxZ->blockSignals(false);
     }
     if (doc->getObject(CutYName)) {
         hasBoxY = true;
-        blockSignals(true);
+        ui->groupBoxY->blockSignals(true);
         ui->groupBoxY->setChecked(true);
-        blockSignals(false);
+        ui->groupBoxY->blockSignals(false);
     }
     if (doc->getObject(CutXName)) {
         hasBoxX = true;
-        blockSignals(true);
+        ui->groupBoxX->blockSignals(true);
         ui->groupBoxX->setChecked(true);
-        blockSignals(false);
+        ui->groupBoxX->blockSignals(false);
     }
     // if there is a cut, disable the button
     if (hasBoxX || hasBoxY || hasBoxZ)
