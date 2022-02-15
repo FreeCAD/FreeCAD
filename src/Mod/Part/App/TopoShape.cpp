@@ -4297,7 +4297,8 @@ bool TopoShape::_makETransform(const TopoShape &shape,
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale) {
-        if(rclTrf.hasScale()<0) {
+        auto type = rclTrf.hasScale();
+        if (type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling) {
             makEGTransform(shape,rclTrf,op,copy);
             return true;
         }

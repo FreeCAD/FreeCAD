@@ -37,8 +37,10 @@ Scale the matrix with the vector
     <Methode Name="hasScale" Const="true">
       <Documentation>
         <UserDocu>
-hasScale(tol=None)
-Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
+hasScale(tol=0.0)
+Return an enum value of ScaleType. Possible values are:
+Uniform, NonUniformLeft, NonUniformRight, NoScaling or Other
+if it's not a scale matrix
         </UserDocu>
       </Documentation>
     </Methode>

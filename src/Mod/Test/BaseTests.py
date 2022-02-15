@@ -422,13 +422,42 @@ class MatrixTestCase(unittest.TestCase):
     def testScale(self):
         self.mat.scale(1., 2., 3.)
         self.assertEqual(self.mat.determinant(), 6.0)
-        self.assertEqual(self.mat.hasScale(), -1)
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.NonUniformLeft)
         self.mat.unity()
-        self.assertEqual(self.mat.hasScale(), 0)
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.NoScaling)
         self.mat.scale(2., 2., 2.)
-        self.assertEqual(self.mat.hasScale(), 1)
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.Uniform)
         self.mat.rotateX(1.0)
-        self.assertEqual(self.mat.hasScale(), 1)
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.Uniform)
+        self.mat.scale(1., 2., 3.)
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.NonUniformLeft)
+        self.mat.unity()
+        self.mat.scale(1., 2., 3.)
+        self.mat.rotateX(1.0)
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.NonUniformRight)
+        self.mat.unity()
+        self.mat.setCol(0, FreeCAD.Vector(1,2,3))
+        self.mat.setCol(1, FreeCAD.Vector(1,2,3))
+        self.mat.setCol(2, FreeCAD.Vector(1,2,3))
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.Other)
+        self.mat.unity()
+        self.mat.setRow(0, FreeCAD.Vector(1,2,3))
+        self.mat.setRow(1, FreeCAD.Vector(1,2,3))
+        self.mat.setRow(2, FreeCAD.Vector(1,2,3))
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.Other)
+
+    def testShearing(self):
+        self.mat.setRow(1, FreeCAD.Vector(0,1,1))
+        self.assertEqual(self.mat.hasScale(), FreeCAD.ScaleType.Other)
+
+    def testMultLeftOrRight(self):
+        mat1 = FreeCAD.Matrix()
+        mat1.rotateX(1.0)
+
+        mat2 = FreeCAD.Matrix()
+        mat2.scale(1., 2., 3.)
+        self.assertEqual((mat1 * mat2).hasScale(), FreeCAD.ScaleType.NonUniformRight)
+        self.assertEqual((mat2 * mat1).hasScale(), FreeCAD.ScaleType.NonUniformLeft)
 
     def testNull(self):
         self.assertFalse(self.mat.isNull())

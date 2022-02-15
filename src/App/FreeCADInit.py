@@ -888,6 +888,15 @@ class Scheme(IntEnum):
 
 App.Units.Scheme = Scheme
 
+class ScaleType(IntEnum):
+    Other = -1
+    NoScaling = 0
+    NonUniformRight = 1
+    NonUniformLeft = 2
+    Uniform = 3
+
+App.ScaleType = ScaleType
+
 # clean up namespace
 del(InitApplications)
 del(test_ascii)
