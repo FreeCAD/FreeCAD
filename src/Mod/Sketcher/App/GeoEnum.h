@@ -135,6 +135,12 @@ inline constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoI
 {
 }
 
+#ifndef FC_OS_WIN32
+constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
+constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
+constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
+#endif
+
 } // namespace Sketcher
 
 namespace std
