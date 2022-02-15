@@ -92,6 +92,7 @@
         <file>icons/Part_Feature.svg</file>
         <file>icons/Part_FeatureImport.svg</file>
         <file>icons/Part_Import.svg</file>
+        <file>icons/Part_SectionCut.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
     </qresource>
