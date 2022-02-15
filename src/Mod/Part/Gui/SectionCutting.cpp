@@ -1126,7 +1126,8 @@ void SectionCut::onCutZHSsliderMoved(int val)
     ui->cutZ->setValue(NewCutValue);
 }
 
-void SectionCut::onFlipXclicked()
+// helper function for the onFlip_clicked signal
+void SectionCut::FlipClickedHelper(const char* BoxName)
 {
     // there might be no document
     if (!Gui::Application::Instance->activeDocument()) {
@@ -1138,20 +1139,19 @@ void SectionCut::onFlipXclicked()
         onRefreshCutPBclicked();
         return;
     }
-    // we must move the box in x-direction by its Length
-    // get the cut box
-    auto CutBox = doc->getObject(BoxXName);
+    // we must move the box e.g. in y-direction by its Width
+    auto CutBox = doc->getObject(BoxName);
     // there should be a box, but maybe the user deleted it meanwhile
     if (!CutBox) {
         Base::Console().Warning((std::string("SectionCut warning: there is no ")
-            + std::string(BoxXName) + std::string(", trying to recreate it\n")).c_str());
+            + std::string(BoxName) + std::string(", trying to recreate it\n")).c_str());
         // recreate the box
         startCutting();
         return;
     }
     Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxXName)
+        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1159,12 +1159,34 @@ void SectionCut::onFlipXclicked()
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
     // flip the box
-    if (ui->flipX->isChecked())
-        BoxPosition.x = BoxPosition.x + pcBox->Length.getValue();
-    else
-        BoxPosition.x = BoxPosition.x - pcBox->Length.getValue();
+    switch (std::string(BoxName).back())
+    {
+    case 'X':
+        if (ui->flipX->isChecked())
+            BoxPosition.x = BoxPosition.x + pcBox->Length.getValue();
+        else
+            BoxPosition.x = BoxPosition.x - pcBox->Length.getValue();
+        break;
+    case 'Y':
+        if (ui->flipY->isChecked())
+            BoxPosition.y = BoxPosition.y + pcBox->Width.getValue();
+        else
+            BoxPosition.y = BoxPosition.y - pcBox->Width.getValue();
+        break;
+    case 'Z':
+        if (ui->flipZ->isChecked())
+            BoxPosition.z = BoxPosition.z + pcBox->Height.getValue();
+        else
+            BoxPosition.z = BoxPosition.z - pcBox->Height.getValue();
+        break;
+    }
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
+}
+
+void SectionCut::onFlipXclicked()
+{
+    FlipClickedHelper(BoxXName);
 
     auto CutObject = doc->getObject(CutXName);
     // there should be a cut, but maybe the user deleted it meanwhile
@@ -1227,43 +1249,7 @@ void SectionCut::onFlipXclicked()
 
 void SectionCut::onFlipYclicked()
 {
-    // there might be no document
-    if (!Gui::Application::Instance->activeDocument()) {
-        noDocumentActions();
-        return;
-    }
-    // refresh objects and return in case the document was changed
-    if (doc != Gui::Application::Instance->activeDocument()->getDocument()) {
-        onRefreshCutPBclicked();
-        return;
-    }
-    // we must move the box in y-direction by its Width
-        // get the cut box
-    auto CutBox = doc->getObject(BoxYName);
-    // there should be a box, but maybe the user deleted it meanwhile
-    if (!CutBox) {
-        Base::Console().Warning((std::string("SectionCut warning: there is no ")
-            + std::string(BoxYName) + std::string(", trying to recreate it\n")).c_str());
-        // recreate the box
-        startCutting();
-        return;
-    }
-    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
-    if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxYName)
-            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
-        return;
-    }
-    // get its placement and size
-    Base::Placement placement = pcBox->Placement.getValue();
-    Base::Vector3d BoxPosition = placement.getPosition();
-    // flip the box
-    if (ui->flipY->isChecked())
-        BoxPosition.y = BoxPosition.y + pcBox->Width.getValue();
-    else
-        BoxPosition.y = BoxPosition.y - pcBox->Width.getValue();
-    placement.setPosition(BoxPosition);
-    pcBox->Placement.setValue(placement);
+    FlipClickedHelper(BoxYName);
 
     auto CutObject = doc->getObject(CutYName);
     // there should be a cut, but maybe the user deleted it meanwhile
@@ -1300,43 +1286,7 @@ void SectionCut::onFlipYclicked()
 
 void SectionCut::onFlipZclicked()
 {
-    // there might be no document
-    if (!Gui::Application::Instance->activeDocument()) {
-        noDocumentActions();
-        return;
-    }
-    // refresh objects and return in case the document was changed
-    if (doc != Gui::Application::Instance->activeDocument()->getDocument()) {
-        onRefreshCutPBclicked();
-        return;
-    }
-    // we must move the box in z-direction by its Height
-    // first get the cut box
-    auto CutBox = doc->getObject(BoxZName);
-    // there should be a box, but maybe the user deleted it meanwhile
-    if (!CutBox) {
-        Base::Console().Warning((std::string("SectionCut warning: there is no ")
-            + std::string(BoxZName) + std::string(", trying to recreate it\n")).c_str());
-        // recreate the box
-        startCutting();
-        return;
-    }
-    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
-    if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxZName)
-            + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
-        return;
-    }
-    // get its placement and size
-    Base::Placement placement = pcBox->Placement.getValue();
-    Base::Vector3d BoxPosition = placement.getPosition();
-    // flip the box
-    if (ui->flipZ->isChecked())
-        BoxPosition.z = BoxPosition.z + pcBox->Height.getValue();
-    else
-        BoxPosition.z = BoxPosition.z - pcBox->Height.getValue();
-    placement.setPosition(BoxPosition);
-    pcBox->Placement.setValue(placement);
+    FlipClickedHelper(BoxZName);
 
     auto CutObject = doc->getObject(CutZName);
     // there should be a cut, but maybe the user deleted it meanwhile

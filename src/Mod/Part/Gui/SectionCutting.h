@@ -70,6 +70,7 @@ private:
     SbBox3f getViewBoundingBox();
     void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
         bool forXRange = true, bool forYRange = true, bool forZRange = true);
+    void FlipClickedHelper(const char* BoxName);
     const char* CompoundName = "SectionCutCompound";
     const char* BoxXName = "SectionCutBoxX";
     const char* BoxYName = "SectionCutBoxY";
