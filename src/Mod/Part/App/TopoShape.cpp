@@ -3162,7 +3162,7 @@ void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
 
-    *this = makEGTransform(rclMat);
+    *this = makeGTransform(rclMat);
 }
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
@@ -3194,7 +3194,7 @@ bool TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool che
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
 
-    return _makETransform(TopoShape(*this),rclTrf,0,checkScale,copy);
+    return _makeTransform(TopoShape(*this),rclTrf,0,checkScale,copy);
 }
 
 TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
@@ -4056,7 +4056,7 @@ TopoDS_Shape TopoShape::makeShell(const TopoDS_Shape& input) const
 #define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
 #define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
 
-TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol)
+TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix, double tol)
 {
     _Shape.Nullify();
 
@@ -4124,10 +4124,10 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
         // Now retrieve the shape and set it without touching element map
         wires.back().setShape(aFix.Wire());
     }
-    return makECompound(wires,0,false);
+    return makeCompound(wires,0,false);
 }
 
-TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const char *op, bool force)
+TopoShape &TopoShape::makeCompound(const std::vector<TopoShape> &shapes, const char *op, bool force)
 {
     (void)op;
     _Shape.Nullify();
@@ -4158,7 +4158,7 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
     return *this;
 }
 
-TopoShape &TopoShape::makEFace(const TopoShape &shape, const char *op, const char *maker)
+TopoShape &TopoShape::makeFace(const TopoShape &shape, const char *op, const char *maker)
 {
     std::vector<TopoShape> shapes;
     if(shape.shapeType() == TopAbs_COMPOUND) {
@@ -4166,15 +4166,17 @@ TopoShape &TopoShape::makEFace(const TopoShape &shape, const char *op, const cha
             shapes.push_back(it.Value());
     } else
         shapes.push_back(shape);
-    return makEFace(shapes,op,maker);
+    return makeFace(shapes,op,maker);
 }
 
-TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char *op, const char *maker)
+TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char *op, const char *maker)
 {
     (void)op;
     _Shape.Nullify();
 
-    if(!maker || !maker[0]) maker = "Part::FaceMakerBullseye";
+    if(!maker || !maker[0])
+        maker = "Part::FaceMakerBullseye";
+
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     for(auto &s : shapes) {
         if (s.getShape().ShapeType() == TopAbs_COMPOUND)
@@ -4187,7 +4189,7 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     return *this;
 }
 
-TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no_fail) {
+TopoShape &TopoShape::makeRefine(const TopoShape &shape, const char *op, bool no_fail) {
     (void)op;
     _Shape.Nullify();
     if(shape.isNull()) {
@@ -4293,21 +4295,21 @@ bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
 }
 
-bool TopoShape::_makETransform(const TopoShape &shape,
+bool TopoShape::_makeTransform(const TopoShape &shape,
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale) {
         auto type = rclTrf.hasScale();
         if (type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling) {
-            makEGTransform(shape,rclTrf,op,copy);
+            makeGTransform(shape,rclTrf,op,copy);
             return true;
         }
     }
-    makETransform(shape,convert(rclTrf),op,copy);
+    makeTransform(shape,convert(rclTrf),op,copy);
     return false;
 }
 
-TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {
+TopoShape &TopoShape::makeTransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {
     // resetElementMap();
 
     if(!copy) {
@@ -4336,7 +4338,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
     return *this;
 }
 
-TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
+TopoShape &TopoShape::makeGTransform(const TopoShape &shape,
         const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
     (void)op;
