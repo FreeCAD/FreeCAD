@@ -53,6 +53,7 @@
 # include <Mod/TechDraw/App/DrawProjGroupItem.h>
 # include <Mod/TechDraw/App/DrawProjGroup.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
+# include <Mod/TechDraw/App/DrawViewBalloon.h>
 # include <Mod/TechDraw/App/DrawDimHelper.h>
 # include <Mod/TechDraw/App/LandmarkDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
@@ -69,6 +70,7 @@
 #include "TaskLinkDim.h"
 
 #include "TaskSelectLineAttributes.h"
+#include "TaskCustomizeFormat.h"
 
 /////////////////////////////
 #include <Mod/TechDraw/App/DrawViewSection.h>  // needed
@@ -2216,6 +2218,56 @@ bool CmdTechDrawExtensionCreateLengthArc::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_ExtensionCustomizeFormat
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExtensionCustomizeFormat)
+
+CmdTechDrawExtensionCustomizeFormat::CmdTechDrawExtensionCustomizeFormat()
+  : Command("TechDraw_ExtensionCustomizeFormat")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Customize format label");
+    sToolTipText    = QT_TR_NOOP("Select a dimension or a balloon\n\
+    - click this tool\n\
+    - edit the Format field, using the keyboard and/or the special buttons");
+    sWhatsThis      = "TechDraw_ExtensionCustomizeFormat";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_ExtensionCustomizeFormat";
+}
+
+void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Base::Console().Message("CustomizeFormat gestartet\n");
+    std::vector<Gui::SelectionObject> selected;
+    if (!_checkSelection(this, selected, "TechDraw Customize Format"))
+        return;
+    auto object = selected[0].getObject();
+    if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ||
+        object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
+        Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
+
+    /*
+    if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
+        Base::Console().Message("Bemaßung gewählt\n"); // -----------------------------------------
+    if (object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
+        Base::Console().Message("Balloon gewählt\n"); // -----------------------------------------
+    Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
+    */
+    
+    
+}
+
+bool CmdTechDrawExtensionCustomizeFormat::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
 namespace TechDrawGui {
     //===========================================================================
     // internal helper routines
@@ -2368,4 +2420,5 @@ void CreateTechDrawCommandsExtensionDims(void)
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateHorizChamferDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateVertChamferDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateLengthArc());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionCustomizeFormat());
 }

@@ -68,6 +68,7 @@ set(TechDrawGui_UIC_SRCS
     TaskBalloon.ui
     TaskCosmeticLine.ui
     TaskSelectLineAttributes.ui
+    TaskCustomizeFormat.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
     TaskDetail.ui
@@ -189,6 +190,9 @@ SET(TechDrawGui_SRCS
     TaskSelectLineAttributes.ui
     TaskSelectLineAttributes.cpp
     TaskSelectLineAttributes.h
+    TaskCustomizeFormat.ui
+    TaskCustomizeFormat.cpp
+    TaskCustomizeFormat.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -383,6 +387,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskDetail.ui
     TaskCosmeticLine.ui
     TaskSelectLineAttributes.ui
+    TaskCustomizeFormat.ui
     TaskMoveView.ui
     TaskProjection.ui
 
