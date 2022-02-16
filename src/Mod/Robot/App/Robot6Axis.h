@@ -77,7 +77,6 @@ public:
 	bool calcTcp(void);
 	Base::Placement getTcp(void);
 
-    //void setKinematik(const std::vector<std::vector<float> > &KinTable);
 
 
 protected:

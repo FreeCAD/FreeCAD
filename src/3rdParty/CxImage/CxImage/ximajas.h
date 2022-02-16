@@ -23,8 +23,6 @@ class CxImageJAS: public CxImage
 public:
 	CxImageJAS(): CxImage((DWORD)0) {}	// <vho> cast to DWORD
 
-//	bool Load(const TCHAR * imageFileName){ return CxImage::Load(imageFileName,0);}
-//	bool Save(const TCHAR * imageFileName){ return CxImage::Save(imageFileName,0);}
 	bool Decode(CxFile * hFile, DWORD imagetype = 0);
 	bool Decode(FILE *hFile, DWORD imagetype = 0) { CxIOFile file(hFile); return Decode(&file,imagetype); }
 
@@ -46,11 +44,6 @@ protected:
 			// because this overwrites a static structure in the Jasper library.
 			// This structure is used by Jasper for internal operations too, e.g. tempfile.
 			// However the ops_ pointer in the stream can be overwritten.
-
-			//stream->ops_->close_ = JasClose;
-			//stream->ops_->read_  = JasRead;
-			//stream->ops_->seek_  = JasSeek;
-			//stream->ops_->write_ = JasWrite;
 
 			jas_stream_CxFile.close_ = JasClose;
 			jas_stream_CxFile.read_  = JasRead;

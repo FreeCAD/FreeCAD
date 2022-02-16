@@ -558,7 +558,6 @@ bool CxImage::HistogramLog()
 bool CxImage::HistogramRoot()
 {
 	if (!pDib) return false;
-	//q(i,j) = sqrt(|p(i,j)|);
 
     int x, y, i;
 	RGBQUAD color;

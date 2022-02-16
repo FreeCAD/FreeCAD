@@ -38,7 +38,6 @@ bool CxImageRAW::Decode(CxFile *hFile)
 
 	// setup library options, see dcr_print_manual for the available switches
 	// call dcr_parse_command_line_options(&dcr,0,0,0) to set default options
-	// if (dcr_parse_command_line_options(&dcr,argc,argv,&arg))
 	if (dcr_parse_command_line_options(&dcr,0,0,0)){
 		cx_throw("CxImageRAW: unknown option");
 	}

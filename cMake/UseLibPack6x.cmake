@@ -27,13 +27,11 @@ set(XercesC_FOUND TRUE)
 set(Boost_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/boost)
 set(Boost_LIBRARIES 
 	optimized boost_filesystem-vc80-mt.lib 
-	#optimized boost_graph-vc80-mt.lib 
 	optimized boost_program_options-vc80-mt.lib
 	optimized boost_python-vc80-mt.lib
 	optimized boost_regex-vc80-mt.lib
 	optimized boost_signals-vc80-mt.lib
 	debug boost_filesystem-vc80-mt-gd.lib 
-	#debug boost_graph-vc80-mt-gd.lib 
 	debug boost_program_options-vc80-mt-gd.lib
 	debug boost_python-vc80-mt-gd.lib
 	debug boost_regex-vc80-mt-gd.lib
@@ -148,17 +146,8 @@ set(QT_RCC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/rcc.exe)
 MACRO (QT4_EXTRACT_OPTIONS _qt4_files _qt4_options)
 	SET(${_qt4_files})
 	SET(${_qt4_options})
-	#SET(_QT4_DOING_OPTIONS FALSE)
 	FOREACH(_currentArg ${ARGN})
-	#  IF ("${_currentArg}" STREQUAL "OPTIONS")
-	#	SET(_QT4_DOING_OPTIONS TRUE)
-	#  ELSE ("${_currentArg}" STREQUAL "OPTIONS")
-	#	IF(_QT4_DOING_OPTIONS) 
-	#	  LIST(APPEND ${_qt4_options} "${_currentArg}")
-	#	ELSE(_QT4_DOING_OPTIONS)
 		  LIST(APPEND ${_qt4_files} "${_currentArg}")
-	#	ENDIF(_QT4_DOING_OPTIONS)
-	#  ENDIF ("${_currentArg}" STREQUAL "OPTIONS")
 	ENDFOREACH(_currentArg)  
 ENDMACRO (QT4_EXTRACT_OPTIONS)
  

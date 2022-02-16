@@ -56,8 +56,6 @@ macro(PrintFinalReport)
         message(STATUS "NETGEN:              not enabled")
     endif(DEFINED NETGEN_FOUND)
 
-    #message(STATUS "OpenCV:              ${OpenCV_VERSION}")
-
     if(DEFINED SWIG_FOUND)
         message(STATUS "SWIG:                ${SWIG_VERSION}")
     else(DEFINED SWIG_FOUND)
@@ -159,8 +157,6 @@ macro(PrintFinalReport)
 
 
     if (WIN32)
-    #message(STATUS "SPNAV:               not available yet for your OS") # FREECAD_USE_3DCONNEXION instead...
-    else(WIN32)
         if(DEFINED SPNAV_FOUND)
             message(STATUS "SPNAV:               [${SPNAV_LIBRARY}] [${SPNAV_INCLUDE_DIR}]")
         else(DEFINED SPNAV_FOUND)

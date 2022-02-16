@@ -23,7 +23,6 @@
 
 #if CXIMAGE_SUPPORT_MNG
 
-//#define MNG_NO_CMS
 #define MNG_SUPPORT_DISPLAY
 #define MNG_SUPPORT_READ
 #define	MNG_SUPPORT_WRITE
@@ -36,7 +35,6 @@ extern "C" {
 #include "../mng/libmng_error.h"
 }
 
-//unsigned long _stdcall RunMNGThread(void *lpParam);
 
 typedef struct tagmngstuff 
 {

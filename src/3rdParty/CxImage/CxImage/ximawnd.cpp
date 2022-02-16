@@ -229,19 +229,6 @@ bool CxImage::CreateFromHANDLE(HANDLE hMem)
 		SetXDPI((long)floor(head.biXPelsPerMeter * 254.0 / 10000.0 + 0.5));
 		SetYDPI((long)floor(head.biYPelsPerMeter * 254.0 / 10000.0 + 0.5));
 
-		/*//copy the pixels (old way)
-		if((pHead->biCompression != BI_RGB) || (pHead->biBitCount == 32)){ //<Jörgen Alfredsson>
-			// BITFIELD case
-			// set the internal header in the dib
-			memcpy(pDib,&head,sizeof(head));
-			// get the bitfield masks
-			DWORD bf[3];
-			memcpy(bf,lpVoid+pHead->biSize,12);
-			// transform into RGB
-			Bitfield2RGB(lpVoid+pHead->biSize+12,bf[0],bf[1],bf[2],(BYTE)pHead->biBitCount);
-		} else { //normal bitmap
-			memcpy(pDib,lpVoid,GetSize());
-		}*/
 
 		// <Michael Gandyra>
 		// fill in color map
@@ -1104,7 +1091,6 @@ long CxImage::DrawString(HDC hdc, long x, long y, const TCHAR* text, RGBQUAD col
 		LOGFONT* m_pLF;
 		m_pLF=(LOGFONT*)calloc(1,sizeof(LOGFONT));
 		_tcsncpy(m_pLF->lfFaceName,font,31);	// For UNICODE support
-		//strncpy(m_pLF->lfFaceName,font,31);
 		m_pLF->lfHeight=lSize;
 		m_pLF->lfWeight=lWeight;
 		m_pLF->lfItalic=bItalic;
@@ -1124,7 +1110,6 @@ long CxImage::DrawString(HDC hdc, long x, long y, const TCHAR* text, RGBQUAD col
 		SetBkMode(TmpDC,OPAQUE);
 		//Set text position;
 		RECT pos = {0,0,0,0};
-		//long len = (long)strlen(text);
 		long len = (long)_tcslen(text);	// For UNICODE support
 		::DrawText(TmpDC,text,len,&pos,DT_CALCRECT);
 		pos.right+=pos.bottom; //for italics
@@ -1332,7 +1317,6 @@ long CxImage::DrawStringEx(HDC hdc, long x, long y, CXTEXTINFO *pTextType, bool 
                 pcolor.rgbGreen = (unsigned char)(a * (pcolor.rgbGreen - p_forecolor.rgbGreen) + p_forecolor.rgbGreen );
                 pcolor.rgbReserved = 0;
                 SetPixelColor(x+ix+frame,y+iy-frame,pcolor,bSetAlpha);
-              //SetPixelColor(x+ix+frame,y+iy-frame,p_forecolor,bSetAlpha);
 			}
 		}
 	}

@@ -33,9 +33,9 @@ IF(Qt5Core_VERSION VERSION_LESS 5.14)
   set(RCCOPTIONS "")
 ELSE()
   # New (>= 5.14)
-  FIND_PROGRAM(PYSIDE2UICBINARY NAMES uic )#pyside2-uic)
+  FIND_PROGRAM(PYSIDE2UICBINARY NAMES uic )
   set(UICOPTIONS "--generator=python")
-  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES  rcc )#pyside2-rcc)
+  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES  rcc )
   set(RCCOPTIONS "--generator=python" "--compress-algo=zlib" "--compress=1")
 ENDIF(Qt5Core_VERSION VERSION_LESS 5.14)
 
@@ -44,9 +44,7 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
     SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/ui_${outfile}.py)
-    #ADD_CUSTOM_TARGET(${it} ALL
-    #  DEPENDS ${outfile}
-    #)
+
     if(WIN32 OR APPLE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
           COMMAND ${PYSIDE2UICBINARY} ${UICOPTIONS} ${infile} -o ${outfile}
@@ -71,9 +69,6 @@ MACRO(PYSIDE_WRAP_RC outfiles)
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
     SET(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
-    #ADD_CUSTOM_TARGET(${it} ALL
-    #  DEPENDS ${outfile}
-    #)
     if(WIN32 OR APPLE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
           COMMAND ${PYSIDE2RCCBINARY} ${RCCOPTIONS} ${infile} -o ${outfile}

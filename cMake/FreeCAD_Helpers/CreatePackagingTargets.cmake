@@ -2,7 +2,7 @@ macro(CreatePackagingTargets)
     # ================================================================================
     # == Packaging ===================================================================
     #
-    #add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
     add_custom_target(dist-git
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/makedist.py
               --bindir=${CMAKE_BINARY_DIR}

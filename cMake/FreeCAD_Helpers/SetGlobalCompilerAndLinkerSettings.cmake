@@ -58,7 +58,6 @@ macro(SetGlobalCompilerAndLinkerSettings)
         endif(CMAKE_SIZEOF_VOID_P EQUAL 4)
     else(MSVC)
         set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
-            #message(STATUS "DEBUG: ${CMAKE_CXX_FLAGS_DEBUG}")
     endif(MSVC)
 
     if(MINGW)
@@ -67,7 +66,6 @@ macro(SetGlobalCompilerAndLinkerSettings)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-attributes")
             set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--export-all-symbols")
-            #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
         else()
             # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
             # Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
@@ -77,9 +75,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-attributes")
             set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--export-all-symbols")
-            #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
-            # http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie
-            # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+
             link_libraries(-lgdi32)
         endif()
     endif(MINGW)

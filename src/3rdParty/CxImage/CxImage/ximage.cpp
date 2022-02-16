@@ -216,9 +216,6 @@ void* CxImage::Create(DWORD dwWidth, DWORD dwHeight, DWORD wBpp, DWORD imagetype
     head.biBitCount = (WORD)wBpp;		// from parameter
     head.biCompression = BI_RGB;    
     head.biSizeImage = info.dwEffWidth * dwHeight;
-//    head.biXPelsPerMeter = 0; See SetXDPI
-//    head.biYPelsPerMeter = 0; See SetYDPI
-//    head.biClrImportant = 0;  See SetClrImportant
 
 	pDib = malloc(GetSize()); // alloc memory block to store our bitmap
     if (!pDib){

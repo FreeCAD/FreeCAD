@@ -298,8 +298,6 @@ public:
 	void	SetRetreiveAllFrames(bool flag);
 	CxImage * GetFrame(long nFrame) const;
 
-	//void*	GetUserData() const {return info.pUserData;}
-	//void	SetUserData(void* pUserData) {info.pUserData = pUserData;}
 //@}
 
 /** \addtogroup Palette
@@ -449,12 +447,10 @@ public:
 #if CXIMAGE_SUPPORT_DECODE
 /** \addtogroup Decode */ //@{
 #ifdef WIN32
-	//bool Load(LPCWSTR filename, DWORD imagetype=0);
 	bool LoadResource(HRSRC hRes, DWORD imagetype, HMODULE hModule=NULL);
 #endif
 	// For UNICODE support: char -> TCHAR
 	bool Load(const TCHAR* filename, DWORD imagetype=0);
-	//bool Load(const char * filename, DWORD imagetype=0);
 	bool Decode(FILE * hFile, DWORD imagetype);
 	bool Decode(CxFile * hFile, DWORD imagetype);
 	bool Decode(BYTE * buffer, DWORD size, DWORD imagetype);
@@ -477,13 +473,11 @@ public:
 #endif
 	// For UNICODE support: char -> TCHAR
 	bool Save(const TCHAR* filename, DWORD imagetype);
-	//bool Save(const char * filename, DWORD imagetype=0);
 	bool Encode(FILE * hFile, DWORD imagetype);
 	bool Encode(CxFile * hFile, DWORD imagetype);
 	bool Encode(CxFile * hFile, CxImage ** pImages, int pagecount, DWORD imagetype);
 	bool Encode(FILE *hFile, CxImage ** pImages, int pagecount, DWORD imagetype);
 	bool Encode(BYTE * &buffer, long &size, DWORD imagetype);
-
 	bool Encode2RGBA(CxFile *hFile, bool bFlipY = false);
 	bool Encode2RGBA(BYTE * &buffer, long &size, bool bFlipY = false);
 //@}

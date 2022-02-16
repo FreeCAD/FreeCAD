@@ -50,19 +50,6 @@ set(ZLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/zlib-1.2.7)
 set(ZLIB_LIBRARIES  zlib.lib)
 set(ZLIB_FOUND TRUE) 
 
-# SMESH
-#set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
-#set(SMESH_LIBRARIES
-#    StdMeshers.lib
-#    MEFISTO2.lib
-#    SMESH.lib
-#    DriverUNV.lib
-#    SMESHDS.lib
-#    DriverSTL.lib
-#    DriverDAT.lib
-#    Driver.lib
-#    SMDS.lib
-#)
 
 set(SMESH_FOUND TRUE) 
 
@@ -517,18 +504,9 @@ if(FREECAD_USE_FREETYPE)
 endif(FREECAD_USE_FREETYPE)
 
 
-#  SHIBOKEN_INCLUDE_DIR        - Directories to include to use SHIBOKEN
-#  SHIBOKEN_LIBRARY            - Files to link against to use SHIBOKEN
-#  SHIBOKEN_BINARY             - Executable name
-
 SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.2)
 SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7_d.lib)
 set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
-
-#  PYSIDE_INCLUDE_DIR   - Directories to include to use PySide
-#  PYSIDE_LIBRARY       - Files to link against to use PySide
-#  PYSIDE_PYTHONPATH    - Path to where the PySide Python module files could be found
-#  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
 
 SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.2)
 SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)

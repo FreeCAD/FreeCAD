@@ -28,8 +28,6 @@ typedef struct tagWbmpHeader
 public:
 	CxImageWBMP(): CxImage(CXIMAGE_FORMAT_WBMP) {}
 
-//	bool Load(const TCHAR * imageFileName){ return CxImage::Load(imageFileName,CXIMAGE_FORMAT_WBMP);}
-//	bool Save(const TCHAR * imageFileName){ return CxImage::Save(imageFileName,CXIMAGE_FORMAT_WBMP);}
 	bool Decode(CxFile * hFile);
 	bool Decode(FILE *hFile) { CxIOFile file(hFile); return Decode(&file); }
 protected:

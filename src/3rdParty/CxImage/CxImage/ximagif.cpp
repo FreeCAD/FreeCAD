@@ -30,7 +30,7 @@ bool CxImageGIF::Decode(CxFile *fp)
 	if (fp == NULL) return false;
 
 	fp->Read(&dscgif,/*sizeof(dscgif)*/13,1);
-	//if (strncmp(dscgif.header,"GIF8",3)!=0) {
+
 	if (strncmp(dscgif.header,"GIF8",4)!=0) return FALSE;
 
 	// Avoid Byte order problem with Mac <AMSN>
@@ -146,10 +146,6 @@ bool CxImageGIF::Decode(CxFile *fp)
 								  restore the area overwritten by the graphic with
 								  what was there prior to rendering the graphic.
 				*/
-				/*	backimage.Copy(*this);
-					if (prevdispmeth==2){
-						backimage.Clear((BYTE)first_transparent_index);
-					}*/
 					if (prevdispmeth==2){
 						backimage.Copy(*this,false,false,false);
 						backimage.Clear((BYTE)first_transparent_index);
@@ -180,9 +176,6 @@ bool CxImageGIF::Decode(CxFile *fp)
 						if (RGB(r[i],g[i],b[i]) == 0xFFFFFF) has_white = 1;
 					}
 
-					// Force transparency colour white...
-					//if (0) if (info.nBkgndIndex >= 0)
-					//	r[info.nBkgndIndex] = g[info.nBkgndIndex] = b[info.nBkgndIndex] = 255;
 					// Fill in with white // AD
 					if (info.nBkgndIndex >= 0) {
 						while (i < 256)	{
@@ -191,11 +184,6 @@ bool CxImageGIF::Decode(CxFile *fp)
 							i++;
 						}
 					}
-
-					// Force last colour to white...   // AD
-					//if ((info.nBkgndIndex >= 0) && !has_white) {
-					//	r[255] = g[255] = b[255] = 255;
-					//}
 
 					SetPalette((info.nBkgndIndex >= 0 ? 256 : palcount), r, g, b);
 				}
@@ -212,7 +200,7 @@ bool CxImageGIF::Decode(CxFile *fp)
 				ipass = 0;
 
 				long pos_start = fp->Tell();
-				//if (interlaced) log << "Interlaced" << endl;
+
 				decoder(fp, iter, image.w, badcode);
 				delete iter;
 
@@ -650,8 +638,6 @@ void CxImageGIF::EncodeComment(CxFile *fp)
 bool CxImageGIF::EncodeRGB(CxFile *fp)
 {
 	EncodeHeader(fp);
-
-//	EncodeLoopExtension(fp);
 
 	EncodeComment(fp);
 
@@ -1285,7 +1271,6 @@ int CxImageGIF::get_num_frames(CxFile *fp,struct_TabCol* TabColSrc,struct_dscgif
 
 				long pos_start = fp->Tell();
 
-				//if (interlaced) log << "Interlaced" << endl;
 				decoder(fp, 0, image.w, badcode);
 
 				if (badcode){

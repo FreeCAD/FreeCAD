@@ -230,7 +230,6 @@ SET(OPENCV_INCLUDE_DIR ${OpenCV_INCLUDE_DIRS} )
 SET(OPENCV_FOUND       ${OpenCV_FOUND})
 
 
-
 # display help message
 IF(NOT OpenCV_FOUND)
   # make FIND_PACKAGE friendly

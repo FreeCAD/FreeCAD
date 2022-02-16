@@ -9,15 +9,9 @@
 
 IF (CMAKE_COMPILER_IS_GNUCC)
     FIND_PATH(SMESH_INCLUDE_DIR SMESH_Mesh.hxx
-    # These are default search paths, why specify them?
-    # /usr/include
-    # /usr/local/include
     PATH_SUFFIXES smesh
     )
-    FIND_LIBRARY(SMESH_LIBRARY SMESH
-    #  /usr/lib
-    #  /usr/local/lib
-    )
+    FIND_LIBRARY(SMESH_LIBRARY SMESH )
 ELSE (CMAKE_COMPILER_IS_GNUCC)
     # Not yet implemented
 ENDIF (CMAKE_COMPILER_IS_GNUCC)

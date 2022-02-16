@@ -27,8 +27,7 @@ fi
 if [[ ${HOST} =~ "Darwin" ]]; then
   # add hacks for osx here!
   echo "adding hacks for osx"
-  #ln -s /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk
-
+  
   # install space-mouse
   if [ ! -d "/Library/Frameworks/3DconnexionClient.framework" ]; then
     echo "Installing 3D connexion spacemouse drivers."

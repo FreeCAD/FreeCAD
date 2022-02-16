@@ -119,10 +119,6 @@ protected:
 
 // Background color definition (if no transparency). see Notes above
 #define	XMF_COLOR_BACK	GetSysColor(COLOR_WINDOW)
-// alternatives
-//#define	XMF_COLOR_BACK	RGB(192, 192, 192)	// lite gray
-//#define	XMF_COLOR_BACK	RGB(  0,   0,   0)	// black
-//#define	XMF_COLOR_BACK	RGB(255, 255, 255)	// white
 
 
 // transparency support. see Notes above
@@ -139,12 +135,7 @@ protected:
 									XMF_COLOR_TRANSPARENT_G, \
 									XMF_COLOR_TRANSPARENT_R, \
 									0
-// max. size. see Notes above
-// alternatives
-//#define	XMF_MAXSIZE_CX	(GetSystemMetrics(SM_CXSCREEN)-10)
-//#define	XMF_MAXSIZE_CY	(GetSystemMetrics(SM_CYSCREEN)-50)
-//#define	XMF_MAXSIZE_CX	(2*GetSystemMetrics(SM_CXSCREEN)/3)
-//#define	XMF_MAXSIZE_CY	(2*GetSystemMetrics(SM_CYSCREEN)/3)
+
 #define	XMF_MAXSIZE_CX	4000
 #define	XMF_MAXSIZE_CY	4000
 

@@ -120,8 +120,6 @@ typedef struct tag_RLE{
 public:
 	CxImageGIF(): CxImage(CXIMAGE_FORMAT_GIF) {m_loops=0; info.dispmeth=0; m_comment[0]='\0';}
 
-//	bool Load(const TCHAR * imageFileName){ return CxImage::Load(imageFileName,CXIMAGE_FORMAT_GIF);}
-//	bool Save(const TCHAR * imageFileName){ return CxImage::Save(imageFileName,CXIMAGE_FORMAT_GIF);}
 	
 	bool Decode(CxFile * fp);
 	bool Decode(FILE *fp) { CxIOFile file(fp); return Decode(&file); }

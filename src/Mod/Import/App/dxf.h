@@ -179,8 +179,6 @@ public:
     void endRun(void);
 
     bool Failed(){return m_fail;}
-//    void setOptions(void);
-//    bool isVersionValid(int vers);
     std::string getLayerName() { return m_layerName; }
     void setLayerName(std::string s);
     void setVersion(int v) { m_version = v;}
@@ -258,7 +256,7 @@ private:
 
 
     typedef std::map< std::string,Aci_t > LayerAciMap_t;
-    LayerAciMap_t m_layer_aci;  // layer names -> layer color aci map
+    LayerAciMap_t m_layer_aci; 
 
     bool ReadUnits();
     bool ReadLayer();

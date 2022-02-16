@@ -152,11 +152,6 @@ public:
 
   int GetANewId();
 
-  // std::map < int, SMESH_Algo * >_mapAlgo;
-  // std::map < int, SMESH_0D_Algo * >_map0D_Algo;
-  // std::map < int, SMESH_1D_Algo * >_map1D_Algo;
-  // std::map < int, SMESH_2D_Algo * >_map2D_Algo;
-  // std::map < int, SMESH_3D_Algo * >_map3D_Algo;
 
 private:
 

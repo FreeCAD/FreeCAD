@@ -113,16 +113,6 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 		cx = emh.rclBounds.right - emh.rclBounds.left;
 		cy = emh.rclBounds.bottom - emh.rclBounds.top;
 
-		// alternative methods, sometime not so reliable... [DP]
-		//cx = emh.szlDevice.cx;
-		//cy = emh.szlDevice.cy;
-		//
-		//hDC = ::GetDC(0);
-		//float hscale = (float)GetDeviceCaps(hDC, HORZRES)/(100.0f * GetDeviceCaps(hDC, HORZSIZE));
-		//float vscale  =  (float)GetDeviceCaps(hDC, VERTRES)/(100.0f * GetDeviceCaps(hDC, VERTSIZE));
-		//::ReleaseDC(0, hDC);
-		//cx = (long)((emh.rclFrame.right - emh.rclFrame.left) * hscale);
-		//cy = (long)((emh.rclFrame.bottom - emh.rclFrame.top) * vscale);
 	}
 
 	if (info.nEscape == -1) {	// Check if cancelled
@@ -308,15 +298,6 @@ HENHMETAFILE CxImageWMF::ConvertWmfFiletoEmf(CxFile *fp, METAFILEHEADER *metafil
 		// at least not scaleable.
 		// we could try to convert, but would loose ratio. don't allow this
 		return (hMeta);
-
-		//metafileheader->bbox.right = ?;
-		//metafileheader->bbox.left = ?;
-		//metafileheader->bbox.bottom = ?;
-		//metafileheader->bbox.top = ?;
-		//metafileheader->inch = ?;
-		//
-		//seekpos = 0;
-		// fp->Seek(0, SEEK_SET);	// rewind
 	}
 
 	// At this point we have a metaheader regardless of whether
@@ -352,8 +333,6 @@ HENHMETAFILE CxImageWMF::ConvertWmfFiletoEmf(CxFile *fp, METAFILEHEADER *metafil
 	// Enhanced Metafile to full screen.
 	// the METAFILEHEADER from above is needed to scale the image
 
-//	hMeta = SetWinMetaFileBits(len, p, NULL, NULL);
-
 	// scale the metafile (pixels/inch of metafile => pixels/inch of display)
 
 	METAFILEPICT	mfp;
@@ -373,11 +352,7 @@ HENHMETAFILE CxImageWMF::ConvertWmfFiletoEmf(CxFile *fp, METAFILEHEADER *metafil
 
 	// in MM_ANISOTROPIC mode xExt and yExt are in MM_HIENGLISH
 	// MM_HIENGLISH means: Each logical unit is converted to 0.001 inch
-	//mfp.xExt *= 1000;
-	//mfp.yExt *= 1000;
-	// ????
-	//int k = 332800 / ::GetSystemMetrics(SM_CXSCREEN);
-	//mfp.xExt *= k;	mfp.yExt *= k;
+
 
 	// fix for Win9x
 	while ((mfp.xExt < 6554) && (mfp.yExt < 6554))
@@ -412,7 +387,7 @@ HENHMETAFILE CxImageWMF::ConvertEmfFiletoEmf(CxFile *pFile, ENHMETAHEADER *pemfh
 	if (iLenRead < sizeof(ENHMETAHEADER))         return NULL;
 	if (pemfh->iType != EMR_HEADER)               return NULL;
 	if (pemfh->dSignature != ENHMETA_SIGNATURE)   return NULL;
-	//if (pemfh->nBytes != (DWORD)iLen)             return NULL;
+
 	pFile->Seek(pos,SEEK_SET);
 
 	BYTE* pBuff = (BYTE *)malloc(iLen);

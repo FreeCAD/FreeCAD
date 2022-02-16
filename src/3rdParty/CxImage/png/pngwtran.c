@@ -29,12 +29,6 @@ png_do_write_transformations(png_structp png_ptr)
         (*(png_ptr->write_user_transform_fn)) /* user write transform function */
           (png_ptr,                    /* png_ptr */
            &(png_ptr->row_info),       /* row_info:     */
-             /*  png_uint_32 width;          width of row */
-             /*  png_uint_32 rowbytes;       number of bytes in row */
-             /*  png_byte color_type;        color type of pixels */
-             /*  png_byte bit_depth;         bit depth of samples */
-             /*  png_byte channels;          number of channels (1-4) */
-             /*  png_byte pixel_depth;       bits per pixel (depth*channels) */
            png_ptr->row_buf + 1);      /* start of pixel data for row */
 #endif
 #if defined(PNG_WRITE_FILLER_SUPPORTED)
@@ -495,10 +489,6 @@ png_do_write_invert_alpha(png_row_infop row_info, png_bytep row)
 
             for (i = 0, sp = dp = row; i < row_width; i++)
             {
-               /* does nothing
-               *(dp++) = *(sp++);
-               *(dp++) = *(sp++);
-               */
                sp+=2; dp = sp;
                *(dp++) = (png_byte)(255 - *(sp++));
                *(dp++) = (png_byte)(255 - *(sp++));

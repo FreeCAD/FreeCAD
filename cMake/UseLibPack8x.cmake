@@ -55,33 +55,6 @@ set(ZLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/zlib)
 set(ZLIB_LIBRARIES  zdll.lib)
 set(ZLIB_FOUND TRUE) 
 
-# SMESH
-#set(SMESH_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/smesh)
-#set(SMESH_LIBRARIES   
-#	optimized  StdMeshers.lib
-#    optimized  MEFISTO2.lib
-#	optimized  SMESH.lib
-#	optimized  DriverUNV.lib
-#	optimized  SMESHDS.lib
-#	optimized  NETGENPlugin.lib
-#	optimized  DriverSTL.lib
-#	optimized  DriverDAT.lib
-#	optimized  Driver.lib
-#	optimized  SMDS.lib
-#)
-#set(SMESH_DEBUG_LIBRARIES   
-#	debug  StdMeshersd.lib
-#	debug  MEFISTO2d.lib
-#	debug  SMESHd.lib
-#	debug  DriverUNVd.lib
-#	debug  SMESHDSd.lib
-#	debug  NETGENPlugind.lib
-#	debug  DriverSTLd.lib
-#	debug  DriverDATd.lib
-#	debug  Driverd.lib
-#	debug  SMDSd.lib
-#) 
-#set(SMESH_FOUND TRUE) 
 	
 # Coin3D
 set(COIN3D_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/coin)
@@ -167,39 +140,20 @@ set(QT_HELPCOMPILER_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/qhelpgenerator.exe)
 set(QT_COLLECTIOMGENERATOR_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/qcollectiongenerator.exe)
 
 if(FREECAD_LIBPACK_USEPYSIDE) 
-    #  SHIBOKEN_INCLUDE_DIR        - Directories to include to use SHIBOKEN
-    #  SHIBOKEN_LIBRARY            - Files to link against to use SHIBOKEN
-    #  SHIBOKEN_BINARY             - Executable name
 
     SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken)
     SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.6.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.6_d.lib)
     set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 
-    #  PYSIDE_INCLUDE_DIR   - Directories to include to use PySide
-    #  PYSIDE_LIBRARY       - Files to link against to use PySide
-    #  PYSIDE_PYTHONPATH    - Path to where the PySide Python module files could be found
-    #  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
-
     SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide)
     SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.6.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.6_d.lib)
-    #SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
-    #SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)
 endif(FREECAD_LIBPACK_USEPYSIDE)
 
 MACRO (QT4_EXTRACT_OPTIONS _qt4_files _qt4_options)
 	SET(${_qt4_files})
 	SET(${_qt4_options})
-	#SET(_QT4_DOING_OPTIONS FALSE)
 	FOREACH(_currentArg ${ARGN})
-	#  IF ("${_currentArg}" STREQUAL "OPTIONS")
-	#	SET(_QT4_DOING_OPTIONS TRUE)
-	#  ELSE ("${_currentArg}" STREQUAL "OPTIONS")
-	#	IF(_QT4_DOING_OPTIONS) 
-	#	  LIST(APPEND ${_qt4_options} "${_currentArg}")
-	#	ELSE(_QT4_DOING_OPTIONS)
 		  LIST(APPEND ${_qt4_files} "${_currentArg}")
-	#	ENDIF(_QT4_DOING_OPTIONS)
-	#  ENDIF ("${_currentArg}" STREQUAL "OPTIONS")
 	ENDFOREACH(_currentArg)  
 ENDMACRO (QT4_EXTRACT_OPTIONS)
  

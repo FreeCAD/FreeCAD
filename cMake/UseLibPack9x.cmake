@@ -174,17 +174,8 @@ set(QT_COLLECTIOMGENERATOR_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/qcollectiongene
 MACRO (QT4_EXTRACT_OPTIONS _qt4_files _qt4_options)
 	SET(${_qt4_files})
 	SET(${_qt4_options})
-	#SET(_QT4_DOING_OPTIONS FALSE)
 	FOREACH(_currentArg ${ARGN})
-	#  IF ("${_currentArg}" STREQUAL "OPTIONS")
-	#	SET(_QT4_DOING_OPTIONS TRUE)
-	#  ELSE ("${_currentArg}" STREQUAL "OPTIONS")
-	#	IF(_QT4_DOING_OPTIONS) 
-	#	  LIST(APPEND ${_qt4_options} "${_currentArg}")
-	#	ELSE(_QT4_DOING_OPTIONS)
 		  LIST(APPEND ${_qt4_files} "${_currentArg}")
-	#	ENDIF(_QT4_DOING_OPTIONS)
-	#  ENDIF ("${_currentArg}" STREQUAL "OPTIONS")
 	ENDFOREACH(_currentArg)  
 ENDMACRO (QT4_EXTRACT_OPTIONS)
  
@@ -326,41 +317,7 @@ set(NGLIB_DEBUG_LIBRARIES
     debug nglibd
 )
 
-# OCC
-#set(OCC_INCLUDE_DIR C:/Projects/LibPack/oce-0.10.0/include/oce)
-#set(OCC_LIBRARY_DIR C:/Projects/LibPack/oce-0.10.0/Win64/lib)
-#set(OCC_LIBRARIES
-#    ${OCC_LIBRARY_DIR}/TKFillet.lib
-#    ${OCC_LIBRARY_DIR}/TKMesh.lib
-#    ${OCC_LIBRARY_DIR}/TKernel.lib
-#    ${OCC_LIBRARY_DIR}/TKG2d.lib
-#    ${OCC_LIBRARY_DIR}/TKG3d.lib
-#    ${OCC_LIBRARY_DIR}/TKMath.lib
-#    ${OCC_LIBRARY_DIR}/TKIGES.lib
-#    ${OCC_LIBRARY_DIR}/TKSTL.lib
-#    ${OCC_LIBRARY_DIR}/TKShHealing.lib
-#    ${OCC_LIBRARY_DIR}/TKXSBase.lib
-#    ${OCC_LIBRARY_DIR}/TKBool.lib
-#    ${OCC_LIBRARY_DIR}/TKBO.lib
-#    ${OCC_LIBRARY_DIR}/TKBRep.lib
-#    ${OCC_LIBRARY_DIR}/TKTopAlgo.lib
-#    ${OCC_LIBRARY_DIR}/TKGeomAlgo.lib
-#    ${OCC_LIBRARY_DIR}/TKGeomBase.lib
-#    ${OCC_LIBRARY_DIR}/TKOffset.lib
-#    ${OCC_LIBRARY_DIR}/TKPrim.lib
-#    ${OCC_LIBRARY_DIR}/TKSTEP.lib
-#    ${OCC_LIBRARY_DIR}/TKSTEPBase.lib
-#    ${OCC_LIBRARY_DIR}/TKSTEPAttr.lib
-#    ${OCC_LIBRARY_DIR}/TKHLR.lib
-#    ${OCC_LIBRARY_DIR}/TKFeat.lib
-#)
-#set(OCC_OCAF_LIBRARIES
-#    ${OCC_LIBRARY_DIR}/TKCAF.lib
-#    ${OCC_LIBRARY_DIR}/TKXCAF.lib
-#    ${OCC_LIBRARY_DIR}/TKLCAF.lib
-#    ${OCC_LIBRARY_DIR}/TKXDESTEP.lib
-#    ${OCC_LIBRARY_DIR}/TKXDEIGES.lib
-#)
+
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/oce-0.13)
 set(OCC_LIBRARY_DIR ${FREECAD_LIBPACK_DIR}/lib)
 set(OCC_LIBRARIES
@@ -456,18 +413,10 @@ if(FREECAD_USE_FREETYPE)
 endif(FREECAD_USE_FREETYPE)
 
 
-#  SHIBOKEN_INCLUDE_DIR        - Directories to include to use SHIBOKEN
-#  SHIBOKEN_LIBRARY            - Files to link against to use SHIBOKEN
-#  SHIBOKEN_BINARY             - Executable name
-
 SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.1)
 SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7_d.lib)
 set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 
-#  PYSIDE_INCLUDE_DIR   - Directories to include to use PySide
-#  PYSIDE_LIBRARY       - Files to link against to use PySide
-#  PYSIDE_PYTHONPATH    - Path to where the PySide Python module files could be found
-#  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
 
 SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
 SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)

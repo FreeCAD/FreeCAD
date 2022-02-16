@@ -34,7 +34,7 @@ bool CxImageTIF::Decode(CxFile * hFile)
 	// TIFFSetErrorHandler(NULL);	//<Patrick Hoffmann>
 
 	//Open file and fill the TIFF structure
-	// m_tif = TIFFOpen(imageFileName,"rb");
+
 	TIFF* m_tif = _TIFFOpenEx(hFile, "rb");
 
 	uint32 height=0;
@@ -58,9 +58,6 @@ bool CxImageTIF::Decode(CxFile * hFile)
 	if (!m_tif)
 		cx_throw("Error encountered while opening TIFF file");
 
-	// <Robert Abram> - 12/2002 : get NumFrames directly, instead of looping
-	// info.nNumFrames=0;
-	// while(TIFFSetDirectory(m_tif,(uint16)info.nNumFrames)) info.nNumFrames++;
 	info.nNumFrames = TIFFNumberOfDirectories(m_tif);
 
 	if (!TIFFSetDirectory(m_tif, (uint16)info.nFrame))
@@ -106,7 +103,7 @@ bool CxImageTIF::Decode(CxFile * hFile)
 		TIFFSetField(m_tif, TIFFTAG_ROWSPERSTRIP, rowsperstrip);
 	}
 
-	isRGB = /*(bitspersample >= 8) && (VK: it is possible so for RGB to have < 8 bpp!)*/
+	isRGB = 
 		(photometric == PHOTOMETRIC_RGB) ||
 		(photometric == PHOTOMETRIC_YCBCR) ||
 		(photometric == PHOTOMETRIC_SEPARATED) ||
@@ -686,9 +683,6 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 	if (AlphaIsValid() && bitcount==8) samplesperpixel=2; //8bpp + alpha layer
 #endif //CXIMAGE_SUPPORT_ALPHA
 
-//	line = CalculateLine(width, bitspersample * samplesperpixel);
-//	pitch = (uint16)CalculatePitch(line);
-
 	//prepare the palette struct
 	RGBQUAD pal[256];
 	if (GetPalette()){
@@ -715,8 +709,6 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 	TIFFSetField(m_tif, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
 	TIFFSetField(m_tif, TIFFTAG_XRESOLUTION, (float)info.xDPI);
 	TIFFSetField(m_tif, TIFFTAG_YRESOLUTION, (float)info.yDPI);
-//	TIFFSetField(m_tif, TIFFTAG_XPOSITION, (float)info.xOffset);
-//	TIFFSetField(m_tif, TIFFTAG_YPOSITION, (float)info.yOffset);
 
 	// multi-paging - Thanks to Abe <God(dot)bless(at)marihuana(dot)com>
 	if (multipage)
