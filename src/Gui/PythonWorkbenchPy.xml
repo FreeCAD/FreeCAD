@@ -53,6 +53,11 @@
         <UserDocu>Remove a command bar</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="reloadActive" Static="true">
+      <Documentation>
+        <UserDocu>Reload the active workbench after changing menus or toolbars</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="AppendMenu">
         <Documentation>
             <UserDocu>deprecated -- use appendMenu</UserDocu>

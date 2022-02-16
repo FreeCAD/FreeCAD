@@ -73,6 +73,8 @@ class Workbench:
         self.__Workbench__.appendContextMenu(name, cmds)
     def removeContextMenu(self,name):
         self.__Workbench__.removeContextMenu(name)
+    def reloadActive(self):
+        self.__Workbench__.reloadActive()
     def name(self):
         return self.__Workbench__.name()
     def GetClassName(self):

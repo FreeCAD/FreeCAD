@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "Workbench.h"
+#include "WorkbenchManager.h"
 
 // inclusion of the generated files (generated out of PythonWorkbenchPy.xml)
 #include "PythonWorkbenchPy.h"
@@ -270,6 +271,20 @@ PyObject*  PythonWorkbenchPy::removeCommandbar(PyObject *args)
             return nullptr;
 
         getPythonBaseWorkbenchPtr()->removeCommandbar( psToolBar );
+        Py_Return;
+    } PY_CATCH;
+}
+
+/** Reload the workbench */
+PyObject*  PythonWorkbenchPy::reloadActive(PyObject *args)
+{
+    PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return nullptr;
+
+        Workbench* active = Gui::WorkbenchManager::instance()->active();
+        if (active)
+            active->activate();
         Py_Return;
     } PY_CATCH;
 }
