@@ -161,40 +161,36 @@ NodeImplSharedPtr StructureNodeImpl::lookup( const ustring &pathName )
          {
             return NodeImplSharedPtr(); /// empty pointer
          }
-         else
-         {
-            NodeImplSharedPtr root( getRoot() );
-            return ( root );
-         }
+
+         NodeImplSharedPtr root( getRoot() );
+         return ( root );
       }
-      else
+
+      /// Find child with elementName that matches first field in path
+      unsigned i;
+      for ( i = 0; i < children_.size(); i++ )
       {
-         /// Find child with elementName that matches first field in path
-         unsigned i;
-         for ( i = 0; i < children_.size(); i++ )
+         if ( fields.at( 0 ) == children_.at( i )->elementName() )
          {
-            if ( fields.at( 0 ) == children_.at( i )->elementName() )
-            {
-               break;
-            }
+            break;
          }
-         if ( i == children_.size() )
-         {
-            return NodeImplSharedPtr(); /// empty pointer
-         }
-
-         if ( fields.size() == 1 )
-         {
-            return ( children_.at( i ) );
-         }
-
-         //??? use level here rather than unparse
-         /// Remove first field in path
-         fields.erase( fields.begin() );
-
-         /// Call lookup on child object with remaining fields in path name
-         return children_.at( i )->lookup( imf->pathNameUnparse( true, fields ) );
       }
+      if ( i == children_.size() )
+      {
+         return NodeImplSharedPtr(); /// empty pointer
+      }
+
+      if ( fields.size() == 1 )
+      {
+         return ( children_.at( i ) );
+      }
+
+      //??? use level here rather than unparse
+      /// Remove first field in path
+      fields.erase( fields.begin() );
+
+      /// Call lookup on child object with remaining fields in path name
+      return children_.at( i )->lookup( imf->pathNameUnparse( true, fields ) );
    }
    else
    { /// Absolute pathname and we aren't at the root

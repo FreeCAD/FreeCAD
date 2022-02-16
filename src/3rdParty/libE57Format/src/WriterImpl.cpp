@@ -38,7 +38,7 @@ namespace e57
    {
       // We are using the E57 v1.0 data format standard fieldnames.
       // The standard fieldnames are used without an extension prefix (in the default namespace).
-      // We explicitly register it for completeness (the reference implementaion would do it for us, if we didn't).
+      // We explicitly register it for completeness (the reference implementation would do it for us, if we didn't).
       imf_.extensionsAdd( "", E57_V1_0_URI );
 
       // Set per-file properties.
@@ -68,10 +68,10 @@ namespace e57
 // TODO currently no support for handling UTC <-> GPS time conversions
 // note that "creationDateTime" is optional in the standard
 #if 0
-    StructureNode creationDateTime = StructureNode(imf_);
-	creationDateTime.set("dateTimeValue", FloatNode(imf_, GetGPSTime()));
-	creationDateTime.set("isAtomicClockReferenced", IntegerNode(imf_,0));
-    root_.set("creationDateTime", creationDateTime);
+   StructureNode creationDateTime = StructureNode(imf_);
+   creationDateTime.set("dateTimeValue", FloatNode(imf_, GetGPSTime()));
+   creationDateTime.set("isAtomicClockReferenced", IntegerNode(imf_,0));
+   root_.set("creationDateTime", creationDateTime);
 #endif
 
       root_.set( "data3D", data3D_ );
@@ -321,7 +321,7 @@ namespace e57
       return pos;
    }
 
-   // This function reads one of the image blobs
+   // This function writes one of the image blobs
    int64_t WriterImpl::WriteImage2DNode( StructureNode image, Image2DType imageType, void *pBuffer, int64_t start,
                                          int64_t count )
    {
@@ -438,7 +438,7 @@ namespace e57
          scan.set( "description", StringNode( imf_, data3DHeader.description ) );
       }
 
-      if ( data3DHeader.originalGuids.size() > 0 )
+      if ( !data3DHeader.originalGuids.empty() )
       {
          scan.set( "originalGuids", VectorNode( imf_ ) );
          VectorNode originalGuids( scan.get( "originalGuids" ) );
@@ -646,7 +646,7 @@ namespace e57
 
          // data3DHeader.pointGroupingSchemes.groupingByLine.idElementName));
          bool byColumn = true; // default should be "columnIndex"
-         if ( data3DHeader.pointGroupingSchemes.groupingByLine.idElementName.compare( "rowIndex" ) == 0 )
+         if ( data3DHeader.pointGroupingSchemes.groupingByLine.idElementName == "rowIndex" )
          {
             byColumn = false;
          }
@@ -739,11 +739,9 @@ namespace e57
             return ScaledIntegerNode( imf_, 0, pointRangeMinimum, pointRangeMaximum, pointRangeScale,
                                       pointRangeOffset );
          }
-         else
-         {
-            return FloatNode( imf_, 0., ( pointRangeScale < E57_NOT_SCALED_USE_FLOAT ) ? E57_DOUBLE : E57_SINGLE,
-                              data3DHeader.pointFields.pointRangeMinimum, data3DHeader.pointFields.pointRangeMaximum );
-         }
+
+         return FloatNode( imf_, 0., ( pointRangeScale < E57_NOT_SCALED_USE_FLOAT ) ? E57_DOUBLE : E57_SINGLE,
+                           data3DHeader.pointFields.pointRangeMinimum, data3DHeader.pointFields.pointRangeMaximum );
       };
 
       if ( data3DHeader.pointFields.cartesianXField )
@@ -777,11 +775,9 @@ namespace e57
          {
             return ScaledIntegerNode( imf_, 0, angleMinimum, angleMaximum, angleScale, angleOffset );
          }
-         else
-         {
-            return FloatNode( imf_, 0., ( angleScale < E57_NOT_SCALED_USE_FLOAT ) ? E57_DOUBLE : E57_SINGLE,
-                              data3DHeader.pointFields.angleMinimum, data3DHeader.pointFields.angleMaximum );
-         }
+
+         return FloatNode( imf_, 0., ( angleScale < E57_NOT_SCALED_USE_FLOAT ) ? E57_DOUBLE : E57_SINGLE,
+                           data3DHeader.pointFields.angleMinimum, data3DHeader.pointFields.angleMaximum );
       };
 
       if ( data3DHeader.pointFields.sphericalAzimuthField )
@@ -907,7 +903,7 @@ namespace e57
       // E57_EXT_surface_normals
       if ( data3DHeader.pointFields.normalX || data3DHeader.pointFields.normalY || data3DHeader.pointFields.normalZ )
       {
-         // make sure we declare the extesion before using the fields with prefix
+         // make sure we declare the extension before using the fields with prefix
          ustring norExtUri;
          if ( !imf_.extensionsLookupPrefix( "nor", norExtUri ) )
          {
@@ -1069,7 +1065,7 @@ namespace e57
    template CompressedVectorWriter WriterImpl::SetUpData3DPointsData( int64_t dataIndex, size_t pointCount,
                                                                       const Data3DPointsData_t<double> &buffers );
 
-   // This funtion writes out the group data
+   // This function writes out the group data
    bool WriterImpl::WriteData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
                                            int64_t *startPointIndex, int64_t *pointCount )
    {

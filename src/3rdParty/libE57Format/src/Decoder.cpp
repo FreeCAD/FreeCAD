@@ -361,8 +361,8 @@ BitpackFloatDecoder::BitpackFloatDecoder( unsigned bytestreamNumber, SourceDestB
 size_t BitpackFloatDecoder::inputProcessAligned( const char *inbuf, const size_t firstBit, const size_t endBit )
 {
 #ifdef E57_MAX_VERBOSE
-   std::cout << "BitpackFloatDecoder::inputProcessAligned() called, inbuf=" << inbuf << " firstBit=" << firstBit
-             << " endBit=" << endBit << std::endl;
+   std::cout << "BitpackFloatDecoder::inputProcessAligned() called, inbuf=" << reinterpret_cast<const void *>( inbuf )
+             << " firstBit=" << firstBit << " endBit=" << endBit << std::endl;
 #endif
    /// Read from inbuf, decode, store in destBuffer
    /// Repeat until have filled destBuffer, or completed all records
@@ -674,7 +674,7 @@ size_t BitpackIntegerDecoder<RegisterT>::inputProcessAligned( const char *inbuf,
    if ((reinterpret_cast<unsigned>(inbuf)) % sizeof(RegisterT))
       throw E57_EXCEPTION2(E57_ERROR_INTERNAL, "inbuf=" + toString(reinterpret_cast<unsigned>(inbuf)));
 #endif
-   /// Verfiy first bit is in first word
+   /// Verify first bit is in first word
    if ( firstBit >= 8 * sizeof( RegisterT ) )
    {
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "firstBit=" + toString( firstBit ) );
@@ -706,17 +706,17 @@ size_t BitpackIntegerDecoder<RegisterT>::inputProcessAligned( const char *inbuf,
    auto inp = reinterpret_cast<const RegisterT *>( inbuf );
    unsigned wordPosition = 0; /// The index in inbuf of the word we are currently working on.
 
-   ///  For example on little endian machine:
-   ///  Assume: registerT=uint32_t, bitOffset=20, destBitMask=0x00007fff (for a
-   ///  15 bit value). inp[wordPosition]                    LLLLLLLL LLLLXXXX
-   ///  XXXXXXXX XXXXXXXX   Note LSB of value is at bit20 inp(wordPosition+1]
-   ///  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXHHH H=high bits of value,
-   ///  X=uninteresting bits low = inp[i] >> bitOffset            00000000
-   ///  00000000 0000LLLL LLLLLLLL   L=low bits of value, X=uninteresting bits
-   ///  high = inp[i+1] << (32-bitOffset)    XXXXXXXX XXXXXXXX XHHH0000 00000000
-   ///  w = high | low XXXXXXXX XXXXXXXX XHHHLLLL LLLLLLLL destBitmask 00000000
-   ///  00000000 01111111 11111111 w & mask                             00000000
-   ///  00000000 0HHHLLLL LLLLLLLL
+   // clang-format off
+   /// For example on little endian machine:
+   /// Assume: registerT=uint32_t, bitOffset=20, destBitMask=0x00007fff (for a 15 bit value).
+   /// inp[wordPosition]                    LLLLLLLL LLLLXXXX XXXXXXXX XXXXXXXX   Note LSB of value is at bit20
+   /// inp(wordPosition+1]                  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXHHH   H=high bits of value, X=uninteresting bits
+   /// low = inp[i] >> bitOffset            00000000 00000000 0000LLLL LLLLLLLL   L=low bits of value, X=uninteresting bits
+   /// high = inp[i+1] << (32-bitOffset)    XXXXXXXX XXXXXXXX XHHH0000 00000000
+   /// w = high | low                       XXXXXXXX XXXXXXXX XHHHLLLL LLLLLLLL
+   /// destBitmask                          00000000 00000000 01111111 11111111
+   /// w & mask                             00000000 00000000 0HHHLLLL LLLLLLLL
+   // clang-format on
 
    size_t bitOffset = firstBit;
 
@@ -731,7 +731,19 @@ size_t BitpackIntegerDecoder<RegisterT>::inputProcessAligned( const char *inbuf,
 #endif
 
       RegisterT w;
-      if ( bitOffset > 0 )
+      if ( bitOffset == 0 )
+      {
+         /// The left shift (used below) is not defined if shift is >= size of
+         /// word
+         w = low;
+      }
+      // Avoid reading the next word, unless it is needed
+      // If the last record finishes on the last bit of input, avoid UMR
+      else if ( bitOffset + bitsPerRecord_ <= RegisterBits )
+      {
+         w = low >> bitOffset;
+      }
+      else
       {
          /// Get upper word (may or may not contain interesting bits),
          RegisterT high = inp[wordPosition + 1];
@@ -743,13 +755,7 @@ size_t BitpackIntegerDecoder<RegisterT>::inputProcessAligned( const char *inbuf,
          /// Shift high to just above the lower bits, shift low LSBit to bit0,
          /// OR together. Note shifts are logical (not arithmetic) because using
          /// unsigned variables.
-         w = ( high << ( 8 * sizeof( RegisterT ) - bitOffset ) ) | ( low >> bitOffset );
-      }
-      else
-      {
-         /// The left shift (used above) is not defined if shift is >= size of
-         /// word
-         w = low;
+         w = ( high << ( RegisterBits - bitOffset ) ) | ( low >> bitOffset );
       }
 
 #ifdef E57_MAX_VERBOSE
@@ -777,7 +783,7 @@ size_t BitpackIntegerDecoder<RegisterT>::inputProcessAligned( const char *inbuf,
          destBuffer_->setNextInt64( value );
       }
 
-      /// Store the result in next avaiable position in the user's dest buffer
+      /// Store the result in next available position in the user's dest buffer
 
       /// Calc next bit alignment and which word it starts in
       bitOffset += bitsPerRecord_;
@@ -837,7 +843,6 @@ void ConstantIntegerDecoder::destBufferSetNew( std::vector<SourceDestBuffer> &db
 
 size_t ConstantIntegerDecoder::inputProcess( const char *source, const size_t availableByteCount )
 {
-   (void)source; (void)availableByteCount;
 #ifdef E57_MAX_VERBOSE
    std::cout << "ConstantIntegerDecoder::inputprocess() called, source=" << (void *)( source )
              << " availableByteCount=" << availableByteCount << std::endl;

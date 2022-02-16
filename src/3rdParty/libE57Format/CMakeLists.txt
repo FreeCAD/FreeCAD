@@ -39,7 +39,7 @@ project( E57Format
 	LANGUAGES
 	    CXX
 	VERSION
-	    2.2.1
+	    2.3.0
 )
 
 include( Tags )
@@ -100,18 +100,13 @@ option( E57_WRITE_CRAZY_PACKET_MODE "Compile library to enable reader-stressing 
 set( revision_id "${PROJECT_NAME}-${PROJECT_VERSION}-${${PROJECT_NAME}_BUILD_TAG}" )
 message( STATUS "[E57] Revison ID: ${revision_id}" )
 
-# Need to explicitly set the source files to add_library()
-if(${CMAKE_VERSION} VERSION_LESS "3.11.0")
-	file(GLOB E57Format_SOURCES src/[^.]*.cpp)
-endif()
-
 # Target
 if ( E57_BUILD_SHARED )
 	message( STATUS "[E57] Building shared library" )
-	add_library( E57Format SHARED ${E57Format_SOURCES})
+	add_library( E57Format SHARED )
 else()
 	message( STATUS "[E57] Building static library" )
-	add_library( E57Format STATIC ${E57Format_SOURCES})
+	add_library( E57Format STATIC )
 endif()
 
 include( E57ExportHeader )
@@ -180,21 +175,21 @@ install(
         E57Format
     EXPORT
         E57Format-export
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
 )
 
 # CMake package files
-#install(
-#    EXPORT
-#        E57Format-export
-#    DESTINATION lib/cmake/E57Format
-#)
+install(
+    EXPORT
+        E57Format-export
+    DESTINATION lib/cmake/E57Format
+)
 
-#install(
-#    FILES
-#        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/e57format-config.cmake
-#    DESTINATION
-#        lib/cmake/E57Format
-#)
+install(
+    FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/e57format-config.cmake
+    DESTINATION
+        lib/cmake/E57Format
+)

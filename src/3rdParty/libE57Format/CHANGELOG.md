@@ -4,10 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 2.2.1 - (in progress)
+## 2.3.0 - (in progress)
+
+### Changed
+
+- Change `E57_DEBUG`, `E57_MAX_DEBUG`, `E57_VERBOSE`, `E57_MAX_VERBOSE`, `E57_WRITE_CRAZY_PACKET_MODE` from **#defines** to cmake options. ([#80](https://github.com/asmaloney/libE57Format/pull/80)) (Thanks Nigel!)
 
 ### Fixed
 
+- Fix E57SimpleReader to handle missing `images2D` and `isAtomicClockReferenced` nodes. ([#90](https://github.com/asmaloney/libE57Format/pull/90)) (Thanks Olli!)
+- Fix **BitpackIntegerDecoder** sometimes reading past end of input buffer. ([#87](https://github.com/asmaloney/libE57Format/pull/87)) (Thanks Nigel!)
+- Fix compilation when some debug options are set. ([#81](https://github.com/asmaloney/libE57Format/pull/81), [#82](https://github.com/asmaloney/libE57Format/pull/82), [#84](https://github.com/asmaloney/libE57Format/pull/84)) (Thanks Nigel!)
 - Fix compilation with [musl libc](https://musl.libc.org/) ([#70](https://github.com/asmaloney/libE57Format/pull/70)) (Thanks Dimitri!)
 - Add missing include for [GCC 11](https://gcc.gnu.org/gcc-11/porting_to.html#header-dep-changes) ([#68](https://github.com/asmaloney/libE57Format/pull/68)) (Thanks bartoszek!)
 

@@ -87,7 +87,7 @@ namespace e57
    available about nodes in the tree. So if the ImageFile is closed (by calling
    ImageFile::close), the API user must be ready for many of the API functions to
    throw E57Exception(E57_ERROR_IMAGEFILE_NOT_OPEN). Secondly, regarding the
-   E57_ERROR_INTERNAL error, there is a lot of consistancy checking in the
+   E57_ERROR_INTERNAL error, there is a lot of consistency checking in the
    Reference Implementation, and there may be much more added. Even if some API
    routines do not now throw E57_ERROR_INTERNAL, they could some time in the
    future, or in different implementations. So the right to throw
@@ -144,14 +144,18 @@ namespace e57
       os << "    context: " << context_ << std::endl;
       os << "    sourceFunctionName: " << sourceFunctionName_ << std::endl;
       if ( reportingFunctionName != nullptr )
+      {
          os << "    reportingFunctionName: " << reportingFunctionName << std::endl;
+      }
 
       /*** Add a line in error message that a smart editor (gnu emacs) can
        * interpret as a link to the source code: */
       os << sourceFileName_ << "(" << sourceLineNumber_ << ") : error C" << errorCode_ << ":  <--- occurred on"
          << std::endl;
       if ( reportingFileName != nullptr )
+      {
          os << reportingFileName << "(" << reportingLineNumber << ") : error C0:  <--- reported on" << std::endl;
+      }
 #endif
    }
 

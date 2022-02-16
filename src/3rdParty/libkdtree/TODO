@@ -1,0 +1,10 @@
+libkdtree++ TODO list
+=====================
+
+- DOCUMENTATION
+- automated unit testing
+- performance improvement
+- keep tree balanced in insert() and erase().
+- erase(range)
+- add swap() to allow vectors of KDTree to be sorted
+- add policies/traits

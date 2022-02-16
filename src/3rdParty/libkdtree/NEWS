@@ -1,0 +1,32 @@
+libkdtree++ NEWS
+================
+
+17 Nov 2008:
+   Again, it's almost Christmas. Recently a whole lot of bug have been fixed in
+   version 0.6.3 of the library. You can find a summary of the fixes in the
+   Changelog. For short:
+   - you can now assign an existing tree to another tree without an ugly bug if
+   your tree required parameters for the accessor,
+   - now you can finally use the reverse iterator,
+   - find() and erase() work properly based on the location given in argument,
+   - the project is compatible with MSVC2005
+   - many more...
+
+02 Dec 2007:
+   It's Christmas, and libkdtree++ packs in more power for the find
+   and find_nearest functions. Performance improvement should be
+   carried on with other part of the interface in the coming months.
+
+   As a result of these modification, KDTree definition has been a
+   little altered. The new definition includes a template for a
+   distance calculator. This functor by default calcultes the square
+   of th difference between two elements returned by the accessor.
+
+29 Sep 2007:
+   Sylvain Bougerel spent some time cleaning up the code and build
+   infrastructure of the code from Sourceforge, and I imported the
+   results of his work to a git repository on git.debian.org today.
+
+   http://git.debian.org/?p=libkdtree/libkdtree.git;a=summary
+
+   Martin F. Krafft <libkdtree@pobox.madduck.net>

@@ -1,0 +1,4 @@
+test_kdtree
+test_kdtree-gcc3.4
+test_kdtree-gcc4.3
+test_kdtree-gcc4.2

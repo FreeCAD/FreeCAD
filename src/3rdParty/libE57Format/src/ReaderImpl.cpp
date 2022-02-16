@@ -32,7 +32,7 @@ namespace e57
 
    ReaderImpl::ReaderImpl( const ustring &filePath ) :
       imf_( filePath, "r" ), root_( imf_.root() ), data3D_( root_.get( "/data3D" ) ),
-      images2D_( root_.get( "/images2D" ) )
+      images2D_( root_.isDefined( "/images2D" ) ? root_.get( "/images2D" ) : VectorNode( imf_ ) )
    {
    }
 
@@ -90,8 +90,12 @@ namespace e57
       {
          StructureNode creationDateTime( root_.get( "creationDateTime" ) );
          fileHeader.creationDateTime.dateTimeValue = FloatNode( creationDateTime.get( "dateTimeValue" ) ).value();
-         fileHeader.creationDateTime.isAtomicClockReferenced =
-            (int32_t)IntegerNode( creationDateTime.get( "isAtomicClockReferenced" ) ).value();
+
+         if ( creationDateTime.isDefined( "isAtomicClockReferenced" ) )
+         {
+            fileHeader.creationDateTime.isAtomicClockReferenced =
+               (int32_t)IntegerNode( creationDateTime.get( "isAtomicClockReferenced" ) ).value();
+         }
       }
 
       fileHeader.data3DSize = data3D_.childCount();
@@ -156,8 +160,12 @@ namespace e57
          StructureNode acquisitionDateTime( image.get( "acquisitionDateTime" ) );
          image2DHeader.acquisitionDateTime.dateTimeValue =
             FloatNode( acquisitionDateTime.get( "dateTimeValue" ) ).value();
-         image2DHeader.acquisitionDateTime.isAtomicClockReferenced =
-            (int32_t)IntegerNode( acquisitionDateTime.get( "isAtomicClockReferenced" ) ).value();
+
+         if ( acquisitionDateTime.isDefined( "isAtomicClockReferenced" ) )
+         {
+            image2DHeader.acquisitionDateTime.isAtomicClockReferenced =
+               (int32_t)IntegerNode( acquisitionDateTime.get( "isAtomicClockReferenced" ) ).value();
+         }
       }
 
       // Get pose structure for scan.
@@ -669,12 +677,12 @@ namespace e57
          StructureNode bbox( scan.get( "cartesianBounds" ) );
          if ( bbox.get( "xMinimum" ).type() == E57_SCALED_INTEGER )
          {
-            data3DHeader.cartesianBounds.xMinimum = (double)ScaledIntegerNode( bbox.get( "xMinimum" ) ).scaledValue();
-            data3DHeader.cartesianBounds.xMaximum = (double)ScaledIntegerNode( bbox.get( "xMaximum" ) ).scaledValue();
-            data3DHeader.cartesianBounds.yMinimum = (double)ScaledIntegerNode( bbox.get( "yMinimum" ) ).scaledValue();
-            data3DHeader.cartesianBounds.yMaximum = (double)ScaledIntegerNode( bbox.get( "yMaximum" ) ).scaledValue();
-            data3DHeader.cartesianBounds.zMinimum = (double)ScaledIntegerNode( bbox.get( "zMinimum" ) ).scaledValue();
-            data3DHeader.cartesianBounds.zMaximum = (double)ScaledIntegerNode( bbox.get( "zMaximum" ) ).scaledValue();
+            data3DHeader.cartesianBounds.xMinimum = ScaledIntegerNode( bbox.get( "xMinimum" ) ).scaledValue();
+            data3DHeader.cartesianBounds.xMaximum = ScaledIntegerNode( bbox.get( "xMaximum" ) ).scaledValue();
+            data3DHeader.cartesianBounds.yMinimum = ScaledIntegerNode( bbox.get( "yMinimum" ) ).scaledValue();
+            data3DHeader.cartesianBounds.yMaximum = ScaledIntegerNode( bbox.get( "yMaximum" ) ).scaledValue();
+            data3DHeader.cartesianBounds.zMinimum = ScaledIntegerNode( bbox.get( "zMinimum" ) ).scaledValue();
+            data3DHeader.cartesianBounds.zMaximum = ScaledIntegerNode( bbox.get( "zMaximum" ) ).scaledValue();
          }
          else if ( bbox.get( "xMinimum" ).type() == E57_FLOAT )
          {
@@ -692,10 +700,8 @@ namespace e57
          StructureNode sbox( scan.get( "sphericalBounds" ) );
          if ( sbox.get( "rangeMinimum" ).type() == E57_SCALED_INTEGER )
          {
-            data3DHeader.sphericalBounds.rangeMinimum =
-               (double)ScaledIntegerNode( sbox.get( "rangeMinimum" ) ).scaledValue();
-            data3DHeader.sphericalBounds.rangeMaximum =
-               (double)ScaledIntegerNode( sbox.get( "rangeMaximum" ) ).scaledValue();
+            data3DHeader.sphericalBounds.rangeMinimum = ScaledIntegerNode( sbox.get( "rangeMinimum" ) ).scaledValue();
+            data3DHeader.sphericalBounds.rangeMaximum = ScaledIntegerNode( sbox.get( "rangeMaximum" ) ).scaledValue();
          }
          else if ( sbox.get( "rangeMinimum" ).type() == E57_FLOAT )
          {
@@ -706,9 +712,9 @@ namespace e57
          if ( sbox.get( "elevationMinimum" ).type() == E57_SCALED_INTEGER )
          {
             data3DHeader.sphericalBounds.elevationMinimum =
-               (double)ScaledIntegerNode( sbox.get( "elevationMinimum" ) ).scaledValue();
+               ScaledIntegerNode( sbox.get( "elevationMinimum" ) ).scaledValue();
             data3DHeader.sphericalBounds.elevationMaximum =
-               (double)ScaledIntegerNode( sbox.get( "elevationMaximum" ) ).scaledValue();
+               ScaledIntegerNode( sbox.get( "elevationMaximum" ) ).scaledValue();
          }
          else if ( sbox.get( "elevationMinimum" ).type() == E57_FLOAT )
          {
@@ -718,10 +724,8 @@ namespace e57
 
          if ( sbox.get( "azimuthStart" ).type() == E57_SCALED_INTEGER )
          {
-            data3DHeader.sphericalBounds.azimuthStart =
-               (double)ScaledIntegerNode( sbox.get( "azimuthStart" ) ).scaledValue();
-            data3DHeader.sphericalBounds.azimuthEnd =
-               (double)ScaledIntegerNode( sbox.get( "azimuthEnd" ) ).scaledValue();
+            data3DHeader.sphericalBounds.azimuthStart = ScaledIntegerNode( sbox.get( "azimuthStart" ) ).scaledValue();
+            data3DHeader.sphericalBounds.azimuthEnd = ScaledIntegerNode( sbox.get( "azimuthEnd" ) ).scaledValue();
          }
          else if ( sbox.get( "azimuthStart" ).type() == E57_FLOAT )
          {
@@ -756,16 +760,24 @@ namespace e57
       {
          StructureNode acquisitionStart( scan.get( "acquisitionStart" ) );
          data3DHeader.acquisitionStart.dateTimeValue = FloatNode( acquisitionStart.get( "dateTimeValue" ) ).value();
-         data3DHeader.acquisitionStart.isAtomicClockReferenced =
-            (int32_t)IntegerNode( acquisitionStart.get( "isAtomicClockReferenced" ) ).value();
+
+         if ( acquisitionStart.isDefined( "isAtomicClockReferenced" ) )
+         {
+            data3DHeader.acquisitionStart.isAtomicClockReferenced =
+               (int32_t)IntegerNode( acquisitionStart.get( "isAtomicClockReferenced" ) ).value();
+         }
       }
 
       if ( scan.isDefined( "acquisitionEnd" ) )
       {
          StructureNode acquisitionEnd( scan.get( "acquisitionEnd" ) );
          data3DHeader.acquisitionEnd.dateTimeValue = FloatNode( acquisitionEnd.get( "dateTimeValue" ) ).value();
-         data3DHeader.acquisitionEnd.isAtomicClockReferenced =
-            (int32_t)IntegerNode( acquisitionEnd.get( "isAtomicClockReferenced" ) ).value();
+
+         if ( acquisitionEnd.isDefined( "isAtomicClockReferenced" ) )
+         {
+            data3DHeader.acquisitionEnd.isAtomicClockReferenced =
+               (int32_t)IntegerNode( acquisitionEnd.get( "isAtomicClockReferenced" ) ).value();
+         }
       }
 
       // Get a prototype of datatypes that will be stored in points record.
@@ -914,9 +926,9 @@ namespace e57
          if ( intbox.get( "intensityMaximum" ).type() == E57_SCALED_INTEGER )
          {
             data3DHeader.intensityLimits.intensityMaximum =
-               (double)ScaledIntegerNode( intbox.get( "intensityMaximum" ) ).scaledValue();
+               ScaledIntegerNode( intbox.get( "intensityMaximum" ) ).scaledValue();
             data3DHeader.intensityLimits.intensityMinimum =
-               (double)ScaledIntegerNode( intbox.get( "intensityMinimum" ) ).scaledValue();
+               ScaledIntegerNode( intbox.get( "intensityMinimum" ) ).scaledValue();
          }
          else if ( intbox.get( "intensityMaximum" ).type() == E57_FLOAT )
          {
@@ -987,17 +999,17 @@ namespace e57
          if ( colorbox.get( "colorRedMaximum" ).type() == E57_SCALED_INTEGER )
          {
             data3DHeader.colorLimits.colorRedMaximum =
-               (double)ScaledIntegerNode( colorbox.get( "colorRedMaximum" ) ).scaledValue();
+               ScaledIntegerNode( colorbox.get( "colorRedMaximum" ) ).scaledValue();
             data3DHeader.colorLimits.colorRedMinimum =
-               (double)ScaledIntegerNode( colorbox.get( "colorRedMinimum" ) ).scaledValue();
+               ScaledIntegerNode( colorbox.get( "colorRedMinimum" ) ).scaledValue();
             data3DHeader.colorLimits.colorGreenMaximum =
-               (double)ScaledIntegerNode( colorbox.get( "colorGreenMaximum" ) ).scaledValue();
+               ScaledIntegerNode( colorbox.get( "colorGreenMaximum" ) ).scaledValue();
             data3DHeader.colorLimits.colorGreenMinimum =
-               (double)ScaledIntegerNode( colorbox.get( "colorGreenMinimum" ) ).scaledValue();
+               ScaledIntegerNode( colorbox.get( "colorGreenMinimum" ) ).scaledValue();
             data3DHeader.colorLimits.colorBlueMaximum =
-               (double)ScaledIntegerNode( colorbox.get( "colorBlueMaximum" ) ).scaledValue();
+               ScaledIntegerNode( colorbox.get( "colorBlueMaximum" ) ).scaledValue();
             data3DHeader.colorLimits.colorBlueMinimum =
-               (double)ScaledIntegerNode( colorbox.get( "colorBlueMinimum" ) ).scaledValue();
+               ScaledIntegerNode( colorbox.get( "colorBlueMinimum" ) ).scaledValue();
          }
          else if ( colorbox.get( "colorRedMaximum" ).type() == E57_FLOAT )
          {
@@ -1152,7 +1164,7 @@ namespace e57
             StructureNode groupingByLine( pointGroupingSchemes.get( "groupingByLine" ) );
 
             StringNode idElementName( groupingByLine.get( "idElementName" ) );
-            if ( idElementName.value().compare( "columnIndex" ) == 0 )
+            if ( idElementName.value() == "columnIndex" )
             {
                bColumnIndex = true;
             }
@@ -1218,7 +1230,7 @@ namespace e57
       return true;
    }
 
-   // This funtion writes out the group data
+   // This function writes out the group data
    bool ReaderImpl::ReadData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
                                           int64_t *startPointIndex, int64_t *pointCount ) const
    {
@@ -1253,20 +1265,19 @@ namespace e57
       {
          ustring name = lineGroupRecord.get( protoIndex ).elementName();
 
-         if ( ( name.compare( "idElementValue" ) == 0 ) && lineGroupRecord.isDefined( "idElementValue" ) &&
+         if ( ( name == "idElementValue" ) && lineGroupRecord.isDefined( "idElementValue" ) &&
               ( idElementValue != nullptr ) )
          {
             groupSDBuffers.emplace_back( imf_, "idElementValue", idElementValue, groupCount, true );
          }
 
-         if ( ( name.compare( "startPointIndex" ) == 0 ) && lineGroupRecord.isDefined( "startPointIndex" ) &&
+         if ( ( name == "startPointIndex" ) && lineGroupRecord.isDefined( "startPointIndex" ) &&
               ( startPointIndex != nullptr ) )
          {
             groupSDBuffers.emplace_back( imf_, "startPointIndex", startPointIndex, groupCount, true );
          }
 
-         if ( ( name.compare( "pointCount" ) == 0 ) && lineGroupRecord.isDefined( "pointCount" ) &&
-              ( pointCount != nullptr ) )
+         if ( ( name == "pointCount" ) && lineGroupRecord.isDefined( "pointCount" ) && ( pointCount != nullptr ) )
          {
             groupSDBuffers.emplace_back( imf_, "pointCount", pointCount, groupCount, true );
          }
@@ -1297,122 +1308,110 @@ namespace e57
       {
          ustring name = proto.get( protoIndex ).elementName();
          NodeType type = proto.get( protoIndex ).type();
-         bool scaled = (type == E57_SCALED_INTEGER);
+         bool scaled = ( type == E57_SCALED_INTEGER );
          // E57_EXT_surface_normals
          ustring norExtUri;
          bool haveNormalsExt = imf_.extensionsLookupPrefix( "nor", norExtUri );
 
-         if ( ( name.compare( "cartesianX" ) == 0 ) && proto.isDefined( "cartesianX" ) &&
-              ( buffers.cartesianX != nullptr ) )
+         if ( ( name == "cartesianX" ) && proto.isDefined( "cartesianX" ) && ( buffers.cartesianX != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "cartesianX", buffers.cartesianX, count, true, scaled );
          }
-         else if ( ( name.compare( "cartesianY" ) == 0 ) && proto.isDefined( "cartesianY" ) &&
-                   ( buffers.cartesianY != nullptr ) )
+         else if ( ( name == "cartesianY" ) && proto.isDefined( "cartesianY" ) && ( buffers.cartesianY != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "cartesianY", buffers.cartesianY, count, true, scaled );
          }
-         else if ( ( name.compare( "cartesianZ" ) == 0 ) && proto.isDefined( "cartesianZ" ) &&
-                   ( buffers.cartesianZ != nullptr ) )
+         else if ( ( name == "cartesianZ" ) && proto.isDefined( "cartesianZ" ) && ( buffers.cartesianZ != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "cartesianZ", buffers.cartesianZ, count, true, scaled );
          }
-         else if ( ( name.compare( "cartesianInvalidState" ) == 0 ) && proto.isDefined( "cartesianInvalidState" ) &&
+         else if ( ( name == "cartesianInvalidState" ) && proto.isDefined( "cartesianInvalidState" ) &&
                    ( buffers.cartesianInvalidState != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "cartesianInvalidState", buffers.cartesianInvalidState, count, true );
          }
-         else if ( ( name.compare( "sphericalRange" ) == 0 ) && proto.isDefined( "sphericalRange" ) &&
+         else if ( ( name == "sphericalRange" ) && proto.isDefined( "sphericalRange" ) &&
                    ( buffers.sphericalRange != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "sphericalRange", buffers.sphericalRange, count, true, scaled );
          }
-         else if ( ( name.compare( "sphericalAzimuth" ) == 0 ) && proto.isDefined( "sphericalAzimuth" ) &&
+         else if ( ( name == "sphericalAzimuth" ) && proto.isDefined( "sphericalAzimuth" ) &&
                    ( buffers.sphericalAzimuth != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "sphericalAzimuth", buffers.sphericalAzimuth, count, true, scaled );
          }
-         else if ( ( name.compare( "sphericalElevation" ) == 0 ) && proto.isDefined( "sphericalElevation" ) &&
+         else if ( ( name == "sphericalElevation" ) && proto.isDefined( "sphericalElevation" ) &&
                    ( buffers.sphericalElevation != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "sphericalElevation", buffers.sphericalElevation, count, true, scaled );
          }
-         else if ( ( name.compare( "sphericalInvalidState" ) == 0 ) && proto.isDefined( "sphericalInvalidState" ) &&
+         else if ( ( name == "sphericalInvalidState" ) && proto.isDefined( "sphericalInvalidState" ) &&
                    ( buffers.sphericalInvalidState != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "sphericalInvalidState", buffers.sphericalInvalidState, count, true );
          }
-         else if ( ( name.compare( "rowIndex" ) == 0 ) && proto.isDefined( "rowIndex" ) &&
-                   ( buffers.rowIndex != nullptr ) )
+         else if ( ( name == "rowIndex" ) && proto.isDefined( "rowIndex" ) && ( buffers.rowIndex != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "rowIndex", buffers.rowIndex, count, true );
          }
-         else if ( ( name.compare( "columnIndex" ) == 0 ) && proto.isDefined( "columnIndex" ) &&
-                   ( buffers.columnIndex != nullptr ) )
+         else if ( ( name == "columnIndex" ) && proto.isDefined( "columnIndex" ) && ( buffers.columnIndex != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "columnIndex", buffers.columnIndex, count, true );
          }
-         else if ( ( name.compare( "returnIndex" ) == 0 ) && proto.isDefined( "returnIndex" ) &&
-                   ( buffers.returnIndex != nullptr ) )
+         else if ( ( name == "returnIndex" ) && proto.isDefined( "returnIndex" ) && ( buffers.returnIndex != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "returnIndex", buffers.returnIndex, count, true );
          }
-         else if ( ( name.compare( "returnCount" ) == 0 ) && proto.isDefined( "returnCount" ) &&
-                   ( buffers.returnCount != nullptr ) )
+         else if ( ( name == "returnCount" ) && proto.isDefined( "returnCount" ) && ( buffers.returnCount != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "returnCount", buffers.returnCount, count, true );
          }
-         else if ( ( name.compare( "timeStamp" ) == 0 ) && proto.isDefined( "timeStamp" ) &&
-                   ( buffers.timeStamp != nullptr ) )
+         else if ( ( name == "timeStamp" ) && proto.isDefined( "timeStamp" ) && ( buffers.timeStamp != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "timeStamp", buffers.timeStamp, count, true, scaled );
          }
-         else if ( ( name.compare( "isTimeStampInvalid" ) == 0 ) && proto.isDefined( "isTimeStampInvalid" ) &&
+         else if ( ( name == "isTimeStampInvalid" ) && proto.isDefined( "isTimeStampInvalid" ) &&
                    ( buffers.isTimeStampInvalid != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "isTimeStampInvalid", buffers.isTimeStampInvalid, count, true );
          }
-         else if ( ( name.compare( "intensity" ) == 0 ) && proto.isDefined( "intensity" ) &&
-                   ( buffers.intensity != nullptr ) )
+         else if ( ( name == "intensity" ) && proto.isDefined( "intensity" ) && ( buffers.intensity != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "intensity", buffers.intensity, count, true, scaled );
          }
-         else if ( ( name.compare( "isIntensityInvalid" ) == 0 ) && proto.isDefined( "isIntensityInvalid" ) &&
+         else if ( ( name == "isIntensityInvalid" ) && proto.isDefined( "isIntensityInvalid" ) &&
                    ( buffers.isIntensityInvalid != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "isIntensityInvalid", buffers.isIntensityInvalid, count, true );
          }
-         else if ( ( name.compare( "colorRed" ) == 0 ) && proto.isDefined( "colorRed" ) &&
-                   ( buffers.colorRed != nullptr ) )
+         else if ( ( name == "colorRed" ) && proto.isDefined( "colorRed" ) && ( buffers.colorRed != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "colorRed", buffers.colorRed, count, true, scaled );
          }
-         else if ( ( name.compare( "colorGreen" ) == 0 ) && proto.isDefined( "colorGreen" ) &&
-                   ( buffers.colorGreen != nullptr ) )
+         else if ( ( name == "colorGreen" ) && proto.isDefined( "colorGreen" ) && ( buffers.colorGreen != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "colorGreen", buffers.colorGreen, count, true, scaled );
          }
-         else if ( ( name.compare( "colorBlue" ) == 0 ) && proto.isDefined( "colorBlue" ) &&
-                   ( buffers.colorBlue != nullptr ) )
+         else if ( ( name == "colorBlue" ) && proto.isDefined( "colorBlue" ) && ( buffers.colorBlue != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "colorBlue", buffers.colorBlue, count, true, scaled );
          }
-         else if ( ( name.compare( "isColorInvalid" ) == 0 ) && proto.isDefined( "isColorInvalid" ) &&
+         else if ( ( name == "isColorInvalid" ) && proto.isDefined( "isColorInvalid" ) &&
                    ( buffers.isColorInvalid != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "isColorInvalid", buffers.isColorInvalid, count, true );
          }
-         else if ( haveNormalsExt && ( name.compare( "nor:normalX" ) == 0 ) && proto.isDefined( "nor:normalX" ) &&
+         else if ( haveNormalsExt && ( name == "nor:normalX" ) && proto.isDefined( "nor:normalX" ) &&
                    ( buffers.normalX != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "nor:normalX", buffers.normalX, count, true, scaled );
          }
-         else if ( haveNormalsExt && ( name.compare( "nor:normalY" ) == 0 ) && proto.isDefined( "nor:normalY" ) &&
+         else if ( haveNormalsExt && ( name == "nor:normalY" ) && proto.isDefined( "nor:normalY" ) &&
                    ( buffers.normalY != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "nor:normalY", buffers.normalY, count, true, scaled );
          }
-         else if ( haveNormalsExt && ( name.compare( "nor:normalZ" ) == 0 ) && proto.isDefined( "nor:normalZ" ) &&
+         else if ( haveNormalsExt && ( name == "nor:normalZ" ) && proto.isDefined( "nor:normalZ" ) &&
                    ( buffers.normalZ != nullptr ) )
          {
             destBuffers.emplace_back( imf_, "nor:normalZ", buffers.normalZ, count, true, scaled );

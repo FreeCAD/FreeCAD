@@ -106,7 +106,7 @@ namespace e57
          size_t currentPosition = 0;
          size_t len = value_.length();
 
-         /// Loop, searching for occurences of "]]>", which will be split across
+         /// Loop, searching for occurrences of "]]>", which will be split across
          /// two CDATA directives
          while ( currentPosition < len )
          {

@@ -36,6 +36,17 @@ Since the original fork, [Jiri Hörner](https://github.com/ptc-jhoerner) has add
 
 [Ryan Baumann](https://github.com/ryanfb) has updated the `e57unpack` and `e57validate` tools to work with **libE57Format**. You can find them in the [e57tools](https://github.com/ryanfb/e57tools) repo.
 
+## Building
+
+`$ mkdir -p build && cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --parallel`
+
+### Dependencies
+
+[Xerces-C++](https://xerces.apache.org/xerces-c/) validating XML parser is needed at runtime and
+[clang-format](https://clang.llvm.org/docs/ClangFormat.html) for checking C++ formatting.
+
+Ubuntu 20.04 (bionic): `$ sudo apt install libxerces-c-dev clang-format`
+
 ## License
 
 This project as a whole is licensed under the [**BSL-1.0**](https://opensource.org/licenses/BSL-1.0) license - see the [LICENSE](LICENSE.md) file for details.

@@ -36,7 +36,7 @@ namespace e57
    class CompressedVectorReaderImpl
    {
    public:
-      CompressedVectorReaderImpl( std::shared_ptr<CompressedVectorNodeImpl> ni, std::vector<SourceDestBuffer> &dbufs );
+      CompressedVectorReaderImpl( std::shared_ptr<CompressedVectorNodeImpl> cvi, std::vector<SourceDestBuffer> &dbufs );
       ~CompressedVectorReaderImpl();
       unsigned read();
       unsigned read( std::vector<SourceDestBuffer> &dbufs );
