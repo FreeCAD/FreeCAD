@@ -40,7 +40,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "UI and Command for Path Thread Milling Operation."
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -49,17 +49,23 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-def fillThreads(combo, dataFile):
-    combo.blockSignals(True)
-    combo.clear()
+def fillThreads(form, dataFile, defaultSelect):
+    form.threadName.blockSignals(True)
+    select = form.threadName.currentText()
+    PathLog.debug("select = '{}'".format(select))
+    form.threadName.clear()
     with open(
         "{}Mod/Path/Data/Threads/{}.csv".format(FreeCAD.getHomePath(), dataFile)
     ) as fp:
         reader = csv.DictReader(fp)
         for row in reader:
-            combo.addItem(row["name"], row)
-    combo.setEnabled(True)
-    combo.blockSignals(False)
+            form.threadName.addItem(row['name'], row)
+    if select:
+        form.threadName.setCurrentText(select)
+    elif defaultSelect:
+        form.threadName.setCurrentText(defaultSelect)
+    form.threadName.setEnabled(True)
+    form.threadName.blockSignals(False)
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
@@ -134,25 +140,35 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.pitch.updateSpinBox()
 
         self.setupToolController(obj, self.form.toolController)
+        self._updateFromThreadType()
 
-    def _isThreadMetric(self):
+    def _isThreadCustom(self):
         return (
             self.form.threadType.currentData()
-            == PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal
+            in [PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomInternal, PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomExternal]
         )
 
     def _isThreadImperial(self):
         return (
             self.form.threadType.currentData()
-            == PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal
+            in [PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal, PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialExternal]
         )
+
+    def _isThreadMetric(self):
+        return (
+            self.form.threadType.currentData()
+            in [PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal, PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricExternal]
+        )
+
+    def _isThreadInternal(self):
+        return self.form.threadType.currentData() in PathThreadMilling.ObjectThreadMilling.ThreadTypesInternal
+
+    def _isThreadExternal(self):
+        return self.form.threadType.currentData() in PathThreadMilling.ObjectThreadMilling.ThreadTypesExternal
 
     def _updateFromThreadType(self):
 
-        if (
-            self.form.threadType.currentData()
-            == PathThreadMilling.ObjectThreadMilling.ThreadTypeCustom
-        ):
+        if self._isThreadCustom():
             self.form.threadName.setEnabled(False)
             self.form.threadFit.setEnabled(False)
             self.form.threadFitLabel.setEnabled(False)
@@ -169,7 +185,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.threadTPI.setEnabled(False)
             self.form.threadTPILabel.setEnabled(False)
             self.form.threadTPI.setValue(0)
-            fillThreads(self.form.threadName, "metric-internal")
+            if self._isThreadInternal():
+                fillThreads(self.form, "metric-internal", self.obj.ThreadName)
+            else:
+                fillThreads(self.form, "metric-external", self.obj.ThreadName)
 
         if self._isThreadImperial():
             self.form.threadFit.setEnabled(True)
@@ -179,7 +198,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.threadTPI.setEnabled(True)
             self.form.threadTPILabel.setEnabled(True)
             self.pitch.updateSpinBox(0)
-            fillThreads(self.form.threadName, "imperial-internal")
+            fillThreads(self.form, "imperial-internal", self.obj.ThreadName)
 
     def _updateFromThreadName(self):
         thread = self.form.threadName.currentData()

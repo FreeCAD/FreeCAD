@@ -27,7 +27,7 @@ import math
 from PathTests.PathTestUtils import PathTestBase
 
 
-def radii(major, minor, toolDia, toolCrest):
+def radii(internal, major, minor, toolDia, toolCrest):
     """test radii function for simple testing"""
     return (minor, major)
 
@@ -51,15 +51,26 @@ class TestPathThreadMilling(PathTestBase):
 
     def test01(self):
         """Verify internal radii with tool crest."""
-        self.assertRadii(PathThreadMilling.radiiInternal(20, 18, 2, 0.1), (8, 9.113397))
+        self.assertRadii(PathThreadMilling.threadRadii(True, 20, 18, 2, 0.1), (8, 9.113397))
 
     def test10(self):
-        """Verify thread passes."""
-        self.assertList(PathThreadMilling.threadPasses(1, radii, 10, 9, 0, 0), [10])
-        self.assertList(
-            PathThreadMilling.threadPasses(2, radii, 10, 9, 0, 0), [9.5, 10]
-        )
-        self.assertList(
-            PathThreadMilling.threadPasses(5, radii, 10, 9, 0, 0),
-            [9.2, 9.4, 9.6, 9.8, 10],
-        )
+        '''Verify internal thread passes.'''
+        self.assertList(PathThreadMilling.threadPasses(1, radii, True, 10, 9, 0, 0), [10])
+        self.assertList(PathThreadMilling.threadPasses(2, radii, True, 10, 9, 0, 0), [9.5, 10])
+        self.assertList(PathThreadMilling.threadPasses(5, radii, True, 10, 9, 0, 0), [9.2, 9.4, 9.6, 9.8, 10])
+
+    def test20(self):
+        '''Verify external radii.'''
+        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0), (11,  9.6))
+        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 19, 2, 0), (11, 10.3))
+
+    def test21(self):
+        '''Verify external radii with tool crest.'''
+        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.513397))
+
+    def test30(self):
+        '''Verify external thread passes.'''
+        self.assertList(PathThreadMilling.threadPasses(1, radii, False, 10, 9, 0, 0), [9])
+        self.assertList(PathThreadMilling.threadPasses(2, radii, False, 10, 9, 0, 0), [9.5, 9])
+        self.assertList(PathThreadMilling.threadPasses(5, radii, False, 10, 9, 0, 0), [9.8, 9.6, 9.4, 9.2, 9])
+

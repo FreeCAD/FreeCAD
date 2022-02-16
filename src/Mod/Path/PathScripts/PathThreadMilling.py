@@ -36,7 +36,10 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path thread milling operation."
 
-if False:
+# math.sqrt(3)/2 ... 60deg triangle height
+SQRT_3_DIVIDED_BY_2 = 0.8660254037844386
+
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -45,8 +48,8 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-def radiiInternal(majorDia, minorDia, toolDia, toolCrest=None):
-    """internlThreadRadius(majorDia, minorDia, toolDia, toolCrest) ... returns the maximum radius for thread."""
+def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
+    """threadRadii(majorDia, minorDia, toolDia, toolCrest) ... returns the minimum and maximum radius for thread."""
     PathLog.track(majorDia, minorDia, toolDia, toolCrest)
     if toolCrest is None:
         toolCrest = 0.0
@@ -57,22 +60,28 @@ def radiiInternal(majorDia, minorDia, toolDia, toolCrest=None):
     # Since we already have the outer diameter it's simpler to just add 1/8 * H
     # to get the outer tip of the thread.
     H = ((majorDia - minorDia) / 2.0) * 1.6  # (D - d)/2 = 5/8 * H
-    outerTip = majorDia / 2.0 + H / 8.0
+    if internal:
+        # mill inside out
+        outerTip = majorDia / 2.0 + H / 8.0
+        # Compensate for the crest of the tool
+        toolTip = outerTip - toolCrest * SQRT_3_DIVIDED_BY_2
+        return ((minorDia - toolDia) / 2.0, toolTip - toolDia / 2.0)
+    # mill outside in
+    innerTip = minorDia / 2.0 - H / 4.0
     # Compensate for the crest of the tool
-    toolTip = (
-        outerTip - toolCrest * 0.8660254037844386
-    )  # math.sqrt(3)/2 ... 60deg triangle height
-    return ((minorDia - toolDia) / 2.0, toolTip - toolDia / 2.0)
+    toolTip = innerTip - toolCrest * SQRT_3_DIVIDED_BY_2
+    return ((majorDia + toolDia) / 2.0, toolTip + toolDia / 2.0)
 
-
-def threadPasses(count, radii, majorDia, minorDia, toolDia, toolCrest=None):
-    PathLog.track(count, radii, majorDia, minorDia, toolDia, toolCrest)
-    minor, major = radii(majorDia, minorDia, toolDia, toolCrest)
+def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest):
+    PathLog.track(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
+    minor, major = radii(internal, majorDia, minorDia, toolDia, toolCrest)
     dr = float(major - minor) / count
-    return [major - dr * (count - (i + 1)) for i in range(count)]
+    if internal:
+        return [minor + dr * (i + 1) for i in range(count)]
+    return [major - dr * (i + 1) for i in range(count)]
 
 
-class _InternalThread(object):
+class _ThreadInternal(object):
     """Helper class for dealing with different thread types"""
 
     def __init__(self, cmd, zStart, zFinal, pitch):
@@ -112,9 +121,9 @@ class _InternalThread(object):
         return self.pitch > 0
 
 
-def internalThreadCommands(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
-    """internalThreadCommands(loc, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
-    thread = _InternalThread(cmd, zStart, zFinal, pitch)
+def threadCommandsInternal(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
+    """threadCommandsInternal(loc, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
+    thread = _ThreadInternal(cmd, zStart, zFinal, pitch)
 
     yMin = loc.y - radius
     yMax = loc.y + radius
@@ -171,23 +180,92 @@ def internalThreadCommands(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
     return path
 
 
+def threadCommandsExternal(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
+    """threadCommandsExternal(loc, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
+    thread = _ThreadInternal(cmd, zStart, zFinal, pitch)
+
+    yMin = loc.y - radius
+    yMax = loc.y + radius
+
+    path = []
+    # at this point the tool is at a safe height (depending on the previous thread), so we can move
+    # into position first, and then drop to the start height. If there is any material in the way this
+    # op hasn't been setup properly.
+    path.append(Path.Command("G0", {"X": loc.x, "Y": loc.y}))
+    path.append(Path.Command("G0", {"Z": thread.zStart}))
+    if leadInOut:
+        path.append(Path.Command(thread.cmd, {"Y": yMax, "J": (yMax - loc.y) / 2}))
+    else:
+        path.append(Path.Command("G1", {"Y": yMax}))
+
+    z = thread.zStart
+    r = -radius
+    i = 0
+    while True:
+        z = thread.zStart + i * thread.hPitch
+        if thread.overshoots(z):
+            break
+        if 0 == (i & 0x01):
+            y = yMin
+        else:
+            y = yMax
+        path.append(Path.Command(thread.cmd, {"Y": y, "Z": z + thread.hPitch, "J": r}))
+        r = -r
+        i = i + 1
+
+    z = thread.zStart + i * thread.hPitch
+    if PathGeom.isRoughly(z, thread.zFinal):
+        x = loc.x
+    else:
+        n = math.fabs(thread.zFinal - thread.zStart) / thread.hPitch
+        k = n - int(n)
+        dy = math.cos(k * math.pi)
+        dx = math.sin(k * math.pi)
+        y = thread.adjustY(loc.y, r * dy)
+        x = thread.adjustX(loc.x, r * dx)
+        path.append(
+            Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r})
+        )
+
+    if leadInOut:
+        path.append(
+            Path.Command(
+                thread.cmd,
+                {"X": loc.x, "Y": loc.y, "I": (loc.x - x) / 2, "J": (loc.y - y) / 2},
+            )
+        )
+    else:
+        path.append(Path.Command("G1", {"X": loc.x, "Y": loc.y}))
+
+    return path
+
+
 class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     """Proxy object for thread milling operation."""
 
     LeftHand = "LeftHand"
     RightHand = "RightHand"
-    ThreadTypeCustom = "Custom"
-    ThreadTypeMetricInternal = "MetricInternal"
+    ThreadTypeCustomExternal = "CustomExternal"
+    ThreadTypeCustomInternal = "CustomInternal"
+    ThreadTypeImperialExternal = "ImperialExternal"
     ThreadTypeImperialInternal = "ImperialInternal"
+    ThreadTypeMetricExternal = "MetricExternal"
+    ThreadTypeMetricInternal = "MetricInternal"
     DirectionClimb = "Climb"
     DirectionConventional = "Conventional"
 
     ThreadOrientations = [LeftHand, RightHand]
-    ThreadTypes = [
-        ThreadTypeCustom,
-        ThreadTypeMetricInternal,
+    ThreadTypesInternal = [
+        ThreadTypeCustomInternal,
         ThreadTypeImperialInternal,
-    ]
+        ThreadTypeMetricInternal,
+        ]
+    ThreadTypesExternal = [
+        ThreadTypeCustomExternal,
+        ThreadTypeImperialExternal,
+        ThreadTypeMetricExternal,
+        ]
+    ThreadTypes = ThreadTypesInternal + ThreadTypesExternal
     Directions = [DirectionClimb, DirectionConventional]
 
     @classmethod
@@ -200,25 +278,26 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         'raw' is list of (translated_text, data_string) tuples
         'translated' is list of translated string literals
         """
+        PathLog.track()
 
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "ThreadType": [
-                (translate("Path_ThreadMilling", "Custom"), "Custom"),
-                (translate("Path_ThreadMilling", "Metric Internal"), "MetricInternal"),
-                (
-                    translate("Path_ThreadMilling", "Imperial Internal"),
-                    "ImperialInternal",
-                ),
-            ],  # this is the direction that the profile runs
+                (translate("Path_ThreadMilling", "Custom External"), ObjectThreadMilling.ThreadTypeCustomExternal),
+                (translate("Path_ThreadMilling", "Custom Internal"), ObjectThreadMilling.ThreadTypeCustomInternal),
+                (translate("Path_ThreadMilling", "Imperial Internal"), ObjectThreadMilling.ThreadTypeImperialInternal),
+                (translate("Path_ThreadMilling", "Imperial External"), ObjectThreadMilling.ThreadTypeImperialExternal),
+                (translate("Path_ThreadMilling", "Metric External"), ObjectThreadMilling.ThreadTypeMetricExternal),
+                (translate("Path_ThreadMilling", "Metric Internal"), ObjectThreadMilling.ThreadTypeMetricInternal),
+            ],
             "ThreadOrientation": [
-                (translate("Path_ThreadMilling", "LeftHand"), "LeftHand"),
-                (translate("Path_ThreadMilling", "RightHand"), "RightHand"),
-            ],  # side of profile that cutter is on in relation to direction of profile
+                (translate("Path_ThreadMilling", "LeftHand"), ObjectThreadMilling.LeftHand),
+                (translate("Path_ThreadMilling", "RightHand"), ObjectThreadMilling.RightHand),
+            ],
             "Direction": [
-                (translate("Path_ThreadMilling", "Climb"), "Climb"),
-                (translate("Path_ThreadMilling", "Conventional"), "Conventional"),
-            ],  # side of profile that cutter is on in relation to direction of profile
+                (translate("Path_ThreadMilling", "Climb"), ObjectThreadMilling.DirectionClimb),
+                (translate("Path_ThreadMilling", "Conventional"), ObjectThreadMilling.DirectionConventional),
+            ],
         }
 
         if dataType == "raw":
@@ -236,9 +315,11 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         return data
 
     def circularHoleFeatures(self, obj):
+        PathLog.track()
         return PathOp.FeatureBaseGeometry
 
     def initCircularHoleOperation(self, obj):
+        PathLog.track()
         obj.addProperty(
             "App::PropertyEnumeration",
             "ThreadOrientation",
@@ -333,48 +414,11 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
-    def threadStartDepth(self, obj):
-        if obj.ThreadOrientation == self.RightHand:
-            if obj.Direction == self.DirectionClimb:
-                PathLog.track(obj.Label, obj.FinalDepth)
-                return obj.FinalDepth
-            PathLog.track(obj.Label, obj.StartDepth)
-            return obj.StartDepth
-        if obj.Direction == self.DirectionClimb:
-            PathLog.track(obj.Label, obj.StartDepth)
-            return obj.StartDepth
-        PathLog.track(obj.Label, obj.FinalDepth)
-        return obj.FinalDepth
+    def _isThreadInternal(self, obj):
+        return obj.ThreadType in self.ThreadTypesInternal
 
-    def threadFinalDepth(self, obj):
-        PathLog.track(obj.Label)
-        if obj.ThreadOrientation == self.RightHand:
-            if obj.Direction == self.DirectionClimb:
-                PathLog.track(obj.Label, obj.StartDepth)
-                return obj.StartDepth
-            PathLog.track(obj.Label, obj.FinalDepth)
-            return obj.FinalDepth
-        if obj.Direction == self.DirectionClimb:
-            PathLog.track(obj.Label, obj.FinalDepth)
-            return obj.FinalDepth
-        PathLog.track(obj.Label, obj.StartDepth)
-        return obj.StartDepth
-
-    def threadDirectionCmd(self, obj):
-        PathLog.track(obj.Label)
-        if obj.ThreadOrientation == self.RightHand:
-            if obj.Direction == self.DirectionClimb:
-                PathLog.track(obj.Label, "G2")
-                return "G2"
-            PathLog.track(obj.Label, "G3")
-            return "G3"
-        if obj.Direction == self.DirectionClimb:
-            PathLog.track(obj.Label, "G3")
-            return "G3"
-        PathLog.track(obj.Label, "G2")
-        return "G2"
-
-    def threadSetup(self, obj):
+    def _threadSetupInternal(self, obj):
+        PathLog.track()
         # the thing to remember is that Climb, for an internal thread must always be G3
         if obj.Direction == self.DirectionClimb:
             if obj.ThreadOrientation == self.RightHand:
@@ -383,6 +427,18 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         if obj.ThreadOrientation == self.RightHand:
             return ("G2", obj.StartDepth.Value, obj.FinalDepth.Value)
         return ("G2", obj.FinalDepth.Value, obj.StartDepth.Value)
+
+    def threadSetup(self, obj):
+        PathLog.track()
+        cmd, zbegin, zend = self._threadSetupInternal(obj)
+
+        if obj.ThreadType in self.ThreadTypesInternal:
+            return (cmd, zbegin, zend)
+
+        # need to reverse direction for external threads
+        if cmd == 'G2':
+            return ('G3', zbegin, zend)
+        return ('G2', zbegin, zend)
 
     def threadPassRadii(self, obj):
         PathLog.track(obj.Label)
@@ -405,15 +461,15 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
         for radius in threadPasses(
             obj.Passes,
-            radiiInternal,
+            threadRadii,
+            self._isThreadInternal(obj),
             obj.MajorDiameter.Value,
             obj.MinorDiameter.Value,
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            commands = internalThreadCommands(
-                loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut
-            )
+            commands = threadCommandsInternal(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut)
+
             for cmd in commands:
                 p = cmd.Parameters
                 if cmd.Name in ["G0"]:
@@ -454,6 +510,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             PathLog.error("No suitable Tool found for thread milling operation")
 
     def opSetDefaultValues(self, obj, job):
+        PathLog.track()
         obj.ThreadOrientation = self.RightHand
         obj.ThreadType = self.ThreadTypeMetricInternal
         obj.ThreadFit = 50
@@ -465,7 +522,9 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
     def isToolSupported(self, obj, tool):
         """Thread milling only supports thread milling cutters."""
-        return hasattr(tool, "Diameter") and hasattr(tool, "Crest")
+        support = hasattr(tool, "Diameter") and hasattr(tool, "Crest")
+        PathLog.track(tool.Name, support)
+        return support
 
 
 def SetupProperties():
