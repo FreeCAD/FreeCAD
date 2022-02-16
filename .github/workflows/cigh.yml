@@ -1,0 +1,59 @@
+# This workflow aims at building and testing FreeCAD
+# It uses a runner based on latest Ubuntu LTS version
+# It builds using CMake/Ninja/Clang as a toolchain
+
+name: FCBuildNTest
+
+on:
+  workflow_dispatch: # Triggered only manually
+    branches-ignore: # Do not run on master and release branches
+      - master
+      - releases/**
+jobs:
+  BuildNTest:
+    # Do not run on FreeCAD mainstream repo or on master branch (we never know :D)
+    if: github.repository != 'FreeCAD/FreeCAD' || !endsWith( github.ref, '/master' )
+    runs-on: ubuntu-latest
+    container: openbrain/freecad
+    steps:
+      - name: Check out repository ref ${{ github.ref }} of ${{ github.repository }}
+        uses: actions/checkout@v2
+## NINJA
+# Below step is used for Ninja compilation
+# Disabled at the moment because Ninja only works on file timestamps
+#      - name: Creating build directory
+#        run: mkdir ~/build
+## CCACHE
+# Below steps creates folders needed for Ccache/Make compilation
+      - name : Creating build and Ccache directories
+        run: mkdir ~/build && mkdir ~/ccache && mkdir ~/ccache/config && mkdir ~/ccache/cache && export CCACHE_CONFIGPATH=~/ccache/config && export CCACHE_DIR=~/ccache/cache
+##
+      - name: Setting cache
+        uses: actions/cache@v2
+        with:
+## NINJA
+#          path: ~/build
+## CCACHE
+          path: ~/ccache
+##
+          key: ${{runner.os}}-FC-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-FC-${{ github.ref }}-
+            ${{ runner.os }}-FC-
+      - name: Configuring CMake
+## NINJA
+#        run: cmake -GNinja -DCMAKE_CXX_COMPILER="/usr/bin/clang++" -DCMAKE_C_COMPILER="/usr/bin/clang" -B~/build .
+## CCACHE
+        run: cmake -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER="/usr/bin/clang++" -DCMAKE_C_COMPILER="/usr/bin/clang" -B~/build .
+##
+      - name: Compiling sources
+## NINJA
+#        run: cd ~/build && ninja -j$(nproc)
+## CCACHE
+#        run: cd ~/build && ccache --config-path ~/ccache/config --dir ~/ccache/cache make -j$(nproc)
+        run: cd ~/build && ccache cmake --build -j$(nproc)
+##
+      - name: Testing
+        run: xvfb-run ~/build/bin/FreeCAD -t 0
+      - name: Ending
+        run: echo "Job finished with status => ${{ job.status }}."
