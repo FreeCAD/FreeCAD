@@ -51,6 +51,13 @@ else:
 
 UserInput = None
 
+class PathNoTCExistsException(Exception):
+    '''PathNoECExistsException is raised when no TC exists at all, or when all
+    existing TCs are rejected by a given op.
+    This is typically an error because avery op requires a TC. '''
+
+    def __init__(self):
+        super().__init__('No Tool Controllers exist')
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -375,7 +382,7 @@ def findToolController(obj, proxy, name=None):
     controllers = getToolControllers(obj, proxy)
 
     if len(controllers) == 0:
-        return None
+        raise PathNoTCExistsException()
 
     # If there's only one in the job, use it.
     if len(controllers) == 1:
@@ -383,9 +390,9 @@ def findToolController(obj, proxy, name=None):
             tc = controllers[0]
         else:
             tc = None
-    elif name is not None:  # More than one, make the user choose.
+    elif name is not None:
         tc = [i for i in controllers if i.Label == name][0]
-    elif UserInput:
+    elif UserInput:  # More than one, make the user choose.
         tc = UserInput.chooseToolController(controllers)
     return tc
 
