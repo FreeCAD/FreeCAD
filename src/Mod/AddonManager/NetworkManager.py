@@ -73,7 +73,7 @@ import os
 import queue
 import itertools
 import tempfile
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 # This is the global instance of the NetworkManager that outside code
 # should access
@@ -281,7 +281,7 @@ if HAVE_QTNETWORK:
             self.__request_queued.emit()
             return current_index
 
-        def blocking_get(self, url: str) -> QtCore.QByteArray:
+        def blocking_get(self, url: str) -> Optional[QtCore.QByteArray]:
             """Submits a GET request to the QNetworkAccessManager and block until it is complete"""
 
             current_index = next(self.counting_iterator)  # A thread-safe counter
@@ -302,10 +302,12 @@ if HAVE_QTNETWORK:
                     if self.synchronous_complete[current_index]:
                         break
 
-
             with self.synchronous_lock:
                 self.synchronous_complete.pop(current_index)
-                return self.synchronous_result_data.pop(current_index)
+                if current_index in self.synchronous_result_data:
+                    return self.synchronous_result_data.pop(current_index)
+                else:
+                    return None
 
         def __synchronous_process_completion(
             self, index: int, code: int, data: QtCore.QByteArray
@@ -314,6 +316,14 @@ if HAVE_QTNETWORK:
                 if index in self.synchronous_complete:
                     if code == 200:
                         self.synchronous_result_data[index] = data
+                    else:
+                        FreeCAD.Console.PrintWarning(
+                            translate(
+                                "AddonsInstaller",
+                                "Addon Manager: Unexpected {} response from server",
+                            ).format(code)
+                            + "\n"
+                        )
                     self.synchronous_complete[index] = True
 
         def __create_get_request(self, url: str) -> QtNetwork.QNetworkRequest:
