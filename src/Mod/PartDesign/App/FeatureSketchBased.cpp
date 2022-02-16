@@ -72,18 +72,18 @@
 
 #endif
 
+#include <App/OriginFeature.h>
+#include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
-#include <App/OriginFeature.h>
-#include <App/Document.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
-#include "FeatureSketchBased.h"
-#include "DatumPlane.h"
 #include "DatumLine.h"
+#include "DatumPlane.h"
+#include "FeatureSketchBased.h"
 
 using namespace PartDesign;
 
@@ -218,7 +218,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
                     if (!shape.hasSubShape(TopAbs_WIRE))
                         shape = shape.makEWires();
                     if (shape.hasSubShape(TopAbs_WIRE))
-                        shape = shape.makEFace(0, "Part::FaceMakerCheese");
+                        shape = shape.makEFace(0, "Part::FaceMakerBullseye");
                     else
                         err = "Cannot make face from profile";
                 }
