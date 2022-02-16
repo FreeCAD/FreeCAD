@@ -113,15 +113,15 @@ ViewProviderPartExt::ViewProviderPartExt()
     NormalsFromUV = true;
 
     // get default line color
-    unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
+    unsigned long lcol = Gui::ViewParams::getDefaultShapeLineColor(); // dark grey (25,25,25)
     float lr,lg,lb;
     lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
     // get default vertex color
-    unsigned long vcol = Gui::ViewParams::instance()->getDefaultShapeVertexColor(); 
+    unsigned long vcol = Gui::ViewParams::getDefaultShapeVertexColor(); 
     float vr,vg,vb;
     vr = ((vcol >> 24) & 0xff) / 255.0; vg = ((vcol >> 16) & 0xff) / 255.0; vb = ((vcol >> 8) & 0xff) / 255.0;
-    int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
-    int psize = Gui::ViewParams::instance()->getDefaultShapePointSize();
+    int lwidth = Gui::ViewParams::getDefaultShapeLineWidth();
+    int psize = Gui::ViewParams::getDefaultShapePointSize();
 	
 
 

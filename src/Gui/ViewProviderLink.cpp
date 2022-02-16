@@ -356,7 +356,7 @@ public:
         if(pcSnapshot) {
             if(!update) return pcSnapshot;
         }else{
-            if(ViewParams::instance()->getUseSelectionRoot())
+            if(ViewParams::getUseSelectionRoot())
                 pcSnapshot = new SoFCSelectionRoot;
             else
                 pcSnapshot = new SoSeparator;
@@ -1605,7 +1605,7 @@ ViewProviderLink::ViewProviderLink()
     ADD_PROPERTY_TYPE(OverrideMaterial, (false), " Link", App::Prop_None, "Override linked object's material");
 
     App::Material mat(App::Material::DEFAULT);
-    mat.diffuseColor.setPackedValue(ViewParams::instance()->getDefaultLinkColor());
+    mat.diffuseColor.setPackedValue(ViewParams::getDefaultLinkColor());
     ADD_PROPERTY_TYPE(ShapeMaterial, (mat), " Link", App::Prop_None, 0);
     ShapeMaterial.setStatus(App::Property::MaterialEdit, true);
 
@@ -1613,7 +1613,7 @@ ViewProviderLink::ViewProviderLink()
     static const char* DrawStyleEnums[]= {"None","Solid","Dashed","Dotted","Dashdot",NULL};
     DrawStyle.setEnums(DrawStyleEnums);
 
-    int lwidth = ViewParams::instance()->getDefaultShapeLineWidth();
+    int lwidth = ViewParams::getDefaultShapeLineWidth();
     ADD_PROPERTY_TYPE(LineWidth,(lwidth), " Link", App::Prop_None, "");
 
     static App::PropertyFloatConstraint::Constraints sizeRange = {1.0,64.0,1.0};

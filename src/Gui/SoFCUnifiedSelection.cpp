@@ -127,7 +127,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
 
     setPreSelection = false;
     preSelection = -1;
-    useNewSelection = ViewParams::instance()->getUseNewSelection();
+    useNewSelection = ViewParams::getUseNewSelection();
 }
 
 /*!
@@ -1269,7 +1269,7 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbCol
 static std::time_t _CyclicLastReported;
 
 void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
-    if(ViewParams::instance()->getCoinCycleCheck()
+    if(ViewParams::getCoinCycleCheck()
             && !SelStack.nodeSet.insert(this).second)
     {
         std::time_t t = std::time(0);
@@ -1298,7 +1298,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     auto state = action->getState();
     SelContextPtr ctx = getRenderContext<SelContext>(this);
     int style = selectionStyle.getValue();
-    if((style==SoFCSelectionRoot::Box || ViewParams::instance()->getShowSelectionBoundingBox())
+    if((style==SoFCSelectionRoot::Box || ViewParams::getShowSelectionBoundingBox())
        && ctx && !ctx->hideAll && (ctx->selAll || ctx->hlAll))
     {
         if (style==SoFCSelectionRoot::PassThrough) {
@@ -1452,7 +1452,7 @@ void SoFCSelectionRoot::moveActionStack(SoAction *from, SoAction *to, bool erase
 
 #define BEGIN_ACTION \
     auto &stack = ActionStacks[action];\
-    if(ViewParams::instance()->getCoinCycleCheck() \
+    if(ViewParams::getCoinCycleCheck() \
         && !stack.nodeSet.insert(this).second) \
     {\
         std::time_t t = std::time(0);\
@@ -1755,7 +1755,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
         if(det)
             inherited::GLRenderInPath(action);
         else {
-            bool bbox = ViewParams::instance()->getShowSelectionBoundingBox();
+            bool bbox = ViewParams::getShowSelectionBoundingBox();
             if(!bbox) {
                 for(int i=0,count=path->getLength();i<count;++i) {
                     if(!path->getNode(i)->isOfType(SoFCSelectionRoot::getClassTypeId()))

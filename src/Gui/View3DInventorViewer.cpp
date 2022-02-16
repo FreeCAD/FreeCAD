@@ -1340,7 +1340,7 @@ void View3DInventorViewer::setRenderCache(int mode)
         // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
         coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
 
-        int setting = ViewParams::instance()->getRenderCache();
+        int setting = ViewParams::getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
                 pcViewProviderRoot->renderCaching = SoSeparator::ON;

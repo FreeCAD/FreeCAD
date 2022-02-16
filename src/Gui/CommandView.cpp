@@ -3723,8 +3723,8 @@ StdCmdSelBoundingBox::StdCmdSelBoundingBox()
 void StdCmdSelBoundingBox::activated(int iMsg)
 {
     bool checked = !!iMsg;
-    if(checked != ViewParams::instance()->getShowSelectionBoundingBox()) {
-        ViewParams::instance()->setShowSelectionBoundingBox(checked);
+    if(checked != ViewParams::getShowSelectionBoundingBox()) {
+        ViewParams::setShowSelectionBoundingBox(checked);
         if(_pcAction)
             _pcAction->setChecked(checked,true);
     }
@@ -3734,7 +3734,7 @@ bool StdCmdSelBoundingBox::isActive(void)
 {
     if(_pcAction) {
         bool checked = _pcAction->isChecked();
-        if(checked != ViewParams::instance()->getShowSelectionBoundingBox())
+        if(checked != ViewParams::getShowSelectionBoundingBox())
             _pcAction->setChecked(!checked,true);
     }
     return true;
