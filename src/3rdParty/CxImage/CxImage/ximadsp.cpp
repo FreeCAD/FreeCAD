@@ -355,13 +355,6 @@ bool CxImage::SplitHSL(CxImage* h,CxImage* s,CxImage* l)
 	if (s) tmps.SetGrayPalette();
 	if (l) tmpl.SetGrayPalette();
 
-	/* pseudo-color generator for hue channel (visual debug)
-	if (h) for(long j=0; j<256; j++){
-		BYTE i=(BYTE)j;
-		RGBQUAD hsl={120,240,i,0};
-		tmph.SetPaletteColor(i,HSLtoRGB(hsl));
-	}*/
-
 	if (h) h->Transfer(tmph);
 	if (s) s->Transfer(tmps);
 	if (l) l->Transfer(tmpl);
@@ -413,7 +406,6 @@ RGBQUAD CxImage::RGBtoHSL(RGBQUAD lRGBColor)
 		else /* B == cMax */
 			H = (BYTE)(((2*HSLMAX)/3) + Gdelta - Rdelta);
 
-//		if (H < 0) H += HSLMAX;     //always false
 		if (H > HSLMAX) H -= HSLMAX;
 	}
 	RGBQUAD hsl={L,S,H,0};
@@ -482,9 +474,6 @@ RGBQUAD CxImage::YUVtoRGB(RGBQUAD lYUVColor)
 	U = lYUVColor.rgbGreen - 128;
 	V = lYUVColor.rgbBlue - 128;
 
-//	R = (int)(1.164 * Y + 2.018 * U);
-//	G = (int)(1.164 * Y - 0.813 * V - 0.391 * U);
-//	B = (int)(1.164 * Y + 1.596 * V);
 	R = (int)( Y + 1.403f * V);
 	G = (int)( Y - 0.344f * U - 0.714f * V);
 	B = (int)( Y + 1.770f * U);
@@ -503,9 +492,6 @@ RGBQUAD CxImage::RGBtoYUV(RGBQUAD lRGBColor)
 	G = lRGBColor.rgbGreen;
 	B = lRGBColor.rgbBlue;
 
-//	Y = (int)( 0.257 * R + 0.504 * G + 0.098 * B);
-//	U = (int)( 0.439 * R - 0.368 * G - 0.071 * B + 128);
-//	V = (int)(-0.148 * R - 0.291 * G + 0.439 * B + 128);
 	Y = (int)(0.299f * R + 0.587f * G + 0.114f * B);
 	U = (int)((B-Y) * 0.565f + 128);
 	V = (int)((R-Y) * 0.713f + 128);
@@ -655,10 +641,6 @@ bool CxImage::Colorize(BYTE hue, BYTE sat, float blend)
 						hsl.rgbGreen=sat;
 						hsl.rgbBlue = (BYTE)RGB2GRAY(color.rgbRed,color.rgbGreen,color.rgbBlue);
 						hsl = HSLtoRGB(hsl);
-						//BlendPixelColor(x,y,hsl,blend);
-						//color.rgbRed = (BYTE)(hsl.rgbRed * blend + color.rgbRed * (1.0f - blend));
-						//color.rgbBlue = (BYTE)(hsl.rgbBlue * blend + color.rgbBlue * (1.0f - blend));
-						//color.rgbGreen = (BYTE)(hsl.rgbGreen * blend + color.rgbGreen * (1.0f - blend));
 						color.rgbRed = (BYTE)((hsl.rgbRed * a0 + color.rgbRed * a1)>>8);
 						color.rgbBlue = (BYTE)((hsl.rgbBlue * a0 + color.rgbBlue * a1)>>8);
 						color.rgbGreen = (BYTE)((hsl.rgbGreen * a0 + color.rgbGreen * a1)>>8);
@@ -1543,7 +1525,7 @@ bool CxImage::FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage
 	long j,k,m;
 
 	_complex **grid;
-	//double mean = tmpReal->Mean();
+
 	/* Allocate memory for the grid */
 	grid = (_complex **)malloc(w * sizeof(_complex));
 	for (k=0;k<w;k++) {
@@ -3363,18 +3345,6 @@ int  CxImage::OptimalThreshold(long method, RECT * pBox, CxImage* pContrastMask)
 				threshold /= nt;
 			else
 				threshold = (gray_min+gray_max)/2;
-
-			/*better(?) but really expensive alternative:
-			n = 0:255;
-			pth1 = c1(th1)/sqrt(2*pi*s1(th1))*exp(-((n - m1(th1)).^2)/2/s1(th1)) + c2(th1)/sqrt(2*pi*s2(th1))*exp(-((n - m2(th1)).^2)/2/s2(th1));
-			pth2 = c1(th2)/sqrt(2*pi*s1(th2))*exp(-((n - m1(th2)).^2)/2/s1(th2)) + c2(th2)/sqrt(2*pi*s2(th2))*exp(-((n - m2(th2)).^2)/2/s2(th2));
-			...
-			mse_th1 = sum((p-pth1).^2);
-			mse_th2 = sum((p-pth2).^2);
-			...
-			select th# that gives minimum mse_th#
-			*/
-
 		}
 	}
 

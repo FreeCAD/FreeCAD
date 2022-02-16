@@ -67,21 +67,6 @@ _tiffUnmapProcEx(thandle_t /*fd*/, tdata_t /*base*/, toff_t /*size*/)
 {
 }
 
-// Open a TIFF file descriptor for read/writing.
-/*
-TIFF*
-TIFFOpen(const char* name, const char* mode)
-{
-	static const char module[] = "TIFFOpen";
-   FILE* stream = fopen(name, mode);
-	if (stream == NULL) 
-   {
-		TIFFError(module, "%s: Cannot open", name);
-		return NULL;
-	}
-	return (TIFFFdOpen((int)stream, name, mode));
-}
-*/
 
 TIFF*
 _TIFFFdOpen(void* fd, const char* name, const char* mode)

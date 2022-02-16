@@ -377,19 +377,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     (void)NewName;
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
 #else
-    std::map<std::string,Document*>::iterator pos;
-    pos = DocMap.find(OldName);
-
-    if (pos != DocMap.end()) {
-        Document* temp;
-        temp = pos->second;
-        DocMap.erase(pos);
-        DocMap[NewName] = temp;
-        signalRenameDocument(*temp);
-    }
-    else {
-        throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
-    }
+   
 #endif
 }
 
@@ -2304,7 +2292,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("write-log")) {
         mConfig["LoggingFile"] = "1";
-        //mConfig["LoggingFileName"] = vm["write-log"].as<string>();
         mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
     }
 
@@ -2329,7 +2316,6 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
-        //sScriptName = FreeCADTest;
     }
 
     if (vm.count("single-instance")) {

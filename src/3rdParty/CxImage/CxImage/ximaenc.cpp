@@ -81,17 +81,7 @@ bool CxImage::EncodeSafeCheck(CxFile *hFile)
 	}
 	return false;
 }
-////////////////////////////////////////////////////////////////////////////////
-//#ifdef WIN32
-//bool CxImage::Save(LPCWSTR filename, DWORD imagetype)
-//{
-//	FILE* hFile;	//file handle to write the image
-//	if ((hFile=_wfopen(filename,L"wb"))==NULL)  return false;
-//	bool bOK = Encode(hFile,imagetype);
-//	fclose(hFile);
-//	return bOK;
-//}
-//#endif //WIN32
+
 ////////////////////////////////////////////////////////////////////////////////
 // For UNICODE support: char -> TCHAR
 /**
@@ -541,36 +531,7 @@ bool CxImage::Load(const TCHAR * filename, DWORD imagetype)
 }
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef WIN32
-//bool CxImage::Load(LPCWSTR filename, DWORD imagetype)
-//{
-//	/*FILE* hFile;	//file handle to read the image
-//	if ((hFile=_wfopen(filename, L"rb"))==NULL)  return false;
-//	bool bOK = Decode(hFile,imagetype);
-//	fclose(hFile);*/
-//
-//	/* automatic file type recognition */
-//	bool bOK = false;
-//	if ( GetTypeIndexFromId(imagetype) ){
-//		FILE* hFile;	//file handle to read the image
-//		if ((hFile=_wfopen(filename,L"rb"))==NULL)  return false;
-//		bOK = Decode(hFile,imagetype);
-//		fclose(hFile);
-//		if (bOK) return bOK;
-//	}
-//
-//	char szError[256];
-//	strcpy(szError,info.szLastError); //save the first error
-//
-//	// if failed, try automatic recognition of the file...
-//	FILE* hFile;	//file handle to read the image
-//	if ((hFile=_wfopen(filename,L"rb"))==NULL)  return false;
-//	bOK = Decode(hFile,CXIMAGE_FORMAT_UNKNOWN);
-//	fclose(hFile);
-//
-//	if (!bOK && imagetype > 0) strcpy(info.szLastError,szError); //restore the first error
-//
-//	return bOK;
-//}
+
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Loads an image from the application resources.
@@ -586,21 +547,6 @@ bool CxImage::LoadResource(HRSRC hRes, DWORD imagetype, HMODULE hModule)
 	if (hMem){
 		char* lpVoid=(char*)LockResource(hMem);
 		if (lpVoid){
-			// FILE* fTmp=tmpfile(); doesn't work with network
-			/*char tmpPath[MAX_PATH] = {0};
-			char tmpFile[MAX_PATH] = {0};
-			GetTempPath(MAX_PATH,tmpPath);
-			GetTempFileName(tmpPath,"IMG",0,tmpFile);
-			FILE* fTmp=fopen(tmpFile,"w+b");
-			if (fTmp){
-				fwrite(lpVoid,rsize,1,fTmp);
-				fseek(fTmp,0,SEEK_SET);
-				bool bOK = Decode(fTmp,imagetype);
-				fclose(fTmp);
-				DeleteFile(tmpFile);
-				return bOK;
-			}*/
-
 			CxMemFile fTmp((BYTE*)lpVoid,rsize);
 			return Decode(&fTmp,imagetype);
 		}

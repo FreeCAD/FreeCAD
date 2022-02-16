@@ -435,7 +435,6 @@ public:
 	long	Tile(HDC hdc, RECT *rc);
 	long	Draw2(HDC hdc, long x=0, long y=0, long cx = -1, long cy = -1);
 	long	Draw2(HDC hdc, const RECT& rect);
-	//long	DrawString(HDC hdc, long x, long y, const char* text, RGBQUAD color, const char* font, long lSize=0, long lWeight=400, BYTE bItalic=0, BYTE bUnderline=0, bool bSetAlpha=false);
 	long	DrawString(HDC hdc, long x, long y, const TCHAR* text, RGBQUAD color, const TCHAR* font, long lSize=0, long lWeight=400, BYTE bItalic=0, BYTE bUnderline=0, bool bSetAlpha=false);
 	// <VATI> extensions
 	long    DrawStringEx(HDC hdc, long x, long y, CXTEXTINFO *pTextType, bool bSetAlpha=false );
@@ -468,9 +467,6 @@ protected:
 
 public:
 /** \addtogroup Encode */ //@{
-#ifdef WIN32
-	//bool Save(LPCWSTR filename, DWORD imagetype=0);
-#endif
 	// For UNICODE support: char -> TCHAR
 	bool Save(const TCHAR* filename, DWORD imagetype);
 	bool Encode(FILE * hFile, DWORD imagetype);
