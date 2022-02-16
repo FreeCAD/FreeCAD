@@ -2241,7 +2241,6 @@ CmdTechDrawExtensionCustomizeFormat::CmdTechDrawExtensionCustomizeFormat()
 void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Base::Console().Message("CustomizeFormat gestartet\n");
     std::vector<Gui::SelectionObject> selected;
     if (!_checkSelection(this, selected, "TechDraw Customize Format"))
         return;
