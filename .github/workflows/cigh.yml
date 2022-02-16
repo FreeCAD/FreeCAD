@@ -1,0 +1,125 @@
+# This workflow aims at building and testing FreeCAD
+# It uses a runner based on latest Ubuntu LTS version
+# It builds using CMake/CCache+Make/Clang as a toolchain
+#
+# It has been foreseen to be used with CMake/Ninja/Clang...
+# ...but this is disabled at the moment because Ninja...
+# ...only works based on file timestamps, which isn't...
+# ...compatible with Git not managing them
+
+name: FCBuildNTest
+
+on:
+  workflow_dispatch: # Triggered manually
+# To run manually, use :
+# curl -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/:OWNER/FreeCAD/actions/workflows/cigh.yml/dispatches -d '{"ref":":BRANCH_NAME"}' -u :USER_NAME
+# It will then require your Github PAT to trigger the launching event
+#    branches-ignore: # Do not run on master and release branches
+#      - master
+#      - releases/**
+  pull_request:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  BuildNTest:
+    runs-on: ubuntu-20.04
+    container: openbrain/freecad
+    env:
+      CI_BUILD_DIR: ${{ github.workspace }}/build
+      CI_CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_DIR: ${{ github.workspace }}/ccache/ccache
+      CCACHE_MAXSIZE: 2G
+      CC: /usr/bin/clang
+      CXX: /usr/bin/clang++
+    steps:
+      - name: Check out repository ref ${{ github.ref }} of ${{ github.repository }}
+        uses: actions/checkout@v2
+## NINJA
+      #- name: Creating build directory
+        #run: mkdir -p $CI_BUILD_DIR
+## CCACHE
+      - name : Creating build and Ccache directories
+        run: mkdir -p $CI_BUILD_DIR && mkdir -p $CI_CCACHE_DIR && mkdir -p $CCACHE_CONFIGPATH && mkdir -p $CCACHE_DIR
+##
+      - name: Setting cache
+        uses: actions/cache@v2
+        with:
+## NINJA
+          #path: ${{ github.workspace }}/build # !! YAML node anchors not supported by GH !!
+## CCACHE
+          path: ${{ github.workspace }}/ccache # !! YAML node anchors not supported by GH !!
+##
+          key: ${{ runner.os }}-FC-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-FC-${{ github.ref }}-
+            ${{ runner.os }}-FC-
+      - name: Configuring CMake
+## NINJA
+        #run: cmake -GNinja -B$CI_BUILD_DIR .
+## CCACHE
+        run: cmake -B$CI_BUILD_DIR .
+# Below is minimal build for CI testing purposes
+        #run: >
+          #cmake -B$CI_BUILD_DIR .
+          #-DBUILD_ADDONMGR=OFF
+          #-DBUILD_ARCH=OFF
+          #-DBUILD_ASSEMBLY=OFF
+          #-DBUILD_CLOUD=OFF
+          #-DBUILD_COMPLETE=OFF
+          #-DBUILD_DRAFT=OFF
+          #-DBUILD_DRAWING=OFF
+          #-DBUILD_FEM=OFF
+          #-DBUILD_FEM_NETGEN=OFF
+          #-DBUILD_GUI=OFF
+          #-DBUILD_IDF=OFF
+          #-DBUILD_IMAGE=OFF
+          #-DBUILD_IMPORT=OFF
+          #-DBUILD_INSPECTION=OFF
+          #-DBUILD_JTREADER=OFF
+          #-DBUILD_MATERIAL=OFF
+          #-DBUILD_MESH=OFF
+          #-DBUILD_MESH_PART=OFF
+          #-DBUILD_OPENSCAD=OFF
+          #-DBUILD_PART=ON
+          #-DBUILD_PART_DESIGN=OFF
+          #-DBUILD_PATH=OFF
+          #-DBUILD_PLOT=OFF
+          #-DBUILD_POINTS=OFF
+          #-DBUILD_RAYTRACING=OFF
+          #-DBUILD_REVERSEENGINEERING=OFF
+          #-DBUILD_ROBOT=OFF
+          #-DBUILD_SANDBOX=OFF
+          #-DBUILD_SHOW=OFF
+          #-DBUILD_SKETCHER=OFF
+          #-DBUILD_SPREADSHEET=OFF
+          #-DBUILD_START=OFF
+          #-DBUILD_SURFACE=OFF
+          #-DBUILD_TECHDRAW=OFF
+          #-DBUILD_TEMPLATE=OFF
+          #-DBUILD_TEST=ON
+          #-DBUILD_TUX=OFF
+          #-DBUILD_WEB=OFF
+##
+      - name: Compiling sources
+## NINJA
+        #run: cd $CI_BUILD_DIR && ninja -j$(nproc)
+## CCACHE
+        run: cd $CI_BUILD_DIR && cmake --build ./ -j$(nproc)
+##
+      - name: Installing
+        run: cd $CI_BUILD_DIR && cmake --install ./
+      - name: Print ccache statistics
+        run: ccache -s
+      - name: Assess compiled version
+        #run: $CI_BUILD_DIR/bin/FreeCADCmd --version # on build
+        run: /usr/local/bin/FreeCADCmd --version # on installed binary
+      - name: Testing
+        run: xvfb-run /usr/local/bin/FreeCAD -t 0 # Test in GUI mode on installed binary
+        #run: xvfb-run $CI_BUILD_DIR/bin/FreeCAD -t 0 # Test in GUI mode on build
+        #run: CI_BUILD_DIR/bin/FreeCADCmd -t 0 # Test in CLI mode on build
+      - name: Ending
+        run: echo "Job finished with status => ${{ job.status }}."
