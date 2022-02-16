@@ -274,7 +274,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>Least square geomtry element</string>
+        <string>Least square geometry element</string>
        </property>
        <property name="text">
         <string>Ⓖ</string>
@@ -379,7 +379,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>most inscribed geomtry element</string>
+        <string>most inscribed geometry element</string>
        </property>
        <property name="text">
         <string>Ⓧ</string>
