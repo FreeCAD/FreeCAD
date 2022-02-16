@@ -2249,16 +2249,6 @@ void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
     if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ||
         object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
         Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
-
-    /*
-    if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
-        Base::Console().Message("Bemaßung gewählt\n"); // -----------------------------------------
-    if (object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
-        Base::Console().Message("Balloon gewählt\n"); // -----------------------------------------
-    Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
-    */
-    
-    
 }
 
 bool CmdTechDrawExtensionCustomizeFormat::isActive(void)
