@@ -8372,6 +8372,567 @@ bool CmdSketcherExternal::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+/* Create Insert =====================================================*/
+
+class DrawSketchHandlerInsert : public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerInsert(int geoId) :Mode(STATUS_SEEK_First), insertMode(InsertBox), EditCurve(6), geoId(geoId) {}
+    virtual ~DrawSketchHandlerInsert() {}
+    /// mode table
+    enum SelectMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_SEEK_Third,     /**< enum value ----. */
+        STATUS_End
+    };
+    enum InsertMode {
+        InsertBox,
+        InsertArc,
+        InsertArc2
+    };
+
+    virtual void registerPressedKey(bool pressed, int key)
+    {
+        if ((key == SoKeyboardEvent::RIGHT_SHIFT || key == SoKeyboardEvent::LEFT_SHIFT) && pressed) {
+
+            if (insertMode == InsertBox && Mode == STATUS_SEEK_Second) {
+                insertMode = InsertArc;
+                EditCurve.resize(32);
+                EditCurve[31] = EditCurve[5];
+                toolSettings->widget->setLabel(QApplication::translate("Insert geo",
+                    "Distance of center to line"), 2);
+            }
+            else if (insertMode == InsertArc) {
+                insertMode = InsertArc2;
+            }
+            else if (insertMode == InsertArc2) {
+                if (Mode == STATUS_SEEK_Second) {
+                    insertMode = InsertBox;
+                    EditCurve[5] = EditCurve[31];
+                    EditCurve.resize(6);
+                    toolSettings->widget->setLabel(QApplication::translate("Insert geo",
+                        "Insert depth"), 2);
+                }
+                else {
+                    insertMode = InsertArc;
+                }
+            }
+            mouseMove(prevOnSketchPos); // trigger an update of EditCurve
+        }
+    }
+
+    virtual void activated(ViewProviderSketch*)
+    {
+        setCrosshairCursor("Sketcher_Pointer_Frame");
+        toolSettings->widget->setSettings(16);
+        setLineGeo(geoId);
+
+        // Constrain icon size in px
+        qreal pixelRatio = devicePixelRatio();
+        const unsigned long defaultCrosshairColor = 0xFFFFFF;
+        unsigned long color = getCrosshairColor();
+        auto colorMapping = std::map<unsigned long, unsigned long>();
+        colorMapping[defaultCrosshairColor] = color;
+
+        qreal fullIconWidth = 32 * pixelRatio;
+        qreal iconWidth = 16 * pixelRatio;
+        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
+            icon = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Insert", QSizeF(iconWidth, iconWidth));
+        QPainter cursorPainter;
+        cursorPainter.begin(&cursorPixmap);
+        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.end();
+        int hotX = 8;
+        int hotY = 8;
+        cursorPixmap.setDevicePixelRatio(pixelRatio);
+        // only X11 needs hot point coordinates to be scaled
+        if (qGuiApp->platformName() == QLatin1String("xcb")) {
+            hotX *= pixelRatio;
+            hotY *= pixelRatio;
+        }
+        setCursor(cursorPixmap, hotX, hotY, false);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        prevOnSketchPos = onSketchPos;
+        if (Mode == STATUS_SEEK_Second) {
+            Base::Vector2d projectedPoint;
+            projectedPoint.ProjectToLine(onSketchPos - EditCurve[0], dirVec);
+            projectedPoint = EditCurve[0] + projectedPoint;
+            if (insertMode == InsertBox) {
+                EditCurve[2] = onSketchPos;
+
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    EditCurve[1] = EditCurve[0] + toolSettings->widget->toolParameters[0] * dirVec;
+                    Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
+                    EditCurve[2].ProjectToLine(EditCurve[2] - EditCurve[1], Perpendicular);
+                    EditCurve[2] = EditCurve[1] + EditCurve[2];
+                }
+                else {
+                    EditCurve[1] = projectedPoint;
+                    startLength = (EditCurve[1] - EditCurve[0]).Length();
+                }
+
+                if (startLength > lineLength * 0.75) {
+                    boxLength = (lineLength - startLength) * 0.8;
+                }
+                else {
+                    boxLength = lineLength / 5;
+                }
+                EditCurve[3] = EditCurve[2] + boxLength * dirVec;
+                EditCurve[4].ProjectToLine(EditCurve[3] - EditCurve[0], dirVec);
+                EditCurve[4] = EditCurve[0] + EditCurve[4];
+
+                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                    renderSuggestConstraintsCursor(sugConstr1);
+                    return;
+                }
+            }
+            else {
+                if (toolSettings->widget->isSettingSet[0] == 1) {
+                    EditCurve[1] = EditCurve[0] + toolSettings->widget->toolParameters[0] * dirVec;
+                    Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
+                }
+                else {
+                    EditCurve[1] = projectedPoint;
+                    startLength = (EditCurve[1] - EditCurve[0]).Length();
+                }
+
+                if (startLength > lineLength * 0.75) {
+                    boxLength = (lineLength - startLength) * 0.8;
+                }
+                else {
+                    boxLength = lineLength / 5;
+                }
+                EditCurve[30] = EditCurve[1] + boxLength * dirVec;
+                radius = boxLength / 2;
+                centerPoint = EditCurve[1] + radius * dirVec;
+
+                double angle1 = GetPointAngle(centerPoint, EditCurve[1]);
+                double angle2 = GetPointAngle(centerPoint, EditCurve[30]);
+
+                startAngle = angle2;
+                endAngle = angle1;
+                if (insertMode == InsertArc2) {
+                    startAngle = angle1;
+                    endAngle = angle2;
+                }
+                double arcAngle = endAngle - startAngle;
+                if (arcAngle < 0) {
+                    arcAngle = arcAngle + 2 * M_PI;
+                }
+                for (int i = 2; i <= 29; i++) {
+                    double angle = startAngle + i * arcAngle / 29.0; // N point arc has N-1 segments
+                    if (insertMode == InsertArc) {
+                        EditCurve[31 - i] = Base::Vector2d(centerPoint.x + radius * cos(angle),
+                            centerPoint.y + radius * sin(angle));
+                    }
+                    else {
+                        EditCurve[i] = Base::Vector2d(centerPoint.x + radius * cos(angle),
+                            centerPoint.y + radius * sin(angle));
+                    }
+                }
+            }
+
+            drawEdit(EditCurve);
+            setPositionText(onSketchPos);
+            if (toolSettings->widget->isSettingSet[0] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
+                }
+        }
+        else if (Mode == STATUS_SEEK_Third) {
+
+            Base::Vector2d projectedPtn;
+            projectedPtn.ProjectToLine(onSketchPos - EditCurve[0], dirVec);
+            projectedPtn = EditCurve[0] + projectedPtn;
+            if ((projectedPtn - EditCurve[0]).Length() > startLength) {
+                if (insertMode == InsertBox) {
+                    EditCurve[3] = onSketchPos;
+
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        boxLength = toolSettings->widget->toolParameters[1];
+                    }
+                    else {
+                        boxLength = (projectedPtn - EditCurve[1]).Length();
+                    }
+
+                    Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
+                        EditCurve[2] = EditCurve[1] + toolSettings->widget->toolParameters[2] * Perpendicular;
+                        EditCurve[3] = EditCurve[2] + boxLength * dirVec;
+                    }
+                    else {
+                        EditCurve[2].ProjectToLine(onSketchPos - EditCurve[1], Perpendicular);
+                        EditCurve[2] = EditCurve[1] + EditCurve[2];
+                        EditCurve[3] = EditCurve[2] + boxLength * dirVec;
+                    }
+
+                    EditCurve[4].ProjectToLine(EditCurve[3] - EditCurve[0], dirVec);
+                    EditCurve[4] = EditCurve[0] + EditCurve[4];
+                }
+                else {
+                    if (toolSettings->widget->isSettingSet[1] == 1) {
+                        boxLength = toolSettings->widget->toolParameters[1];
+                        Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
+                        Base::Vector2d midPoint = EditCurve[1] + boxLength / 2 * dirVec;
+                        centerPoint.ProjectToLine(onSketchPos - midPoint, Perpendicular);
+                        centerPoint = midPoint + centerPoint;
+                    }
+                    else {
+                        Base::Vector2d projectedPtn;
+                        projectedPtn.ProjectToLine(onSketchPos - EditCurve[0], dirVec);
+                        projectedPtn = EditCurve[0] + projectedPtn;
+                        boxLength = (projectedPtn - EditCurve[1]).Length()*2;
+                        centerPoint = onSketchPos;
+                    }
+
+                    if (toolSettings->widget->isSettingSet[2] == 1) {
+                        Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
+                        Base::Vector2d midPoint = EditCurve[1] + boxLength / 2 * dirVec;
+                        centerPoint = midPoint + toolSettings->widget->toolParameters[2] * Perpendicular;
+                    }
+
+                    EditCurve[30] = EditCurve[1] + boxLength * dirVec;
+                    radius = (EditCurve[1] - centerPoint).Length();
+
+                    double angle1 = GetPointAngle(centerPoint, EditCurve[1]);
+                    double angle2 = GetPointAngle(centerPoint, EditCurve[30]);
+
+                    startAngle = angle2;
+                    endAngle = angle1;
+                    if (insertMode == InsertArc2) {
+                        startAngle = angle1;
+                        endAngle = angle2;
+                    }
+                    double arcAngle = endAngle - startAngle;
+                    if (arcAngle < 0) {
+                        arcAngle = arcAngle + 2 * M_PI;
+                    }
+                    for (int i = 2; i <= 29; i++) {
+                        double angle = startAngle + i * arcAngle / 29.0;
+                        if (insertMode == InsertArc) {
+                            EditCurve[31 - i] = Base::Vector2d(centerPoint.x + radius * cos(angle),
+                                centerPoint.y + radius * sin(angle));
+                        }
+                        else {
+                            EditCurve[i] = Base::Vector2d(centerPoint.x + radius * cos(angle),
+                                centerPoint.y + radius * sin(angle));
+                        }
+                    }
+                }
+
+                if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
+                    renderSuggestConstraintsCursor(sugConstr2);
+                    return;
+                }
+                drawEdit(EditCurve);
+                setPositionText(onSketchPos);
+            }
+            if (toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] == 2) {
+                pressButton(onSketchPos);
+                releaseButton(onSketchPos);
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_First) {
+            geoId = getPreselectCurve();
+            setLineGeo(geoId);
+        }
+        else if (Mode == STATUS_SEEK_Second) {
+            toolSettings->widget->setParameterActive(0, 0);
+            toolSettings->widget->setParameterActive(1, 1);
+            toolSettings->widget->setParameterActive(1, 2);
+            toolSettings->widget->setParameterFocus(1);
+            Mode = STATUS_SEEK_Third;
+        }
+        else {
+            Mode = STATUS_End;
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        if (Mode == STATUS_End) {
+            unsetCursor();
+            resetPositionText();
+
+            int firstCurve = getHighestCurveIndex() + 1;
+
+            if (insertMode == InsertBox) {
+                try {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch insert"));
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "geoList = []\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "%s.addGeometry(geoList,%s)\n"
+                        "conList = []\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Parallel',%d,%d))\n"
+                        "conList.append(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,2))\n"
+                        "conList.append(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,1))\n"
+                        "conList.append(Sketcher.Constraint('Tangent',%d,%d))\n"
+                        "%s.addConstraint(conList)\n"
+                        "del geoList, conList\n",
+                        EditCurve[0].x, EditCurve[0].y, EditCurve[1].x, EditCurve[1].y, // line 1
+                        EditCurve[1].x, EditCurve[1].y, EditCurve[2].x, EditCurve[2].y, // line 2
+                        EditCurve[2].x, EditCurve[2].y, EditCurve[3].x, EditCurve[3].y, // line 3
+                        EditCurve[3].x, EditCurve[3].y, EditCurve[4].x, EditCurve[4].y, // line 4
+                        EditCurve[4].x, EditCurve[4].y, EditCurve[5].x, EditCurve[5].y, // line 5
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                        geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                        firstCurve, firstCurve + 1, // coincident1
+                        firstCurve + 1, firstCurve + 2, // coincident2
+                        firstCurve + 2, firstCurve + 3, // coincident3
+                        firstCurve + 3, firstCurve + 4, // coincident4
+                        firstCurve + 2, firstCurve, // Parallel
+                        firstCurve, firstCurve + 1, firstCurve, // Perpendicular1
+                        firstCurve + 3, firstCurve +4, firstCurve + 4, // Perpendicular2
+                        firstCurve, firstCurve + 4, // tangent
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "transferConstraints(%d,%d,%d,%d)",
+                        geoId, 1, firstCurve, 1);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "transferConstraints(%d,%d,%d,%d)",
+                        geoId, 2, firstCurve + 4, 2);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "transferConstraints(%d,%d,%d,%d)",
+                        geoId, 0, firstCurve, 0);
+
+                    //add constraint if user typed in some dimensions in tool widget
+                    if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] != 0) {
+                        if (toolSettings->widget->isSettingSet[0] == 1) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                                firstCurve, 1, firstCurve, 2, toolSettings->widget->toolParameters[0]);
+                        }
+                        if (toolSettings->widget->isSettingSet[1] == 1) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                                firstCurve + 2, 1, firstCurve + 2, 2, toolSettings->widget->toolParameters[1]);
+                        }
+                        if (toolSettings->widget->isSettingSet[2] == 1) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                                firstCurve + 1, 1, firstCurve + 1, 2, toolSettings->widget->toolParameters[2]);
+                        }
+                    }
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometry(%d)", geoId);
+
+                    Gui::Command::commitCommand();
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("Failed to add insert: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
+
+                bool avoidredundant = sketchgui->AvoidRedundant.getValue() && sketchgui->Autoconstraints.getValue();
+
+                if (avoidredundant)
+                    removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()), sugConstr1, sugConstr2);
+
+                // add auto constraints for the insert segment start
+                if (!sugConstr1.empty()) {
+                    createAutoConstraints(sugConstr1, firstCurve + 2, Sketcher::PointPos::start);
+                    sugConstr1.clear();
+                }
+
+                // add auto constraints for the insert segment end
+                if (!sugConstr2.empty()) {
+                    createAutoConstraints(sugConstr2, firstCurve + 2, Sketcher::PointPos::end);
+                    sugConstr2.clear();
+                }
+            }
+            else {
+                try {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch insert"));
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "geoList = []\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                        "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                        "%s.addGeometry(geoList,%s)\n"
+                        "conList = []\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,%i))\n"
+                        "conList.append(Sketcher.Constraint('Coincident',%i,%i,%i,1))\n"
+                        "conList.append(Sketcher.Constraint('Tangent',%d,%d))\n"
+                        "%s.addConstraint(conList)\n"
+                        "del geoList, conList\n",
+                        EditCurve[0].x, EditCurve[0].y, EditCurve[1].x, EditCurve[1].y, // line 1
+                        centerPoint.x, centerPoint.y, // center of the  arc 1
+                        radius,
+                        startAngle, endAngle,                 // start and end angle of arc1
+                        EditCurve[30].x, EditCurve[30].y, EditCurve[31].x, EditCurve[31].y, // line 5
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                        geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                        firstCurve, firstCurve + 1, insertMode == InsertArc ? 2 : 1,// coincident1
+                        firstCurve + 1, insertMode == InsertArc ? 1 : 2, firstCurve + 2, // coincident2
+                        firstCurve, firstCurve + 2, // tangent
+                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "transferConstraints(%d,%d,%d,%d)",
+                        geoId, 1, firstCurve, 1);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "transferConstraints(%d,%d,%d,%d)",
+                        geoId, 2, firstCurve + 2, 2);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "transferConstraints(%d,%d,%d,%d)",
+                        geoId, 0, firstCurve, 0);
+
+                    //add constraint if user typed in some dimensions in tool widget
+                    if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] != 0) {
+                        if (toolSettings->widget->isSettingSet[0] == 1) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                                firstCurve, 1, firstCurve, 2, toolSettings->widget->toolParameters[0]);
+                        }
+                        if (toolSettings->widget->isSettingSet[1] == 1) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                                firstCurve, 2, firstCurve + 2, 1, toolSettings->widget->toolParameters[1]);
+                        }
+                        if (toolSettings->widget->isSettingSet[2] == 1) {
+                            if (toolSettings->widget->toolParameters[2] == 0) {
+                                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                                    firstCurve + 1, 3, firstCurve);
+                            }
+                            else {
+                                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                                    firstCurve + 1, 3, firstCurve, 0, toolSettings->widget->toolParameters[2]);
+                            }
+                        }
+                    }
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometry(%d)", geoId);
+
+                    Gui::Command::commitCommand();
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("Failed to add insert: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
+
+                // add auto constraints for the insert segment end
+                if (!sugConstr2.empty()) {
+                    createAutoConstraints(sugConstr2, firstCurve + 1, Sketcher::PointPos::mid);
+                    sugConstr2.clear();
+                }
+
+            }
+
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
+
+            EditCurve.clear();
+            drawEdit(EditCurve);
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
+            if (continuousMode) {
+                // This code enables the continuous creation mode.
+                toolSettings->widget->setSettings(16);
+                Mode = STATUS_SEEK_First;
+                if (insertMode == InsertBox) {
+                    EditCurve.resize(6);
+                }
+                else{
+                    EditCurve.resize(32);
+                    toolSettings->widget->setLabel(QApplication::translate("Insert geo",
+                        "Distance of center to line"), 2);
+                }
+                applyCursor();
+            }
+            else {
+                sketchgui->purgeHandler(); // no code after this insert, Handler get deleted in ViewProvider
+            }
+        }
+        return true;
+    }
+protected:
+    int geoId;
+    Base::Vector2d dirVec, centerPoint, prevOnSketchPos;
+    double lineLength, boxLength, startLength, radius, startAngle, endAngle;
+    InsertMode insertMode;
+    SelectMode Mode;
+    std::vector<Base::Vector2d> EditCurve;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+
+    void setLineGeo(int geoId) {
+        if (geoId >= 0) {
+            const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(geoId);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                //Hide GeoId line?
+                const Part::GeomLineSegment* lineGeo = static_cast<const Part::GeomLineSegment*>(geom);
+                EditCurve[0].x = lineGeo->getStartPoint().x;
+                EditCurve[0].y = lineGeo->getStartPoint().y;
+                if (insertMode == InsertBox) {
+                    EditCurve[5].x = lineGeo->getEndPoint().x;
+                    EditCurve[5].y = lineGeo->getEndPoint().y;
+                    lineLength = (EditCurve[5] - EditCurve[0]).Length();
+                }
+                else {
+                    EditCurve[31].x = lineGeo->getEndPoint().x;
+                    EditCurve[31].y = lineGeo->getEndPoint().y;
+                    lineLength = (EditCurve[31] - EditCurve[0]).Length();
+                }
+                dirVec.Set((lineGeo->getEndPoint().x - lineGeo->getStartPoint().x) / lineLength,
+                    (lineGeo->getEndPoint().y - lineGeo->getStartPoint().y) / lineLength);
+
+                toolSettings->widget->setParameterActive(1, 0);
+                toolSettings->widget->setParameterFocus(0);
+                Mode = STATUS_SEEK_Second;
+            }
+        }
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherInsert)
+
+CmdSketcherInsert::CmdSketcherInsert()
+    : Command("Sketcher_Insert")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Insert geometry on line");
+    sToolTipText = QT_TR_NOOP("Insert a geometry in a line while preserving constraints.");
+    sWhatsThis = "Sketcher_Insert";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Insert";
+    sAccel = "G, I";
+    eType = ForEdit;
+}
+
+void CmdSketcherInsert::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    //The following code let us catch if user selected an edge before launching the tool.
+    int geoId = Sketcher::GeoEnum::GeoUndef;
+    std::vector<Gui::SelectionObject> selection;
+    selection = Gui::Command::getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() == 1) {
+        // get the needed lists and objects
+        const std::vector<std::string>& SubNames = selection[0].getSubNames();
+        if (SubNames.size() == 1) {
+            if (SubNames[0].size() > 4 && SubNames[0].substr(0, 4) == "Edge") {
+                geoId = std::atoi(SubNames[0].substr(4, 4000).c_str()) - 1;
+            }
+        }
+    }
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerInsert(geoId));
+}
+
+bool CmdSketcherInsert::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
 /* Carbon Copy============================================================*/
 
 namespace SketcherGui {
@@ -10583,6 +11144,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());
+    rcCmdMgr.addCommand(new CmdSketcherInsert());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }

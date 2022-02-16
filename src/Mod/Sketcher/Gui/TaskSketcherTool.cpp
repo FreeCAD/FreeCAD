@@ -641,7 +641,7 @@ void SketcherToolWidget::setSettings(int toolSelected)
             isWidgetActive = 1;
             break;
         }
-        case 15: //Round corner rectangle : DrawSketchHandlerOblong
+        case 15: //Frame : DrawSketchHandlerFrame
         {
             toolParameters.resize(5, 0);
             isSettingSet.resize(5, 0);
@@ -669,6 +669,29 @@ void SketcherToolWidget::setSettings(int toolSelected)
             ui->parameterFour->setEnabled(0);
             ui->parameterFive->setVisible(1);
             ui->parameterFive->setEnabled(0);
+
+            setParameterFocus(0);
+            isWidgetActive = 1;
+            break;
+        }
+        case 16: //Insert : DrawSketchHandlerInsert
+        {
+            toolParameters.resize(3, 0);
+            isSettingSet.resize(3, 0);
+
+            ui->label->setVisible(1);
+            ui->label2->setVisible(1);
+            ui->label3->setVisible(1);
+            ui->label->setText(QApplication::translate("TaskSketcherTool_p1_insert", "Start length"));
+            ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_insert", "Insert length"));
+            ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_insert", "Insert depth"));
+
+            ui->parameterOne->setVisible(1);
+            ui->parameterOne->setEnabled(0);
+            ui->parameterTwo->setVisible(1);
+            ui->parameterTwo->setEnabled(0);
+            ui->parameterThree->setVisible(1);
+            ui->parameterThree->setEnabled(0);
 
             setParameterFocus(0);
             isWidgetActive = 1;
