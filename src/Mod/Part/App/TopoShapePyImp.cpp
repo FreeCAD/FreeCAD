@@ -2171,7 +2171,7 @@ PyObject* TopoShapePy::makeWires(PyObject *args) {
     if (!PyArg_ParseTuple(args, "s", &op))
         return NULL;
     PY_TRY {
-        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makEWires(op)));
+        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makeWires(op)));
     }PY_CATCH_OCC
 }
 
