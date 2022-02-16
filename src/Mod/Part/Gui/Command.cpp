@@ -56,25 +56,24 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Part/App/PartFeature.h>
 
-#include "BoxSelection.h"
-#include "CrossSections.h"
+#include "../App/PartFeature.h"
+#include <Mod/Part/App/Part2DObject.h>
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
+#include "DlgRevolution.h"
 #include "DlgFilletEdges.h"
 #include "DlgPrimitives.h"
 #include "DlgProjectionOnSurface.h"
-#include "DlgRevolution.h"
+#include "CrossSections.h"
 #include "Mirroring.h"
-#include "SectionCutting.h"
-#include "TaskCheckGeometry.h"
-#include "TaskDimension.h"
-#include "TaskLoft.h"
-#include "TaskShapeBuilder.h"
-#include "TaskSweep.h"
 #include "ViewProvider.h"
+#include "TaskShapeBuilder.h"
+#include "TaskLoft.h"
+#include "TaskSweep.h"
+#include "TaskDimension.h"
+#include "TaskCheckGeometry.h"
+#include "BoxSelection.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1310,6 +1309,56 @@ bool CmdPartBoolean::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+/**
+ * Used for Loft, Sweep, Revolve, and Extrude where the user has preselected
+ * some objects prior to executing the command. In some such cases the dialog
+ * can be skipped, for example, selecting a sketch in the tree, a path
+ * in the 3d view, and then clicking the Sweep toolbar icon
+ */
+
+namespace PartGui {
+
+bool callFunction (const Py::Object& module, const std::string& function, App::Document* doc, const char* text) {
+    try {
+        doc -> openTransaction(text);
+        Py::Boolean result(module.callMemberFunction(function));
+        bool ok = result.as_bool();
+        ok ? doc->commitTransaction() : doc->abortTransaction();
+        return ok;
+    }
+    catch (const Py::Exception&) {
+        doc->abortTransaction();
+        throw; //re-throw the exception
+    }
+}
+
+void checkSkipDialog (Gui::TaskView::TaskDialog *dlg, const std::string& function, const char* text) {
+
+    bool neverSkipDialog = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part")->GetBool("NeverSkipDialog", false);
+    if (!neverSkipDialog) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        Base::PyGILStateLocker lock;
+        try {
+            PyObject* module = PyImport_ImportModule("BasicShapes.SkipGui");
+            if (!module) {
+                throw Py::Exception();
+            }
+            Py::Module skipgui(module, true);
+            if (PartGui::callFunction(skipgui, function, doc, text)) {
+                return; //true means selection was good and object was created
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e;
+            e.ReportException();
+            Gui::Control().showDialog(dlg); //show the dialog on runtime python error
+        }
+    }
+    Gui::Control().showDialog(dlg);
+
+}
+}
+
 //===========================================================================
 // Part_Extrude
 //===========================================================================
@@ -1330,7 +1379,7 @@ CmdPartExtrude::CmdPartExtrude()
 void CmdPartExtrude::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskExtrusion());
+    PartGui::checkSkipDialog(new PartGui::TaskExtrusion(), "makeExtrude", "Extrude");
 }
 
 bool CmdPartExtrude::isActive(void)
@@ -1410,7 +1459,7 @@ CmdPartRevolve::CmdPartRevolve()
 void CmdPartRevolve::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskRevolution());
+    PartGui::checkSkipDialog(new PartGui::TaskRevolution(), "makeRevolve", "Revolve");
 }
 
 bool CmdPartRevolve::isActive(void)
@@ -1591,7 +1640,7 @@ CmdPartLoft::CmdPartLoft()
 void CmdPartLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskLoft());
+    PartGui::checkSkipDialog(new PartGui::TaskLoft(), "makeLoft", "Loft");
 }
 
 bool CmdPartLoft::isActive(void)
@@ -1620,7 +1669,7 @@ CmdPartSweep::CmdPartSweep()
 void CmdPartSweep::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskSweep());
+    PartGui::checkSkipDialog(new PartGui::TaskSweep(), "makeSweep", "Sweep");
 }
 
 bool CmdPartSweep::isActive(void)
@@ -2469,51 +2518,6 @@ bool CmdPartProjectionOnSurface::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-//===========================================================================
-// Part_SectionCut
-//===========================================================================
-
-DEF_STD_CMD_AC(CmdPartSectionCut)
-
-CmdPartSectionCut::CmdPartSectionCut()
-    : Command("Part_SectionCut")
-{
-    sAppModule = "Part";
-    sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Persistent section cut");
-    sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
-    sWhatsThis = "Part_SectionCut";
-    sStatusTip = sToolTipText;
-    sPixmap = "Part_SectionCut";
-    eType = AlterDoc | Alter3DView;
-}
-
-Gui::Action* CmdPartSectionCut::createAction(void)
-{
-    Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
-#if 0
-    pcAction->setCheckable(true);
-#endif
-    return pcAction;
-}
-
-void CmdPartSectionCut::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    static QPointer<PartGui::SectionCut> sectionCut = nullptr;
-    if (!sectionCut) {
-        sectionCut = PartGui::SectionCut::makeDockWidget(Gui::getMainWindow());
-    }
-}
-
-bool CmdPartSectionCut::isActive(void)
-{
-    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    return view ? true : false;
-}
-
-//---------------------------------------------------------------
-
 void CreatePartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2564,5 +2568,4 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
-    rcCmdMgr.addCommand(new CmdPartSectionCut());
 }
