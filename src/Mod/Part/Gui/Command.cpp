@@ -1303,6 +1303,58 @@ bool CmdPartBoolean::isActive(void)
 }
 
 //===========================================================================
+// Skip Dialog helper functions
+//===========================================================================
+
+/**
+ * Used for Loft, Sweep, Revolve, and Extrude where the user has preselected
+ * some objects prior to executing the command. In some such cases the dialog
+ * can be skipped, for example, selecting a sketch in the tree, a path
+ * in the 3d view, and then clicking the Sweep toolbar icon
+ */
+
+namespace PartGui {
+
+bool callFunction (const Py::Object& module, const std::string& function, App::Document* doc, const char* text) {
+    try {
+        doc -> openTransaction(text);
+        Py::Boolean result(module.callMemberFunction(function));
+        bool ok = result.as_bool();
+        ok ? doc->commitTransaction() : doc->abortTransaction();
+        return ok;
+    }
+    catch (const Py::Exception&) {
+        doc->abortTransaction();
+        throw; //re-throw the exception
+    }
+}
+
+void checkSkipDialog (Gui::TaskView::TaskDialog *dlg, const std::string& function, const char* text) {
+
+    bool neverSkipDialog = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part")->GetBool("NeverSkipDialog", false);
+    if (!neverSkipDialog) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        Base::PyGILStateLocker lock;
+        try {
+            PyObject* module = PyImport_ImportModule("BasicShapes.SkipGui");
+            if (!module) {
+                throw Py::Exception();
+            }
+            Py::Module skipgui(module, true);
+            if (PartGui::callFunction(skipgui, function, doc, text)) {
+                return; //true means selection was good and object was created
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e;
+            e.ReportException();
+        }
+    }
+    Gui::Control().showDialog(dlg);
+
+}
+}
+//===========================================================================
 // Part_Extrude
 //===========================================================================
 DEF_STD_CMD_A(CmdPartExtrude)
@@ -1322,7 +1374,7 @@ CmdPartExtrude::CmdPartExtrude()
 void CmdPartExtrude::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskExtrusion());
+    PartGui::checkSkipDialog(new PartGui::TaskExtrusion(), "makeExtrude", QT_TRANSLATE_NOOP("Command", "Extrude"));
 }
 
 bool CmdPartExtrude::isActive(void)
@@ -1402,7 +1454,7 @@ CmdPartRevolve::CmdPartRevolve()
 void CmdPartRevolve::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskRevolution());
+    PartGui::checkSkipDialog(new PartGui::TaskRevolution(), "makeRevolve", QT_TRANSLATE_NOOP("Command", "Revolve"));
 }
 
 bool CmdPartRevolve::isActive(void)
@@ -1583,7 +1635,7 @@ CmdPartLoft::CmdPartLoft()
 void CmdPartLoft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskLoft());
+    PartGui::checkSkipDialog(new PartGui::TaskLoft(), "makeLoft", QT_TRANSLATE_NOOP("Command", "Loft"));
 }
 
 bool CmdPartLoft::isActive(void)
@@ -1612,13 +1664,14 @@ CmdPartSweep::CmdPartSweep()
 void CmdPartSweep::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskSweep());
+    PartGui::checkSkipDialog(new PartGui::TaskSweep(), "makeSweep", QT_TRANSLATE_NOOP("Command", "Sweep"));
 }
 
 bool CmdPartSweep::isActive(void)
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
+
 
 //===========================================================================
 // Part_Offset
