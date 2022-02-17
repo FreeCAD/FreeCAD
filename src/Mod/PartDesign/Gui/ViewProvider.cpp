@@ -28,23 +28,18 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
-#include <Inventor/nodes/SoSwitch.h>
 #endif
 
 #include <Base/Exception.h>
-#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MDIView.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "TaskFeatureParameters.h"
-#include "Utils.h"
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
