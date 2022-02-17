@@ -91,6 +91,47 @@ void ShowRestoreInformationLayer(const char * visibleelementname)
     hGrp->SetBool(visibleelementname, !status);
 }
 
+/// For a knot given by (GeoId, PosId) finds the B-Spline and the knot's
+/// index within it (by OCC numbering).
+/// Returns true if the entities are found, false otherwise.
+/// If returns false, `splineGeoId` and `knotIndexOCC` have garbage values.
+bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
+                             int knotGeoId, Sketcher::PointPos knotPosId,
+                             int& splineGeoId, int& knotIndexOCC)
+{
+    for (auto const constraint : Obj->Constraints.getValues()) {
+        if (constraint->Type == Sketcher::InternalAlignment
+            && constraint->First == knotGeoId
+            && constraint->AlignmentType == Sketcher::BSplineKnotPoint)
+        {
+            splineGeoId = constraint->Second;
+            knotIndexOCC = constraint->InternalAlignmentIndex + 1;
+            return true;  // we have already found our knot.
+        }
+    }
+
+    // TODO: what to do if multiple splines have the same first/last point?
+    const Part::Geometry *geo = Obj->getGeometry(knotGeoId);
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        splineGeoId = knotGeoId;
+        switch (knotPosId) {
+        case Sketcher::PointPos::start:
+            knotIndexOCC = 1;
+            return true;
+        case Sketcher::PointPos::end:
+            knotIndexOCC = static_cast<const Part::GeomBSplineCurve *>(geo)->countKnots();
+            return true;
+        default:
+            // If we reach here something went wrong.
+            // isBsplineKnotOrEndPoint (that we expect is run before) will
+            // only accept spline knotGeoID if knotPosId is start or end.
+            return false;
+        }
+    }
+
+    return false;
+}
+
 // Show/Hide B-spline degree
 DEF_STD_CMD_A(CmdSketcherBSplineDegree)
 
@@ -637,55 +678,48 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
 
-    bool applied = false;
-    bool notaknot = true;
-    boost::uuids::uuid bsplinetag;
-
     int GeoId;
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if (isSimpleVertex(Obj, GeoId, PosId)) {
-        const std::vector<Sketcher::Constraint *> &vals = Obj->Constraints.getValues();
+    int splineGeoId;
+    int knotIndexOCC;
 
-        for (std::vector<Sketcher::Constraint *>::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment
-                && (*it)->First == GeoId
-                && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-            {
-                bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
-                notaknot = false;
+    bool applied = false;
+    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId) &&
+                      findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+    boost::uuids::uuid bsplinetag;
 
-                try {
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                          "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                          (*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
-                    applied = true;
+    if (!notaknot) {
+        bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
 
-                    // Warning: GeoId list might have changed
-                    // as the consequence of deleting pole circles and
-                    // particularly B-spline GeoID might have changed.
-                }
-                catch (const Base::CADKernelError& e) {
-                    e.ReportException();
-                    if (e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(),
-                                             QObject::tr("CAD Kernel Error"),
-                                             QObject::tr(e.getMessage().c_str()));
-                    }
-                    getSelection().clearSelection();
-                }
-                catch (const Base::Exception& e) {
-                    e.ReportException();
-                    if (e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(),
-                                             QObject::tr("Input Error"),
-                                             QObject::tr(e.getMessage().c_str()));
-                    }
-                    getSelection().clearSelection();
-                }
-                break;  // we have already found our knot.
+        try {
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                  splineGeoId, knotIndexOCC, 1);
+            applied = true;
+
+            // Warning: GeoId list might have changed
+            // as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+        catch (const Base::CADKernelError& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("CAD Kernel Error"),
+                                     QObject::tr(e.getMessage().c_str()));
             }
+            getSelection().clearSelection();
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("Input Error"),
+                                     QObject::tr(e.getMessage().c_str()));
+            }
+            getSelection().clearSelection();
         }
     }
 
@@ -791,42 +825,34 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
 
-    bool applied = false;
-    bool notaknot = true;
-    boost::uuids::uuid bsplinetag;
-
     int GeoId;
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if (isSimpleVertex(Obj, GeoId, PosId))
-    {
-        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+    int splineGeoId;
+    int knotIndexOCC;
 
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment
-                && (*it)->First == GeoId
-                && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-            {
-                bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
-                notaknot = false;
+    bool applied = false;
+    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId) &&
+                      findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+    boost::uuids::uuid bsplinetag;
 
-                try {
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                          "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                          (*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
-                    applied = true;
+    if (!notaknot) {
+        bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
 
-                    // Warning: GeoId list might have changed as the consequence of deleting pole circles and
-                    // particularly B-spline GeoID might have changed.
-                }
-                catch (const Base::Exception& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                                         QObject::tr(getStrippedPythonExceptionString(e).c_str()));
-                    getSelection().clearSelection();
-                }
-                break;  // we have already found our knot.
-            }
+        try {
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                  splineGeoId, knotIndexOCC, -1);
+            applied = true;
+
+            // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+                                 QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+            getSelection().clearSelection();
         }
     }
 
