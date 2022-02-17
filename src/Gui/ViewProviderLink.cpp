@@ -23,29 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/details/SoDetail.h>
+# include <Inventor/draggers/SoCenterballDragger.h>
+# include <Inventor/misc/SoChildList.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/misc/SoChildList.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/nodes/SoSurroundScale.h>
-# include <Inventor/nodes/SoCube.h>
 # include <Inventor/sensors/SoNodeSensor.h>
+# include <Inventor/SoPickedPoint.h>
 #endif
-#include <cctype>
+
 #include <atomic>
+#include <cctype>
 #include <QApplication>
 #include <QFileInfo>
 #include <QMenu>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost_bind_bind.hpp>
 #include <Base/BoundBoxPy.h>
