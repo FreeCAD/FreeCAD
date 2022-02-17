@@ -66,7 +66,10 @@ bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
 
 bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
 
+/// Checks if `GeoId` corresponds to a B-Spline knot
 bool isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId);
+/// Checks if the (`GeoId`, `PosId`) pair corresponds to a B-Spline knot, including first and last knots
+bool isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
 
 bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
 
