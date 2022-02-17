@@ -38,7 +38,7 @@ import draftfunctions.rotate as rotate
 def array(objectslist, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None):
     """
     This function creates an array of independent objects.
-    Use makeArray() to create a parametric array object.
+    Use make_array() to create a parametric array object.
     
     Creates an array of the given objects (that can be an object or a list
     of objects).

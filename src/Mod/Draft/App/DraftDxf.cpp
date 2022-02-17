@@ -199,7 +199,7 @@ void DraftDxfRead::OnReadDimension(const double* s, const double* e, const doubl
         Base::Interpreter().runStringArg("p1=FreeCAD.Vector(%f,%f,%f)",s[0]*optionScaling,s[1]*optionScaling,s[2]*optionScaling);
         Base::Interpreter().runStringArg("p2=FreeCAD.Vector(%f,%f,%f)",e[0]*optionScaling,e[1]*optionScaling,e[2]*optionScaling);
         Base::Interpreter().runStringArg("p3=FreeCAD.Vector(%f,%f,%f)",point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
-        Base::Interpreter().runString("Draft.makeDimension(p1,p2,p3)");
+        Base::Interpreter().runString("Draft.make_dimension(p1,p2,p3)");
     }
 }
 
