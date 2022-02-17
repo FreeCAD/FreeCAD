@@ -27,21 +27,8 @@
 # include <cfloat>
 # include <QAction>
 # include <QMenu>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/manips/SoCenterballManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
 #endif
 
 #include <App/PropertyGeo.h>
@@ -50,7 +37,6 @@
 #include <Base/Placement.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Gui/BitmapFactory.h>
-#include <Inventor/draggers/SoCenterballDragger.h>
 #if (COIN_MAJOR_VERSION > 2)
 #include <Inventor/nodes/SoDepthBuffer.h>
 #endif
