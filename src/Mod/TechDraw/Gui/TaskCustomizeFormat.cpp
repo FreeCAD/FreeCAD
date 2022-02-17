@@ -202,11 +202,11 @@ void TaskCustomizeFormat::onFormatChanged()
     QString formatPreview = ui->leFormat->text();
     if (isDimension)
     {
-        int size(80);
+        constexpr int size(80);
         char buffer[size];
         std::string formatString = formatPreview.toUtf8().constData();
-        size = sprintf(buffer,formatString.c_str(),dimRawValue);
-        formatPreview = QString::fromUtf8(buffer,size);
+        auto usedSize = snprintf(buffer,size, formatString.c_str(),dimRawValue);
+        formatPreview = QString::fromUtf8(buffer, usedSize);
     }
     ui->lbShowPreview->setText(formatPreview);
 }
