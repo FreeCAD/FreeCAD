@@ -87,7 +87,7 @@ class Shape2DView(gui_base_original.Modifier):
         commitlist = []
         Gui.addModule("Draft")
         if len(objs) == 1 and faces:
-            _cmd = "Draft.makeShape2DView"
+            _cmd = "Draft.make_shape2dview"
             _cmd += "("
             _cmd += "FreeCAD.ActiveDocument." + objs[0].Name + ", "
             _cmd += DraftVecUtils.toString(vec) + ", "
@@ -97,7 +97,7 @@ class Shape2DView(gui_base_original.Modifier):
         else:
             n = 0
             for o in objs:
-                _cmd = "Draft.makeShape2DView"
+                _cmd = "Draft.make_shape2dview"
                 _cmd += "("
                 _cmd += "FreeCAD.ActiveDocument." + o.Name + ", "
                 _cmd += DraftVecUtils.toString(vec)

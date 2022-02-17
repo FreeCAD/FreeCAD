@@ -171,7 +171,7 @@ class Line(gui_base_original.Creator):
                 rot, sup, pts, fil = self.getStrings()
 
                 _base = DraftVecUtils.toString(self.node[0])
-                _cmd = 'Draft.makeWire'
+                _cmd = 'Draft.make_wire'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'placement=pl, '
@@ -347,7 +347,7 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
+                    _cmd_list = ['wire = Draft.make_wire([' + pts + '])']
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
