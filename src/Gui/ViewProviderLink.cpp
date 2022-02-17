@@ -58,6 +58,7 @@
 #include <Gui/BitmapFactory.h>
 
 #include "ViewProviderLink.h"
+#include "ViewProviderLinkPy.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
@@ -71,10 +72,8 @@
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
-#include "ViewProviderLinkPy.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderGroupExtension.h"
-
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
