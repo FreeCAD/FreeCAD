@@ -24,109 +24,69 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <Bnd_Box.hxx>
-# include <Poly_Polygon3D.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepTools.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <GeomLib.hxx>
-# include <GeomAbs_CurveType.hxx>
-# include <GeomAbs_SurfaceType.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
 # include <gp_Trsf.hxx>
+# include <Precision.hxx>
 # include <Poly_Array1OfTriangle.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Poly_PolygonOnTriangulation.hxx>
 # include <Poly_Triangulation.hxx>
-# include <Poly_Connect.hxx>
-# include <Standard_Version.hxx>
+# include <QAction>
+# include <QMenu>
+# include <sstream>
+# include <TColgp_Array1OfDir.hxx>
 # include <TColgp_Array1OfPnt.hxx>
+# include <TColStd_Array1OfInteger.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <Poly_PolygonOnTriangulation.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <TColgp_Array1OfDir.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TShort_Array1OfShortReal.hxx>
-# include <TShort_HArray1OfShortReal.hxx>
-# include <Precision.hxx>
-# include <Python.h>
+
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/errors/SoDebugError.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoLocateHighlight.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/nodes/SoNormalBinding.h>
-# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoScale.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <QAction>
-# include <QMenu>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/TimeInfo.h>
-#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
-
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/Selection.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
+#include <Base/TimeInfo.h>
+#include <Base/Tools.h>
+#include <boost/algorithm/string/predicate.hpp>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/ViewProviderLink.h>
-
+#include <Gui/Selection.h>
+#include <Gui/SoFCSelectionAction.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
+#include <Mod/Part/App/Tools.h>
+
 #include "ViewProviderExt.h"
-#include "SoBrepPointSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
+#include "SoBrepPointSet.h"
 #include "TaskFaceColors.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/Part/App/Tools.h>
 
 FC_LOG_LEVEL_INIT("Part", true, true)
 
@@ -896,8 +856,9 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
 
 void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
