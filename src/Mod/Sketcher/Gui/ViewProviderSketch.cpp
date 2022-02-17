@@ -363,9 +363,7 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
 
     sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
     Mode = STATUS_SKETCH_UseHandler;
-    sketchHandler->sketchgui = this;
-    sketchHandler->preActivated(this);
-    sketchHandler->activated(this);
+    sketchHandler->activate(this);
 
     // make sure receiver has focus so immediately pressing Escape will be handled by
     // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
@@ -382,12 +380,9 @@ void ViewProviderSketch::deactivateHandler()
         editCurve.clear();
         drawEdit(editCurve); // erase any line
         resetPositionText();
-        sketchHandler->deactivated(this);
-        sketchHandler->postDeactivated(this);
-        sketchHandler->unsetCursor();
+        sketchHandler->deactivate();
         sketchHandler = nullptr;
     }
-    DrawSketchHandler::postDeactivatedAlwaysRun(this);
     Mode = STATUS_NONE;
 }
 
@@ -467,11 +462,13 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             }
             return false;
         }
+        break;
     case SoKeyboardEvent::LEFT_SHIFT:
         if (Mode < STATUS_SKETCH_UseHandler) {
             editCoinManager->setConstraintSelectability(!pressed);
             return true;
         }
+        [[fallthrough]];
     default:
         {
             if (isInEditMode() && sketchHandler)
