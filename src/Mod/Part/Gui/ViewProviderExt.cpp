@@ -109,24 +109,26 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/Selection.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/ViewProviderLink.h>
-
+#include <Gui/Selection.h>
+#include <Gui/SoFCSelectionAction.h>
+#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Utilities.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewParams.h>
-#include "ViewProviderExt.h"
-#include "SoBrepPointSet.h"
-#include "SoBrepEdgeSet.h"
-#include "SoBrepFaceSet.h"
-#include "TaskFaceColors.h"
+#include <Gui/ViewProviderLink.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/Tools.h>
+
+#include "ViewProviderExt.h"
+#include "SoBrepEdgeSet.h"
+#include "SoBrepFaceSet.h"
+#include "SoBrepPointSet.h"
+#include "TaskFaceColors.h"
+
 
 FC_LOG_LEVEL_INIT("Part", true, true)
 
@@ -896,8 +898,9 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
 
 void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
