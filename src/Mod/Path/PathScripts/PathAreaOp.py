@@ -33,6 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Draft = LazyLoader("Draft", globals(), "Draft")
 Part = LazyLoader("Part", globals(), "Part")
+PathGeom = LazyLoader("PathScripts.PathGeom", globals(), "PathScripts.PathGeom")
 
 
 __title__ = "Base class for PathArea based operations."
@@ -313,11 +314,18 @@ class ObjectOp(PathOp.ObjectOp):
                 pathParams["preamble"] = False
 
                 if self.endVector is None:
-                    V = hWire.Wires[0].Vertexes
-                    lv = len(V) - 1
-                    pathParams["start"] = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
+                    verts = hWire.Wires[0].Vertexes
+                    idx = 0
                     if obj.Direction == "CCW":
-                        pathParams["start"] = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
+                        idx = len(verts) - 1
+                    x = verts[idx].X
+                    y = verts[idx].Y
+                    # Zero start value adjustments for Path.fromShapes() bug
+                    if PathGeom.isRoughly(x, 0.0):
+                        x = 0.00001
+                    if PathGeom.isRoughly(y, 0.0):
+                        y = 0.00001
+                    pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
                 else:
                     pathParams["start"] = self.endVector
 
