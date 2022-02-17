@@ -29,6 +29,7 @@
 # include <QMenu>
 # include <Inventor/draggers/SoDragger.h>
 # include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include <App/PropertyGeo.h>
