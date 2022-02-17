@@ -364,6 +364,7 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
     sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
     Mode = STATUS_SKETCH_UseHandler;
     sketchHandler->sketchgui = this;
+    sketchHandler->preActivated(this);
     sketchHandler->activated(this);
 
     // make sure receiver has focus so immediately pressing Escape will be handled by
@@ -382,10 +383,11 @@ void ViewProviderSketch::deactivateHandler()
         drawEdit(editCurve); // erase any line
         resetPositionText();
         sketchHandler->deactivated(this);
+        sketchHandler->postDeactivated(this);
         sketchHandler->unsetCursor();
         sketchHandler = nullptr;
     }
-
+    DrawSketchHandler::postDeactivatedAlwaysRun(this);
     Mode = STATUS_NONE;
 }
 
@@ -464,6 +466,11 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 return viewProviderParameters.handleEscapeButton;
             }
             return false;
+        }
+    case SoKeyboardEvent::LEFT_SHIFT:
+        if (Mode < STATUS_SKETCH_UseHandler) {
+            editCoinManager->setConstraintSelectability(!pressed);
+            return true;
         }
     default:
         {
@@ -3288,6 +3295,11 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
 
 
 /*************************** functions ViewProviderSketch offers to friends such as DrawHandlerSketch ************************/
+
+void ViewProviderSketch::setConstraintSelectability(bool enabled /*= true*/)
+{
+    editCoinManager->setConstraintSelectability(enabled);
+}
 
 void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {

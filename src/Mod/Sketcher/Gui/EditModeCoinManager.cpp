@@ -627,6 +627,11 @@ void EditModeCoinManager::updateColor(const GeoListFacade & geolistfacade)
     pEditModeConstraintCoinManager->updateConstraintColor(constraints);
 }
 
+void EditModeCoinManager::setConstraintSelectability(bool enabled /* = true */)
+{
+    pEditModeConstraintCoinManager->setConstraintSelectability(enabled);
+}
+
 void EditModeCoinManager::createEditModeInventorNodes()
 {
     // 1 - Create the edit root node

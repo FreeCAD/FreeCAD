@@ -436,7 +436,7 @@ public:
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
         STATUS_SKETCH_UseHandler, /**< enum value a DrawSketchHandler is in control. */
         STATUS_SKETCH_StartRubberBand, /**< enum value for initiating a rubber band selection */
-        STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection *//**< enum value a DrawSketchHandler is in control. */
+        STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection */
     };
 
     /// is called by GuiCommands to set the drawing mode
@@ -698,6 +698,7 @@ private:
     void deleteSelected();
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
+    void setConstraintSelectability(bool enabled = true);
     void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
