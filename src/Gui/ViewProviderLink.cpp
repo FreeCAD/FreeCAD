@@ -48,30 +48,33 @@
 #include <QMenu>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost_bind_bind.hpp>
+#include <Base/BoundBoxPy.h>
 #include <Base/Console.h>
 #include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>
-#include <Base/BoundBoxPy.h>
 #include <Base/Tools.h>
 #include <App/ComplexGeoData.h>
 #include <App/GeoFeature.h>
+#include <Gui/BitmapFactory.h>
+
+#include "ViewProviderLink.h"
 #include "Application.h"
 #include "BitmapFactory.h"
-#include "Document.h"
-#include "Selection.h"
-#include "MainWindow.h"
-#include "ViewProviderLink.h"
-#include "ViewProviderLinkPy.h"
-#include "LinkViewPy.h"
-#include "ViewProviderGeometryObject.h"
-#include "ViewProviderGroupExtension.h"
-#include "View3DInventor.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCCSysDragger.h"
 #include "Control.h"
+#include "Document.h"
+#include "LinkViewPy.h"
+#include "MainWindow.h"
+#include "Selection.h"
+#include "SoFCCSysDragger.h"
+#include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
 #include "TaskElementColors.h"
+#include "View3DInventor.h"
 #include "ViewParams.h"
+#include "ViewProviderLinkPy.h"
+#include "ViewProviderGeometryObject.h"
+#include "ViewProviderGroupExtension.h"
+
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -2342,7 +2345,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if(linkEdit(ext)) {
         linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
     } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
-        QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+        QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
+        QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
         act->setData(QVariant((int)ViewProvider::Transform));
     }
 
