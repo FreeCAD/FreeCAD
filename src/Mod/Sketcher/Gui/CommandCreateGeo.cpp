@@ -4255,7 +4255,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -4282,7 +4282,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -4387,7 +4387,7 @@ public:
     }
 
 private:
-    virtual void activated(ViewProviderSketch * /*sketchgui*/)
+    virtual void activated() override
     {
         setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
     }
