@@ -236,6 +236,8 @@ void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const c
     QAction* act;
     act = menu->addAction(QObject::tr("Edit datum"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    // Call the extensions
+    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderDatum::setEdit(int ModNum)
