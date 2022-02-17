@@ -36,9 +36,7 @@
 # include <Poly_Polygon3D.hxx>
 # include <Poly_PolygonOnTriangulation.hxx>
 # include <Poly_Triangulation.hxx>
-# include <QAction>
-# include <QMenu>
-# include <sstream>
+# include <Standard_Version.hxx>
 # include <TColgp_Array1OfDir.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
@@ -50,6 +48,10 @@
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+
+# include <QAction>
+# include <QMenu>
+# include <sstream>
 
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
