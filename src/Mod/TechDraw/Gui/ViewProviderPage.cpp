@@ -26,26 +26,18 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QList>
 # include <QMenu>
 # include <QMessageBox>
-# include <QTextStream>
-# include <QTimer>
-# include <QList>
 # include <QPointer>
+# include <QTextStream>
+# include <boost_bind_bind.hpp>
 # include <boost_signals2.hpp>
 # include <boost/signals2/connection.hpp>
-# include <boost_bind_bind.hpp>
-
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
@@ -61,12 +53,11 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "PreferencesGui.h"
 #include "MDIViewPage.h"
-#include "QGVPage.h"
+#include "PreferencesGui.h"
 #include "QGITemplate.h"
+#include "QGVPage.h"
 #include "ViewProviderTemplate.h"
 #include "ViewProviderPage.h"
 
