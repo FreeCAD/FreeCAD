@@ -322,6 +322,7 @@ SET(Gui_UIC_SRCS
     DlgOnlineHelp.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgPreferences.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
@@ -418,6 +419,7 @@ SET(Dialog_CPP_SRCS
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
     DlgParameterFind.cpp
+    DlgPreferencePackManagementImp.cpp
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
@@ -456,6 +458,7 @@ SET(Dialog_HPP_SRCS
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
     DlgParameterFind.h
+    DlgPreferencePackManagementImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
@@ -499,6 +502,7 @@ SET(Dialog_SRCS
     DlgMaterialProperties.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui

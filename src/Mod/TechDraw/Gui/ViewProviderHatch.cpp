@@ -26,16 +26,10 @@
 
 #ifndef _PreComp_
 #include <Precision.hxx>
-
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 

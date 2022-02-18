@@ -454,17 +454,22 @@ class PackageDetails(QWidget):
     def show_macro(self, repo: AddonManagerRepo) -> None:
         """loads information of a given macro"""
 
-        if HAS_QTWEBENGINE:
-            self.ui.webView.load(QUrl(repo.macro.url))
-            self.ui.urlBar.setText(repo.macro.url)
+        if not repo.macro.url:
+            # We need to populate the macro information... may as well do it while the user reads the wiki page
+            self.worker = GetMacroDetailsWorker(repo)
+            self.worker.readme_updated.connect(self.macro_readme_updated)
+            self.worker.start()
         else:
-            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(repo.macro.url)
+            self.macro_readme_updated()
+
+    def macro_readme_updated(self):
+        if HAS_QTWEBENGINE:
+            self.ui.webView.load(QUrl(self.repo.macro.url))
+            self.ui.urlBar.setText(self.repo.macro.url)
+        else:
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.repo.macro.url)
             text = readme_data.data().decode("utf8")
             self.ui.textBrowserReadMe.setHtml(text)
-
-        # We need to populate the macro information... may as well do it while the user reads the wiki page
-        self.worker = GetMacroDetailsWorker(repo)
-        self.worker.start()
 
     def run_javascript(self):
         """Modify the page for a README to optimize for viewing in a smaller window"""

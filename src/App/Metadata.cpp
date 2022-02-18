@@ -320,6 +320,14 @@ void App::Metadata::addGenericMetadata(const std::string& tag, const Meta::Gener
     _genericMetadata.insert(std::make_pair(tag, genericMetadata));
 }
 
+void App::Metadata::removeContentItem(const std::string& tag, const std::string& itemName)
+{
+    auto tagRange = _content.equal_range(tag);
+    auto foundItem = std::find_if(tagRange.first, tagRange.second, [itemName](auto check) -> bool { return itemName == check.second.name(); });
+    if (foundItem != tagRange.second)
+        _content.erase(foundItem);
+}
+
 
 DOMElement* appendSimpleXMLNode(DOMElement* baseNode, const std::string& nodeName, const std::string& nodeContents)
 {

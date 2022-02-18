@@ -27,32 +27,14 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/LineGroup.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "PreferencesGui.h"
-#include "MDIViewPage.h"
-#include "QGVPage.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
 #include "ViewProviderRichAnno.h"

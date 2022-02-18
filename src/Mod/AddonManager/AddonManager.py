@@ -28,6 +28,7 @@ import os
 import shutil
 import stat
 import tempfile
+import hashlib
 from datetime import date, timedelta
 from typing import Dict
 
@@ -320,6 +321,26 @@ class CommandAddonManager:
                 )
             )
 
+        # See if the user has changed the custom repos list since our last re-cache:
+        stored_hash = pref.GetString("CustomRepoHash", "")
+        custom_repos = pref.GetString("CustomRepositories", "")
+        if custom_repos:
+            hasher = hashlib.sha1()
+            hasher.update(custom_repos.encode("utf-8"))
+            new_hash = hasher.hexdigest()
+        else:
+            new_hash = ""
+        if new_hash != stored_hash:
+            stored_hash = pref.SetString("CustomRepoHash", new_hash)
+            self.update_cache = True
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller",
+                    "Custom repo list changed, forcing recache...\n",
+                )
+            )
+
+
         # If we are checking for updates automatically, hide the Check for updates button:
         autocheck = pref.GetBool("AutoCheck", False)
         if autocheck:
@@ -372,6 +393,7 @@ class CommandAddonManager:
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
         self.dialog.buttonPauseUpdate.clicked.connect(self.stop_update)
+        self.dialog.buttonCheckForUpdates.clicked.connect(lambda: self.force_check_updates(standalone=True))
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -734,23 +756,32 @@ class CommandAddonManager:
             self.do_next_startup_phase()
             return
         if not self.packages_with_updates:
-            if hasattr(self, "check_worker"):
-                thread = self.check_worker
-                if thread:
-                    if not thread.isFinished():
-                        self.do_next_startup_phase()
-                        return
-            self.dialog.buttonUpdateAll.setText(
-                translate("AddonsInstaller", "Checking for updates...")
-            )
-            self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
-            self.check_worker.finished.connect(self.do_next_startup_phase)
-            self.check_worker.progress_made.connect(self.update_progress_bar)
-            self.check_worker.update_status.connect(self.status_updated)
-            self.check_worker.start()
-            self.enable_updates(len(self.packages_with_updates))
+            self.force_check_updates(standalone = False)
         else:
             self.do_next_startup_phase()
+
+    def force_check_updates(self, standalone = False) -> None:
+        if hasattr(self, "check_worker"):
+            thread = self.check_worker
+            if thread:
+                if not thread.isFinished():
+                    self.do_next_startup_phase()
+                    return
+                
+        self.dialog.buttonUpdateAll.setText(
+            translate("AddonsInstaller", "Checking for updates...")
+        )
+        self.dialog.buttonUpdateAll.show()
+        self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)            
+        self.check_worker.finished.connect(self.do_next_startup_phase)
+        self.check_worker.finished.connect(self.update_check_complete)
+        self.check_worker.progress_made.connect(self.update_progress_bar)
+        if standalone:
+            self.current_progress_region = 1
+            self.number_of_progress_regions = 1
+        self.check_worker.update_status.connect(self.status_updated)
+        self.check_worker.start()
+        self.enable_updates(len(self.packages_with_updates))
 
     def status_updated(self, repo: AddonManagerRepo) -> None:
         self.item_model.reload_item(repo)
@@ -769,11 +800,18 @@ class CommandAddonManager:
             )
             self.dialog.buttonUpdateAll.setText(s.format(number_of_updates))
             self.dialog.buttonUpdateAll.setEnabled(True)
+        elif hasattr(self, "check_worker") and self.check_worker.isRunning():
+            self.dialog.buttonUpdateAll.setText(
+                translate("AddonsInstaller", "Checking for updates...")
+            )
         else:
             self.dialog.buttonUpdateAll.setText(
                 translate("AddonsInstaller", "No updates available")
             )
             self.dialog.buttonUpdateAll.setEnabled(False)
+
+    def update_check_complete(self) -> None:
+        self.enable_updates(len(self.packages_with_updates))
 
     def add_addon_repo(self, addon_repo: AddonManagerRepo) -> None:
         """adds a workbench to the list"""

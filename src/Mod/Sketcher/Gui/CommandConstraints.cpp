@@ -687,51 +687,14 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+    virtual void mouseMove(Base::Vector2d /*onSketchPos*/) override {}
 
-        resetOngoingSequences();
-
-        selSeq.clear();
-
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(selFilterGate);
-
-        // Constrain icon size in px
-        qreal pixelRatio = devicePixelRatio();
-        const unsigned long defaultCrosshairColor = 0xFFFFFF;
-        unsigned long color = getCrosshairColor();
-        auto colorMapping = std::map<unsigned long, unsigned long>();
-        colorMapping[defaultCrosshairColor] = color;
-
-        qreal fullIconWidth = 32 * pixelRatio;
-        qreal iconWidth = 16 * pixelRatio;
-        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
-                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->getPixmap(), QSizeF(iconWidth, iconWidth));
-        QPainter cursorPainter;
-        cursorPainter.begin(&cursorPixmap);
-        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
-        cursorPainter.end();
-        int hotX = 8;
-        int hotY = 8;
-        cursorPixmap.setDevicePixelRatio(pixelRatio);
-        // only X11 needs hot point coordinates to be scaled
-        if (qGuiApp->platformName() == QLatin1String("xcb")) {
-            hotX *= pixelRatio;
-            hotY *= pixelRatio;
-        }
-        setCursor(cursorPixmap, hotX, hotY, false);
-    }
-
-    virtual void mouseMove(Base::Vector2d /*onSketchPos*/) {}
-
-    virtual bool pressButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -819,6 +782,44 @@ public:
         }
 
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+
+        resetOngoingSequences();
+
+        selSeq.clear();
+
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(selFilterGate);
+
+        // Constrain icon size in px
+        qreal pixelRatio = devicePixelRatio();
+        const unsigned long defaultCrosshairColor = 0xFFFFFF;
+        unsigned long color = getCrosshairColor();
+        auto colorMapping = std::map<unsigned long, unsigned long>();
+        colorMapping[defaultCrosshairColor] = color;
+
+        qreal fullIconWidth = 32 * pixelRatio;
+        qreal iconWidth = 16 * pixelRatio;
+        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
+                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->getPixmap(), QSizeF(iconWidth, iconWidth));
+        QPainter cursorPainter;
+        cursorPainter.begin(&cursorPixmap);
+        cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
+        cursorPainter.end();
+        int hotX = 8;
+        int hotY = 8;
+        cursorPixmap.setDevicePixelRatio(pixelRatio);
+        // only X11 needs hot point coordinates to be scaled
+        if (qGuiApp->platformName() == QLatin1String("xcb")) {
+            hotX *= pixelRatio;
+            hotY *= pixelRatio;
+        }
+        setCursor(cursorPixmap, hotX, hotY, false);
     }
 
 protected:
@@ -1788,26 +1789,15 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        Gui::Selection().rmvSelectionGate();
-        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
-        selFilterGate->setAllowedSelTypes(SelVertex|SelRoot);
-        Gui::Selection().addSelectionGate(selFilterGate);
-        int hotX = 8;
-        int hotY = 8;
-        setCursor(QPixmap(cursor_createcoincident), hotX, hotY);
-    }
+    virtual void mouseMove(Base::Vector2d onSketchPos) override {Q_UNUSED(onSketchPos);}
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
-
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         int VtId = getPreselectPoint();
         int CrsId = getPreselectCross();
@@ -1867,6 +1857,18 @@ public:
 
         return true;
     }
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().rmvSelectionGate();
+        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+        selFilterGate->setAllowedSelTypes(SelVertex|SelRoot);
+        Gui::Selection().addSelectionGate(selFilterGate);
+        int hotX = 8;
+        int hotY = 8;
+        setCursor(QPixmap(cursor_createcoincident), hotX, hotY);
+    }
+
 protected:
     int GeoId1, GeoId2;
     Sketcher::PointPos PosId1, PosId2;

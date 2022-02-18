@@ -30,18 +30,10 @@
 #endif
 
 #include <QColor>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Material.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>

@@ -255,6 +255,9 @@ namespace App {
         void setFreeCADMax(const Meta::Version& version);
         void addGenericMetadata(const std::string& tag, const Meta::GenericMetadata& genericMetadata);
 
+        // Deleters (work in progress...)
+        void removeContentItem(const std::string& tag, const std::string& itemName);
+
         /**
          * Write the metadata to an XML file
          */

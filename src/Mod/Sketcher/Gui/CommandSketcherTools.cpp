@@ -1319,14 +1319,7 @@ public:
         Snap5Degree
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        setCursor(QPixmap(cursor_createcopy), 7, 7);
-        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
-        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -1359,7 +1352,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d)
+    virtual bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1368,7 +1361,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End)
@@ -1421,6 +1414,13 @@ public:
             sketchgui->purgeHandler();
         }
         return true;
+    }
+private:
+    virtual void activated() override
+    {
+        setCursor(QPixmap(cursor_createcopy), 7, 7);
+        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
+        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
     }
 protected:
     SelectMode Mode;
@@ -1868,14 +1868,7 @@ public:
         Snap5Degree
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
-        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
-        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
 
@@ -1910,7 +1903,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d)
+    virtual bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1919,7 +1912,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -1958,6 +1951,13 @@ public:
             sketchgui->purgeHandler();
         }
         return true;
+    }
+private:
+    virtual void activated() override
+    {
+        setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
+        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
+        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
     }
 protected:
     SelectMode Mode;

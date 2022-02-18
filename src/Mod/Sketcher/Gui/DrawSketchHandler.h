@@ -97,11 +97,9 @@ public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
-    virtual void preActivated(ViewProviderSketch *);
-    virtual void activated(ViewProviderSketch *){}
-    virtual void deactivated(ViewProviderSketch *){}
-    virtual void postDeactivated(ViewProviderSketch *){}
-    static void postDeactivatedAlwaysRun(ViewProviderSketch *);
+    void activate(ViewProviderSketch *);
+    void deactivate();
+
     virtual void mouseMove(Base::Vector2d onSketchPos)=0;
     virtual bool pressButton(Base::Vector2d onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2d onSketchPos)=0;
@@ -129,6 +127,12 @@ public:
     void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
+
+private:
+    virtual void preActivated();
+    virtual void activated(){}
+    virtual void deactivated(){}
+    virtual void postDeactivated(){}
 
 protected:
     // helpers

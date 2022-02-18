@@ -121,14 +121,25 @@ DrawSketchHandler::DrawSketchHandler() : sketchgui(0) {}
 
 DrawSketchHandler::~DrawSketchHandler() {}
 
-void DrawSketchHandler::preActivated(ViewProviderSketch* vp)
+void DrawSketchHandler::activate(ViewProviderSketch * vp)
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*vp, false);
+    sketchgui = vp;
+
+    this->preActivated();
+    this->activated();
 }
 
-void DrawSketchHandler::postDeactivatedAlwaysRun(ViewProviderSketch* vp)
+void DrawSketchHandler::deactivate()
 {
-    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*vp, true);
+    this->deactivated();
+    this->postDeactivated();
+    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
+    unsetCursor();
+}
+
+void DrawSketchHandler::preActivated()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
 }
 
 void DrawSketchHandler::quit(void)

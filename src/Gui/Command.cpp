@@ -1776,20 +1776,23 @@ std::string CommandManager::newMacroName() const
 
     bool used = true;
     int id = 0;
-    std::ostringstream name;
+    std::string name;
     while (used) {
         used = false;
-        name << "Std_Macro_" << id++;
+        std::ostringstream test_name;
+        test_name << "Std_Macro_" << id++;
 
         for (const auto& macro : macros) {
-            if (name.str() == std::string(macro->getName())) {
+            if (test_name.str() == std::string(macro->getName())) {
                 used = true;
                 break;
             }
         }
+        if (!used)
+            name = test_name.str();
     }
 
-    return name.str();
+    return name;
 }
 
 void CommandManager::clearCommands()

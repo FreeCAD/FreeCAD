@@ -136,8 +136,8 @@ using GeoListFacade = Sketcher::GeoListFacade;
  *
  */
 class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
-                                            , public PartGui::ViewProviderAttachExtension
-                                            , public Gui::SelectionObserver
+                                           , public PartGui::ViewProviderAttachExtension
+                                           , public Gui::SelectionObserver
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
 

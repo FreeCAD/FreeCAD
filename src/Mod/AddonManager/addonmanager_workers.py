@@ -231,9 +231,8 @@ class UpdateWorker(QtCore.QThread):
             if addon and addon["url"]:
                 if addon["url"][-1] == "/":
                     addon["url"] = addon["url"][0:-1]  # Strip trailing slash
+                addon["url"] = addon["url"].split(".git")[0] # Remove .git
                 name = addon["url"].split("/")[-1]
-                if name.lower().endswith(".git"):
-                    name = name[:-4]
                 if name in package_names:
                     # We already have something with this name, skip this one
                     continue
@@ -636,7 +635,7 @@ class FillMacroListWorker(QtCore.QThread):
                         "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                     )
                 gitrepo = git.Git(self.repo_dir)
-                gitrepo.pull()
+                gitrepo.pull("--ff-only")
             else:
                 git.Repo.clone_from(
                     "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
@@ -999,7 +998,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 utils.repair_git_repo(self.repo.url, clonedir)
             repo = git.Git(clonedir)
             try:
-                repo.pull()  # Refuses to take a progress object?
+                repo.pull("--ff-only")  # Refuses to take a progress object?
                 answer = translate(
                     "AddonsInstaller",
                     "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
@@ -1222,7 +1221,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if os.path.isfile(package_xml):
             self.repo.load_metadata_file(package_xml)
             self.repo.installed_version = self.repo.metadata.Version
-            self.repo.updated_timestamp = datetime.now().timestamp()
+            self.repo.updated_timestamp = os.path.getmtime(package_xml)
 
 
 class DependencyInstallationWorker(QtCore.QThread):

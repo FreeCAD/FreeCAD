@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2022 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,55 +21,66 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
+#define GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
 
-#ifndef _PreComp_
-#endif
+#include <memory>
+#include <QDialog>
+#include <boost/filesystem.hpp>
 
-#include <App/DocumentObject.h>
-#include "ViewProviderSpreadsheet.h"
 
-using namespace TechDrawGui;
+class QTreeWidgetItem;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderSpreadsheet, TechDrawGui::ViewProviderSymbol)
+namespace Gui {
 
-//**************************************************************************
-// Construction/Destruction
+namespace Dialog {
 
-ViewProviderSpreadsheet::ViewProviderSpreadsheet()
+class Ui_DlgPreferencePackManagement;
+
+/**
+ * \class DlgCreateNewPreferencePackImp
+ * 
+ * A dialog to request a preferencePack name and a set of preferencePack templates. 
+ * 
+ * \author Chris Hennes
+ */
+class GuiExport DlgPreferencePackManagementImp : public QDialog
 {
-    sPixmap = "TechDraw_TreeSpreadsheet";
-}
+  Q_OBJECT
 
-ViewProviderSpreadsheet::~ViewProviderSpreadsheet()
-{
-}
+public:
 
-void ViewProviderSpreadsheet::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderSymbol::attach(pcFeat);
-}
+    DlgPreferencePackManagementImp(QWidget* parent = nullptr);
+    ~DlgPreferencePackManagementImp();
 
-void ViewProviderSpreadsheet::setDisplayMode(const char* ModeName)
-{
-    ViewProviderSymbol::setDisplayMode(ModeName);
-}
+Q_SIGNALS:
+    void packVisibilityChanged();
 
-std::vector<std::string> ViewProviderSpreadsheet::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderSymbol::getDisplayModes();
+protected Q_SLOTS:
 
-    return StrList;
-}
+    void deleteUserPack(const std::string & prefPackName);
+    void hideBuiltInPack(const std::string& prefPackName);
+    void hideInstalledPack(const std::string& addonName, const std::string& prefPackName);
 
-void ViewProviderSpreadsheet::updateData(const App::Property* prop)
-{
-    ViewProviderSymbol::updateData(prop);
-}
+    void showEvent(QShowEvent* event) override;
+    void showAddonManager();
 
-TechDraw::DrawViewSpreadsheet* ViewProviderSpreadsheet::getViewObject() const
-{
-    return dynamic_cast<TechDraw::DrawViewSpreadsheet*>(pcObject);
-}
+private:
+
+    enum class TreeWidgetType {
+        BUILTIN,
+        USER,
+        ADDON
+    };
+
+    std::unique_ptr<Ui_DlgPreferencePackManagement> ui;
+
+    std::vector<std::string> getPacksFromDirectory(const boost::filesystem::path& path) const;
+    void addTreeNode(const std::string& name, const std::vector<std::string>& contents, TreeWidgetType twt);
+
+};
+
+} // namespace Dialog
+} // namespace Gui
+
+#endif // GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
