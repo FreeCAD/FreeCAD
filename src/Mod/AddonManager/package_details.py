@@ -21,6 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from posixpath import normpath
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
@@ -291,7 +292,9 @@ class PackageDetails(QWidget):
                 basedir = FreeCAD.getUserAppDataDir()
                 moddir = os.path.join(basedir, "Mod", repo.name)
             installationLocationString = (
-                translate("AddonsInstaller", "Installation location") + ": " + moddir
+                translate("AddonsInstaller", "Installation location")
+                + ": "
+                + os.path.normpath(moddir)
             )
 
             self.ui.labelInstallationLocation.setText(installationLocationString)

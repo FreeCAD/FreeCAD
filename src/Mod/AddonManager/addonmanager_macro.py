@@ -27,6 +27,8 @@ import io
 import codecs
 import shutil
 import time
+from urllib.parse import urlparse
+import tempfile
 from typing import Dict, Tuple, List, Union
 
 import FreeCAD
@@ -34,7 +36,7 @@ import NetworkManager
 
 translate = FreeCAD.Qt.translate
 
-from addonmanager_utilities import remove_directory_if_empty
+from addonmanager_utilities import remove_directory_if_empty, is_float
 
 try:
     from HTMLParser import HTMLParser
@@ -65,6 +67,7 @@ class Macro(object):
         self.date = ""
         self.src_filename = ""
         self.author = ""
+        self.icon = ""
         self.other_files = []
         self.parsed = False
 
@@ -112,52 +115,81 @@ class Macro(object):
         # __Files__
         # __Author__
         # __Date__
-        max_lines_to_search = 50
+        max_lines_to_search = 200
         line_counter = 0
-        number_of_fields = 5
         ic = re.IGNORECASE  # Shorten the line for Black
-        re_comment = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_date = re.compile(r"^__Date__\s*=\s*(['\"])(.*)\1", flags=ic)
 
+        string_search_mapping = {
+            "__comment__": "comment",
+            "__web__": "url",
+            "__version__": "version",
+            "__files__": "other_files",
+            "__author__": "author",
+            "__date__": "date",
+            "__icon__": "icon",
+        }
+
+        string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
         f = io.StringIO(code)
         while f and line_counter < max_lines_to_search:
             line = f.readline()
             line_counter += 1
-            if not line.startswith(
-                "__"
-            ):  # Speed things up a bit... this comparison is very cheap
-                continue
-            match = re.match(re_comment, line)
-            if match:
-                self.comment = match.group(2)
-                self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
-                number_of_fields -= 1
-            match = re.match(re_author, line)
-            if match:
-                self.author = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_url, line)
-            if match:
-                self.url = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_version, line)
-            if match:
-                self.version = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_date, line)
-            if match:
-                self.date = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_files, line)
-            if match:
-                self.other_files = [of.strip() for of in match.group(2).split(",")]
-                number_of_fields -= 1
-            if number_of_fields <= 0:
-                break
+            # if not line.startswith("__"):
+            #    # Speed things up a bit... this comparison is very cheap
+            #    continue
+
+            lowercase_line = line.lower()
+            for key, value in string_search_mapping.items():
+                if lowercase_line.startswith(key):
+                    _, _, after_equals = line.partition("=")
+                    match = re.match(string_search_regex, after_equals)
+                    if match:
+                        if type(self.__dict__[value]) == str:
+                            self.__dict__[value] = match.group(2)
+                        elif type(self.__dict__[value]) == list:
+                            self.__dict__[value] = [
+                                of.strip() for of in match.group(2).split(",")
+                            ]
+                        string_search_mapping.pop(key)
+                        break
+                    else:
+                        # Macro authors are supposed to be providing strings here, but in some
+                        # cases they are not doing so. If this is the "__version__" tag, try
+                        # to apply some special handling to accepts numbers, and "__date__"
+                        if key == "__version__":
+                            if "__date__" in after_equals.lower():
+                                FreeCAD.Console.PrintMessage(
+                                    translate(
+                                        "AddonsInstaller",
+                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.",
+                                    ).format(self.name, key)
+                                    + "\n"
+                                )
+                                self.version = self.date
+                                break
+                            elif is_float(after_equals):
+                                FreeCAD.Console.PrintMessage(
+                                    translate(
+                                        "AddonsInstaller",
+                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.",
+                                    ).format(self.name, key)
+                                    + "\n"
+                                )
+                                self.version = str(after_equals).strip()
+                                break
+                        FreeCAD.Console.PrintError(
+                            translate(
+                                "AddonsInstaller",
+                                "Syntax error while reading {} from macro {}",
+                            ).format(key, self.name)
+                            + "\n"
+                        )
+                        FreeCAD.Console.PrintError(line + "\n")
+                        continue
+
+        # Do some cleanup of the values:
+        if self.comment:
+            self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
 
         # Truncate long comments to speed up searches, and clean up display
         if len(self.comment) > 512:
@@ -251,9 +283,7 @@ class Macro(object):
 
     def install(self, macro_dir: str) -> Tuple[bool, List[str]]:
         """Install a macro and all its related files
-
         Returns True if the macro was installed correctly.
-
         Parameters
         ----------
         - macro_dir: the directory to install into
@@ -283,8 +313,16 @@ class Macro(object):
                     os.makedirs(dst_dir)
                 except OSError:
                     return False, [f"Failed to create {dst_dir}"]
-            src_file = os.path.join(base_dir, other_file)
-            dst_file = os.path.join(macro_dir, other_file)
+            src_file = os.path.normpath(os.path.join(base_dir, other_file))
+            dst_file = os.path.normpath(os.path.join(macro_dir, other_file))
+            if not os.path.isfile(src_file):
+                warnings.append(
+                    translate(
+                        "AddonsInstaller",
+                        "Could not locate macro-specified file {} (should have been at {})",
+                    ).format(other_file, src_file)
+                )
+                continue
             try:
                 shutil.copy(src_file, dst_file)
             except IOError:

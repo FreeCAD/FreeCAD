@@ -24,7 +24,7 @@
 import os
 import re
 import ctypes
-from typing import Union, Optional
+from typing import Union, Optional, Any
 
 import urllib
 from urllib.request import Request
@@ -338,6 +338,15 @@ def update_macro_installation_details(repo) -> None:
         repo.installed_version = get_macro_version_from_file(test_file_two)
     else:
         return
+
+
+# Borrowed from Stack Overflow: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python
+def is_float(element: Any) -> bool:
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
 
 
 #  @}

@@ -371,22 +371,24 @@ class PackageListItemDelegate(QStyledItemDelegate):
                     )
         elif repo.macro and repo.macro.parsed:
             self.widget.ui.labelDescription.setText(repo.macro.comment)
-            self.widget.ui.labelVersion.setText(repo.macro.version)
+            version_string = ""
+            if repo.macro.version:
+                version_string = repo.macro.version + " "
+            if repo.macro.on_wiki:
+                version_string += "(wiki)"
+            elif repo.macro.on_git:
+                version_string += "(git)"
+            else:
+                version_string += "(unknown source)"
             if repo.macro.date:
-                if repo.macro.version:
-                    new_label = (
-                        "v"
-                        + repo.macro.version
-                        + ", "
-                        + translate("AddonsInstaller", "updated")
-                        + " "
-                        + repo.macro.date
-                    )
-                else:
-                    new_label = (
-                        translate("AddonsInstaller", "Updated") + " " + repo.macro.date
-                    )
-                self.widget.ui.labelVersion.setText(new_label)
+                version_string = (
+                    version_string
+                    + ", "
+                    + translate("AddonsInstaller", "updated")
+                    + " "
+                    + repo.macro.date
+                )
+            self.widget.ui.labelVersion.setText("<i>" + version_string + "</i>")
             if self.displayStyle == ListDisplayStyle.EXPANDED:
                 if repo.macro.author:
                     caption = translate("AddonsInstaller", "Author")
