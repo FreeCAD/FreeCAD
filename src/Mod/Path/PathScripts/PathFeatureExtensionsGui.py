@@ -234,8 +234,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
-        # Hide warning label by default
-        form.enableExtensionsWarning.hide()
         return form
 
     def forAllItemsCall(self, cb):
@@ -297,21 +295,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         Subroutine called inside `setFields()` to initialize Extensions efficiently."""
         if self.enabled:
             self.extensions = FeatureExtensions.getExtensions(obj)
-        elif (
-            len(obj.ExtensionFeature) > 0
-        ):  # latter test loads pre-existing extensions (editing of existing operation)
-            noEdges = True
-            for (__, __, subFeat) in FeatureExtensions.readObjExtensionFeature(obj):
-                if subFeat.startswith("Edge") or subFeat.startswith("Wire"):
-                    noEdges = False
-                    break
+        elif len(obj.ExtensionFeature) > 0:
             self.extensions = FeatureExtensions.getExtensions(obj)
             self.form.enableExtensions.setChecked(True)
-            if noEdges:
-                self._enableExtensions()
-            else:
-                self.form.includeEdges.setChecked(True)
-                self._includeEdgesAndWires()
+            self._includeEdgesAndWires()
+        else:
+            self.form.extensionEdit.setDisabled(True)
         self.setExtensions(self.extensions)
 
     def updateQuantitySpinBoxes(self, index=None):
@@ -331,7 +320,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         # PathLog.debug("createItemForBaseModel() label: {}, sub: {}, {}, edgeCnt: {}, subEdges: {}".format(base.Label, sub, '+', len(edges), len(base.Shape.getElement(sub).Edges)))
 
         extendCorners = self.form.extendCorners.isChecked()
-        includeEdges = self.form.includeEdges.isChecked()
         subShape = base.Shape.getElement(sub)
 
         def createSubItem(label, ext0):
@@ -356,24 +344,23 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         item.setSelectable(False)
 
         extensionEdges = {}
-        if includeEdges:
-            if self.useOutline == 1 and sub.startswith("Face"):
-                # Only show exterior extensions if `Use Outline` is True
-                subEdges = subShape.Wires[0].Edges
-            else:
-                # Show all exterior and interior extensions if `Use Outline` is False
-                subEdges = subShape.Edges
+        if self.useOutline == 1 and sub.startswith("Face"):
+            # Only show exterior extensions if `Use Outline` is True
+            subEdges = subShape.Wires[0].Edges
+        else:
+            # Show all exterior and interior extensions if `Use Outline` is False
+            subEdges = subShape.Edges
 
-            for edge in subEdges:
-                for (e, label) in edges:
-                    if edge.isSame(e):
-                        ext1 = self._cachedExtension(self.obj, base, sub, label)
-                        if ext1.isValid():
-                            extensionEdges[e] = label[4:]  # isolate edge number
-                            if not extendCorners:
-                                createSubItem(label, ext1)
+        for edge in subEdges:
+            for (e, label) in edges:
+                if edge.isSame(e):
+                    ext1 = self._cachedExtension(self.obj, base, sub, label)
+                    if ext1.isValid():
+                        extensionEdges[e] = label[4:]  # isolate edge number
+                        if not extendCorners:
+                            createSubItem(label, ext1)
 
-        if extendCorners and includeEdges:
+        if extendCorners:
 
             def edgesMatchShape(e0, e1):
                 flipped = PathGeom.flipEdge(e1)
@@ -413,23 +400,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     )  # pylint: disable=unnecessary-lambda
                 ext2 = self._cachedExtension(self.obj, base, sub, label)
                 createSubItem(label, ext2)
-
-        # Only add these subItems for horizontally oriented faces, not edges or vertical faces (from vertical face loops)
-        if sub.startswith("Face") and PathGeom.isHorizontal(subShape):
-            # Add entry to extend outline of face
-            label = "Extend_" + sub
-            ext3 = self._cachedExtension(self.obj, base, sub, label)
-            createSubItem(label, ext3)
-
-            # Add entry for waterline at face
-            label = "Waterline_" + sub
-            ext4 = self._cachedExtension(self.obj, base, sub, label)
-            createSubItem(label, ext4)
-
-            # Add entry for avoid face
-            label = "Avoid_" + sub
-            ext5 = self._cachedExtension(self.obj, base, sub, label)
-            createSubItem(label, ext5)
 
         return item
 
@@ -654,7 +624,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         signals = []
         signals.append(self.form.defaultLength.editingFinished)
         signals.append(self.form.enableExtensions.toggled)
-        signals.append(self.form.includeEdges.toggled)
         return signals
 
     def registerSignalHandlers(self, obj):
@@ -665,7 +634,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
         self.form.defaultLength.editingFinished.connect(self.updateQuantitySpinBoxes)
         self.form.enableExtensions.toggled.connect(self._enableExtensions)
-        self.form.includeEdges.toggled.connect(self._includeEdgesAndWires)
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 
@@ -716,46 +684,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         The return value is a simple boolean to communicate whether or not Extensions
         are be enabled.
         """
-        enabled = True
+        enabled = False
 
-        if self.initialEdgeCount < 1:
-            self.initialEdgeCount = 0
-            for base in self.obj.Base:
-                for sub in sorted(base[1]):
-                    self.initialEdgeCount += len(base[0].Shape.getElement(sub).Edges)
-            if self.initialEdgeCount > self.edgeCountThreshold:
-                # Block signals
-                self.form.enableExtensions.blockSignals(True)
-                self.form.enableExtensionsWarning.blockSignals(True)
-                self.form.includeEdges.blockSignals(True)
-
-                # Make changes to form
-                msg = translate(
-                    "PathPocketShape",
-                    "Edge count greater than threshold of"
-                    + " "
-                    + str(self.edgeCountThreshold)
-                    + ":  "
-                    + str(self.initialEdgeCount),
-                )
-                self.form.enableExtensionsWarning.setText(msg)
-                self.form.enableExtensions.setChecked(False)
-                self.form.enableExtensionsWarning.show()
-                msg = translate("PathFeatureExtensions", "Click to enable Extensions")
-                self.form.enableExtensions.setText(msg)
-                self.form.extensionEdit.setDisabled(True)
-                self.form.includeEdges.setChecked(False)
-                msg = translate("PathFeatureExtensions", "Click to include Edges/Wires")
-                self.form.includeEdges.setText(msg)
-
-                # Unblock signals
-                self.form.enableExtensions.blockSignals(False)
-                self.form.enableExtensionsWarning.blockSignals(False)
-                self.form.includeEdges.blockSignals(False)
-
-                enabled = False
-        elif not self.form.enableExtensions.isChecked():
-            enabled = False
+        if self.form.enableExtensions.isChecked():
+            enabled = True
 
         PathLog.debug("_autoEnableExtensions() is {}".format(enabled))
         self.enabled = enabled
@@ -771,15 +703,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if self.form.enableExtensions.isChecked():
             self.enabled = True
             self.extensionsReady = False
-            msg = translate("PathFeatureExtensions", "Extensions enabled")
-            self.form.enableExtensions.setText(msg)
-            self.form.enableExtensionsWarning.hide()
             self.form.extensionEdit.setEnabled(True)
             self.extensions = FeatureExtensions.getExtensions(self.obj)
             self.setExtensions(self.extensions)
         else:
-            msg = translate("PathFeatureExtensions", "Click to enable Extensions")
-            self.form.enableExtensions.setText(msg)
             self.form.extensionEdit.setDisabled(True)
             self.enabled = False
 
@@ -790,12 +717,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         """
         self._getUseOutlineState()  # Find `useOutline` checkbox and get its boolean value
         PathLog.debug("_includeEdgesAndWires()")
-        if self.form.includeEdges.isChecked():
-            msg = translate("PathFeatureExtensions", "Including Edges/Wires")
-            self.form.includeEdges.setText(msg)
-        else:
-            msg = translate("PathFeatureExtensions", "Click to include Edges/Wires")
-            self.form.includeEdges.setText(msg)
         self.extensionsReady = False
         self._enableExtensions()
 
@@ -822,10 +743,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def _resetCachedExtensions(self):
         PathLog.debug("_resetCachedExtensions()")
         reset = dict()
-        # Keep waterline extensions as they will not change
-        for k in self.extensionsCache.keys():
-            if k.startswith("Waterline"):
-                reset[k] = self.extensionsCache[k]
         self.extensionsCache = reset
         self.extensionsReady = False
 
