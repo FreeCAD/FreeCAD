@@ -23,37 +23,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <Precision.hxx>
-# include <gp_Lin.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Law_Function.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <BRepAlgoAPI_Common.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
-# include <ShapeAnalysis.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <BRepPrimAPI_MakeRevol.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax3.hxx>
 #endif
 
 # include <Standard_Version.hxx>
 # include <Base/Axis.h>
-# include <Base/Console.h>
 # include <Base/Exception.h>
 # include <Base/Placement.h>
 # include <Base/Tools.h>
@@ -411,17 +400,17 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     double angle = Angle.getValue();
     double growth = Growth.getValue();
 
-    if (angle < Precision::Confusion() && angle > -Precision::Confusion())
+    if (fabs(angle) < Precision::Confusion())
         angle = 0.0;
 
     // get revolve axis
-    Base::Vector3d b = Base.getValue();
-    gp_Pnt pnt(b.x, b.y, b.z);
-    Base::Vector3d v = Axis.getValue();
-    gp_Dir dir(v.x, v.y, v.z);
+    Base::Vector3d baseVector = Base.getValue();
+    gp_Pnt pnt(baseVector.x, baseVector.y, baseVector.z);
+    Base::Vector3d axisVector = Axis.getValue();
+    gp_Dir dir(axisVector.x, axisVector.y, axisVector.z);
 
     Base::Vector3d normal = getProfileNormal();
-    Base::Vector3d start = v.Cross(normal);  // pointing towards the desired helix start point.
+    Base::Vector3d start = axisVector.Cross(normal);  // pointing towards the desired helix start point.
 
     // if our axis is (nearly) aligned with the profile's normal, we're only interested in the "twist"
     // of the helix. The actual starting point, and thus the radius, isn't important as long as it's
@@ -443,14 +432,14 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
     // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
-    double axisOffset = 100 * (profileCenter * start - b * start);
-    double startOffset = startOffset0 + profileCenter * v - b * v;
+    double axisOffset = 100 * (profileCenter * start - baseVector * start);
+    double startOffset = startOffset0 + profileCenter * axisVector - baseVector * axisVector;
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
-        if (std::fabs(v * normal) < Precision::Confusion())
+        if (fabs(axisVector * normal) < Precision::Confusion())
             throw Base::ValueError("Error: Result is self intersecting");
         radius = 1000.0; //fallback to radius 1000
     }
