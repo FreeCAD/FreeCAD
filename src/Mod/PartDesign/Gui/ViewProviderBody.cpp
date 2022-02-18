@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Precision.hxx>
 # include <QMenu>
 #endif
