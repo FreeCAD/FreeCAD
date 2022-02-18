@@ -37,8 +37,6 @@
 using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
 
-const auto TemplateRole = Qt::UserRole;
-
 /* TRANSLATOR Gui::Dialog::DlgPreferencePackManagementImp */
 
 /**
