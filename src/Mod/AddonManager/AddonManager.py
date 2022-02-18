@@ -340,7 +340,6 @@ class CommandAddonManager:
                 )
             )
 
-
         # If we are checking for updates automatically, hide the Check for updates button:
         autocheck = pref.GetBool("AutoCheck", False)
         if autocheck:
@@ -772,6 +771,7 @@ class CommandAddonManager:
             translate("AddonsInstaller", "Checking for updates...")
         )
         self.dialog.buttonUpdateAll.show()
+        self.dialog.buttonCheckForUpdates.setDisabled(True)
         self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)            
         self.check_worker.finished.connect(self.do_next_startup_phase)
         self.check_worker.finished.connect(self.update_check_complete)
@@ -812,6 +812,7 @@ class CommandAddonManager:
 
     def update_check_complete(self) -> None:
         self.enable_updates(len(self.packages_with_updates))
+        self.dialog.buttonCheckForUpdates.setEnabled(True)
 
     def add_addon_repo(self, addon_repo: AddonManagerRepo) -> None:
         """adds a workbench to the list"""

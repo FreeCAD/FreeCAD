@@ -173,6 +173,26 @@ if HAVE_QTNETWORK:
                 systemProxyCheck = pref.GetBool("SystemProxyCheck", systemProxyCheck)
                 userProxyCheck = pref.GetBool("UserProxyCheck", userProxyCheck)
                 proxy_string = pref.GetString("ProxyUrl", "")
+
+                # Add some error checking to the proxy setup, since for historical reasons they
+                # are indepdendent booleans, rather than an enumeration:
+                count = [noProxyCheck, systemProxyCheck, userProxyCheck].count(True)
+                if count != 1:
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Parameter error: mutually exclusive proxy options set. Resetting to default.") + "\n")
+                    noProxyCheck = True
+                    systemProxyCheck = False
+                    userProxyCheck = False
+                    pref.SetBool("NoProxyCheck", noProxyCheck)
+                    pref.SetBool("SystemProxyCheck", systemProxyCheck)
+                    pref.SetBool("UserProxyCheck", userProxyCheck)
+
+                if userProxyCheck and not proxy_string:                   
+                    FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Parameter error: user proxy indicated, but no proxy provided. Resetting to default.") + "\n")
+                    noProxyCheck = True
+                    userProxyCheck = False
+                    pref.SetBool("NoProxyCheck", noProxyCheck)
+                    pref.SetBool("UserProxyCheck", userProxyCheck)
+
             else:
                 print("Please select a proxy type:")
                 print("1) No proxy")
@@ -191,6 +211,7 @@ if HAVE_QTNETWORK:
                 else:
                     print(f"Got {result}, expected 1, 2, or 3.")
                     app.quit()
+                
 
             if noProxyCheck:
                 pass
