@@ -43,6 +43,11 @@
         <UserDocu>Show a list of all menus</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="reloadActive" Static="true">
+      <Documentation>
+        <UserDocu>Reload the active workbench after changing menus or toolbars</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
