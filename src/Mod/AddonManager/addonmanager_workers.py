@@ -1322,7 +1322,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                self.emit.failure(
+                self.failure.emit(
                     translate(
                         "AddonsInstaller",
                         "Installation of Python package {} failed",
@@ -1341,7 +1341,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                self.emit.failure(
+                self.failure.emit(
                     translate(
                         "AddonsInstaller",
                         "Installation of Python package {} failed",
