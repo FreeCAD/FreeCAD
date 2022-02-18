@@ -635,7 +635,7 @@ class FillMacroListWorker(QtCore.QThread):
                         "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                     )
                 gitrepo = git.Git(self.repo_dir)
-                gitrepo.pull()
+                gitrepo.pull("--ff-only")
             else:
                 git.Repo.clone_from(
                     "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
@@ -998,7 +998,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 utils.repair_git_repo(self.repo.url, clonedir)
             repo = git.Git(clonedir)
             try:
-                repo.pull()  # Refuses to take a progress object?
+                repo.pull("--ff-only")  # Refuses to take a progress object?
                 answer = translate(
                     "AddonsInstaller",
                     "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
