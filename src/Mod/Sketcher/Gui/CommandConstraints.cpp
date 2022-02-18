@@ -160,9 +160,9 @@ void showNoConstraintBetweenFixedGeometry()
 {
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                          QObject::tr("Cannot add a constraint between two fixed geometries. "
-                                     "Fixed geometries involve external geometry, "
-                                     "blocked geometry or special points "
-                                     "as B-spline knot points."));
+                                     "Fixed geometries include external geometry, "
+                                     "blocked geometry, and special points "
+                                     "such as B-spline knot points."));
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
@@ -529,7 +529,7 @@ int SketchSelection::setUp(void)
         // if one selectetd, only sketch allowed. should be done by activity of command
         if(!selection[0].getObject()->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId()))
         {
-            ErrorMsg = QObject::tr("Only sketch and its support is allowed to select");
+            ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
             return -1;
         }
 
@@ -540,7 +540,7 @@ int SketchSelection::setUp(void)
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
             if(selection[1].getObject() != SketchObj->Support.getValue()){
-                ErrorMsg = QObject::tr("Only sketch and its support is allowed to select");
+                ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return-1;
             }
             // assume always a Part::Feature derived object as support
@@ -552,7 +552,7 @@ int SketchSelection::setUp(void)
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
             if(selection[0].getObject() != SketchObj->Support.getValue()){
-                ErrorMsg = QObject::tr("Only sketch and its support is allowed to select");
+                ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
                 return -1;
             }
             // assume always a Part::Feature derived object as support
@@ -561,7 +561,7 @@ int SketchSelection::setUp(void)
             SupportSubNames = selection[0].getSubNames();
 
         } else {
-            ErrorMsg = QObject::tr("One of the selected has to be on the sketch");
+            ErrorMsg = QObject::tr("One of the selected has to be on the sketch.");
             return -1;
         }
     }
@@ -936,7 +936,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                     QObject::tr("The selected edge is not a line segment"));
+                                     QObject::tr("The selected edge is not a line segment."));
                 return;
             }
 
@@ -1003,7 +1003,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     }
     else { // vertex mode, fixedpoints > 1
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                             QObject::tr("There are more than one fixed point selected. Select a maximum of one fixed point!"));
+                             QObject::tr("There are more than one fixed points selected. Select a maximum of one fixed point!"));
         return;
     }
     // finish the transaction and update
@@ -1031,7 +1031,7 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
                 const Part::Geometry *geo = Obj->getGeometry(CrvId);
                 if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                        QObject::tr("The selected edge is not a line segment"));
+                                        QObject::tr("The selected edge is not a line segment."));
                     return;
                 }
 
@@ -1174,7 +1174,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
             const Part::Geometry *geo = Obj->getGeometry(GeoId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                     QObject::tr("The selected edge is not a line segment"));
+                                     QObject::tr("The selected edge is not a line segment."));
                 return;
             }
 
@@ -1267,7 +1267,7 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
             const Part::Geometry *geo = Obj->getGeometry(CrvId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                     QObject::tr("The selected edge is not a line segment"));
+                                     QObject::tr("The selected edge is not a line segment."));
                 return;
             }
 
@@ -1978,7 +1978,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two or more vertexes from the sketch."));
+            QObject::tr("Select two or more vertices from the sketch."));
         return;
     }
 
@@ -1988,7 +1988,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         getIdsFromName(*it, Obj, GeoId, PosId);
         if (isEdge(GeoId,PosId)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more vertexes from the sketch."));
+                QObject::tr("Select two or more vertices from the sketch."));
             return;
         }
     }
@@ -2134,7 +2134,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select vertexes from the sketch."));
+                                 QObject::tr("Select vertices from the sketch."));
         }
         return;
     }
@@ -2368,7 +2368,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("This constraint does not make sense for non-linear curves"));
+                QObject::tr("This constraint does not make sense for non-linear curves."));
         }
 
         return;
@@ -2559,7 +2559,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
                 if( geom && isBsplinePole(geom)) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                        QObject::tr("Select an edge that is not a B-spline weight"));
+                                        QObject::tr("Select an edge that is not a B-spline weight."));
                     abortCommand();
 
                     continue;
@@ -2648,7 +2648,7 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
 
     if( geom && isBsplinePole(geom)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
         abortCommand();
 
         return;
@@ -2879,7 +2879,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
         const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("This constraint only makes sense on a line segment or a pair of points"));
+                QObject::tr("This constraint only makes sense on a line segment or a pair of points."));
             return;
         }
 
@@ -3128,7 +3128,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selS
         const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("This constraint only makes sense on a line segment or a pair of points"));
+                QObject::tr("This constraint only makes sense on a line segment or a pair of points."));
             return;
         }
 
@@ -3256,7 +3256,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 
         if (!isEdge(GeoId,PosId)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select a valid line"));
+                                 QObject::tr("Select a valid line."));
             return;
         }
         else if (isPointOrSegmentFixed(Obj,GeoId)) {
@@ -3272,7 +3272,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         const Part::Geometry *geo = Obj->getGeometry(GeoId);
         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                QObject::tr("The selected edge is not a valid line"));
+                                QObject::tr("The selected edge is not a valid line."));
             return;
         }
         ids.push_back(GeoId);
@@ -3310,7 +3310,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
         if (    Obj->getGeometry(GeoId1)->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                 Obj->getGeometry(GeoId2)->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                QObject::tr("The selected edge is not a valid line"));
+                                QObject::tr("The selected edge is not a valid line."));
             return;
         }
 
@@ -3407,7 +3407,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (!Obj || (SubNames.size() != 2 && SubNames.size() != 3)) {
-        strError = QObject::tr("Wrong number of selected objects!","perpendicular constraint");
+        strError = QObject::tr("Wrong number of selected objects!","perpendicular constraint.");
         if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             strError+strBasicHelp);
@@ -3440,7 +3440,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -3545,7 +3545,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if(isBsplinePole(geom2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -3587,7 +3587,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if(isBsplinePole(Obj, GeoId1)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -3768,7 +3768,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         if(isBsplinePole(Obj, GeoId1)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select an edge that is not a B-spline weight"));
+                            QObject::tr("Select an edge that is not a B-spline weight."));
             return;
         }
 
@@ -3925,7 +3925,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
         }
 
@@ -4138,7 +4138,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -4226,7 +4226,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             if(isBsplinePole(geom2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -4256,7 +4256,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             if(isBsplinePole(geom1) || isBsplinePole(geom2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -4454,7 +4454,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         if(isBsplinePole(geom1) || isBsplinePole(geom2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
         }
 
@@ -4647,7 +4647,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
         }
 
@@ -5096,7 +5096,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
             if(isBsplinePole(geom)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 continue;
             }
 
@@ -5823,7 +5823,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
             if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
             }
 
@@ -5885,7 +5885,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
         if(isBsplinePole(Obj, GeoId1) || (GeoId2 != GeoEnum::GeoUndef && isBsplinePole(Obj, GeoId2))) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select an edge that is not a B-spline weight"));
+                            QObject::tr("Select an edge that is not a B-spline weight."));
             return;
         }
 
@@ -6177,7 +6177,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select an edge that is not a B-spline weight"));
+                             QObject::tr("Select an edge that is not a B-spline weight."));
                 return;
         }
 
@@ -6323,12 +6323,12 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
         if (!isEdge(GeoId,PosId)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Select two or more compatible edges"));
+                                 QObject::tr("Select two or more compatible edges."));
             return;
         }
         else if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                     QObject::tr("Sketch axes cannot be used in equality constraints"));
+                                     QObject::tr("Sketch axes cannot be used in equality constraints."));
                 return;
         }
         else if (isPointOrSegmentFixed(Obj,GeoId)) {
@@ -6377,7 +6377,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more edges of similar type"));
+                QObject::tr("Select two or more edges of similar type."));
             return;
         }
 
@@ -6392,7 +6392,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
          ( parabSel && weightSel)) {
 
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two or more edges of similar type"));
+            QObject::tr("Select two or more edges of similar type."));
         return;
     }
 
@@ -6444,7 +6444,7 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
                !(geo2->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())) ){
 
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more edges of similar type"));
+                QObject::tr("Select two or more edges of similar type."));
             return;
         }
 
@@ -6867,7 +6867,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
         if(isBsplinePole(geo)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select an edge that is not a B-spline weight"));
+                            QObject::tr("Select an edge that is not a B-spline weight."));
             return;
         }
 
@@ -7002,7 +7002,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         if (isPointOrSegmentFixed(Obj,GeoId)) {
             if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                     QObject::tr("Sketch axes cannot be used in internal alignment constraint"));
+                                     QObject::tr("Sketch axes cannot be used in internal alignment constraint."));
                 return;
             }
             else if (hasAlreadyExternal) {
@@ -7025,7 +7025,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             arcsofellipseids.push_back(GeoId);
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more compatible edges"));
+                QObject::tr("Select two or more compatible edges."));
             return;
         }
     }
