@@ -145,6 +145,20 @@ PyObject* WorkbenchPy::listCommandbars(PyObject *args)
     } PY_CATCH;
 }
 
+/** Reload the workbench */
+PyObject*  WorkbenchPy::reloadActive(PyObject *args)
+{
+    PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return nullptr;
+
+        Workbench* active = Gui::WorkbenchManager::instance()->active();
+        if (active)
+            active->activate();
+        Py_Return;
+    } PY_CATCH;
+}
+
 PyObject* WorkbenchPy::getCustomAttributes(const char*) const
 {
     return nullptr;
