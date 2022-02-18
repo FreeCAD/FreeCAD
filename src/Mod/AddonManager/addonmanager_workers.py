@@ -231,9 +231,8 @@ class UpdateWorker(QtCore.QThread):
             if addon and addon["url"]:
                 if addon["url"][-1] == "/":
                     addon["url"] = addon["url"][0:-1]  # Strip trailing slash
+                addon["url"] = addon["url"].split(".git")[0] # Remove .git
                 name = addon["url"].split("/")[-1]
-                if name.lower().endswith(".git"):
-                    name = name[:-4]
                 if name in package_names:
                     # We already have something with this name, skip this one
                     continue
