@@ -392,7 +392,9 @@ class CommandAddonManager:
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
         self.dialog.buttonPauseUpdate.clicked.connect(self.stop_update)
-        self.dialog.buttonCheckForUpdates.clicked.connect(lambda: self.force_check_updates(standalone=True))
+        self.dialog.buttonCheckForUpdates.clicked.connect(
+            lambda: self.force_check_updates(standalone=True)
+        )
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -755,24 +757,24 @@ class CommandAddonManager:
             self.do_next_startup_phase()
             return
         if not self.packages_with_updates:
-            self.force_check_updates(standalone = False)
+            self.force_check_updates(standalone=False)
         else:
             self.do_next_startup_phase()
 
-    def force_check_updates(self, standalone = False) -> None:
+    def force_check_updates(self, standalone=False) -> None:
         if hasattr(self, "check_worker"):
             thread = self.check_worker
             if thread:
                 if not thread.isFinished():
                     self.do_next_startup_phase()
                     return
-                
+
         self.dialog.buttonUpdateAll.setText(
             translate("AddonsInstaller", "Checking for updates...")
         )
         self.dialog.buttonUpdateAll.show()
         self.dialog.buttonCheckForUpdates.setDisabled(True)
-        self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)            
+        self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
         self.check_worker.finished.connect(self.do_next_startup_phase)
         self.check_worker.finished.connect(self.update_check_complete)
         self.check_worker.progress_made.connect(self.update_progress_bar)

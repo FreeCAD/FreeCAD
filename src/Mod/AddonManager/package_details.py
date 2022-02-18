@@ -231,7 +231,7 @@ class PackageDetails(QWidget):
                 if have_git and repo.repo_type != AddonManagerRepo.RepoType.MACRO:
                     basedir = FreeCAD.getUserAppDataDir()
                     moddir = os.path.join(basedir, "Mod", repo.name)
-                    if os.path.exists(os.path.join(moddir,".git")):
+                    if os.path.exists(os.path.join(moddir, ".git")):
                         gitrepo = git.Repo(moddir)
                         branch = gitrepo.head.ref.name
                         detached_head = gitrepo.head.is_detached
@@ -467,7 +467,9 @@ class PackageDetails(QWidget):
             self.ui.webView.load(QUrl(self.repo.macro.url))
             self.ui.urlBar.setText(self.repo.macro.url)
         else:
-            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.repo.macro.url)
+            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
+                self.repo.macro.url
+            )
             text = readme_data.data().decode("utf8")
             self.ui.textBrowserReadMe.setHtml(text)
 

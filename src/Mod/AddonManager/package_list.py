@@ -102,7 +102,9 @@ class PackageList(QWidget):
 
         self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
         self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
-        self.item_filter.setHideNewerFreeCADRequired(pref.GetBool("HideNewerFreeCADRequired", True))
+        self.item_filter.setHideNewerFreeCADRequired(
+            pref.GetBool("HideNewerFreeCADRequired", True)
+        )
 
     def on_listPackages_clicked(self, index: QModelIndex):
         source_selection = self.item_filter.mapToSource(index)
