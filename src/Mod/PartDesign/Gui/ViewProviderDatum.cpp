@@ -30,10 +30,12 @@
 # include <QAction>
 # include <QMenu>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoPointDetail.h>
