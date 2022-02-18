@@ -28,6 +28,7 @@ import os
 import shutil
 import stat
 import tempfile
+import hashlib
 from datetime import date, timedelta
 from typing import Dict
 
@@ -319,6 +320,26 @@ class CommandAddonManager:
                     "Previous cache process was interrupted, restarting...\n",
                 )
             )
+
+        # See if the user has changed the custom repos list since our last re-cache:
+        stored_hash = pref.GetString("CustomRepoHash", "")
+        custom_repos = pref.GetString("CustomRepositories", "")
+        if custom_repos:
+            hasher = hashlib.sha1()
+            hasher.update(custom_repos.encode("utf-8"))
+            new_hash = hasher.hexdigest()
+        else:
+            new_hash = ""
+        if new_hash != stored_hash:
+            stored_hash = pref.SetString("CustomRepoHash", new_hash)
+            self.update_cache = True
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller",
+                    "Custom repo list changed, forcing recache...\n",
+                )
+            )
+
 
         # If we are checking for updates automatically, hide the Check for updates button:
         autocheck = pref.GetBool("AutoCheck", False)
