@@ -17,39 +17,19 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="enableExtensions">
+      <widget class="QCheckBox" name="enableExtensions">
        <property name="text">
-        <string>Click to disable Extensions</string>
+        <string>Enable Extensions</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
        </property>
        <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="includeEdges">
-       <property name="text">
-        <string>Ignore Edges and Wires</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="enableExtensionsWarning">
-     <property name="text">
-      <string>---</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QWidget" name="extensionEdit" native="true">
