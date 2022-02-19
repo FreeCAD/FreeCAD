@@ -436,6 +436,7 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
             move(center.x() - width() * 0.5, 10);
         }
     }
+    }
     QDialog::resizeEvent(ev);
 }
 
