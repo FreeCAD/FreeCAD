@@ -24,18 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <Precision.hxx>
 #endif
 
+#include <Mod/PartDesign/App/FeaturePocket.h>
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPocketParameters.h"
-#include <Gui/Command.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeaturePocket.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
