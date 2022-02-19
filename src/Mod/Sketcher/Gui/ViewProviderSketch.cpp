@@ -316,6 +316,7 @@ ViewProviderSketch::ViewProviderSketch()
 
 ViewProviderSketch::~ViewProviderSketch()
 {
+    connectionToolWidget.disconnect();
 }
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
@@ -2802,10 +2803,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     ViewProvider2DObjectGrid::setEdit(ModNum); // notify to handle grid according to edit mode property
 
     // start the edit dialog
-    if (sketchDlg)
-        Gui::Control().showDialog(sketchDlg);
-    else
-        Gui::Control().showDialog(new TaskDlgEditSketch(this));
+    if (!sketchDlg)
+        sketchDlg = new TaskDlgEditSketch(this);
+
+    connectionToolWidget = sketchDlg->registerToolWidgetChanged(boost::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, bp::_1));
+
+    Gui::Control().showDialog(sketchDlg);
 
     // This call to the solver is needed to initialize the DoF and solve time controls
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
@@ -3356,6 +3359,11 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
     return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
 
+void ViewProviderSketch::slotToolWidgetChanged(QWidget * newwidget)
+{
+    if(sketchHandler)
+        sketchHandler->toolWidgetChanged(newwidget);
+}
 
 /*************************** functions ViewProviderSketch offers to friends such as DrawHandlerSketch ************************/
 

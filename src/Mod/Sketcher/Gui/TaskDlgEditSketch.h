@@ -32,6 +32,7 @@
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
+#include "TaskSketcherTool.h"
 #include <boost_signals2.hpp>
 
 typedef boost::signals2::connection Connection;
@@ -66,9 +67,17 @@ public:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Close; }
 
+    template<typename F>
+    boost::signals2::connection registerToolWidgetChanged(F&& f) {
+        return ToolSettings->registerToolWidgetChanged(std::forward<F>(f));
+    }
+
 protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+
+private:
+    void slotToolChanged(const std::string & toolname);
 
 protected:
     ViewProviderSketch      *sketchView;
@@ -77,6 +86,10 @@ protected:
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
     TaskSketcherSolverAdvanced *SolverAdvanced;
+    TaskSketcherTool        * ToolSettings;
+
+private:
+    Connection connectionToolSettings;
 };
 
 
