@@ -25,49 +25,48 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <qfileinfo.h>
-# include <qdir.h>
+# include <QDir>
 # include <QPrinter>
 # include <QFileInfo>
+# include <Inventor/MarkerBitmaps.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/TranscodingException.hpp>
 #include <boost/regex.hpp>
+#include <xercesc/util/TranscodingException.hpp>
+#include <CXX/Objects.hxx>
 
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "MainWindowPy.h"
-#include "Macro.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
-#include "SoFCDB.h"
-#include "View3DInventor.h"
-#include "SplitView3DInventor.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
-#include "PythonWrapper.h"
-#include "WidgetFactory.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "Language/Translator.h"
-#include "DownloadManager.h"
-#include "DlgPreferencesImp.h"
-#include "DocumentObserverPython.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
-#include <CXX/Objects.hxx>
-#include <Inventor/MarkerBitmaps.h>
+#include <Language/Translator.h>
+
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "DlgPreferencesImp.h"
+#include "Document.h"
+#include "DocumentObserverPython.h"
+#include "DownloadManager.h"
+#include "EditorView.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "MainWindowPy.h"
+#include "PythonEditor.h"
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
+#include "SplitView3DInventor.h"
+#include "View3DInventor.h"
+#include "ViewProvider.h"
+#include "WaitCursor.h"
+#include "WidgetFactory.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+
 
 using namespace Gui;
 

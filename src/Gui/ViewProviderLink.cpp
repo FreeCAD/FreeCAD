@@ -38,23 +38,19 @@
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/SoPickedPoint.h>
+#include <QApplication>
+#include <QMenu>
 #endif
 
 #include <atomic>
-#include <cctype>
-#include <QApplication>
-#include <QFileInfo>
-#include <QMenu>
-
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost_bind_bind.hpp>
-#include <Base/BoundBoxPy.h>
-#include <Base/Console.h>
-#include <Base/PlacementPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/Tools.h>
+#include <cctype>
 #include <App/ComplexGeoData.h>
-#include <App/GeoFeature.h>
+#include <Base/BoundBoxPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 
 #include "ViewProviderLink.h"
@@ -62,9 +58,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
-#include "Document.h"
 #include "LinkViewPy.h"
-#include "MainWindow.h"
 #include "Selection.h"
 #include "SoFCCSysDragger.h"
 #include "SoFCUnifiedSelection.h"
@@ -73,7 +67,7 @@
 #include "View3DInventor.h"
 #include "ViewParams.h"
 #include "ViewProviderGeometryObject.h"
-#include "ViewProviderGroupExtension.h"
+
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 

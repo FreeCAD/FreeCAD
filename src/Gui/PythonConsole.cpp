@@ -26,34 +26,28 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QDockWidget>
-# include <QGridLayout>
-# include <QHBoxLayout>
 # include <QKeyEvent>
 # include <QMenu>
 # include <QMessageBox>
-# include <QPushButton>
-# include <QSpacerItem>
+# include <QMimeData>
 # include <QTextCursor>
 # include <QTextDocumentFragment>
 # include <QTextStream>
 # include <QUrl>
-# include <QMimeData>
 #endif
-
-#include "PythonConsole.h"
-#include "PythonConsolePy.h"
-#include "CallTips.h"
-#include "Application.h"
-#include "Action.h"
-#include "Command.h"
-#include "DlgEditorImp.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "Tools.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
 #include <CXX/Exception.hxx>
+
+#include "PythonConsole.h"
+#include "PythonConsolePy.h"
+#include "Application.h"
+#include "CallTips.h"
+#include "FileDialog.h"
+#include "MainWindow.h"
+#include "Tools.h"
+
 
 using namespace Gui;
 

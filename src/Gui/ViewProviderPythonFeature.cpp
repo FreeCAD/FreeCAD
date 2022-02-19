@@ -31,41 +31,22 @@
 # include <QMenu>
 # include <QPixmap>
 # include <boost_bind_bind.hpp>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/draggers/SoDragger.h>
-# include <Inventor/manips/SoCenterballManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/details/SoDetail.h>
 #endif
 
-#include "ViewProviderDocumentObjectPy.h"
+#include <App/DocumentObjectPy.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+
 #include "ViewProviderPythonFeature.h"
-#include "Tree.h"
-#include "Window.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "PythonWrapper.h"
 #include "View3DInventorViewer.h"
-#include <App/DocumentObjectPy.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
+#include "ViewProviderDocumentObjectPy.h"
+
 
 FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true)
 
