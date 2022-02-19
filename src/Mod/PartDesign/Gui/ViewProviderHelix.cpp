@@ -33,7 +33,6 @@
 
 #include <Gui/Application.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "TaskHelixParameters.h"
 #include "ViewProviderHelix.h"
