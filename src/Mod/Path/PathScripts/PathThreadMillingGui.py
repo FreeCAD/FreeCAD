@@ -48,14 +48,13 @@ else:
 
 translate = FreeCAD.Qt.translate
 
-
 def fillThreads(form, dataFile, defaultSelect):
     form.threadName.blockSignals(True)
     select = form.threadName.currentText()
     PathLog.debug("select = '{}'".format(select))
     form.threadName.clear()
     with open(
-        "{}Mod/Path/Data/Threads/{}.csv".format(FreeCAD.getHomePath(), dataFile)
+        "{}Mod/Path/Data/Threads/{}".format(FreeCAD.getHomePath(), dataFile)
     ) as fp:
         reader = csv.DictReader(fp)
         for row in reader:
@@ -151,13 +150,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def _isThreadImperial(self):
         return (
             self.form.threadType.currentData()
-            in [PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal, PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialExternal]
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesImperial
         )
 
     def _isThreadMetric(self):
         return (
             self.form.threadType.currentData()
-            in [PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal, PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricExternal]
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesMetric
         )
 
     def _isThreadInternal(self):
@@ -176,39 +175,32 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.threadPitchLabel.setEnabled(True)
             self.form.threadTPI.setEnabled(True)
             self.form.threadTPILabel.setEnabled(True)
-
-        if self._isThreadMetric():
+        else:
             self.form.threadFit.setEnabled(True)
             self.form.threadFitLabel.setEnabled(True)
-            self.form.threadPitch.setEnabled(True)
-            self.form.threadPitchLabel.setEnabled(True)
-            self.form.threadTPI.setEnabled(False)
-            self.form.threadTPILabel.setEnabled(False)
-            self.form.threadTPI.setValue(0)
-            if self._isThreadInternal():
-                fillThreads(self.form, "metric-internal", self.obj.ThreadName)
+            if self._isThreadMetric():
+                self.form.threadPitch.setEnabled(True)
+                self.form.threadPitchLabel.setEnabled(True)
+                self.form.threadTPI.setEnabled(False)
+                self.form.threadTPILabel.setEnabled(False)
+                self.form.threadTPI.setValue(0)
             else:
-                fillThreads(self.form, "metric-external", self.obj.ThreadName)
-
-        if self._isThreadImperial():
-            self.form.threadFit.setEnabled(True)
-            self.form.threadFitLabel.setEnabled(True)
-            self.form.threadPitch.setEnabled(False)
-            self.form.threadPitchLabel.setEnabled(False)
-            self.form.threadTPI.setEnabled(True)
-            self.form.threadTPILabel.setEnabled(True)
-            self.pitch.updateSpinBox(0)
-            fillThreads(self.form, "imperial-internal", self.obj.ThreadName)
+                self.form.threadPitch.setEnabled(False)
+                self.form.threadPitchLabel.setEnabled(False)
+                self.form.threadTPI.setEnabled(True)
+                self.form.threadTPILabel.setEnabled(True)
+                self.pitch.updateSpinBox(0)
+            fillThreads(self.form, PathThreadMilling.ObjectThreadMilling.ThreadTypeData[self.form.threadType.currentData()], self.obj.ThreadName)
 
     def _updateFromThreadName(self):
         thread = self.form.threadName.currentData()
         fit = float(self.form.threadFit.value()) / 100
-        mamin = float(thread["dMajorMin"])
-        mamax = float(thread["dMajorMax"])
-        major = mamin + (mamax - mamin) * fit
-        mimin = float(thread["dMinorMin"])
-        mimax = float(thread["dMinorMax"])
-        minor = mimin + (mimax - mimin) * fit
+        maxmin = float(thread["dMajorMin"])
+        maxmax = float(thread["dMajorMax"])
+        major = maxmin + (maxmax - maxmin) * fit
+        minmin = float(thread["dMinorMin"])
+        minmax = float(thread["dMinorMax"])
+        minor = minmin + (minmax - minmin) * fit
 
         if self._isThreadMetric():
             pitch = float(thread["pitch"])

@@ -247,23 +247,51 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     RightHand = "RightHand"
     ThreadTypeCustomExternal = "CustomExternal"
     ThreadTypeCustomInternal = "CustomInternal"
-    ThreadTypeImperialExternal = "ImperialExternal"
-    ThreadTypeImperialInternal = "ImperialInternal"
-    ThreadTypeMetricExternal = "MetricExternal"
-    ThreadTypeMetricInternal = "MetricInternal"
+    ThreadTypeImperialExternal2A = "ImperialExternal2A"
+    ThreadTypeImperialExternal3A = "ImperialExternal3A"
+    ThreadTypeImperialInternal2B = "ImperialInternal2B"
+    ThreadTypeImperialInternal3B = "ImperialInternal3B"
+    ThreadTypeMetricExternal4G6G = "MetricExternal4G6G"
+    ThreadTypeMetricExternal6G = "MetricExternal6G"
+    ThreadTypeMetricInternal6H = "MetricInternal6H"
     DirectionClimb = "Climb"
     DirectionConventional = "Conventional"
 
     ThreadOrientations = [LeftHand, RightHand]
-    ThreadTypesInternal = [
-        ThreadTypeCustomInternal,
-        ThreadTypeImperialInternal,
-        ThreadTypeMetricInternal,
-        ]
+
+    ThreadTypeData = {
+            ThreadTypeImperialExternal2A : 'imperial-external-2A.csv',
+            ThreadTypeImperialExternal3A : 'imperial-external-3A.csv',
+            ThreadTypeImperialInternal2B : 'imperial-internal-2B.csv',
+            ThreadTypeImperialInternal3B : 'imperial-internal-3B.csv',
+            ThreadTypeMetricExternal4G6G : 'metric-external-4G6G.csv',
+            ThreadTypeMetricExternal6G : 'metric-external-6G.csv',
+            ThreadTypeMetricInternal6H : 'metric-internal-6H.csv',
+            }
+
     ThreadTypesExternal = [
         ThreadTypeCustomExternal,
-        ThreadTypeImperialExternal,
-        ThreadTypeMetricExternal,
+        ThreadTypeImperialExternal2A,
+        ThreadTypeImperialExternal3A,
+        ThreadTypeMetricExternal4G6G,
+        ThreadTypeMetricExternal6G,
+        ]
+    ThreadTypesInternal = [
+        ThreadTypeCustomInternal,
+        ThreadTypeImperialInternal2B,
+        ThreadTypeImperialInternal3B,
+        ThreadTypeMetricInternal6H,
+        ]
+    ThreadTypesImperial = [
+        ThreadTypeImperialExternal2A,
+        ThreadTypeImperialExternal3A,
+        ThreadTypeImperialInternal2B,
+        ThreadTypeImperialInternal3B,
+        ]
+    ThreadTypesMetric = [
+        ThreadTypeMetricExternal4G6G,
+        ThreadTypeMetricExternal6G,
+        ThreadTypeMetricInternal6H,
         ]
     ThreadTypes = ThreadTypesInternal + ThreadTypesExternal
     Directions = [DirectionClimb, DirectionConventional]
@@ -285,10 +313,13 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "ThreadType": [
                 (translate("Path_ThreadMilling", "Custom External"), ObjectThreadMilling.ThreadTypeCustomExternal),
                 (translate("Path_ThreadMilling", "Custom Internal"), ObjectThreadMilling.ThreadTypeCustomInternal),
-                (translate("Path_ThreadMilling", "Imperial Internal"), ObjectThreadMilling.ThreadTypeImperialInternal),
-                (translate("Path_ThreadMilling", "Imperial External"), ObjectThreadMilling.ThreadTypeImperialExternal),
-                (translate("Path_ThreadMilling", "Metric External"), ObjectThreadMilling.ThreadTypeMetricExternal),
-                (translate("Path_ThreadMilling", "Metric Internal"), ObjectThreadMilling.ThreadTypeMetricInternal),
+                (translate("Path_ThreadMilling", "Imperial External (2A)"), ObjectThreadMilling.ThreadTypeImperialExternal2A),
+                (translate("Path_ThreadMilling", "Imperial External (3A)"), ObjectThreadMilling.ThreadTypeImperialExternal3A),
+                (translate("Path_ThreadMilling", "Imperial Internal (2B)"), ObjectThreadMilling.ThreadTypeImperialInternal2B),
+                (translate("Path_ThreadMilling", "Imperial Internal (3B)"), ObjectThreadMilling.ThreadTypeImperialInternal3B),
+                (translate("Path_ThreadMilling", "Metric External (4G6G)"), ObjectThreadMilling.ThreadTypeMetricExternal4G6G),
+                (translate("Path_ThreadMilling", "Metric External (6G)"), ObjectThreadMilling.ThreadTypeMetricExternal6G),
+                (translate("Path_ThreadMilling", "Metric Internal (6H)"), ObjectThreadMilling.ThreadTypeMetricInternal6H),
             ],
             "ThreadOrientation": [
                 (translate("Path_ThreadMilling", "LeftHand"), ObjectThreadMilling.LeftHand),
@@ -512,18 +543,18 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         PathLog.track()
         obj.ThreadOrientation = self.RightHand
-        obj.ThreadType = self.ThreadTypeMetricInternal
+        obj.ThreadType = self.ThreadTypeMetricInternal6H
         obj.ThreadFit = 50
         obj.Pitch = 1
         obj.TPI = 0
         obj.Passes = 1
         obj.Direction = self.DirectionClimb
-        obj.LeadInOut = True
+        obj.LeadInOut = False
 
     def isToolSupported(self, obj, tool):
         """Thread milling only supports thread milling cutters."""
         support = hasattr(tool, "Diameter") and hasattr(tool, "Crest")
-        PathLog.track(tool.Name, support)
+        PathLog.track(tool.Label, support)
         return support
 
 
