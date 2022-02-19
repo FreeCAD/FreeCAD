@@ -32,7 +32,7 @@
 # include <QCursor>
 # include <QHeaderView>
 # include <QMenu>
-# include <QMessageBox.h>
+# include <QMessageBox>
 # include <QPixmap>
 # include <QTimer>
 # include <QToolTip>
