@@ -430,12 +430,14 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     // Find out in what quadrant relative to the axis the profile is located, and the exact position.
     Base::Vector3d profileCenter = getProfileCenterPoint();
 
-    // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
-    // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
-    double axisOffset = 100 * (profileCenter * start - baseVector * start);
+    double axisOffset = profileCenter * start - baseVector * start;
     double startOffset = startOffset0 + profileCenter * axisVector - baseVector * axisVector;
-    double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
+    // If startOffset0 = 1.0 we have an auxiliary spine. Then the factor of 100
+    // below ensures that profile size is small compared to the curvature of the helix.
+    // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
+    int factor = (startOffset0 == 1.0) ? 100 : 1;
+    double radius = fabs(factor * axisOffset);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
