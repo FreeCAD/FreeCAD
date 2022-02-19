@@ -116,6 +116,11 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
     return vp.getPreselectCross();
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(const ViewProviderSketch &vp, const std::string &toolname)
+{
+    vp.signalToolChanged(toolname);
+
+}
 
 /**************************** CurveConverter **********************************************/
 
@@ -221,9 +226,17 @@ DrawSketchHandler::DrawSketchHandler() : sketchgui(nullptr) {}
 
 DrawSketchHandler::~DrawSketchHandler() {}
 
+std::string DrawSketchHandler::getToolName() const
+{
+    return "DSH_None";
+}
+
+
 void DrawSketchHandler::activate(ViewProviderSketch * vp)
 {
     sketchgui = vp;
+
+    this->signalToolChanged();
 
     this->preActivated();
     this->activated();
@@ -235,6 +248,8 @@ void DrawSketchHandler::deactivate()
     this->postDeactivated();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
     unsetCursor();
+
+    ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, "DSH_None");
 }
 
 void DrawSketchHandler::preActivated()
@@ -254,6 +269,17 @@ void DrawSketchHandler::quit(void)
 
     unsetCursor();
     sketchgui->purgeHandler();
+}
+
+void DrawSketchHandler::toolWidgetChanged(QWidget * newwidget)
+{
+    toolwidget = newwidget;
+    onWidgetChanged();
+}
+
+void DrawSketchHandler::onWidgetChanged()
+{
+
 }
 
 //**************************************************************************
@@ -938,4 +964,10 @@ int DrawSketchHandler::getPreselectCurve(void) const
 int DrawSketchHandler::getPreselectCross(void) const
 {
     return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(*sketchgui);
+}
+
+void DrawSketchHandler::signalToolChanged() const
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, this->getToolName());
+
 }

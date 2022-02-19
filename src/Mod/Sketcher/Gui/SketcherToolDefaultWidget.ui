@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SketcherGui::SketcherToolDefaultWidget</class>
+ <widget class="QWidget" name="SketcherGui::SketcherToolDefaultWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>312</width>
+    <height>254</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+  
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Parameter 1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterOne">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout2">
+     <item>
+      <widget class="QLabel" name="label2">
+       <property name="text">
+        <string>Parameter 2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterTwo">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item> 
+   
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout3">
+     <item>
+      <widget class="QLabel" name="label3">
+       <property name="text">
+        <string>Parameter 3</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterThree">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+	
+   <item>
+	<layout class="QHBoxLayout" name="horizontalLayout4">
+     <item>
+      <widget class="QLabel" name="label4">
+       <property name="text">
+        <string>Parameter 4</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterFour">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
+   <item>
+	<layout class="QHBoxLayout" name="horizontalLayout5">
+     <item>
+      <widget class="QLabel" name="label5">
+       <property name="text">
+        <string>Parameter 5</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterFive">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
+   <item>
+	<layout class="QHBoxLayout" name="horizontalLayout6">
+     <item>
+      <widget class="QLabel" name="label6">
+       <property name="text">
+        <string>Parameter 6</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterSix">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+      
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxTS1">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+        <property name="toolTip">
+         <string>Checkbox 1 toolTip</string>
+        </property>
+        <property name="text">
+         <string>Checkbox 1</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring></cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+    </widget>
+   </item>
+   
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxTS2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Checkbox 2 toolTip</string>
+     </property>
+     <property name="text">
+      <string>Checkbox 2</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+        <property name="prefEntry" stdset="0">
+         <cstring></cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+    </widget>
+   </item>
+   
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxTS3">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Checkbox 3 toolTip</string>
+     </property>
+     <property name="text">
+      <string>Checkbox 3</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+        <property name="prefEntry" stdset="0">
+         <cstring></cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+    </widget>
+   </item>
+   
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxTS4">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Checkbox 4 toolTip</string>
+     </property>
+     <property name="text">
+      <string>Checkbox 4</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+        <property name="prefEntry" stdset="0">
+         <cstring></cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+    </widget>
+   </item>
+   
+   	<item>
+	  <widget class="QLabel" name="notice">
+	   <property name="text">
+		<string></string>
+	   </property>
+	   <property name="maximumSize">
+		<size>
+		 <width>400</width>
+		 <height>500</height>
+		</size>
+	   </property>
+	  </widget>
+	 </item>
+
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

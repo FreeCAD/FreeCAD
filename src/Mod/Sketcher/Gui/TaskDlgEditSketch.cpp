@@ -33,6 +33,7 @@
 
 using namespace SketcherGui;
 
+namespace bp = boost::placeholders;
 
 //**************************************************************************
 //**************************************************************************
@@ -43,6 +44,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     : TaskDialog(),sketchView(sketchView)
 {
     assert(sketchView);
+    ToolSettings = new TaskSketcherTool(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
     General = new TaskSketcherGeneral(sketchView);
@@ -52,6 +54,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
 
+    Content.push_back(ToolSettings);
     Content.push_back(Messages);
 
     if (hGrp->GetBool("ShowSolverAdvancedWidget",false)) {
@@ -72,6 +75,10 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
         Constraints->hideGroupBox();
     if (!hGrp->GetBool("ExpandedElementsWidget",true))
         Elements->hideGroupBox();
+
+    connectionToolSettings = sketchView->registerToolChanged(boost::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, bp::_1));
+
+    ToolSettings->setHidden(true);
 }
 
 TaskDlgEditSketch::~TaskDlgEditSketch()
@@ -81,6 +88,19 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end())
         Content.push_back(SolverAdvanced);
+
+    connectionToolSettings.disconnect();
+}
+
+void TaskDlgEditSketch::slotToolChanged(const std::string & toolname)
+{
+
+    if( toolname == "DSH_None" )
+        ToolSettings->setHidden(true);
+    else {
+        ToolSettings->setHidden(false);
+        ToolSettings->toolChanged(toolname);
+    }
 }
 
 //==== calls from the TaskView ===============================================================

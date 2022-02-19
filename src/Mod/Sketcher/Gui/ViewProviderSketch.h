@@ -538,6 +538,14 @@ public:
     boost::signals2::signal<void ()> signalElementsChanged;
     //@}
 
+    /** @name Register slot for signal */
+    //@{
+    template<typename F>
+    boost::signals2::connection registerToolChanged(F&& f) {
+        return signalToolChanged.connect(std::forward<F>(f));
+    }
+    //@}
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
@@ -643,6 +651,14 @@ private:
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
     //@}
+
+    /** @name signals*/
+    //@{
+    /// signals a tool change
+    boost::signals2::signal<void (const std::string & toolname)> signalToolChanged;
+    //@}
+
+    void slotToolWidgetChanged(QWidget * newwidget);
 
     /** @name Attorney functions*/
     //@{
@@ -759,6 +775,9 @@ private:
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
     ViewProviderParameters viewProviderParameters;
+
+    using Connection = boost::signals2::connection;
+    Connection connectionToolWidget;
 };
 
 } // namespace PartGui
