@@ -25,37 +25,28 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
-# include <string>
-# include <boost_bind_bind.hpp>
 # include <QApplication>
-# include <QString>
-# include <QStatusBar>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Application.h"
-#include "Document.h"
-#include "Selection.h"
-#include "SelectionFilter.h"
-#include "View3DInventor.h"
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
-#include <Gui/SelectionObjectPy.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
+
+#include "Selection.h"
+#include "Application.h"
+#include "Document.h"
+#include "Macro.h"
 #include "MainWindow.h"
+#include "SelectionFilter.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
-#include "Macro.h"
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
