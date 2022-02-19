@@ -24,23 +24,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <QAbstractButton>
-# include <qapplication.h>
-# include <qdir.h>
-# include <qfileinfo.h>
-# include <QKeySequence>
+# include <QApplication>
+# include <QFileInfo>
+# include <QMessageBox>
 # include <QTextStream>
-# include <qmessagebox.h>
-# include <qstatusbar.h>
-# include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <cctype>
-
+#include <App/AutoTransaction.h>
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/Transactions.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
@@ -48,30 +43,21 @@
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/Transactions.h>
-#include <App/AutoTransaction.h>
-#include <App/GeoFeatureGroupExtension.h>
-
-#include "Application.h"
-#include "MainWindow.h"
-#include "Tree.h"
 #include "Document.h"
 #include "DocumentPy.h"
+#include "Application.h"
 #include "Command.h"
 #include "Control.h"
 #include "FileDialog.h"
+#include "MainWindow.h"
+#include "Selection.h"
+#include "Thumbnail.h"
+#include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderDocumentObjectGroup.h"
-#include "Selection.h"
 #include "WaitCursor.h"
-#include "Thumbnail.h"
-#include "ViewProviderLink.h"
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
