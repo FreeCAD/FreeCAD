@@ -29,7 +29,7 @@
 # include <QActionGroup>
 # include <QApplication>
 # include <QContextMenuEvent>
-# include <QCursor.h>
+# include <QCursor>
 # include <QHeaderView>
 # include <QMenu>
 # include <QMessageBox.h>
