@@ -25,21 +25,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QAction>
-# include <QMenu>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
 # include <Precision.hxx>
+# include <QMessageBox>
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include <App/DocumentObjectGroup.h>
@@ -49,16 +48,17 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
 
+#include "ViewProviderDatum.h"
 #include "TaskDatumParameters.h"
 #include "Utils.h"
 #include "ViewProviderBody.h"
-#include "ViewProviderDatum.h"
+
 
 using namespace PartDesignGui;
 

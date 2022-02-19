@@ -25,7 +25,6 @@
 #ifndef PARTGUI_ViewProviderDatumPoint_H
 #define PARTGUI_ViewProviderDatumPoint_H
 
-#include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
 
 namespace PartDesignGui {
