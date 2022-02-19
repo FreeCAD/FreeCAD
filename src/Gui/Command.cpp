@@ -41,7 +41,6 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
-#include <Gui/ViewProviderLink.h>
 
 #include "Command.h"
 #include "Action.h"
@@ -57,6 +56,7 @@
 #include "Selection.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewProviderLink.h"
 #include "WaitCursor.h"
 #include "WhatsThis.h"
 #include "WorkbenchManager.h"

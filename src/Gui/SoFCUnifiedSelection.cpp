@@ -23,48 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qstatusbar.h>
-# include <qstring.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-#endif
-
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-
 #include <Inventor/SoFullPath.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/elements/SoComplexityElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoElements.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoProfileCoordinateElement.h>
-#include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoUnitsElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormalBinding.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/SoPickedPoint.h>
 #include <Inventor/threads/SbStorage.h>
+#endif
 
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
@@ -75,26 +56,22 @@
 # include <GL/gl.h>
 #endif
 
-#include <QtOpenGL.h>
-
-#include <Base/Console.h>
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ComplexGeoData.h>
+#include <Base/Tools.h>
 
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
+#include "Document.h"
 #include "MainWindow.h"
 #include "Selection.h"
-#include "ViewProvider.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
+#include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
