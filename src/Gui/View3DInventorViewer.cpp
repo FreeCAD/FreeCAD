@@ -31,126 +31,89 @@
 # include <OpenGL/gl.h>
 # else
 # include <GL/gl.h>
+# include <GL/glext.h>
+# include <GL/glu.h>
 # endif
+
 # include <Inventor/SbBox.h>
 # include <Inventor/SoEventManager.h>
+# include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoHandleEventAction.h>
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
+# include <Inventor/elements/SoLightModelElement.h>
+# include <Inventor/elements/SoOverrideElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/events/SoEvent.h>
+# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/events/SoMotion3Event.h>
 # include <Inventor/manips/SoClipPlaneManip.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCallback.h>
-# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoCube.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoLocateHighlight.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoRotationXYZ.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSelection.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoSelection.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/actions/SoBoxHighlightRenderAction.h>
-# include <Inventor/events/SoEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMotion3Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/projectors/SbSphereSheetProjector.h>
-# include <Inventor/SoOffscreenRenderer.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoTransparencyType.h>
-# include <QApplication>
+# include <QBitmap>
 # include <QEventLoop>
 # include <QKeyEvent>
-# include <QWheelEvent>
 # include <QMessageBox>
-# include <QTimer>
-# include <QStatusBar>
-# include <QBitmap>
 # include <QMimeData>
+# include <QTimer>
+# include <QVariantAnimation>
+# include <QWheelEvent>
 #endif
-
-#include <Inventor/SoEventManager.h>
-
-#if !defined(FC_OS_MACOSX)
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#endif
-
-#include <QVariantAnimation>
 
 #include <sstream>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
-#include <Base/Stream.h>
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-#include <App/GeoFeatureGroupExtension.h>
+#include <Quarter/devices/InputDevice.h>
+#include <Quarter/eventhandlers/EventFilter.h>
 
 #include "View3DInventorViewer.h"
-#include "ViewProviderDocumentObject.h"
+#include "Application.h"
+#include "CornerCrossLetters.h"
+#include "Document.h"
+#include "GLPainter.h"
+#include "MainWindow.h"
+#include "NaviCube.h"
+#include "NavigationStyle.h"
+#include "Selection.h"
+#include "SoAxisCrossKit.h"
 #include "SoFCBackgroundGradient.h"
-#include "SoFCColorBar.h"
-#include "SoFCColorLegend.h"
-#include "SoFCColorGradient.h"
+#include "SoFCBoundingBox.h"
+#include "SoFCDB.h"
+#include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCInteractiveElement.h"
-#include "SoFCBoundingBox.h"
-#include "SoAxisCrossKit.h"
-#include "View3DInventorRiftViewer.h"
-
-#include "Selection.h"
 #include "SoFCSelectionAction.h"
-#include "SoFCVectorizeU3DAction.h"
+#include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
-#include "SoFCDB.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "NavigationStyle.h"
-#include "ViewProvider.h"
-#include "SpaceballEvent.h"
-#include "GLPainter.h"
-#include <Quarter/eventhandlers/EventFilter.h>
-#include <Quarter/devices/InputDevice.h>
-#include "View3DViewerPy.h"
-#include <Gui/NaviCube.h>
-
-#include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/annex/Profiler/SoProfiler.h>
-#include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <QGesture>
-
+#include "SoFCVectorizeU3DAction.h"
 #include "SoTouchEvents.h"
-#include "Document.h"
+#include "SpaceballEvent.h"
+#include "View3DInventorRiftViewer.h"
+#include "View3DViewerPy.h"
 #include "ViewParams.h"
-
+#include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
 
-#include "CornerCrossLetters.h"
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
