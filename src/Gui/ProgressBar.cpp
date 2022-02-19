@@ -33,9 +33,8 @@
 # include <QThread>
 # include <QTime>
 # include <QTimer>
+# include <QWindow>
 #endif
-
-#include <QWindow>
 
 
 #include "ProgressBar.h"

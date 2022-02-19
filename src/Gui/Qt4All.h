@@ -28,6 +28,7 @@
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
+#include <QDirIterator>
 #include <QElapsedTimer>
 #include <qeventloop.h>
 #include <qfile.h>
@@ -166,6 +167,7 @@
 // QtWidgets
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QStackedWidget>
 // QtXML
 # include <QDomDocument>
 # include <QDomElement>

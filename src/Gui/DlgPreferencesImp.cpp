@@ -30,11 +30,10 @@
 # include <QDesktopWidget>
 # include <QGenericReturnArgument>
 # include <QMessageBox>
+# include <QScreen>
 # include <QScrollArea>
 # include <QScrollBar>
 #endif
-
-#include <QScreen>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>

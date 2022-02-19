@@ -32,12 +32,11 @@
 # include <QDesktopWidget>
 # include <QEvent>
 # include <QMessageBox>
+# include <QScreen>
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
 #endif
-
-#include <QScreen>
 
 #include <Base/Tools.h>
 #include "Action.h"

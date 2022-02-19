@@ -34,13 +34,12 @@
 # include <QTextBrowser>
 # include <QProcess>
 # include <QProcessEnvironment>
+# include <QScreen>
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
 # include <Inventor/C/basic.h>
 #endif
-
-#include <QScreen>
 
 #include <LibraryVersions.h>
 #include <zlib.h>

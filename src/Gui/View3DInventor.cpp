@@ -35,6 +35,7 @@
 # include <QLayout>
 # include <QMdiSubWindow>
 # include <QMessageBox>
+# include <QMimeData>
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
@@ -43,7 +44,7 @@
 # include <QStackedWidget>
 # include <QTimer>
 # include <QUrl>
-# include <QMimeData>
+# include <QWindow>
 # include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
@@ -56,10 +57,8 @@
 # include <Inventor/fields/SoSFString.h>
 # include <Inventor/fields/SoSFColor.h>
 #endif
-#include <QStackedWidget>
-#include <QtOpenGL.h>
 
-#include <QWindow>
+#include <QtOpenGL.h>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
