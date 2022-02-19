@@ -24,24 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QMenu>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "Utils.h"
-#include "ViewProviderPipe.h"
-#include "TaskPipeParameters.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
+#include "ViewProviderPipe.h"
+#include "TaskPipeParameters.h"
 
 using namespace PartDesignGui;
 

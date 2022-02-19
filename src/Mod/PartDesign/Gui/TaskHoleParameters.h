@@ -25,10 +25,6 @@
 #define GUI_TASKVIEW_TaskHoleParameters_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
-#include <boost/bind/bind.hpp>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"

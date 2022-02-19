@@ -25,7 +25,6 @@
 #define PARTGUI_ViewProviderPipe_H
 
 #include "ViewProviderAddSub.h"
-#include <map>
 
 namespace PartDesignGui {
 

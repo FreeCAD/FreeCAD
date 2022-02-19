@@ -23,49 +23,35 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <Geom_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Precision.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Pln.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopExp.hxx>
+ //# include <BRep_Tool.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <gp_Ax2.hxx>
 # include <Law_Function.hxx>
-# include <Law_Linear.hxx>
-# include <Law_S.hxx>
+//# include <Law_Linear.hxx>
+//# include <Law_S.hxx>
+# include <Precision.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Wire.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+//# include <TopTools_IndexedMapOfShape.hxx>
+//# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #endif
 
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
-#include <App/Document.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
-//#include "Body.h"
 #include "FeaturePipe.h"
 
 

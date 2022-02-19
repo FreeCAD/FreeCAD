@@ -23,53 +23,36 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
 # include <gp_Dir.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
-# include <Geom_Plane.hxx>
 # include <Geom_Circle.hxx>
-# include <Geom2d_Curve.hxx>
+# include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopExp.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Standard_Version.hxx>
-# include <QCoreApplication>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <gp_Ax1.hxx>
 #endif
 
-
-#include <Base/Placement.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/FileInfo.h>
-#include <App/Document.h>
 #include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <Base/Placement.h>
 #include <Base/Reader.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "json.hpp"
 #include "FeatureHole.h"
+#include "json.hpp"
 
 namespace PartDesign {
 

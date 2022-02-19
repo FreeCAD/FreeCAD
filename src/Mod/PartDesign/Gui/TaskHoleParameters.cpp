@@ -22,23 +22,17 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <boost_bind_bind.hpp>
-#endif
-
-#include "ui_TaskHoleParameters.h"
-#include "TaskHoleParameters.h"
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
+
+#include "ui_TaskHoleParameters.h"
+#include "TaskHoleParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
