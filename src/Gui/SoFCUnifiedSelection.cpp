@@ -23,12 +23,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+#endif
+
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+# include <GL/gl.h>
+#endif
+
 #include <Inventor/SoFullPath.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -45,16 +56,6 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/threads/SbStorage.h>
-#endif
-
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-# include <GL/gl.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

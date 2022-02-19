@@ -28,15 +28,15 @@
 # include <QDir>
 # include <QPrinter>
 # include <QFileInfo>
-# include <Inventor/MarkerBitmaps.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <boost/regex.hpp>
-#include <xercesc/util/TranscodingException.hpp>
 #include <CXX/Objects.hxx>
+#include <Inventor/MarkerBitmaps.h>
+#include <xercesc/util/TranscodingException.hpp>
 
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>

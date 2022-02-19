@@ -43,8 +43,6 @@
 # include <Inventor/actions/SoHandleEventAction.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
-# include <Inventor/elements/SoLightModelElement.h>
-# include <Inventor/elements/SoOverrideElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/events/SoKeyboardEvent.h>
@@ -75,7 +73,9 @@
 # include <QWheelEvent>
 #endif
 
-#include <sstream>
+# include <Inventor/elements/SoLightModelElement.h>
+# include <Inventor/elements/SoOverrideElement.h>
+
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
