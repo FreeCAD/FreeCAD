@@ -33,6 +33,7 @@
 #include <qfile.h>
 #include <QLibraryInfo>
 #include <QMutex>
+#include <qmath.h>
 #include <qnamespace.h>
 #include <QPointer>
 #include <QProcess>
@@ -50,7 +51,8 @@
 #include <qtranslator.h>
 #include <QUrl>
 #include <QUrlQuery>
-#include <qvariant.h>
+#include <QVariant>
+#include <QVariantAnimation>
 #include <QWaitCondition>
 // QtGui
 #include <QAbstractEventDispatcher>
@@ -102,6 +104,7 @@
 #include <QMessageLogContext>
 #include <QMimeData>
 #include <qmovie.h>
+#include <QOpenGLTexture>
 #include <qpainter.h>
 #include <qpalette.h>
 #include <qpixmap.h>
@@ -116,6 +119,7 @@
 #include <QProgressDialog>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
+#include <QScreen>
 #include <QScrollArea>
 #include <qscrollbar.h>
 #include <QSessionManager>
@@ -145,6 +149,7 @@
 #include <QTreeView>
 #include <QTreeWidget>
 #include <qvalidator.h>
+#include <QWindow>
 #include <QWhatsThis>
 #include <QWhatsThisClickedEvent>
 #include <qwidget.h>
@@ -158,9 +163,11 @@
 // QtSvg
 #include <QSvgRenderer>
 #include <QSvgWidget>
-
-#include "qmath.h"
-#include <QGraphicsView>
+// QtWidgets
 #include <QGraphicsScene>
+#include <QGraphicsView>
+// QtXML
+# include <QDomDocument>
+# include <QDomElement>
 
 #endif
