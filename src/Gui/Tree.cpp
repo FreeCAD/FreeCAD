@@ -28,44 +28,39 @@
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
-# include <qcursor.h>
-# include <QVBoxLayout>
-# include <qlayout.h>
-# include <qstatusbar.h>
 # include <QContextMenuEvent>
+# include <QCursor.h>
+# include <QHeaderView>
 # include <QMenu>
+# include <QMessageBox.h>
 # include <QPixmap>
 # include <QTimer>
 # include <QToolTip>
-# include <QHeaderView>
-# include <qmessagebox.h>
+# include <QVBoxLayout>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
 
 #include "Tree.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include "Document.h"
-#include "BitmapFactory.h"
-#include "ViewProviderDocumentObject.h"
-#include "MenuManager.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "Macro.h"
-#include "Workbench.h"
-#include "Widgets.h"
 #include "ExpressionCompleter.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "MenuManager.h"
+#include "View3DInventor.h"
+#include "ViewProviderDocumentObject.h"
+#include "Widgets.h"
+#include "Workbench.h"
+
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
