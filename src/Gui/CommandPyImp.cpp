@@ -384,6 +384,31 @@ PyObject* CommandPy::removeCustomCommand(PyObject* args)
     }
 }
 
+PyObject* CommandPy::findCustomCommand(PyObject* args)
+{
+    const char* macroScriptName = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &macroScriptName))
+        return nullptr;
+
+    CommandManager& commandManager = Application::Instance->commandManager();
+    std::vector<Command*> macros = commandManager.getGroupCommands("Macros");
+
+    auto action = std::find_if(macros.begin(), macros.end(), [macroScriptName](const Command* c) {
+        if (auto mc = dynamic_cast<const MacroCommand*>(c))
+            if (std::string(mc->getScriptName()) == std::string(macroScriptName))
+                return true;
+        return false;
+        });
+
+    if (action != macros.end()) {
+        return PyUnicode_FromString((*action)->getName());
+    }
+    else {
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+}
+
 PyObject *CommandPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

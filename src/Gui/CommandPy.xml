@@ -117,5 +117,15 @@ Returns True if something was removed, or False if not.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="findCustomCommand" Static='true'>
+      <Documentation>
+        <UserDocu>Find the name of a custom command, given a macro name
+findCustomCommand(name) -> Optional[str]
+--
+Given the name of a macro, return the name of the custom command for that macro, or
+None if there is no command matching that macro script name.
+        </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
