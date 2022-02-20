@@ -1005,7 +1005,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 )
             except Exception as e:
                 answer = (
-                    translate("AddonsInstaller", "Error updating module ")
+                    translate("AddonsInstaller", "Error updating module")
+                    + " "
                     + self.repo.name
                     + " - "
                     + translate("AddonsInstaller", "Please fix manually")
