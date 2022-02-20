@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Cut.hxx>
 # include <gp_Dir.hxx>
+# include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Face.hxx>
 #endif
