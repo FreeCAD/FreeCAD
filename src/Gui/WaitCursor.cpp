@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QDateTime>
 # include <QMessageBox>
 # include <QProgressDialog>
 # include <QWindow>

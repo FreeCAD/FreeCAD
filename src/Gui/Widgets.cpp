@@ -46,8 +46,8 @@
 #include <App/ExpressionParser.h>
 
 #include "Widgets.h"
-#include "Application.h"
 #include "Action.h"
+#include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgExpressionInput.h"
