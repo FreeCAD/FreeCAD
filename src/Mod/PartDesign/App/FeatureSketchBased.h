@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_SketchBased_H
 #define PARTDESIGN_SketchBased_H
 
-#include <App/PropertyStandard.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
 

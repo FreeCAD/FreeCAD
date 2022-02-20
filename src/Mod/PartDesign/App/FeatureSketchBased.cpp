@@ -23,64 +23,42 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <functional>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepCheck_Analyzer.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepGProp.hxx>
 # include <BRepGProp_Face.hxx>
 # include <BRepLProp_SLProps.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepOffsetAPI_MakeOffset.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepProj_Projection.hxx>
 # include <Extrema_ExtCC.hxx>
 # include <Extrema_POnCurv.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Ax1.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Pln.hxx>
 # include <GProp_GProps.hxx>
-# include <IntTools_FClass2d.hxx>
 # include <ShapeAnalysis.hxx>
-# include <ShapeAnalysis_Surface.hxx>
-# include <ShapeFix_Face.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_Wire.hxx>
 # include <Standard_Version.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-
 #endif
 
-#include <App/OriginFeature.h>
 #include <App/Document.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+#include <App/OriginFeature.h>
 #include <Base/Reader.h>
-#include <Base/Console.h>
 #include <Base/Tools.h>
-#include <App/Application.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+
 #include "DatumLine.h"
 #include "DatumPlane.h"
 #include "FeatureSketchBased.h"
