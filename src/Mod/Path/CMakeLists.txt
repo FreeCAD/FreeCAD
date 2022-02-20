@@ -270,10 +270,13 @@ SET(Path_Images
 )
 
 SET(PathData_Threads
-    Data/Threads/imperial-external.csv
-    Data/Threads/imperial-internal.csv
-    Data/Threads/metric-external.csv
-    Data/Threads/metric-internal.csv
+    Data/Threads/imperial-external-2A.csv
+    Data/Threads/imperial-external-3A.csv
+    Data/Threads/imperial-internal-2B.csv
+    Data/Threads/imperial-internal-3B.csv
+    Data/Threads/metric-external-4G6G.csv
+    Data/Threads/metric-external-6G.csv
+    Data/Threads/metric-internal-6H.csv
 )
 
 SET(Path_Data
