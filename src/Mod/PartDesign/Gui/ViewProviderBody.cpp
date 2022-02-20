@@ -24,22 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Precision.hxx>
 # include <QMenu>
 #endif
 
+#include <App/Origin.h>
+#include <App/Part.h>
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Gui/Application.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
