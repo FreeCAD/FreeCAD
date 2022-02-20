@@ -444,19 +444,25 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
-    for (size_t i=0; i < SubNames.size(); i++) {
+    std::vector<int> GeoIdList;
+
+    for (auto subName : SubNames) {
         // only handle edges
-        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
-            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-            nurbsized = true;
-        }
-        else if (SubNames[i].size() > 12 && SubNames[i].substr(0,12) == "ExternalEdge") {
-            int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-            nurbsized = true;
-        }
+        int GeoId;
+        if (subName.size() > 4 && subName.substr(0,4) == "Edge")
+            GeoId = std::atoi(subName.substr(4,4000).c_str()) - 1;
+        else if (subName.size() > 12 && subName.substr(0,12) == "ExternalEdge")
+            GeoId = - (std::atoi(subName.substr(12,4000).c_str()) + 2);
+        else
+            continue;
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
+        GeoIdList.push_back(GeoId);
+        nurbsized = true;
     }
+
+    // for creating the poles and knots
+    for (const auto& GeoId : GeoIdList)
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
 
     if (!nurbsized) {
         abortCommand();
