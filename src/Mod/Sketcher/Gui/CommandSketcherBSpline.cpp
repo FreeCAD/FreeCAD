@@ -407,23 +407,23 @@ bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
 }
 
 // Convert to NURBS
-DEF_STD_CMD_A(CmdSketcherConvertToNURB)
+DEF_STD_CMD_A(CmdSketcherConvertToNURBS)
 
-CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
-    : Command("Sketcher_BSplineConvertToNURB")
+CmdSketcherConvertToNURBS::CmdSketcherConvertToNURBS()
+    : Command("Sketcher_BSplineConvertToNURBS")
 {
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Convert geometry to B-spline");
     sToolTipText    = QT_TR_NOOP("Converts the selected geometry to a B-spline");
-    sWhatsThis      = "Sketcher_BSplineConvertToNURB";
+    sWhatsThis      = "Sketcher_BSplineConvertToNURBS";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineApproximate";
     sAccel          = "";
     eType           = ForEdit;
 }
 
-void CmdSketcherConvertToNURB::activated(int iMsg)
+void CmdSketcherConvertToNURBS::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -469,7 +469,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     tryAutoRecomputeIfNotSolve(Obj);
 }
 
-bool CmdSketcherConvertToNURB::isActive(void)
+bool CmdSketcherConvertToNURBS::isActive(void)
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -1220,7 +1220,7 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplineKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherBSplinePoleWeight());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
-    rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
+    rcCmdMgr.addCommand(new CmdSketcherConvertToNURBS());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
