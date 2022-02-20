@@ -23,20 +23,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <vector>
-# include <list>
-# include <set>
-# include <boost_bind_bind.hpp>
 # include <QMessageBox>
 # include <QPushButton>
 #endif
 
-#include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include "WorkflowManager.h"
@@ -45,9 +40,7 @@
 using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
-
 WorkflowManager * WorkflowManager::_instance = nullptr;
-
 
 WorkflowManager::WorkflowManager() {
     // Fill the map with already opened documents
