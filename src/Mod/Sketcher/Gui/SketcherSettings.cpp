@@ -71,6 +71,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
+    ui->checkBoxRotateEnablePreview->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
     form->saveSettings();
 }
@@ -82,6 +83,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
+    ui->checkBoxRotateEnablePreview->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
     form->loadSettings();
 }

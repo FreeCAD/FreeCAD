@@ -697,6 +697,39 @@ void SketcherToolWidget::setSettings(int toolSelected)
             isWidgetActive = 1;
             break;
         }
+        case 17: //Rotate
+        {
+            toolParameters.resize(4, 0);
+            isSettingSet.resize(4, 0);
+
+            ui->label->setVisible(1);
+            ui->label2->setVisible(1);
+            ui->label3->setVisible(1);
+            ui->label4->setVisible(1);
+            ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rotate", "x of center point"));
+            ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rotate", "y of center point"));
+            ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rotate", "Total angle"));
+            ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rotate", "Number of copy"));
+
+            ui->parameterOne->setVisible(1);
+            ui->parameterOne->setEnabled(1);
+            ui->parameterTwo->setVisible(1);
+            ui->parameterTwo->setEnabled(1);
+            ui->parameterThree->setVisible(1);
+            ui->parameterThree->setEnabled(0);
+            setUnit(Base::Unit::Angle, 2);
+            isSettingSet[2] = 0; //setUnit triggers ValuedChanged.
+            ui->parameterFour->setVisible(1);
+            ui->parameterFour->setEnabled(0);
+
+            ui->checkBoxTS2->setVisible(1);
+            ui->checkBoxTS2->setChecked(1);
+            ui->checkBoxTS2->setText(QApplication::translate("TaskSketcherTool_rotate", "Clone constraints"));
+
+            setParameterFocus(0);
+            isWidgetActive = 1;
+            break;
+        }
 
     }
 

@@ -166,7 +166,26 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
        </widget>
       </item>
-     </layout>
+	  <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxRotateEnablePreview">
+        <property name="toolTip">
+         <string>Enable Rotate tool preview on mouse move which is cpu intensive</string>
+        </property>
+        <property name="text">
+         <string>Enable Rotate tool preview on mouse move</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RotateEnablePreview</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+	 </layout>
     </widget>
    </item>
    <item row="4" column="0">

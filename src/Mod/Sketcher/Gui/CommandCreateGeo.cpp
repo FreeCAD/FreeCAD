@@ -1369,7 +1369,7 @@ public:
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] + toolSettings->widget->isSettingSet[4] != 0) {
                     if (toolSettings->widget->isSettingSet[0] == 1) {
                         distanceXYorPointOnObject(0, signX == signY ? firstCurve + 1 : firstCurve + 7, signX == signY ? Sketcher::PointPos::start : Sketcher::PointPos::end, toolSettings->widget->toolParameters[0]);
                     }
@@ -3045,7 +3045,7 @@ public:
                           geometryCreationMode==Construction?"True":"False"); //arcAngle > 0 ? 0 : 1);
 
             //add constraint if user typed in some dimensions in tool widget
-                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] != 0) {
                     if (toolSettings->widget->isSettingSet[0] == 1) {
                         distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
@@ -3713,7 +3713,7 @@ public:
                           geometryCreationMode==Construction?"True":"False");
 
                 //add constraint if user typed in some dimensions in tool widget
-                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] != 0) {
                     if (toolSettings->widget->isSettingSet[0] == 1) {
                         distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
@@ -7388,12 +7388,10 @@ public:
                         }
 
                         //add constraint if user typed in some dimensions in tool widget
-                        if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2]) {
-                            if (toolSettings->widget->isSettingSet[0] == 1 && radius > 0 ) {
+                        if (toolSettings->widget->isSettingSet[0] == 1 && radius > 0 ) {
                                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                                     currentgeoid + 1, radius);
                             }
-                        }
 
                         Gui::Command::commitCommand();
                     }
@@ -10677,7 +10675,7 @@ public:
 
                 //add constraint if user typed in some dimensions in tool widget
                 int lastCurve = getHighestCurveIndex(); //last geoID is the circle
-                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] + toolSettings->widget->isSettingSet[3] != 0) {
+                if (toolSettings->widget->isSettingSet[0] + toolSettings->widget->isSettingSet[1] + toolSettings->widget->isSettingSet[2] != 0) {
                     if (toolSettings->widget->isSettingSet[0] == 1) {
                         distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::mid, toolSettings->widget->toolParameters[0]);
                     }
