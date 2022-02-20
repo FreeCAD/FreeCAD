@@ -24,8 +24,6 @@
 #ifndef GUI_VIEW3DPY_H
 #define GUI_VIEW3DPY_H
 
-#include <Base/PyObjectBase.h>
-#include <CXX/Extensions.hxx>
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
 

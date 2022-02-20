@@ -35,14 +35,13 @@
 # include <GL/gl.h>
 # endif
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <memory>
+
 #include "SoFCSelectionContext.h"
 
 class SoFullPath;

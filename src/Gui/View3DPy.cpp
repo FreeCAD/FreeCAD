@@ -25,12 +25,10 @@
 
 #ifndef __InventorAll__
 # include "InventorAll.h"
-# include <sstream>
 # include <QColor>
 # include <QDir>
 # include <QFileInfo>
 # include <QImage>
-# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include <App/DocumentObject.h>
