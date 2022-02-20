@@ -24,7 +24,6 @@
 #ifndef GUI_ACTION_H
 #define GUI_ACTION_H
 
-#include <memory>
 #include <QAction>
 #include <QComboBox>
 #include <QKeySequence>

@@ -25,9 +25,8 @@
 #define APPLICATION_H
 
 #include <QPixmap>
-#include <string>
-#include <vector>
 #include <map>
+#include <string>
 
 #define  putpix()
 

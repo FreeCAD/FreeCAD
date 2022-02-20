@@ -24,11 +24,7 @@
 #ifndef GUI_COMMAND_H
 #define GUI_COMMAND_H
 
-
 #include <list>
-#include <map>
-#include <string>
-#include <vector>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>

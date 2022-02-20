@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QString>
 # include <QApplication>
 # include <QBitmap>
 # include <QDir>
@@ -33,16 +32,16 @@
 # include <QImageReader>
 # include <QPainter>
 # include <QPalette>
+# include <QString>
 # include <QSvgRenderer>
 # include <QStyleOption>
-# include <sstream>
 #endif
 
 #include <string>
 #include <Inventor/fields/SoSFImage.h>
 
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
 
 #include "BitmapFactory.h"
 
