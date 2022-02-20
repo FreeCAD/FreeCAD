@@ -440,25 +440,31 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    bool nurbsized = false;
-
     openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
-    for (size_t i=0; i < SubNames.size(); i++) {
+    std::vector<int> GeoIdList;
+
+    for (const auto& subName : SubNames) {
         // only handle edges
-        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
-            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-            nurbsized = true;
+        if (subName.size() > 4 && subName.substr(0,4) == "Edge") {
+            int GeoId = std::atoi(subName.substr(4,4000).c_str()) - 1;
+            GeoIdList.push_back(GeoId);
         }
-        else if (SubNames[i].size() > 12 && SubNames[i].substr(0,12) == "ExternalEdge") {
-            int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-            nurbsized = true;
+        else if (subName.size() > 12 && subName.substr(0,12) == "ExternalEdge") {
+            int GeoId = - (std::atoi(subName.substr(12,4000).c_str()) + 2);
+            GeoIdList.push_back(GeoId);
         }
     }
 
-    if (!nurbsized) {
+    // for creating the poles and knots
+    for (auto GeoId : GeoIdList) {
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
+    }
+    for (auto GeoId : GeoIdList) {
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
+    }
+
+    if (GeoIdList.empty()) {
         abortCommand();
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("None of the selected elements is an edge."));
