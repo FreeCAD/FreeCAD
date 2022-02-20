@@ -79,10 +79,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         )
         self.pitch = PathGui.QuantitySpinBox(self.form.threadPitch, obj, "Pitch")
 
-        # setupCombo(self.form.threadOrientation, obj.Proxy.ThreadOrientations)
-        # setupCombo(self.form.threadType, obj.Proxy.ThreadTypes)
-        # setupCombo(self.form.opDirection, obj.Proxy.Directions)
-
     def getForm(self):
         """getForm() ... return UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpThreadMillingEdit.ui")
