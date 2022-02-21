@@ -313,7 +313,7 @@ public:
 
 protected:
     // singleton
-    static InterpreterSingleton *_pcSingelton;
+    static InterpreterSingleton *_pcSingleton;
 
 private:
     std::string _cDebugFileName;
