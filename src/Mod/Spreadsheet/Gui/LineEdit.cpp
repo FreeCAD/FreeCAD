@@ -48,11 +48,9 @@ bool LineEdit::eventFilter(QObject* object, QEvent* event)
             // Special tab handling -- must be done via a QApplication event filter, otherwise the widget
             // system will always grab the tab events
             if (completerActive()) {
-                hideCompleter();
-                event->accept();
-                return true; // To make sure this tab press doesn't do anything else
-            }
-            else {
+                // the completer will filter on Tab and BackTab for navigation
+                return false;
+            } else {
                 lastKeyPressed = keyEvent->key();
                 lastModifiers = keyEvent->modifiers();
             }
