@@ -22,11 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes.
-
-Warning: this still uses the `Drawing.projectToSVG` method to provide
-the SVG representation of certain objects.
-Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
-may not be removed completely yet. This must be checked.
 """
 ## @package svg
 # \ingroup draftfunctions
@@ -48,7 +43,6 @@ from draftutils.messages import _wrn, _err
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-# Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
 
 ## \addtogroup draftfunctions
