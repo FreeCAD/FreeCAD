@@ -25,26 +25,17 @@
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
 #endif
 
+#include <App/DocumentObject.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/FeatureFillet.h>
+
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureFillet.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 
 using namespace PartDesignGui;

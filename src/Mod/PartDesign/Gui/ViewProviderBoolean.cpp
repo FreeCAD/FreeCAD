@@ -25,20 +25,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QAction>
 # include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderBoolean.h"
 #include "TaskBooleanParameters.h"
-#include "ViewProviderBody.h"
 #include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+#include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
-#include <Gui/Application.h>
 #include <Gui/Document.h>
 
 

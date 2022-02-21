@@ -25,27 +25,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QAction>
+# include <QMessageBox>
 #endif
+
+#include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureBoolean.h>
 
 #include "ui_TaskBooleanParameters.h"
 #include "TaskBooleanParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/Gui/ReferenceSelection.h>
+
 
 using namespace PartDesignGui;
 using namespace Gui;

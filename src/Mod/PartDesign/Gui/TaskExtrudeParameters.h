@@ -24,9 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
 #define GUI_TASKVIEW_TaskExtrudeParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderSketchBased.h"

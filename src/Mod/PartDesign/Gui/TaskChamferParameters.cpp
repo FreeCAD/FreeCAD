@@ -26,28 +26,18 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QFontMetrics>
-# include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
 #endif
 
+#include <App/DocumentObject.h>
+#include <Gui/Selection.h>
+#include <Gui/Tools.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/FeatureChamfer.h>
+
 #include "ui_TaskChamferParameters.h"
 #include "TaskChamferParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/Tools.h>
-#include <Mod/PartDesign/App/FeatureChamfer.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 
 using namespace PartDesignGui;
