@@ -701,3 +701,7 @@ std::string ViewProviderDocumentObject::getFullName() const {
         return pcObject->getFullName() + ".ViewObject";
     return std::string("?");
 }
+
+App::Document *ViewProviderDocumentObject::getOwnerDocument() const {
+    return pcObject?pcObject->getDocument():0;
+}
