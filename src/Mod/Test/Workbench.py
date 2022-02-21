@@ -25,6 +25,15 @@
 
 import FreeCAD, FreeCADGui, os, unittest
 
+from PySide2 import QtWidgets, QtCore
+from PySide2.QtWidgets import QApplication
+
+class CallableCheckWarning:
+    def __call__(self):
+        diag = QApplication.activeModalWidget()
+        if (diag):
+            QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
+
 class WorkbenchTestCase(unittest.TestCase):
     def setUp(self):
         self.Active = FreeCADGui.activeWorkbench()
@@ -34,16 +43,17 @@ class WorkbenchTestCase(unittest.TestCase):
         wbs=FreeCADGui.listWorkbenches()
         # this gives workbenches a possibility to detect that we're under test environment
         FreeCAD.TestEnvironment = True
-        try:
-            for i in wbs:
+        for i in wbs:
+            try:
+                print ("Activate workbench '{}'".format(i))
+                cobj = CallableCheckWarning()
+                QtCore.QTimer.singleShot(500, cobj)
                 success = FreeCADGui.activateWorkbench(i)
                 FreeCAD.Console.PrintLog("Active: "+FreeCADGui.activeWorkbench().name()+ " Expected: "+i+"\n")
                 self.assertTrue(success, "Test on activating workbench {0} failed".format(i))
-        except Exception as e:
-            del FreeCAD.TestEnvironment
-            self.fail("Loading of workbench '{0}' failed: {1}".format(i, e))
-        else:
-            del FreeCAD.TestEnvironment
+            except Exception as e:
+                self.fail("Loading of workbench '{0}' failed: {1}".format(i, e))
+        del FreeCAD.TestEnvironment
         
     def testHandler(self):
         import __main__
