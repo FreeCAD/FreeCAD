@@ -22,106 +22,70 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepFeat_SplitShape.hxx>
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
-# include <BRepPrimAPI_MakeTorus.hxx>
-# include <BRepPrimAPI_MakeCylinder.hxx>
-# include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrimAPI_MakeRevolution.hxx>
-# include <BRepPrim_Wedge.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepLib.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <BRepBuilderAPI_MakeShell.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepFeat_SplitShape.hxx>
 # include <BRepOffsetAPI_Sewing.hxx>
+# include <BRepPrim_Wedge.hxx>
+# include <BRepPrimAPI_MakeBox.hxx>
+# include <BRepPrimAPI_MakeCone.hxx>
+# include <BRepPrimAPI_MakeCylinder.hxx>
+# include <BRepPrimAPI_MakeRevolution.hxx>
+# include <BRepPrimAPI_MakeSphere.hxx>
+# include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepFill.hxx>
+# include <BRepFill_Filling.hxx>
+# include <BRepFill_Generator.hxx>
 # include <BRepLib.hxx>
-# include <gp_Circ.hxx>
+# include <BSplCLib.hxx>
 # include <gp_Ax3.hxx>
+# include <gp_Circ.hxx>
 # include <gp_Pnt.hxx>
-# include <gp_Lin.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Geom2d_Line.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
 # include <Geom_BSplineSurface.hxx>
-# include <Geom_ConicalSurface.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom_OffsetSurface.hxx>
-# include <GeomAPI_PointsToBSplineSurface.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Plane.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
+# include <GeomFill_AppSurf.hxx>
+# include <GeomFill_Line.hxx>
+# include <GeomFill_SectionGenerator.hxx>
 # include <Interface_Static.hxx>
-# include <Poly_Triangulation.hxx>
+# include <NCollection_List.hxx>
+# include <Precision.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
-# include <TopoDS.hxx>
+# include <Standard_Version.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Compound.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
 # include <TopoDS_Shell.hxx>
 # include <TopoDS_Solid.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TColgp_HArray2OfPnt.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColStd_Array1OfInteger.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <Precision.hxx>
-# include <Standard_Version.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
-# include <BSplCLib.hxx>
-# include <GeomFill_AppSurf.hxx>
-# include <GeomFill_Line.hxx>
-# include <GeomFill_Pipe.hxx>
-# include <GeomFill_SectionGenerator.hxx>
-# include <NCollection_List.hxx>
-# include <BRepFill_Filling.hxx>
 #endif
-# include <BRepFill_Generator.hxx>
 
-#include <cstdio>
-#include <fstream>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
+#include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "TopoShape.h"
-#include "TopoShapePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeVertexPy.h"
-#include "GeometryPy.h"
 #include "GeometryCurvePy.h"
+#include "GeometryPy.h"
 #include "BSplineSurfacePy.h"
+#include "edgecluster.h"
+#include "FaceMaker.h"
 #include "FeaturePartBox.h"
 #include "FeaturePartCut.h"
 #include "FeaturePartImportStep.h"
@@ -129,12 +93,21 @@
 #include "FeaturePartImportBrep.h"
 #include "ImportIges.h"
 #include "ImportStep.h"
-#include "edgecluster.h"
-#include "FaceMaker.h"
+#include "modelRefine.h"
+#include "OCCError.h"
 #include "PartFeature.h"
 #include "PartPyCXX.h"
-#include "modelRefine.h"
 #include "Tools.h"
+#include "TopoShape.h"
+#include "TopoShapeCompoundPy.h"
+#include "TopoShapeCompSolidPy.h"
+#include "TopoShapePy.h"
+#include "TopoShapeEdgePy.h"
+#include "TopoShapeFacePy.h"
+#include "TopoShapeShellPy.h"
+#include "TopoShapeSolidPy.h"
+#include "TopoShapeWirePy.h"
+#include "TopoShapeVertexPy.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"

@@ -23,27 +23,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <Python.h>
-# include <QString>
-# include <QDir>
 # include <QFileInfo>
-# include <QLineEdit>
 # include <QPointer>
+# include <QString>
 # include <Standard_math.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Standard_Version.hxx>
-# include <TopoDS_TCompound.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
+#include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/DocumentObserver.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -56,8 +48,6 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Part/App/PartFeature.h>
 
 #include "BoxSelection.h"
 #include "CrossSections.h"
