@@ -25,22 +25,19 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QMessageBox>
 # include <QMenu>
-# include <Inventor/nodes/SoSeparator.h>
+# include <QMessageBox>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
-
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ViewProviderShapeBinder.h"

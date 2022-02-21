@@ -56,12 +56,12 @@
 #include <App/Document.h>
 #include <App/OriginFeature.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
+#include "FeatureSketchBased.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
-#include "FeatureSketchBased.h"
+
 
 using namespace PartDesign;
 

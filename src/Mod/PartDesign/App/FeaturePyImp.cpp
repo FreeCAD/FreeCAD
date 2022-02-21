@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "Feature.h"
-
 // inclusion of the generated files (generated out of FeaturePy.xml)
 #include "FeaturePy.h"
 #include "FeaturePy.cpp"

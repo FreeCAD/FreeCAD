@@ -25,16 +25,12 @@
 #define GUI_TASKVIEW_TaskPrimitiveParameters_H
 
 #include <memory>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
-#include "TaskSketchBasedParameters.h"
 #include "ViewProviderPrimitive.h"
 #include "TaskDatumParameters.h"
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
 
 namespace App {
 class Property;

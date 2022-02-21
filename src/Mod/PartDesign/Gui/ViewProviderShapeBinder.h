@@ -26,7 +26,6 @@
 
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesignGui {
 

@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QMessageBox>
 #endif
 
@@ -34,14 +33,12 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
-#include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/Part/App/PartFeature.h>
-
-#include "ReferenceSelection.h"
-#include "Workbench.h"
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ui_TaskShapeBinder.h"
 #include "TaskShapeBinder.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
