@@ -195,7 +195,8 @@ def processcsg(filename):
     if printverbose:
         print('End Parser')
         print(result)
-    fixVisibility()
+    if gui:
+        fixVisibility()
     hassetcolor.clear()
     alreadyhidden.clear()
     FreeCAD.Console.PrintMessage('End processing CSG file\n')

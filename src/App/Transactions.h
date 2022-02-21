@@ -87,6 +87,11 @@ public:
     void addObjectDel(const TransactionalObject *Obj);
     void addObjectChange(const TransactionalObject *Obj, const Property *Prop);
 
+    /// Check if any transaction is being applied.
+    static bool isApplying(Property *prop = nullptr);
+
+    static void removePendingProperty(Property *prop);
+
 private:
     int transID;
     typedef std::pair<const TransactionalObject*, TransactionObject*> Info;
@@ -132,8 +137,9 @@ protected:
 
     struct PropData : DynamicProperty::PropData {
         Base::Type propertyType;
+        const Property *propertyOrig = nullptr;
     };
-    std::unordered_map<const Property*, PropData> _PropChangeMap;
+    std::unordered_map<int64_t, PropData> _PropChangeMap;
 
     std::string _NameInDocument;
 };
@@ -189,6 +195,20 @@ public:
     {
         return (new CLASS);
     }
+};
+
+class AppExport TransactionGuard
+{
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+
+public:
+    TransactionGuard(bool undo);
+    ~TransactionGuard();
+
+private:
+    bool undo;
 };
 
 } //namespace App

@@ -36,8 +36,10 @@ using Base::Writer;
 #include <Base/Reader.h>
 using Base::XMLReader;
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include "Transactions.h"
 #include "Property.h"
+#include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
 
@@ -163,6 +165,133 @@ void Transaction::addOrRemoveProperty(TransactionalObject *Obj,
 //**************************************************************************
 // separator for other implementation aspects
 
+static int _TransactionActive;
+static bool _FlushingProps;
+
+// Hold all changed property when transactions are applied. The mapped value is
+// index for remembering the order. Although the property change order within
+// the same object is not kept, but there is some ordering of changes between
+// different objects
+static std::unordered_map<Property*, int> _PendingProps;
+static int _PendingPropIndex;
+
+TransactionGuard::TransactionGuard(bool undo)
+    :undo(undo)
+{
+    if(_FlushingProps) {
+        FC_ERR("Recursive transaction");
+        return;
+    }
+    ++_TransactionActive;
+}
+
+TransactionGuard::~TransactionGuard()
+{
+    if(_FlushingProps)
+        return;
+
+    if(--_TransactionActive)
+        return;
+
+    Base::StateLocker locker(_FlushingProps);
+
+    std::vector<std::pair<Property*,int> > props;
+    props.reserve(_PendingProps.size());
+    props.insert(props.end(),_PendingProps.begin(),_PendingProps.end());
+    std::sort(props.begin(), props.end(),
+        [](const std::pair<Property*,int> &a, const std::pair<Property*,int> &b) {
+            return a.second < b.second;
+        });
+
+    std::vector<App::Document*> docs;
+    std::set<App::Document*> docSet;
+    for(auto &v : props) {
+        auto container = v.first->getContainer();
+        if (!container) continue;
+        auto doc = container->getOwnerDocument();
+        if (doc && docSet.insert(doc).second)
+            docs.push_back(doc);
+    }
+
+    std::string errMsg;
+    for(auto &v : props) {
+        auto prop = v.first;
+        // double check if the property exists, because it may be removed
+        // while we are looping.
+        if(_PendingProps.count(prop)) {
+            try {
+                FC_LOG("transaction touch " << prop->getFullName());
+                prop->touch();
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                errMsg = e.what();
+            }catch(std::exception &e) {
+                errMsg = e.what();
+            }catch(...) {
+                errMsg = "Unknown exception";
+            }
+            if(errMsg.size()) {
+                FC_ERR("Exception on finishing transaction " << errMsg);
+                errMsg.clear();
+            }
+        }
+    }
+    _PendingProps.clear();
+    _PendingPropIndex = 0;
+
+    try {
+        if(undo) {
+            for (auto doc : docs)
+                doc->signalUndo(*doc);
+            GetApplication().signalUndo();
+        } else {
+            for (auto doc : docs)
+                doc->signalRedo(*doc);
+            GetApplication().signalRedo();
+        }
+    } catch(Base::Exception &e) {
+        e.ReportException();
+        errMsg = e.what();
+    } catch(...) {
+        errMsg = "Unknown exception";
+    }
+    if (errMsg.size()) {
+        FC_ERR("Exception on " << (undo?"undo: ":"redo: ") << errMsg);
+        errMsg.clear();
+    }
+}
+
+
+bool Transaction::isApplying(Property *prop)
+{
+    if (_TransactionActive) {
+        if(prop)
+            _PendingProps.insert(std::make_pair(prop, _PendingPropIndex++));
+        return true;
+    }
+
+    // If we are flushing the property changes, then
+    // Document::isPerformingTransaction() shall still report true. That's why
+    // we return true here if prop is not given.
+    if (!prop)
+        return _FlushingProps;
+
+    // Property::hasSetValue/touch() also call us (with a given prop) to see if
+    // it shall notify its container about the change. Now, it is debatable if
+    // we shall allow further propagation of the change notification, because
+    // optimally speaking, no recomputation shall be performed while undo/redo.
+    // We can stop the chain of notification after informing change of the
+    // given property. This, however, may cause problem for those not
+    // 'optimally' coded objects. So we didn't do that, but only remove the
+    // soon to be notified property here.
+    _PendingProps.erase(prop);
+    return false;
+}
+
+void Transaction::removePendingProperty(Property *prop)
+{
+    _PendingProps.erase(prop);
+}
 
 void Transaction::apply(Document &Doc, bool forward)
 {
@@ -175,6 +304,7 @@ void Transaction::apply(Document &Doc, bool forward)
             info.second->applyNew(Doc, const_cast<TransactionalObject*>(info.first));
         for(auto &info : index) 
             info.second->applyChn(Doc, const_cast<TransactionalObject*>(info.first), forward);
+
     }catch(Base::Exception &e) {
         e.ReportException();
         errMsg = e.what();
@@ -299,7 +429,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
         // Property change order is not preserved, as it is recursive in nature
         for(auto &v : _PropChangeMap) {
             auto &data = v.second;
-            auto prop = const_cast<Property*>(v.first);
+            auto prop = const_cast<Property*>(data.propertyOrig);
 
             if(!data.property) {
                 // here means we are undoing/redoing and property add operation
@@ -311,9 +441,9 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             // been destroies. We must prepare for the case where user removed
             // a dynamic property but does not recordered as transaction.
             auto name = pcObj->getPropertyName(prop);
-            if(!name) {
+            if(!name || (data.name.size() && data.name != name) || data.propertyType != prop->getTypeId()) {
                 // Here means the original property is not found, probably removed
-                if(v.second.name.empty()) {
+                if(data.name.empty()) {
                     // not a dynamic property, nothing to do
                     continue;
                 }
@@ -322,12 +452,12 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
                 // restored. But since restoring property is actually creating
                 // a new property, the property key inside redo stack will not
                 // match. So we search by name first.
-                prop = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                prop = pcObj->getDynamicPropertyByName(data.name.c_str());
                 if(!prop) {
                     // Still not found, re-create the property
                     prop = pcObj->addDynamicProperty(
-                            data.property->getTypeId().getName(),
-                            v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
+                            data.propertyType.getName(),
+                            data.name.c_str(), data.group.c_str(), data.doc.c_str(),
                             data.attr, data.readonly, data.hidden);
                     if(!prop)
                         continue;
@@ -363,10 +493,11 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
 
 void TransactionObject::setProperty(const Property* pcProp)
 {
-    auto &data = _PropChangeMap[pcProp];
+    auto &data = _PropChangeMap[pcProp->getID()];
     if(!data.property && data.name.empty()) {
         static_cast<DynamicProperty::PropData&>(data) = 
             pcProp->getContainer()->getDynamicPropertyData(pcProp);
+        data.propertyOrig = pcProp;
         data.property = pcProp->Copy();
         data.propertyType = pcProp->getTypeId();
         data.property->setStatusValue(pcProp->getStatus());
@@ -379,12 +510,12 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
     if(!pcProp || !pcProp->getContainer())
         return;
 
-    auto &data = _PropChangeMap[pcProp];
+    auto &data = _PropChangeMap[pcProp->getID()];
     if(data.name.size()) {
         if(!add && !data.property) {
             // this means add and remove the same property inside a single
             // transaction, so they cancel each other out.
-            _PropChangeMap.erase(pcProp);
+            _PropChangeMap.erase(pcProp->getID());
         }
         return;
     }
@@ -392,7 +523,7 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
         delete data.property;
         data.property = 0;
     }
-
+    data.propertyOrig = pcProp;
     static_cast<DynamicProperty::PropData&>(data) = 
         pcProp->getContainer()->getDynamicPropertyData(pcProp);
     if(add) 

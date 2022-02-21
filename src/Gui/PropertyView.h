@@ -81,7 +81,7 @@ protected:
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
-    void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
+    void slotChangePropertyData(const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
@@ -109,6 +109,7 @@ private:
     Connection connectDelDocument;
     Connection connectDelObject;
     Connection connectDelViewObject;
+    Connection connectChangedDocument;
     QTabWidget* tabs;
     QTimer* timer;
 };

@@ -75,8 +75,6 @@ public:
     /** Builds up the list view with the properties. */
     void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList(), bool checkDocument=false);
     void updateProperty(const App::Property&);
-    void updateEditorMode(const App::Property&);
-    bool appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
     void setAutomaticExpand(bool);
     bool isAutomaticExpand(bool) const;
@@ -91,9 +89,15 @@ public:
     void setGroupTextColor(const QColor& c);
 
     bool isBinding() const { return binding; }
+    void openEditor(const QModelIndex &index);
+    void closeEditor();
 
 protected Q_SLOTS:
     void onItemActivated(const QModelIndex &index);
+    void onItemExpanded(const QModelIndex &index);
+    void onItemCollapsed(const QModelIndex &index);
+    void onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &dst, int row);
+    void onRowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
     virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
@@ -101,6 +105,7 @@ protected:
     virtual void editorDestroyed (QObject * editor);
     virtual void currentChanged (const QModelIndex & current, const QModelIndex & previous);
     virtual void rowsInserted (const QModelIndex & parent, int start, int end);
+    virtual void rowsAboutToBeRemoved (const QModelIndex & parent, int start, int end);
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
     virtual void contextMenuEvent(QContextMenuEvent *event);
@@ -108,8 +113,6 @@ protected:
 
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
-    void updateItemEditor(bool enable, int column, const QModelIndex& parent);
-    void setupTransaction(const QModelIndex &);
     void closeTransaction();
     void recomputeDocument(App::Document*);
 
@@ -125,13 +128,19 @@ private:
     bool delaybuild;
     bool binding;
     bool checkDocument;
+    bool closingEditor;
 
     int transactionID = 0;
 
     QColor groupColor;
     QBrush background;
 
+    QPointer<QWidget> activeEditor;
+    QPersistentModelIndex editingIndex;
+    int removingRows = 0;
+
     friend class Gui::PropertyView;
+    friend class PropertyItemDelegate;
 };
 
 } //namespace PropertyEditor

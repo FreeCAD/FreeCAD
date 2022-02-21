@@ -27,10 +27,13 @@
 #	include <cassert>
 #endif
 
+#include <atomic>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include "Transactions.h"
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include "Application.h"
@@ -49,16 +52,17 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
 //**************************************************************************
 // Construction/Destruction
 
+static std::atomic<int64_t> _PropID;
+
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(0), myName(0)
+  :father(0), myName(0), _id(++_PropID)
 {
-
 }
 
 Property::~Property()
 {
-
+    Transaction::removePendingProperty(this);
 }
 
 const char* Property::getName() const
@@ -212,9 +216,14 @@ void Property::destroy(Property *p) {
 void Property::touch()
 {
     PropertyCleaner guard(this);
-    if (father)
-        father->onChanged(this);
     StatusBits.set(Touched);
+    if (getName() && father && !Transaction::isApplying(this)) {
+        father->onChanged(this);
+        if(!testStatus(Busy)) {
+            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+            signalChanged(*this);
+        }
+    }
 }
 
 void Property::setReadOnly(bool readOnly)
@@ -224,15 +233,7 @@ void Property::setReadOnly(bool readOnly)
 
 void Property::hasSetValue(void)
 {
-    PropertyCleaner guard(this);
-    if (father) {
-        father->onChanged(this);
-        if(!testStatus(Busy)) {
-            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
-            signalChanged(*this);
-        }
-    }
-    StatusBits.set(Touched);
+    touch();
 }
 
 void Property::aboutToSetValue(void)
