@@ -91,6 +91,7 @@ struct PythonConsoleP
     QStringList statements;
     bool interactive;
     QMap<QString, QColor> colormap; // Color map
+    ParameterGrp::handle hGrpSettings;
     PythonConsoleP()
     {
         type = Normal;
@@ -438,8 +439,12 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     // set colors and font from settings
     ParameterGrp::handle hPrefGrp = getWindowParameter();
-    hPrefGrp->Attach( this );
+    hPrefGrp->Attach(this);
     hPrefGrp->NotifyAll();
+
+    d->hGrpSettings = WindowParameter::getDefaultParameter()->GetGroup("PythonConsole");
+    d->hGrpSettings->Attach(this);
+    d->hGrpSettings->Notify("PythonWordWrap");
 
     // disable undo/redo stuff
     setUndoRedoEnabled( false );
@@ -468,7 +473,8 @@ PythonConsole::~PythonConsole()
 {
     saveHistory();
     Base::PyGILStateLocker lock;
-    getWindowParameter()->Detach( this );
+    d->hGrpSettings->Detach(this);
+    getWindowParameter()->Detach(this);
     delete pythonSyntax;
     Py_XDECREF(d->_stdoutPy);
     Py_XDECREF(d->_stderrPy);
@@ -478,15 +484,12 @@ PythonConsole::~PythonConsole()
 }
 
 /** Set new font and colors according to the parameters. */
-void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sReason )
+void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sReason )
 {
-    Q_UNUSED(rCaller);
-    ParameterGrp::handle hPrefGrp = getWindowParameter();
-    ParameterGrp::handle hPrefGen = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
 
     if (strcmp(sReason, "PythonWordWrap") == 0) {
-        bool pythonWordWrap = hPrefGen->GetBool("PythonWordWrap", true);
+        bool pythonWordWrap = rGrp.GetBool("PythonWordWrap", true);
         if (pythonWordWrap)
             setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
         else
@@ -494,8 +497,8 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
     }
 
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
-        int fontSize = hPrefGrp->GetInt("FontSize", 10);
-        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII("Font", "Courier").c_str());
+        int fontSize = rGrp.GetInt("FontSize", 10);
+        QString fontFamily = QString::fromLatin1(rGrp.GetASCII("Font", "Courier").c_str());
 
         QFont font(fontFamily, fontSize);
         setFont(font);
@@ -513,17 +516,15 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
             QColor color = it.value();
             unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
             unsigned long value = static_cast<unsigned long>(col);
-            value = hPrefGrp->GetUnsigned(sReason, value);
+            value = rGrp.GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
             pythonSyntax->setColor(QString::fromLatin1(sReason), color);
         }
     }
 
-    if (strcmp(sReason, "PythonBlockCursor") == 0 ||
-        strcmp(sReason, "FontSize") == 0 ||
-        strcmp(sReason, "Font") == 0) {
-        bool block = hPrefGen->GetBool("PythonBlockCursor", false);
+    if (strcmp(sReason, "PythonBlockCursor") == 0) {
+        bool block = rGrp.GetBool("PythonBlockCursor", false);
         if (block)
             setCursorWidth(QFontMetrics(font()).averageCharWidth());
         else
@@ -1258,9 +1259,6 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-
     a = menu.addAction(tr("&Copy"), this, SLOT(copy()), QKeySequence(QString::fromLatin1("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
@@ -1276,7 +1274,7 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction* saveh = menu.addAction(tr("Save history"));
     saveh->setToolTip(tr("Saves Python history across %1 sessions").arg(qApp->applicationName()));
     saveh->setCheckable(true);
-    saveh->setChecked(hGrp->GetBool("SavePythonHistory", false));
+    saveh->setChecked(d->hGrpSettings->GetBool("SavePythonHistory", false));
 
     menu.addSeparator();
 
@@ -1297,25 +1295,13 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction* wrap = menu.addAction(tr("Word wrap"));
     wrap->setCheckable(true);
 
-    if (hGrp->GetBool("PythonWordWrap", true)) {
-        wrap->setChecked(true);
-        this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    } else {
-        wrap->setChecked(false);
-        this->setWordWrapMode(QTextOption::NoWrap);
-    }
-
+    wrap->setChecked(d->hGrpSettings->GetBool("PythonWordWrap", true));
     QAction* exec = menu.exec(e->globalPos());
     if (exec == wrap) {
-        if (wrap->isChecked()) {
-            this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-            hGrp->SetBool("PythonWordWrap", true);
-        } else {
-            this->setWordWrapMode(QTextOption::NoWrap);
-            hGrp->SetBool("PythonWordWrap", false);
-        }
-    } else if (exec == saveh) {
-        hGrp->SetBool("SavePythonHistory", saveh->isChecked());
+        d->hGrpSettings->SetBool("PythonWordWrap", wrap->isChecked());
+    }
+    else if (exec == saveh) {
+        d->hGrpSettings->SetBool("SavePythonHistory", saveh->isChecked());
     }
 }
 
@@ -1405,9 +1391,8 @@ void PythonConsole::loadHistory() const
     // only load contents if history is empty, to not overwrite anything
     if (!d->history.isEmpty())
         return;
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-    if (!hGrp->GetBool("SavePythonHistory", false))
+
+    if (!d->hGrpSettings->GetBool("SavePythonHistory", false))
         return;
     QFile f(d->historyFile);
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -1430,9 +1415,7 @@ void PythonConsole::saveHistory() const
 {
     if (d->history.isEmpty())
         return;
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-    if (!hGrp->GetBool("SavePythonHistory", false))
+    if (!d->hGrpSettings->GetBool("SavePythonHistory", false))
         return;
     QFile f(d->historyFile);
     if (f.open(QIODevice::WriteOnly)) {

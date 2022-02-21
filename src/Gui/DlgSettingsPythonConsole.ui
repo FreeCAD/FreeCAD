@@ -36,7 +36,7 @@ horizontal space in Python console</string>
          <cstring>PythonWordWrap</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>General</cstring>
+         <cstring>PythonConsole</cstring>
         </property>
        </widget>
       </item>
@@ -55,7 +55,7 @@ horizontal space in Python console</string>
          <cstring>PythonBlockCursor</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>General</cstring>
+         <cstring>PythonConsole</cstring>
         </property>
        </widget>
       </item>
@@ -74,7 +74,7 @@ horizontal space in Python console</string>
          <cstring>SavePythonHistory</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>General</cstring>
+         <cstring>PythonConsole</cstring>
         </property>
        </widget>
       </item>
