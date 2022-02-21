@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) 2020 Zheng Lei <realthunder.dev@gmail.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,6 +41,8 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
+#include <Base/Tools.h>
+#include <Base/Interpreter.h>
 #include <App/GeoFeature.h>
 #include <App/ComplexGeoData.h>
 #include "ExpressionCompleter.h"
@@ -145,7 +148,7 @@ public:
     //
     // For property data, Level1Data will generate and save the model data using
     // struct PropertyData. Note that, once PropertyData is generated, the next
-    // time it (or its children) is accessed, it will be through the cached 
+    // time it (or its children) is accessed, it will be through the cached
     // PropertyData (through ModelIndex lookup of dataMap), instead of Level1Data.
     //
     // The subsequent hierarchy is handled by Level2Data, whose Info::idx1 having
@@ -279,7 +282,7 @@ public:
                 propNameList.reserve(props.size());
                 for(auto &v : props) {
                     propList.emplace_back(v.first);
-                    propNameList.push_back(QString::fromLatin1(v.first));
+                    propNameList.push_back(QString::fromUtf8(v.first));
                 }
 
                 if(obj->isDerivedFrom(GeoFeature::getClassTypeId())) {
@@ -500,6 +503,23 @@ public:
                 if(getModel()->inList.count(obj))
                     name += QObject::tr(" (Cyclic reference!)");
                 return name;
+            }
+            case Qt::ToolTipRole: {
+                QString txt;
+                if(!obj)
+                    txt = QObject::tr("Object not found!");
+                else {
+                    if(getModel()->inList.count(obj))
+                        txt = QObject::tr("Warning! Cyclic reference may occur if you reference this object\n\n");
+                    txt += QString::fromLatin1("%1: %2\n%3: %4").arg(
+                            QObject::tr("Internal name"), QString::fromLatin1(obj->getNameInDocument()),
+                            QObject::tr("Label"), QString::fromUtf8(obj->Label.getValue()));
+                    if(obj->Label2.getStrValue().size()) {
+                        txt += QString::fromLatin1("\n%1: %2").arg(
+                                QObject::tr("Description"), QString::fromUtf8(obj->Label2.getValue()));
+                    }
+                }
+                return txt;
             }
             case Qt::DecorationRole: {
                 auto vp = Gui::Application::Instance->getViewProvider(obj);
@@ -2167,7 +2187,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
     } else if (boost::ends_with(path, "#<<")) {
         l << input.mid(0,input.size()-2);
         l << QLatin1String("<<");
-        FC_TRACE("split path " << path 
+        FC_TRACE("split path " << path
                 << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
         return l;
     }
@@ -2198,8 +2218,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             if(retry && sl.size()) {
                 sl.pop_back();
                 vexpr->popComponents();
-            } 
-            
+            }
             if (ending.isEmpty())
                 vexpr->popComponents();
 
@@ -2229,9 +2248,10 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
             auto m = dynamic_cast<ExpressionCompleterModel*>(model());
             if(m && m->setPath(l, vexpr)) {
-                FC_TRACE("adjust path " << path 
+                FC_TRACE("adjust path " << path
                         << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             }
+
             FC_TRACE("split path " << path
                     << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             return l;
@@ -2269,7 +2289,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
         l << ending;
     } else
         l << input;
-    FC_TRACE("split path bail out -> " 
+    FC_TRACE("split path bail out -> "
             << l.join(QLatin1String("/")).toUtf8().constData());
     return l;
 }
@@ -2352,7 +2372,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     bool stringing = false;
-    if(insideString) 
+    if(insideString)
         stringing = true;
     else {
         // Check if we have unclosed string starting from the end. If the
@@ -2362,7 +2382,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
             int token = get<0>(tokens[i]);
             if(token == ExpressionParser::STRING)
                 break;
-            if(token==ExpressionParser::LT 
+            if(token==ExpressionParser::LT
                 && i && get<0>(tokens[i-1])==ExpressionParser::LT)
             {
                 i-=2;
@@ -2441,7 +2461,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
             return;
         }
 
-        if (token != '.' && token != '#' && 
+        if (token != '.' && token != '#' &&
             token != ExpressionParser::IDENTIFIER &&
             token != ExpressionParser::STRING)
             break;
@@ -2487,16 +2507,26 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 void ExpressionCompleter::showPopup(bool show) {
     if (show && widget()->hasFocus()) {
         QRect rect;
-        ExpressionTextEdit *editor = qobject_cast<ExpressionTextEdit*>(widget());
-        if(editor) {
-            QTextCursor cursor = editor->textCursor();
-            rect = editor->cursorRect(cursor);
-            rect = QRect(editor->viewport()->mapToGlobal(rect.topLeft()), rect.size());
-            int w = editor->width() - rect.left();
-            if(w < 200)
-                w = 200;
-            rect.setWidth(w);
-            rect = QRect(editor->mapFromGlobal(rect.topLeft()), rect.size());
+        if (auto editor = qobject_cast<ExpressionTextEdit*>(widget())) {
+            int width = editor->width();
+            rect = editor->cursorRect();
+            rect.adjust(-2, -2, 2, 2);
+            if(popup()->isVisible()) {
+                QPoint pos = editor->viewport()->mapFromGlobal(
+                        popup()->mapToGlobal(QPoint(0,0)));
+                if(abs(rect.left() - pos.x()) < width/2)
+                    rect.setLeft(pos.x());
+                rect.setWidth(popup()->width());
+            }
+            rect.setRight(width);
+            if(rect.width() < 300)
+                rect.setRight(rect.left() + 300);
+            rect.moveTo(editor->viewport()->mapTo(editor, rect.topLeft()));
+        }
+        else if (auto editor = qobject_cast<QLineEdit*>(widget())) {
+            rect = editor->rect();
+            if(rect.width() < 300)
+                rect.setWidth(300);
         }
         complete(rect);
     } else {
@@ -2516,7 +2546,9 @@ void ExpressionCompleter::getPrefixRange(QString &prefix, int &start, int &end, 
 }
 
 bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
-    if (e->type() == QEvent::KeyPress && (o == widget() || o == popup())) {
+    if (e->type() == QEvent::KeyPress
+            && (o == widget() || o == popup())
+            && popup()->isVisible()) {
         QKeyEvent * ke = static_cast<QKeyEvent*>(e);
         switch(ke->key()) {
         case Qt::Key_Left:
@@ -2553,7 +2585,6 @@ bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
 ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char checkPrefix, bool checkInList)
     : QLineEdit(parent)
     , completer(nullptr)
-    , block(true)
     , noProperty(noProperty)
     , exactMatch(false)
     , checkInList(checkInList)
@@ -2618,12 +2649,10 @@ void ExpressionLineEdit::hideCompleter()
 
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
-    if (!block) {
-        if(!text.size() || (checkPrefix && text[0]!=QLatin1Char(checkPrefix)))
-            return;
-        if (!text.startsWith(QLatin1Char('\'')))
-            Q_EMIT textChanged2(text,cursorPosition());
-    }
+    if(!text.size() || (checkPrefix && text[0]!=QLatin1Char(checkPrefix)))
+        return;
+    if (!text.startsWith(QLatin1Char('\'')))
+        Q_EMIT textChanged2(text,cursorPosition());
 }
 
 void ExpressionLineEdit::slotCompleteText(QString completionPrefix)
@@ -2633,7 +2662,6 @@ void ExpressionLineEdit::slotCompleteText(QString completionPrefix)
     QString before(text().left(start));
     QString after(text().mid(end));
 
-    Base::FlagToggler<bool> flag(block,false);
     before += completionPrefix;
     setText(before + after);
     setCursorPosition(before.length()+offset);

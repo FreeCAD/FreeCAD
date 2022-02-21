@@ -111,7 +111,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent * event);
 private:
     ExpressionCompleter * completer;
-    bool block;
     bool noProperty;
     bool exactMatch;
     bool checkInList;
