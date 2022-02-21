@@ -2877,7 +2877,7 @@ def getShapes(filename):
 def projectShape(shape, direction, tess=None):
     """Project shape in a given direction.
 
-    It uses `Drawing.projectEx(shape, direction)`
+    It uses `TechDraw.projectEx(shape, direction)`
     to return a list with all the parts of the projection.
     The first five elements are added to a list of edges,
     which are then put in a `Part.Compound`.
@@ -2908,12 +2908,12 @@ def projectShape(shape, direction, tess=None):
 
     See also
     --------
-    Drawing.projectEx, DraftGeomUtils.cleanProjection
+    TechDraw.projectEx, DraftGeomUtils.cleanProjection
     """
-    import Drawing
+    import TechDraw
     edges = []
     try:
-        groups = Drawing.projectEx(shape, direction)
+        groups = TechDraw.projectEx(shape, direction)
     except Part.OCCError:
         print("unable to project shape on direction ", direction)
         return shape
@@ -4131,8 +4131,8 @@ def getViewDXF(view, blocks=True):
         r = view.Rotation
         if r != 0:
             r = -r  # fix rotation direction
-        import Drawing
-        proj = Drawing.projectToDXF(view.Source.Shape, view.Direction)
+        import TechDraw
+        proj = TechDraw.projectToDXF(view.Source.Shape, view.Direction)
         if dxfExportBlocks:
             # change layer and set color and ltype to BYBLOCK (0)
             proj = proj.replace("sheet_layer\n",

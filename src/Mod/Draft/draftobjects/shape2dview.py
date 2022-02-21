@@ -140,9 +140,9 @@ class Shape2DView(DraftObject):
     def getProjected(self,obj,shape,direction):
 
         "returns projected edges from a shape and a direction"
-        import Part, Drawing, DraftGeomUtils
+        import Part, TechDraw, DraftGeomUtils
         edges = []
-        _groups = Drawing.projectEx(shape, direction)
+        _groups = TechDraw.projectEx(shape, direction)
         for g in _groups[0:5]:
             if g:
                 edges.append(g)
@@ -210,7 +210,7 @@ class Shape2DView(DraftObject):
                         onlysolids = obj.Base.OnlySolids
                     if hasattr(obj,"OnlySolids"): # override base object
                         onlysolids = obj.OnlySolids
-                    import Arch, Part, Drawing
+                    import Arch
                     objs = groups.get_group_contents(objs, walls=True)
                     if getattr(obj,"VisibleOnly",True):
                         objs = gui_utils.remove_hidden(objs)
