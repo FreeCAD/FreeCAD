@@ -24,7 +24,6 @@
 #ifndef GUI_VIEW_H
 #define GUI_VIEW_H
 
-#include <vector>
 #include <Base/BaseClass.h>
 
 namespace App
