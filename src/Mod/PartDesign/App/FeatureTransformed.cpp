@@ -22,34 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRep_Builder.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Precision.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBndLib.hxx>
 # include <Bnd_Box.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
 
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <Base/Reader.h>
+#include <Mod/Part/App/modelRefine.h>
+
 #include "FeatureTransformed.h"
-#include "FeatureMultiTransform.h"
+#include "Body.h"
 #include "FeatureAddSub.h"
 #include "FeatureMirrored.h"
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
-#include "Body.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <App/Application.h>
-#include <Mod/Part/App/modelRefine.h>
 
 using namespace PartDesign;
 

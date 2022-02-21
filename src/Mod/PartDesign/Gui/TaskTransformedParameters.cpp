@@ -23,38 +23,26 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QListWidget>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-
-#include <Base/Console.h>
 #include <App/Application.h>
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
-#include <Gui/Application.h>
+#include <Base/Console.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
-
-#include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
-
-#include "ReferenceSelection.h"
-#include "TaskMultiTransformParameters.h"
-#include "Utils.h"
+#include <Mod/PartDesign/App/FeatureTransformed.h>
 
 #include "TaskTransformedParameters.h"
+#include "TaskMultiTransformParameters.h"
+#include "ReferenceSelection.h"
+
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 

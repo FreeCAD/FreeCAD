@@ -23,17 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Precision.hxx>
-# include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FeatureScaled.h"
 #include "FeatureAddSub.h"
-#include <Mod/Part/App/TopoShape.h>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
 
 using namespace PartDesign;
 
