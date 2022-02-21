@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderMultiTransform.h"
 #include "TaskMultiTransformParameters.h"
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>

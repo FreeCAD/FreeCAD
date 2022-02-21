@@ -24,9 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskLinearPatternParameters_H
 #define GUI_TASKVIEW_TaskLinearPatternParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderLinearPattern.h"

@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_FeatureMultiTransform_H
 #define PARTDESIGN_FeatureMultiTransform_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureTransformed.h"
 
 

@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_FeatureMirrored_H
 #define PARTDESIGN_FeatureMirrored_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureTransformed.h"
 
 

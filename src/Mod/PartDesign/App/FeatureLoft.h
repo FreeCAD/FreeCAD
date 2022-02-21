@@ -24,10 +24,6 @@
 #ifndef PARTDESIGN_Loft_H
 #define PARTDESIGN_Loft_H
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-
 #include "FeatureSketchBased.h"
 
 namespace PartDesign
