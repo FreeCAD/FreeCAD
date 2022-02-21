@@ -963,7 +963,7 @@ private:
         TechDraw::DrawViewPart* source = nullptr;
         TopoDS_Face face;
 
-        if (!PyArg_ParseTuple(args.ptr(), "O|detet", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
+        if (!PyArg_ParseTuple(args.ptr(), "O|detect", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
             throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
         }
 
