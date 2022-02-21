@@ -152,7 +152,7 @@ namespace
   };
   //================================================================================
   /*!
-   * \brief Oriented convertor of a pair of integers to a sole index 
+   * \brief Oriented converter of a pair of integers to a sole index 
    */
   class _OrientedIndexer : public _Indexer
   {

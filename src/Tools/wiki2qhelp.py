@@ -79,7 +79,7 @@ usage='''
     -g filename or --helpgenerator-exe filename: Uses filename as qt collection generator
     -o path or --out-path path: Specifies an output path
     -h or --help: Displays this help message
-    -p [convertor] or --pdf [convertor]: Outputs a pdf file instead of qhelp. Convertor
+    -p [converter] or --pdf [converter]: Outputs a pdf file instead of qhelp. Converter
                                          can be pisa (default) or htmldoc
     -t path or --tempfolder path: Uses path as temp folder for storing html files
 
@@ -218,7 +218,7 @@ def crawl(site=DEFAULTURL):
     if VERBOSE: print ("All done!")
     return 0
 
-def buildpdffiles(folder=TMPFOLDER,convertor=PDFCONVERTOR):
+def buildpdffiles(folder=TMPFOLDER,converter=PDFCONVERTOR):
     "scans a folder for html files and converts them all to pdf"
     templist = os.listdir(folder)
     fileslist = []
@@ -226,7 +226,7 @@ def buildpdffiles(folder=TMPFOLDER,convertor=PDFCONVERTOR):
         if i[-5:] == '.html':
             fileslist.append(i)
     for f in fileslist:
-        if convertor == 'pisa': createpdf_pisa(f[:-5],folder)
+        if converter == 'pisa': createpdf_pisa(f[:-5],folder)
         else: createpdf_htmldoc(f[:-5],folder)
 
 def fetch_resources(uri, rel):
@@ -605,15 +605,7 @@ def main(arg):
 		if o in ("-o", "--out-path"):
 			print ("Using output path:",a)
 			OUTPUTPATH = a
-#    if arg:
-#        if (arg[0] == '-h') or (arg[0] == '--help'):
-#            print usage
-#        else:
-#            URL = arg[0]
-#            if len(arg) > 1: INDEX = arg[1]
-#            if len(arg) > 2: OUTPUTPATH = arg[2]
-#            crawl()
-#    else:
+
 		crawl()
 
 if __name__ == "__main__":
