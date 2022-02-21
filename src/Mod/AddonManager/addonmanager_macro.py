@@ -302,18 +302,16 @@ class Macro(object):
             code = flat_code
         self.code = code
         self.fill_details_from_code(self.code)
+        if not self.icon and not self.xpm:
+            self.parse_wiki_page_for_icon(p)
+
         if not self.author:
             self.author = self.parse_desc("Author: ")
         if not self.date:
             self.date = self.parse_desc("Last modified: ")
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
-            # Technically we don't claim to support this, but some macro authors are
-            # doing it anyway, so let's give it a shot...
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller", "Attempting to fetch macro icon from {}"
-                ).format(self.icon)
-                + "\n"
+            FreeCAD.Console.PrintLog(
+                f"Attempting to fetch macro icon from {self.icon}\n"
             )
             p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.icon)
             if p:
@@ -322,11 +320,17 @@ class Macro(object):
                 os.makedirs(am_path, exist_ok=True)
                 _, _, filename = self.icon.rpartition("/")
                 base, _, extension = filename.rpartition(".")
-                constructed_name = os.path.join(am_path, base + "." + extension)
-                with open(constructed_name, "wb") as f:
-                    f.write(p.data())
-                self.icon_source = self.icon
-                self.icon = constructed_name
+                if base.lower().startswith("file:"):
+                    FreeCAD.Console.PrintMessage(
+                        f"Cannot use specified icon for {self.name}, {self.icon} is not a direct download link\n"
+                    )
+                    self.icon = ""
+                else:
+                    constructed_name = os.path.join(am_path, base + "." + extension)
+                    with open(constructed_name, "wb") as f:
+                        f.write(p.data())
+                    self.icon_source = self.icon
+                    self.icon = constructed_name
 
     def parse_desc(self, line_start: str) -> Union[str, None]:
         components = self.desc.split(">")
@@ -463,6 +467,56 @@ class Macro(object):
                 except Exception:
                     FreeCAD.Console.PrintMessage(f"?\n")
         return True
+
+    def parse_wiki_page_for_icon(self, page_data: str) -> None:
+        """Attempt to find a url for the icon in the wiki page. Sets self.icon if found."""
+
+        # Method 1: the text "toolbar icon" appears on the page, and provides a direct lin to an icon
+
+        # Try to get an icon from the wiki page itself:
+        # <a rel="nofollow" class="external text" href="https://www.freecadweb.org/wiki/images/f/f5/Macro_3D_Parametric_Curve.png">ToolBar Icon</a>
+        icon_regex = re.compile(r'.*href="(.*?)">ToolBar Icon', re.IGNORECASE)
+        wiki_icon = ""
+        if "ToolBar Icon" in page_data:
+            f = io.StringIO(page_data)
+            lines = f.readlines()
+            for line in lines:
+                if ">ToolBar Icon<" in line:
+                    match = icon_regex.match(line)
+                    if match:
+                        wiki_icon = match.group(1)
+                        if "file:" not in wiki_icon.lower():
+                            self.icon = wiki_icon
+                            return
+                        break
+
+        # See if we found an icon, but it wasn't a direct link:
+        icon_regex = re.compile(r'.*img.*?src="(.*?)"', re.IGNORECASE)
+        if wiki_icon.startswith("http"):
+            # It's a File: wiki link. We can load THAT page and get the image from it...
+            FreeCAD.Console.PrintLog(
+                f"Found a File: link for macro {self.name} -- {wiki_icon}"
+            )
+            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(wiki_icon)
+            if p:
+                p = p.data().decode("utf8")
+                f = io.StringIO(p)
+                lines = f.readlines()
+                trigger = False
+                for line in lines:
+                    if trigger:
+                        match = icon_regex.match(line)
+                        if match:
+                            wiki_icon = match.group(1)
+                            self.icon = "https://www.freecadweb.org/wiki" + wiki_icon
+                            return
+                    elif "fullImageLink" in line:
+                        trigger = True
+
+            #    <div class="fullImageLink" id="file">
+            #        <a href="/images/a/a2/Bevel.svg">
+            #            <img alt="File:Bevel.svg" src="/images/a/a2/Bevel.svg" width="64" height="64"/>
+            #        </a>
 
 
 #  @}
