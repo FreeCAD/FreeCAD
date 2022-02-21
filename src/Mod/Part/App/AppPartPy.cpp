@@ -71,6 +71,8 @@
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
+#include <BRepFill_Generator.hxx>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -81,8 +83,6 @@
 #include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 
-#include "GeometryCurvePy.h"
-#include "GeometryPy.h"
 #include "BSplineSurfacePy.h"
 #include "edgecluster.h"
 #include "FaceMaker.h"
@@ -91,6 +91,8 @@
 #include "FeaturePartImportStep.h"
 #include "FeaturePartImportIges.h"
 #include "FeaturePartImportBrep.h"
+#include "GeometryCurvePy.h"
+#include "GeometryPy.h"
 #include "ImportIges.h"
 #include "ImportStep.h"
 #include "modelRefine.h"
