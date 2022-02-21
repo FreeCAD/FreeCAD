@@ -429,7 +429,7 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
         TopLoc_Location edgeLocation;
         if (numEdges == 1) {
             // create a new wire from the input wire to determine its location
-            // to reset the location after the offet operation
+            // to reset the location after the offset operation
             BRepBuilderAPI_MakeWire mkWire;
             TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
             while (xp.More()) {

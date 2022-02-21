@@ -175,7 +175,7 @@ if HAVE_QTNETWORK:
                 proxy_string = pref.GetString("ProxyUrl", "")
 
                 # Add some error checking to the proxy setup, since for historical reasons they
-                # are indepdendent booleans, rather than an enumeration:
+                # are independent booleans, rather than an enumeration:
                 count = [noProxyCheck, systemProxyCheck, userProxyCheck].count(True)
                 if count != 1:
                     FreeCAD.Console.PrintWarning(
