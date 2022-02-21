@@ -34,7 +34,7 @@
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1193392755557" ID="Freemind_Link_1428395748" MODIFIED="1193392767045" TEXT="XML Model"/>
 <node CREATED="1193392767389" ID="Freemind_Link_1901080961" MODIFIED="1193392777035" TEXT="GUI Callback"/>
-<node CREATED="1193392777503" ID="Freemind_Link_130622541" MODIFIED="1193392788820" TEXT="Exceptions wile restore"/>
+<node CREATED="1193392777503" ID="Freemind_Link_130622541" MODIFIED="1193392788820" TEXT="Exceptions while restore"/>
 </node>
 </node>
 </map>
