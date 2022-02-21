@@ -139,8 +139,6 @@ void DlgGeneralImp::saveSettings()
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
-    ui->PythonWordWrap->onSave();
-    ui->PythonBlockCursor->onSave();
 
     QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
     PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
@@ -209,8 +207,6 @@ void DlgGeneralImp::loadSettings()
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
-    ui->PythonWordWrap->onRestore();
-    ui->PythonBlockCursor->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
