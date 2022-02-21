@@ -483,12 +483,12 @@ def getSVG(source,
         if should_update_svg_cache:
             svgcache = ""
             # render using the Drawing module
-            import Drawing, Part
+            import TechDraw, Part
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
                 style = {'stroke':       "SVGLINECOLOR",
                          'stroke-width': "SVGLINEWIDTH"}
-                svgcache += Drawing.projectToSVG(
+                svgcache += TechDraw.projectToSVG(
                     baseshape, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
@@ -497,7 +497,7 @@ def getSVG(source,
                 style = {'stroke':           "SVGLINECOLOR",
                          'stroke-width':     "SVGLINEWIDTH",
                          'stroke-dasharray': "SVGHIDDENPATTERN"}
-                svgcache += Drawing.projectToSVG(
+                svgcache += TechDraw.projectToSVG(
                     hshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
@@ -524,7 +524,7 @@ def getSVG(source,
                 sshapes = Part.makeCompound(sshapes)
                 style = {'stroke':       "SVGLINECOLOR",
                          'stroke-width': "SVGCUTLINEWIDTH"}
-                svgcache += Drawing.projectToSVG(
+                svgcache += TechDraw.projectToSVG(
                     sshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
@@ -629,7 +629,7 @@ def getDXF(obj):
     elif hasattr(obj,"showHidden"):
         showHidden = obj.showHidden
     result = []
-    import Drawing,Part
+    import TechDraw, Part
     if not obj.Source:
         return result
     source = obj.Source
@@ -641,11 +641,11 @@ def getDXF(obj):
     objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
     vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
     if vshapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(vshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(vshapes),direction))
     if sshapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(sshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(sshapes),direction))
     if hshapes:
-        result.append(Drawing.projectToDXF(Part.makeCompound(hshapes),direction))
+        result.append(TechDraw.projectToDXF(Part.makeCompound(hshapes),direction))
     return result
 
 
