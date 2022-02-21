@@ -50,27 +50,27 @@ public:
 
     Waypoint();
     /// full constructor 
-    Waypoint(const char* name, 
-             const Base::Placement &endPos, 
-             WaypointType type=Waypoint::LINE, 
-             float velocity=2000.0, 
-             float accelaration=100.0, 
-             bool cont=false,
-             unsigned int tool=0, 
-             unsigned int base = 0);
+    Waypoint(const char* name,
+        const Base::Placement& endPos,
+        WaypointType type = Waypoint::LINE,
+        float velocity = 2000.0,
+        float acceleration = 100.0,
+        bool cont = false,
+        unsigned int tool = 0,
+        unsigned int base = 0);
 
     ~Waypoint();
 
     // from base class
-    virtual unsigned int getMemSize (void) const;
-    virtual void Save (Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer& /*writer*/) const;
+    virtual void Restore(Base::XMLReader& /*reader*/);
 
      
     std::string Name;
     WaypointType Type;
     float Velocity;
-    float Accelaration;
+    float Acceleration;
     bool Cont;
     unsigned int Tool,Base;
     Base::Placement EndPos;
