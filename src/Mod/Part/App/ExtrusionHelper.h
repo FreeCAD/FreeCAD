@@ -25,6 +25,7 @@
 #define PART_EXTRUSIONHELPER_H
 
 #include <list>
+#include <vector>
 #include <gp_Dir.hxx>
 #include <TopoDS_Shape.hxx>
 

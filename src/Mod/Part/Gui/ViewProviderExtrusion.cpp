@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderExtrusion.h"
 #include <Mod/Part/App/FeatureExtrusion.h>
 

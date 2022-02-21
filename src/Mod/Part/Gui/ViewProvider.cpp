@@ -23,17 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-#endif
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Document.h>
 #include <Gui/Command.h>
-
-#include <Mod/Part/App/PartFeature.h>
 
 #include "ViewProvider.h"
 
