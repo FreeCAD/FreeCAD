@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_FeatureLinearPattern_H
 #define PARTDESIGN_FeatureLinearPattern_H
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 

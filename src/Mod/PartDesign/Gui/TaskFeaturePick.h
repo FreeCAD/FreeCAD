@@ -23,14 +23,13 @@
 #ifndef PARTDESIGNGUI_FeaturePickDialog_H
 #define PARTDESIGNGUI_FeaturePickDialog_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/DocumentObserver.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/ViewProviderOrigin.h>
 #include <App/DocumentObject.h>
+#include <Gui/DocumentObserver.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/ViewProviderOrigin.h>
 
-#include <boost/function.hpp>
 #include <QListWidgetItem>
 
 namespace PartDesignGui {
