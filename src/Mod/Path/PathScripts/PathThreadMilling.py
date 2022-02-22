@@ -176,7 +176,7 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
 
     if PathGeom.isRoughly(z, thread.zFinal):
         x = center.x
-        y = yMin if 0 == (i & 0x01) else yMax
+        y = yMin if (i & 0x01) else yMax
     else:
         n = math.fabs(thread.zFinal - thread.zStart) / thread.hPitch
         k = n - int(n)
@@ -191,20 +191,26 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
         comment(path, 'finish-thread')
 
     a = math.atan2(y - center.y, x - center.x)
-    dx = math.cos(a) * elevator
-    dy = math.sin(a) * elevator
+    dx = math.cos(a) * (radius - elevator)
+    dy = math.sin(a) * (radius - elevator)
+    PathLog.debug('')
+    PathLog.debug("a={}: dx={:.2f}, dy={:.2f}".format(a / math.pi * 180, dx, dy))
+
+    elevatorX = x - dx
+    elevatorY = y - dy
+    PathLog.debug("({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY))
 
     if leadInOut:
         comment(path, 'lead-out')
         path.append(
             Path.Command(
                 thread.cmd,
-                {"X": center.x + dx, "Y": center.y + dy, "I": dx / 2, "J": dy / 2},
+                {"X": elevatorX, "Y": elevatorY, "I": -dx / 2, "J": -dy / 2},
             )
         )
         comment(path, 'lead-out')
-
-    path.append(Path.Command("G1", {"X": center.x + dx, "Y": center.y - dy}))
+    else:
+        path.append(Path.Command("G1", {"X": elevatorX, "Y": elevatorY}))
 
     return path
 

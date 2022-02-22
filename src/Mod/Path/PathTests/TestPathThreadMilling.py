@@ -206,3 +206,59 @@ class TestPathThreadMilling(PathTestBase):
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
 
+    def test50(self):
+        '''Verify lead in/out commands for a single thread'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G2'
+        zStart      = 0
+        zFinal      = 1
+        pitch       = 1
+        radius      = 3
+        leadInOut   = True
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                '(------- lead-in -------)',
+                'G2 J0.500000 Y3.000000',
+                '(------- lead-in -------)',
+                'G2 J-3.000000 Y-3.000000 Z0.500000', 
+                'G2 J3.000000 Y3.000000 Z1.000000', 
+                '(------- lead-out -------)',
+                'G2 I0.000000 J-0.500000 X0.000000 Y2.000000', 
+                '(------- lead-out -------)',
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
+
+    def test51(self):
+        '''Verify lead in/out commands for one and a half threads'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G2'
+        zStart      = 0
+        zFinal      = 1.5
+        pitch       = 1
+        radius      = 3
+        leadInOut   = True
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                '(------- lead-in -------)',
+                'G2 J0.500000 Y3.000000',
+                '(------- lead-in -------)',
+                'G2 J-3.000000 Y-3.000000 Z0.500000', 
+                'G2 J3.000000 Y3.000000 Z1.000000', 
+                'G2 J-3.000000 Y-3.000000 Z1.500000', 
+                '(------- lead-out -------)',
+                'G2 I0.000000 J0.500000 X0.000000 Y-2.000000', 
+                '(------- lead-out -------)',
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
