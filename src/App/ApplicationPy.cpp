@@ -22,34 +22,24 @@
  ***************************************************************************/
 
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <stdexcept>
-#endif
-
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
+#include <Base/Parameter.h>
+#include <Base/Sequencer.h>
 
 #include "Application.h"
-#include "Document.h"
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
 
-// FreeCAD Base header
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/Factory.h>
-#include <Base/FileInfo.h>
-#include <Base/UnitsApi.h>
-#include <Base/Sequencer.h>
 
 //using Base::GetConsole;
 using namespace Base;
 using namespace App;
-
 
 
 //**************************************************************************
