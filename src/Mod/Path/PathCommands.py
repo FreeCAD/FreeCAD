@@ -108,8 +108,8 @@ class _CommandSelectLoop:
         if loopwire:
             FreeCADGui.Selection.clearSelection()
             elist = obj.Shape.Edges
-            for e in elist:
-                for i in loopwire.Edges:
+            for i in loopwire.Edges:
+                for e in elist:
                     if e.hashCode() == i.hashCode():
                         FreeCADGui.Selection.addSelection(
                             obj, "Edge" + str(elist.index(e) + 1)

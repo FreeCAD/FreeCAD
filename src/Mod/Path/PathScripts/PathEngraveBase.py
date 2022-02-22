@@ -63,15 +63,23 @@ class ObjectOp(PathOp.ObjectOp):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         PathLog.track(obj.Label, len(wires), zValues)
 
+        decomposewires = []
         for wire in wires:
-            offset = wire
+            decomposewires.extend(PathOpTools.makeWires(wire.Edges))
+
+        wires = decomposewires
+        for wire in wires:
+            # offset = wire
 
             # reorder the wire
             if hasattr(obj, "StartVertex"):
                 start_idx = obj.StartVertex
+            edges = wire.Edges
 
-            edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
-            edges = Part.sortEdges(edges)[0]
+            # edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
+            # PathLog.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
+            # edges = Part.sortEdges(edges)[0]
+            # PathLog.track("edges: {}".format(len(edges)))
 
             last = None
 
