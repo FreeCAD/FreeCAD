@@ -22,15 +22,9 @@
  ***************************************************************************/
 
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <iostream>
-# include <sstream>
-# include <exception>
-# include <ios>
-# include <functional>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -39,9 +33,7 @@
 # define WINVER 0x502 // needed for SetDllDirectory
 # include <Windows.h>
 # endif
-# include <csignal>
 # include <boost/program_options.hpp>
-# include <boost/filesystem.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
 #endif
 
@@ -55,77 +47,74 @@
 #include <sys/sysctl.h>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
+#include <QDir>
+#include <QFileInfo>
+#include <QProcessEnvironment>
+#include <QStandardPaths>
+#include <LibraryVersions.h>
 
-#include "Application.h"
-#include "Document.h"
-
+#include <App/MaterialPy.h>
+#include <App/MetadataPy.h>
 // FreeCAD Base header
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+#include <Base/AxisPy.h>
+#include <Base/BaseClass.h>
+#include <Base/BoundBoxPy.h>
 #include <Base/Console.h>
-#include <Base/Factory.h>
+#include <Base/CoordinateSystemPy.h>
+#include <Base/Exception.h>
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
-#include <Base/Type.h>
-#include <Base/BaseClass.h>
-#include <Base/Persistence.h>
-#include <Base/Reader.h>
+#include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
-#include <Base/CoordinateSystemPy.h>
-#include <Base/BoundBoxPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/Parameter.h>
+#include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
 #include <Base/RotationPy.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
-#include <Base/UnitsApi.h>
-#include <Base/QuantityPy.h>
-#include <Base/UnitPy.h>
+#include <Base/Type.h>
 #include <Base/TypePy.h>
+#include <Base/UnitPy.h>
+#include <Base/UnitsApi.h>
+#include <Base/VectorPy.h>
 
-#include "GeoFeature.h"
+#include "Annotation.h"
+#include "Application.h"
+#include "ComplexGeoData.h"
+#include "DocumentObjectFileIncluded.h"
+#include "DocumentObjectGroup.h"
+#include "DocumentObjectGroupPy.h"
+#include "DocumentObserver.h"
+#include "DocumentPy.h"
+#include "ExpressionParser.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
-#include "ComplexGeoData.h"
+#include "GeoFeature.h"
+#include "GeoFeatureGroupExtension.h"
+#include "InventorObject.h"
+#include "Link.h"
+#include "LinkBaseExtensionPy.h"
+#include "MaterialObject.h"
+#include "MeasureDistance.h"
+#include "Origin.h"
+#include "OriginFeature.h"
+#include "OriginGroupExtension.h"
+#include "OriginGroupExtensionPy.h"
+#include "Part.h"
+#include "PartPy.h"
+#include "Placement.h"
 #include "Property.h"
 #include "PropertyContainer.h"
-#include "PropertyUnits.h"
+#include "PropertyExpressionEngine.h"
 #include "PropertyFile.h"
 #include "PropertyLinks.h"
 #include "PropertyPythonObject.h"
-#include "PropertyExpressionEngine.h"
-#include "Document.h"
-#include "DocumentObjectGroup.h"
-#include "DocumentObjectFileIncluded.h"
-#include "DocumentObserver.h"
-#include "InventorObject.h"
-#include "VRMLObject.h"
-#include "Annotation.h"
-#include "MeasureDistance.h"
-#include "Placement.h"
-#include "GeoFeatureGroupExtension.h"
-#include "OriginGroupExtension.h"
-#include "Part.h"
-#include "OriginFeature.h"
-#include "Origin.h"
-#include "MaterialObject.h"
 #include "TextDocument.h"
-#include "ExpressionParser.h"
 #include "Transactions.h"
-#include <App/MaterialPy.h>
-#include <App/MetadataPy.h>
-#include <Base/GeometryPyCXX.h>
-#include "Link.h"
-
-#include "DocumentPy.h"
-#include "DocumentObjectGroupPy.h"
-#include "LinkBaseExtensionPy.h"
-#include "OriginGroupExtensionPy.h"
-#include "PartPy.h"
+#include "VRMLObject.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -133,13 +122,6 @@
 #include <Build/Version.h>
 #include "Branding.h"
 
-#include <boost/tokenizer.hpp>
-#include <boost/token_functions.hpp>
-#include <QDir>
-#include <QFileInfo>
-#include <QProcessEnvironment>
-#include <QStandardPaths>
-#include <LibraryVersions.h>
 
 using namespace App;
 using namespace std;

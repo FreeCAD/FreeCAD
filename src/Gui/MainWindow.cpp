@@ -425,15 +425,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // Python console
     if (hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
         PythonConsole* pcPython = new PythonConsole(this);
-        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-
-        if (hGrp->GetBool("PythonWordWrap", true)) {
-          pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        } else {
-          pcPython->setWordWrapMode(QTextOption::NoWrap);
-        }
-
         pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
         pcPython->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));

@@ -267,10 +267,6 @@ std::string DocumentObject::getFullName() const {
     return name;
 }
 
-App::Document *DocumentObject::getOwnerDocument() const {
-    return _pDoc;
-}
-
 const char *DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not

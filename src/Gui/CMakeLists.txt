@@ -340,6 +340,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
     DlgWorkbenches.ui
@@ -582,6 +583,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsImageImp.cpp
     DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
+    DlgSettingsPythonConsole.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgEditorImp.h
@@ -600,6 +602,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsImageImp.h
     DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
+    DlgSettingsPythonConsole.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -620,6 +623,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 

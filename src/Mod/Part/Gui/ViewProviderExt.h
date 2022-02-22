@@ -188,8 +188,6 @@ private:
     static App::PropertyQuantityConstraint::Constraints angDeflectionRange;
     static const char* LightingEnums[];
     static const char* DrawStyleEnums[];
-
-    TopoDS_Shape cachedShape;
 };
 
 }

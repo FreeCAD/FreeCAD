@@ -23,28 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Solid.hxx>
+
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepOffsetAPI_ThruSections.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <Base/Console.h>
-#include <Base/Reader.h>
 #include <App/Document.h>
+#include <Base/Exception.h>
+#include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
-//#include "Body.h"
 #include "FeatureLoft.h"
 
 

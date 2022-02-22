@@ -38,7 +38,6 @@
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "PrefWidgets.h"
-#include "PythonConsole.h"
 #include "Language/Translator.h"
 #include "Gui/PreferencePackManager.h"
 #include "DlgPreferencesImp.h"
@@ -139,21 +138,6 @@ void DlgGeneralImp::saveSettings()
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
-    ui->PythonWordWrap->onSave();
-    ui->PythonBlockCursor->onSave();
-
-    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-    PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
-    if (pcPython) {
-        bool pythonWordWrap = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
-
-        if (pythonWordWrap) {
-            pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        } else {
-            pcPython->setWordWrapMode(QTextOption::NoWrap);
-        }
-    }
 
     setRecentFileSize();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -209,8 +193,6 @@ void DlgGeneralImp::loadSettings()
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
-    ui->PythonWordWrap->onRestore();
-    ui->PythonBlockCursor->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");

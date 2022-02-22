@@ -144,8 +144,6 @@ public:
 
     virtual std::string getFullName() const override;
 
-    virtual App::Document *getOwnerDocument() const override;
-
     /** Allow this class to be used as an override for the original view provider of the given object
      *
      * @sa App::DocumentObject::getViewProviderNameOverride()

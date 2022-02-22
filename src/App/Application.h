@@ -26,12 +26,12 @@
 
 #include <boost_signals2.hpp>
 
-#include <vector>
 #include <deque>
+#include <vector>
 
-#include <Base/PyObjectBase.h>
-#include <Base/Parameter.h>
 #include <Base/Observer.h>
+#include <Base/Parameter.h>
+#include <Base/PyObjectBase.h>
 
 
 namespace Base

@@ -307,13 +307,11 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
 void PropertyEditor::recomputeDocument(App::Document* doc)
 {
     try {
-        if (App::Document* doc = App::GetApplication().getActiveDocument()) {
-            if (!doc->isTransactionEmpty()) {
-                // Between opening and committing a transaction a recompute
-                // could already have been done
-                if (doc->isTouched())
-                    doc->recompute();
-            }
+        if (doc && !doc->isTransactionEmpty()) {
+            // Between opening and committing a transaction a recompute
+            // could already have been done
+            if (doc->isTouched())
+                doc->recompute();
         }
     }
     // do not re-throw
