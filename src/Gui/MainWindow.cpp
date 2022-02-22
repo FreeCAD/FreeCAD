@@ -1458,10 +1458,22 @@ void MainWindow::stopSplasher(void)
 
 QPixmap MainWindow::aboutImage() const
 {
-    // See if we have a custom About screen image set
     QPixmap about_image;
+
+    // For graphic designers, provide a way to override the real About image via
+    // the preferences, so they can test their work before deploying it.
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    auto imageOverride = hGrp->GetASCII("AboutImageOverride");
+    if (!imageOverride.empty()) {
+        QFileInfo fi(QString::fromStdString(imageOverride));
+        if (fi.isFile() && fi.exists())
+            about_image.load(fi.filePath());
+    }
+
+    // See if we have a custom About screen image set
     QFileInfo fi(QString::fromLatin1("images:about_image.png"));
-    if (fi.isFile() && fi.exists())
+    if (about_image.isNull() && fi.isFile() && fi.exists())
         about_image.load(fi.filePath(), "PNG");
 
     std::string about_path = App::Application::Config()["AboutImage"];
@@ -1484,10 +1496,22 @@ QPixmap MainWindow::aboutImage() const
 
 QPixmap MainWindow::splashImage() const
 {
-    // search in the UserAppData dir as very first
     QPixmap splash_image;
+
+    // For graphic designers, provide a way to override the real Splash image via
+    // the preferences, so they can test their work before deploying it.
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    auto imageOverride = hGrp->GetASCII("SplashImageOverride");
+    if (!imageOverride.empty()) {
+        QFileInfo fi(QString::fromStdString(imageOverride));
+        if (fi.isFile() && fi.exists())
+            splash_image.load(fi.filePath());
+    }
+
+    // search in the UserAppData dir as very first
     QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
-    if (fi.isFile() && fi.exists())
+    if (splash_image.isNull() && fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
 
     // if no image was found try the config
