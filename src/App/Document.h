@@ -23,21 +23,16 @@
 #ifndef APP_DOCUMENT_H
 #define APP_DOCUMENT_H
 
-#include <CXX/Objects.hxx>
-#include <Base/Observer.h>
-#include <Base/Persistence.h>
 #include <Base/Type.h>
+#include <CXX/Objects.hxx>
 
 #include "PropertyContainer.h"
-#include "PropertyStandard.h"
 #include "PropertyLinks.h"
+#include "PropertyStandard.h"
 
 #include <map>
-#include <vector>
 #include <stack>
-#include <functional>
-
-#include <boost_signals2.hpp>
+#include <vector>
 
 namespace Base {
     class Writer;

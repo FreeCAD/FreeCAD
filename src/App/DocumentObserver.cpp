@@ -23,17 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <functional>
-# include <sstream>
-#endif
-
 #include <Base/Tools.h>
+
 #include "Application.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "DocumentObserver.h"
 #include "ComplexGeoData.h"
+#include "Document.h"
+#include "DocumentObserver.h"
 #include "GeoFeature.h"
 
 using namespace App;

@@ -24,12 +24,14 @@
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+
 #include "DocumentObject.h"
 #include "Document.h"
 #include "ExpressionParser.h"
 #include "GeoFeature.h"
-#include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include "GroupExtension.h"
+
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
 #include <App/DocumentObjectPy.h>

@@ -24,7 +24,6 @@
 #ifndef APP_DOCUMENTOBJECTEXTENSION_H
 #define APP_DOCUMENTOBJECTEXTENSION_H
 
-#include "Extension.h"
 #include "DocumentObject.h"
 
 namespace App {
