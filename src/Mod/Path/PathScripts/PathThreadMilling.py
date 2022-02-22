@@ -81,6 +81,24 @@ def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
     return [major - dr * (i + 1) for i in range(count)]
 
 
+def elevatorRadius(obj, center, internal, tool):
+    '''elevatorLocation(obj, center, internal, tool) ... return suitable location for the tool elevator'''
+
+    if internal:
+        dy = float(obj.MinorDiameter - tool.Diameter) / 2 - 1
+        if dy < 0:
+            if (obj.MinorDiameter < tool.Diameter):
+                PathLog.error("The selected tool is too big (d={}) for milling a thread with minor diameter D={}".format(tool.Diameter, obj.MinorDiameter))
+            dy = 0
+    else:
+        dy = float(obj.MajorDiameter + tool.Diameter) / 2 + 1
+
+    return dy
+
+def comment(path, msg):
+    if True:
+        path.append(Path.Command("(------- {} -------)".format(msg)))
+
 class _ThreadInternal(object):
     """Helper class for dealing with different thread types"""
 
@@ -121,29 +139,30 @@ class _ThreadInternal(object):
         return self.pitch > 0
 
 
-def threadCommandsInternal(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
-    """threadCommandsInternal(loc, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
+def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator):
+    """threadCommands(center, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
     thread = _ThreadInternal(cmd, zStart, zFinal, pitch)
 
-    yMin = loc.y - radius
-    yMax = loc.y + radius
+    yMin = center.y - radius
+    yMax = center.y + radius
 
     path = []
-    # at this point the tool is at a safe height (depending on the previous thread), so we can move
+    # at this point the tool is at a safe heiht (depending on the previous thread), so we can move
     # into position first, and then drop to the start height. If there is any material in the way this
     # op hasn't been setup properly.
-    path.append(Path.Command("G0", {"X": loc.x, "Y": loc.y}))
+    path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
     path.append(Path.Command("G0", {"Z": thread.zStart}))
     if leadInOut:
-        path.append(Path.Command(thread.cmd, {"Y": yMax, "J": (yMax - loc.y) / 2}))
+        comment(path, 'lead-in')
+        path.append(Path.Command(thread.cmd, {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2}))
+        comment(path, 'lead-in')
     else:
         path.append(Path.Command("G1", {"Y": yMax}))
 
     z = thread.zStart
     r = -radius
     i = 0
-    while True:
-        z = thread.zStart + i * thread.hPitch
+    while not PathGeom.isRoughly(z, thread.zFinal):
         if thread.overshoots(z):
             break
         if 0 == (i & 0x01):
@@ -153,91 +172,42 @@ def threadCommandsInternal(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
         path.append(Path.Command(thread.cmd, {"Y": y, "Z": z + thread.hPitch, "J": r}))
         r = -r
         i = i + 1
+        z = z + thread.hPitch
 
-    z = thread.zStart + i * thread.hPitch
     if PathGeom.isRoughly(z, thread.zFinal):
-        x = loc.x
+        x = center.x
+        y = yMin if 0 == (i & 0x01) else yMax
     else:
         n = math.fabs(thread.zFinal - thread.zStart) / thread.hPitch
         k = n - int(n)
         dy = math.cos(k * math.pi)
         dx = math.sin(k * math.pi)
-        y = thread.adjustY(loc.y, r * dy)
-        x = thread.adjustX(loc.x, r * dx)
+        y = thread.adjustY(center.y, r * dy)
+        x = thread.adjustX(center.x, r * dx)
+        comment(path, 'finish-thread')
         path.append(
             Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r})
         )
+        comment(path, 'finish-thread')
+
+    a = math.atan2(y - center.y, x - center.x)
+    dx = math.cos(a) * elevator
+    dy = math.sin(a) * elevator
 
     if leadInOut:
+        comment(path, 'lead-out')
         path.append(
             Path.Command(
                 thread.cmd,
-                {"X": loc.x, "Y": loc.y, "I": (loc.x - x) / 2, "J": (loc.y - y) / 2},
+                {"X": center.x + dx, "Y": center.y + dy, "I": dx / 2, "J": dy / 2},
             )
         )
-    else:
-        path.append(Path.Command("G1", {"X": loc.x, "Y": loc.y}))
-    return path
+        comment(path, 'lead-out')
 
-
-def threadCommandsExternal(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
-    """threadCommandsExternal(loc, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
-    thread = _ThreadInternal(cmd, zStart, zFinal, pitch)
-
-    yMin = loc.y - radius
-    yMax = loc.y + radius
-
-    path = []
-    # at this point the tool is at a safe height (depending on the previous thread), so we can move
-    # into position first, and then drop to the start height. If there is any material in the way this
-    # op hasn't been setup properly.
-    path.append(Path.Command("G0", {"X": loc.x, "Y": loc.y}))
-    path.append(Path.Command("G0", {"Z": thread.zStart}))
-    if leadInOut:
-        path.append(Path.Command(thread.cmd, {"Y": yMax, "J": (yMax - loc.y) / 2}))
-    else:
-        path.append(Path.Command("G1", {"Y": yMax}))
-
-    z = thread.zStart
-    r = -radius
-    i = 0
-    while True:
-        z = thread.zStart + i * thread.hPitch
-        if thread.overshoots(z):
-            break
-        if 0 == (i & 0x01):
-            y = yMin
-        else:
-            y = yMax
-        path.append(Path.Command(thread.cmd, {"Y": y, "Z": z + thread.hPitch, "J": r}))
-        r = -r
-        i = i + 1
-
-    z = thread.zStart + i * thread.hPitch
-    if PathGeom.isRoughly(z, thread.zFinal):
-        x = loc.x
-    else:
-        n = math.fabs(thread.zFinal - thread.zStart) / thread.hPitch
-        k = n - int(n)
-        dy = math.cos(k * math.pi)
-        dx = math.sin(k * math.pi)
-        y = thread.adjustY(loc.y, r * dy)
-        x = thread.adjustX(loc.x, r * dx)
-        path.append(
-            Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r})
-        )
-
-    if leadInOut:
-        path.append(
-            Path.Command(
-                thread.cmd,
-                {"X": loc.x, "Y": loc.y, "I": (loc.x - x) / 2, "J": (loc.y - y) / 2},
-            )
-        )
-    else:
-        path.append(Path.Command("G1", {"X": loc.x, "Y": loc.y}))
+    path.append(Path.Command("G1", {"X": center.x + dx, "Y": center.y - dy}))
 
     return path
+
 
 
 class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
@@ -485,6 +455,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
     def executeThreadMill(self, obj, loc, gcode, zStart, zFinal, pitch):
         PathLog.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
+        elevator = elevatorRadius(obj, loc, self._isThreadInternal(obj), self.tool)
 
         self.commandlist.append(
             Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
@@ -499,7 +470,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            commands = threadCommandsInternal(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut)
+            commands = threadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut, elevator)
 
             for cmd in commands:
                 p = cmd.Parameters

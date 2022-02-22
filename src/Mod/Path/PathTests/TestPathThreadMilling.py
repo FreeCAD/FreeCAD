@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathThreadMilling as PathThreadMilling
 import math
@@ -73,4 +74,135 @@ class TestPathThreadMilling(PathTestBase):
         self.assertList(PathThreadMilling.threadPasses(1, radii, False, 10, 9, 0, 0), [9])
         self.assertList(PathThreadMilling.threadPasses(2, radii, False, 10, 9, 0, 0), [9.5, 9])
         self.assertList(PathThreadMilling.threadPasses(5, radii, False, 10, 9, 0, 0), [9.8, 9.6, 9.4, 9.2, 9])
+
+    def test40(self):
+        '''Verify thread commands for a single thread'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G2'
+        zStart      = 0
+        zFinal      = 1
+        pitch       = 1
+        radius      = 3
+        leadInOut   = False
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                'G1 Y3.000000', 
+                'G2 J-3.000000 Y-3.000000 Z0.500000', 
+                'G2 J3.000000 Y3.000000 Z1.000000', 
+                'G1 X0.000000 Y2.000000', 
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
+
+    def test41(self):
+        '''Verify thread commands for a thwo threads'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G2'
+        zStart      = 0
+        zFinal      = 2
+        pitch       = 1
+        radius      = 3
+        leadInOut   = False
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                'G1 Y3.000000', 
+                'G2 J-3.000000 Y-3.000000 Z0.500000', 
+                'G2 J3.000000 Y3.000000 Z1.000000', 
+                'G2 J-3.000000 Y-3.000000 Z1.500000', 
+                'G2 J3.000000 Y3.000000 Z2.000000', 
+                'G1 X0.000000 Y2.000000', 
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
+
+    def test42(self):
+        '''Verify thread commands for a one and a half threads'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G2'
+        zStart      = 0
+        zFinal      = 1.5
+        pitch       = 1
+        radius      = 3
+        leadInOut   = False
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                'G1 Y3.000000', 
+                'G2 J-3.000000 Y-3.000000 Z0.500000', 
+                'G2 J3.000000 Y3.000000 Z1.000000', 
+                'G2 J-3.000000 Y-3.000000 Z1.500000', 
+                'G1 X0.000000 Y-2.000000', 
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
+
+    def test43(self):
+        '''Verify thread commands for a one and 3 quarter threads'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G2'
+        zStart      = 0
+        zFinal      = 1.75
+        pitch       = 1
+        radius      = 3
+        leadInOut   = False
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                'G1 Y3.000000', 
+                'G2 J-3.000000 Y-3.000000 Z0.500000', 
+                'G2 J3.000000 Y3.000000 Z1.000000', 
+                'G2 J-3.000000 Y-3.000000 Z1.500000', 
+                '(------- finish-thread -------)',
+                'G2 J3.000000 X-3.000000 Y0.000000 Z1.750000', 
+                '(------- finish-thread -------)',
+                'G1 X-2.000000 Y0.000000', 
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
+
+    def test44(self):
+        '''Verify thread commands for a one and 3 quarter threads - CCW'''
+
+        center      = FreeCAD.Vector()
+        cmd         = 'G3'
+        zStart      = 0
+        zFinal      = 1.75
+        pitch       = 1
+        radius      = 3
+        leadInOut   = False
+        elevator    = 2
+
+        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+
+        gcode = [
+                'G0 X0.000000 Y2.000000',
+                'G0 Z0.000000', 
+                'G1 Y3.000000', 
+                'G3 J-3.000000 Y-3.000000 Z0.500000', 
+                'G3 J3.000000 Y3.000000 Z1.000000', 
+                'G3 J-3.000000 Y-3.000000 Z1.500000', 
+                '(------- finish-thread -------)',
+                'G3 J3.000000 X3.000000 Y0.000000 Z1.750000', 
+                '(------- finish-thread -------)',
+                'G1 X2.000000 Y0.000000', 
+                ]
+        self.assertEqual([p.toGCode() for p in path], gcode)
 
