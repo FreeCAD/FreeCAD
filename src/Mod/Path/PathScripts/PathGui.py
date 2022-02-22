@@ -21,9 +21,11 @@
 # ***************************************************************************
 
 import FreeCAD
+import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
+from PySide import QtGui, QtCore
 
 from PySide import QtCore, QtGui
 
@@ -199,3 +201,38 @@ class QuantitySpinBox(QtCore.QObject):
             if prop == self.prop:
                 return exp
         return None
+
+
+def getDocNode():
+    doc = FreeCADGui.ActiveDocument.Document.Name
+    tws = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
+
+    for tw in tws:
+        if tw.topLevelItemCount() != 1 or tw.topLevelItem(0).text(0) != "Application":
+            continue
+        toptree = tw.topLevelItem(0)
+        for i in range(0, toptree.childCount()):
+            docitem = toptree.child(i)
+            if docitem.text(0) == doc:
+                return docitem
+    return None
+
+
+def disableItem(item):
+    Dragflag = QtCore.Qt.ItemFlag.ItemIsDragEnabled
+    Dropflag = QtCore.Qt.ItemFlag.ItemIsDropEnabled
+    item.setFlags(item.flags() & ~Dragflag)
+    item.setFlags(item.flags() & ~Dropflag)
+    for idx in range(0, item.childCount()):
+        disableItem(item.child(idx))
+
+
+def findItem(docitem, objname):
+    print(docitem.text(0))
+    for i in range(0, docitem.childCount()):
+        if docitem.child(i).text(0) == objname:
+            return docitem.child(i)
+        res = findItem(docitem.child(i), objname)
+        if res:
+            return res
+    return None

@@ -75,3 +75,33 @@ def generate(
 
     PathLog.track(commands)
     return commands
+
+
+def generateSubstitute(newTC, oldTC=None):
+    """
+    The specific commands to emit, depend on the state of the machine.
+    For example, the toolnumber may not change, only the spindle speed.
+    This routine will generate a list of commands to substitute for a TC
+    object to be handed to the postprocessor.
+    It will contain only the commands needed
+    """
+
+    if oldTC is None:
+        return newTC.Path.Commands
+
+    if newTC.ToolNumber != oldTC.ToolNumber:  # Full toolchange
+        return newTC.Path.Commands
+
+    if (newTC.SpindleSpeed != oldTC.SpindleSpeed) or (
+        newTC.SpindleDir != oldTC.SpindleDir
+    ):
+        if newTC.SpindleDir == "Forward":
+            sd = SpindleDirection.CW
+        elif newTC.SpindleDir == "Reverse":
+            sd = SpindleDirection.CCW
+        else:
+            sd = SpindleDirection.OFF
+
+        return [Path.Command(sd.value, {"S": newTC.SpindleSpeed})]
+
+    return []
