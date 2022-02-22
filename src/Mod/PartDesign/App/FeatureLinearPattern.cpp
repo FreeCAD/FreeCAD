@@ -23,24 +23,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Ax1.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
+# include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-#include "DatumPlane.h"
-#include "DatumLine.h"
 #include <App/OriginFeature.h>
 #include <Base/Axis.h>
-#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "FeatureLinearPattern.h"
+#include "DatumLine.h"
+#include "DatumPlane.h"
+
 
 using namespace PartDesign;
 

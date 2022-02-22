@@ -23,35 +23,33 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <QDialog>
 #endif
 
-#include <App/OriginFeature.h>
-#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
 
-#include "Utils.h"
-
+#include "ui_DlgReference.h"
 #include "ReferenceSelection.h"
 #include "TaskFeaturePick.h"
-#include <ui_DlgReference.h>
+#include "Utils.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
