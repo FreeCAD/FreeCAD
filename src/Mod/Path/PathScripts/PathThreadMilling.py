@@ -96,7 +96,7 @@ def elevatorRadius(obj, center, internal, tool):
     return dy
 
 def comment(path, msg):
-    if True:
+    if False:
         path.append(Path.Command("(------- {} -------)".format(msg)))
 
 class _ThreadInternal(object):

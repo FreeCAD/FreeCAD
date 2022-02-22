@@ -171,9 +171,9 @@ class TestPathThreadMilling(PathTestBase):
                 'G2 J-3.000000 Y-3.000000 Z0.500000', 
                 'G2 J3.000000 Y3.000000 Z1.000000', 
                 'G2 J-3.000000 Y-3.000000 Z1.500000', 
-                '(------- finish-thread -------)',
+                #'(------- finish-thread -------)',
                 'G2 J3.000000 X-3.000000 Y0.000000 Z1.750000', 
-                '(------- finish-thread -------)',
+                #'(------- finish-thread -------)',
                 'G1 X-2.000000 Y0.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
@@ -199,9 +199,9 @@ class TestPathThreadMilling(PathTestBase):
                 'G3 J-3.000000 Y-3.000000 Z0.500000', 
                 'G3 J3.000000 Y3.000000 Z1.000000', 
                 'G3 J-3.000000 Y-3.000000 Z1.500000', 
-                '(------- finish-thread -------)',
+                #'(------- finish-thread -------)',
                 'G3 J3.000000 X3.000000 Y0.000000 Z1.750000', 
-                '(------- finish-thread -------)',
+                #'(------- finish-thread -------)',
                 'G1 X2.000000 Y0.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
@@ -223,14 +223,14 @@ class TestPathThreadMilling(PathTestBase):
         gcode = [
                 'G0 X0.000000 Y2.000000',
                 'G0 Z0.000000', 
-                '(------- lead-in -------)',
+                #'(------- lead-in -------)',
                 'G2 J0.500000 Y3.000000',
-                '(------- lead-in -------)',
+                #'(------- lead-in -------)',
                 'G2 J-3.000000 Y-3.000000 Z0.500000', 
                 'G2 J3.000000 Y3.000000 Z1.000000', 
-                '(------- lead-out -------)',
+                #'(------- lead-out -------)',
                 'G2 I0.000000 J-0.500000 X0.000000 Y2.000000', 
-                '(------- lead-out -------)',
+                #'(------- lead-out -------)',
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
 
@@ -251,14 +251,14 @@ class TestPathThreadMilling(PathTestBase):
         gcode = [
                 'G0 X0.000000 Y2.000000',
                 'G0 Z0.000000', 
-                '(------- lead-in -------)',
+                #'(------- lead-in -------)',
                 'G2 J0.500000 Y3.000000',
-                '(------- lead-in -------)',
+                #'(------- lead-in -------)',
                 'G2 J-3.000000 Y-3.000000 Z0.500000', 
                 'G2 J3.000000 Y3.000000 Z1.000000', 
                 'G2 J-3.000000 Y-3.000000 Z1.500000', 
-                '(------- lead-out -------)',
+                #'(------- lead-out -------)',
                 'G2 I0.000000 J0.500000 X0.000000 Y-2.000000', 
-                '(------- lead-out -------)',
+                #'(------- lead-out -------)',
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
