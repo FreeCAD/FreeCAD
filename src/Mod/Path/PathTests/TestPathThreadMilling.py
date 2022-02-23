@@ -87,7 +87,8 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = False
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
+        print(start)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -98,6 +99,7 @@ class TestPathThreadMilling(PathTestBase):
                 'G1 X0.000000 Y2.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(0, 2, 0))
 
     def test41(self):
         '''Verify thread commands for a thwo threads'''
@@ -111,7 +113,7 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = False
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -124,6 +126,7 @@ class TestPathThreadMilling(PathTestBase):
                 'G1 X0.000000 Y2.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(0, 2, 0))
 
     def test42(self):
         '''Verify thread commands for a one and a half threads'''
@@ -137,7 +140,7 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = False
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -149,6 +152,7 @@ class TestPathThreadMilling(PathTestBase):
                 'G1 X0.000000 Y-2.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(0, -2, 0))
 
     def test43(self):
         '''Verify thread commands for a one and 3 quarter threads'''
@@ -162,7 +166,7 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = False
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -177,6 +181,7 @@ class TestPathThreadMilling(PathTestBase):
                 'G1 X-2.000000 Y0.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(-2, 0, 0))
 
     def test44(self):
         '''Verify thread commands for a one and 3 quarter threads - CCW'''
@@ -190,7 +195,7 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = False
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -205,6 +210,7 @@ class TestPathThreadMilling(PathTestBase):
                 'G1 X2.000000 Y0.000000', 
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(2, 0, 0))
 
     def test50(self):
         '''Verify lead in/out commands for a single thread'''
@@ -218,7 +224,7 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = True
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -233,6 +239,7 @@ class TestPathThreadMilling(PathTestBase):
                 #'(------- lead-out -------)',
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(0, 2, 0))
 
     def test51(self):
         '''Verify lead in/out commands for one and a half threads'''
@@ -246,7 +253,7 @@ class TestPathThreadMilling(PathTestBase):
         leadInOut   = True
         elevator    = 2
 
-        path = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator)
+        path, start = PathThreadMilling.threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, None)
 
         gcode = [
                 'G0 X0.000000 Y2.000000',
@@ -262,3 +269,5 @@ class TestPathThreadMilling(PathTestBase):
                 #'(------- lead-out -------)',
                 ]
         self.assertEqual([p.toGCode() for p in path], gcode)
+        self.assertCoincide(start, FreeCAD.Vector(0, -2, 0))
+

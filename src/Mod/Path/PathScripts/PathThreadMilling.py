@@ -115,10 +115,10 @@ def comment(path, msg):
     if False:
         path.append(Path.Command("(------- {} -------)".format(msg)))
 
-class _ThreadInternal(object):
+class _Thread(object):
     """Helper class for dealing with different thread types"""
 
-    def __init__(self, cmd, zStart, zFinal, pitch):
+    def __init__(self, cmd, zStart, zFinal, pitch, internal):
         self.cmd = cmd
         if zStart < zFinal:
             self.pitch = pitch
@@ -127,6 +127,7 @@ class _ThreadInternal(object):
         self.hPitch = self.pitch / 2
         self.zStart = zStart
         self.zFinal = zFinal
+        self.internal = internal
 
     def overshoots(self, z):
         """overshoots(z) ... returns true if adding another half helix goes beyond the thread bounds"""
@@ -153,11 +154,21 @@ class _ThreadInternal(object):
     def isUp(self):
         """isUp() ... returns True if the thread goes from the bottom up"""
         return self.pitch > 0
+    
+    def g4Opposite(self):
+        return 'G2' if self.isG3() else 'G3'
 
+    def g4LeadInOut(self):
+        if self.internal:
+            return self.cmd
+        return self.g4Opposite()
 
-def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator):
+    def g4Start2Elevator(self):
+        return self.g4Opposite()
+
+def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, start):
     """threadCommands(center, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
-    thread = _ThreadInternal(cmd, zStart, zFinal, pitch)
+    thread = _Thread(cmd, zStart, zFinal, pitch, radius > elevator)
 
     yMin = center.y - radius
     yMax = center.y + radius
@@ -166,13 +177,21 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
     # at this point the tool is at a safe heiht (depending on the previous thread), so we can move
     # into position first, and then drop to the start height. If there is any material in the way this
     # op hasn't been setup properly.
-    path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
-    path.append(Path.Command("G0", {"Z": thread.zStart}))
     if leadInOut:
         comment(path, 'lead-in')
-        path.append(Path.Command(thread.cmd, {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2}))
+        if start is None:
+            path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
+            path.append(Path.Command("G0", {"Z": thread.zStart}))
+        else:
+            path.append(Path.Command(thread.g4Start2Elevator(), {"X": center.x, "Y": center.y + elevator, "Z" : thread.zStart, "I": (center.x - start.x) / 2, "J": (center.y + elevator - start.y) / 2, "K" : (thread.zStart - start.z) / 2}))
+        path.append(Path.Command(thread.g4LeadInOut(), {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2}))
         comment(path, 'lead-in')
     else:
+        if start is None:
+            path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
+            path.append(Path.Command("G0", {"Z": thread.zStart}))
+        else:
+            path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator, "Z": thread.zStart}))
         path.append(Path.Command("G1", {"Y": yMax}))
 
     z = thread.zStart
@@ -220,7 +239,7 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
         comment(path, 'lead-out')
         path.append(
             Path.Command(
-                thread.cmd,
+                thread.g4LeadInOut(),
                 {"X": elevatorX, "Y": elevatorY, "I": -dx / 2, "J": -dy / 2},
             )
         )
@@ -228,7 +247,7 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
     else:
         path.append(Path.Command("G1", {"X": elevatorX, "Y": elevatorY}))
 
-    return path
+    return (path, FreeCAD.Vector(elevatorX, elevatorY, thread.zFinal))
 
 
 
@@ -479,10 +498,10 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         PathLog.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
         elevator = elevatorRadius(obj, loc, self._isThreadInternal(obj), self.tool)
 
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
+        move2clearance = Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        self.commandlist.append(move2clearance)
 
+        start = None
         for radius in threadPasses(
             obj.Passes,
             threadRadii,
@@ -492,7 +511,13 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            commands = threadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut, elevator)
+            if not start is None and not self._isThreadInternal(obj) and not obj.LeadInOut:
+                # external thread without lead in/out have to go up and over
+                # in other words we need a move to clearance and not take any
+                # shortcuts when moving to the elevator position
+                self.commandlist.append(move2clearance)
+                start = None
+            commands, start = threadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut, elevator, start)
 
             for cmd in commands:
                 p = cmd.Parameters
