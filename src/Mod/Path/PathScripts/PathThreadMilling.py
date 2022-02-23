@@ -39,7 +39,7 @@ __doc__ = "Path thread milling operation."
 # math.sqrt(3)/2 ... 60deg triangle height
 SQRT_3_DIVIDED_BY_2 = 0.8660254037844386
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
