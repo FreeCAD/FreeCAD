@@ -158,7 +158,7 @@ class Macro(object):
                         # to apply some special handling to accepts numbers, and "__date__"
                         if key == "__version__":
                             if "__date__" in after_equals.lower():
-                                FreeCAD.Console.PrintMessage(
+                                FreeCAD.Console.PrintLog(
                                     translate(
                                         "AddonsInstaller",
                                         "In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.",
@@ -168,7 +168,7 @@ class Macro(object):
                                 self.version = self.date
                                 break
                             elif is_float(after_equals):
-                                FreeCAD.Console.PrintMessage(
+                                FreeCAD.Console.PrintLog(
                                     translate(
                                         "AddonsInstaller",
                                         "In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.",

@@ -248,6 +248,8 @@ class UpdateWorker(QtCore.QThread):
                     repo.load_metadata_file(md_file)
                     repo.installed_version = repo.metadata.Version
                     repo.updated_timestamp = os.path.getmtime(md_file)
+                    repo.verify_url_and_branch(addon["url"], addon["branch"])
+
                 self.addon_repo.emit(repo)
 
         # querying official addons
@@ -288,6 +290,8 @@ class UpdateWorker(QtCore.QThread):
                 repo.load_metadata_file(md_file)
                 repo.installed_version = repo.metadata.Version
                 repo.updated_timestamp = os.path.getmtime(md_file)
+                repo.verify_url_and_branch(url, branch)
+
             if name in py2only:
                 repo.python2 = True
             if name in mod_reject_list:
