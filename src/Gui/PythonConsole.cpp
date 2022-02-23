@@ -444,7 +444,7 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     d->hGrpSettings = WindowParameter::getDefaultParameter()->GetGroup("PythonConsole");
     d->hGrpSettings->Attach(this);
-    d->hGrpSettings->Notify("PythonWordWrap");
+    d->hGrpSettings->NotifyAll();
 
     // disable undo/redo stuff
     setUndoRedoEnabled( false );
