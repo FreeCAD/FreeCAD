@@ -106,6 +106,7 @@ if HAVE_QTNETWORK:
         ):
             self.index = index
             self.request = request
+            self.original_url = request.url()
             self.track_progress = track_progress
 
     class NetworkManager(QtCore.QObject):
@@ -161,6 +162,8 @@ if HAVE_QTNETWORK:
             self.diskCache = QtNetwork.QNetworkDiskCache()
             self.diskCache.setCacheDirectory(qnam_cache)
             self.QNAM.setCache(self.diskCache)
+
+            self.monitored_connections:List[int] = []
 
             # Set up the proxy, if necesssary:
             noProxyCheck = True
@@ -260,24 +263,24 @@ if HAVE_QTNETWORK:
                     if item.index in self.__abort_when_found:
                         self.__abort_when_found.remove(item.index)
                         return  # Do not do anything with this item, it's been aborted...
-                    reply = self.QNAM.get(item.request)
-
-                    self.__last_started_index = item.index
-                    reply.finished.connect(lambda i=item: self.__reply_finished(i))
-                    reply.redirected.connect(
-                        lambda url, r=reply: self.__on_redirect(r, url)
-                    )
-                    reply.sslErrors.connect(self.__on_ssl_error)
                     if item.track_progress:
-                        reply.readyRead.connect(
-                            lambda i=item.index: self.__data_incoming(i)
-                        )
-                        reply.downloadProgress.connect(
-                            lambda a, b, i=item.index: self.progress_made.emit(i, a, b)
-                        )
-                    self.replies[item.index] = reply
+                        self.monitored_connections.append(item.index)
+                    self.__launch_request(item.index, item.request)
             except queue.Empty:
                 pass
+
+        def __launch_request(self, index:int, request:QtNetwork.QNetworkRequest) -> None:
+            reply = self.QNAM.get(request)
+            self.replies[index] = reply
+
+            self.__last_started_index = index
+            reply.finished.connect(self.__reply_finished)
+            reply.redirected.connect(self.__follow_redirect)
+            reply.sslErrors.connect(self.__on_ssl_error)
+            if index in self.monitored_connections:
+                reply.readyRead.connect(self.__ready_to_read)
+                reply.downloadProgress.connect(self.__download_progress)
+
 
         def submit_unmonitored_get(self, url: str) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
@@ -365,11 +368,11 @@ if HAVE_QTNETWORK:
                 QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
             )
             request.setAttribute(
-                QtNetwork.QNetworkRequest.CacheSaveControlAttribute, False
+                QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True
             )
             request.setAttribute(
                 QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                QtNetwork.QNetworkRequest.AlwaysNetwork,
+                QtNetwork.QNetworkRequest.PreferCache,
             )
             return request
 
@@ -431,9 +434,16 @@ if HAVE_QTNETWORK:
         ):
             pass
 
-        def __on_redirect(self, reply, _):
-            # For now just blindly follow all redirects
-            reply.redirectAllowed.emit()
+        def __follow_redirect(self, url):
+            sender = self.sender()
+            if sender:
+                for index,reply in self.replies.items():
+                    if reply == sender:
+                        current_index = index
+                        break
+
+                sender.abort()
+                self.__launch_request(current_index, self.__create_get_request(url))
 
         def __on_ssl_error(self, reply: str, errors: List[str]):
             if HAVE_FREECAD:
@@ -449,36 +459,84 @@ if HAVE_QTNETWORK:
                 for error in errors:
                     print(error)
 
-        def __data_incoming(self, index: int):
-            reply = self.replies[index]
-            chunk_size = reply.bytesAvailable()
-            buffer = reply.read(chunk_size)
+        def __download_progress(self, bytesReceived:int, bytesTotal:int) -> None:
+            sender = self.sender()
+            if not sender:
+                return
+            for index,reply in self.replies.items():
+                if reply == sender:
+                    self.progress_made.emit(index, bytesReceived, bytesTotal)
+                    return
+
+        def __ready_to_read(self) -> None:
+            sender = self.sender()
+            if not sender:
+                return
+
+            for index,reply in self.replies.items():
+                if reply == sender:
+                    self.__data_incoming(index, reply)
+                    return
+
+        def __data_incoming(self, index: int, reply:QtNetwork.QNetworkReply) -> None:
+            if not index in self.replies:
+                # We already finished this reply, this is a vestigial signal
+                return
+            buffer = reply.readAll()
             if not index in self.file_buffers:
                 f = tempfile.NamedTemporaryFile("wb", delete=False)
                 self.file_buffers[index] = f
             else:
                 f = self.file_buffers[index]
-            f.write(buffer.data())
+            try:
+                f.write(buffer.data())
+            except Exception as e:
+                if HAVE_FREECAD:
+                    FreeCAD.Console.PrintError(f"Network Manager internal error: {str(e)}")
+                else:
+                    print (f"Network Manager internal error: {str(e)}")
 
-        def __reply_finished(self, item: QueueItem) -> None:
-            reply = self.replies.pop(item.index)
+
+        def __reply_finished(self) -> None:
+            reply = self.sender()
+            if not reply:
+                print ("Network Manager Error: __reply_finished not called by a Qt signal")
+                return
+
+            if reply.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
+                # Silently do nothing
+                return
+
+            index = None
+            for key,value in self.replies.items():
+                if reply == value:
+                    index = key
+                    break
+            if index is None:
+                print (f"Lost net request for {reply.url()}")
+                return
+
             response_code = reply.attribute(
                 QtNetwork.QNetworkRequest.HttpStatusCodeAttribute
             )
             self.queue.task_done()
             if reply.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
-                if item.track_progress:
-                    f = self.file_buffers[item.index]
+                if index in self.monitored_connections:
+                     # Make sure to read any remaining data
+                    self.__data_incoming(index, reply)
+                    self.monitored_connections.remove(index)
+                    f = self.file_buffers[index]
                     f.close()
-                    self.progress_complete.emit(item.index, response_code, f.name)
+                    self.progress_complete.emit(index, response_code, f.name)
                 else:
                     data = reply.readAll()
-                    self.completed.emit(item.index, response_code, data)
+                    self.completed.emit(index, response_code, data)
             else:
-                if item.track_progress:
-                    self.progress_complete.emit(item.index, response_code, "")
+                if index in self.monitored_connections:
+                    self.progress_complete.emit(index, response_code, "")
                 else:
-                    self.completed.emit(item.index, response_code, None)
+                    self.completed.emit(index, response_code, None)
+            self.replies.pop(index)
 
 else:  # HAVE_QTNETWORK is false:
 
