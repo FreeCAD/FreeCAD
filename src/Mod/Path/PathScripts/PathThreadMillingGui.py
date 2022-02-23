@@ -48,6 +48,7 @@ else:
 
 translate = FreeCAD.Qt.translate
 
+
 def fillThreads(form, dataFile, defaultSelect):
     form.threadName.blockSignals(True)
     select = form.threadName.currentText()
@@ -58,7 +59,7 @@ def fillThreads(form, dataFile, defaultSelect):
     ) as fp:
         reader = csv.DictReader(fp)
         for row in reader:
-            form.threadName.addItem(row['name'], row)
+            form.threadName.addItem(row["name"], row)
     if select:
         form.threadName.setCurrentText(select)
     elif defaultSelect:
@@ -138,10 +139,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self._updateFromThreadType()
 
     def _isThreadCustom(self):
-        return (
-            self.form.threadType.currentData()
-            in [PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomInternal, PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomExternal]
-        )
+        return self.form.threadType.currentData() in [
+            PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomInternal,
+            PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomExternal,
+        ]
 
     def _isThreadImperial(self):
         return (
@@ -156,10 +157,16 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         )
 
     def _isThreadInternal(self):
-        return self.form.threadType.currentData() in PathThreadMilling.ObjectThreadMilling.ThreadTypesInternal
+        return (
+            self.form.threadType.currentData()
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesInternal
+        )
 
     def _isThreadExternal(self):
-        return self.form.threadType.currentData() in PathThreadMilling.ObjectThreadMilling.ThreadTypesExternal
+        return (
+            self.form.threadType.currentData()
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesExternal
+        )
 
     def _updateFromThreadType(self):
 
@@ -186,7 +193,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 self.form.threadTPI.setEnabled(True)
                 self.form.threadTPILabel.setEnabled(True)
                 self.pitch.updateSpinBox(0)
-            fillThreads(self.form, PathThreadMilling.ObjectThreadMilling.ThreadTypeData[self.form.threadType.currentData()], self.obj.ThreadName)
+            fillThreads(
+                self.form,
+                PathThreadMilling.ObjectThreadMilling.ThreadTypeData[
+                    self.form.threadType.currentData()
+                ],
+                self.obj.ThreadName,
+            )
         self._updateFromThreadName()
 
     def _updateFromThreadName(self):

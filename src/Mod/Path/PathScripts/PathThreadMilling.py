@@ -72,6 +72,7 @@ def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
     toolTip = innerTip - toolCrest * SQRT_3_DIVIDED_BY_2
     return ((majorDia + toolDia) / 2.0, toolTip + toolDia / 2.0)
 
+
 def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest):
     PathLog.track(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
     # the logic goes as follows, total area to be removed:
@@ -98,22 +99,28 @@ def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
 
 
 def elevatorRadius(obj, center, internal, tool):
-    '''elevatorLocation(obj, center, internal, tool) ... return suitable location for the tool elevator'''
+    """elevatorLocation(obj, center, internal, tool) ... return suitable location for the tool elevator"""
 
     if internal:
         dy = float(obj.MinorDiameter - tool.Diameter) / 2 - 1
         if dy < 0:
-            if (obj.MinorDiameter < tool.Diameter):
-                PathLog.error("The selected tool is too big (d={}) for milling a thread with minor diameter D={}".format(tool.Diameter, obj.MinorDiameter))
+            if obj.MinorDiameter < tool.Diameter:
+                PathLog.error(
+                    "The selected tool is too big (d={}) for milling a thread with minor diameter D={}".format(
+                        tool.Diameter, obj.MinorDiameter
+                    )
+                )
             dy = 0
     else:
         dy = float(obj.MajorDiameter + tool.Diameter) / 2 + 1
 
     return dy
 
+
 def comment(path, msg):
     if False:
         path.append(Path.Command("(------- {} -------)".format(msg)))
+
 
 class _Thread(object):
     """Helper class for dealing with different thread types"""
@@ -154,9 +161,9 @@ class _Thread(object):
     def isUp(self):
         """isUp() ... returns True if the thread goes from the bottom up"""
         return self.pitch > 0
-    
+
     def g4Opposite(self):
-        return 'G2' if self.isG3() else 'G3'
+        return "G2" if self.isG3() else "G3"
 
     def g4LeadInOut(self):
         if self.internal:
@@ -166,7 +173,10 @@ class _Thread(object):
     def g4Start2Elevator(self):
         return self.g4Opposite()
 
-def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, start):
+
+def threadCommands(
+    center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, start
+):
     """threadCommands(center, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread"""
     thread = _Thread(cmd, zStart, zFinal, pitch, radius > elevator)
 
@@ -178,20 +188,41 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
     # into position first, and then drop to the start height. If there is any material in the way this
     # op hasn't been setup properly.
     if leadInOut:
-        comment(path, 'lead-in')
+        comment(path, "lead-in")
         if start is None:
             path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
             path.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
-            path.append(Path.Command(thread.g4Start2Elevator(), {"X": center.x, "Y": center.y + elevator, "Z" : thread.zStart, "I": (center.x - start.x) / 2, "J": (center.y + elevator - start.y) / 2, "K" : (thread.zStart - start.z) / 2}))
-        path.append(Path.Command(thread.g4LeadInOut(), {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2}))
-        comment(path, 'lead-in')
+            path.append(
+                Path.Command(
+                    thread.g4Start2Elevator(),
+                    {
+                        "X": center.x,
+                        "Y": center.y + elevator,
+                        "Z": thread.zStart,
+                        "I": (center.x - start.x) / 2,
+                        "J": (center.y + elevator - start.y) / 2,
+                        "K": (thread.zStart - start.z) / 2,
+                    },
+                )
+            )
+        path.append(
+            Path.Command(
+                thread.g4LeadInOut(),
+                {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2},
+            )
+        )
+        comment(path, "lead-in")
     else:
         if start is None:
             path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator}))
             path.append(Path.Command("G0", {"Z": thread.zStart}))
         else:
-            path.append(Path.Command("G0", {"X": center.x, "Y": center.y + elevator, "Z": thread.zStart}))
+            path.append(
+                Path.Command(
+                    "G0", {"X": center.x, "Y": center.y + elevator, "Z": thread.zStart}
+                )
+            )
         path.append(Path.Command("G1", {"Y": yMax}))
 
     z = thread.zStart
@@ -219,36 +250,37 @@ def threadCommands(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevat
         dx = math.sin(k * math.pi)
         y = thread.adjustY(center.y, r * dy)
         x = thread.adjustX(center.x, r * dx)
-        comment(path, 'finish-thread')
+        comment(path, "finish-thread")
         path.append(
             Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r})
         )
-        comment(path, 'finish-thread')
+        comment(path, "finish-thread")
 
     a = math.atan2(y - center.y, x - center.x)
     dx = math.cos(a) * (radius - elevator)
     dy = math.sin(a) * (radius - elevator)
-    PathLog.debug('')
+    PathLog.debug("")
     PathLog.debug("a={}: dx={:.2f}, dy={:.2f}".format(a / math.pi * 180, dx, dy))
 
     elevatorX = x - dx
     elevatorY = y - dy
-    PathLog.debug("({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY))
+    PathLog.debug(
+        "({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY)
+    )
 
     if leadInOut:
-        comment(path, 'lead-out')
+        comment(path, "lead-out")
         path.append(
             Path.Command(
                 thread.g4LeadInOut(),
                 {"X": elevatorX, "Y": elevatorY, "I": -dx / 2, "J": -dy / 2},
             )
         )
-        comment(path, 'lead-out')
+        comment(path, "lead-out")
     else:
         path.append(Path.Command("G1", {"X": elevatorX, "Y": elevatorY}))
 
     return (path, FreeCAD.Vector(elevatorX, elevatorY, thread.zFinal))
-
 
 
 class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
@@ -271,14 +303,14 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     ThreadOrientations = [LeftHand, RightHand]
 
     ThreadTypeData = {
-            ThreadTypeImperialExternal2A : 'imperial-external-2A.csv',
-            ThreadTypeImperialExternal3A : 'imperial-external-3A.csv',
-            ThreadTypeImperialInternal2B : 'imperial-internal-2B.csv',
-            ThreadTypeImperialInternal3B : 'imperial-internal-3B.csv',
-            ThreadTypeMetricExternal4G6G : 'metric-external-4G6G.csv',
-            ThreadTypeMetricExternal6G : 'metric-external-6G.csv',
-            ThreadTypeMetricInternal6H : 'metric-internal-6H.csv',
-            }
+        ThreadTypeImperialExternal2A: "imperial-external-2A.csv",
+        ThreadTypeImperialExternal3A: "imperial-external-3A.csv",
+        ThreadTypeImperialInternal2B: "imperial-internal-2B.csv",
+        ThreadTypeImperialInternal3B: "imperial-internal-3B.csv",
+        ThreadTypeMetricExternal4G6G: "metric-external-4G6G.csv",
+        ThreadTypeMetricExternal6G: "metric-external-6G.csv",
+        ThreadTypeMetricInternal6H: "metric-internal-6H.csv",
+    }
 
     ThreadTypesExternal = [
         ThreadTypeCustomExternal,
@@ -286,24 +318,24 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         ThreadTypeImperialExternal3A,
         ThreadTypeMetricExternal4G6G,
         ThreadTypeMetricExternal6G,
-        ]
+    ]
     ThreadTypesInternal = [
         ThreadTypeCustomInternal,
         ThreadTypeImperialInternal2B,
         ThreadTypeImperialInternal3B,
         ThreadTypeMetricInternal6H,
-        ]
+    ]
     ThreadTypesImperial = [
         ThreadTypeImperialExternal2A,
         ThreadTypeImperialExternal3A,
         ThreadTypeImperialInternal2B,
         ThreadTypeImperialInternal3B,
-        ]
+    ]
     ThreadTypesMetric = [
         ThreadTypeMetricExternal4G6G,
         ThreadTypeMetricExternal6G,
         ThreadTypeMetricInternal6H,
-        ]
+    ]
     ThreadTypes = ThreadTypesInternal + ThreadTypesExternal
     Directions = [DirectionClimb, DirectionConventional]
 
@@ -322,23 +354,62 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "ThreadType": [
-                (translate("Path_ThreadMilling", "Custom External"), ObjectThreadMilling.ThreadTypeCustomExternal),
-                (translate("Path_ThreadMilling", "Custom Internal"), ObjectThreadMilling.ThreadTypeCustomInternal),
-                (translate("Path_ThreadMilling", "Imperial External (2A)"), ObjectThreadMilling.ThreadTypeImperialExternal2A),
-                (translate("Path_ThreadMilling", "Imperial External (3A)"), ObjectThreadMilling.ThreadTypeImperialExternal3A),
-                (translate("Path_ThreadMilling", "Imperial Internal (2B)"), ObjectThreadMilling.ThreadTypeImperialInternal2B),
-                (translate("Path_ThreadMilling", "Imperial Internal (3B)"), ObjectThreadMilling.ThreadTypeImperialInternal3B),
-                (translate("Path_ThreadMilling", "Metric External (4G6G)"), ObjectThreadMilling.ThreadTypeMetricExternal4G6G),
-                (translate("Path_ThreadMilling", "Metric External (6G)"), ObjectThreadMilling.ThreadTypeMetricExternal6G),
-                (translate("Path_ThreadMilling", "Metric Internal (6H)"), ObjectThreadMilling.ThreadTypeMetricInternal6H),
+                (
+                    translate("Path_ThreadMilling", "Custom External"),
+                    ObjectThreadMilling.ThreadTypeCustomExternal,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Custom Internal"),
+                    ObjectThreadMilling.ThreadTypeCustomInternal,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Imperial External (2A)"),
+                    ObjectThreadMilling.ThreadTypeImperialExternal2A,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Imperial External (3A)"),
+                    ObjectThreadMilling.ThreadTypeImperialExternal3A,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Imperial Internal (2B)"),
+                    ObjectThreadMilling.ThreadTypeImperialInternal2B,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Imperial Internal (3B)"),
+                    ObjectThreadMilling.ThreadTypeImperialInternal3B,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Metric External (4G6G)"),
+                    ObjectThreadMilling.ThreadTypeMetricExternal4G6G,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Metric External (6G)"),
+                    ObjectThreadMilling.ThreadTypeMetricExternal6G,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Metric Internal (6H)"),
+                    ObjectThreadMilling.ThreadTypeMetricInternal6H,
+                ),
             ],
             "ThreadOrientation": [
-                (translate("Path_ThreadMilling", "LeftHand"), ObjectThreadMilling.LeftHand),
-                (translate("Path_ThreadMilling", "RightHand"), ObjectThreadMilling.RightHand),
+                (
+                    translate("Path_ThreadMilling", "LeftHand"),
+                    ObjectThreadMilling.LeftHand,
+                ),
+                (
+                    translate("Path_ThreadMilling", "RightHand"),
+                    ObjectThreadMilling.RightHand,
+                ),
             ],
             "Direction": [
-                (translate("Path_ThreadMilling", "Climb"), ObjectThreadMilling.DirectionClimb),
-                (translate("Path_ThreadMilling", "Conventional"), ObjectThreadMilling.DirectionConventional),
+                (
+                    translate("Path_ThreadMilling", "Climb"),
+                    ObjectThreadMilling.DirectionClimb,
+                ),
+                (
+                    translate("Path_ThreadMilling", "Conventional"),
+                    ObjectThreadMilling.DirectionConventional,
+                ),
             ],
         }
 
@@ -478,9 +549,9 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             return (cmd, zbegin, zend)
 
         # need to reverse direction for external threads
-        if cmd == 'G2':
-            return ('G3', zbegin, zend)
-        return ('G2', zbegin, zend)
+        if cmd == "G2":
+            return ("G3", zbegin, zend)
+        return ("G2", zbegin, zend)
 
     def threadPassRadii(self, obj):
         PathLog.track(obj.Label)
@@ -498,7 +569,9 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         PathLog.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
         elevator = elevatorRadius(obj, loc, self._isThreadInternal(obj), self.tool)
 
-        move2clearance = Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        move2clearance = Path.Command(
+            "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
+        )
         self.commandlist.append(move2clearance)
 
         start = None
@@ -511,13 +584,27 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            if not start is None and not self._isThreadInternal(obj) and not obj.LeadInOut:
+            if (
+                not start is None
+                and not self._isThreadInternal(obj)
+                and not obj.LeadInOut
+            ):
                 # external thread without lead in/out have to go up and over
                 # in other words we need a move to clearance and not take any
                 # shortcuts when moving to the elevator position
                 self.commandlist.append(move2clearance)
                 start = None
-            commands, start = threadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut, elevator, start)
+            commands, start = threadCommands(
+                loc,
+                gcode,
+                zStart,
+                zFinal,
+                pitch,
+                radius,
+                obj.LeadInOut,
+                elevator,
+                start,
+            )
 
             for cmd in commands:
                 p = cmd.Parameters
