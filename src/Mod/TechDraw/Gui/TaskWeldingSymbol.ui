@@ -40,7 +40,7 @@
           <widget class="QLineEdit" name="leArrowTextL">
            <property name="toolTip">
             <string>Text before arrow side symbol
-Preperation depth, (weld size)</string>
+Preparation depth, (weld size)</string>
            </property>
           </widget>
          </item>
@@ -48,7 +48,7 @@ Preperation depth, (weld size)</string>
           <widget class="QLineEdit" name="leArrowTextR">
            <property name="toolTip">
             <string>Text after arrow side symbol
-No. of welds × length, (gap)</string>
+Number of welds × length, (gap)</string>
            </property>
           </widget>
          </item>
@@ -137,7 +137,7 @@ Angle, surface finish, root</string>
           <widget class="QLineEdit" name="leOtherTextR">
            <property name="toolTip">
             <string>Text after other side symbol
-No. of welds × length, (gap)</string>
+Number of welds × length, (gap)</string>
            </property>
           </widget>
          </item>
@@ -179,7 +179,7 @@ No. of welds × length, (gap)</string>
           <widget class="QLineEdit" name="leOtherTextL">
            <property name="toolTip">
             <string>Text before other side symbol
-Preperation depth, (weld size)</string>
+Preparation depth, (weld size)</string>
            </property>
           </widget>
          </item>
