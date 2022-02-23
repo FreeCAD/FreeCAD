@@ -331,6 +331,11 @@ class PackageDetails(QWidget):
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
+        elif status == AddonManagerRepo.UpdateStatus.CANNOT_CHECK:
+            self.ui.buttonInstall.hide()
+            self.ui.buttonUninstall.show()
+            self.ui.buttonUpdate.show()
+            self.ui.buttonCheckForUpdate.hide()
 
         required_version = self.requires_newer_freecad()
         if repo.obsolete:
