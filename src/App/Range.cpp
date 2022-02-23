@@ -21,12 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include "Range.h"
+
 #include <Base/Exception.h>
-#include <assert.h>
-#include <string.h>
-#include <sstream>
 #include <boost/regex.hpp>
+#include <assert.h>
+#include <sstream>
+#include <string.h>
+
+#include "Range.h"
+
 
 using namespace App;
 

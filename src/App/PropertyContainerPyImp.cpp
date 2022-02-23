@@ -29,8 +29,6 @@
 
 #include "PropertyContainer.h"
 #include "Property.h"
-#include "PropertyLinks.h"
-#include "Application.h"
 #include "DocumentObject.h"
 
 #include <boost/iostreams/device/array.hpp>

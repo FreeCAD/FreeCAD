@@ -23,31 +23,23 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <boost/version.hpp>
-# include <boost/filesystem/path.hpp>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <boost/math/special_functions/round.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/math/special_functions/round.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Stream.h>
 #include <Base/Quantity.h>
 #include <Base/Tools.h>
 
 #include "PropertyStandard.h"
-#include "PropertyLinks.h"
-#include "MaterialPy.h"
-#include "ObjectIdentifier.h"
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "MaterialPy.h"
+#include "ObjectIdentifier.h"
+
 
 using namespace App;
 using namespace Base;

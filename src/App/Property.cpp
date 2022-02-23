@@ -24,19 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#	include <cassert>
+#include <cassert>
 #endif
 
 #include <atomic>
+#include <Base/Tools.h>
+#include <Base/Writer.h>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include "Application.h"
-#include "DocumentObject.h"
+
 
 using namespace App;
 

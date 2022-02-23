@@ -23,32 +23,22 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <assert.h>
-# include <sstream>
-#endif
-
-#include <QFileInfo>
-#include <QDateTime>
 #include <QDir>
-
+#include <QFileInfo>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost_bind_bind.hpp>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <CXX/Objects.hxx>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-
-#include "Application.h"
-#include "DocumentObject.h"
-#include "DocumentObjectPy.h"
-#include "Document.h"
 
 #include "PropertyLinks.h"
+#include "Application.h"
+#include "Document.h"
+#include "DocumentObject.h"
+#include "DocumentObjectPy.h"
+
 
 FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
 
