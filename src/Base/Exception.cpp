@@ -24,12 +24,9 @@
 
 #include "PreCompiled.h"
 
-#include <typeinfo>
-
 #include "Exception.h"
 #include "Console.h"
 #include "PyObjectBase.h"
-#include <CXX/Objects.hxx>
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
 
