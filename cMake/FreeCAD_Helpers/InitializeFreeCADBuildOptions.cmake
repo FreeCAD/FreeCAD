@@ -78,7 +78,7 @@ macro(InitializeFreeCADBuildOptions)
                    "Qt WebEngine"
       )
     endif()
-    configure_file(${CMAKE_SOURCE_DIR}/src/QtOpenGL.h.cmake ${CMAKE_BINARY_DIR}/src/QtOpenGL.h)
+
 
     if(APPLE)
         option(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
