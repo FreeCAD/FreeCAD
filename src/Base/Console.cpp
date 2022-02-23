@@ -24,26 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <time.h>
-# include <stdio.h>
 # if defined(FC_OS_WIN32)
-#  include <io.h>
 #  include <windows.h>
 # elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
 #  include <unistd.h>
 # endif
-# include "fcntl.h"
+# include <cstring>
 #endif
 
 #include "Console.h"
 #include "Exception.h"
+#include "frameobject.h"
 #include "PyObjectBase.h"
 #include <QCoreApplication>
-#include <frameobject.h>
+
 
 using namespace Base;
-
-
 
 
 //=========================================================================

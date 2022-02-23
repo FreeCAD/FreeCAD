@@ -27,13 +27,11 @@
 #include <Base/PyExport.h>
 #include <Base/Stream.h>
 //#pragma warning(disable: 4786)  // specifier longer then 255 chars
-#include <assert.h>
-#include <set>
-#include <map>
-#include <string>
-#include <cstring>
-#include <sstream>
 #include <chrono>
+#include <map>
+#include <set>
+#include <string>
+#include <sstream>
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)

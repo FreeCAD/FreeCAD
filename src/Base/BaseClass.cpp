@@ -27,7 +27,6 @@
 # include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "BaseClass.h"
 #include "PyObjectBase.h"
 
