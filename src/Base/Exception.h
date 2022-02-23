@@ -25,12 +25,11 @@
 #ifndef BASE_EXCEPTION_H
 #define BASE_EXCEPTION_H
 
-#include <exception>
-#include <stdexcept>
-#include <string>
 #include <csignal>
-#include "FileInfo.h"
+#include <string>
 #include "BaseClass.h"
+#include "FileInfo.h"
+
 
 typedef struct _object PyObject;
 
