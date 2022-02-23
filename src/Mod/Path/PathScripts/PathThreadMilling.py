@@ -74,11 +74,27 @@ def threadRadii(internal, majorDia, minorDia, toolDia, toolCrest):
 
 def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest):
     PathLog.track(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
+    # the logic goes as follows, total area to be removed:
+    #   A = H * W  ... where H is the depth and W is half the width of a thread
+    #     H = k * sin(30) = k * 1/2  -> k = 2 * H
+    #     W = k * cos(30) = k * sqrt(3)/2
+    #     -> W = (2 * H) * sqrt(3) / 2 = H * sqrt(3)
+    #   A = sqrt(3) * H^2
+    # Each pass has to remove the same area
+    #   An = A / count = sqrt(3) * H^2 / count
+    # Because each successive pass doesn't have to remove the aera of the previous
+    # passes the result for the height:
+    #   Ai = (i + 1) * An = (i + 1) * sqrt(3) * Hi^2 = sqrt(3) * H^2 / count
+    #   Hi = sqrt(H^2 * (i + 1) / count)
+    #   Hi = H * sqrt((i + 1) / count)
     minor, major = radii(internal, majorDia, minorDia, toolDia, toolCrest)
-    dr = float(major - minor) / count
+    H = float(major - minor)
+    Hi = [H * math.sqrt((i + 1) / count) for i in range(count)]
+    PathLog.debug("threadPasses({}, {}) -> H={} : {}".format(minor, major, H, Hi))
+
     if internal:
-        return [minor + dr * (i + 1) for i in range(count)]
-    return [major - dr * (i + 1) for i in range(count)]
+        return [minor + h for h in Hi]
+    return [major - h for h in Hi]
 
 
 def elevatorRadius(obj, center, internal, tool):
