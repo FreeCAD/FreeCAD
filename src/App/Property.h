@@ -24,14 +24,12 @@
 #ifndef APP_PROPERTY_H
 #define APP_PROPERTY_H
 
-// Std. configurations
-
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <string>
-#include <bitset>
 #include <boost/signals2.hpp>
+#include <bitset>
+#include <string>
 #include <FCGlobal.h>
 
 namespace Py {

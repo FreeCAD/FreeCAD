@@ -24,16 +24,9 @@
 #ifndef APP_PROPERTYUNITS_H
 #define APP_PROPERTYUNITS_H
 
-// Std. configurations
-
-
-#include <string>
-#include <list>
-#include <vector>
-#include <boost/filesystem/path.hpp>
-
-#include <Base/Unit.h>
 #include <Base/Quantity.h>
+#include <Base/Unit.h>
+
 #include "PropertyStandard.h"
 
 namespace Base {

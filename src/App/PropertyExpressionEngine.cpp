@@ -21,21 +21,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-#include "ExpressionParser.h"
-#include "ExpressionVisitors.h"
+#include <Base/Writer.h>
+
 #include "PropertyExpressionEngine.h"
-#include "PropertyStandard.h"
-#include "PropertyUnits.h"
-#include <CXX/Objects.hxx>
-#include <boost/bind/bind.hpp>
-#include <boost/graph/graph_traits.hpp>
+#include "ExpressionVisitors.h"
+
 
 FC_LOG_LEVEL_INIT("App",true);
 

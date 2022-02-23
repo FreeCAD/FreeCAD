@@ -24,13 +24,7 @@
 #ifndef APP_PROPERTFILE_H
 #define APP_PROPERTFILE_H
 
-// Std. configurations
-
-
 #include <string>
-#include <list>
-#include <vector>
-#include <boost/filesystem/path.hpp>
 
 #include "PropertyStandard.h"
 

@@ -27,18 +27,12 @@
 #include <Base/Placement.h>
 
 #include "FeaturePython.h"
-#include "GeoFeature.h"
-#include "PropertyGeo.h"
 
 
 namespace Base
 {
-//  class Vector3D;
-  //class Matrix4D;
 }
 
-//using Base::Vector3D;
-//using Base::Matrix4D;
 
 namespace App
 {
@@ -52,8 +46,6 @@ class AppExport Placement: public App::GeoFeature
     PROPERTY_HEADER(App::Placement);
 
 public:
-
-
   /// Constructor
   Placement(void);
   virtual ~Placement();
@@ -68,10 +60,7 @@ public:
 typedef App::FeaturePythonT<App::Placement> PlacementPython;
 
 
-
-
 } //namespace App
-
 
 
 #endif

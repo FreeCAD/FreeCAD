@@ -23,19 +23,17 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "PropertyPythonObject.h"
-#include "DocumentObjectPy.h"
-#include "DocumentObject.h"
-#include <Base/Base64.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <iostream>
 #include <boost/regex.hpp>
+
+#include <Base/Base64.h>
+#include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
+
+#include "PropertyPythonObject.h"
+#include "DocumentObject.h"
+
 
 using namespace App;
 

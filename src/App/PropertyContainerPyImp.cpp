@@ -23,17 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
 #include "PropertyContainer.h"
 #include "Property.h"
-#include "PropertyLinks.h"
-#include "Application.h"
 #include "DocumentObject.h"
 
-#include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)

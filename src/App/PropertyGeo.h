@@ -24,18 +24,17 @@
 #ifndef APP_PROPERTYGEO_H
 #define APP_PROPERTYGEO_H
 
-// Std. configurations
-
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 #include <Base/BoundBox.h>
+#include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Unit.h>
+#include <Base/Vector3D.h>
 
 #include "Property.h"
-#include "PropertyLinks.h"
 #include "ComplexGeoData.h"
+#include "PropertyLinks.h"
 #include <FCGlobal.h>
+
 
 namespace Base {
 class Writer;

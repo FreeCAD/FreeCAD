@@ -23,25 +23,16 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <sstream>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Uuid.h>
 
 #include "PropertyFile.h"
 #include "Document.h"
-#include "PropertyContainer.h"
 #include "DocumentObject.h"
+#include "PropertyContainer.h"
+
 
 using namespace App;
 using namespace Base;
