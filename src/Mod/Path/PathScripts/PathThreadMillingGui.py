@@ -187,29 +187,31 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 self.form.threadTPILabel.setEnabled(True)
                 self.pitch.updateSpinBox(0)
             fillThreads(self.form, PathThreadMilling.ObjectThreadMilling.ThreadTypeData[self.form.threadType.currentData()], self.obj.ThreadName)
+        self._updateFromThreadName()
 
     def _updateFromThreadName(self):
-        thread = self.form.threadName.currentData()
-        fit = float(self.form.threadFit.value()) / 100
-        maxmin = float(thread["dMajorMin"])
-        maxmax = float(thread["dMajorMax"])
-        major = maxmin + (maxmax - maxmin) * fit
-        minmin = float(thread["dMinorMin"])
-        minmax = float(thread["dMinorMax"])
-        minor = minmin + (minmax - minmin) * fit
+        if not self._isThreadCustom():
+            thread = self.form.threadName.currentData()
+            fit = float(self.form.threadFit.value()) / 100
+            maxmin = float(thread["dMajorMin"])
+            maxmax = float(thread["dMajorMax"])
+            major = maxmin + (maxmax - maxmin) * fit
+            minmin = float(thread["dMinorMin"])
+            minmax = float(thread["dMinorMax"])
+            minor = minmin + (minmax - minmin) * fit
 
-        if self._isThreadMetric():
-            pitch = float(thread["pitch"])
-            self.pitch.updateSpinBox(pitch)
+            if self._isThreadMetric():
+                pitch = float(thread["pitch"])
+                self.pitch.updateSpinBox(pitch)
 
-        if self._isThreadImperial():
-            tpi = int(thread["tpi"])
-            self.form.threadTPI.setValue(tpi)
-            minor = minor * 25.4
-            major = major * 25.4
+            if self._isThreadImperial():
+                tpi = int(thread["tpi"])
+                self.form.threadTPI.setValue(tpi)
+                minor = minor * 25.4
+                major = major * 25.4
 
-        self.majorDia.updateSpinBox(major)
-        self.minorDia.updateSpinBox(minor)
+            self.majorDia.updateSpinBox(major)
+            self.minorDia.updateSpinBox(minor)
 
         self.setDirty()
 
