@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
 # include <sstream>
 #endif
 #ifdef __GNUC__
@@ -30,12 +31,8 @@
 #endif
 
 #include <QString>
-#include "Console.h"
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaImperial1.h"
-#include <cmath>
-#include <iomanip>
 
 
 using namespace Base;

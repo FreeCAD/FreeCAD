@@ -24,10 +24,9 @@
 #ifndef BASE_UNITSSCHEMAMKS_H
 #define BASE_UNITSSCHEMAMKS_H
 
-
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
+
 
 namespace Base {
 

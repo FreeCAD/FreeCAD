@@ -26,12 +26,11 @@
 # include <unistd.h>
 #endif
 
-#include <QString>
 #include <QLocale>
+#include <QString>
 
-#include "Exception.h"
-#include "UnitsApi.h"
 #include "UnitsSchema.h"
+
 
 using namespace Base;
 

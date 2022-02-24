@@ -24,12 +24,7 @@
 #ifndef BASE_Unit_H
 #define BASE_Unit_H
 
-#ifdef _MSC_VER
-#  include <boost/cstdint.hpp>
-#else
-#  include <cstdint>
-#endif
-#include <string>
+#include <cstdint>
 #include <QString>
 #include <FCGlobal.h>
 
