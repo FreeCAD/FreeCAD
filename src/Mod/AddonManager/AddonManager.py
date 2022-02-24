@@ -260,7 +260,6 @@ class CommandAddonManager:
         self.macro_repo_dir = FreeCAD.getUserMacroDir(True)
         self.packages_with_updates = []
         self.startup_sequence = []
-        self.addon_removed = False
         self.cleanup_workers()
 
         # restore window geometry from stored state
@@ -1315,7 +1314,7 @@ class CommandAddonManager:
             )
 
         for installed_repo in self.subupdates_succeeded:
-            if not installed_repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+            if installed_repo.contains_workbench():
                 self.restart_required = True
                 installed_repo.set_status(AddonManagerRepo.UpdateStatus.PENDING_RESTART)
             else:
@@ -1393,7 +1392,7 @@ class CommandAddonManager:
             message,
             QtWidgets.QMessageBox.Close,
         )
-        if repo.repo_type != AddonManagerRepo.RepoType.MACRO:
+        if repo.contains_workbench():
             repo.set_status(AddonManagerRepo.UpdateStatus.PENDING_RESTART)
             self.restart_required = True
         else:
@@ -1513,11 +1512,9 @@ class CommandAddonManager:
                 self.item_model.update_item_status(
                     repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED
                 )
-                self.addon_removed = (
-                    True  # A value to trigger the restart message on dialog close
-                )
+                if repo.contains_workbench():
+                    self.restart_required = True
                 self.packageDetails.show_repo(repo)
-                self.restart_required = True
             else:
                 self.dialog.textBrowserReadMe.setText(
                     translate(

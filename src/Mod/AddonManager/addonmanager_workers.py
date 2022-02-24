@@ -1003,10 +1003,16 @@ class InstallWorkbenchWorker(QtCore.QThread):
             repo = git.Git(clonedir)
             try:
                 repo.pull("--ff-only")  # Refuses to take a progress object?
-                answer = translate(
-                    "AddonsInstaller",
-                    "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
-                )
+                if self.repo.contains_workbench():
+                    answer = translate(
+                        "AddonsInstaller",
+                        "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
+                    )
+                else:
+                    answer = translate(
+                        "AddonsInstaller",
+                        "Workbench successfully updated.",
+                    )
             except Exception as e:
                 answer = (
                     translate("AddonsInstaller", "Error updating module")
@@ -1077,10 +1083,16 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
             FreeCAD.Console.PrintMessage("Clone complete\n")
 
-        answer = translate(
-            "AddonsInstaller",
-            "Workbench successfully installed. Please restart FreeCAD to apply the changes.",
-        )
+        if self.repo.contains_workbench():
+            answer = translate(
+                "AddonsInstaller",
+                "Workbench successfully installed. Please restart FreeCAD to apply the changes.",
+            )
+        else:
+            answer = translate(
+                "AddonsInstaller",
+                "Addon successfully installed.",
+            )
 
         if self.repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             # symlink any macro contained in the module to the macros folder
