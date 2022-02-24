@@ -372,7 +372,7 @@ if HAVE_QTNETWORK:
             )
             request.setAttribute(
                 QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
-                QtNetwork.QNetworkRequest.PreferCache,
+                QtNetwork.QNetworkRequest.PreferNetwork,
             )
             return request
 
