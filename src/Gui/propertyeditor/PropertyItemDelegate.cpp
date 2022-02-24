@@ -37,6 +37,8 @@
 #include "PropertyItemDelegate.h"
 #include "PropertyItem.h"
 #include "PropertyEditor.h"
+#include "MDIView.h"
+#include "Tree.h"
 
 FC_LOG_LEVEL_INIT("PropertyView",true,true)
 
@@ -122,6 +124,40 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
     else
         this->pressed = false;
     return QItemDelegate::editorEvent(event, model, option, index);
+}
+
+bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
+{
+    if (ev->type() == QEvent::FocusOut) {
+        PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        auto widget = qobject_cast<QWidget*>(o);
+        if (widget && parentEditor && parentEditor->activeEditor
+                   && widget != parentEditor->activeEditor)
+        {
+            // We event filter child QAbstractButton and QLabel of an editor,
+            // which requires special focus change in order to not mess up with
+            // QItemDelegate's logic.
+            QWidget *w = QApplication::focusWidget();
+            // For some reason, Qt (5.15) on Windows will remove current focus
+            // before bringing up a modal dialog.
+            if (!w)
+                return false;
+            while (w) { // don't worry about focus changes internally in the editor
+                if (w == widget || w == parentEditor->activeEditor)
+                    return false;
+
+                // ignore focus change to 3D view or tree view, because, for
+                // example DlgPropertyLink is implemented as modeless dialog
+                // to allow selection in 3D and tree view.
+                if (qobject_cast<MDIView*>(w))
+                    return false;
+                if (qobject_cast<TreeWidget*>(w))
+                    return false;
+                w = w->parentWidget();
+            }
+        }
+    }
+    return QItemDelegate::eventFilter(o, ev);
 }
 
 QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem & /*option*/, 
