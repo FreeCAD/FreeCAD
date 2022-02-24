@@ -29,17 +29,15 @@
 #endif
 
 #include <atomic>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Writer.h>
-using Base::Writer;
-#include <Base/Reader.h>
-using Base::XMLReader;
 #include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
+
 #include "Transactions.h"
-#include "Property.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "Property.h"
+
 
 FC_LOG_LEVEL_INIT("App",true,true)
 

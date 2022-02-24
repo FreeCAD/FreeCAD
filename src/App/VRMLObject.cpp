@@ -23,16 +23,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "VRMLObject.h"
 #include "Document.h"
 #include "DocumentObjectPy.h"
 #include <Base/FileInfo.h>
-#include <Base/Stream.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/Writer.h>
+
 
 using namespace App;
 

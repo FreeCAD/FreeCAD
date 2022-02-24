@@ -26,7 +26,7 @@
 #include <boost/regex.hpp>
 #include <assert.h>
 #include <sstream>
-#include <string.h>
+#include <string>
 
 #include "Range.h"
 

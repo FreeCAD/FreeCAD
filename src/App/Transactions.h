@@ -28,7 +28,8 @@
 #include <unordered_map>
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
-#include <App/PropertyContainer.h>
+
+#include "PropertyContainer.h"
 
 namespace App
 {
