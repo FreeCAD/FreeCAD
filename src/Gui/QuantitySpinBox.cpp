@@ -144,7 +144,7 @@ public:
     {
         try {
             QString copy = str;
-            copy.remove(locale.groupSeparator());
+            copy.remove(QLocale().groupSeparator());
 
             result = Base::Quantity::parse(copy);
             value = result.getValue();
@@ -166,6 +166,8 @@ public:
 
         const bool plus = max >= 0;
         const bool minus = min <= 0;
+
+        auto locale = QLocale();
 
         switch (len) {
         case 0:
@@ -295,7 +297,6 @@ end:
         return res;
     }
 
-    QLocale locale;
     bool validInput;
     bool pendingEmit;
     QString validStr;
@@ -318,7 +319,6 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
       ExpressionSpinBox(this),
       d_ptr(new QuantitySpinBoxPrivate(this))
 {
-    d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
     QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
                      this, SLOT(userInput(QString)));
