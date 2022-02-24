@@ -310,7 +310,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
         ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(viewProvider,
             [pcolor, PtNum, preselectpointmfid, layerId = l, &coinMapping = coinMapping, drawingParameters = this->drawingParameters](const int i) {
                 auto pointindex = coinMapping.getIndexLayer(i);
-                if (layerId == pointindex.layerId && pointindex.fieldIndex < PtNum) {
+                if (layerId == pointindex.layerId && pointindex.fieldIndex >= 0 && pointindex.fieldIndex < PtNum) {
                     pcolor[pointindex.fieldIndex] = (preselectpointmfid == pointindex)
                         ? drawingParameters.PreselectSelectedColor : drawingParameters.SelectColor;
                 }
