@@ -26,7 +26,6 @@
 
 #include <CXX/WrapPython.h>
 #include <memory>
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
 #include "Quantity.h"

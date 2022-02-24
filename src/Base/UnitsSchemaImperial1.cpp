@@ -29,13 +29,10 @@
 # include <unistd.h>
 #endif
 
-#include <QString>
-#include "Console.h"
-#include "Exception.h"
-#include "UnitsApi.h"
-#include "UnitsSchemaImperial1.h"
 #include <cmath>
-#include <iomanip>
+#include <QString>
+
+#include "UnitsSchemaImperial1.h"
 
 
 using namespace Base;

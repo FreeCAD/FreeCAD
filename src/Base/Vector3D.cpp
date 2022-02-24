@@ -22,9 +22,12 @@
 
 
 #include "PreCompiled.h"
+
 #include <limits>
-#include "Tools.h"
+
 #include "Vector3D.h"
+#include "Tools.h"
+
 
 using namespace Base;
 

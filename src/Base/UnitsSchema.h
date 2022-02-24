@@ -24,10 +24,8 @@
 #ifndef BASE_UNITSSCHEMA_H
 #define BASE_UNITSSCHEMA_H
 
-
-#include <string>
 #include <QString>
-#include <Base/Quantity.h>
+#include "Quantity.h"
 
 
 namespace Base {
