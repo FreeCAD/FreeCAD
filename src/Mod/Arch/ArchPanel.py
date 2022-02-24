@@ -869,11 +869,11 @@ class PanelView:
             if hasattr(obj.Source.Proxy,"BaseProfile"):
                 p = obj.Source.Proxy.BaseProfile
                 n = obj.Source.Proxy.ExtrusionVector
-                import Drawing
+                import TechDraw
                 svg1 = ""
                 svg2 = ""
                 result = ""
-                svg1 = Drawing.projectToSVG(p,DraftVecUtils.neg(n))
+                svg1 = TechDraw.projectToSVG(p,DraftVecUtils.neg(n))
                 if svg1:
                     w = str(obj.LineWidth/obj.Scale) #don't let linewidth be influenced by the scale...
                     svg1 = svg1.replace('stroke-width="0.35"','stroke-width="'+w+'"')
