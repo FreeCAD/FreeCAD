@@ -271,7 +271,7 @@ at the kink in the leader line</string>
      <item row="1" column="1">
       <widget class="Gui::FileChooser" name="fcSymbolDir">
        <property name="toolTip">
-        <string>Directory to welding symbols.
+        <string>Directory path for welding symbols.
 This directory will be used for the symbol selection.</string>
        </property>
        <property name="mode">
