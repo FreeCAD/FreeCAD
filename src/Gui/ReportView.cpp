@@ -413,8 +413,11 @@ ReportOutput::ReportOutput(QWidget* parent)
 
     Base::Console().AttachObserver(this);
     getWindowParameter()->Attach(this);
-
     getWindowParameter()->NotifyAll();
+    // do this explicitly because the keys below might not yet be part of a group
+    getWindowParameter()->Notify("RedirectPythonOutput");
+    getWindowParameter()->Notify("RedirectPythonErrors");
+
     _prefs = WindowParameter::getDefaultParameter()->GetGroup("Editor");
     _prefs->Attach(this);
     _prefs->Notify("FontSize");
