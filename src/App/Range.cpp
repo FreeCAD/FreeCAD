@@ -21,13 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <boost/regex.hpp>
+#include <cassert>
+#include <sstream>
+#include <string>
+#endif
 
 #include <Base/Exception.h>
-#include <boost/regex.hpp>
-#include <assert.h>
-#include <sstream>
-#include <string.h>
-
 #include "Range.h"
 
 
