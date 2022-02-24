@@ -102,9 +102,9 @@ SectionCut::SectionCut(QWidget* parent)
             ObjectsListVisible.push_back(*it);
     }
 
-    // we can have existing cut boxes take their values
+    // if we can have existing cut boxes, take their values
     // the flip state cannot be readout of the box position, therefore readout the position
-    // is if it was unflipped
+    // as if it was unflipped
     if (doc->getObject(BoxZName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
         if (!pcBox) {
