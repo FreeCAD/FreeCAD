@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
+#include <Base/Interpreter.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>

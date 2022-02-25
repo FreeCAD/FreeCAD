@@ -31,35 +31,26 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/io/ios_state.hpp>
-
-#include <Base/Console.h>
-#include "Base/Exception.h"
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentPy.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyUnits.h>
-#include <Base/QuantityPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/RotationPy.h>
-#include <Base/VectorPy.h>
-#include <QStringList>
-#include <string>
-#include <sstream>
-#include <math.h>
-#include <stdio.h>
-#include <stack>
-#include <deque>
-#include <algorithm>
-#include "ExpressionParser.h"
-#include <Base/Unit.h>
-#include <App/PropertyUnits.h>
-#include <App/ObjectIdentifier.h>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
+
+#include <sstream>
+#include <stack>
+#include <string>
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/ObjectIdentifier.h>
+#include <App/PropertyUnits.h>
+#include <Base/Interpreter.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/RotationPy.h>
+#include <Base/VectorPy.h>
+
+#include "ExpressionParser.h"
+
 
 /** \defgroup Expression Expressions framework
     \ingroup APP
@@ -69,7 +60,7 @@
 using namespace Base;
 using namespace App;
 
-FC_LOG_LEVEL_INIT("Expression",true,true)
+FC_LOG_LEVEL_INIT("Expression", true, true)
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

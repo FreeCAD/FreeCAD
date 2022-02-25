@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 
 #include "Document.h"
 #include "DocumentObject.h"

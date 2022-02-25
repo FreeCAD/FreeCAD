@@ -67,6 +67,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include "../App/PartFeature.h"
 #include <Gui/Application.h>

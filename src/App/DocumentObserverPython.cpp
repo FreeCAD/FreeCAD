@@ -27,6 +27,7 @@
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObserverPython.h"
+#include <Base/Interpreter.h>
 
 
 using namespace App;

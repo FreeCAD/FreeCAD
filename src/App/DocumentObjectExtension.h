@@ -24,9 +24,12 @@
 #ifndef APP_DOCUMENTOBJECTEXTENSION_H
 #define APP_DOCUMENTOBJECTEXTENSION_H
 
-#include "DocumentObject.h"
+#include "Extension.h"
+#include <Base/Matrix.h>
 
 namespace App {
+class DocumentObject;
+class DocumentObjectExecReturn;
 
 /**
  * @brief Extension with special document object calls

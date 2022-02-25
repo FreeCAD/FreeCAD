@@ -24,16 +24,15 @@
 #ifndef APP_EXTENSIONCONTAINER_H
 #define APP_EXTENSIONCONTAINER_H
 
-#include "Extension.h"
-#include "PropertyContainer.h"
-#include "PropertyPythonObject.h"
-#include "DynamicProperty.h"
-#include <CXX/Objects.hxx>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Writer.h>
+
+#include "PropertyContainer.h"
+
 
 namespace App {
 
+class Extension;
 /**
  * @brief Container which can hold extensions
  *

@@ -28,6 +28,7 @@
 
 #include <Base/Base64.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 

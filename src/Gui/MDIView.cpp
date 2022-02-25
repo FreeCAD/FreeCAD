@@ -45,6 +45,7 @@
 #include "Application.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
+#include <Base/Interpreter.h>
 
 using namespace Gui;
 namespace bp = boost::placeholders;

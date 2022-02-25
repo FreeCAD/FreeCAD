@@ -25,6 +25,8 @@
 
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectExtensionPy.h"
+#include "DocumentObject.h"
+#include "ExtensionContainer.h"
 
 using namespace App;
 
