@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
+# *   Copyright (c) 2015 Dan Falk <ddfalck@gmail.com>                       *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
