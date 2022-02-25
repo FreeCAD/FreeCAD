@@ -28,7 +28,6 @@
 #endif
 
 #include "Application.h"
-#include "DocumentObject.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include <App/ExtensionContainerPy.h>

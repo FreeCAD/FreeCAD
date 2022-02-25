@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cassert>
-# include <cstring>
-# include <cstdlib>
+# include <string>
+# include <vector>
 #endif
 
 #include <Base/Exception.h>
