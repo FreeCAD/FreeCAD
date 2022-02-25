@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,6 +22,8 @@
 # ***************************************************************************
 
 import difflib
+import importlib
+import os
 import unittest
 
 import FreeCAD
@@ -34,10 +37,13 @@ import PathScripts.PathUtil
 import PathScripts.post
 import PathScripts.PostUtils as PostUtils
 
-WriteDebugOutput = False
+# If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test.
+# If KEEP_DEBUG_OUTPUT is True, then leave the gcode file behind in the
+# directory where the test is run so it can be looked at easily.
+KEEP_DEBUG_OUTPUT = True
 
 
-class TestPathPostTestCases(unittest.TestCase):
+class TestPathPost(unittest.TestCase):
     """Test some of the output of the postprocessors.
 
     At the moment this is just getting started, and only tests
@@ -47,8 +53,38 @@ class TestPathPostTestCases(unittest.TestCase):
 
     def setUp(self):
         """Set up the postprocessor tests."""
-        testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/boxtest1.fcstd"
-        self.doc = FreeCAD.open(testfile)
+        pass
+
+    def tearDown(self):
+        """Tear down after the postprocessor tests."""
+        pass
+
+    def _run_a_test(self, freecad_document, postprocesser_file, postprocessor_args, gcode_file, reference_file):
+        """
+        Run one test based on the arguments.
+
+        Parameters
+        ----------
+        freecad_document : str
+            the name of the FreeCAD document to open
+        postprocessor_file : str
+            the name of the postprocessor file to test
+        postprocessor_args : str
+            the arguments to pass to the postprocessor
+        gcode_file : str
+            the name of the file the postprocessor writes the gcode to
+        reference_file : str
+            the name of the file that the gcode is compared to
+
+        Returns
+        -------
+        None
+        """
+
+        freecad_document_path = (
+            FreeCAD.getHomePath() + "Mod/Path/PathTests/" + freecad_document + ".fcstd"
+        )
+        self.doc = FreeCAD.open(freecad_document_path)
         self.job = FreeCAD.ActiveDocument.getObject("Job")
         self.postlist = []
         currTool = None
@@ -60,82 +96,52 @@ class TestPathPostTestCases(unittest.TestCase):
                         self.postlist.append(tc)
                 self.postlist.append(obj)
 
-    def tearDown(self):
-        """Tear down after the postprocessor tests."""
-        FreeCAD.closeDocument("boxtest1")
+        full_postprocessor_file_name = "PathScripts.post." + postprocesser_file
+        postprocessor = importlib.import_module(name=full_postprocessor_file_name)
+        gcode = postprocessor.export(self.postlist, gcode_file, postprocessor_args)
+        FreeCAD.closeDocument(freecad_document)
 
-    def testLinuxCNC(self):
-        """
-        Test the linuxcnc postprocessor in metric mode (default).
+        if not KEEP_DEBUG_OUTPUT:
+            os.remove(gcode_file)
 
-        Returns
-        -------
-        None.
+        reference_file_path = (
+            FreeCAD.getHomePath() + "Mod/Path/PathTests/" + reference_file + ".ngc"
+        )
+        with open(reference_file_path, "r") as fp:
+            refGCode = fp.read()
 
-        """
-        from PathScripts.post import linuxcnc_post as postprocessor
+        if gcode != refGCode:
+            msg = "".join(
+                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
+            )
+            self.fail("linuxcnc output doesn't match: " + msg)
 
-        args = (
+    def test_linuxcnc(self):
+        """Test the linuxcnc postprocessor in metric mode (default)."""
+        postprocessor_args = (
             # "--no-header --no-comments --no-show-editor --precision=2"
             "--no-header --no-show-editor"
         )
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
+        self._run_a_test(freecad_document="boxtest1",
+                         postprocesser_file="linuxcnc_post",
+                         postprocessor_args=postprocessor_args,
+                         gcode_file="test_linuxcnc.ngc",
+                         reference_file="test_linuxcnc_01")
 
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_01.ngc"
+    def test_linuxcnc_imperial(self):
+        """Test the linuxcnc postprocessor in Imperial mode."""
+        postprocessor_args = (
+            "--no-header --no-comments --no-show-editor --precision=2 --inches"
         )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testLinuxCNC.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
-
-    def testLinuxCNCImperial(self):
-        """
-        Test the linuxcnc postprocessor using the --inches option.
-
-        This uses the same file and job as the testLinuxCNC test but
-        adds the --inches option.
-
-        Returns
-        -------
-        None.
-
-        """
-        from PathScripts.post import linuxcnc_post as postprocessor
-
-        args = "--no-header --no-comments --no-show-editor --precision=2 --inches"
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_10.ngc"
-        )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testLinuxCNCImplerial.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
+        self._run_a_test(freecad_document="boxtest1",
+                         postprocesser_file="linuxcnc_post",
+                         postprocessor_args=postprocessor_args,
+                         gcode_file="test_linuxcnc_imperial.ngc",
+                         reference_file="test_linuxcnc_10")
 
 
 class TestPathPostUtils(unittest.TestCase):
     """Test the utility functions in the PostUtils.py file."""
-
     def testSplitArcs(self):
         """
         Tests the PostUtils.splitArcs function.
