@@ -24,11 +24,11 @@
 #ifndef _AppComplexGeoData_h_
 #define _AppComplexGeoData_h_
 
-#include <Base/Placement.h>
-#include <Base/Persistence.h>
+#include <Base/BoundBox.h>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
-#include <Base/BoundBox.h>
+#include <Base/Persistence.h>
+#include <Base/Placement.h>
 #include <Base/Rotation.h>
 
 #ifdef __GNUC__

@@ -25,10 +25,11 @@
 #define APP_BRANDING_H
 
 #include <string>
-#include <QMap>
-#include <QVector>
-#include <QString>
 #include <QDomDocument>
+#include <QMap>
+#include <QString>
+#include <QVector>
+
 
 class QIODevice;
 
