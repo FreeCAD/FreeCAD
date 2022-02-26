@@ -31,11 +31,12 @@
 # if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <dirent.h>
 # include <unistd.h>
-# include <sys/stat.h>
 # elif defined (FC_OS_WIN32)
 # include <io.h>
 # include <Windows.h>
 # endif
+#include <sys/stat.h>
+#include <sys/types.h>
 #endif
 
 #include "FileInfo.h"
