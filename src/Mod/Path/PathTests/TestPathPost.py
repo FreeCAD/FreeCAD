@@ -69,7 +69,24 @@ class TestPathPost(unittest.TestCase):
         Label = "Fixture"
 
     def _generate_gcode(self, job, postprocessor_name, postprocessor_args, gcode_file):
-        """Generate the gcode for a job"""
+        """
+        Generate the gcode for the passed-in job.
+
+        Parameters
+        ----------
+        job : FreeCAD job object
+            the job to generate the gcode for
+        postprocessor_file : str
+            the name of the postprocessor file to test
+        postprocessor_args : str
+            the arguments to pass to the postprocessor
+        gcode_file : str
+            the name of the file the postprocessor writes the gcode to
+
+        Returns
+        -------
+        None or str
+        """
 
         wcslist = job.Fixtures
         orderby = job.OrderOutputBy
@@ -78,8 +95,8 @@ class TestPathPost(unittest.TestCase):
         postlist = []
 
         if orderby == "Fixture":
-            # Order by fixture means all operations and tool changes will be completed in one
-            # fixture before moving to the next.
+            # Order by fixture means all operations and tool changes will be
+            # completed in one fixture before moving to the next.
 
             currTool = None
             for index, f in enumerate(wcslist):
@@ -143,15 +160,11 @@ class TestPathPost(unittest.TestCase):
                 tc = PathScripts.PathUtil.toolControllerForOp(obj)
                 if tc is None or tc.ToolNumber == currTool and active:
                     curlist.append(obj)
-                elif (
-                    tc.ToolNumber != currTool and currTool is None and active
-                ):  # first TC
+                elif tc.ToolNumber != currTool and currTool is None and active:  # first TC
                     sublist.append(tc)
                     curlist.append(obj)
                     currTool = tc.ToolNumber
-                elif (
-                    tc.ToolNumber != currTool and currTool is not None and active
-                ):  # TC
+                elif tc.ToolNumber != currTool and currTool is not None and active:  # TC
                     for fixture in fixturelist:
                         sublist.append(fixture)
                         sublist.extend(curlist)
@@ -201,19 +214,21 @@ class TestPathPost(unittest.TestCase):
                     postlist.append(sublist)
 
         if split:
-            all_gcode = []
+            all_gcode = ""
             for slist in postlist:
                 processor = PostProcessor.load(postprocessor_name)
                 gcode = processor.export(slist, gcode_file, postprocessor_args)
                 all_gcode.append(gcode)
-            return(all_gcode)
+            return all_gcode
         else:
             finalpostlist = [item for slist in postlist for item in slist]
             processor = PostProcessor.load(postprocessor_name)
             gcode = processor.export(finalpostlist, gcode_file, postprocessor_args)
-            return (gcode)
+            return gcode
 
-    def _run_a_test(self, freecad_document, postprocessor_file, postprocessor_args, gcode_file, reference_file):
+    def _run_a_test(
+        self, freecad_document, postprocessor_file, postprocessor_args, gcode_file, reference_file
+    ):
         """
         Run one test based on the arguments.
 
@@ -240,10 +255,7 @@ class TestPathPost(unittest.TestCase):
         )
         self.doc = FreeCAD.open(freecad_document_path)
         self.job = FreeCAD.ActiveDocument.getObject("Job")
-        gcode = self._generate_gcode(self.job,
-                                     postprocessor_file,
-                                     postprocessor_args,
-                                     gcode_file)
+        gcode = self._generate_gcode(self.job, postprocessor_file, postprocessor_args, gcode_file)
         FreeCAD.closeDocument(freecad_document)
         if not KEEP_DEBUG_OUTPUT:
             os.remove(gcode_file)
@@ -255,9 +267,7 @@ class TestPathPost(unittest.TestCase):
             refGCode = fp.read()
 
         if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
+            msg = "".join(difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True)))
             self.fail("linuxcnc output doesn't match: " + msg)
 
     def test_linuxcnc(self):
@@ -266,26 +276,40 @@ class TestPathPost(unittest.TestCase):
             # "--no-header --no-comments --no-show-editor --precision=2"
             "--no-header --no-show-editor"
         )
-        self._run_a_test(freecad_document="boxtest1",
-                         postprocessor_file="linuxcnc",
-                         postprocessor_args=postprocessor_args,
-                         gcode_file="test_linuxcnc.ngc",
-                         reference_file="test_linuxcnc_01")
+        self._run_a_test(
+            freecad_document="boxtest1",
+            postprocessor_file="linuxcnc",
+            postprocessor_args=postprocessor_args,
+            gcode_file="test_linuxcnc.ngc",
+            reference_file="test_linuxcnc_01",
+        )
 
     def test_linuxcnc_imperial(self):
         """Test the linuxcnc postprocessor in Imperial mode."""
-        postprocessor_args = (
-            "--no-header --no-show-editor --inches"
+        postprocessor_args = "--no-header --no-show-editor --inches"
+        self._run_a_test(
+            freecad_document="boxtest1",
+            postprocessor_file="linuxcnc",
+            postprocessor_args=postprocessor_args,
+            gcode_file="test_linuxcnc_imperial.ngc",
+            reference_file="test_linuxcnc_10",
         )
-        self._run_a_test(freecad_document="boxtest1",
-                         postprocessor_file="linuxcnc",
-                         postprocessor_args=postprocessor_args,
-                         gcode_file="test_linuxcnc_imperial.ngc",
-                         reference_file="test_linuxcnc_10")
+
+    def test_linuxcnc_02(self):
+        """Test the linuxcnc postprocessor metric, G55, M4, other way around part."""
+        postprocessor_args = "--no-header --no-show-editor"
+        self._run_a_test(
+            freecad_document="boxtest2",
+            postprocessor_file="linuxcnc",
+            postprocessor_args=postprocessor_args,
+            gcode_file="test_linuxcnc_2.ngc",
+            reference_file="test_linuxcnc_02",
+        )
 
 
 class TestPathPostUtils(unittest.TestCase):
     """Test the utility functions in the PostUtils.py file."""
+
     def testSplitArcs(self):
         """
         Tests the PostUtils.splitArcs function.
@@ -315,4 +339,6 @@ class TestPathPostUtils(unittest.TestCase):
 
         results = PostUtils.splitArcs(testpath)
         self.assertTrue(len(results.Commands) == 41)
-        self.assertTrue(len([c for c in results.Commands if c.Name in ['G2', 'G3']]) == 0)
+        self.assertTrue(
+            len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
+        )
