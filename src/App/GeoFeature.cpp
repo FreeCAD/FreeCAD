@@ -23,12 +23,11 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/GeoFeaturePy.h>
 
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
-#include <App/GeoFeaturePy.h>
+
 
 using namespace App;
 

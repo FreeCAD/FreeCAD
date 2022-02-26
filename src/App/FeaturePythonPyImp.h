@@ -25,7 +25,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Interpreter.h>
-#include <App/PropertyContainerPy.h>
+#include <Base/PyObjectBase.h>
 
 #if defined(__clang__)
 # pragma clang diagnostic push
@@ -75,6 +75,8 @@
 
 namespace App
 {
+
+class Property;
 
 /**
  * @author Werner Mayer

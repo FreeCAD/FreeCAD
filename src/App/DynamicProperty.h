@@ -24,21 +24,20 @@
 #ifndef APP_DYNAMICPROPERTY_H
 #define APP_DYNAMICPROPERTY_H
 
-#include <Base/Persistence.h>
-#include <unordered_map>
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
 
-#include <boost/functional/hash.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 
+
 namespace Base {
 class Writer;
+class XMLReader;
 class XMLWriter;
 }
 
