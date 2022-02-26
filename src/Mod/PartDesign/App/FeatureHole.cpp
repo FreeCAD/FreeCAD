@@ -1831,16 +1831,12 @@ App::DocumentObjectExecReturn* Hole::execute(void)
 
         double angle = Base::toRadians<double>(360.0);
         BRepPrimAPI_MakeRevol RevolMaker(face, gp_Ax1(firstPoint, zDir), angle);
-
-        TopoDS_Shape protoHole;
-        if (RevolMaker.IsDone()) {
-            protoHole = RevolMaker.Shape();
-
-            if (protoHole.IsNull())
-                return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
-        }
-        else
+        if (!RevolMaker.IsDone())
             return new App::DocumentObjectExecReturn("Hole error: Could not revolve sketch");
+
+        TopoDS_Shape protoHole = RevolMaker.Shape();
+        if (protoHole.IsNull())
+            return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
 
 
         // Make thread
@@ -1856,44 +1852,17 @@ App::DocumentObjectExecReturn* Hole::execute(void)
             protoHole = mkFuse.Shape();
         }
 
-        BRep_Builder builder;
-        TopoDS_Compound holes;
-        builder.MakeCompound(holes);
-        TopTools_IndexedMapOfShape edgeMap;
-        TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
-        for (int i = 1; i <= edgeMap.Extent(); i++) {
-            Standard_Real c_start;
-            Standard_Real c_end;
-            TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
-            Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
-
-            // Circle?
-            if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-                continue;
-
-            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-            gp_Pnt loc = circle->Axis().Location();
-
-
-            gp_Trsf localSketchTransformation;
-            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
-                gp_Pnt(loc.X(), loc.Y(), loc.Z()));
-
-            TopoDS_Shape copy = protoHole;
-            copy.Move(localSketchTransformation);
-            builder.Add(holes, copy);
-        }
-
+        TopoDS_Compound holes = findHoles(profileshape, protoHole);
         this->AddSubShape.setValue(holes);
 
         // For some reason it is faster to do the cut through a BooleanOperation.
-        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut(base, holes));
-        if (!mkBool->IsDone()) {
+        BRepAlgoAPI_Cut mkBool(base, holes);
+        if (!mkBool.IsDone()) {
             std::stringstream error;
             error << "Boolean operation failed";
             return new App::DocumentObjectExecReturn(error.str());
         }
-        TopoDS_Shape result = mkBool->Shape();
+        TopoDS_Shape result = mkBool.Shape();
 
 
         // We have to get the solids (fuse sometimes creates compounds)
@@ -1978,6 +1947,39 @@ gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
     // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
     xDir.Normalize();
     return xDir;
+}
+
+TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape, const TopoDS_Shape& protohole) const
+{
+    BRep_Builder builder;
+    TopoDS_Compound holes;
+    builder.MakeCompound(holes);
+    TopTools_IndexedMapOfShape edgeMap;
+    TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
+    for (int i = 1; i <= edgeMap.Extent(); i++) {
+        Standard_Real c_start;
+        Standard_Real c_end;
+        TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
+        Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
+
+        // Circle?
+        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
+            continue;
+
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
+        gp_Pnt loc = circle->Axis().Location();
+
+
+        gp_Trsf localSketchTransformation;
+        localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
+            gp_Pnt(loc.X(), loc.Y(), loc.Z()));
+
+        TopoDS_Shape copy = protohole;
+        copy.Move(localSketchTransformation);
+        builder.Add(holes, copy);
+    }
+
+    return holes;
 }
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
