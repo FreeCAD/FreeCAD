@@ -216,11 +216,11 @@ private:
     void updateThreadDepthParam();
     void readCutDefinitions();
 
-    double getThreadClassClearance();
-    double getThreadRunout(int mode = 1);
-    double getThreadPitch();
-    void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape);
-    gp_Vec computePerpendicular(const gp_Vec&);
+    double getThreadClassClearance() const;
+    double getThreadRunout(int mode = 1) const;
+    double getThreadPitch() const;
+    void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
+    gp_Vec computePerpendicular(const gp_Vec&) const;
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);

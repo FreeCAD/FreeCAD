@@ -924,7 +924,7 @@ void Hole::updateHoleCutParams()
     }
 }
 
-double Hole::getThreadClassClearance()
+double Hole::getThreadClassClearance() const
 {
     double pitch = getThreadPitch();
 
@@ -946,7 +946,7 @@ double Hole::getThreadClassClearance()
 // mode=1 (default), For normal cases e1 is wanted.
 // mode=2, In cases where shorter thread runout is necessary
 // mode=3, In cases where longer thread runout is necessary
-double Hole::getThreadRunout(int mode)
+double Hole::getThreadRunout(int mode) const
 {
     double pitch = getThreadPitch();
 
@@ -975,7 +975,7 @@ double Hole::getThreadRunout(int mode)
     return 4 * pitch;
 }
 
-double Hole::getThreadPitch()
+double Hole::getThreadPitch() const
 {
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
@@ -1985,7 +1985,6 @@ App::DocumentObjectExecReturn* Hole::execute(void)
         builder.MakeCompound(holes);
         TopTools_IndexedMapOfShape edgeMap;
         TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
-        Base::Placement SketchPos = profile->Placement.getValue();
         for (int i = 1; i <= edgeMap.Extent(); i++) {
             Standard_Real c_start;
             Standard_Real c_end;
@@ -2052,7 +2051,7 @@ App::DocumentObjectExecReturn* Hole::execute(void)
     }
 }
 
-void Hole::rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape)
+void Hole::rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const
 {
     auto getRotationAxis = [](const gp_Dir& dir1, const gp_Dir& dir2, gp_Dir& dir3, double& angle) {
         if (dir1.IsEqual(dir2, Precision::Angular()))
@@ -2087,7 +2086,7 @@ void Hole::rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, Top
     }
 }
 
-gp_Vec Hole::computePerpendicular(const gp_Vec& zDir)
+gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
 {
     // Define xDir
     gp_Vec xDir;
