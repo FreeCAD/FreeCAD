@@ -1845,131 +1845,7 @@ App::DocumentObjectExecReturn* Hole::execute(void)
 
         // Make thread
         if (Threaded.getValue() && ModelThread.getValue()) {
-            bool leftHanded = (bool)ThreadDirection.getValue();
-
-            // Nomenclature and formulae according to Figure 1 of ISO 68-1
-            // this is the same for all metric and UTS threads as stated here:
-            // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
-            // Note that in the ISO standard, Dmaj is called D, which has been followed here.
-            double D = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;  // Major diameter
-            double P = getThreadPitch();
-            double H = sqrt(3) / 2 * P;                                                           // Height of fundamental triangle
-
-            double clearance;                                                                     // clearance to be added on the diameter
-            if (UseCustomThreadClearance.getValue())
-                clearance = CustomThreadClearance.getValue();
-            else
-                clearance = getThreadClassClearance();
-
-            // construct the cross section going counter-clockwise
-            // for graphical explanation of geometrical construction of p1-p6 see:
-            // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
-            gp_Pnt p1 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + P / 8 * zDir);
-            gp_Pnt p2 = toPnt((D / 2 + clearance / 2) * xDir + 7 * P / 16 * zDir);
-            gp_Pnt p3 = toPnt((D / 2 + clearance / 2) * xDir + 9 * P / 16 * zDir);
-            gp_Pnt p4 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + 7 * P / 8 * zDir);
-            gp_Pnt p5 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + 7 * P / 8 * zDir);
-            gp_Pnt p6 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + P / 8 * zDir);
-
-            BRepBuilderAPI_MakeWire mkThreadWire;
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
-            mkThreadWire.Build();
-            TopoDS_Wire threadWire = mkThreadWire.Wire();
-
-            //create the helix path
-            double threadDepth = ThreadDepth.getValue();
-            double helixLength = threadDepth + P / 2;
-            double holeDepth = Depth.getValue();
-            std::string threadDepthMethod(ThreadDepthType.getValueAsString());
-            std::string depthMethod(DepthType.getValueAsString());
-            if (threadDepthMethod != "Dimension") {
-                if (depthMethod == "ThroughAll") {
-                    threadDepth = length;
-                    ThreadDepth.setValue(threadDepth);
-                    helixLength = threadDepth + 2 * P;
-                }
-                else if (threadDepthMethod == "Tapped (DIN76)") {
-                    threadDepth = holeDepth - getThreadRunout();
-                    ThreadDepth.setValue(threadDepth);
-                    helixLength = threadDepth + P / 2;
-                }
-                else { // Hole depth
-                    threadDepth = holeDepth;
-                    ThreadDepth.setValue(threadDepth);
-                    helixLength = threadDepth + P / 8;
-                }
-            }
-            else {
-                if (depthMethod == "Dimension") {
-                    // the thread must not be deeper than the hole
-                    // thus the max helixLength is holeDepth + P / 8;
-                    if (threadDepth > (holeDepth - P / 2))
-                        helixLength = holeDepth + P / 8;
-                }
-            }
-            TopoDS_Shape helix = TopoShape().makeLongHelix(P, helixLength, D / 2, 0.0, leftHanded);
-
-            gp_Pnt origo(0.0, 0.0, 0.0);
-            gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
-            gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
-
-            // Reverse the direction of the helix. So that it goes into the material
-            gp_Trsf mov;
-            mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
-            TopLoc_Location loc1(mov);
-            helix.Move(loc1);
-
-            // rotate the helix so that it is pointing in the zdir.
-            rotateToNormal(dir_axis1, zDir, helix);
-
-            // create the pipe shell
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
-            mkPS.SetTolerance(Precision::Confusion());
-            mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-            mkPS.SetMode(true);  //This is for frenet
-            mkPS.Add(threadWire);
-            if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn("Error: Thread could not be built");
-            TopoDS_Shape shell = mkPS.Shape();
-
-            // create faces at the ends of the pipe shell
-            TopTools_ListOfShape sim;
-            mkPS.Simulate(2, sim);
-            std::vector<TopoDS_Wire> frontwires, backwires;
-            frontwires.push_back(TopoDS::Wire(sim.First()));
-            backwires.push_back(TopoDS::Wire(sim.Last()));
-            // build the end faces
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
-            // sew the shell and end faces
-            BRepBuilderAPI_Sewing sewer;
-            sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
-            sewer.Add(shell);
-            sewer.Perform();
-
-            // make the closed off shell into a solid
-            BRepBuilderAPI_MakeSolid mkSolid;
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-            if (!mkSolid.IsDone())
-                return new App::DocumentObjectExecReturn("Error: Result is not a solid");
-            TopoDS_Shape result = mkSolid.Shape();
-
-            // check if the algorithm has confused the inside and outside of the solid
-            BRepClass3d_SolidClassifier SC(result);
-            SC.PerformInfinitePoint(Precision::Confusion());
-            if (SC.State() == TopAbs_IN)
-                result.Reverse();
-
-            // we are done
-            TopoDS_Shape protoThread = result;
+            TopoDS_Shape protoThread = makeThread(xDir, zDir, length);
 
             // fuse the thread to the hole
             BRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
@@ -2102,6 +1978,135 @@ gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
     // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
     xDir.Normalize();
     return xDir;
+}
+
+TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
+{
+    bool leftHanded = (bool)ThreadDirection.getValue();
+
+    // Nomenclature and formulae according to Figure 1 of ISO 68-1
+    // this is the same for all metric and UTS threads as stated here:
+    // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
+    // Note that in the ISO standard, Dmaj is called D, which has been followed here.
+    double D = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;  // Major diameter
+    double P = getThreadPitch();
+    double H = sqrt(3) / 2 * P;                                                           // Height of fundamental triangle
+
+    double clearance;                                                                     // clearance to be added on the diameter
+    if (UseCustomThreadClearance.getValue())
+        clearance = CustomThreadClearance.getValue();
+    else
+        clearance = getThreadClassClearance();
+
+    // construct the cross section going counter-clockwise
+    // for graphical explanation of geometrical construction of p1-p6 see:
+    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
+    gp_Pnt p1 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + P / 8 * zDir);
+    gp_Pnt p2 = toPnt((D / 2 + clearance / 2) * xDir + 7 * P / 16 * zDir);
+    gp_Pnt p3 = toPnt((D / 2 + clearance / 2) * xDir + 9 * P / 16 * zDir);
+    gp_Pnt p4 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + 7 * P / 8 * zDir);
+    gp_Pnt p5 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + 7 * P / 8 * zDir);
+    gp_Pnt p6 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + P / 8 * zDir);
+
+    BRepBuilderAPI_MakeWire mkThreadWire;
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
+    mkThreadWire.Build();
+    TopoDS_Wire threadWire = mkThreadWire.Wire();
+
+    //create the helix path
+    double threadDepth = ThreadDepth.getValue();
+    double helixLength = threadDepth + P / 2;
+    double holeDepth = Depth.getValue();
+    std::string threadDepthMethod(ThreadDepthType.getValueAsString());
+    std::string depthMethod(DepthType.getValueAsString());
+    if (threadDepthMethod != "Dimension") {
+        if (depthMethod == "ThroughAll") {
+            threadDepth = length;
+            ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + 2 * P;
+        }
+        else if (threadDepthMethod == "Tapped (DIN76)") {
+            threadDepth = holeDepth - getThreadRunout();
+            ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + P / 2;
+        }
+        else { // Hole depth
+            threadDepth = holeDepth;
+            ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + P / 8;
+        }
+    }
+    else {
+        if (depthMethod == "Dimension") {
+            // the thread must not be deeper than the hole
+            // thus the max helixLength is holeDepth + P / 8;
+            if (threadDepth > (holeDepth - P / 2))
+                helixLength = holeDepth + P / 8;
+        }
+    }
+    TopoDS_Shape helix = TopoShape().makeLongHelix(P, helixLength, D / 2, 0.0, leftHanded);
+
+    gp_Pnt origo(0.0, 0.0, 0.0);
+    gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
+    gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
+
+    // Reverse the direction of the helix. So that it goes into the material
+    gp_Trsf mov;
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    TopLoc_Location loc1(mov);
+    helix.Move(loc1);
+
+    // rotate the helix so that it is pointing in the zdir.
+    rotateToNormal(dir_axis1, zDir, helix);
+
+    // create the pipe shell
+    BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
+    mkPS.SetTolerance(Precision::Confusion());
+    mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+    mkPS.SetMode(true);  //This is for frenet
+    mkPS.Add(threadWire);
+    if (!mkPS.IsReady())
+        throw Base::CADKernelError("Error: Thread could not be built");
+    TopoDS_Shape shell = mkPS.Shape();
+
+    // create faces at the ends of the pipe shell
+    TopTools_ListOfShape sim;
+    mkPS.Simulate(2, sim);
+    std::vector<TopoDS_Wire> frontwires, backwires;
+    frontwires.push_back(TopoDS::Wire(sim.First()));
+    backwires.push_back(TopoDS::Wire(sim.Last()));
+    // build the end faces
+    TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+    TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+
+    // sew the shell and end faces
+    BRepBuilderAPI_Sewing sewer;
+    sewer.SetTolerance(Precision::Confusion());
+    sewer.Add(front);
+    sewer.Add(back);
+    sewer.Add(shell);
+    sewer.Perform();
+
+    // make the closed off shell into a solid
+    BRepBuilderAPI_MakeSolid mkSolid;
+    mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+    if (!mkSolid.IsDone())
+        throw Base::CADKernelError("Error: Result is not a solid");
+    TopoDS_Shape result = mkSolid.Shape();
+
+    // check if the algorithm has confused the inside and outside of the solid
+    BRepClass3d_SolidClassifier SC(result);
+    SC.PerformInfinitePoint(Precision::Confusion());
+    if (SC.State() == TopAbs_IN)
+        result.Reverse();
+
+    // we are done
+    return result;
 }
 
 void Hole::addCutType(const CutDimensionSet& dimensions)
