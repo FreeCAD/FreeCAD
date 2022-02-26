@@ -25,6 +25,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
 #if defined(__clang__)
 # pragma clang diagnostic push
