@@ -1661,20 +1661,7 @@ App::DocumentObjectExecReturn* Hole::execute(void)
         // Define this as zDir
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
         zDir.Transform(invObjLoc.Transformation());
-
-        // Define xDir
-        gp_Vec xDir;
-
-        /* Compute xDir normal to zDir */
-        if (std::abs(zDir.Z() - zDir.X()) > Precision::Confusion())
-            xDir = gp_Vec(zDir.Z(), 0, -zDir.X());
-        else if (std::abs(zDir.Z() - zDir.Y()) > Precision::Confusion())
-            xDir = gp_Vec(zDir.Y(), -zDir.X(), 0);
-        else
-            xDir = gp_Vec(0, -zDir.Z(), zDir.Y());
-
-        // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
-        xDir.Normalize();
+        gp_Vec xDir = computePerpendicular(zDir);
 
         if (method == "Dimension")
             length = Depth.getValue();
@@ -2098,6 +2085,24 @@ void Hole::rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, Top
         TopLoc_Location loc2(mov);
         helixShape.Move(loc2);
     }
+}
+
+gp_Vec Hole::computePerpendicular(const gp_Vec& zDir)
+{
+    // Define xDir
+    gp_Vec xDir;
+
+    /* Compute xDir normal to zDir */
+    if (std::abs(zDir.Z() - zDir.X()) > Precision::Confusion())
+        xDir = gp_Vec(zDir.Z(), 0, -zDir.X());
+    else if (std::abs(zDir.Z() - zDir.Y()) > Precision::Confusion())
+        xDir = gp_Vec(zDir.Y(), -zDir.X(), 0);
+    else
+        xDir = gp_Vec(0, -zDir.Z(), zDir.Y());
+
+    // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
+    xDir.Normalize();
+    return xDir;
 }
 
 void Hole::addCutType(const CutDimensionSet& dimensions)
