@@ -25,7 +25,6 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Interpreter.h>
-#include <App/PropertyContainerPy.h>
 
 #if defined(__clang__)
 # pragma clang diagnostic push

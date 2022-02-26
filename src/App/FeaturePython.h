@@ -25,13 +25,9 @@
 #ifndef APP_FEATUREPYTHON_H
 #define APP_FEATUREPYTHON_H
 
-
-#include <Base/Exception.h>
-#include <Base/Writer.h>
 #include <App/GeoFeature.h>
-#include <App/DynamicProperty.h>
 #include <App/PropertyPythonObject.h>
-#include <App/PropertyGeo.h>
+
 
 namespace App
 {
