@@ -42,7 +42,7 @@ from PathScripts.PathPostProcessor import PostProcessor
 # If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test.
 # If KEEP_DEBUG_OUTPUT is True, then leave the gcode file behind in the
 # directory where the test is run so it can be looked at easily.
-KEEP_DEBUG_OUTPUT = True
+KEEP_DEBUG_OUTPUT = False
 
 
 class TestPathPost(unittest.TestCase):
@@ -292,7 +292,7 @@ class TestPathPost(unittest.TestCase):
             postprocessor_file="linuxcnc",
             postprocessor_args=postprocessor_args,
             gcode_file="test_linuxcnc_imperial.ngc",
-            reference_file="test_linuxcnc_10",
+            reference_file="test_linuxcnc_11",
         )
 
     def test_linuxcnc_02(self):
@@ -304,6 +304,39 @@ class TestPathPost(unittest.TestCase):
             postprocessor_args=postprocessor_args,
             gcode_file="test_linuxcnc_2.ngc",
             reference_file="test_linuxcnc_02",
+        )
+
+    def test_centroid(self):
+        """Test the centroid postprocessor in metric (default) mode."""
+        postprocessor_args = "--no-header --no-show-editor"
+        self._run_a_test(
+            freecad_document="boxtest1",
+            postprocessor_file="centroid",
+            postprocessor_args=postprocessor_args,
+            gcode_file="test_centroid.ngc",
+            reference_file="test_centroid_01",
+        )
+
+    def test_centroid_imperial(self):
+        """Test the centroid postprocessor in Imperial mode."""
+        postprocessor_args = "--no-header --no-show-editor --inches"
+        self._run_a_test(
+            freecad_document="boxtest1",
+            postprocessor_file="centroid",
+            postprocessor_args=postprocessor_args,
+            gcode_file="test_centroid_imperial.ngc",
+            reference_file="test_centroid_11",
+        )
+
+    def test_centroid_02(self):
+        """Test the centroid postprocessor metric, G55, M4, other way around part."""
+        postprocessor_args = "--no-header --no-show-editor"
+        self._run_a_test(
+            freecad_document="boxtest2",
+            postprocessor_file="centroid",
+            postprocessor_args=postprocessor_args,
+            gcode_file="test_centroid_2.ngc",
+            reference_file="test_centroid_02",
         )
 
 
