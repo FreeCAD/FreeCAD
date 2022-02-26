@@ -219,6 +219,7 @@ private:
     double getThreadClassClearance();
     double getThreadRunout(int mode = 1);
     double getThreadPitch();
+    void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape);
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);
