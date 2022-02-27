@@ -23,10 +23,7 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 
 #include "Part.h"
 #include "PartPy.h"
