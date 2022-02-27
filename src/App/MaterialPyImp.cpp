@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/Material.h"
-
 // inclusion of the generated files (generated out of MaterialPy.xml)
 #include "MaterialPy.h"
 #include "MaterialPy.cpp"

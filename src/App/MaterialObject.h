@@ -25,7 +25,6 @@
 #define APP_MaterialObject_H
 
 #include "DocumentObject.h"
-#include "PropertyStandard.h"
 #include "FeaturePython.h"
 
 
