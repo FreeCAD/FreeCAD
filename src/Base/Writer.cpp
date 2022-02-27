@@ -23,23 +23,21 @@
 
 #include "PreCompiled.h"
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <limits>
+#include <locale>
+
 #include "Writer.h"
-#include "Persistence.h"
-#include "Exception.h"
 #include "Base64.h"
+#include "Exception.h"
 #include "FileInfo.h"
+#include "Persistence.h"
 #include "Stream.h"
 #include "Tools.h"
 
-#include <algorithm>
-#include <locale>
-#include <limits>
 
 using namespace Base;
 using namespace std;
 using namespace zipios;
-
 
 
 // ---------------------------------------------------------------------------
