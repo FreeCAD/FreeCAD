@@ -27,10 +27,9 @@
 
 #include <boost/filesystem.hpp>
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <memory>
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
