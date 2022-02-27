@@ -257,45 +257,24 @@ def repair_git_repo(repo_url: str, clone_dir: str) -> None:
 
 def is_darkmode() -> bool:
     """Heuristics to determine if we are in a darkmode stylesheet"""
-    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
-        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
-            return True
-    else:
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
-        style = pref.GetString("StyleSheet")
-        if "dark" in style.lower():
-            return True
-    return False
+    pl = FreeCADGui.getMainWindow().palette()
+    return pl.color(pl.Background).lightness() < 128
 
 
 def warning_color_string() -> str:
     """A shade of red, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
-
-    if is_darkmode():
-        warningColorString = "rgb(255,105,97)"
-    else:
-        warningColorString = "rgb(215,0,21)"
-    return warningColorString
+    return "rgb(255,105,97)" if is_darkmode() else "rgb(215,0,21)"
 
 
 def bright_color_string() -> str:
     """A shade of green, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
-
-    if is_darkmode():
-        brightColorString = "rgb(48,219,91)"
-    else:
-        brightColorString = "rgb(36,138,61)"
-    return brightColorString
+    return "rgb(48,219,91)" if is_darkmode() else "rgb(36,138,61)"
 
 
 def attention_color_string() -> str:
     """A shade of orange, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+    return "rgb(255,179,64)" if is_darkmode() else "rgb(255,149,0)"
 
-    if is_darkmode():
-        attentionColorString = "rgb(255,179,64)"
-    else:
-        attentionColorString = "rgb(255,149,0)"
-    return attentionColorString
 
 def get_assigned_string_literal(line:str) -> Optional[str]:
     """Look for a line of the form my_var = "A string literal" and return the string literal.
