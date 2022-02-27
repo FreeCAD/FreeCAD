@@ -82,9 +82,12 @@ ViewProviderPage::ViewProviderPage()
     m_graphicsView(nullptr)
 {
     sPixmap = "TechDraw_TreePage";
-    static const char *group = "Base";
+    static const char *group = "Grid";
 
     ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
+    ADD_PROPERTY_TYPE(ShowGrid ,(PreferencesGui::showGrid()),group,App::Prop_None,"Show or hide a grid on this Page");
+    ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group, (App::PropertyType)(App::Prop_None),
+                     "Grid line spacing in mm");
 
     ShowFrames.setStatus(App::Property::Hidden,true);
     Visibility.setStatus(App::Property::Hidden,true);
@@ -300,6 +303,8 @@ bool ViewProviderPage::showMDIViewPage()
         m_mdiView->redrawAllViews();
         m_mdiView->fixOrphans(true);
     }
+    setGrid();
+
     return true;
 }
 
@@ -382,11 +387,11 @@ MDIViewPage* ViewProviderPage::getMDIViewPage() const
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-//    if (prop == &(getDrawPage()->Template)) {
-//       if (m_mdiView) {
-//            m_mdiView->updateTemplate();
-//        }
-//    }
+    if (prop == &(ShowGrid)) {
+        setGrid();
+    } else if (prop == &(GridSpacing)) {
+        setGrid();
+    }
 
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
@@ -491,4 +496,29 @@ Gui::MDIView *ViewProviderPage::getMDIView() const
 {
     const_cast<ViewProviderPage*>(this)->showMDIViewPage();
     return m_mdiView.data();
+}
+
+void  ViewProviderPage::setGrid(void)
+{
+    TechDraw::DrawPage* dp = getDrawPage();
+    if (!dp) {
+        return;
+    }
+    int pageWidth = 298;
+    int pageHeight = 215;
+    int gridStep = GridSpacing.getValue() > 0 ? GridSpacing.getValue() : 10;
+    if (dp) {
+        pageWidth = dp->getPageWidth();
+        pageHeight = dp->getPageHeight();
+    }
+    QGVPage* widget = getGraphicsView();
+    if (widget) {
+        if (ShowGrid.getValue()) {
+            widget->showGrid(true);
+            widget->makeGrid(pageWidth, pageHeight, gridStep);
+        } else {
+            widget->showGrid(false);
+        }
+        widget->updateViewport();
+    }
 }

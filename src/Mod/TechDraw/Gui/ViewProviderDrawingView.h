@@ -25,6 +25,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost_signals2.hpp> 
 
 #include <Gui/ViewProviderFeature.h>

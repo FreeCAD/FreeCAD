@@ -71,6 +71,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->pfc_Welding->onSave();
     ui->pfc_FilePattern->onSave();
     ui->le_NamePattern->onSave();
+    ui->cb_ShowGrid->onSave();
+    ui->psb_GridSpacing->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -106,6 +108,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->pfc_Welding->onRestore();
     ui->pfc_FilePattern->onRestore();
     ui->le_NamePattern->onRestore();
+    ui->cb_ShowGrid->onRestore();
+    ui->psb_GridSpacing->onRestore();
 }
 
 /**
