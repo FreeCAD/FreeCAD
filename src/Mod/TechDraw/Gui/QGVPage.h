@@ -23,11 +23,17 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QLabel>
 
 class QTemporaryFile;
+
+namespace App {
+class DocumentObject;
+}
 
 namespace TechDraw {
 class DrawView;
@@ -122,6 +128,9 @@ public:
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
 
+    void makeGrid(int width, int height, int step);
+    void showGrid(bool state) {m_showGrid = state;}
+    void updateViewport(void) {viewport()->repaint();}
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -150,6 +159,7 @@ protected:
 
     void activateCursor(QCursor cursor);
     void resetCursor();
+    virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
 
 private:
     RendererType m_renderer;
@@ -172,6 +182,9 @@ private:
 
     QPoint panOrigin;
     bool panningActive;
+
+    bool m_showGrid;
+    QPainterPath m_gridPath;
 };
 
 } // namespace 

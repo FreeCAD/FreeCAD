@@ -28,6 +28,8 @@
 #ifndef TECHDRAW_EDGEWALKER_H
 #define TECHDRAW_EDGEWALKER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
@@ -72,7 +74,7 @@ typedef
                                 >
         planar_embedding_t;
 
-class WalkerEdge
+class TechDrawExport WalkerEdge
 {
 public:
     static bool weCompare(WalkerEdge i, WalkerEdge j);
@@ -85,7 +87,7 @@ public:
     int idx;
 };
 
-class ewWire
+class TechDrawExport ewWire
 {
 public:
     bool isEqual(ewWire w);
@@ -96,7 +98,7 @@ public:
     int size(void);
 };
 
-class ewWireList
+class TechDrawExport ewWireList
 {
 public:
     ewWireList removeDuplicateWires();
@@ -108,7 +110,7 @@ public:
 
 
 
-class edgeVisitor : public boost::planar_face_traversal_visitor
+class TechDrawExport edgeVisitor : public boost::planar_face_traversal_visitor
 {
 public:
     template <typename Edge>
@@ -124,7 +126,7 @@ private:
     TechDraw::graph m_g;
 };
 
-class incidenceItem
+class TechDrawExport incidenceItem
 {
 public:
     incidenceItem() {iEdge = 0; angle = 0.0;}
@@ -137,7 +139,7 @@ public:
     edge_t eDesc;
 };
 
-class embedItem
+class TechDrawExport embedItem
 {
 public:
     embedItem();
@@ -152,7 +154,7 @@ public:
 };
 
 
-class EdgeWalker
+class TechDrawExport EdgeWalker
 {
 public:
     EdgeWalker(void);

@@ -90,6 +90,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "Rez.h"
+#include "PreferencesGui.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -134,7 +135,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
       drawBkg(true),
       m_vpPage(0),
       balloonPlacing(false),
-      panningActive(false)
+      panningActive(false),
+      m_showGrid(false)
 {
     assert(vp);
     m_vpPage = vp;
@@ -1306,5 +1308,47 @@ void QGVPage::resetCursor() {
     viewport()->setCursor(Qt::ArrowCursor);
 }
 
+void QGVPage::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    Q_UNUSED(rect);
+    if (m_showGrid) {
+        QPen gridPen(PreferencesGui::gridQColor());
+        QPen savePen = painter->pen();
+        painter->setPen(gridPen);
+        painter->drawPath(m_gridPath);
+        painter->setPen(savePen);
+    }
+}
+
+void QGVPage::makeGrid(int gridWidth, int gridHeight, int gridStep)
+{
+    QPainterPath grid;
+    int width = Rez::guiX(gridWidth);
+    int height = Rez::guiX(gridHeight);
+    int step = Rez::guiX(gridStep);
+    int horizStart = 0;
+    int vPos = 0;
+    int rows = (height / step) + 1;
+    //draw horizontal lines
+    for (int i = 0; i < rows; i++) {
+        vPos = i * step;
+        QPoint start (horizStart, -vPos);
+        QPoint end (width, -vPos);
+        grid.moveTo(start);
+        grid.lineTo(end);
+    }
+    //draw vertical lines
+    int vertStart = 0;
+    int cols = (width / step) + 1;
+    int hPos = 0;
+    for (int i = 0; i < cols; i++) {
+        hPos = i * step;
+        QPoint start(hPos, -vertStart);
+        QPoint end(hPos, -height);
+        grid.moveTo(start);
+        grid.lineTo(end);
+    }
+    m_gridPath = grid;
+}
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>
