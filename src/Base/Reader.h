@@ -23,18 +23,18 @@
 #ifndef BASE_READER_H
 #define BASE_READER_H
 
-
-#include <string>
-#include <map>
 #include <bitset>
-#include <memory>
+#include <map>
+#include <sstream>
+#include <string>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "FileInfo.h"
-#include "Writer.h"
+#include "Persistence.h"
+
 
 namespace zipios {
 class ZipInputStream;
