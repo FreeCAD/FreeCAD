@@ -33,7 +33,6 @@
 #include "Property.h"
 #include "ComplexGeoData.h"
 #include "PropertyLinks.h"
-#include <FCGlobal.h>
 
 
 namespace Base {

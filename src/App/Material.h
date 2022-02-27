@@ -30,7 +30,7 @@
 
 #include <sstream>
 #include <iomanip>
-#include <FCGlobal.h>
+
 
 namespace App
 {

@@ -30,7 +30,7 @@
 #include <boost/signals2.hpp>
 #include <bitset>
 #include <string>
-#include <FCGlobal.h>
+
 
 namespace Py {
 class Object;
