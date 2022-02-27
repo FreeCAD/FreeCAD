@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_DressUp_H
 #define PARTDESIGN_DressUp_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureAddSub.h"
 
 namespace PartDesign

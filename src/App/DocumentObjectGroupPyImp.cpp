@@ -24,8 +24,6 @@
 #include "PreCompiled.h"
 
 #include "DocumentObjectGroup.h"
-#include "Document.h"
-#include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of DocumentObjectGroupPy.xml)
 #include "DocumentObjectGroupPy.h"

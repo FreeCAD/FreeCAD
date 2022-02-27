@@ -28,18 +28,13 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Dir.hxx>
 # include <Precision.hxx>
-# include <TopoDS.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
 #endif
 
 #include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 

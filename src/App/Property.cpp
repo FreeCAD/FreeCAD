@@ -24,17 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#	include <cassert>
+#include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <atomic>
+#include <Base/Tools.h>
+#include <Base/Writer.h>
+
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include "Application.h"
-#include "DocumentObject.h"
+
 
 using namespace App;
 
@@ -49,11 +49,12 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
 //**************************************************************************
 // Construction/Destruction
 
+static std::atomic<int64_t> _PropID;
+
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(0), myName(0)
+  :father(0), myName(0), _id(++_PropID)
 {
-
 }
 
 Property::~Property()

@@ -25,10 +25,11 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
+# include <QInputDialog>
 # include <QMessageBox>
+# include <QString>
 # include <stdlib.h>
 # include <qdebug.h>
-# include <QString>
 # include <GC_MakeEllipse.hxx>
 # include <boost/math/special_functions/fpclassify.hpp>
 # include <memory>
@@ -223,12 +224,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Line");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -254,7 +250,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -268,7 +264,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -328,6 +324,14 @@ public:
         }
         return true;
     }
+
+private:
+
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Line");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -398,12 +402,9 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Box");
-    }
+public:
 
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode==STATUS_SEEK_First) {
@@ -450,7 +451,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             if(constructionMethod == Diagonal) {
@@ -484,7 +485,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -631,6 +632,13 @@ public:
         }
         return true;
     }
+
+private:
+
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Box");
+    }
 protected:
     BoxMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -741,12 +749,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch*)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Oblong");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -820,7 +823,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -833,7 +836,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -997,6 +1000,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Oblong");
+    }
+
 protected:
     BoxMode Mode;
     Base::Vector2d StartPos, EndPos;
@@ -1208,7 +1218,7 @@ public:
         SNAP_MODE_45Degree
     };
 
-    virtual void registerPressedKey(bool pressed, int key)
+    virtual void registerPressedKey(bool pressed, int key) override
     {
         if (Mode != STATUS_SEEK_Second)
             return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
@@ -1287,12 +1297,7 @@ public:
         }
     }
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         suppressTransition = false;
         if (Mode==STATUS_SEEK_First) {
@@ -1418,7 +1423,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -1514,7 +1519,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
             bool addedGeometry = true;
@@ -1716,7 +1721,7 @@ public:
         return true;
     }
 
-    virtual void quit(void) {
+    virtual void quit(void) override {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
@@ -1751,6 +1756,12 @@ public:
                 applyCursor();
             }
         }
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
     }
 
 protected:
@@ -1870,12 +1881,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -1939,7 +1945,7 @@ public:
 
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             CenterPoint = onSketchPos;
@@ -1978,7 +1984,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End) {
@@ -2041,6 +2047,12 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
+    }
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -2099,12 +2111,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -2219,7 +2226,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             // 32 point curve + center + endpoint
@@ -2247,7 +2254,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -2310,6 +2317,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -2461,12 +2475,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -2504,7 +2513,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -2516,7 +2525,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -2574,6 +2583,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -2677,27 +2693,10 @@ public:
     };
 
     /**
-     * @brief Slot called when the create ellipse command is activated
-     * @param sketchgui A pointer to the active sketch
-     */
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
-        if (constrMethod == 0) {
-            method = CENTER_PERIAPSIS_B;
-            mode = STATUS_SEEK_CENTROID;
-        } else {
-            method = PERIAPSIS_APOAPSIS_B;
-            mode = STATUS_SEEK_PERIAPSIS;
-        }
-    }
-
-
-    /**
      * @brief Updates the ellipse when the cursor moves
      * @param onSketchPos the position of the cursor on the sketch
      */
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -2789,7 +2788,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -2824,7 +2823,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
@@ -2844,6 +2843,24 @@ public:
         }
         return true;
     }
+
+private:
+    /**
+     * @brief Slot called when the create ellipse command is activated
+     * @param sketchgui A pointer to the active sketch
+     */
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
+        if (constrMethod == 0) {
+            method = CENTER_PERIAPSIS_B;
+            mode = STATUS_SEEK_CENTROID;
+        } else {
+            method = PERIAPSIS_APOAPSIS_B;
+            mode = STATUS_SEEK_PERIAPSIS;
+        }
+    }
+
 protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 private:
@@ -3454,12 +3471,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -3569,7 +3581,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -3595,7 +3607,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -3728,6 +3740,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -3783,12 +3802,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch * /*sketchgui*/)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -3899,7 +3913,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -3927,7 +3941,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -4071,6 +4085,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -4128,12 +4149,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch * /*sketchgui*/)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -4240,7 +4256,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -4267,7 +4283,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -4369,6 +4385,12 @@ public:
             }
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
     }
 
 protected:
@@ -4561,6 +4583,7 @@ public:
       , EditCurve(2)
       , CurrentConstraint(0)
       , ConstrMethod(constructionMethod)
+      , SplineDegree(3)
       , IsClosed(false)
       , FirstPoleGeoId(-2000)
     {
@@ -4576,12 +4599,7 @@ public:
         STATUS_CLOSE
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
             setPositionText(onSketchPos);
@@ -4612,7 +4630,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
 
@@ -4729,7 +4747,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_CLOSE) {
             unsetCursor();
@@ -4766,9 +4784,10 @@ public:
 
                 // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
-                                        "(%s,None,None,%s,3,None,False),%s)",
+                                        "(%s,None,None,%s,%d,None,False),%s)",
                                         controlpoints.c_str(),
                                         ConstrMethod == 0 ?"False":"True",
+                                        SplineDegree,
                                         geometryCreationMode==Construction?"True":"False");
 
 
@@ -4835,6 +4854,8 @@ public:
                 EditCurve.resize(2);
                 applyCursor();
 
+                SplineDegree = 3;
+
                 sugConstr.clear();
 
                 std::vector<AutoConstraint> sugConstr1;
@@ -4855,7 +4876,25 @@ public:
         return true;
     }
 
-    virtual void quit(void) {
+    virtual void registerPressedKey(bool pressed, int key) override
+    {
+        if (SoKeyboardEvent::D == key && pressed) {
+            SplineDegree = QInputDialog::getInt(
+                Gui::getMainWindow(),
+                QObject::tr("B-Spline Degree"),
+                QObject::tr("Define B-Spline Degree, between 1 and %1:")
+                .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+                SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
+            // FIXME: Pressing Esc here also finishes the B-Spline creation.
+            // The user may only want to exit the dialog.
+        }
+        // TODO: On pressing, say, W, modify last pole's weight
+        // TODO: On pressing, say, M, modify next knot's multiplicity
+        // TODO: On pressing, say, Backspace, delete last pole
+    }
+
+    virtual void quit(void) override
+    {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
@@ -4902,6 +4941,12 @@ public:
         }
     }
 
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
+    }
+
 protected:
     SELECT_MODE Mode;
 
@@ -4911,6 +4956,7 @@ protected:
 
     int CurrentConstraint;
     int ConstrMethod;
+    int SplineDegree;
     bool IsClosed;
     int FirstPoleGeoId;
 };
@@ -5115,12 +5161,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -5179,7 +5220,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             // N point curve + center + endpoint
@@ -5204,7 +5245,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -5267,6 +5308,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -5411,12 +5459,7 @@ public:
     DrawSketchHandlerPoint() : selectionDone(false) {}
     virtual ~DrawSketchHandlerPoint() {}
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Point");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         setPositionText(onSketchPos);
         if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -5426,14 +5469,14 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         EditPoint = onSketchPos;
         selectionDone = true;
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (selectionDone){
@@ -5475,6 +5518,12 @@ public:
             }
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Point");
     }
 
 protected:
@@ -5629,25 +5678,18 @@ public:
         STATUS_SEEK_Second
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         bool construction=false;
         int VtId = getPreselectPoint();
@@ -5812,6 +5854,14 @@ public:
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
 
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
     }
 
 protected:
@@ -6024,15 +6074,7 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Trimming");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
 
@@ -6071,13 +6113,13 @@ public:
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         int GeoId = getPreselectCurve();
         if (GeoId > -1) {
@@ -6107,6 +6149,16 @@ public:
 
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Trimming");
+    }
+
 private:
     std::vector<Base::Vector2d> EditMarkers;
 };
@@ -6201,17 +6253,7 @@ public:
         STATUS_SEEK_Second,
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        Q_UNUSED(sketchgui)
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        filterGate = new ExtendSelection(sketchgui->getObject());
-        Gui::Selection().addSelectionGate(filterGate);
-        setCrosshairCursor("Sketcher_Pointer_Extension");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_Second) {
@@ -6324,13 +6366,13 @@ public:
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_First) {
@@ -6406,6 +6448,17 @@ public:
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        Q_UNUSED(sketchgui)
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        filterGate = new ExtendSelection(sketchgui->getObject());
+        Gui::Selection().addSelectionGate(filterGate);
+        setCrosshairCursor("Sketcher_Pointer_Extension");
     }
 
 protected:
@@ -6495,26 +6548,18 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Splitting");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         int GeoId = getPreselectCurve();
         if (GeoId >= 0) {
@@ -6540,6 +6585,15 @@ public:
         }
 
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Splitting");
     }
 };
 
@@ -6641,42 +6695,20 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        setAxisPickStyle(false);
-        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        Gui::View3DInventorViewer *viewer;
-        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-        SoNode* root = viewer->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
-
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_External");
-    }
-
-    virtual void deactivated(ViewProviderSketch *sketchgui)
-    {
-        Q_UNUSED(sketchgui);
-        setAxisPickStyle(true);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
@@ -6686,7 +6718,7 @@ public:
         return true;
     }
 
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
@@ -6726,6 +6758,29 @@ public:
             }
         }
         return false;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setAxisPickStyle(false);
+        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        Gui::View3DInventorViewer *viewer;
+        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+        SoNode* root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_External");
+    }
+
+    virtual void deactivated() override
+    {
+        Q_UNUSED(sketchgui);
+        setAxisPickStyle(true);
     }
 };
 
@@ -6826,43 +6881,20 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        setAxisPickStyle(false);
-        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        Gui::View3DInventorViewer *viewer;
-        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-        SoNode* root = viewer->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
-
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
-    }
-
-    virtual void deactivated(ViewProviderSketch *sketchgui)
-    {
-        Q_UNUSED(sketchgui);
-        setAxisPickStyle(true);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
@@ -6872,7 +6904,7 @@ public:
         return true;
     }
 
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
@@ -6904,6 +6936,29 @@ public:
                 }
         }
         return false;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setAxisPickStyle(false);
+        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        Gui::View3DInventorViewer *viewer;
+        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+        SoNode* root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
+    }
+
+    virtual void deactivated() override
+    {
+        Q_UNUSED(sketchgui);
+        setAxisPickStyle(true);
     }
 };
 
@@ -6983,12 +7038,7 @@ public:
         SNAP_DIR_Vert
     };
 
-    virtual void activated(ViewProviderSketch*)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Slot");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -7058,7 +7108,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -7070,7 +7120,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -7208,6 +7258,12 @@ public:
         }
         return true;
     }
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Slot");
+    }
+
 protected:
     BoxMode Mode;
     SNAP_MODE SnapMode;
@@ -7281,12 +7337,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode==STATUS_SEEK_First) {
@@ -7327,7 +7378,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             StartPos = onSketchPos;
@@ -7339,7 +7390,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -7399,6 +7450,12 @@ public:
             }
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
     }
 protected:
     const size_t Corners;

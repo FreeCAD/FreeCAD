@@ -1282,6 +1282,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="InitGui.py" line="114"/>
+        <source>Engraving Operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="131"/>
+        <source>3D Operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="InitGui.py" line="136"/>
         <source>Project Setup</source>
         <translation type="unfinished"></translation>
@@ -1297,18 +1307,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="151"/>
-        <source>Path Modification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="InitGui.py" line="141"/>
         <source>Helpful Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="159"/>
-        <source>&amp;Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1317,23 +1317,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="InitGui.py" line="114"/>
-        <source>Engraving Operations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="InitGui.py" line="131"/>
-        <source>3D Operations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="InitGui.py" line="149"/>
         <source>Supplemental Commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="InitGui.py" line="151"/>
+        <source>Path Modification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="InitGui.py" line="154"/>
         <source>Specialty Operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="159"/>
+        <source>&amp;Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2040,114 +2040,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="PathProfile.py" line="663"/>
         <source>For open edges, verify Final Depth for this operation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PathSlot</name>
-    <message>
-        <location filename="PathSlot.py" line="101"/>
-        <source>New property added to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="103"/>
-        <source>Check default value(s).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="431"/>
-        <source>No Base Geometry object in the operation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="441"/>
-        <source>Custom points are identical.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="449"/>
-        <source>Custom points not at same Z height.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="501"/>
-        <source>Current Extend Radius value produces negative arc radius.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="519"/>
-        <source>No path extensions available for full circles.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="674"/>
-        <source>operation collides with model.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="926"/>
-        <source>Verify slot path start and end points.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="752"/>
-        <source>The selected face is inaccessible.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="769"/>
-        <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="794"/>
-        <source>A single selected face must have four edges minimum.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="853"/>
-        <source>No parallel edges identified.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="878"/>
-        <source>value error.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="942"/>
-        <source>Current tool larger than arc diameter.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="1027"/>
-        <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="1047"/>
-        <source>Failed to determine point 1 from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="1058"/>
-        <source>Failed to determine point 2 from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="1072"/>
-        <source>Selected geometry not parallel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="1192"/>
-        <source>The selected face is not oriented vertically:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathSlot.py" line="1713"/>
-        <source>Current offset value produces negative radius.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3559,6 +3451,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
 </context>
 <context>
+    <name>Path_Job:</name>
+    <message>
+        <location filename="PathJobDlg.py" line="351"/>
+        <source>Cylinder: %.2f x %.2f</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Path_MillFace</name>
     <message>
         <location filename="PathMillFaceGui.py" line="91"/>
@@ -4099,6 +3999,161 @@ If it is necessary to set the FinalDepth manually please select a different oper
 <context>
     <name>Path_Slot</name>
     <message>
+        <location filename="PathSlot.py" line="109"/>
+        <source>New property added to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="111"/>
+        <source>Check default value(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="258"/>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="259"/>
+        <source>ZigZag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="262"/>
+        <source>Single-pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="263"/>
+        <source>Multi-pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="266"/>
+        <source>Start to End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="267"/>
+        <source>Perpendicular</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="282"/>
+        <source>Center of Mass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="284"/>
+        <source>Center of BoundBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="287"/>
+        <source>Lowest Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="288"/>
+        <source>Highest Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="277"/>
+        <source>Long Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="278"/>
+        <source>Short Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="289"/>
+        <source>Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="608"/>
+        <source>No Base Geometry object in the operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="617"/>
+        <source>Custom points are identical.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="624"/>
+        <source>Custom points not at same Z height.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="700"/>
+        <source>No path extensions available for full circles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="876"/>
+        <source>operation collides with model.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1146"/>
+        <source>Verify slot path start and end points.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="973"/>
+        <source>The selected face is inaccessible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1018"/>
+        <source>A single selected face must have four edges minimum.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1075"/>
+        <source>No parallel edges identified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1099"/>
+        <source>value error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1161"/>
+        <source>Current tool larger than arc diameter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1267"/>
+        <source>Failed to determine point 1 from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1277"/>
+        <source>Failed to determine point 2 from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1290"/>
+        <source>Selected geometry not parallel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1411"/>
+        <source>The selected face is not oriented vertically:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1939"/>
+        <source>Current offset value produces negative radius.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathSlotGui.py" line="243"/>
         <source>Slot</source>
         <translation type="unfinished"></translation>
@@ -4417,6 +4472,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathToolController.py" line="134"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="PathToolController.py" line="132"/>
         <source>Forward</source>
         <translation type="unfinished"></translation>
@@ -4503,6 +4563,59 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="PathWaterlineGui.py" line="151"/>
         <source>Create a Waterline Operation from a model</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Workbench</name>
+    <message>
+        <location filename="InitGui.py" line="176"/>
+        <source>Project Setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="179"/>
+        <source>Tool Commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="182"/>
+        <source>New Operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="223"/>
+        <source>Path Modification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="190"/>
+        <source>Helpful Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="241"/>
+        <source>&amp;Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="209"/>
+        <source>Path Dressup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="216"/>
+        <source>Supplemental Commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="231"/>
+        <source>Specialty Operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="InitGui.py" line="242"/>
+        <source>Utils</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4621,6 +4734,114 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="PathWaterline.py" line="139"/>
         <source>Multi-pass</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PathSlot</name>
+    <message>
+        <location filename="PathSlot.py" line="101"/>
+        <source>New property added to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="103"/>
+        <source>Check default value(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="431"/>
+        <source>No Base Geometry object in the operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="441"/>
+        <source>Custom points are identical.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="449"/>
+        <source>Custom points not at same Z height.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="501"/>
+        <source>Current Extend Radius value produces negative arc radius.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="519"/>
+        <source>No path extensions available for full circles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="674"/>
+        <source>operation collides with model.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="752"/>
+        <source>The selected face is inaccessible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="769"/>
+        <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="794"/>
+        <source>A single selected face must have four edges minimum.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="853"/>
+        <source>No parallel edges identified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="878"/>
+        <source>value error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="926"/>
+        <source>Verify slot path start and end points.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="942"/>
+        <source>Current tool larger than arc diameter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1027"/>
+        <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1047"/>
+        <source>Failed to determine point 1 from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1058"/>
+        <source>Failed to determine point 2 from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1072"/>
+        <source>Selected geometry not parallel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1192"/>
+        <source>The selected face is not oriented vertically:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathSlot.py" line="1713"/>
+        <source>Current offset value produces negative radius.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

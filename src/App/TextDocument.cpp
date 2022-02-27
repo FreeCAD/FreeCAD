@@ -23,12 +23,8 @@
 
 #include "PreCompiled.h"
 
-#include <string>
-#include <fstream>
-#include <boost_signals2.hpp>
-
-#include "DocumentObject.h"
 #include "TextDocument.h"
+#include "DocumentObject.h"
 
 
 using namespace App;

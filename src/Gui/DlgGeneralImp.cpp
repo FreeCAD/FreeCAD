@@ -38,16 +38,13 @@
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "PrefWidgets.h"
-#include "PythonConsole.h"
 #include "Language/Translator.h"
 #include "Gui/PreferencePackManager.h"
 #include "DlgPreferencesImp.h"
 
 #include "DlgCreateNewPreferencePackImp.h"
-
-// Only needed until PreferencePacks can be managed from the AddonManager:
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include "DlgPreferencePackManagementImp.h"
+#include "DlgRevertToBackupConfigImp.h"
 
 
 using namespace Gui::Dialog;
@@ -97,19 +94,16 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     recreatePreferencePackMenu();
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
 
-    // Future work: the Add-On Manager will be modified to include a section for Preference Packs, at which point this
-    // button will be modified to open the Add-On Manager to that tab.
-    auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+    ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
+    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgGeneralImp::onManagePreferencePacksClicked);
 
-    // If that directory hasn't been created yet, just send the user to the preferences directory
-    if (!(fs::exists(savedPreferencePacksDirectory) && fs::is_directory(savedPreferencePacksDirectory))) {
-        savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir());
-        ui->ManagePreferencePacks->hide();
-    }
-    
-    QString pathToSavedPacks(QString::fromStdString(savedPreferencePacksDirectory.string()));
-    ui->ManagePreferencePacks->setToolTip(tr("Open the directory of saved user preference packs"));
-    connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, [pathToSavedPacks]() { QDesktopServices::openUrl(QUrl::fromLocalFile(pathToSavedPacks)); });
+    // If there are any saved config file backs, show the revert button, otherwise hide it:
+    const auto & backups = Application::Instance->prefPackManager()->configBackups();
+    if (backups.empty())
+        ui->RevertToSavedConfig->setEnabled(false);
+    else
+        ui->RevertToSavedConfig->setEnabled(true);
+    connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
 }
 
 /**
@@ -144,21 +138,6 @@ void DlgGeneralImp::saveSettings()
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
-    ui->PythonWordWrap->onSave();
-    ui->PythonBlockCursor->onSave();
-
-    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-    PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
-    if (pcPython) {
-        bool pythonWordWrap = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
-
-        if (pythonWordWrap) {
-            pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        } else {
-            pcPython->setWordWrapMode(QTextOption::NoWrap);
-        }
-    }
 
     setRecentFileSize();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -214,8 +193,6 @@ void DlgGeneralImp::loadSettings()
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
-    ui->PythonWordWrap->onRestore();
-    ui->PythonBlockCursor->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -353,6 +330,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
 
     // Populate the Preference Packs list
+    Application::Instance->prefPackManager()->rescan();
     auto packs = Application::Instance->prefPackManager()->preferencePacks();
 
     ui->PreferencePacks->setRowCount(packs.size());
@@ -392,6 +370,17 @@ void DlgGeneralImp::saveAsNewPreferencePack()
     newPreferencePackDialog->open();
 }
 
+void DlgGeneralImp::revertToSavedConfig()
+{
+    revertToBackupConfigDialog = std::make_unique<DlgRevertToBackupConfigImp>(this);
+    connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, [this]() {
+        auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
+        if (parentDialog)
+            parentDialog->reload();
+        });
+    revertToBackupConfigDialog->open();
+}
+
 void DlgGeneralImp::newPreferencePackDialogAccepted() 
 {
     auto preferencePackTemplates = Application::Instance->prefPackManager()->templateFiles();
@@ -405,8 +394,17 @@ void DlgGeneralImp::newPreferencePackDialogAccepted()
         });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
     Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
-    Application::Instance->prefPackManager()->rescan();
     recreatePreferencePackMenu();
+}
+
+void DlgGeneralImp::onManagePreferencePacksClicked()
+{
+    if (!this->preferencePackManagementDialog) {
+        this->preferencePackManagementDialog = std::make_unique<DlgPreferencePackManagementImp>(this);
+        connect(this->preferencePackManagementDialog.get(), &DlgPreferencePackManagementImp::packVisibilityChanged,
+            this, &DlgGeneralImp::recreatePreferencePackMenu);
+    }
+    this->preferencePackManagementDialog->show();
 }
 
 void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)

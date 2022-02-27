@@ -24,13 +24,10 @@
 #ifndef PARTDESIGN_DATUMSHAPE_H
 #define PARTDESIGN_DATUMSHAPE_H
 
-#include <QString>
-#include <boost_signals2.hpp>
 #include <App/PropertyLinks.h>
 #include <App/DocumentObserver.h>
 #include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {

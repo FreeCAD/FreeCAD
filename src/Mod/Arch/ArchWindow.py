@@ -383,15 +383,16 @@ class _CommandWindow:
         librarypath = librarypath.replace("\\", "/") + "/Architectural Parts"
         presetdir = FreeCAD.getUserAppDataDir().replace("\\", "/") + "/Arch"
         for path in [librarypath, presetdir]:
-            if os.path.exists(path):
+            if os.path.isdir(path):
                 for wtype in ["Windows", "Doors"]:
                     wdir = path + "/" + wtype
-                    if os.path.exists(wdir):
+                    if os.path.isdir(wdir):
                         for subtype in os.listdir(wdir):
                             subdir = wdir + "/" + subtype
-                            if os.path.exists(subdir):
+                            if os.path.isdir(subdir):
                                 for subfile in os.listdir(subdir):
-                                    if subfile.lower().endswith(".fcstd"):
+                                    if (os.path.isfile(subdir + "/" + subfile)
+                                            and subfile.lower().endswith(".fcstd")):
                                         self.librarypresets.append([wtype + " - " + subtype + " - " + subfile[:-6],
                                                                     subdir + "/" + subfile])
 

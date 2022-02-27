@@ -24,25 +24,20 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Base/Writer.h>
-#include <Base/Tools.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
+#include <Base/Tools.h>
+#include <Base/Writer.h>
 
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
-#include "DocumentObjectGroup.h"
-#include "PropertyLinks.h"
-#include "PropertyGeo.h"
-#include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
+#include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
-#include <App/DocumentObjectPy.h>
-#include <boost/bind/bind.hpp>
+#include "PropertyExpressionEngine.h"
+#include "PropertyLinks.h"
+
 
 FC_LOG_LEVEL_INIT("App",true,true)
 

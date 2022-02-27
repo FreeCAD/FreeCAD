@@ -23,12 +23,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
-#include "Document.h"
 #include "FeaturePythonPyImp.h"
 
 using namespace App;

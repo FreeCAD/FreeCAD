@@ -19,7 +19,7 @@
     <message>
       <location filename="_CommandCompoundFilter.py" line="57"/>
       <source>Compound Filter</source>
-      <translation>Verbund Filter</translation>
+      <translation>Verbundfilter</translation>
     </message>
     <message>
       <location filename="_CommandCompoundFilter.py" line="67"/>
@@ -27,8 +27,8 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Filtern Sie Objekte aus einem ausgewählten Verbund nach Eigenschaften wie Volumen,
-Bereich oder Länge, oder indem Sie bestimmte Elemente auswählen.
+      <translation>Filtert Objekte eines ausgewählten Verbundes nach Eigenschaften wie Volumen,
+Fläche oder Länge heraus, oder durch die Auswahl bestimmter Bestandteile.
 Wenn ein zweites Objekt ausgewählt ist, wird es als Referenz verwendet, zum Beispiel
 für Kollisions- oder Distanzfilterung.</translation>
     </message>
@@ -135,7 +135,7 @@ It will create a 'Compound Filter' for each slice.</source>
     <message>
       <location filename="SplitFeatures.py" line="529"/>
       <source>Boolean XOR</source>
-      <translation>Boolesche XOR</translation>
+      <translation>Boolesches eXklusives ODER</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="537"/>
@@ -143,10 +143,10 @@ It will create a 'Compound Filter' for each slice.</source>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>Eine boolesche 'exclusiv-ODER' Operation mit zwei oder mehr ausgewählten Objekten,
-oder mit den Formen innerhalb eines Verbundes durchführen.
+      <translation>Führt eine boolesche 'Exklusiv-ODER'-Operation mit zwei oder mehr ausgewählten Objekten
+oder mit den Formen innerhalb eines Verbundes durch.
 Das bedeutet, dass die sich überschneidenden Volumen der Formen entfernt werden.
-Ein 'Compound Filter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
+Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
     </message>
   </context>
   <context>
@@ -154,7 +154,7 @@ Ein 'Compound Filter' kann verwendet werden, um die restlichen Stücke zu extrah
     <message>
       <location filename="CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Erstelle eine Röhre</translation>
+      <translation>Röhre...</translation>
     </message>
     <message>
       <location filename="CommandShapes.py" line="50"/>
@@ -167,7 +167,7 @@ Ein 'Compound Filter' kann verwendet werden, um die restlichen Stücke zu extrah
     <message>
       <location filename="CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation>Erstelle eine Röhre</translation>
+      <translation>Röhre...</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="57"/>
@@ -228,7 +228,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Bitte wählen Sie zwei oder mehr Formen. Oder wählen Sie einen Verbund mit zwei oder mehr Formen, welche verbunden werden werden sollen.</translation>
+      <translation>Bitte zwei oder mehr Formen auswählen. Oder einen Verbund auswählen, der zwei oder mehr Formen enthält, die verbunden werden sollen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="901"/>
@@ -4761,7 +4761,7 @@ die Größe der resultierenden STEP Datei zu minimieren.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="39"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Modell nach Boolscher Operation automatisch aufbereiten</translation>
+      <translation>Modell nach Boolescher Operation automatisch aufbereiten</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
@@ -6018,7 +6018,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Boolean</source>
-      <translation>Bool'sche Operationen</translation>
+      <translation>Boolesche Operation</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>

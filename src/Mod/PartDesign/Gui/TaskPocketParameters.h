@@ -25,8 +25,6 @@
 #define GUI_TASKVIEW_TaskPocketParameters_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPocket.h"

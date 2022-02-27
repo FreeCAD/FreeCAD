@@ -23,18 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
-
-#include "DocumentObjectGroup.h"
-#include "DocumentObjectGroupPy.h"
-#include "GroupExtensionPy.h"
-#include "Document.h"
-#include "FeaturePythonPyImp.h"
-#include "GeoFeatureGroupExtension.h"
-#include <Base/Console.h>
 #include <Base/Tools.h>
+
+#include "Document.h"
+#include "GeoFeatureGroupExtension.h"
+#include "GroupExtensionPy.h"
+
 
 using namespace App;
 namespace bp = boost::placeholders;

@@ -36,6 +36,7 @@
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
+#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <boost_bind_bind.hpp>

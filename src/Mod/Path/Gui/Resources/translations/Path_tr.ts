@@ -226,7 +226,7 @@
     <message>
       <location filename="PathAdaptive.py" line="1039"/>
       <source>Stop processing</source>
-      <translation type="unfinished">Stop processing</translation>
+      <translation>İşlemeyi durdur</translation>
     </message>
     <message>
       <location filename="PathProbe.py" line="58"/>
@@ -371,7 +371,7 @@
     <message>
       <location filename="PathVcarve.py" line="251"/>
       <source>Vcarve Tolerance</source>
-      <translation type="unfinished">Vcarve Tolerance</translation>
+      <translation>Vcarve Toleransı</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="63"/>
@@ -411,12 +411,12 @@
     <message>
       <location filename="PathDressupLeadInOut.py" line="108"/>
       <source>The Style of motion into the Path</source>
-      <translation type="unfinished">The Style of motion into the Path</translation>
+      <translation>İzin, içine doğru hareketin biçimi</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="115"/>
       <source>The Style of motion out of the Path</source>
-      <translation type="unfinished">The Style of motion out of the Path</translation>
+      <translation>İzin, dışına doğru hareketin biçimi</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="124"/>
@@ -981,7 +981,7 @@
     <message>
       <location filename="PathAreaOp.py" line="148"/>
       <source>Split Arcs into discrete segments</source>
-      <translation type="unfinished">Split Arcs into discrete segments</translation>
+      <translation>Yayları ayrı bölümlere ayırın</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="69"/>
@@ -1061,7 +1061,7 @@
     <message>
       <location filename="PathJob.py" line="540"/>
       <source>Select the Type of Job</source>
-      <translation type="unfinished">Select the Type of Job</translation>
+      <translation>İşin tipini seçin</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="531"/>
@@ -1282,6 +1282,16 @@
       <translation>Saat Yönünün Tersi</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="114"/>
+      <source>Engraving Operations</source>
+      <translation>Oymacılık İşlemleri</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="131"/>
+      <source>3D Operations</source>
+      <translation>3B işlemler</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="136"/>
       <source>Project Setup</source>
       <translation>Proje kurulumu</translation>
@@ -1297,19 +1307,9 @@
       <translation>İşlemler</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="151"/>
-      <source>Path Modification</source>
-      <translation>Yol Değişikliği</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="141"/>
       <source>Helpful Tools</source>
       <translation>Yararlı araçlar</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>&amp;Path</source>
-      <translation>Yol</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="147"/>
@@ -1317,24 +1317,24 @@
       <translation>Yolu donat</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="114"/>
-      <source>Engraving Operations</source>
-      <translation>Oymacılık İşlemleri</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="131"/>
-      <source>3D Operations</source>
-      <translation>3B işlemler</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="149"/>
       <source>Supplemental Commands</source>
       <translation>Tamamlayıcı Komutlar</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="151"/>
+      <source>Path Modification</source>
+      <translation>Yol Değişikliği</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="154"/>
       <source>Specialty Operations</source>
       <translation>Özel İşlemler</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="159"/>
+      <source>&amp;Path</source>
+      <translation>Yol</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="159"/>
@@ -1663,7 +1663,7 @@
     <message>
       <location filename="PathJob.py" line="496"/>
       <source>Select the Type of Job</source>
-      <translation type="unfinished">Select the Type of Job</translation>
+      <translation>İşin tipini seçin</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="538"/>
@@ -2043,114 +2043,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Açık kenarlar için, bu işlemin Bitiş Derinliğini doğrula.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSlot</name>
-    <message>
-      <location filename="PathSlot.py" line="101"/>
-      <source>New property added to</source>
-      <translation>Şuraya eklenen yeni özellik</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="103"/>
-      <source>Check default value(s).</source>
-      <translation>Varsayılan değer(ler) i denetle.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="431"/>
-      <source>No Base Geometry object in the operation.</source>
-      <translation>İşlemde hiçbir Temel Geometri nesnesi yok.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="441"/>
-      <source>Custom points are identical.</source>
-      <translation>Özel noktalar özdeş.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="449"/>
-      <source>Custom points not at same Z height.</source>
-      <translation>Özel noktalar aynı Z yüksekliğinde değil.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="501"/>
-      <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation>Geçerli Uzatma Yarıçapı değeri negatif yay yarıçapı üretir.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="519"/>
-      <source>No path extensions available for full circles.</source>
-      <translation>Tam daireler için kullanılabilir yol uzantısı yok.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="674"/>
-      <source>operation collides with model.</source>
-      <translation>işlem, modelle çakışıyor.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="926"/>
-      <source>Verify slot path start and end points.</source>
-      <translation>Yuva yolu başlangıç ve bitiş noktalarını doğrulayın.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="752"/>
-      <source>The selected face is inaccessible.</source>
-      <translation>Seçilen yüz, ulaşılamaz konumda.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="769"/>
-      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation>Sadece bir köşe seçili. Temel Geometri' ye başka bir şekil ekleyin.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="794"/>
-      <source>A single selected face must have four edges minimum.</source>
-      <translation>Tek bir seçili yüzün en az dört kenarı olmalıdır.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="853"/>
-      <source>No parallel edges identified.</source>
-      <translation>Hiçbir paralel kenar tanımlanmamış.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="878"/>
-      <source>value error.</source>
-      <translation>değer hatası.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="942"/>
-      <source>Current tool larger than arc diameter.</source>
-      <translation>Mevcut takım çapı, yay çapından büyük.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1027"/>
-      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation>Başarısız oldu, kenardan yuva yalnızca çizgileri, yayları ve daireleri kabul eder.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1047"/>
-      <source>Failed to determine point 1 from</source>
-      <translation>Nokta 1'in şuraya göre belirlenmesi başarısız</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1058"/>
-      <source>Failed to determine point 2 from</source>
-      <translation>Nokta 2' nin şuraya göre belirlenmesi başarısız</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1072"/>
-      <source>Selected geometry not parallel.</source>
-      <translation>Seçilen geometri paralel değil.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1192"/>
-      <source>The selected face is not oriented vertically:</source>
-      <translation>Seçilen yüz dikey olarak yönlendirilmiyor:</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1713"/>
-      <source>Current offset value produces negative radius.</source>
-      <translation>Mevcut öteleme değeri, negatif yarıçap üretir.</translation>
     </message>
   </context>
   <context>
@@ -2679,12 +2571,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathAdaptive.py" line="922"/>
       <source>Clearing</source>
-      <translation type="unfinished">Clearing</translation>
+      <translation>Belirginleştirmek</translation>
     </message>
     <message>
       <location filename="PathAdaptive.py" line="923"/>
       <source>Profiling</source>
-      <translation type="unfinished">Profiling</translation>
+      <translation>Kesitini Çıkarmak</translation>
     </message>
     <message>
       <location filename="PathAdaptiveGui.py" line="255"/>
@@ -2978,7 +2870,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathDressupLeadInOut.py" line="192"/>
       <source>Length/Radius positive not Null</source>
-      <translation type="unfinished">Length/Radius positive not Null</translation>
+      <translation>Uzunluk/Yarıçap değersiz değil pozitif</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="479"/>
@@ -3074,17 +2966,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathDressupRampEntry.py" line="133"/>
       <source>RampMethod1</source>
-      <translation type="unfinished">RampMethod1</translation>
+      <translation>RampMethod1</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="134"/>
       <source>RampMethod2</source>
-      <translation type="unfinished">RampMethod2</translation>
+      <translation>RampMethod2</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="135"/>
       <source>RampMethod3</source>
-      <translation type="unfinished">RampMethod3</translation>
+      <translation>RampMethod3</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="136"/>
@@ -3094,17 +2986,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathDressupRampEntry.py" line="140"/>
       <source>Horizontal Feed Rate</source>
-      <translation type="unfinished">Horizontal Feed Rate</translation>
+      <translation>Yataydaki Akış Oranı</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="144"/>
       <source>Vertical Feed Rate</source>
-      <translation type="unfinished">Vertical Feed Rate</translation>
+      <translation>Düşeydeki Akış Oranı</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="148"/>
       <source>Ramp Feed Rate</source>
-      <translation type="unfinished">Ramp Feed Rate</translation>
+      <translation>Rampa Akış Oranı</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="151"/>
@@ -3283,12 +3175,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathDrilling.py" line="71"/>
       <source>G99</source>
-      <translation type="unfinished">G99</translation>
+      <translation>G99</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="72"/>
       <source>G98</source>
-      <translation type="unfinished">G98</translation>
+      <translation>G98</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="75"/>
@@ -3519,17 +3411,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathJob.py" line="263"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="264"/>
       <source>Lathe</source>
-      <translation type="unfinished">Lathe</translation>
+      <translation>Torna</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="265"/>
       <source>Multiaxis</source>
-      <translation type="unfinished">Multiaxis</translation>
+      <translation>Çok boyutlu eksen</translation>
     </message>
     <message>
       <location filename="PathJobDlg.py" line="63"/>
@@ -3563,6 +3455,14 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
+    <name>Path_Job:</name>
+    <message>
+      <location filename="PathJobDlg.py" line="351"/>
+      <source>Cylinder: %.2f x %.2f</source>
+      <translation>Silindir: %.2f x %.2f</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_MillFace</name>
     <message>
       <location filename="PathMillFaceGui.py" line="91"/>
@@ -3593,12 +3493,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathOp.py" line="371"/>
       <source>Flood</source>
-      <translation type="unfinished">Flood</translation>
+      <translation>Su ile kaplama</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="372"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>Sis</translation>
     </message>
   </context>
   <context>
@@ -4103,6 +4003,161 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
   <context>
     <name>Path_Slot</name>
     <message>
+      <location filename="PathSlot.py" line="109"/>
+      <source>New property added to</source>
+      <translation>Şuraya eklenen yeni özellik</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="111"/>
+      <source>Check default value(s).</source>
+      <translation>Varsayılan değer(ler) i denetle.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="258"/>
+      <source>Line</source>
+      <translation>Çizgi</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="259"/>
+      <source>ZigZag</source>
+      <translation>Zikzak</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="262"/>
+      <source>Single-pass</source>
+      <translation>Tek geçiş</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="263"/>
+      <source>Multi-pass</source>
+      <translation>Çoklu geçiş</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="266"/>
+      <source>Start to End</source>
+      <translation>Baştan Sona</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="267"/>
+      <source>Perpendicular</source>
+      <translation>Dik</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="282"/>
+      <source>Center of Mass</source>
+      <translation>Kütle Merkezi</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="284"/>
+      <source>Center of BoundBox</source>
+      <translation>Bağlı Kutunun Merkezi</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="287"/>
+      <source>Lowest Point</source>
+      <translation>En Alt Nokta</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="288"/>
+      <source>Highest Point</source>
+      <translation>En Üst Nokta</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="277"/>
+      <source>Long Edge</source>
+      <translation>Uzun Kenar</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="278"/>
+      <source>Short Edge</source>
+      <translation>Kısa Kenar</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="289"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="608"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation>İşlemde hiçbir Temel Geometri nesnesi yok.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="617"/>
+      <source>Custom points are identical.</source>
+      <translation>Özel noktalar özdeş.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="624"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Özel noktalar aynı Z yüksekliğinde değil.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="700"/>
+      <source>No path extensions available for full circles.</source>
+      <translation>Tam daireler için kullanılabilir yol uzantısı yok.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="876"/>
+      <source>operation collides with model.</source>
+      <translation>işlem, modelle çakışıyor.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1146"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Yuva yolu başlangıç ve bitiş noktalarını doğrulayın.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="973"/>
+      <source>The selected face is inaccessible.</source>
+      <translation>Seçilen yüz, ulaşılamaz konumda.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1018"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation>Tek bir seçili yüzün en az dört kenarı olmalıdır.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1075"/>
+      <source>No parallel edges identified.</source>
+      <translation>Hiçbir paralel kenar tanımlanmamış.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1099"/>
+      <source>value error.</source>
+      <translation>değer hatası.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1161"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Mevcut takım çapı, yay çapından büyük.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1267"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Nokta 1'in şuraya göre belirlenmesi başarısız</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1277"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Nokta 2' nin şuraya göre belirlenmesi başarısız</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1290"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>Seçilen geometri paralel değil.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1411"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>Seçilen yüz dikey olarak yönlendirilmiyor:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1939"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Mevcut öteleme değeri, negatif yarıçap üretir.</translation>
+    </message>
+    <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
       <translation>Yuva</translation>
@@ -4141,17 +4196,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathSurface.py" line="460"/>
       <source>CenterOfMass</source>
-      <translation type="unfinished">CenterOfMass</translation>
+      <translation>Kütle merkezi</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="461"/>
       <source>CenterOfBoundBox</source>
-      <translation type="unfinished">CenterOfBoundBox</translation>
+      <translation>Sınır kutusunun merkezi</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="462"/>
       <source>XminYmin</source>
-      <translation type="unfinished">XminYmin</translation>
+      <translation>XminYmin</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="463"/>
@@ -4284,22 +4339,22 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathThreadMilling.py" line="208"/>
       <source>Metric Internal</source>
-      <translation type="unfinished">Metric Internal</translation>
+      <translation>Metrik - dahili</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="210"/>
       <source>Imperial Internal</source>
-      <translation type="unfinished">Imperial Internal</translation>
+      <translation>Dahili İngiliz ölçü grubu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>
       <source>LeftHand</source>
-      <translation type="unfinished">LeftHand</translation>
+      <translation>Sol el</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="216"/>
       <source>RightHand</source>
-      <translation type="unfinished">RightHand</translation>
+      <translation>Sağ el</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="219"/>
@@ -4421,6 +4476,11 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Araç Kumandasını Ekle</translation>
     </message>
     <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Hiçbiri</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>İleri</translation>
@@ -4511,6 +4571,59 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="InitGui.py" line="176"/>
+      <source>Project Setup</source>
+      <translation>Proje kurulumu</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="179"/>
+      <source>Tool Commands</source>
+      <translation>Aracı komutları</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="182"/>
+      <source>New Operations</source>
+      <translation>İşlemler</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="223"/>
+      <source>Path Modification</source>
+      <translation>Yol Değişikliği</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="190"/>
+      <source>Helpful Tools</source>
+      <translation>Yararlı araçlar</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="241"/>
+      <source>&amp;Path</source>
+      <translation>Yol</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="209"/>
+      <source>Path Dressup</source>
+      <translation>Yolu donat</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="216"/>
+      <source>Supplemental Commands</source>
+      <translation>Tamamlayıcı Komutlar</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="231"/>
+      <source>Specialty Operations</source>
+      <translation>Özel İşlemler</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="242"/>
+      <source>Utils</source>
+      <translation>Yardımcılar</translation>
+    </message>
+  </context>
+  <context>
     <name>path_waterline</name>
     <message>
       <location filename="PathWaterline.py" line="41"/>
@@ -4540,17 +4653,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathWaterline.py" line="106"/>
       <source>CenterOfMass</source>
-      <translation type="unfinished">CenterOfMass</translation>
+      <translation>Kütle merkezi</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="107"/>
       <source>CenterOfBoundBox</source>
-      <translation type="unfinished">CenterOfBoundBox</translation>
+      <translation>Sınır kutusunun merkezi</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="108"/>
       <source>XminYmin</source>
-      <translation type="unfinished">XminYmin</translation>
+      <translation>XminYmin</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="109"/>
@@ -4560,7 +4673,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathWaterline.py" line="112"/>
       <source>Off</source>
-      <translation type="unfinished">Off</translation>
+      <translation>Kapalı</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
@@ -4626,6 +4739,114 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation>Çoklu geçiş</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSlot</name>
+    <message>
+      <location filename="PathSlot.py" line="101"/>
+      <source>New property added to</source>
+      <translation>Şuraya eklenen yeni özellik</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="103"/>
+      <source>Check default value(s).</source>
+      <translation>Varsayılan değer(ler) i denetle.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="431"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation>İşlemde hiçbir Temel Geometri nesnesi yok.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation>Özel noktalar özdeş.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="449"/>
+      <source>Custom points not at same Z height.</source>
+      <translation>Özel noktalar aynı Z yüksekliğinde değil.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="501"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation>Geçerli Uzatma Yarıçapı değeri negatif yay yarıçapı üretir.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="519"/>
+      <source>No path extensions available for full circles.</source>
+      <translation>Tam daireler için kullanılabilir yol uzantısı yok.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="674"/>
+      <source>operation collides with model.</source>
+      <translation>işlem, modelle çakışıyor.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation>Seçilen yüz, ulaşılamaz konumda.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="769"/>
+      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
+      <translation>Sadece bir köşe seçili. Temel Geometri' ye başka bir şekil ekleyin.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="794"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation>Tek bir seçili yüzün en az dört kenarı olmalıdır.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="853"/>
+      <source>No parallel edges identified.</source>
+      <translation>Hiçbir paralel kenar tanımlanmamış.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="878"/>
+      <source>value error.</source>
+      <translation>değer hatası.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="926"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Yuva yolu başlangıç ve bitiş noktalarını doğrulayın.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="942"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Mevcut takım çapı, yay çapından büyük.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1027"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation>Başarısız oldu, kenardan yuva yalnızca çizgileri, yayları ve daireleri kabul eder.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1047"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Nokta 1'in şuraya göre belirlenmesi başarısız</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1058"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Nokta 2' nin şuraya göre belirlenmesi başarısız</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1072"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>Seçilen geometri paralel değil.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1192"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>Seçilen yüz dikey olarak yönlendirilmiyor:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1713"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Mevcut öteleme değeri, negatif yarıçap üretir.</translation>
     </message>
   </context>
   <context>

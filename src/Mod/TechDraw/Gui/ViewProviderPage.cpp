@@ -26,26 +26,18 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QList>
 # include <QMenu>
 # include <QMessageBox>
-# include <QTextStream>
-# include <QTimer>
-# include <QList>
 # include <QPointer>
+# include <QTextStream>
+# include <boost_bind_bind.hpp>
 # include <boost_signals2.hpp>
 # include <boost/signals2/connection.hpp>
-# include <boost_bind_bind.hpp>
-
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
@@ -61,12 +53,11 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "PreferencesGui.h"
 #include "MDIViewPage.h"
-#include "QGVPage.h"
+#include "PreferencesGui.h"
 #include "QGITemplate.h"
+#include "QGVPage.h"
 #include "ViewProviderTemplate.h"
 #include "ViewProviderPage.h"
 
@@ -91,9 +82,12 @@ ViewProviderPage::ViewProviderPage()
     m_graphicsView(nullptr)
 {
     sPixmap = "TechDraw_TreePage";
-    static const char *group = "Base";
+    static const char *group = "Grid";
 
     ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
+    ADD_PROPERTY_TYPE(ShowGrid ,(PreferencesGui::showGrid()),group,App::Prop_None,"Show or hide a grid on this Page");
+    ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group, (App::PropertyType)(App::Prop_None),
+                     "Grid line spacing in mm");
 
     ShowFrames.setStatus(App::Property::Hidden,true);
     Visibility.setStatus(App::Property::Hidden,true);
@@ -309,6 +303,8 @@ bool ViewProviderPage::showMDIViewPage()
         m_mdiView->redrawAllViews();
         m_mdiView->fixOrphans(true);
     }
+    setGrid();
+
     return true;
 }
 
@@ -391,11 +387,11 @@ MDIViewPage* ViewProviderPage::getMDIViewPage() const
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-//    if (prop == &(getDrawPage()->Template)) {
-//       if (m_mdiView) {
-//            m_mdiView->updateTemplate();
-//        }
-//    }
+    if (prop == &(ShowGrid)) {
+        setGrid();
+    } else if (prop == &(GridSpacing)) {
+        setGrid();
+    }
 
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
@@ -500,4 +496,29 @@ Gui::MDIView *ViewProviderPage::getMDIView() const
 {
     const_cast<ViewProviderPage*>(this)->showMDIViewPage();
     return m_mdiView.data();
+}
+
+void  ViewProviderPage::setGrid(void)
+{
+    TechDraw::DrawPage* dp = getDrawPage();
+    if (!dp) {
+        return;
+    }
+    int pageWidth = 298;
+    int pageHeight = 215;
+    int gridStep = GridSpacing.getValue() > 0 ? GridSpacing.getValue() : 10;
+    if (dp) {
+        pageWidth = dp->getPageWidth();
+        pageHeight = dp->getPageHeight();
+    }
+    QGVPage* widget = getGraphicsView();
+    if (widget) {
+        if (ShowGrid.getValue()) {
+            widget->showGrid(true);
+            widget->makeGrid(pageWidth, pageHeight, gridStep);
+        } else {
+            widget->showGrid(false);
+        }
+        widget->updateViewport();
+    }
 }

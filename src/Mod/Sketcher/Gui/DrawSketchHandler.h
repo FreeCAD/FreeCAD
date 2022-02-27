@@ -46,6 +46,7 @@ class ViewProviderSketch;
  */
 class ViewProviderSketchDrawSketchHandlerAttorney {
 private:
+    static inline void setConstraintSelectability(ViewProviderSketch &vp, bool enabled = true);
     static inline void setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos, const SbString &txt);
     static inline void setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos);
     static inline void resetPositionText(ViewProviderSketch &vp);
@@ -96,8 +97,9 @@ public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
-    virtual void activated(ViewProviderSketch *){}
-    virtual void deactivated(ViewProviderSketch *){}
+    void activate(ViewProviderSketch *);
+    void deactivate();
+
     virtual void mouseMove(Base::Vector2d onSketchPos)=0;
     virtual bool pressButton(Base::Vector2d onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2d onSketchPos)=0;
@@ -125,6 +127,12 @@ public:
     void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
+
+private:
+    virtual void preActivated();
+    virtual void activated(){}
+    virtual void deactivated(){}
+    virtual void postDeactivated(){}
 
 protected:
     // helpers

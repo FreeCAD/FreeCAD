@@ -433,7 +433,7 @@ class ObjectSurface(PathOp.ObjectOp):
         ]
 
     @classmethod
-    def propertyEnumerations(self, dataType="data"):
+    def propertyEnumerations(cls, dataType="data"):
         """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
@@ -607,15 +607,14 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("ShowTempObjects", mode)
 
         # Repopulate enumerations in case of changes
-        ENUMS = self.opPropertyEnumerations()
-        for n in ENUMS:
+        for prop, enums in ObjectSurface.propertyEnumerations():
             restore = False
-            if hasattr(obj, n):
-                val = obj.getPropertyByName(n)
+            if hasattr(obj, prop):
+                val = obj.getPropertyByName(prop)
                 restore = True
-            setattr(obj, n, ENUMS[n])
+            setattr(obj, prop, enums)
             if restore:
-                setattr(obj, n, val)
+                setattr(obj, prop, val)
 
         self.setEditorProperties(obj)
 

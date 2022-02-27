@@ -24,24 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/version.hpp>
-# include <boost/filesystem/path.hpp>
 # include <cfloat>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Stream.h>
-#include <Base/UnitsApi.h>
-
-#include "PropertyUnits.h"
-#include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
+
+#include "PropertyUnits.h"
 #include "Expression.h"
+
 
 using namespace App;
 using namespace Base;

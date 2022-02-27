@@ -130,8 +130,6 @@ void PreferencePack::applyConfigChanges() const
     }
 }
 
-
-
 PreferencePackManager::PreferencePackManager()
 {
     auto modPath = fs::path(App::Application::getUserAppDataDir()) / "Mod";
@@ -149,6 +147,7 @@ PreferencePackManager::PreferencePackManager()
 void PreferencePackManager::rescan()
 {
     std::lock_guard<std::mutex> lock(_mutex);
+    _preferencePacks.clear();
     for (const auto& path : _preferencePackPaths) {
         if (fs::exists(path) && fs::is_directory(path)) {
             FindPreferencePacksInPackage(path);
@@ -164,14 +163,24 @@ void PreferencePackManager::rescan()
 void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path& mod)
 {
     auto packageMetadataFile = mod / "package.xml";
+    static const auto modDirectory = fs::path(App::Application::getUserAppDataDir()) / "Mod" / "SavedPreferencePacks";
+    static const auto resourcePath = fs::path(App::Application::getResourceDir()) / "Gui" / "PreferencePacks";
+
     if (fs::exists(packageMetadataFile) && fs::is_regular_file(packageMetadataFile)) {
         try {
             App::Metadata metadata(packageMetadataFile);
             auto content = metadata.content();
+            auto basename = mod.leaf().string();
+            if (mod == modDirectory)
+                basename = "##USER_SAVED##";
+            else if (mod == resourcePath)
+                basename = "##BUILT_IN##";
             for (const auto& item : content) {
                 if (item.first == "preferencepack") {
-                    PreferencePack newPreferencePack(mod / item.second.name(), item.second);
-                    _preferencePacks.insert(std::make_pair(newPreferencePack.name(), newPreferencePack));
+                    if (isVisible(basename, item.second.name())) {
+                        PreferencePack newPreferencePack(mod / item.second.name(), item.second);
+                        _preferencePacks.insert(std::make_pair(newPreferencePack.name(), newPreferencePack));
+                    }
                 }
             }
         }
@@ -218,6 +227,77 @@ bool PreferencePackManager::apply(const std::string& preferencePackName) const
     else {
         throw std::runtime_error("No such Preference Pack: " + preferencePackName);
     }
+}
+
+std::string findUnusedName(const std::string &basename, ParameterGrp::handle parent)
+{
+    int i = 1;
+    while (true) {
+        std::ostringstream nameToTest;
+        nameToTest << basename << "_" << i;
+        if (!parent->HasGroup(nameToTest.str().c_str()))
+            return nameToTest.str();
+        ++i;
+    }
+}
+
+bool PreferencePackManager::isVisible(const std::string& addonName, const std::string& preferencePackName) const
+{
+    if (addonName == "" || preferencePackName == "")
+        return true;
+
+    auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General/HiddenPreferencePacks");
+    auto hiddenPacks = pref->GetGroups();
+    auto hiddenPack = std::find_if(hiddenPacks.begin(), hiddenPacks.end(), [addonName, preferencePackName](ParameterGrp::handle handle) {
+        return (handle->GetASCII("addonName", "") == addonName) && (handle->GetASCII("preferencePackName", "") == preferencePackName);
+        });
+    if (hiddenPack == hiddenPacks.end())
+        return true;
+    else
+        return false;
+}
+
+void PreferencePackManager::toggleVisibility(const std::string& addonName, const std::string& preferencePackName)
+{
+    if (preferencePackName == "")
+        return;
+    auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General/HiddenPreferencePacks");
+    auto hiddenPacks = pref->GetGroups();
+    auto hiddenPack = std::find_if(hiddenPacks.begin(), hiddenPacks.end(), [addonName,preferencePackName](ParameterGrp::handle handle) {
+        return (handle->GetASCII("addonName", "") == addonName) && (handle->GetASCII("preferencePackName", "") == preferencePackName);
+        });
+    if (hiddenPack == hiddenPacks.end()) {
+        auto name = findUnusedName("PreferencePack", pref);
+        auto group = pref->GetGroup(name.c_str());
+        group->SetASCII("addonName", addonName.c_str());
+        group->SetASCII("preferencePackName", preferencePackName.c_str());
+    }
+    else {
+        auto groupName = (*hiddenPack)->GetGroupName();
+        hiddenPacks.clear(); // To decrement the reference count of the group we are about the remove...
+        pref->RemoveGrp(groupName);
+    }
+    rescan();
+}
+
+void Gui::PreferencePackManager::deleteUserPack(const std::string& name)
+{
+    if (name == "")
+        return;
+    auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
+    auto savedPath = savedPreferencePacksDirectory / name;
+    std::unique_ptr<App::Metadata> metadata;
+    if (fs::exists(savedPreferencePacksDirectory / "package.xml")) {
+        metadata = std::make_unique<App::Metadata>(savedPreferencePacksDirectory / "package.xml");
+    }
+    else {
+        throw std::runtime_error("Lost the user-saved preference packs metadata file!");
+    }
+    metadata->removeContentItem("preferencepack", name);
+    metadata->write(savedPreferencePacksDirectory / "package.xml");
+    if (fs::exists(savedPath))
+        fs::remove_all(savedPath);
+    rescan();
 }
 
 void copyTemplateParameters(Base::Reference<ParameterGrp> templateGroup, const std::string& path, Base::Reference<ParameterGrp> outputGroup)
@@ -444,4 +524,16 @@ void Gui::PreferencePackManager::DeleteOldBackups() const
             }
         }
     }
+}
+
+std::vector<boost::filesystem::path> Gui::PreferencePackManager::configBackups() const
+{
+    std::vector<boost::filesystem::path> results;
+    auto backupDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks" / "Backups";
+    if (fs::exists(backupDirectory) && fs::is_directory(backupDirectory)) {
+        for (const auto& backup : fs::directory_iterator(backupDirectory)) {
+            results.push_back(backup);
+        }
+    }
+    return results;
 }

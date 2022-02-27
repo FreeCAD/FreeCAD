@@ -50,7 +50,7 @@ QHELPCOMPILER = 'qhelpgenerator'
 QCOLLECTIOMGENERATOR = 'qcollectiongenerator'
 PDFOUTPUT = False # if true, a pdf file will be generated instead of qhelp.
 REMOVE = True # if true, the temp html files are removed after successful operation
-PDFCONVERTOR = 'pisa' # can be 'pisa' or 'htmldoc'
+PDFCONVERTER = 'pisa' # can be 'pisa' or 'htmldoc'
 
 #    END CONFIGURATION      ##############################################
 
@@ -79,7 +79,7 @@ usage='''
     -g filename or --helpgenerator-exe filename: Uses filename as qt collection generator
     -o path or --out-path path: Specifies an output path
     -h or --help: Displays this help message
-    -p [convertor] or --pdf [convertor]: Outputs a pdf file instead of qhelp. Convertor
+    -p [converter] or --pdf [converter]: Outputs a pdf file instead of qhelp. Converter
                                          can be pisa (default) or htmldoc
     -t path or --tempfolder path: Uses path as temp folder for storing html files
 
@@ -162,7 +162,7 @@ def crawl(site=DEFAULTURL):
         print ("Error: QAssistant not fully installed, exiting.")
         return 1
     if PDFOUTPUT:
-        if PDFCONVERTOR == 'pisa':
+        if PDFCONVERTER == 'pisa':
             try:
                 import ho.pisa as pisa
             except Exception: ("Error: Python-pisa not installed, exiting.")
@@ -218,7 +218,7 @@ def crawl(site=DEFAULTURL):
     if VERBOSE: print ("All done!")
     return 0
 
-def buildpdffiles(folder=TMPFOLDER,convertor=PDFCONVERTOR):
+def buildpdffiles(folder=TMPFOLDER,converter=PDFCONVERTER):
     "scans a folder for html files and converts them all to pdf"
     templist = os.listdir(folder)
     fileslist = []
@@ -226,7 +226,7 @@ def buildpdffiles(folder=TMPFOLDER,convertor=PDFCONVERTOR):
         if i[-5:] == '.html':
             fileslist.append(i)
     for f in fileslist:
-        if convertor == 'pisa': createpdf_pisa(f[:-5],folder)
+        if converter == 'pisa': createpdf_pisa(f[:-5],folder)
         else: createpdf_htmldoc(f[:-5],folder)
 
 def fetch_resources(uri, rel):
@@ -574,7 +574,7 @@ def output(html,page):
     file.close()
 
 def main(arg):
-	global QHELPCOMPILER,QCOLLECTIOMGENERATOR,OUTPUTPATH,PDFOUTPUT,PDFCONVERTOR,TMPFOLDER,VERBOSE
+	global QHELPCOMPILER,QCOLLECTIOMGENERATOR,OUTPUTPATH,PDFOUTPUT,PDFCONVERTER,TMPFOLDER,VERBOSE
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "hp:t:c:g:o:", ["help", "pdf=", "noremove", "tempfolder=", "helpcompiler-exe=", "out-path=", "helpgenerator-exe="])
 	except getopt.GetoptError:
@@ -590,7 +590,7 @@ def main(arg):
 			PDFOUTPUT = True
 			if a in ['pisa','htmldoc']:
 				print ("using pdf converter:",a)
-				PDFCONVERTOR = a
+				PDFCONVERTER = a
 		if o in ("-t","--tempfolder"):
 			print ("using tempfolder:",a)
 			TMPFOLDER = a

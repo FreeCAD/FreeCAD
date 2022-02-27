@@ -195,7 +195,8 @@ def processcsg(filename):
     if printverbose:
         print('End Parser')
         print(result)
-    fixVisibility()
+    if gui:
+        fixVisibility()
     hassetcolor.clear()
     alreadyhidden.clear()
     FreeCAD.Console.PrintMessage('End processing CSG file\n')
@@ -229,6 +230,9 @@ def p_group_action1(p):
     'group_action1 : group LPAREN RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Group")
 # Test if need for implicit fuse
+    if p[5] is None:
+        p[0] = []
+        return
     if (len(p[5]) > 1):
         p[0] = [fuse(p[5], "Group")]
     else:
@@ -946,7 +950,7 @@ def p_multmatrix_action(p):
     transform_matrix = FreeCAD.Matrix()
     if printverbose: print("Multmatrix")
     if printverbose: print(p[3])
-    if gui:
+    if gui and p[6]:
         parentcolor=p[6][0].ViewObject.ShapeColor
         parenttransparency=p[6][0].ViewObject.Transparency
 
@@ -1029,7 +1033,7 @@ def p_multmatrix_action(p):
         p[0] = [newobj]
     else :
         p[0] = [new_part]
-    if gui:
+    if gui and p[6]:
         new_part.ViewObject.ShapeColor=parentcolor
         new_part.ViewObject.Transparency = parenttransparency
     if printverbose: print("Multmatrix applied")

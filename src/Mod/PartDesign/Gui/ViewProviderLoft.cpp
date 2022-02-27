@@ -24,22 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QMenu>
 #endif
 
-#include "Utils.h"
-#include "ViewProviderLoft.h"
-#include "TaskLoftParameters.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureLoft.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
+#include <Mod/PartDesign/App/FeatureLoft.h>
 
+#include "ViewProviderLoft.h"
+#include "TaskLoftParameters.h"
 
 using namespace PartDesignGui;
 

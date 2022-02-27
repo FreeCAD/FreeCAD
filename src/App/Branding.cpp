@@ -22,16 +22,11 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <QXmlSimpleReader>
-#include <QXmlInputSource>
-#include <QDir>
 #include <QFile>
-#include <QFileInfo>
 
 #include "Branding.h"
+
 
 using namespace App;
 

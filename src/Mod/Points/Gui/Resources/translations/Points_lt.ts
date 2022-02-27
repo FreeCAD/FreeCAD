@@ -110,11 +110,11 @@
     <name>Command</name>
     <message>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Importuoti taškus</translation>
     </message>
     <message>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Keisti taškus</translation>
     </message>
     <message>
       <source>Convert to points</source>
@@ -122,7 +122,7 @@
     </message>
     <message>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Iškirpti taškus</translation>
     </message>
   </context>
   <context>

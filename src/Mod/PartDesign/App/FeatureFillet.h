@@ -26,7 +26,6 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
 #include "FeatureDressUp.h"
 
 namespace PartDesign

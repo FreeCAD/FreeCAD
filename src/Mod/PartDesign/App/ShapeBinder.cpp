@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include <boost_bind_bind.hpp>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
@@ -36,15 +34,14 @@
 #include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include "ShapeBinder.h"
-#include <App/Document.h>
 #include <App/GroupExtension.h>
-#include <App/OriginFeature.h>
 #include <App/Link.h>
+#include <App/OriginFeature.h>
 #include <Mod/Part/App/TopoShape.h>
+
+#include "ShapeBinder.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -660,7 +657,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         else {
             for(size_t i=0;i<shapes.size();++i) {
                 auto &shape = shapes[i];
-                shape = shape.makETransform(*shapeMats[i]);
+                shape = shape.makeTransform(*shapeMats[i]);
                 // if(shape.Hasher
                 //         && shape.getElementMapSize()
                 //         && shape.Hasher != getDocument()->getStringHasher())
@@ -676,7 +673,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             return;
         }
 
-        result.makECompound(shapes);
+        result.makeCompound(shapes);
 
         bool fused = false;
         if(Fuse.getValue()) {
@@ -692,11 +689,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
             if(solids.size()) {
                 solid.fuse(solids);
-                result = solid.makERefine();
+                result = solid.makeRefine();
                 fused = true;
             } else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
-                result.makECompound({solid});
+                result.makeCompound({solid});
                 fused = true;
             }
         } 
@@ -705,9 +702,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 && !result.hasSubShape(TopAbs_FACE)
                 && result.hasSubShape(TopAbs_EDGE))
         {
-            result = result.makEWires();
+            result = result.makeWires();
             try {
-                result = result.makEFace(0);
+                result = result.makeFace(0);
             }catch(...){}
         }
 

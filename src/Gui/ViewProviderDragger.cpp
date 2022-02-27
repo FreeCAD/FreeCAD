@@ -27,44 +27,30 @@
 # include <cfloat>
 # include <QAction>
 # include <QMenu>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/manips/SoCenterballManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "ViewProviderDragger.h"
-#include "View3DInventorViewer.h"
-#include "Application.h"
-#include "Document.h"
-#include "Window.h"
-
-#include <Base/Console.h>
-#include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
-#include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/nodes/SoResetTransform.h>
+#include <Base/Console.h>
+#include <Base/Placement.h>
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <Gui/BitmapFactory.h>
 #if (COIN_MAJOR_VERSION > 2)
 #include <Inventor/nodes/SoDepthBuffer.h>
 #endif
-#include "SoFCUnifiedSelection.h"
-#include "SoFCCSysDragger.h"
+#include <Inventor/nodes/SoResetTransform.h>
+#include "Application.h"
 #include "Control.h"
+#include "Document.h"
+#include "SoFCCSysDragger.h"
+#include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
-#include <boost/math/special_functions/fpclassify.hpp>
+#include "View3DInventorViewer.h"
+#include "ViewProviderDragger.h"
+#include "Window.h"
 
 using namespace Gui;
 
@@ -105,7 +91,8 @@ bool ViewProviderDragger::doubleClicked(void)
 
 void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
+    QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Transform));
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }

@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;About</source>
-      <translation>このプログラムについて &amp;A</translation>
+      <translation>FreeCADについて &amp;A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="198"/>
       <source>Remaining:</source>
-      <translation>残り：</translation>
+      <translation>残り:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="215"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="249"/>
       <source>Run:</source>
-      <translation>実行：</translation>
+      <translation>実行:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>

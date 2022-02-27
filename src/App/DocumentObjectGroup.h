@@ -24,11 +24,9 @@
 #ifndef APP_DOCUMENTOBJECTGROUP_H
 #define APP_DOCUMENTOBJECTGROUP_H
 
-#include "FeaturePython.h"
 #include "DocumentObject.h"
-#include "PropertyLinks.h"
+#include "FeaturePython.h"
 #include "GroupExtension.h"
-#include <vector>
 
 
 namespace App

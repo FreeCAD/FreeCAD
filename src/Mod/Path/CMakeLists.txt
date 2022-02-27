@@ -26,7 +26,6 @@ INSTALL(
 )
 
 SET(PathScripts_SRCS
-    PathCommands.py
     PathScripts/drillableLib.py
     PathScripts/PathAdaptive.py
     PathScripts/PathAdaptiveGui.py

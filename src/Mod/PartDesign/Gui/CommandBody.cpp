@@ -24,33 +24,27 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QMessageBox>
 # include <QInputDialog>
-# include <Inventor/C/basic.h>
+# include <QMessageBox>
 # include <TopExp_Explorer.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <Base/Console.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
-#include <Gui/ActiveObjectList.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
-#include "Utils.h"
 #include "TaskFeaturePick.h"
+#include "Utils.h"
 #include "WorkflowManager.h"
-
 
 
 //===========================================================================

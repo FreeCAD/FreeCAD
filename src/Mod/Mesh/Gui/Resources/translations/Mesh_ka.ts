@@ -54,11 +54,11 @@
     </message>
     <message>
       <source>Cross-sections...</source>
-      <translation type="unfinished">Cross-sections...</translation>
+      <translation>განივი-გადანაჭრები...</translation>
     </message>
     <message>
       <source>Cross-sections</source>
-      <translation type="unfinished">Cross-sections</translation>
+      <translation>განივი-გადანაჭრები</translation>
     </message>
   </context>
   <context>
@@ -693,7 +693,7 @@
     </message>
     <message>
       <source>Trim</source>
-      <translation type="unfinished">Trim</translation>
+      <translation>მოკვეცა</translation>
     </message>
     <message>
       <source>Split</source>

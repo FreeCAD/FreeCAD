@@ -23,14 +23,13 @@
 
 #include "PreCompiled.h"
 
-#include "DocumentObjectGroup.h"
-#include "Document.h"
-#include <CXX/Objects.hxx>
+#include "DocumentObject.h"
 
 // inclusion of the generated files (generated out of GroupExtensionPy.xml)
 #include "GroupExtensionPy.h"
 #include "GroupExtensionPy.cpp"
 #include "DocumentObjectPy.h"
+
 
 using namespace App;
 

@@ -26,8 +26,10 @@
 # include <cstdlib>
 #endif
 
-#include "ColorModel.h"
 #include <Base/Exception.h>
+
+#include "ColorModel.h"
+
 
 using namespace App;
 

@@ -26,15 +26,14 @@
 # include <sstream>
 #endif
 
-
-#include <Base/Console.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
-#include <Base/Reader.h>
 #include <Base/MatrixPy.h>
 #include <Base/Tools.h>
-#include <App/DocumentObjectPy.h>
+
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
+
 
 using namespace App;
 

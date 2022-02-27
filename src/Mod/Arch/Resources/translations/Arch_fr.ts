@@ -2885,6 +2885,21 @@ Création du bâtiment abandonnée.</translation>
       <translation>Choisissez une face sur un objet existant, ou sélectionnez un paramètre prédéfini</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation type="unfinished">No window found. Cannot continue.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation>Options de la fenêtre</translation>
@@ -3097,7 +3112,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3107,7 +3122,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="InitGui.py" line="91"/>
       <source>Panel tools</source>
-      <translation>Outils pour panneaux</translation>
+      <translation>Outils pour les panneaux</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="94"/>
@@ -4099,6 +4114,19 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     </message>
   </context>
   <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation type="unfinished">Cut with line</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation type="unfinished">Cut an object with a line</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_CutPlane</name>
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
@@ -4350,7 +4378,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchPanel.py" line="1689"/>
       <source>Panel tools</source>
-      <translation>Outils pour panneaux</translation>
+      <translation>Outils pour les panneaux</translation>
     </message>
   </context>
   <context>
@@ -4472,7 +4500,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Créer différents types d'armatures, en forme de U, en forme de L et des étriers</translation>
     </message>
   </context>
   <context>
@@ -4666,7 +4694,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
   </context>
   <context>
@@ -4674,7 +4702,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
   </context>
   <context>
@@ -4806,7 +4834,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -4816,7 +4844,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="91"/>
       <source>Panel tools</source>
-      <translation>Outils pour panneaux</translation>
+      <translation>Outils pour les panneaux</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="99"/>

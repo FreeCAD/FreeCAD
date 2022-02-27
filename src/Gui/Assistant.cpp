@@ -24,18 +24,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QCoreApplication>
 # include <QDir>
 # include <QFileInfo>
 # include <QLibraryInfo>
 # include <QMessageBox>
 # include <QProcess>
 # include <QTextStream>
-# include <QCoreApplication>
 #endif
 
-#include "Assistant.h"
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
+#include "Assistant.h"
 
 using namespace Gui;
 

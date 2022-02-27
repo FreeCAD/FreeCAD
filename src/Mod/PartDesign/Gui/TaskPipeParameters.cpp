@@ -24,42 +24,33 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QAction>
-# include <QRegExp>
-# include <QTextStream>
-# include <QMessageBox>
 # include <QGenericReturnArgument>
+# include <QMessageBox>
 # include <QMetaObject>
-# include <Precision.hxx>
 #endif
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/Origin.h>
+#include <Gui/CommandT.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/Widgets.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
 
 #include "ui_TaskPipeParameters.h"
 #include "ui_TaskPipeOrientation.h"
 #include "ui_TaskPipeScaling.h"
 #include <ui_DlgReference.h>
+
 #include "TaskPipeParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Widgets.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
-#include "TaskSketchBasedParameters.h"
-#include "ReferenceSelection.h"
-#include "Utils.h"
 #include "TaskFeaturePick.h"
+#include "TaskSketchBasedParameters.h"
+#include "Utils.h"
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 

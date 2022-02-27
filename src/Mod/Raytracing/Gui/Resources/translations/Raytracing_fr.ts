@@ -85,7 +85,7 @@
     </message>
     <message>
       <source>&amp;Render</source>
-      <translation>Rendre</translation>
+      <translation>&amp;Rendu</translation>
     </message>
     <message>
       <source>Renders the current raytracing project with an external renderer</source>

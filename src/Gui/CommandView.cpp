@@ -25,12 +25,13 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QApplication>
 # include <QDialog>
+# include <QDomDocument>
+# include <QDomElement>
 # include <QFile>
 # include <QFileInfo>
 # include <QFont>
@@ -42,56 +43,43 @@
 # include <boost_bind_bind.hpp>
 #endif
 
+#include <App/ComplexGeoDataPy.h>
+#include <App/DocumentObject.h>
+#include <App/GeoFeature.h>
+#include <App/GeoFeatureGroupExtension.h>
+#include <App/MeasureDistance.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
+
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Clipping.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "Tree.h"
-#include "View.h"
-#include "Document.h"
-#include "Macro.h"
+#include "DemoMode.h"
 #include "DlgDisplayPropertiesImp.h"
 #include "DlgSettingsImageImp.h"
+#include "Document.h"
+#include "FileDialog.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "NavigationStyle.h"
+#include "SceneInspector.h"
 #include "Selection.h"
-#include "SoFCOffscreenRenderer.h"
-#include "SoFCBoundingBox.h"
-#include "SoFCUnifiedSelection.h"
 #include "SoAxisCrossKit.h"
-#include "SoQTQuarterAdaptor.h"
+#include "SoFCOffscreenRenderer.h"
+#include "SoFCUnifiedSelection.h"
+#include "TextureMapping.h"
+#include "Tools.h"
+#include "Tree.h"
+#include "Utilities.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
-#include "WaitCursor.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderGeometryObject.h"
-#include "SceneInspector.h"
-#include "DemoMode.h"
-#include "TextureMapping.h"
-#include "Tools.h"
-#include "Utilities.h"
-#include "NavigationStyle.h"
-
-#include <Base/Console.h>
-#include <Base/Tools2D.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Reader.h>
-#include <Base/Parameter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/GeoFeature.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/MeasureDistance.h>
-#include <App/DocumentObject.h>
-#include <App/ComplexGeoDataPy.h>
-#include <App/GeoFeatureGroupExtension.h>
-
-#include <QDomDocument>
-#include <QDomElement>
+#include "WaitCursor.h"
 
 using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;

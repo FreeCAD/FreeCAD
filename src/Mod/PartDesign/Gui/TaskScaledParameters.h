@@ -24,9 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskScaledParameters_H
 #define GUI_TASKVIEW_TaskScaledParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderScaled.h"

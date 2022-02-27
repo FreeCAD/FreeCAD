@@ -1701,7 +1701,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     </message>
     <message>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <source>All Files</source>

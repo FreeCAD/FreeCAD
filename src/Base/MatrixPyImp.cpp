@@ -351,7 +351,10 @@ PyObject* MatrixPy::hasScale(PyObject * args)
     double tol=0;
     if (!PyArg_ParseTuple(args, "|d", &tol))
         return nullptr;
-    return Py::new_reference_to(Py::Int(getMatrixPtr()->hasScale(tol)));
+
+    ScaleType type = getMatrixPtr()->hasScale(tol);
+    Py::Module mod("FreeCAD");
+    return Py::new_reference_to(mod.callMemberFunction("ScaleType", Py::TupleN(Py::Int(static_cast<int>(type)))));
 }
 
 PyObject* MatrixPy::nullify(PyObject * args)

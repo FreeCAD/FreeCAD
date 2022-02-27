@@ -22,12 +22,13 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include "Application.h"
-#include "Transactions.h"
-#include "Document.h"
+
 #include "AutoTransaction.h"
+#include "Application.h"
+#include "Document.h"
+#include "Transactions.h"
+
 
 FC_LOG_LEVEL_INIT("App",true,true)
 

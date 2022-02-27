@@ -24,19 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <Precision.hxx>
-# include <QRegExp>
 # include <QSignalBlocker>
-# include <QTextStream>
 #endif
+
+#include <Base/UnitsApi.h>
+#include <Gui/Command.h>
+#include <Mod/PartDesign/App/FeatureExtrude.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
-#include <Gui/Widgets.h>
-#include <Mod/PartDesign/App/FeatureExtrude.h>
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;

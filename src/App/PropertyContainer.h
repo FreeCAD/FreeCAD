@@ -25,7 +25,6 @@
 #define APP_PROPERTYCONTAINER_H
 
 #include <map>
-#include <climits>
 #include <cstring>
 #include <Base/Persistence.h>
 

@@ -23,40 +23,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#  include <cassert>
-#  include <float.h>
 #  include <Inventor/actions/SoSearchAction.h>
 #  include <Inventor/actions/SoGetBoundingBoxAction.h>
 #  include <Inventor/nodes/SoCallback.h>
-#  include <Inventor/nodes/SoComplexity.h>
-#  include <Inventor/nodes/SoCube.h>
-#  include <Inventor/nodes/SoCamera.h>
-#  include <Inventor/nodes/SoCoordinate3.h>
-#  include <Inventor/nodes/SoCoordinate4.h>
-#  include <Inventor/nodes/SoFont.h>
 #  include <Inventor/nodes/SoMatrixTransform.h>
-#  include <Inventor/nodes/SoProfile.h>
-#  include <Inventor/nodes/SoProfileCoordinate2.h>
-#  include <Inventor/nodes/SoProfileCoordinate3.h>
 #  include <Inventor/nodes/SoSwitch.h>
-#  include <Inventor/nodes/SoTransformation.h>
 #  include <Inventor/nodes/SoIndexedLineSet.h>
 #  include <Inventor/nodes/SoIndexedFaceSet.h>
 #  include <Inventor/nodes/SoPointSet.h>
 #  include <Inventor/nodes/SoDrawStyle.h>
-#  include <Inventor/nodes/SoComplexity.h>
 #  include <Inventor/nodes/SoLightModel.h>
 #  include <Inventor/nodes/SoBaseColor.h>
 #endif
-
-#include <Base/Console.h>
-
-#include "SoFCSelectionAction.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoSwitchElement.h>
-#include "Selection.h"
 
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
@@ -65,30 +43,29 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/elements/SoProfileElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoComplexity.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCoordinate4.h>
 #include <Inventor/nodes/SoCube.h>
-#include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoProfileCoordinate2.h>
 #include <Inventor/nodes/SoProfileCoordinate3.h>
-#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTransformation.h>
 
-
-
+#include "SoFCSelectionAction.h"
+#include "SoFCSelection.h"
 
 
 using namespace Gui;

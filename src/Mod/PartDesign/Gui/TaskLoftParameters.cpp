@@ -24,32 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QAction>
-# include <QRegExp>
-# include <QTextStream>
-# include <QMessageBox>
-# include <Precision.hxx>
 #endif
 
-#include "ui_TaskLoftParameters.h"
-#include "TaskLoftParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Mod/PartDesign/App/FeatureLoft.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
+
+#include "ui_TaskLoftParameters.h"
+#include "TaskLoftParameters.h"
 #include "TaskSketchBasedParameters.h"
-#include "ReferenceSelection.h"
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 

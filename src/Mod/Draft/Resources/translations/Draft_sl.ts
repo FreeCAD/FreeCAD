@@ -728,11 +728,6 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <translation>Datoteka PAT, ki jo uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblika tega objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Ime vzorca, ki ga uporablja ta predmet</translation>
@@ -741,6 +736,11 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Merilo vzorca, ki ga uporablja ta predmet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblika tega objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1145,12 +1145,12 @@ preko kotnice</translation>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Določa vzorec SVG.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Določa velikost vzorca SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1723,7 +1723,7 @@ Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s sprememb
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Bezierova krivulja</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1734,8 +1734,8 @@ Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s sprememb
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Ustvari n-stopenjsko bezierovo krivuljo. Več kot boste izbrali točk, višja bo stopnja.
+CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1750,7 +1750,7 @@ CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezierova orodja</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1760,7 +1760,7 @@ CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Ustvari različne vrste bezierovih krivulj.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1821,7 +1821,7 @@ Dobljeni klon je mogoče prevelikostiti v vseh treh smereh.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Kubična bezierova krivulja</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1833,9 +1833,7 @@ Dobljeni klon je mogoče prevelikostiti v vseh treh smereh.</translation>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Ustvari bezierovo krivuljo iz dvostopenjskih (kvadratnih) in tristopenjskih (kubičnih) odsekov. S klikom in vlečenjem določite posamezni odsek. Ko je krivulja enkrat že ustvarjena, lahko naknadno urejate vsako krmilno točko in nastavite lastnosti vsakemu vozlu.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2987,7 +2985,7 @@ Nadomestek delovne ravnine lahko kadarkoli služi tudi shranjevanju različnih p
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezierova orodja</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3701,6 +3699,11 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
       <translation>Najdenih več črtovij ali robov: pretvarjanje v črtovje</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Najdenih več nepopravljivih predmetov: ustvarjanje sestava</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>poizkušanje: zapiranje</translation>
@@ -3719,11 +3722,6 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Najdene točke: ustvarjanje sestava</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Najdenih več nepopravljivih predmetov: ustvarjanje sestava</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4244,7 +4242,7 @@ Ta možnost ni na voljo, če je v prednastavitvah izrisovanja možnost "Uporabi 
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Naložite izrisno (Draft) delovno okolje, da bi omogočili urejanje tega predmeta</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5093,7 +5091,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>Bezierova krivulja je bila sklenjena</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>

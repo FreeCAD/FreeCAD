@@ -24,15 +24,15 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <list>
-# include <sstream>
 #endif
+
+#include <Base/TypePy.h>
 
 #include "MainWindowPy.h"
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "MDIViewPy.h"
 #include "PythonWrapper.h"
-#include <Base/TypePy.h>
 
 
 using namespace Gui;

@@ -243,6 +243,28 @@ class AddonManagerRepo:
                     self.branch = "master"
         self.extract_tags(self.metadata)
 
+    def verify_url_and_branch(self, url: str, branch: str) -> None:
+        """Print diagnostic information for Addon Developers if their metadata is
+        inconsistent with the actual fetch location. Most often this is due to using
+        the wrong branch name."""
+
+        if self.url != url:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})",
+                ).format(self.display_name, self.url, url)
+                + "\n"
+            )
+        if self.branch != branch:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})",
+                ).format(self.display_name, self.branch, branch)
+                + "\n"
+            )
+
     def extract_tags(self, metadata: FreeCAD.Metadata) -> None:
         for new_tag in metadata.Tag:
             self.tags.add(new_tag)
@@ -364,3 +386,31 @@ class AddonManagerRepo:
     def set_status(self, status):
         with self.status_lock:
             self.update_status = status
+
+    def is_disabled(self):
+        # Check for existence of disabling stopfile:
+        stopfile = os.path.join(
+            FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED"
+        )
+        if os.path.exists(stopfile):
+            return True
+        else:
+            return False
+
+    def disable(self):
+        stopfile = os.path.join(
+            FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED"
+        )
+        with open(stopfile, "w") as f:
+            f.write(
+                "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
+            )
+
+    def enable(self):
+        stopfile = os.path.join(
+            FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED"
+        )
+        try:
+            os.unlink(stopfile)
+        except Exception:
+            pass

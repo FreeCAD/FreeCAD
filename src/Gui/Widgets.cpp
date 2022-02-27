@@ -23,9 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
 # include <QColorDialog>
-# include <QDesktopWidget>
+# include <QDebug>
 # include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QDrag>
@@ -39,7 +38,6 @@
 # include <QTextBlock>
 # include <QTimer>
 # include <QToolTip>
-# include <QDebug>
 #endif
 
 #include <Base/Tools.h>
@@ -47,13 +45,13 @@
 #include <Base/Interpreter.h>
 #include <App/ExpressionParser.h>
 
-#include "Command.h"
 #include "Widgets.h"
-#include "Application.h"
 #include "Action.h"
-#include "PrefWidgets.h"
+#include "Application.h"
 #include "BitmapFactory.h"
+#include "Command.h"
 #include "DlgExpressionInput.h"
+#include "PrefWidgets.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
 #include "ui_DlgTreeWidget.h"
@@ -389,7 +387,7 @@ bool AccelLineEdit::isNone() const
 /**
  * Checks which keys are pressed and show it as text.
  */
-void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
+void AccelLineEdit::keyPressEvent (QKeyEvent * e)
 {
     QString txtLine = text();
 
@@ -470,7 +468,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
  * Constructs a line edit with no text.
  * The \a parent argument is sent to the QLineEdit constructor.
  */
-ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
+ModifierLineEdit::ModifierLineEdit (QWidget * parent )
   : QLineEdit(parent)
 {
     setPlaceholderText(tr("Press modifier keys"));
@@ -479,7 +477,7 @@ ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
 /**
  * Checks which modifiers are pressed and show it as text.
  */
-void ModifierLineEdit::keyPressEvent ( QKeyEvent * e)
+void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
 {
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();

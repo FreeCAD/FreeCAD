@@ -3297,11 +3297,11 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Lataa automaattisesti?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Lataa nyt</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3336,11 +3336,11 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Ladattu</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Lataa nyt</translation>
     </message>
   </context>
   <context>
@@ -3982,7 +3982,7 @@ Oletussjärjestelmä on määritetty yleisissä asetuksissa.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>tuntematon yksikkö:</translation>
     </message>
   </context>
   <context>

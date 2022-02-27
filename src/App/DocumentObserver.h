@@ -26,8 +26,9 @@
 
 #include <Base/BaseClass.h>
 #include <boost_signals2.hpp>
-#include <set>
 #include <memory>
+#include <set>
+
 
 namespace App
 {

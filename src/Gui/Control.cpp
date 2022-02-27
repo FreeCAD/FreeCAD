@@ -31,14 +31,13 @@
 # include <QPointer>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Control.h"
-#include "TaskView/TaskView.h"
-
 #include <App/AutoTransaction.h>
-#include <Gui/MainWindow.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
+#include <Gui/MainWindow.h>
+
+#include "Control.h"
+#include "TaskView/TaskView.h"
 
 
 using namespace Gui;

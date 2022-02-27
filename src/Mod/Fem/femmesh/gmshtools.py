@@ -412,7 +412,7 @@ class GmshTools():
                 shell=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                universal_newlines=True
             )
         except Exception as e:
             Console.PrintMessage(str(e) + "\n")

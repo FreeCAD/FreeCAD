@@ -25,8 +25,6 @@
 #define APP_PROPERTYPYTHONOBJECT_H
 
 #include <string>
-#include <list>
-#include <vector>
 #include <CXX/Objects.hxx>
 
 #include "Property.h"

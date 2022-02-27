@@ -115,6 +115,11 @@ public:
     void rebuildConstraintNodes(void);
     //@}
 
+    /** @name change constraints selectability*/
+    //@{
+    void setConstraintSelectability(bool enabled = true);
+    //@}
+
     std::set<int> detectPreselectionConstr( const SoPickedPoint *Point,
                                             const SbVec2s &cursorPos);
 

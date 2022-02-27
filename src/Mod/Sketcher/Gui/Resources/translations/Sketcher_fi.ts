@@ -4497,7 +4497,7 @@ Kuitenkaan ei ole löytynyt rajoitteita, jotka liittyisivät päätepisteisiin.<
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="238"/>
       <source>Hide All</source>
-      <translation type="unfinished">Hide All</translation>
+      <translation>Piilota kaikki</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="244"/>

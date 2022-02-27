@@ -38,7 +38,7 @@ if App.GuiUp:
 
 
 def make_wire(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):
-    """makeWire(pointslist,[closed],[placement])
+    """make_wire(pointslist, [closed], [placement])
     
     Creates a Wire object from the given list of vectors.  If face is
     true (and wire is closed), the wire will appear filled. Instead of

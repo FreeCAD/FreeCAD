@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #include "View.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
 
 using namespace Gui;
 

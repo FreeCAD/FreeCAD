@@ -11,7 +11,7 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>代表平面のメッシュを選んでください</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
@@ -424,14 +424,14 @@ A value in the range of 0.2-10.</source>
     <message>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>チップのないボディを選択しました。
+ボディの先端を設定するか、別の形を選択してください。</translation>
     </message>
     <message>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation type="unfinished">You have selected a shape without faces.
-Select a different shape, please.</translation>
+      <translation>面のないシェイプを選択しました。
+別のシェイプを選択してください。</translation>
     </message>
     <message>
       <source>Select a shape for meshing, first.</source>

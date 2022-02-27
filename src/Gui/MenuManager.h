@@ -26,6 +26,7 @@
 
 #include <string>
 #include <QStringList>
+#include <FCGlobal.h>
 
 class QAction;
 class QMenu;
@@ -46,6 +47,7 @@ public:
 
     bool hasItems() const;
     MenuItem* findItem(const std::string&);
+    MenuItem* findParentOf(const std::string&);
     MenuItem* copy() const;
     uint count() const;
 

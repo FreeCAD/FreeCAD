@@ -23,26 +23,16 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-# include <QMessageBox>
-#endif
-
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MDIView.h>
-#include <Gui/MenuManager.h>
-
 #include <Mod/Sketcher/Gui/Workbench.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 #include "Utils.h"
-
 #include "Workbench.h"
-
 #include "WorkflowManager.h"
 
 using namespace PartDesignGui;
@@ -588,11 +578,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         Gui::MenuItem* face = new Gui::MenuItem();
         face->setCommand("Part_ColorPerFace");
         view->insertItem(appr, face);
-        appr = view->findItem("Std_ToggleClipPlane");
-        appr = view->afterItem(appr);
-        Gui::MenuItem* cut = new Gui::MenuItem();
-        cut->setCommand("Part_SectionCut");
-        view->insertItem(appr, cut);
     }
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others

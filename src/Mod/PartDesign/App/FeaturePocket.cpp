@@ -23,33 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <BRepAlgoAPI_Common.hxx>
+# include <gp_Dir.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-#include <Base/Console.h>
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <App/Document.h>
 
 #include "FeaturePocket.h"
-
 
 using namespace PartDesign;
 

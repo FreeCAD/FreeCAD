@@ -24,11 +24,11 @@
 #ifndef APP_EXTENSION_H
 #define APP_EXTENSION_H
 
+#include <Base/Interpreter.h>
+
 #include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
-#include "ExtensionContainer.h"
-#include "Base/Interpreter.h"
-#include <CXX/Objects.hxx>
+
 
 namespace App {
 

@@ -207,7 +207,7 @@ def process(filename):
 
     # do we use the parametric Draft Wire?
     if useDraftWire:
-        obj = Draft.makeWire(coords, True)
+        obj = Draft.make_wire(coords, True)
         # obj.label = airfoilname
     else:
         # alternate solution, uses common Part Faces

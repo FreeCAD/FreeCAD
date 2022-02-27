@@ -51,28 +51,18 @@ The FreeCAD document handles the dependencies of its DocumentObjects with
 an adjacence list. This gives the opportunity to calculate the shortest
 recompute path. Also, it enables more complicated dependencies beyond trees.
 
-
 @see App::Application
 @see App::DocumentObject
 */
 
-
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <sstream>
-# include <climits>
 # include <bitset>
-# include <random>
 # include <boost/filesystem.hpp>
 #endif
 
 #include <boost/algorithm/string.hpp>
-
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/strong_components.hpp>
 
@@ -83,35 +73,38 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <boost/graph/visitors.hpp>
 #endif //USE_OLD_DAG
 
-#include <boost_bind_bind.hpp>
 #include <boost/regex.hpp>
-#include <unordered_set>
-#include <unordered_map>
 #include <random>
+#include <unordered_map>
+#include <unordered_set>
 
-#include <QCoreApplication>
 #include <QCryptographicHash>
+#include <QCoreApplication>
 
-#include "AutoTransaction.h"
-#include "Document.h"
-#include "Application.h"
-#include "DocumentObject.h"
-#include "MergeDocuments.h"
-#include "ExpressionParser.h"
 #include <App/DocumentPy.h>
-
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
-#include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Stream.h>
-#include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
+
+#include "Document.h"
+#include "Application.h"
+#include "AutoTransaction.h"
+#include "DocumentObserver.h"
+#include "DocumentObject.h"
+#include "ExpressionParser.h"
+#include "GeoFeature.h"
+#include "GeoFeatureGroupExtension.h"
+#include "Link.h"
+#include "MergeDocuments.h"
+#include "Origin.h"
+#include "OriginGroupExtension.h"
+#include "Transactions.h"
 
 #ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
@@ -121,14 +114,6 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <zipios++/zipoutputstream.h>
 #include <zipios++/meta-iostreams.h>
 
-#include "Application.h"
-#include "Transactions.h"
-#include "GeoFeatureGroupExtension.h"
-#include "Origin.h"
-#include "OriginGroupExtension.h"
-#include "Link.h"
-#include "DocumentObserver.h"
-#include "GeoFeature.h"
 
 FC_LOG_LEVEL_INIT("App", true, true, true)
 

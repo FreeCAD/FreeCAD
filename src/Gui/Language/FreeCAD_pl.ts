@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Stwórz łącze podrzędne</translation>
+      <translation>Utwórz łącze względne</translation>
     </message>
     <message>
       <source>Import links</source>
@@ -7797,7 +7797,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Stwórz łącze podrzędne</translation>
+      <translation>Utwórz łącze względne</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>

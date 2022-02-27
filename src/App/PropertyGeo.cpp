@@ -23,30 +23,23 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#	include <assert.h>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Rotation.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
-#include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
-#include <Base/QuantityPy.h>
-#include <Base/RotationPy.h>
+#include <Base/Reader.h>
 
-#include "Document.h"
-#include "DocumentObject.h"
-#include "Placement.h"
+#include <Base/Quantity.h>
+#include <Base/QuantityPy.h>
+#include <Base/Rotation.h>
+#include <Base/RotationPy.h>
+#include <Base/Stream.h>
+#include <Base/Tools.h>
+#include <Base/VectorPy.h>
+#include <Base/Writer.h>
+
 #include "PropertyGeo.h"
+#include "Placement.h"
 #include "ObjectIdentifier.h"
+
 
 using namespace App;
 using namespace Base;

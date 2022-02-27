@@ -24,11 +24,11 @@
     </message>
     <message>
       <source>&amp;Clip</source>
-      <translation type="unfinished">&amp;Clip</translation>
+      <translation>&amp;კვეთა</translation>
     </message>
     <message>
       <source>Inserts a clip group in the active drawing</source>
-      <translation type="unfinished">Inserts a clip group in the active drawing</translation>
+      <translation>კვეთების ჯგუფის აქტიურ ნახაზში ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -200,7 +200,7 @@
     </message>
     <message>
       <source>&amp;Native</source>
-      <translation type="unfinished">&amp;Native</translation>
+      <translation>&amp;ჩაშენებული</translation>
     </message>
     <message>
       <source>&amp;OpenGL</source>

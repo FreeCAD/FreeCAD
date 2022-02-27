@@ -26,12 +26,7 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
 #include "ViewProviderSpreadsheet.h"
 
 using namespace TechDrawGui;

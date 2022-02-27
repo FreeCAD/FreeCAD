@@ -322,11 +322,13 @@ SET(Gui_UIC_SRCS
     DlgOnlineHelp.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgPreferences.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
     DlgReportView.ui
+    DlgRevertToBackupConfig.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
@@ -338,6 +340,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
     DlgWorkbenches.ui
@@ -418,9 +421,11 @@ SET(Dialog_CPP_SRCS
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
     DlgParameterFind.cpp
+    DlgPreferencePackManagementImp.cpp
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
+    DlgRevertToBackupConfigImp.cpp
     DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     DlgCheckableMessageBox.cpp
@@ -456,9 +461,11 @@ SET(Dialog_HPP_SRCS
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
     DlgParameterFind.h
+    DlgPreferencePackManagementImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
+    DlgRevertToBackupConfigImp.h
     DlgCheckableMessageBox.h
     DlgExpressionInput.h
     TaskDlgRelocation.h
@@ -499,9 +506,11 @@ SET(Dialog_SRCS
     DlgMaterialProperties.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
+    DlgRevertToBackupConfig.ui
     DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
@@ -574,6 +583,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsImageImp.cpp
     DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
+    DlgSettingsPythonConsole.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgEditorImp.h
@@ -592,6 +602,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsImageImp.h
     DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
+    DlgSettingsPythonConsole.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -612,6 +623,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 

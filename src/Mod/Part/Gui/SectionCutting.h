@@ -24,7 +24,7 @@
 #define PARTGUI_SECTIONCUTTING_H
 
 #include <QDialog>
-#include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 
 namespace PartGui {
 
@@ -59,8 +59,8 @@ public:
 
 private:
     Ui_SectionCut* ui;
-    std::vector<App::DocumentObject*> ObjectsListVisible;
-    App::Document* doc; //pointer to active document
+    std::vector<App::DocumentObjectT> ObjectsListVisible;
+    App::Document* doc = nullptr; // pointer to active document
     bool hasBoxX = false;
     bool hasBoxY = false;
     bool hasBoxZ = false;
@@ -70,6 +70,8 @@ private:
     SbBox3f getViewBoundingBox();
     void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
         bool forXRange = true, bool forYRange = true, bool forZRange = true);
+    void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
+    void FlipClickedHelper(const char* BoxName);
     const char* CompoundName = "SectionCutCompound";
     const char* BoxXName = "SectionCutBoxX";
     const char* BoxYName = "SectionCutBoxY";

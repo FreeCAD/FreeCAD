@@ -377,11 +377,11 @@
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Pulse el botón izquierdo del mouse</translation>
+      <translation>Presione el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Presione SHIFT y el botón central del mouse</translation>
+      <translation>Presione Shift y el botón central del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -389,14 +389,14 @@
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Desplazar el botón central del mouse</translation>
+      <translation>Rotar la rueda central del mouse</translation>
     </message>
   </context>
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Pulse el botón izquierdo del mouse</translation>
+      <translation>Presione el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -409,7 +409,8 @@
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Desplaza el botón central del mouse o mantén presionado el botón central mientras hace un clic izquierdo o derecho y mueve el mouse hacia arriba o hacia abajo</translation>
+      <translation>Rota la rueda central del mouse o mantén presionado el botón central
+mientras hace un clic izquierdo o derecho y mueve el mouse hacia arriba o hacia abajo</translation>
     </message>
   </context>
   <context>
@@ -2497,22 +2498,20 @@ from Python console to Report view panel</source>
     <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation>El sistema de coordenadas principales siempre se mostrará en
-esquina inferior derecha dentro de los archivos abiertos</translation>
+      <translation>El sistema de coordenadas principal siempre se mostrará en la esquina inferior derecha dentro de los archivos abiertos</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation>Tiempo necesario para la última operación y la tasa de fotogramas resultante
-se mostrará en la esquina inferior izquierda en los archivos abiertos</translation>
+      <translation>El tiempo necesario para la última operación y la tasa de fotogramas resultante se mostrará en la esquina inferior izquierda en los archivos abiertos</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>Si está marcado, la aplicación recordará qué banco de trabajo está activo para cada pestaña de la vista</translation>
+      <translation>Si está marcado, la aplicación recordará cuál entorno de trabajo está activo por cada pestaña del área de visualización</translation>
     </message>
     <message>
       <source>Remember active workbench by tab</source>
-      <translation>Recordar banco de trabajo activo por pestaña</translation>
+      <translation>Recordar entorno de trabajo activo por pestaña</translation>
     </message>
     <message>
       <source>Rendering</source>
@@ -2529,7 +2528,7 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation>Si se selecciona, se utilizarán los objetos de búfer de vértices (VB).
+      <translation>Si se selecciona, se utilizarán Vertex Buffer Objects (VBO).
 Una VBO es una función OpenGL que proporciona métodos para subir datos de vértices
 (posición, vector, color, etc.) a la tarjeta gráfica.
 Las VBOs ofrecen un rendimiento sustancial porque los datos residen
@@ -2542,11 +2541,11 @@ esta configuración como activada al buscar soporte en los foros de FreeCAD</tra
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation>Usar OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Usar OpenGL VBO (Vertex Buffer Objet)</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation>Renderizar caché</translation>
+      <translation>Caché de renderización</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2556,7 +2555,7 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation>"Renderizar almacenamiento de caché" es otra forma de decir "aceleración de renderizado".
+      <translation>"Render Caching" es otra forma de decir "Renderering Acceleration".
 Hay 3 opciones disponibles para lograr esto: 
 1) 'Auto' (por defecto), deja que Coin3D decida dónde cachear.
 2) 'Distribuido', activa manualmente la caché para todos los nodos raíz del proveedor de vista.
@@ -2582,7 +2581,7 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
-      <translation>Renderizar tipos de objetos transparentes</translation>
+      <translation>Tipo de renderizado de objetos transparentes</translation>
     </message>
     <message>
       <source>One pass</source>
@@ -2590,11 +2589,11 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation>Pasada de cara posterior</translation>
+      <translation>Pasada por la cara posterior</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
-      <translation>Tamaño de los vértices en el banco de trabajo del croquis</translation>
+      <translation>Tamaño de los vértices en el entorno de trabajo Croquizador</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
@@ -2602,11 +2601,11 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
-      <translation>La retroiluminación está habilitada con el color definido</translation>
+      <translation>La retroiluminación se habilita con el color definido</translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation>Luz de fondo</translation>
+      <translation>Color de retroiluminación</translation>
     </message>
     <message>
       <source>Intensity</source>
@@ -2614,7 +2613,7 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation>Intensidad de la luz de fondo</translation>
+      <translation>Intensidad de la retroiluminación</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2642,13 +2641,13 @@ opening or creation</source>
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
       <translation>Área para elegir elementos en la vista 3D.
-Valor más grande facilita la selección de cosas, pero puede hacer que las características pequeñas sean imposibles de seleccionar.               </translation>
+Un valor más grande facilita la selección de cosas, pero puede hacer que objetos pequeños sean imposible de seleccionar.               </translation>
     </message>
     <message>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation>Esta opción es útil para solucionar problemas de tarjeta gráfica y problemas en el controlador.
+      <translation>Esta opción es útil para solucionar problemas de tarjeta gráfica y en el controlador.
 
 Cambiar esta opción requiere reiniciar la aplicación.</translation>
     </message>
@@ -2658,13 +2657,13 @@ Cambiar esta opción requiere reiniciar la aplicación.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation>Qué tipo de antialiasing multimuestra se utiliza</translation>
+      <translation>Qué tipo de suavizado de bordes multimuestra se utiliza</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation>Distancia de ojos a ojos usada para proyecciones estéreo.
+      <translation>Distancia de ojo a ojo usada para proyecciones estéreo.
 El valor especificado es un factor que se multiplicará con el tamaño del recuadro
 del objeto 3D que se muestra actualmente.</translation>
     </message>
@@ -3301,7 +3300,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation>Bancos de trabajo disponibles</translation>
+      <translation>Entornos de trabajo disponibles</translation>
     </message>
   </context>
   <context>
@@ -3450,7 +3449,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation>Número de pasos por giro cuando se usan flechas (por defecto = 8: ángulo del paso = 360/8 = 45 grados)</translation>
+      <translation>Número de pasos por vuelta cuando se usan flechas (por defecto = 8 : ángulo del paso = 360/8 = 45°)</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -3504,7 +3503,7 @@ Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</source>
       <translation>Estilo de órbita de rotación.
 Trackball: mover el ratón horizontalmente rotará la pieza alrededor del eje Y
-Turntable: la pieza se girará alrededor del eje Z.</translation>
+Turntable: la pieza se girará alrededor del eje z.</translation>
     </message>
     <message>
       <source>Turntable</source>
@@ -3530,7 +3529,7 @@ El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
     </message>
     <message>
       <source>Enable animated rotations</source>
-      <translation>Activar rotaciones animadas</translation>
+      <translation>Permite las rotaciones animadas</translation>
     </message>
     <message>
       <source>Enable animation</source>
@@ -3542,7 +3541,7 @@ El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Zoom en cursor</translation>
+      <translation>Zoom en el cursor</translation>
     </message>
     <message>
       <source>Zoom step</source>
@@ -3564,7 +3563,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Desactivar el gesto de inclinación de la pantalla táctil</translation>
+      <translation>Desactivar gesto de inclinación de la pantalla táctil</translation>
     </message>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
@@ -3616,7 +3615,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>Orientación de cámara por defecto al crear un nuevo documento o seleccionar la vista de inicio</translation>
+      <translation>Orientación por defecto de la cámara al crear un nuevo documento o seleccionar la vista de inicio</translation>
     </message>
     <message>
       <source>Rotation mode</source>
@@ -3628,7 +3627,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation>Arrastra el cursor</translation>
+      <translation>Arrastre el cursor</translation>
     </message>
     <message>
       <source>Object center</source>
@@ -3636,7 +3635,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation>Girar al estado posible más cercano al hacer clic en una cara del cubo</translation>
+      <translation>Girar al estado más cercano posible al hacer clic en una cara del cubo</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
@@ -3653,8 +3652,8 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation>Cuánto se ampliará.
-El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento.</translation>
+      <translation>Cuánto zoom se aplicará.
+Paso de zoom de ´1´ significa un factor de 7.5 para cada paso de zoom.</translation>
     </message>
   </context>
   <context>
@@ -3819,7 +3818,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Color gradient</source>
-      <translation>Degradado de color</translation>
+      <translation>Color en degradé</translation>
     </message>
     <message>
       <source>Simple color</source>
@@ -3827,7 +3826,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Objeto editándose</translation>
+      <translation>Objeto en edición</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -3839,7 +3838,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation>Activa el resaltado de selección y usa el color especificado</translation>
+      <translation>Habilita el resaltado de selección y usa el color especificado</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -3851,7 +3850,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation>El degradado de color obtendrá el color seleccionado como color medio</translation>
+      <translation>El color en degradé obtendrá el color seleccionado como color medio</translation>
     </message>
     <message>
       <source>Bottom color</source>
@@ -3871,11 +3870,11 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation>Color de fondo para objetos en la vista en árbol que están en edición actualmente</translation>
+      <translation>Color de fondo para objetos en la vista de árbol que están en edición actualmente</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
-      <translation>Color de fondo para contenedores activos en la vista en árbol</translation>
+      <translation>Color de fondo para contenedores activos en vista de árbol</translation>
     </message>
   </context>
   <context>
@@ -4295,7 +4294,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Zooming:</source>
-      <translation>Enfocar:</translation>
+      <translation>Zoom:</translation>
     </message>
   </context>
   <context>
@@ -5029,11 +5028,11 @@ Desea guardar los cambios?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
+      <translation>Pulse o haga clic en el botón izquierdo del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos o pulse el botón derecho del ratón.</translation>
+      <translation>Arrastre la pantalla con dos dedos o presione Alt o presione el botón derecho del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
@@ -5041,7 +5040,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pince (coloque dos dedos en la pantalla &amp;&amp; sepárelos || júntelos) O arrastre el botón central del ratón O use PgUp/PgDown en el teclado.</translation>
+      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos) o rote la rueda central del ratón o use AvPág/RePág en teclado.</translation>
     </message>
   </context>
   <context>
@@ -5118,7 +5117,7 @@ Desea guardar los cambios?</translation>
     <name>Gui::InventorNavigationStyle</name>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Presione la tecla CTRL y el botón izquierdo del ratón</translation>
+      <translation>Presione Ctrl y botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -5126,11 +5125,11 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Press left mouse button</source>
-      <translation>Pulse el botón izquierdo del mouse</translation>
+      <translation>Presione el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Desplazar el botón central del mouse</translation>
+      <translation>Rotar la rueda central del mouse</translation>
     </message>
   </context>
   <context>
@@ -5328,19 +5327,19 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
+      <translation>Pulse o haga clic en el botón izquierdo del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos o presione ALT + botón medio del ratón.</translation>
+      <translation>Arrastre la pantalla con dos dedos o presione Alt + botón central del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo o presione ALT + botón izquierdo del mouse. En Sketcher y otros modos de edición, también mantenga presionado Alt.</translation>
+      <translation>Arrastre la pantalla con un dedo o presione Alt + botón izquierdo del ratón. En el Croquizador y otros modos de edición, también mantenga presionado Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos) o arrastre el botón central del ratón o presione ALT + botón derecho del ratón o use AvPág/RePág en teclado.</translation>
+      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos) o rote la rueda central del ratón o presione Alt + botón derecho del ratón o use AvPág/RePág en teclado.</translation>
     </message>
   </context>
   <context>
@@ -5354,19 +5353,19 @@ How do you want to proceed?</source>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Pulse el botón izquierdo del mouse</translation>
+      <translation>Presione el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press CTRL and middle mouse button</source>
-      <translation>Pulse CTRL y el botón central del mouse</translation>
+      <translation>Pulse Ctrl y el botón central del ratón</translation>
     </message>
     <message>
       <source>Press CTRL and right mouse button</source>
-      <translation>Pulse CTRL y botón derecho del mouse</translation>
+      <translation>Pulse Ctrl y botón derecho del ratón</translation>
     </message>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Presione la tecla CTRL y el botón izquierdo del ratón</translation>
+      <translation>Presione Ctrl y botón izquierdo del ratón</translation>
     </message>
   </context>
   <context>
@@ -5623,7 +5622,7 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RevitNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Pulse el botón izquierdo del mouse</translation>
+      <translation>Presione el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -5631,11 +5630,11 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Presione SHIFT y el botón central del mouse</translation>
+      <translation>Presione Shift y el botón central del ratón</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Desplazar el botón central del mouse</translation>
+      <translation>Rotar la rueda central del mouse</translation>
     </message>
   </context>
   <context>
@@ -5885,19 +5884,19 @@ Do you want to specify another directory?</source>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Pulse el botón izquierdo del mouse</translation>
+      <translation>Presione el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press SHIFT button</source>
-      <translation>Presione la tecla SHIFT</translation>
+      <translation>Presione la tecla Shift</translation>
     </message>
     <message>
       <source>Press ALT button</source>
-      <translation>Presione la tecla ALT</translation>
+      <translation>Presione la tecla Alt</translation>
     </message>
     <message>
       <source>Press CTRL and SHIFT buttons</source>
-      <translation>Presione CTRL y SHIFT</translation>
+      <translation>Presione Ctrl y Shift</translation>
     </message>
   </context>
   <context>

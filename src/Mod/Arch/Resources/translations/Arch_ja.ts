@@ -6,42 +6,42 @@
     <message>
       <location filename="ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
-      <translation>この建物の種類</translation>
+      <translation>ビルディングタイプ</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="204"/>
       <source>The height of this object</source>
-      <translation>このオブジェクトの高さ</translation>
+      <translation>オブジェクトの高さ</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="336"/>
       <source>If true, the height value propagates to contained objects</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects</translation>
+      <translation>true の場合、高さの値は含まれているオブジェクトに伝播します</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="339"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation>このレベルの (0,0,0) 点レベル</translation>
+      <translation>レベルの (0,0,0) 点レベル</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="206"/>
       <source>The computed floor area of this floor</source>
-      <translation>このフロアの床面積の計算</translation>
+      <translation>フロアの床面積の計算</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="200"/>
       <source>An optional description for this component</source>
-      <translation>このコンポーネントのオプション説明</translation>
+      <translation>コンポーネントのオプション説明</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
-      <translation>このコンポーネントのオプション・タグ</translation>
+      <translation>コンポーネントのオプション・タグ</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="921"/>
       <source>The shape of this object</source>
-      <translation>このオブジェクトの形</translation>
+      <translation>オブジェクトの形</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="349"/>
@@ -191,17 +191,17 @@
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>自動グループボックスのオン/オフを切り替えます</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>コンテンツからサイズを自動的に設定</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>オートサイズがオンになっているときに使用するマージンです。</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="ArchMaterial.py" line="296"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>カット時のこのマテリアルの色</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="719"/>
@@ -566,7 +566,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="933"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>この値よりもさらにジオメトリーがカットされます。無制限の場合はゼロのままにしてください。</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="997"/>
@@ -606,7 +606,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1028"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>3D ビューにラベルを表示</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="941"/>
@@ -711,7 +711,7 @@
     <message>
       <location filename="ArchTruss.py" line="158"/>
       <source>The normal direction of this truss</source>
-      <translation type="unfinished">The normal direction of this truss</translation>
+      <translation>このトラスの法線方向</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="162"/>
@@ -1781,7 +1781,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>0でない場合、軸は1つのフルラインではなく、指定された長さの2本のラインとして表されます</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="314"/>
@@ -2886,6 +2886,21 @@ Building creation aborted.</translation>
       <location filename="ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>既存オブジェクトにある面を選択するか、プリセットを選択</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation type="unfinished">No window found. Cannot continue.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4106,6 +4121,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>選択した線またはスクラッチから帳壁ブジェクトを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation type="unfinished">Cut with line</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation type="unfinished">Cut an object with a line</translation>
     </message>
   </context>
   <context>

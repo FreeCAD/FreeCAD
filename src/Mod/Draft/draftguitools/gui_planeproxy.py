@@ -63,7 +63,7 @@ class Draft_WorkingPlaneProxy:
         if hasattr(App, "DraftWorkingPlane"):
             App.ActiveDocument.openTransaction("Create WP proxy")
             Gui.addModule("Draft")
-            _cmd = "Draft.makeWorkingPlaneProxy("
+            _cmd = "Draft.make_workingplaneproxy("
             _cmd += "FreeCAD.DraftWorkingPlane.getPlacement()"
             _cmd += ")"
             Gui.doCommand(_cmd)

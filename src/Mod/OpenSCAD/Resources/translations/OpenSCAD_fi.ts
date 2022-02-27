@@ -46,12 +46,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Lataa</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Tallenna</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
@@ -351,7 +351,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
-      <translation>OpenSCAD vienti</translation>
+      <translation>OpenSCAD-vienti</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="185"/>

@@ -23,20 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <BRep_Tool.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
-#include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #endif
 
-
-#include "FeatureDressUp.h"
 #include <App/Document.h>
 #include <Base/Exception.h>
-
-
+#include "FeatureDressUp.h"
 
 using namespace PartDesign;
 
@@ -256,7 +253,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
             // Make a compound to contain both additive and subtractive shape,
             // bceause a dressing (e.g. a fillet) can either be additive or
             // subtractive. And the dressup feature can contain mixture of both.
-            AddSubShape.setValue(Part::TopoShape().makECompound(shapes));
+            AddSubShape.setValue(Part::TopoShape().makeCompound(shapes));
 
         } catch (Standard_Failure &e) {
             FC_THROWM(Base::CADKernelError, "Failed to calculate AddSub shape: "

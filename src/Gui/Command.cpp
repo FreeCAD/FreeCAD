@@ -23,49 +23,45 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
 # include <sstream>
 # include <QApplication>
 # include <QByteArray>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
 #include <boost/algorithm/string/replace.hpp>
 
-#include <Python.h>
-#include <frameobject.h>
+#include <App/DocumentObject.h>
+#include <App/AutoTransaction.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
+#include "BitmapFactory.h"
+#include "Control.h"
+#include "DlgUndoRedo.h"
 #include "Document.h"
-#include "Selection.h"
+#include "frameobject.h"
 #include "Macro.h"
 #include "MainWindow.h"
-#include "DlgUndoRedo.h"
-#include "BitmapFactory.h"
-#include "WhatsThis.h"
-#include "WaitCursor.h"
-#include "Control.h"
+#include "Python.h"
+#include "Selection.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewProviderLink.h"
+#include "WaitCursor.h"
+#include "WhatsThis.h"
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
-
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/AutoTransaction.h>
-#include <Gui/ViewProviderLink.h>
 
 FC_LOG_LEVEL_INIT("Command", true, true)
 
@@ -1767,6 +1763,32 @@ void CommandManager::removeCommand(Command* pCom)
         delete It->second;
         _sCommands.erase(It);
     }
+}
+
+std::string CommandManager::newMacroName() const
+{
+    CommandManager& commandManager = Application::Instance->commandManager();
+    std::vector<Command*> macros = commandManager.getGroupCommands("Macros");
+
+    bool used = true;
+    int id = 0;
+    std::string name;
+    while (used) {
+        used = false;
+        std::ostringstream test_name;
+        test_name << "Std_Macro_" << id++;
+
+        for (const auto& macro : macros) {
+            if (test_name.str() == std::string(macro->getName())) {
+                used = true;
+                break;
+            }
+        }
+        if (!used)
+            name = test_name.str();
+    }
+
+    return name;
 }
 
 void CommandManager::clearCommands()

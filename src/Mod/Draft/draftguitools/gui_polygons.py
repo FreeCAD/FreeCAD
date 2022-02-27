@@ -225,7 +225,7 @@ class Polygon(gui_base_original.Creator):
                         _cmd_list)
         else:
             # Insert a Draft polygon
-            _cmd = 'Draft.makePolygon'
+            _cmd = 'Draft.make_polygon'
             _cmd += '('
             _cmd += str(self.ui.numFaces.value()) + ', '
             _cmd += 'radius=' + str(self.rad) + ', '

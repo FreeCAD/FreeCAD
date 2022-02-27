@@ -23,22 +23,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <algorithm>
-# include <functional>
-#endif
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Reader.h>
-#include <Base/Writer.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
-#include "Application.h"
 #include "Property.h"
 #include "PropertyContainer.h"
-#include "PropertyLinks.h"
+
 
 FC_LOG_LEVEL_INIT("App",true,true)
 

@@ -707,7 +707,7 @@ def process_ObjectsViaOpenSCADShape(doc, children, name, maxmeshpoints=None):
     else:
         import FreeCAD
         FreeCAD.Console.PrintError( translate('OpenSCAD',\
-            "Error all shapes must be either 2D or both must be 3D")+u'\n')
+            "OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.")+u'\n')
 
 def process_ObjectsViaOpenSCAD(doc,children,name):
     if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \

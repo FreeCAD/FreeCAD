@@ -33,7 +33,7 @@
 using namespace SpreadsheetGui;
 
 LineEdit::LineEdit(QWidget *parent)
-    : Gui::ExpressionLineEdit(parent, false, true)
+    : Gui::ExpressionLineEdit(parent, false, '=', true)
     , lastKeyPressed(0)
 {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);

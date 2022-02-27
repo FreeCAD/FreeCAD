@@ -23,13 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <algorithm>
-#endif
-
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectExtensionPy.h"
+#include "DocumentObject.h"
+#include "ExtensionContainer.h"
 
 using namespace App;
 

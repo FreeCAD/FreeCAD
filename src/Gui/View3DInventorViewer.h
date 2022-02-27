@@ -29,17 +29,17 @@
 #include <set>
 #include <vector>
 
-#include <Base/Type.h>
 #include <Base/Placement.h>
+#include <Base/Type.h>
+#include <Gui/Quarter/SoQTQuarterAdaptor.h>
+#include <Gui/Namespace.h>
+#include <Gui/Selection.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
-#include <Gui/Quarter/SoQTQuarterAdaptor.h>
+
 #include <QCursor>
 #include <QImage>
-
-#include <Gui/Selection.h>
-#include <Gui/Namespace.h>
 
 class SoTranslation;
 class SoTransform;

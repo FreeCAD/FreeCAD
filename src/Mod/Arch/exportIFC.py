@@ -1343,7 +1343,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         psa = curvestyles[rgb]
                     else:
                         col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
-                        cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("CONTINUOUS")
+                        cvf = ifcfile.createIfcDraughtingPredefinedCurveFont("continuous")
                         ics = ifcfile.createIfcCurveStyle('Line',cvf,None,col)
                         psa = ifcfile.createIfcPresentationStyleAssignment([ics])
                         curvestyles[rgb] = psa

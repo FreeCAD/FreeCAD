@@ -24,24 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
-# include <QAbstractItemView>
 # include <QActionEvent>
 # include <QApplication>
-# include <QDesktopWidget>
 # include <QEvent>
+# include <QMenu>
 # include <QMessageBox>
+# include <QScreen>
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
 #endif
 
-#include <QScreen>
-
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Base/Tools.h>
+
 #include "Action.h"
-#include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
@@ -55,10 +53,7 @@
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
-#include "WorkbenchManager.h"
 
-#include <Base/Exception.h>
-#include <App/Application.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;

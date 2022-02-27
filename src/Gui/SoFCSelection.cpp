@@ -23,40 +23,27 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qstatusbar.h>
-# include <qstring.h>
+# include <QString>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoCube.h>
 #endif
 
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-
 #include <Inventor/SoFullPath.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/SoPickedPoint.h>
 
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-
-#include <Base/Console.h>
 #include "SoFCSelection.h"
 #include "MainWindow.h"
-#include "Selection.h"
-#include "SoFCSelectionAction.h"
 #include "SoFCInteractiveElement.h"
+#include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "ViewParams.h"
 

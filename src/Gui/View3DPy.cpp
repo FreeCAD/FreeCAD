@@ -25,49 +25,39 @@
 
 #ifndef __InventorAll__
 # include "InventorAll.h"
-# include <sstream>
 # include <QColor>
 # include <QDir>
 # include <QFileInfo>
 # include <QImage>
-# include <Inventor/SbViewVolume.h>
-# include <Inventor/nodes/SoCamera.h>
 #endif
 
-#include <QtOpenGL.h>
-#include "View3DPy.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderExtern.h"
-#include "Application.h"
-#include "Document.h"
-#include "NavigationStyle.h"
-#include "SoMouseWheelEvent.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCOffscreenRenderer.h"
-#include "SoFCVectorizeSVGAction.h"
-#include "SoFCVectorizeU3DAction.h"
-#include "SoFCDB.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "View3DViewerPy.h"
-#include "ActiveObjectList.h"
-#include "PythonWrapper.h"
-
-
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
 #include <Base/Rotation.h>
 #include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-#include <App/GeoFeature.h>
-#include <CXX/Objects.hxx>
+#include "View3DPy.h"
+#include "Document.h"
+#include "NavigationStyle.h"
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
+#include "SoFCOffscreenRenderer.h"
+#include "SoFCSelectionAction.h"
+#include "SoFCVectorizeSVGAction.h"
+#include "SoFCVectorizeU3DAction.h"
+#include "SoMouseWheelEvent.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
+#include "View3DViewerPy.h"
+#include "ViewProviderDocumentObject.h"
+#include "ViewProviderExtern.h"
 
 using namespace Gui;
 

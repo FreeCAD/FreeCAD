@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>Place robot...</source>
-      <translation>Emplazar robot ...</translation>
+      <translation>Colocar robot...</translation>
     </message>
     <message>
       <source>Place a robot (experimental!)</source>
@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Insert a Kuka IR125 into the document.</source>
-      <translation>Inserte un Kuka iR125 en el documento.</translation>
+      <translation>Inserte un Kuka IR125 en el documento.</translation>
     </message>
   </context>
   <context>
@@ -766,7 +766,7 @@
     </message>
     <message>
       <source>Discontinues</source>
-      <translation>Interrumpe</translation>
+      <translation>Discontinua</translation>
     </message>
     <message>
       <source>Position and Orientation:</source>

@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 # include <cassert>
 # include <cstring>
-# include <cstdlib>
 #endif
 
 #include <Base/Exception.h>

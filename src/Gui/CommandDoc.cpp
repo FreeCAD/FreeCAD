@@ -23,59 +23,45 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 # include <QClipboard>
 # include <QDateTime>
-# include <QEventLoop>
-# include <QFileDialog>
-# include <QLabel>
 # include <QTextStream>
-# include <QStatusBar>
-# include <QPointer>
-# include <QProcess>
-# include <sstream>
-# include <Inventor/nodes/SoCamera.h>
+# include <QTreeWidgetItem> 
 #endif
-#include <algorithm>
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
 #include <App/AutoTransaction.h>
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
-#include <App/Origin.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Tools.h>
 
 #include "Action.h"
 #include "Application.h"
-#include "Document.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include "Control.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "Selection.h"
+#include "DlgObjectSelection.h"
 #include "DlgProjectInformationImp.h"
 #include "DlgProjectUtility.h"
-#include "Transform.h"
-#include "Placement.h"
+#include "GraphvizView.h"
 #include "ManualAlignment.h"
-#include "WaitCursor.h"
-#include "ViewProvider.h"
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include "MergeDocuments.h"
 #include "NavigationStyle.h"
-#include "GraphvizView.h"
-#include "DlgObjectSelection.h"
+#include "Placement.h"
+#include "Transform.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
+#include "ViewProvider.h"
+#include "WaitCursor.h"
 
 FC_LOG_LEVEL_INIT("Command", false)
 

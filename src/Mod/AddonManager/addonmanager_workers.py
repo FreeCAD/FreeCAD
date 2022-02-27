@@ -231,9 +231,8 @@ class UpdateWorker(QtCore.QThread):
             if addon and addon["url"]:
                 if addon["url"][-1] == "/":
                     addon["url"] = addon["url"][0:-1]  # Strip trailing slash
+                addon["url"] = addon["url"].split(".git")[0]  # Remove .git
                 name = addon["url"].split("/")[-1]
-                if name.lower().endswith(".git"):
-                    name = name[:-4]
                 if name in package_names:
                     # We already have something with this name, skip this one
                     continue
@@ -249,6 +248,8 @@ class UpdateWorker(QtCore.QThread):
                     repo.load_metadata_file(md_file)
                     repo.installed_version = repo.metadata.Version
                     repo.updated_timestamp = os.path.getmtime(md_file)
+                    repo.verify_url_and_branch(addon["url"], addon["branch"])
+
                 self.addon_repo.emit(repo)
 
         # querying official addons
@@ -289,6 +290,8 @@ class UpdateWorker(QtCore.QThread):
                 repo.load_metadata_file(md_file)
                 repo.installed_version = repo.metadata.Version
                 repo.updated_timestamp = os.path.getmtime(md_file)
+                repo.verify_url_and_branch(url, branch)
+
             if name in py2only:
                 repo.python2 = True
             if name in mod_reject_list:
@@ -525,7 +528,7 @@ class UpdateChecker:
                 macro_wrapper.macro.fill_details_from_file(
                     macro_wrapper.macro.src_filename
                 )
-            if not macro_wrapper.macro.parsed and macro_wrapper.macro.on_wiki:
+            elif not macro_wrapper.macro.parsed and macro_wrapper.macro.on_wiki:
                 mac = macro_wrapper.macro.name.replace(" ", "_")
                 mac = mac.replace("&", "%26")
                 mac = mac.replace("+", "%2B")
@@ -636,7 +639,7 @@ class FillMacroListWorker(QtCore.QThread):
                         "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
                     )
                 gitrepo = git.Git(self.repo_dir)
-                gitrepo.pull()
+                gitrepo.pull("--ff-only")
             else:
                 git.Repo.clone_from(
                     "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
@@ -644,7 +647,7 @@ class FillMacroListWorker(QtCore.QThread):
         except Exception as e:
             FreeCAD.Console.PrintWarning(
                 translate(
-                    "AddonsInstaller", "An error occurred fetching macros from GitHub"
+                    "AddonsInstaller", "An error occurred updating macros from GitHub"
                 )
                 + f":\n{e}\n"
             )
@@ -999,14 +1002,21 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 utils.repair_git_repo(self.repo.url, clonedir)
             repo = git.Git(clonedir)
             try:
-                repo.pull()  # Refuses to take a progress object?
-                answer = translate(
-                    "AddonsInstaller",
-                    "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
-                )
+                repo.pull("--ff-only")  # Refuses to take a progress object?
+                if self.repo.contains_workbench():
+                    answer = translate(
+                        "AddonsInstaller",
+                        "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
+                    )
+                else:
+                    answer = translate(
+                        "AddonsInstaller",
+                        "Workbench successfully updated.",
+                    )
             except Exception as e:
                 answer = (
-                    translate("AddonsInstaller", "Error updating module ")
+                    translate("AddonsInstaller", "Error updating module")
+                    + " "
                     + self.repo.name
                     + " - "
                     + translate("AddonsInstaller", "Please fix manually")
@@ -1073,10 +1083,16 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
             FreeCAD.Console.PrintMessage("Clone complete\n")
 
-        answer = translate(
-            "AddonsInstaller",
-            "Workbench successfully installed. Please restart FreeCAD to apply the changes.",
-        )
+        if self.repo.contains_workbench():
+            answer = translate(
+                "AddonsInstaller",
+                "Workbench successfully installed. Please restart FreeCAD to apply the changes.",
+            )
+        else:
+            answer = translate(
+                "AddonsInstaller",
+                "Addon successfully installed.",
+            )
 
         if self.repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             # symlink any macro contained in the module to the macros folder
@@ -1222,7 +1238,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if os.path.isfile(package_xml):
             self.repo.load_metadata_file(package_xml)
             self.repo.installed_version = self.repo.metadata.Version
-            self.repo.updated_timestamp = datetime.now().timestamp()
+            self.repo.updated_timestamp = os.path.getmtime(package_xml)
 
 
 class DependencyInstallationWorker(QtCore.QThread):
@@ -1323,7 +1339,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                self.emit.failure(
+                self.failure.emit(
                     translate(
                         "AddonsInstaller",
                         "Installation of Python package {} failed",
@@ -1342,7 +1358,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                self.emit.failure(
+                self.failure.emit(
                     translate(
                         "AddonsInstaller",
                         "Installation of Python package {} failed",

@@ -28,28 +28,23 @@
 # include <QAction>
 # include <QApplication>
 # include <QKeyEvent>
-# include <QListWidget>
 # include <QListWidgetItem>
 # include <QTimer>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include "TaskDressUpParameters.h"
 #include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Gui/Tools.h>
+#include <Gui/WaitCursor.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
+
+#include "TaskDressUpParameters.h"
+
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 

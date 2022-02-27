@@ -23,30 +23,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
 # include <Standard_Failure.hxx>
-# include <TopoDS_Solid.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Pln.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
-// TODO Cleanup headers (2015-09-04, Fat-Zer)
-#include <Base/Exception.h>
-#include "App/Document.h"
+#include "App/DocumentObject.h"
 #include <App/FeaturePythonPyImp.h>
 #include "App/OriginFeature.h"
-#include "Body.h"
-#include "ShapeBinder.h"
-#include "Feature.h"
-#include "FeaturePy.h"
-#include "Mod/Part/App/DatumFeature.h"
-
 #include <Base/Console.h>
 
-FC_LOG_LEVEL_INIT("PartDesign",true,true)
+#include "Feature.h"
+#include "FeaturePy.h"
+#include "Body.h"
+#include "ShapeBinder.h"
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 
 namespace PartDesign {

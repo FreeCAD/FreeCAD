@@ -740,11 +740,6 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <translation>PAT datoteka korištena kod ovog objekta</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblik ovog objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Ime uzorka korištenog kod ovog objekta</translation>
@@ -753,6 +748,11 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Skaliranje uzorka korištenog kod ovog objekta</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblik ovog objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3738,6 +3738,11 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
       <translation>Pronašli smo nekoliko žica ili rubova: poveži ih</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Pronađeno je nekoliko objekata koji su nepopravljivi: stvaranje spoja</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>pokušava: zatvoriti to</translation>
@@ -3756,11 +3761,6 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Pronađene točke: stvori složen spoj</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Pronađeno je nekoliko objekata koji su nepopravljivi: stvaranje spoja</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

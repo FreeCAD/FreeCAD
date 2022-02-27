@@ -22,11 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of some shapes.
-
-Warning: this still uses the `Drawing.projectToSVG` method to provide
-the SVG representation of certain objects.
-Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
-may not be removed completely yet. This must be checked.
 """
 ## @package svgshapes
 # \ingroup draftfunctions
@@ -45,7 +40,7 @@ from draftutils.messages import _msg, _wrn
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
+TechDraw = lz.LazyLoader("TechDraw", globals(), "TechDraw")
 
 ## \addtogroup draftfunctions
 # @{
@@ -151,7 +146,7 @@ def _get_path_circ_ellipse(plane, edge, vertex, edata,
     done = False
     if int(occversion[0]) >= 7 and int(occversion[1]) >= 1:
         # if using occ >= 7.1, use HLR algorithm
-        snip = Drawing.projectToSVG(edge, drawing_plane_normal)
+        snip = TechDraw.projectToSVG(edge, drawing_plane_normal)
 
         if snip:
             try:

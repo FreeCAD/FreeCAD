@@ -23,25 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDir>
-# include <QFileInfo>
-# include <QLineEdit>
-# include <QInputDialog>
 # include <Standard_math.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 
-#include "../App/PartFeature.h"
-#include "../App/TopoShape.h"
 #include "DlgPartCylinderImp.h"
 #include "ShapeFromMesh.h"
 

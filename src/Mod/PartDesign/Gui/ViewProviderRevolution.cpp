@@ -24,12 +24,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
 # include <QMenu>
 #endif
 
 #include "TaskRevolutionParameters.h"
-
 #include "ViewProviderRevolution.h"
 
 using namespace PartDesignGui;

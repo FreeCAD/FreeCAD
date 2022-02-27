@@ -30,11 +30,10 @@
 # include <QDesktopWidget>
 # include <QGenericReturnArgument>
 # include <QMessageBox>
+# include <QScreen>
 # include <QScrollArea>
 # include <QScrollBar>
 #endif
-
-#include <QScreen>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -433,6 +432,8 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
                     Q_ARG(int, newWidth),
                     Q_ARG(int, newHeight));
             }
+            QPoint center = rect.center();
+            move(center.x() - width() * 0.5, 10);
         }
     }
     QDialog::resizeEvent(ev);

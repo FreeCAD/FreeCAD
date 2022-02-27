@@ -107,7 +107,7 @@ class Solve(run.Solve):
         # AFAIK: z88r needs to be run twice
         # once in test mode and once in real solve mode
         # the subprocess was just copied, it works :-)
-        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values
+        # TODO: search out for "Vector GS" and "Vector KOI" and print values
         # may be compare with the used ones
         self.pushStatus("Executing solver in test mode...\n")
         self._process = subprocess.Popen(

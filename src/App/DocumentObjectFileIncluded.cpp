@@ -23,11 +23,7 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "DocumentObjectFileIncluded.h"
-#include "Document.h"
 
 using namespace App;
 

@@ -24,24 +24,6 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: version
-    attributes:
-      label: Version
-      description: What version of FreeCAD are you running?
-      options:
-        - 0.19 (Release)
-        - 0.20 (Development)
-    validations:
-      required: true
-  - type: textarea
-    id: full_version
-    attributes:
-      label: Full version info
-      description: Please use the About FreeCAD dialog to copy your full version information and paste it here.
-      render: shell
-    validations:
-      required: true
-  - type: dropdown
     id: wb
     attributes:
       label: Subproject(s) affected?

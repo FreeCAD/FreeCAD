@@ -106,6 +106,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolattrib << "TechDraw_ExtensionCascadeObliqueDimension";
     *toolattrib << "Separator";
     *toolattrib << "TechDraw_ExtensionAreaAnnotation";
+    *toolattrib << "TechDraw_ExtensionCustomizeFormat";
 
     // extension: centerlines and threading
     Gui::MenuItem* toolcenter = new Gui::MenuItem;
@@ -280,6 +281,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *extattribs << "TechDraw_ExtensionCascadeVertDimension";
 //    *extattribs << "TechDraw_ExtensionCascadeObliqueDimension";
     *extattribs << "TechDraw_ExtensionAreaAnnotation";
+    *extattribs << "TechDraw_ExtensionCustomizeFormat";
 
     Gui::ToolBarItem *extcenter = new Gui::ToolBarItem(root);
     extcenter->setCommand("TechDraw Centerlines");
@@ -418,6 +420,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *extattribs << "TechDraw_ExtensionCascadeVertDimension";
 //    *extattribs << "TechDraw_ExtensionCascadeObliqueDimension";
     *extattribs << "TechDraw_ExtensionAreaAnnotation";
+    *extattribs << "TechDraw_ExtensionCustomizeFormat";
 
     Gui::ToolBarItem *extcenter = new Gui::ToolBarItem(root);
     extcenter->setCommand("TechDraw Centerlines");

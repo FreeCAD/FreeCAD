@@ -24,40 +24,34 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Precision.hxx>
 # include <QMenu>
 #endif
 
-#include <Base/Console.h>
-#include <App/Part.h>
 #include <App/Origin.h>
+#include <App/Part.h>
+#include <Base/Console.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Application.h>
+#include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Gui/ViewProviderOriginFeature.h>
-
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 
-#include "ViewProviderDatum.h"
-#include "Utils.h"
-
 #include "ViewProviderBody.h"
+#include "Utils.h"
 #include "ViewProvider.h"
-#include <Gui/Application.h>
-#include <Gui/MDIView.h>
+#include "ViewProviderDatum.h"
+
 
 using namespace PartDesignGui;
 namespace bp = boost::placeholders;

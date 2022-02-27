@@ -724,11 +724,6 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <translation>Le fichier PAT utilisé par cet objet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forme de cet objet</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Le nom du motif utilisé par cet objet</translation>
@@ -737,6 +732,11 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>La mise à l'échelle du motif utilisée par cet objet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forme de cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1140,12 +1140,12 @@ au-delà de la ligne de cote</translation>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Définit un motif SVG.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Définit la taille du motif SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1638,7 +1638,7 @@ CTRL to snap, SHIFT to constrain.</source>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée un arc en désignant 3 points. Ctrl pour aimanter, Majuscule pour contraindre.</translation>
+      <translation>Crée un arc en désignant 3 points. Ctrl pour aimanter, MAJ pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -1715,7 +1715,7 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Courbe de Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1726,8 +1726,8 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crée une courbe de Bézier de degré N. Plus vous prenez de points, plus le degré est élevé.
+CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1742,7 +1742,7 @@ CTRL pour aimanter, MAJ pour contraindre.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Outils Bézier</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1752,7 +1752,7 @@ CTRL pour aimanter, MAJ pour contraindre.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Créer différents types de courbes de Bézier.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1814,7 +1814,7 @@ Le clone résultant peut être mis à l'échelle dans chacune de ses trois direc
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Courbe de Bézier cubique</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1826,9 +1826,9 @@ Le clone résultant peut être mis à l'échelle dans chacune de ses trois direc
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crée une courbe de Bézier faite de segments de 2ème degré (quadratique) et 3ème degré (cubique). Cliquez et faites glisser pour définir chaque segment.
+Après la création de la courbe, vous pouvez revenir en arrière pour éditer chaque point de contrôle et définir les propriétés de chaque nœud.
+CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2983,7 +2983,7 @@ Vous pouvez ensuite l'utiliser pour enregistrer une position différente de la c
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Outils Bézier</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3696,6 +3696,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Plusieurs filaires ou arêtes trouvés : les joindre</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Plusieurs objets non traitable trouvés : création d'un composé</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>essayer : le fermer</translation>
@@ -3714,11 +3719,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Points trouvés : création d'un composé</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Plusieurs objets non traitable trouvés : création d'un composé</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4239,7 +4239,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Veuillez charger l'atelier Draft pour activer l'édition de cet objet</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4274,7 +4274,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Définir l'échelle utilisée par les outils de prise de note</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4364,12 +4364,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Verrouillage de l'aimantation</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Point d'extrémité aimanté</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
@@ -4379,22 +4379,22 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Aimanter centre</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Aimanter l'angle</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Aimanter intersection</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Amanter la perpendiculaire</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
@@ -4404,7 +4404,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Aligner parallèle</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
@@ -4424,7 +4424,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Aimanter sur la grille</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
@@ -5081,7 +5081,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>La courbe de Bézier a été fermée</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>

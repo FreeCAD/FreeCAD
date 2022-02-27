@@ -23,39 +23,33 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
+
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepGProp_Face.hxx>
 # include <BRep_Tool.hxx>
 # include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopExp_Explorer.hxx>
 # include <ShapeExtend_Explorer.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 # include <QKeyEvent>
 # include <QMessageBox>
-# include <Python.h>
-# include <Inventor/system/inttypes.h>
 #endif
 
-#include "ui_DlgExtrusion.h"
-#include "DlgExtrusion.h"
-#include "../App/PartFeature.h"
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <Base/Interpreter.h>
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/Utilities.h>
+
+#include "ui_DlgExtrusion.h"
+#include "DlgExtrusion.h"
+
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 

@@ -4495,7 +4495,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="247"/>
       <source>Automation</source>
-      <translation type="unfinished">Automation</translation>
+      <translation>自動</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>

@@ -27,31 +27,22 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cassert>
-# include <cstdio>
-# include <cstdlib>
-# include <fstream>
-# include <climits>
 # include <cstring>
 # if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <dirent.h>
 # include <unistd.h>
-# include <sys/stat.h>
 # elif defined (FC_OS_WIN32)
-# include <direct.h>
 # include <io.h>
 # include <Windows.h>
 # endif
+#include <sys/stat.h>
+#include <sys/types.h>
 #endif
-
 
 #include "FileInfo.h"
 #include "Exception.h"
 #include "Stream.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <cstdio>
-#include <cerrno>
-#include <cstring>
+
 
 using namespace Base;
 

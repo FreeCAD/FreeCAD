@@ -61,6 +61,11 @@ using namespace Sketcher;
 
 /************************************ Attorney *******************************************/
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(ViewProviderSketch &vp, bool enabled /*= true*/)
+{
+    vp.setConstraintSelectability(enabled);
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos, const SbString &txt)
 {
     vp.setPositionText(Pos,txt);
@@ -115,6 +120,27 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const 
 DrawSketchHandler::DrawSketchHandler() : sketchgui(0) {}
 
 DrawSketchHandler::~DrawSketchHandler() {}
+
+void DrawSketchHandler::activate(ViewProviderSketch * vp)
+{
+    sketchgui = vp;
+
+    this->preActivated();
+    this->activated();
+}
+
+void DrawSketchHandler::deactivate()
+{
+    this->deactivated();
+    this->postDeactivated();
+    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
+    unsetCursor();
+}
+
+void DrawSketchHandler::preActivated()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
+}
 
 void DrawSketchHandler::quit(void)
 {

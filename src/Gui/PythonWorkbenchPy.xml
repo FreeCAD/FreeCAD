@@ -11,7 +11,7 @@
     FatherNamespace="Gui">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>This class handles document objects in group</UserDocu>
+      <UserDocu>This is the class for Python workbenches</UserDocu>
     </Documentation>
     <Methode Name="appendMenu">
       <Documentation>

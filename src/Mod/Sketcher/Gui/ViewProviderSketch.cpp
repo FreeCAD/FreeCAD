@@ -25,81 +25,64 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-# include <Poly_Polygon3D.hxx>
 
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/SbBox3f.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoPointDetail.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Inventor/SbLine.h>
 # include <Inventor/SbTime.h>
 
 /// Qt Include Files
 # include <QAction>
 # include <QApplication>
 # include <QColor>
+# include <QDesktopWidget>
 # include <QDialog>
 # include <QFont>
+# include <QKeyEvent>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
 # include <QTextStream>
-# include <QKeyEvent>
-# include <QDesktopWidget>
 
 # include <boost_bind_bind.hpp>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Converter.h>
-#include <Base/Tools.h>
-#include <Base/Parameter.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsSchema.h>
-#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
-#include <Gui/Tools.h>
-#include <Gui/Utilities.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
+#include <Gui/Selection.h>
+#include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Inventor/SmSwitchboard.h>
 
 #include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/Sketch.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/GeoList.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/Sketch.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
-#include "SoZoomTranslation.h"
-#include "SoDatumLabel.h"
-#include "EditDatumDialog.h"
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
+#include "EditModeCoinManager.h"
+#include "EditDatumDialog.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketchGeometryExtension.h"
 
-#include "EditModeCoinManager.h"
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -363,8 +346,7 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
 
     sketchHandler = std::unique_ptr<DrawSketchHandler>(newHandler);
     Mode = STATUS_SKETCH_UseHandler;
-    sketchHandler->sketchgui = this;
-    sketchHandler->activated(this);
+    sketchHandler->activate(this);
 
     // make sure receiver has focus so immediately pressing Escape will be handled by
     // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
@@ -381,11 +363,9 @@ void ViewProviderSketch::deactivateHandler()
         editCurve.clear();
         drawEdit(editCurve); // erase any line
         resetPositionText();
-        sketchHandler->deactivated(this);
-        sketchHandler->unsetCursor();
+        sketchHandler->deactivate();
         sketchHandler = nullptr;
     }
-
     Mode = STATUS_NONE;
 }
 
@@ -465,6 +445,13 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             }
             return false;
         }
+        break;
+    case SoKeyboardEvent::LEFT_SHIFT:
+        if (Mode < STATUS_SKETCH_UseHandler) {
+            editCoinManager->setConstraintSelectability(!pressed);
+            return true;
+        }
+        [[fallthrough]];
     default:
         {
             if (isInEditMode() && sketchHandler)
@@ -2627,6 +2614,8 @@ void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
 void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const char *member)
 {
     menu->addAction(tr("Edit sketch"), receiver, member);
+    // Call the extensions
+    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
@@ -3288,6 +3277,11 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
 
 
 /*************************** functions ViewProviderSketch offers to friends such as DrawHandlerSketch ************************/
+
+void ViewProviderSketch::setConstraintSelectability(bool enabled /*= true*/)
+{
+    editCoinManager->setConstraintSelectability(enabled);
+}
 
 void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {

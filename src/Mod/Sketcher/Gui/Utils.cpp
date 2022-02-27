@@ -221,6 +221,21 @@ bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
     return (gf && gf->getInternalType() == Sketcher::InternalType::BSplineKnotPoint);
 }
 
+bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId)
+{
+    // check first using geometry facade
+    if (isBsplineKnot(Obj, GeoId))
+        return true;
+
+    const Part::Geometry *geo = Obj->getGeometry(GeoId);
+    // end points of B-Splines are also knots
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() &&
+        (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end))
+        return true;
+
+    return false;
+}
+
 bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
 {
     //This func is a "smartness" behind three-element tangent-, perp.- and angle-via-point.

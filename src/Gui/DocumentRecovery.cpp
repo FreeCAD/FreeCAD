@@ -33,6 +33,8 @@
 # include <QDateTime>
 # include <QDebug>
 # include <QDir>
+# include <QDirIterator>
+# include <QDomDocument>
 # include <QFile>
 # include <QFileInfo>
 # include <QHeaderView>
@@ -64,8 +66,6 @@
 #include <Gui/DlgCheckableMessageBox.h>
 #include <Gui/MainWindow.h>
 
-#include <QDomDocument>
-#include <QDirIterator>
 #include <boost/interprocess/sync/file_lock.hpp>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)

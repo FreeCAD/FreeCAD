@@ -25,120 +25,93 @@
 
 #ifndef _PreComp_
 # include "InventorAll.h"
-# include <unordered_map>
-# include <boost_signals2.hpp>
-# include <sstream>
-# include <stdexcept>
-# include <iostream>
-# include <functional>
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
 # include <QMessageLogContext>
-# include <QPointer>
-# include <QSessionManager>
 # include <QStatusBar>
 # include <QTextStream>
 # include <QTimer>
+# include <QWindow>
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
-#include <boost/filesystem.hpp>
-#include <QtOpenGL.h>
-#include <QWindow>
-
-// FreeCAD Base header
+#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <Base/Parameter.h>
 #include <Base/Exception.h>
-#include <Base/Factory.h>
 #include <Base/FileInfo.h>
+#include <Base/Parameter.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
+
+#include <Language/Translator.h>
+#include <Quarter/Quarter.h>
 
 #include "Application.h"
 #include "AutoSaver.h"
-#include "GuiApplication.h"
-#include "MainWindow.h"
-#include "Document.h"
-#include "DocumentPy.h"
-#include "View.h"
-#include "View3DPy.h"
-#include "UiLoader.h"
-#include "WidgetFactory.h"
+#include "AxisOriginPy.h"
+#include "BitmapFactory.h"
 #include "Command.h"
+#include "CommandPy.h"
+#include "Control.h"
+#include "DlgSettingsCacheDirectory.h"
+#include "DocumentPy.h"
+#include "DocumentRecovery.h"
+#include "EditorView.h"
+#include "ExpressionBindingPy.h"
+#include "FileDialog.h"
+#include "GuiApplication.h"
+#include "GuiInitScript.h"
+#include "LinkViewPy.h"
+#include "MainWindow.h"
 #include "Macro.h"
 #include "PreferencePackManager.h"
-#include "ProgressBar.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "ToolBoxManager.h"
-#include "WaitCursor.h"
-#include "MenuManager.h"
-#include "Window.h"
-#include "Selection.h"
-#include "BitmapFactory.h"
-#include "SoFCDB.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
-#include "View3DPy.h"
-#include "DlgOnlineHelpImp.h"
-#include "SpaceballEvent.h"
-#include "Control.h"
-#include "DocumentRecovery.h"
-#include "DlgSettingsCacheDirectory.h"
-#include "TransactionObject.h"
-#include "FileDialog.h"
-#include "ExpressionBindingPy.h"
-#include "ViewProviderLinkPy.h"
-
-#include "EditorView.h"
-#include "TextDocumentEditorView.h"
+#include "SoFCDB.h"
+#include "Selection.h"
 #include "SplitView3DInventor.h"
+#include "TaskView/TaskView.h"
+#include "TaskView/TaskDialogPython.h"
+#include "TransactionObject.h"
+#include "TextDocumentEditorView.h"
+#include "UiLoader.h"
+#include "View3DPy.h"
+#include "View3DViewerPy.h"
 #include "View3DInventor.h"
-#include "ViewProvider.h"
+#include "ViewProviderAnnotation.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderDocumentObjectGroup.h"
+#include "ViewProviderDragger.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
-#include "ViewProviderPythonFeature.h"
-#include "ViewProviderDocumentObjectGroup.h"
-#include "ViewProviderDragger.h"
-#include "ViewProviderGeometryObject.h"
-#include "ViewProviderInventorObject.h"
-#include "ViewProviderVRMLObject.h"
-#include "ViewProviderAnnotation.h"
-#include "ViewProviderMeasureDistance.h"
-#include "ViewProviderPlacement.h"
-#include "ViewProviderOriginFeature.h"
-#include "ViewProviderPlane.h"
-#include "ViewProviderLine.h"
 #include "ViewProviderGeoFeatureGroup.h"
-#include "ViewProviderOriginGroup.h"
-#include "ViewProviderPart.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderMaterialObject.h"
-#include "ViewProviderTextDocument.h"
+#include "ViewProviderGeometryObject.h"
 #include "ViewProviderGroupExtension.h"
+#include "ViewProviderInventorObject.h"
+#include "ViewProviderLine.h"
 #include "ViewProviderLink.h"
-#include "LinkViewPy.h"
-#include "AxisOriginPy.h"
-#include "CommandPy.h"
-
-#include "Language/Translator.h"
-#include "TaskView/TaskView.h"
-#include "TaskView/TaskDialogPython.h"
-#include <Gui/Quarter/Quarter.h>
-#include "View3DViewerPy.h"
-#include <Gui/GuiInitScript.h>
-#include <LibraryVersions.h>
+#include "ViewProviderLinkPy.h"
+#include "ViewProviderMaterialObject.h"
+#include "ViewProviderMeasureDistance.h"
+#include "ViewProviderOrigin.h"
+#include "ViewProviderOriginFeature.h"
+#include "ViewProviderOriginGroup.h"
+#include "ViewProviderPlacement.h"
+#include "ViewProviderPlane.h"
+#include "ViewProviderPart.h"
+#include "ViewProviderPythonFeature.h"
+#include "ViewProviderTextDocument.h"
+#include "ViewProviderVRMLObject.h"
+#include "WaitCursor.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+#include "WidgetFactory.h"
 
 
 using namespace Gui;

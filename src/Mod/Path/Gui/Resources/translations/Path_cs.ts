@@ -46,17 +46,17 @@
     <message>
       <location filename="PathSurface.py" line="190"/>
       <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation type="unfinished">Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</translation>
+      <translation>Převést rovinné oblouky na příkazy G2/G3 G kódu pro `Kruhové CikCak` a `Kruhové` vzory řezu.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="124"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</translation>
+      <translation>Menší hodnoty přinášejí jemnější a přesnější síť. Menší hodnoty zvyšují čas zpracování.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</translation>
+      <translation>Menší hodnoty přinášejí jemnější a přesnější síť. Menší hodnoty nezvyšují čas zpracování.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="PathWaterline.py" line="144"/>
       <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation type="unfinished">Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</translation>
+      <translation>Vyberte algoritmus, který chcete použít: OCL Dropcutter*, nebo experimentální (Nezaložený na OCL).</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="146"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="PathWaterline.py" line="148"/>
       <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation type="unfinished">Set to clear last layer in a `Multi-pass` operation.</translation>
+      <translation>Nastavit pro vymazání poslední vrstvy v operaci `Multi-pass`.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="150"/>
@@ -121,27 +121,27 @@
     <message>
       <location filename="PathWaterline.py" line="156"/>
       <source>Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</source>
-      <translation type="unfinished">Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</translation>
+      <translation>Obrátit pořadí řezů u překrytí dráhy. U kruhových řezů se postupuje zvenku a směrem ke středu.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="158"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>Nastavte hloubku osy Z od cílového povrchu.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
-      <translation type="unfinished">Set the start point for the cut pattern.</translation>
+      <translation>Nastavte počáteční bod pro vzor řezu.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
-      <translation type="unfinished">Choose location of the center point for starting the cut pattern.</translation>
+      <translation>Vyberte umístění středového bodu pro spuštění řezu.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation type="unfinished">Set the sampling resolution. Smaller values quickly increase processing time.</translation>
+      <translation>Nastavte rozlišení vzorkování. Menší hodnoty rychle zvyšují čas zpracování.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="170"/>
@@ -151,27 +151,27 @@
     <message>
       <location filename="PathWaterline.py" line="173"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.</source>
-      <translation type="unfinished">Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.</translation>
+      <translation>Povolit optimalizaci lineární dráhy(kolineárních bodů). Odstraní zbytečné kolineární body z výstupu G kódu.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="175"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>Povolit samostatnou optimalizaci přechodů mezi jednotlivými kroky.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
-      <translation type="unfinished">Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</translation>
+      <translation>Mezery kolineárního a druhého radiálního artefaktu, které jsou menší než tato prahová hodnota, jsou v dráze uzavřeny.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="179"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
-      <translation type="unfinished">Feedback: three smallest gaps identified in the path geometry.</translation>
+      <translation>Zpětná vazba: tři nejmenší mezery zjištěné v geometrii dráhy.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="179"/>
       <source>Profile the edges of the selection.</source>
-      <translation type="unfinished">Profile the edges of the selection.</translation>
+      <translation>Profil hran výběru.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="140"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
       <source>The base path to modify</source>
-      <translation type="unfinished">The base path to modify</translation>
+      <translation>Základní dráha pro úpravu</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="57"/>
@@ -196,22 +196,22 @@
     <message>
       <location filename="PathDressupDragknife.py" line="58"/>
       <source>Distance the point trails behind the spindle</source>
-      <translation type="unfinished">Distance the point trails behind the spindle</translation>
+      <translation>Vzdálenost stopy bodu za vřetenem</translation>
     </message>
     <message>
       <location filename="PathDressupDragknife.py" line="59"/>
       <source>Height to raise during corner action</source>
-      <translation type="unfinished">Height to raise during corner action</translation>
+      <translation>Výška zvednití během akce rohu</translation>
     </message>
     <message>
       <location filename="PathHop.py" line="37"/>
       <source>The object to be reached by this hop</source>
-      <translation type="unfinished">The object to be reached by this hop</translation>
+      <translation>Objekt, který má být dosažen tento skok</translation>
     </message>
     <message>
       <location filename="PathHop.py" line="38"/>
       <source>The Z height of the hop</source>
-      <translation type="unfinished">The Z height of the hop</translation>
+      <translation>Z výška skoku</translation>
     </message>
     <message>
       <location filename="PathFeatureExtensions.py" line="517"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="PathAdaptive.py" line="1039"/>
       <source>Stop processing</source>
-      <translation type="unfinished">Stop processing</translation>
+      <translation>Zastavit zpracování</translation>
     </message>
     <message>
       <location filename="PathProbe.py" line="58"/>
@@ -241,17 +241,17 @@
     <message>
       <location filename="PathProbe.py" line="60"/>
       <source>Number of points to probe in X direction</source>
-      <translation type="unfinished">Number of points to probe in X direction</translation>
+      <translation>Počet bodů měření sondou ve směru X</translation>
     </message>
     <message>
       <location filename="PathProbe.py" line="61"/>
       <source>Number of points to probe in Y direction</source>
-      <translation type="unfinished">Number of points to probe in Y direction</translation>
+      <translation>Počet bodů měření sondou ve směru Y</translation>
     </message>
     <message>
       <location filename="PathProbe.py" line="62"/>
       <source>The output location for the probe data to be written</source>
-      <translation type="unfinished">The output location for the probe data to be written</translation>
+      <translation>Umístění výstupu pro záznam dat sondy, které mají být zapsány</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="108"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="PathJob.py" line="498"/>
       <source>Operations Cycle Time Estimation</source>
-      <translation type="unfinished">Operations Cycle Time Estimation</translation>
+      <translation>Odhad času trvání cyklu operace</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="199"/>
@@ -346,17 +346,17 @@
     <message>
       <location filename="PathOp.py" line="317"/>
       <source>Lower limit of the turning diameter</source>
-      <translation type="unfinished">Lower limit of the turning diameter</translation>
+      <translation>Dolní mez průměru soustružení</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="325"/>
       <source>Upper limit of the turning diameter.</source>
-      <translation type="unfinished">Upper limit of the turning diameter.</translation>
+      <translation>Horní mez průměru soustružení.</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="435"/>
       <source>Coolant option for this operation</source>
-      <translation type="unfinished">Coolant option for this operation</translation>
+      <translation>Volba chlazení pro tuto operaci</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="82"/>
@@ -371,7 +371,7 @@
     <message>
       <location filename="PathVcarve.py" line="251"/>
       <source>Vcarve Tolerance</source>
-      <translation type="unfinished">Vcarve Tolerance</translation>
+      <translation>Tolerance Vcarve</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="63"/>
@@ -426,12 +426,12 @@
     <message>
       <location filename="PathDressupLeadInOut.py" line="72"/>
       <source>Extends LeadIn distance</source>
-      <translation type="unfinished">Extends LeadIn distance</translation>
+      <translation>Prodloužit vzdálenost LeadIn</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="73"/>
       <source>Extends LeadOut distance</source>
-      <translation type="unfinished">Extends LeadOut distance</translation>
+      <translation>Prodloužit vzdálenost LeadOut</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="74"/>
@@ -446,7 +446,7 @@
     <message>
       <location filename="PathFixture.py" line="37"/>
       <source>Fixture Offset Number</source>
-      <translation type="unfinished">Fixture Offset Number</translation>
+      <translation>Číslo posunu upinky</translation>
     </message>
     <message>
       <location filename="PathToolBit.py" line="145"/>
@@ -531,7 +531,7 @@
     <message>
       <location filename="PathDrilling.py" line="60"/>
       <source>Incremental Drill depth before retracting to clear chips</source>
-      <translation type="unfinished">Incremental Drill depth before retracting to clear chips</translation>
+      <translation>Přírustková hloubka vrtání před výjezdem k odstranění třísek</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="61"/>
@@ -566,17 +566,17 @@
     <message>
       <location filename="PathDrilling.py" line="67"/>
       <source>How far the drill depth is extended</source>
-      <translation type="unfinished">How far the drill depth is extended</translation>
+      <translation>Prodloužení hloubky vrtání</translation>
     </message>
     <message>
       <location filename="PathPlane.py" line="37"/>
       <source>Orientation plane of CNC path</source>
-      <translation type="unfinished">Orientation plane of CNC path</translation>
+      <translation>Orientace roviny CNC dráhy</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="58"/>
       <source>Shape to use for calculating Boundary</source>
-      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+      <translation>Tvar použitý pro výpočet hranice</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="59"/>
@@ -586,7 +586,7 @@
     <message>
       <location filename="PathMillFace.py" line="61"/>
       <source>Exclude milling raised areas inside the face.</source>
-      <translation type="unfinished">Exclude milling raised areas inside the face.</translation>
+      <translation>Vyloučit frézování vyvýšené plochy uvnitř oříznuté plochy.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="160"/>
@@ -611,12 +611,12 @@
     <message>
       <location filename="PathSlot.py" line="115"/>
       <source>Enter custom start point for slot path.</source>
-      <translation type="unfinished">Enter custom start point for slot path.</translation>
+      <translation>Zadat uživatelský počáteční bod pro dráhu drážky.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="117"/>
       <source>Enter custom end point for slot path.</source>
-      <translation type="unfinished">Enter custom end point for slot path.</translation>
+      <translation>Zadat uživatelský koncový bod pro dráhu drážky.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="119"/>
@@ -626,12 +626,12 @@
     <message>
       <location filename="PathSlot.py" line="121"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the beginning of the path, negative shortens.</translation>
+      <translation>Pozitivní prodloužení začátku dráhy, záporné zkrácení.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="123"/>
       <source>Positive extends the end of the path, negative shortens.</source>
-      <translation type="unfinished">Positive extends the end of the path, negative shortens.</translation>
+      <translation>Pozitivní prodloužení konce dráhy, záporné zkrácení.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="125"/>
@@ -911,32 +911,32 @@
     <message>
       <location filename="PathDeburr.py" line="126"/>
       <source>The desired width of the chamfer</source>
-      <translation type="unfinished">The desired width of the chamfer</translation>
+      <translation>Požadovaná šířka zkosení</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="132"/>
       <source>The additional depth of the tool path</source>
-      <translation type="unfinished">The additional depth of the tool path</translation>
+      <translation>Dodatečná hloubka dráhy nástroje</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="138"/>
       <source>How to join chamfer segments</source>
-      <translation type="unfinished">How to join chamfer segments</translation>
+      <translation>Jak připojit segmenty zkosení</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="146"/>
       <source>Direction of Operation</source>
-      <translation type="unfinished">Direction of Operation</translation>
+      <translation>Směr operace</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="153"/>
       <source>Side of Operation</source>
-      <translation type="unfinished">Side of Operation</translation>
+      <translation>Strana operace</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="163"/>
       <source>Select the segment, there the operations starts</source>
-      <translation type="unfinished">Select the segment, there the operations starts</translation>
+      <translation>Vyberte segment, kde operace začínají</translation>
     </message>
     <message>
       <location filename="PathStock.py" line="111"/>
@@ -1051,7 +1051,7 @@
     <message>
       <location filename="PathJob.py" line="159"/>
       <source>Job Cycle Time Estimation</source>
-      <translation type="unfinished">Job Cycle Time Estimation</translation>
+      <translation>Odhad času trvání úlohy</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="176"/>
@@ -1164,7 +1164,7 @@
     <message>
       <location filename="PathEngraveGui.py" line="74"/>
       <source>Ignoring vertex</source>
-      <translation type="unfinished">Ignoring vertex</translation>
+      <translation>Ignorovat vrchol</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="282"/>
@@ -1184,17 +1184,17 @@
     <message>
       <location filename="PathUtils.py" line="472"/>
       <source>Didn't find job %s</source>
-      <translation type="unfinished">Didn't find job %s</translation>
+      <translation>Nenašel jsem úlohu %s</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="541"/>
       <source>Illegal arc: Start and end radii not equal</source>
-      <translation type="unfinished">Illegal arc: Start and end radii not equal</translation>
+      <translation>Neplatný oblouk: Nerovná se začátek a konec poloměru</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="750"/>
       <source>Legacy Tools not supported</source>
-      <translation type="unfinished">Legacy Tools not supported</translation>
+      <translation>Starší nástroje nejsou podporovány</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="754"/>
@@ -1204,7 +1204,7 @@
     <message>
       <location filename="PathUtils.py" line="760"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</translation>
+      <translation>Neplatný úhel hrany řezu %.2f, musí být &gt;0A&lt;unk&gt; ° a &lt;=180A&lt;unk&gt; °</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="767"/>
@@ -1214,7 +1214,7 @@
     <message>
       <location filename="PathOp.py" line="570"/>
       <source>No parent job found for operation.</source>
-      <translation type="unfinished">No parent job found for operation.</translation>
+      <translation>Nenalezena žádná nadřazená úloha pro operaci.</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="576"/>
@@ -1224,7 +1224,7 @@
     <message>
       <location filename="PathOp.py" line="720"/>
       <source>No coolant property found. Please recreate operation.</source>
-      <translation type="unfinished">No coolant property found. Please recreate operation.</translation>
+      <translation>Nebyla nalezena žádná vlastnost chlazení. Prosím obnovte operaci.</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="779"/>
@@ -1239,7 +1239,7 @@
     <message>
       <location filename="PathOp.py" line="798"/>
       <source>Feedrate Error</source>
-      <translation type="unfinished">Feedrate Error</translation>
+      <translation>Chyba rychlosti posuvu</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="815"/>
@@ -1249,12 +1249,12 @@
     <message>
       <location filename="PathOp.py" line="838"/>
       <source>Base object %s.%s already in the list</source>
-      <translation type="unfinished">Base object %s.%s already in the list</translation>
+      <translation>Základní objekt %s.%s je již v seznamu</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="851"/>
       <source>Base object %s.%s rejected by operation</source>
-      <translation type="unfinished">Base object %s.%s rejected by operation</translation>
+      <translation>Základní objekt %s.%s odmítnut operací</translation>
     </message>
     <message>
       <location filename="PathProfileGui.py" line="165"/>
@@ -1282,6 +1282,16 @@
       <translation>Levotočivý</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="114"/>
+      <source>Engraving Operations</source>
+      <translation>Operace obrábění po křivce</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="131"/>
+      <source>3D Operations</source>
+      <translation>3D Operace</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="136"/>
       <source>Project Setup</source>
       <translation>Nastavení projektu</translation>
@@ -1297,19 +1307,9 @@
       <translation>Nová operace</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="151"/>
-      <source>Path Modification</source>
-      <translation type="unfinished">Path Modification</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="141"/>
       <source>Helpful Tools</source>
       <translation type="unfinished">Helpful Tools</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="159"/>
-      <source>&amp;Path</source>
-      <translation>Cesta</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="147"/>
@@ -1317,19 +1317,14 @@
       <translation type="unfinished">Path Dressup</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="114"/>
-      <source>Engraving Operations</source>
-      <translation>Operace obrábění po křivce</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="131"/>
-      <source>3D Operations</source>
-      <translation>3D Operace</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="149"/>
       <source>Supplemental Commands</source>
       <translation type="unfinished">Supplemental Commands</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="151"/>
+      <source>Path Modification</source>
+      <translation>Úprava dráhy</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="154"/>
@@ -1338,8 +1333,13 @@
     </message>
     <message>
       <location filename="InitGui.py" line="159"/>
+      <source>&amp;Path</source>
+      <translation>Cesta</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
-      <translation type="unfinished">Utils</translation>
+      <translation>Nástroje</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
@@ -1349,17 +1349,17 @@
     <message>
       <location filename="PathToolBitLibraryGui.py" line="77"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation type="unfinished">Choose a writable location for your toolbits</translation>
+      <translation>Vyberte si zapisovatelnou polohu pro vaše nástroje</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
       <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
-      <translation type="unfinished">A planar adaptive start is unavailable. The non-planar will be attempted.</translation>
+      <translation>Rovinný adaptivní počátek je nedostupný. Bude proveden pokus o neroviný.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="233"/>
       <source>The non-planar adaptive start is also unavailable.</source>
-      <translation type="unfinished">The non-planar adaptive start is also unavailable.</translation>
+      <translation>Nerovinný adaptivní start je také nedostupný.</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="785"/>
@@ -1374,17 +1374,17 @@
     <message>
       <location filename="PathOpGui.py" line="997"/>
       <source>AreaOp Operation</source>
-      <translation type="unfinished">AreaOp Operation</translation>
+      <translation>Operace AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1122"/>
       <source>Uncreate AreaOp Operation</source>
-      <translation type="unfinished">Uncreate AreaOp Operation</translation>
+      <translation>Nevytvořit operaci AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1262"/>
       <source>Pick Start Point</source>
-      <translation type="unfinished">Pick Start Point</translation>
+      <translation>Vybrat počáteční bod</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="456"/>
@@ -1438,32 +1438,32 @@
     <message>
       <location filename="PathDeburr.py" line="101"/>
       <source>The desired width of the chamfer</source>
-      <translation type="unfinished">The desired width of the chamfer</translation>
+      <translation>Požadovaná šířka zkosení</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="103"/>
       <source>The additional depth of the tool path</source>
-      <translation type="unfinished">The additional depth of the tool path</translation>
+      <translation>Dodatečná hloubka dráhy nástroje</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="105"/>
       <source>How to join chamfer segments</source>
-      <translation type="unfinished">How to join chamfer segments</translation>
+      <translation>Jak připojit segmenty zkosení</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="109"/>
       <source>Direction of Operation</source>
-      <translation type="unfinished">Direction of Operation</translation>
+      <translation>Směr operace</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="112"/>
       <source>Side of Operation</source>
-      <translation type="unfinished">Side of Operation</translation>
+      <translation>Strana operace</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="116"/>
       <source>Select the segment, there the operations starts</source>
-      <translation type="unfinished">Select the segment, there the operations starts</translation>
+      <translation>Vyberte segment, kde operace začínají</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="189"/>
@@ -1478,7 +1478,7 @@
     <message>
       <location filename="PathDeburrGui.py" line="125"/>
       <source>Deburr</source>
-      <translation type="unfinished">Deburr</translation>
+      <translation>Odjehlení</translation>
     </message>
     <message>
       <location filename="PathDeburrGui.py" line="126"/>
@@ -1491,27 +1491,27 @@
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="717"/>
       <source>Click to enable Extensions</source>
-      <translation type="unfinished">Click to enable Extensions</translation>
+      <translation>Kliknutím povolíte rozšíření</translation>
     </message>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="733"/>
       <source>Click to include Edges/Wires</source>
-      <translation type="unfinished">Click to include Edges/Wires</translation>
+      <translation>Kliknutím zahrnete hrany/dráty</translation>
     </message>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="710"/>
       <source>Extensions enabled</source>
-      <translation type="unfinished">Extensions enabled</translation>
+      <translation>Rozšíření povoleno</translation>
     </message>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="730"/>
       <source>Including Edges/Wires</source>
-      <translation type="unfinished">Including Edges/Wires</translation>
+      <translation>Včetně hran/drátů</translation>
     </message>
     <message>
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
-      <translation type="unfinished">Waterline error</translation>
+      <translation>Chyba vodorysky</translation>
     </message>
   </context>
   <context>
@@ -1532,22 +1532,22 @@
     <message>
       <location filename="PathGeom.py" line="151"/>
       <source>face %s not handled, assuming not vertical</source>
-      <translation type="unfinished">face %s not handled, assuming not vertical</translation>
+      <translation>plocha %s není řešena, za předpokladu, že není vertikální</translation>
     </message>
     <message>
       <location filename="PathGeom.py" line="163"/>
       <source>edge %s not handled, assuming not vertical</source>
-      <translation type="unfinished">edge %s not handled, assuming not vertical</translation>
+      <translation>hrana %s není řešena, za předpokladu, že není vertikální</translation>
     </message>
     <message>
       <location filename="PathGeom.py" line="166"/>
       <source>isVertical(%s) not supported</source>
-      <translation type="unfinished">isVertical(%s) not supported</translation>
+      <translation>isVertical(%s) není podporováno</translation>
     </message>
     <message>
       <location filename="PathGeom.py" line="194"/>
       <source>isHorizontal(%s) not supported</source>
-      <translation type="unfinished">isHorizontal(%s) not supported</translation>
+      <translation>isHorizontal(%s) není podporováno</translation>
     </message>
     <message>
       <location filename="PathGeom.py" line="546"/>
@@ -1768,7 +1768,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathOpGui.py" line="1093"/>
       <source>AreaOp Operation</source>
-      <translation type="unfinished">AreaOp Operation</translation>
+      <translation>Operace AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1778,12 +1778,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathOpGui.py" line="1224"/>
       <source>Uncreate AreaOp Operation</source>
-      <translation type="unfinished">Uncreate AreaOp Operation</translation>
+      <translation>Nevytvořit operaci AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1371"/>
       <source>Pick Start Point</source>
-      <translation type="unfinished">Pick Start Point</translation>
+      <translation>Vybrat počáteční bod</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -1888,27 +1888,27 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathOp.py" line="315"/>
       <source>Lower limit of the turning diameter</source>
-      <translation type="unfinished">Lower limit of the turning diameter</translation>
+      <translation>Dolní mez průměru soustružení</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="323"/>
       <source>Upper limit of the turning diameter.</source>
-      <translation type="unfinished">Upper limit of the turning diameter.</translation>
+      <translation>Horní mez průměru soustružení.</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="383"/>
       <source>Coolant option for this operation</source>
-      <translation type="unfinished">Coolant option for this operation</translation>
+      <translation>Volba chlazení pro tuto operaci</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
-      <translation type="unfinished">Job Cycle Time Estimation</translation>
+      <translation>Odhad času trvání úlohy</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="422"/>
       <source>Operations Cycle Time Estimation</source>
-      <translation type="unfinished">Operations Cycle Time Estimation</translation>
+      <translation>Odhad času trvání cyklu operace</translation>
     </message>
   </context>
   <context>
@@ -1944,7 +1944,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketBaseGui.py" line="67"/>
       <source>Pass Extension</source>
-      <translation type="unfinished">Pass Extension</translation>
+      <translation>Přejít rozšíření</translation>
     </message>
     <message>
       <location filename="PathPocketBaseGui.py" line="68"/>
@@ -1954,12 +1954,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketShape.py" line="107"/>
       <source>Pocket does not support shape %s.%s</source>
-      <translation type="unfinished">Pocket does not support shape %s.%s</translation>
+      <translation>Kapsa nepodporuje tvar %s.%s</translation>
     </message>
     <message>
       <location filename="PathPocketShape.py" line="123"/>
       <source>Vertical faces do not form a loop - ignoring</source>
-      <translation type="unfinished">Vertical faces do not form a loop - ignoring</translation>
+      <translation>Svislé plochy netvoří smyčku - ignoruji</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="62"/>
@@ -1969,7 +1969,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocket.py" line="108"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
-      <translation type="unfinished">Final depth set below ZMin of face(s) selected.</translation>
+      <translation>Konečná hloubka nastavená pod ZMin zvolené plochy (ploch).</translation>
     </message>
   </context>
   <context>
@@ -1997,7 +1997,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="93"/>
       <source>Check its default value.</source>
-      <translation type="unfinished">Check its default value.</translation>
+      <translation>Zkontrolujte jeho výchozí hodnotu.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="197"/>
@@ -2007,12 +2007,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Dohromady</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Jednotlivě</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -2037,120 +2037,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Zkontrolovat výběr hrany a požadavky na konečnou hloubku pro profilování otevřené hrany.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
-      <translation type="unfinished">For open edges, verify Final Depth for this operation.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSlot</name>
-    <message>
-      <location filename="PathSlot.py" line="101"/>
-      <source>New property added to</source>
-      <translation type="unfinished">New property added to</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="103"/>
-      <source>Check default value(s).</source>
-      <translation type="unfinished">Check default value(s).</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="431"/>
-      <source>No Base Geometry object in the operation.</source>
-      <translation type="unfinished">No Base Geometry object in the operation.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="441"/>
-      <source>Custom points are identical.</source>
-      <translation type="unfinished">Custom points are identical.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="449"/>
-      <source>Custom points not at same Z height.</source>
-      <translation type="unfinished">Custom points not at same Z height.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="501"/>
-      <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="519"/>
-      <source>No path extensions available for full circles.</source>
-      <translation type="unfinished">No path extensions available for full circles.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="674"/>
-      <source>operation collides with model.</source>
-      <translation type="unfinished">operation collides with model.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="926"/>
-      <source>Verify slot path start and end points.</source>
-      <translation type="unfinished">Verify slot path start and end points.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="752"/>
-      <source>The selected face is inaccessible.</source>
-      <translation type="unfinished">The selected face is inaccessible.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="769"/>
-      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation type="unfinished">Only a vertex selected. Add another feature to the Base Geometry.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="794"/>
-      <source>A single selected face must have four edges minimum.</source>
-      <translation type="unfinished">A single selected face must have four edges minimum.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="853"/>
-      <source>No parallel edges identified.</source>
-      <translation type="unfinished">No parallel edges identified.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="878"/>
-      <source>value error.</source>
-      <translation type="unfinished">value error.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="942"/>
-      <source>Current tool larger than arc diameter.</source>
-      <translation type="unfinished">Current tool larger than arc diameter.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1027"/>
-      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation type="unfinished">Failed, slot from edge only accepts lines, arcs and circles.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1047"/>
-      <source>Failed to determine point 1 from</source>
-      <translation type="unfinished">Failed to determine point 1 from</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1058"/>
-      <source>Failed to determine point 2 from</source>
-      <translation type="unfinished">Failed to determine point 2 from</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1072"/>
-      <source>Selected geometry not parallel.</source>
-      <translation type="unfinished">Selected geometry not parallel.</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1192"/>
-      <source>The selected face is not oriented vertically:</source>
-      <translation type="unfinished">The selected face is not oriented vertically:</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="1713"/>
-      <source>Current offset value produces negative radius.</source>
-      <translation type="unfinished">Current offset value produces negative radius.</translation>
+      <translation>Pro otevřené hrany ověřte konečnou hloubku pro tuto operaci.</translation>
     </message>
   </context>
   <context>
@@ -2158,7 +2050,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathStock.py" line="86"/>
       <source>Invalid base object %s - no shape found</source>
-      <translation type="unfinished">Invalid base object %s - no shape found</translation>
+      <translation>Neplatný základní objekt %s - nebyl nalezen žádný tvar</translation>
     </message>
     <message>
       <location filename="PathStock.py" line="98"/>
@@ -2769,7 +2661,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDeburrGui.py" line="147"/>
       <source>Deburr</source>
-      <translation type="unfinished">Deburr</translation>
+      <translation>Odjehlení</translation>
     </message>
     <message>
       <location filename="PathDeburrGui.py" line="150"/>
@@ -2829,7 +2721,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupZCorrect.py" line="66"/>
       <source>The base path to modify</source>
-      <translation type="unfinished">The base path to modify</translation>
+      <translation>Základní dráha pro úpravu</translation>
     </message>
   </context>
   <context>
@@ -2837,7 +2729,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupDogbone.py" line="406"/>
       <source>The base path to modify</source>
-      <translation type="unfinished">The base path to modify</translation>
+      <translation>Základní dráha pro úpravu</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="407"/>
@@ -3041,7 +2933,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupPathBoundary.py" line="52"/>
       <source>The base path to modify</source>
-      <translation type="unfinished">The base path to modify</translation>
+      <translation>Základní dráha pro úpravu</translation>
     </message>
     <message>
       <location filename="PathDressupPathBoundary.py" line="54"/>
@@ -3064,7 +2956,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupRampEntry.py" line="59"/>
       <source>The base path to modify</source>
-      <translation type="unfinished">The base path to modify</translation>
+      <translation>Základní dráha pro úpravu</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="65"/>
@@ -3182,7 +3074,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTag.py" line="117"/>
       <source>The base path to modify</source>
-      <translation type="unfinished">The base path to modify</translation>
+      <translation>Základní dráha pro úpravu</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="118"/>
@@ -3563,6 +3455,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
   </context>
   <context>
+    <name>Path_Job:</name>
+    <message>
+      <location filename="PathJobDlg.py" line="351"/>
+      <source>Cylinder: %.2f x %.2f</source>
+      <translation>Válec: %.2f x %.2f</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_MillFace</name>
     <message>
       <location filename="PathMillFaceGui.py" line="91"/>
@@ -3634,12 +3534,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocket.py" line="120"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Dohromady</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="121"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Jednotlivě</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="61"/>
@@ -4103,6 +4003,161 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_Slot</name>
     <message>
+      <location filename="PathSlot.py" line="109"/>
+      <source>New property added to</source>
+      <translation type="unfinished">New property added to</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="111"/>
+      <source>Check default value(s).</source>
+      <translation type="unfinished">Check default value(s).</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="258"/>
+      <source>Line</source>
+      <translation>Čára</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="259"/>
+      <source>ZigZag</source>
+      <translation type="unfinished">ZigZag</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="262"/>
+      <source>Single-pass</source>
+      <translation type="unfinished">Single-pass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="263"/>
+      <source>Multi-pass</source>
+      <translation type="unfinished">Multi-pass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="266"/>
+      <source>Start to End</source>
+      <translation type="unfinished">Start to End</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="267"/>
+      <source>Perpendicular</source>
+      <translation>Kolmý</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="282"/>
+      <source>Center of Mass</source>
+      <translation type="unfinished">Center of Mass</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="284"/>
+      <source>Center of BoundBox</source>
+      <translation type="unfinished">Center of BoundBox</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="287"/>
+      <source>Lowest Point</source>
+      <translation type="unfinished">Lowest Point</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="288"/>
+      <source>Highest Point</source>
+      <translation type="unfinished">Highest Point</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="277"/>
+      <source>Long Edge</source>
+      <translation type="unfinished">Long Edge</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="278"/>
+      <source>Short Edge</source>
+      <translation type="unfinished">Short Edge</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="289"/>
+      <source>Vertex</source>
+      <translation>Vrchol</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="608"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation type="unfinished">No Base Geometry object in the operation.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="617"/>
+      <source>Custom points are identical.</source>
+      <translation>Uživatelské body jsou totožné.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="624"/>
+      <source>Custom points not at same Z height.</source>
+      <translation type="unfinished">Custom points not at same Z height.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="700"/>
+      <source>No path extensions available for full circles.</source>
+      <translation type="unfinished">No path extensions available for full circles.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="876"/>
+      <source>operation collides with model.</source>
+      <translation type="unfinished">operation collides with model.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1146"/>
+      <source>Verify slot path start and end points.</source>
+      <translation type="unfinished">Verify slot path start and end points.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="973"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1018"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation type="unfinished">A single selected face must have four edges minimum.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1075"/>
+      <source>No parallel edges identified.</source>
+      <translation>Nebyly nalezeny žádné paralelní hrany.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1099"/>
+      <source>value error.</source>
+      <translation>chyba hodnoty.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1161"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Aktuální nástroj větší než průměr oblouku.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1267"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Nepodařilo se určit bod 1 od</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1277"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Nepodařilo se určit bod 2 od</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1290"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>Vybraná geometrie není rovnoběžná.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1411"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>Vybraná oříznutá plocha není orientována vertikálně:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1939"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Aktuální hodnota posunu vede k zápornému poloměru.</translation>
+    </message>
+    <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
       <translation type="unfinished">Slot</translation>
@@ -4211,12 +4266,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="482"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Dohromady</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="483"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Jednotlivě</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="486"/>
@@ -4317,7 +4372,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolBitLibraryGui.py" line="85"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation type="unfinished">Choose a writable location for your toolbits</translation>
+      <translation>Vyberte si zapisovatelnou polohu pro vaše nástroje</translation>
     </message>
     <message>
       <location filename="PathToolBitLibraryGui.py" line="793"/>
@@ -4421,6 +4476,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">Add Tool Controller</translation>
     </message>
     <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Žádný</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation type="unfinished">Forward</translation>
@@ -4508,6 +4568,59 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathWaterlineGui.py" line="151"/>
       <source>Create a Waterline Operation from a model</source>
       <translation type="unfinished">Create a Waterline Operation from a model</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="InitGui.py" line="176"/>
+      <source>Project Setup</source>
+      <translation>Nastavení projektu</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="179"/>
+      <source>Tool Commands</source>
+      <translation>Příkazy nástroje</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="182"/>
+      <source>New Operations</source>
+      <translation>Nová operace</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="223"/>
+      <source>Path Modification</source>
+      <translation>Úprava dráhy</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="190"/>
+      <source>Helpful Tools</source>
+      <translation type="unfinished">Helpful Tools</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="241"/>
+      <source>&amp;Path</source>
+      <translation>Cesta</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="209"/>
+      <source>Path Dressup</source>
+      <translation type="unfinished">Path Dressup</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="216"/>
+      <source>Supplemental Commands</source>
+      <translation type="unfinished">Supplemental Commands</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="231"/>
+      <source>Specialty Operations</source>
+      <translation>Speciální operace</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="242"/>
+      <source>Utils</source>
+      <translation>Nástroje</translation>
     </message>
   </context>
   <context>
@@ -4610,12 +4723,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="134"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Dohromady</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="135"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Jednotlivě</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="138"/>
@@ -4626,6 +4739,114 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation type="unfinished">Multi-pass</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSlot</name>
+    <message>
+      <location filename="PathSlot.py" line="101"/>
+      <source>New property added to</source>
+      <translation type="unfinished">New property added to</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="103"/>
+      <source>Check default value(s).</source>
+      <translation type="unfinished">Check default value(s).</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="431"/>
+      <source>No Base Geometry object in the operation.</source>
+      <translation type="unfinished">No Base Geometry object in the operation.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="441"/>
+      <source>Custom points are identical.</source>
+      <translation>Uživatelské body jsou totožné.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="449"/>
+      <source>Custom points not at same Z height.</source>
+      <translation type="unfinished">Custom points not at same Z height.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="501"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="519"/>
+      <source>No path extensions available for full circles.</source>
+      <translation type="unfinished">No path extensions available for full circles.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="674"/>
+      <source>operation collides with model.</source>
+      <translation type="unfinished">operation collides with model.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="752"/>
+      <source>The selected face is inaccessible.</source>
+      <translation type="unfinished">The selected face is inaccessible.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="769"/>
+      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
+      <translation type="unfinished">Only a vertex selected. Add another feature to the Base Geometry.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="794"/>
+      <source>A single selected face must have four edges minimum.</source>
+      <translation type="unfinished">A single selected face must have four edges minimum.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="853"/>
+      <source>No parallel edges identified.</source>
+      <translation>Nebyly nalezeny žádné paralelní hrany.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="878"/>
+      <source>value error.</source>
+      <translation>chyba hodnoty.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="926"/>
+      <source>Verify slot path start and end points.</source>
+      <translation type="unfinished">Verify slot path start and end points.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="942"/>
+      <source>Current tool larger than arc diameter.</source>
+      <translation>Aktuální nástroj větší než průměr oblouku.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1027"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation>Nezdařilo se, drážka od hrany přijímá pouze čáry, oblouky a kružnice.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1047"/>
+      <source>Failed to determine point 1 from</source>
+      <translation>Nepodařilo se určit bod 1 od</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1058"/>
+      <source>Failed to determine point 2 from</source>
+      <translation>Nepodařilo se určit bod 2 od</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1072"/>
+      <source>Selected geometry not parallel.</source>
+      <translation>Vybraná geometrie není rovnoběžná.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1192"/>
+      <source>The selected face is not oriented vertically:</source>
+      <translation>Vybraná oříznutá plocha není orientována vertikálně:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1713"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Aktuální hodnota posunu vede k zápornému poloměru.</translation>
     </message>
   </context>
   <context>

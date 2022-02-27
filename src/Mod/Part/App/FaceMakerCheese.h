@@ -25,7 +25,6 @@
 
 #include "FaceMaker.h"
 #include <list>
-#include <functional>
 
 namespace Part
 {

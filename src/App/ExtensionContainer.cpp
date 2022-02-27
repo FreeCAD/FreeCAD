@@ -23,15 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <algorithm>
-#endif
+#include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "Extension.h"
-#include "DocumentObject.h"
-#include "Base/Exception.h"
-#include <Base/Console.h>
+#include "ExtensionContainer.h"
+
 
 using namespace App;
 

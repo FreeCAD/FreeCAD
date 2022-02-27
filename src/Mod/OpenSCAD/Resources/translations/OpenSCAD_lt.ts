@@ -46,12 +46,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Įkelti</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Išsaugoti</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
@@ -196,12 +196,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
-      <translation type="unfinished">Mirror Mesh Feature...</translation>
+      <translation>Veidrodinio tinklo ypatybė...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="198"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation type="unfinished">Create Mirror Mesh Feature</translation>
+      <translation>Sukurti veidrodinio tinko ypatybę</translation>
     </message>
   </context>
   <context>
@@ -248,12 +248,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>Tinklo dydžio keitimo ypatybė...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="258"/>
       <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
+      <translation>Sukurti tinklo dydžio keitimo ypatybę</translation>
     </message>
   </context>
   <context>
@@ -261,12 +261,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>Tinklo mastelio ypatybė...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="228"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>Sukurti tinklo mastelio ypatybę</translation>
     </message>
   </context>
   <context>
