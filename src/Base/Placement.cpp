@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Placement.h"
 #include "Rotation.h"

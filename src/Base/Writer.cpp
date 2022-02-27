@@ -23,9 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Writer.h"
 #include "Persistence.h"
