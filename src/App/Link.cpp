@@ -22,22 +22,16 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
-
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/preprocessor/stringize.hpp>
 #include <Base/Tools.h>
+
 #include "Application.h"
+#include "ComplexGeoData.h"
+#include "ComplexGeoDataPy.h"
 #include "Document.h"
 #include "GroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include "ComplexGeoData.h"
-#include "ComplexGeoDataPy.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
