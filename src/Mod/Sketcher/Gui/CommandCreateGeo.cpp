@@ -25,10 +25,11 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
+# include <QInputDialog>
 # include <QMessageBox>
+# include <QString>
 # include <stdlib.h>
 # include <qdebug.h>
-# include <QString>
 # include <GC_MakeEllipse.hxx>
 # include <boost/math/special_functions/fpclassify.hpp>
 # include <memory>
@@ -4582,6 +4583,7 @@ public:
       , EditCurve(2)
       , CurrentConstraint(0)
       , ConstrMethod(constructionMethod)
+      , SplineDegree(3)
       , IsClosed(false)
       , FirstPoleGeoId(-2000)
     {
@@ -4782,9 +4784,10 @@ public:
 
                 // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
-                                        "(%s,None,None,%s,3,None,False),%s)",
+                                        "(%s,None,None,%s,%d,None,False),%s)",
                                         controlpoints.c_str(),
                                         ConstrMethod == 0 ?"False":"True",
+                                        SplineDegree,
                                         geometryCreationMode==Construction?"True":"False");
 
 
@@ -4851,6 +4854,8 @@ public:
                 EditCurve.resize(2);
                 applyCursor();
 
+                SplineDegree = 3;
+
                 sugConstr.clear();
 
                 std::vector<AutoConstraint> sugConstr1;
@@ -4871,7 +4876,25 @@ public:
         return true;
     }
 
-    virtual void quit(void) override {
+    virtual void registerPressedKey(bool pressed, int key) override
+    {
+        if (SoKeyboardEvent::D == key && pressed) {
+            SplineDegree = QInputDialog::getInt(
+                Gui::getMainWindow(),
+                QObject::tr("B-Spline Degree"),
+                QObject::tr("Define B-Spline Degree, between 1 and %1:")
+                .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+                SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
+            // FIXME: Pressing Esc here also finishes the B-Spline creation.
+            // The user may only want to exit the dialog.
+        }
+        // TODO: On pressing, say, W, modify last pole's weight
+        // TODO: On pressing, say, M, modify next knot's multiplicity
+        // TODO: On pressing, say, Backspace, delete last pole
+    }
+
+    virtual void quit(void) override
+    {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
@@ -4933,6 +4956,7 @@ protected:
 
     int CurrentConstraint;
     int ConstrMethod;
+    int SplineDegree;
     bool IsClosed;
     int FirstPoleGeoId;
 };
