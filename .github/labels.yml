@@ -7,7 +7,7 @@ Core:
 - 'src/Base/**/*'
 - 'src/Gui/**/*'
 
-:octocat: :
+:octocat::
 - '.github/**/*'
 
 Addon Manager:
