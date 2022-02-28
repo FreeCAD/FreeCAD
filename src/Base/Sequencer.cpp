@@ -24,15 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cstdio>
-# include <algorithm>
 # include <QMutex>
 # include <QMutexLocker>
 #endif
 
 #include "Sequencer.h"
-#include "Console.h"
-#include <CXX/Objects.hxx>
+
 
 using namespace Base;
 

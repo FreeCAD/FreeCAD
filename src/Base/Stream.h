@@ -24,18 +24,16 @@
 #ifndef BASE_STREAM_H
 #define BASE_STREAM_H
 
-
 #ifdef __GNUC__
 # include <cstdint>
 #endif
 
 #include <fstream>
-#include <ios>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 #include "FileInfo.h"
+
 
 class QByteArray;
 class QIODevice;
