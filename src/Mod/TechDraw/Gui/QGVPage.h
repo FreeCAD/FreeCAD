@@ -25,9 +25,10 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QLabel>
+#include <QPainterPath>
 
 class QTemporaryFile;
 

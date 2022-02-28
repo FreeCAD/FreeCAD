@@ -27,10 +27,8 @@
 #include <Base/Persistence.h>
 
 
-
 namespace App
 {
-
 
 /** Base class of all geometric document objects.
  */

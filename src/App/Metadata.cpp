@@ -29,19 +29,11 @@
 #include "Metadata.h"
 
 #include <xercesc/sax/HandlerBase.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 
-
-#include "Base/XMLTools.h"
-#include "App/Expression.h"
 #include "App/Application.h"
+#include "App/Expression.h"
+#include "Base/XMLTools.h"
 
 /*
 *** From GCC: ***

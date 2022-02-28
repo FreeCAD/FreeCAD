@@ -59,7 +59,7 @@
 		<Attribute Name="Urls" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
-					List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
+					List of URLs as objects with 'location' and 'type' string attributes, where type is one of:
 					* website
 					* repository
 					* bugtracker

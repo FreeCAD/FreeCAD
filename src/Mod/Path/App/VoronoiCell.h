@@ -22,10 +22,7 @@
 #ifndef PATH_VORONOICELL_H
 #define PATH_VORONOICELL_H
 
-#include <Base/Handle.h>
 #include <Base/BaseClass.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
 #include "Voronoi.h"
 
 namespace Path

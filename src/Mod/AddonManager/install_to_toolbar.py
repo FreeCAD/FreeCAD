@@ -22,14 +22,14 @@
 import FreeCAD
 import FreeCADGui
 from PySide2 import QtCore, QtWidgets
-import AddonManagerRepo
+import Addon
 
 import os
 
 translate = FreeCAD.Qt.translate
 
 
-def ask_to_install_toolbar_button(repo: AddonManagerRepo) -> None:
+def ask_to_install_toolbar_button(repo: Addon) -> None:
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     do_not_show_dialog = pref.GetBool("dontShowAddMacroButtonDialog", False)
     if not do_not_show_dialog:
@@ -46,7 +46,7 @@ def ask_to_install_toolbar_button(repo: AddonManagerRepo) -> None:
 
 
 def ask_for_toolbar(
-    repo: AddonManagerRepo, custom_toolbars
+    repo: Addon, custom_toolbars
 ) -> object:  # Returns the pref group for the new toolbar
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
 
@@ -158,7 +158,7 @@ def check_for_toolbar(custom_toolbars, toolbar_name: str) -> bool:
         return False
 
 
-def install_toolbar_button(repo: AddonManagerRepo) -> None:
+def install_toolbar_button(repo: Addon) -> None:
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     custom_toolbar_name = pref.GetString(
         "CustomToolbarName", "Auto-Created Macro Toolbar"
@@ -206,7 +206,7 @@ def install_toolbar_button(repo: AddonManagerRepo) -> None:
         )
 
 
-def install_macro_to_toolbar(repo: AddonManagerRepo, toolbar: object) -> None:
+def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
     menuText = repo.display_name
     tooltipText = f"<b>{repo.display_name}</b>"
     if repo.macro.comment:
@@ -254,7 +254,7 @@ def install_macro_to_toolbar(repo: AddonManagerRepo, toolbar: object) -> None:
     wb.reloadActive()
 
 
-def remove_custom_toolbar_button(repo: AddonManagerRepo) -> None:
+def remove_custom_toolbar_button(repo: Addon) -> None:
     """If this repo contains a macro, look through the custom commands and
     see if one is set up for this macro. If so, remove it, including any
     toolbar entries."""

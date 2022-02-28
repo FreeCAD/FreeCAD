@@ -22,60 +22,34 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
-# include <iostream>
 # include <string>
 # include <sstream>
-# include <cstdlib>
-# include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
-
 # include <App/DocumentObject.h>
-# include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Type.h>
+# include <Base/Console.h>
+# include <Base/Type.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
 # include <Gui/Command.h>
 # include <Gui/Control.h>
-# include <Gui/Document.h>
-# include <Gui/Selection.h>
 # include <Gui/MainWindow.h>
-# include <Gui/FileDialog.h>
-# include <Gui/ViewProvider.h>
+# include <Gui/Selection.h>
 
-# include <Mod/Part/App/PartFeature.h>
-
-# include <Mod/TechDraw/App/DrawViewPart.h>
-# include <Mod/TechDraw/App/DrawProjGroupItem.h>
-# include <Mod/TechDraw/App/DrawProjGroup.h>
-# include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
-# include <Mod/TechDraw/App/DrawDimHelper.h>
-# include <Mod/TechDraw/App/LandmarkDimension.h>
+# include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
+# include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
-# include <Mod/TechDraw/App/Geometry.h>
 # include <Mod/TechDraw/App/Preferences.h>
 
-#include <Mod/TechDraw/Gui/QGVPage.h> //needed ?
-
-
 #include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "TaskLinkDim.h"
-
-#include "TaskSelectLineAttributes.h"
 #include "TaskCustomizeFormat.h"
+#include "TaskSelectLineAttributes.h"
 
-/////////////////////////////
-#include <Mod/TechDraw/App/DrawViewSection.h>  // needed
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-/////////////////////////////
 
 using namespace TechDrawGui;
 using namespace TechDraw;

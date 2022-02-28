@@ -4,4 +4,5 @@
 # License LGPL
 
 import FreeCAD
+
 FreeCAD.__unit_test__ += ["TestAddonManagerApp"]

@@ -4,7 +4,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -40,7 +40,7 @@ import addonmanager_utilities as utils
 import AddonManager_rc
 from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
-from AddonManagerRepo import AddonManagerRepo
+from Addon import Addon
 from install_to_toolbar import (
     ask_to_install_toolbar_button,
     remove_custom_toolbar_button,
@@ -496,7 +496,7 @@ class CommandAddonManager:
         # Write the cache data if it's safe to do so:
         if not worker_killed:
             for repo in self.item_model.repos:
-                if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+                if repo.repo_type == Addon.Kind.MACRO:
                     self.cache_macro(repo)
                 else:
                     self.cache_package(repo)
@@ -633,7 +633,7 @@ class CommandAddonManager:
             )  # Link to step 2
             self.update_worker.start()
 
-    def cache_package(self, repo: AddonManagerRepo):
+    def cache_package(self, repo: Addon):
         if not hasattr(self, "package_cache"):
             self.package_cache = {}
         self.package_cache[repo.name] = repo.to_cache()
@@ -671,7 +671,7 @@ class CommandAddonManager:
             self.macro_worker.finished.connect(self.do_next_startup_phase)
             self.macro_worker.start()
 
-    def cache_macro(self, repo: AddonManagerRepo):
+    def cache_macro(self, repo: Addon):
         if not hasattr(self, "macro_cache"):
             self.macro_cache = []
         if repo.macro is not None:
@@ -724,7 +724,7 @@ class CommandAddonManager:
         )
         self.startup()
 
-    def on_package_updated(self, repo: AddonManagerRepo) -> None:
+    def on_package_updated(self, repo: Addon) -> None:
         """Called when the named package has either new metadata or a new icon (or both)"""
 
         with self.lock:
@@ -788,12 +788,12 @@ class CommandAddonManager:
         self.check_worker.start()
         self.enable_updates(len(self.packages_with_updates))
 
-    def status_updated(self, repo: AddonManagerRepo) -> None:
+    def status_updated(self, repo: Addon) -> None:
         self.item_model.reload_item(repo)
-        if repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        if repo.status() == Addon.Status.UPDATE_AVAILABLE:
             self.packages_with_updates.append(repo)
             self.enable_updates(len(self.packages_with_updates))
-        elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+        elif repo.status() == Addon.Status.PENDING_RESTART:
             self.restart_required = True
 
     def enable_updates(self, number_of_updates: int) -> None:
@@ -819,7 +819,7 @@ class CommandAddonManager:
         self.enable_updates(len(self.packages_with_updates))
         self.dialog.buttonCheckForUpdates.setEnabled(True)
 
-    def add_addon_repo(self, addon_repo: AddonManagerRepo) -> None:
+    def add_addon_repo(self, addon_repo: Addon) -> None:
         """adds a workbench to the list"""
 
         if addon_repo.icon is None or addon_repo.icon.isNull():
@@ -832,17 +832,17 @@ class CommandAddonManager:
                 return
         self.item_model.append_item(addon_repo)
 
-    def get_icon(self, repo: AddonManagerRepo, update: bool = False) -> QtGui.QIcon:
+    def get_icon(self, repo: Addon, update: bool = False) -> QtGui.QIcon:
         """returns an icon for a repo"""
 
         if not update and repo.icon and not repo.icon.isNull() and repo.icon.isValid():
             return repo.icon
 
         path = ":/icons/" + repo.name.replace(" ", "_")
-        if repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
+        if repo.repo_type == Addon.Kind.WORKBENCH:
             path += "_workbench_icon.svg"
             default_icon = QtGui.QIcon(":/icons/document-package.svg")
-        elif repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+        elif repo.repo_type == Addon.Kind.MACRO:
             if repo.macro and repo.macro.icon:
                 if os.path.isabs(repo.macro.icon):
                     path = repo.macro.icon
@@ -864,7 +864,7 @@ class CommandAddonManager:
             else:
                 path += "_macro_icon.svg"
                 default_icon = QtGui.QIcon(":/icons/document-python.svg")
-        elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        elif repo.repo_type == Addon.Kind.PACKAGE:
             # The cache might not have been downloaded yet, check to see if it's there...
             if os.path.isfile(repo.get_cached_icon_filename()):
                 path = repo.get_cached_icon_filename()
@@ -885,7 +885,7 @@ class CommandAddonManager:
 
         return addonicon
 
-    def table_row_activated(self, selected_repo: AddonManagerRepo) -> None:
+    def table_row_activated(self, selected_repo: Addon) -> None:
         """a row was activated, show the relevant data"""
 
         self.packageList.hide()
@@ -898,7 +898,7 @@ class CommandAddonManager:
         self.dialog.labelStatusInfo.setText(message)
         self.dialog.labelStatusInfo.repaint()
 
-    def show_workbench(self, repo: AddonManagerRepo) -> None:
+    def show_workbench(self, repo: Addon) -> None:
         self.packageList.hide()
         self.packageDetails.show()
         self.packageDetails.show_repo(repo)
@@ -907,16 +907,16 @@ class CommandAddonManager:
         self.packageDetails.hide()
         self.packageList.show()
 
-    def append_to_repos_list(self, repo: AddonManagerRepo) -> None:
+    def append_to_repos_list(self, repo: Addon) -> None:
         """this function allows threads to update the main list of workbenches"""
 
         self.item_model.append_item(repo)
 
-    def resolve_dependencies(self, repo: AddonManagerRepo) -> None:
+    def resolve_dependencies(self, repo: Addon) -> None:
         if not repo:
             return
 
-        deps = AddonManagerRepo.Dependencies()
+        deps = Addon.Dependencies()
         repo_name_dict = dict()
         for r in self.item_model.repos:
             repo_name_dict[repo.name] = r
@@ -941,7 +941,7 @@ class CommandAddonManager:
 
         missing_external_addons = []
         for dep in deps.required_external_addons:
-            if dep.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if dep.status() == Addon.Status.NOT_INSTALLED:
                 missing_external_addons.append(dep)
 
         # Now check the loaded addons to see if we are missing an internal workbench:
@@ -1069,7 +1069,7 @@ class CommandAddonManager:
         else:
             self.install(repo)
 
-    def dependency_dialog_yes_clicked(self, repo: AddonManagerRepo) -> None:
+    def dependency_dialog_yes_clicked(self, repo: Addon) -> None:
         # Get the lists out of the dialog:
         addons = []
         for row in range(self.dependency_dialog.listWidgetAddons.count()):
@@ -1116,7 +1116,7 @@ class CommandAddonManager:
         self.dependency_installation_dialog.show()
         self.dependency_installation_worker.start()
 
-    def no_python_exe(self, repo: AddonManagerRepo) -> None:
+    def no_python_exe(self, repo: Addon) -> None:
         if hasattr(self, "dependency_installation_dialog"):
             self.dependency_installation_dialog.hide()
         result = QtWidgets.QMessageBox.critical(
@@ -1136,7 +1136,7 @@ class CommandAddonManager:
         if result == QtWidgets.QMessageBox.Yes:
             self.install(repo)
 
-    def no_pip(self, command: str, repo: AddonManagerRepo) -> None:
+    def no_pip(self, command: str, repo: Addon) -> None:
         if hasattr(self, "dependency_installation_dialog"):
             self.dependency_installation_dialog.hide()
         result = QtWidgets.QMessageBox.critical(
@@ -1169,7 +1169,7 @@ class CommandAddonManager:
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
 
-    def dependency_dialog_ignore_clicked(self, repo: AddonManagerRepo) -> None:
+    def dependency_dialog_ignore_clicked(self, repo: Addon) -> None:
         self.install(repo)
 
     def cancel_dependency_installation(self) -> None:
@@ -1177,7 +1177,7 @@ class CommandAddonManager:
         self.dependency_installation_worker.requestInterruption()
         self.dependency_installation_dialog.hide()
 
-    def install(self, repo: AddonManagerRepo) -> None:
+    def install(self, repo: Addon) -> None:
         """installs or updates a workbench, macro, or package"""
 
         if hasattr(self, "install_worker") and self.install_worker:
@@ -1191,8 +1191,8 @@ class CommandAddonManager:
             return
 
         if (
-            repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH
-            or repo.repo_type == AddonManagerRepo.RepoType.PACKAGE
+            repo.repo_type == Addon.Kind.WORKBENCH
+            or repo.repo_type == Addon.Kind.PACKAGE
         ):
             self.show_progress_widgets()
             self.install_worker = InstallWorkbenchWorker(repo)
@@ -1203,7 +1203,7 @@ class CommandAddonManager:
             self.install_worker.success.connect(self.on_package_installed)
             self.install_worker.failure.connect(self.on_installation_failed)
             self.install_worker.start()
-        elif repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+        elif repo.repo_type == Addon.Kind.MACRO:
             macro = repo.macro
 
             # To try to ensure atomicity, test the installation into a temp directory first,
@@ -1238,16 +1238,14 @@ class CommandAddonManager:
                     message += error
                 self.on_installation_failed(repo, message)
 
-    def update(self, repo: AddonManagerRepo) -> None:
+    def update(self, repo: Addon) -> None:
         self.install(repo)
 
-    def mark_repo_update_available(
-        self, repo: AddonManagerRepo, available: bool
-    ) -> None:
+    def mark_repo_update_available(self, repo: Addon, available: bool) -> None:
         if available:
-            repo.set_status(AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE)
+            repo.set_status(Addon.Status.UPDATE_AVAILABLE)
         else:
-            repo.set_status(AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
+            repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
 
@@ -1279,9 +1277,7 @@ class CommandAddonManager:
     def on_update_all_completed(self) -> None:
         self.hide_progress_widgets()
 
-        def get_package_list(
-            message: str, repos: List[AddonManagerRepo], threshold: int
-        ):
+        def get_package_list(message: str, repos: List[Addon], threshold: int):
             """To ensure that the list doesn't get too long for the dialog, cut it off at some threshold"""
             num_updates = len(repos)
             if num_updates < threshold:
@@ -1339,11 +1335,9 @@ class CommandAddonManager:
         for installed_repo in self.subupdates_succeeded:
             if installed_repo.contains_workbench():
                 self.restart_required = True
-                installed_repo.set_status(AddonManagerRepo.UpdateStatus.PENDING_RESTART)
+                installed_repo.set_status(Addon.Status.PENDING_RESTART)
             else:
-                installed_repo.set_status(
-                    AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
-                )
+                installed_repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
             self.item_model.reload_item(installed_repo)
             for requested_repo in self.packages_with_updates:
                 if installed_repo.name == requested_repo.name:
@@ -1407,7 +1401,7 @@ class CommandAddonManager:
                 "AddonManager recaches."
             )
 
-    def on_package_installed(self, repo: AddonManagerRepo, message: str) -> None:
+    def on_package_installed(self, repo: Addon, message: str) -> None:
         self.hide_progress_widgets()
         QtWidgets.QMessageBox.information(
             None,
@@ -1416,16 +1410,16 @@ class CommandAddonManager:
             QtWidgets.QMessageBox.Close,
         )
         if repo.contains_workbench():
-            repo.set_status(AddonManagerRepo.UpdateStatus.PENDING_RESTART)
+            repo.set_status(Addon.Status.PENDING_RESTART)
             self.restart_required = True
         else:
-            repo.set_status(AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
+            repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
-        if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+        if repo.repo_type == Addon.Kind.MACRO:
             ask_to_install_toolbar_button(repo)
 
-    def on_installation_failed(self, _: AddonManagerRepo, message: str) -> None:
+    def on_installation_failed(self, _: Addon, message: str) -> None:
         self.hide_progress_widgets()
         QtWidgets.QMessageBox.warning(
             None,
@@ -1434,7 +1428,7 @@ class CommandAddonManager:
             QtWidgets.QMessageBox.Close,
         )
 
-    def executemacro(self, repo: AddonManagerRepo) -> None:
+    def executemacro(self, repo: Addon) -> None:
         """executes a selected macro"""
 
         macro = repo.macro
@@ -1468,7 +1462,7 @@ class CommandAddonManager:
         os.chmod(path, stat.S_IWRITE)
         func(path)
 
-    def remove(self, repo: AddonManagerRepo) -> None:
+    def remove(self, repo: Addon) -> None:
         """uninstalls a macro or workbench"""
 
         confirm = QtWidgets.QMessageBox.question(
@@ -1483,8 +1477,8 @@ class CommandAddonManager:
             return
 
         if (
-            repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH
-            or repo.repo_type == AddonManagerRepo.RepoType.PACKAGE
+            repo.repo_type == Addon.Kind.WORKBENCH
+            or repo.repo_type == Addon.Kind.PACKAGE
         ):
             basedir = FreeCAD.getUserAppDataDir()
             moddir = basedir + os.sep + "Mod"
@@ -1535,7 +1529,7 @@ class CommandAddonManager:
             if os.path.exists(clonedir):
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.item_model.update_item_status(
-                    repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+                    repo.name, Addon.Status.NOT_INSTALLED
                 )
                 if repo.contains_workbench():
                     self.restart_required = True
@@ -1548,7 +1542,7 @@ class CommandAddonManager:
                     )
                 )
 
-        elif repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+        elif repo.repo_type == Addon.Kind.MACRO:
             macro = repo.macro
             if macro.remove():
                 remove_custom_toolbar_button(repo)
@@ -1559,7 +1553,7 @@ class CommandAddonManager:
                     + "\n"
                 )
                 self.item_model.update_item_status(
-                    repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+                    repo.name, Addon.Status.NOT_INSTALLED
                 )
                 self.packageDetails.show_repo(repo)
             else:
