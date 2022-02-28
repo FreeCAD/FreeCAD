@@ -64,9 +64,7 @@ class DocumentObjectToolTipWidget(QtGui.QWidget):
   
     # Tried hiding/detaching the preview to prevent it from disappearing when changing its contents
     #self.preview.viewer.stopAnimating()
-    self.preview.viewer.getViewer().setSceneGraph(obj.ViewObject.RootNode)
-    self.preview.viewer.setCameraOrientation(App.Rotation(1,1,0, 0.2))
-    self.preview.viewer.fitAll()
+    self.preview.showSceneGraph(obj.ViewObject.RootNode)
 
     setParent(self)
     # Let the GUI recompute the side of the description based on its horizontal size.
