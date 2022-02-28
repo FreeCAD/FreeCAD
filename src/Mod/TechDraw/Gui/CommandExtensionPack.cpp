@@ -1450,14 +1450,16 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg) {
     TechDraw::DrawViewPart* baseView;
     auto objFeat = selection[0].getObject();
     if (objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        TechDraw::DrawViewSection* sectionView = dynamic_cast<TechDraw::DrawViewSection*>(objFeat);
+        TechDraw::DrawViewSection* sectionView = static_cast<TechDraw::DrawViewSection*>(objFeat);
         baseView = sectionView->getBaseDVP();
-        if (baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        if (baseView && baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             std::vector<App::DocumentObject*> parentViews = baseView->getInList();
             if (!parentViews.empty()) {
                 TechDraw::DrawProjGroup* groupBase = dynamic_cast<TechDraw::DrawProjGroup*>(parentViews[0]);
-                xPos = groupBase->X.getValue();
-                yPos = groupBase->Y.getValue();
+                if (groupBase) {
+                    xPos = groupBase->X.getValue();
+                    yPos = groupBase->Y.getValue();
+                }
             }
         }
         else {
