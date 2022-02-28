@@ -254,14 +254,17 @@ class StdCmdFreezeViews : public Gui::Command
 public:
     StdCmdFreezeViews();
     virtual ~StdCmdFreezeViews(){}
-    const char* className() const
+    const char* className() const override
     { return "StdCmdFreezeViews"; }
 
+    void setShortcut (const QString &) override;
+    QString getShortcut() const override;
+
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Action * createAction(void);
-    virtual void languageChange();
+    virtual void activated(int iMsg) override;
+    virtual bool isActive(void) override;
+    virtual Action * createAction(void) override;
+    virtual void languageChange() override;
 
 private:
     void onSaveViews();
@@ -322,6 +325,19 @@ Action * StdCmdFreezeViews::createAction(void)
         pcAction->addAction(QString::fromLatin1(""))->setVisible(false);
 
     return pcAction;
+}
+
+void StdCmdFreezeViews::setShortcut(const QString &shortcut)
+{
+    if (freezeView)
+        freezeView->setShortcut(shortcut);
+}
+
+QString StdCmdFreezeViews::getShortcut() const
+{
+    if (freezeView)
+        return freezeView->shortcut().toString();
+    return Command::getShortcut();
 }
 
 void StdCmdFreezeViews::activated(int iMsg)

@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QKeySequence>
+#include <QCompleter>
 
 namespace Gui
 {
@@ -57,6 +58,7 @@ public:
     void setCheckable(bool);
     void setChecked (bool, bool no_signal=false);
     bool isChecked() const;
+    bool isEnabled() const;
 
     void setShortcut (const QString &);
     QKeySequence shortcut() const;
@@ -66,13 +68,23 @@ public:
     QString statusTip() const;
     void setText (const QString &);
     QString text() const;
-    void setToolTip (const QString &);
+    void setToolTip (const QString &, const QString &title = QString());
     QString toolTip() const;
     void setWhatsThis (const QString &);
     QString whatsThis() const;
     void setMenuRole(QAction::MenuRole menuRole);
     QAction *action() const {
         return _action;
+    }
+
+    static QString createToolTip(QString tooltip,
+                                 const QString &title,
+                                 const QFont &font,
+                                 const QString &shortcut,
+                                 Action *action = nullptr);
+
+    Command *command() const {
+        return _pcCmd;
     }
 
 public Q_SLOTS:
@@ -82,6 +94,8 @@ public Q_SLOTS:
 protected:
     QAction* _action;
     Command *_pcCmd;
+    QString _tooltip;
+    QString _title;
 };
 
 // --------------------------------------------------------------------
@@ -355,6 +369,26 @@ public:
 
 private:
     QMenu* _menu;
+};
+
+/**
+ * Command name completer.
+ */
+class GuiExport CommandCompleter : public QCompleter
+{
+    Q_OBJECT
+public:
+    CommandCompleter(QLineEdit *edit, QObject *parent = nullptr);
+
+Q_SIGNALS:
+    void commandActivated(const QByteArray &name);
+
+protected Q_SLOTS:
+    void onTextChanged(const QString &);
+    void onCommandActivated(const QModelIndex &);
+
+protected:
+    bool eventFilter(QObject *, QEvent *ev);
 };
 
 } // namespace Gui

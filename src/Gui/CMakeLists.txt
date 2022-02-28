@@ -395,6 +395,7 @@ SET(Command_CPP_SRCS
     CommandStructure.cpp
     CommandLink.cpp
     CommandPyImp.cpp
+    ShortcutManager.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
@@ -402,6 +403,7 @@ SET(Command_SRCS
     ActionFunction.h
     Command.h
     CommandT.h
+    ShortcutManager.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
