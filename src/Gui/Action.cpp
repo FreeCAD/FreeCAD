@@ -57,6 +57,7 @@
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
+#include "ShortcutManager.h"
 
 
 using namespace Gui;
@@ -149,6 +150,11 @@ void Action::setEnabled(bool b)
     _action->setEnabled(b);
 }
 
+bool Action::isEnabled() const
+{
+    return _action->isEnabled();
+}
+
 void Action::setVisible(bool b)
 {
     _action->setVisible(b);
@@ -157,6 +163,7 @@ void Action::setVisible(bool b)
 void Action::setShortcut(const QString & key)
 {
     _action->setShortcut(key);
+    setToolTip(_tooltip, _title);
 }
 
 QKeySequence Action::shortcut() const
@@ -187,6 +194,8 @@ QString Action::statusTip() const
 void Action::setText(const QString & s)
 {
     _action->setText(s);
+    if (_title.isEmpty())
+        setToolTip(_tooltip);
 }
 
 QString Action::text() const
@@ -194,14 +203,112 @@ QString Action::text() const
     return _action->text();
 }
 
-void Action::setToolTip(const QString & s)
+void Action::setToolTip(const QString & s, const QString & title)
 {
-    _action->setToolTip(s);
+    _tooltip = s;
+    _title = title;
+    _action->setToolTip(createToolTip(s,
+                title.isEmpty() ? _action->text() : title, 
+                _action->font(),
+                _action->shortcut().toString(QKeySequence::NativeText),
+                this));
+}
+
+QString Action::createToolTip(QString _tooltip,
+                              const QString & title,
+                              const QFont &font,
+                              const QString &sc,
+                              Action *act)
+{
+    QString text = title;
+    text.remove(QLatin1Char('&'));;
+    while(text.size() && text[text.size()-1].isPunct())
+        text.resize(text.size()-1);
+
+    if (text.isEmpty())
+        return _tooltip;
+
+    // The following code tries to make a more useful tooltip by inserting at
+    // the beginning of the tooltip the action title in bold followed by the
+    // shortcut.
+    //
+    // The long winding code is to deal with the fact that Qt will auto wrap
+    // a rich text tooltip but the width is too short. We can escape the auto
+    // wrappin using <p style='white-space:pre'>.
+
+    QString shortcut = sc;
+    if (shortcut.size() && _tooltip.endsWith(shortcut))
+        _tooltip.resize(_tooltip.size() - shortcut.size());
+    if (shortcut.size())
+        shortcut = QString::fromLatin1(" (%1)").arg(shortcut);
+
+    QString tooltip = QString::fromLatin1(
+            "<p style='white-space:pre; margin-bottom:0.5em;'><b>%1</b>%2</p>").arg(
+            text.toHtmlEscaped(), shortcut.toHtmlEscaped());
+
+    QString cmdName;
+    auto pcCmd = act ? act->_pcCmd : nullptr;
+    if (pcCmd && pcCmd->getName()) {
+        cmdName = QString::fromLatin1(pcCmd->getName());
+        if (auto groupcmd = dynamic_cast<GroupCommand*>(pcCmd)) {
+            int idx = act->property("defaultAction").toInt();
+            auto cmd = groupcmd->getCommand(idx);
+            if (cmd && cmd->getName())
+                cmdName = QStringLiteral("%1 (%2:%3)")
+                    .arg(QString::fromLatin1(cmd->getName()))
+                    .arg(cmdName)
+                    .arg(idx);
+        }
+        cmdName = QStringLiteral("<p style='white-space:pre; margin-top:0.5em;'><i>%1</i></p>")
+            .arg(cmdName.toHtmlEscaped());
+    }
+
+    if (shortcut.size() && _tooltip.endsWith(shortcut))
+        _tooltip.resize(_tooltip.size() - shortcut.size());
+
+    if (_tooltip.isEmpty()
+            || _tooltip == text
+            || _tooltip == title)
+    {
+        return tooltip + cmdName;
+    }
+    if (Qt::mightBeRichText(_tooltip)) {
+        // already rich text, so let it be to avoid duplicated unwrapping
+        return tooltip + _tooltip + cmdName;
+    }
+
+    tooltip += QString::fromLatin1(
+            "<p style='white-space:pre; margin:0;'>");
+
+    // If the user supplied tooltip contains line break, we shall honour it.
+    if (_tooltip.indexOf(QLatin1Char('\n')) >= 0)
+        tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+    else {
+        // If not, try to end the non wrapping paragraph at some pre defined
+        // width, so that the following text can wrap at that width.
+        float tipWidth = 400;
+        QFontMetrics fm(font);
+        int width = fm.width(_tooltip);
+        if (width <= tipWidth)
+            tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+        else {
+            int index = tipWidth / width * _tooltip.size();
+            // Try to only break at white space
+            for(int i=0; i<50 && index<_tooltip.size(); ++i, ++index) {
+                if (_tooltip[index] == QLatin1Char(' '))
+                    break;
+            }
+            tooltip += _tooltip.left(index).toHtmlEscaped()
+                + QString::fromLatin1("</p>")
+                + _tooltip.right(_tooltip.size()-index).trimmed().toHtmlEscaped();
+        }
+    }
+    return tooltip + cmdName;
 }
 
 QString Action::toolTip() const
 {
-    return _action->toolTip();
+    return _tooltip;
 }
 
 void Action::setWhatsThis(const QString & s)
@@ -533,7 +640,7 @@ void WorkbenchGroup::addTo(QWidget *w)
 
     auto setupBox = [&](QComboBox* box) {
         box->setIconSize(QSize(16, 16));
-        box->setToolTip(_action->toolTip());
+        box->setToolTip(_tooltip);
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
         box->addActions(_group->actions());
@@ -1242,6 +1349,208 @@ void WindowAction::addTo ( QWidget * w )
         connect(menu, SIGNAL(aboutToShow()),
                 getMainWindow(), SLOT(onWindowsMenuAboutToShow()));
     }
+}
+
+// --------------------------------------------------------------------
+
+struct CmdInfo {
+    Command *cmd = nullptr;
+    QString text;
+    QString tooltip;
+    QIcon icon;
+    bool iconChecked = false;
+};
+static std::vector<CmdInfo> _Commands;
+static int _CommandRevision;
+
+class CommandModel : public QAbstractItemModel
+{
+public:
+
+public:
+    CommandModel(QObject* parent)
+        : QAbstractItemModel(parent)
+    {
+        update();
+    }
+
+    void update()
+    {
+        auto &manager = Application::Instance->commandManager();
+        if (_CommandRevision == manager.getRevision())
+            return;
+        beginResetModel();
+        _CommandRevision = manager.getRevision();
+        _Commands.clear();
+        for (auto &v : manager.getCommands()) {
+            _Commands.emplace_back();
+            auto &info = _Commands.back();
+            info.cmd = v.second;
+        }
+        endResetModel();
+    }
+
+    virtual QModelIndex parent(const QModelIndex &) const
+    {
+        return QModelIndex();
+    }
+
+    virtual QVariant data(const QModelIndex & index, int role) const
+    {
+        if (index.row() < 0 || index.row() >= (int)_Commands.size())
+            return QVariant();
+
+        auto &info = _Commands[index.row()];
+
+        switch(role) {
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+            if (info.text.isEmpty()) {
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+                info.text = QString::fromLatin1("%2 (%1)").arg(
+                        QString::fromLatin1(info.cmd->getName()),
+                        qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
+#else
+                info.text = qApp->translate(info.cmd->className(), info.cmd->getMenuText());
+#endif
+                info.text.replace(QLatin1Char('&'), QString());
+                if (info.text.isEmpty())
+                    info.text = QString::fromLatin1(info.cmd->getName());
+            }
+            return info.text;
+
+        case Qt::DecorationRole:
+            if (!info.iconChecked) {
+                info.iconChecked = true;
+                if(info.cmd->getPixmap())
+                    info.icon = BitmapFactory().iconFromTheme(info.cmd->getPixmap());
+            }
+            return info.icon;
+
+        case Qt::ToolTipRole:
+            if (info.tooltip.isEmpty()) {
+                info.tooltip = QString::fromLatin1("%1: %2").arg(
+                        QString::fromLatin1(info.cmd->getName()),
+                        qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
+                QString tooltip = qApp->translate(info.cmd->className(), info.cmd->getToolTipText());
+                if (tooltip.size())
+                    info.tooltip += QString::fromLatin1("\n\n") + tooltip;
+            }
+            return info.tooltip;
+
+        case Qt::UserRole:
+            return QByteArray(info.cmd->getName());
+
+        default:
+            return QVariant();
+        }
+    }
+
+    virtual QModelIndex index(int row, int, const QModelIndex &) const
+    {
+        return this->createIndex(row, 0);
+    }
+
+    virtual int rowCount(const QModelIndex &) const
+    {
+        return (int)(_Commands.size());
+    }
+
+    virtual int columnCount(const QModelIndex &) const
+    {
+        return 1;
+    }
+};
+
+
+// --------------------------------------------------------------------
+
+CommandCompleter::CommandCompleter(QLineEdit *lineedit, QObject *parent)
+    : QCompleter(parent)
+{
+    this->setModel(new CommandModel(this));
+#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+    this->setFilterMode(Qt::MatchContains);
+#endif
+    this->setCaseSensitivity(Qt::CaseInsensitive);
+    this->setCompletionMode(QCompleter::PopupCompletion);
+    this->setWidget(lineedit);
+    connect(lineedit, SIGNAL(textEdited(QString)), this, SLOT(onTextChanged(QString)));
+    connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(onCommandActivated(QModelIndex)));
+    connect(this, SIGNAL(highlighted(QString)), lineedit, SLOT(setText(QString)));
+}
+
+bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
+{
+    if (ev->type() == QEvent::KeyPress
+            && (o == this->widget() || o == this->popup()))
+    {
+        QKeyEvent * ke = static_cast<QKeyEvent*>(ev);
+        switch(ke->key()) {
+        case Qt::Key_Escape: {
+            auto edit = qobject_cast<QLineEdit*>(this->widget());
+            if (edit && edit->text().size()) {
+                edit->setText(QString());
+                popup()->hide();
+                return true;
+            } else if (popup()->isVisible()) {
+                popup()->hide();
+                return true;
+            }
+            break;
+        }
+        case Qt::Key_Tab: {
+            if (this->popup()->isVisible()) {
+                QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
+                qApp->sendEvent(this->popup(), &kevent);
+                return true;
+            }
+            break;
+        }
+        case Qt::Key_Backtab: {
+            if (this->popup()->isVisible()) {
+                QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
+                qApp->sendEvent(this->popup(), &kevent);
+                return true;
+            }
+            break;
+        }
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            if (o == this->widget()) {
+                auto index = currentIndex();
+                if (index.isValid())
+                    onCommandActivated(index);
+                else
+                    complete();
+                ev->setAccepted(true);
+                return true;
+            }
+        default:
+            break;
+        }
+    }
+    return QCompleter::eventFilter(o, ev);
+}
+
+void CommandCompleter::onCommandActivated(const QModelIndex &index)
+{
+    QByteArray name = completionModel()->data(index, Qt::UserRole).toByteArray();
+    Q_EMIT commandActivated(name);
+}
+
+void CommandCompleter::onTextChanged(const QString &txt)
+{
+    if (txt.size() < 3 || !widget())
+        return;
+
+    static_cast<CommandModel*>(this->model())->update();
+
+    this->setCompletionPrefix(txt);
+    QRect rect = widget()->rect();
+    if (rect.width() < 300)
+        rect.setWidth(300);
+    this->complete(rect);
 }
 
 #include "moc_Action.cpp"

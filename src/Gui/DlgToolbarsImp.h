@@ -24,6 +24,7 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
+#include <boost/signals2/connection.hpp>
 #include "PropertyPage.h"
 #include <memory>
 
@@ -82,6 +83,7 @@ protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:
     Type type;
+    boost::signals2::scoped_connection conn;
 };
 
 /** This class implements the creation of user defined toolbars.

@@ -289,10 +289,13 @@ public:
     const char* className() const override
     { return "StdCmdFreezeViews"; }
 
+    void setShortcut (const QString &) override;
+    QString getShortcut() const override;
+
 protected:
     void activated(int iMsg) override;
     bool isActive() override;
-    Action * createAction() override;
+    Action * createAction(void) override;
     void languageChange() override;
 
 private:
@@ -354,6 +357,19 @@ Action * StdCmdFreezeViews::createAction()
         pcAction->addAction(QString::fromLatin1(""))->setVisible(false);
 
     return pcAction;
+}
+
+void StdCmdFreezeViews::setShortcut(const QString &shortcut)
+{
+    if (freezeView)
+        freezeView->setShortcut(shortcut);
+}
+
+QString StdCmdFreezeViews::getShortcut() const
+{
+    if (freezeView)
+        return freezeView->shortcut().toString();
+    return Command::getShortcut();
 }
 
 void StdCmdFreezeViews::activated(int iMsg)

@@ -310,6 +310,8 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
 
 void Workbench::setupCustomShortcuts() const
 {
+    // Now managed by ShortcutManager
+#if 0
     // Assigns user defined accelerators
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter();
     if (hGrp->HasGroup("Shortcut")) {
@@ -328,6 +330,7 @@ void Workbench::setupCustomShortcuts() const
             }
         }
     }
+#endif
 }
 
 void Workbench::setupContextMenu(const char* recipient,MenuItem* item) const
