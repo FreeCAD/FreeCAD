@@ -25,16 +25,10 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-# include <cinttypes>
-# include <iomanip>
-# include <boost/algorithm/string.hpp>
-# include <boost/lexical_cast.hpp>
 #endif
 
 #include <Base/Vector3D.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
+
 #include "Voronoi.h"
 
 using namespace Base;

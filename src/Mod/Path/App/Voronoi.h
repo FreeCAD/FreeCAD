@@ -23,15 +23,12 @@
 #define PATH_VORONOI_H
 
 #include <map>
-#include <string>
+#include <vector>
 #include <Base/BaseClass.h>
 #include <Base/Handle.h>
 #include <Base/Vector3D.h>
 
-#include <vector>
-#include <boost/polygon/point_concept.hpp>
 #include <boost/polygon/polygon.hpp>
-#include <boost/polygon/segment_concept.hpp>
 #include <boost/polygon/voronoi.hpp>
 
 #if (SIZE_MAX == UINT_MAX)
