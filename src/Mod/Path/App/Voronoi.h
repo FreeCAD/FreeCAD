@@ -22,6 +22,7 @@
 #ifndef PATH_VORONOI_H
 #define PATH_VORONOI_H
 
+#include <limits>
 #include <map>
 #include <vector>
 #include <Base/BaseClass.h>
