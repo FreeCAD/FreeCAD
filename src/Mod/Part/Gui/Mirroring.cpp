@@ -41,6 +41,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -68,6 +70,8 @@ Mirroring::Mirroring(QWidget* parent)
 
     Gui::ItemViewSelection sel(ui->shapes);
     sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
 /*  
@@ -96,12 +100,11 @@ void Mirroring::findShapes()
         return;
 
     this->document = QString::fromLatin1(activeDoc->getName());
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
-        (Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
-        if (!shape.IsNull()) {
+        Part::TopoShape shape = Part::Feature::getTopoShape(*it);
+        if (!shape.isNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
             

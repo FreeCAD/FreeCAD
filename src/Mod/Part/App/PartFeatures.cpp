@@ -46,6 +46,7 @@
 
 
 #include "PartFeatures.h"
+#include <App/Link.h>
 
 
 using namespace Part;
@@ -82,20 +83,21 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    const Part::TopoShape part = Part::Feature::getShape(obj, "", false, 0, 0, true, false);
+    if (part.isNull()) {
         return new App::DocumentObjectExecReturn("No shape linked.");
+    }
 
     // if no explicit sub-shape is selected use the whole part
     const std::vector<std::string>& element = link.getSubValues();
     if (element.empty()) {
-        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+        shape = part.getShape();
         return nullptr;
     }
     else if (element.size() != 1) {
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
-    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
             shape = part.getSubShape(element[0].c_str());
