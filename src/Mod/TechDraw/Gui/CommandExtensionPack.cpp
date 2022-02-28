@@ -1446,10 +1446,11 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg) {
             QObject::tr("Selection is empty"));
         return;
     }
-    float xPos=0.0f, yPos=0.0f;
+
+    double xPos=0.0, yPos=0.0;
     TechDraw::DrawViewPart* baseView;
     auto objFeat = selection[0].getObject();
-    if (objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+    if (objFeat && objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         TechDraw::DrawViewSection* sectionView = static_cast<TechDraw::DrawViewSection*>(objFeat);
         baseView = sectionView->getBaseDVP();
         if (baseView && baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -1462,7 +1463,7 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg) {
                 }
             }
         }
-        else {
+        else if (baseView) {
             xPos = baseView->X.getValue();
             yPos = baseView->Y.getValue();
         }
