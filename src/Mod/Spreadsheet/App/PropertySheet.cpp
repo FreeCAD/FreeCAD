@@ -388,7 +388,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
     int dstCols = dstRange.colCount();
     CellAddress dstFrom = dstRange.from();
 
-    int roffset,coffset;
+    int roffset=0,coffset=0;
 
     AtomicPropertyChange signaller(*this);
     for(int ri=0; ri < rangeCount; ++ri) {
