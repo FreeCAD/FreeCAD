@@ -1446,7 +1446,7 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg) {
             QObject::tr("Selection is empty"));
         return;
     }
-    float xPos, yPos;
+    float xPos=0.0f, yPos=0.0f;
     TechDraw::DrawViewPart* baseView;
     auto objFeat = selection[0].getObject();
     if (objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
