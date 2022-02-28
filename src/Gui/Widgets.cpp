@@ -413,18 +413,23 @@ void AccelLineEdit::keyPressEvent (QKeyEvent * e)
         break;
     }
 
-    // 4 keys are allowed for QShortcut
-    switch (keyPressedCount) {
-    case 4:
+    if (txtLine.isEmpty()) {
+        // Text maybe cleared by QLineEdit's built in clear button
         keyPressedCount = 0;
-        txtLine.clear();
-        break;
-    case 0:
-        txtLine.clear();
-        break;
-    default:
-        txtLine += QChar::fromLatin1(',');
-        break;
+    } else {
+        // 4 keys are allowed for QShortcut
+        switch (keyPressedCount) {
+        case 4:
+            keyPressedCount = 0;
+            txtLine.clear();
+            break;
+        case 0:
+            txtLine.clear();
+            break;
+        default:
+            txtLine += QString::fromLatin1(",");
+            break;
+        }
     }
 
     // Handles modifiers applying a mask.
