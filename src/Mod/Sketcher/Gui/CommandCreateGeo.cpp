@@ -4589,7 +4589,7 @@ public:
                 return;
             }
         }
-        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS){
+        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
 
             EditCurve[EditCurve.size()-1] = onSketchPos;
 
@@ -4676,8 +4676,6 @@ public:
 
                     return true;
                 }
-
-
             }
 
             // insert circle point for pole, defer internal alignment constraining.
@@ -4753,7 +4751,6 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-
                 //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
                 /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
@@ -4771,7 +4768,6 @@ public:
                                         SplineDegree,
                                         geometryCreationMode==Construction?"True":"False");
 
-
                 currentgeoid++;
 
                 // autoconstraints were added to the circles of the poles, which is ok because they must go to the
@@ -4780,7 +4776,6 @@ public:
                 // as the ones created by this tool are intended for the b-spline endpoints, and not for the poles,
                 // so here we retrieve any autoconstraint on those poles' center and mangle it to the endpoint.
                 if (ConstrMethod == 0) {
-
                     for(auto & constr : static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues()) {
                         if(constr->First == FirstPoleGeoId && constr->FirstPos == Sketcher::PointPos::mid) {
                             constr->First = currentgeoid;
@@ -4829,21 +4824,7 @@ public:
 
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-
-                SplineDegree = 3;
-
-                sugConstr.clear();
-
-                std::vector<AutoConstraint> sugConstr1;
-                sugConstr.push_back(sugConstr1);
-
-                CurrentConstraint=0;
-                IsClosed=false;
+                resetHandlerState();
 
                 /* It is ok not to call to purgeHandler
                  * in continuous creation mode because the
@@ -4902,19 +4883,7 @@ public:
             }
             else {
                 // This code disregards existing data and enables the continuous creation mode.
-                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-
-                sugConstr.clear();
-
-                std::vector<AutoConstraint> sugConstr1;
-                sugConstr.push_back(sugConstr1);
-
-                CurrentConstraint=0;
-                IsClosed=false;
+                resetHandlerState();
             }
         }
         else { // we have no data (CurrentConstraint == 0) so user when right-clicking really wants to exit
@@ -4923,6 +4892,25 @@ public:
     }
 
 private:
+    void resetHandlerState()
+    {
+        Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
+        EditCurve.clear();
+        drawEdit(EditCurve);
+        EditCurve.resize(2);
+        applyCursor();
+
+        SplineDegree = 3;
+
+        sugConstr.clear();
+
+        std::vector<AutoConstraint> sugConstr1;
+        sugConstr.push_back(sugConstr1);
+
+        CurrentConstraint = 0;
+        IsClosed = false;
+    }
+
     virtual void activated() override
     {
         setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
