@@ -12,11 +12,17 @@ import FreeCAD as App
 def roundVector(v,dec):
     return str([round(v[0],dec), round(v[1],dec), round(v[2],dec)])
 
-def buildShapeContent(obj, decimals=2, advancedShapeContent=True):
+def buildShapeContent(objArg, decimals=2, advancedShapeContent=True):
+    linkName = ""
+    if objArg.isDerivedFrom("App::Link"):
+        obj = objArg.getLinkedObject()
+        linkName = "<" + objArg.Name + "> "
+    else:
+        obj = objArg
     shp = obj.Shape
     typeStr = str(shp.ShapeType)
     lbl = '' if obj.Name == obj.Label else '(' + obj.Label + ')'
-    result = obj.Name + lbl + '\n'
+    result = linkName + obj.Name + lbl + '\n'
     result += 'Shape type:  '+typeStr+'\n'
     result += 'Vertices:  '+str(len(shp.Vertexes))+'\n'
     result += 'Edges:  '+str(len(shp.Edges))+'\n'
@@ -64,17 +70,17 @@ def buildShapeContent(obj, decimals=2, advancedShapeContent=True):
                     result += str(p)+':  '+roundVector(props[p],decimals) +'\n'
                 else:
                     result += str(p)+':  '+str(props[p])+'\n'
-
-        if obj.getGlobalPlacement() != obj.Placement:
-            rpl = obj.getGlobalPlacement() * obj.Placement.inverse()
-            rot = rpl.Rotation
-            if hasattr(shp, 'CenterOfMass'):
-                result += 'Global CenterOfMass:  '+roundVector(rpl.multVec(shp.CenterOfMass),decimals)+'\n'
-            if hasattr(shp, 'PrincipalProperties'):
-                props = shp.PrincipalProperties
-                for p in props:
-                    if 'AxisOfInertia' in p:
-                        result += 'Global ' + str(p)+':  '+roundVector(rot.multVec(props[p]),decimals) +'\n'
-        else:
-            result += 'Global Placement = Placement'
+        if hasattr(obj,"getGlobalPlacement"):
+            if obj.getGlobalPlacement() != obj.Placement:
+                rpl = obj.getGlobalPlacement() * obj.Placement.inverse()
+                rot = rpl.Rotation
+                if hasattr(shp, 'CenterOfMass'):
+                    result += 'Global CenterOfMass:  '+roundVector(rpl.multVec(shp.CenterOfMass),decimals)+'\n'
+                if hasattr(shp, 'PrincipalProperties'):
+                    props = shp.PrincipalProperties
+                    for p in props:
+                        if 'AxisOfInertia' in p:
+                            result += 'Global ' + str(p)+':  '+roundVector(rot.multVec(props[p]),decimals) +'\n'
+            else:
+                result += 'Global Placement = Placement'
     return result

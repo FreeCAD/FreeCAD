@@ -50,6 +50,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
 
 
@@ -102,10 +103,14 @@ void LoftWidget::findShapes()
         return;
     d->document = activeDoc->getName();
 
-    std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        TopoDS_Shape shape = (*it)->Shape.getValue();
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+        if (topoShape.isNull()) {
+            continue;
+        }
+        TopoDS_Shape shape = topoShape.getShape();
         if (shape.IsNull()) continue;
 
         // also allow compounds with a single face, wire or vertex or
@@ -145,7 +150,6 @@ void LoftWidget::findShapes()
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);
