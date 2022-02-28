@@ -36,6 +36,7 @@
 
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
@@ -1754,6 +1755,12 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
     auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
 
         if (!Feat) return;
+
+        // Creating a helix with default values isn't always valid but fixes
+        // itself when more values are set. So, this guard is used to suppress
+        // errors before the user is able to change the parameters.
+        Base::ObjectStatusLocker<App::Document::Status, App::Document> guard(
+                                 App::Document::IgnoreErrorOnRecompute, Feat->getDocument(), true);
 
         // specific parameters for helix
         Gui::Command::updateActive();
