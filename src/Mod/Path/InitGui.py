@@ -251,6 +251,7 @@ class PathWorkbench(Workbench):
 
         # keep this one the last entry in the preferences
         import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
+        from PathScripts.PathPreferences import preferences
 
         FreeCADGui.addPreferencePage(
             PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
@@ -274,7 +275,9 @@ class PathWorkbench(Workbench):
                 msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
 
                 msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
-                msgbox.exec_()
+                msgbox.addButton(translate("Path", "Don't Show This Anymore"), QtGui.QMessageBox.ActionRole)
+                if msgbox.exec_() == 1:
+                    preferences().SetBool("WarningSuppressVelocity", True)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
