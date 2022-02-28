@@ -39,6 +39,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "ShortcutManager.h"
 #include "ui_DlgChooseIcon.h"
 
 
@@ -87,6 +88,8 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
 /** Destroys the object and frees any allocated resources */
 DlgCustomActionsImp::~DlgCustomActionsImp()
 {
+    if (bChanged)
+        MacroCommand::save();
 }
 
 bool DlgCustomActionsImp::event(QEvent* e)
@@ -126,17 +129,18 @@ bool DlgCustomActionsImp::event(QEvent* e)
 
 void DlgCustomActionsImp::onAddMacroAction(const QByteArray&)
 {
-  // does nothing
+    bChanged = true;
 }
 
-void DlgCustomActionsImp::onRemoveMacroAction(const QByteArray&)
+void DlgCustomActionsImp::onRemoveMacroAction(const QByteArray &name)
 {
-  // does nothing
+    bChanged = true;
+    ShortcutManager::instance()->reset(name.constData());
 }
 
 void DlgCustomActionsImp::onModifyMacroAction(const QByteArray&)
 {
-  // does nothing
+    bChanged = true;
 }
 
 void DlgCustomActionsImp::showActions()
@@ -192,7 +196,8 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
         ui->actionMenu      -> setText(QString::fromUtf8(pScript->getMenuText()));
         ui->actionToolTip   -> setText(QString::fromUtf8(pScript->getToolTipText()));
         ui->actionStatus    -> setText(QString::fromUtf8(pScript->getStatusTip()));
-        ui->actionAccel     -> setText(QString::fromLatin1(pScript->getAccel()));
+        ui->actionAccel     -> setText(ShortcutManager::instance()->getShortcut(
+                    actionName.constData(), pScript->getAccel()));
         ui->pixmapLabel->clear();
         m_sPixmap.clear();
         const char* name = pScript->getPixmap();
@@ -263,7 +268,8 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     m_sPixmap.clear();
 
     if (!ui->actionAccel->text().isEmpty()) {
-        macro->setAccel(ui->actionAccel->text().toLatin1());
+        ShortcutManager::instance()->setShortcut(
+                actionName.constData(), ui->actionAccel->text().toLatin1().constData());
     }
     ui->actionAccel->clear();
 
@@ -335,20 +341,8 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         action->setStatusTip(QString::fromUtf8(macro->getStatusTip()));
         if (macro->getPixmap())
             action->setIcon(Gui::BitmapFactory().pixmap(macro->getPixmap()));
-        action->setShortcut(QString::fromLatin1(macro->getAccel()));
-
-        QString accel = action->shortcut().toString(QKeySequence::NativeText);
-        if (!accel.isEmpty()) {
-            // show shortcut inside tooltip
-            QString ttip = QString::fromLatin1("%1 (%2)")
-                .arg(action->toolTip(), accel);
-            action->setToolTip(ttip);
-
-            // show shortcut inside status tip
-            QString stip = QString::fromLatin1("(%1)\t%2")
-                .arg(accel, action->statusTip());
-            action->setStatusTip(stip);
-        }
+        action->setShortcut(ShortcutManager::instance()->getShortcut(
+                    actionName.constData(), macro->getAccel()));
     }
 
     // emit signal to notify the container widget

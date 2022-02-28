@@ -38,6 +38,7 @@
 // inclusion of the generated files (generated out of CommandPy.xml)
 #include "CommandPy.h"
 #include "CommandPy.cpp"
+#include "ShortcutManager.h"
 
 
 // returns a string which represents the object e.g. when printed in python
@@ -188,33 +189,8 @@ PyObject* CommandPy::setShortcut(PyObject *args)
 
     Command* cmd = this->getCommandPtr();
     if (cmd) {
-        Action* action = cmd->getAction();
-        if (action) {
-            QKeySequence shortcut = QString::fromLatin1(pShortcut);
-            QString nativeText = shortcut.toString(QKeySequence::NativeText);
-            action->setShortcut(nativeText);
-            bool success = action->shortcut() == nativeText;
-            /**
-             * avoid cluttering parameters unnecessarily by saving only
-             * when new shortcut is not the default shortcut
-             * remove spaces to handle cases such as shortcut = "C,L" or "C, L"
-             */
-            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
-            QString spc = QString::fromLatin1(" ");
-
-            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-            const char* pName = cmd->getName();
-            if (success && default_shortcut.remove(spc).toUpper() != nativeText.remove(spc).toUpper()) {
-                hGrp->SetASCII(pName, pShortcut);
-            }
-            else {
-                hGrp->RemoveASCII(pName);
-            }
-            return Py::new_reference_to(Py::Boolean(success));
-        }
-        else {
-            return Py::new_reference_to(Py::Boolean(false));
-        }
+        ShortcutManager::instance()->setShortcut(cmd->getName(), pShortcut);
+        return Py::new_reference_to(Py::Boolean(true));
     }
     else {
         PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
@@ -230,24 +206,8 @@ PyObject* CommandPy::resetShortcut(PyObject *args)
 
     Command* cmd = this->getCommandPtr();
     if (cmd) {
-        Action* action = cmd->getAction();
-        if (action){
-            QString default_shortcut = QString::fromLatin1(cmd->getAccel());
-            action->setShortcut(default_shortcut);
-            ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
-            hGrp->RemoveASCII(cmd->getName());
-            /** test to see if we successfully reset the shortcut by loading it back and comparing */
-            QString spc = QString::fromLatin1(" ");
-            QString new_shortcut = action->shortcut().toString();
-            if (default_shortcut.remove(spc).toUpper() == new_shortcut.remove(spc).toUpper()){
-                return Py::new_reference_to(Py::Boolean(true));
-            } else {
-                return Py::new_reference_to(Py::Boolean(false));
-            }
-        } else {
-            return Py::new_reference_to(Py::Boolean(false));
-        }
-
+        ShortcutManager::instance()->reset(cmd->getName());
+        return Py::new_reference_to(Py::Boolean(true));
     } else {
         PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
