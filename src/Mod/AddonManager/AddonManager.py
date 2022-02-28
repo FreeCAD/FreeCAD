@@ -262,7 +262,7 @@ class CommandAddonManager:
 
         # cleanup the leftovers from previous runs
         self.macro_repo_dir = FreeCAD.getUserMacroDir(True)
-        self.packages_with_updates = []
+        self.packages_with_updates = set()
         self.startup_sequence = []
         self.cleanup_workers()
 
@@ -724,6 +724,10 @@ class CommandAddonManager:
         )
         self.startup()
 
+        # Recaching implies checking for updates, regardless of the user's autocheck option
+        self.startup_sequence.remove(self.check_updates)
+        self.startup_sequence.append(self.force_check_updates)
+
     def on_package_updated(self, repo: Addon) -> None:
         """Called when the named package has either new metadata or a new icon (or both)"""
 
@@ -775,6 +779,7 @@ class CommandAddonManager:
         self.dialog.buttonUpdateAll.setText(
             translate("AddonsInstaller", "Checking for updates...")
         )
+        self.packages_with_updates.clear()
         self.dialog.buttonUpdateAll.show()
         self.dialog.buttonCheckForUpdates.setDisabled(True)
         self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
@@ -791,7 +796,7 @@ class CommandAddonManager:
     def status_updated(self, repo: Addon) -> None:
         self.item_model.reload_item(repo)
         if repo.status() == Addon.Status.UPDATE_AVAILABLE:
-            self.packages_with_updates.append(repo)
+            self.packages_with_updates.add(repo)
             self.enable_updates(len(self.packages_with_updates))
         elif repo.status() == Addon.Status.PENDING_RESTART:
             self.restart_required = True
