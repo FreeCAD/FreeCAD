@@ -781,7 +781,10 @@ void BrowserView::onLoadFinished(bool ok)
     QProgressBar* bar = SequencerBar::instance()->getProgressBar();
     bar->setValue(100);
     bar->hide();
-    getMainWindow()->showMessage(QString());
+    Gui::MainWindow* win = Gui::getMainWindow();
+    if (win) {
+        win->showMessage(QString());
+    }
     isLoading = false;
 }
 
