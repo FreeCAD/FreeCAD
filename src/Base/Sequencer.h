@@ -24,11 +24,11 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
-#include <vector>
 #include <memory>
 #include <CXX/Extensions.hxx>
 
 #include "Exception.h"
+
 
 namespace Base
 {

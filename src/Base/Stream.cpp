@@ -26,11 +26,7 @@
 #ifndef _PreComp_
 # include <QBuffer>
 # include <QByteArray>
-# include <QDataStream>
 # include <QIODevice>
-# include <cstdlib>
-# include <string>
-# include <cstdio>
 # include <cstring>
 #ifdef __GNUC__
 # include <cstdint>
@@ -40,7 +36,7 @@
 #include "Stream.h"
 #include "Swap.h"
 #include <CXX/Objects.hxx>
-#include <Python.h>
+
 
 using namespace Base;
 

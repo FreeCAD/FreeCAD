@@ -22,13 +22,11 @@
 
 #include "PreCompiled.h"
 
-#include "Base/Quantity.h"
-#include "Base/Vector3D.h"
-
 // inclusion of the generated files (generated out of QuantityPy.xml)
 #include "QuantityPy.h"
 #include "UnitPy.h"
 #include "QuantityPy.cpp"
+
 
 using namespace Base;
 

@@ -22,15 +22,13 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <climits>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include "Base/Exception.h"
+
 #include "Rotation.h"
 #include "Matrix.h"
-#include "Base/Exception.h"
+
 
 using namespace Base;
 

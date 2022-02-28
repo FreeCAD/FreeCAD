@@ -22,17 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
 # ifdef FC_OS_WIN32
 # define _USE_MATH_DEFINES
 # endif // FC_OS_WIN32
-# include <cmath>
 #endif
 
 #include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
-#include "Console.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
