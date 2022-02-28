@@ -78,9 +78,7 @@ if(DOXYGEN_FOUND)
 
     # exclude some subdirectories
     # src/Tools : content not relevant ?
-    # src/3rdParty/CxImage : Windows thumbnailer
     set(        DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Tools)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Doc/sphinx)
     # deprecated modules
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Assembly)
