@@ -9,11 +9,16 @@
   <url type="repository" branch="main">https://github.com/chennes/FreeCAD-Package</url>
   <url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
   <icon>Resources/icons/PackageIcon.svg</icon>
+  <tag>Tag0</tag>
+  <tag>Tag1</tag>
 
   <content>
     <workbench>
       <classname>MyWorkbench</classname>
       <subdirectory>./</subdirectory>
+		<tag>TagA</tag>
+		<tag>TagB</tag>
+		<tag>TagC</tag>
     </workbench>
   </content>
 

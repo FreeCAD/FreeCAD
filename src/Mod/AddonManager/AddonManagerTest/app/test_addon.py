@@ -77,3 +77,26 @@ class TestAddon(unittest.TestCase):
         contents = addon.metadata.Content
         self.assertEqual(len(contents),1,"Wrong number of content catetories found")
         self.assertEqual(len(contents["workbench"]),1,"Wrong number of workbenches found")
+
+    def test_git_url_cleanup(self):
+        base_url = "https://github.com/FreeCAD/FreeCAD"
+        test_urls = [f"  {base_url}  ",
+                     f"{base_url}.git",
+                     f"  {base_url}.git  "]
+        for url in test_urls:
+            addon = Addon("FreeCAD", url, Addon.Status.NOT_INSTALLED, "master")
+            self.assertEqual(addon.url, base_url)
+
+    def test_tag_extraction(self):
+        addon = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon.load_metadata_file(os.path.join(self.test_dir, "good_package.xml"))
+
+        tags = addon.tags
+        self.assertEqual(len(tags),5)
+        expected_tags = set()
+        expected_tags.add("Tag0")
+        expected_tags.add("Tag1")
+        expected_tags.add("TagA")
+        expected_tags.add("TagB")
+        expected_tags.add("TagC")
+        self.assertEqual(tags, expected_tags)
