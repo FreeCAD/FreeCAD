@@ -4580,6 +4580,7 @@ class DrawSketchHandlerBSpline: public DrawSketchHandler
 public:
     DrawSketchHandlerBSpline(int constructionMethod)
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
+      , MousePressMode(MOUSE_NOT_PRESSED)
       , EditCurve(2)
       , CurrentConstraint(0)
       , ConstrMethod(constructionMethod)
@@ -4599,6 +4600,14 @@ public:
         STATUS_CLOSE
     };
 
+    // TODO: this kind of behavior will be useful in a superclass
+    // when LMB is pressed it's a transitional state so some undos can't be done
+    // (like delete last pole)
+    enum MOUSE_PRESS_MODE {
+        MOUSE_PRESSED,
+        MOUSE_NOT_PRESSED
+    };
+
     virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
@@ -4609,7 +4618,6 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
-
             EditCurve[EditCurve.size()-1] = onSketchPos;
 
             drawEdit(EditCurve);
@@ -4625,13 +4633,15 @@ public:
                 renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
                 return;
             }
-
         }
+
         applyCursor();
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
+        MousePressMode = MOUSE_PRESSED;
+
         if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
 
             EditCurve[0] = onSketchPos;
@@ -4747,6 +4757,8 @@ public:
 
     virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
+        MousePressMode = MOUSE_NOT_PRESSED;
+
         if (Mode==STATUS_CLOSE) {
             unsetCursor();
             resetPositionText();
@@ -4869,9 +4881,62 @@ public:
             // FIXME: Pressing Esc here also finishes the B-Spline creation.
             // The user may only want to exit the dialog.
         }
+        // On pressing Backspace delete last pole
+        else if (SoKeyboardEvent::BACKSPACE == key && pressed) {
+            // when mouse is pressed we are in a transitional state so don't mess with it
+            if (MOUSE_PRESSED == MousePressMode)
+                return;
+
+            // can only delete last pole if it exists
+            if (STATUS_SEEK_FIRST_CONTROLPOINT == Mode ||
+                STATUS_CLOSE == Mode)
+                return;
+
+            // if only first pole exists it's equivalent to canceling current spline
+            if (1 == CurrentConstraint) {
+                // this also exits b-spline creation if continuous mode is off
+                this->quit();
+                return;
+            }
+
+            // reverse the steps of press/release button
+            try {
+                // already ensured that CurrentConstraint == EditCurve.size() > 1
+                const int delGeoId = FirstPoleGeoId+EditCurve.size()-2;
+                const auto& constraints = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues();
+                for (int i = constraints.size() - 1; i >= 0; --i) {
+                    if (delGeoId == constraints[i]->First ||
+                        delGeoId == constraints[i]->Second ||
+                        delGeoId == constraints[i]->Third)
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "delConstraint(%d)", i);
+                }
+
+                // Remove pole
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometry(%d)", delGeoId);
+
+                // last entry is kept for tracking mouse movement
+                EditCurve.erase(std::prev(std::prev(EditCurve.end())));
+                sugConstr.erase(std::prev(std::prev(sugConstr.end())));
+
+                --CurrentConstraint;
+
+                // run this in the end to redraw lines
+                drawEdit(EditCurve);
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                // some commands might have already deleted some constraints/geometries but not others
+                Gui::Command::abortCommand();
+
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+                return;
+            }
+        }
         // TODO: On pressing, say, W, modify last pole's weight
         // TODO: On pressing, say, M, modify next knot's multiplicity
-        // TODO: On pressing, say, Backspace, delete last pole
+
+        return;
     }
 
     virtual void quit(void) override
@@ -4937,6 +5002,7 @@ private:
 
 protected:
     SELECT_MODE Mode;
+    MOUSE_PRESS_MODE MousePressMode;
 
     std::vector<Base::Vector2d> EditCurve;
 
