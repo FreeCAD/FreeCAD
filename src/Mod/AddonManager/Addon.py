@@ -115,7 +115,7 @@ class Addon:
         # The url should never end in ".git", so strip it if it's there
         parsed_url = urlparse(self.url)
         if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + parsed_url.path[:-4]
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
             if parsed_url.query:
                 self.url += "?" + parsed_url.query
             if parsed_url.fragment:
