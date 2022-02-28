@@ -42,6 +42,7 @@ SET(AddonManagerTests_SRCS
 SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
     AddonManagerTest/app/test_utilities.py
+    AddonManagerTest/app/test_addon.py
 )
 
 SET(AddonManagerTestsGui_SRCS
@@ -54,6 +55,7 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/bad_macro_metadata.FCStd
     AddonManagerTest/data/good_macro_metadata.FCStd
     AddonManagerTest/data/missing_macro_metadata.FCStd
+    AddonManagerTest/data/good_package.xml
 )
 
 SET(AddonManagerTests_ALL

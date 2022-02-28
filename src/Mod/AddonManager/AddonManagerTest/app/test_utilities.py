@@ -115,7 +115,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for line in good_lines:
             result = get_assigned_string_literal(line[0])
-            self.assertEquals(result, line[1])
+            self.assertEqual(result, line[1])
 
         bad_lines = [
             "my_var = __date__",
