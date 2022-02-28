@@ -276,13 +276,13 @@ def attention_color_string() -> str:
     return "rgb(255,179,64)" if is_darkmode() else "rgb(255,149,0)"
 
 
-def get_assigned_string_literal(line:str) -> Optional[str]:
+def get_assigned_string_literal(line: str) -> Optional[str]:
     """Look for a line of the form my_var = "A string literal" and return the string literal.
     If the assignment is of a floating point value, that value is converted to a string
     and returned. If neither is true, returns None."""
 
     string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
-    _,_,after_equals = line.partition("=") 
+    _, _, after_equals = line.partition("=")
     match = re.match(string_search_regex, after_equals)
     if match:
         return str(match.group(2))
@@ -290,9 +290,10 @@ def get_assigned_string_literal(line:str) -> Optional[str]:
         return str(after_equals).strip()
     return None
 
+
 def get_macro_version_from_file(filename: str) -> str:
-    """ Get the version of the macro from a local macro file. Supports strings, ints, and floats, as
-    well as a reference to __date__ """
+    """Get the version of the macro from a local macro file. Supports strings, ints, and floats, as
+    well as a reference to __date__"""
 
     date = ""
     with open(filename, "r", errors="ignore") as f:

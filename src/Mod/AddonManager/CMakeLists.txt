@@ -4,13 +4,13 @@ ENDIF (BUILD_GUI)
 
 SET(AddonManager_SRCS
     add_toolbar_button_dialog.ui
+    Addon.py
     AddonManager.py
     AddonManager.ui
     addonmanager_macro.py
     addonmanager_utilities.py
     addonmanager_workers.py
     AddonManagerOptions.ui
-    AddonManagerRepo.py
     ALLOWED_PYTHON_PACKAGES.txt
     change_branch.py
     change_branch.ui
