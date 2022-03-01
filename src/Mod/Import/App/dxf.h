@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <string>
 #include <iosfwd>
 #include <cstdio>
 #include <cstring>
