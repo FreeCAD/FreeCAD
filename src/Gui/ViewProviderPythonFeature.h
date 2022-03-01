@@ -125,6 +125,8 @@ public:
 
     bool getDropPrefix(std::string &prefix) const;
 
+    bool editProperty(const char *propName);
+
 private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
@@ -170,6 +172,7 @@ private:
     FC_PY_ELEMENT(getDropPrefix) \
     FC_PY_ELEMENT(replaceObject) \
     FC_PY_ELEMENT(getLinkedViewProvider) \
+    FC_PY_ELEMENT(editProperty) \
 
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
@@ -573,6 +576,11 @@ protected:
         if(!imp->getLinkedViewProvider(res, subname, recursive))
             res = ViewProviderT::getLinkedViewProvider(subname,recursive);
         return res;
+    }
+
+    virtual void editProperty(const char *propName) override {
+        if (!imp->editProperty(propName))
+            ViewProviderT::editProperty(propName);
     }
 
 public:

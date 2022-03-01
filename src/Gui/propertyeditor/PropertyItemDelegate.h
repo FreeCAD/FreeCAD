@@ -29,6 +29,8 @@
 namespace Gui {
 namespace PropertyEditor {
 
+class PropertyEditorWidget;
+
 class PropertyItemDelegate : public QItemDelegate
 {
     Q_OBJECT
@@ -52,6 +54,7 @@ public Q_SLOTS:
 
 private:
     mutable QWidget *expressionEditor;
+    mutable PropertyEditorWidget *userEditor = nullptr;
     mutable bool pressed;
     bool changed;
 };

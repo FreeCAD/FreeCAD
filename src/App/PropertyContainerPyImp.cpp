@@ -197,6 +197,7 @@ static const std::map<std::string, int> &getStatusMap() {
         statusMap["PartialTrigger"] = Property::PartialTrigger;
         statusMap["NoRecompute"] = Property::NoRecompute;
         statusMap["CopyOnChange"] = Property::CopyOnChange;
+        statusMap["UserEdit"] = Property::UserEdit;
     }
     return statusMap;
 }
