@@ -10,6 +10,9 @@
 #include <cmath>
 
 #include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 #include <App/Application.h>
 #include <Base/Console.h>

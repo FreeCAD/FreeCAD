@@ -13,12 +13,10 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <iosfwd>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 
 #include <Base/Vector3D.h>
 
