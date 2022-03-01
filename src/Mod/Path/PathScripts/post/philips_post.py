@@ -216,7 +216,6 @@ parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up
 TOOLTIP_ARGS = parser.format_help()
 
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global LINENUMBERS
     global SHOW_EDITOR
 
@@ -309,7 +308,7 @@ def mapGCode(command):
 
 def linenumberify(GCodeString):
     # add a linenumber at every beginning of line
-    global linenr # pylint: disable=global-statement
+    global linenr
     if not LINENUMBERS:
         result = GCodeString + "\n"
     else:
@@ -327,7 +326,6 @@ def linenumberify(GCodeString):
     return result
 
 def export(objectslist, filename, argstring):
-    # pylint: disable=unused-argument,global-statement
     global UNITS
     global linenr
 
@@ -457,7 +455,7 @@ def export(objectslist, filename, argstring):
                                 # absolute center
                                 outstring.append(
                                     '(' + param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS) + ')')
-                                z = c.Parameters['Z'] # pylint: disable=unused-variable
+                                z = c.Parameters['Z']
                                 k = c.Parameters['K']
                                 if USE_RADIUS_IF_POSSIBLE and angleUnder180(command, lastX, lastY, c.Parameters['X'], c.Parameters['Y'], i, j):
                                     # R is handled with the I parameter, here:

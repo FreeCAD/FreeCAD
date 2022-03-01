@@ -208,7 +208,7 @@ def postProcessorBlacklist():
     blacklist = pref.GetString(PostProcessorBlacklist, "")
     if not blacklist:
         return []
-    return eval(blacklist)  # pylint: disable=eval-used
+    return eval(blacklist)
 
 
 def setPostProcessorDefaults(processor, args, blacklist):

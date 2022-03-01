@@ -86,7 +86,7 @@ def selectOffsetWire(feature, wires):
         dist = feature.distToShape(w)[0]
         if (
             closest is None or dist > closest[0]
-        ):  # pylint: disable=unsubscriptable-object
+        ):
             closest = (dist, w)
 
     if closest is not None:

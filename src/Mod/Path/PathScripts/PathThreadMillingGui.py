@@ -68,13 +68,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def initPage(self, obj):
         self.majorDia = PathGui.QuantitySpinBox(
             self.form.threadMajor, obj, "MajorDiameter"
-        )  # pylint: disable=attribute-defined-outside-init
+        )
         self.minorDia = PathGui.QuantitySpinBox(
             self.form.threadMinor, obj, "MinorDiameter"
-        )  # pylint: disable=attribute-defined-outside-init
+        )
         self.pitch = PathGui.QuantitySpinBox(
             self.form.threadPitch, obj, "Pitch"
-        )  # pylint: disable=attribute-defined-outside-init
+        )
 
         # setupCombo(self.form.threadOrientation, obj.Proxy.ThreadOrientations)
         # setupCombo(self.form.threadType, obj.Proxy.ThreadTypes)

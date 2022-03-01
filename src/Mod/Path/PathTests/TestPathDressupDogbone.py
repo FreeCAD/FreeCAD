@@ -42,7 +42,6 @@ class TestFeature:
         self.Path = Path.Path()
 
     def addProperty(self, typ, nam, category, tip):
-        # pylint: disable=unused-argument
         setattr(self, nam, None)
 
     def setEditorMode(self, prop, mode):

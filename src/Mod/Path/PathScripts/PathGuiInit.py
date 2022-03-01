@@ -19,7 +19,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# pylint: disable=unused-import
 
 import PathScripts.PathLog as PathLog
 
@@ -34,7 +33,7 @@ else:
 Processed = False
 
 def Startup():
-    global Processed # pylint: disable=global-statement
+    global Processed
     if not Processed:
         PathLog.debug('Initializing PathGui')
         from PathScripts import PathAdaptiveGui

@@ -358,7 +358,7 @@ def getToolControllers(obj, proxy=None):
         proxy = obj.Proxy
     try:
         job = findParentJob(obj)
-    except Exception:  # pylint: disable=broad-except
+    except Exception:
         job = None
 
     PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
@@ -485,7 +485,7 @@ def sort_locations(locations, keys, attractors=None):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get()  # pylint: disable=unused-variable
+        prio, i, result = q.get()
 
         return result
 

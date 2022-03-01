@@ -253,7 +253,7 @@ class ObjectDressup:
 
         self.wire, rapid = PathGeom.wireForPath(
             obj.Base.Path
-        )  # pylint: disable=unused-variable
+        )
         self.edges = self.wire.Edges
 
         maxTagZ = minZ + obj.Height.Value
@@ -286,11 +286,9 @@ class ObjectDressup:
             obj.Shape = solid
 
     def supportsTagGeneration(self, obj):
-        # pylint: disable=unused-argument
         return False
 
     def pointIsOnPath(self, obj, p):
-        # pylint: disable=unused-argument
         for e in self.edges:
             if DraftGeomUtils.isPtOnEdge(p, e):
                 return True

@@ -161,7 +161,6 @@ class TaskPanel:
                 self.pointAcceptAndContinue()
 
         def cancel():
-            # pylint: disable=unused-variable
             self.pointReject()
 
         self.pointWhenDone = whenDone

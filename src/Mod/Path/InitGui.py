@@ -158,7 +158,7 @@ class PathWorkbench(Workbench):
 
         if PathPreferences.advancedOCLFeaturesEnabled():
             try:
-                import ocl  # pylint: disable=unused-variable
+                import ocl
                 from PathScripts import PathSurfaceGui
                 from PathScripts import PathWaterlineGui
 

@@ -50,7 +50,6 @@ translate = FreeCAD.Qt.translate
 
 
 class JobTemplate:
-    # pylint: disable=no-init
     """Attribute and sub element strings for template export/import."""
     Description = "Desc"
     GeometryTolerance = "Tolerance"
@@ -69,7 +68,6 @@ class JobTemplate:
 
 
 def isResourceClone(obj, propLink, resourceName):
-    # pylint: disable=unused-argument
     if hasattr(propLink, "PathResource") and (
         resourceName is None or resourceName == propLink.PathResource
     ):
@@ -464,7 +462,7 @@ class ObjectJob:
         if getattr(obj.Operations, "ViewObject", None):
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except Exception:  # pylint: disable=broad-except
+            except Exception:
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject(
@@ -703,7 +701,7 @@ class ObjectJob:
                     group.insert(group.index(before), op)
                     if removeBefore:
                         group.remove(before)
-                except Exception as e:  # pylint: disable=broad-except
+                except Exception as e:
                     PathLog.error(e)
                     group.append(op)
             else:

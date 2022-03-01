@@ -56,7 +56,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def initPage(self, obj):
         """initPage(obj) ... Is called after getForm() to initiate the task panel."""
         debugMsg("initPage()")
-        # pylint: disable=attribute-defined-outside-init
         self.CATS = [None, None]
         self.propEnums = PathSlot.ObjectSlot.propertyEnumerations(dataType="raw")
         self.ENUMS = dict()

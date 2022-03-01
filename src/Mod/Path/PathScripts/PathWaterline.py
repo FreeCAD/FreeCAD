@@ -2260,7 +2260,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         PathLog.track()
 
         paths = []
-        pathParams = {}  # pylint: disable=assignment-from-no-return
+        pathParams = {}
 
         pathParams["shapes"] = [wire]
         pathParams["feedrate"] = self.horizFeed
@@ -2276,7 +2276,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         (pp, end_vector) = Path.fromShapes(**pathParams)
         paths.extend(pp.Commands)
 
-        self.endVector = end_vector  # pylint: disable=attribute-defined-outside-init
+        self.endVector = end_vector
 
         return (paths, end_vector)
 

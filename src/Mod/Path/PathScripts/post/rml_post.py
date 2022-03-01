@@ -46,7 +46,6 @@ if open.__module__ in ['__builtin__','io']:
 # Entrypoint used by FreeCAD
 def export(objectslist, filename, argstring):
     "Export objects as Roland Modela code."
-    # pylint: disable=unused-argument
 
     code = ""
     for obj in objectslist:

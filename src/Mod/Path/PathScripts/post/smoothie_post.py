@@ -116,7 +116,6 @@ if open.__module__ in ['__builtin__', 'io']:
 
 
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -163,7 +162,7 @@ def processArguments(argstring):
         IP_ADDR = args.IP_ADDR
         VERBOSE = args.verbose
 
-    except Exception: # pylint: disable=broad-except
+    except Exception:
         return False
 
     return True
@@ -171,7 +170,7 @@ def processArguments(argstring):
 
 def export(objectslist, filename, argstring):
     processArguments(argstring)
-    global UNITS # pylint: disable=global-statement
+    global UNITS
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             FreeCAD.Console.PrintError("the object " + obj.Name + " is not a path. Please select only path and Compounds.\n")
@@ -332,7 +331,7 @@ def sendToSmoothie(ip, GCODE, fname):
 
 
 def linenumber():
-    global LINENR # pylint: disable=global-statement
+    global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
@@ -340,7 +339,7 @@ def linenumber():
 
 
 def parse(pathobj):
-    global SPINDLE_SPEED # pylint: disable=global-statement
+    global SPINDLE_SPEED
 
     out = ""
     lastcommand = None

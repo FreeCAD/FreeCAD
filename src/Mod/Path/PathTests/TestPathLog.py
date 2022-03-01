@@ -33,11 +33,11 @@ class TestPathLog(unittest.TestCase):
         PathLog.untrackAllModules()
 
     def callerFile(self):
-        return PathLog._caller()[0] # pylint: disable=protected-access
+        return PathLog._caller()[0]
     def callerLine(self):
-        return PathLog._caller()[1] # pylint: disable=protected-access
+        return PathLog._caller()[1]
     def callerFunc(self):
-        return PathLog._caller()[2] # pylint: disable=protected-access
+        return PathLog._caller()[2]
 
     def test00(self):
         """Check for proper module extraction."""

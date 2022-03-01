@@ -44,7 +44,7 @@ class PostProcessor:
         namespace = {}
 
         #can't modify function local scope with exec in python3
-        exec("import %s as current_post" % postname, namespace) # pylint: disable=exec-used
+        exec("import %s as current_post" % postname, namespace)
         current_post = namespace['current_post']
 
         # make sure the script is reloaded if it was previously loaded
@@ -53,11 +53,11 @@ class PostProcessor:
         # resulting in 2 load messages if the script outputs one of those.
         try:
             # Python 2.7
-            exec("reload(%s)" % 'current_post') # pylint: disable=exec-used
+            exec("reload(%s)" % 'current_post')
         except NameError:
             # Python 3.4+
-            from importlib import reload        # pylint: disable=redefined-builtin,unused-import
-            exec("reload(%s)" % 'current_post') # pylint: disable=exec-used
+            from importlib import reload
+            exec("reload(%s)" % 'current_post')
 
         sys.path = syspath
 

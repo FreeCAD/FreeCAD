@@ -149,7 +149,6 @@ if open.__module__ in ['__builtin__', 'io']:
 
 
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -186,14 +185,13 @@ def processArguments(argstring):
             UNIT_FORMAT = 'in'
             PRECISION = 4
 
-    except Exception:  # pylint: disable=broad-except
+    except Exception:
         return False
 
     return True
 
 
 def export(objectslist, filename, argstring):
-    # pylint: disable=unused-argument
     if not processArguments(argstring):
         return None
     global UNITS
@@ -278,7 +276,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
-    global LINENR  # pylint: disable=global-statement
+    global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 1
         return "N" + str(LINENR) + " "
@@ -286,7 +284,6 @@ def linenumber():
 
 
 def parse(pathobj):
-    # pylint: disable=global-statement
     global PRECISION
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT

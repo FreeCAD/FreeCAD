@@ -98,7 +98,6 @@ GetValue = getMetricValue
 
 
 def export(objectslist, filename, argstring):
-    # pylint: disable=global-statement
     global OUTPUT_COMMENTS
     global OUTPUT_HEADER
     global SHOW_EDITOR

@@ -877,7 +877,6 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        # pylint: disable=unused-argument
         PathLog.debug("Deleting Dressup")
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
@@ -895,7 +894,6 @@ class ViewProviderDressup:
 
 
 class CommandPathDressupRampEntry:
-    # pylint: disable=no-init
 
     def GetResources(self):
         return {

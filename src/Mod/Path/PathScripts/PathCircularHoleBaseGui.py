@@ -58,7 +58,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseHoleGeometryEdit.ui")
 
     def initPage(self, obj):
-        self.updating = False # pylint: disable=attribute-defined-outside-init
+        self.updating = False
 
     def setFields(self, obj):
         '''setFields(obj) ... fill form with values from obj'''
@@ -142,9 +142,9 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             PathLog.debug("keeping (%s.%s)" % (obj.Label, sub))
             newlist.append(base)
         PathLog.debug("obj.Base=%s newlist=%s" % (self.obj.Base, newlist))
-        self.updating = True # pylint: disable=attribute-defined-outside-init
+        self.updating = True
         self.obj.Base = newlist
-        self.updating = False # pylint: disable=attribute-defined-outside-init
+        self.updating = False
 
     def checkedChanged(self):
         '''checkeChanged() ... callback when checked status of a base feature changed'''

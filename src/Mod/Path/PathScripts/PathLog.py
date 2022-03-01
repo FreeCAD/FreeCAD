@@ -26,7 +26,6 @@ import traceback
 
 class Level:
     """Enumeration of log levels, used for setLevel and getLevel."""
-    # pylint: disable=no-init
     RESET   = -1
     ERROR   = 0
     WARNING = 1
@@ -48,15 +47,15 @@ _trackAll = False
 
 def logToConsole(yes):
     """(boolean) - if set to True (default behaviour) log messages are printed to the console. Otherwise they are printed to stdout."""
-    global _useConsole # pylint: disable=global-statement
+    global _useConsole
     _useConsole = yes
 
 def setLevel(level, module = None):
     """(level, module = None)
        if no module is specified the default log level is set.
        Otherwise the module specific log level is changed (use RESET to clear)."""
-    global _defaultLogLevel # pylint: disable=global-statement
-    global _moduleLogLevel # pylint: disable=global-statement
+    global _defaultLogLevel
+    global _moduleLogLevel
     if module:
         if level == Level.RESET:
             if _moduleLogLevel.get(module, -1) != -1:
@@ -82,12 +81,12 @@ def thisModule():
 
 def _caller():
     """internal function to determine the calling module."""
-    filename, line, func, text = traceback.extract_stack(limit=3)[0] # pylint: disable=unused-variable
+    filename, line, func, text = traceback.extract_stack(limit=3)[0]
     return os.path.splitext(os.path.basename(filename))[0], line, func
 
 def _log(level, module_line_func, msg):
     """internal function to do the logging"""
-    module, line, func = module_line_func # pylint: disable=unused-variable
+    module, line, func = module_line_func
     if getLevel(module) >= level:
         message = "%s.%s: %s" % (module, Level.toString(level), msg)
         if _useConsole:
@@ -125,32 +124,32 @@ def error(msg):
 
 def trackAllModules(boolean):
     """(boolean) - if True all modules will be tracked, otherwise tracking is up to the module setting."""
-    global _trackAll # pylint: disable=global-statement
+    global _trackAll
     _trackAll = boolean
 
 def untrackAllModules():
     """In addition to stop tracking all modules it also clears the tracking flag for all individual modules."""
-    global _trackAll # pylint: disable=global-statement
-    global _trackModule # pylint: disable=global-statement
+    global _trackAll
+    global _trackModule
     _trackAll = False
     _trackModule = { }
 
 def trackModule(module = None):
     """(module = None) - start tracking given module, current module if not set."""
-    global _trackModule # pylint: disable=global-statement
+    global _trackModule
     if module:
         _trackModule[module] = True
     else:
-        mod, line, func = _caller() # pylint: disable=unused-variable
+        mod, line, func = _caller()
         _trackModule[mod] = True
 
 def untrackModule(module = None):
     """(module = None) - stop tracking given module, current module if not set."""
-    global _trackModule # pylint: disable=global-statement
+    global _trackModule
     if module and _trackModule.get(module, None):
         del _trackModule[module]
     elif not module:
-        mod, line, func = _caller() # pylint: disable=unused-variable
+        mod, line, func = _caller()
         if _trackModule.get(mod, None):
             del _trackModule[mod]
 

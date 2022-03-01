@@ -81,7 +81,7 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
 
     @classmethod
     def setUpClass(cls):
-        global doc # pylint: disable=global-statement
+        global doc
         doc = FreeCAD.openDocument(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_geomop.fcstd')
 
     @classmethod

@@ -83,7 +83,7 @@ class PropertyEnumeration(Property):
 
     def setValue(self, value):
         if list == type(value):
-            self.enums = value # pylint: disable=attribute-defined-outside-init
+            self.enums = value
         else:
             super(PropertyEnumeration, self).setValue(value)
 

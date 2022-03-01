@@ -58,7 +58,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         if not hasattr(self, "extensionsPanel"):
             self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(
                 obj, features
-            )  # pylint: disable=attribute-defined-outside-init
+            )
         return self.extensionsPanel
 
 

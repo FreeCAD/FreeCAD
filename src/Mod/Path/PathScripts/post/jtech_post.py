@@ -111,7 +111,6 @@ if open.__module__ == '__builtin__':
 
 
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -153,7 +152,7 @@ def processArguments(argstring):
             OUTPUT_DOUBLES = False
         POWER_ON_DELAY = float(args.power_on_delay) / 1000  # milliseconds
 
-    except Exception: # pylint: disable=broad-except
+    except Exception:
         return False
 
     return True
@@ -228,7 +227,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
-    global LINENR # pylint: disable=global-statement
+    global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "

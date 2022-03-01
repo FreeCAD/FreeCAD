@@ -478,7 +478,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             shapeEnv = PathUtils.getEnvelope(
                                 profileshape, depthparams=custDepthparams
                             )
-                        except Exception as ee:  # pylint: disable=broad-except
+                        except Exception as ee:
                             # PathUtils.getEnvelope() failed to return an object.
                             msg = translate("PathProfile", "Unable to create path for face(s).")
                             PathLog.error(msg + "\n{}".format(ee))
@@ -512,7 +512,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 shapes.extend(self._processEachModel(obj))
 
-        self.removalshapes = shapes  # pylint: disable=attribute-defined-outside-init
+        self.removalshapes = shapes
         PathLog.debug("%d shapes" % len(shapes))
 
         # Delete the temporary objects

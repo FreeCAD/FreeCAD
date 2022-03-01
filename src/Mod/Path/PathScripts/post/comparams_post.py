@@ -79,7 +79,6 @@ def lineout(command, oldvals, modal):
 
 
 def export(obj, filename, argstring):
-    # pylint: disable=unused-argument
     modal = True
     gcode = ''
     safetyblock1 = 'G90G40G49\n'
