@@ -12,7 +12,7 @@ It can be extended by other mods, by adding a new result provider.
 
 ### Usage
 
-The search bar appears next to the [`What's this?`](https://wiki.freecad.org/Std_WhatsThis) tool <img src="https://user-images.githubusercontent.com/4140247/156215976-5dfadb0c-cac4-44b2-8ad4-b67462a5f7fa.png" alt="drawing" width="20px" height="20px"/> in FreeCAD's default File toolbar.
+The search bar appears next to the [`What's this?`](https://wiki.freecad.org/Std_WhatsThis) tool <a href="https://wiki.freecad.org/Std_WhatsThis"><img src="https://user-images.githubusercontent.com/4140247/156215976-5dfadb0c-cac4-44b2-8ad4-b67462a5f7fa.png" alt="drawing" width="20px" height="20px"/></a> in FreeCAD's default File toolbar.
 
 ![Screenshot of the search bar, with results in its drop-down menu and extra info about the result in a separate pane](screenshot.png)
 
