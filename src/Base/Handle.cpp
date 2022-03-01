@@ -25,14 +25,14 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <iostream>
 # include <cassert>
+# include <iostream>
 #endif
 
 #include <QAtomicInt>
 
 #include "Handle.h"
-#include "Exception.h"
+
 
 using namespace Base;
 
