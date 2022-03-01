@@ -1,5 +1,4 @@
-SearchBar
-=========
+## FreeCAD SearchBar
 
 This FreeCAD mod adds a search bar for tools, document objects and preferences.
 
@@ -7,39 +6,51 @@ This FreeCAD mod adds a search bar for tools, document objects and preferences.
 
 ⚠️️ Most of these should now be solved, but save your work often and proceed with caution while testing this extension. ⚠️
 
-Extensibility
--------------
+### Extensibility
 
 It can be extended by other mods, by adding a new result provider.
 
-Usage
------
+### Usage
 
-The search bar appars next to the What's this? tool, in FreeCAD's default File toolbar.
+The search bar appears next to the `What's this?` tool <img src="https://user-images.githubusercontent.com/4140247/156215976-5dfadb0c-cac4-44b2-8ad4-b67462a5f7fa.png" alt="drawing" width="20px" height="20px"/> in FreeCAD's default File toolbar.
 
 ![Screenshot of the search bar, with results in its drop-down menu and extra info about the result in a separate pane](screenshot.png)
 
-Installation
-------------
+### Installation
+
+#### Automatic Install
+
+Install **SearchBar** addon via the FreeCAD Addon Manager from the **Tools** :arrow_right: **Addon Manager** dropdown menu. 
+
+#### Manual Install
+
+<details>
+<summary>Expand for instructions on manual installation of SearchBar</summary>
 
 Clone the GIT repository or extract the `.zip` downloaded from GitHub to the following location:
+  * Linux: `~/.FreeCAD/Mod/SearchBar`
+  * macOS: `/Users/user_name/Library/Preferences/FreeCAD/Mod/SearchBar`
+  * Windows: `C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\SearchBar`
 
-Uninstallation
---------------
+### Uninstallation
 
 * Remove the folder which was cloned during installation:
-  * Linux: ~/.FreeCAD/Mod/SearchBar
-  * macos: /Users/user_name/Library/Preferences/FreeCAD/Mod/SearchBar
-  * Windows: C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\SearchBar
-* Optional: Remove the cache (~30MB) ~/.FreeCAD/Cache_SearchBarMod or equivalent on other platforms
+  * Linux: `~/.FreeCAD/Mod/SearchBar`
+  * macOS: `/Users/user_name/Library/Preferences/FreeCAD/Mod/SearchBar`
+  * Windows: `C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\SearchBar`
+* Optional: Remove the cache (\~30MB) `\~/.FreeCAD/Cache_SearchBarMod` or equivalent on other platforms
 
-Development
------------
+</details>
+
+### Development
 
 * `InitGui.py` adds an instance of `SearchBoxLight` to the GUI.
 * `SearchBoxLight` is a hollowed-out implementation of a search box, it loads everything lazily.
 
-License
--------
+### Feedback
 
-[![License: CC0 v1.0.](https://img.shields.io/badge/license-CC0-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/) This repository is in the public domain.
+To report bugs or feature enhancements, please open a ticket in the [issue queue](https://github.com/SuzanneSoy/SearchBar/issues). Best place to discuss feedback or issues in on the [dedicated FreeCAD forum discussion]() for SearchBar. 
+
+### License [![License: CC0 v1.0.](https://img.shields.io/badge/license-CC0-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+See [LICENSE](LICENSE).
+This repository is in the public domain.
