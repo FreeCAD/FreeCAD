@@ -1615,10 +1615,9 @@ static gp_Pnt toPnt(gp_Vec dir)
 
 App::DocumentObjectExecReturn* Hole::execute(void)
 {
-    Part::Feature* profile = 0;
-    TopoDS_Shape profileshape;
+     TopoDS_Shape profileshape;
     try {
-        profile = getVerifiedObject();
+
         profileshape = getVerifiedFace();
     }
     catch (const Base::Exception& e) {
