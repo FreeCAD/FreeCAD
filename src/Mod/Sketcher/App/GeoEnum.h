@@ -119,6 +119,10 @@ public:
      */
     PointPos Pos;
 
+    bool isCurve() const;
+
+    int posIdAsInt() const;
+
     /** @brief GeoElementId of the Root Point
      */
     static const GeoElementId RtPnt;
@@ -133,6 +137,14 @@ public:
 // inline constexpr constructor
 inline constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
 {
+}
+
+inline bool GeoElementId::isCurve() const {
+    return Pos == PointPos::none;
+}
+
+inline int GeoElementId::posIdAsInt() const {
+    return static_cast<int>(Pos);
 }
 
 #ifndef FC_OS_WIN32
