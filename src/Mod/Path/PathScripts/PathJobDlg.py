@@ -260,9 +260,7 @@ class JobCreate:
         models = []
 
         for i in range(self.itemsSolid.rowCount()):
-            for j in range(
-                self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)
-            ):
+            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)):
                 models.append(self.itemsSolid.child(i).data(self.DataObject))
 
         for i in range(self.items2D.rowCount()):

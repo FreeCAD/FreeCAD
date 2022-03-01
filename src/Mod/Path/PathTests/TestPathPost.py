@@ -143,13 +143,12 @@ class TestPathPostUtils(unittest.TestCase):
 
         testpath = Path.Path(commands)
         self.assertTrue(len(testpath.Commands) == 9)
-        self.assertTrue(len([c for c in testpath.Commands if c.Name in ['G2', 'G3']]) == 4)
+        self.assertTrue(
+            len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4
+        )
 
         results = PostUtils.splitArcs(testpath)
         # self.assertTrue(len(results.Commands) == 117)
-        self.assertTrue(len([c for c in results.Commands if c.Name in ['G2', 'G3']]) == 0)
-
-
-
-
-
+        self.assertTrue(
+            len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
+        )

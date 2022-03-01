@@ -24,14 +24,14 @@ import Path
 
 from PathTests.PathTestUtils import PathTestBase
 
+
 class TestPathTooltable(PathTestBase):
-
     def test00(self):
-        '''Verify templateAttrs'''
+        """Verify templateAttrs"""
 
-        t = Path.Tool(name='t', diameter=1.2)
-        u = Path.Tool(name='u', diameter=3.4)
-        v = Path.Tool(name='v', diameter=5.6)
+        t = Path.Tool(name="t", diameter=1.2)
+        u = Path.Tool(name="u", diameter=3.4)
+        v = Path.Tool(name="v", diameter=5.6)
 
         tt = Path.Tooltable()
         tt.setTool(3, t)
@@ -45,26 +45,24 @@ class TestPathTooltable(PathTestBase):
         self.assertTrue(3 in attrs)
         self.assertTrue(4 in attrs)
 
-        self.assertEqual(attrs[1]['name'], 'u')
-        self.assertEqual(attrs[1]['diameter'], 3.4)
-        self.assertEqual(attrs[3]['name'], 't')
-        self.assertEqual(attrs[3]['diameter'], 1.2)
-        self.assertEqual(attrs[4]['name'], 'v')
-        self.assertEqual(attrs[4]['diameter'], 5.6)
+        self.assertEqual(attrs[1]["name"], "u")
+        self.assertEqual(attrs[1]["diameter"], 3.4)
+        self.assertEqual(attrs[3]["name"], "t")
+        self.assertEqual(attrs[3]["diameter"], 1.2)
+        self.assertEqual(attrs[4]["name"], "v")
+        self.assertEqual(attrs[4]["diameter"], 5.6)
         return tt
 
     def test01(self):
-        '''Verify setFromTemplate roundtrip.'''
+        """Verify setFromTemplate roundtrip."""
         tt = self.test00()
         uu = Path.Tooltable()
         uu.setFromTemplate(tt.templateAttrs())
 
         self.assertEqual(tt.Content, uu.Content)
 
-
     def test02(self):
-        '''Verify template constructor.'''
+        """Verify template constructor."""
         tt = self.test00()
         uu = Path.Tooltable(tt.templateAttrs())
         self.assertEqual(tt.Content, uu.Content)
-

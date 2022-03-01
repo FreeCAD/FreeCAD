@@ -21,20 +21,22 @@
 # ***************************************************************************
 
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils
 
-class PathUtilsUserInput(object):
 
+class PathUtilsUserInput(object):
     def selectedToolController(self):
         tc = None
         # check if a user has selected a tool controller in the tree.
         # Return the first one and remove all from selection
         for sel in FreeCADGui.Selection.getSelectionEx():
-            if hasattr(sel.Object, 'Proxy'):
-                if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
+            if hasattr(sel.Object, "Proxy"):
+                if isinstance(
+                    sel.Object.Proxy, PathScripts.PathToolController.ToolController
+                ):
                     if tc is None:
                         tc = sel.Object
                     FreeCADGui.Selection.removeSelection(sel.Object)
@@ -47,7 +49,9 @@ class PathUtilsUserInput(object):
         r = form.exec_()
         if not r:
             return None
-        return [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
+        return [
+            i for i in controllers if i.Label == form.uiToolController.currentText()
+        ][0]
 
     def chooseJob(self, jobs):
         job = None
@@ -79,7 +83,9 @@ class PathUtilsUserInput(object):
                     if r is False or r == 0:
                         return None
                     else:
-                        job = [j for j in jobs if j.Label == form.cboProject.currentText()][0]
+                        job = [
+                            j for j in jobs if j.Label == form.cboProject.currentText()
+                        ][0]
         return job
 
     def createJob(self):
@@ -87,4 +93,3 @@ class PathUtilsUserInput(object):
 
 
 PathUtils.UserInput = PathUtilsUserInput()
-

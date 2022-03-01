@@ -28,85 +28,87 @@ import math
 
 from PathTests.PathTestUtils import PathTestBase
 
+
 class VbitTool(object):
-    '''Faked out vcarve tool'''
+    """Faked out vcarve tool"""
 
     def __init__(self, dia, angle, tipDia):
-        self.Diameter         = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
+        self.Diameter = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
         self.CuttingEdgeAngle = FreeCAD.Units.Quantity(angle, FreeCAD.Units.Angle)
-        self.TipDiameter      = FreeCAD.Units.Quantity(tipDia, FreeCAD.Units.Length)
+        self.TipDiameter = FreeCAD.Units.Quantity(tipDia, FreeCAD.Units.Length)
+
 
 Scale45 = 2.414214
 Scale60 = math.sqrt(3)
 
+
 class TestPathVcarve(PathTestBase):
-    '''Test Vcarve milling basics.'''
+    """Test Vcarve milling basics."""
 
     def test00(self):
-        '''Verify 90 deg depth calculation'''
+        """Verify 90 deg depth calculation"""
         tool = VbitTool(10, 90, 0)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -10)
-        self.assertRoughly(geom.start,  0)
-        self.assertRoughly(geom.stop,  -5)
-        self.assertRoughly(geom.scale,  1)
+        self.assertRoughly(geom.start, 0)
+        self.assertRoughly(geom.stop, -5)
+        self.assertRoughly(geom.scale, 1)
 
     def test01(self):
-        '''Verify 90 deg depth limit'''
+        """Verify 90 deg depth limit"""
         tool = VbitTool(10, 90, 0)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -3)
-        self.assertRoughly(geom.start,  0)
-        self.assertRoughly(geom.stop,  -3)
-        self.assertRoughly(geom.scale,  1)
+        self.assertRoughly(geom.start, 0)
+        self.assertRoughly(geom.stop, -3)
+        self.assertRoughly(geom.scale, 1)
 
     def test02(self):
-        '''Verify 60 deg depth calculation'''
+        """Verify 60 deg depth calculation"""
         tool = VbitTool(10, 60, 0)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -10)
-        self.assertRoughly(geom.start,  0)
+        self.assertRoughly(geom.start, 0)
         self.assertRoughly(geom.stop, -5 * Scale60)
-        self.assertRoughly(geom.scale,  Scale60)
+        self.assertRoughly(geom.scale, Scale60)
 
     def test03(self):
-        '''Verify 60 deg depth limit'''
+        """Verify 60 deg depth limit"""
         tool = VbitTool(10, 60, 0)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -3)
-        self.assertRoughly(geom.start,  0)
-        self.assertRoughly(geom.stop,  -3)
-        self.assertRoughly(geom.scale,  Scale60)
+        self.assertRoughly(geom.start, 0)
+        self.assertRoughly(geom.stop, -3)
+        self.assertRoughly(geom.scale, Scale60)
 
     def test10(self):
-        '''Verify 90 deg with tip dia depth calculation'''
+        """Verify 90 deg with tip dia depth calculation"""
         tool = VbitTool(10, 90, 2)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -10)
         # in order for the width to be correct the height needs to be shifted
-        self.assertRoughly(geom.start,  1)
-        self.assertRoughly(geom.stop,  -4)
-        self.assertRoughly(geom.scale,  1)
+        self.assertRoughly(geom.start, 1)
+        self.assertRoughly(geom.stop, -4)
+        self.assertRoughly(geom.scale, 1)
 
     def test11(self):
-        '''Verify 90 deg with tip dia depth limit calculation'''
+        """Verify 90 deg with tip dia depth limit calculation"""
         tool = VbitTool(10, 90, 2)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -3)
         # in order for the width to be correct the height needs to be shifted
-        self.assertRoughly(geom.start,  1)
-        self.assertRoughly(geom.stop,  -3)
-        self.assertRoughly(geom.scale,  1)
+        self.assertRoughly(geom.start, 1)
+        self.assertRoughly(geom.stop, -3)
+        self.assertRoughly(geom.scale, 1)
 
     def test12(self):
-        '''Verify 45 deg with tip dia depth calculation'''
+        """Verify 45 deg with tip dia depth calculation"""
         tool = VbitTool(10, 45, 2)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -10)
         # in order for the width to be correct the height needs to be shifted
-        self.assertRoughly(geom.start,  Scale45)
-        self.assertRoughly(geom.stop,  -4 * Scale45)
-        self.assertRoughly(geom.scale,  Scale45)
+        self.assertRoughly(geom.start, Scale45)
+        self.assertRoughly(geom.stop, -4 * Scale45)
+        self.assertRoughly(geom.scale, Scale45)
 
     def test13(self):
-        '''Verify 45 deg with tip dia depth limit calculation'''
+        """Verify 45 deg with tip dia depth limit calculation"""
         tool = VbitTool(10, 45, 2)
         geom = PathVcarve._Geometry.FromTool(tool, 0, -3)
         # in order for the width to be correct the height needs to be shifted
-        self.assertRoughly(geom.start,  Scale45)
-        self.assertRoughly(geom.stop,  -3)
-        self.assertRoughly(geom.scale,  Scale45)
-
+        self.assertRoughly(geom.start, Scale45)
+        self.assertRoughly(geom.stop, -3)
+        self.assertRoughly(geom.scale, Scale45)

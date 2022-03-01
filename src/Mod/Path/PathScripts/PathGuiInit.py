@@ -32,10 +32,11 @@ else:
 
 Processed = False
 
+
 def Startup():
     global Processed
     if not Processed:
-        PathLog.debug('Initializing PathGui')
+        PathLog.debug("Initializing PathGui")
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
         from PathScripts import PathComment
@@ -75,6 +76,7 @@ def Startup():
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui
         from PathScripts import PathVcarveGui
+
         Processed = True
     else:
-        PathLog.debug('Skipping PathGui initialisation')
+        PathLog.debug("Skipping PathGui initialisation")

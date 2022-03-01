@@ -23,24 +23,25 @@
 
 from __future__ import print_function
 
-TOOLTIP='''
+TOOLTIP = """
 This is an example postprocessor file for the Path workbench. It is used
 to save a list of FreeCAD Path objects to a file.
 
 Read the Path Workbench documentation to know how to convert Path objects
 to GCode.
-'''
+"""
 
 import datetime
+
 now = datetime.datetime.now()
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
-def export(objectslist, filename,argstring):
+def export(objectslist, filename, argstring):
     "called when freecad exports a list of objects"
     if len(objectslist) > 1:
         print("This script is unable to write more than one Path object")
@@ -62,7 +63,7 @@ def parse(inputstring):
     output = ""
 
     # write some stuff first
-    output += "N10 ;time:"+str(now)+"\n"
+    output += "N10 ;time:" + str(now) + "\n"
     output += "N20 G17 G20 G80 G40 G90\n"
     output += "N30 (Exported by FreeCAD)\n"
 
@@ -98,5 +99,6 @@ def parse(inputstring):
 
     print("done postprocessing.")
     return output
+
 
 # print(__name__ + " gcode postprocessor loaded.")

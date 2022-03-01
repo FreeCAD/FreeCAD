@@ -1378,12 +1378,14 @@ def Create(res):
             obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
             return obj
     except PathUtils.PathNoTCExistsException:
-        msg = translate('PathOp', 'No suitable tool controller found.\nAborting op creation')
+        msg = translate(
+            "PathOp", "No suitable tool controller found.\nAborting op creation"
+        )
         diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
         diag.setWindowModality(QtCore.Qt.ApplicationModal)
         diag.exec_()
     except PathOp.PathNoTCException:
-        PathLog.warning(translate('PathOp', 'No tool controller, aborting op creation'))
+        PathLog.warning(translate("PathOp", "No tool controller, aborting op creation"))
 
     FreeCAD.ActiveDocument.abortTransaction()
     FreeCAD.ActiveDocument.recompute()

@@ -51,13 +51,15 @@ else:
 
 UserInput = None
 
+
 class PathNoTCExistsException(Exception):
-    '''PathNoECExistsException is raised when no TC exists at all, or when all
+    """PathNoECExistsException is raised when no TC exists at all, or when all
     existing TCs are rejected by a given op.
-    This is typically an error because avery op requires a TC. '''
+    This is typically an error because avery op requires a TC."""
 
     def __init__(self):
-        super().__init__('No Tool Controllers exist')
+        super().__init__("No Tool Controllers exist")
+
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):

@@ -41,7 +41,7 @@ import shlex
 from PathScripts import PostUtils
 from PathScripts import PathUtils
 
-TOOLTIP = '''
+TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a High-Z S-1000T 4 Axis Mill by CNC-Step (www.cnc-step.com) using the KineticNC Control Software. This postprocessor, once placed
@@ -50,21 +50,45 @@ FreeCAD, via the GUI importer or via python scripts with:
 
 import KineticNC_post
 KineticNC_post.export(object,"/path/to/file.ncc","")
-'''
+"""
 
 now = datetime.datetime.now()
 
-parser = argparse.ArgumentParser(prog='linuxcnc', add_help=False)
-parser.add_argument('--no-header', action='store_true', help='suppress header output')
-parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
-parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
-parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
-parser.add_argument('--precision', default='3', help='number of digits of precision, default=3')
-parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
-parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
-parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
-parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
-parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
+parser = argparse.ArgumentParser(prog="linuxcnc", add_help=False)
+parser.add_argument("--no-header", action="store_true", help="suppress header output")
+parser.add_argument(
+    "--no-comments", action="store_true", help="suppress comment output"
+)
+parser.add_argument(
+    "--line-numbers", action="store_true", help="prefix with line numbers"
+)
+parser.add_argument(
+    "--no-show-editor",
+    action="store_true",
+    help="don't pop up editor before writing output",
+)
+parser.add_argument(
+    "--precision", default="3", help="number of digits of precision, default=3"
+)
+parser.add_argument(
+    "--preamble",
+    help='set commands to be issued before the first command, default="G17\nG90"',
+)
+parser.add_argument(
+    "--postamble",
+    help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"',
+)
+parser.add_argument(
+    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
+)
+parser.add_argument(
+    "--modal",
+    action="store_true",
+    help="Output the Same G-command Name USE NonModal Mode",
+)
+parser.add_argument(
+    "--axis-modal", action="store_true", help="Output the Same Axis Value Mode"
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -74,44 +98,46 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
+OUTPUT_DOUBLES = (
+    True  # if false duplicate axis values are suppressed if the same as previous line.
+)
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_SPEED_FORMAT = 'mm/min'
-UNIT_FORMAT = 'mm'
+UNIT_SPEED_FORMAT = "mm/min"
+UNIT_FORMAT = "mm"
 
 MACHINE_NAME = "High-Z S-1000T"
-CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
-CORNER_MAX = {'x': 1000, 'y': 600, 'z': 300}
+CORNER_MIN = {"x": 0, "y": 0, "z": 0}
+CORNER_MAX = {"x": 1000, "y": 600, "z": 300}
 PRECISION = 3
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = '''% 
+PREAMBLE = """% 
 G17 G21 G40 G49 G80 G90 
 M08
-'''
+"""
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = '''M05 M09
+POSTAMBLE = """M05 M09
 G17 G90 G80 G40
 M30
-'''
+"""
 
 # Pre operation text will be inserted before every operation
-PRE_OPERATION = ''''''
+PRE_OPERATION = """"""
 
 # Post operation text will be inserted after every operation
-POST_OPERATION = ''''''
+POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = '''M05 
-M09'''
+TOOL_CHANGE = """M05 
+M09"""
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
@@ -146,14 +172,14 @@ def processArguments(argstring):
         if args.postamble is not None:
             POSTAMBLE = args.postamble
         if args.inches:
-            UNITS = 'G20'
-            UNIT_SPEED_FORMAT = 'in/min'
-            UNIT_FORMAT = 'in'
+            UNITS = "G20"
+            UNIT_SPEED_FORMAT = "in/min"
+            UNIT_FORMAT = "in"
             PRECISION = 4
         if args.modal:
             MODAL = True
         if args.axis_modal:
-            print ('here')
+            print("here")
             OUTPUT_DOUBLES = False
 
     except:
@@ -171,7 +197,11 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
-            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
+            print(
+                "the object "
+                + obj.Name
+                + " is not a path. Please select only path and Compounds."
+            )
             return None
 
     print("postprocessing...")
@@ -195,7 +225,7 @@ def export(objectslist, filename, argstring):
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
-        myMachine = 'not set'
+        myMachine = "not set"
 
         if hasattr(job, "MachineName"):
             myMachine = job.MachineName
@@ -203,17 +233,20 @@ def export(objectslist, filename, argstring):
         if hasattr(job, "MachineUnits"):
             if job.MachineUnits == "Metric":
                 UNITS = "G21"
-                UNIT_FORMAT = 'mm'
-                UNIT_SPEED_FORMAT = 'mm/min'
+                UNIT_FORMAT = "mm"
+                UNIT_SPEED_FORMAT = "mm/min"
             else:
                 UNITS = "G20"
-                UNIT_FORMAT = 'in'
-                UNIT_SPEED_FORMAT = 'in/min'
+                UNIT_FORMAT = "in"
+                UNIT_SPEED_FORMAT = "in/min"
 
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine: %s, %s)\n" % (myMachine, UNIT_SPEED_FORMAT)
+            gcode += linenumber() + "(machine: %s, %s)\n" % (
+                myMachine,
+                UNIT_SPEED_FORMAT,
+            )
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -244,7 +277,7 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    if not filename == '-':
+    if not filename == "-":
         gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
@@ -269,12 +302,30 @@ def parse(pathobj):
 
     out = ""
     lastcommand = None
-    precision_string = '.' + str(PRECISION) + 'f'
+    precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
 
     # the order of parameters
     # linuxcnc doesn't want K properties on XY plane  Arcs need work.
-    params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'I', 'J', 'F', 'S', 'T', 'Q', 'R', 'L', 'H', 'D', 'P']
+    params = [
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "C",
+        "I",
+        "J",
+        "F",
+        "S",
+        "T",
+        "Q",
+        "R",
+        "L",
+        "H",
+        "D",
+        "P",
+    ]
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
@@ -304,41 +355,64 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if c.Name[0] == '(' and not OUTPUT_COMMENTS: # command is a comment
+            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == 'F' and (currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES):
-                        if c.Name not in ["G0", "G00"]:  # linuxcnc doesn't use rapid speeds
-                            speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
+                    if param == "F" and (
+                        currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
+                    ):
+                        if c.Name not in [
+                            "G0",
+                            "G00",
+                        ]:  # linuxcnc doesn't use rapid speeds
+                            speed = Units.Quantity(
+                                c.Parameters["F"], FreeCAD.Units.Velocity
+                            )
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                                outstring.append(param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
+                                outstring.append(
+                                    param
+                                    + format(
+                                        float(speed.getValueAs(UNIT_SPEED_FORMAT)),
+                                        precision_string,
+                                    )
+                                )
                         else:
                             continue
-                    elif param == 'T':
-                        outstring.append(param + str(int(c.Parameters['T'])))
-                    elif param == 'H':
-                        outstring.append(param + str(int(c.Parameters['H'])))
-                    elif param == 'D':
-                        outstring.append(param + str(int(c.Parameters['D'])))
-                    elif param == 'S':
-                        outstring.append(param + str(int(c.Parameters['S'])))
+                    elif param == "T":
+                        outstring.append(param + str(int(c.Parameters["T"])))
+                    elif param == "H":
+                        outstring.append(param + str(int(c.Parameters["H"])))
+                    elif param == "D":
+                        outstring.append(param + str(int(c.Parameters["D"])))
+                    elif param == "S":
+                        outstring.append(param + str(int(c.Parameters["S"])))
                     else:
-                        if (not OUTPUT_DOUBLES) and (param in currLocation) and (currLocation[param] == c.Parameters[param]):
+                        if (
+                            (not OUTPUT_DOUBLES)
+                            and (param in currLocation)
+                            and (currLocation[param] == c.Parameters[param])
+                        ):
                             continue
                         else:
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
                             outstring.append(
-                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
+                                param
+                                + format(
+                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                                )
+                            )
 
             # store the latest command
             lastcommand = command
             currLocation.update(c.Parameters)
 
             # Check for Tool Change:
-            if command == 'M6':
+            if command == "M6":
                 # if OUTPUT_COMMENTS:
                 #     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):
@@ -361,5 +435,6 @@ def parse(pathobj):
                 out = out.strip() + "\n"
 
         return out
+
 
 print(__name__ + " gcode postprocessor loaded.")

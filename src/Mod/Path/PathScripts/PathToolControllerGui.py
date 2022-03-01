@@ -138,7 +138,6 @@ def Create(name="Default Tool", tool=None, toolNumber=1):
 
 
 class CommandPathToolController(object):
-
     def GetResources(self):
         return {
             "Pixmap": "Path_LengthOffset",

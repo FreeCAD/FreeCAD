@@ -198,6 +198,7 @@ def fcoms(string, commentsym):
         return string
     return comment
 
+
 def splitArcs(path):
     """filters a path object and replaces at G2/G3 moves with discrete G1
     returns a Path object"""
@@ -217,7 +218,7 @@ def splitArcs(path):
             continue
 
         edge = edgeForCmd(command, machine.getPosition())
-        pts =edge.discretize(Deflection=deflection)
+        pts = edge.discretize(Deflection=deflection)
         edges = [Part.makeLine(v1, v2) for v1, v2 in zip(pts, pts[1:])]
         for edge in edges:
             results.extend(cmdsForEdge(edge))
@@ -225,4 +226,3 @@ def splitArcs(path):
         machine.addCommand(command)
 
     return Path.Path(results)
-

@@ -73,9 +73,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(
             FreeCAD.getHomePath(), "chamfer.svg"
         )
-        self.opImage = QtGui.QPixmap(
-            self.opImagePath
-        )
+        self.opImage = QtGui.QPixmap(self.opImagePath)
         self.form.opImage.setPixmap(self.opImage)
         iconMiter = QtGui.QIcon(":/icons/edge-join-miter-not.svg")
         iconMiter.addFile(":/icons/edge-join-miter.svg", state=QtGui.QIcon.On)

@@ -560,7 +560,6 @@ def Create(baseObject, name="DressupTag"):
 
 
 class CommandPathDressupTag:
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",

@@ -260,7 +260,6 @@ class ViewProviderDressup:
 
 
 class CommandPathDressup:
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",

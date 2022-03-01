@@ -66,7 +66,6 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-
 class ObjectWaterline(PathOp.ObjectOp):
     """Proxy object for Surfacing operation."""
 

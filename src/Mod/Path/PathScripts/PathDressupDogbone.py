@@ -391,9 +391,7 @@ class Bone(object):
         # c = distance
         # b = self.toolRadius
         # beta = fabs(boneAngle - theta)
-        beta = math.fabs(
-            addAngle(boneAngle, -theta)
-        )
+        beta = math.fabs(addAngle(boneAngle, -theta))
         D = (distance / toolRadius) * math.sin(beta)
         if D > 1:  # no intersection
             PathLog.debug("adaptive - no intersection - no bone")
@@ -432,9 +430,7 @@ class ObjectDressup(object):
             "App::PropertyEnumeration",
             "Side",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The side of path to insert bones"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
         )
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
@@ -450,9 +446,7 @@ class ObjectDressup(object):
             "App::PropertyIntegerList",
             "BoneBlacklist",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Bones that aren't dressed up"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
         )
         obj.BoneBlacklist = []
         obj.setEditorMode("BoneBlacklist", 2)  # hide this one
@@ -470,9 +464,7 @@ class ObjectDressup(object):
             "App::PropertyFloat",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Dressup length if Incision == custom"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == custom"),
         )
         obj.Custom = 0.0
         obj.Proxy = self
@@ -1367,13 +1359,10 @@ def Create(base, name="DogboneDressup"):
 
 
 class CommandDressupDogbone(object):
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone", "Dogbone Dress-up"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupDogbone",
                 "Creates a Dogbone Dress-up object from a selected path",

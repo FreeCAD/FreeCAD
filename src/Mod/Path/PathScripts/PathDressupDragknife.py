@@ -596,7 +596,6 @@ class ViewProviderDressup:
 
 
 class CommandDressupDragknife:
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",

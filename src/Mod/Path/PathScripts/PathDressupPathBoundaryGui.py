@@ -257,7 +257,6 @@ def Create(base, name="DressupPathBoundary"):
 
 
 class CommandPathDressupPathBoundary:
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",

@@ -251,9 +251,7 @@ class ObjectDressup:
         self.solids = [self.masterSolid.cloneAt(pos) for pos in self.obj.Positions]
         self.tagSolid = Part.Compound(self.solids)
 
-        self.wire, rapid = PathGeom.wireForPath(
-            obj.Base.Path
-        )
+        self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
         self.edges = self.wire.Edges
 
         maxTagZ = minZ + obj.Height.Value

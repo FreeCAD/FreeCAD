@@ -227,9 +227,7 @@ class ObjectOp(PathOp.ObjectOp):
         area.setPlane(PathUtils.makeWorkplane(baseobject))
         area.add(baseobject)
 
-        areaParams = self.areaOpAreaParams(
-            obj, isHole
-        )
+        areaParams = self.areaOpAreaParams(obj, isHole)
 
         heights = [i for i in self.depthparams]
         PathLog.debug("depths: {}".format(heights))
@@ -245,9 +243,7 @@ class ObjectOp(PathOp.ObjectOp):
         shapelist = [sec.getShape() for sec in sections]
         PathLog.debug("shapelist = %s" % shapelist)
 
-        pathParams = self.areaOpPathParams(
-            obj, isHole
-        )
+        pathParams = self.areaOpPathParams(obj, isHole)
         pathParams["shapes"] = shapelist
         pathParams["feedrate"] = self.horizFeed
         pathParams["feedrate_v"] = self.vertFeed

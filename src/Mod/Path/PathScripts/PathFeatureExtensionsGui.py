@@ -208,9 +208,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.obj.ViewObject.RootNode.addChild(self.switch)
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
-        self.model = QtGui.QStandardItemModel(
-            self.form.extensionTree
-        )
+        self.model = QtGui.QStandardItemModel(self.form.extensionTree)
         self.model.setHorizontalHeaderLabels(["Base", "Extension"])
 
         """
@@ -261,9 +259,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def updateProxyExtensions(self, obj):
         PathLog.debug("updateProxyExtensions()")
-        self.extensions = (
-            self.currentExtensions()
-        )
+        self.extensions = self.currentExtensions()
         FeatureExtensions.setExtensions(obj, self.extensions)
 
     def getFields(self, obj):
@@ -634,9 +630,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 
-        self.selectionModel = (
-            self.form.extensionTree.selectionModel()
-        )
+        self.selectionModel = self.form.extensionTree.selectionModel()
         self.selectionModel.selectionChanged.connect(self.selectionChanged)
         self.selectionChanged()
 

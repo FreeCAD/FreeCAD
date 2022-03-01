@@ -51,6 +51,7 @@ translate = FreeCAD.Qt.translate
 
 class JobTemplate:
     """Attribute and sub element strings for template export/import."""
+
     Description = "Desc"
     GeometryTolerance = "Tolerance"
     Job = "Job"

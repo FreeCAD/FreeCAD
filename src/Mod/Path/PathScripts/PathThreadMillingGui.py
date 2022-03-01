@@ -72,9 +72,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.minorDia = PathGui.QuantitySpinBox(
             self.form.threadMinor, obj, "MinorDiameter"
         )
-        self.pitch = PathGui.QuantitySpinBox(
-            self.form.threadPitch, obj, "Pitch"
-        )
+        self.pitch = PathGui.QuantitySpinBox(self.form.threadPitch, obj, "Pitch")
 
         # setupCombo(self.form.threadOrientation, obj.Proxy.ThreadOrientations)
         # setupCombo(self.form.threadType, obj.Proxy.ThreadTypes)
