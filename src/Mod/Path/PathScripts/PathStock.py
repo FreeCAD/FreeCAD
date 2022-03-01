@@ -43,7 +43,6 @@ else:
 
 
 class StockType:
-    # pylint: disable=no-init
 
     NoStock = "None"
     FromBase = "FromBase"

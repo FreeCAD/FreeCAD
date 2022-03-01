@@ -424,7 +424,7 @@ class ToolLibraryManager:
             else:
                 return False
 
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             print("could not parse file", e)
 
     def write(self, filename, listname):
@@ -472,7 +472,7 @@ class ToolLibraryManager:
                 fp.close()
                 print("Written ", PathUtil.toUnicode(fname))
 
-            except Exception as e:  # pylint: disable=broad-except
+            except Exception as e:
                 print("Could not write file:", e)
 
     def addnew(self, listname, tool, position=None):

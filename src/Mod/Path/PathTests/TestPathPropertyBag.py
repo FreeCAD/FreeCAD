@@ -24,53 +24,58 @@ import FreeCAD
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathTests.PathTestUtils as PathTestUtils
 
-class TestPathPropertyBag(PathTestUtils.PathTestBase):
 
+class TestPathPropertyBag(PathTestUtils.PathTestBase):
     def setUp(self):
-        self.doc = FreeCAD.newDocument('test-property-bag')
+        self.doc = FreeCAD.newDocument("test-property-bag")
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
 
     def test00(self):
-        '''basic PropertyBag creation and access test'''
+        """basic PropertyBag creation and access test"""
         bag = PathPropertyBag.Create()
-        self.assertTrue(hasattr(bag, 'Proxy'))
+        self.assertTrue(hasattr(bag, "Proxy"))
         self.assertEqual(bag.Proxy.getCustomProperties(), [])
-        self.assertEqual(bag.CustomPropertyGroups,  [])
+        self.assertEqual(bag.CustomPropertyGroups, [])
 
     def test01(self):
-        '''adding properties to a PropertyBag is tracked properly'''
+        """adding properties to a PropertyBag is tracked properly"""
         bag = PathPropertyBag.Create()
         proxy = bag.Proxy
-        proxy.addCustomProperty('App::PropertyString', 'Title', 'Address', 'Some description')
-        self.assertTrue(hasattr(bag, 'Title'))
-        bag.Title = 'Madame'
-        self.assertEqual(bag.Title, 'Madame')
-        self.assertEqual(bag.Proxy.getCustomProperties(), ['Title'])
-        self.assertEqual(bag.CustomPropertyGroups,  ['Address'])
+        proxy.addCustomProperty(
+            "App::PropertyString", "Title", "Address", "Some description"
+        )
+        self.assertTrue(hasattr(bag, "Title"))
+        bag.Title = "Madame"
+        self.assertEqual(bag.Title, "Madame")
+        self.assertEqual(bag.Proxy.getCustomProperties(), ["Title"])
+        self.assertEqual(bag.CustomPropertyGroups, ["Address"])
 
     def test02(self):
-        '''refreshCustomPropertyGroups deletes empty groups'''
+        """refreshCustomPropertyGroups deletes empty groups"""
         bag = PathPropertyBag.Create()
         proxy = bag.Proxy
-        proxy.addCustomProperty('App::PropertyString', 'Title', 'Address', 'Some description')
-        bag.Title = 'Madame'
-        bag.removeProperty('Title')
+        proxy.addCustomProperty(
+            "App::PropertyString", "Title", "Address", "Some description"
+        )
+        bag.Title = "Madame"
+        bag.removeProperty("Title")
         proxy.refreshCustomPropertyGroups()
         self.assertEqual(bag.Proxy.getCustomProperties(), [])
-        self.assertEqual(bag.CustomPropertyGroups,  [])
+        self.assertEqual(bag.CustomPropertyGroups, [])
 
     def test03(self):
-        '''refreshCustomPropertyGroups does not delete non-empty groups'''
+        """refreshCustomPropertyGroups does not delete non-empty groups"""
         bag = PathPropertyBag.Create()
         proxy = bag.Proxy
-        proxy.addCustomProperty('App::PropertyString', 'Title', 'Address', 'Some description')
-        proxy.addCustomProperty('App::PropertyString', 'Gender', 'Attributes')
-        bag.Title = 'Madame'
-        bag.Gender = 'Female'
-        bag.removeProperty('Gender')
+        proxy.addCustomProperty(
+            "App::PropertyString", "Title", "Address", "Some description"
+        )
+        proxy.addCustomProperty("App::PropertyString", "Gender", "Attributes")
+        bag.Title = "Madame"
+        bag.Gender = "Female"
+        bag.removeProperty("Gender")
         proxy.refreshCustomPropertyGroups()
-        self.assertEqual(bag.Proxy.getCustomProperties(), ['Title'])
-        self.assertEqual(bag.CustomPropertyGroups,  ['Address'])
-
+        self.assertEqual(bag.Proxy.getCustomProperties(), ["Title"])
+        self.assertEqual(bag.CustomPropertyGroups, ["Address"])

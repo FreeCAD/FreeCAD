@@ -29,10 +29,12 @@ __doc__ = "Prototype objects to allow extraction of setup sheet values and editi
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 class Property(object):
-    '''Base class for all prototype properties'''
+    """Base class for all prototype properties"""
+
     def __init__(self, name, propType, category, info):
         self.name = name
         self.propType = propType
@@ -43,6 +45,7 @@ class Property(object):
 
     def setValue(self, value):
         self.value = value
+
     def getValue(self):
         return self.value
 
@@ -52,7 +55,7 @@ class Property(object):
     def displayString(self):
         if self.value is None:
             t = self.typeString()
-            p = 'an' if t[0] in ['A', 'E', 'I', 'O', 'U'] else 'a'
+            p = "an" if t[0] in ["A", "E", "I", "O", "U"] else "a"
             return "%s %s" % (p, t)
         return self.value
 
@@ -77,13 +80,14 @@ class Property(object):
     def valueFromString(self, string):
         return string
 
+
 class PropertyEnumeration(Property):
     def typeString(self):
         return "Enumeration"
 
     def setValue(self, value):
         if list == type(value):
-            self.enums = value # pylint: disable=attribute-defined-outside-init
+            self.enums = value
         else:
             super(PropertyEnumeration, self).setValue(value)
 
@@ -93,27 +97,33 @@ class PropertyEnumeration(Property):
     def initProperty(self, obj, name):
         setattr(obj, name, self.enums)
 
+
 class PropertyQuantity(Property):
     def displayString(self):
         if self.value is None:
             return Property.displayString(self)
         return self.value.getUserPreferred()[0]
 
+
 class PropertyAngle(PropertyQuantity):
     def typeString(self):
         return "Angle"
+
 
 class PropertyDistance(PropertyQuantity):
     def typeString(self):
         return "Distance"
 
+
 class PropertyLength(PropertyQuantity):
     def typeString(self):
         return "Length"
 
+
 class PropertyPercent(Property):
     def typeString(self):
         return "Percent"
+
 
 class PropertyFloat(Property):
     def typeString(self):
@@ -122,12 +132,14 @@ class PropertyFloat(Property):
     def valueFromString(self, string):
         return float(string)
 
+
 class PropertyInteger(Property):
     def typeString(self):
         return "Integer"
 
     def valueFromString(self, string):
         return int(string)
+
 
 class PropertyBool(Property):
     def typeString(self):
@@ -136,9 +148,11 @@ class PropertyBool(Property):
     def valueFromString(self, string):
         return bool(string)
 
+
 class PropertyString(Property):
     def typeString(self):
         return "String"
+
 
 class PropertyMap(Property):
     def typeString(self):
@@ -147,32 +161,33 @@ class PropertyMap(Property):
     def displayString(self, value):
         return str(value)
 
+
 class OpPrototype(object):
 
     PropertyType = {
-            'App::PropertyAngle':               PropertyAngle,
-            'App::PropertyBool':                PropertyBool,
-            'App::PropertyDistance':            PropertyDistance,
-            'App::PropertyEnumeration':         PropertyEnumeration,
-            'App::PropertyFile':                PropertyString,
-            'App::PropertyFloat':               PropertyFloat,
-            'App::PropertyFloatConstraint':     Property,
-            'App::PropertyFloatList':           Property,
-            'App::PropertyInteger':             PropertyInteger,
-            'App::PropertyIntegerList':         PropertyInteger,
-            'App::PropertyLength':              PropertyLength,
-            'App::PropertyLink':                Property,
-            'App::PropertyLinkList':            Property,
-            'App::PropertyLinkSubListGlobal':   Property,
-            'App::PropertyMap':                 PropertyMap,
-            'App::PropertyPercent':             PropertyPercent,
-            'App::PropertyString':              PropertyString,
-            'App::PropertyStringList':          Property,
-            'App::PropertyVectorDistance':      Property,
-            'App::PropertyVectorList':          Property,
-            'Part::PropertyPartShape':          Property,
-            'App::PropertyPythonObject':        PropertyString,
-            }
+        "App::PropertyAngle": PropertyAngle,
+        "App::PropertyBool": PropertyBool,
+        "App::PropertyDistance": PropertyDistance,
+        "App::PropertyEnumeration": PropertyEnumeration,
+        "App::PropertyFile": PropertyString,
+        "App::PropertyFloat": PropertyFloat,
+        "App::PropertyFloatConstraint": Property,
+        "App::PropertyFloatList": Property,
+        "App::PropertyInteger": PropertyInteger,
+        "App::PropertyIntegerList": PropertyInteger,
+        "App::PropertyLength": PropertyLength,
+        "App::PropertyLink": Property,
+        "App::PropertyLinkList": Property,
+        "App::PropertyLinkSubListGlobal": Property,
+        "App::PropertyMap": PropertyMap,
+        "App::PropertyPercent": PropertyPercent,
+        "App::PropertyString": PropertyString,
+        "App::PropertyStringList": Property,
+        "App::PropertyVectorDistance": Property,
+        "App::PropertyVectorList": Property,
+        "Part::PropertyPartShape": Property,
+        "App::PropertyPythonObject": PropertyString,
+    }
 
     def __init__(self, name):
         self.Label = name
@@ -181,13 +196,13 @@ class OpPrototype(object):
         self.Proxy = None
 
     def __setattr__(self, name, val):
-        if name in ['Label', 'DoNotSetDefaultValues', 'properties', 'Proxy']:
-            if name == 'Proxy':
-                val = None # make sure the proxy is never set
+        if name in ["Label", "DoNotSetDefaultValues", "properties", "Proxy"]:
+            if name == "Proxy":
+                val = None  # make sure the proxy is never set
             return super(OpPrototype, self).__setattr__(name, val)
         self.properties[name].setValue(val)
 
-    def addProperty(self, typeString, name, category, info = None):
+    def addProperty(self, typeString, name, category, info=None):
         prop = self.PropertyType[typeString](name, typeString, category, info)
         self.properties[name] = prop
         return self

@@ -49,18 +49,18 @@ class _PropertyEditor(object):
     def widget(self, parent):
         """widget(parent) ... called by the delegate to get a new editor widget.
         Must be implemented by subclasses and return the widget."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def setEditorData(self, widget):
         """setEditorData(widget) ... called by the delegate to initialize the editor.
         The widget is the object returned by widget().
         Must be implemented by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def setModelData(self, widget):
         """setModelData(widget) ... called by the delegate to store new values.
         Must be implemented by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def propertyValue(self):
         return self.obj.getPropertyByName(self.prop)

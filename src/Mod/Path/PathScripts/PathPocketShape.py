@@ -138,7 +138,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         self.horiz.append(face)
 
             # Add faces for extensions
-            self.exts = []  # pylint: disable=attribute-defined-outside-init
+            self.exts = []
             for ext in extensions:
                 if not ext.avoid:
                     wire = ext.getWire()

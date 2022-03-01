@@ -66,7 +66,7 @@ def _getProperty(obj, prop):
 
 def getProperty(obj, prop):
     """getProperty(obj, prop) ... answer obj's property defined by its canonical name."""
-    o, attr, name = _getProperty(obj, prop)  # pylint: disable=unused-variable
+    o, attr, name = _getProperty(obj, prop)
     return attr
 
 
@@ -80,7 +80,7 @@ def getPropertyValueString(obj, prop):
 
 def setProperty(obj, prop, value):
     """setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name."""
-    o, attr, name = _getProperty(obj, prop)  # pylint: disable=unused-variable
+    o, attr, name = _getProperty(obj, prop)
     if not attr is None and type(value) == str:
         if type(attr) == int:
             value = int(value, 0)
@@ -156,7 +156,7 @@ def clearExpressionEngine(obj):
     is deleted that still has one or more expressions attached to it.
     Use this function to remove all expressions before deletion."""
     if hasattr(obj, "ExpressionEngine"):
-        for attr, expr in obj.ExpressionEngine:  # pylint: disable=unused-variable
+        for attr, expr in obj.ExpressionEngine:
             obj.setExpression(attr, None)
 
 

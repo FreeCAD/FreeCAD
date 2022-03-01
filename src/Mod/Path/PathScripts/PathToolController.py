@@ -155,7 +155,6 @@ class ToolController:
         obj.setEditorMode("Placement", 2)
 
     def onDelete(self, obj, arg2=None):
-        # pylint: disable=unused-argument
         if not self.usesLegacyTool(obj):
             if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
                 if hasattr(obj.Tool.Proxy, "onDelete"):
@@ -372,7 +371,6 @@ def Create(
 
 
 def FromTemplate(template, assignViewProvider=True):
-    # pylint: disable=unused-argument
     PathLog.track()
 
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)

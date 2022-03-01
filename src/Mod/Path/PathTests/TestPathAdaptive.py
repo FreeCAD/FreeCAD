@@ -28,30 +28,33 @@ import PathScripts.PathJob as PathJob
 import PathScripts.PathAdaptive as PathAdaptive
 import PathScripts.PathGeom as PathGeom
 from PathTests.PathTestUtils import PathTestBase
+
 if FreeCAD.GuiUp:
     import PathScripts.PathAdaptiveGui as PathAdaptiveGui
     import PathScripts.PathJobGui as PathJobGui
 
 
 class TestPathAdaptive(PathTestBase):
-    '''Unit tests for the Adaptive operation.'''
+    """Unit tests for the Adaptive operation."""
 
     @classmethod
     def setUpClass(cls):
-        '''setUpClass()...
+        """setUpClass()...
         This method is called upon instantiation of this test class.  Add code and objects here
         that are needed for the duration of the test() methods in this class.  In other words,
         set up the 'global' test environment here; use the `setUp()` method to set up a 'local'
-        test environment. 
+        test environment.
         This method does not have access to the class `self` reference, but it
         is able to call static methods within this same class.
-        '''
+        """
 
         # Open existing FreeCAD document with test geometry
-        doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_adaptive.fcstd')
+        doc = FreeCAD.open(
+            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_adaptive.fcstd"
+        )
 
         # Create Job object, adding geometry objects from file opened above
-        job = PathJob.Create('Job', [doc.Fusion], None)
+        job = PathJob.Create("Job", [doc.Fusion], None)
         job.GeometryTolerance.Value = 0.001
         if FreeCAD.GuiUp:
             job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
@@ -66,12 +69,12 @@ class TestPathAdaptive(PathTestBase):
 
     @classmethod
     def tearDownClass(cls):
-        '''tearDownClass()...
+        """tearDownClass()...
         This method is called prior to destruction of this test class.  Add code and objects here
         that cleanup the test environment after the test() methods in this class have been executed.
         This method does not have access to the class `self` reference.  This method
         is able to call static methods within this same class.
-        '''
+        """
         # FreeCAD.Console.PrintMessage("TestPathAdaptive.tearDownClass()\n")
 
         # Close geometry document without saving
@@ -79,30 +82,30 @@ class TestPathAdaptive(PathTestBase):
 
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
-        '''setUp()...
+        """setUp()...
         This method is called prior to each `test()` method.  Add code and objects here
         that are needed for multiple `test()` methods.
-        '''
+        """
         self.doc = FreeCAD.ActiveDocument
         self.con = FreeCAD.Console
 
     def tearDown(self):
-        '''tearDown()...
+        """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
-        '''
+        """
         pass
 
     # Unit tests
     def test00(self):
-        '''test00() Empty test.'''
+        """test00() Empty test."""
         return
 
     def test01(self):
-        '''test01() Verify path generated on Face3.'''
+        """test01() Verify path generated on Face3."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
+        adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3"])]  # (base, subs_list)
         adaptive.Label = "test01+"
         adaptive.Comment = "test01() Verify path generated on Face3."
@@ -115,8 +118,10 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -127,13 +132,15 @@ class TestPathAdaptive(PathTestBase):
 
         # self.assertTrue(expected_moves_test01 == operationMoves,
         #                "expected_moves_test01: {}\noperationMoves: {}".format(expected_moves_test01, operationMoves))
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
     def test02(self):
-        '''test02() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different.'''
+        """test02() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
+        adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
         adaptive.Label = "test02+"
         adaptive.Comment = "test02() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."
@@ -146,19 +153,23 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
     def test03(self):
-        '''test03() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different.'''
+        """test03() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
+        adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face3", "Face10"])]  # (base, subs_list)
         adaptive.Label = "test03+"
         adaptive.Comment = "test03() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."
@@ -171,20 +182,38 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = True
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
     def test04(self):
-        '''test04() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'''
+        """test04() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
-        adaptive.Base = [(self.doc.Fusion, ["Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"])]  # (base, subs_list)
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [
+            (
+                self.doc.Fusion,
+                [
+                    "Edge9",
+                    "Edge2",
+                    "Edge8",
+                    "Edge15",
+                    "Edge30",
+                    "Edge31",
+                    "Edge29",
+                    "Edge19",
+                ],
+            )
+        ]  # (base, subs_list)
         adaptive.Label = "test04+"
         adaptive.Comment = 'test04() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'
 
@@ -196,20 +225,40 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
     def test05(self):
-        '''test05() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'''
+        """test05() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
-        adaptive.Base = [(self.doc.Fusion, ["Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"])]  # (base, subs_list)
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [
+            (
+                self.doc.Fusion,
+                [
+                    "Edge13",
+                    "Edge7",
+                    "Edge9",
+                    "Edge2",
+                    "Edge8",
+                    "Edge15",
+                    "Edge30",
+                    "Edge31",
+                    "Edge29",
+                    "Edge19",
+                ],
+            )
+        ]  # (base, subs_list)
         adaptive.Label = "test05+"
         adaptive.Comment = 'test05() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19".'
 
@@ -221,20 +270,40 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
     def test06(self):
-        '''test06() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33".'''
+        """test06() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33"."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
-        adaptive.Base = [(self.doc.Fusion, ["Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33"])]  # (base, subs_list)
+        adaptive = PathAdaptive.Create("Adaptive")
+        adaptive.Base = [
+            (
+                self.doc.Fusion,
+                [
+                    "Edge15",
+                    "Edge30",
+                    "Edge31",
+                    "Edge29",
+                    "Edge19",
+                    "Edge18",
+                    "Edge35",
+                    "Edge32",
+                    "Edge34",
+                    "Edge33",
+                ],
+            )
+        ]  # (base, subs_list)
         adaptive.Label = "test06+"
         adaptive.Comment = 'test06() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33".'
 
@@ -246,18 +315,25 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
 
         # Check command count
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
-        edges = [self.doc.Fusion.Shape.getElement(e) for e in ["Edge35", "Edge32", "Edge33", "Edge34"]]
+        edges = [
+            self.doc.Fusion.Shape.getElement(e)
+            for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
+        ]
         square = Part.Wire(edges)
         sqrBB = square.BoundBox
         minPoint = FreeCAD.Vector(sqrBB.XMin, sqrBB.YMin, 0.0)
@@ -269,10 +345,10 @@ class TestPathAdaptive(PathTestBase):
         self.assertFalse(isInBox, "Paths originating within the inner hole.")
 
     def test07(self):
-        '''test07() Verify path generated on donut-shaped Face10.'''
+        """test07() Verify path generated on donut-shaped Face10."""
 
         # Instantiate a Adaptive operation and set Base Geometry
-        adaptive = PathAdaptive.Create('Adaptive')
+        adaptive = PathAdaptive.Create("Adaptive")
         adaptive.Base = [(self.doc.Fusion, ["Face10"])]  # (base, subs_list)
         adaptive.Label = "test07+"
         adaptive.Comment = "test07() Verify path generated on donut-shaped Face10."
@@ -285,17 +361,24 @@ class TestPathAdaptive(PathTestBase):
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
-        adaptive.setExpression('StepDown', None)
-        adaptive.StepDown.Value = 20.0  # Have to set expression to None before numerical value assignment
+        adaptive.setExpression("StepDown", None)
+        adaptive.StepDown.Value = (
+            20.0  # Have to set expression to None before numerical value assignment
+        )
 
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+        self.assertTrue(
+            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
+        )
 
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
-        edges = [self.doc.Fusion.Shape.getElement(e) for e in ["Edge35", "Edge32", "Edge33", "Edge34"]]
+        edges = [
+            self.doc.Fusion.Shape.getElement(e)
+            for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
+        ]
         square = Part.Wire(edges)
         sqrBB = square.BoundBox
         minPoint = FreeCAD.Vector(sqrBB.XMin, sqrBB.YMin, 0.0)
@@ -312,7 +395,10 @@ class TestPathAdaptive(PathTestBase):
 
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
-        edges = [self.doc.Fusion.Shape.getElement(e) for e in ["Edge35", "Edge32", "Edge33", "Edge34"]]
+        edges = [
+            self.doc.Fusion.Shape.getElement(e)
+            for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
+        ]
         square = Part.Wire(edges)
         sqrBB = square.BoundBox
         minPoint = FreeCAD.Vector(sqrBB.XMin, sqrBB.YMin, 0.0)
@@ -322,20 +408,22 @@ class TestPathAdaptive(PathTestBase):
                 isInBox = True
                 break
         self.assertTrue(isInBox, "No paths originating within the inner hole.")
+
+
 # Eclass
 
 
 def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
-    '''setDepthsAndHeights(op, strDep=20.0, finDep=0.0)... Sets default depths and heights for `op` passed to it'''
+    """setDepthsAndHeights(op, strDep=20.0, finDep=0.0)... Sets default depths and heights for `op` passed to it"""
 
     # Set start and final depth in order to eliminate effects of stock (and its default values)
-    op.setExpression('StartDepth', None)
+    op.setExpression("StartDepth", None)
     op.StartDepth.Value = strDep
-    op.setExpression('FinalDepth', None)
+    op.setExpression("FinalDepth", None)
     op.FinalDepth.Value = finDep
 
     # Set step down so as to only produce one layer path
-    op.setExpression('StepDown', None)
+    op.setExpression("StepDown", None)
     op.StepDown.Value = 20.0
 
     # Set Heights
@@ -343,9 +431,9 @@ def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
 
 
 def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True):
-    '''getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True)...
+    """getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=True)...
     Accepts command dict and returns point string coordinate.
-    '''
+    """
     gcode_list = list()
     last = FreeCAD.Vector(0.0, 0.0, 0.0)
     for c in cmdList:
@@ -358,13 +446,13 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             z = last.z
             if p.get("X"):
                 x = round(p["X"], 2)
-                gcode += " X" + str(x) 
+                gcode += " X" + str(x)
             if p.get("Y"):
                 y = round(p["Y"], 2)
-                gcode += " Y" + str(y) 
+                gcode += " Y" + str(y)
             if p.get("Z"):
                 z = round(p["Z"], 2)
-                gcode += " Z" + str(z) 
+                gcode += " Z" + str(z)
             last.x = x
             last.y = y
             last.z = z
@@ -376,13 +464,13 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             z = last.z
             if p.get("X"):
                 x = round(p["X"], 2)
-                gcode += " X" + str(x) 
+                gcode += " X" + str(x)
             if p.get("Y"):
                 y = round(p["Y"], 2)
-                gcode += " Y" + str(y) 
+                gcode += " Y" + str(y)
             if p.get("Z"):
                 z = round(p["Z"], 2)
-                gcode += " Z" + str(z) 
+                gcode += " Z" + str(z)
             last.x = x
             last.y = y
             last.z = z
@@ -407,13 +495,13 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
 
             if p.get("X"):
                 x = round(p["X"], 2)
-            gcode += " X" + str(x) 
+            gcode += " X" + str(x)
             if p.get("Y"):
                 y = round(p["Y"], 2)
-            gcode += " Y" + str(y) 
+            gcode += " Y" + str(y)
             if p.get("Z"):
                 z = round(p["Z"], 2)
-            gcode += " Z" + str(z) 
+            gcode += " Z" + str(z)
 
             gcode_list.append(gcode)
             last.x = x
@@ -438,7 +526,9 @@ def _addViewProvider(adaptiveOp):
     if FreeCAD.GuiUp:
         PathOpGui = PathAdaptiveGui.PathOpGui
         cmdRes = PathAdaptiveGui.Command.res
-        adaptiveOp.ViewObject.Proxy = PathOpGui.ViewProvider(adaptiveOp.ViewObject, cmdRes)
+        adaptiveOp.ViewObject.Proxy = PathOpGui.ViewProvider(
+            adaptiveOp.ViewObject, cmdRes
+        )
 
 
 # Example string literal of expected path moves from an operation

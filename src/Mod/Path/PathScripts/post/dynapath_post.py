@@ -38,7 +38,7 @@ import datetime
 import shlex
 from PathScripts import PostUtils
 
-TOOLTIP = '''
+TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a Tree Journyman 325 3 axis mill with Dynapath 20
@@ -70,26 +70,35 @@ spaces add / prior to comments
 
 import dynapath_post
 dynapath_post.export(object,"/path/to/file.ncc","")
-'''
+"""
 
-parser = argparse.ArgumentParser(prog='dynapath_post',
-        add_help=False)
-parser.add_argument('--no-header', action='store_true',
-        help='suppress header output')
-parser.add_argument('--no-comments', action='store_true',
-        help='suppress comment output')
-parser.add_argument('--line-numbers', action='store_true',
-        help='prefix with line numbers')
-parser.add_argument('--no-show-editor', action='store_true',
-        help='don\'t pop up editor before writing output')
-parser.add_argument('--precision', default='3',
-        help='number of digits of precision, default=3')
-parser.add_argument('--preamble',
-        help='set commands to be issued before the first command, default="G17\nG90\nG80\nG40"')
-parser.add_argument('--postamble',
-        help='set commands to be issued after the last command, default="M09\nM05\nG80\nG40\nG17\nG90\nM30"')
-parser.add_argument('--inches', action='store_true',
-        help='Convert output for US imperial mode (G20)')
+parser = argparse.ArgumentParser(prog="dynapath_post", add_help=False)
+parser.add_argument("--no-header", action="store_true", help="suppress header output")
+parser.add_argument(
+    "--no-comments", action="store_true", help="suppress comment output"
+)
+parser.add_argument(
+    "--line-numbers", action="store_true", help="prefix with line numbers"
+)
+parser.add_argument(
+    "--no-show-editor",
+    action="store_true",
+    help="don't pop up editor before writing output",
+)
+parser.add_argument(
+    "--precision", default="3", help="number of digits of precision, default=3"
+)
+parser.add_argument(
+    "--preamble",
+    help='set commands to be issued before the first command, default="G17\nG90\nG80\nG40"',
+)
+parser.add_argument(
+    "--postamble",
+    help='set commands to be issued after the last command, default="M09\nM05\nG80\nG40\nG17\nG90\nM30"',
+)
+parser.add_argument(
+    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
+)
 
 
 TOOLTIP_ARGS = parser.format_help()
@@ -105,51 +114,50 @@ MODAL = False  # if true commands are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 1  # line number starting value
 
-UNIT_SPEED_FORMAT = 'mm/min'
-UNIT_FORMAT = 'mm'
+UNIT_SPEED_FORMAT = "mm/min"
+UNIT_FORMAT = "mm"
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
 MACHINE_NAME = "Tree MM"
-CORNER_MIN = {'x': -340, 'y': 0, 'z': 0}
-CORNER_MAX = {'x': 340, 'y': -355, 'z': -150}
+CORNER_MIN = {"x": -340, "y": 0, "z": 0}
+CORNER_MAX = {"x": 340, "y": -355, "z": -150}
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = '''G17
+PREAMBLE = """G17
 G90
 ;G90.1 ;needed for simulation only
 G80
 G40
-'''
+"""
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = '''M09
+POSTAMBLE = """M09
 M05
 G80
 G40
 G17
 G90
 M30
-'''
+"""
 
 
 # Pre operation text will be inserted before every operation
-PRE_OPERATION = ''''''
+PRE_OPERATION = """"""
 
 # Post operation text will be inserted after every operation
-POST_OPERATION = ''''''
+POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = ''''''
+TOOL_CHANGE = """"""
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -181,19 +189,18 @@ def processArguments(argstring):
         if args.postamble is not None:
             POSTAMBLE = args.postamble
         if args.inches:
-            UNITS = 'G20'
-            UNIT_SPEED_FORMAT = 'in/min'
-            UNIT_FORMAT = 'in'
+            UNITS = "G20"
+            UNIT_SPEED_FORMAT = "in/min"
+            UNIT_FORMAT = "in"
             PRECISION = 4
 
-    except Exception:  # pylint: disable=broad-except
+    except Exception:
         return False
 
     return True
 
 
 def export(objectslist, filename, argstring):
-    # pylint: disable=unused-argument
     if not processArguments(argstring):
         return None
     global UNITS
@@ -202,7 +209,11 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
-            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
+            print(
+                "the object "
+                + obj.Name
+                + " is not a path. Please select only path and Compounds."
+            )
             return
 
     print("postprocessing...")
@@ -226,7 +237,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_HEADER:
         gcode += linenumber() + "(Exported by FreeCAD)\n"
         gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-        gcode += linenumber() + "(Output Time:"+str(now)+")\n"
+        gcode += linenumber() + "(Output Time:" + str(now) + ")\n"
 
     # Write the preamble
     if OUTPUT_COMMENTS:
@@ -258,7 +269,7 @@ def export(objectslist, filename, argstring):
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
 
-    print('show editor: {}'.format(SHOW_EDITOR))
+    print("show editor: {}".format(SHOW_EDITOR))
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
@@ -278,7 +289,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
-    global LINENR  # pylint: disable=global-statement
+    global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 1
         return "N" + str(LINENR) + " "
@@ -286,7 +297,6 @@ def linenumber():
 
 
 def parse(pathobj):
-    # pylint: disable=global-statement
     global PRECISION
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
@@ -294,10 +304,10 @@ def parse(pathobj):
     out = ""
     lastcommand = None
 
-    precision_string = '.' + str(PRECISION) + 'f'
+    precision_string = "." + str(PRECISION) + "f"
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control the order of parameters
-    params = ['X', 'Y', 'Z', 'A', 'B', 'I', 'J', 'F', 'S', 'T', 'Q', 'R', 'L']
+    params = ["X", "Y", "Z", "A", "B", "I", "J", "F", "S", "T", "Q", "R", "L"]
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if OUTPUT_COMMENTS:
@@ -307,7 +317,9 @@ def parse(pathobj):
         return out
     else:  # parsing simple path
 
-        if not hasattr(pathobj, "Path"):  # groups might contain non-path things like stock.
+        if not hasattr(
+            pathobj, "Path"
+        ):  # groups might contain non-path things like stock.
             return out
 
         if OUTPUT_COMMENTS:
@@ -325,24 +337,40 @@ def parse(pathobj):
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == 'F':
-                        speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
+                    if param == "F":
+                        speed = Units.Quantity(
+                            c.Parameters["F"], FreeCAD.Units.Velocity
+                        )
                         if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                            outstring.append(param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
-                    elif param == 'S':
-                        outstring.append(param + format(c.Parameters[param], precision_string))
-                    elif param == 'T':
-                        outstring.append(param + format(c.Parameters['T'], precision_string))
+                            outstring.append(
+                                param
+                                + format(
+                                    float(speed.getValueAs(UNIT_SPEED_FORMAT)),
+                                    precision_string,
+                                )
+                            )
+                    elif param == "S":
+                        outstring.append(
+                            param + format(c.Parameters[param], precision_string)
+                        )
+                    elif param == "T":
+                        outstring.append(
+                            param + format(c.Parameters["T"], precision_string)
+                        )
                     else:
                         pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
+                            param
+                            + format(
+                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                            )
+                        )
 
             # store the latest command
             lastcommand = command
 
             # Check for Tool Change:
-            if command == 'M6':
+            if command == "M6":
                 if OUTPUT_COMMENTS:
                     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):

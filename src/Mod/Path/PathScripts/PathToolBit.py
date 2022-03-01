@@ -369,8 +369,11 @@ class ToolBit(object):
                 self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
-            PathLog.error("Did not find a PropertyBag in {} - not a ToolBit shape?".format(
-                        docName))
+            PathLog.error(
+                "Did not find a PropertyBag in {} - not a ToolBit shape?".format(
+                    docName
+                )
+            )
 
         # has to happen last because it could trigger op.execute evaluations
         obj.BitPropertyNames = propNames

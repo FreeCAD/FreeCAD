@@ -51,7 +51,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setTitle("3D Surface - " + obj.Label)
         # self.updateVisibility()
         # retrieve property enumerations
-       # self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
+        # self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
         self.propEnums = PathSurface.ObjectSurface.propertyEnumerations(False)
 
     def getForm(self):

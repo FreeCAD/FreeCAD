@@ -69,15 +69,12 @@ class ViewProvider(object):
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def getDisplayMode(self, mode):
-        # pylint: disable=unused-argument
         return "Default"
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         PathLog.track()
         taskPanel = TaskPanel(vobj)
         FreeCADGui.Control.closeDialog()
@@ -86,7 +83,6 @@ class ViewProvider(object):
         return True
 
     def unsetEdit(self, vobj, mode):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         return
 
@@ -106,7 +102,6 @@ class Delegate(QtGui.QStyledItemDelegate):
     #    #PathLog.track(index.column(), type(option))
 
     def createEditor(self, parent, option, index):
-        # pylint: disable=unused-argument
         editor = PathPropertyEditor.Editor(
             index.data(self.RoleObject), index.data(self.RoleProperty)
         )
@@ -118,14 +113,12 @@ class Delegate(QtGui.QStyledItemDelegate):
         index.data(self.RoleEditor).setEditorData(widget)
 
     def setModelData(self, widget, model, index):
-        # pylint: disable=unused-argument
         PathLog.track(index.row(), index.column())
         editor = index.data(self.RoleEditor)
         editor.setModelData(widget)
         index.model().setData(index, editor.displayString(), QtCore.Qt.DisplayRole)
 
     def updateEditorGeometry(self, widget, option, index):
-        # pylint: disable=unused-argument
         widget.setGeometry(option.rect)
 
 

@@ -26,13 +26,12 @@ import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 class TestPathDeburr(PathTestUtils.PathTestBase):
-
     def test00(self):
-        '''Verify chamfer depth and offset for an end mill.'''
+        """Verify chamfer depth and offset for an end mill."""
         tool = Path.Tool()
         tool.Diameter = 20
         tool.FlatRadius = 0
@@ -52,7 +51,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test01(self):
-        '''Verify chamfer depth and offset for a 90 deg v-bit.'''
+        """Verify chamfer depth and offset for a 90 deg v-bit."""
         tool = Path.Tool()
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 90
@@ -68,7 +67,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test02(self):
-        '''Verify chamfer depth and offset for a 90 deg v-bit with non 0 flat radius.'''
+        """Verify chamfer depth and offset for a 90 deg v-bit with non 0 flat radius."""
         tool = Path.Tool()
         tool.FlatRadius = 0.3
         tool.CuttingEdgeAngle = 90
@@ -84,7 +83,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test03(self):
-        '''Verify chamfer depth and offset for a 60 deg v-bit with non 0 flat radius.'''
+        """Verify chamfer depth and offset for a 60 deg v-bit with non 0 flat radius."""
         tool = Path.Tool()
         tool.FlatRadius = 10
         tool.CuttingEdgeAngle = 60
@@ -102,7 +101,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test10(self):
-        '''Verify missing cutting edge angle info prints only once.'''
+        """Verify missing cutting edge angle info prints only once."""
 
         class FakeEndmill(object):
             def __init__(self, dia):
@@ -113,17 +112,21 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
+            1, 0.1, tool, not info
+        )
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
+            1, 0.1, tool, not info
+        )
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
 
     def test11(self):
-        '''Verify missing tip diameter info prints only once.'''
+        """Verify missing tip diameter info prints only once."""
 
         class FakePointyBit(object):
             def __init__(self, dia, angle):
@@ -135,11 +138,15 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
+            1, 0.1, tool, not info
+        )
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(
+            1, 0.1, tool, not info
+        )
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)

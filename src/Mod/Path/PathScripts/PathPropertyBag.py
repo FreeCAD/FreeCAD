@@ -72,9 +72,7 @@ class PropertyBag(object):
             "App::PropertyStringList",
             self.CustomPropertyGroups,
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "List of custom property groups"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "List of custom property groups"),
         )
         self.onDocumentRestored(obj)
 
