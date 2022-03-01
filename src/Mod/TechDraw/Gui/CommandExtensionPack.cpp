@@ -33,6 +33,7 @@
 # include <App/DocumentObject.h>
 # include <Base/Exception.h>
 # include <Base/Console.h>
+# include <Base/Tools.h>
 # include <Base/Type.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
@@ -1755,7 +1756,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     int totalPoints(0);
     const std::vector<std::string> subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
-        for (std::string name : subNames) {
+        for (const std::string& name : subNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(name);
             std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
             // We filter arcs, circles etc. which are not allowed.
@@ -1806,9 +1807,16 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     // the balloon has been created successfully
     // calculate needed variables
     double scale = objFeat->getScale();
-    totalArea = totalArea*10*10; // Todo: get factor cm->mm if cm set
-    std::stringstream balloonText;
-    balloonText << " " << totalArea << " cm2 ";
+    double scale2 = scale * scale;
+    totalArea = totalArea / scale2;    //convert from view scale to internal mm2
+
+    //make area unit-aware
+    Base::Quantity asQuantity;
+    asQuantity.setValue(totalArea);
+    asQuantity.setUnit(Base::Unit::Area);
+    QString qUserString = asQuantity.getUserString();
+    std::string sUserString = Base::Tools::toStdString(qUserString);
+
     xCenter = (xCenter/totalPoints)/scale;
     yCenter = (yCenter/totalPoints)/scale;
     // set the attributes in the data tab's fields
@@ -1820,9 +1828,8 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     balloon->Y.setValue(-yCenter);
     balloon->OriginX.setValue(xCenter);
     balloon->OriginY.setValue(-yCenter);
-    balloon->ShapeScale.setValue(0.75);
     balloon->ScaleType.setValue("Page");
-    balloon->Text.setValue(balloonText.str());
+    balloon->Text.setValue(sUserString);
     // look for the ballons's view provider
     TechDraw::DrawPage* page = objFeat->findParentPage();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
