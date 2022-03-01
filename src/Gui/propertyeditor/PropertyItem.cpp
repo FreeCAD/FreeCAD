@@ -91,6 +91,14 @@ PropertyItem* PropertyItemFactory::createPropertyItem (const char* sName) const
 }
 
 // ----------------------------------------------------
+
+QVariant PropertyItemAttorney::toString(PropertyItem* item, const QVariant& v)
+{
+    return item->toString(v);
+}
+
+// ----------------------------------------------------
+
 Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
@@ -474,6 +482,22 @@ QVariant PropertyItem::expressionEditorData(QWidget *editor) const
     if(le)
         return QVariant(le->text());
     return QVariant();
+}
+
+PropertyEditorWidget* PropertyItem::createPropertyEditorWidget(QWidget* parent) const
+{
+    PropertyEditorWidget* editor = new PropertyEditorWidget(parent);
+    connect(editor, &PropertyEditorWidget::buttonClick, this, [this]() {
+        const auto &props = this->getPropertyData();
+        if (!props.empty()
+                && props[0]->getName()
+                && props[0]->testStatus(App::Property::UserEdit)
+                && props[0]->getContainer())
+        {
+            props[0]->getContainer()->editProperty(props[0]->getName());
+        }
+    });
+    return editor;
 }
 
 QString PropertyItem::propertyName() const
@@ -1540,7 +1564,8 @@ void PropertyEditorWidget::setValue(const QVariant& val)
 // ---------------------------------------------------------------
 
 VectorListWidget::VectorListWidget(int decimals, QWidget *parent)
-    :PropertyEditorWidget(parent), decimals(decimals)
+  : PropertyEditorWidget(parent)
+  , decimals(decimals)
 {
     connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }

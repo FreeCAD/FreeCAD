@@ -182,30 +182,25 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     QWidget* editor;
     expressionEditor = 0;
     userEditor = nullptr;
-    if(parentEditor && parentEditor->isBinding())
+    if (parentEditor && parentEditor->isBinding()) {
         expressionEditor = editor = childItem->createExpressionEditor(parent, this, SLOT(valueChanged()));
+    }
     else {
         const auto &props = childItem->getPropertyData();
-        if (props.size() && props[0]->testStatus(App::Property::UserEdit)) {
-            editor = userEditor = new PropertyEditorWidget(parent);
-            QObject::connect(userEditor, &PropertyEditorWidget::buttonClick, childItem,
-                [childItem]() {
-                    const auto &props = childItem->getPropertyData();
-                    if (props.size()
-                            && props[0]->getName()
-                            && props[0]->testStatus(App::Property::UserEdit)
-                            && props[0]->getContainer())
-                    {
-                        props[0]->getContainer()->editProperty(props[0]->getName());
-                    }
-                });
-        } else
+        if (!props.empty() && props[0]->testStatus(App::Property::UserEdit)) {
+            editor = userEditor = childItem->createPropertyEditorWidget(parent);
+        }
+        else {
             editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
+        }
     }
-    if (editor) // Make sure the editor background is painted so the cell content doesn't show through
+    if (editor) {
+        // Make sure the editor background is painted so the cell content doesn't show through
         editor->setAutoFillBackground(true);
-    if (editor && childItem->isReadOnly())
+    }
+    if (editor && childItem->isReadOnly()) {
         editor->setDisabled(true);
+    }
     else if (editor /*&& this->pressed*/) {
         // We changed the way editor is activated in PropertyEditor (in response
         // of signal activated and clicked), so now we should grab focus
@@ -246,10 +241,10 @@ void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
     QVariant data = index.data(Qt::EditRole);
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     editor->blockSignals(true);
-    if(expressionEditor == editor)
+    if (expressionEditor == editor)
         childItem->setExpressionEditorData(editor, data);
     else if (userEditor == editor)
-        userEditor->setValue(childItem->toString(data));
+        userEditor->setValue(PropertyItemAttorney::toString(childItem, data));
     else
         childItem->setEditorData(editor, data);
     editor->blockSignals(false);

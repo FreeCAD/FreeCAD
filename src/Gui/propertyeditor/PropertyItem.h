@@ -77,6 +77,7 @@ namespace PropertyEditor {
 
 class PropertyItem;
 class PropertyModel;
+class PropertyEditorWidget;
 
 /**
  * The PropertyItemFactory provides methods for the dynamic creation of property items.
@@ -111,6 +112,11 @@ public:
     }
 };
 
+class PropertyItemAttorney {
+public:
+    static QVariant toString(PropertyItem* item, const QVariant& v);
+};
+
 class GuiExport PropertyItem : public QObject, public ExpressionBinding
 {
     Q_OBJECT
@@ -138,6 +144,8 @@ public:
     QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
     QVariant expressionEditorData(QWidget *editor) const;
+
+    PropertyEditorWidget* createPropertyEditorWidget(QWidget* parent) const;
 
     /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
        childs which like to be informed of a binding*/
@@ -180,14 +188,13 @@ public:
 
     bool hasAnyExpression() const;
 
-    virtual QVariant toString(const QVariant&) const;
-
 protected:
     PropertyItem();
 
     virtual QVariant displayName() const;
     virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
     virtual void initialize();
@@ -205,6 +212,8 @@ protected:
     int precision;
     bool linked;
     bool expanded;
+
+    friend class PropertyItemAttorney;
 };
 
 /**
