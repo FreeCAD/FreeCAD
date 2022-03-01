@@ -52,6 +52,8 @@ public:
 
 protected:
     Stream();
+    Stream(const Stream&) = default;
+    Stream& operator=(const Stream&) = default;
     virtual ~Stream();
 
     bool _swap;
@@ -148,6 +150,10 @@ protected:
             std::ios::in | std::ios::out);
 
 private:
+    ByteArrayOStreambuf(const ByteArrayOStreambuf&);
+    ByteArrayOStreambuf& operator=(const ByteArrayOStreambuf&);
+
+private:
     QBuffer* _buffer;
 };
 
@@ -174,6 +180,9 @@ protected:
     virtual pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out);
+private:
+    ByteArrayIStreambuf(const ByteArrayIStreambuf&);
+    ByteArrayIStreambuf& operator=(const ByteArrayIStreambuf&);
 
 private:
     const QByteArray& _buffer;
@@ -201,6 +210,10 @@ protected:
     virtual pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out);
+private:
+    IODeviceOStreambuf(const IODeviceOStreambuf&);
+    IODeviceOStreambuf& operator=(const IODeviceOStreambuf&);
+
 protected:
     QIODevice* device;
 };
@@ -225,6 +238,9 @@ protected:
     virtual pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out);
+private:
+    IODeviceIStreambuf(const IODeviceIStreambuf&);
+    IODeviceIStreambuf& operator=(const IODeviceIStreambuf&);
 
 protected:
     QIODevice* device;
@@ -271,6 +287,10 @@ private:
     bool writeStr(const char* s, std::streamsize num);
 
 private:
+    PyStreambuf(const PyStreambuf&);
+    PyStreambuf& operator=(const PyStreambuf&);
+
+private:
     PyObject* inp;
     Type type;
     const std::size_t put_back;
@@ -295,6 +315,10 @@ protected:
     virtual pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
             std::ios::in | std::ios::out);
+
+private:
+    Streambuf(const Streambuf&);
+    Streambuf& operator=(const Streambuf&);
 
 private:
     std::string::const_iterator _beg;

@@ -239,7 +239,7 @@ std::streambuf::int_type
 ByteArrayOStreambuf::overflow(std::streambuf::int_type c)
 {
     if (c != EOF) {
-        char z = c;
+        char z = static_cast<char>(c);
         if (_buffer->write (&z, 1) != 1) {
             return EOF;
         }
@@ -375,7 +375,7 @@ std::streambuf::int_type
 IODeviceOStreambuf::overflow(std::streambuf::int_type c)
 {
     if (c != EOF) {
-        char z = c;
+        char z = static_cast<char>(c);
         if (device->write (&z, 1) != 1) {
             return EOF;
         }
@@ -601,7 +601,7 @@ PyStreambuf::overflow(PyStreambuf::int_type ch)
 #ifdef PYSTREAM_BUFFERED
     sync();
     if (ch != traits_type::eof()) {
-        *pptr() = ch;
+        *pptr() = static_cast<char>(ch);
         pbump(1);
         return ch;
     }
