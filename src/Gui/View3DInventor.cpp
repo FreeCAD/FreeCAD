@@ -507,6 +507,7 @@ void View3DInventor::printPdf()
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
         print(&printer);
     }
