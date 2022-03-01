@@ -351,7 +351,7 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     if (rv) {
         return rv;
     }
-
+    // getVerifiedObject() may throw it's own exception if fail
     Part::Feature* obj = getVerifiedObject(silent);
 
     if (!obj)
