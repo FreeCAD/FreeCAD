@@ -22,8 +22,13 @@
 
 import FreeCADGui
 import PathScripts.PathPreferences as PathPreferences
-import PySide
+import PathScripts.PathLog as PathLog
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class AdvancedPreferencesPage:
     def __init__(self, parent=None):
@@ -42,6 +47,7 @@ class AdvancedPreferencesPage:
         )
 
     def loadSettings(self):
+        PathLog.track()
         self.form.WarningSuppressAllSpeeds.setChecked(
             PathPreferences.suppressAllSpeedsWarning()
         )
@@ -57,7 +63,9 @@ class AdvancedPreferencesPage:
         self.form.WarningSuppressOpenCamLib.setChecked(
             PathPreferences.suppressOpenCamLibWarning()
         )
-        self.form.WarningSuppressVelocity.setChecked(PathPreferences.suppressVelocity())
+        self.form.WarningSuppressVelocity.setChecked(
+            PathPreferences.suppressVelocity()
+        )
         self.updateSelection()
 
     def updateSelection(self, state=None):

@@ -25,8 +25,11 @@ import glob
 import os
 import PathScripts.PathLog as PathLog
 
-# PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 DefaultFilePath = "DefaultFilePath"
 DefaultJobTemplate = "DefaultJobTemplate"
