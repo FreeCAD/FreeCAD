@@ -24,9 +24,6 @@
 #ifndef APP_PERSISTENCE_H
 #define APP_PERSISTENCE_H
 
-// Std. configurations
-
-
 #include "BaseClass.h"
 
 namespace Base

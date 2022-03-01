@@ -48,13 +48,11 @@
 #define slots
 #include <bitset>
 
-#include <typeinfo>
 #include "Exception.h"
 #ifndef PYCXX_PYTHON_2TO3
 #define PYCXX_PYTHON_2TO3
 #endif
 #include <CXX/Objects.hxx>
-
 
 
 /** Python static class macro for definition
