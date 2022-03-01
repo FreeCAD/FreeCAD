@@ -29,16 +29,12 @@
 #   include <boost/regex.hpp>
 #endif
 
-#include "Console.h"
 #include "Interpreter.h"
-#include "FileInfo.h"
-#include "Stream.h"
-#include "PyTools.h"
-#include "Exception.h"
-#include "PyObjectBase.h"
-#include <CXX/Extensions.hxx>
-
+#include "Console.h"
 #include "ExceptionFactory.h"
+#include "FileInfo.h"
+#include "PyObjectBase.h"
+#include "PyTools.h"
 
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!

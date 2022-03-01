@@ -23,27 +23,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <xercesc/sax/SAXParseException.hpp>
-# include <xercesc/sax/SAXException.hpp>
-# include <xercesc/sax2/XMLReaderFactory.hpp>
-#endif
-
-// ---------------------------------------------------------------------------
-//  Includes
-// ---------------------------------------------------------------------------
-#include <xercesc/util/Janitor.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XMLExceptMsgs.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "InputSource.h"
-#include "Exception.h"
 #include "XMLTools.h"
+
 
 XERCES_CPP_NAMESPACE_USE
 

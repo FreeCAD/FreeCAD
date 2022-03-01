@@ -25,11 +25,11 @@
 // Standard streambuf implementation following Nicolai Josuttis, "The 
 // Standard C++ Library".
 // ============================================================================
+
 #include "PreCompiled.h"
 
 #include "gzstream.h"
 #include <cassert>
-#include <string>
 #include <cstring>  // for memcpy
 
 

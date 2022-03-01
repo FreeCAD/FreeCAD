@@ -29,11 +29,7 @@
 #ifndef GZSTREAM_H
 #define GZSTREAM_H 1
 
-// standard C++ with new header file names and std:: namespace
-#include <iostream>
-#include <fstream>
-#include <istream>
-#include <ios>
+#include <sstream>
 #include <zlib.h>
 
 #ifdef _MSC_VER
