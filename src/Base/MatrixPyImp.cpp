@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include <climits>
-#include <cmath>
-#include "Base/Matrix.h"
-
 // inclusion of the generated files (generated out of MatrixPy.xml)
 #include "RotationPy.h"
 #include "VectorPy.h"
@@ -34,6 +30,7 @@
 #include "QuantityPy.h"
 #include "MatrixPy.h"
 #include "MatrixPy.cpp"
+
 
 using namespace Base;
 

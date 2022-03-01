@@ -24,16 +24,13 @@
 #ifndef BASE_MATRIX_H
 #define BASE_MATRIX_H
 
-#include <cassert>
-#include <cfloat>
-#include <cmath>
-#include <cstdio>
 #include <string>
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+
 
 namespace Base {
 

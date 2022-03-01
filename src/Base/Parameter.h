@@ -32,9 +32,6 @@
 #ifndef BASE__PARAMETER_H
 #define BASE__PARAMETER_H
 
-// Include files
-#include <Python.h>
-
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower
@@ -53,7 +50,6 @@
 #include <vector>
 #include <xercesc/util/XercesDefs.hpp>
 
-// Std. configurations
 #include "Handle.h"
 #include "Observer.h"
 

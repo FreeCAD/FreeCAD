@@ -27,45 +27,30 @@
 #ifndef _PreComp_
 #   include <cassert>
 #   include <memory>
-#   include <xercesc/util/PlatformUtils.hpp>
-#   include <xercesc/util/XercesVersion.hpp>
 #   include <xercesc/dom/DOM.hpp>
-#   include <xercesc/dom/DOMImplementation.hpp>
-#   include <xercesc/dom/DOMImplementationLS.hpp>
 #   if (XERCES_VERSION_MAJOR == 2)
 #   include <xercesc/dom/DOMWriter.hpp>
 #   endif
-#   include <xercesc/framework/StdOutFormatTarget.hpp>
 #   include <xercesc/framework/LocalFileFormatTarget.hpp>
 #   include <xercesc/framework/LocalFileInputSource.hpp>
 #   include <xercesc/framework/MemBufFormatTarget.hpp>
 #   include <xercesc/framework/MemBufInputSource.hpp>
 #   include <xercesc/parsers/XercesDOMParser.hpp>
-#   include <xercesc/util/XMLUni.hpp>
-#   include <xercesc/util/XMLUniDefs.hpp>
-#   include <xercesc/util/XMLString.hpp>
 #   include <xercesc/sax/ErrorHandler.hpp>
 #   include <xercesc/sax/SAXParseException.hpp>
-#   include <fcntl.h>
-#   include <sys/types.h>
-#   include <sys/stat.h>
-#   ifdef FC_OS_WIN32
-#   include <io.h>
-#   endif
 #   include <sstream>
-#   include <cstdio>
+#   include <string>
+#   include <utility>
 #endif
 
-
-#include <fcntl.h>
 #ifdef FC_OS_LINUX
 #   include <unistd.h>
 #endif
 
 #include "Parameter.h"
 #include "Parameter.inl"
-#include "Exception.h"
 #include "Console.h"
+#include "Exception.h"
 
 
 //#ifdef XERCES_HAS_CPP_NAMESPACE
