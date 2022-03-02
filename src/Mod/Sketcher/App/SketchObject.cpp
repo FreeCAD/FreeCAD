@@ -3153,14 +3153,88 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             }
         }
     }
+    else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+
+        // find split point
+        double splitParam;
+        bsp->closestParameter(point, splitParam);
+
+        // what to do for periodic b-splines?
+        if (bsp->isPeriodic()) {
+            Part::GeomBSplineCurve* newBsp;
+            int newId(GeoEnum::GeoUndef);
+            newBsp = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
+            newGeometries.push_back(newBsp);
+            newBsp->Trim(splitParam, splitParam);
+            newId = addGeometry(newBsp);
+            if (newId >= 0) {
+                newIds.push_back(newId);
+                setConstruction(newId, GeometryFacade::getConstruction(geo));
+                exposeInternalGeometry(newId);
+
+                // no constraints to transfer here, and we assume the split is to "break" the b-spline
+                ok = true;
+            }
+        }
+        else {
+            // create new b-splines
+            Part::GeomBSplineCurve* newBsp;
+            int newId(GeoEnum::GeoUndef);
+            newBsp = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
+            newGeometries.push_back(newBsp);
+            newBsp->Trim(newBsp->getFirstParameter(), splitParam);
+            newId = addGeometry(newBsp);
+            if (newId >= 0) {
+                newIds.push_back(newId);
+                setConstruction(newId, GeometryFacade::getConstruction(geo));
+                exposeInternalGeometry(newId);
+
+                // the "second" half
+                newBsp = static_cast<Part::GeomBSplineCurve *>(bsp->clone());
+                newGeometries.push_back(newBsp);
+                newBsp->Trim(splitParam, newBsp->getLastParameter());
+                newId = addGeometry(newBsp);
+                if (newId >= 0) {
+                    newIds.push_back(newId);
+                    setConstruction(newId, GeometryFacade::getConstruction(geo));
+                    exposeInternalGeometry(newId);
+
+                    // apply appropriate constraints on the new points at split point
+                    Constraint* joint = new Constraint();
+                    joint->Type = Coincident;
+                    joint->First = newIds[0];
+                    joint->FirstPos = PointPos::end;
+                    joint->Second = newIds[1];
+                    joint->SecondPos = PointPos::start;
+                    newConstraints.push_back(joint);
+
+                    // transfer constraints from start and end of original spline
+                    transferConstraints(GeoId, PointPos::start, newIds[0], PointPos::start, true);
+                    transferConstraints(GeoId, PointPos::end, newIds[1], PointPos::end, true);
+                    ok = true;
+                }
+            }
+        }
+    }
 
     if (ok) {
         std::vector<int> oldConstraints;
         getConstraintIndices(GeoId, oldConstraints);
 
+        const auto& allConstraints = this->Constraints.getValues();
+
+        // keep constraints on internal geometries so they are deleted
+        // when the old curve is deleted
+        oldConstraints.erase(
+            std::remove_if(
+                oldConstraints.begin(), oldConstraints.end(),
+                [=](const auto& i){return allConstraints[i]->Type == InternalAlignment;}),
+            oldConstraints.end());
+
         for (unsigned int i = 0; i < oldConstraints.size(); ++i) {
 
-            Constraint *con = this->Constraints.getValues()[oldConstraints[i]];
+            Constraint *con = allConstraints[oldConstraints[i]];
             int conId = con->First;
             PointPos conPos = con->FirstPos;
             if (conId == GeoId) {
