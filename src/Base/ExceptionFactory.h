@@ -24,10 +24,9 @@
 #ifndef BASE_EXCEPTIONFACTORY_H
 #define BASE_EXCEPTIONFACTORY_H
 
-
 #include <Python.h>
-
 #include "Factory.h"
+
 
 namespace Base
 {
