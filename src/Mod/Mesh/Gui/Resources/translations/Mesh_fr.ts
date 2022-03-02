@@ -5,7 +5,8 @@
     <name>CmdMeshAddFacet</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Add triangle</source>
@@ -20,7 +21,8 @@
     <name>CmdMeshBoundingBox</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Boundings info...</source>
@@ -35,7 +37,8 @@
     <name>CmdMeshBuildRegularSolid</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Regular solid...</source>
@@ -50,7 +53,8 @@
     <name>CmdMeshCrossSections</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Cross-sections...</source>
@@ -65,7 +69,8 @@
     <name>CmdMeshDecimating</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Decimation...</source>
@@ -80,7 +85,8 @@
     <name>CmdMeshDemolding</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Interactive demolding direction</source>
@@ -91,7 +97,8 @@
     <name>CmdMeshDifference</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Difference</source>
@@ -102,7 +109,8 @@
     <name>CmdMeshEvaluateFacet</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Face info</source>
@@ -117,7 +125,8 @@
     <name>CmdMeshEvaluateSolid</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Check solid mesh</source>
@@ -132,7 +141,8 @@
     <name>CmdMeshEvaluation</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
@@ -147,7 +157,8 @@
     <name>CmdMeshExport</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Export mesh...</source>
@@ -162,7 +173,8 @@
     <name>CmdMeshFillInteractiveHole</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Close hole</source>
@@ -177,7 +189,8 @@
     <name>CmdMeshFillupHoles</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Fill holes...</source>
@@ -192,7 +205,8 @@
     <name>CmdMeshFlipNormals</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Flip normals</source>
@@ -207,7 +221,8 @@
     <name>CmdMeshFromGeometry</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Create mesh from geometry...</source>
@@ -222,7 +237,8 @@
     <name>CmdMeshFromPartShape</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Create mesh from shape...</source>
@@ -237,7 +253,8 @@
     <name>CmdMeshHarmonizeNormals</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Harmonize normals</source>
@@ -252,7 +269,8 @@
     <name>CmdMeshImport</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Import mesh...</source>
@@ -267,7 +285,8 @@
     <name>CmdMeshIntersection</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Intersection</source>
@@ -278,7 +297,8 @@
     <name>CmdMeshMerge</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Merge</source>
@@ -293,7 +313,8 @@
     <name>CmdMeshPolyCut</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Cut mesh</source>
@@ -308,7 +329,8 @@
     <name>CmdMeshPolySegm</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Make segment</source>
@@ -323,7 +345,8 @@
     <name>CmdMeshPolySelect</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Select mesh</source>
@@ -338,7 +361,8 @@
     <name>CmdMeshPolySplit</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Split mesh</source>
@@ -353,7 +377,8 @@
     <name>CmdMeshPolyTrim</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Trim mesh</source>
@@ -368,7 +393,8 @@
     <name>CmdMeshRemeshGmsh</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Refinement...</source>
@@ -383,7 +409,8 @@
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Remove components by hand...</source>
@@ -398,7 +425,8 @@
     <name>CmdMeshRemoveComponents</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Remove components...</source>
@@ -413,7 +441,8 @@
     <name>CmdMeshScale</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Scale...</source>
@@ -428,7 +457,8 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Create section from mesh and plane</source>
@@ -443,7 +473,8 @@
     <name>CmdMeshSegmentation</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Create mesh segments...</source>
@@ -458,7 +489,8 @@
     <name>CmdMeshSegmentationBestFit</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces...</source>
@@ -473,7 +505,8 @@
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Smooth...</source>
@@ -488,7 +521,8 @@
     <name>CmdMeshSplitComponents</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Split by components</source>
@@ -503,7 +537,8 @@
     <name>CmdMeshToolMesh</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>
@@ -518,7 +553,8 @@
     <name>CmdMeshTransform</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Transform mesh</source>
@@ -533,7 +569,8 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Trim mesh with a plane</source>
@@ -548,7 +585,8 @@
     <name>CmdMeshUnion</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Union</source>
@@ -559,7 +597,8 @@
     <name>CmdMeshVertexCurvature</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Curvature plot</source>
@@ -574,7 +613,8 @@
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
       <source>Mesh</source>
-      <translation>Maillage</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Mesh</translation>
     </message>
     <message>
       <source>Curvature info</source>

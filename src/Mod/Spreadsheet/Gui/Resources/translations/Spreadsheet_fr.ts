@@ -6,7 +6,8 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="739"/>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="874"/>
@@ -77,7 +78,8 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="902"/>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="905"/>
@@ -102,7 +104,8 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
@@ -117,7 +120,8 @@
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Align bottom</source>
@@ -132,7 +136,8 @@
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Align center</source>
@@ -147,7 +152,8 @@
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Align left</source>
@@ -162,7 +168,8 @@
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Align right</source>
@@ -177,7 +184,8 @@
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Align top</source>
@@ -192,7 +200,8 @@
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
@@ -207,7 +216,8 @@
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
@@ -222,7 +232,8 @@
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
@@ -237,7 +248,8 @@
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Merge cells</source>
@@ -252,7 +264,8 @@
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Set alias</source>
@@ -267,7 +280,8 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Split cell</source>
@@ -282,7 +296,8 @@
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Bold text</source>
@@ -297,7 +312,8 @@
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Italic text</source>
@@ -312,7 +328,8 @@
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Underline text</source>
@@ -532,7 +549,8 @@
     </message>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Spreadsheet does not support range selection when pasting.
@@ -653,7 +671,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <name>SpreadsheetGui::DlgSettings</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <source>Import/Export Settings</source>
@@ -778,7 +797,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Tableur</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Spreadsheet</translation>
     </message>
   </context>
 </TS>

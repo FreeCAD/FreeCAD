@@ -6,7 +6,8 @@
     <message>
       <location filename="TranslationTexts.py" line="42"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="43"/>
@@ -156,7 +157,7 @@
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Vous pouvez configurer un dossier personnalisé à afficher ici dans le menu Modifier -&gt; Préférences -&gt; Début -&gt; Afficher un dossier supplémentaire</translation>
+      <translation>Vous pouvez configurer un dossier personnalisé à afficher ici dans le menu Modifier -&gt; Préférences -&gt; Start -&gt; Afficher un dossier supplémentaire</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -227,7 +228,8 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translatorcomment>Do not translate workbench name</translatorcomment>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>

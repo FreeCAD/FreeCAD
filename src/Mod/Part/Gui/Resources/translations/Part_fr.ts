@@ -181,7 +181,7 @@ Un 'Filtre composé' peut être utilisé pour extraire les parties restantes.</t
       <location filename="../../AppPartGui.cpp" line="222"/>
       <location filename="../../AppPartGui.cpp" line="223"/>
       <source>Part design</source>
-      <translation>Conception de pièces</translation>
+      <translation>Part / PartDesign</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="224"/>
@@ -3462,10 +3462,10 @@ Note : Le placement est exprimé localement par rapport à l'objet auquel il est
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Impossible de déterminer le vecteur normal de la forme à extruder. Veuillez utiliser un autre mode. 
+      <translation>Impossible de déterminer le vecteur normal de la forme à extruder. Veuillez utiliser un autre mode.
 
 (%1)</translation>
     </message>
@@ -4658,7 +4658,7 @@ la taille du fichier STEP résultant.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Le lien à la direction d'extrusion est invalide. 
+      <translation>Le lien à la direction d'extrusion est invalide.
 
 %1</translation>
     </message>
@@ -5488,10 +5488,10 @@ Valeur par défaut : false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
+the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Les opérations booléennes supplémentaires peuvent parfois trouver des erreurs que
-la vérification de géométrie standard BRep rate. Ces erreurs ne signifient pas toujours 
+la vérification de géométrie standard BRep rate. Ces erreurs ne signifient pas toujours
 que l'objet vérifié est inutilisable. Valeur par dar défaut : false</translation>
     </message>
     <message>
@@ -5523,9 +5523,9 @@ mais plus stable. Valeur par défaut : false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Développer le contenu de la forme. Les modifications prendront effet la prochaine fois que vous utiliserez 
+      <translation>Développer le contenu de la forme. Les modifications prendront effet la prochaine fois que vous utiliserez
 l'outil de vérification de la géométrie. valeur par défaut : false</translation>
     </message>
     <message>
@@ -5535,9 +5535,9 @@ l'outil de vérification de la géométrie. valeur par défaut : false</translat
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la prochaine fois que vous utiliserez 
+      <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la prochaine fois que vous utiliserez
 l'outil de vérification de la géométrie. Valeur par défaut : false</translation>
     </message>
     <message>
