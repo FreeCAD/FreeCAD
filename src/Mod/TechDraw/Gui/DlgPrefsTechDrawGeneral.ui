@@ -494,7 +494,7 @@ for ProjectionGroups</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,2">
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="minimumSize">
@@ -794,24 +794,29 @@ for ProjectionGroups</string>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1">
-        <item row="1" column="2">
-         <widget class="Gui::PrefSpinBox" name="psb_GridSpacing">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="value">
-           <number>10</number>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>gridSpacing</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
+         </spacer>
         </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_ShowGrid">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Set ShowGrid property to true on new Pages.</string>
+          </property>
           <property name="text">
            <string>Show Grid</string>
           </property>
@@ -838,18 +843,24 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <item row="1" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing">
+          <property name="toolTip">
+           <string>Distance between Page grid lines.</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-         </spacer>
+          <property name="value">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>gridSpacing</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>psb_GridSpacing</cstring>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -888,11 +899,6 @@ for ProjectionGroups</string>
   <customwidget>
    <class>Gui::PrefFileChooser</class>
    <extends>Gui::FileChooser</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

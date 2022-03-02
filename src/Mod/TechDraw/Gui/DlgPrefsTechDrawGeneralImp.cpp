@@ -44,6 +44,9 @@ DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
     ui->setupUi(this);
     ui->plsb_LabelSize->setUnit(Base::Unit::Length);
     ui->plsb_LabelSize->setMinimum(0);
+
+    ui->psb_GridSpacing->setUnit(Base::Unit::Length);
+    ui->psb_GridSpacing->setMinimum(0);
 }
 
 DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
@@ -108,7 +111,13 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->pfc_Welding->onRestore();
     ui->pfc_FilePattern->onRestore();
     ui->le_NamePattern->onRestore();
+
+    bool gridDefault = PreferencesGui::showGrid();
+    ui->cb_ShowGrid->setChecked(gridDefault);
     ui->cb_ShowGrid->onRestore();
+
+    double spacingDefault = PreferencesGui::gridSpacing();
+    ui->psb_GridSpacing->setValue(spacingDefault);
     ui->psb_GridSpacing->onRestore();
 }
 

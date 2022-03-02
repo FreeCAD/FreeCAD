@@ -66,7 +66,7 @@ static QString     weldingDirectory();
 static bool showGrid();
 static App::Color gridColor();
 static QColor gridQColor();
-static int gridSpacing();
+static double gridSpacing();
 
 };
 
