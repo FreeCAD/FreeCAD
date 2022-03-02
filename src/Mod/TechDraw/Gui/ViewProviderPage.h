@@ -32,6 +32,8 @@
 
 #include <boost_signals2.hpp> 
 
+#include <App/PropertyUnits.h>
+
 namespace TechDraw{
     class DrawPage;
 }
@@ -53,7 +55,7 @@ public:
 
     App::PropertyBool  ShowFrames;
     App::PropertyBool  ShowGrid;
-    App::PropertyInteger GridSpacing;
+    App::PropertyDistance GridSpacing;
 
     virtual void attach(App::DocumentObject *) override;
     virtual void setDisplayMode(const char* ModeName) override;

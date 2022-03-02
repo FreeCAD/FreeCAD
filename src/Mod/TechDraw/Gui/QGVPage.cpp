@@ -1320,31 +1320,31 @@ void QGVPage::drawForeground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void QGVPage::makeGrid(int gridWidth, int gridHeight, int gridStep)
+void QGVPage::makeGrid(int gridWidth, int gridHeight, double gridStep)
 {
     QPainterPath grid;
-    int width = Rez::guiX(gridWidth);
-    int height = Rez::guiX(gridHeight);
-    int step = Rez::guiX(gridStep);
-    int horizStart = 0;
-    int vPos = 0;
+    double width = Rez::guiX(gridWidth);
+    double height = Rez::guiX(gridHeight);
+    double step = Rez::guiX(gridStep);
+    double horizStart = 0.0;
+    double vPos = 0;
     int rows = (height / step) + 1;
     //draw horizontal lines
     for (int i = 0; i < rows; i++) {
         vPos = i * step;
-        QPoint start (horizStart, -vPos);
-        QPoint end (width, -vPos);
+        QPointF start (horizStart, -vPos);
+        QPointF end (width, -vPos);
         grid.moveTo(start);
         grid.lineTo(end);
     }
     //draw vertical lines
-    int vertStart = 0;
+    double vertStart = 0.0;
+    double hPos = 0.0;
     int cols = (width / step) + 1;
-    int hPos = 0;
     for (int i = 0; i < cols; i++) {
         hPos = i * step;
-        QPoint start(hPos, -vertStart);
-        QPoint end(hPos, -height);
+        QPointF start(hPos, -vertStart);
+        QPointF end(hPos, -height);
         grid.moveTo(start);
         grid.lineTo(end);
     }

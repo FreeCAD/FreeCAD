@@ -227,12 +227,12 @@ QColor PreferencesGui::gridQColor()
     return PreferencesGui::gridColor().asValue<QColor>();
 }
 
-int PreferencesGui::gridSpacing()
+double PreferencesGui::gridSpacing()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/General");
-    int spacing = hGrp->GetInt("gridSpacing", 10);
+    double spacing = hGrp->GetFloat("gridSpacing", 10.0);
     return spacing;
 }
 
@@ -241,6 +241,6 @@ bool PreferencesGui::showGrid()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/General");
-    bool show = hGrp->GetInt("showGrid", true);
+    bool show = hGrp->GetBool("showGrid", true);
     return show;
 }

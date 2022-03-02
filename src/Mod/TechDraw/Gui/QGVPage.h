@@ -129,7 +129,7 @@ public:
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
 
-    void makeGrid(int width, int height, int step);
+    void makeGrid(int width, int height, double step);
     void showGrid(bool state) {m_showGrid = state;}
     void updateViewport(void) {viewport()->repaint();}
 
