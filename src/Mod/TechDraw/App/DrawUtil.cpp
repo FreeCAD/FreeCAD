@@ -297,15 +297,15 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3
     // y = mx + b
     // m = (y1 - y0) / (x1 - x0)
     if (DrawUtil::fpCompare(dir.x, 0.0) ) {                 //vertical case
-        p1 = Base::Vector3d(point.x, - yRange / 2.0, 0.0);  
-        p2 = Base::Vector3d(point.x, yRange / 2.0, 0.0);
+        p1 = Base::Vector3d(point.x, point.y - (yRange / 2.0), 0.0);
+        p2 = Base::Vector3d(point.x, point.y + (yRange / 2.0), 0.0);
     } else {
         double slope = dir.y / dir.x;
         double left = -xRange / 2.0;
         double right = xRange / 2.0;
         if (DrawUtil::fpCompare(slope, 0.0)) {               //horizontal case
-            p1 = Base::Vector3d(left, point.y);
-            p2 = Base::Vector3d(right, point.y);
+            p1 = Base::Vector3d(point.x - (xRange / 2.0), point.y);
+            p2 = Base::Vector3d(point.x + (xRange / 2.0), point.y);
         } else {                                           //normal case
             double top = yRange / 2.0;
             double bottom = -yRange / 2.0;

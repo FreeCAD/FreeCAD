@@ -357,7 +357,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 // cut base shape with tool
     //is SectionOrigin valid?
     Bnd_Box centerBox;
-    BRepBndLib::Add(baseShape, centerBox);
+    BRepBndLib::AddOptimal(baseShape, centerBox);
     centerBox.SetGap(0.0);
 
 // make tool
@@ -414,7 +414,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 
 // check for error in cut
     Bnd_Box testBox;
-    BRepBndLib::Add(rawShape, testBox);
+    BRepBndLib::AddOptimal(rawShape, testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
         Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());

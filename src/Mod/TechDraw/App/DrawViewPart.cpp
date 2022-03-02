@@ -417,8 +417,11 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
 
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
 
+//    BRepTools::Write(shape, "DVPShape.brep");            //debug
+
     inputCenter = TechDraw::findCentroid(shape,
                                          viewAxis);
+
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
@@ -536,7 +539,7 @@ void DrawViewPart::extractFaces()
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
-        BRepBndLib::Add(*itOuter, sOuter);
+        BRepBndLib::AddOptimal(*itOuter, sOuter);
         sOuter.SetGap(0.1);
         if (sOuter.IsVoid()) {
             Base::Console().Log("DVP::Extract Faces - outer Bnd_Box is void for %s\n",getNameInDocument());
@@ -557,7 +560,7 @@ void DrawViewPart::extractFaces()
             }
 
             Bnd_Box sInner;
-            BRepBndLib::Add(*itInner, sInner);
+            BRepBndLib::AddOptimal(*itInner, sInner);
             sInner.SetGap(0.1);
             if (sInner.IsVoid()) {
                 Base::Console().Log("INFO - DVP::Extract Faces - inner Bnd_Box is void for %s\n",getNameInDocument());
@@ -926,6 +929,16 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
 Base::Vector3d DrawViewPart::getOriginalCentroid(void) const
 {
     return m_saveCentroid;
+}
+
+Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
+{
+    TopoDS_Shape shape = getSourceShape();
+    gp_Ax2 cs = getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0));
+    Base::Vector3d center = TechDraw::findCentroidVec(shape, cs);
+    Base::Console().Message("DVP::getCurrentCentroid - center: %s\n",
+                             DrawUtil::formatVector(center).c_str());
+    return center;
 }
 
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const

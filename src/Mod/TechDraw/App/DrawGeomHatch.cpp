@@ -285,7 +285,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
     TopoDS_Face face = f;
 
     Bnd_Box bBox;
-    BRepBndLib::Add(face, bBox);
+    BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
 
     for (auto& ls: lineSets) {
@@ -312,7 +312,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         //save the boundingBox of hatch pattern
         Bnd_Box overlayBox;
         overlayBox.SetGap(0.0);
-        BRepBndLib::Add(common, overlayBox);
+        BRepBndLib::AddOptimal(common, overlayBox);
         ls.setBBox(overlayBox);
 
         //get resulting edges
@@ -471,7 +471,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     TopoDS_Face face = extractFace(source,fdx);
 
     Bnd_Box bBox;
-    BRepBndLib::Add(face, bBox);
+    BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
 
     for (auto& ls: m_lineSets) {
