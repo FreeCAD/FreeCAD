@@ -163,7 +163,8 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
         return ivViewer;
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) return nullptr;
+    if (!doc)
+        return nullptr;
     Gui::MDIView* view = doc->getActiveView();
     if (view && view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();

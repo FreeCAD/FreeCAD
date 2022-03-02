@@ -269,7 +269,8 @@ const char *DocumentObject::getNameInDocument() const
     // to an object that has been removed from the document. In this case we should rather
     // return 0.
     //assert(pcNameInDocument);
-    if (!pcNameInDocument) return 0;
+    if (!pcNameInDocument)
+        return 0;
     return pcNameInDocument->c_str();
 }
 
@@ -1039,7 +1040,8 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 int DocumentObject::setElementVisible(const char *element, bool visible) {
     for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
         int ret = ext->extensionSetElementVisible(element,visible);
-        if(ret>=0) return ret;
+        if(ret>=0)
+            return ret;
     }
 
     return -1;
@@ -1048,7 +1050,8 @@ int DocumentObject::setElementVisible(const char *element, bool visible) {
 int DocumentObject::isElementVisible(const char *element) const {
     for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
         int ret = ext->extensionIsElementVisible(element);
-        if(ret>=0) return ret;
+        if(ret>=0)
+            return ret;
     }
 
     return -1;
@@ -1240,7 +1243,8 @@ const std::string &DocumentObject::hiddenMarker() {
 }
 
 const char *DocumentObject::hasHiddenMarker(const char *subname) {
-    if(!subname) return 0;
+    if(!subname)
+        return 0;
     const char *marker = strrchr(subname,'.');
     if(!marker)
         marker = subname;

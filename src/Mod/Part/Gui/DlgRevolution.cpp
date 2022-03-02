@@ -324,7 +324,8 @@ void DlgRevolution::keyPressEvent(QKeyEvent* ke)
 void DlgRevolution::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType

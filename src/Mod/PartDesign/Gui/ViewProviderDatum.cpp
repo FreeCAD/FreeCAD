@@ -273,7 +273,8 @@ bool ViewProviderDatum::doubleClicked(void)
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->getActiveView();
-    if(!activeView) return false;
+    if(!activeView)
+        return false;
 
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();

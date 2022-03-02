@@ -114,7 +114,8 @@ bool SketchGeometryExtension::getInternalTypeFromName(std::string str, InternalT
     auto pos = std::find_if(    SketchGeometryExtension::internaltype2str.begin(),
                                 SketchGeometryExtension::internaltype2str.end(),
                                 [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
+                                    return strcmp(val,str.c_str())==0;
+                                }
                                 );
 
     if( pos != SketchGeometryExtension::internaltype2str.end()) {
@@ -132,7 +133,8 @@ bool SketchGeometryExtension::getGeometryModeFromName(std::string str, GeometryM
     auto pos = std::find_if(    SketchGeometryExtension::geometrymode2str.begin(),
                                 SketchGeometryExtension::geometrymode2str.end(),
                                 [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
+                                    return strcmp(val,str.c_str())==0;
+                                }
                                 );
 
     if( pos != SketchGeometryExtension::geometrymode2str.end()) {

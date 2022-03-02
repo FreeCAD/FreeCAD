@@ -180,7 +180,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
                 qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
                 qApp->translate("Sketcher_NewSketch", "Select the method to attach this sketch to selected object"),
                 items, iSugg, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
-            if (!ok) return;
+            if (!ok)
+                return;
             int index = items.indexOf(text);
             if (index == 0){
                 bAttach = false;

@@ -415,7 +415,8 @@ bool ParameterGrp::GetBool(const char* Name, bool bPreset) const
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCBool",Name);
     // if not return preset
-    if (!pcElem) return bPreset;
+    if (!pcElem)
+        return bPreset;
     // if yes check the value and return
     if (strcmp(StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
         return false;
@@ -484,7 +485,8 @@ long ParameterGrp::GetInt(const char* Name, long lPreset) const
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCInt",Name);
     // if not return preset
-    if (!pcElem) return lPreset;
+    if (!pcElem)
+        return lPreset;
     // if yes check the value and return
     return atol (StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str());
 }
@@ -547,7 +549,8 @@ unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset)
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCUInt",Name);
     // if not return preset
-    if (!pcElem) return lPreset;
+    if (!pcElem)
+        return lPreset;
     // if yes check the value and return
     return strtoul (StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(),nullptr,10);
 }
@@ -610,7 +613,8 @@ double ParameterGrp::GetFloat(const char* Name, double dPreset) const
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCFloat",Name);
     // if not return preset
-    if (!pcElem) return dPreset;
+    if (!pcElem)
+        return dPreset;
     // if yes check the value and return
     return atof (StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str());
 }

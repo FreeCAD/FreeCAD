@@ -287,7 +287,8 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 {
     TopoShape shape;
 
-    if(!obj) return shape;
+    if(!obj)
+        return shape;
 
     PyObject *pyobj = 0;
     Base::Matrix4D mat;
@@ -526,7 +527,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
 App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, const char *subname)
 {
-    if(!obj) return 0;
+    if(!obj)
+        return 0;
     auto owner = obj->getSubObject(subname);
     if(owner) {
         auto linked = owner->getLinkedObject(true);

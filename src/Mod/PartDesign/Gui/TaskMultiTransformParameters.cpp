@@ -451,7 +451,8 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
-    if (transformFeatures.empty()) return;
+    if (transformFeatures.empty())
+        return;
 
     App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);

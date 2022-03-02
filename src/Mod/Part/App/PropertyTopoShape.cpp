@@ -243,7 +243,8 @@ static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_
 #else
   os.open(File, std::ios::out);
 #endif
-  if (!os.rdbuf()->is_open()) return Standard_False;
+  if (!os.rdbuf()->is_open())
+      return Standard_False;
 
   Standard_Boolean isGood = (os.good() && !os.eof());
   if(!isGood)

@@ -511,7 +511,8 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     }
 
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
-    if (!pCam) return;
+    if (!pCam)
+        return;
     SbViewVolume  vol = pCam->getViewVolume();
 
     vol.projectPointToLine(SbVec2f(pX,pY), line);

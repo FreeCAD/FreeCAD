@@ -905,7 +905,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
 {
     if (action->getTypeId() == Gui::SoGLSelectAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -915,7 +916,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);
@@ -927,7 +929,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
     }
     else if (action->getTypeId() == Gui::SoVisibleFaceAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -937,7 +940,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);

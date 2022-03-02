@@ -409,7 +409,8 @@ bool path_simulate::CheckConnect()
         return true;  // The first delivery is always the same (in the negative z-direction)
     }
 
-    if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;  // Infeed in the negative z-direction
+    if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0)  // Infeed in the negative z-direction
+        return true;
     else                                                  return false; // Infeed in the positive z-direction
 }
 
@@ -437,7 +438,8 @@ bool path_simulate::CheckConnect(bool tool)
 				 (*m_it1)->D0((*m_it1)->FirstParameter(),tmp);
 				 m_StartPnts1.push_back(tmp);  // Target point
 
-				 if(m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;
+				 if(m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0)
+				     return true;
 				 else                                                 return false;
 			}
 			else
@@ -452,7 +454,8 @@ bool path_simulate::CheckConnect(bool tool)
 				 (*m_it2)->D0((*m_it2)->FirstParameter(),tmp);
 				 m_StartPnts2.push_back(tmp);  // Target point
 
-				 if(m_StartPnts2[0].Z() - m_StartPnts2[1].Z() >= 0.0) return true;
+				 if(m_StartPnts2[0].Z() - m_StartPnts2[1].Z() >= 0.0)
+				     return true;
 				 else                                                 return false;
 			}
 		}
@@ -491,7 +494,8 @@ bool path_simulate::CheckConnect(bool tool)
         return true;  // The first delivery is always the same
     }
 
-    if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;
+    if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0)
+        return true;
     else                                                  return false;
 }
 
@@ -1085,7 +1089,8 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
 		return true;
 	}
 	
-	if(ConnPnts[0].Distance(ConnPnts[1]) < 1e-3) return true;  // no delivery on spiral tracks!!!
+	if(ConnPnts[0].Distance(ConnPnts[1]) < 1e-3)  // no delivery on spiral tracks!!!
+	    return true;
 
     for (int i=0; i<ind; ++i)
     {
@@ -2654,7 +2659,8 @@ bool path_simulate::StartingTool()
     }
     else z1 = 1e+3;
 
-    if(z0<z1)  return false;  // Slave has to wait
+    if(z0<z1)  // Slave has to wait
+        return false;
     else       return true;   // Master has to wait
 }
 

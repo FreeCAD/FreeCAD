@@ -187,7 +187,8 @@ void FCCmdTest3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if (!pcDoc) return;
+    if (!pcDoc)
+        return;
 }
 
 
@@ -217,7 +218,8 @@ void FCCmdTest4::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 
@@ -246,7 +248,8 @@ void FCCmdTest5::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 bool FCCmdTest5::isActive(void)
@@ -275,7 +278,8 @@ void FCCmdTest6::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 bool FCCmdTest6::isActive(void)
@@ -303,7 +307,8 @@ void CmdTestCmdFuncs::activated(int iMsg)
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     auto obj = doc->addObject("App::Annotation", "obj");
-    if (!obj) return;
+    if (!obj)
+        return;
 
     std::string objName = obj->getNameInDocument();
 

@@ -345,7 +345,8 @@ void DlgExtrusion::autoSolid()
 void DlgExtrusion::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     this->document = activeDoc->getName();
     this->label = activeDoc->Label.getValue();

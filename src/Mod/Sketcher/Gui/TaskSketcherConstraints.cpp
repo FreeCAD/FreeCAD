@@ -581,7 +581,8 @@ void ConstraintView::centerSelectedItems()
 void ConstraintView::deleteSelectedItems()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc) return;
+    if (!doc)
+        return;
 
     doc->openTransaction("Delete constraint");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
@@ -1137,7 +1138,8 @@ void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged(void
 void TaskSketcherConstraints::on_listWidgetConstraints_itemActivated(QListWidgetItem *item)
 {
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
-    if (!it) return;
+    if (!it)
+        return;
 
     // if its the right constraint
     if (it->isDimensional()) {
@@ -1151,7 +1153,8 @@ void TaskSketcherConstraints::on_listWidgetConstraints_updateDrivingStatus(QList
 {
     Q_UNUSED(status);
     ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
-    if (!citem) return;
+    if (!citem)
+        return;
 
     Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleDrivingConstraint");
     slotConstraintsChanged();
@@ -1161,7 +1164,8 @@ void TaskSketcherConstraints::on_listWidgetConstraints_updateActiveStatus(QListW
 {
     Q_UNUSED(status);
     ConstraintItem *citem = dynamic_cast<ConstraintItem*>(item);
-    if (!citem) return;
+    if (!citem)
+        return;
 
     Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleActiveConstraint");
     slotConstraintsChanged();

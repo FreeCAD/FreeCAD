@@ -236,7 +236,8 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
 
 Py::Object LinkViewPy::getOwner() const {
     auto owner = getLinkViewPtr()->getOwner();
-    if(!owner) return Py::Object();
+    if(!owner)
+        return Py::Object();
     return Py::Object(owner->getPyObject(),true);
 }
 

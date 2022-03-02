@@ -735,7 +735,8 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if(!viewProvider) return;
+    if(!viewProvider)
+        return;
 
     if (d->_editViewProvider==viewProvider || d->_editViewProviderParent==viewProvider)
         _resetEdit();

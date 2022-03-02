@@ -429,7 +429,8 @@ void PythonDebugger::runFile(const QString& fn)
 #else
         FILE *fp = fopen((const char*)pxFileName,"r");
 #endif
-        if (!fp) return;
+        if (!fp)
+            return;
 
         Base::PyGILStateLocker locker;
         PyObject *module, *dict;

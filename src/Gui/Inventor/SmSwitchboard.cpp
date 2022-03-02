@@ -205,6 +205,7 @@ void
 SmSwitchboard::search(SoSearchAction * action)
 {
   SoNode::search(action); // clazy:exclude=skipped-base-method
-  if (action->isFound()) return;
+  if (action->isFound())
+      return;
   SmSwitchboard::doAction(action);
 }

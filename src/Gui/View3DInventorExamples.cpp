@@ -290,7 +290,8 @@ void LightManip(SoSeparator * root)
   SoInput in;
   in.setBuffer((void *)scenegraph, std::strlen(scenegraph));
   SoSeparator * _root = SoDB::readAll( &in );
-  if ( _root == NULL ) return; // Shouldn't happen.
+  if ( _root == NULL ) // Shouldn't happen.
+      return;
   root->addChild(_root);
   root->ref();
 
@@ -303,7 +304,8 @@ void LightManip(SoSeparator * root)
     sa.setSearchingAll( false );
     sa.apply( root );
     SoPath * path = sa.getPath();
-    if ( path == NULL) return; // Shouldn't happen.
+    if ( path == NULL) // Shouldn't happen.
+        return;
 
     SoPointLightManip * manip = new SoPointLightManip;
     manip->replaceNode( path );
@@ -408,7 +410,8 @@ timersensorcallback(void * data, SoSensor *)
 void AnimationTexture(SoSeparator * root)
 {
   // Scene graph
-  if ( root == NULL ) return; // Shouldn't happen.
+  if ( root == NULL ) // Shouldn't happen.
+      return;
 
   // Generate a julia set to use as a texturemap
   julia(global_cr, global_ci, 2.5, texturewidth, textureheight, 4, bitmap, 64);

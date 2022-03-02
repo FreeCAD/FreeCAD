@@ -190,7 +190,8 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
-        if (!pDoc) return; // no document
+        if (!pDoc) // no document
+            return;
         openCommand("Import an Assembly");
         if (select == filter[1] ||
             select == filter[3]) {
@@ -248,7 +249,8 @@ void CmdAssemblyImport::activated(int iMsg)
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
-        if (!pDoc) return; // no document
+        if (!pDoc) // no document
+            return;
         openCommand("Import an Assembly");
         if (select == filter[0] ||
             select == filter[1]) {

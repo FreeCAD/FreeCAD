@@ -193,7 +193,8 @@ void SoFCUnifiedSelection::write(SoWriteAction * action)
     SoOutput * out = action->getOutput();
     if (out->getStage() == SoOutput::WRITE) {
         // Do not write out the fields of this class
-        if (this->writeHeader(out, true, false)) return;
+        if (this->writeHeader(out, true, false))
+            return;
         SoGroup::doAction((SoAction *)action);
         this->writeFooter(out);
     }
@@ -205,10 +206,14 @@ void SoFCUnifiedSelection::write(SoWriteAction * action)
 int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
-    if (!detail)                                           return 0;
-    if (detail->isOfType(SoFaceDetail::getClassTypeId()))  return 1;
-    if (detail->isOfType(SoLineDetail::getClassTypeId()))  return 2;
-    if (detail->isOfType(SoPointDetail::getClassTypeId())) return 3;
+    if (!detail)
+        return 0;
+    if (detail->isOfType(SoFaceDetail::getClassTypeId()))
+        return 1;
+    if (detail->isOfType(SoLineDetail::getClassTypeId()))
+        return 2;
+    if (detail->isOfType(SoPointDetail::getClassTypeId()))
+        return 3;
     return 0;
 }
 
@@ -252,7 +257,8 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         ret.push_back(info);
     }
 
-    if(ret.size()<=1) return ret;
+    if(ret.size()<=1)
+        return ret;
 
     // To identify the picking of lines in a concave area we have to
     // get all intersection points. If we have two or more intersection
@@ -523,7 +529,8 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 }
 
 bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bool ctrlDown) {
-    if(infos.empty() || !infos[0].vpd) return false;
+    if(infos.empty() || !infos[0].vpd)
+        return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
     if(infos.size()>1) {
@@ -548,9 +555,11 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
 
     const auto &info = infos[0];
     auto vpd = info.vpd;
-    if(!vpd) return false;
+    if(!vpd)
+        return false;
     const char *objname = vpd->getObject()->getNameInDocument();
-    if(!objname) return false;
+    if(!objname)
+        return false;
     const char *docname = vpd->getObject()->getDocument()->getName();
 
     bool hasNext = false;

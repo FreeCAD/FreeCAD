@@ -165,7 +165,8 @@ bool cutting_tools::fillFaceWireMap()
         TopExp_Explorer Explore_Face;
         Explore_Face.Init(MOrderIt->second,TopAbs_WIRE);
         //If there is no Wire -> return
-        if (!Explore_Face.More()) return false;
+        if (!Explore_Face.More())
+            return false;
 
         //Now push all wires into the map
         for (Explore_Face.ReInit();Explore_Face.More();Explore_Face.Next())
@@ -348,7 +349,8 @@ bool cutting_tools::arrangecuts_ZLEVEL()
     {
         //The machining order is now used to determine the cutting sequence
         std::vector<std::pair<Base::Vector3f,TopoDS_Face> >::iterator MOrderIt;
-        if (m_MachiningOrder.size()<2) return false; //Did not select at least two Levels
+        if (m_MachiningOrder.size()<2) //Did not select at least two Levels
+            return false;
         //Now take two levels and perform the Cutting Stuff
         for (MOrderIt = m_MachiningOrder.begin();MOrderIt != m_MachiningOrder.end(); ++MOrderIt)
         {
@@ -3455,7 +3457,8 @@ bool cutting_tools::classifyShape()
 {
     TopExp_Explorer Explorer;
     Explorer.Init(m_Shape,TopAbs_FACE);
-    if (!Explorer.More()) return false;
+    if (!Explorer.More())
+        return false;
     //check how many different faces we have
     int k=0;
     for (; Explorer.More(); Explorer.Next())

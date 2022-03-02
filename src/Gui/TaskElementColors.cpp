@@ -277,7 +277,8 @@ public:
     }
 
     void onSelectionChanged() {
-        if(busy) return;
+        if(busy)
+            return;
         busy = true;
         std::map<std::string,int> sels;
         for(auto &sel : Selection().getSelectionEx(

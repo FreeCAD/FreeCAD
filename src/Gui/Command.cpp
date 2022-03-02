@@ -226,9 +226,11 @@ Command::~Command()
 bool Command::isViewOfType(Base::Type t) const
 {
     Gui::Document *d = getGuiApplication()->activeDocument();
-    if (!d) return false;
+    if (!d)
+        return false;
     Gui::BaseView *v = d->getActiveView();
-    if (!v) return false;
+    if (!v)
+        return false;
     if (v->getTypeId().isDerivedFrom(t))
         return true;
     else
@@ -936,7 +938,8 @@ void Command::adjustCameraPosition()
         SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
         action.apply(viewer->getSceneGraph());
         SbBox3f box = action.getBoundingBox();
-        if (box.isEmpty()) return;
+        if (box.isEmpty())
+            return;
 
         // get cirumscribing sphere and check if camera is inside
         SbVec3f cam_pos = camera->position.getValue();

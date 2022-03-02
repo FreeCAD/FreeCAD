@@ -71,7 +71,8 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
     try {
         this->parentProperty = nullptr;
         // if no mesh is given
-        if (!pcObj) return 0;
+        if (!pcObj)
+            return 0;
         if (PyObject_TypeCheck(pcObj, &(MeshPy::Type))) {
             getMeshObjectPtr()->operator = (*static_cast<MeshPy*>(pcObj)->getMeshObjectPtr());
         }
@@ -79,13 +80,15 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
             PyObject* ret = addFacets(args);
             bool ok = (ret!=nullptr);
             Py_XDECREF(ret);
-            if (!ok) return -1;
+            if (!ok)
+                return -1;
         }
         else if (PyTuple_Check(pcObj)) {
             PyObject* ret = addFacets(args);
             bool ok = (ret!=nullptr);
             Py_XDECREF(ret);
-            if (!ok) return -1;
+            if (!ok)
+                return -1;
         }
         else if (PyUnicode_Check(pcObj)) {
             getMeshObjectPtr()->load(PyUnicode_AsUTF8(pcObj));

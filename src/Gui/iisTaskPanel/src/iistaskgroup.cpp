@@ -39,7 +39,8 @@ void iisTaskGroup::setScheme(iisTaskPanelScheme *scheme)
 
 void iisTaskGroup::addIconLabel(iisIconLabel *label, bool addToLayout)
 {
-	if (!label) return;
+	if (!label)
+	    return;
 
 	if (addToLayout) {
 		layout()->addWidget(label);

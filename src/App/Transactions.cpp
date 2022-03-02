@@ -99,7 +99,8 @@ static std::atomic<int> _TransactionID;
 
 int Transaction::getNewID() {
     int id = ++_TransactionID;
-    if(id) return id;
+    if(id)
+        return id;
     // wrap around? really?
     return ++_TransactionID;
 }

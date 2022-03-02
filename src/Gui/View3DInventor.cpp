@@ -607,7 +607,8 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if(strcmp("GetCamera",pMsg) == 0 ) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
-        if (!Cam) return false;
+        if (!Cam)
+            return false;
         *ppReturn = SoFCDB::writeNodesToString(Cam).c_str();
         return true;
     }

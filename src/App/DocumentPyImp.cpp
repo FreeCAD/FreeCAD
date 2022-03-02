@@ -792,13 +792,15 @@ PyObject *DocumentPy::getCustomAttributes(const char* attr) const
     // wise it wouldn't be possible to address this attribute any more.
     // The object must then be addressed by the getObject() method directly.
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
-    if (prop) return 0;
+    if (prop)
+        return 0;
     if (this->ob_type->tp_dict == NULL) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
     PyObject* item = PyDict_GetItemString(this->ob_type->tp_dict, attr);
-    if (item) return 0;
+    if (item)
+        return 0;
     // search for an object with this name
     DocumentObject* obj = getDocumentPtr()->getObject(attr);
     return (obj ? obj->getPyObject() : 0);
@@ -812,13 +814,15 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
     // wise it wouldn't be possible to address this attribute any more.
     // The object must then be addressed by the getObject() method directly.
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
-    if (prop) return 0;
+    if (prop)
+        return 0;
     if (this->ob_type->tp_dict == NULL) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
     PyObject* item = PyDict_GetItemString(this->ob_type->tp_dict, attr);
-    if (item) return 0;
+    if (item)
+        return 0;
     DocumentObject* obj = getDocumentPtr()->getObject(attr);
     if (obj)
     {

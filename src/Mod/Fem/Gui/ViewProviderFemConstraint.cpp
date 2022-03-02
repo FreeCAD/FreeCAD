@@ -502,19 +502,26 @@ void ViewProviderFemConstraint::checkForWizard()
     wizardWidget= NULL;
     wizardSubLayout = NULL;
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (mw == NULL) return;
+    if (mw == NULL)
+        return;
     QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (dw == NULL) return;
+    if (dw == NULL)
+        return;
     QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (cw == NULL) return;
+    if (cw == NULL)
+        return;
     QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (tw == NULL) return;
+    if (tw == NULL)
+        return;
     QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (sw == NULL) return;
+    if (sw == NULL)
+        return;
     QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (sa== NULL) return;
+    if (sa== NULL)
+        return;
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
-    if (wd == NULL) return;
+    if (wd == NULL)
+        return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
     if (wiz != NULL) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);

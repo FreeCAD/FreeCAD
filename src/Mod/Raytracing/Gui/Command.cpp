@@ -195,7 +195,8 @@ void CmdRaytracingWritePart::activated(int)
     // name of the objects in the pov file
     std::string Name = "Part";
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (obj.empty()) return;
+    if (obj.empty())
+        return;
 
     std::stringstream out;
     //Raytracing.writePartFile(App.document().GetActiveFeature().getShape())

@@ -319,7 +319,8 @@ void TaskCosVertex::enableTaskButtons(bool b)
 bool TaskCosVertex::accept()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     removeTracker();
     double x = ui->dsbX->value().getValue();
@@ -339,7 +340,8 @@ bool TaskCosVertex::accept()
 bool TaskCosVertex::reject()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     removeTracker();
     m_trackerMode = QGTracker::TrackerMode::None;

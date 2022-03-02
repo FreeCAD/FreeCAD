@@ -117,12 +117,14 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         // get the first input shape
         TopoDS_Shape S1;
         ret = getShape(Curve1, S1);
-        if (ret) return ret;
+        if (ret)
+            return ret;
 
         // get the second input shape
         TopoDS_Shape S2;
         ret = getShape(Curve2, S2);
-        if (ret) return ret;
+        if (ret)
+            return ret;
 
         // check for expected type
         if (S1.IsNull() || S2.IsNull())

@@ -272,7 +272,8 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
 
 short LinkBaseExtension::extensionMustExecute(void) {
     auto link = getLink();
-    if(!link) return 0;
+    if(!link)
+        return 0;
     return link->mustExecute();
 }
 
@@ -507,7 +508,8 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
         if(!propElementVis || !element || !element[0])
             return -1;
         if(propElementVis->getSize()<=index) {
-            if(visible) return 1;
+            if(visible)
+                return 1;
             propElementVis->setSize(index+1, true);
         }
         propElementVis->setStatus(Property::User3,true);
@@ -571,10 +573,12 @@ int LinkBaseExtension::getArrayIndex(const char *subname, const char **psubname)
         return -1;
     const char *dot = strchr(subname,'.');
     if(!dot) dot= subname+strlen(subname);
-    if(dot == subname) return -1;
+    if(dot == subname)
+        return -1;
     int idx = 0;
     for(const char *c=subname;c!=dot;++c) {
-        if(!isdigit(*c)) return -1;
+        if(!isdigit(*c))
+            return -1;
         idx = idx*10 + *c -'0';
     }
     if(psubname) {
@@ -596,7 +600,8 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
     if(isdigit(subname[0])) {
         // If the name start with digits, treat as index reference
         idx = getArrayIndex(subname,0);
-        if(idx<0) return -1;
+        if(idx<0)
+            return -1;
         if(_getElementCountProperty()) {
             if(idx>=_getElementCountValue())
                 return -1;
@@ -627,7 +632,8 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             // Then check for the actual linked object's name or label, and
             // redirect that reference to the first array element
             auto linked = getTrueLinkedObject(false);
-            if(!linked || !linked->getNameInDocument()) return -1;
+            if(!linked || !linked->getNameInDocument())
+                return -1;
             std::string sub(subname,dot-subname);
             if(subname[0]=='$') {
                 if(strcmp(sub.c_str()+1,linked->Label.getValue())==0)
@@ -908,7 +914,8 @@ DocumentObject *LinkBaseExtension::getTrueLinkedObject(
     }
 
     auto ret = getLink(depth);
-    if(!ret) return 0;
+    if(!ret)
+        return 0;
     bool transform = linkTransform();
     const char *subname = getSubName();
     if(subname || (mat && transform)) {
@@ -1041,7 +1048,8 @@ void LinkBaseExtension::updateGroup() {
 }
 
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
-    if(!prop) return;
+    if(!prop)
+        return;
 
     if(prop == getLinkPlacementProperty() || prop == getPlacementProperty()) {
         auto src = getLinkPlacementProperty();

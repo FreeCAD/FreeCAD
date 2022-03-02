@@ -619,7 +619,8 @@ bool TaskDetail::accept()
 //    Base::Console().Message("TD::accept()\n");
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     m_ghost->hide();
     getDetailFeat()->requestPaint();
@@ -633,7 +634,8 @@ bool TaskDetail::reject()
 {
 //    Base::Console().Message("TD::reject()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     m_ghost->hide();
     if (m_mode == CREATEMODE) {

@@ -200,7 +200,8 @@ App::DocumentObject *DlgObjectSelection::objFromItem(QTreeWidgetItem *item) {
         name = qPrintable(item->text(2));
     }
     auto doc = App::GetApplication().getDocument(docName.c_str());
-    if(!doc) return 0;
+    if(!doc)
+        return 0;
     return doc->getObject(name.c_str());
 }
 
@@ -222,9 +223,11 @@ void DlgObjectSelection::onItemExpanded(QTreeWidgetItem * item) {
 }
 
 void DlgObjectSelection::onItemChanged(QTreeWidgetItem * item, int column) {
-    if(column) return;
+    if(column)
+        return;
     auto obj = objFromItem(item);
-    if(!obj) return;
+    if(!obj)
+        return;
     auto state = item->checkState(0);
     auto it = objMap.find(obj);
     if(it == objMap.end() || state == it->second.checkState)

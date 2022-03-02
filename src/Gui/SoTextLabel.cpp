@@ -115,7 +115,8 @@ SoTextLabel::SoTextLabel()
  */
 void SoTextLabel::GLRender(SoGLRenderAction *action)
 {
-    if (!this->shouldGLRender(action)) return;
+    if (!this->shouldGLRender(action))
+        return;
 
     // only draw text without background
     if (!this->background.getValue()) {

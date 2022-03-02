@@ -102,7 +102,8 @@ CmdMeshTransform::CmdMeshTransform()
 void CmdMeshTransform::activated(int)
 {
   unsigned int n = getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId());
-  if ( n!=1 ) return;
+  if ( n!=1 )
+      return;
 
   std::string fName = getUniqueObjectName("Move");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
@@ -141,7 +142,8 @@ CmdMeshDemolding::CmdMeshDemolding()
 void CmdMeshDemolding::activated(int)
 {
   unsigned int n = getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId());
-  if ( n!=1 ) return;
+  if ( n!=1 )
+      return;
 
   std::string fName = getUniqueObjectName("Demolding");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
@@ -608,7 +610,8 @@ void CmdMeshFromGeometry::activated(int)
 bool CmdMeshFromGeometry::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc) return false;
+    if (!doc)
+        return false;
     return getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
 }
 
@@ -1647,7 +1650,8 @@ void CmdMeshFillupHoles::activated(int)
     bool ok;
     int FillupHolesOfLength = QInputDialog::getInt(Gui::getMainWindow(), QObject::tr("Fill holes"),
                                 QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok, Qt::MSWindowsFixedSizeDialogHint);
-    if (!ok) return;
+    if (!ok)
+        return;
     openCommand(QT_TRANSLATE_NOOP("Command", "Fill up holes"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.fillupHoles(%d)"

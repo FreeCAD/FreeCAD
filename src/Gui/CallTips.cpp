@@ -443,7 +443,8 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
     App::PropertyContainerPy* cont = (App::PropertyContainerPy*)(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
-    if (!container) return;
+    if (!container)
+        return;
     std::map<std::string,App::Property*> Map;
     container->getPropertyMap(Map);
 
@@ -689,7 +690,8 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
 void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 {
     hide();
-    if (!item->isSelected()) return;
+    if (!item->isSelected())
+        return;
 
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();

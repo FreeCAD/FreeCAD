@@ -574,7 +574,8 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
 {
     Cell * cell = nonNullCellAt(address);
     assert(cell != 0);
-    if (cell->address != address) return; //Reject alignment change for merged cell except top-left one
+    if (cell->address != address) //Reject alignment change for merged cell except top-left one
+        return;
     cell->setAlignment(_alignment);
 }
 

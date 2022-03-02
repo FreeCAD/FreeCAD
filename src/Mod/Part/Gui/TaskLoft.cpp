@@ -97,7 +97,8 @@ void LoftWidget::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui)
+        return;
     d->document = activeDoc->getName();
 
     std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();

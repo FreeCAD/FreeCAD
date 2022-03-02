@@ -364,7 +364,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
+        if (!selObj || selObj == ViewProvider->getObject())//prevent self-referencing
+            return;
         
         std::string subname = msg.pSubName;
 
@@ -562,7 +563,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         return;
 
     QLineEdit* line = getLine(idx);
-    if (line == NULL) return;
+    if (line == NULL)
+        return;
 
     if (text.length() == 0) {
         // Reference was removed
@@ -605,7 +607,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == NULL) return;
+    if (obj == NULL)
+        return;
 
     std::string subElement;
 

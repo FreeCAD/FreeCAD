@@ -275,7 +275,8 @@ struct MeshFastBuilder::Private {
         }
         bool operator<(const Vertex& rhs) const
         {
-            if      (x != rhs.x)    return x < rhs.x;
+            if      (x != rhs.x)
+                return x < rhs.x;
             else if (y != rhs.y)    return y < rhs.y;
             else if (z != rhs.z)    return z < rhs.z;
             else                    return false;

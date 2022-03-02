@@ -1166,7 +1166,8 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                     return;
                 }
             }
-            if(!pcDelObj) return;
+            if(!pcDelObj)
+                return;
             // When the object is going to be deleted we have to check if it has already been added to
             // the undo transactions
             std::list<Transaction*>::iterator it;

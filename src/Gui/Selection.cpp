@@ -721,12 +721,14 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
 
     if(msg.Object.getSubName().size()) {
         auto pParent = msg.Object.getObject();
-        if(!pParent) return;
+        if(!pParent)
+            return;
         std::pair<std::string,std::string> elementName;
         auto &newElementName = elementName.first;
         auto &oldElementName = elementName.second;
         auto pObject = App::GeoFeature::resolveElement(pParent,msg.pSubName,elementName);
-        if (!pObject) return;
+        if (!pObject)
+            return;
         SelectionChanges msg2(msg.Type,pObject->getDocument()->getName(),
                 pObject->getNameInDocument(),
                 newElementName.size()?newElementName.c_str():oldElementName.c_str(),
@@ -890,7 +892,8 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     static char buf[513];
 
     // if nothing is in preselect ignore
-    if(CurrentPreselection.Object.getObjectName().empty()) return;
+    if(CurrentPreselection.Object.getObjectName().empty())
+        return;
 
     CurrentPreselection.x = x;
     CurrentPreselection.y = y;
@@ -1283,9 +1286,11 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
             rmvPreselect();
     }
     auto pDoc = getDocument(pDocName);
-    if(!pDoc) return false;
+    if(!pDoc)
+        return false;
     auto pObject = pDoc->getObject(pObjectName);
-    if(!pObject) return false;
+    if(!pObject)
+        return false;
     if (!isSelected(pObject, pSubName,0))
         return false;
 
@@ -1350,7 +1355,8 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
         notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
-    if(!pDocName) return;
+    if(!pDocName)
+        return;
 
     _SelObj temp;
     int ret = checkSelection(pDocName,pObjectName,pSubName,0,temp);
@@ -1702,7 +1708,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
 
 const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, const char* pSubName) const
 {
-    if (!obj) return 0;
+    if (!obj)
+        return 0;
 
     for(list<_SelObj>::const_iterator It = _SelList.begin();It != _SelList.end();++It) {
         if (It->pObject == obj) {
@@ -1720,7 +1727,8 @@ const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, con
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
 {
-    if(!Obj.getNameInDocument()) return;
+    if(!Obj.getNameInDocument())
+        return;
 
     // For safety reason, don't bother checking
     rmvPreselect();

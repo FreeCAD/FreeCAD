@@ -223,7 +223,8 @@ CONTEXT_MEMBER_DEF("Sketcher_SelectVerticalAxis",doSelectVAxis)
 void ElementView::deleteSelectedItems()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc) return;
+    if (!doc)
+        return;
 
     doc->openTransaction("Delete element");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
@@ -613,7 +614,8 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *item)
 {
     ElementItem *it = dynamic_cast<ElementItem*>(item);
-    if (!it) return;
+    if (!it)
+        return;
 
     Gui::Selection().rmvPreselect();
 
@@ -1161,9 +1163,12 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
 
 QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
 {
-    if (construction && external) return QIcon();
-    if (construction) return Construction;
-    if (external) return External;
+    if (construction && external)
+        return QIcon();
+    if (construction)
+        return Construction;
+    if (external)
+        return External;
     return Normal;
 }
 

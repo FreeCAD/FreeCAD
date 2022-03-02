@@ -433,7 +433,8 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
     case TopAbs_COMPOUND:{
         const TopoDS_Compound &cmpd = TopoDS::Compound(sh);
         TopoDS_Iterator it (cmpd, Standard_False, Standard_False);//don't mess with placements, to hopefully increase speed
-        if (! it.More()) return rtAnything;//empty compound
+        if (! it.More())//empty compound
+            return rtAnything;
         const TopoDS_Shape &sh1 = it.Value();
         it.Next();
         if (it.More()){

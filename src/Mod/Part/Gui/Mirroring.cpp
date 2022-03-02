@@ -90,9 +90,11 @@ void Mirroring::changeEvent(QEvent *e)
 void Mirroring::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui)
+        return;
 
     this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType

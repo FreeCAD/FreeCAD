@@ -393,7 +393,8 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
 
 unsigned long TopoShape::countSubShapes(const char* Type) const
 {
-    if(!Type) return 0;
+    if(!Type)
+        return 0;
     if(strcmp(Type,"SubShape")==0)
         return countSubShapes(TopAbs_SHAPE);
     auto type = shapeType(Type,true);

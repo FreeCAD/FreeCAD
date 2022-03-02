@@ -115,7 +115,8 @@ PyObject* ExternalGeometryFacadePy::setFlag(PyObject *args)
         auto pos = std::find_if(ExternalGeometryExtension::flag2str.begin(),
                                 ExternalGeometryExtension::flag2str.end(),
                                 [flag](const char * val) {
-                                    return strcmp(val,flag)==0;}
+                                    return strcmp(val,flag)==0;
+                                }
                                 );
 
         if( pos != ExternalGeometryExtension::flag2str.end()) {

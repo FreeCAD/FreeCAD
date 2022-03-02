@@ -462,7 +462,8 @@ ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::str
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
         Py::Object ret(Base::pyCall(py_getElementPicked.ptr(),args.ptr()));
-        if(!ret.isString()) return Rejected;
+        if(!ret.isString())
+            return Rejected;
         subname = ret.as_string();
         return Accepted;
     }

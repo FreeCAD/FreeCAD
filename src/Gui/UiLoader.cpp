@@ -432,7 +432,8 @@ QDir QUiLoader::workingDirectory() const
         PythonWrapper wrap;
         Py::Object dir((uiloader.callMemberFunction("workingDirectory")));
         QDir* d = wrap.toQDir(dir.ptr());
-        if (d) return *d;
+        if (d)
+            return *d;
         return QDir::current();
     }
     catch (Py::Exception& e) {

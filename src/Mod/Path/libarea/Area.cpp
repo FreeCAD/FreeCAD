@@ -88,7 +88,8 @@ void CArea::ChangeStartToNearest(const Point *point, double min_dist)
             m_curves.erase(It);
     }
 
-    if(m_curves.empty()) return;
+    if(m_curves.empty())
+        return;
 
     std::list<CCurve> curves;
     Point p;
@@ -521,7 +522,8 @@ static void zigzag(const CArea &input_a)
     Point null_point(0, 0);
 	rightward_for_zigs = true;
 
-	if(CArea::m_please_abort)return;
+	if(CArea::m_please_abort)
+	    return;
 
 	double step_percent_increment = 0.8 * CArea::m_single_area_processing_length / num_steps;
 
@@ -544,7 +546,8 @@ static void zigzag(const CArea &input_a)
 		a2.Intersect(a);
 		make_zig(a2, y0, y);
 		rightward_for_zigs = !rightward_for_zigs;
-		if(CArea::m_please_abort)return;
+		if(CArea::m_please_abort)
+		    return;
 		CArea::m_processing_done += step_percent_increment;
 	}
 
@@ -566,7 +569,8 @@ void CArea::SplitAndMakePocketToolpath(std::list<CCurve> &curve_list, const CAre
 	CArea::m_processing_done = m_split_processing_length;
 	CArea::m_units = save_units;
 
-	if(areas.size() == 0)return;
+	if(areas.size() == 0)
+	    return;
 
 	double single_area_length = 50.0 / areas.size();
 
@@ -601,7 +605,8 @@ void CArea::MakePocketToolpath(std::list<CCurve> &curve_list, const CAreaPocketP
 	{
 		std::list<CArea> m_areas;
 		a_offset.Split(m_areas);
-		if(CArea::m_please_abort)return;
+		if(CArea::m_please_abort)
+		    return;
 		if(m_areas.size() == 0)
 		{
 			CArea::m_processing_done += CArea::m_single_area_processing_length;
@@ -644,7 +649,8 @@ void CArea::Split(std::list<CArea> &m_areas)const
 		CArea a = *this;
 		a.Reorder();
 
-		if(CArea::m_please_abort)return;
+		if(CArea::m_please_abort)
+		    return;
 
 		for(std::list<CCurve>::const_iterator It = a.m_curves.begin(); It != a.m_curves.end(); It++)
 		{
@@ -732,7 +738,8 @@ bool IsInside(const Point& p, const CArea& a)
 	c.m_vertices.emplace_back(Point(p.x - 0.01, p.y - 0.01));
 	a2.m_curves.push_back(c);
 	a2.Intersect(a);
-	if(fabs(a2.GetArea()) < 0.0004)return false;
+	if(fabs(a2.GetArea()) < 0.0004)
+	    return false;
 	return true;
 }
 

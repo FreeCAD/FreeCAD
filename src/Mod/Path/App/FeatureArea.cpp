@@ -174,7 +174,8 @@ FeatureAreaView::FeatureAreaView()
 std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     std::list<TopoDS_Shape> shapes;
     App::DocumentObject* pObj = Source.getValue();
-    if (!pObj) return shapes;
+    if (!pObj)
+        return shapes;
     if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
         return shapes;
 
@@ -186,7 +187,8 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     int index=SectionIndex.getValue(),count=SectionCount.getValue();
     if(index<0) {
         index += ((int)all_shapes.size());
-        if(index<0) return shapes;
+        if(index<0)
+            return shapes;
         if(count<=0 || index+1-count<0) {
             count = index+1;
             index = 0;

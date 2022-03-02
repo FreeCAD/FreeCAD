@@ -361,11 +361,13 @@ void SelectionView::deselect(void)
 
 void SelectionView::toggleSelect(QListWidgetItem* item)
 {
-    if (!item) return;
+    if (!item)
+        return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
     char *objname = std::strchr(docname,'#');
-    if(!objname) return;
+    if(!objname)
+        return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
     if(subname) {
@@ -399,11 +401,13 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
 
 void SelectionView::preselect(QListWidgetItem* item)
 {
-    if (!item) return;
+    if (!item)
+        return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
     char *objname = std::strchr(docname,'#');
-    if(!objname) return;
+    if(!objname)
+        return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
     if(subname) {

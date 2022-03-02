@@ -2888,8 +2888,10 @@ bool SpringbackCorrection::InsideCheck(Base::Vector3f pnt, Base::Vector3f normal
 
         if (b1==false)
         {
-            if ((b2 == true)  && (b(0,2) > 0)) return false;
-            if ((b2 == false) && (b(0,2) < 0)) return false;
+            if ((b2 == true)  && (b(0,2) > 0))
+                return false;
+            if ((b2 == false) && (b(0,2) < 0))
+                return false;
         }
     }
     return true;

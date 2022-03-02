@@ -1155,7 +1155,8 @@ bool StdCmdPaste::isActive(void)
         return true;
     QClipboard* cb = QApplication::clipboard();
     const QMimeData* mime = cb->mimeData();
-    if (!mime) return false;
+    if (!mime)
+        return false;
     return getMainWindow()->canInsertFromMimeData(mime);
 }
 

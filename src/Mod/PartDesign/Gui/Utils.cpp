@@ -68,7 +68,8 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         }
     }
     auto *activeView = Gui::Application::Instance->activeView();
-    if(!activeView) return false;
+    if(!activeView)
+        return false;
     App::DocumentObject *parent = 0;
     std::string subname;
     auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
@@ -451,7 +452,9 @@ bool isFeatureMovable(App::DocumentObject* const feat)
             return false;
 
         if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
-            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj){return !isFeatureMovable(obj); }))
+            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj){
+                return !isFeatureMovable(obj);
+            }))
                 return false;
         }
 

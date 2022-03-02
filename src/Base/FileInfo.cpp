@@ -354,7 +354,8 @@ bool FileInfo::isFile () const
         // If we can open it must be an existing file, otherwise we assume it
         // is a directory (which doesn't need to be true for any cases)
         std::ifstream str(FileName.c_str(), std::ios::in | std::ios::binary);
-        if (!str) return false;
+        if (!str)
+            return false;
         str.close();
         return true;
     }
@@ -513,7 +514,8 @@ bool FileInfo::createDirectory() const
 
 bool FileInfo::deleteDirectory() const
 {
-    if (isDir() == false ) return false;
+    if (isDir() == false )
+        return false;
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
     return _wrmdir(wstr.c_str()) == 0;
@@ -526,7 +528,8 @@ bool FileInfo::deleteDirectory() const
 
 bool FileInfo::deleteDirectoryRecursive() const
 {
-    if (isDir() == false ) return false;
+    if (isDir() == false )
+        return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
 
     for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {

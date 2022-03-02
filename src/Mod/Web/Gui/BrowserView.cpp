@@ -855,11 +855,16 @@ bool BrowserView::onHasMsg(const char* pMsg) const
         return view->page()->action(QWebEnginePage::Back)->isEnabled();
     if (strcmp(pMsg,"Next")==0)
         return view->page()->action(QWebEnginePage::Forward)->isEnabled();
-    if (strcmp(pMsg,"Refresh")==0) return !isLoading;
-    if (strcmp(pMsg,"Stop")==0) return isLoading;
-    if (strcmp(pMsg,"ZoomIn")==0) return true;
-    if (strcmp(pMsg,"ZoomOut")==0) return true;
-    if (strcmp(pMsg,"SetURL")==0) return true;
+    if (strcmp(pMsg,"Refresh")==0)
+        return !isLoading;
+    if (strcmp(pMsg,"Stop")==0)
+        return isLoading;
+    if (strcmp(pMsg,"ZoomIn")==0)
+        return true;
+    if (strcmp(pMsg,"ZoomOut")==0)
+        return true;
+    if (strcmp(pMsg,"SetURL")==0)
+        return true;
 
     return false;
 }

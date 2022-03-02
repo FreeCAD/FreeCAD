@@ -411,7 +411,8 @@ int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
     if (!tag) tag = "";
     if (_logLevels.find(tag) != _logLevels.end())
         return &_logLevels[tag];
-    if (!create) return 0;
+    if (!create)
+        return 0;
     int &ret = _logLevels[tag];
     ret = -1;
     return &ret;

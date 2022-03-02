@@ -85,7 +85,8 @@ int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     try {
         // if no mesh is given
-        if (!pcObj) return 0;
+        if (!pcObj)
+            return 0;
         if (PyObject_TypeCheck(pcObj, &(FemMeshPy::Type))) {
             getFemMeshPtr()->operator= (*static_cast<FemMeshPy*>(pcObj)->getFemMeshPtr());
         }

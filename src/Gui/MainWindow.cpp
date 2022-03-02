@@ -993,7 +993,8 @@ void MainWindow::setActiveWindow(MDIView* view)
 
 void MainWindow::onWindowActivated(QMdiSubWindow* w)
 {
-    if (!w) return;
+    if (!w)
+        return;
     MDIView* view = dynamic_cast<MDIView*>(w->widget());
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");

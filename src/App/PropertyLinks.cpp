@@ -648,7 +648,8 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const &value) {
     DocumentObject *obj = 0;
     if(idx>=0 && idx<(int)_lValueList.size()) {
         obj = _lValueList[idx];
-        if(obj == value) return;
+        if(obj == value)
+            return;
     }
 
     if(!value || !value->getNameInDocument())
@@ -2805,7 +2806,8 @@ public:
     }
 
     void slotFinishRestoreDocument(const App::Document &doc) {
-        if(pcDoc) return;
+        if(pcDoc)
+            return;
         QString fullpath(getFullPath());
         if(!fullpath.isEmpty() && getFullPath(doc.getFileName())==fullpath)
             attach(const_cast<App::Document*>(&doc));
@@ -2816,7 +2818,8 @@ public:
             slotFinishRestoreDocument(doc);
             return;
         }
-        if(&doc!=pcDoc) return;
+        if(&doc!=pcDoc)
+            return;
 
         QFileInfo info(myPos->first);
         // QString path(info.canonicalFilePath());
@@ -2878,7 +2881,8 @@ public:
             deinit();
             return;
         }
-        if(pcDoc!=&doc) return;
+        if(pcDoc!=&doc)
+            return;
         std::map<App::PropertyLinkBase*,std::vector<App::PropertyXLink*> > parentLinks;
         for(auto link : links) {
             link->setFlag(PropertyLinkBase::LinkDetached);

@@ -789,7 +789,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
 
 void MeshAlgorithm::SetFacetsProperty(const std::vector<FacetIndex> &raulInds, const std::vector<unsigned long> &raulProps) const
 {
-    if (raulInds.size() != raulProps.size()) return;
+    if (raulInds.size() != raulProps.size())
+        return;
 
     std::vector<unsigned long>::const_iterator iP = raulProps.begin();
     for (std::vector<FacetIndex>::const_iterator i = raulInds.begin(); i != raulInds.end(); ++i, ++iP)

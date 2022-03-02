@@ -250,7 +250,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     // the file size has only 134 bytes in this case. On the other hand we must overread the first 80 bytes
     // because it can happen that the file is binary but contains one of these keywords.
     std::streambuf* buf = rstrIn.rdbuf();
-    if (!buf) return false;
+    if (!buf)
+        return false;
     buf->pubseekoff(80, std::ios::beg, std::ios::in);
     uint32_t ulCt, ulBytes=50;
     rstrIn.read((char*)&ulCt, sizeof(ulCt));

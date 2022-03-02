@@ -119,7 +119,8 @@ void View::onSelectionChanged(const SelectionChanges& msg)
     return;
   }
   auto doc = Gui::Application::Instance->getDocument(msg.pDocName);
-  if (!doc) return;
+  if (!doc)
+      return;
   auto &model = modelMap[doc];
   if(!model)
     model = std::make_shared<Model>(this, *doc);

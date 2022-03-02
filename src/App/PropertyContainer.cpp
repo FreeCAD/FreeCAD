@@ -77,7 +77,8 @@ App::Property* PropertyContainer::addDynamicProperty(
 Property *PropertyContainer::getPropertyByName(const char* name) const
 {
     auto prop = dynamicProps.getDynamicPropertyByName(name);
-    if(prop) return prop;
+    if(prop)
+        return prop;
     return getPropertyData().getPropertyByName(this,name);
 }
 
@@ -120,28 +121,32 @@ short PropertyContainer::getPropertyType(const char *name) const
 const char* PropertyContainer::getPropertyGroup(const Property* prop) const
 {
     auto group = dynamicProps.getPropertyGroup(prop);
-    if(group) return group;
+    if(group)
+        return group;
     return getPropertyData().getGroup(this,prop);
 }
 
 const char* PropertyContainer::getPropertyGroup(const char *name) const
 {
     auto group = dynamicProps.getPropertyGroup(name);
-    if(group) return group;
+    if(group)
+        return group;
     return getPropertyData().getGroup(this,name);
 }
 
 const char* PropertyContainer::getPropertyDocumentation(const Property* prop) const
 {
     auto doc = dynamicProps.getPropertyDocumentation(prop);
-    if(doc) return doc;
+    if(doc)
+        return doc;
     return getPropertyData().getDocumentation(this,prop);
 }
 
 const char* PropertyContainer::getPropertyDocumentation(const char *name) const
 {
     auto doc = dynamicProps.getPropertyDocumentation(name);
-    if(doc) return doc;
+    if(doc)
+        return doc;
     return getPropertyData().getDocumentation(this,name);
 }
 

@@ -295,11 +295,13 @@ int ObjectIdentifier::numSubComponents() const
 bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
     ResolveResults result(*this);
     if(components.size() - result.propertyIndex != 1) {
-        if(silent) return false;
+        if(silent)
+            return false;
         FC_THROWM(Base::ValueError,"Invalid property path: single component expected");
     }
     if(!components[result.propertyIndex].isSimple()) {
-        if(silent) return false;
+        if(silent)
+            return false;
         FC_THROWM(Base::ValueError,"Invalid property path: simple component expected");
     }
     const std::string &name = components[result.propertyIndex].getName();
@@ -308,7 +310,8 @@ bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
     if((isAddress && addr.toString(CellAddress::Cell::ShowRowColumn) != prop.getName()) ||
        (!isAddress && name!=prop.getName()))
     {
-        if(silent) return false;
+        if(silent)
+            return false;
         FC_THROWM(Base::ValueError,"Invalid property path: name mismatch");
     }
     return true;

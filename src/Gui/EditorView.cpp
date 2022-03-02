@@ -623,9 +623,12 @@ bool PythonEditorView::onMsg(const char* pMsg,const char** ppReturn)
  */
 bool PythonEditorView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp(pMsg,"Run")==0)  return true;
-    if (strcmp(pMsg,"StartDebug")==0)  return true;
-    if (strcmp(pMsg,"ToggleBreakpoint")==0)  return true;
+    if (strcmp(pMsg,"Run")==0)
+        return true;
+    if (strcmp(pMsg,"StartDebug")==0)
+        return true;
+    if (strcmp(pMsg,"ToggleBreakpoint")==0)
+        return true;
     return EditorView::onHasMsg(pMsg);
 }
 

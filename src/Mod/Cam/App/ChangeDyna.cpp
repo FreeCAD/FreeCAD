@@ -37,8 +37,10 @@ bool ChangeDyna::Read( const std::string & _filename)
     // open file for reading
     std::ifstream input( _filename.c_str() );
     std::ifstream input2("CurveTimes.k");
-    if (!input2.is_open()) return false;
-    if (!ReadTimes(input2)) return false;
+    if (!input2.is_open())
+        return false;
+    if (!ReadTimes(input2))
+        return false;
     std::ofstream output("dyna2.str");
     if ( !input.is_open() )
     {
