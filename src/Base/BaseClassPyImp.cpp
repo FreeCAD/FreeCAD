@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "BaseClass.h"
-
 // inclusion of the generated files (generated out of BaseClassPy.xml)
 #include "BaseClassPy.h"
 #include "BaseClassPy.cpp"
