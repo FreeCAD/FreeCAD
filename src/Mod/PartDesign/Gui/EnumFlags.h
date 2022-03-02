@@ -24,8 +24,6 @@
 #ifndef PARTDESIGNGUI_ENUMFLAGS_H
 #define PARTDESIGNGUI_ENUMFLAGS_H
 
-#include <QFlags>
-
 namespace PartDesignGui {
 
 // https://wiggling-bits.net/using-enum-classes-as-type-safe-bitmasks/
