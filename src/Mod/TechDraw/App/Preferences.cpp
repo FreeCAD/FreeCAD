@@ -233,3 +233,17 @@ std::string Preferences::lineGroupFile()
     }
     return lgFileName;
 }
+
+std::string Preferences::formatSpec()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetASCII("formatSpec","%.2w");
+}
+
+int Preferences::altDecimals()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetInt("AltDecimals", 2);
+}

@@ -67,9 +67,11 @@ static QString     defaultTemplate();
 static QString     defaultTemplateDir();
 static std::string lineGroupFile();
 
-
-
 static const double DefaultFontSizeInMM;
+
+static std::string  formatSpec();
+static int          altDecimals();
+
 };
 
 } //end namespace TechDraw
