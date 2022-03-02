@@ -52,7 +52,8 @@ public:
             const Part::Geometry *geom = Sketch->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 return true;
             }
         }
@@ -88,7 +89,8 @@ public:
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "split(%d,App.Vector(%f,%f,0))",
