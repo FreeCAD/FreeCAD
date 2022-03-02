@@ -318,7 +318,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
-    BRepBndLib::Add(myShape, bbxSource);
+    BRepBndLib::AddOptimal(myShape, bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
     Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor

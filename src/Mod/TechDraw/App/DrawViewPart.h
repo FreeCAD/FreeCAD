@@ -156,6 +156,7 @@ public:
     virtual gp_Ax2 getProjectionCS(Base::Vector3d pt) const;
     virtual Base::Vector3d getXDirection(void) const;       //don't use XDirection.getValue()
     virtual Base::Vector3d getOriginalCentroid(void) const;
+    virtual Base::Vector3d getCurrentCentroid(void) const;
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
                                       const Base::Vector3d& axis,
                                       const bool flip = true)  const;

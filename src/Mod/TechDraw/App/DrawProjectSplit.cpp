@@ -177,7 +177,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* ge
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
-        BRepBndLib::Add(*itOuter, sOuter);
+        BRepBndLib::AddOptimal(*itOuter, sOuter);
         sOuter.SetGap(0.1);
         if (sOuter.IsVoid()) {
             Base::Console().Message("DPS::Extract Faces - outer Bnd_Box is void\n");
@@ -198,7 +198,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* ge
             }
 
             Bnd_Box sInner;
-            BRepBndLib::Add(*itInner, sInner);
+            BRepBndLib::AddOptimal(*itInner, sInner);
             sInner.SetGap(0.1);
             if (sInner.IsVoid()) {
                 Base::Console().Log("INFO - DPS::Extract Faces - inner Bnd_Box is void\n");
@@ -251,7 +251,7 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
 
     //eliminate obvious cases
     Bnd_Box sBox;
-    BRepBndLib::Add(e, sBox);
+    BRepBndLib::AddOptimal(e, sBox);
     sBox.SetGap(0.1);
     if (sBox.IsVoid()) {
         Base::Console().Message("DPS::isOnEdge - Bnd_Box is void\n");
