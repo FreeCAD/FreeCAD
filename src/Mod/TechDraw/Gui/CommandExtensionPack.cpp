@@ -1737,7 +1737,7 @@ CmdTechDrawExtensionAreaAnnotation::CmdTechDrawExtensionAreaAnnotation()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Calculate the area of selected faces");
-    sToolTipText    = QT_TR_NOOP("Select several faces\n\
+    sToolTipText    = QT_TR_NOOP("Select several faces<br>\
     - click this tool");
     sWhatsThis      = "TechDraw_ExtensionAreaAnnotation";
     sStatusTip      = sToolTipText;
