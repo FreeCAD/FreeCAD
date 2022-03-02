@@ -77,7 +77,6 @@ class ObjectOp(PathOp.ObjectOp):
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... overwrite to add operation specific features.
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
         return 0
 
     def initOperation(self, obj):
@@ -107,7 +106,7 @@ class ObjectOp(PathOp.ObjectOp):
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def areaOpShapeForDepths(self, obj, job):
         """areaOpShapeForDepths(obj) ... returns the shape used to make an initial calculation for the depths being used.
@@ -131,7 +130,7 @@ class ObjectOp(PathOp.ObjectOp):
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, porp) ... overwrite to process operation specific changes to properties.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def opOnChanged(self, obj, prop):
         """opOnChanged(obj, prop) ... base implementation of the notification framework - do not overwrite.
@@ -172,7 +171,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def areaOpOnDocumentRestored(self, obj):
         """areaOpOnDocumentRestored(obj) ... overwrite to fully restore receiver"""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... base implementation, do not overwrite.
@@ -184,7 +183,7 @@ class ObjectOp(PathOp.ObjectOp):
         if PathOp.FeatureDepths & self.opFeatures(obj):
             try:
                 shape = self.areaOpShapeForDepths(obj, job)
-            except Exception as ee:  # pylint: disable=broad-except
+            except Exception as ee:
                 PathLog.error(ee)
                 shape = None
 
@@ -219,19 +218,16 @@ class ObjectOp(PathOp.ObjectOp):
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... overwrite to set initial values of operation specific properties.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
-        # pylint: disable=unused-argument
         PathLog.track()
         area = Path.Area()
         area.setPlane(PathUtils.makeWorkplane(baseobject))
         area.add(baseobject)
 
-        areaParams = self.areaOpAreaParams(
-            obj, isHole
-        )  # pylint: disable=assignment-from-no-return
+        areaParams = self.areaOpAreaParams(obj, isHole)
 
         heights = [i for i in self.depthparams]
         PathLog.debug("depths: {}".format(heights))
@@ -247,9 +243,7 @@ class ObjectOp(PathOp.ObjectOp):
         shapelist = [sec.getShape() for sec in sections]
         PathLog.debug("shapelist = %s" % shapelist)
 
-        pathParams = self.areaOpPathParams(
-            obj, isHole
-        )  # pylint: disable=assignment-from-no-return
+        pathParams = self.areaOpPathParams(obj, isHole)
         pathParams["shapes"] = shapelist
         pathParams["feedrate"] = self.horizFeed
         pathParams["feedrate_v"] = self.vertFeed
@@ -275,7 +269,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         (pp, end_vector) = Path.fromShapes(**pathParams)
         PathLog.debug("pp: {}, end vector: {}".format(pp, end_vector))
-        self.endVector = end_vector  # pylint: disable=attribute-defined-outside-init
+        self.endVector = end_vector
 
         simobj = None
         if getsim:
@@ -291,7 +285,6 @@ class ObjectOp(PathOp.ObjectOp):
 
     def _buildProfileOpenEdges(self, obj, edgeList, isHole, start, getsim):
         """_buildPathArea(obj, edgeList, isHole, start, getsim) ... internal function."""
-        # pylint: disable=unused-argument
         PathLog.track()
 
         paths = []
@@ -302,7 +295,7 @@ class ObjectOp(PathOp.ObjectOp):
                 hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
                 hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
 
-                pathParams = {}  # pylint: disable=assignment-from-no-return
+                pathParams = {}
                 pathParams["shapes"] = [hWire]
                 pathParams["feedrate"] = self.horizFeed
                 pathParams["feedrate_v"] = self.vertFeed
@@ -343,7 +336,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         return paths, simobj
 
-    def opExecute(self, obj, getsim=False):  # pylint: disable=arguments-differ
+    def opExecute(self, obj, getsim=False):
         """opExecute(obj, getsim=False) ... implementation of Path.Area ops.
         determines the parameters for _buildPathArea().
         Do not overwrite, implement
@@ -355,8 +348,8 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track()
 
         # Instantiate class variables for operation reference
-        self.endVector = None  # pylint: disable=attribute-defined-outside-init
-        self.leadIn = 2.0  # pylint: disable=attribute-defined-outside-init
+        self.endVector = None
+        self.leadIn = 2.0
 
         # Initiate depthparams and calculate operation heights for operation
         self.depthparams = self._customDepthParams(
@@ -369,7 +362,7 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             start = None
 
-        aOS = self.areaOpShapes(obj)  # pylint: disable=assignment-from-no-return
+        aOS = self.areaOpShapes(obj)
 
         # Adjust tuples length received from other PathWB tools/operations
         shapes = []
@@ -421,7 +414,7 @@ class ObjectOp(PathOp.ObjectOp):
                     )
                 else:
                     (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
-            except Exception as e:  # pylint: disable=broad-except
+            except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError(
                     "Something unexpected happened. Check project and tool config."
@@ -454,33 +447,28 @@ class ObjectOp(PathOp.ObjectOp):
 
     def areaOpRetractTool(self, obj):
         """areaOpRetractTool(obj) ... return False to keep the tool at current level between shapes. Default is True."""
-        # pylint: disable=unused-argument
         return True
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
         Note that the resulting parameters are stored in the property AreaParams.
         Must be overwritten by subclasses."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def areaOpPathParams(self, obj, isHole):
         """areaOpPathParams(obj, isHole) ... return operation specific path parameters in a dictionary.
         Note that the resulting parameters are stored in the property PathParams.
         Must be overwritten by subclasses."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return all shapes to be processed by Path.Area for this op.
         Must be overwritten by subclasses."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def areaOpUseProjection(self, obj):
         """areaOpUseProcjection(obj) ... return True if the operation can use procjection, defaults to False.
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
         return False
 
     # Support methods

@@ -3012,7 +3012,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     std::vector<Constraint *> newConstraints;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
-    double radius, startAngle, endAngle, splitAngle;
+    double radius, startAngle, endAngle, splitAngle=0.0;
     unsigned int longestPart = 0;
 
 

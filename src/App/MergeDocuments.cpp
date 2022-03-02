@@ -23,17 +23,15 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost_bind_bind.hpp>
 #endif
 
 #include <QCoreApplication>
-
-#include "MergeDocuments.h"
-#include <Base/Console.h>
+#include <App/Document.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+
+#include "MergeDocuments.h"
+
 
 using namespace App;
 namespace bp = boost::placeholders;

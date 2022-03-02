@@ -26,18 +26,19 @@
 # include <QPixmapCache>
 # include <QStyle>
 #endif
-#include "ExpressionBinding.h"
-#include "QuantitySpinBox_p.h"
+
 #include "BitmapFactory.h"
 #include "Command.h"
-#include <App/Expression.h>
-#include <App/DocumentObject.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <App/ObjectIdentifier.h>
-#include <App/Document.h>
+#include "ExpressionBinding.h"
+#include "QuantitySpinBox_p.h"
+
 #include <App/Application.h>
-#include <boost_bind_bind.hpp>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Expression.h>
+#include <App/ObjectIdentifier.h>
+#include <Base/Tools.h>
+
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 

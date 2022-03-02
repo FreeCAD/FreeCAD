@@ -25,8 +25,11 @@ import glob
 import os
 import PathScripts.PathLog as PathLog
 
-# PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 DefaultFilePath = "DefaultFilePath"
 DefaultJobTemplate = "DefaultJobTemplate"
@@ -208,7 +211,7 @@ def postProcessorBlacklist():
     blacklist = pref.GetString(PostProcessorBlacklist, "")
     if not blacklist:
         return []
-    return eval(blacklist)  # pylint: disable=eval-used
+    return eval(blacklist)
 
 
 def setPostProcessorDefaults(processor, args, blacklist):

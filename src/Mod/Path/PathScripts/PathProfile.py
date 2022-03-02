@@ -332,8 +332,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             params["MiterLimit"] = obj.MiterLimit
 
         if obj.SplitArcs:
-            params['Explode'] = True
-            params['FitArcs'] = False
+            params["Explode"] = True
+            params["FitArcs"] = False
 
         return params
 
@@ -376,7 +376,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         shapes = []
         remainingObjBaseFeatures = []
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
-        self.inaccessibleMsg = translate("PathProfile",
+        self.inaccessibleMsg = translate(
+            "PathProfile",
             "The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.",
         )
         self.offsetExtra = obj.OffsetExtra.Value
@@ -478,9 +479,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             shapeEnv = PathUtils.getEnvelope(
                                 profileshape, depthparams=custDepthparams
                             )
-                        except Exception as ee:  # pylint: disable=broad-except
+                        except Exception as ee:
                             # PathUtils.getEnvelope() failed to return an object.
-                            msg = translate("PathProfile", "Unable to create path for face(s).")
+                            msg = translate(
+                                "PathProfile", "Unable to create path for face(s)."
+                            )
                             PathLog.error(msg + "\n{}".format(ee))
                             cont = False
 
@@ -512,7 +515,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 shapes.extend(self._processEachModel(obj))
 
-        self.removalshapes = shapes  # pylint: disable=attribute-defined-outside-init
+        self.removalshapes = shapes
         PathLog.debug("%d shapes" % len(shapes))
 
         # Delete the temporary objects
@@ -623,7 +626,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 shapes.append(tup)
                         else:
                             if zDiff < self.JOB.GeometryTolerance.Value:
-                                msg = translate("PathProfile", "Check edge selection and Final Depth requirements for profiling open edge(s).")
+                                msg = translate(
+                                    "PathProfile",
+                                    "Check edge selection and Final Depth requirements for profiling open edge(s).",
+                                )
                                 PathLog.error(msg)
                             else:
                                 PathLog.error(self.inaccessibleMsg)

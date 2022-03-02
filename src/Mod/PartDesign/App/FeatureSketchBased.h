@@ -151,10 +151,10 @@ protected:
 
 
     /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
-    double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
+    double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v) const;
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis);
+                 Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis) const;
 
     void onChanged(const App::Property* prop);
 private:

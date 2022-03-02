@@ -9,7 +9,7 @@
  *   version 2 of the License, or (at your option) any later version.      *
  *                                                                         *
  *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *ench
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
@@ -699,6 +699,7 @@ void AboutDialog::on_copyButton_clicked()
             deskInfo = QString::fromLatin1(" (") + deskEnv + QString::fromLatin1("/") + deskSess + QString::fromLatin1(")");
     }
 
+    str << "[code]\n";
     str << "OS: " << QSysInfo::prettyProductName() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << build;
@@ -746,6 +747,9 @@ void AboutDialog::on_copyButton_clicked()
     bool firstMod = true;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
+            auto dirName = mod.path().leaf().string();
+            if (dirName[0] == '.') // Ignore dot directories
+                continue;
             if (firstMod) {
                 firstMod = false;
                 str << "Installed mods: \n";
@@ -757,10 +761,15 @@ void AboutDialog::on_copyButton_clicked()
                 if (metadata.version() != App::Meta::Version())
                     str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
             }
+            auto disablingFile = mod.path() / "ADDON_DISABLED";
+            if (fs::exists(disablingFile))
+                str << " (Disabled)";
+            
             str << "\n";
         }
     }
 
+    str << "[/code]\n";
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
 }

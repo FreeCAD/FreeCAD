@@ -24,15 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cstdio>
-# include <algorithm>
 # include <QMutex>
 # include <QMutexLocker>
 #endif
 
 #include "Sequencer.h"
-#include "Console.h"
-#include <CXX/Objects.hxx>
+
 
 using namespace Base;
 
@@ -129,8 +126,8 @@ void SequencerBase::startStep()
 bool SequencerBase::next(bool canAbort)
 {
     this->nProgress++;
-    float fDiv = this->nTotalSteps > 0 ? (float)this->nTotalSteps : 1000.0f;
-    int perc = (int)((float)this->nProgress * (100.0f / fDiv));
+    float fDiv = this->nTotalSteps > 0 ? static_cast<float>(this->nTotalSteps) : 1000.0f;
+    int perc = int((float(this->nProgress) * (100.0f / fDiv)));
 
     // do only an update if we have increased by one percent
     if (perc > this->_nLastPercentage) {
@@ -223,25 +220,7 @@ void SequencerBase::setText(const char*)
 
 // ---------------------------------------------------------
 
-EmptySequencer::EmptySequencer()
-{
-}
-
-EmptySequencer::~EmptySequencer()
-{
-}
-
-// ---------------------------------------------------------
-
 using Base::ConsoleSequencer;
-
-ConsoleSequencer::ConsoleSequencer ()
-{
-}
-
-ConsoleSequencer::~ConsoleSequencer ()
-{
-}
 
 void ConsoleSequencer::setText (const char* pszTxt)
 {
@@ -255,7 +234,7 @@ void ConsoleSequencer::startStep()
 void ConsoleSequencer::nextStep( bool )
 {
     if (this->nTotalSteps != 0)
-        printf("\t\t\t\t\t\t(%2.1f %%)\t\r", (float)progressInPercent());
+        printf("\t\t\t\t\t\t(%d %%)\t\r", progressInPercent());
 }
 
 void ConsoleSequencer::resetData()
@@ -356,8 +335,8 @@ Py::Object ProgressIndicatorPy::repr()
 Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
 {
     char* text;
-    int steps;
-    if (!PyArg_ParseTuple(args.ptr(), "si",&text,&steps))
+    unsigned int steps;
+    if (!PyArg_ParseTuple(args.ptr(), "sI",&text,&steps))
         throw Py::Exception();
     if (!_seq.get())
         _seq.reset(new SequencerLauncher(text,steps));

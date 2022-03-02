@@ -25,11 +25,9 @@
 #ifndef APP_Origin_H
 #define APP_Origin_H
 
-#include "GeoFeature.h"
-
-#include "OriginFeature.h"
 #include "GeoFeatureGroupExtension.h"
-#include "PropertyLinks.h"
+#include "OriginFeature.h"
+
 
 namespace App
 {

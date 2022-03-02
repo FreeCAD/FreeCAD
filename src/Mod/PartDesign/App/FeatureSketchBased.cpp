@@ -918,7 +918,7 @@ bool ProfileBased::isParallelPlane(const TopoDS_Shape & s1, const TopoDS_Shape &
     return false;
 }
 
-double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vector3d & v)
+double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vector3d & v) const
 {
     try {
         Part::Feature* obj = getVerifiedObject();
@@ -947,7 +947,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vect
 }
 
 void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const std::vector<std::string> &subReferenceAxis,
-                           Base::Vector3d& base, Base::Vector3d& dir, ProfileBased::ForbiddenAxis checkAxis)
+                           Base::Vector3d& base, Base::Vector3d& dir, ProfileBased::ForbiddenAxis checkAxis) const
 {
     auto verifyAxisFunc = [](ProfileBased::ForbiddenAxis checkAxis, const gp_Pln& sketchplane, const gp_Dir& dir) {
         switch (checkAxis) {

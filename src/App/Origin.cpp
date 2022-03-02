@@ -28,13 +28,13 @@
 #include <string>
 #endif
 
+#include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 
-#include <App/Document.h>
+#include "Origin.h"
 #include "OriginFeature.h"
 
-#include "Origin.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

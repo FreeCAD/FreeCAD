@@ -3571,13 +3571,15 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
     FC_TIME_LOG(t,"Recompute total");
 
-    if(d->_RecomputeLog.size()) {
+    if (d->_RecomputeLog.size()) {
         d->pendingRemove.clear();
-        Base::Console().Error("Recompute failed! Please check report view.\n");
-    } else {
+        if (!testStatus(Status::IgnoreErrorOnRecompute))
+            Base::Console().Error("Recompute failed! Please check report view.\n");
+    }
+    else {
         for(auto &o : d->pendingRemove) {
             auto obj = o.getObject();
-            if(obj)
+            if (obj)
                 obj->getDocument()->removeObject(obj->getNameInDocument());
         }
     }

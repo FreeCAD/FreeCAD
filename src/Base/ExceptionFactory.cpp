@@ -25,6 +25,7 @@
 #include "ExceptionFactory.h"
 #include <CXX/Objects.hxx>
 
+
 using namespace Base;
 
 ExceptionFactory* ExceptionFactory::_pcSingleton = nullptr;

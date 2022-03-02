@@ -22,23 +22,16 @@
 
 #include "PreCompiled.h"
 
-
-#ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
-#endif
-
-#include "Base/Exception.h"
-#include "Base/GeometryPyCXX.h"
-#include "Base/PlacementPy.h"
 #include "Base/Vector3D.h"
 #include "Base/VectorPy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiCell.h"
-#include "Mod/Path/App/VoronoiCellPy.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
 
-#include "Mod/Path/App/VoronoiCellPy.cpp"
+#include "Voronoi.h"
+#include "VoronoiCell.h"
+#include "VoronoiCellPy.h"
+#include "VoronoiCellPy.cpp"
+#include "VoronoiEdge.h"
+#include "VoronoiEdgePy.h"
+
 
 using namespace Path;
 

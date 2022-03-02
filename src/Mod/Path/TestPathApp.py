@@ -31,11 +31,13 @@ from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDrillable import TestPathDrillable
 from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
 from PathTests.TestPathGeom import TestPathGeom
+
 # from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathHelpers import TestPathHelpers
 from PathTests.TestPathHelixGenerator import TestPathHelixGenerator
 from PathTests.TestPathLog import TestPathLog
 from PathTests.TestPathOpTools import TestPathOpTools
+
 # from PathTests.TestPathPost import PathPostTestCases
 from PathTests.TestPathPost import TestPathPostUtils
 from PathTests.TestPathPreferences import TestPathPreferences

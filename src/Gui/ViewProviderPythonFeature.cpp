@@ -1418,6 +1418,27 @@ bool ViewProviderPythonFeatureImp::getLinkedViewProvider(
     return true;
 }
 
+bool ViewProviderPythonFeatureImp::editProperty(const char *name)
+{
+    _FC_PY_CALL_CHECK(editProperty,return false);
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(name));
+        Py::Object ret(Base::pyCall(py_editProperty.ptr(),args.ptr()));
+        return ret.isTrue();
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
+
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
+}
 
 // ---------------------------------------------------------
 

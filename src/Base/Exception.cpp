@@ -28,6 +28,7 @@
 #include "Console.h"
 #include "PyObjectBase.h"
 
+
 FC_LOG_LEVEL_INIT("Exception", true, true)
 
 using namespace Base;

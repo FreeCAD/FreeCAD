@@ -25,12 +25,10 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <stdexcept>
 # include <QAbstractSpinBox>
 # include <QByteArray>
 # include <QComboBox>
 # include <QDataStream>
-# include <QDebug>
 # include <QFileInfo>
 # include <QFileOpenEvent>
 # include <QKeyEvent>
@@ -41,24 +39,21 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 
-#if defined(Q_OS_WIN)
-# include <Windows.h>
-#endif
 #if defined(Q_OS_UNIX)
 # include <sys/types.h>
 # include <time.h>
 # include <unistd.h>
 #endif
 
-#include "GuiApplication.h"
-#include "Application.h"
-#include "SpaceballEvent.h"
-#include "MainWindow.h"
-
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <App/Application.h>
+#include "GuiApplication.h"
+#include "Application.h"
+#include "MainWindow.h"
+#include "SpaceballEvent.h"
+
 
 using namespace Gui;
 

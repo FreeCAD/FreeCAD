@@ -35,7 +35,6 @@ def RegisterDressup(dressup):
 
 class DressupPreferencesPage:
     def __init__(self, parent=None):
-        # pylint: disable=unused-argument
         self.form = QtGui.QToolBox()
         self.form.setWindowTitle(translate("Path_PreferencesPathDressup", "Dressups"))
         pages = []

@@ -21,22 +21,16 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-#endif
 
-#include <Base/MatrixPy.h>
-#include <Base/VectorPy.h>
 #include <Base/BoundBoxPy.h>
-#include <App/MaterialPy.h>
+#include <Base/MatrixPy.h>
 #include <App/DocumentObjectPy.h>
-
-#include "ViewProviderDocumentObjectPy.h"
-#include "ViewProviderLink.h"
-#include "WidgetFactory.h"
+#include <App/MaterialPy.h>
 
 #include "LinkViewPy.h"
 #include "LinkViewPy.cpp"
+#include "ViewProviderDocumentObjectPy.h"
+
 
 using namespace Gui;
 

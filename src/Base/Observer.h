@@ -25,15 +25,11 @@
 #ifndef BASE_OBSERVER_H
 #define BASE_OBSERVER_H
 
-// Std. configurations
-
 #include <cassert>
 #include <set>
-#include <cstring>
-#include <cstdio>
-#include <exception>
-#include "Exception.h"
 #include "Console.h"
+#include "Exception.h"
+
 
 namespace Base
 {

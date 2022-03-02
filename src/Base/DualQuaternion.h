@@ -25,7 +25,7 @@
 
 #include "DualNumber.h"
 #include <FCGlobal.h>
-//#include <Console.h> //DEBUG
+
 
 namespace Base {
 

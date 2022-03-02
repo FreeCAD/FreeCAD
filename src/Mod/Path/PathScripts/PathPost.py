@@ -45,7 +45,6 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 
 class _TempObject:
-    # pylint: disable=no-init
     Path = None
     Name = "Fixture"
     InList = []
@@ -54,7 +53,6 @@ class _TempObject:
 
 class DlgSelectPostProcessor:
     def __init__(self, parent=None):
-        # pylint: disable=unused-argument
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgSelectPostProcessor.ui")
         firstItem = None
         for post in PathPreferences.allEnabledPostProcessors():
@@ -91,7 +89,6 @@ class DlgSelectPostProcessor:
 
 
 class CommandPathPost:
-    # pylint: disable=no-init
     subpart = 1
 
     def resolveFileName(self, job):

@@ -24,11 +24,11 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
-#include <vector>
 #include <memory>
 #include <CXX/Extensions.hxx>
 
 #include "Exception.h"
+
 
 namespace Base
 {
@@ -206,6 +206,8 @@ protected:
 protected:
     /** construction */
     SequencerBase();
+    SequencerBase(const SequencerBase&) = default;
+    SequencerBase& operator=(const SequencerBase&) = default;
     /** Destruction */
     virtual ~SequencerBase();
     /**
@@ -253,9 +255,7 @@ class BaseExport EmptySequencer : public Base::SequencerBase
 {
 public:
     /** construction */
-    EmptySequencer();
-    /** Destruction */
-    ~EmptySequencer();
+    EmptySequencer() = default;
 };
 
 /**
@@ -265,9 +265,7 @@ class BaseExport ConsoleSequencer : public SequencerBase
 {
 public:
     /** construction */
-    ConsoleSequencer ();
-    /** Destruction */
-    ~ConsoleSequencer ();
+    ConsoleSequencer () = default;
 
 protected:
     /** Starts the sequencer */
@@ -374,6 +372,10 @@ public:
     bool next(bool canAbort = false);
     void setProgress(size_t);
     bool wasCanceled() const;
+
+private:
+    SequencerLauncher(const SequencerLauncher&);
+    void operator=(const SequencerLauncher&);
 };
 
 /** Access to the only SequencerBase instance */

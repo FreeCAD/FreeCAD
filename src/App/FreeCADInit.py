@@ -235,7 +235,6 @@ def InitApplications():
                     freecad_module = importlib.import_module(freecad_module_name)
                     extension_modules += [freecad_module_name]
                     if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-                        stopFile = os.path.join(freecad_module.__path__, "ADDON_DISABLED")
                         importlib.import_module(freecad_module_name + '.init')
                         Log('Init: Initializing ' + freecad_module_name + '... done\n')
                     else:

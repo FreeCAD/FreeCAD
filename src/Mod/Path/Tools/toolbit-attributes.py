@@ -61,15 +61,31 @@ import os
 import sys
 
 parser = argparse.ArgumentParser()
-parser.add_argument('path', nargs='+', help='Shape file to process')
-parser.add_argument('--move', metavar='<group1>:<group2>', help='Move attributes from group 1 into group 2')
-parser.add_argument('--delete', metavar='prop', help='Delete the given attribute')
-parser.add_argument('--set', metavar='prop=value', help='Set property value')
-parser.add_argument('--print', action='store_true', help='If set attributes are printed as discovered')
-parser.add_argument('--print-all', action='store_true', help='If set Shape attributes are also printed')
-parser.add_argument('--print-groups', action='store_true', help='If set all custom property groups are printed')
-parser.add_argument('--save-changes', action='store_true', help='Unless specified the file is not saved')
-parser.add_argument('--freecad', help='Directory FreeCAD binaries (libFreeCAD.so) if not installed')
+parser.add_argument("path", nargs="+", help="Shape file to process")
+parser.add_argument(
+    "--move",
+    metavar="<group1>:<group2>",
+    help="Move attributes from group 1 into group 2",
+)
+parser.add_argument("--delete", metavar="prop", help="Delete the given attribute")
+parser.add_argument("--set", metavar="prop=value", help="Set property value")
+parser.add_argument(
+    "--print", action="store_true", help="If set attributes are printed as discovered"
+)
+parser.add_argument(
+    "--print-all", action="store_true", help="If set Shape attributes are also printed"
+)
+parser.add_argument(
+    "--print-groups",
+    action="store_true",
+    help="If set all custom property groups are printed",
+)
+parser.add_argument(
+    "--save-changes", action="store_true", help="Unless specified the file is not saved"
+)
+parser.add_argument(
+    "--freecad", help="Directory FreeCAD binaries (libFreeCAD.so) if not installed"
+)
 args = parser.parse_args()
 
 if args.freecad:
@@ -80,19 +96,19 @@ import Path
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathUtil as PathUtil
 
-set_var=None
-set_val=None
+set_var = None
+set_val = None
 
 GroupMap = {}
 if args.move:
-    g = args.move.split(':')
+    g = args.move.split(":")
     if len(g) != 2:
         print("ERROR: {} not a valid group mapping".format(args.move))
         sys.exit(1)
     GroupMap[g[0]] = g[1]
 
 if args.set:
-    s = args.set.split('=')
+    s = args.set.split("=")
     if len(s) != 2:
         print("ERROR: {} not a valid group mapping".format(args.move))
         sys.exit(1)
@@ -100,7 +116,7 @@ if args.set:
     set_val = s[1]
 
 for i, fname in enumerate(args.path):
-    #print(fname)
+    # print(fname)
     doc = FreeCAD.openDocument(fname, False)
     print("{}:".format(doc.Name))
     for o in doc.Objects:
@@ -115,11 +131,11 @@ for i, fname in enumerate(args.path):
                 ttp = PathPropertyBag.getPropertyTypeName(typ)
                 val = PathUtil.getProperty(o, p)
                 dsc = o.getDocumentationOfProperty(p)
-                enm = ''
+                enm = ""
                 enum = []
-                if ttp == 'Enumeration':
+                if ttp == "Enumeration":
                     enum = o.getEnumerationsOfProperty(p)
-                    enm = "{}".format(','.join(enum))
+                    enm = "{}".format(",".join(enum))
                 if GroupMap.get(grp):
                     group = GroupMap.get(grp)
                     print("move: {}.{} -> {}".format(grp, p, group))
@@ -131,22 +147,26 @@ for i, fname in enumerate(args.path):
                     PathUtil.setProperty(o, p, val)
                 if p == set_var:
                     print("set {}.{} = {}".format(grp, p, set_val))
-                    if ttp == 'Enumeration' and set_val[0] == '[':
-                        enum = set_val[1:-1].split(',')
+                    if ttp == "Enumeration" and set_val[0] == "[":
+                        enum = set_val[1:-1].split(",")
                         setattr(o, p, enum)
                     else:
                         PathUtil.setProperty(o, p, set_val)
                 if p == args.delete:
                     print("delete {}.{}".format(grp, p))
                     o.removeProperty(p)
-                if not args.print_all and grp == 'Shape':
+                if not args.print_all and grp == "Shape":
                     continue
                 if args.print or args.print_all:
-                    print("    {:10} {:20} {:20} {:10} {}".format(grp, p, ttp, str(val), enm))
+                    print(
+                        "    {:10} {:20} {:20} {:10} {}".format(
+                            grp, p, ttp, str(val), enm
+                        )
+                    )
             o.Proxy.refreshCustomPropertyGroups()
     if args.save_changes:
         doc.recompute()
         doc.save()
     FreeCAD.closeDocument(doc.Name)
 
-print('-done-')
+print("-done-")

@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAbstractTextDocumentLayout>
 # include <QApplication>
 # include <QCheckBox>
 # include <QClipboard>
@@ -32,15 +31,12 @@
 # include <QVBoxLayout>
 # include <QLineEdit>
 # include <QMessageBox>
-# include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
-# include <QScrollBar>
 # include <QPlainTextEdit>
 # include <QPrintPreviewDialog>
 # include <QSpacerItem>
 # include <QStyle>
-# include <QTextBlock>
 # include <QTextCodec>
 # include <QTextCursor>
 # include <QTextDocument>
@@ -51,16 +47,15 @@
 
 #include "EditorView.h"
 #include "Application.h"
-#include "BitmapFactory.h"
 #include "FileDialog.h"
 #include "Macro.h"
 #include "MainWindow.h"
-#include "PythonDebugger.h"
 #include "PythonEditor.h"
 
+#include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
+
 
 using namespace Gui;
 namespace Gui {

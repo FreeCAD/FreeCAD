@@ -28,7 +28,6 @@
 #include <QRect>
 #include <QWidgetItem>
 #include <Inventor/SbVec3f.h>
-#include <QtOpenGL.h>
 #include <Gui/GLPainter.h>
 
 namespace Gui {

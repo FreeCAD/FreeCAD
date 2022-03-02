@@ -87,6 +87,15 @@ private:
     double tolerance;
 };
 
+struct SketchAnalysis::VertexID_Less
+{
+    bool operator()(const VertexIds& x,
+                    const VertexIds& y) const
+    {
+        return (x.GeoId < y.GeoId || ((x.GeoId == y.GeoId) && (x.PosId < y. PosId)));
+    }
+};
+
 struct SketchAnalysis::Vertex_EqualTo
 {
     Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
@@ -142,7 +151,9 @@ private:
 
 int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool includeconstruction /*=true*/)
 {
-    std::vector<VertexIds> vertexIds;
+    std::vector<VertexIds> vertexIds; // Holds a list of all vertices in the sketch
+
+    // Build the list of sketch vertices
     const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
         auto gf = GeometryFacade::getFacade(geom[i]);
@@ -222,32 +233,123 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
+        // TODO take into account single vertices ?
     }
 
-    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(precision));
+    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(precision)); // Sort points in geographic order
+
+    // Build a list of all coincidence in the sketch
+
+    std::vector<Sketcher::Constraint*> coincidences = sketch->Constraints.getValues();
+
+    for (auto &constraint:sketch->Constraints.getValues()) {
+        if (constraint->Type == Sketcher::Coincident ||
+            constraint->Type == Sketcher::Tangent ||
+            constraint->Type == Sketcher::Perpendicular) {
+            coincidences.push_back(constraint);
+        }
+        // TODO optimizing by removing constraints not applying on vertices ?
+    }
+
+    std::list<ConstraintIds> missingCoincidences; //Holds the list of missing coincidences
+
     std::vector<VertexIds>::iterator vt = vertexIds.begin();
     Vertex_EqualTo pred(precision);
 
-    std::list<ConstraintIds> coincidences;
-    // Make a list of constraint we expect for coincident vertexes
+    // Comparing existing constraints and find missing ones
+
     while (vt < vertexIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
+        // Seeking for adjacent group of vertices
         vt = std::adjacent_find(vt, vertexIds.end(), pred);
-        if (vt < vertexIds.end()) {
+        if (vt < vertexIds.end()) { // If one found
             std::vector<VertexIds>::iterator vn;
-            for (vn = vt+1; vn != vertexIds.end(); ++vn) {
+            std::set<VertexIds, VertexID_Less> vertexGrp; // Holds a single group of adjacent vertices
+            // Extract the group of adjacent vertices
+            vertexGrp.insert(*vt);
+            for (vn = vt+1; vn < vertexIds.end(); ++vn) {
                 if (pred(*vt,*vn)) {
-                    ConstraintIds id;
-                    id.Type = Coincident; // default point on point restriction
-                    id.v = vt->v;
-                    id.First = vt->GeoId;
-                    id.FirstPos = vt->PosId;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = vn->PosId;
-                    coincidences.push_back(id);
+                    vertexGrp.insert(*vn);
                 }
                 else {
                     break;
+                }
+            }
+
+            std::vector<std::set<VertexIds, VertexID_Less>> coincVertexGrps; // Holds groups of coincident vertices
+
+            // Decompose the group of adjacent vertices into groups of coincident vertices
+            for (auto &coincidence:coincidences) { // Going through existent coincidences
+                VertexIds v1, v2;
+                v1.GeoId = coincidence->First;
+                v1.PosId = coincidence->FirstPos;
+                v2.GeoId = coincidence->Second;
+                v2.PosId = coincidence->SecondPos;
+
+                // Look if coincident vertices are in the group of adjacent ones we are processing
+                auto nv1 = vertexGrp.extract(v1);
+                auto nv2 = vertexGrp.extract(v2);
+
+                // Maybe if both empty, they already have been extracted by other coincidences
+                // We have to check in existing coincident groups and eventually merge
+                if (nv1.empty() && nv2.empty()) {
+                    std::set<VertexIds, VertexID_Less> *tempGrp = nullptr;
+                    for (auto it = coincVertexGrps.begin(); it < coincVertexGrps.end(); ++it) {
+                        if ( (it->find(v1) != it->end()) || (it->find(v2) != it->end()) ) {
+                            if (tempGrp == nullptr) {
+                                tempGrp = &*it;
+                            }
+                            else {
+                                tempGrp->insert(it->begin(), it->end());
+                                coincVertexGrps.erase(it);
+                                break;
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                // Look if one of the constrained vertices is already in a group of coincident vertices
+                for (std::set<VertexIds, VertexID_Less> &grp:coincVertexGrps) {
+                    if ( (grp.find(v1) != grp.end()) || (grp.find(v2) != grp.end()) ) {
+                        // If yes add them to the existing group
+                        if (!nv1.empty()) grp.insert(nv1.value());
+                        if (!nv2.empty()) grp.insert(nv2.value());
+                        continue;
+                    }
+                }
+
+                if (nv1.empty() || nv2.empty()) continue;
+
+                // If no, create a new group of coincident vertices
+                std::set<VertexIds, VertexID_Less> newGrp;
+                newGrp.insert(nv1.value());
+                newGrp.insert(nv2.value());
+                coincVertexGrps.push_back(newGrp);
+            }
+
+            // If there are remaining vertices in the adjacent group (not in any existing constraint)
+            // add them as being each a separate coincident group
+            for (auto &lonept: vertexGrp) {
+                std::set<VertexIds, VertexID_Less> newGrp;
+                newGrp.insert(lonept);
+                coincVertexGrps.push_back(newGrp);
+            }
+
+            // If there is more than 1 coincident group into adjacent group, constraint(s) is(are) missing
+            // Virtually generate the missing constraint(s)
+            if (coincVertexGrps.size() > 1) {
+                std::vector<std::set<VertexIds, VertexID_Less>>::iterator vn;
+                // Starting from the 2nd coincident group, generate a constraint between
+                // this group first vertex, and previous group first vertex
+                for (vn = coincVertexGrps.begin()+1; vn < coincVertexGrps.end(); ++vn) {
+                    ConstraintIds id;
+                    id.Type = Coincident; // default point on point restriction
+                    id.v = (vn-1)->begin()->v;
+                    id.First = (vn-1)->begin()->GeoId;
+                    id.FirstPos = (vn-1)->begin()->PosId;
+                    id.Second = vn->begin()->GeoId;
+                    id.SecondPos = vn->begin()->PosId;
+                    missingCoincidences.push_back(id);
                 }
             }
 
@@ -255,34 +357,15 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
         }
     }
 
-    // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
-    // and check which of them is forcing two vertexes to be coincident.
-    // If there is none but two vertexes can be considered equal a coincident constraint is missing.
-    std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident ||
-            (*it)->Type == Sketcher::Tangent ||
-            (*it)->Type == Sketcher::Perpendicular) {
-            ConstraintIds id;
-            id.First = (*it)->First;
-            id.FirstPos = (*it)->FirstPos;
-            id.Second = (*it)->Second;
-            id.SecondPos = (*it)->SecondPos;
-            std::list<ConstraintIds>::iterator pos = std::find_if
-                    (coincidences.begin(), coincidences.end(), Constraint_Equal(id));
-            if (pos != coincidences.end()) {
-                coincidences.erase(pos);
-            }
-        }
-    }
-
+    // Update list of missing constraints stored as member variable of sketch
     this->vertexConstraints.clear();
-    this->vertexConstraints.reserve(coincidences.size());
+    this->vertexConstraints.reserve(missingCoincidences.size());
 
-    for (std::list<ConstraintIds>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
-        this->vertexConstraints.push_back(*it);
+    for (auto &coincidence:missingCoincidences) {
+        this->vertexConstraints.push_back(coincidence);
     }
 
+    // Return number of missing constraints
     return this->vertexConstraints.size();
 }
 

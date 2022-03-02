@@ -119,6 +119,10 @@ public:
      */
     PointPos Pos;
 
+    bool isCurve() const;
+
+    int posIdAsInt() const;
+
     /** @brief GeoElementId of the Root Point
      */
     static const GeoElementId RtPnt;
@@ -135,10 +139,18 @@ inline constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoI
 {
 }
 
+inline bool GeoElementId::isCurve() const {
+    return Pos == PointPos::none;
+}
+
+inline int GeoElementId::posIdAsInt() const {
+    return static_cast<int>(Pos);
+}
+
 #ifndef FC_OS_WIN32
 constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
 constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
-constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
+constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::none);
 #endif
 
 } // namespace Sketcher

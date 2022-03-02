@@ -24,12 +24,11 @@
 #ifndef BASE_FILETEMPLATE_H
 #define BASE_FILETEMPLATE_H
 
-// Std. configurations
-
 #include <string>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+
 
 namespace Base
 {

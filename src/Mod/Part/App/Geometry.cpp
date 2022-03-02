@@ -4246,6 +4246,12 @@ bool GeomSurface::normal(double u, double v, gp_Dir& dir) const
     return false;
 }
 
+gp_Vec GeomSurface::getDN(double u, double v, int Nu, int Nv) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    return s->DN(u, v, Nu, Nv);
+}
+
 bool GeomSurface::isUmbillic(double u, double v) const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
@@ -4497,6 +4503,50 @@ void         GeomCone::Restore    (Base::XMLReader &/*reader*/)    {assert(0);  
 PyObject *GeomCone::getPyObject(void)
 {
     return new ConePy(static_cast<GeomCone*>(this->clone()));
+}
+
+gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
+{
+    // Copied from ElSLib::ConeDN() and applied the needed fix
+    auto ElSLib__ConeDN = [](const Standard_Real U,
+                             const Standard_Real V,
+                             const gp_Ax3& Pos,
+                             const Standard_Real Radius,
+                             const Standard_Real SAngle,
+                             const Standard_Integer Nu,
+                             const Standard_Integer Nv)
+    {
+       gp_XYZ Xdir = Pos.XDirection().XYZ();
+       gp_XYZ Ydir = Pos.YDirection().XYZ();
+       gp_XYZ ZDir = Pos.Direction ().XYZ();
+       Standard_Real Um = U + Nu * M_PI_2;  // M_PI * 0.5
+       Xdir.Multiply(cos(Um));
+       Ydir.Multiply(sin(Um));
+       Xdir.Add(Ydir);
+       if(Nv == 0) {
+         Xdir.Multiply(Radius + V * sin(SAngle));
+         if(Nu == 0) Xdir.Add(Pos.Location().XYZ());
+         return gp_Vec(Xdir);
+       }
+       else if(Nv == 1) {
+         Xdir.Multiply(sin(SAngle));
+         ZDir.Multiply(cos(SAngle));
+         Xdir.Add(ZDir);
+         return gp_Vec(Xdir);
+       }
+       return gp_Vec(0.0,0.0,0.0);
+    };
+
+    // Workaround for cones to get the correct derivatives
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=66677
+    Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast(handle());
+    Standard_RangeError_Raise_if (Nu + Nv < 1 || Nu < 0 || Nv < 0, " ");
+    if (Nv > 1) {
+        return gp_Vec (0.0, 0.0, 0.0);
+    }
+    else {
+      return ElSLib__ConeDN(u, v, s->Position(), s->RefRadius(), s->SemiAngle(), Nu, Nv);
+    }
 }
 
 // -------------------------------------------------

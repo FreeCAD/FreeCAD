@@ -71,6 +71,7 @@ public:
         TempDoc = 9, // Mark as temporary document without prompt for save
         RestoreError = 10,
         LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
+        IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
     };
 
     /** @name Properties */

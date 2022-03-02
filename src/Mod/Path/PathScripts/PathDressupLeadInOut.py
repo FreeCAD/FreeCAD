@@ -162,7 +162,6 @@ class ObjectDressup:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def setup(self, obj):
@@ -405,7 +404,6 @@ class ObjectDressup:
 
     def getLeadEnd(self, obj, queue, action):
         """returns the Gcode of LeadOut."""
-        # pylint: disable=unused-argument
         results = []
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         R = obj.Length.Value  # Radius of roll or length
@@ -504,7 +502,7 @@ class ObjectDressup:
         return results
 
     def generateLeadInOutCurve(self, obj):
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
         firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
         op = PathDressup.baseOp(obj.Base)
         currLocation.update(firstmove.Parameters)
@@ -634,7 +632,6 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         panel = TaskDressupLeadInOut(vobj.Object, self)
         FreeCADGui.Control.showDialog(panel)
@@ -646,7 +643,6 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        # pylint: disable=unused-argument
         PathLog.debug("Deleting Dressup")
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
@@ -660,7 +656,6 @@ class ViewProviderDressup:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def clearTaskPanel(self):
@@ -668,8 +663,6 @@ class ViewProviderDressup:
 
 
 class CommandPathDressupLeadInOut:
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",

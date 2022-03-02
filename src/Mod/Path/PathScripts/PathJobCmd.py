@@ -58,9 +58,7 @@ class CommandJobCreate:
             "Pixmap": "Path_Job",
             "MenuText": QT_TRANSLATE_NOOP("Path_Job", "Job"),
             "Accel": "P, J",
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Job", "Creates a Path Job object"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object"),
         }
 
     def IsActive(self):
@@ -104,7 +102,8 @@ class CommandJobTemplateExport:
             "Pixmap": "Path_ExportTemplate",
             "MenuText": QT_TRANSLATE_NOOP("Path_ExportTemplate", "Export Template"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_ExportTemplate", "Exports Path Job as a template to be used for other jobs"
+                "Path_ExportTemplate",
+                "Exports Path Job as a template to be used for other jobs",
             ),
         }
 

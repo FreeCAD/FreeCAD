@@ -32,6 +32,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <cctype>
+
 #include <App/AutoTransaction.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>

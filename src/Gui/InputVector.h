@@ -23,13 +23,10 @@
 #ifndef GUI_INPUTVECTOR_H
 #define GUI_INPUTVECTOR_H
 
-#include <cfloat>
 #include <memory>
-#include <boost/any.hpp>
+#include <QApplication>
 #include <QDialog>
 #include <QMessageBox>
-#include <QApplication>
-
 #include <Gui/propertyeditor/PropertyItem.h>
 
 class QGridLayout;

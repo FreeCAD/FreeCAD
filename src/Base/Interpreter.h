@@ -31,11 +31,6 @@
 #   undef _XOPEN_SOURCE
 #endif // (re-)defined in pyconfig.h
 
-
-#include <Python.h>
-#include <CXX/Extensions.hxx>
-
-
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower
@@ -46,11 +41,10 @@
 #undef isalnum
 #endif
 
-// Std. configurations
+#include <CXX/Extensions.hxx>
 #include <string>
-#include <map>
-
 #include "Exception.h"
+
 
 /** Helper macro to obtain callable from an object
  *
@@ -90,7 +84,6 @@ namespace Base {
 
     using std::string;
     using std::vector;
-
 
 
 class BaseExport PyException : public Exception

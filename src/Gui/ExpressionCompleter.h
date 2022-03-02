@@ -23,12 +23,10 @@
 #ifndef EXPRESSIONCOMPLETER_H
 #define EXPRESSIONCOMPLETER_H
 
-#include <QObject>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QObject>
 #include <QPlainTextEdit>
-#include <set>
-#include <memory>
 #include <App/DocumentObserver.h>
 
 class QStandardItem;

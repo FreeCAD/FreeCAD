@@ -30,7 +30,7 @@ import FreeCAD
 from FreeCAD import Units
 import shlex
 
-TOOLTIP = '''
+TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a smoothieboard. This postprocessor, once placed
@@ -39,25 +39,55 @@ FreeCAD, via the GUI importer or via python scripts with:
 
 import smoothie_post
 smoothie_post.export(object,"/path/to/file.ncc","")
-'''
+"""
 
 now = datetime.datetime.now()
 
-parser = argparse.ArgumentParser(prog='linuxcnc', add_help=False)
-parser.add_argument('--header', action='store_true', help='output headers (default)')
-parser.add_argument('--no-header', action='store_true', help='suppress header output')
-parser.add_argument('--comments', action='store_true', help='output comment (default)')
-parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
-parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
-parser.add_argument('--no-line-numbers', action='store_true', help='don\'t prefix with line numbers (default)')
-parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output (default)')
-parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
-parser.add_argument('--precision', default='4', help='number of digits of precision, default=4')
-parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
-parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
-parser.add_argument('--IP_ADDR', help='IP Address for machine target machine')
-parser.add_argument('--verbose', action='store_true', help='verbose output for debugging, default="False"')
-parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
+parser = argparse.ArgumentParser(prog="linuxcnc", add_help=False)
+parser.add_argument("--header", action="store_true", help="output headers (default)")
+parser.add_argument("--no-header", action="store_true", help="suppress header output")
+parser.add_argument("--comments", action="store_true", help="output comment (default)")
+parser.add_argument(
+    "--no-comments", action="store_true", help="suppress comment output"
+)
+parser.add_argument(
+    "--line-numbers", action="store_true", help="prefix with line numbers"
+)
+parser.add_argument(
+    "--no-line-numbers",
+    action="store_true",
+    help="don't prefix with line numbers (default)",
+)
+parser.add_argument(
+    "--show-editor",
+    action="store_true",
+    help="pop up editor before writing output (default)",
+)
+parser.add_argument(
+    "--no-show-editor",
+    action="store_true",
+    help="don't pop up editor before writing output",
+)
+parser.add_argument(
+    "--precision", default="4", help="number of digits of precision, default=4"
+)
+parser.add_argument(
+    "--preamble",
+    help='set commands to be issued before the first command, default="G17\nG90"',
+)
+parser.add_argument(
+    "--postamble",
+    help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"',
+)
+parser.add_argument("--IP_ADDR", help="IP Address for machine target machine")
+parser.add_argument(
+    "--verbose",
+    action="store_true",
+    help='verbose output for debugging, default="False"',
+)
+parser.add_argument(
+    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -80,43 +110,42 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_SPEED_FORMAT = 'mm/min'
-UNIT_FORMAT = 'mm'
+UNIT_SPEED_FORMAT = "mm/min"
+UNIT_FORMAT = "mm"
 
 MACHINE_NAME = "SmoothieBoard"
-CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
-CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
+CORNER_MIN = {"x": 0, "y": 0, "z": 0}
+CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = '''G17 G90
-'''
+PREAMBLE = """G17 G90
+"""
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = '''M05
+POSTAMBLE = """M05
 G17 G90
 M2
-'''
+"""
 
 
 # Pre operation text will be inserted before every operation
-PRE_OPERATION = ''''''
+PRE_OPERATION = """"""
 
 # Post operation text will be inserted after every operation
-POST_OPERATION = ''''''
+POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = ''''''
+TOOL_CHANGE = """"""
 
 # Number of digits after the decimal point
 PRECISION = 5
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -156,14 +185,14 @@ def processArguments(argstring):
         if args.postamble is not None:
             POSTAMBLE = args.postamble
         if args.inches:
-            UNITS = 'G20'
-            UNIT_SPEED_FORMAT = 'in/min'
-            UNIT_FORMAT = 'in'
+            UNITS = "G20"
+            UNIT_SPEED_FORMAT = "in/min"
+            UNIT_FORMAT = "in"
 
         IP_ADDR = args.IP_ADDR
         VERBOSE = args.verbose
 
-    except Exception: # pylint: disable=broad-except
+    except Exception:
         return False
 
     return True
@@ -171,10 +200,14 @@ def processArguments(argstring):
 
 def export(objectslist, filename, argstring):
     processArguments(argstring)
-    global UNITS # pylint: disable=global-statement
+    global UNITS
     for obj in objectslist:
         if not hasattr(obj, "Path"):
-            FreeCAD.Console.PrintError("the object " + obj.Name + " is not a path. Please select only path and Compounds.\n")
+            FreeCAD.Console.PrintError(
+                "the object "
+                + obj.Name
+                + " is not a path. Please select only path and Compounds.\n"
+            )
             return
 
     FreeCAD.Console.PrintMessage("postprocessing...\n")
@@ -246,7 +279,7 @@ def export(objectslist, filename, argstring):
         sendToSmoothie(IP_ADDR, final, filename)
     else:
 
-        if not filename == '-':
+        if not filename == "-":
             gfile = pythonopen(filename, "w")
             gfile.write(final)
             gfile.close()
@@ -261,7 +294,7 @@ def sendToSmoothie(ip, GCODE, fname):
     import os
 
     fname = os.path.basename(fname)
-    FreeCAD.Console.PrintMessage('sending to smoothie: {}\n'.format(fname))
+    FreeCAD.Console.PrintMessage("sending to smoothie: {}\n".format(fname))
 
     f = GCODE.rstrip()
     filesize = len(f)
@@ -269,9 +302,9 @@ def sendToSmoothie(ip, GCODE, fname):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(4.0)
     s.connect((ip, 115))
-    tn = s.makefile(mode='rw')
+    tn = s.makefile(mode="rw")
 
-# read startup prompt
+    # read startup prompt
     ln = tn.readline()
     if not ln.startswith("+"):
         FreeCAD.Console.PrintMessage("Failed to connect with sftp: {}\n".format(ln))
@@ -280,7 +313,7 @@ def sendToSmoothie(ip, GCODE, fname):
     if VERBOSE:
         print("RSP: " + ln.strip())
 
-# Issue initial store command
+    # Issue initial store command
     tn.write("STOR OLD /sd/" + fname + "\n")
     tn.flush()
 
@@ -292,7 +325,7 @@ def sendToSmoothie(ip, GCODE, fname):
     if VERBOSE:
         print("RSP: " + ln.strip())
 
-# send size of file
+    # send size of file
     tn.write("SIZE " + str(filesize) + "\n")
     tn.flush()
 
@@ -305,13 +338,13 @@ def sendToSmoothie(ip, GCODE, fname):
         print("RSP: " + ln.strip())
 
     cnt = 0
-# now send file
+    # now send file
     for line in f.splitlines(1):
         tn.write(line)
         if VERBOSE:
             cnt += len(line)
             print("SND: " + line.strip())
-            print(str(cnt) + "/" + str(filesize) + "\r", end='')
+            print(str(cnt) + "/" + str(filesize) + "\r", end="")
 
     tn.flush()
 
@@ -323,7 +356,7 @@ def sendToSmoothie(ip, GCODE, fname):
     if VERBOSE:
         print("RSP: " + ln.strip())
 
-# exit
+    # exit
     tn.write("DONE\n")
     tn.flush()
     tn.close()
@@ -332,7 +365,7 @@ def sendToSmoothie(ip, GCODE, fname):
 
 
 def linenumber():
-    global LINENR # pylint: disable=global-statement
+    global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
@@ -340,16 +373,16 @@ def linenumber():
 
 
 def parse(pathobj):
-    global SPINDLE_SPEED # pylint: disable=global-statement
+    global SPINDLE_SPEED
 
     out = ""
     lastcommand = None
-    precision_string = '.' + str(PRECISION) + 'f'
+    precision_string = "." + str(PRECISION) + "f"
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
     # linuxcnc doesn't want K properties on XY plane  Arcs need work.
-    params = ['X', 'Y', 'Z', 'A', 'B', 'I', 'J', 'F', 'S', 'T', 'Q', 'R', 'L']
+    params = ["X", "Y", "Z", "A", "B", "I", "J", "F", "S", "T", "Q", "R", "L"]
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         # if OUTPUT_COMMENTS:
@@ -379,28 +412,42 @@ def parse(pathobj):
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == 'F':
-                        if c.Name not in ["G0", "G00"]:  # linuxcnc doesn't use rapid speeds
-                            speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
+                    if param == "F":
+                        if c.Name not in [
+                            "G0",
+                            "G00",
+                        ]:  # linuxcnc doesn't use rapid speeds
+                            speed = Units.Quantity(
+                                c.Parameters["F"], FreeCAD.Units.Velocity
+                            )
                             outstring.append(
-                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
-                    elif param == 'T':
-                        outstring.append(param + str(c.Parameters['T']))
-                    elif param == 'S':
-                        outstring.append(param + str(c.Parameters['S']))
-                        SPINDLE_SPEED = c.Parameters['S']
+                                param
+                                + format(
+                                    float(speed.getValueAs(UNIT_SPEED_FORMAT)),
+                                    precision_string,
+                                )
+                            )
+                    elif param == "T":
+                        outstring.append(param + str(c.Parameters["T"]))
+                    elif param == "S":
+                        outstring.append(param + str(c.Parameters["S"]))
+                        SPINDLE_SPEED = c.Parameters["S"]
                     else:
                         pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
-            if command in ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']:
-                outstring.append('S' + str(SPINDLE_SPEED))
+                            param
+                            + format(
+                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                            )
+                        )
+            if command in ["G1", "G01", "G2", "G02", "G3", "G03"]:
+                outstring.append("S" + str(SPINDLE_SPEED))
 
             # store the latest command
             lastcommand = command
 
             # Check for Tool Change:
-            if command == 'M6':
+            if command == "M6":
                 # if OUTPUT_COMMENTS:
                 #     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):

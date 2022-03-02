@@ -33,9 +33,12 @@ __contributors__ = "russ4262 (Russell Johnson)"
 
 
 class ObjectProfile(PathProfile.ObjectProfile):
-    '''Pseudo class for Profile operation,
-    allowing for backward compatibility with pre-existing "Profile Edges" operations.'''
+    """Pseudo class for Profile operation,
+    allowing for backward compatibility with pre-existing "Profile Edges" operations."""
+
     pass
+
+
 # Eclass
 
 
@@ -44,7 +47,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Profile operation.'''
+    """Create(name) ... Creates and returns a Profile operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectProfile(obj, name, parentJob)

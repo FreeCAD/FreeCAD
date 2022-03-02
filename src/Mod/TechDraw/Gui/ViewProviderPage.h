@@ -108,9 +108,6 @@ private:
     bool m_docReady;
     std::string m_pageName;
     QGVPage* m_graphicsView;
-    bool m_showGrid;
-    int  m_gridStep;
-
 };
 
 } // namespace TechDrawGui

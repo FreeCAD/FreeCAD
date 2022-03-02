@@ -22,17 +22,15 @@
    3. This notice may not be removed or altered from any source distribution.
 
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
-
 */
+
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <iostream>
 # include <string>
 #endif
 
 #include "Base64.h"
-
 
 
 static const std::string base64_chars = 

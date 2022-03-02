@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "Placement.h"
 #include "GeometryPyCXX.h"
 
 // inclusion of the generated files (generated out of PlacementPy.xml)

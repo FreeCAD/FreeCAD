@@ -51,13 +51,15 @@ else:
 
 UserInput = None
 
+
 class PathNoTCExistsException(Exception):
-    '''PathNoECExistsException is raised when no TC exists at all, or when all
+    """PathNoECExistsException is raised when no TC exists at all, or when all
     existing TCs are rejected by a given op.
-    This is typically an error because avery op requires a TC. '''
+    This is typically an error because avery op requires a TC."""
 
     def __init__(self):
-        super().__init__('No Tool Controllers exist')
+        super().__init__("No Tool Controllers exist")
+
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -358,7 +360,7 @@ def getToolControllers(obj, proxy=None):
         proxy = obj.Proxy
     try:
         job = findParentJob(obj)
-    except Exception:  # pylint: disable=broad-except
+    except Exception:
         job = None
 
     PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
@@ -485,7 +487,7 @@ def sort_locations(locations, keys, attractors=None):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get()  # pylint: disable=unused-variable
+        prio, i, result = q.get()
 
         return result
 

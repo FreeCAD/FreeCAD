@@ -118,11 +118,11 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
-		    "App::PropertyInteger",
-			"JitterSeed",
-			"Path",
-			QT_TRANSLATE_NOOP("App::Property","Seed value for jitter randomness"),
-		)
+            "App::PropertyInteger",
+            "JitterSeed",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+        )
         obj.addProperty(
             "App::PropertyLink",
             "ToolController",
@@ -165,8 +165,14 @@ class ObjectArray:
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
         if not hasattr(obj, "JitterSeed"):
-            obj.addProperty("App::PropertyInteger", "JitterSeed",
-                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Seed value for jitter randomness"))
+            obj.addProperty(
+                "App::PropertyInteger",
+                "JitterSeed",
+                "Path",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property", "Seed value for jitter randomness"
+                ),
+            )
             obj.JitterSeed = 0
 
         obj.setEditorMode("Angle", angleMode)

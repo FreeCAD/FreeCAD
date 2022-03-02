@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -33,12 +33,12 @@ import addonmanager_utilities as utils
 translate = FreeCAD.Qt.translate
 
 
-class AddonManagerRepo:
+class Addon:
     "Encapsulate information about a FreeCAD addon"
 
     from enum import IntEnum
 
-    class RepoType(IntEnum):
+    class Kind(IntEnum):
         WORKBENCH = 1
         MACRO = 2
         PACKAGE = 3
@@ -51,7 +51,7 @@ class AddonManagerRepo:
             elif self.value == 3:
                 return "Package"
 
-    class UpdateStatus(IntEnum):
+    class Status(IntEnum):
         NOT_INSTALLED = 0
         UNCHECKED = 1
         NO_UPDATE_AVAILABLE = 2
@@ -91,7 +91,7 @@ class AddonManagerRepo:
         def __init__(self, msg):
             super().__init__(msg)
 
-    def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
+    def __init__(self, name: str, url: str, status: Status, branch: str):
         self.name = name.strip()
         self.display_name = self.name
         self.url = url.strip()
@@ -99,7 +99,7 @@ class AddonManagerRepo:
         self.python2 = False
         self.obsolete = False
         self.rejected = False
-        self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
+        self.repo_type = Addon.Kind.WORKBENCH
         self.description = None
         self.tags = set()  # Just a cache, loaded from Metadata
 
@@ -115,7 +115,7 @@ class AddonManagerRepo:
         # The url should never end in ".git", so strip it if it's there
         parsed_url = urlparse(self.url)
         if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + parsed_url.path[:-4]
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
             if parsed_url.query:
                 self.url += "?" + parsed_url.query
             if parsed_url.fragment:
@@ -155,12 +155,12 @@ class AddonManagerRepo:
     @classmethod
     def from_macro(self, macro: Macro):
         if macro.is_installed():
-            status = AddonManagerRepo.UpdateStatus.UNCHECKED
+            status = Addon.Status.UNCHECKED
         else:
-            status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-        instance = AddonManagerRepo(macro.name, macro.url, status, "master")
+            status = Addon.Status.NOT_INSTALLED
+        instance = Addon(macro.name, macro.url, status, "master")
         instance.macro = macro
-        instance.repo_type = AddonManagerRepo.RepoType.MACRO
+        instance.repo_type = Addon.Kind.MACRO
         instance.description = macro.desc
         return instance
 
@@ -170,18 +170,18 @@ class AddonManagerRepo:
 
         mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", cache_dict["name"])
         if os.path.isdir(mod_dir):
-            status = AddonManagerRepo.UpdateStatus.UNCHECKED
+            status = Addon.Status.UNCHECKED
         else:
-            status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-        instance = AddonManagerRepo(
+            status = Addon.Status.NOT_INSTALLED
+        instance = Addon(
             cache_dict["name"], cache_dict["url"], status, cache_dict["branch"]
         )
 
         for key, value in cache_dict.items():
             instance.__dict__[key] = value
 
-        instance.repo_type = AddonManagerRepo.RepoType(cache_dict["repo_type"])
-        if instance.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        instance.repo_type = Addon.Kind(cache_dict["repo_type"])
+        if instance.repo_type == Addon.Kind.PACKAGE:
             # There must be a cached metadata file, too
             cached_package_xml_file = os.path.join(
                 FreeCAD.getUserCachePath(),
@@ -232,7 +232,7 @@ class AddonManagerRepo:
     def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         self.metadata = metadata
         self.display_name = metadata.Name
-        self.repo_type = AddonManagerRepo.RepoType.PACKAGE
+        self.repo_type = Addon.Kind.PACKAGE
         self.description = metadata.Description
         for url in metadata.Urls:
             if "type" in url and url["type"] == "repository":
@@ -277,9 +277,9 @@ class AddonManagerRepo:
     def contains_workbench(self) -> bool:
         """Determine if this package contains (or is) a workbench"""
 
-        if self.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
+        if self.repo_type == Addon.Kind.WORKBENCH:
             return True
-        elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        elif self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 FreeCAD.Console.PrintWarning(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
@@ -298,9 +298,9 @@ class AddonManagerRepo:
     def contains_macro(self) -> bool:
         """Determine if this package contains (or is) a macro"""
 
-        if self.repo_type == AddonManagerRepo.RepoType.MACRO:
+        if self.repo_type == Addon.Kind.MACRO:
             return True
-        elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        elif self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 FreeCAD.Console.PrintWarning(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
@@ -314,7 +314,7 @@ class AddonManagerRepo:
     def contains_preference_pack(self) -> bool:
         """Determine if this package contains a preference pack"""
 
-        if self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        if self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 FreeCAD.Console.PrintWarning(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"

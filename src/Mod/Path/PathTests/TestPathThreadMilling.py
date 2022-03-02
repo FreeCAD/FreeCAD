@@ -26,34 +26,40 @@ import math
 
 from PathTests.PathTestUtils import PathTestBase
 
+
 def radii(major, minor, toolDia, toolCrest):
-    '''test radii function for simple testing'''
+    """test radii function for simple testing"""
     return (minor, major)
 
+
 class TestPathThreadMilling(PathTestBase):
-    '''Test thread milling basics.'''
+    """Test thread milling basics."""
 
     def assertRadii(self, have, want):
         self.assertRoughly(have[0], want[0])
         self.assertRoughly(have[1], want[1])
 
     def assertList(self, have, want):
-        self.assertEqual(len(have), len(want));
+        self.assertEqual(len(have), len(want))
         for i in range(len(have)):
             self.assertRoughly(have[i], want[i])
 
     def test00(self):
-        '''Verify internal radii.'''
+        """Verify internal radii."""
         self.assertRadii(PathThreadMilling.radiiInternal(20, 18, 2, 0), (8, 9.2))
         self.assertRadii(PathThreadMilling.radiiInternal(20, 19, 2, 0), (8.5, 9.1))
 
     def test01(self):
-        '''Verify internal radii with tool crest.'''
+        """Verify internal radii with tool crest."""
         self.assertRadii(PathThreadMilling.radiiInternal(20, 18, 2, 0.1), (8, 9.113397))
 
     def test10(self):
-        '''Verify thread passes.'''
+        """Verify thread passes."""
         self.assertList(PathThreadMilling.threadPasses(1, radii, 10, 9, 0, 0), [10])
-        self.assertList(PathThreadMilling.threadPasses(2, radii, 10, 9, 0, 0), [9.5, 10])
-        self.assertList(PathThreadMilling.threadPasses(5, radii, 10, 9, 0, 0), [9.2, 9.4, 9.6, 9.8, 10])
-
+        self.assertList(
+            PathThreadMilling.threadPasses(2, radii, 10, 9, 0, 0), [9.5, 10]
+        )
+        self.assertList(
+            PathThreadMilling.threadPasses(5, radii, 10, 9, 0, 0),
+            [9.2, 9.4, 9.6, 9.8, 10],
+        )

@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <cstdlib>
 #endif
 
 #include "PyObjectBase.h"
 #include "Console.h"
 #include "Interpreter.h"
+
 
 #define ATTR_TRACKING
 
