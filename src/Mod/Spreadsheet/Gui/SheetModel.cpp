@@ -78,77 +78,6 @@ int SheetModel::columnCount(const QModelIndex &parent) const
     return 26 * 26 + 26;
 }
 
-#if 0 // obsolete function
-static void appendUnit(int l, bool isNumerator, std::string unit, std::vector<std::string> & v)
-{
-    if (l == 0)
-        return;
-    if ((l < 0) ^ isNumerator ) {
-        std::ostringstream s;
-
-        s << unit;
-        if (abs(l) > 1)
-            s << "^" << abs(l);
-
-        v.push_back(s.str());
-    }
-}
-
-static std::string getUnitString(const Base::Unit & unit)
-{
-    std::vector<std::string> numerator;
-    std::vector<std::string> denominator;
-    const Base::UnitSignature & sig = unit.getSignature();
-
-    // Nominator
-    appendUnit(sig.Length, true, "mm", numerator);
-    appendUnit(sig.Mass, true, "kg", numerator);
-    appendUnit(sig.Time, true, "s", numerator);
-    appendUnit(sig.ElectricCurrent, true, "A", numerator);
-    appendUnit(sig.ThermodynamicTemperature, true, "K", numerator);
-    appendUnit(sig.AmountOfSubstance, true, "mol", numerator);
-    appendUnit(sig.LuminousIntensity, true, "cd", numerator);
-    appendUnit(sig.Angle, true, "deg", numerator);
-
-    // Denominator
-    appendUnit(sig.Length, false, "mm", denominator);
-    appendUnit(sig.Mass, false, "kg", denominator);
-    appendUnit(sig.Time, false, "s", denominator);
-    appendUnit(sig.ElectricCurrent, false, "A", denominator);
-    appendUnit(sig.ThermodynamicTemperature, false, "K", denominator);
-    appendUnit(sig.AmountOfSubstance, false, "mol", denominator);
-    appendUnit(sig.LuminousIntensity, false, "cd", denominator);
-    appendUnit(sig.Angle, false, "deg", denominator);
-
-    std::string unitStr;
-
-    if (numerator.size() > 0) {
-        for (std::size_t i = 0; i < numerator.size(); ++i) {
-            if (i > 0)
-                unitStr += "*";
-            unitStr += numerator[i];
-        }
-    }
-
-    if (denominator.size() > 0) {
-        if (numerator.size() == 0)
-            unitStr = "1";
-        unitStr += "/";
-
-        if (denominator.size() > 1)
-            unitStr += "(";
-        for (std::size_t i = 0; i < denominator.size(); ++i) {
-            if (i > 0)
-                unitStr += "*";
-            unitStr += denominator[i];
-        }
-        if (denominator.size() > 1)
-            unitStr += ")";
-    }
-
-    return unitStr;
-}
-#endif
 
 QVariant SheetModel::data(const QModelIndex &index, int role) const
 {
@@ -388,11 +317,6 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 }
             }
             else {
-                //QString number = QLocale().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
-                //if (!computedUnit.isEmpty())
-                //    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
-                //else
-                //    v = number;
 
                 // When displaying a quantity then use the globally set scheme
                 // See: https://forum.freecadweb.org/viewtopic.php?f=3&t=50078
@@ -564,15 +488,8 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
             // Because of possible complication of recursively escaped
             // characters, let's take a shortcut and bypass the command
             // interface for now.
-#if 0
-            std::string strAddress = address.toString();
-            str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
-            str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
-            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" <<
-                    str.toUtf8().constData() << "')");
-#else
+
             sheet->setContent(address, str.toUtf8().constData());
-#endif
             Gui::Command::commitCommand();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
