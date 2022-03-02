@@ -26,18 +26,16 @@
 # include <QApplication>
 # include <QButtonGroup>
 # include <QCompleter>
-# include <QComboBox>
-# include <QDesktopServices>
-# include <QDialogButtonBox>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
 # include <QLineEdit>
 # include <QPushButton>
 # include <QRadioButton>
+# include <QResizeEvent>
+# include <QStandardPaths>
 # include <QStyle>
 # include <QUrl>
-# include <QResizeEvent>
 #endif
 
 #include <Base/Parameter.h>
@@ -45,8 +43,8 @@
 
 #include "FileDialog.h"
 #include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "Tools.h"
+
 
 using namespace Gui;
 

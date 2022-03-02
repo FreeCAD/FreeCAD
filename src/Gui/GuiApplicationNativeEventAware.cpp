@@ -21,18 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
+
 #include <iomanip>
 #include <sstream>
 
-#include <QGlobalStatic>
 #include <QMainWindow>
-#include <QWidget>
 #include <FCConfig.h>
-#include <Base/Console.h>
+#include "Application.h"
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
-#include "Application.h"
+
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 #if defined(Q_OS_LINUX)

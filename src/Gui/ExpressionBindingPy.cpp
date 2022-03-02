@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+
+#include <App/DocumentObjectPy.h>
+
 #include "ExpressionBindingPy.h"
-#include "ExpressionBinding.h"
+#include "InputField.h"
 #include "PythonWrapper.h"
 #include "QuantitySpinBox.h"
-#include "InputField.h"
-#include <App/DocumentObjectPy.h>
+
 
 using namespace Gui;
 
