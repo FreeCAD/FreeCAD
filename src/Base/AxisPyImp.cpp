@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include "Axis.h"
 #include "GeometryPyCXX.h"
 
 // inclusion of the generated files (generated out of AxisPy.xml)

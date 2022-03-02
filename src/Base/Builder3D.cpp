@@ -28,15 +28,12 @@
 # include <string>
 #endif
 
-#include <cstdlib>
-
-/// FreeCAD #includes sorted by Base,App,Gui......
 #include "Builder3D.h"
-#include "Exception.h"
-#include "Vector3D.h"
-#include "Matrix.h"
 #include "Console.h"
+#include "Exception.h"
+#include "Matrix.h"
 #include "Tools.h"
+
 
 using namespace Base;
 
