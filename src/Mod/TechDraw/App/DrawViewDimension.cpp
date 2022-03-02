@@ -1470,9 +1470,7 @@ std::string DrawViewDimension::getPrefix() const
 
 std::string DrawViewDimension::getDefaultFormatSpec(bool isToleranceFormat) const
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    std::string prefFormat = hGrp->GetASCII("formatSpec","");
+    std::string prefFormat = Preferences::formatSpec();
     QString formatSpec;
     QString qPrefix;
     if (prefFormat.empty()) {
@@ -1482,7 +1480,7 @@ std::string DrawViewDimension::getDefaultFormatSpec(bool isToleranceFormat) cons
         if (useDecimals()) {
             precision = Base::UnitsApi::getDecimals();
         } else {
-            precision = hGrp->GetInt("AltDecimals", 2);
+            precision = Preferences::altDecimals();
         }
         QString formatPrecision = QString::number(precision);
 
