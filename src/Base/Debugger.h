@@ -24,8 +24,8 @@
 #ifndef BASE_DEBUGGER_H
 #define BASE_DEBUGGER_H
 
-#include <QObject>
 #include <QEventLoop>
+#include <QObject>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif

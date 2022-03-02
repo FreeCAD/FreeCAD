@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -46,6 +45,8 @@
 #include <sys/param.h>
 #include <sys/sysctl.h>
 #endif
+
+#include <csignal>
 
 #include <QDir>
 #include <QFileInfo>
