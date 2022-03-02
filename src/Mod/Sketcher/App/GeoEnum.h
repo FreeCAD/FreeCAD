@@ -150,7 +150,7 @@ inline int GeoElementId::posIdAsInt() const {
 #ifndef FC_OS_WIN32
 constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
 constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
-constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
+constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::none);
 #endif
 
 } // namespace Sketcher
