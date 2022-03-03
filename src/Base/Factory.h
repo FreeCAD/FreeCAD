@@ -118,7 +118,7 @@ public:
     /// Produce an instance
     virtual void* Produce () const
     {
-        return (void*)mScript;
+        return const_cast<char*>(mScript);
     }
 
 private:
