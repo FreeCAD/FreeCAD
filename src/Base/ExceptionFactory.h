@@ -26,6 +26,7 @@
 
 #include <Python.h>
 #include "Factory.h"
+#include <typeinfo>
 
 
 namespace Base
