@@ -40,11 +40,7 @@ set(RobotGui_UIC_SRCS
     TaskTrajectoryDressUpParameter.ui
 )
 
-if(BUILD_QT5)
     qt5_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
-endif()
 
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp

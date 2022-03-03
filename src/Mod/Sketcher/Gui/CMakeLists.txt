@@ -25,11 +25,9 @@ set(SketcherGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
+
     qt5_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
-else()
-    qt4_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
-endif()
+
 
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
@@ -50,11 +48,9 @@ set(SketcherGui_UIC_SRCS
     ConstraintSettingsDialog.ui
 )
 
-if(BUILD_QT5)
+
     qt5_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
-endif()
+
 
 SET(SketcherGui_SRCS
     ${SketcherGui_SRCS}

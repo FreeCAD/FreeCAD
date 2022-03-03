@@ -19,17 +19,12 @@ include_directories(
     ${QT_QTCORE_INCLUDE_DIR}
 )
 
-if(BUILD_QT5)
+
     include_directories(
         ${Qt5XmlPatterns_INCLUDE_DIRS}
     )
     set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
-else(BUILD_QT5)
-    include_directories(
-        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
-    )
-    set(QtXmlPatternsLib ${QT_QTXMLPATTERNS_LIBRARY})
-endif(BUILD_QT5)
+
 
 link_directories(${OCC_LIBRARY_DIR})
 

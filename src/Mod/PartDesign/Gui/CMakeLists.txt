@@ -60,11 +60,8 @@ set(PartDesignGui_UIC_SRCS
     TaskHelixParameters.ui
 )
 
-if(BUILD_QT5)
     qt5_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
-endif()
+
 
 SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp

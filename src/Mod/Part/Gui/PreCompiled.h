@@ -180,10 +180,6 @@
 #include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
 
 // GL
 // Include glext before InventorAll

@@ -75,11 +75,6 @@
 #endif
 
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
-
 // OCCT
 #include <BRepBuilderAPI_MakePolygon.hxx>
 

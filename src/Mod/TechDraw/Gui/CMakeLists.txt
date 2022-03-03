@@ -26,15 +26,11 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-if(BUILD_QT5)
+
     include_directories(
         ${Qt5XmlPatterns_INCLUDE_DIRS}
     )
-else(BUILD_QT5)
-    include_directories(
-        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
-    )
-endif(BUILD_QT5)
+
 
 # The XML files
 set(TechDrawGui_XML_SRCS
@@ -47,11 +43,9 @@ set(TechDrawGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
+
     qt5_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
-else()
-    qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
-endif()
+
 
 set(TechDrawGui_UIC_SRCS
     DlgPageChooser.ui
@@ -88,11 +82,9 @@ set(TechDrawGui_UIC_SRCS
     TaskProjection.ui
 )
 
-if(BUILD_QT5)
+
     qt5_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
-endif()
+
 
 SET(MRTE_SRCS 
     mrichtextedit.ui

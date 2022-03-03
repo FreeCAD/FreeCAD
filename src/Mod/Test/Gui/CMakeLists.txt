@@ -14,11 +14,9 @@ set(Dialogs_UIC_SRCS
     UnitTest.ui
 )
 
-if(BUILD_QT5)
+
     qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-endif()
+
 
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}

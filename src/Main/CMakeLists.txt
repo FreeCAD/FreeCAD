@@ -37,11 +37,7 @@ if(BUILD_GUI)
         FreeCADGui
     )
 
-    if (MSVC AND NOT BUILD_QT5)
-        list(APPEND FreeCAD_LIBS
-            ${QT_QTMAIN_LIBRARY}
-        )
-    endif()
+
 
     if(NOT BUILD_DYNAMIC_LINK_PYTHON)
         # executables have to be linked against python libraries,
@@ -86,17 +82,11 @@ SET(FreeCADMainCmd_LIBS
     FreeCADApp
 )
 
-if (BUILD_QT5)
+
     list(APPEND FreeCADMainCmd_LIBS
         ${Qt5Core_LIBRARIES}
         ${Qt5Xml_LIBRARIES}
     )
-else()
-    list(APPEND FreeCADMainCmd_LIBS
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTXML_LIBRARY}
-    )
-endif()
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     # executables have to be linked against python libraries,

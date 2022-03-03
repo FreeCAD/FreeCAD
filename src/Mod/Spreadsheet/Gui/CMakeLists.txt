@@ -20,7 +20,7 @@ set(SpreadsheetGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
+
     set_property(SOURCE qtcolorpicker.h qtcolorpicker.cpp PROPERTY SKIP_AUTOMOC ON)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp
@@ -29,11 +29,7 @@ if(BUILD_QT5)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.h
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.h)
-else()
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp
-        COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp)
-endif()
+
 
 set_property(SOURCE qtcolorpicker.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp)
 set_property(SOURCE qtcolorpicker.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp)
@@ -111,9 +107,9 @@ set(SpreadsheetGui_UIC_SRCS
 )
 
 
-if (BUILD_QT5)
+
     qt5_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
-endif()
+
 
 add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
 target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})

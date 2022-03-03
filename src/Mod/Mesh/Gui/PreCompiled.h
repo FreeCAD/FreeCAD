@@ -74,10 +74,6 @@
 # include <windows.h>
 #endif
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
 
 // Inventor
 #ifndef __InventorAll__

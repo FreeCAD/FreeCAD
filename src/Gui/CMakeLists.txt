@@ -78,7 +78,6 @@ else(MSVC)
     )
 endif(MSVC)
 
-if (BUILD_QT5)
 
     if (Qt5WebEngineWidgets_FOUND AND BUILD_WITH_CONDA)
         add_definitions(-DQTWEBENGINE)
@@ -110,20 +109,11 @@ if (BUILD_QT5)
         ${Qt5WinExtras_LIBRARIES}
       )
     endif()
-else()
-    include_directories(
-        ${QT_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADGui_LIBS
-        ${QT_LIBRARIES}
-        ${QT_QTUITOOLS_LIBRARY}
-    )
-endif()
 
 IF(SPNAV_FOUND)
     if(SPNAV_USE_X11)
       add_definitions(-DSPNAV_USE_X11)
-      if (BUILD_QT5 AND UNIX AND NOT APPLE)
+      if (UNIX AND NOT APPLE)
         find_package(Qt5X11Extras REQUIRED)
         include_directories(${Qt5X11Extras_INCLUDE_DIRS})
         list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
@@ -174,11 +164,8 @@ IF(OCULUS_FOUND)
 ENDIF(OCULUS_FOUND)
 
 if(FREECAD_USE_SHIBOKEN)
-    if (BUILD_QT5)
-        add_definitions(-DHAVE_SHIBOKEN2)
-    else()
-        add_definitions(-DHAVE_SHIBOKEN)
-    endif()
+
+    add_definitions(-DHAVE_SHIBOKEN2)
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
     )
@@ -212,14 +199,12 @@ if(FREECAD_USE_PYSIDE)
             )
         endif (TARGET PySide2::pyside2)
     endif (PYSIDE_LIBRARY)
-    if (BUILD_QT5)
+
         include_directories(
             ${PYSIDE_INCLUDE_DIR}/QtWidgets
         )
         add_definitions(-DHAVE_PYSIDE2)
-    else()
-        add_definitions(-DHAVE_PYSIDE)
-    endif()
+
 endif(FREECAD_USE_PYSIDE)
 
 generate_from_xml(DocumentPy)
@@ -280,7 +265,7 @@ SET(FreeCADGui_SDK_MOC_HDRS
 )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
-if (BUILD_QT5)
+
     set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
@@ -289,11 +274,7 @@ if (BUILD_QT5)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h)
-else()
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
-        COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
-endif()
+
 
 set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
 set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)

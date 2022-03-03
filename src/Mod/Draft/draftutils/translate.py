@@ -111,19 +111,6 @@ def translate(context, text, utf8_decode=False):
     # the translate function doesn't use the 4th parameter
     if six.PY3:
         return Qtranslate(context, text, None)
-    # Python 2
-    elif QtCore.qVersion() > "4":
-        # Python 2 and Qt5
-        if utf8_decode:
-            # The text is a utf8 string, and since it is Qt5
-            # the translate function doesn't use the 4th parameter
-            return Qtranslate(context, text, None)
-        else:
-            # The text is not a unicode string, and since it is Qt5
-            # the translate function doesn't use the 4th parameter.
-            # Therefore the output string needs to be encoded manually
-            # as utf8 bytes before returning.
-            return Qtranslate(context, text, None).encode("utf8")
     
 
 # Original code no longer used. It is listed here for reference
