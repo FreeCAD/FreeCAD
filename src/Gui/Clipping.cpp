@@ -29,12 +29,10 @@
 # include <Inventor/sensors/SoTimerSensor.h>
 # include <QDockWidget>
 # include <QPointer>
-# include <cmath>
 #endif
 
 #include "Clipping.h"
 #include "ui_Clipping.h"
-#include "Application.h"
 #include "DockWindowManager.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
