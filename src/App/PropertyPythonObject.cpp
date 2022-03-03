@@ -224,7 +224,7 @@ void PropertyPythonObject::saveObject(Base::Writer &writer) const
                 writer.Stream() << " object=\"yes\"";
             }
         }
-        if (parent->isDerivedFrom(Base::Type::fromName("Gui::ViewProvider"))) {
+        else if (parent->isDerivedFrom(Base::Type::fromName("Gui::ViewProvider"))) {
             if (this->object.hasAttr("__vobject__")) {
                 writer.Stream() << " vobject=\"yes\"";
             }
