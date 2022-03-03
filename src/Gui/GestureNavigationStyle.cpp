@@ -62,29 +62,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/draggers/SoDragger.h>
 # include <QApplication>
 #endif
 
-#include "GestureNavigationStyle.h"
+#include <QTapAndHoldGesture>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
-#include "View3DInventorViewer.h"
+
+#include "GestureNavigationStyle.h"
 #include "Application.h"
 #include "SoTouchEvents.h"
+#include "View3DInventorViewer.h"
 
-#include <QTapAndHoldGesture>
-
-#include <boost/statechart/state_machine.hpp>
-#include <boost/statechart/simple_state.hpp>
-#include <boost/statechart/state.hpp>
 #include <boost/statechart/custom_reaction.hpp>
-#include <boost/mpl/list.hpp>
+#include <boost/statechart/state_machine.hpp>
+#include <boost/statechart/state.hpp>
+
 
 namespace sc = boost::statechart;
 #define NS Gui::GestureNavigationStyle

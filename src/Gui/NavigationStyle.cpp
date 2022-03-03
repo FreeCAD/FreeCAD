@@ -41,6 +41,7 @@
 #include "SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
+
 using namespace Gui;
 
 namespace Gui {
