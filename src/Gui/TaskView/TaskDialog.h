@@ -24,13 +24,11 @@
 #ifndef GUI_TASKVIEW_TASKDIALOG_H
 #define GUI_TASKVIEW_TASKDIALOG_H
 
-#include <map>
 #include <string>
 #include <vector>
 
 #include <QDialogButtonBox>
 
-#include <Gui/Selection.h>
 
 namespace App {
 

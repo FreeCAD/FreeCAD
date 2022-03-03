@@ -26,7 +26,7 @@
 
 #include "TaskDialog.h"
 #include "TaskWatcher.h"
-#include <CXX/Extensions.hxx>
+
 
 namespace Gui {
 namespace TaskView {

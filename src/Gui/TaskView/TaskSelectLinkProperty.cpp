@@ -20,23 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+#include <App/DocumentObject.h>
+#include <Base/Console.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/SelectionFilter.h>
 
 #include "ui_TaskSelectLinkProperty.h"
 #include "TaskSelectLinkProperty.h"
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/SelectionFilter.h>
+
 
 using namespace Gui::TaskView;
 

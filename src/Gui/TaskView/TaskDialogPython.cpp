@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,18 +28,17 @@
 # include <QPointer>
 #endif
 
-#include "TaskDialogPython.h"
-#include "TaskView.h"
-
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/UiLoader.h>
 #include <Gui/PythonWrapper.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
-#include <CXX/Objects.hxx>
+
+#include "TaskDialogPython.h"
+#include "TaskView.h"
+
 
 using namespace Gui;
 using namespace Gui::TaskView;
