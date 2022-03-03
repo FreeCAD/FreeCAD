@@ -24,22 +24,22 @@
 #ifndef PROPERTYEDITORITEM_H
 #define PROPERTYEDITORITEM_H
 
+#include <QItemEditorFactory>
 #include <QObject>
 #include <QPointer>
-#include <QItemEditorFactory>
 #include <vector>
 
+#include <App/PropertyStandard.h>
 #include <Base/Factory.h>
-#include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
+#include <Base/Vector3D.h>
 #include <Base/UnitsApi.h>
-#include <App/DocumentObserver.h>
-#include <App/PropertyStandard.h>
-#include <Gui/Widgets.h>
 #include <Gui/ExpressionBinding.h>
 #include <Gui/MetaTypes.h>
+#include <Gui/Widgets.h>
+
 #include <FCGlobal.h>
 
 #ifdef Q_MOC_RUN
@@ -52,6 +52,7 @@ Q_DECLARE_METATYPE(Base::Rotation)
 Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
 #endif
+
 
 #define PROPERTYITEM_HEADER \
 public: \

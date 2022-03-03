@@ -26,10 +26,11 @@
 
 #include <QAbstractItemModel>
 #include <QStringList>
-#include <vector>
 #include <map>
 #include <unordered_map>
+#include <vector>
 #include "PropertyItem.h"
+
 
 namespace App {
 class Property;

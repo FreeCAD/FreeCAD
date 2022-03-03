@@ -29,18 +29,16 @@
 # include <QPainter>
 #endif
 
-#include <Base/Console.h>
 #include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+
 #include "PropertyItemDelegate.h"
-#include "PropertyItem.h"
-#include "PropertyEditor.h"
 #include "MDIView.h"
+#include "PropertyEditor.h"
+#include "PropertyItem.h"
 #include "Tree.h"
 
-FC_LOG_LEVEL_INIT("PropertyView",true,true)
+
+FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
 

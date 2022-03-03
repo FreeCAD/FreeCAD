@@ -24,47 +24,39 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
+# include <QApplication>
 # include <QComboBox>
 # include <QFontDatabase>
-# include <QLayout>
 # include <QLocale>
+# include <QPalette>
 # include <QPixmap>
 # include <QTextStream>
 # include <QTimer>
-# include <QApplication>
-# include <QPalette>
-# include <QtGlobal>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
+#include "PropertyItem.h"
+#include "PropertyView.h"
 
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Widgets.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Placement.h>
-#include <Gui/FileDialog.h>
+#include <Gui/Control.h>
 #include <Gui/DlgPropertyLink.h>
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Placement.h>
 #include <Gui/QuantitySpinBox.h>
-#include <Gui/VectorListEditor.h>
-
-#include "PropertyItem.h"
-#include "PropertyView.h"
+#include <Gui/Selection.h>
 #include <Gui/SpinBox.h>
+#include <Gui/VectorListEditor.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
 
 using namespace Gui::PropertyEditor;
 using namespace Gui::Dialog;

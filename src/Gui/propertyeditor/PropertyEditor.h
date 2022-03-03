@@ -24,16 +24,13 @@
 #ifndef PROPERTYEDITOR_H
 #define PROPERTYEDITOR_H
 
-#include <map>
-#include <string>
-#include <vector>
 #include <unordered_set>
 
 #include <QTreeView>
 
-#include <App/DocumentObserver.h>
 #include "PropertyItem.h"
 #include "PropertyModel.h"
+
 
 namespace App {
 class Property;

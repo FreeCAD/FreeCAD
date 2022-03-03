@@ -23,15 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cfloat>
-#endif
-
 #include <boost/algorithm/string/predicate.hpp>
 
-#include "PropertyModel.h"
 #include "PropertyItem.h"
+#include "PropertyModel.h"
 #include "PropertyView.h"
+
 
 using namespace Gui;
 using namespace Gui::PropertyEditor;
