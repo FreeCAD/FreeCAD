@@ -858,7 +858,7 @@ for ProjectionGroups</string>
            <cstring>gridSpacing</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>psb_GridSpacing</cstring>
+           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
