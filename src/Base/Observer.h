@@ -26,6 +26,7 @@
 #define BASE_OBSERVER_H
 
 #include <cassert>
+#include <cstring>
 #include <set>
 #include "Console.h"
 #include "Exception.h"

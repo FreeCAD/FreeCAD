@@ -34,8 +34,8 @@
 
 #include "Console.h"
 #include "Exception.h"
-#include "frameobject.h"
 #include "PyObjectBase.h"
+#include "frameobject.h"
 #include <QCoreApplication>
 
 

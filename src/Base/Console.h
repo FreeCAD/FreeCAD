@@ -21,17 +21,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#pragma once
+
+
+
+#ifndef BASE_CONSOLE_H
+#define BASE_CONSOLE_H
 
 // Std. configurations
-#include <Base/PyExport.h>
 #include <Base/Stream.h>
-//#pragma warning(disable: 4786)  // specifier longer then 255 chars
 #include <chrono>
 #include <map>
 #include <set>
 #include <string>
 #include <sstream>
+
+// Python stuff
+typedef struct _object PyObject;
+typedef struct PyMethodDef PyMethodDef;
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -747,3 +753,5 @@ private:
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
+
+#endif // BASE_CONSOLE_H

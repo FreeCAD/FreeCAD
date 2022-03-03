@@ -26,6 +26,7 @@
 # include <unistd.h>
 #endif
 
+#include <CXX/WrapPython.h>
 #include <memory>
 #include <QString>
 #include "Exception.h"
