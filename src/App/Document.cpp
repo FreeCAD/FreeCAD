@@ -469,7 +469,7 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param name Name of node.
          */
 
-        void add(DocumentObject * docObj, const std::string & name, const std::string & label, bool CSSubgraphs) {
+        void add(DocumentObject * docObj, const std::string & name, const std::string & label) {
 
             //don't add objects twice
             if(std::find(objects.begin(), objects.end(), docObj) != objects.end())
@@ -478,24 +478,11 @@ void Document::exportGraphviz(std::ostream& out) const
             //find the correct graph to add the vertex to. Check first expression graphs, afterwards
             //the parent CS and origin graphs
             Graph * sgraph = GraphList[docObj];
-            if(CSSubgraphs) {
-                if(!sgraph) {
-                    auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
-                    if(group) {
-                        if(docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
-                            sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
-                        else
-                            sgraph = GraphList[group];
-                    }
-                }
-                if(!sgraph) {
-                    if(docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
-                        sgraph = GraphList[static_cast<OriginFeature*>(docObj)->getOrigin()];
-                }
-            }
+            
             if(!sgraph)
+            {
                 sgraph = &DepList;
-
+            }
             // Keep a list of all added document objects.
             objects.insert(docObj);
 
@@ -649,11 +636,11 @@ void Document::exportGraphviz(std::ostream& out) const
         void buildAdjacencyList() {
 
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
-            bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
+         
 
             // Add internal document objects
             for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
-                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue(), CSSubgraphs);
+                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue());
 
             // Add external document objects
             for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
@@ -665,8 +652,7 @@ void Document::exportGraphviz(std::ostream& out) const
                         if (item == GlobalVertexList.end())
                             add(*It2,
                                 std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue(),
-                                CSSubgraphs);
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue());
                     }
                 }
             }
