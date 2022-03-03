@@ -105,6 +105,7 @@ public:
     virtual bool showLock(void) const;
 
     std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
+    void setScaleAttribute();
 
 protected:
     virtual void onChanged(const App::Property* prop) override;
