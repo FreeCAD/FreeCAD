@@ -1499,7 +1499,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     // Save picture methods:
     // FramebufferObject -- viewer renders into FBO (no offscreen)
     // CoinOffscreenRenderer -- Coin's offscreen rendering method
-    // PixelBuffer -- Qt's pixel buffer used for offscreen rendering (only Qt4)
+
     // Otherwise (Default) -- Qt's FBO used for offscreen rendering
     std::string saveMethod = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetASCII("SavePicture");

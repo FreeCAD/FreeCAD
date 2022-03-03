@@ -35,26 +35,20 @@ set(AssemblyGui_MOC_HDRS
 fc_wrap_cpp(AssemblyGui_MOC_SRCS ${AssemblyGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${AssemblyGui_MOC_SRCS})
 
-if (BUILD_QT5)
+
 	qt5_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
-else()
-	qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
-endif()
+
 
 set(AssemblyGui_UIC_SRCS
     #TaskAssemblyConstraints.ui
 )
-if (BUILD_QT5)
+
 	qt5_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
-else()
-	qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
-endif()
+
 
 SET(AssemblyGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
-    #ViewProviderPartRef.cpp
-    #ViewProviderPartRef.h
     ViewProviderProduct.cpp
     ViewProviderProduct.h
     ViewProviderProductRef.cpp
@@ -76,7 +70,6 @@ SET(AssemblyGuiModule_SRCS
     Command.cpp
     CommandConstraints.cpp
     Resources/Assembly.qrc
-	#qrc_Assembly.cxx
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp

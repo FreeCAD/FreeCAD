@@ -50,11 +50,7 @@
 #ifdef _PreComp_
 // standard
 #include <iostream>
-//#include <stdio.h>
 #include <assert.h>
-//#include <io.h>
-//#include <fcntl.h>
-//#include <ctype.h>
 
 // STL
 #include <vector>
@@ -113,10 +109,6 @@
 
 
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
 
 // Inventor
 #ifndef __InventorAll__

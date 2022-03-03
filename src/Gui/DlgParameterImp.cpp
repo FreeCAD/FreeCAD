@@ -120,8 +120,6 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     boldFont.setBold(true);
     defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 
-    // set a placeholder text to inform the user
-    // (QLineEdit has no placeholderText property in Qt4)
     ui->findGroupLE->setPlaceholderText(tr("Search Group"));
 }
 

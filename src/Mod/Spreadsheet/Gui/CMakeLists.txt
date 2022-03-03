@@ -42,11 +42,8 @@ SET(SpreadsheetGui_RES_SRCS
     Resources/Spreadsheet.qrc
 )
 
-if(BUILD_QT5)
     qt5_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
-else()
-    qt4_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
-endif()
+
 
 set(SpreadsheetGui_UIC_SRCS
    Sheet.ui
@@ -55,11 +52,7 @@ set(SpreadsheetGui_UIC_SRCS
    DlgSheetConf.ui
 )
 
-if(BUILD_QT5)
     qt5_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
-endif()
 
 SET(SpreadsheetGui_SRCS
     ${SpreadsheetGui_QRC_SRCS}

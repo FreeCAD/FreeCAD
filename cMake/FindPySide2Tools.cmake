@@ -3,16 +3,7 @@
 # PYSIDE2RCCBINARY - Location of PYSIDE2RCC executable
 # PYSIDE2_TOOLS_FOUND - PySide2 utilities found.
 
-# Also provides macro similar to FindQt4.cmake's WRAP_UI and WRAP_RC,
-# for the automatic generation of Python code from Qt4's user interface
-# ('.ui') and resource ('.qrc') files. These macros are called:
-# - PYSIDE_WRAP_UI
-# - PYSIDE_WRAP_RC
 
-IF(PYSIDE2UICBINARY AND PYSIDE2RCCBINARY)
-  # Already in cache, be silent
-  set(PYSIDE2_TOOLS_FOUND_QUIETLY TRUE)
-ENDIF(PYSIDE2UICBINARY AND PYSIDE2RCCBINARY)
 
 if(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     #pyside2 tools are often in same location as python interpreter

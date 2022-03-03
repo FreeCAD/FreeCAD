@@ -38,10 +38,6 @@ import six
 
 Qtranslate = QtCore.QCoreApplication.translate
 
-# This property only exists in Qt4, which is normally paired
-# with Python 2.
-# But if Python 2 is used with Qt5 (rare),
-# this assignment will fail.
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
 except AttributeError:
@@ -128,22 +124,7 @@ def translate(context, text, utf8_decode=False):
             # Therefore the output string needs to be encoded manually
             # as utf8 bytes before returning.
             return Qtranslate(context, text, None).encode("utf8")
-    else:
-        # Python 2 and Qt4
-        if utf8_decode:
-            # The text is a utf8 string, and since it is Qt4
-            # the translate function uses the 4th parameter
-            # to handle the input encoding.
-            return Qtranslate(context, text, None, _encoding)
-        else:
-            # The text is not a unicode string, and since it is Qt4
-            # the translate function uses the 4th parameter
-            # to handle the encoding.
-            # In this case, the `encoding` is `None`, therefore
-            # the output string needs to be encoded manually
-            # as utf8 bytes before returning.
-            return Qtranslate(context, text, None, _encoding).encode("utf8")
-
+    
 
 # Original code no longer used. It is listed here for reference
 # to show how the different pairings Py2/Qt4, Py3/Qt5, Py2/Qt5, Py3/Qt4

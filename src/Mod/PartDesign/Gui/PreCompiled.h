@@ -95,10 +95,6 @@
 #endif
 
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
 
 #include <QMessageBox>
 #include <QMenu>

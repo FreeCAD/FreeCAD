@@ -29,11 +29,9 @@ set(PartDesignGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
+
     qt5_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
-else()
-    qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
-endif()
+
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui

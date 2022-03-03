@@ -92,10 +92,6 @@
 #include <Standard_PrimitiveTypes.hxx>
 #include <TopoDS_Shape.hxx>
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
 
 #include <qobject.h>
 #include <QRegExp>

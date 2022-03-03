@@ -26,13 +26,10 @@ set(DrawingGui_UIC_SRCS
     TaskOrthoViews.ui
 )
 
-if(BUILD_QT5)
+
     qt5_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
     qt5_wrap_ui(DrawingGui_UIC_HDRS ${DrawingGui_UIC_SRCS})
-else()
-    qt4_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
-    qt4_wrap_ui(DrawingGui_UIC_HDRS ${DrawingGui_UIC_SRCS})
-endif()
+
 
 SET(DrawingGui_SRCS
     ${DrawingGui_SRCS}

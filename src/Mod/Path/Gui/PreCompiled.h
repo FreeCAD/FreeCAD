@@ -72,10 +72,6 @@
 // OCC
 #include <TopExp_Explorer.hxx>
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
 
 // all of Inventor
 #ifndef __InventorAll__

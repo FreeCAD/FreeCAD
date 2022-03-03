@@ -62,11 +62,6 @@
 #endif
 
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
-
 #endif //_PreComp_
 
 #endif // STARTGUI_PRECOMPILED_H

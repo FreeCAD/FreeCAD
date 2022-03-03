@@ -371,14 +371,11 @@ SET(Gui_RES_SRCS
     QSint/actionpanel/schemes.qrc
 )
 
-if (BUILD_QT5)
+
     QT5_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
     QT5_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
-else()
-    QT4_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
-    QT4_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
-endif()
-SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
+
+    SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
 # The command sources
 SET(Command_CPP_SRCS
@@ -781,11 +778,9 @@ set(iis_MOC_HDRS
     iisTaskPanel/src/iistaskheader.h
 )
 
-if (BUILD_QT5)
+
     qt5_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
-else()
-    qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
-endif()
+
 SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 
 SET(qsintActionPanel_SRCS
@@ -823,23 +818,10 @@ set(qsint_MOC_HDRS
     QSint/actionpanel/taskheader_p.h
 )
 
-if(BUILD_QT5)
     qt5_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
-else()
-    qt4_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
-endif()
+
 SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
-#SET(Resource_RCS
-#   Icons/resource.qrc
-#   Language/translation.qrc)
-#qt4_add_resources(Resource_SRCS ${Resource_RCS})
-#SET(Resource_SRCS
-#   ${Resource_SRCS}
-#   Icons/resource.qrc
-#   Language/translation.qrc
-#)
-#SOURCE_GROUP("Resource" FILES ${Resource_SRCS})
 
 # The 3d view
 SET(View3D_CPP_SRCS
@@ -904,11 +886,9 @@ SET(Quarter_MOC_HDR
     Quarter/eventhandlers/EventFilter.h
     Quarter/QuarterWidget.h
 )
-if(BUILD_QT5)
+
     qt5_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
-else()
-    qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
-endif()
+
 
 SET(Quarter_SRCS 
     ${Quarter_CPP_SRC} 
@@ -1199,7 +1179,6 @@ SET(FreeCADGui_SRCS
     MetaTypes.h
     PreCompiled.cpp
     PreCompiled.h
-    Qt4All.h
     Control.h
     SpaceballEvent.h
     PreferencePackManager.h
