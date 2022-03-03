@@ -93,8 +93,6 @@ def find_tools(noobsolete=True):
         QMAKE = "qmake"
     elif (os.system("qmake-qt5 -version") == 0):
         QMAKE = "qmake-qt5"
-    elif (os.system("qmake-qt4 -version") == 0):
-        QMAKE = "qmake-qt4"
     else:
         raise Exception("Cannot find qmake")
     if (os.system("lupdate -version") == 0):
@@ -106,10 +104,6 @@ def find_tools(noobsolete=True):
         LUPDATE = "lupdate-qt5"
         if noobsolete:
             LUPDATE += " -no-obsolete"
-    elif (os.system("lupdate-qt4 -version") == 0):
-        LUPDATE = "lupdate-qt4"
-        if noobsolete:
-            LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
     if (os.system("pyside2-lupdate -version") == 0):

@@ -52,19 +52,17 @@ if(HOMEBREW_PREFIX)
     endforeach(PTH_FILE)
 endif()
 
-if(BUILD_QT5)
-    set(QT_PLUGINS_DIR "${Qt5Core_DIR}/../../../plugins")
-    execute_process(COMMAND "xcode-select" "--print-path"
-        OUTPUT_VARIABLE XCODE_PATH
-        ERROR_QUIET
-        )
-    string(STRIP ${XCODE_PATH} XCODE_PATH)
+set(QT_PLUGINS_DIR "${Qt5Core_DIR}/../../../plugins")
+execute_process(COMMAND "xcode-select" "--print-path"
+    OUTPUT_VARIABLE XCODE_PATH
+    ERROR_QUIET
+    )
+string(STRIP ${XCODE_PATH} XCODE_PATH)
 
-    set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/Current")
+set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/Current")
 
-    # add qt assistant to bundle
-    install(PROGRAMS "${Qt5Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant" DESTINATION ${CMAKE_INSTALL_PREFIX}/MacOS)
-endif(BUILD_QT5)
+# add qt assistant to bundle
+install(PROGRAMS "${Qt5Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant" DESTINATION ${CMAKE_INSTALL_PREFIX}/MacOS)
 
 # add QtWebEngineProcess to bundle
 if(BUILD_WEB)

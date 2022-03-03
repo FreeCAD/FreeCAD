@@ -529,7 +529,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->rootItem->setFlags(Qt::ItemIsEnabled);
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    // causes unexpected drop events (possibly only with Qt4.1.x)
+
     this->setMouseTracking(true); // needed for itemEntered() to work
 
 

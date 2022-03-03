@@ -547,7 +547,6 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 //shouldn't happen. Gestures are not expected to start in the middle of navigation.
                 //we'll consume it, without reacting.
                 processed=true;
-                //This does, unfortunately, happen on regular basis for pan gesture on Windows8.1+Qt4.8
             }
         }
 

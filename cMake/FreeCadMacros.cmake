@@ -175,11 +175,6 @@ macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
 endmacro(generate_from_any)
 
 
-# generates the ui -> cpp h files
-#macro(qt4_wrap_ui infiles )
-#
-#endmacro(qt4_wrap_ui)
-
 
 MACRO(ADD_MSVC_PRECOMPILED_HEADER TargetName PrecompiledHeader PrecompiledSource SourcesVar)
   IF(MSVC)
