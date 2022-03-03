@@ -143,15 +143,15 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
 
         if (prop == &ScaleType) {
-            double newScale = getScale();
             if (ScaleType.isValue("Automatic")) {
                 //Nothing in particular
             } else if (ScaleType.isValue("Page")) {
-                newScale = page->Scale.getValue();
+                double newScale = page->Scale.getValue();
                 if(std::abs(getScale() - newScale) > FLT_EPSILON) {
                     Scale.setValue(newScale);
                 }
             }
+            updateChildrenScale();
         }
         if (prop == &Rotation) {
             if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
@@ -1008,8 +1008,8 @@ void DrawProjGroup::updateChildrenScale(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else if(view->Scale.getValue() != Scale.getValue()) {
-            view->Scale.setValue(Scale.getValue());
+        } else {
+            view->Scale.setValue(getScale());
             view->recomputeFeature();
         }
     }
@@ -1063,7 +1063,7 @@ void DrawProjGroup::updateViews(void) {
         auto view(dynamic_cast<DrawProjGroupItem *>(it));
         if (view == nullptr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
+            Base::Console().Log("PROBLEM - DPG::updateViews - non DPGI entry in Views! %s\n",
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }

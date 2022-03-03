@@ -32,6 +32,7 @@
 
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Exception.h>
@@ -87,6 +88,8 @@ DrawView::DrawView(void):
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
+
+    setScaleAttribute();
 }
 
 DrawView::~DrawView()
@@ -148,7 +151,6 @@ void DrawView::onChanged(const App::Property* prop)
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
-                       Scale.purgeTouched();
                     }
                 }
             } else if ( ScaleType.isValue("Custom") ) {
@@ -160,7 +162,6 @@ void DrawView::onChanged(const App::Property* prop)
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
                         Scale.setValue(newScale);
-                        Scale.purgeTouched();
                     }
                 }
             }
@@ -237,6 +238,7 @@ QRectF DrawView::getRect() const
 void DrawView::onDocumentRestored()
 {
     handleXYLock();
+    setScaleAttribute();
     DrawView::execute();
 }
 /**
@@ -409,10 +411,15 @@ void DrawView::setPosition(double x, double y, bool force)
     }
 }
 
-//TODO: getScale is no longer needed and could revert to Scale.getValue
 double DrawView::getScale(void) const
 {
     auto result = Scale.getValue();
+    if (ScaleType.isValue("Page")) {
+        auto page = findParentPage();
+        if (page) {
+            result = page->Scale.getValue();
+        }
+    }
     if (!(result > 0.0)) {
         result = 1.0;
         Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
@@ -536,6 +543,16 @@ bool DrawView::keepUpdated(void)
         result = true;
     }
     return result;
+}
+
+void DrawView::setScaleAttribute()
+{
+    if (ScaleType.isValue("Page") ||
+        ScaleType.isValue("Automatic")) {
+        Scale.setStatus(App::Property::ReadOnly,true);
+    } else {
+        Scale.setStatus(App::Property::ReadOnly, false);
+    }
 }
 
 int DrawView::prefScaleType(void)
