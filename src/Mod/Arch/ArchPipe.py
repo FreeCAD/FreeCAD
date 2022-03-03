@@ -407,6 +407,9 @@ class _ArchPipeConnector(ArchComponent.Component):
         else:
             v2 = wires[1].Vertexes[-2].Point.sub(wires[1].Vertexes[-1].Point).normalize()
         p = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
+        # If the pipe has a non-zero WallThickness p is a shape instead of a wire:
+        if p.ShapeType != "Wire":
+            p = p.Wires
         p = Part.Face(p)
         if len(obj.Pipes) == 2:
             if obj.ConnectorType != "Corner":
