@@ -3266,6 +3266,147 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     return -1;
 }
 
+int SketchObject::join(int geoId1, Sketcher::PointPos posId1,
+                       int geoId2, Sketcher::PointPos posId2)
+{
+    // No need to check input data validity as this is an sketchobject managed operation
+
+    Base::StateLocker lock(managedoperation, true);
+
+    if (Sketcher::PointPos::start != posId1 && Sketcher::PointPos::end != posId1 &&
+        Sketcher::PointPos::start != posId2 && Sketcher::PointPos::end != posId2) {
+        THROWM(ValueError,"Invalid position(s): points must be start or end points of a curve.");
+        return -1;
+    }
+
+    if (geoId1 == geoId2) {
+        THROWM(ValueError,"Connecting the end points of the same curve is not yet supported.");
+        return -1;
+    }
+
+    if (geoId1 < 0 || geoId1 > getHighestCurveIndex() ||
+        geoId2 < 0 || geoId2 > getHighestCurveIndex()) {
+        return -1;
+    }
+
+    // get the old splines
+    auto* geo1 = getGeometry(geoId1);
+    auto* geo2 = getGeometry(geoId2);
+
+    if (GeometryFacade::getConstruction(geo1) != GeometryFacade::getConstruction(geo2)) {
+        THROWM(ValueError,"Cannot join construction and non-construction geometries.");
+        return -1;
+    }
+
+    // TODO: make both curves b-splines here itself
+    if (geo1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+        THROWM(ValueError,"Please convert both curves to NURBS before attempting to join them.");
+        return -1;
+    }
+
+    if (geo2->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+        THROWM(ValueError,"Please convert both curves to NURBS before attempting to join them.");
+        return -1;
+    }
+
+    // TODO: is there a cleaner way to get our mutable bsp's?
+    // we need the splines to be mutable because we may reverse them
+    // and/or change their degree
+    auto* constbsp1 = static_cast<const Part::GeomBSplineCurve *>(geo1);
+    auto* constbsp2 = static_cast<const Part::GeomBSplineCurve *>(geo2);
+    const Handle(Geom_BSplineCurve) curve1 = Handle(Geom_BSplineCurve)::DownCast(constbsp1->handle());
+    const Handle(Geom_BSplineCurve) curve2 = Handle(Geom_BSplineCurve)::DownCast(constbsp2->handle());
+    std::unique_ptr<Part::GeomBSplineCurve> bsp1(new Part::GeomBSplineCurve(curve1));
+    std::unique_ptr<Part::GeomBSplineCurve> bsp2(new Part::GeomBSplineCurve(curve2));
+
+    if (bsp1->isPeriodic() || bsp2->isPeriodic()) {
+        THROWM(ValueError,"It is only possible to join non-periodic curves.");
+        return -1;
+    }
+
+    // reverse the splines if needed: join end of 1st to start of 2nd
+    if (Sketcher::PointPos::start == posId1)
+        bsp1->reverse();
+    if (Sketcher::PointPos::end == posId2)
+        bsp2->reverse();
+
+    // ensure the degrees of both curves are the same
+    if (bsp1->getDegree() < bsp2->getDegree())
+        bsp1->increaseDegree(bsp2->getDegree());
+    else if (bsp2->getDegree() < bsp1->getDegree())
+        bsp2->increaseDegree(bsp1->getDegree());
+
+    // TODO: set up vectors for new poles, knots, mults
+    std::vector<Base::Vector3d> poles1 = bsp1->getPoles();
+    std::vector<double> weights1 = bsp1->getWeights();
+    std::vector<double> knots1 = bsp1->getKnots();
+    std::vector<int> mults1 = bsp1->getMultiplicities();
+    std::vector<Base::Vector3d> poles2 = bsp2->getPoles();
+    std::vector<double> weights2 = bsp2->getWeights();
+    std::vector<double> knots2 = bsp2->getKnots();
+    std::vector<int> mults2 = bsp2->getMultiplicities();
+
+    std::vector<Base::Vector3d> newPoles(std::move(poles1));
+    std::vector<double> newWeights(std::move(weights1));
+    std::vector<double> newKnots(std::move(knots1));
+    std::vector<int> newMults(std::move(mults1));
+
+    poles2.erase(poles2.begin());
+    newPoles.insert(newPoles.end(),
+                    std::make_move_iterator(poles2.begin()),
+                    std::make_move_iterator(poles2.end()));
+
+    // TODO: Weights might need to be scaled
+    weights2.erase(weights2.begin());
+    newWeights.insert(newWeights.end(),
+                      std::make_move_iterator(weights2.begin()),
+                      std::make_move_iterator(weights2.end()));
+
+    // knots of the second spline come after all of the first
+    double offset = newKnots.back() - knots2.front();
+    knots2.erase(knots2.begin());
+    for (auto& knot : knots2)
+        knot += offset;
+    newKnots.insert(newKnots.end(),
+                    std::make_move_iterator(knots2.begin()),
+                    std::make_move_iterator(knots2.end()));
+
+    // end knots can have a multiplicity of (degree + 1)
+    if (bsp1->getDegree() < newMults.back())
+        newMults.back() = bsp1->getDegree();
+    mults2.erase(mults2.begin());
+    newMults.insert(newMults.end(),
+                      std::make_move_iterator(mults2.begin()),
+                      std::make_move_iterator(mults2.end()));
+
+    Part::GeomBSplineCurve* newSpline =
+        new Part::GeomBSplineCurve(newPoles, newWeights, newKnots, newMults,
+                                   bsp1->getDegree(), false, true);
+
+    int newGeoId = addGeometry(newSpline);
+
+    if (newGeoId < 0) {
+        THROWM(ValueError,"Failed to create joined curve.");
+        return -1;
+    }
+    else {
+        exposeInternalGeometry(newGeoId);
+        setConstruction(newGeoId, GeometryFacade::getConstruction(geo1));
+
+        // TODO: transfer constraints on the non-connected ends
+        auto otherPosId1 = (Sketcher::PointPos::start == posId1) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+        auto otherPosId2 = (Sketcher::PointPos::start == posId2) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+
+        transferConstraints(geoId1, otherPosId1, newGeoId, PointPos::start, true);
+        transferConstraints(geoId2, otherPosId2, newGeoId, PointPos::end, true);
+
+        delGeometries({geoId1, geoId2});
+        return 0;
+    }
+
+    return -1;
+}
+
 bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn) const
 {
     if (rsn)

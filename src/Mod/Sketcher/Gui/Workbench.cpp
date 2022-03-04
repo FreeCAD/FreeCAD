@@ -423,7 +423,8 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_BSplineIncreaseKnotMultiplicity"
             << "Sketcher_BSplineDecreaseKnotMultiplicity"
-            << "Sketcher_BSplineInsertKnot";
+            << "Sketcher_BSplineInsertKnot"
+            << "Sketcher_JoinCurves";
 }
 
 template <>
@@ -434,7 +435,8 @@ inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bsp
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_CompModifyKnotMultiplicity"
-            << "Sketcher_BSplineInsertKnot";
+            << "Sketcher_BSplineInsertKnot"
+            << "Sketcher_JoinCurves";
 }
 
 template <typename T>
