@@ -688,6 +688,35 @@ void StdCmdPythonWebsite::activated(int iMsg)
     OpenURLInBrowser("https://www.python.org");
 }
 
+
+//===========================================================================
+// Std_ReportBug
+//===========================================================================
+
+DEF_STD_CMD(StdCmdReportBug)
+
+StdCmdReportBug::StdCmdReportBug()
+  :Command("Std_ReportBug")
+{
+    sGroup        = "Help";
+    sMenuText     = QT_TR_NOOP("Report a bug");
+    sToolTipText  = QT_TR_NOOP("Report a bug or suggest a feature");
+    sWhatsThis    = "Std_ReportBug";
+    sStatusTip    = QT_TR_NOOP("Report a bug or suggest a feature");
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdReportBug::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("IssuesPage", "https://github.com/FreeCAD/FreeCAD/issues");
+    hURLGrp->SetASCII("IssuesPage", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+
 //===========================================================================
 // Std_MeasurementSimple
 //===========================================================================
@@ -931,6 +960,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
     rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
+    rcCmdMgr.addCommand(new StdCmdReportBug());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
