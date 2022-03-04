@@ -218,6 +218,11 @@ class TaskPanelPage(object):
     def _installTCUpdate(self):
         return hasattr(self.form, "toolController")
 
+    def setParent(self, parent):
+        '''setParent() ... used to transfer parent object link to child class.
+        Do not overwrite.'''
+        self.parent = parent
+
     def onDirtyChanged(self, callback):
         """onDirtyChanged(callback) ... set callback when dirty state changes."""
         self.signalDirtyChanged = callback
@@ -1166,6 +1171,7 @@ class TaskPanel(object):
             self.form = forms
 
         self.selectionFactory = selectionFactory
+        self.obj = obj
         self.isdirty = deleteOnReject
         self.visibility = obj.ViewObject.Visibility
         obj.ViewObject.Visibility = True
@@ -1372,7 +1378,7 @@ def Create(res):
         obj = res.objFactory(res.name, obj=None, parentJob=res.job)
         if obj.Proxy:
             obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
-            obj.ViewObject.Visibility = False
+            obj.ViewObject.Visibility = True
             FreeCAD.ActiveDocument.commitTransaction()
 
             obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
