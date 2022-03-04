@@ -149,7 +149,6 @@ protected:
     void unsetCursor(void);
     void applyCursor(void);
     void applyCursor(QCursor &newCursor);
-    void setCrosshairColor();
     unsigned long getCrosshairColor();
     qreal devicePixelRatio();
     void setCrosshairCursor(const char* svgName);

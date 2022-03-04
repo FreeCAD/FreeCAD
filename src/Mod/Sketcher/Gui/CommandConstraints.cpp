@@ -675,8 +675,6 @@ protected:
     { return isCreateGeoActive(getActiveGuiDocument()); }
 };
 
-extern char cursor_crosshair_color[];
-
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:

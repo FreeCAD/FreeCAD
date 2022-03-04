@@ -192,26 +192,6 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 /* Sketch commands =======================================================*/
 
-static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
-char cursor_crosshair_color[12];
-
-void DrawSketchHandler::setCrosshairColor()
-{
-    unsigned long color = getCrosshairColor();
-    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
-}
-
-unsigned long DrawSketchHandler::getCrosshairColor()
-{
-    unsigned long color = 0xFFFFFFFF; // white
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
-    // from rgba to rgb
-    color = (color >> 8) & 0xFFFFFF;
-    return color;
-}
-
 class DrawSketchHandlerLine: public DrawSketchHandler
 {
 public:
@@ -254,6 +234,7 @@ public:
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
+
             Mode = STATUS_SEEK_Second;
         }
         else {

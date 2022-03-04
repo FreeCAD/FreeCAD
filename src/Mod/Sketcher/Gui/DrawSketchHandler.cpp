@@ -169,6 +169,17 @@ int DrawSketchHandler::getHighestCurveIndex(void)
     return sketchgui->getSketchObject()->getHighestCurveIndex();
 }
 
+unsigned long DrawSketchHandler::getCrosshairColor()
+{
+    unsigned long color = 0xFFFFFFFF; // white
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
+    // from rgba to rgb
+    color = (color >> 8) & 0xFFFFFF;
+    return color;
+}
+
 void DrawSketchHandler::setCrosshairCursor(const char* svgName) {
     QString cursorName = QString::fromLatin1(svgName);
     const unsigned long defaultCrosshairColor = 0xFFFFFF;
