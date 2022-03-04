@@ -1196,6 +1196,99 @@ bool CmdSketcherInsertKnot::isActive()
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
 
+DEF_STD_CMD_A(CmdSketcherJoinCurves)
+
+CmdSketcherJoinCurves::CmdSketcherJoinCurves()
+    : Command("Sketcher_JoinCurves")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = "Sketcher";
+    sMenuText       = QT_TR_NOOP("Join curves");
+    sToolTipText    = QT_TR_NOOP("Join two curves at selected end points");
+    sWhatsThis      = "Sketcher_JoinCurves";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_JoinCurves";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherJoinCurves::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // TODO: confirm whether or not we need to check for OCC version
+#if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(),
+                         QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC "
+                                     "does not support knot operation. "
+                                     "You need 6.9.0 or higher"));
+    return;
+#endif
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.size() == 0) {
+        // Check that something is selected
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
+                             QObject::tr("Nothing is selected. Please select end points of curves."));
+        return;
+    }
+
+    if (SubNames.size() != 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Two end points should be selected."));
+        return;
+    }
+
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+
+    int GeoIds[2];
+    Sketcher::PointPos PosIds[2];
+    getIdsFromName(SubNames[0], Obj, GeoIds[0], PosIds[0]);
+    getIdsFromName(SubNames[1], Obj, GeoIds[1], PosIds[1]);
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
+    bool applied = false;
+
+    try {
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "join(%d, %d, %d, %d) ",
+                              GeoIds[0], static_cast<int>(PosIds[0]),
+                              GeoIds[1], static_cast<int>(PosIds[1]));
+        applied = true;
+
+        // Warning: GeoId list will have changed
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+                             QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+        getSelection().clearSelection();
+    }
+
+    if (applied)
+        Gui::Command::commitCommand();
+    else
+        Gui::Command::abortCommand();
+
+    tryAutoRecomputeIfNotSolve(Obj);
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherJoinCurves::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+}
+
 void CreateSketcherCommandsBSpline()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1213,4 +1306,5 @@ void CreateSketcherCommandsBSpline()
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherInsertKnot());
+    rcCmdMgr.addCommand(new CmdSketcherJoinCurves());
 }

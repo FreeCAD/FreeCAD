@@ -216,6 +216,7 @@
         <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
         <file>icons/splines/Sketcher_BSplineInsertKnot.svg</file>
+        <file>icons/splines/Sketcher_JoinCurves.svg</file>
         <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
         <file>icons/splines/Sketcher_BSplinePoleWeight.svg</file>
         <file>icons/splines/Sketcher_BSplinePolygon.svg</file>

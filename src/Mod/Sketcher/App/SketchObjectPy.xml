@@ -222,6 +222,11 @@ If there is no such constraint an exception is raised.
         <UserDocu>split a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="join">
+      <Documentation>
+        <UserDocu>join two curves at the given end points</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addSymmetric">
       <Documentation>
         <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>

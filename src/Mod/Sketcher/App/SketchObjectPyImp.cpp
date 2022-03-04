@@ -1169,6 +1169,28 @@ PyObject* SketchObjectPy::split(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::join(PyObject *args)
+{
+    int GeoId1(Sketcher::GeoEnum::GeoUndef), GeoId2(Sketcher::GeoEnum::GeoUndef);
+    int PosId1 = static_cast<int>(Sketcher::PointPos::none),
+        PosId2 = static_cast<int>(Sketcher::PointPos::none);
+
+    if (!PyArg_ParseTuple(args, "iiii", &GeoId1, &PosId1, &GeoId2, &PosId2))
+        return 0;
+
+    if (this->getSketchObjectPtr()->join(GeoId1, (Sketcher::PointPos) PosId1,
+                                         GeoId2, (Sketcher::PointPos) PosId2)) {
+        std::stringstream str;
+        str << "Not able to join the curves with end points: ("
+            << GeoId1 << ", " << PosId1 << "), ("
+            << GeoId2 << ", " << PosId2 << ")";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::addSymmetric(PyObject *args)
 {
     PyObject *pcObj;
