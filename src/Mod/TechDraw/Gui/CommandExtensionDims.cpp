@@ -2203,9 +2203,9 @@ CmdTechDrawExtensionCustomizeFormat::CmdTechDrawExtensionCustomizeFormat()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Customize format label");
-    sToolTipText    = QT_TR_NOOP("Select a dimension or a balloon\n\
-    - click this tool\n\
+    sMenuText       = QT_TR_NOOP("Customize Format Label");
+    sToolTipText    = QT_TR_NOOP("Select a dimension or a balloon<br>\
+    - click this tool<br>\
     - edit the Format field, using the keyboard and/or the special buttons");
     sWhatsThis      = "TechDraw_ExtensionCustomizeFormat";
     sStatusTip      = sToolTipText;
