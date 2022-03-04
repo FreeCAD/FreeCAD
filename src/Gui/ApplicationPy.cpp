@@ -31,6 +31,7 @@
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <xercesc/util/XMLString.hpp>
 #endif
 
 #include <boost/regex.hpp>

@@ -25,6 +25,8 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "Extension.h"
 #include "ExtensionContainer.h"

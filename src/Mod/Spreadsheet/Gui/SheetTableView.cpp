@@ -37,6 +37,8 @@
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Gui/CommandT.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>

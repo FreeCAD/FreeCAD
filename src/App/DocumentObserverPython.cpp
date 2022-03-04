@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <CXX/Objects.hxx>
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"

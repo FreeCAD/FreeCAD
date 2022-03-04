@@ -34,6 +34,7 @@
 #include <Base/Interpreter.h>
 #include <Base/QuantityPy.h>
 #include <Base/Console.h>
+#include <Base/Reader.h>
 #include <CXX/Objects.hxx>
 
 #include "ObjectIdentifier.h"

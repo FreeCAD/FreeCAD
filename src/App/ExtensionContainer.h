@@ -24,9 +24,6 @@
 #ifndef APP_EXTENSIONCONTAINER_H
 #define APP_EXTENSIONCONTAINER_H
 
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-
 #include "PropertyContainer.h"
 
 
