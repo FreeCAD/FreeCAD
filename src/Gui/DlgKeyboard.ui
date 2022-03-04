@@ -201,7 +201,7 @@ be treated as shorctcut key sequence 'F, F'.</string>
             </size>
            </property>
            <property name="toolTip">
-            <string>This list shows commands having the same shortcut in the priority from hight
+            <string>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest prioirty will be triggered.</string>
            </property>

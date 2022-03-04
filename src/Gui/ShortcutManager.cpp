@@ -235,7 +235,7 @@ bool ShortcutManager::checkShortcut(QObject *o, const QKeySequence &key)
         pendingActions.emplace_back(action, key.count(), 0);
     }
     if (flush) {
-        // We'll flush now because there is no poential match with further
+        // We'll flush now because there is no potential match with further
         // keystrokes, so no need to wait for timer.
         lastFocus = nullptr;
         onTimer();
