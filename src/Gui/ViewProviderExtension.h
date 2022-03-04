@@ -24,7 +24,8 @@
 #ifndef GUI_VIEWPROVIDEREXTENSION_H
 #define GUI_VIEWPROVIDEREXTENSION_H
 
-#include "App/Extension.h"
+#include <App/Extension.h>
+#include <App/PropertyPythonObject.h>
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -114,28 +115,6 @@ private:
     bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
-
-/**
- * Generic Python extension class which allows to behave every extension
- * derived class as Python extension -- simply by subclassing.
- */
-template <class ExtensionT>
-class ViewProviderExtensionPythonT : public ExtensionT
-{
-    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
-
-public:
-    typedef ExtensionT Inherited;
-
-    ViewProviderExtensionPythonT() {
-        ExtensionT::m_isPythonExtension = true;
-        ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
-    }
-    virtual ~ViewProviderExtensionPythonT() {
-    }
-};
-
-typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;
 
 } //Gui
 

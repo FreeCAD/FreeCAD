@@ -31,6 +31,7 @@
 # include <QMessageBox>
 #endif
 
+#include <Base/Interpreter.h>
 #include <App/DocumentObject.h>
 #include <Gui/Command.h>
 #include <Gui/Selection.h>

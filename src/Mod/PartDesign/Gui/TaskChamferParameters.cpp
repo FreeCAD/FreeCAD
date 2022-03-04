@@ -30,6 +30,7 @@
 # include <QMessageBox>
 #endif
 
+#include <Base/Interpreter.h>
 #include <App/DocumentObject.h>
 #include <Gui/Selection.h>
 #include <Gui/Tools.h>

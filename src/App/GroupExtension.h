@@ -24,8 +24,9 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
-#include "DocumentObject.h"
-#include "DocumentObjectExtension.h"
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectExtension.h>
+#include <App/ExtensionPython.h>
 #include <vector>
 
 

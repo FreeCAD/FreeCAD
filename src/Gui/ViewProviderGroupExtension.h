@@ -25,7 +25,7 @@
 #define GUI_VIEWPROVIDERGROUPEXTENSION_H
 
 #include <App/Extension.h>
-#include "ViewProviderExtension.h"
+#include "ViewProviderExtensionPython.h"
 
 namespace Gui
 {

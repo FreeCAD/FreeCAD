@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
+#include <App/ExtensionPython.h>
 #include <App/PropertyStandard.h>
 #include <App/Material.h>
 

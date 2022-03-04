@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,32 +21,36 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERCOSMETICEXTENSION_H
-#define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
+#ifndef GUI_VIEWPROVIDEREXTENSIONPYTHON_H
+#define GUI_VIEWPROVIDEREXTENSIONPYTHON_H
 
-#include <App/Extension.h>
-#include <Gui/ViewProviderExtensionPython.h>
+#include "ViewProviderExtension.h"
+#include <App/PropertyPythonObject.h>
 
-namespace TechDrawGui
+namespace Gui {
+
+/**
+ * Generic Python extension class which allows to behave every extension
+ * derived class as Python extension -- simply by subclassing.
+ */
+template <class ExtensionT>
+class ViewProviderExtensionPythonT : public ExtensionT
 {
-
-class TechDrawGuiExport ViewProviderCosmeticExtension : public Gui::ViewProviderExtension
-{
-    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderCosmeticExtension);
+    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
 
 public:
-    /// Constructor
-    ViewProviderCosmeticExtension(void);
-    virtual ~ViewProviderCosmeticExtension() = default;
+    typedef ExtensionT Inherited;
 
-    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
-
-    virtual void extensionUpdateData(const App::Property*) override;
-
+    ViewProviderExtensionPythonT() {
+        ExtensionT::m_isPythonExtension = true;
+        ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
+    }
+    virtual ~ViewProviderExtensionPythonT() {
+    }
 };
 
-typedef Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension> ViewProviderCosmeticExtensionPython;
+typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;
 
-} //namespace TechDrawGui
+} //Gui
 
-#endif // GUI_VIEWPROVIDERCOSMETICEXTENSION_H
+#endif // GUI_VIEWPROVIDEREXTENSIONPYTHON_H
