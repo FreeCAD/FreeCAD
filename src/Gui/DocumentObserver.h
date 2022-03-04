@@ -23,6 +23,7 @@
 #ifndef GUI_DOCUMENTOBSERVER_H
 #define GUI_DOCUMENTOBSERVER_H
 
+#include <Base/BaseClass.h>
 #include <boost_signals2.hpp>
 
 
