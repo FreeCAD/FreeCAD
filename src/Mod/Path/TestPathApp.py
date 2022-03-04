@@ -46,6 +46,7 @@ from PathTests.TestPathRotationGenerator import TestPathRotationGenerator
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathStock import TestPathStock
 from PathTests.TestPathThreadMilling import TestPathThreadMilling
+from PathTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
 from PathTests.TestPathTool import TestPathTool
 from PathTests.TestPathToolBit import TestPathToolBit
 from PathTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
@@ -77,6 +78,7 @@ False if TestPathRotationGenerator.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathStock.__name__ else True
 False if TestPathThreadMilling.__name__ else True
+False if TestPathThreadMillingGenerator.__name__ else True
 False if TestPathTool.__name__ else True
 False if TestPathToolBit.__name__ else True
 False if TestPathToolChangeGenerator.__name__ else True
