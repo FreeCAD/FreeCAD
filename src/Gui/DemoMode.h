@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DEMOMODE_H
 #define GUI_DIALOG_DEMOMODE_H
 
-#include <Inventor/SbLinear.h>
 #include <QDialog>
+
 
 class QTimer;
 class SoCamera;
