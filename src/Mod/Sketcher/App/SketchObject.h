@@ -289,6 +289,14 @@ public:
     int extend(int geoId, double increment, PointPos endPoint);
     /// split a curve
     int split(int geoId, const Base::Vector3d &point);
+    /*!
+      \brief Join one or two curves at the given end points
+      \details The combined curve will be a b-spline
+      \param geoId1, posId1, geoId2, posId2: the end points to join
+      \retval - 0 on success, -1 on failure
+    */
+    int join(int geoId1, Sketcher::PointPos posId1,
+             int geoId2, Sketcher::PointPos posId2);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::PointPos::none);
