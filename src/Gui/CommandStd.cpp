@@ -20,46 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
-# include <QSharedPointer>
 # include <QWhatsThis>
-# include <QDesktopServices>
-# include <QUrl>
-# include <boost_bind_bind.hpp>
 #endif
 
-#include <boost/scoped_ptr.hpp>
-
+#include <App/Document.h>
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
-#include <App/Document.h>
-#include "Action.h"
-#include "Application.h"
-#include "Document.h"
-#include "Splashscreen.h"
-#include "Command.h"
-#include "MainWindow.h"
-#include "WhatsThis.h"
-#include "DlgUndoRedo.h"
-#include "BitmapFactory.h"
-#include "View.h"
 
+#include "Action.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "DlgCustomizeImp.h"
 #include "DlgParameterImp.h"
 #include "DlgPreferencesImp.h"
-#include "DlgCustomizeImp.h"
-#include "Widgets.h"
-#include "OnlineDocumentation.h"
-#include "GuiConsole.h"
-#include "WorkbenchManager.h"
-#include "Workbench.h"
-#include "Selection.h"
 #include "DlgUnitsCalculatorImp.h"
+#include "GuiConsole.h"
+#include "MainWindow.h"
+#include "OnlineDocumentation.h"
+#include "Selection.h"
+#include "Splashscreen.h"
+#include "WhatsThis.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+
 
 using Base::Console;
 using Base::Sequencer;

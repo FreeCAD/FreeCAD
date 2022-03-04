@@ -27,28 +27,23 @@
 # include <QMessageBox>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include "Command.h"
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/Link.h>
+#include <Base/Exception.h>
+
 #include "Action.h"
 #include "Application.h"
-#include "MainWindow.h"
-#include "Tree.h"
+#include "Command.h"
 #include "Document.h"
+#include "MainWindow.h"
 #include "Selection.h"
-#include "WaitCursor.h"
-#include "BitmapFactory.h"
+#include "Tree.h"
 #include "ViewProviderDocumentObject.h"
+#include "WaitCursor.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
-#include <App/Link.h>
 
-FC_LOG_LEVEL_INIT("CommandLink",true,true)
+FC_LOG_LEVEL_INIT("CommandLink", true, true)
 
 using namespace Gui;
 

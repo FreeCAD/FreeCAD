@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Command.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "DlgMacroExecuteImp.h"
 #include "DlgMacroRecordImp.h"
 #include "Macro.h"
+#include "MainWindow.h"
 #include "PythonDebugger.h"
+
 
 using namespace Gui;
 

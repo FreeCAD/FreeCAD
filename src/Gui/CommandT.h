@@ -24,14 +24,14 @@
 #ifndef GUI_COMMAND_T_H
 #define GUI_COMMAND_T_H
 
-#include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Gui/Command.h>
-#include <exception>
 #include <type_traits>
 #include <typeinfo>
 #include <boost/format.hpp>
+
 
 namespace Gui {
 

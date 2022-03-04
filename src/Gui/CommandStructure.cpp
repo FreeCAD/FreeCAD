@@ -24,15 +24,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#include <QMessageBox>
 #endif
 
-#include "App/Part.h"
 #include "App/Document.h"
+
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"
-#include "MDIView.h"
 #include "ViewProviderDocumentObject.h"
 
 
