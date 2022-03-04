@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #include <stdio.h>
-#include <cmath>
 
 #include <QByteArray>
 #include <QDockWidget>
@@ -35,11 +33,12 @@
 #include <QFileIconProvider>
 #include <QUrlQuery>
 
-#include "DownloadItem.h"
 #include "DownloadManager.h"
 #include "ui_DownloadManager.h"
 #include "DockWindowManager.h"
+#include "DownloadItem.h"
 #include "MainWindow.h"
+
 
 using namespace Gui::Dialog;
 

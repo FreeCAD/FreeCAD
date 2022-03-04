@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DOWNLOADITEM_H
 #define GUI_DIALOG_DOWNLOADITEM_H
 
 #include <QBasicTimer>
 #include <QElapsedTimer>
 #include <QFile>
+#include <QLabel>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QTableView>
 #include <QTime>
 #include <QUrl>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
-#include <QLabel>
-#include <QTableView>
+
 
 class AutoSaver;
 class QFileIconProvider;

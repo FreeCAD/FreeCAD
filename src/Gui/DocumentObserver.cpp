@@ -28,11 +28,12 @@
 #endif
 
 #include <functional>
+
+#include "DocumentObserver.h"
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
-#include "DocumentObserver.h"
-#include <App/Document.h>
+
 
 using namespace Gui;
 namespace sp = std::placeholders;

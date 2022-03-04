@@ -20,26 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <algorithm>
-# include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
 #endif
 
-#include <boost/unordered_set.hpp>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
 
 #include "DocumentModel.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;

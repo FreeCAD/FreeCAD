@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCUMENT_H
 #define GUI_DOCUMENT_H
-
-#include "MDIView.h"
 
 #include <list>
 #include <map>
 #include <string>
 
-#include <Base/Persistence.h>
 #include <App/Document.h>
+#include <Base/Persistence.h>
 
+#include "MDIView.h"
 #include "Tree.h"
+
 
 class SoNode;
 class SoPath;

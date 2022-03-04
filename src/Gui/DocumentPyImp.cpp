@@ -26,13 +26,11 @@
 # include <sstream>
 #endif
 
+#include <App/Document.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 
-#include <App/Document.h>
-
 #include "Application.h"
-#include "Document.h"
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
 
