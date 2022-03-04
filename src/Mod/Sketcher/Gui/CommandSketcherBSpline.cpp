@@ -1054,7 +1054,7 @@ public:
     {
         Q_UNUSED(onSketchPos);
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot (incomplete)"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
 
         bool applied = false;
         boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
