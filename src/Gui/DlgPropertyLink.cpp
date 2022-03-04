@@ -39,6 +39,7 @@
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObserver.h>
+#include <App/ObjectIdentifier.h>
 #include <App/PropertyPythonObject.h>
 
 #include "Document.h"

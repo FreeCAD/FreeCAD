@@ -36,6 +36,7 @@
 
 #include <App/AutoTransaction.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
 #include <App/GeoFeature.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>

@@ -28,7 +28,7 @@
 #include <boost_signals2.hpp>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
-#include <App/Expression.h>
+#include <App/PropertyLinks.h>
 #include <set>
 
 namespace Base {
@@ -42,6 +42,7 @@ class DocumentObject;
 class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
+using ExpressionPtr = std::unique_ptr<Expression>;
 
 class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
