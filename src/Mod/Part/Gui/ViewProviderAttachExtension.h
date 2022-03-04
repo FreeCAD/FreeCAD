@@ -25,7 +25,7 @@
 #define GUI_VIEWPROVIDERATTACHEXTENSION_H
 
 #include <App/Extension.h>
-#include <Gui/ViewProviderExtension.h>
+#include <Gui/ViewProviderExtensionPython.h>
 
 namespace PartGui
 {

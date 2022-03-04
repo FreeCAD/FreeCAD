@@ -31,6 +31,7 @@
 
 #include "Extension.h"
 #include "ExtensionContainer.h"
+#include "ExtensionPython.h"
 #include <ExtensionPy.h>
 
 

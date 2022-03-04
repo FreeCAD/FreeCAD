@@ -27,6 +27,7 @@
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
 
+#include <App/ExtensionPython.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
 #include <App/GeoFeature.h>

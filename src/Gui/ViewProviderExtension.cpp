@@ -30,6 +30,7 @@
 
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtensionPy.h"
+#include "ViewProviderExtensionPython.h"
 
 using namespace Gui;
 
