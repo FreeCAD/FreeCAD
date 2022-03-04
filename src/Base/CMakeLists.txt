@@ -254,6 +254,7 @@ SET(FreeCADBase_CPP_SRCS
     Rotation.cpp
     RotationPyImp.cpp
     Sequencer.cpp
+    SmartPtrPy.cpp
     Stream.cpp
     Swap.cpp
     ${SWIG_SRCS}
@@ -312,6 +313,7 @@ SET(FreeCADBase_HPP_SRCS
     Reader.h
     Rotation.h
     Sequencer.h
+    SmartPtrPy.h
     Stream.h
     Swap.h
     ${SWIG_HEADERS}

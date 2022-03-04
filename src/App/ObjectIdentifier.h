@@ -30,10 +30,11 @@
 #include <string>
 #include <vector>
 #include <boost/any.hpp>
-#include <CXX/Objects.hxx>
 #include <FCConfig.h>
 
-
+namespace Py {
+class Object;
+}
 namespace App
 {
 

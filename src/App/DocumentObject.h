@@ -30,6 +30,7 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <Base/Matrix.h>
+#include <Base/SmartPtrPy.h>
 
 #include <bitset>
 #include <unordered_map>
@@ -609,7 +610,7 @@ protected:
 
      /// python object of this class and all descendent
 protected: // attributes
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
 
