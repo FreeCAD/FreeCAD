@@ -333,6 +333,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
             // TODO: is it necessary to make sure the item has no pending commit?
             item->setPropertyData(jt->second);
         }
+        else
+            item->updateData();
     }
 
     // Third step, signal item insertion and movement.
