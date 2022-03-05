@@ -31,13 +31,13 @@
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <xercesc/util/XMLString.hpp>
 #endif
 
 #include <boost/regex.hpp>
 #include <CXX/Objects.hxx>
 #include <Inventor/MarkerBitmaps.h>
 #include <xercesc/util/TranscodingException.hpp>
+#include <xercesc/util/XMLString.hpp>
 
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
