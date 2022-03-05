@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifdef __GNUC__
 # include <unistd.h>
@@ -28,17 +27,13 @@
 
 #include <sstream>
 
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentObject.h>
 #include <Base/Interpreter.h>
-#include <CXX/Objects.hxx>
 
 #include "Selection.h"
 #include "SelectionFilter.h"
-//#include "SelectionFilterPy.h"
-#include "Application.h"
+
 
 using namespace Gui;
 
@@ -49,7 +44,6 @@ using namespace Gui;
 # pragma warning(disable : 4065)
 # pragma warning(disable : 4335) // disable MAC file format warning on VC
 #endif
-
 
 
 SelectionFilterGate::SelectionFilterGate(const char* filter)

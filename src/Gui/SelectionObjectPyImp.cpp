@@ -22,16 +22,17 @@
 
 #include "PreCompiled.h"
 
-#include "SelectionObject.h"
-#include "Selection.h"
-#include <Base/GeometryPyCXX.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Application.h>
+#include <Base/GeometryPyCXX.h>
+
+#include "Selection.h"
+#include "SelectionObject.h"
+
 
 // inclusion of the generated files (generated out of SelectionObjectPy.xml)
 #include "SelectionObjectPy.h"
 #include "SelectionObjectPy.cpp"
+
 
 using namespace Gui;
 

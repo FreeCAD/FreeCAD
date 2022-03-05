@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_SELECTIONVIEW_H
 #define GUI_DOCKWND_SELECTIONVIEW_H
 
-
 #include "DockWindow.h"
 #include "Selection.h"
+
 
 class QListWidget;
 class QListWidgetItem;

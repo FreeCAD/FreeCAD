@@ -21,26 +21,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SELECTION_H
 #define GUI_SELECTION_H
 
-// Std. configurations
-
+#include <deque>
+#include <list>
 #include <string>
 #include <vector>
-#include <list>
-#include <map>
-#include <deque>
-#include <boost_signals2.hpp>
 #include <CXX/Objects.hxx>
 
-#include <Base/Observer.h>
-#include <Base/Type.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
+#include <Base/Observer.h>
 #include <Gui/SelectionObject.h>
+
 
 namespace App
 {

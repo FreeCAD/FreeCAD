@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -48,6 +47,7 @@
 #include "SelectionFilter.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
+
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 

@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOSHAPESCALE_H
 #define GUI_SOSHAPESCALE_H
 
-#include <Inventor/nodekits/SoSubKit.h>
-#include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodes/SoShape.h>
+
 
 class SbViewport;
 class SoState;
