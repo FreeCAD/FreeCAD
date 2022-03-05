@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef __InventorAll__
@@ -39,11 +38,11 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
-#include <Base/Rotation.h>
 #include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
 
 #include "View3DPy.h"
+
 #include "Document.h"
 #include "NavigationStyle.h"
 #include "PythonWrapper.h"
@@ -55,9 +54,9 @@
 #include "SoMouseWheelEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "View3DViewerPy.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
+
 
 using namespace Gui;
 

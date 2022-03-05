@@ -20,45 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoShapeHints.h>
+# include <string>
 # include <Inventor/SbClip.h>
-# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoComplexity.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoTexture3.h>
 # include <Inventor/nodes/SoTextureCoordinate3.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/draggers/SoTransformerDragger.h>
-
-# include <float.h>
-# include <cstring>
 #endif
 
-#include "../Base/Console.h"
-
-
-#include "View3DInventorExamples.h"
-
-#include <Inventor/SbPlane.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/manips/SoPointLightManip.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
-#include <Inventor/SbBasic.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
+#include "View3DInventorExamples.h"
 
 
 unsigned char * generateTexture(int w, int h, int d)

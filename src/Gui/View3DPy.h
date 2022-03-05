@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEW3DPY_H
 #define GUI_VIEW3DPY_H
 
-#include <Gui/MDIView.h>
-#include <Gui/MDIViewPy.h>
+#include "MDIView.h"
+#include "MDIViewPy.h"
+
 
 class SoEventCallback;
 class SoDragger;

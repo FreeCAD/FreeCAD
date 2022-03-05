@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "VectorListEditor.h"
 #include "ui_VectorListEditor.h"
-#include <Gui/QuantitySpinBox.h>
-#include <Base/Tools.h>
+#include "QuantitySpinBox.h"
+
 
 using namespace Gui;
 
