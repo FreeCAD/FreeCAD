@@ -934,7 +934,7 @@ class CommandAddonManager:
 
         FreeCAD.Console.PrintLog("The following addons are required:\n")
         for addon in deps.required_external_addons:
-            FreeCAD.Console.PrintLog(addon + "\n")
+            FreeCAD.Console.PrintLog(addon.name + "\n")
 
         FreeCAD.Console.PrintLog("The following Python modules are required:\n")
         for pyreq in deps.python_required:

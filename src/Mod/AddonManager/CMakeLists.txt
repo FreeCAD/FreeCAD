@@ -56,6 +56,11 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/good_macro_metadata.FCStd
     AddonManagerTest/data/missing_macro_metadata.FCStd
     AddonManagerTest/data/good_package.xml
+    AddonManagerTest/data/macro_only.xml
+    AddonManagerTest/data/workbench_only.xml
+    AddonManagerTest/data/prefpack_only.xml
+    AddonManagerTest/data/combination.xml
+    AddonManagerTest/data/DoNothing.FCMacro
 )
 
 SET(AddonManagerTests_ALL

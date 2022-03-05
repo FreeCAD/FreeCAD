@@ -27,6 +27,7 @@ import os
 import FreeCAD
 
 from Addon import Addon
+from addonmanager_macro import Macro
 
 class TestAddon(unittest.TestCase):
 
@@ -100,3 +101,104 @@ class TestAddon(unittest.TestCase):
         expected_tags.add("TagB")
         expected_tags.add("TagC")
         self.assertEqual(tags, expected_tags)
+
+    def test_contains_functions(self):
+
+        # Test package.xml combinations:
+
+        # Workbenches
+        addon_with_workbench = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon_with_workbench.load_metadata_file(os.path.join(self.test_dir, "workbench_only.xml"))
+        self.assertTrue(addon_with_workbench.contains_workbench())
+        self.assertFalse(addon_with_workbench.contains_macro())
+        self.assertFalse(addon_with_workbench.contains_preference_pack())
+
+        # Macros
+        addon_with_macro = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon_with_macro.load_metadata_file(os.path.join(self.test_dir, "macro_only.xml"))
+        self.assertFalse(addon_with_macro.contains_workbench())
+        self.assertTrue(addon_with_macro.contains_macro())
+        self.assertFalse(addon_with_macro.contains_preference_pack())
+
+        # Preference Packs
+        addon_with_prefpack = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon_with_prefpack.load_metadata_file(os.path.join(self.test_dir, "prefpack_only.xml"))
+        self.assertFalse(addon_with_prefpack.contains_workbench())
+        self.assertFalse(addon_with_prefpack.contains_macro())
+        self.assertTrue(addon_with_prefpack.contains_preference_pack())
+
+        # Combination
+        addon_with_all = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon_with_all.load_metadata_file(os.path.join(self.test_dir, "combination.xml"))
+        self.assertTrue(addon_with_all.contains_workbench())
+        self.assertTrue(addon_with_all.contains_macro())
+        self.assertTrue(addon_with_all.contains_preference_pack())
+
+        # Now do the simple, explicitly-set cases
+        addon_wb = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon_wb.repo_type = Addon.Kind.WORKBENCH
+        self.assertTrue(addon_wb.contains_workbench())
+        self.assertFalse(addon_wb.contains_macro())
+        self.assertFalse(addon_wb.contains_preference_pack())
+
+        addon_m = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon_m.repo_type = Addon.Kind.MACRO
+        self.assertFalse(addon_m.contains_workbench())
+        self.assertTrue(addon_m.contains_macro())
+        self.assertFalse(addon_m.contains_preference_pack())
+
+        # There is no equivalent for preference packs, they are always accompanied by a 
+        # metadata file
+
+    def test_create_from_macro(self):
+        macro_file = os.path.join(self.test_dir, "DoNothing.FCMacro")
+        macro = Macro("DoNothing")
+        macro.fill_details_from_file(macro_file)
+        addon = Addon.from_macro(macro)
+
+        self.assertEqual(addon.repo_type, Addon.Kind.MACRO)
+        self.assertEqual(addon.name,"DoNothing")
+        self.assertEqual(addon.macro.comment,"Do absolutely nothing. For Addon Manager unit tests.")
+        self.assertEqual(addon.url,"https://github.com/FreeCAD/FreeCAD")
+        self.assertEqual(addon.macro.version,"1.0")
+        self.assertEqual(len(addon.macro.other_files),3)
+        self.assertEqual(addon.macro.author,"Chris Hennes")
+        self.assertEqual(addon.macro.date,"2022-02-28")
+        self.assertEqual(addon.macro.icon,"not_real.png")
+        self.assertEqual(addon.macro.xpm,"")
+
+    def test_cache(self):
+        addon = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        cache_data = addon.to_cache()
+        second_addon = Addon.from_cache(cache_data)
+
+        self.assertTrue(addon.__dict__, second_addon.__dict__)
+
+    def test_dependency_resolution(self):
+        
+        addonA = Addon("AddonA","https://github.com/FreeCAD/FakeAddonA", Addon.Status.NOT_INSTALLED, "master")
+        addonB = Addon("AddonB","https://github.com/FreeCAD/FakeAddonB", Addon.Status.NOT_INSTALLED, "master")
+        addonC = Addon("AddonC","https://github.com/FreeCAD/FakeAddonC", Addon.Status.NOT_INSTALLED, "master")
+        addonD = Addon("AddonD","https://github.com/FreeCAD/FakeAddonD", Addon.Status.NOT_INSTALLED, "master")
+
+        addonA.requires.add("AddonB")
+        addonB.requires.add("AddonC")
+        addonB.requires.add("AddonD")
+        addonD.requires.add("Path")
+
+        all_addons = {
+            addonA.name: addonA,
+            addonB.name: addonB,
+            addonC.name: addonC,
+            addonD.name: addonD,
+            }
+
+        deps = Addon.Dependencies()
+        addonA.walk_dependency_tree(all_addons, deps)
+
+        self.assertEqual(len(deps.required_external_addons),3)
+        addon_strings = [addon.name for addon in deps.required_external_addons]
+        self.assertTrue("AddonB" in addon_strings, "AddonB not in required dependencies, and it should be.")
+        self.assertTrue("AddonC" in addon_strings, "AddonC not in required dependencies, and it should be.")
+        self.assertTrue("AddonD" in addon_strings, "AddonD not in required dependencies, and it should be.")
+        self.assertTrue("Path" in deps.unrecognized_addons, "Path not in unrecognized dependencies, and it should be.")

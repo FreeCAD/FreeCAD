@@ -80,9 +80,9 @@ class Addon:
 
     class Dependencies:
         def __init__(self):
-            self.required_external_addons = dict()
-            self.blockers = dict()
-            self.replaces = dict()
+            self.required_external_addons = [] # A list of Addons
+            self.blockers = [] # A list of Addons
+            self.replaces = [] # A list of Addons
             self.unrecognized_addons: Set[str] = set()
             self.python_required: Set[str] = set()
             self.python_optional: Set[str] = set()
@@ -363,13 +363,17 @@ class Addon:
         return self.cached_icon_filename
 
     def walk_dependency_tree(self, all_repos, deps):
-        """Compute the total dependency tree for this repo (recursive)"""
+        """Compute the total dependency tree for this repo (recursive)
+        - all_repos is a dictionary of repos, keyed on the name of the repo
+        - deps is an Addon.Dependency object encapsulating all the types of dependency
+        information that may be needed.
+        """
 
         deps.python_required |= self.python_requires
         deps.python_optional |= self.python_optional
         for dep in self.requires:
             if dep in all_repos:
-                if not dep in deps.required:
+                if not dep in deps.required_external_addons:
                     deps.required_external_addons.append(all_repos[dep])
                     all_repos[dep].walk_dependency_tree(all_repos, deps)
             else:
