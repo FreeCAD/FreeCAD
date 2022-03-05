@@ -20,25 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qfileinfo.h>
-# include <qsplitter.h>
+# include <QSplitter>
+# include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
 #endif
 
-#include "SplitView3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "SoFCSelectionAction.h"
-#include "Document.h"
-#include "Application.h"
-#include "NavigationStyle.h"
-#include "View3DPy.h"
 #include <Base/Interpreter.h>
+
+#include "SplitView3DInventor.h"
+#include "Application.h"
+#include "Document.h"
+#include "NavigationStyle.h"
+#include "SoFCSelectionAction.h"
+#include "View3DInventorViewer.h"
+#include "View3DPy.h"
 
 
 using namespace Gui;

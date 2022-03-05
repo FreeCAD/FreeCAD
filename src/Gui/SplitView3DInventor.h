@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SPLITVIEW3DINVENTOR_H
 #define GUI_SPLITVIEW3DINVENTOR_H
 
@@ -28,8 +27,8 @@
 #include "MDIViewPy.h"
 
 #include <Base/Parameter.h>
-#include <CXX/Extensions.hxx>
 #include <vector>
+
 
 namespace Gui {
 class View3DInventorViewer;

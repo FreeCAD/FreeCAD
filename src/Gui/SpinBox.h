@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SPINBOX_H
 #define GUI_SPINBOX_H
 
-#include <QValidator>
 #include <QSpinBox>
+#include <QValidator>
 #include "ExpressionBinding.h"
+
 
 class QStyleOptionSpinBox;
 

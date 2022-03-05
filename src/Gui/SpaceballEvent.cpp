@@ -21,8 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #include "SpaceballEvent.h"
-#include "Application.h"
+
 
 using namespace Spaceball;
 
