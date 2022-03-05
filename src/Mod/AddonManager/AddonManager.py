@@ -1423,6 +1423,9 @@ class CommandAddonManager:
         self.packageDetails.show_repo(repo)
         if repo.repo_type == Addon.Kind.MACRO:
             ask_to_install_toolbar_button(repo)
+        if repo in self.packages_with_updates:
+            self.packages_with_updates.remove(repo)
+            self.enable_updates(len(self.packages_with_updates))
 
     def on_installation_failed(self, _: Addon, message: str) -> None:
         self.hide_progress_widgets()
