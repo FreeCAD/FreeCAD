@@ -506,7 +506,7 @@ void  ViewProviderPage::setGrid(void)
     }
     int pageWidth = 298;
     int pageHeight = 215;
-    int gridStep = GridSpacing.getValue() > 0 ? GridSpacing.getValue() : 10;
+    double gridStep = GridSpacing.getValue() > 0 ? GridSpacing.getValue() : 10.0;
     if (dp) {
         pageWidth = dp->getPageWidth();
         pageHeight = dp->getPageHeight();
