@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,8 +29,9 @@
 
 #include "MenuManager.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "Command.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 
