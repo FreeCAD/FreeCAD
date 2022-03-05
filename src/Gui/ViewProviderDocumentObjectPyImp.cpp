@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Document.h>
 #include <App/DocumentObjectPy.h>
+#include "Document.h"
 
 // inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.xml)
 #include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderDocumentObjectPy.cpp"
+
 
 using namespace Gui;
 

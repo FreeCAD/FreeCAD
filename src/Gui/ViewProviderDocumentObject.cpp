@@ -20,52 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QByteArray>
 # include <QMenu>
-# include <qpixmap.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoFullPath.h>
-# include <Inventor/misc/SoChildList.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoDetail.h>
+# include <Inventor/misc/SoChildList.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/BoundBox.h>
-#include <App/Material.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/DocumentObserver.h>
 #include <App/Origin.h>
+#include <Base/Tools.h>
+
+#include "ViewProviderDocumentObjectPy.h"
 #include "ActionFunction.h"
 #include "Application.h"
 #include "Command.h"
 #include "Document.h"
-#include "Selection.h"
-#include "MainWindow.h"
 #include "MDIView.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "TaskView/TaskAppearance.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderExtension.h"
 #include "SoFCUnifiedSelection.h"
 #include "Tree.h"
-#include <Gui/ViewProviderDocumentObjectPy.h>
+#include "ViewProviderDocumentObject.h"
+#include "ViewProviderExtension.h"
+#include "TaskView/TaskAppearance.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 

@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_H
 #define GUI_VIEWPROVIDER_H
 
-#include <map>
-#include <vector>
-#include <string>
 #include <bitset>
+#include <map>
+#include <string>
+#include <vector>
 #include <QIcon>
 #include <boost_signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
-#include <App/TransactionalObject.h>
 #include <App/Material.h>
-#include <Base/Vector3D.h>
+#include <App/TransactionalObject.h>
 #include <Base/BoundBox.h>
+#include <Base/Vector3D.h>
+
 
 class SbVec2s;
 class SbVec3f;

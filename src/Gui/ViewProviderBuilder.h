@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERBUILDER_H
 #define GUI_VIEWPROVIDERBUILDER_H
 
-#include <vector>
 #include <map>
-#include <memory>
+#include <vector>
 #include <Base/Type.h>
-#include <Base/Factory.h>
+
 
 class SoNode;
 

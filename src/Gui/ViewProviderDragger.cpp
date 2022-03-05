@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
+# include <string>
 # include <QAction>
 # include <QMenu>
 # include <Inventor/draggers/SoDragger.h>
@@ -32,17 +31,11 @@
 # include <Inventor/nodes/SoTransform.h>
 #endif
 
-#include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
-#include <Base/Console.h>
 #include <Base/Placement.h>
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <Gui/BitmapFactory.h>
-#if (COIN_MAJOR_VERSION > 2)
-#include <Inventor/nodes/SoDepthBuffer.h>
-#endif
-#include <Inventor/nodes/SoResetTransform.h>
+
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Control.h"
 #include "Document.h"
 #include "SoFCCSysDragger.h"
@@ -50,7 +43,7 @@
 #include "TaskCSysDragger.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDragger.h"
-#include "Window.h"
+
 
 using namespace Gui;
 

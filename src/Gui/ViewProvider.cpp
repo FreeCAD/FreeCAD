@@ -20,50 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QPixmap>
 # include <QTimer>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/details/SoDetail.h>
+# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/details/SoDetail.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <boost_bind_bind.hpp>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/BoundBox.h>
 #include <Base/Matrix.h>
-#include <App/PropertyGeo.h>
 
 #include "ViewProvider.h"
-#include "Application.h"
 #include "ActionFunction.h"
-#include "Document.h"
-#include "ViewProviderPy.h"
+#include "Application.h"
 #include "BitmapFactory.h"
+#include "Document.h"
+#include "SoFCDB.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "SoFCDB.h"
-#include "ViewProviderExtension.h"
-#include "SoFCUnifiedSelection.h"
-#include "ViewProviderLink.h"
 #include "ViewParams.h"
+#include "ViewProviderExtension.h"
+#include "ViewProviderLink.h"
+#include "ViewProviderPy.h"
 
 
-FC_LOG_LEVEL_INIT("ViewProvider",true,true)
+FC_LOG_LEVEL_INIT("ViewProvider", true, true)
 
 using namespace std;
 using namespace Gui;

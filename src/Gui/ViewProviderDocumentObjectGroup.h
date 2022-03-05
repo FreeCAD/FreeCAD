@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
 #define GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
 
-
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderPythonFeature.h"
 #include "ViewProviderGroupExtension.h"
+#include "ViewProviderPythonFeature.h"
+
 
 namespace Gui {
 
