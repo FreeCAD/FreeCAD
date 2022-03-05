@@ -20,28 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAbstractTextDocumentLayout>
 # include <QApplication>
 # include <QClipboard>
-# include <QString>
 # include <QMessageBox>
 # include <QPushButton>
-# include <QTextBlock>
-# include <iostream>
-# include <boost_bind_bind.hpp>
-# include <boost_signals2.hpp>
+# include <QString>
 #endif
 
-
-#include <App/TextDocument.h>
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-
 #include "TextDocumentEditorView.h"
+#include "Application.h"
+#include "Document.h"
+#include "MainWindow.h"
 
 
 using namespace Gui;

@@ -28,29 +28,24 @@
 
 #include <QColorDialog>
 
-#include <boost_bind_bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-#include "ui_TaskElementColors.h"
-#include "TaskElementColors.h"
-#include "ViewProviderLink.h"
-
-#include <Base/Console.h>
 #include <App/ComplexGeoData.h>
 
+#include "TaskElementColors.h"
+#include "ui_TaskElementColors.h"
 #include "Application.h"
-#include "Control.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "Selection.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Control.h"
+#include "Document.h"
 #include "FileDialog.h"
+#include "Selection.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+#include "ViewProviderLink.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 namespace bp = boost::placeholders;

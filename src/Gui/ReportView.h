@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCKWND_REPORTVIEW_H
 #define GUI_DOCKWND_REPORTVIEW_H
 
+#include <QPointer>
 #include <QTextEdit>
 #include <QSyntaxHighlighter>
-#include <Base/Console.h>
-#include <QPointer>
-#include <QDockWidget>
-#include "DockWindow.h"
+
 #include "Window.h"
 #include <FCGlobal.h>
+
 
 class QTabWidget;
 

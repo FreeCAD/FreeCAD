@@ -22,14 +22,13 @@
 
 /* Text completion mechanism */
 
-
 #ifndef GUI_TEXTEDIT_H
 #define GUI_TEXTEDIT_H
 
 #include <QListWidget>
 #include <QPlainTextEdit>
-#include "View.h"
 #include "Window.h"
+
 
 namespace Gui {
 class CompletionBox;

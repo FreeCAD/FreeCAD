@@ -20,30 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <QImage>
-# include <QMessageBox>
 # include <QImageReader>
 # include <QKeyEvent>
+# include <QMessageBox>
 #endif
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-#include <QDialogButtonBox>
-
-#include <App/Application.h>
 
 #include "TextureMapping.h"
-#include "BitmapFactory.h"
 #include "ui_TextureMapping.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Document.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+
 
 using namespace Gui::Dialog;
 
