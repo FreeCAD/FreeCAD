@@ -78,9 +78,9 @@ void Writer::insertBinFile(const char* FileName)
     Stream() << "<![CDATA[";
     std::ifstream::pos_type fileSize = from.tellg();
     from.seekg(0, std::ios::beg);
-    std::vector<unsigned char> bytes(fileSize);
-    from.read((char*)&bytes[0], fileSize);
-    Stream() << Base::base64_encode(&bytes[0], fileSize);
+    std::vector<unsigned char> bytes(static_cast<size_t>(fileSize));
+    from.read(reinterpret_cast<char*>(&bytes[0]), fileSize);
+    Stream() << Base::base64_encode(&bytes[0], static_cast<unsigned int>(fileSize));
     Stream() << "]]>" << endl;
 }
 
@@ -265,7 +265,7 @@ void ZipWriter::writeFiles()
     // processing the files new ones can be added
     size_t index = 0;
     while (index < FileList.size()) {
-        FileEntry entry = FileList.begin()[index];
+        FileEntry entry = FileList[index];
         ZipStream.putNextEntry(entry.FileName);
         entry.Object->SaveDocFile(*this);
         index++;
@@ -305,7 +305,7 @@ void FileWriter::writeFiles()
     size_t index = 0;
     this->FileStream.close();
     while (index < FileList.size()) {
-        FileEntry entry = FileList.begin()[index];
+        FileEntry entry = FileList[index];
 
         if (shouldWrite(entry.FileName, entry.Object)) {
             std::string filePath = entry.FileName;

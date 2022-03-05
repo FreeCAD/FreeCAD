@@ -134,6 +134,10 @@ protected:
 
     bool forceXML;
     int fileVersion;
+
+private:
+    Writer(const Writer&);
+    Writer& operator=(const Writer&);
 };
 
 

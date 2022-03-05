@@ -31,6 +31,11 @@ ViewProjMethod::ViewProjMethod()
 {
 }
 
+bool ViewProjMethod::isValid() const
+{
+    return true;
+}
+
 /*! Calculate the composed projection matrix which is a product of
  * projection matrix multiplied with input transformation matrix.
  */
@@ -82,7 +87,7 @@ ViewProjMatrix::ViewProjMatrix (const Matrix4D &rclMtx)
     double m31 = _clMtx[3][1];
     double m32 = _clMtx[3][2];
     double m33 = _clMtx[3][3];
-    isOrthographic = (m30 == 0 && m31 == 0 && m32 == 0 && m33 == 1);
+    isOrthographic = (m30 == 0.0 && m31 == 0.0 && m32 == 0.0 && m33 == 1.0);
 
     // Only for orthographic projection mode we can compute a single
     // matrix performing all steps.
@@ -97,10 +102,6 @@ ViewProjMatrix::ViewProjMatrix (const Matrix4D &rclMtx)
 
     _clMtxInv = _clMtx;
     _clMtxInv.inverseGauss();
-}
-
-ViewProjMatrix::~ViewProjMatrix()
-{
 }
 
 Matrix4D ViewProjMatrix::getProjectionMatrix () const
@@ -122,10 +123,12 @@ void perspectiveTransform(const Base::Matrix4D& mat, Vec& pnt)
     double m31 = mat[3][1];
     double m32 = mat[3][2];
     double m33 = mat[3][3];
-    double w = (pnt.x * m30 + pnt.y * m31 + pnt.z * m32 + m33);
+    double w = (static_cast<double>(pnt.x) * m30 +
+                static_cast<double>(pnt.y) * m31 +
+                static_cast<double>(pnt.z) * m32 + m33);
 
     mat.multVec(pnt, pnt);
-    pnt /= w;
+    pnt /= static_cast<typename Vec::num_type>(w);
 }
 
 Vector3f ViewProjMatrix::operator()(const Vector3f& inp) const
@@ -137,7 +140,7 @@ Vector3f ViewProjMatrix::operator()(const Vector3f& inp) const
     if (!isOrthographic) {
         dst = src;
         perspectiveTransform<Vector3f>(_clMtx, dst);
-        dst.Set(0.5*dst.x+0.5, 0.5*dst.y+0.5, 0.5*dst.z+0.5);
+        dst.Set(0.5f*dst.x+0.5f, 0.5f*dst.y+0.5f, 0.5f*dst.z+0.5f);
     }
     else {
         _clMtx.multVec(src, dst);
@@ -168,7 +171,7 @@ Vector3f ViewProjMatrix::inverse (const Vector3f& src) const
 {
     Vector3f dst;
     if (!isOrthographic) {
-        dst.Set(2.0*src.x-1.0, 2.0*src.y-1.0, 2.0*src.z-1.0);
+        dst.Set(2.0f*src.x-1.0f, 2.0f*src.y-1.0f, 2.0f*src.z-1.0f);
         perspectiveTransform<Vector3f>(_clMtxInv, dst);
     }
     else {
@@ -199,10 +202,6 @@ ViewOrthoProjMatrix::ViewOrthoProjMatrix (const Matrix4D &rclMtx)
 {
     _clMtxInv = _clMtx;
     _clMtxInv.inverse();
-}
-
-ViewOrthoProjMatrix::~ViewOrthoProjMatrix()
-{
 }
 
 Matrix4D ViewOrthoProjMatrix::getProjectionMatrix () const

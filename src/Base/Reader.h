@@ -296,7 +296,6 @@ class BaseExport Reader : public std::istream
 {
 public:
     Reader(std::istream&, const std::string&, int version);
-    ~Reader();
     std::istream& getStream();
     std::string getFileName() const;
     int getFileVersion() const;
