@@ -38,11 +38,12 @@
 #include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Tools.h>
+#include <CXX/Extensions.hxx>
 
 #include "ExpressionCompleter.h"
 
 
-FC_LOG_LEVEL_INIT("Completer",true,true)
+FC_LOG_LEVEL_INIT("Completer", true, true)
 
 Q_DECLARE_METATYPE(App::ObjectIdentifier)
 
