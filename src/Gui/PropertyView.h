@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_PROPERTYVIEW_H
 #define GUI_DOCKWND_PROPERTYVIEW_H
 
-
 #include "DockWindow.h"
 #include "Selection.h"
-#include <boost_signals2.hpp>
+
 
 class QPixmap;
 class QTabWidget;

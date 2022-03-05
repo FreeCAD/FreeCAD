@@ -25,10 +25,9 @@
 #define GUI_PYTHONWRAPPER_H
 
 #include <QGraphicsItem>
-
 #include <Base/PyObjectBase.h>
-#include <CXX/Objects.hxx>
 #include <FCGlobal.h>
+
 
 QT_BEGIN_NAMESPACE
 class QDir;

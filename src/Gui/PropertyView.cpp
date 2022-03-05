@@ -20,38 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QGridLayout>
-# include <QHeaderView>
 # include <QEvent>
+# include <QGridLayout>
 # include <QTimer>
-# include <boost_bind_bind.hpp>
 #endif
 
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyContainer.h>
 #include <App/DocumentObject.h>
-#include <App/Document.h>
-#include <Base/Console.h>
+#include <Base/Parameter.h>
 
 #include "PropertyView.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "Document.h"
-#include "BitmapFactory.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
+#include "MainWindow.h"
 #include "Tree.h"
 #include "ViewParams.h"
-
+#include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "propertyeditor/PropertyEditor.h"
+
 
 using namespace std;
 using namespace Gui;
@@ -76,7 +64,7 @@ static ParameterGrp::handle _GetParam() {
  * in two tabs.
  */
 PropertyView::PropertyView(QWidget *parent)
-  : QWidget(parent),SelectionObserver(false,0)
+  : QWidget(parent), SelectionObserver(false, 0)
 {
     QGridLayout* pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);

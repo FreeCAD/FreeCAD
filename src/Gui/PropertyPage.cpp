@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QVBoxLayout>
 #endif
 
+#include <Base/Console.h>
+
 #include "PropertyPage.h"
 #include "PrefWidgets.h"
 #include "UiLoader.h"
-#include <Base/Console.h>
+
 
 using namespace Gui::Dialog;
 

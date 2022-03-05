@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
 # include <limits>
-# include <QWidget>
-# include <QIcon>
 # include <QDir>
+# include <QIcon>
+# include <QWidget>
 #endif
+
 #include <QMetaType>
 
 // Uncomment this block to remove PySide C++ support and switch to its Python interface
