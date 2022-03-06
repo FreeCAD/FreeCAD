@@ -37,6 +37,11 @@ using namespace App;
 static int _TransactionLock;
 static int _TransactionClosed;
 
+void* App::AutoTransaction::operator new(size_t size)
+{
+    return nullptr;
+}
+
 AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     auto &app = GetApplication();
     if(name && app._activeTransactionGuard>=0) {
@@ -240,4 +245,8 @@ bool TransactionLocker::isLocked() {
     return _TransactionLock > 0;
 }
 
+void* App::TransactionLocker::operator new(size_t size)
+{
+    return nullptr;
+}
 
