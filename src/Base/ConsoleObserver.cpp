@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,7 +28,7 @@
 # include <Python.h>
 #endif
 
-# include <frameobject.h>
+#include <frameobject.h>
 
 #include "ConsoleObserver.h"
 
