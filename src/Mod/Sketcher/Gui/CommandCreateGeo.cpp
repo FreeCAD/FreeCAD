@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
 # include <QInputDialog>
