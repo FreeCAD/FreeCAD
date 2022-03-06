@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
 #define GUI_VIEWPROVIDER_ViewProviderPart_H
 
-
-#include "ViewProviderOriginGroup.h"
 #include "ViewProviderDragger.h"
+#include "ViewProviderOriginGroup.h"
 #include "ViewProviderPythonFeature.h"
 
 

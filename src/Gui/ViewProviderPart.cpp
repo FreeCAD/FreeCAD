@@ -20,27 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
 # include <QMenu>
-# include <QPixmap>
-# include <boost_bind_bind.hpp>
 #endif
 
+#include <App/DocumentObject.h>
 #include <App/Part.h>
-#include <App/Document.h>
-
-#include "ActiveObjectList.h"
-#include "ActionFunction.h"
-#include "BitmapFactory.h"
-#include "Command.h"
 
 #include "ViewProviderPart.h"
+#include "ActionFunction.h"
 #include "Application.h"
-#include "MDIView.h"
+#include "BitmapFactory.h"
+#include "Command.h"
 
 
 using namespace Gui;
