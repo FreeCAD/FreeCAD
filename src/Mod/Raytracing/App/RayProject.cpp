@@ -30,6 +30,7 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <Base/Stream.h>
 #include <App/Application.h>
 #include "RayProject.h"
 #include "RayFeature.h"
