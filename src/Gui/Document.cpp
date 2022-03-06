@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cctype>
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
@@ -31,8 +31,6 @@
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
-
-#include <cctype>
 
 #include <App/AutoTransaction.h>
 #include <App/DocumentObject.h>
@@ -61,7 +59,8 @@
 #include "ViewProviderDocumentObjectGroup.h"
 #include "WaitCursor.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 namespace bp = boost::placeholders;

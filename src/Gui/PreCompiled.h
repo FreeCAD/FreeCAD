@@ -59,12 +59,15 @@
 #include <shellapi.h>
 #endif
 
+// null-terminated byte string
+#include <cctype.h>
+
 // streams
 #include <iostream>
 #include <iomanip>
 
-
 // STL
+#include <atomic>
 #include <vector>
 #include <map>
 #include <string>
@@ -88,7 +91,6 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
-
 
 // Python
 #include <Python.h>
