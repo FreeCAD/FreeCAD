@@ -66,9 +66,9 @@ using namespace Base;
 std::string ConvertFromWideString(const std::wstring& string)
 {
     int neededSize = WideCharToMultiByte(CP_UTF8, 0, string.c_str(), -1, 0, 0,0,0);
-    char * CharString = new char[neededSize];
+    char * CharString = new char[static_cast<size_t>(neededSize)];
     WideCharToMultiByte(CP_UTF8, 0, string.c_str(), -1, CharString, neededSize,0,0);
-    std::string String((char*)CharString);
+    std::string String(CharString);
     delete [] CharString;
     CharString = NULL;
     return String;
@@ -77,7 +77,7 @@ std::string ConvertFromWideString(const std::wstring& string)
 std::wstring ConvertToWideString(const std::string& string)
 {
     int neededSize = MultiByteToWideChar(CP_UTF8, 0, string.c_str(), -1, 0, 0);
-    wchar_t* wideCharString = new wchar_t[neededSize];
+    wchar_t* wideCharString = new wchar_t[static_cast<size_t>(neededSize)];
     MultiByteToWideChar(CP_UTF8, 0, string.c_str(), -1, wideCharString, neededSize);
     std::wstring wideString(wideCharString);
     delete [] wideCharString;
@@ -110,7 +110,7 @@ const std::string &FileInfo::getTempPath()
         wchar_t buf[MAX_PATH + 2];
         GetTempPathW(MAX_PATH + 1,buf);
         int neededSize = WideCharToMultiByte(CP_UTF8, 0, buf, -1, 0, 0, 0, 0);
-        char* dest = new char[neededSize];
+        char* dest = new char[static_cast<size_t>(neededSize)];
         WideCharToMultiByte(CP_UTF8, 0, buf, -1,dest, neededSize, 0, 0);
         tempPath = dest;
         delete [] dest;
@@ -383,14 +383,15 @@ bool FileInfo::isDir () const
             return false;
         }
         return S_ISDIR(st.st_mode);
-#endif
+#else
         return false;
+#endif
     }
     else
         return false;
 
     // TODO: Check for valid path name
-    return true;
+    //return true;
 }
 
 unsigned int FileInfo::size () const

@@ -74,7 +74,7 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
     else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
     else if (PyLong_Check(value))
-        quant = Quantity((double)PyLong_AsLong(value),_Unit);
+        quant = Quantity(double(PyLong_AsLong(value)),_Unit);
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
         Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
         quant = *(pcObject->getQuantityPtr());

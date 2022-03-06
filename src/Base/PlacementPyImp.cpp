@@ -289,16 +289,16 @@ void PlacementPy::setRotation(Py::Object arg)
 {
     Py::Rotation rot;
     if (rot.accepts(arg.ptr())) {
-        getPlacementPtr()->setRotation((Base::Rotation)Py::Rotation(arg));
+        getPlacementPtr()->setRotation(static_cast<Base::Rotation>(Py::Rotation(arg)));
         return;
     }
     Py::Tuple tuple;
     if (tuple.accepts(arg.ptr())) {
         tuple = arg;
-        getPlacementPtr()->setRotation(Base::Rotation((double)Py::Float(tuple[0]),
-                                                      (double)Py::Float(tuple[1]),
-                                                      (double)Py::Float(tuple[2]),
-                                                      (double)Py::Float(tuple[3])
+        getPlacementPtr()->setRotation(Base::Rotation(static_cast<double>(Py::Float(tuple[0])),
+                                                      static_cast<double>(Py::Float(tuple[1])),
+                                                      static_cast<double>(Py::Float(tuple[2])),
+                                                      static_cast<double>(Py::Float(tuple[3]))
                                                      ));
         return;
     }

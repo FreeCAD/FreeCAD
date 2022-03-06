@@ -40,7 +40,7 @@ QString UnitsSchema::toLocale(const Base::Quantity& quant, double factor, const 
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
     if (format.option != QuantityFormat::None) {
-        uint opt = static_cast<uint>(format.option);
+        int opt = format.option;
         Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
     }
 

@@ -171,8 +171,8 @@ public:
     bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
-    bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
-    void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+    bool testStatus(ObjectStatus pos) const {return StatusBits.test(size_t(pos));}
+    void setStatus(ObjectStatus pos, bool on) {StatusBits.set(size_t(pos), on);}
     //@}
 
     int isExporting() const;

@@ -35,7 +35,7 @@ using namespace App;
 //===========================================================================
 // Material
 //===========================================================================
-Material::Material(void)
+Material::Material()
 {
     setType(STEEL);
     setType(USER_DEFINED);
