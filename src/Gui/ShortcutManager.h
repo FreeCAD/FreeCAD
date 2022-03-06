@@ -128,7 +128,7 @@ private:
 
         ActionData(QAction *action, const char *name = "")
             : key(action->shortcut(), name)
-            , pointer(reinterpret_cast<int64_t>(action))
+            , pointer(reinterpret_cast<intptr_t>(action))
             , action(action)
         {}
     };
