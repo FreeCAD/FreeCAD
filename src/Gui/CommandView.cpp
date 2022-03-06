@@ -261,10 +261,10 @@ public:
     QString getShortcut() const override;
 
 protected:
-    virtual void activated(int iMsg) override;
-    virtual bool isActive(void) override;
-    virtual Action * createAction(void) override;
-    virtual void languageChange() override;
+    void activated(int iMsg) override;
+    bool isActive(void) override;
+    Action * createAction(void) override;
+    void languageChange() override;
 
 private:
     void onSaveViews();

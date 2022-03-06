@@ -404,6 +404,8 @@ void ShortcutManager::setTopPriority(const char *cmdName)
 
 void ShortcutManager::onTimer()
 {
+    timer.stop();
+
     QAction *found = nullptr;
     int priority = -INT_MAX;
     int seq_length = 0;
@@ -427,8 +429,8 @@ void ShortcutManager::onTimer()
     if (lastFocus && lastFocus == QApplication::focusWidget()) {
         // We are here because we have withheld some previous triggered action.
         // We then disabled the action, and faked the same key strokes in order
-        // to wait for more for potential match of longer key sequence.  We use
-        // a timer to end the wait and triggered the pending action.
+        // to wait for more potential match of longer key sequence. We use
+        // a timer to end the wait and trigger the pending action.
         //
         // However, Qt's internal shorcutmap state machine is still armed with
         // our fake key strokes. So we try to fake some more obscure symbol key
@@ -449,7 +451,6 @@ void ShortcutManager::onTimer()
             }
         }
     }
-    timer.stop();
 }
 
 #include "moc_ShortcutManager.cpp"
