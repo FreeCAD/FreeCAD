@@ -30,6 +30,7 @@
 # include <Inventor/SbBox3f.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoPointDetail.h>
+# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/SbLine.h>
 # include <Inventor/SbTime.h>

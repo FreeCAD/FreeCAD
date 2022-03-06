@@ -54,52 +54,43 @@
 
 #include <cassert>
 
-#include <Quarter/QuarterWidget.h>
-#include <Quarter/eventhandlers/EventFilter.h>
-#include <Quarter/eventhandlers/DragDropHandler.h>
-
-#include <QtCore/QEvent>
-#include <QtCore/QDebug>
-#include <QtCore/QFile>
 #include <QAction>
 #include <QApplication>
+#include <QDebug>
+#include <QEvent>
+#include <QFile>
+#include <QGuiApplication>
+#include <QMetaObject>
+#include <QOpenGLDebugLogger>
+#include <QOpenGLDebugMessage>
 #include <QPaintEvent>
 #include <QResizeEvent>
-
-#include <QOpenGLDebugMessage>
-#include <QOpenGLDebugLogger>
+#include <QWindow>
 
 #if COIN_MAJOR_VERSION >= 4
 #include <Inventor/SbByteBuffer.h>
 #endif
 
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/system/gl.h>
-#include <Inventor/events/SoEvents.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/SbByteBuffer.h>
 #include <Inventor/SbColor.h>
-#include <Inventor/sensors/SoSensorManager.h>
+#include <Inventor/SbViewportRegion.h>
 #include <Inventor/SoDB.h>
-
-#include <Inventor/SbBasic.h>
-#include <Inventor/SoRenderManager.h>
 #include <Inventor/SoEventManager.h>
+#include <Inventor/SoRenderManager.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
 
-#include <ctime>
-
+#include "QuarterWidget.h"
 #include "InteractionMode.h"
-#include "QuarterWidgetP.h"
 #include "QuarterP.h"
-
-#include <QWindow>
-#include <QGuiApplication>
-#include <QMetaObject>
+#include "QuarterWidgetP.h"
+#include "eventhandlers/EventFilter.h"
+#include "eventhandlers/DragDropHandler.h"
 
 
 using namespace SIM::Coin3D::Quarter;

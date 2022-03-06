@@ -34,21 +34,15 @@
 
 */
 
-#include <Quarter/eventhandlers/EventFilter.h>
+#include <QEvent>
+#include <QMouseEvent>
 
-#include <QtCore/QEvent>
-#include <QtGui/QMouseEvent>
+#include "QuarterWidget.h"
+#include "devices/Keyboard.h"
+#include "devices/Mouse.h"
+#include "devices/SpaceNavigatorDevice.h"
+#include "eventhandlers/EventFilter.h"
 
-#include <Inventor/SoEventManager.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-
-#include <Quarter/QuarterWidget.h>
-#include <Quarter/devices/Mouse.h>
-#include <Quarter/devices/Keyboard.h>
-#include <Quarter/devices/SpaceNavigatorDevice.h>
-
-#include <QGuiApplication>
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
