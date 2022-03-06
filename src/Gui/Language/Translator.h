@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TRANSLATOR_H
 #define GUI_TRANSLATOR_H
 
 #include <QObject>
-#include <string>
-#include <map>
 #include <list>
+#include <map>
+#include <string>
+
 
 class QDir;
 

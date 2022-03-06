@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <QTranslator>
-# include <QStringList>
-# include <QDir>
 # include <QApplication>
+# include <QDir>
 # include <QRegularExpression>
+# include <QStringList>
+# include <QTranslator>
 #endif
 
-#include "Translator.h"
 #include <App/Application.h>
+#include "Translator.h"
+
 
 using namespace Gui;
 
