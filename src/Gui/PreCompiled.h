@@ -95,6 +95,10 @@
 // Python
 #include <Python.h>
 
+// Xerces
+#include <xercesc/util/TranscodingException.hpp>
+#include <xercesc/util/XMLString.hpp>
+
 #include "InventorAll.h"
 #include "Qt4All.h"
 
