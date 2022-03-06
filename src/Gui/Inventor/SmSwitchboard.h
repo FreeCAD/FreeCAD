@@ -33,11 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFBool.h>
-#include <Inventor/nodes/SoSubNode.h>
-
-//#include <SmallChange/basic.h>
+#include <Inventor/nodes/SoGroup.h>
 
 
 class GuiExport SmSwitchboard : public SoGroup {
