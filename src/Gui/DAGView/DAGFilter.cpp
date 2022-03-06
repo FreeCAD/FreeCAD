@@ -21,14 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
+#include <App/DocumentObject.h>
 #include <Base/Type.h>
-#include <Gui/ViewProviderDocumentObject.h>
-
 
 #include "DAGFilter.h"
+
 
 using namespace Gui;
 using namespace DAG;

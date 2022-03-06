@@ -22,13 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
 #include <QApplication>
+#include <QPainter>
 #endif
 
 #include <QStyleOptionViewItem>
 
 #include "DAGRectItem.h"
+
 
 using namespace Gui;
 using namespace DAG;

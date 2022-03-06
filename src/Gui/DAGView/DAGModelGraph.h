@@ -23,21 +23,22 @@
 #ifndef DAGMODELGRAPH_H
 #define DAGMODELGRAPH_H
 
-#include <memory>
 #include <bitset>
+#include <memory>
 
 #include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/iteration_macros.hpp>
 #include <boost_graph_reverse_graph.hpp>
-#include <boost/graph/topological_sort.hpp>
-#include <boost/graph/graphviz.hpp>
 #include <boost/graph/breadth_first_search.hpp>
+#include <boost/graph/graphviz.hpp>
+#include <boost/graph/iteration_macros.hpp>
+#include <boost/graph/topological_sort.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost_signals2.hpp>
 
 #include "DAGRectItem.h"
+
 
 namespace App{class DocumentObject;}
 
