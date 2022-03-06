@@ -33,9 +33,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QThread>
-#include <QtCore/QWaitCondition>
-#include <QtCore/QMutex>
+#include <QMutex>
+#include <QThread>
+#include <QWaitCondition>
+
 
 class SoQtP;
 

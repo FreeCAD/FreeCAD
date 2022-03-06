@@ -34,24 +34,20 @@
 #pragma warning(disable : 4267)
 #endif
 
-#include <Quarter/devices/SpaceNavigatorDevice.h>
-
-#include <QApplication>
+#include <QEvent>
 #include <QWidget>
-#include <QtCore/QEvent>
 
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoMotion3Event.h>
 #include <Inventor/events/SoSpaceballButtonEvent.h>
 
-#include "NativeEvent.h"
-
 #ifdef HAVE_SPACENAV_LIB
 #include <QX11Info>
 #include <spnav.h>
-#endif //HAVE_SPACENAV_LIB
+#endif
 
-#include <cstdio>
+#include "NativeEvent.h"
+#include "devices/SpaceNavigatorDevice.h"
 
 
 namespace SIM { namespace Coin3D { namespace Quarter {

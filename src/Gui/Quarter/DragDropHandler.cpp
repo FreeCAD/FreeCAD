@@ -37,20 +37,18 @@
   functionality to the QuarterWidget.
 */
 
-#include <Quarter/eventhandlers/DragDropHandler.h>
-
-#include <QtCore/QUrl>
-#include <QtCore/QFileInfo>
-#include <QtCore/QStringList>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDropEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QFileInfo>
 #include <QMimeData>
-
+#include <QStringList>
+#include <QUrl>
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#include <Quarter/QuarterWidget.h>
-#include <cstdlib>
+#include "QuarterWidget.h"
+#include "eventhandlers/DragDropHandler.h"
+
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
