@@ -1378,11 +1378,10 @@ struct CmdInfo {
 };
 static std::vector<CmdInfo> _Commands;
 static int _CommandRevision;
+static const int CommandNameRole = Qt::UserRole;
 
 class CommandModel : public QAbstractItemModel
 {
-public:
-
 public:
     CommandModel(QObject* parent)
         : QAbstractItemModel(parent)
@@ -1450,7 +1449,7 @@ public:
             }
             return info.tooltip;
 
-        case Qt::UserRole:
+        case CommandNameRole:
             return QByteArray(info.cmd->getName());
 
         default:
@@ -1481,9 +1480,7 @@ CommandCompleter::CommandCompleter(QLineEdit *lineedit, QObject *parent)
     : QCompleter(parent)
 {
     this->setModel(new CommandModel(this));
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     this->setFilterMode(Qt::MatchContains);
-#endif
     this->setCaseSensitivity(Qt::CaseInsensitive);
     this->setCompletionMode(QCompleter::PopupCompletion);
     this->setWidget(lineedit);
@@ -1547,12 +1544,14 @@ bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
 
 void CommandCompleter::onCommandActivated(const QModelIndex &index)
 {
-    QByteArray name = completionModel()->data(index, Qt::UserRole).toByteArray();
+    QByteArray name = completionModel()->data(index, CommandNameRole).toByteArray();
     Q_EMIT commandActivated(name);
 }
 
 void CommandCompleter::onTextChanged(const QString &txt)
 {
+    // Do not activate completer if less than 3 characters for better
+    // performance.
     if (txt.size() < 3 || !widget())
         return;
 
