@@ -60,7 +60,7 @@
 #endif
 
 // null-terminated byte string
-#include <cctype.h>
+#include <cctype>
 
 // streams
 #include <iostream>
