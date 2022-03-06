@@ -35,6 +35,7 @@
 #include "InputSource.h"
 #include "Persistence.h"
 #include "Sequencer.h"
+#include "Stream.h"
 #include "XMLTools.h"
 
 #ifdef _MSC_VER

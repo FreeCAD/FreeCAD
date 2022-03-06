@@ -34,6 +34,7 @@
 #include "ui_RemeshGmsh.h"
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <Gui/Application.h>

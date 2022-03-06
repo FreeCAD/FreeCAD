@@ -44,6 +44,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include <Language/Translator.h>

@@ -40,6 +40,7 @@
 #include <App/GeoFeature.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include "Action.h"

@@ -91,6 +91,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
+#include <Base/Stream.h>
 
 #include "Document.h"
 #include "Application.h"

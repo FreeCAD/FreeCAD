@@ -36,6 +36,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 

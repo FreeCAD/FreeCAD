@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <cassert>
 # include <string>
+# include <fstream>
 #endif
 
 #include "Builder3D.h"

@@ -29,6 +29,7 @@
 #include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include "Mesh.h"

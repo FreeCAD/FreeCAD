@@ -25,6 +25,7 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <Base/Stream.h>
 
 #include "Document.h"
 #include "DocumentObject.h"

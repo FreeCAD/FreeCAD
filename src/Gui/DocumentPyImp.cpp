@@ -29,6 +29,7 @@
 #include <App/Document.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
+#include <Base/Stream.h>
 
 #include "Application.h"
 #include "MergeDocuments.h"

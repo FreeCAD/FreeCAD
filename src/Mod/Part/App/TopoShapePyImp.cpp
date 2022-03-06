@@ -74,6 +74,7 @@
 #include <Base/Matrix.h>
 #include <Base/Rotation.h>
 #include <Base/MatrixPy.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <App/PropertyStandard.h>

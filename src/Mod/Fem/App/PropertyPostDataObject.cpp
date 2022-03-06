@@ -43,8 +43,9 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
+#include <Base/Writer.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <CXX/Objects.hxx>

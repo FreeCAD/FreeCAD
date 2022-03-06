@@ -28,7 +28,6 @@
 #define BASE_CONSOLE_H
 
 // Std. configurations
-#include <Base/Stream.h>
 #include <chrono>
 #include <map>
 #include <set>
@@ -668,84 +667,6 @@ namespace Base {
 
             std::stringstream &prefix(std::stringstream &str, const char *src, int line);
     };
-
-
-    //=========================================================================
-    // some special observers
-
-    /** The LoggingConsoleObserver class
-     *  This class is used by the main modules to write Console messages and logs to a file
-     */
-    class BaseExport ConsoleObserverFile : public ILogger
-{
-public:
-    ConsoleObserverFile(const char *sFileName);
-    ~ConsoleObserverFile() override;
-
-    void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void) override {return "File";}
-
-protected:
-    Base::ofstream cFileStream;
-};
-
-/** The CmdConsoleObserver class
- *  This class is used by the main modules to write Console messages and logs the system con.
- */
-class BaseExport ConsoleObserverStd: public ILogger
-{
-public:
-    ConsoleObserverStd();
-    ~ConsoleObserverStd() override;
-    void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void) override {return "Console";}
-protected:
-    bool useColorStderr;
-private:
-    void Warning(const char *sWarn);
-    void Message(const char *sMsg);
-    void Error  (const char *sErr);
-    void Log    (const char *sErr);
-};
-
-class BaseExport RedirectStdOutput : public std::streambuf
-{
-public:
-    RedirectStdOutput();
-
-protected:
-    int overflow(int c = EOF);
-    int sync();
-
-private:
-    std::string buffer;
-};
-
-class BaseExport RedirectStdError : public std::streambuf
-{
-public:
-    RedirectStdError();
-
-protected:
-    int overflow(int c = EOF);
-    int sync();
-
-private:
-    std::string buffer;
-};
-
-class BaseExport RedirectStdLog : public std::streambuf
-{
-public:
-    RedirectStdLog();
-
-protected:
-    int overflow(int c = EOF);
-    int sync();
-
-private:
-    std::string buffer;
-};
 
 
 } // namespace Base

@@ -32,6 +32,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Quantity.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include "PropertyStandard.h"

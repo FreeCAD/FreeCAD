@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <stdexcept>

@@ -35,6 +35,7 @@
 #include "FileInfo.h"
 #include "PyObjectBase.h"
 #include "PyTools.h"
+#include "Stream.h"
 
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
