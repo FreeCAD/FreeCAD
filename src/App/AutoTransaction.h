@@ -31,7 +31,9 @@ class Application;
 class AppExport AutoTransaction {
 private:
     /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
+    void* operator new(size_t size) {
+        return (void*)size;
+    };
 
 public:
     /** Constructor
@@ -120,7 +122,9 @@ public:
 
 private:
     /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
+    void* operator new(size_t size) {
+        return (void*)size;
+    };
 
 private:
     bool active;
