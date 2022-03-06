@@ -32,7 +32,7 @@ class AppExport AutoTransaction {
 private:
     /// Private new operator to prevent heap allocation
     void* operator new(size_t size) {
-        return (void*)size;
+        return nullptr;
     };
 
 public:
@@ -123,7 +123,7 @@ public:
 private:
     /// Private new operator to prevent heap allocation
     void* operator new(size_t size) {
-        return (void*)size;
+        return nullptr;
     };
 
 private:
