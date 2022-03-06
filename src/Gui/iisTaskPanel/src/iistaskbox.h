@@ -8,14 +8,14 @@
 #ifndef IISTASKBOX_H
 #define IISTASKBOX_H
 
-#include <QtGui>
-#include <QWidget>
-#include <QFrame>
 #include <QBoxLayout>
+#include <QFrame>
 #include <QPaintEvent>
 #include <QPixmap>
+#include <QWidget>
 
 #include "iistaskpanel_global.h"
+
 
 class iisTaskHeader;
 class iisTaskGroup;

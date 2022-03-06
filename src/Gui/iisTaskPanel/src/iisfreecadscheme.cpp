@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "iisfreecadscheme.h"
 #include <QApplication>
-#include <QStyle>
 
 
 iisFreeCADTaskPanelScheme* iisFreeCADTaskPanelScheme::myDefaultXPScheme = nullptr;

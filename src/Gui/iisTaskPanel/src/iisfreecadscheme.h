@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IISFREECADTASKPANELSCHEME_H
 #define IISFREECADTASKPANELSCHEME_H
 
 #include "iistaskpanelscheme.h"
-
-#include "iistaskpanel_global.h"
 
 
 class IISTASKPANEL_EXPORT iisFreeCADTaskPanelScheme : public iisTaskPanelScheme

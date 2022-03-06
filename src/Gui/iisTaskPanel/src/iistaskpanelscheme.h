@@ -9,12 +9,13 @@
 #define IISTASKPANELSCHEME_H
 
 #include <QtGui>
+#include <QBrush>
 #include <QColor>
 #include <QPen>
-#include <QBrush>
 #include <QSize>
 
 #include "iistaskpanel_global.h"
+
 
 struct IISTASKPANEL_EXPORT iisIconLabelScheme
 {
