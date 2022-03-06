@@ -30,17 +30,12 @@
 #include "Transactions.h"
 
 
-FC_LOG_LEVEL_INIT("App",true,true)
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
 static int _TransactionLock;
 static int _TransactionClosed;
-
-void* App::AutoTransaction::operator new(size_t size)
-{
-    return nullptr;
-}
 
 AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     auto &app = GetApplication();
@@ -243,10 +238,5 @@ void TransactionLocker::activate(bool enable)
 
 bool TransactionLocker::isLocked() {
     return _TransactionLock > 0;
-}
-
-void* App::TransactionLocker::operator new(size_t size)
-{
-    return nullptr;
 }
 
