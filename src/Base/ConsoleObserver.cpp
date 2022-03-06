@@ -26,8 +26,9 @@
 #ifndef _PreComp_
 # include <cstring>
 # include <Python.h>
-# include <frameobject.h>
 #endif
+
+# include <frameobject.h>
 
 #include "ConsoleObserver.h"
 
