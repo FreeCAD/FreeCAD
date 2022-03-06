@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 # include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
 # include <Inventor/SoFullPath.h>
+# include <Inventor/SoInput.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
@@ -34,24 +34,23 @@
 # include <QFileInfo>
 #endif
 
-#include <Inventor/nodes/SoFile.h>
-#include <Inventor/VRMLnodes/SoVRMLInline.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
+#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+#include <Inventor/VRMLnodes/SoVRMLBackground.h>
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+#include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include <Inventor/VRMLnodes/SoVRMLMovieTexture.h>
 #include <Inventor/VRMLnodes/SoVRMLScript.h>
-#include <Inventor/VRMLnodes/SoVRMLBackground.h>
-#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
-#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
-#include <Inventor/lists/SbStringList.h>
+
+#include <App/Document.h>
+#include <App/VRMLObject.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
 
 #include "ViewProviderVRMLObject.h"
 #include "SoFCSelection.h"
-#include <App/VRMLObject.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <sstream>
+
 
 using namespace Gui;
 

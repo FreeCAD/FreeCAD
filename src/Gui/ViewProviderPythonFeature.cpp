@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -30,7 +29,6 @@
 # include <QFileInfo>
 # include <QMenu>
 # include <QPixmap>
-# include <boost_bind_bind.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoDetail.h>
 #endif
@@ -48,7 +46,7 @@
 #include "ViewProviderDocumentObjectPy.h"
 
 
-FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true)
+FC_LOG_LEVEL_INIT("ViewProviderPythonFeature", true, true)
 
 
 using namespace Gui;

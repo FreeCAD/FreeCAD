@@ -20,26 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/SbRotation.h>
+# include <Inventor/SoFullPath.h>
+# include <Inventor/details/SoDetail.h>
 # include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 # include <QByteArray>
 # include <QDataStream>
 #endif
 
-#include <Inventor/SoDB.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/details/SoDetail.h>
-#include "SoFCDB.h"
-
-#include "ViewProvider.h"
-#include "PythonWrapper.h"
-
 #include <Base/BoundBoxPy.h>
+
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
 #include <Gui/ViewProviderPy.h>
@@ -53,6 +48,7 @@
 #include <Base/PlacementPy.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+
 
 using namespace Gui;
 
