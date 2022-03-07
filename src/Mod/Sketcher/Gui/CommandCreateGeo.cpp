@@ -190,6 +190,30 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
     }
 }
 
+void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj) {
+    if (distance == 0.) {
+
+        if(attachment.isCurve()) {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                element.GeoId, element.posIdAsInt(), attachment.GeoId);
+
+        }
+        else {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                element.GeoId, element.posIdAsInt(), attachment.GeoId, attachment.posIdAsInt());
+        }
+    }
+    else {
+        if(attachment == Sketcher::GeoElementId::VAxis) {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                element.GeoId, element.posIdAsInt(), distance);
+        }
+        else if(attachment == Sketcher::GeoElementId::HAxis) {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                element.GeoId, element.posIdAsInt(), distance);
+        }
+    }
+}
 
 /* Sketch commands =======================================================*/
 
