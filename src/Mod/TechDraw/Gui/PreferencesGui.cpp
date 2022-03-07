@@ -241,6 +241,6 @@ bool PreferencesGui::showGrid()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/General");
-    bool show = hGrp->GetBool("showGrid", true);
+    bool show = hGrp->GetBool("showGrid", false);
     return show;
 }
