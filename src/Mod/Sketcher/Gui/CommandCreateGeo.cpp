@@ -4737,7 +4737,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         MousePressMode = MOUSE_NOT_PRESSED;
 
@@ -4839,6 +4839,8 @@ public:
                 // This code enables the continuous creation mode.
                 resetHandlerState();
 
+                this->mouseMove(onSketchPos);
+
                 /* It is ok not to call to purgeHandler
                  * in continuous creation mode because the
                  * handler is destroyed by the quit() method on pressing the
@@ -4848,6 +4850,10 @@ public:
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
         }
+        else {
+            this->mouseMove(onSketchPos);
+        }
+
         return true;
     }
 
@@ -4902,8 +4908,8 @@ public:
 
                 --CurrentConstraint;
 
-                // run this in the end to redraw lines
-                drawEdit(EditCurve);
+                // run this in the end to draw lines and position text
+                this->mouseMove(EditCurve.back());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
