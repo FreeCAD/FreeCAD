@@ -2460,25 +2460,25 @@ bool CmdPartProjectionOnSurface::isActive(void)
 }
 
 //===========================================================================
-// Part_SectionCut
+// Std_SectionCut
 //===========================================================================
 
-DEF_STD_CMD_AC(CmdPartSectionCut)
+DEF_STD_CMD_AC(CmdStdSectionCut)
 
-CmdPartSectionCut::CmdPartSectionCut()
-    : Command("Part_SectionCut")
+CmdStdSectionCut::CmdStdSectionCut()
+    : Command("Std_SectionCut")
 {
-    sAppModule = "Part";
-    sGroup = QT_TR_NOOP("Part");
+    sAppModule = "Std";
+    sGroup = QT_TR_NOOP("Std");
     sMenuText = QT_TR_NOOP("Persistent section cut");
     sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
-    sWhatsThis = "Part_SectionCut";
+    sWhatsThis = "Std_SectionCut";
     sStatusTip = sToolTipText;
-    sPixmap = "Part_SectionCut";
+    sPixmap = "Std_SectionCut";
     eType = AlterDoc | Alter3DView;
 }
 
-Gui::Action* CmdPartSectionCut::createAction(void)
+Gui::Action* CmdStdSectionCut::createAction(void)
 {
     Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
 #if 0
@@ -2487,7 +2487,7 @@ Gui::Action* CmdPartSectionCut::createAction(void)
     return pcAction;
 }
 
-void CmdPartSectionCut::activated(int iMsg)
+void CmdStdSectionCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     static QPointer<PartGui::SectionCut> sectionCut = nullptr;
@@ -2496,7 +2496,7 @@ void CmdPartSectionCut::activated(int iMsg)
     }
 }
 
-bool CmdPartSectionCut::isActive(void)
+bool CmdStdSectionCut::isActive(void)
 {
     Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     return view ? true : false;
@@ -2554,5 +2554,5 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
-    rcCmdMgr.addCommand(new CmdPartSectionCut());
+    rcCmdMgr.addCommand(new CmdStdSectionCut());
 }

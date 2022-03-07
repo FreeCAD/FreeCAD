@@ -221,7 +221,7 @@ PyMOD_INIT_FUNC(PartGui)
     // add resources and reloads the translators
     loadPartResource();
 
-    Gui::Workbench::addPermanentMenuItem("Part_SectionCut", "Std_ToggleClipPlane");
+    Gui::Workbench::addPermanentMenuItem("Std_SectionCut", "Std_ToggleClipPlane");
 
     // register bitmaps
     // Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
