@@ -2887,17 +2887,17 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Okno nie jest oparte na szkicu. Okno nie zostało wyrównane lub nie zmieniono jego rozmiaru.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Brak wiązania szerokości i / lub wysokości w szkicu okna. Rozmiar okna nie zostanie zmieniony.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Nie znaleziono okna. Kontynuacja nie jest możliwa.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4125,12 +4125,12 @@ Jeśli Bieg = 0, wówczas Bieg jest obliczany tak, aby wysokość była taka sam
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Przetnij wzdłuż linii</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Przetnij obiekt wzdłuż linii</translation>
     </message>
   </context>
   <context>

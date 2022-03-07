@@ -341,7 +341,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Axis out and right</source>
-      <translation type="unfinished">Axis out and right</translation>
+      <translation>軸向右外側</translation>
     </message>
     <message>
       <source>Vertical tilt</source>

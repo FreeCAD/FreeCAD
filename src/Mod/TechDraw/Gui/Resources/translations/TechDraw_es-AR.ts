@@ -49,27 +49,27 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Compartir vista</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Comparte una vista en una segunda página</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Compartir Vista con otra Página</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Ver para compartir</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Seleccione Vista para compartir de la lista.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="75"/>
@@ -2437,7 +2437,7 @@ Cada unidad tiene aproximadamente 0.1 mm de ancho</translation>
     <name>TechDrawGui::DlgPrefsTechDrawDimensionsImp</name>
     <message>
       <source>Dimensions</source>
-      <translation>Dimensiones</translation>
+      <translation>Acotación</translation>
     </message>
     <message>
       <source>Standard to be used for dimensional values</source>
@@ -2477,7 +2477,7 @@ Cada unidad tiene aproximadamente 0.1 mm de ancho</translation>
     </message>
     <message>
       <source>Character used to indicate diameter dimensions</source>
-      <translation>Caracter usado para indicar las cotas de diámetro</translation>
+      <translation>Carácter usado para indicar las cotas de diámetro</translation>
     </message>
     <message>
       <source>⌀</source>
@@ -4263,7 +4263,7 @@ usando el espacio X/Y dado</translation>
     <name>Workbench</name>
     <message>
       <source>Dimensions</source>
-      <translation>Dimensiones</translation>
+      <translation>Acotación</translation>
     </message>
     <message>
       <source>Annotations</source>

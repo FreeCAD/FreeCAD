@@ -16,12 +16,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="336"/>
       <source>If true, the height value propagates to contained objects</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects</translation>
+      <translation>Ak pravdivé, hodnota výšky sa presunie na označené objekty</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="339"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>Úroveň bodu (0,0,0) tejto úrovne</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="206"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="921"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>Tvar tohto objektu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="349"/>
@@ -2888,6 +2888,21 @@ Building creation aborted.</translation>
       <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation type="unfinished">No window found. Cannot continue.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation type="unfinished">Window options</translation>
@@ -4106,6 +4121,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation type="unfinished">Cut with line</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation type="unfinished">Cut an object with a line</translation>
     </message>
   </context>
   <context>

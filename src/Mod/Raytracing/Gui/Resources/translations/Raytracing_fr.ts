@@ -51,7 +51,7 @@
     </message>
     <message>
       <source>Insert a new part object into a Raytracing project</source>
-      <translation>Insérez un nouvel objet dans un projet de Lancer de rayon.</translation>
+      <translation>Insérez un nouvel objet dans un projet de Raytracing</translation>
     </message>
   </context>
   <context>

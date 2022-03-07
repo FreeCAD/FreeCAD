@@ -16,7 +16,7 @@
     <message>
       <location filename="PathSurface.py" line="125"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</translation>
+      <translation>რაც მცირეა მნიშვნელობა, ბადე მით უფრო ზუსტი და მკაფიო იქნება. მცირე მნიშვნელობები ასევე საგრძნობლად ზრდიან დამუშავების დროს.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="127"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="PathWaterline.py" line="124"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</translation>
+      <translation>რაც მცირეა მნიშვნელობა, ბადე მით უფრო ზუსტი და მკაფიო იქნება. მცირე მნიშვნელობები ასევე საგრძნობლად ზრდიან დამუშავების დროს.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</translation>
+      <translation>მცირე მნიშვნელობების შედეგია უფრო ზუსტი ბადე. მცირე მნიშვნელობები გადამუშავების დროს არც ისე ძალიან ზრდიან.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="PathWaterline.py" line="168"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation type="unfinished">Set the sampling resolution. Smaller values quickly increase processing time.</translation>
+      <translation>დააყენეთ სამპლინგის გაფართოება. მცირე მნიშვნელობები სწრაფად ზრდიან დამუშავების დროს.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="170"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="PathJob.py" line="498"/>
       <source>Operations Cycle Time Estimation</source>
-      <translation type="unfinished">Operations Cycle Time Estimation</translation>
+      <translation>ოპერაციების ციკლის დაახლოებითი დრო</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="199"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="PathToolBit.py" line="153"/>
       <source>The parametrized body representing the tool bit</source>
-      <translation type="unfinished">The parametrized body representing the tool bit</translation>
+      <translation>ხელსაწყოს მჭრელი იარაღის აღმწერი პარამეტრიზებული სხეული</translation>
     </message>
     <message>
       <location filename="PathToolBit.py" line="159"/>
@@ -471,7 +471,7 @@
     <message>
       <location filename="PathToolBit.py" line="211"/>
       <source>List of all properties inherited from the bit</source>
-      <translation type="unfinished">List of all properties inherited from the bit</translation>
+      <translation>მჭრელი იარაღიდან მემკვიდრეობით მიღებული ყველა თვისების სია</translation>
     </message>
     <message>
       <location filename="PathCustom.py" line="56"/>
@@ -576,7 +576,7 @@
     <message>
       <location filename="PathMillFace.py" line="58"/>
       <source>Shape to use for calculating Boundary</source>
-      <translation type="unfinished">Shape to use for calculating Boundary</translation>
+      <translation>საზღვრის დასათვლელად გამოსაყენებელი მონახაზი</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="59"/>
@@ -636,7 +636,7 @@
     <message>
       <location filename="PathSlot.py" line="125"/>
       <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation type="unfinished">Complete the operation in a single pass at depth, or mulitiple passes to final depth.</translation>
+      <translation>ოპერაციის სიღრმეზე ერთი გავლის დასრულება. ან აირჩიეთ მრავალი გავლა, სრული სიღრმის მისაღწევად.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -714,16 +714,6 @@
       <translation>ახალი ოპერაციების StepDown-თვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation type="unfinished">Extra offset to apply to the operation. Direction is operation dependent.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation type="unfinished">Start pocketing at center or boundary</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>ხელსაწყოს მჭრელი იარაღის მიმართულება საათის(ს. მ.) ან საათის საწინააღმდეგო (ს. ს. მ.) მიმართულებით მოძრაობა</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>ოპერაციაზე გადასატარებელი დამატებითი წანაცვლება. მიმართულება დამოკიდებულია ოპერაციის ტიპზე.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -781,7 +781,7 @@
     <message>
       <location filename="PathStop.py" line="36"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>პროგრამაში აუცილებელი ან არასავალდებული შეჩერების ჩამატება</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="42"/>
@@ -796,12 +796,12 @@
     <message>
       <location filename="PathArray.py" line="46"/>
       <source>The spacing between the array copies in Linear pattern</source>
-      <translation type="unfinished">The spacing between the array copies in Linear pattern</translation>
+      <translation>მასივის ასლებს შორის დაცილება ხაზოვან შაბლონში</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="64"/>
       <source>The tool controller that will be used to calculate the path</source>
-      <translation type="unfinished">The tool controller that will be used to calculate the path</translation>
+      <translation>ტრაექტორიის გამოსათვლელად გამოყენებული ხელსაწყოს კონტროლერი</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="48"/>
@@ -816,7 +816,7 @@
     <message>
       <location filename="PathArray.py" line="52"/>
       <source>Total angle in Polar pattern</source>
-      <translation type="unfinished">Total angle in Polar pattern</translation>
+      <translation>ჯამური კუთხე პოლარულ შაბლონში</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="54"/>
@@ -826,7 +826,7 @@
     <message>
       <location filename="PathArray.py" line="56"/>
       <source>The centre of rotation in Polar pattern</source>
-      <translation type="unfinished">The centre of rotation in Polar pattern</translation>
+      <translation>პოლარულ შაბლონში ბრუნვის ცენტრი</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="58"/>
@@ -1031,7 +1031,7 @@
     <message>
       <location filename="PathJob.py" line="117"/>
       <source>The NC output file for this project</source>
-      <translation type="unfinished">The NC output file for this project</translation>
+      <translation>ამ პროექტის NC გამოსატანი ფაილი</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="123"/>
@@ -1131,12 +1131,12 @@
     <message>
       <location filename="PathProfile.py" line="182"/>
       <source>Make True, if using Cutter Radius Compensation</source>
-      <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
+      <translation>ჩართეთ, თუ იყენებთ ხელსაწყოს რადიუსის კომპენსაციას</translation>
     </message>
     <message>
       <location filename="PathEngrave.py" line="94"/>
       <source>The vertex index to start the path from</source>
-      <translation type="unfinished">The vertex index to start the path from</translation>
+      <translation>ტრაექტორიის საწყისი წვეროს ინდექსი</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="65"/>
@@ -1267,6 +1267,16 @@
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="206"/>
+      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
+      <translation type="unfinished">A planar adaptive start is unavailable. The non-planar will be attempted.</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="233"/>
+      <source>The non-planar adaptive start is also unavailable.</source>
+      <translation>არაბრტყელი ადაპტიური სტარტიც ხელმიუწვდომელია.</translation>
+    </message>
+    <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
       <translation>ფაილის არასწორი სახელი</translation>
@@ -1342,6 +1352,21 @@
       <translation>ხელსაწყოები</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="275"/>
+      <source>Warning</source>
+      <translation>გაფრთხილება</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="277"/>
+      <source>Ok</source>
+      <translation>დიახ</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="278"/>
+      <source>Don't Show This Anymore</source>
+      <translation type="unfinished">Don't Show This Anymore</translation>
+    </message>
+    <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>გამორთული თვისებების სია</translation>
@@ -1349,17 +1374,7 @@
     <message>
       <location filename="PathToolBitLibraryGui.py" line="77"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation type="unfinished">Choose a writable location for your toolbits</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="206"/>
-      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
-      <translation type="unfinished">A planar adaptive start is unavailable. The non-planar will be attempted.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="233"/>
-      <source>The non-planar adaptive start is also unavailable.</source>
-      <translation type="unfinished">The non-planar adaptive start is also unavailable.</translation>
+      <translation>აირჩიეთ თქვენი მჭრელი იარაღის ჩაწერადი ადგილი</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="785"/>
@@ -1374,7 +1389,7 @@
     <message>
       <location filename="PathOpGui.py" line="997"/>
       <source>AreaOp Operation</source>
-      <translation type="unfinished">AreaOp Operation</translation>
+      <translation>ოპერაცია AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1122"/>
@@ -1390,14 +1405,6 @@
       <location filename="PathProfile.py" line="456"/>
       <source>Unable to create path for face(s).</source>
       <translation>ტრაექტორიის შექმნა ზედაპირ(ებ)-ისთვის შეუძლებელია.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="PathFeatureExtensions.py" line="382"/>
-      <source>Extend Outline error</source>
-      <translation type="unfinished">Extend Outline error</translation>
     </message>
   </context>
   <context>
@@ -1487,34 +1494,6 @@
     </message>
   </context>
   <context>
-    <name>PathFeatureExtensions</name>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="717"/>
-      <source>Click to enable Extensions</source>
-      <translation>დააწკაპუნეთ გაფართოებების ჩასართავად</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="733"/>
-      <source>Click to include Edges/Wires</source>
-      <translation>დააწკაპუნეთ წიბოების/პოლიხაზების ჩასართავად</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="710"/>
-      <source>Extensions enabled</source>
-      <translation>გაფართოებები ჩართულია</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="730"/>
-      <source>Including Edges/Wires</source>
-      <translation>წიბოების/პოლიხაზების ჩათვლით</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensions.py" line="421"/>
-      <source>Waterline error</source>
-      <translation>დონის შეცდომა</translation>
-    </message>
-  </context>
-  <context>
     <name>PathFixture</name>
     <message>
       <location filename="PathFixture.py" line="156"/>
@@ -1576,6 +1555,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>ნედლეულის მხაარდაუჭერელი ობექტი %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>ნედლეულის მხარდაუჭერელი ტიპი %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>ნედლეული არაა საბაზისო შემომსაზღვრელი ჩარჩო!</translation>
@@ -1591,19 +1580,9 @@
       <translation>ნედლეული ცილინდი არაა!</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>ნედლეულის მხაარდაუჭერელი ობექტი %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>ნედლეულის მხარდაუჭერელი ტიპი %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJob.py" line="112"/>
       <source>The NC output file for this project</source>
-      <translation type="unfinished">The NC output file for this project</translation>
+      <translation>ამ პროექტის NC გამოსატანი ფაილი</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="118"/>
@@ -1744,16 +1723,16 @@
       <translation>ბაზური მდებარეობა</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>სიმაღლეები</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>სიმაღლეები</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1768,7 +1747,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathOpGui.py" line="1093"/>
       <source>AreaOp Operation</source>
-      <translation type="unfinished">AreaOp Operation</translation>
+      <translation>ოპერაცია AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1784,6 +1763,18 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathOpGui.py" line="1371"/>
       <source>Pick Start Point</source>
       <translation>აირჩიეთ საწყისი წერტილი</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1390"/>
+      <source>No suitable tool controller found.
+Aborting op creation</source>
+      <translation type="unfinished">No suitable tool controller found.
+Aborting op creation</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1394"/>
+      <source>No tool controller, aborting op creation</source>
+      <translation type="unfinished">No tool controller, aborting op creation</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -1908,7 +1899,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJob.py" line="422"/>
       <source>Operations Cycle Time Estimation</source>
-      <translation type="unfinished">Operations Cycle Time Estimation</translation>
+      <translation>ოპერაციების ციკლის დაახლოებითი დრო</translation>
     </message>
   </context>
   <context>
@@ -1969,7 +1960,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocket.py" line="108"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
-      <translation type="unfinished">Final depth set below ZMin of face(s) selected.</translation>
+      <translation>საბოლოო სიღრმე მონიშნული ზედაპირ(ებ)-ზე ZMin-ზე ნაკლებია.</translation>
     </message>
   </context>
   <context>
@@ -2042,7 +2033,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
-      <translation type="unfinished">For open edges, verify Final Depth for this operation.</translation>
+      <translation>ღია წიბოების შემთხვევაში გადაამოწმეთ საბოლოო სიღრმე ამ ოპერაციისთვის.</translation>
     </message>
   </context>
   <context>
@@ -2153,7 +2144,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="41"/>
       <source>This operation requires OpenCamLib to be installed.</source>
-      <translation type="unfinished">This operation requires OpenCamLib to be installed.</translation>
+      <translation>ოპერაციის შესასრულებლად საჭიროა OpenCamLib-ი.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="111"/>
@@ -2168,7 +2159,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="269"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>ამ დავალების GeometryTolerance 0.0-ის ტოლია.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="271"/>
@@ -2193,12 +2184,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="418"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Only zero or positive values permitted.</translation>
+      <translation>AvoidLastX_Faces: დასაშვებია მხოლოდ ნულოვანი ან დადებითი მნიშვნელობები.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="421"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Avoid last X faces count limited to 100.</translation>
+      <translation>AvoidLastX_Faces: თავიდან ასაცილებელი ბოლო X ზედაპირების უდიდესი რიცხვი 100-ის ტოლია.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="492"/>
@@ -2208,7 +2199,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="512"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling 3D Surface operation. Error creating OCL cutter.</translation>
+      <translation>3D ზედაპირის ოპერაციის გაუქმება. შეცდომა OCL მჭრელის შექმნისას.</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="695"/>
@@ -2271,7 +2262,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurfaceSupport.py" line="96"/>
       <source>Shape appears to not be horizontal planar.</source>
-      <translation type="unfinished">Shape appears to not be horizontal planar.</translation>
+      <translation>მოხაზულობა არ წარმოადგენს ჰორიზონტალურ სიბრტყეს.</translation>
     </message>
     <message>
       <location filename="PathSurfaceSupport.py" line="118"/>
@@ -2321,7 +2312,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurfaceSupport.py" line="1200"/>
       <source>Path transitions might not avoid the model. Verify paths.</source>
-      <translation type="unfinished">Path transitions might not avoid the model. Verify paths.</translation>
+      <translation>გარდამავალი ტრაექტორიები შეიძლება ვერ ასცდნენ მოდელს. შეამოწმეთ ისინი.</translation>
     </message>
     <message>
       <location filename="PathSurfaceSupport.py" line="1866"/>
@@ -2336,17 +2327,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurfaceSupport.py" line="2287"/>
       <source>Failed to identify a horizontal cross-section for Face</source>
-      <translation type="unfinished">Failed to identify a horizontal cross-section for Face</translation>
+      <translation>ზედაპირის ჰორიზონტალური კვეთის ამოცნობის შეცდომა</translation>
     </message>
     <message>
       <location filename="PathSurfaceSupport.py" line="2340"/>
       <source>getUnifiedRegions() must be called before getInternalFeatures().</source>
-      <translation type="unfinished">getUnifiedRegions() must be called before getInternalFeatures().</translation>
+      <translation>getUnifiedRegions() getInternalFeatures()-მდე უნდა გამოიძახოთ.</translation>
     </message>
     <message>
       <location filename="PathSurfaceSupport.py" line="2521"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation type="unfinished">Diameter dimension missing from ToolBit shape.</translation>
+      <translation>ხელსაწყოს მონახაზში დიამეტრის ზომა აკლია.</translation>
     </message>
   </context>
   <context>
@@ -2379,7 +2370,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolBit.py" line="141"/>
       <source>The parametrized body representing the tool bit</source>
-      <translation type="unfinished">The parametrized body representing the tool bit</translation>
+      <translation>ხელსაწყოს მჭრელი იარაღის აღმწერი პარამეტრიზებული სხეული</translation>
     </message>
     <message>
       <location filename="PathToolBit.py" line="142"/>
@@ -2394,7 +2385,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolBit.py" line="175"/>
       <source>List of all properties inherited from the bit</source>
-      <translation type="unfinished">List of all properties inherited from the bit</translation>
+      <translation>მჭრელი იარაღიდან მემკვიდრეობით მიღებული ყველა თვისების სია</translation>
     </message>
     <message>
       <location filename="PathToolBitCmd.py" line="40"/>
@@ -2485,7 +2476,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="41"/>
       <source>This operation requires OpenCamLib to be installed.</source>
-      <translation type="unfinished">This operation requires OpenCamLib to be installed.</translation>
+      <translation>ოპერაციის შესასრულებლად საჭიროა OpenCamLib-ი.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="111"/>
@@ -2500,7 +2491,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="244"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>ამ დავალების GeometryTolerance 0.0-ის ტოლია.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="246"/>
@@ -2525,12 +2516,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="400"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Only zero or positive values permitted.</translation>
+      <translation>AvoidLastX_Faces: დასაშვებია მხოლოდ ნულოვანი ან დადებითი მნიშვნელობები.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="403"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Avoid last X faces count limited to 100.</translation>
+      <translation>AvoidLastX_Faces: თავიდან ასაცილებელი ბოლო X ზედაპირების უდიდესი რიცხვი 100-ის ტოლია.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="477"/>
@@ -2653,7 +2644,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathCustomGui.py" line="81"/>
       <source>Create custom gcode snippet</source>
-      <translation type="unfinished">Create custom gcode snippet</translation>
+      <translation>მომხმარებლის gcode-ის ფრაგმენტის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -3124,7 +3115,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTag.py" line="161"/>
       <source>Base doesn't have a Path to dress-up.</source>
-      <translation type="unfinished">Base doesn't have a Path to dress-up.</translation>
+      <translation>ზღუდარის დასადებად ბაზისს ტრაექტორია არ გააჩნია.</translation>
     </message>
     <message>
       <location filename="PathDressupTag.py" line="164"/>
@@ -3252,7 +3243,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelixGui.py" line="92"/>
       <source>Creates a Path Helix object from a features of a base object</source>
-      <translation type="unfinished">Creates a Path Helix object from a features of a base object</translation>
+      <translation>საბაზისო ობიექტის თვისებებიდან სპირალური ტრაექტორიის შექმნა</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="72"/>
@@ -3979,7 +3970,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSimpleCopy.py" line="43"/>
       <source>Creates a non-parametric copy of another path</source>
-      <translation type="unfinished">Creates a non-parametric copy of another path</translation>
+      <translation>სხვა ტრაექტორიის არაპარამეტრული ასლის შექმნა</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="61"/>
@@ -4178,7 +4169,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathStop.py" line="117"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation type="unfinished">Add Optional or Mandatory Stop to the program</translation>
+      <translation>პროგრამაში აუცილებელი ან არასავალდებული შეჩერების ჩამატება</translation>
     </message>
   </context>
   <context>
@@ -4332,6 +4323,26 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>კუთხვილის ფრეზვა</translation>
     </message>
     <message>
+      <location filename="PathThreadMilling.py" line="193"/>
+      <source>Custom External</source>
+      <translation type="unfinished">Custom External</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="197"/>
+      <source>Custom Internal</source>
+      <translation type="unfinished">Custom Internal</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="201"/>
+      <source>Imperial External (2A)</source>
+      <translation type="unfinished">Imperial External (2A)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="205"/>
+      <source>Imperial External (3A)</source>
+      <translation type="unfinished">Imperial External (3A)</translation>
+    </message>
+    <message>
       <location filename="PathThreadMilling.py" line="207"/>
       <source>Custom</source>
       <translation>მომხმარებლის</translation>
@@ -4342,9 +4353,34 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>შიდა მეტრული</translation>
     </message>
     <message>
+      <location filename="PathThreadMilling.py" line="209"/>
+      <source>Imperial Internal (2B)</source>
+      <translation type="unfinished">Imperial Internal (2B)</translation>
+    </message>
+    <message>
       <location filename="PathThreadMilling.py" line="210"/>
       <source>Imperial Internal</source>
       <translation>შიდა იმპერიული</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="213"/>
+      <source>Imperial Internal (3B)</source>
+      <translation type="unfinished">Imperial Internal (3B)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="217"/>
+      <source>Metric External (4G6G)</source>
+      <translation type="unfinished">Metric External (4G6G)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="221"/>
+      <source>Metric External (6G)</source>
+      <translation type="unfinished">Metric External (6G)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="225"/>
+      <source>Metric Internal (6H)</source>
+      <translation type="unfinished">Metric Internal (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>
@@ -4372,7 +4408,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolBitLibraryGui.py" line="85"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation type="unfinished">Choose a writable location for your toolbits</translation>
+      <translation>აირჩიეთ თქვენი მჭრელი იარაღის ჩაწერადი ადგილი</translation>
     </message>
     <message>
       <location filename="PathToolBitLibraryGui.py" line="793"/>
@@ -4628,7 +4664,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="41"/>
       <source>This operation requires OpenCamLib to be installed.</source>
-      <translation type="unfinished">This operation requires OpenCamLib to be installed.</translation>
+      <translation>ოპერაციის შესასრულებლად საჭიროა OpenCamLib-ი.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="98"/>
@@ -4739,6 +4775,42 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation>მრავალგავლადი</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="382"/>
+      <source>Extend Outline error</source>
+      <translation type="unfinished">Extend Outline error</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFeatureExtensions</name>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="710"/>
+      <source>Extensions enabled</source>
+      <translation>გაფართოებები ჩართულია</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="717"/>
+      <source>Click to enable Extensions</source>
+      <translation>დააწკაპუნეთ გაფართოებების ჩასართავად</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="730"/>
+      <source>Including Edges/Wires</source>
+      <translation>წიბოების/პოლიხაზების ჩათვლით</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="733"/>
+      <source>Click to include Edges/Wires</source>
+      <translation>დააწკაპუნეთ წიბოების/პოლიხაზების ჩასართავად</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="421"/>
+      <source>Waterline error</source>
+      <translation>დონის შეცდომა</translation>
     </message>
   </context>
   <context>
@@ -4885,12 +4957,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPropertyBagGui.py" line="235"/>
       <source>Edit PropertyBag</source>
-      <translation type="unfinished">Edit PropertyBag</translation>
+      <translation>თვისებების ნაკრების ჩასწორება</translation>
     </message>
     <message>
       <location filename="PathPropertyBagGui.py" line="392"/>
       <source>Create PropertyBag</source>
-      <translation type="unfinished">Create PropertyBag</translation>
+      <translation>თვისებების ნაკრების შექმნა</translation>
     </message>
     <message>
       <location filename="PathPropertyBagGui.py" line="406"/>
@@ -4900,7 +4972,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPropertyBagGui.py" line="409"/>
       <source>Creates an object which can be used to store reference properties.</source>
-      <translation type="unfinished">Creates an object which can be used to store reference properties.</translation>
+      <translation>ქმნს ობიექტს, რომელიც შეიძლება გამოიყენოთ ბმების თვისებების შესანახად.</translation>
     </message>
     <message>
       <location filename="PathPropertyBag.py" line="62"/>
@@ -4928,7 +5000,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathEngrave.py" line="96"/>
       <source>The vertex index to start the path from</source>
-      <translation type="unfinished">The vertex index to start the path from</translation>
+      <translation>ტრაექტორიის საწყისი წვეროს ინდექსი</translation>
     </message>
   </context>
   <context>
@@ -4936,7 +5008,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="58"/>
       <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</translation>
+      <translation>წრიული ჭრილების მიმართულება: საათის მიმართულებით (ს. მ.) ან საათის საწინააღმდეგო მიმართულებით(ს. ს. მ)</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="61"/>
@@ -5514,7 +5586,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;თუ ჩართულია, ხელსაწყოს კონტროლერის განსაზღვრებები შაბლონში შეინახება.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -5524,7 +5596,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მონიშნეთ შაბლონში ჩასასმელი ხელსაწყოს ყველა კონტროლერი.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
@@ -5544,7 +5616,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="92"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ჩართეთ ოპერაციების ნაგულისხმევი სიმაღლის შაბლონში შესანახად.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
@@ -5739,7 +5811,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ToolTip to be displayed when user hovers mouse over property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ToolTip to be displayed when user hovers mouse over property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;თვისებაზე თაგუნას გადატარებისას მინიშნების ჩვენება.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="82"/>
@@ -5754,7 +5826,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want to create several properties in a batch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want to create several properties in a batch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ჩართეთ, თუ ზედიზედ რამდენიმე თვსების შექმნა გნებავთ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
@@ -5774,7 +5846,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ხელსაწყოს მჭრელი იარაღის ამ ბიბლიოთეკაში ჩამატება.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
@@ -5784,7 +5856,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ხელსაწყოს მონიშნული მჭრელი იარაღ(ებ)-ის ბიბლიოთეკიდან წაშლა.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -5804,12 +5876,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="139"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the selected library with a new name or export to another format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the selected library with a new name or export to another format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მონიშნული ბიბლიოთეკის სხვა სახელით შენახვა ან სხვა ფორმატში გატანა&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="190"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ხელსაწყოს მჭრელი იარაღების ბიბლიოთეკის ცხრილი.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
@@ -5907,7 +5979,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;აირჩიეთ, რა ტიპის მოხაზულობა უნდა იყოს გამოყენებული ქვედა ტრაექტორიის შესაზღუდად.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
@@ -6038,7 +6110,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="30"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მონიშნული თვისებების ამ ოპერაციის საბაზისო გეომეტრიების სიაში ჩამატება.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="33"/>
@@ -6050,7 +6122,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მონიშნული ელემენტების ბაზისური გეომეტრიების სიიდან წაშლა. ოპერაცია მათზე აღარ გადატარდება.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -6125,7 +6197,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მონიშნული ელემენტების ბაზისური გეომეტრიების სიიდან წაშლა. ოპერაცია მათზე აღარ გადატარდება.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="75"/>
@@ -6167,7 +6239,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;შემთხვევითი ადგილების დამატების ფანჯრის გახსნა.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
@@ -6349,7 +6421,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მიმართულება, რომლითაც პროფილი შესრულდება. საათის, თუ საათის საწინააღმდეგო მიმართულებით.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
@@ -6727,7 +6799,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="229"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მასალის რაოდენობა სამიზნე ფორმასთან მიმართებაში, რომელიც ოპერაციის მიერ უნდა იქნას დატოვებული.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="242"/>
@@ -6804,7 +6876,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;შეიყვანეთ ზონდირების წერტილების ჩაწერი ფაილის სახელი.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="148"/>
@@ -6819,7 +6891,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ამ ოპერაციის შედეგად დარჩენილი დამატებითი მასალის რაოდენობა სამიზნე ფორმასთან მიმართებაში.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="117"/>
@@ -6934,7 +7006,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;აირჩიეთ, რომელი წერტილი გამოიყენოთ მეორე არჩეულ თვისებაზე.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
@@ -6949,12 +7021,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ვიყენებ ხელით მითითებული წერტილებს მონაცემების ჩანართის თვისებებიდან.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the Property View of the Data tab.</source>
-      <translation type="unfinished">Currently using custom point inputs available in the Property View of the Data tab.</translation>
+      <translation>მიმდინარედ გამოიყენება ხელით მიმდინარე მნიშვნელობა, რომელიც ხელმისაწვდომია მონაცემების ჩანართის თვისების ხედში.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="269"/>
@@ -7054,13 +7126,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მონიშნული შემომსაზღვრელი ჩარჩოს დამატებითი წანაცვლება Y ღერძის გასწვრივ."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="107"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="249"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&lt;body&gt;&lt;p&gt;/&gt;დააყენეთ სემპლინგის გაფართოება. რაც მცირეა მნიშვნელობა, მით გაიზრდება დამუშავების დროც.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="117"/>
@@ -7095,7 +7167,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="151"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable separate optimization of transitions between, and breaks within, each step over path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable separate optimization of transitions between, and breaks within, each step over path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ტრაექტორიის თითოეული ბიჯის, მათ შორის გადასვლის და ჩატეხვების ცალცალკე გაუმჯობესება.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="154"/>
@@ -7344,7 +7416,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;აირჩიეთ ალგორითმი: OCL DropCutter*-ი თუ საცდელი(არაა დაფუძნებული OCL-ზე).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="120"/>
@@ -7389,7 +7461,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PropertyBag.ui" line="14"/>
       <source>Property Bag</source>
-      <translation type="unfinished">Property Bag</translation>
+      <translation>თვისებების ნაკრები</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
@@ -7655,7 +7727,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="110"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the number of tags generated when a new dressup is created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the number of tags generated when a new dressup is created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;შეიყვანეთ ახალი ზღუდარის შექმნის დროს გენერირებული ჭდეების რაოდენობა.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -8024,7 +8096,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="374"/>
       <source>Default path shape selection behavior in 3D viewer</source>
-      <translation type="unfinished">Default path shape selection behavior in 3D viewer</translation>
+      <translation>ნაგულისხმევი ტრაექტორიის მოხაზულობის მონიშვნის ქცევა 3D ხედში</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="384"/>
@@ -8347,7 +8419,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="47"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance the point trails behind the spindle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance the point trails behind the spindle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;წერტილის კვალის დაშორება შპინდელის მიღმა&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="66"/>
@@ -8357,7 +8429,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="73"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height to raise during corner action&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height to raise during corner action&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;კუთხის ქმედებისას აწევის სიმაღლე&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="92"/>
@@ -8691,7 +8763,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="61"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;შეიყვანეთ ზონდირების მონაცემების ფაილის სახელი&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -8749,7 +8821,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="118"/>
       <source>Fast Forward</source>
-      <translation type="unfinished">Fast Forward</translation>
+      <translation>სწრაფად წინ</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="180"/>
@@ -8822,7 +8894,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="96"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ხელსაწყოს მჭრელი იარაღის ტიპისა და მოხაზულობის აღწერის შემცველი ფაილი.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
@@ -8963,7 +9035,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ხელსაწყოს ამოსარჩევად ხელმისაწვდომი მჭრელი იარაღები.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="101"/>

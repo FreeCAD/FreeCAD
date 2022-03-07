@@ -2890,17 +2890,17 @@ Building creation aborted.</source>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Az ablak nem a vázlaton alapul. Az ablak nincs igazítva vagy átméretezve.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Nincs szélességi és/vagy magassági korlátozás az ablak vázlatában. Az ablak nincs átméretezve.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Nem található ablak. Nem folytatható.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4128,12 +4128,12 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Vágás vonallal</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Egy vonallal elvágja az objektumot</translation>
     </message>
   </context>
   <context>
@@ -4510,7 +4510,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Hozzon létre különböző típusú betonacélokat, beleértve az U-alakút, L-alakút és kengyelt</translation>
     </message>
   </context>
   <context>

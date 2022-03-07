@@ -4,6 +4,22 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation type="unfinished">Create new toolbar</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>実行</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
       <translation> {date} にバージョン {version} がインストールされました</translation>
@@ -86,12 +102,12 @@
     <message>
       <location filename="package_details.py" line="312"/>
       <source>Fetching README.md from package repository</source>
-      <translation type="unfinished">Fetching README.md from package repository</translation>
+      <translation>パッケージリポジトリから README.md をフェッチしています</translation>
     </message>
     <message>
       <location filename="package_details.py" line="354"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>警告: このアドオンはFreeCADが必要です </translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
@@ -103,22 +119,22 @@
     <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>URL {} から README データを読み込めませんでした</translation>
     </message>
     <message>
       <location filename="package_details.py" line="577"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>成功</translation>
     </message>
     <message>
       <location filename="package_details.py" line="600"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>git ref &apos;{} に変更されました&apos; -- Addonを使用するには再起動してください。</translation>
     </message>
     <message>
       <location filename="package_details.py" line="636"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>JavaScriptページが報告されました</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
@@ -148,54 +164,64 @@
     <message>
       <location filename="package_details.py" line="786"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>ブランチの変更</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>有効</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>無効化</translation>
     </message>
     <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>パッケージ一覧に戻る</translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+      <translation>
+        <numerusform>QtWebEngine Python バインディングがインストールされていません --代替のREADME表示を使用しています。詳細とインストール手順については、レポートビューを参照してください。</numerusform>
       </translation>
     </message>
     <message>
       <location filename="package_list.py" line="119"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>フィルタは有効です</translation>
     </message>
     <message>
       <location filename="package_list.py" line="125"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>フィルタ正規表現が無効です</translation>
     </message>
     <message>
       <location filename="package_list.py" line="207"/>
       <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
+      <translation>パッケージの詳細についてはクリックしてください {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>クリックしてワークベンチ{} の詳細を確認する</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>マクロの詳細については {} をクリックしてください</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>メンテナー</translation>
     </message>
     <message>
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>メンテナー:</translation>
     </message>
     <message>
       <location filename="package_list.py" line="364"/>
@@ -205,12 +231,7 @@
     <message>
       <location filename="package_list.py" line="371"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation>更新完了</translation>
+      <translation>更新</translation>
     </message>
     <message>
       <location filename="package_list.py" line="382"/>
@@ -220,7 +241,7 @@
     <message>
       <location filename="package_list.py" line="404"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>最新版</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="586"/>
@@ -231,6 +252,16 @@
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
       <translation>再起動を保留中</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation type="unfinished">DISABLED</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation>インストール済のバージョン</translation>
     </message>
     <message>
       <location filename="package_list.py" line="180"/>
@@ -248,9 +279,9 @@
       <translation>クリックしてマクロの詳細を見る</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>インストール済のバージョン</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation>更新完了</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -260,7 +291,7 @@
     <message>
       <location filename="package_list.py" line="383"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>インストール済み:</translation>
     </message>
     <message>
       <location filename="package_list.py" line="394"/>
@@ -290,7 +321,7 @@
     <message>
       <location filename="package_list.py" line="578"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>プリファレンスパック</translation>
     </message>
     <message>
       <location filename="package_list.py" line="692"/>
@@ -362,7 +393,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="367"/>
       <source>Unable to fetch git updates for workbench</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench</translation>
+      <translation>ワークベンチのGitアップデートを取得できません</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="391"/>
@@ -377,12 +408,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="426"/>
       <source>git fetch failed for {}</source>
-      <translation type="unfinished">git fetch failed for {}</translation>
+      <translation>{} の git フェッチに失敗しました</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+      <translation>{wb.name} の git フェッチに失敗しました</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -397,12 +428,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
-      <translation type="unfinished">git pull failed for {wb.name}</translation>
+      <translation>{wb.name} の git プルに失敗しました</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="514"/>
       <source>Done locating macros.</source>
-      <translation type="unfinished">Done locating macros.</translation>
+      <translation>マクロの配置を完了しました。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="521"/>
@@ -437,7 +468,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="608"/>
       <source>An error occurred fetching macros from GitHub</source>
-      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
+      <translation>GitHubからマクロを取得中にエラーが発生しました</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -497,7 +533,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="824"/>
       <source>Retrieving info from {}</source>
-      <translation type="unfinished">Retrieving info from {}</translation>
+      <translation>{} から情報を取得しています</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="835"/>
@@ -525,9 +561,24 @@
       <translation>先ずは、見当たらないコンポーネントをインストールしてください。</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>マクロの説明を取得しています...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Gitからの情報を取り込み中</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>エラー: ZIP ファイルを以下から配置できません。</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Wikiからの情報を取得しています</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -540,24 +591,9 @@
       <translation>インストールが完了しました</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Gitからの情報を取り込み中</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Wikiからの情報を取得しています</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation type="unfinished">Error updating module</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1078"/>
@@ -565,44 +601,49 @@
       <translation>手動で修正してください</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>モジュールの更新に失敗しました </translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
+      <translation>エラー: ZIP ファイルを配置できません。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1403"/>
       <source>Retrieving package metadata...</source>
-      <translation type="unfinished">Retrieving package metadata...</translation>
+      <translation>パッケージのメタデータを取得しています...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1405"/>
       <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+      <translation>pipの実行に失敗しました。エラーが返されました:</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>{} の package.xml をダウンロードしました</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>{} の metadata.txt をダウンロードしました</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
       <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
+      <translation>{} のダウンロードされたアイコン</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
       <source>Failed to repair missing .git directory</source>
-      <translation type="unfinished">Failed to repair missing .git directory</translation>
+      <translation>.git ディレクトリの不足を修復できませんでした</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="335"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>リポジトリURL</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="338"/>
@@ -612,33 +653,33 @@
     <message>
       <location filename="addonmanager_metadata.py" line="72"/>
       <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
+      <translation>暗号化された接続でエラー</translation>
     </message>
     <message>
       <location filename="addonmanager_metadata.py" line="135"/>
       <source>Failed to connect to</source>
-      <translation type="unfinished">Failed to connect to</translation>
+      <translation>接続に失敗しました</translation>
     </message>
     <message>
       <location filename="addonmanager_metadata.py" line="220"/>
       <source>Failed to connect to URL</source>
-      <translation type="unfinished">Failed to connect to URL</translation>
+      <translation>URLへの接続に失敗しました</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="101"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>危険: 開発者機能</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="114"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>ローカルの変更があります</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="192"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>ブランチ</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="178"/>
@@ -650,38 +691,38 @@
       <location filename="change_branch.py" line="261"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">
-        <numerusform>Kind</numerusform>
+      <translation>
+        <numerusform>種類</numerusform>
       </translation>
     </message>
     <message>
       <location filename="change_branch.py" line="265"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>ローカル名</translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="271"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation type="unfinished">
-        <numerusform>Tracking</numerusform>
+      <translation>
+        <numerusform>トラッキング</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">
-        <numerusform>Local updated</numerusform>
+      <translation>
+        <numerusform>ローカルが更新されました</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">
-        <numerusform>Remote updated</numerusform>
+      <translation>
+        <numerusform>リモートが更新されました</numerusform>
       </translation>
     </message>
     <message>
@@ -697,22 +738,22 @@
     <message>
       <location filename="AddonManager.py" line="213"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>接続に失敗しました</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="240"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>依存関係がありません</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>起動中...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>アドオン情報を読み込み中</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="199"/>
@@ -740,6 +781,16 @@
       <translation>キャッシュを更新しています...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>アップデートを確認中…</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} アップデートを適用</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>ここからインストールできますアドオンは、FreeCAD公式の一部ではないゆえにFreeCADチームによってレビューがなされていない。あなたが何をインストールしようとしているかを確認して下さい！</translation>
@@ -747,7 +798,7 @@
     <message>
       <location filename="AddonManager.py" line="203"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>変更を有効にするにはFreeCADを再起動する必要があります。</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="204"/>
@@ -757,12 +808,7 @@
     <message>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>アップデートを確認中…</translation>
+      <translation>QtNetworkをインポートできませんでした。詳細についてはレポートビューを参照してください。アドオンマネージャーは利用できません。</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -805,9 +851,14 @@
       <translation>マクロを削除しました</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>マクロを削除できませんでした</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
+      <translation>Addon Manager: AutoCheck ユーザー設定が False であるため、更新チェックをスキップします</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="542"/>
@@ -815,54 +866,49 @@
       <translation>再起動が必要です</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="577"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>利用可能なアップデートはありません</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
-      <translation type="unfinished">All packages updates failed. Packages:</translation>
+      <translation>すべてのパッケージの更新に失敗しました。 パッケージ:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
-      <translation type="unfinished">Failed packages:</translation>
+      <translation>失敗したパッケージ:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="915"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>リストするには多すぎます</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="893"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>不足している要件</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>依存関係インストール中</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1061"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Pythonを実行できません</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1081"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>pipを実行できません</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1102"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>パッケージのインストールに失敗しました</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1105"/>
@@ -878,19 +924,14 @@
       <location filename="AddonManager.py" line="1280"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
-        <numerusform>{} total, see Report view for list</numerusform>
+      <translation>
+        <numerusform>計 {} リストのレポートビューを参照してください</numerusform>
       </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
       <translation>正常終了</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1159"/>
@@ -920,7 +961,7 @@
     <message>
       <location filename="AddonManager.py" line="1457"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>削除を確認</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1460"/>
@@ -928,9 +969,14 @@
       <translation>本当にこのアドオンを削除しますか？</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>マクロを削除できませんでした</translation>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation>Addon&apos;s uninstall.py スクリプトの実行に失敗しました。アンインストールして続行します...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation type="unfinished">Successfully uninstalled {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

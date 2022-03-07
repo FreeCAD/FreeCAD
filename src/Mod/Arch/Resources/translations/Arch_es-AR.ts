@@ -2890,17 +2890,17 @@ Creación de construcción cancelada.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Ventana no basada en croquis. Ventana no alineada o redimensionada.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>No hay restricciones de Ancho y/o Altura en el croquis de la ventana. Ventana no redimensionada.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>No se ha encontrado ninguna ventana. No se puede continuar.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4128,12 +4128,12 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Cortar con una línea</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Corta un objeto con una línea</translation>
     </message>
   </context>
   <context>
@@ -6308,8 +6308,8 @@ propiedades de objeto FreeCAD almacenadas</translation>
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</source>
-      <translation>Si esta opción está marcada, el 'Project', 'Site', 'Building', y 'Storeys'
-objetos que generalmente se encuentran en un archivo IFC no son importados, y todos los objetos
+      <translation>Si esta opción está marcada, los objetos por defecto 'Project', 'Site', 'Building', y 'Storeys'
+ que generalmente se encuentran en un archivo IFC no son importados, y todos los objetos
 se colocan en un 'Group'.
 Los 'Buildings' y 'Storeys' siguen siendo importados si hay más de uno.</translation>
     </message>

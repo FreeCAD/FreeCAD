@@ -91,7 +91,7 @@ Cela créera un 'filtre composé' pour chaque forme.</translation>
     <message>
       <location filename="SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation>Résidus booléens</translation>
+      <translation>Fragments booléens</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="197"/>
@@ -100,7 +100,7 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Crée un objet 'Residu booléen' à partir de deux ou plusieurs objets sélectionnés,
+      <translation>Crée un objet 'Fragment booléen' à partir de deux ou plusieurs objets sélectionnés,
 ou à partir des formes à l'intérieur d'un composé.
 Ceci est une union booléenne qui est ensuite coupée aux intersections
 des formes originales.
@@ -2443,7 +2443,7 @@ en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1351"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Créer une face à partir d'un ensemble de fils (par exemple, à partir d’une esquisse)</translation>
+      <translation>Créer une face à partir d'un ensemble de polylignes (par exemple, à partir d’une esquisse)</translation>
     </message>
   </context>
   <context>
@@ -3040,7 +3040,7 @@ de la projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Décalage de l'accrochage(en coordonnées locales) :</translation>
+      <translation>Décalage de l'accrochage (en coordonnées locales) :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -5304,7 +5304,7 @@ le vecteur normal du plan de l'esquisse sera utilisé</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Décalage de l'accrochage(en coordonnées locales) :</translation>
+      <translation>Décalage de l'accrochage (en coordonnées locales) :</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>

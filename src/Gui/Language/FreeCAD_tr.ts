@@ -1687,7 +1687,7 @@ boşluğu aştığında kaydırılacak</translation>
     </message>
     <message>
       <source>Enter a file name, please:</source>
-      <translation>Lütfen bir dosyası adı girin:</translation>
+      <translation>Lütfen bir dosya adı yazın:</translation>
     </message>
     <message>
       <source>Existing file</source>
@@ -2291,7 +2291,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>İç Python hatalarını rapor görünümüne yönlendir</translation>
+      <translation>Dahili Python hatalarını rapor görünümüne yönlendir</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
@@ -4105,7 +4105,7 @@ Tercih edilen sistem, genel tercihlerdeki tek ayardır.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation>Seçili organizasyonları/tasarımları silmek istediğinizden emin misiniz?</translation>
+      <translation>Seçili geçici dizinleri silmek istediğinize emin misiniz?</translation>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
@@ -4113,7 +4113,7 @@ Tercih edilen sistem, genel tercihlerdeki tek ayardır.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation>Seçili organizasyonları/tasarımları silmek istediğinizden emin misiniz?</translation>
+      <translation>Tüm geçici dizinleri silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -4121,7 +4121,7 @@ Tercih edilen sistem, genel tercihlerdeki tek ayardır.</translation>
     </message>
     <message>
       <source>Transient directories deleted.</source>
-      <translation>Geçici dizinler silinir.</translation>
+      <translation>Geçici dizinler silindi.</translation>
     </message>
     <message>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
@@ -4129,7 +4129,7 @@ Tercih edilen sistem, genel tercihlerdeki tek ayardır.</translation>
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Aşağıda listelenen belgenin kurtarma işlemini başlatmak için 'Kurtarmayı Başlat' düğmesine basın.
 
-'Statü' sütunu, dokümanın kurtarılıp kurtarılmayacağını gösterir.</translation>
+'Durum' sütunu, dokümanın kurtarılıp kurtarılmayacağını gösterir.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
@@ -7423,7 +7423,7 @@ Dosyayı farklı bir adla kaydetmek ister misiniz?</translation>
     </message>
     <message>
       <source>Panels</source>
-      <translation>Panels</translation>
+      <translation>Paneller</translation>
     </message>
     <message>
       <source>List of available dock panels</source>

@@ -3075,7 +3075,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>Видна ли линия выноски или нет</translation>
     </message>
     <message>
       <source>False</source>

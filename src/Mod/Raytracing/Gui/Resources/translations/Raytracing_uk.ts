@@ -130,7 +130,7 @@
     </message>
     <message>
       <source>Export part to POV-Ray...</source>
-      <translation type="unfinished">Export part to POV-Ray...</translation>
+      <translation>Експортувати частину у POV-Ray...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a POV-Ray file</source>
@@ -204,19 +204,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Create a Raytracing project to insert a view.</source>
-      <translation type="unfinished">Create a Raytracing project to insert a view.</translation>
+      <translation>Створіть проект Raytracing для вставки вид.</translation>
     </message>
     <message>
       <source>Select a Raytracing project to insert the view.</source>
-      <translation type="unfinished">Select a Raytracing project to insert the view.</translation>
+      <translation>Виберіть проект трасування Raytracing, щоб вставити цей вид.</translation>
     </message>
     <message>
       <source>Select one Raytracing project object.</source>
-      <translation type="unfinished">Select one Raytracing project object.</translation>
+      <translation>Виберіть об'єкт трасування променів.</translation>
     </message>
     <message>
       <source>Luxrender</source>
-      <translation type="unfinished">Luxrender</translation>
+      <translation>Luxrender</translation>
     </message>
     <message>
       <source>POV-Ray not found</source>
@@ -236,11 +236,11 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
+      <translation>Будь ласка встановіть шлях до файлу luxrender або luxconsole в налаштуваннях.</translation>
     </message>
     <message>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation type="unfinished">Please correct the path to the luxrender or luxconsole executable in the preferences.</translation>
+      <translation>Будь ласка виправте шлях до файлу luxrender або luxconsole в налаштуваннях.</translation>
     </message>
     <message>
       <source>POV-Ray file missing</source>
@@ -299,7 +299,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation type="unfinished">The POV-Ray parameters to be passed to the render.</translation>
+      <translation>Параметри POV-Ray будуть передані рендеру.</translation>
     </message>
     <message>
       <source>+P +A</source>
@@ -362,7 +362,7 @@ Do you want to continue?</source>
     <name>RaytracingGui::DlgSettingsRayImp</name>
     <message>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Шлях до POV-Ray виконуваний, якщо ви хочете подати з %1</translation>
     </message>
   </context>
   <context>

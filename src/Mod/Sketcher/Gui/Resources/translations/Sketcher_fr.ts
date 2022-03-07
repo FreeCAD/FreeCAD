@@ -507,7 +507,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3166"/>
       <source>Constrain vertical distance</source>
-      <translation>Contraindre la distance verticale</translation>
+      <translation>Contrainte de distance verticale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3167"/>
@@ -688,7 +688,7 @@ with respect to a line or a third point</source>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConvertToNURB</name>
+    <name>CmdSketcherConvertToNURBS</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
@@ -4426,7 +4426,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="125"/>
       <source>Horizontal Distance</source>
-      <translation>Distance Horizontale</translation>
+      <translation>Distance horizontale</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="130"/>

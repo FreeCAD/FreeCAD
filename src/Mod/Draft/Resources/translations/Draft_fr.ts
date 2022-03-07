@@ -596,7 +596,7 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
     <message>
       <location filename="bspline.py" line="46"/>
       <source>The points of the B-spline</source>
-      <translation>Les points de la courbe (B-spline)</translation>
+      <translation>Les points de la courbe B-spline</translation>
     </message>
     <message>
       <location filename="bspline.py" line="50"/>
@@ -734,14 +734,14 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <translation>La mise à l'échelle du motif utilisée par cet objet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forme de cet objet</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>La rotation du motif utilisée par cet objet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forme de cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1375,7 +1375,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation>Crée un congé entre deux lignes ou arêtes sélectionnées.</translation>
+      <translation>Créer un congé entre deux lignes ou arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="90"/>
@@ -1440,7 +1440,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation>Outils de réseau</translation>
+      <translation>Outils Réseau</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
@@ -1516,7 +1516,7 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
     <message>
       <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
-      <translation>Ajouter au groupe de Construction</translation>
+      <translation>Ajouter au groupe de construction</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="367"/>
@@ -1551,7 +1551,7 @@ Il crée un groupe de construction s'il n'existe pas.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation>Ajoute un point à un fil ou une courbe B-spline existant.</translation>
+      <translation>Ajoute un point à une polyligne ou une courbe B-spline existant.</translation>
     </message>
   </context>
   <context>
@@ -1592,7 +1592,7 @@ Créez d'abord un groupe pour utiliser cet outil.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation>Appliquer le style actuel</translation>
+      <translation>Appliquer le style en cours</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
@@ -1611,7 +1611,7 @@ Créez d'abord un groupe pour utiliser cet outil.</translation>
       <location filename="gui_arcs.py" line="70"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée un arc à partir du centre et du rayon. Ctrl pour aimanter, Majuscule pour contraindre.</translation>
+      <translation>Crée un arc à partir du centre et du rayon. CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -1638,7 +1638,7 @@ CTRL to snap, SHIFT to constrain.</source>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée un arc en désignant 3 points. Ctrl pour aimanter, MAJ pour contraindre.</translation>
+      <translation>Crée un arc en désignant 3 points. CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -1676,7 +1676,7 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
     <message>
       <location filename="gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation>Outils de réseau</translation>
+      <translation>Outils Réseau</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
@@ -1707,7 +1707,7 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée une courbe B-spline avec multiples points. CTRL pour aimanter, SHIFT pour contraindre.</translation>
+      <translation>Crée une courbe B-spline avec multiples points. CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -1850,7 +1850,7 @@ CTRL pour aimanter, MAJ pour contraindre.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation>Supprime un point d’un fil ou d’une courbe B-spline existant.</translation>
+      <translation>Supprime un point d’une polyligne ou d’une courbe B-spline existant.</translation>
     </message>
   </context>
   <context>
@@ -1992,7 +1992,7 @@ sur les nœuds pris en charge et sur les objets pris en charge.</translation>
     <message>
       <location filename="gui_fillets.py" line="67"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation>Crée un congé entre deux lignes ou arêtes sélectionnées.</translation>
+      <translation>Créer un congé entre deux lignes ou arêtes sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2114,7 @@ Les objets ajoutés à ce calque peuvent partager les mêmes propriétés visuel
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée une ligne par 2 points. CTRL pour aimanter, SHIFT pour contraindre.</translation>
+      <translation>Crée une ligne par 2 points. CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -2563,7 +2563,7 @@ les lignes droites Draft qui sont dessinées dans le plan XY. Les objets sélect
     <message>
       <location filename="gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
-      <translation>Définir l'aimantation aux extrémités d'une arête.</translation>
+      <translation>Définir l'aimantation aux points d'extrémités d'une arête.</translation>
     </message>
   </context>
   <context>
@@ -2840,14 +2840,14 @@ Ceci est destiné à être utilisé avec des formes fermées et des solides, et 
     <message>
       <location filename="gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation>Ajuste ou Prolonge</translation>
+      <translation>Ajuster ou Prolonger</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>Ajuste ou étend l'objet sélectionné, ou extrude des faces uniques.
-CTRL pour aimanter, SHIFT pour contraindre au segment actuel ou à la normale, ALT pour inverser.</translation>
+CTRL pour aimanter, MAJ pour contraindre au segment actuel ou à la normale, ALT pour inverser.</translation>
     </message>
   </context>
   <context>
@@ -2879,7 +2879,7 @@ convertir les bords fermés en faces remplies et en polygones paramétriques, et
     <message>
       <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation>Crée une ligne brisée (polyligne). CTRL pour aimanter, SHIFT pour contraindre.</translation>
+      <translation>Crée une ligne brisée (polyligne). CTRL pour aimanter, MAJ pour contraindre.</translation>
     </message>
   </context>
   <context>
@@ -2993,7 +2993,7 @@ Vous pouvez ensuite l'utiliser pour enregistrer une position différente de la c
     <message>
       <location filename="init_tools.py" line="89"/>
       <source>Array tools</source>
-      <translation>Outils de réseau</translation>
+      <translation>Outils Réseau</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1470"/>
@@ -3101,7 +3101,7 @@ Vous pouvez ensuite l'utiliser pour enregistrer une position différente de la c
     <message>
       <location filename="DraftGui.py" line="151"/>
       <source>Cycle snap object</source>
-      <translation>Alterner entre différentes aimantation</translation>
+      <translation>Alterner entre différentes aimantations</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="156"/>
@@ -3456,7 +3456,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="DraftGui.py" line="1094"/>
       <source>Trimex</source>
-      <translation>Ajuste ou Prolonge</translation>
+      <translation>Ajuster ou Prolonger</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1192"/>
@@ -4369,57 +4369,57 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation>Point d'extrémité aimanté</translation>
+      <translation>Aimanter au point d'extrémité</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Aimanter au point milieu</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation>Aimanter centre</translation>
+      <translation>Aimanter au centre</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation>Aimanter l'angle</translation>
+      <translation>Aimanter à l'angle</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation>Aimanter intersection</translation>
+      <translation>Aimanter à l'intersection</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation>Amanter la perpendiculaire</translation>
+      <translation>Aimanter à la perpendiculaire</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Aimanter à l'extension</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation>Aligner parallèle</translation>
+      <translation>Aimanter à la parallèle</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Aimanter spécial</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Aimanter au plus prés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Aimanter orthogonalement</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
@@ -4429,12 +4429,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Aimanter au plan de travail</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Aimanter aux dimensions</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -4751,7 +4751,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_edit_draft_objects.py" line="749"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>Le point de terminaison de la Courbe de Bézier ne peut pas être lissé</translation>
+      <translation>Le point d'extrémité de la Courbe de Bézier ne peut pas être lissé</translation>
     </message>
     <message>
       <location filename="gui_edit_sketcher_objects.py" line="60"/>
@@ -4921,12 +4921,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation>Accrochage d'angles (30 et 45 degrés)</translation>
+      <translation>Aimantation angulaire (30 et 45 degrés)</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
-      <translation>Aimantation au centre d'arc</translation>
+      <translation>Accrochage au centre de l'arc</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="398"/>
@@ -4941,7 +4941,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
-      <translation>Aimantation orthogonal</translation>
+      <translation>Aimantation orthogonale</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="489"/>
@@ -4956,7 +4956,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
-      <translation>Accrochage au Plan de travail</translation>
+      <translation>Aimantation au Plan de travail</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="583"/>
@@ -5206,7 +5206,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_labels.py" line="218"/>
       <source>Pick endpoint of leader line</source>
-      <translation>Choisir le point de terminaison de la ligne de repère</translation>
+      <translation>Choisir le point d'extrémité de la ligne de repère</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="228"/>
@@ -8266,12 +8266,12 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="951"/>
       <source>Enable snap statusbar widget</source>
-      <translation>Activer le widget d'accrochage dans la barre d'état</translation>
+      <translation>Activer le widget d'aimantation dans la barre d'état</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
-      <translation>Draft Widget d'aimantation</translation>
+      <translation>Widget d'aimantation de Draft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="970"/>

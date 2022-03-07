@@ -6,7 +6,7 @@
     <message>
       <location filename="fillet.py" line="47"/>
       <source>The start point of this line.</source>
-      <translation>Початкова точка цієї лінії.</translation>
+      <translation>Початкова точка цієї лінії</translation>
     </message>
     <message>
       <location filename="fillet.py" line="55"/>
@@ -16,7 +16,8 @@
     <message>
       <location filename="fillet.py" line="63"/>
       <source>The length of this line.</source>
-      <translation>Довжина цієї лінії.</translation>
+      <translation>Довжина цієї лінії
+</translation>
     </message>
     <message>
       <location filename="fillet.py" line="71"/>
@@ -77,7 +78,7 @@
     <message>
       <location filename="array.py" line="185"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>Напрямок осі, навколо якого будуть створені елементи в полярному або круговому масиві</translation>
+      <translation>Напрямок осі, навколо якого будуть створені елементи полярного або кругового масиву</translation>
     </message>
     <message>
       <location filename="array.py" line="196"/>
@@ -273,12 +274,12 @@ that displays the measured radius or diameter.
 that displays the measured angle.</source>
       <translation>Точка, через яку буде проходити розмірна лінія або її екстраполяція.
 
-- Для лінійних розмірів ця властивість визначає, наскільки близька розмірна лінія
-до вимірюваного об'єкта.
+- Для лінійних розмірів ця властивість визначає, наскільки близько розмірна лінія
+відноситься до вимірюваного об'єкта.
 - Для радіальних розмірів це керує напрямком розмірної лінії
-що відображає виміряний радіус або діаметр.
-- Для кутових розмірів це регулює радіус розмірної дуги
-що відображає виміряний кут.</translation>
+який відображає виміряний радіус або діаметр.
+- Для кутових розмірів це керує радіусом розмірної дуги
+який відображає виміряний кут.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -288,8 +289,8 @@ If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
       <translation>Початкова точка розмірної лінії.
 
-Якщо це радіус розміру, це буде центр дуги.
-Якщо це розмір діаметру, це буде точка, яка лежить на дузі.</translation>
+Якщо це радіус, це буде центр дуги.
+Якщо це розмір діаметра, то це буде точка, що лежить на дузі.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -299,8 +300,8 @@ If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
       <translation>Кінцева точка розмірної лінії.
 
-Якщо це радіус або розмір діаметра
-це буде точка, яка лежить на дузі.</translation>
+Якщо це радіус або діаметр
+це буде точка, що лежить на дузі.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
@@ -321,10 +322,10 @@ is the radius or diameter, depending on the 'Diameter' property.</source>
       <translation>Значення вимірювання.
 
 Ця властивість доступна лише для читання, оскільки обчислюється значення
-з властивостей "Пуск" і "Кінець".
+із властивостей «Початок» і «Кінець».
 
-Якщо "Зв'язана геометрія" є дугою або колом, це "Відстань"
-- радіус або діаметр, залежно від властивості "Діаметр".</translation>
+Якщо "Зв'язана геометрія" є дугою або колом, ця "Відстань"
+– радіус або діаметр, залежно від властивості «Діаметр».</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
@@ -337,8 +338,8 @@ the radius or the diameter value</source>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation>Початковий кут розмірної лінії (кругова дуга).
-Дуга проведена проти годинникової стрілки.</translation>
+      <translation>Початковий кут розмірної лінії (дуга окружності).
+Дугу малюють проти годинникової стрілки.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
@@ -739,14 +740,14 @@ This property is read-only, as the number depends on the points contained within
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма цього об'єкта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -7578,7 +7579,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation type="unfinished">Note: Not all the options below are used by the new importer yet</translation>
+      <translation>Примітка: Ще не всі варіанти, наведені нижче використовуються новий імпортер</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="149"/>
@@ -7588,7 +7589,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>Якщо не позначено, то тексти/мультитексти не будуть імпортовані</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="159"/>
@@ -7598,7 +7599,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>Якщо вимкнено, точки не імпортуються</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -7608,7 +7609,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>Якщо позначено, то об'єкти простору паперу також будуть імпортовані</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="191"/>
@@ -7618,7 +7619,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Якщо ви хочете, щоб неіменовані блоки (починаються *) було також імпортовано</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="207"/>
@@ -7633,17 +7634,17 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Будуть створені тільки стандартні об'єкти деталі: (найшвидші)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
-      <translation type="unfinished">simple Part shapes</translation>
+      <translation>прості форми</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>Параметричні об'єкти чернетки будуть створюватися щоразу, коли це можливо</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="253"/>
@@ -7653,7 +7654,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="266"/>
       <source>Sketches will be created whenever possible</source>
-      <translation type="unfinished">Sketches will be created whenever possible</translation>
+      <translation>Ескізи будуть створюватися щоразу, коли їх буде можливо</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="269"/>
@@ -7663,7 +7664,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="289"/>
       <source>Scale factor to apply to imported files</source>
-      <translation type="unfinished">Scale factor to apply to imported files</translation>
+      <translation>Масштабувати коефіцієнт для застосування до імпортованих файлів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="309"/>
@@ -7671,10 +7672,10 @@ from the Addon Manager.</source>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Масштабувати коефіцієнт застосування до DXF-файлів при імпорті.
+Фактор - це перетворення між одиницею файлу DXF та міліметрами.
+Приклад: для файлів в міліметрах: 1, в сантиметрах: 10,
+                             метрів в метрах: 1000, в дюймах: 25. , у оздоровленні: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="338"/>
@@ -7716,8 +7717,8 @@ turning the display faster, but making them less easily editable </source>
       <location filename="../ui/preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>Імпортований текст отримає стандартний розмір тексту креслення
+замість розміру, який вони мають у DXF документі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
@@ -7727,17 +7728,17 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Якщо позначено цей пункт, DXF шари будуть імпортовані як шари креслення</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
-      <translation type="unfinished">Use Layers</translation>
+      <translation>Використовуйте шари.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Штрихи будуть конвертовані в прості каркаси</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
@@ -7748,13 +7749,13 @@ instead of the size they have in the DXF document</translation>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>Якщо полілінії мають визначену ширину, то вони будуть представлені
+як закриті дроти з правильною шириною</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Render polylines with width</translation>
+      <translation>Візуалізація полілінії за її шириною</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
@@ -7764,19 +7765,19 @@ as closed wires with correct width</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="489"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation type="unfinished">Treat ellipses and splines as polylines</translation>
+      <translation>Розглядайте еліпси і сплайни як ламані лінії</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="518"/>
       <source>Max Spline Segment:</source>
-      <translation type="unfinished">Max Spline Segment:</translation>
+      <translation>Максимальний сегмент сплайну:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="528"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</translation>
+      <translation>Максимальна довжина кожної ламаної лінії.
+Якщо значення встановлено у «0», весь сплайн розглядається як прямий сегмент.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
@@ -7787,7 +7788,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</translat
     <message>
       <location filename="../ui/preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
+      <translation>Всі об'єкти, що містять грані, будуть експортовані як 3D поліотипи</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
@@ -7798,23 +7799,23 @@ If it is set to '0' the whole spline is treated as a straight segment.</translat
       <location filename="../ui/preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>Подання з малюнками буде експортовано як блоки.
+Це може не вдалося опублікувати шаблони DXF R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
-      <translation type="unfinished">Export Drawing Views as blocks</translation>
+      <translation>Експорт вигляду креслення як блоки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation type="unfinished">Exported objects will be projected to reflect the current view direction</translation>
+      <translation>Експортовані об'єкти будуть проєктовані для відображення поточного напрямку перегляду</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
-      <translation type="unfinished">Project exported objects along current view direction</translation>
+      <translation>Об'єкти проекту в поточному напрямку для перегляду</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
@@ -7829,12 +7830,12 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation type="unfinished">If this is checked, snapping is activated without the need to press the snap mod key</translation>
+      <translation>Якщо вибрано, використання прив'язки буде активоване без необхідності натискати клавішу прив'язки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation type="unfinished">Always snap (disable snap mod)</translation>
+      <translation>Завжди прив'язувати (вимкнути режим прив'язки)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="57"/>
@@ -7875,7 +7876,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="129"/>
       <source>The snap modifier key</source>
-      <translation type="unfinished">The snap modifier key</translation>
+      <translation>Клавіша прив'язки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="164"/>
@@ -7920,7 +7921,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="291"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation type="unfinished">If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</translation>
+      <translation>Якщо відмітити, сітка креслення завжди буде видима при використанні робочого столу креслення активного. В іншому випадку лише за допомогою команди</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="294"/>
@@ -7930,32 +7931,32 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>Якщо вибрано, то буде показано додаткову межу навколо сітки, що показує основний квадратний розмір в нижньому лівому кордоні</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
       <source>Show grid border</source>
-      <translation type="unfinished">Show grid border</translation>
+      <translation>Показати рамку сітки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="329"/>
       <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+      <translation>Якщо встановити, то сітка матиме два основних осі, позначені червоним, зеленим або синім кольором, якщо відповідатиме глобальним осям</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="332"/>
       <source>Use colored axes</source>
-      <translation type="unfinished">Use colored axes</translation>
+      <translation>Використовувати кольорові осі</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="353"/>
       <source>Main lines every</source>
-      <translation type="unfinished">Main lines every</translation>
+      <translation>Основні лінії кожні</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="376"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation type="unfinished">Mainlines will be drawn thicker. Specify here how many squares between mainlines.</translation>
+      <translation>Основні лінії будуть намальовані товщі. Тут укажіть, скільки квадратів між основними лініями.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="402"/>
@@ -7988,7 +7989,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="477"/>
       <source>The number of horizontal or vertical lines of the grid</source>
-      <translation type="unfinished">The number of horizontal or vertical lines of the grid</translation>
+      <translation>Кількість горизонтальних або вертикальних ліній сітки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="483"/>
@@ -7998,22 +7999,22 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="506"/>
       <source>Grid color and transparency</source>
-      <translation type="unfinished">Grid color and transparency</translation>
+      <translation>Колір сітки та прозорість</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="526"/>
       <source>The color of the grid</source>
-      <translation type="unfinished">The color of the grid</translation>
+      <translation>Колір сітки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="546"/>
       <source>The overall transparency of the grid</source>
-      <translation type="unfinished">The overall transparency of the grid</translation>
+      <translation>Загальна прозорість сітки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
-      <translation type="unfinished">Draft Edit preferences</translation>
+      <translation>Редагування налаштувань</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="570"/>
@@ -8023,22 +8024,22 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="584"/>
       <source>Maximum number of contemporary edited objects</source>
-      <translation type="unfinished">Maximum number of contemporary edited objects</translation>
+      <translation>Максимальна кількість одночасно редагованих об’єктів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Встановлює максимальну кількість об'єктів Draft Edit&lt;/p&gt;&lt;p&gt;може обробити одночасно&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="645"/>
       <source>Draft edit pick radius</source>
-      <translation type="unfinished">Draft edit pick radius</translation>
+      <translation>Змінити радіус вибору чернетки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="668"/>
       <source>Controls pick radius of edit nodes</source>
-      <translation type="unfinished">Controls pick radius of edit nodes</translation>
+      <translation>Керування радіусом вибору вузлів редагування</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
@@ -8053,12 +8054,12 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Path to ODA file converter</source>
-      <translation type="unfinished">Path to ODA file converter</translation>
+      <translation>Шлях до перетворювача файлів ODA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>The path to your ODA (formerly Teigha) File Converter executable</source>
-      <translation type="unfinished">The path to your ODA (formerly Teigha) File Converter executable</translation>
+      <translation>Шлях до вашого ODA (раніше програми Teigha) конвертора файлів</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
@@ -8068,12 +8069,12 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Налаштування інтерфейсу користувача</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
       <source>In-Command Shortcuts</source>
-      <translation type="unfinished">In-Command Shortcuts</translation>
+      <translation>Ярлики в команді</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="52"/>
@@ -8083,7 +8084,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="89"/>
       <source>S</source>
-      <translation type="unfinished">S</translation>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="111"/>
@@ -8128,22 +8129,22 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="257"/>
       <source>Cycle Snap</source>
-      <translation type="unfinished">Cycle Snap</translation>
+      <translation>Знімок циклу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="279"/>
       <source>[</source>
-      <translation type="unfinished">[</translation>
+      <translation>[</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="316"/>
       <source>]</source>
-      <translation type="unfinished">]</translation>
+      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="338"/>
       <source>Snap</source>
-      <translation type="unfinished">Snap</translation>
+      <translation>Прив'язати</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="345"/>
@@ -8193,7 +8194,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="498"/>
       <source>Subelement Mode</source>
-      <translation type="unfinished">Subelement Mode</translation>
+      <translation>Режим піделементу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="520"/>
@@ -8278,32 +8279,32 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="928"/>
       <source>Enable draft statusbar customization</source>
-      <translation type="unfinished">Enable draft statusbar customization</translation>
+      <translation>Увімкнути можливість налаштування рядка стану</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="931"/>
       <source>Draft Statusbar</source>
-      <translation type="unfinished">Draft Statusbar</translation>
+      <translation>Креслення рядка стану</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="951"/>
       <source>Enable snap statusbar widget</source>
-      <translation type="unfinished">Enable snap statusbar widget</translation>
+      <translation>Увімкнути віджет рядка стану</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="954"/>
       <source>Draft snap widget</source>
-      <translation type="unfinished">Draft snap widget</translation>
+      <translation>Віджет прив'язки креслення</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="970"/>
       <source>Enable draft statusbar annotation scale widget</source>
-      <translation type="unfinished">Enable draft statusbar annotation scale widget</translation>
+      <translation>Увімкнути чорновик в рядку стану віджет</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="973"/>
       <source>Annotation scale widget</source>
-      <translation type="unfinished">Annotation scale widget</translation>
+      <translation>Віджет шкали анотації</translation>
     </message>
   </context>
 </TS>

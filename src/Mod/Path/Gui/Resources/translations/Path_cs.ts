@@ -646,32 +646,32 @@
     <message>
       <location filename="PathSlot.py" line="129"/>
       <source>Choose what point to use on the first selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the first selected feature.</translation>
+      <translation>Vyberte bod, který chcete použít pro první vybraný prvek.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="131"/>
       <source>Choose what point to use on the second selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the second selected feature.</translation>
+      <translation>Vyberte bod, který chcete použít pro druhý vybraný prvek.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="133"/>
       <source>For arcs/circlular edges, offset the radius for the path.</source>
-      <translation type="unfinished">For arcs/circlular edges, offset the radius for the path.</translation>
+      <translation>U obloukových/kruhových hran, posuňte poloměr dráhy.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="135"/>
       <source>Enable to reverse the cut direction of the slot path.</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot path.</translation>
+      <translation>Povolit otočit směr řezu dráhy drážky.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="138"/>
       <source>The custom start point for the path of this operation</source>
-      <translation type="unfinished">The custom start point for the path of this operation</translation>
+      <translation>Uživatelský počáteční bod pro dráhu této operace</translation>
     </message>
     <message>
       <location filename="PathComment.py" line="41"/>
       <source>Comment or note for CNC program</source>
-      <translation type="unfinished">Comment or note for CNC program</translation>
+      <translation>Komentář nebo poznámka pro CNC program</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="119"/>
@@ -714,29 +714,29 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation type="unfinished">Extra offset to apply to the operation. Direction is operation dependent.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
-      <translation type="unfinished">Start pocketing at center or boundary</translation>
+      <translation>Začít kapsování od středu nebo od kraje</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
-      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
+      <translation>Procento průměru nástroje kroku řezu při každém průchodu</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Směr dráhy nástroje by měl jít dokola ve směru hodinových ručiček (CW), nebo proti směru hodinových ručiček (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Extra posun pro danou operaci. Směr je závislý na operaci.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Angle of the zigzag pattern</source>
-      <translation type="unfinished">Angle of the zigzag pattern</translation>
+      <translation>Úhel rozložení cik-cak</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="76"/>
@@ -746,7 +746,7 @@
     <message>
       <location filename="PathPocketBase.py" line="77"/>
       <source>Use 3D Sorting of Path</source>
-      <translation type="unfinished">Use 3D Sorting of Path</translation>
+      <translation>Použít 3D třídění dráhy</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="78"/>
@@ -866,7 +866,7 @@
     <message>
       <location filename="PathThreadMilling.py" line="246"/>
       <source>Set thread orientation</source>
-      <translation type="unfinished">Set thread orientation</translation>
+      <translation>Nastavit orientaci závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="253"/>
@@ -881,22 +881,22 @@
     <message>
       <location filename="PathThreadMilling.py" line="268"/>
       <source>Set thread's major diameter</source>
-      <translation type="unfinished">Set thread's major diameter</translation>
+      <translation>Nastavit hlavní průměr závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="274"/>
       <source>Set thread's minor diameter</source>
-      <translation type="unfinished">Set thread's minor diameter</translation>
+      <translation>Nastavit menší průměr závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="282"/>
       <source>Set thread's pitch - used for metric threads</source>
-      <translation type="unfinished">Set thread's pitch - used for metric threads</translation>
+      <translation>Nastavit stopání závitu - použité pro metrické závity</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="307"/>
       <source>Set how many passes are used to cut the thread</source>
-      <translation type="unfinished">Set how many passes are used to cut the thread</translation>
+      <translation>Nastavte, kolik průchodů je použito k vyřezání závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="313"/>
@@ -1101,7 +1101,7 @@
     <message>
       <location filename="PathHelix.py" line="156"/>
       <source>Starting Radius</source>
-      <translation type="unfinished">Starting Radius</translation>
+      <translation>Počáteční poloměr</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -1141,12 +1141,12 @@
     <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
-      <translation type="unfinished">Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</translation>
+      <translation>Použít adaptivní algoritmus k odstranění nadměrného obrábění bez záběru na vrchu rovinné kapsy.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="67"/>
       <source>Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.</source>
-      <translation type="unfinished">Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.</translation>
+      <translation>Použít adaptivní algoritmus k odstranění nadměrného obrábění bez záběru na dně rovinné kapsy.</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="69"/>
@@ -1264,7 +1264,17 @@
     <message>
       <location filename="PathProfileGui.py" line="168"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+      <translation>Profil celého modelu, vybrané plochy nebo vybrané hrany</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="206"/>
+      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
+      <translation>Rovinný adaptivní počátek je nedostupný. Bude proveden pokus o neroviný.</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="233"/>
+      <source>The non-planar adaptive start is also unavailable.</source>
+      <translation>Nerovinný adaptivní start je také nedostupný.</translation>
     </message>
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
@@ -1342,6 +1352,21 @@
       <translation>Nástroje</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="275"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="277"/>
+      <source>Ok</source>
+      <translation>Budiž</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="278"/>
+      <source>Don't Show This Anymore</source>
+      <translation type="unfinished">Don't Show This Anymore</translation>
+    </message>
+    <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Seznam zakázaných funkcí</translation>
@@ -1350,16 +1375,6 @@
       <location filename="PathToolBitLibraryGui.py" line="77"/>
       <source>Choose a writable location for your toolbits</source>
       <translation>Vyberte si zapisovatelnou polohu pro vaše nástroje</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="206"/>
-      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
-      <translation>Rovinný adaptivní počátek je nedostupný. Bude proveden pokus o neroviný.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="233"/>
-      <source>The non-planar adaptive start is also unavailable.</source>
-      <translation>Nerovinný adaptivní start je také nedostupný.</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="785"/>
@@ -1390,14 +1405,6 @@
       <location filename="PathProfile.py" line="456"/>
       <source>Unable to create path for face(s).</source>
       <translation type="unfinished">Unable to create path for face(s).</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="PathFeatureExtensions.py" line="382"/>
-      <source>Extend Outline error</source>
-      <translation type="unfinished">Extend Outline error</translation>
     </message>
   </context>
   <context>
@@ -1487,34 +1494,6 @@
     </message>
   </context>
   <context>
-    <name>PathFeatureExtensions</name>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="717"/>
-      <source>Click to enable Extensions</source>
-      <translation>Kliknutím povolíte rozšíření</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="733"/>
-      <source>Click to include Edges/Wires</source>
-      <translation>Kliknutím zahrnete hrany/dráty</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="710"/>
-      <source>Extensions enabled</source>
-      <translation>Rozšíření povoleno</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="730"/>
-      <source>Including Edges/Wires</source>
-      <translation>Včetně hran/drátů</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensions.py" line="421"/>
-      <source>Waterline error</source>
-      <translation>Chyba vodorysky</translation>
-    </message>
-  </context>
-  <context>
     <name>PathFixture</name>
     <message>
       <location filename="PathFixture.py" line="156"/>
@@ -1576,6 +1555,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Nepodporovaný objekt polotovaru %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Nepodporovaný typ polotovaru %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Polotovar není odvozen ze základního kvádru!</translation>
@@ -1589,16 +1578,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Polotovar není válec!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nepodporovaný objekt polotovaru %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nepodporovaný typ polotovaru %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1744,16 +1723,16 @@
       <translation type="unfinished">Base Location</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Výšky</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Výšky</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1784,6 +1763,18 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathOpGui.py" line="1371"/>
       <source>Pick Start Point</source>
       <translation>Vybrat počáteční bod</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1390"/>
+      <source>No suitable tool controller found.
+Aborting op creation</source>
+      <translation type="unfinished">No suitable tool controller found.
+Aborting op creation</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1394"/>
+      <source>No tool controller, aborting op creation</source>
+      <translation type="unfinished">No tool controller, aborting op creation</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -3234,7 +3225,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJobCmd.py" line="105"/>
       <source>Export Template</source>
-      <translation type="unfinished">Export Template</translation>
+      <translation>Exportovat šablonu</translation>
     </message>
     <message>
       <location filename="PathJobCmd.py" line="108"/>
@@ -3298,12 +3289,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathInspect.py" line="126"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</translation>
+      <translation>&lt;b&gt;Poznámka&lt;/b&gt;: Stisknutím tlačítka OK provedete změnu výše uvedeného objektu, ale pokud je objekt parametrický, budou tyto změny přepsány při novém přepočtu.</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="240"/>
       <source>Inspect G-code</source>
-      <translation type="unfinished">Inspect G-code</translation>
+      <translation>Kontrolovat G kód</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="244"/>
@@ -3326,12 +3317,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJobCmd.py" line="62"/>
       <source>Creates a Path Job object</source>
-      <translation type="unfinished">Creates a Path Job object</translation>
+      <translation>Vytvoří objekt dráhy</translation>
     </message>
     <message>
       <location filename="PathJobCmd.py" line="98"/>
       <source>Export Template</source>
-      <translation type="unfinished">Export Template</translation>
+      <translation>Exportovat šablonu</translation>
     </message>
     <message>
       <location filename="PathJobCmd.py" line="101"/>
@@ -3351,12 +3342,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
-      <translation type="unfinished">Edit Job</translation>
+      <translation>Upravit úlohu</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="684"/>
       <source>Uncreate Job</source>
-      <translation type="unfinished">Uncreate Job</translation>
+      <translation>Zrušit úlohu</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="883"/>
@@ -3381,12 +3372,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJobGui.py" line="1365"/>
       <source>Model Selection</source>
-      <translation type="unfinished">Model Selection</translation>
+      <translation>Výběr modelu</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1559"/>
       <source>Create Job</source>
-      <translation type="unfinished">Create Job</translation>
+      <translation>Vytvořit úlohu</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -3411,17 +3402,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathJob.py" line="263"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="264"/>
       <source>Lathe</source>
-      <translation type="unfinished">Lathe</translation>
+      <translation>Soustruh</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="265"/>
       <source>Multiaxis</source>
-      <translation type="unfinished">Multiaxis</translation>
+      <translation>Víceosé</translation>
     </message>
     <message>
       <location filename="PathJobDlg.py" line="63"/>
@@ -3480,7 +3471,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathCommands.py" line="136"/>
       <source>Toggle the Active State of the Operation</source>
-      <translation type="unfinished">Toggle the Active State of the Operation</translation>
+      <translation>Přepnout aktivní stav operace</translation>
     </message>
   </context>
   <context>
@@ -3498,7 +3489,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathOp.py" line="372"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>Mlha</translation>
     </message>
   </context>
   <context>
@@ -3506,7 +3497,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
-      <translation type="unfinished">Copy the operation in the job</translation>
+      <translation>Kopírovat operaci v úloze</translation>
     </message>
   </context>
   <context>
@@ -3604,7 +3595,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketGui.py" line="47"/>
       <source>Creates a Path 3D Pocket object from a face or faces</source>
-      <translation type="unfinished">Creates a Path 3D Pocket object from a face or faces</translation>
+      <translation>Vytvoří objekt dráhy 3D kapsy z plochy nebo ploch</translation>
     </message>
     <message>
       <location filename="PathPocketShapeGui.py" line="63"/>
@@ -3614,7 +3605,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketShapeGui.py" line="64"/>
       <source>Creates a Path Pocket object from a face or faces</source>
-      <translation type="unfinished">Creates a Path Pocket object from a face or faces</translation>
+      <translation>Vytvoří objekt dráhy Kapsy z plochy nebo ploch</translation>
     </message>
   </context>
   <context>
@@ -3627,7 +3618,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketGui.py" line="60"/>
       <source>Creates a Path 3D Pocket object from a face or faces</source>
-      <translation type="unfinished">Creates a Path 3D Pocket object from a face or faces</translation>
+      <translation>Vytvoří objekt dráhy 3D kapsy z plochy nebo ploch</translation>
     </message>
   </context>
   <context>
@@ -3640,7 +3631,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathPocketShapeGui.py" line="73"/>
       <source>Creates a Path Pocket object from a face or faces</source>
-      <translation type="unfinished">Creates a Path Pocket object from a face or faces</translation>
+      <translation>Vytvoří objekt dráhy Kapsy z plochy nebo ploch</translation>
     </message>
   </context>
   <context>
@@ -3707,7 +3698,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathProfileFacesGui.py" line="49"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+      <translation>Profil celého modelu, vybrané plochy nebo vybrané hrany</translation>
     </message>
   </context>
   <context>
@@ -3728,22 +3719,22 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="225"/>
       <source>Base Object(s)</source>
-      <translation type="unfinished">Base Object(s)</translation>
+      <translation>Základní objekt(y)</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="226"/>
       <source>Job Sequence</source>
-      <translation type="unfinished">Job Sequence</translation>
+      <translation>Posloupnost úloh</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="227"/>
       <source>Job Description</source>
-      <translation type="unfinished">Job Description</translation>
+      <translation>Popis úlohy</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="228"/>
       <source>Job Type</source>
-      <translation type="unfinished">Job Type</translation>
+      <translation>Typ úlohy</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="229"/>
@@ -3763,7 +3754,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="233"/>
       <source>Designer</source>
-      <translation type="unfinished">Designer</translation>
+      <translation>Konstruktér</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="291"/>
@@ -3783,17 +3774,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="261"/>
       <source>Cycle Time</source>
-      <translation type="unfinished">Cycle Time</translation>
+      <translation>Čas cyklu</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="262"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>Chladivo</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="264"/>
       <source>TOTAL JOB</source>
-      <translation type="unfinished">TOTAL JOB</translation>
+      <translation>CELKEM ÚLOH</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="285"/>
@@ -3823,7 +3814,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="290"/>
       <source>Inspection Notes</source>
-      <translation type="unfinished">Inspection Notes</translation>
+      <translation>Poznámky k inspekci</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="292"/>
@@ -3853,17 +3844,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="324"/>
       <source>X Size</source>
-      <translation type="unfinished">X Size</translation>
+      <translation>Velikost X</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="325"/>
       <source>Y Size</source>
-      <translation type="unfinished">Y Size</translation>
+      <translation>Velikost Y</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="326"/>
       <source>Z Size</source>
-      <translation type="unfinished">Z Size</translation>
+      <translation>Velikost Z</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="328"/>
@@ -3888,7 +3879,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="357"/>
       <source>Gcode File</source>
-      <translation type="unfinished">Gcode File</translation>
+      <translation>Gcode soubor</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="358"/>
@@ -3913,7 +3904,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="362"/>
       <source>Postprocessor</source>
-      <translation type="unfinished">Postprocessor</translation>
+      <translation>Postprocesor</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="363"/>
@@ -3928,7 +3919,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSanity.py" line="366"/>
       <source>Line Count</source>
-      <translation type="unfinished">Line Count</translation>
+      <translation>Počet řádků</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="379"/>
@@ -3974,7 +3965,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Jednoduchá kopie</translation>
     </message>
     <message>
       <location filename="PathSimpleCopy.py" line="43"/>
@@ -3992,7 +3983,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSimulatorGui.py" line="576"/>
       <source>CAM Simulator</source>
-      <translation type="unfinished">CAM Simulator</translation>
+      <translation>Simulátor CAM</translation>
     </message>
     <message>
       <location filename="PathSimulatorGui.py" line="580"/>
@@ -4160,7 +4151,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>Drážka</translation>
     </message>
     <message>
       <location filename="PathSlotGui.py" line="244"/>
@@ -4206,7 +4197,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSurface.py" line="462"/>
       <source>XminYmin</source>
-      <translation type="unfinished">XminYmin</translation>
+      <translation>XminYmin</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="463"/>
@@ -4329,7 +4320,27 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathThreadMillingGui.py" line="254"/>
       <source>Thread Milling</source>
-      <translation type="unfinished">Thread Milling</translation>
+      <translation>Obrábění závitu</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="193"/>
+      <source>Custom External</source>
+      <translation type="unfinished">Custom External</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="197"/>
+      <source>Custom Internal</source>
+      <translation type="unfinished">Custom Internal</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="201"/>
+      <source>Imperial External (2A)</source>
+      <translation type="unfinished">Imperial External (2A)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="205"/>
+      <source>Imperial External (3A)</source>
+      <translation type="unfinished">Imperial External (3A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="207"/>
@@ -4342,9 +4353,34 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">Metric Internal</translation>
     </message>
     <message>
+      <location filename="PathThreadMilling.py" line="209"/>
+      <source>Imperial Internal (2B)</source>
+      <translation type="unfinished">Imperial Internal (2B)</translation>
+    </message>
+    <message>
       <location filename="PathThreadMilling.py" line="210"/>
       <source>Imperial Internal</source>
       <translation type="unfinished">Imperial Internal</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="213"/>
+      <source>Imperial Internal (3B)</source>
+      <translation type="unfinished">Imperial Internal (3B)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="217"/>
+      <source>Metric External (4G6G)</source>
+      <translation type="unfinished">Metric External (4G6G)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="221"/>
+      <source>Metric External (6G)</source>
+      <translation type="unfinished">Metric External (6G)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="225"/>
+      <source>Metric Internal (6H)</source>
+      <translation type="unfinished">Metric Internal (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>
@@ -4663,7 +4699,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="108"/>
       <source>XminYmin</source>
-      <translation type="unfinished">XminYmin</translation>
+      <translation>XminYmin</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="109"/>
@@ -4673,7 +4709,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathWaterline.py" line="112"/>
       <source>Off</source>
-      <translation type="unfinished">Off</translation>
+      <translation>Vypnuto</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
@@ -4739,6 +4775,42 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation type="unfinished">Multi-pass</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="382"/>
+      <source>Extend Outline error</source>
+      <translation type="unfinished">Extend Outline error</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFeatureExtensions</name>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="710"/>
+      <source>Extensions enabled</source>
+      <translation>Rozšíření povoleno</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="717"/>
+      <source>Click to enable Extensions</source>
+      <translation>Kliknutím povolíte rozšíření</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="730"/>
+      <source>Including Edges/Wires</source>
+      <translation>Včetně hran/drátů</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="733"/>
+      <source>Click to include Edges/Wires</source>
+      <translation>Kliknutím zahrnete hrany/dráty</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="421"/>
+      <source>Waterline error</source>
+      <translation>Chyba vodorysky</translation>
     </message>
   </context>
   <context>
@@ -4946,12 +5018,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathHelix.py" line="64"/>
       <source>Radius increment (must be smaller than tool diameter)</source>
-      <translation type="unfinished">Radius increment (must be smaller than tool diameter)</translation>
+      <translation>Přírůstek poloměru (musí být menší než průměr nástroje)</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="69"/>
       <source>Starting Radius</source>
-      <translation type="unfinished">Starting Radius</translation>
+      <translation>Počáteční poloměr</translation>
     </message>
   </context>
   <context>
@@ -4959,17 +5031,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathThreadMillingGui.py" line="208"/>
       <source>Thread Milling</source>
-      <translation type="unfinished">Thread Milling</translation>
+      <translation>Obrábění závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMillingGui.py" line="209"/>
       <source>Creates a Path Thread Milling operation from features of a base object</source>
-      <translation type="unfinished">Creates a Path Thread Milling operation from features of a base object</translation>
+      <translation>Vytvoří operaci Dráhy obrábění závitu z vlastností (feature) základního objektu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="182"/>
       <source>Set thread orientation</source>
-      <translation type="unfinished">Set thread orientation</translation>
+      <translation>Nastavit orientaci závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="184"/>
@@ -4984,27 +5056,27 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathThreadMilling.py" line="187"/>
       <source>Set thread's major diameter</source>
-      <translation type="unfinished">Set thread's major diameter</translation>
+      <translation>Nastavit hlavní průměr závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="188"/>
       <source>Set thread's minor diameter</source>
-      <translation type="unfinished">Set thread's minor diameter</translation>
+      <translation>Nastavit menší průměr závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="189"/>
       <source>Set thread's pitch - used for metric threads</source>
-      <translation type="unfinished">Set thread's pitch - used for metric threads</translation>
+      <translation>Nastavit stopání závitu - použité pro metrické závity</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="190"/>
       <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
-      <translation type="unfinished">Set thread's TPI (turns per inch) - used for imperial threads</translation>
+      <translation>Nastavit TPI závitu (otoáček na palec) - používá se pro imperiální závity</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="192"/>
       <source>Set how many passes are used to cut the thread</source>
-      <translation type="unfinished">Set how many passes are used to cut the thread</translation>
+      <translation>Nastavte, kolik průchodů je použito k vyřezání závitu</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="193"/>
@@ -5454,7 +5526,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>Create Job</source>
-      <translation type="unfinished">Create Job</translation>
+      <translation>Vytvořit úlohu</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -6482,7 +6554,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="235"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>Chladivo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
@@ -8194,32 +8266,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="64"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="69"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="74"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="79"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="84"/>
       <source>X-&gt;C</source>
-      <translation type="unfinished">X-&gt;C</translation>
+      <translation>X-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="89"/>
       <source>Y-&gt;C</source>
-      <translation type="unfinished">Y-&gt;C</translation>
+      <translation>Y-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
@@ -8301,7 +8373,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
       <source>adaptive</source>
-      <translation type="unfinished">adaptive</translation>
+      <translation>adaptivní</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
@@ -8341,7 +8413,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="40"/>
       <source>Pivot Height</source>
-      <translation type="unfinished">Pivot Height</translation>
+      <translation>Výška otáčení</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="47"/>
@@ -8429,12 +8501,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="272"/>
       <source>Length / Radius:</source>
-      <translation type="unfinished">Length / Radius:</translation>
+      <translation>Délka / Poloměr:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="299"/>
       <source>Radius / Center:</source>
-      <translation type="unfinished">Radius / Center:</translation>
+      <translation>Poloměr / Střed:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
@@ -8444,12 +8516,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="336"/>
       <source>Keep Tool Down</source>
-      <translation type="unfinished">Keep Tool Down</translation>
+      <translation>Ponechat nástroj dole</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="343"/>
       <source>Rapid Plunge</source>
-      <translation type="unfinished">Rapid Plunge</translation>
+      <translation>Rychloposuv zapouštění</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="354"/>
@@ -8459,7 +8531,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="357"/>
       <source>Include Layers</source>
-      <translation type="unfinished">Include Layers</translation>
+      <translation>Zahrnout vrstvy</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="364"/>
@@ -8484,7 +8556,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Upravit...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="59"/>
@@ -8504,7 +8576,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="86"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>Úhel            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="93"/>
@@ -8529,18 +8601,18 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>Kopírovat z</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="155"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
       <source>Replace All</source>
-      <translation type="unfinished">Replace All</translation>
+      <translation>Nahradit vše</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="165"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>Automaticky generovat</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -8555,7 +8627,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation type="unfinished">Drag to reorder, then update.</translation>
+      <translation>Přetažením změnit pořadí a poté aktualizovat.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
@@ -8565,7 +8637,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>přidat</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
@@ -8670,12 +8742,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="14"/>
       <source>Z Depth Correction</source>
-      <translation type="unfinished">Z Depth Correction</translation>
+      <translation>Korekce hloubky Z</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="41"/>
       <source>Probe Points File</source>
-      <translation type="unfinished">Probe Points File</translation>
+      <translation>Soubor bodů sondy</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="47"/>
@@ -8690,7 +8762,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="61"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zadejte název souboru obsahující data sondy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -8698,12 +8770,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation type="unfinished">Path Simulator</translation>
+      <translation>Simulátor dráhy</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation type="unfinished">Stop running simulation</translation>
+      <translation>Zastavit běžící simulaci</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -8713,7 +8785,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
-      <translation type="unfinished">Activate / resume simulation</translation>
+      <translation>Aktivovat / pokračovat v simulaci</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
@@ -8723,32 +8795,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="75"/>
       <source>Pause simulation</source>
-      <translation type="unfinished">Pause simulation</translation>
+      <translation>Pozastavit simulaci</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="78"/>
       <source>Pause</source>
-      <translation type="unfinished">Pause</translation>
+      <translation>Pozastavit</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="95"/>
       <source>Single step simulation</source>
-      <translation type="unfinished">Single step simulation</translation>
+      <translation>Simulace po kroku</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="98"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Krok</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
       <source>Run simulation till end without animation</source>
-      <translation type="unfinished">Run simulation till end without animation</translation>
+      <translation>Spustit simulaci do konce bez animace</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="118"/>
       <source>Fast Forward</source>
-      <translation type="unfinished">Fast Forward</translation>
+      <translation>Rychloposuv</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="180"/>
@@ -8758,12 +8830,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation type="unfinished">G/s</translation>
+      <translation>G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
-      <translation type="unfinished">Accuracy:</translation>
+      <translation>Přesnost:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="261"/>
@@ -8773,12 +8845,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>Úloha:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
       <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
-      <translation type="unfinished">* Note: Volumetric simulation, inaccuracies are inherent.</translation>
+      <translation>* Poznámka: Simulace objemu, nepřesnosti jsou inherentní.</translation>
     </message>
   </context>
   <context>
@@ -8851,7 +8923,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="138"/>
       <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
+      <translation>0 °</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="141"/>
@@ -8866,7 +8938,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="158"/>
@@ -8881,7 +8953,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
-      <translation type="unfinished">Attributes</translation>
+      <translation>Atributy</translation>
     </message>
   </context>
   <context>
@@ -8889,27 +8961,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
       <source>Tool Library</source>
-      <translation type="unfinished">Tool Library</translation>
+      <translation>Knihovna nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
       <source>Import...</source>
-      <translation type="unfinished">Import...</translation>
+      <translation>Importovat...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
       <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Exportovat...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
       <source>Tool Tables</source>
-      <translation type="unfinished">Tool Tables</translation>
+      <translation>Tabulky nástrojů</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
       <source>New Tool</source>
-      <translation type="unfinished">New Tool</translation>
+      <translation>Nový nástroj</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
@@ -8952,7 +9024,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>Výběr nástroje</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
@@ -8972,7 +9044,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>Přidat do úlohy</translation>
     </message>
   </context>
   <context>
@@ -8980,7 +9052,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation type="unfinished">Job Edit</translation>
+      <translation>Úprava úlohy</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
@@ -9017,7 +9089,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="120"/>
       <source>Template Export</source>
-      <translation type="unfinished">Template Export</translation>
+      <translation>Export šablony</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="130"/>
@@ -9059,7 +9131,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="200"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>Pracovní souřadné systémy</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="206"/>
@@ -9084,7 +9156,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>Systémy</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
@@ -9099,82 +9171,82 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="273"/>
       <source>G53</source>
-      <translation type="unfinished">G53</translation>
+      <translation>G53</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="281"/>
       <source>G54</source>
-      <translation type="unfinished">G54</translation>
+      <translation>G54</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="289"/>
       <source>G55</source>
-      <translation type="unfinished">G55</translation>
+      <translation>G55</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="297"/>
       <source>G56</source>
-      <translation type="unfinished">G56</translation>
+      <translation>G56</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="305"/>
       <source>G57</source>
-      <translation type="unfinished">G57</translation>
+      <translation>G57</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="313"/>
       <source>G58</source>
-      <translation type="unfinished">G58</translation>
+      <translation>G58</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="321"/>
       <source>G59</source>
-      <translation type="unfinished">G59</translation>
+      <translation>G59</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="329"/>
       <source>G59.1</source>
-      <translation type="unfinished">G59.1</translation>
+      <translation>G59.1</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="337"/>
       <source>G59.2</source>
-      <translation type="unfinished">G59.2</translation>
+      <translation>G59.2</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="345"/>
       <source>G59.3</source>
-      <translation type="unfinished">G59.3</translation>
+      <translation>G59.3</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="353"/>
       <source>G59.4</source>
-      <translation type="unfinished">G59.4</translation>
+      <translation>G59.4</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="361"/>
       <source>G59.5</source>
-      <translation type="unfinished">G59.5</translation>
+      <translation>G59.5</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="369"/>
       <source>G59.6</source>
-      <translation type="unfinished">G59.6</translation>
+      <translation>G59.6</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="377"/>
       <source>G59.7</source>
-      <translation type="unfinished">G59.7</translation>
+      <translation>G59.7</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="385"/>
       <source>G59.8</source>
-      <translation type="unfinished">G59.8</translation>
+      <translation>G59.8</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="393"/>
       <source>G59.9</source>
-      <translation type="unfinished">G59.9</translation>
+      <translation>G59.9</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="404"/>
@@ -9189,7 +9261,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="410"/>
       <source>Split Output</source>
-      <translation type="unfinished">Split Output</translation>
+      <translation>Rozdělit výstup</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="421"/>
@@ -9199,7 +9271,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="439"/>
       <source>Layout</source>
-      <translation type="unfinished">Layout</translation>
+      <translation>Rozložení</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="445"/>
@@ -9275,27 +9347,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="645"/>
       <source>Center in Stock</source>
-      <translation type="unfinished">Center in Stock</translation>
+      <translation>Střed polotovaru</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="652"/>
       <source>XY in Stock</source>
-      <translation type="unfinished">XY in Stock</translation>
+      <translation>XY polotovaru</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="659"/>
       <source>Set Origin</source>
-      <translation type="unfinished">Set Origin</translation>
+      <translation>Nastavit počátek</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="666"/>
       <source>Move to Origin</source>
-      <translation type="unfinished">Move to Origin</translation>
+      <translation>Přesunout do počátku</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="676"/>
       <source>Set</source>
-      <translation type="unfinished">Set</translation>
+      <translation>Nastavit</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="682"/>
@@ -9310,37 +9382,37 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="696"/>
       <source>Z-Axis</source>
-      <translation type="unfinished">Z-Axis</translation>
+      <translation>Osa Z</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="703"/>
       <source>Y=0</source>
-      <translation type="unfinished">Y=0</translation>
+      <translation>Y = 0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="710"/>
       <source>Z=0</source>
-      <translation type="unfinished">Z=0</translation>
+      <translation>Z=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="717"/>
       <source>X=0</source>
-      <translation type="unfinished">X=0</translation>
+      <translation>X=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="724"/>
       <source>Link Stock and Model</source>
-      <translation type="unfinished">Link Stock and Model</translation>
+      <translation>Spojit polotovar a model</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="734"/>
       <source>Move - XY</source>
-      <translation type="unfinished">Move - XY</translation>
+      <translation>Posunout - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="892"/>
       <source>Rotate - XY</source>
-      <translation type="unfinished">Rotate - XY</translation>
+      <translation>Rotovat - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="926"/>
@@ -9351,7 +9423,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="1010"/>
       <location filename="../panels/PathEdit.ui" line="1293"/>
       <source>Default Values</source>
-      <translation type="unfinished">Default Values</translation>
+      <translation>Výchozí hodnoty</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1016"/>
@@ -9436,7 +9508,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1138"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>Chladivo</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1144"/>
@@ -9457,13 +9529,13 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Nr.</source>
-      <translation type="unfinished">Nr.</translation>
+      <translation>Č.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1222"/>
       <location filename="../panels/PathEdit.ui" line="1231"/>
       <source>Feed</source>
-      <translation type="unfinished">Feed</translation>
+      <translation>Posuv</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1240"/>
@@ -9508,12 +9580,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1369"/>
       <source>Workplan</source>
-      <translation type="unfinished">Workplan</translation>
+      <translation>Pracovní plán</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1381"/>
       <source>Active Tool </source>
-      <translation type="unfinished">Active Tool </translation>
+      <translation>Aktivní nástroj </translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1496"/>

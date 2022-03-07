@@ -714,16 +714,6 @@
       <translation>Выражение, используемое для StepDown (шага по глубине) новых операций.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>Направление движения инструмента по Часовой (CW) или Против часовой стрелки (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Дополнительное смещение применяется к операции. Направление зависит от операции.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Начинать обработку кармана из центра или от границ</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Процент диаметра фрезы для шага на каждом проходе</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Направление движения инструмента по Часовой (CW) или Против часовой стрелки (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Дополнительное смещение применяется к операции. Направление зависит от операции.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1267,6 +1267,16 @@
       <translation>Обработать всю модель, выбранные грани или выбранные края</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="206"/>
+      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
+      <translation>Планарный адаптивный старт недоступен. Будет предпринят не планарный.</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="233"/>
+      <source>The non-planar adaptive start is also unavailable.</source>
+      <translation>Non-planar адаптивный старт также недоступен.</translation>
+    </message>
+    <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
       <translation type="unfinished">Invalid Filename</translation>
@@ -1342,6 +1352,21 @@
       <translation type="unfinished">Utils</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="275"/>
+      <source>Warning</source>
+      <translation>Внимание</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="277"/>
+      <source>Ok</source>
+      <translation>Да</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="278"/>
+      <source>Don't Show This Anymore</source>
+      <translation type="unfinished">Don't Show This Anymore</translation>
+    </message>
+    <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Список отключенных элементов</translation>
@@ -1350,16 +1375,6 @@
       <location filename="PathToolBitLibraryGui.py" line="77"/>
       <source>Choose a writable location for your toolbits</source>
       <translation type="unfinished">Choose a writable location for your toolbits</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="206"/>
-      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
-      <translation>Планарный адаптивный старт недоступен. Будет предпринят не планарный.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="233"/>
-      <source>The non-planar adaptive start is also unavailable.</source>
-      <translation>Non-planar адаптивный старт также недоступен.</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="785"/>
@@ -1390,14 +1405,6 @@
       <location filename="PathProfile.py" line="456"/>
       <source>Unable to create path for face(s).</source>
       <translation>Не удается создать траекторию для грани(ей).</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="PathFeatureExtensions.py" line="382"/>
-      <source>Extend Outline error</source>
-      <translation type="unfinished">Extend Outline error</translation>
     </message>
   </context>
   <context>
@@ -1487,34 +1494,6 @@
     </message>
   </context>
   <context>
-    <name>PathFeatureExtensions</name>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="717"/>
-      <source>Click to enable Extensions</source>
-      <translation>Нажмите, чтобы включить Расширения</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="733"/>
-      <source>Click to include Edges/Wires</source>
-      <translation type="unfinished">Click to include Edges/Wires</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="710"/>
-      <source>Extensions enabled</source>
-      <translation>Расширения включены</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensionsGui.py" line="730"/>
-      <source>Including Edges/Wires</source>
-      <translation type="unfinished">Including Edges/Wires</translation>
-    </message>
-    <message>
-      <location filename="PathFeatureExtensions.py" line="421"/>
-      <source>Waterline error</source>
-      <translation>Ошибка уровня</translation>
-    </message>
-  </context>
-  <context>
     <name>PathFixture</name>
     <message>
       <location filename="PathFixture.py" line="156"/>
@@ -1576,6 +1555,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Неподдерживаемый объект заготовки %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Неподдерживаемый тип заготовки %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Заготовка не из базового ограничивающего объёма!</translation>
@@ -1589,16 +1578,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Заготовка не цилиндр!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Неподдерживаемый объект заготовки %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Неподдерживаемый тип заготовки %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1744,15 +1723,15 @@
       <translation>Базовое Расположение</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Высоты</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>ФинальнаяВысота не может быть изменена для этой операции. Если необходимо вручную установленная ФинальнаяВысота, пожалуйста, выберите другую операцию.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Высоты</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1783,6 +1762,18 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathOpGui.py" line="1371"/>
       <source>Pick Start Point</source>
       <translation>Указать начальную точку</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1390"/>
+      <source>No suitable tool controller found.
+Aborting op creation</source>
+      <translation type="unfinished">No suitable tool controller found.
+Aborting op creation</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1394"/>
+      <source>No tool controller, aborting op creation</source>
+      <translation type="unfinished">No tool controller, aborting op creation</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -4331,6 +4322,26 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">Thread Milling</translation>
     </message>
     <message>
+      <location filename="PathThreadMilling.py" line="193"/>
+      <source>Custom External</source>
+      <translation type="unfinished">Custom External</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="197"/>
+      <source>Custom Internal</source>
+      <translation type="unfinished">Custom Internal</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="201"/>
+      <source>Imperial External (2A)</source>
+      <translation type="unfinished">Imperial External (2A)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="205"/>
+      <source>Imperial External (3A)</source>
+      <translation type="unfinished">Imperial External (3A)</translation>
+    </message>
+    <message>
       <location filename="PathThreadMilling.py" line="207"/>
       <source>Custom</source>
       <translation>Дополнительно</translation>
@@ -4341,9 +4352,34 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Метрическая внутренняя</translation>
     </message>
     <message>
+      <location filename="PathThreadMilling.py" line="209"/>
+      <source>Imperial Internal (2B)</source>
+      <translation type="unfinished">Imperial Internal (2B)</translation>
+    </message>
+    <message>
       <location filename="PathThreadMilling.py" line="210"/>
       <source>Imperial Internal</source>
       <translation type="unfinished">Imperial Internal</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="213"/>
+      <source>Imperial Internal (3B)</source>
+      <translation type="unfinished">Imperial Internal (3B)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="217"/>
+      <source>Metric External (4G6G)</source>
+      <translation type="unfinished">Metric External (4G6G)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="221"/>
+      <source>Metric External (6G)</source>
+      <translation type="unfinished">Metric External (6G)</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="225"/>
+      <source>Metric Internal (6H)</source>
+      <translation type="unfinished">Metric Internal (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>
@@ -4738,6 +4774,42 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathWaterline.py" line="139"/>
       <source>Multi-pass</source>
       <translation>Многопроходный</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="382"/>
+      <source>Extend Outline error</source>
+      <translation type="unfinished">Extend Outline error</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFeatureExtensions</name>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="710"/>
+      <source>Extensions enabled</source>
+      <translation>Расширения включены</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="717"/>
+      <source>Click to enable Extensions</source>
+      <translation>Нажмите, чтобы включить Расширения</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="730"/>
+      <source>Including Edges/Wires</source>
+      <translation type="unfinished">Including Edges/Wires</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensionsGui.py" line="733"/>
+      <source>Click to include Edges/Wires</source>
+      <translation type="unfinished">Click to include Edges/Wires</translation>
+    </message>
+    <message>
+      <location filename="PathFeatureExtensions.py" line="421"/>
+      <source>Waterline error</source>
+      <translation>Ошибка уровня</translation>
     </message>
   </context>
   <context>

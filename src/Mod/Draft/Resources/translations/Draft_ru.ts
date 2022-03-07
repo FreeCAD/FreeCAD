@@ -739,14 +739,14 @@ This property is read-only, as the number depends on the points contained within
       <translation>Масштабирование штриховки, используемой этим объектом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Угол наклона штриховки, используемой этим объектом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

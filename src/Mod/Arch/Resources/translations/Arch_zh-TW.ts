@@ -6,7 +6,7 @@
     <message>
       <location filename="ArchBuilding.py" line="276"/>
       <source>The type of this building</source>
-      <translation>這個建築的類型</translation>
+      <translation>此建築的類型</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="204"/>
@@ -16,12 +16,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="336"/>
       <source>If true, the height value propagates to contained objects</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects</translation>
+      <translation>如果為 true，高度值將顯示至包含的物件</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="339"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>此級別的 (0,0,0) 點的級別</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="206"/>
@@ -31,157 +31,157 @@
     <message>
       <location filename="ArchComponent.py" line="200"/>
       <source>An optional description for this component</source>
-      <translation>此組件的可選說明</translation>
+      <translation>此元件的可選說明</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="202"/>
       <source>An optional tag for this component</source>
-      <translation>此組件的可選標籤</translation>
+      <translation>此元件的可選標籤</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="921"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>此物件的形狀</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="349"/>
       <source>This property stores an inventor representation for this object</source>
-      <translation type="unfinished">This property stores an inventor representation for this object</translation>
+      <translation>此設定儲存此物件的建立者表示</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>如果為 true，當從其它檔案引用時，此物件只能收集實體資訊</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>材質名稱：從你的材質清單中引用，它將材質名稱與實體索引進行關聯，以便於從其它檔案引用該物件時使用</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
       <source>The line width of this object</source>
-      <translation type="unfinished">The line width of this object</translation>
+      <translation>此物件的線寬</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="522"/>
       <source>An optional unit to express levels</source>
-      <translation type="unfinished">An optional unit to express levels</translation>
+      <translation>表示級別的可選單位</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="524"/>
       <source>A transformation to apply to the level mark</source>
-      <translation type="unfinished">A transformation to apply to the level mark</translation>
+      <translation>套用於級別標記的轉換</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, show the level</source>
-      <translation type="unfinished">If true, show the level</translation>
+      <translation>如果為 true，顯示級別</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="530"/>
       <source>If true, show the unit on the level tag</source>
-      <translation type="unfinished">If true, show the unit on the level tag</translation>
+      <translation>如果為 true，則在級別標籤上顯示單位</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="532"/>
       <source>If true, display offset will affect the origin mark too</source>
-      <translation type="unfinished">If true, display offset will affect the origin mark too</translation>
+      <translation>如果為 true，顯示偏移量也會影響原點標記</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="534"/>
       <source>If true, the object's label is displayed</source>
-      <translation type="unfinished">If true, the object's label is displayed</translation>
+      <translation>如果為 true，則顯示物件的標籤</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="537"/>
       <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <translation>用於文字的字體</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="540"/>
       <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
+      <translation>文字的字體大小</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="543"/>
       <source>The individual face colors</source>
-      <translation type="unfinished">The individual face colors</translation>
+      <translation>各面顏色</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="547"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation type="unfinished">If true, when activated, the working plane will automatically adapt to this level</translation>
+      <translation>如果為 true，當啟用時，工作平面將會自動調整此級別</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="550"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
-      <translation type="unfinished">If set to True, the working plane will be kept on Auto mode</translation>
+      <translation>如果設定為 True，工作平面將保持在自動模式</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="552"/>
       <source>Camera position data associated with this object</source>
-      <translation type="unfinished">Camera position data associated with this object</translation>
+      <translation>與此物件關聯的相機位置資料</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="555"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
-      <translation type="unfinished">If set, the view stored in this object will be restored on double-click</translation>
+      <translation>如果設定，連點兩下將還原儲存在此物件中的視圖</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="557"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>如果為 True，連點兩下樹中的物件將啟用它。</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="561"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>如果啟用這項功能，這個物件的建立者表示將儲存在 FreeCAD 檔案中，允許在其他檔案中以輕量模式引用它。</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="563"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the inventor representation of this object, if enabled</translation>
+      <translation>如果啟用，則用於儲存此物件的建立者表示的插槽</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="568"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+      <translation>如果為 true，則顯示此建築零件中包含的物件將使用這些線條、顏色和透明度設定</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="570"/>
       <source>The line width of child objects</source>
-      <translation type="unfinished">The line width of child objects</translation>
+      <translation>子物件的線條寬度</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="573"/>
       <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <translation>子物件的線條顏色</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="577"/>
       <source>The shape color of child objects</source>
-      <translation type="unfinished">The shape color of child objects</translation>
+      <translation>子物件的形狀顏色</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="581"/>
       <source>The transparency of child objects</source>
-      <translation type="unfinished">The transparency of child objects</translation>
+      <translation>子物件的透明度</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="585"/>
       <source>Cut the view above this level</source>
-      <translation type="unfinished">Cut the view above this level</translation>
+      <translation>在此級別上切割視圖</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="587"/>
       <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+      <translation>水平面與切割線之間的距離</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="590"/>
       <source>Turn cutting on when activating this level</source>
-      <translation type="unfinished">Turn cutting on when activating this level</translation>
+      <translation>啟用此級別時開啟切割</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
@@ -591,7 +591,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1023"/>
       <source>Show the cut in the 3D view</source>
-      <translation>在3 D 視圖中顯示修剪</translation>
+      <translation>在 3D 視圖中顯示修剪</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1020"/>
@@ -896,7 +896,7 @@
     <message>
       <location filename="ArchFrame.py" line="124"/>
       <source>The type of edges to consider</source>
-      <translation>要考慮邊的類型</translation>
+      <translation>要考慮的邊緣類型</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="127"/>

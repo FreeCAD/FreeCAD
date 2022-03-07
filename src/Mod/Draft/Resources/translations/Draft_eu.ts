@@ -740,14 +740,14 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <translation>Objektu honek darabilen eredu-eskala</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Objektu honen forma</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Objektu honek darabilen eredu-biraketa</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Objektu honen forma</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -4253,7 +4253,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Kargatu zirriborroen lan-mahaia objektu honen edizioa gaitzeko</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4333,7 +4333,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="utils.py" line="709"/>
       <source>Objects have different placements. Distance between the two base points: </source>
-      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
+      <translation>Objektuek kokapen desberdinak dituzte. Bi oinarru-puntuen arteko distantzia: </translation>
     </message>
     <message>
       <location filename="utils.py" line="712"/>
@@ -4348,12 +4348,12 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="utils.py" line="827"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+      <translation>%s objektuak oinarri bat partekatzen du beste %d objekturekin. Egiaztatu hau aldatu nahi duzun.</translation>
     </message>
     <message>
       <location filename="utils.py" line="833"/>
       <source>%s cannot be modified because its placement is readonly.</source>
-      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
+      <translation>%s ezin da aldatu bere kokapena irakurtzeko soilik delako.</translation>
     </message>
     <message>
       <location filename="utils.py" line="977"/>
@@ -4378,77 +4378,77 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Atxiki blokeari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Atxiki amaierako puntuari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Atxiki erdiko puntuari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Atxiki erdiguneari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Atxiki angeluari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Atxiki ebakidurari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Atxiki perperndikularrari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Atxiki hedadurari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Atxiki paraleloari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Atxiki bereziari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Atxiki hurbilari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Atxiki ortoari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Atxiki saretari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Atxiki laneko planoari</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Atxiki kotei</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -4458,7 +4458,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="gui_utils.py" line="81"/>
       <source>No graphical interface</source>
-      <translation type="unfinished">No graphical interface</translation>
+      <translation>Ez dago interfaze grafikorik</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="161"/>
@@ -4468,32 +4468,32 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="gui_utils.py" line="267"/>
       <source>Symbol not implemented. Using a default symbol.</source>
-      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+      <translation>Ikurra ez dago inplementatuta. Ikur lehenetsia erabiliko da.</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="333"/>
       <source>Visibility off; removed from list: </source>
-      <translation type="unfinished">Visibility off; removed from list: </translation>
+      <translation>Ikusgaitasuna desaktibatuta; zerrendatik kendu da: </translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="603"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>Irudia nulua da</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="609"/>
       <source>filename does not exist on the system or in the resource file</source>
-      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+      <translation>Fitxategi-izena ez da existitzen sisteman edo baliabideen fitxategian</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="668"/>
       <source>unable to load texture</source>
-      <translation type="unfinished">unable to load texture</translation>
+      <translation>Ezin da testura kargatu</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="738"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
+      <translation>Ez dauka 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
@@ -5087,12 +5087,12 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(ON)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(OFF)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
@@ -5102,7 +5102,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>Bezier kurba itxi da</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5427,7 +5427,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Gehitu talde berria</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="183"/>
@@ -5437,7 +5437,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_groups.py" line="193"/>
       <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
+      <translation>Ez dago hautapen berririk. Hutsik ez dauden taldeak edo taldeen barruko objektuak hautatu behar dira.</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="257"/>
@@ -5457,7 +5457,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_groups.py" line="355"/>
       <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
+      <translation>Gehitu talde berria emandako izen batekin</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="383"/>
