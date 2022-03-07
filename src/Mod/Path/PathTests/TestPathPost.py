@@ -310,8 +310,8 @@ class TestPathPost(unittest.TestCase):
     def test_linuxcnc_02(self):
         """Test the linuxcnc postprocessor metric, G55, M4, other way around part."""
         self._run_a_test(
-            freecad_document="boxtest2",
-            job_name="Job",
+            freecad_document="boxtest1",
+            job_name="Job001",
             postprocessor_file="linuxcnc",
             postprocessor_args="--no-header --no-show-editor",
             gcode_file="test_linuxcnc_2.ngc",
@@ -343,8 +343,8 @@ class TestPathPost(unittest.TestCase):
     def test_centroid_02(self):
         """Test the centroid postprocessor metric, G55, M4, other way around part."""
         self._run_a_test(
-            freecad_document="boxtest2",
-            job_name="Job",
+            freecad_document="boxtest1",
+            job_name="Job001",
             postprocessor_file="centroid",
             postprocessor_args="--no-header --no-show-editor",
             gcode_file="test_centroid_2.ngc",
