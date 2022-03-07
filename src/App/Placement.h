@@ -24,7 +24,6 @@
 #ifndef _AppPlacement_h_
 #define _AppPlacement_h_
 
-#include <Base/Placement.h>
 #include "FeaturePython.h"
 
 namespace App

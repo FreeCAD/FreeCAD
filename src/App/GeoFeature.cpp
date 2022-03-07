@@ -27,6 +27,7 @@
 
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ComplexGeoData.h"
 
 
 using namespace App;

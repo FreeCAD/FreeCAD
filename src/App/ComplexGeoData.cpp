@@ -30,6 +30,9 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "ComplexGeoData.h"
+#include <Base/BoundBox.h>
+#include <Base/Placement.h>
+#include <Base/Rotation.h>
 
 
 using namespace Data;

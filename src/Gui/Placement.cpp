@@ -29,6 +29,7 @@
 #include <QSignalMapper>
 #endif
 
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Base/Console.h>

@@ -32,6 +32,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <App/ComplexGeoData.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 #include <Mod/Points/PointsGlobal.h>

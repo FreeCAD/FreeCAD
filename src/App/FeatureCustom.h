@@ -25,8 +25,6 @@
 #ifndef APP_FEATURECUSTOM_H
 #define APP_FEATURECUSTOM_H
 
-#include <App/DocumentObject.h>
-
 
 namespace App
 {

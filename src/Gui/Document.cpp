@@ -33,6 +33,7 @@
 #endif
 
 #include <App/AutoTransaction.h>
+#include <App/ComplexGeoData.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>

@@ -28,7 +28,6 @@
 #include "PropertyStandard.h"
 
 #include <map>
-#include <stack>
 #include <vector>
 
 namespace Base {

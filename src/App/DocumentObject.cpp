@@ -23,13 +23,18 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <stack>
+#endif
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
+#include <Base/Matrix.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
 #include "Application.h"
+#include "ComplexGeoData.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"

@@ -24,17 +24,22 @@
 #ifndef _AppComplexGeoData_h_
 #define _AppComplexGeoData_h_
 
-#include <Base/BoundBox.h>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
-#include <Base/Placement.h>
-#include <Base/Rotation.h>
 
 #ifdef __GNUC__
 # include <stdint.h>
 #endif
 
+
+namespace Base
+{
+class Placement;
+class Rotation;
+template <class _Precision> class BoundBox3;
+typedef BoundBox3<double> BoundBox3d;
+}
 
 namespace Data
 {

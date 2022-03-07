@@ -25,6 +25,7 @@
 #ifndef APP_GeoFeatureGroup_H
 #define APP_GeoFeatureGroup_H
 
+#include "DocumentObject.h"
 #include "GroupExtension.h"
 #include "PropertyGeo.h"
 

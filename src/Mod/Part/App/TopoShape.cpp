@@ -194,9 +194,11 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <Base/BoundBox.h>
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Material.h>

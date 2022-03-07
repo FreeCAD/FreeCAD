@@ -29,11 +29,15 @@
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
-#include <Base/Matrix.h>
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>
 #include <unordered_map>
+
+namespace Base
+{
+class Matrix4D;
+}
 
 namespace App
 {
