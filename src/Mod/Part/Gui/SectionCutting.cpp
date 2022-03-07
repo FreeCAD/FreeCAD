@@ -103,8 +103,20 @@ SectionCut::SectionCut(QWidget* parent)
     }
 
     // if we can have existing cut boxes, take their values
-    // the flip state cannot be readout of the box position, therefore readout the position
-    // as if it was unflipped
+    // to access the flip state we must compare the bounding boxes of the cutbox and the compound
+    Base::BoundBox3d BoundCompound;
+    Base::BoundBox3d BoundCutBox;
+    if (doc->getObject(BoxXName) || doc->getObject(BoxYName) || doc->getObject(BoxZName)) {
+        if (doc->getObject(CompoundName)) {
+            auto compoundObject = doc->getObject(CompoundName);
+            Part::Compound* pcCompound = dynamic_cast<Part::Compound*>(compoundObject);
+            if (!pcCompound) {
+                Base::Console().Error("SectionCut error: compound is incorrectly named, cannot proceed\n");
+                return;
+            }
+            BoundCompound = pcCompound->Shape.getBoundingBox();
+        }
+    }
     if (doc->getObject(BoxZName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
         if (!pcBox) {
@@ -113,7 +125,17 @@ SectionCut::SectionCut(QWidget* parent)
         }
         hasBoxZ = true;
         ui->groupBoxZ->setChecked(true);
-        ui->cutZ->setValue(pcBox->Height.getValue() - fabs(pcBox->Placement.getValue().getPosition().z));
+        // if z of cutbox bounding is greater than z of compound bounding
+        // we know that the cutbox is in flipped state
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinZ > BoundCompound.MinZ){
+            ui->cutZ->setValue(pcBox->Placement.getValue().getPosition().z);
+            ui->flipZ->setChecked(true);
+        }
+        else {
+            ui->cutZ->setValue(pcBox->Height.getValue() + pcBox->Placement.getValue().getPosition().z);
+            ui->flipZ->setChecked(false);
+        }
     }
     if (doc->getObject(BoxYName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
@@ -123,7 +145,15 @@ SectionCut::SectionCut(QWidget* parent)
         }
         hasBoxY = true;
         ui->groupBoxY->setChecked(true);
-        ui->cutY->setValue(pcBox->Width.getValue() - fabs(pcBox->Placement.getValue().getPosition().y));
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinY > BoundCompound.MinY) {
+            ui->cutY->setValue(pcBox->Placement.getValue().getPosition().y);
+            ui->flipY->setChecked(true);
+        }
+        else {
+            ui->cutY->setValue(pcBox->Width.getValue() + pcBox->Placement.getValue().getPosition().y);
+            ui->flipY->setChecked(false);
+        }
     }
     if (doc->getObject(BoxXName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
@@ -133,7 +163,15 @@ SectionCut::SectionCut(QWidget* parent)
         }
         hasBoxX = true;
         ui->groupBoxX->setChecked(true);
-        ui->cutX->setValue(pcBox->Length.getValue() - fabs(pcBox->Placement.getValue().getPosition().x));
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinX > BoundCompound.MinX) {
+            ui->cutX->setValue(pcBox->Placement.getValue().getPosition().x);
+            ui->flipX->setChecked(true);
+        }
+        else {
+            ui->cutX->setValue(pcBox->Length.getValue() + pcBox->Placement.getValue().getPosition().x);
+            ui->flipX->setChecked(false);
+        }
     }
 
     // hide existing cuts to check if there are objects to be cut visible
@@ -449,7 +487,7 @@ void SectionCut::startCutting(bool isInitial)
     // prepare the cut box size according to the bounding box size
     std::vector<float> BoundingBoxSize = { 0.0, 0.0, 0.0 };
     CompoundBoundingBox.getSize(BoundingBoxSize[0], BoundingBoxSize[1], BoundingBoxSize[2]);
-    // get placement of the bunding box origin
+    // get placement of the bounding box origin
     std::vector<float> BoundingBoxOrigin = { 0.0, 0.0, 0.0 };
     CompoundBoundingBox.getOrigin(BoundingBoxOrigin[0], BoundingBoxOrigin[1], BoundingBoxOrigin[2]);
 
@@ -928,7 +966,7 @@ void SectionCut::onCutYvalueChanged(double val)
         CutFeatureZ->Visibility.setValue(false);
         // make SectionCutX visible
         CutObject->Visibility.setValue(true);
-        // get new bunding box
+        // get new bounding box
         auto CutBoundingBox = getViewBoundingBox();
         // refresh Z limits
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue, Refresh::notZValue,
@@ -1382,7 +1420,7 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
     bool forXRange, bool forYRange, bool forZRange)
 {
     if (!BoundingBox.isEmpty()) {
-        SbVec3f cnt = BoundingBox.getCenter();
+        SbVec3f center = BoundingBox.getCenter();
         int minDecimals = Base::UnitsApi::getDecimals();
         float lenx, leny, lenz;
         BoundingBox.getSize(lenx, leny, lenz);
@@ -1392,8 +1430,8 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
         float rangeMin; // to silence a compiler warning we use a float
         float rangeMax;
         if (forXRange) {
-            rangeMin = cnt[0] - (lenx / 2);
-            rangeMax = cnt[0] + (lenx / 2);
+            rangeMin = center[0] - (lenx / 2);
+            rangeMax = center[0] + (lenx / 2);
             ui->cutX->setRange(rangeMin, rangeMax);
             // determine the single step values
             lenx = lenx / steps;
@@ -1402,8 +1440,8 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             ui->cutX->setSingleStep(singleStep);
         }
         if (forYRange) {
-            rangeMin = cnt[1] - (leny / 2);
-            rangeMax = cnt[1] + (leny / 2);
+            rangeMin = center[1] - (leny / 2);
+            rangeMax = center[1] + (leny / 2);
             ui->cutY->setRange(rangeMin, rangeMax);
             leny = leny / steps;
             int dim = static_cast<int>(log10(leny));
@@ -1411,8 +1449,8 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             ui->cutY->setSingleStep(singleStep);
         }
         if (forZRange) {
-            rangeMin = cnt[2] - (lenz / 2);
-            rangeMax = cnt[2] + (lenz / 2);
+            rangeMin = center[2] - (lenz / 2);
+            rangeMax = center[2] + (lenz / 2);
             ui->cutZ->setRange(rangeMin, rangeMax);
             lenz = lenz / steps;
             int dim = static_cast<int>(log10(lenz));
@@ -1420,15 +1458,15 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             ui->cutZ->setSingleStep(singleStep);
         }
         if (forXValue) {
-            ui->cutX->setValue(cnt[0]);
+            ui->cutX->setValue(center[0]);
             ui->cutXHS->setValue(50);
         }
         if (forYValue) {
-            ui->cutY->setValue(cnt[1]);
+            ui->cutY->setValue(center[1]);
             ui->cutYHS->setValue(50);
         }
         if (forZValue) {
-            ui->cutZ->setValue(cnt[2]);
+            ui->cutZ->setValue(center[2]);
             ui->cutZHS->setValue(50);
         }
 
