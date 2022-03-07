@@ -1,5 +1,5 @@
 G90 G80 G40 G49
-;T1=_mm_Endmill
+;T2=_mm_Endmill002
 ;begin preamble
 G53 G00 G17
 G21
@@ -7,12 +7,12 @@ G21
 G55
 ;end operation: Fixture
 ;begin operation
-;5mm Endmill001
-M6 T1
+;5mm Endmill003
+M6 T2
 M4 S123
-;end operation: 5mm Endmill001
+;end operation: 5mm Endmill003
 ;begin operation
-;Profile
+;Profile001
 ;Compensated Tool Path. Diameter: 5.0
 G0 Z9.0000
 G0 X0.0000 Y0.0000
@@ -29,7 +29,7 @@ G1 X-2.5000 Y0.0000 Z-1.0000 F140.4
 G3 X0.0000 Y-2.5000 Z-1.0000 I2.5000 J-0.0000 F140.4
 G0 Z9.0000
 G0 Z9.0000
-;end operation: Profile
+;end operation: Profile001
 ;begin postamble
 M5
 M25
