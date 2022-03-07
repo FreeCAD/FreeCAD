@@ -23,6 +23,8 @@
 #ifndef APP_AUTOTRANSACTION_H
 #define APP_AUTOTRANSACTION_H
 
+#include <cstddef>
+
 namespace App {
 
 class Application;
@@ -31,7 +33,7 @@ class Application;
 class AppExport AutoTransaction {
 private:
     /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
+    void* operator new(std::size_t size);
 
 public:
     /** Constructor
@@ -120,7 +122,7 @@ public:
 
 private:
     /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
+    void* operator new(std::size_t size);
 
 private:
     bool active;
