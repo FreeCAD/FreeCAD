@@ -100,7 +100,7 @@
 #include <xercesc/util/XMLString.hpp>
 
 #include "InventorAll.h"
-#include "Qt4All.h"
+#include "QtAll.h"
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>
