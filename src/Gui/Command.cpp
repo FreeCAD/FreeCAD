@@ -1086,10 +1086,12 @@ void GroupCommand::setup(Action *pcAction) {
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
         pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
+        QIcon icon;
         if (auto childAction = cmd->getAction())
-            pcAction->setIcon(childAction->icon());
-        else
-            pcAction->setIcon(BitmapFactory().iconFromTheme(cmd->getPixmap()));
+            icon = childAction->icon();
+        if (icon.isNull())
+            icon = BitmapFactory().iconFromTheme(cmd->getPixmap());
+        pcAction->setIcon(icon);
         const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
         const char *tooltip = cmd->getToolTipText();
         const char *statustip = cmd->getStatusTip();
