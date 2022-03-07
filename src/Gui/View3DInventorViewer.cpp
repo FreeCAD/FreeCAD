@@ -76,6 +76,7 @@
 # include <Inventor/elements/SoLightModelElement.h>
 # include <Inventor/elements/SoOverrideElement.h>
 
+#include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>

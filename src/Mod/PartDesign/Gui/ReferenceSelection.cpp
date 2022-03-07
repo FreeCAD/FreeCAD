@@ -31,6 +31,7 @@
 # include <QDialog>
 #endif
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>

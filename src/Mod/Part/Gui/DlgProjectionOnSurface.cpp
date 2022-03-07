@@ -45,20 +45,22 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 #endif
+
+#include <Inventor/SbVec3d.h>
 
 #include "DlgProjectionOnSurface.h"
 #include "ui_DlgProjectionOnSurface.h"
 
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
-
-#include "Gui/MainWindow.h"
-#include "Gui/MDIView.h"
-#include "Gui/View3DInventor.h"
-#include "Gui/View3DInventorViewer.h"
-#include "Inventor/SbVec3d.h"
-#include "Gui/Application.h"
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/Application.h>
+#include <Gui/SelectionObject.h>
 
 #include "ViewProviderExt.h"
 

@@ -26,7 +26,7 @@
 # include <Inventor/SoFullPath.h>
 # include <Inventor/details/SoDetail.h>
 # include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoSwitch.h>
 # include <QByteArray>
 # include <QDataStream>
 #endif
@@ -46,6 +46,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 

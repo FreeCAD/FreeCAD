@@ -87,6 +87,7 @@ using QWebEnginePage = QWebPage;
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include <CXX/Extensions.hxx>
 
 using namespace WebGui;

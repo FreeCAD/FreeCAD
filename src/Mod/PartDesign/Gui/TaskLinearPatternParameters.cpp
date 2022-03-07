@@ -29,6 +29,7 @@
 # include <QTimer>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>

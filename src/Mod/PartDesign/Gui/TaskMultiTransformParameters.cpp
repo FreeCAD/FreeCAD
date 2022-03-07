@@ -27,6 +27,7 @@
 # include <QAction>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 

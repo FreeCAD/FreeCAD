@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <cmath>
+#include <QTreeWidget>
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>

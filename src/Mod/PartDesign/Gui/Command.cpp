@@ -44,6 +44,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>

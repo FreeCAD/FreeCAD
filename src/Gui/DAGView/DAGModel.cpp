@@ -52,6 +52,7 @@
 
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>

@@ -28,6 +28,7 @@
 # include <sstream>
 #endif  //#ifndef _PreComp_
 
+# include <App/Document.h>
 # include <App/DocumentObject.h>
 # include <Base/Console.h>
 # include <Base/Type.h>
@@ -38,6 +39,7 @@
 # include <Gui/Control.h>
 # include <Gui/MainWindow.h>
 # include <Gui/Selection.h>
+# include <Gui/SelectionObject.h>
 
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/GeometryPyCXX.h>
 

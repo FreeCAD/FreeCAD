@@ -30,6 +30,7 @@
 
 
 #include "TaskWatcher.h"
+#include <Gui/SelectionObject.h>
 
 
 using namespace RobotGui;

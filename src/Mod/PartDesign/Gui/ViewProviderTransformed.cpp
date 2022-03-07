@@ -46,6 +46,7 @@
 # include <QMenu>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Mod/Part/App/Tools.h>

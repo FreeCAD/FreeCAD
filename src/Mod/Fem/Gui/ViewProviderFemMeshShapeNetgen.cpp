@@ -36,6 +36,7 @@
 
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 
 
 using namespace FemGui;

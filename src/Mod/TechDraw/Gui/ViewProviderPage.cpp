@@ -36,6 +36,7 @@
 # include <boost/signals2/connection.hpp>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>

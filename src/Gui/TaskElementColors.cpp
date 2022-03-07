@@ -31,6 +31,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/ComplexGeoData.h>
+#include <App/Document.h>
 
 #include "TaskElementColors.h"
 #include "ui_TaskElementColors.h"
@@ -41,7 +42,7 @@
 #include "Document.h"
 #include "FileDialog.h"
 #include "Selection.h"
-
+#include "SelectionObject.h"
 #include "ViewProviderLink.h"
 
 

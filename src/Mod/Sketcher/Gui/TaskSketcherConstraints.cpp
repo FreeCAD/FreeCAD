@@ -52,6 +52,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/CommandT.h>

@@ -21,7 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <stdio.h>
+#include <cstdio>
+#include <iostream>
 
 #include <QAuthenticator>
 #include <QContextMenuEvent>
@@ -46,6 +47,7 @@
 #include "MainWindow.h"
 #include "ui_DlgAuthorization.h"
 #include "Tools.h"
+#include <App/Document.h>
 
 
 using namespace Gui::Dialog;

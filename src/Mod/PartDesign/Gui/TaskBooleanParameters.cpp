@@ -29,6 +29,7 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

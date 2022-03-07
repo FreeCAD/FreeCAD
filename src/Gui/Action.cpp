@@ -38,6 +38,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
+#include <App/Document.h>
 
 #include "Action.h"
 #include "BitmapFactory.h"

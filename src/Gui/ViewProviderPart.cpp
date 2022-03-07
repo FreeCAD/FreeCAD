@@ -26,6 +26,7 @@
 # include <QMenu>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 
@@ -34,6 +35,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "MDIView.h"
 
 
 using namespace Gui;

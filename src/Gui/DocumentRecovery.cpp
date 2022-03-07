@@ -49,6 +49,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>

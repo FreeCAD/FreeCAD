@@ -28,6 +28,7 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTimer>
+# include <QTreeWidget>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
@@ -46,6 +47,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 

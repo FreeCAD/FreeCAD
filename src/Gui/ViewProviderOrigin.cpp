@@ -27,6 +27,7 @@
 # include <Inventor/nodes/SoGroup.h>
 #endif
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include "Base/Console.h"
 #include <Base/Vector3D.h>

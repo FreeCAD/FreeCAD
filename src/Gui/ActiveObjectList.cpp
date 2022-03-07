@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>

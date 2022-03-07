@@ -49,6 +49,7 @@
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 
 
 using namespace FemGui;

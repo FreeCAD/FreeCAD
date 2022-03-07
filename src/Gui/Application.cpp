@@ -38,6 +38,7 @@
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

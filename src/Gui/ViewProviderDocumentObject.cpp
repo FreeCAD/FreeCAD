@@ -33,6 +33,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Tools.h>
 

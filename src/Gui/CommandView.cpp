@@ -44,6 +44,7 @@
 #endif
 
 #include <App/ComplexGeoDataPy.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
@@ -67,6 +68,7 @@
 #include "NavigationStyle.h"
 #include "SceneInspector.h"
 #include "Selection.h"
+#include "SelectionObject.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCUnifiedSelection.h"

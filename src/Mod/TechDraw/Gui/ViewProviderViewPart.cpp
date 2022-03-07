@@ -31,6 +31,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 #include <Gui/Control.h>

@@ -32,6 +32,8 @@
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 
+#include <App/Document.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>

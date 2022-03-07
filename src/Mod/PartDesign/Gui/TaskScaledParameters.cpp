@@ -31,6 +31,7 @@
 #include <Base/Console.h>
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureScaled.h>
 

@@ -33,6 +33,7 @@
 
 #include "Application.h"
 #include "MergeDocuments.h"
+#include "MDIView.h"
 #include "ViewProviderExtern.h"
 
 // inclusion of the generated files (generated out of DocumentPy.xml)

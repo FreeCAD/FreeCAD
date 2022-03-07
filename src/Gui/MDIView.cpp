@@ -35,6 +35,7 @@
 #endif
 
 #include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"

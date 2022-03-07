@@ -26,33 +26,38 @@
 #include <list>
 #include <map>
 #include <string>
+#include <boost_signals2.hpp>
 
-#include <App/Document.h>
 #include <Base/Persistence.h>
-
-#include "MDIView.h"
-#include "Tree.h"
 
 
 class SoNode;
 class SoPath;
+class QString;
 
 namespace Base {
 class Matrix4D;
 }
 
 namespace App {
+class Document;
+class DocumentObject;
 class DocumentObjectGroup;
+class Property;
+class Transaction;
 }
 
 namespace Gui {
 
+class BaseView;
+class MDIView;
 class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
 class TransactionViewProvider;
-enum  class HighlightMode;
+enum class HighlightMode;
+enum class TreeItemMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping

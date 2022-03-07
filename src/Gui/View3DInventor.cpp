@@ -53,6 +53,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "View3DInventor.h"
 #include "Application.h"

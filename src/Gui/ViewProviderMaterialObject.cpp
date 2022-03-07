@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QStyle>
 #endif
 
 #include "ViewProviderMaterialObject.h"

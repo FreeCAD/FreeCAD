@@ -22,10 +22,12 @@
 
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 
 #include "ui_TaskSelectLinkProperty.h"
 #include "TaskSelectLinkProperty.h"

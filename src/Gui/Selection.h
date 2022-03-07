@@ -30,22 +30,22 @@
 #include <vector>
 #include <CXX/Objects.hxx>
 
-#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <Base/Observer.h>
-#include <Gui/SelectionObject.h>
 
 
 namespace App
 {
-  class DocumentObject;
-  class Document;
+    class DocumentObject;
+    class Document;
+    class PropertyLinkSubList;
 }
 
 namespace Gui
 {
 
+    class SelectionObject;
     class SelectionFilter;
 
 /** Transport the changes of the Selection

@@ -30,6 +30,7 @@
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/App/BodyBase.h>
 #include <Base/Tools2D.h>
+#include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>

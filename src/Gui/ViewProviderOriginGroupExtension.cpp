@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginGroupExtension.h>
 #include <Base/Console.h>

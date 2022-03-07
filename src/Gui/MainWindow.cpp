@@ -51,6 +51,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Parameter.h>

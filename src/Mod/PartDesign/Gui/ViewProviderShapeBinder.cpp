@@ -32,6 +32,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <App/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>

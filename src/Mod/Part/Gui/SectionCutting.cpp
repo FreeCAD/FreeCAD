@@ -34,6 +34,7 @@
 
 #include "SectionCutting.h"
 #include "ui_SectionCutting.h"
+#include <App/Document.h>
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Base/UnitsApi.h>

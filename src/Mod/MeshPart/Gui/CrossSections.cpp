@@ -60,6 +60,7 @@
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <App/Document.h>
 #include <Base/UnitsApi.h>
 
 using namespace MeshPartGui;

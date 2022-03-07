@@ -33,6 +33,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
+#include <App/Document.h>
 
 
 using namespace Gui;

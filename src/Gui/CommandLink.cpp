@@ -29,6 +29,7 @@
 
 #include <App/Application.h>
 #include <App/ComplexGeoData.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 #include <Base/Exception.h>

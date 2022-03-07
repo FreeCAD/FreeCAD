@@ -30,6 +30,7 @@
 # include <QImage>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>

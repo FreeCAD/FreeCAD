@@ -38,6 +38,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentPy.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/BitmapFactory.h>

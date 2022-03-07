@@ -36,6 +36,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>

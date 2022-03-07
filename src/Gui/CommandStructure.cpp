@@ -29,6 +29,7 @@
 #include "App/Document.h"
 
 #include "Command.h"
+#include "ActiveObjectList.h"
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"

@@ -28,6 +28,7 @@
 #include <QGridLayout>
 #endif
 
+#include <App/Document.h>
 #include "Document.h" // must be before TaskCSysDragger.h
 #include "TaskCSysDragger.h"
 #include "Application.h"

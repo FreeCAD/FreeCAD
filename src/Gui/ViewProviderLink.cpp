@@ -47,6 +47,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/ComplexGeoData.h>
+#include <App/Document.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>

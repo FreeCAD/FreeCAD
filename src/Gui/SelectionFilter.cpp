@@ -27,12 +27,14 @@
 
 #include <sstream>
 
+#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentObject.h>
 #include <Base/Interpreter.h>
 
 #include "Selection.h"
 #include "SelectionFilter.h"
+#include "SelectionObject.h"
 
 
 using namespace Gui;

@@ -54,6 +54,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>

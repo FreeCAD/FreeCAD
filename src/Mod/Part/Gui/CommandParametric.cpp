@@ -31,6 +31,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MDIView.h>
 
 
 //===========================================================================

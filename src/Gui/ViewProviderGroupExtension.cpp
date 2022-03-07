@@ -33,6 +33,7 @@
 #include <Base/Tools.h>
 
 #include "ViewProviderGroupExtension.h"
+#include "ViewProviderDocumentObject.h"
 #include "Command.h"
 #include "Document.h"
 #include "MainWindow.h"

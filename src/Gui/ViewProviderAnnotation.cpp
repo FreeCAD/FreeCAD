@@ -45,6 +45,7 @@
 # include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include <App/Annotation.h>
+#include <App/Document.h>
 #include <App/PropertyStandard.h>
 #include <Base/Parameter.h>
 

@@ -29,6 +29,7 @@
 # include <TopExp_Explorer.hxx>
 #endif
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Console.h>
@@ -37,6 +38,7 @@
 #include <Gui/Document.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBase.h>

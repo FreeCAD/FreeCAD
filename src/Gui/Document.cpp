@@ -34,6 +34,7 @@
 
 #include <App/AutoTransaction.h>
 #include <App/ComplexGeoData.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
@@ -51,6 +52,7 @@
 #include "Control.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
+#include "MDIView.h"
 #include "Selection.h"
 #include "Thumbnail.h"
 #include "Tree.h"

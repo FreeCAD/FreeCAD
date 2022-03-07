@@ -37,6 +37,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>

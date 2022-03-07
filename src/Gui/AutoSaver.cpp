@@ -33,6 +33,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>

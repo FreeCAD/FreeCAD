@@ -60,6 +60,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
 #include <Mod/Fem/App/FemMeshObject.h>

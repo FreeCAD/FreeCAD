@@ -24,6 +24,7 @@
 #define TASKCSYSDRAGGER_H
 
 #include "TaskView/TaskDialog.h"
+#include <App/DocumentObserver.h>
 
 
 namespace Gui

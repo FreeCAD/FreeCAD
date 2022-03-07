@@ -28,6 +28,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 
 #include "ViewProviderGeoFeatureGroupExtension.h"
+#include "ViewProviderDocumentObject.h"
 #include "Application.h"
 #include "SoFCUnifiedSelection.h"
 

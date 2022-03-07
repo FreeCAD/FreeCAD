@@ -24,12 +24,23 @@
 #ifndef GUI_VIEWPROVIDEREXTENSION_H
 #define GUI_VIEWPROVIDEREXTENSION_H
 
+#include <QIcon>
 #include <App/Extension.h>
-#include <App/PropertyPythonObject.h>
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
+
+
+class SoDetail;
+class SoFullPath;
+class SoGroup;
+class SoPickedPoint;
+class SoSeparator;
+
+class QMenu;
+class QObject;
 
 namespace Gui {
+
+class ViewProvider;
+class ViewProviderDocumentObject;
 
 /**
  * @brief Extension with special viewprovider calls

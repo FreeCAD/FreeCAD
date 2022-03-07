@@ -47,10 +47,12 @@
 #include "TaskFemConstraintFixed.h"
 #include "ui_TaskFemConstraintFixed.h"
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
 

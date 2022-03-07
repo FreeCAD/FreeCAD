@@ -27,6 +27,7 @@
 # include <QTimer>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 
@@ -34,6 +35,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "MainWindow.h"
+#include "SelectionObject.h"
 #include "Tree.h"
 #include "ViewParams.h"
 #include "ViewProvider.h"

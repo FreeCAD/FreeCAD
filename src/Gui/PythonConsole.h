@@ -23,6 +23,7 @@
 #ifndef GUI_PYTHONCONSOLE_H
 #define GUI_PYTHONCONSOLE_H
 
+#include <Python.h>
 #include "PythonEditor.h"
 
 

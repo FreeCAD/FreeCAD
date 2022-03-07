@@ -54,6 +54,7 @@
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Fem/App/FemTools.h>
 

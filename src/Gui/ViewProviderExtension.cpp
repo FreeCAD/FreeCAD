@@ -31,6 +31,7 @@
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPython.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 

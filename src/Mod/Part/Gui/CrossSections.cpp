@@ -50,6 +50,7 @@
 #include "CrossSections.h"
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/CrossSection.h>
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
