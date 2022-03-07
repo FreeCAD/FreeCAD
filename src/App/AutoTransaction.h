@@ -33,7 +33,7 @@ class Application;
 class AppExport AutoTransaction {
 private:
     /// Private new operator to prevent heap allocation
-    void* operator new(std::size_t size);
+    void* operator new (std::size_t) = delete;
 
 public:
     /** Constructor
@@ -122,7 +122,7 @@ public:
 
 private:
     /// Private new operator to prevent heap allocation
-    void* operator new(std::size_t size);
+    void* operator new (std::size_t) = delete;
 
 private:
     bool active;
