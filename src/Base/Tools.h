@@ -35,7 +35,6 @@
 #include <string>
 #include <boost_signals2.hpp>
 #include <QString>
-#include <QObject>
 
 // ----------------------------------------------------------------------------
 

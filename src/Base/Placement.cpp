@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include "Placement.h"
+#include "Matrix.h"
 #include "Rotation.h"
 #include "DualQuaternion.h"
 
