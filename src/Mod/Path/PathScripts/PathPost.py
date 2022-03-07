@@ -44,6 +44,8 @@ LOG_MODULE = PathLog.thisModule()
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 
+translate = FreeCAD.Qt.translate
+
 class _TempObject:
     Path = None
     Name = "Fixture"
@@ -241,6 +243,7 @@ class CommandPathPost:
                     job = None
             else:
                 job = None
+
         if job is None:
             targetlist = []
             for o in FreeCAD.ActiveDocument.Objects:
@@ -249,13 +252,12 @@ class CommandPathPost:
                         targetlist.append(o.Label)
             PathLog.debug("Possible post objects: {}".format(targetlist))
             if len(targetlist) > 1:
-                form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-                form.cboProject.addItems(targetlist)
-                r = form.exec_()
-                if r is False:
+                jobname, result = QtGui.QInputDialog.getItem(
+                    None, translate("Path", "Choose a Path Job"), None, targetlist
+                )
+
+                if result is False:
                     return
-                else:
-                    jobname = form.cboProject.currentText()
             else:
                 jobname = targetlist[0]
             job = FreeCAD.ActiveDocument.getObject(jobname)
