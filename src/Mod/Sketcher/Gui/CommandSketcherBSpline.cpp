@@ -1205,8 +1205,16 @@ void CmdSketcherInsertKnot::activated(int iMsg)
 
     // TODO: Ensure GeoId is for the BSpline and not for it's internal geometry
     int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str()) - 1;
+    const Part::Geometry * geo = Obj->getGeometry(GeoId);
 
-    ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())
+        ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("Please select a b-spline curve to insert a knot (not a knot on it). "
+                                         "If the curve is not a b-spline, please convert it into one first."));
+    }
 
     getSelection().clearSelection();
 }
