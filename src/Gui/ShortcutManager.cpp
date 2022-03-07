@@ -247,18 +247,18 @@ bool ShortcutManager::checkShortcut(QObject *o, const QKeySequence &key)
 
     // Qt's shortcut state machine favors shortest match (which is ridiculous,
     // unless I'm mistaken?). We'll do longest match. We've disabled all
-    // shortcuts that can match the current key sequence. Now reply the sequence
+    // shortcuts that can match the current key sequence. Now replay the sequence
     // and wait for the next keystroke.
     for (int i=0; i<key.count(); ++i) {
         int k = key[i];
         Qt::KeyboardModifiers modifiers;
-        if (k & Qt::SHIFT)
+        if ((k & Qt::SHIFT) == Qt::SHIFT)
             modifiers |= Qt::ShiftModifier;
-        if (k & Qt::CTRL)
+        if ((k & Qt::CTRL) == Qt::CTRL)
             modifiers |= Qt::ControlModifier;
-        if (k & Qt::ALT)
+        if ((k & Qt::ALT) == Qt::ALT)
             modifiers |= Qt::AltModifier;
-        if (k & Qt::META)
+        if ((k & Qt::META) == Qt::META)
             modifiers |= Qt::MetaModifier;
         k &= ~(Qt::SHIFT|Qt::CTRL|Qt::ALT|Qt::META);
         QKeyEvent *kev = new QKeyEvent(QEvent::KeyPress, k, modifiers, 0, 0, 0);
