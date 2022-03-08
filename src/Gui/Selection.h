@@ -34,6 +34,8 @@
 #include <App/DocumentObserver.h>
 #include <Base/Observer.h>
 
+#include "SelectionObject.h"
+
 
 namespace App
 {
