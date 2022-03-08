@@ -411,12 +411,15 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     if (preSelPnt != -1)
         sketchgui->getSketchObject()->getGeoVertexIndex(preSelPnt, GeoId, PosId);
     else if (preSelCrv != -1){
-        GeoId = preSelCrv;
-        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(preSelCrv);
 
-        if(geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
-            const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
-            hitShapeDir= line->getEndPoint()-line->getStartPoint();
+        // ensure geom exists in case object was called before preselection is updated
+        if (geom) {
+            GeoId = preSelCrv;
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
+                hitShapeDir= line->getEndPoint()-line->getStartPoint();
+            }
         }
 
     }
