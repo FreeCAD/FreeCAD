@@ -4632,13 +4632,16 @@ public:
 
             // insert circle point for pole, defer internal alignment constraining.
             try {
-
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                       EditCurve[0].x,EditCurve[0].y);
 
+                FirstPoleGeoId = getHighestCurveIndex();
+
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                      FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4652,8 +4655,6 @@ public:
             //Gui::Command::commitCommand();
 
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
-
-            FirstPoleGeoId = getHighestCurveIndex();
 
             // add auto constraints on pole
             if (sugConstr[CurrentConstraint].size() > 0) {
@@ -4697,11 +4698,6 @@ public:
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                       EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
-
-                if(EditCurve.size() == 2) {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
-                                          FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
-                }
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
                                       FirstPoleGeoId, FirstPoleGeoId+ EditCurve.size()-1);
