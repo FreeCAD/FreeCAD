@@ -2471,7 +2471,7 @@ CmdPartSectionCut::CmdPartSectionCut()
     : Command("Part_SectionCut")
 {
     sAppModule = "Part";
-    sGroup = QT_TR_NOOP("Part");
+    sGroup = "View";
     sMenuText = QT_TR_NOOP("Persistent section cut");
     sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
     sWhatsThis = "Part_SectionCut";
