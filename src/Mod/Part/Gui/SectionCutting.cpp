@@ -328,7 +328,7 @@ void SectionCut::startCutting(bool isInitial)
     // those that have a solid shape
     std::vector<App::DocumentObject*> ObjectsListCut;
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        // we need all Link objects in App::Parts for example for Assembly 4
+        // we need all Link objects in App::Part for example for Assembly 4
         if (it->getObject()->getTypeId() == Base::Type::fromName("App::Part")) {
             App::Part* pcPart = static_cast<App::Part*>(it->getObject());
             bool isLinkAssembly = false;
@@ -361,6 +361,13 @@ void SectionCut::startCutting(bool isInitial)
                 && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Feature"))
                 && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Compound"))
                 && it->getObject()->getTypeId() != Base::Type::fromName("App::Part"))
+                ObjectsListCut.push_back(it->getObject());
+        }
+        // get Links that are derived from Part objects
+        if (it->getObject()->getTypeId() == Base::Type::fromName("App::Link")) {
+            App::Link* pcLink = static_cast<App::Link*>(it->getObject());
+            auto linkedObject = doc->getObject(pcLink->LinkedObject.getObjectName());
+            if (linkedObject && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature")))
                 ObjectsListCut.push_back(it->getObject());
         }
     }
