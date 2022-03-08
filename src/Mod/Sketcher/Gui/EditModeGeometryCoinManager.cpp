@@ -303,7 +303,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
         }
         else if (preselectpoint != -1) {
             preselectpointmfid = coinMapping.getIndexLayer(preselectpoint);
-            if (l == preselectpointmfid.layerId && preselectpointmfid.fieldIndex < PtNum)
+            if (MultiFieldId::Invalid != preselectpointmfid &&
+                preselectpointmfid.layerId == l &&
+                preselectpointmfid.fieldIndex < PtNum)
                 pcolor[preselectpointmfid.fieldIndex] = drawingParameters.PreselectColor;
         }
 
