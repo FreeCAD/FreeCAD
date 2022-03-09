@@ -47,8 +47,8 @@ std::string ViewProviderDocumentObjectPy::representation(void) const
 
 PyObject* ViewProviderDocumentObjectPy::update(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
     PY_TRY {
         getViewProviderDocumentObjectPtr()->updateView();
         Py_Return;
@@ -90,7 +90,7 @@ Py::Object ViewProviderDocumentObjectPy::getDocument(void) const
 
 PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderDocumentObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

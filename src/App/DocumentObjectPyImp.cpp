@@ -82,8 +82,8 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args)
     std::string sDocStr;
     PyObject *ro = Py_False, *hd = Py_False;
     if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
-        &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+        &PyBool_Type, &ro, &PyBool_Type, &hd))
+        return nullptr;
 
     if (sDoc) {
         sDocStr = sDoc;
@@ -108,8 +108,8 @@ PyObject*  DocumentObjectPy::removeProperty(PyObject *args)
 
 PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
 
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
@@ -127,8 +127,8 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
 PyObject*  DocumentObjectPy::touch(PyObject * args)
 {
     char *propName = 0;
-    if (!PyArg_ParseTuple(args, "|s",&propName))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "|s",&propName))
+        return nullptr;
     if(propName) {
         if(!propName[0]) {
             getDocumentObjectPtr()->touch(true);
@@ -147,16 +147,16 @@ PyObject*  DocumentObjectPy::touch(PyObject * args)
 
 PyObject*  DocumentObjectPy::purgeTouched(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
     getDocumentObjectPtr()->purgeTouched();
     Py_Return;
 }
 
 PyObject*  DocumentObjectPy::enforceRecompute(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
     getDocumentObjectPtr()->enforceRecompute();
     Py_Return;
 }
@@ -305,12 +305,12 @@ Py::List DocumentObjectPy::getOutListRecursive(void) const
 
 PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 {
-    char * path = NULL;
+    char * path = nullptr;
     PyObject * expr;
-    char * comment = 0;
+    char * comment = nullptr;
 
-    if (!PyArg_ParseTuple(args, "sO|s", &path, &expr, &comment))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "sO|s", &path, &expr, &comment))
+        return nullptr;
 
     App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
 
@@ -795,7 +795,7 @@ PyObject *DocumentObjectPy::resolve(PyObject *args)
 {
     const char *subname;
     if (!PyArg_ParseTuple(args, "s",&subname))
-        return NULL;                             // NULL triggers exception 
+        return nullptr;
 
     PY_TRY {
         std::string elementName;
@@ -820,7 +820,7 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
     PyObject *append = Py_False;
     int type = 0;
     if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
-        return NULL;                             // NULL triggers exception 
+        return nullptr;
 
     PY_TRY {
         std::pair<std::string,std::string> elementName;

@@ -1229,7 +1229,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
 Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
 {
     int cameratype=-1;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {    // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {
         char* modename;
         PyErr_Clear();
         if (!PyArg_ParseTuple(args.ptr(), "s", &modename))
@@ -1306,10 +1306,10 @@ Py::Object View3DInventorPy::dump(const Py::Tuple& args)
 Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
         throw Py::Exception();
 
-    void* ptr = 0;
+    void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", object, &ptr, 0);
     }

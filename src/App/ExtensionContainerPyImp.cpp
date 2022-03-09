@@ -175,7 +175,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
     char *type;
     PyObject *deriv = Py_True;
     if (!PyArg_ParseTuple(args, "s|O", &type, &deriv))
-        return NULL;                                         // NULL triggers exception 
+        return nullptr;
 
     //get the extension type asked for
     bool derived = PyObject_IsTrue(deriv);

@@ -509,7 +509,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type),&obj))
-        return NULL;    // NULL triggers exception
+        return nullptr;
 
     try{
         App::DocumentObjectPy* dobjpy = static_cast<App::DocumentObjectPy*>(obj);
@@ -533,7 +533,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type),&obj))
-        return NULL;    // NULL triggers exception
+        return nullptr;
 
     try{
         App::DocumentObjectPy* dobjpy = static_cast<App::DocumentObjectPy*>(obj);

@@ -86,8 +86,8 @@ std::string MaterialPy::representation(void) const
 PyObject* MaterialPy::set(PyObject * args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
 
     getMaterialPtr()->set(pstr);
 

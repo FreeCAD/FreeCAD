@@ -584,8 +584,8 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
 {
     char *pstr1;
     char *pstr2;
-    if (!PyArg_ParseTuple(args, "ss", &pstr1, &pstr2))     // convert args: Python->C
-        return nullptr;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "ss", &pstr1, &pstr2))
+        return nullptr;
 
     PY_TRY{
         bool b=false;
