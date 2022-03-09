@@ -755,12 +755,14 @@ void SectionCut::CutValueHelper(double value, QDoubleSpinBox* SpinBox, QSlider* 
     }
     // update slider position and tooltip
     // the slider value is % of the cut range
-    Slider->blockSignals(true);
-    Slider->setValue(
-        int((value - SpinBox->minimum())
-            / (SpinBox->maximum() - SpinBox->minimum()) * 100.0));
-    Slider->setToolTip(QString::number(value, 'g', Base::UnitsApi::getDecimals()));
-    Slider->blockSignals(false);
+    if (Slider->isEnabled()) {
+        Slider->blockSignals(true);
+        Slider->setValue(
+            int((value - SpinBox->minimum())
+                / (SpinBox->maximum() - SpinBox->minimum()) * 100.0));
+        Slider->setToolTip(QString::number(value, 'g', Base::UnitsApi::getDecimals()));
+        Slider->blockSignals(false);
+    }
 
     // we cannot cut to the edge because then the result is an empty shape
         // we chose purposely not to simply set the range for cutX previously
