@@ -109,6 +109,7 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop) override;
+    virtual void validateScale();
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;

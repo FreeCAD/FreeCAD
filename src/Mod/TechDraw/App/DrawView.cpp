@@ -239,8 +239,33 @@ void DrawView::onDocumentRestored()
 {
     handleXYLock();
     setScaleAttribute();
+    validateScale();
     DrawView::execute();
 }
+
+//in versions before 0.20 Scale and ScaleType were mishandled.
+//In order to not introduce unintended drawing changes in later
+//versions, ScaleType Page must be modified if view Scale does
+//not match Page Scale
+void DrawView::validateScale()
+{
+    if (ScaleType.isValue("Custom")) {
+        //nothing to do here
+        return;
+    }
+    DrawPage* page = findParentPage();
+    if (page) {
+        if (ScaleType.isValue("Page")) {
+            double pageScale = page->Scale.getValue();
+            double myScale = Scale.getValue();
+            if (!DrawUtil::fpCompare(pageScale, myScale)) {
+                ScaleType.setValue("Custom");
+                ScaleType.purgeTouched();
+            }
+        }
+    }
+}
+
 /**
  * @brief DrawView::countParentPages
  * Fixes a crash in TechDraw when user creates duplicate page without dependencies
