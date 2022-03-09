@@ -385,7 +385,7 @@ void SectionCut::startCutting(bool isInitial)
             || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::FilletBase")) ) {
             // get possible links
             auto subObjectList = it->getObject()->getOutList();
-            // if there links, delete them
+            // if there are links, delete them
             if (!subObjectList.empty()) {
                 for (it2 = subObjectList.begin(); it2 != subObjectList.end(); ++it2) {
                     for (it3 = ObjectsListCut.begin(); it3 != ObjectsListCut.end(); ++it3) {
@@ -448,7 +448,12 @@ void SectionCut::startCutting(bool isInitial)
     int count = 0;
     for (auto itCuts = ObjectsListCut.begin(); itCuts != ObjectsListCut.end(); ++itCuts, count++) {
         // first create a link with a unique name
-        std::string newName = (*itCuts)->getNameInDocument();
+        std::string newName;
+        // since links to normal Part objects all have the document name "Link", use their label text instead
+        if ((*itCuts)->getTypeId() == Base::Type::fromName("App::Link"))
+             newName = (*itCuts)->Label.getValue();
+        else
+            newName = (*itCuts)->getNameInDocument();
         newName = newName + "_CutLink";
         
         auto newObject = doc->addObject("App::Link", newName.c_str());
