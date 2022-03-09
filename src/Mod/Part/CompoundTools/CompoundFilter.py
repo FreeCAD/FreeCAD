@@ -30,15 +30,6 @@ import Part
 import math
 import sys
 
-# xrange is not available in python3
-if sys.version_info.major >= 3:
-    xrange = range
-
-# OCC's Precision::Confusion; should have taken this from FreeCAD
-# but haven't found; unlikely to ever change (DeepSOIC)
-DistConfusion = 1e-7
-ParaConfusion = 1e-8
-
 
 def makeCompoundFilter(name, into_group = None):
     '''makeCompoundFilter(name): makes a CompoundFilter object.'''
@@ -144,7 +135,7 @@ class _CompoundFilter:
                     raise ValueError("index range cannot be parsed: '{}'".format(r))
             if obj.Invert:
                 rst = []
-                for i in xrange(0, len(shps)):
+                for i in range(len(shps)):
                     if not flags[i]:
                         rst.append(shps[i])
         elif obj.FilterType == 'collision-pass':
@@ -154,12 +145,12 @@ class _CompoundFilter:
             stencil = obj.Stencil.Shape
             for s in shps:
                 d = s.distToShape(stencil)
-                if bool(d[0] < DistConfusion) ^ bool(obj.Invert):
+                if bool(d[0] < Part.Precision.confusion()) ^ bool(obj.Invert):
                     rst.append(s)
         elif obj.FilterType in ('window-volume', 'window-area',
                                 'window-length', 'window-distance'):
             vals = [0.0] * len(shps)
-            for i in xrange(0, len(shps)):
+            for i in range(len(shps)):
                 if obj.FilterType == 'window-volume':
                     vals[i] = shps[i].Volume
                 elif obj.FilterType == 'window-area':
@@ -185,7 +176,7 @@ class _CompoundFilter:
             valFrom = obj.WindowFrom / 100.0 * maxval
             valTo = obj.WindowTo / 100.0 * maxval
 
-            for i in xrange(0, len(shps)):
+            for i in range(len(shps)):
                 if bool(vals[i] >= valFrom and vals[i] <= valTo) ^ obj.Invert:
                     rst.append(shps[i])
         else:
@@ -195,7 +186,7 @@ class _CompoundFilter:
             scale = 1.0
             if not obj.Base.Shape.isNull():
                 scale = obj.Base.Shape.BoundBox.DiagonalLength / math.sqrt(3) / math.sqrt(len(shps))
-            if scale < DistConfusion * 100:
+            if scale < Part.Precision.confusion() * 100:
                 scale = 1.0
             print(scale)
             obj.Shape = getNullShapeShape(scale)
