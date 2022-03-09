@@ -462,7 +462,7 @@ bool App::Metadata::supportsCurrentFreeCAD() const
     if (fcVersion == Meta::Version()) {
         std::map<std::string, std::string>& config = App::Application::Config();
         std::stringstream ss;
-        ss << config["BuildVersionMajor"] << "." << config["BuildVersionMinor"] << "." << config["BuildRevision"].empty() ? "0" : config["BuildRevision"];
+        ss << config["BuildVersionMajor"] << "." << config["BuildVersionMinor"] << "." << (config["BuildRevision"].empty() ? "0" : config["BuildRevision"]);
         fcVersion = Meta::Version(ss.str());
     }
 
