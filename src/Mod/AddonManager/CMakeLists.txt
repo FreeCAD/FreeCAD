@@ -25,8 +25,8 @@ SET(AddonManager_SRCS
     NetworkManager.py
     package_details.py
     package_list.py
-    TestAddonManagerApp.py
     select_toolbar_dialog.ui
+    TestAddonManagerApp.py
 )
 IF (BUILD_GUI)
 	LIST(APPEND AddonManager_SRCS TestAddonManagerGui.py)
@@ -41,8 +41,9 @@ SET(AddonManagerTests_SRCS
 
 SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
-    AddonManagerTest/app/test_utilities.py
     AddonManagerTest/app/test_addon.py
+    AddonManagerTest/app/test_macro.py
+    AddonManagerTest/app/test_utilities.py
 )
 
 SET(AddonManagerTestsGui_SRCS
@@ -59,6 +60,7 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/good_macro_metadata.FCStd
     AddonManagerTest/data/good_package.xml
     AddonManagerTest/data/macro_only.xml
+    AddonManagerTest/data/macro_template.FCStd
     AddonManagerTest/data/missing_macro_metadata.FCStd
     AddonManagerTest/data/prefpack_only.xml
     AddonManagerTest/data/test_version_detection.xml
