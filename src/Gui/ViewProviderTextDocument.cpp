@@ -27,6 +27,7 @@
 # include <QPlainTextEdit>
 #endif
 
+#include <App/Application.h>
 #include <Base/Type.h>
 
 #include "ViewProviderTextDocument.h"

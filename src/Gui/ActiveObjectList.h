@@ -27,7 +27,7 @@
 #define GUI_ActiveObjectList_H
 
 #include <map>
-#include "Tree.h"
+#include <Gui/TreeItemMode.h>
 
 
 namespace App {

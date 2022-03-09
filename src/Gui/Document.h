@@ -27,13 +27,13 @@
 #include <map>
 #include <string>
 #include <boost_signals2.hpp>
+#include <QString>
 
 #include <Base/Persistence.h>
-
+#include <Gui/TreeItemMode.h>
 
 class SoNode;
 class SoPath;
-class QString;
 
 namespace Base {
 class Matrix4D;
@@ -56,8 +56,6 @@ class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
 class TransactionViewProvider;
-enum class HighlightMode;
-enum class TreeItemMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping

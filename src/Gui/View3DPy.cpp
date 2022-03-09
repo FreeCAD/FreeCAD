@@ -30,6 +30,7 @@
 # include <QImage>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>

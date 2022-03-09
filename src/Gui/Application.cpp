@@ -32,6 +32,7 @@
 # include <QMessageBox>
 # include <QMessageLogContext>
 # include <QStatusBar>
+# include <QStyle>
 # include <QTextStream>
 # include <QTimer>
 # include <QWindow>
