@@ -66,6 +66,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
 #include <Base/UnitsApi.h>
+#include <Gui/Tree.h>
 #include <Gui/Utilities.h>
 #include <Base/Converter.h>
 #include <Base/Tools.h>
