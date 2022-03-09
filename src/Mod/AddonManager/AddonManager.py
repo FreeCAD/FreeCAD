@@ -929,7 +929,7 @@ class CommandAddonManager:
         repo.walk_dependency_tree(repo_name_dict, deps)
 
         FreeCAD.Console.PrintLog("The following Workbenches are required:\n")
-        for addon in deps.unrecognized_addons:
+        for addon in deps.internal_workbenches:
             FreeCAD.Console.PrintLog(addon + "\n")
 
         FreeCAD.Console.PrintLog("The following addons are required:\n")
@@ -950,11 +950,20 @@ class CommandAddonManager:
                 missing_external_addons.append(dep)
 
         # Now check the loaded addons to see if we are missing an internal workbench:
-        wbs = FreeCADGui.listWorkbenches()
+        wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
+
         missing_wbs = []
-        for dep in deps.unrecognized_addons:
-            if dep not in wbs and dep + "Workbench" not in wbs:
-                missing_wbs.append(dep)
+        for dep in deps.internal_workbenches:
+            if dep.lower() + "workbench" not in wbs:
+                if dep == "Plot":
+                    # Special case for plot, which is no longer a full workbench:
+                    try:
+                        __import__("Plot")
+                    except ImportError:
+                        # Plot might fail for a number of reasons
+                        missing_wbs.append(dep)
+                else:
+                    missing_wbs.append(dep)
 
         # Check the Python dependencies:
         missing_python_requirements = []
@@ -971,19 +980,20 @@ class CommandAddonManager:
                 bad_packages.append(dep)
 
         if bad_packages:
-            message = translate(
+            message = "<p>" + translate(
                 "AddonsInstaller",
                 "The Addon {} requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
-            ).format(repo.name)
+            ).format(repo.name) + "</p><ul>"
             if len(bad_packages) < 15:
                 for dep in bad_packages:
-                    message += f"\n  * {dep}"
+                    message += f"<li>{dep}</li>"
             else:
                 message += (
-                    "\n  * (" + translate("AddonsInstaller", "Too many to list") + ")"
+                    "<li>(" + translate("AddonsInstaller", "Too many to list") + ")</li>"
                 )
+            message += "</ul>"
             QtWidgets.QMessageBox.critical(
-                None, translate("AddonsInstaller", "Connection failed"), message
+                None, translate("AddonsInstaller", "Missing Requirement"), message
             )
             FreeCAD.Console.PrintMessage(
                 translate(
@@ -1017,15 +1027,16 @@ class CommandAddonManager:
                 name = missing_wbs[0]
                 message = translate(
                     "AddonsInstaller",
-                    "Installing {} requires '{}', which is not installed in your copy of FreeCAD.",
+                    "Addon '{}' requires '{}', which is not available in your copy of FreeCAD.",
                 ).format(addon, name)
             else:
-                message = translate(
+                message = "<p>" + translate(
                     "AddonsInstaller",
-                    "Installing {} requires the following workbenches, which are not installed in your copy of FreeCAD:\n",
-                ).format(addon)
+                    "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
+                ).format(addon) + "</p><ul>"
                 for wb in missing_wbs:
-                    message += "  - " + wb + "\n"
+                    message += "<li>" + wb + "</li>"
+                message += "</ul>"
             QtWidgets.QMessageBox.critical(
                 self.dialog,
                 translate("AddonsInstaller", "Missing Requirement"),

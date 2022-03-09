@@ -32,6 +32,22 @@ import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
+INTERNAL_WORKBENCHES = {}
+INTERNAL_WORKBENCHES["arch"] = "Arch"
+INTERNAL_WORKBENCHES["draft"] = "Draft"
+INTERNAL_WORKBENCHES["fem"] = "FEM"
+INTERNAL_WORKBENCHES["mesh"] = "Mesh"
+INTERNAL_WORKBENCHES["openscad"] = "OpenSCAD"
+INTERNAL_WORKBENCHES["part"] = "Part"
+INTERNAL_WORKBENCHES["partdesign"] = "PartDesign"
+INTERNAL_WORKBENCHES["path"] = "Path"
+INTERNAL_WORKBENCHES["plot"] = "Plot"
+INTERNAL_WORKBENCHES["points"] = "Points"
+INTERNAL_WORKBENCHES["raytracing"] = "Raytracing"
+INTERNAL_WORKBENCHES["robot"] = "Robot"
+INTERNAL_WORKBENCHES["sketcher"] = "Sketcher"
+INTERNAL_WORKBENCHES["spreadsheet"] = "Spreadsheet"
+INTERNAL_WORKBENCHES["techdraw"] = "TechDraw"
 
 class Addon:
     "Encapsulate information about a FreeCAD addon"
@@ -83,7 +99,7 @@ class Addon:
             self.required_external_addons = [] # A list of Addons
             self.blockers = [] # A list of Addons
             self.replaces = [] # A list of Addons
-            self.unrecognized_addons: Set[str] = set()
+            self.internal_workbenches: Set[str] = set() # Required internal workbenches
             self.python_required: Set[str] = set()
             self.python_optional: Set[str] = set()
 
@@ -242,6 +258,57 @@ class Addon:
                 else:
                     self.branch = "master"
         self.extract_tags(self.metadata)
+        self.extract_metadata_dependencies(self.metadata)
+
+    def version_is_ok(self, metadata) -> bool:
+        dep_fc_min = metadata.FreeCADMin
+        dep_fc_max = metadata.FreeCADMax
+
+        fc_major = int(FreeCAD.Version()[0])
+        fc_minor = int(FreeCAD.Version()[1])
+
+        try:
+            if dep_fc_min and dep_fc_min != "0.0.0":
+                required_version = dep_fc_min.split(".")
+                if fc_major < int(required_version[0]):
+                    return False # Major version is too low
+                elif fc_major == int(required_version[0]):
+                    if len(required_version) > 1 and fc_minor < int(required_version[1]):
+                        return False # Same major, and minor is too low
+        except ValueError:
+            FreeCAD.Console.PrintMessage(f"Metadata file for {self.name} has invalid FreeCADMin version info\n")
+
+        try:
+            if dep_fc_max and dep_fc_max != "0.0.0":
+                required_version = dep_fc_max.split(".")
+                if fc_major > int(required_version[0]):
+                    return False # Major version is too high
+                elif fc_major == int(required_version[0]):
+                    if len(required_version) > 1 and fc_minor > int(required_version[1]):
+                        return False # Same major, and minor is too high
+        except ValueError:
+            FreeCAD.Console.PrintMessage(f"Metadata file for {self.name} has invalid FreeCADMax version info\n")
+
+        return True
+
+    def extract_metadata_dependencies(self, metadata):
+
+        # Version check: if this piece of metadata doesn't apply to this version of
+        # FreeCAD, just skip it.
+        if not self.version_is_ok(metadata):
+            return
+
+        for dep in metadata.Depend:
+            # Simple version for now: eventually support all of the version params...
+            self.requires.add(dep["package"])
+        for dep in metadata.Conflict:
+            self.blocks.add(dep["package"])
+
+        # Recurse
+        content = metadata.Content
+        for _, value in content.items():
+            for item in value:
+                self.extract_metadata_dependencies(item)
 
     def verify_url_and_branch(self, url: str, branch: str) -> None:
         """Print diagnostic information for Addon Developers if their metadata is
@@ -266,6 +333,12 @@ class Addon:
             )
 
     def extract_tags(self, metadata: FreeCAD.Metadata) -> None:
+
+        # Version check: if this piece of metadata doesn't apply to this version of
+        # FreeCAD, just skip it.
+        if not self.version_is_ok(metadata):
+            return
+
         for new_tag in metadata.Tag:
             self.tags.add(new_tag)
 
@@ -377,8 +450,20 @@ class Addon:
                     deps.required_external_addons.append(all_repos[dep])
                     all_repos[dep].walk_dependency_tree(all_repos, deps)
             else:
-                # Maybe this is an internal workbench, just store its name
-                deps.unrecognized_addons.add(dep)
+                # See if this is an internal workbench:
+                if dep.upper().endswith("WB"):
+                    real_name = dep[:-2].strip().lower()
+                elif dep.upper().endswith("WORKBENCH"):
+                    real_name = dep[:-9].strip().lower()
+                else:
+                   real_name = dep.strip().lower()
+
+                if real_name in INTERNAL_WORKBENCHES:
+                    deps.internal_workbenches.add(INTERNAL_WORKBENCHES[real_name])
+                else:
+                    # Assume it's a Python requirement of some kind:
+                    deps.python_required.add(dep)
+
         for dep in self.blocks:
             if dep in all_repos:
                 deps.blockers[dep] = all_repos[dep]
