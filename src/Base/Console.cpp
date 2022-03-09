@@ -218,9 +218,8 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
             return false;
         }
     }
-    else {
-        return false;
-    }
+
+    return false;
 }
 
 void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
