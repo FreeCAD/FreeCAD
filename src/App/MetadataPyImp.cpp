@@ -318,8 +318,11 @@ void MetadataPy::setFreeCADMax(Py::Object args)
     getMetadataPtr()->setFreeCADMax(App::Meta::Version(version));
 }
 
-PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject*)
+PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject* p)
 {
+    if (!PyArg_ParseTuple(p, ""))
+        return nullptr;
+
     // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
     if (getMetadataPtr()->freecadmin() != App::Meta::Version())
         return Py::new_reference_to(Py::String(getMetadataPtr()->freecadmin().str()));
@@ -341,8 +344,11 @@ PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject*)
     }
 }
 
-PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
+PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject* p)
 {
+    if (!PyArg_ParseTuple(p, ""))
+        return nullptr;
+
     // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
     if (getMetadataPtr()->freecadmax() != App::Meta::Version())
         return Py::new_reference_to(Py::String(getMetadataPtr()->freecadmax().str()));
@@ -362,6 +368,15 @@ PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
         Py_INCREF(Py_None);
         return Py_None;
     }
+}
+
+PyObject* MetadataPy::supportsCurrentFreeCAD(PyObject* p)
+{
+    if (!PyArg_ParseTuple(p, ""))
+        return nullptr;
+
+    bool result = getMetadataPtr()->supportsCurrentFreeCAD();
+    return Py::new_reference_to(Py::Boolean(result));
 }
 
 PyObject* MetadataPy::getCustomAttributes(const char* /*attr*/) const

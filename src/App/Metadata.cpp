@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+ *   Copyright (c) 2022 FreeCAD Project Association                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -453,6 +453,23 @@ bool Metadata::satisfies(const Meta::Dependency& dep)
         if (!(_version >= Meta::Version(dep.version_lt)))
             return false;
 
+    return true;
+}
+
+bool App::Metadata::supportsCurrentFreeCAD() const
+{
+    static auto fcVersion = Meta::Version();
+    if (fcVersion == Meta::Version()) {
+        std::map<std::string, std::string>& config = App::Application::Config();
+        std::stringstream ss;
+        ss << config["BuildVersionMajor"] << "." << config["BuildVersionMinor"] << "." << config["BuildRevision"].empty() ? "0" : config["BuildRevision"];
+        fcVersion = Meta::Version(ss.str());
+    }
+
+    if (_freecadmin != Meta::Version() && _freecadmin > fcVersion)
+        return false;
+    else if (_freecadmax != Meta::Version() && _freecadmax < fcVersion)
+        return false;
     return true;
 }
 

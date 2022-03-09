@@ -150,11 +150,15 @@ def InitApplications():
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
                 meta = FreeCAD.Metadata(MetadataFile)
+                if not meta.supportsCurrentFreeCAD():
+                    continue
                 content = meta.Content
                 if "workbench" in content:
                     FreeCAD.Gui.addIconPath(Dir)
                     workbenches = content["workbench"]
                     for workbench_metadata in workbenches:
+                        if not workbench_metadata.supportsCurrentFreeCAD():
+                            continue
                         subdirectory = workbench_metadata.Name if not workbench_metadata.Subdirectory else workbench_metadata.Subdirectory
                         subdirectory = subdirectory.replace("/",os.path.sep)
                         subdirectory = os.path.join(Dir, subdirectory)
@@ -183,9 +187,18 @@ def InitApplications():
         import freecad
         freecad.gui = FreeCADGui
         for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
-            stopFile = os.path.join(Dir, "ADDON_DISABLED")
+            # Check for a stopfile
+            stopFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "ADDON_DISABLED")
             if os.path.exists(stopFile):
                 continue
+
+            # Make sure that package.xml (if present) does not exclude this version of FreeCAD
+            MetadataFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "package.xml")
+            if os.path.exists(MetadataFile):
+                meta = FreeCAD.Metadata(MetadataFile)
+                if not meta.supportsCurrentFreeCAD():
+                    continue
+
             if freecad_module_ispkg:
                 Log('Init: Initializing ' + freecad_module_name + '\n')
                 try:
