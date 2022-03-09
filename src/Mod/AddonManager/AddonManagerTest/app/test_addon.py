@@ -26,7 +26,7 @@ import unittest
 import os
 import FreeCAD
 
-from Addon import Addon
+from Addon import Addon, INTERNAL_WORKBENCHES
 from addonmanager_macro import Macro
 
 class TestAddon(unittest.TestCase):
@@ -201,4 +201,20 @@ class TestAddon(unittest.TestCase):
         self.assertTrue("AddonB" in addon_strings, "AddonB not in required dependencies, and it should be.")
         self.assertTrue("AddonC" in addon_strings, "AddonC not in required dependencies, and it should be.")
         self.assertTrue("AddonD" in addon_strings, "AddonD not in required dependencies, and it should be.")
-        self.assertTrue("Path" in deps.unrecognized_addons, "Path not in unrecognized dependencies, and it should be.")
+        self.assertTrue("Path" in deps.internal_workbenches, "Path not in workbench dependencies, and it should be.")
+
+    def test_internal_workbench_list(self):
+        addon = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon.load_metadata_file(os.path.join(self.test_dir, "depends_on_all_workbenches.xml"))
+        deps = Addon.Dependencies()
+        addon.walk_dependency_tree({}, deps)
+        self.assertEqual(len(deps.internal_workbenches), len(INTERNAL_WORKBENCHES))
+
+    def test_version_check(self):
+        addon = Addon("FreeCAD","https://github.com/FreeCAD/FreeCAD", Addon.Status.NOT_INSTALLED, "master")
+        addon.load_metadata_file(os.path.join(self.test_dir, "test_version_detection.xml"))
+
+        self.assertEqual(len(addon.tags),1, "Wrong number of tags found: version requirements should have restricted to only one")
+        self.assertFalse("TagA" in addon.tags, "Found 'TagA' in tags, it should have been exluded by version requirement")
+        self.assertTrue("TagB" in addon.tags, "Failed to find 'TagB' in tags, it should have been included")
+        self.assertFalse("TagC" in addon.tags, "Found 'TagA' in tags, it should have been exluded by version requirement")
