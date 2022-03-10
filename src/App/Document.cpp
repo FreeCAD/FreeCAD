@@ -2541,12 +2541,6 @@ private:
             }
         }
 
-        Base::FileInfo tmp(sourcename);
-        if (tmp.renameFile(targetname.c_str()) == false) {
-            throw Base::FileException(
-                "Save interrupted: Cannot rename temporary file to project file", tmp);
-        }
-
         if (numberOfFiles <= 0) {
             try {
                 fi.deleteFile();
@@ -2555,6 +2549,12 @@ private:
                 Base::Console().Warning("Cannot remove backup file: %s\n", fi.fileName().c_str());
                 backupManagementError = true;
            }
+        }
+
+        Base::FileInfo tmp(sourcename);
+        if (tmp.renameFile(targetname.c_str()) == false) {
+            throw Base::FileException(
+                "Save interrupted: Cannot rename temporary file to project file", tmp);
         }
 
         if (backupManagementError) {
