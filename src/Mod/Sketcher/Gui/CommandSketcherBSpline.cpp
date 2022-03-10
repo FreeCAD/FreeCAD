@@ -1237,26 +1237,68 @@ void CmdSketcherJoinCurves::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    if (SubNames.size() == 0) {
-        // Check that something is selected
+
+    int GeoIds[2];
+    Sketcher::PointPos PosIds[2];
+
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    switch (SubNames.size()) {
+    case 0: {
+        // Nothing is selected
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
                              QObject::tr("Nothing is selected. Please select end points of curves."));
         return;
     }
+    case 1: {
+        std::vector<int> GeoIdList;
+        std::vector<Sketcher::PointPos> PosIdList;
 
-    if (SubNames.size() != 2) {
+        int selGeoId;
+        Sketcher::PointPos selPosId;
+
+        getIdsFromName(SubNames[0], Obj, selGeoId, selPosId);
+
+        Obj->getDirectlyCoincidentPoints(selGeoId, selPosId, GeoIdList, PosIdList);
+
+        // Find the right pair of coincident points
+        size_t j = 0;
+        for (size_t i = 0; i < GeoIdList.size(); ++i) {
+            if (Sketcher::PointPos::start == PosIdList[i] ||
+                Sketcher::PointPos::end   == PosIdList[i]) {
+                if (j < 2) {
+                    GeoIds[j] = GeoIdList[i];
+                    PosIds[j] = PosIdList[i];
+                    ++j;
+                }
+                else {
+                    QMessageBox::warning(
+                        Gui::getMainWindow(), QObject::tr("Too many curves on point"),
+                        QObject::tr("Exactly two curve should end at the selected point to be able to join them."));
+                    return;
+                }
+            }
+        }
+        if (j < 2) {
+            QMessageBox::warning(
+                Gui::getMainWindow(), QObject::tr("Too few curves on point"),
+                QObject::tr("Exactly two curve should end at the selected point to be able to join them."));
+            return;
+        }
+
+        break;
+    }
+    case 2: {
+        getIdsFromName(SubNames[0], Obj, GeoIds[0], PosIds[0]);
+        getIdsFromName(SubNames[1], Obj, GeoIds[1], PosIds[1]);
+        break;
+    }
+    default: {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Two end points should be selected."));
+                             QObject::tr("Two end points, or coincident point should be selected."));
         return;
     }
-
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-
-
-    int GeoIds[2];
-    Sketcher::PointPos PosIds[2];
-    getIdsFromName(SubNames[0], Obj, GeoIds[0], PosIds[0]);
-    getIdsFromName(SubNames[1], Obj, GeoIds[1], PosIds[1]);
+    }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
     bool applied = false;
