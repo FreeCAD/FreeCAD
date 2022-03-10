@@ -215,6 +215,6 @@ class TestAddon(unittest.TestCase):
         addon.load_metadata_file(os.path.join(self.test_dir, "test_version_detection.xml"))
 
         self.assertEqual(len(addon.tags),1, "Wrong number of tags found: version requirements should have restricted to only one")
-        self.assertFalse("TagA" in addon.tags, "Found 'TagA' in tags, it should have been exluded by version requirement")
+        self.assertFalse("TagA" in addon.tags, "Found 'TagA' in tags, it should have been excluded by version requirement")
         self.assertTrue("TagB" in addon.tags, "Failed to find 'TagB' in tags, it should have been included")
-        self.assertFalse("TagC" in addon.tags, "Found 'TagA' in tags, it should have been exluded by version requirement")
+        self.assertFalse("TagC" in addon.tags, "Found 'TagA' in tags, it should have been excluded by version requirement")
