@@ -129,7 +129,7 @@ class ObjectDressup:
         """
 
         enums = {
-            "Object": [
+            "Method": [
                 (translate("Path_DressupRampEntry", "RampMethod1"), "RampMethod1"),
                 (translate("Path_DressupRampEntry", "RampMethod2"), "RampMethod2"),
                 (translate("Path_DressupRampEntry", "RampMethod3"), "RampMethod3"),
