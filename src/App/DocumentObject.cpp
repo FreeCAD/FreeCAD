@@ -950,6 +950,16 @@ void DocumentObject::setExpression(const ObjectIdentifier &path, std::shared_ptr
 }
 
 /**
+ * @brief Clear the expression of the object identifier \a path in this document object.
+ * @param path Target object identifier
+ */
+
+void DocumentObject::clearExpression(const ObjectIdentifier & path)
+{
+    setExpression(path, std::shared_ptr<Expression>());
+}
+
+/**
  * @brief Get expression information associated with \a path.
  * @param path Object identifier
  * @return Expression info, containing expression and optional comment.

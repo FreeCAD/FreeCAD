@@ -314,21 +314,31 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 
     App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
 
-    if (Py::Object(expr).isNone())
-        getDocumentObjectPtr()->setExpression(p, std::shared_ptr<Expression>());
+    if (Py::Object(expr).isNone()) {
+        getDocumentObjectPtr()->clearExpression(p);
+        Py_Return;
+    }
     else if (PyUnicode_Check(expr)) {
         const char * exprStr = PyUnicode_AsUTF8(expr);
         std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
-        if(shared_expr && comment)
+        if (shared_expr && comment)
             shared_expr->comment = comment;
 
         getDocumentObjectPtr()->setExpression(p, shared_expr);
+        Py_Return;
     }
-    else if (PyUnicode_Check(expr)) {
-        std::string exprStr = PyUnicode_AsUTF8(expr);
-    }
-    else
-        throw Py::TypeError("String or None expected.");
+
+    throw Py::TypeError("String or None expected.");
+}
+
+PyObject*  DocumentObjectPy::clearExpression(PyObject * args)
+{
+    char * path = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &path))
+        return nullptr;
+
+    App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
+    getDocumentObjectPtr()->clearExpression(p);
     Py_Return;
 }
 

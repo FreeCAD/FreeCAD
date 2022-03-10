@@ -425,6 +425,8 @@ public:
 
     virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
 
+    void clearExpression(const ObjectIdentifier & path);
+
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
