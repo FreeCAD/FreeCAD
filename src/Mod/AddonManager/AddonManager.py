@@ -265,83 +265,13 @@ class CommandAddonManager:
         self.packages_with_updates = set()
         self.startup_sequence = []
         self.cleanup_workers()
+        self.determine_cache_update_status()
 
         # restore window geometry from stored state
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         w = pref.GetInt("WindowWidth", 800)
         h = pref.GetInt("WindowHeight", 600)
         self.dialog.resize(w, h)
-
-        # figure out our cache update frequency: there is a combo box in the preferences dialog with three
-        # options: never, daily, and weekly. Check that first, but allow it to be overridden by a more specific
-        # DaysBetweenUpdates selection, if the user has provided it. For that parameter we use:
-        # -1: Only manual updates (default)
-        #  0: Update every launch
-        # >0: Update every n days
-        self.update_cache = False
-        if hasattr(self, "trigger_recache") and self.trigger_recache:
-            self.update_cache = True
-        update_frequency = pref.GetInt("UpdateFrequencyComboEntry", 0)
-        if update_frequency == 0:
-            days_between_updates = -1
-        elif update_frequency == 1:
-            days_between_updates = 1
-        elif update_frequency == 2:
-            days_between_updates = 7
-        days_between_updates = pref.GetInt("DaysBetweenUpdates", days_between_updates)
-        last_cache_update_string = pref.GetString("LastCacheUpdate", "never")
-        cache_path = FreeCAD.getUserCachePath()
-        am_path = os.path.join(cache_path, "AddonManager")
-        if last_cache_update_string == "never":
-            self.update_cache = True
-        elif days_between_updates > 0:
-            if hasattr(date, "fromisoformat"):
-                last_cache_update = date.fromisoformat(last_cache_update_string)
-            else:
-                # Python 3.6 and earlier don't have date.fromisoformat
-                date_re = re.compile(
-                    "([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])"
-                )
-                matches = date_re.match(last_cache_update_string)
-                last_cache_update = date(
-                    int(matches.group(1)), int(matches.group(2)), int(matches.group(3))
-                )
-            delta_update = timedelta(days=days_between_updates)
-            if date.today() >= last_cache_update + delta_update:
-                self.update_cache = True
-        elif days_between_updates == 0:
-            self.update_cache = True
-        elif not os.path.isdir(am_path):
-            self.update_cache = True
-        stopfile = self.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
-        if os.path.exists(stopfile):
-            self.update_cache = True
-            os.remove(stopfile)
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller",
-                    "Previous cache process was interrupted, restarting...\n",
-                )
-            )
-
-        # See if the user has changed the custom repos list since our last re-cache:
-        stored_hash = pref.GetString("CustomRepoHash", "")
-        custom_repos = pref.GetString("CustomRepositories", "")
-        if custom_repos:
-            hasher = hashlib.sha1()
-            hasher.update(custom_repos.encode("utf-8"))
-            new_hash = hasher.hexdigest()
-        else:
-            new_hash = ""
-        if new_hash != stored_hash:
-            stored_hash = pref.SetString("CustomRepoHash", new_hash)
-            self.update_cache = True
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller",
-                    "Custom repo list changed, forcing recache...\n",
-                )
-            )
 
         # If we are checking for updates automatically, hide the Check for updates button:
         autocheck = pref.GetBool("AutoCheck", False)
@@ -453,13 +383,81 @@ class CommandAddonManager:
                                 ).format(worker)
                             )
 
-    def wait_on_other_workers(self) -> None:
-        for worker in self.workers:
-            if hasattr(self, worker):
-                thread = getattr(self, worker)
-                if thread:
-                    if not thread.isFinished():
-                        thread.wait()
+    def determine_cache_update_status(self) -> None:
+        """Determine whether we need to update the cache, based on user preference, and previous
+        cache update status. Sets self.update_cache to either True or False."""
+
+        # Figure out our cache update frequency: there is a combo box in the preferences dialog with three
+        # options: never, daily, and weekly. Check that first, but allow it to be overridden by a more specific
+        # DaysBetweenUpdates selection, if the user has provided it. For that parameter we use:
+        # -1: Only manual updates (default)
+        #  0: Update every launch
+        # >0: Update every n days
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        self.update_cache = False
+        if hasattr(self, "trigger_recache") and self.trigger_recache:
+            self.update_cache = True
+        update_frequency = pref.GetInt("UpdateFrequencyComboEntry", 0)
+        if update_frequency == 0:
+            days_between_updates = -1
+        elif update_frequency == 1:
+            days_between_updates = 1
+        elif update_frequency == 2:
+            days_between_updates = 7
+        days_between_updates = pref.GetInt("DaysBetweenUpdates", days_between_updates)
+        last_cache_update_string = pref.GetString("LastCacheUpdate", "never")
+        cache_path = FreeCAD.getUserCachePath()
+        am_path = os.path.join(cache_path, "AddonManager")
+        if last_cache_update_string == "never":
+            self.update_cache = True
+        elif days_between_updates > 0:
+            if hasattr(date, "fromisoformat"):
+                last_cache_update = date.fromisoformat(last_cache_update_string)
+            else:
+                # Python 3.6 and earlier don't have date.fromisoformat
+                date_re = re.compile(
+                    "([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])"
+                )
+                matches = date_re.match(last_cache_update_string)
+                last_cache_update = date(
+                    int(matches.group(1)), int(matches.group(2)), int(matches.group(3))
+                )
+            delta_update = timedelta(days=days_between_updates)
+            if date.today() >= last_cache_update + delta_update:
+                self.update_cache = True
+        elif days_between_updates == 0:
+            self.update_cache = True
+        elif not os.path.isdir(am_path):
+            self.update_cache = True
+        stopfile = self.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
+        if os.path.exists(stopfile):
+            self.update_cache = True
+            os.remove(stopfile)
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller",
+                    "Previous cache process was interrupted, restarting...\n",
+                )
+            )
+
+        # See if the user has changed the custom repos list since our last re-cache:
+        stored_hash = pref.GetString("CustomRepoHash", "")
+        custom_repos = pref.GetString("CustomRepositories", "")
+        if custom_repos:
+            hasher = hashlib.sha1()
+            hasher.update(custom_repos.encode("utf-8"))
+            new_hash = hasher.hexdigest()
+        else:
+            new_hash = ""
+        if new_hash != stored_hash:
+            stored_hash = pref.SetString("CustomRepoHash", new_hash)
+            self.update_cache = True
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller",
+                    "Custom repo list changed, forcing recache...\n",
+                )
+            )
 
     def reject(self) -> None:
         """called when the window has been closed"""
@@ -831,14 +829,12 @@ class CommandAddonManager:
             addon_repo.icon = self.get_icon(addon_repo)
         for repo in self.item_model.repos:
             if repo.name == addon_repo.name:
-                # FreeCAD.Console.PrintLog(
-                #    f"Possible duplicate addon: ignoring second addition of {addon_repo.name}\n"
-                # )
                 return
         self.item_model.append_item(addon_repo)
 
     def get_icon(self, repo: Addon, update: bool = False) -> QtGui.QIcon:
-        """returns an icon for a repo"""
+        """Returns an icon for an Addon. Uses a cached icon if possible, unless update is True,
+        in which case the icon is regenerated."""
 
         if not update and repo.icon and not repo.icon.isNull() and repo.icon.isValid():
             return repo.icon
@@ -917,65 +913,78 @@ class CommandAddonManager:
 
         self.item_model.append_item(repo)
 
-    def resolve_dependencies(self, repo: Addon) -> None:
-        if not repo:
-            return
+    # @dataclass(frozen)
+    class MissingDependencies():
+        """Encapsulates a group of four types of dependencies:
+        * Internal workbenches -> wbs
+        * External addons -> external_addons
+        * Required Python packages -> python_required
+        * Optional Python packages -> python_optional
+        """
 
-        deps = Addon.Dependencies()
-        repo_name_dict = dict()
-        for r in self.item_model.repos:
-            repo_name_dict[repo.name] = r
-            repo_name_dict[repo.display_name] = r
-        repo.walk_dependency_tree(repo_name_dict, deps)
+        def __init__(self, repo: Addon, all_repos: List[Addon]):
 
-        FreeCAD.Console.PrintLog("The following Workbenches are required:\n")
-        for addon in deps.internal_workbenches:
-            FreeCAD.Console.PrintLog(addon + "\n")
+            deps = Addon.Dependencies()
+            repo_name_dict = dict()
+            for r in all_repos:
+                repo_name_dict[repo.name] = r
+                repo_name_dict[repo.display_name] = r
+            repo.walk_dependency_tree(repo_name_dict, deps)
 
-        FreeCAD.Console.PrintLog("The following addons are required:\n")
-        for addon in deps.required_external_addons:
-            FreeCAD.Console.PrintLog(addon.name + "\n")
+            self.external_addons = []
+            for dep in deps.required_external_addons:
+                if dep.status() == Addon.Status.NOT_INSTALLED:
+                    self.external_addons.append(dep)
 
-        FreeCAD.Console.PrintLog("The following Python modules are required:\n")
-        for pyreq in deps.python_required:
-            FreeCAD.Console.PrintLog(pyreq + "\n")
+            # Now check the loaded addons to see if we are missing an internal workbench:
+            wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
 
-        FreeCAD.Console.PrintLog("The following Python modules are optional:\n")
-        for pyreq in deps.python_optional:
-            FreeCAD.Console.PrintLog(pyreq + "\n")
+            self.wbs = []
+            for dep in deps.internal_workbenches:
+                if dep.lower() + "workbench" not in wbs:
+                    if dep == "Plot":
+                        # Special case for plot, which is no longer a full workbench:
+                        try:
+                            __import__("Plot")
+                        except ImportError:
+                            # Plot might fail for a number of reasons
+                            self.wbs.append(dep)
+                    else:
+                        self.wbs.append(dep)
 
-        missing_external_addons = []
-        for dep in deps.required_external_addons:
-            if dep.status() == Addon.Status.NOT_INSTALLED:
-                missing_external_addons.append(dep)
-
-        # Now check the loaded addons to see if we are missing an internal workbench:
-        wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
-
-        missing_wbs = []
-        for dep in deps.internal_workbenches:
-            if dep.lower() + "workbench" not in wbs:
-                if dep == "Plot":
-                    # Special case for plot, which is no longer a full workbench:
+            # Check the Python dependencies:
+            self.python_required = []
+            for py_dep in deps.python_required:
+                if py_dep not in self.python_required:
                     try:
-                        __import__("Plot")
+                        __import__(py_dep)
                     except ImportError:
-                        # Plot might fail for a number of reasons
-                        missing_wbs.append(dep)
-                else:
-                    missing_wbs.append(dep)
+                        self.python_required.append(py_dep)
 
-        # Check the Python dependencies:
-        missing_python_requirements = []
-        for py_dep in deps.python_required:
-            if py_dep not in missing_python_requirements:
+            self.python_optional = []
+            for py_dep in deps.python_optional:
                 try:
                     __import__(py_dep)
                 except ImportError:
-                    missing_python_requirements.append(py_dep)
+                    self.python_optional.append(py_dep)
+
+            self.wbs.sort()
+            self.external_addons.sort()
+            self.python_required.sort()
+            self.python_optional.sort()
+            self.python_optional = [
+                option
+                for option in self.python_optional
+                if option not in self.python_required
+            ]
+
+    def handle_disallowed_python(self, python_required:List[str]) -> bool:
+        """Determine if we are missing any required Python packages that are not in the allowed
+        packages list. If so, display a message to the user, and return True. Otherwise return
+        False."""
 
         bad_packages = []
-        for dep in missing_python_requirements:
+        for dep in python_required:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)
 
@@ -1004,85 +1013,80 @@ class CommandAddonManager:
             )
             for package in self.allowed_packages:
                 FreeCAD.Console.PrintMessage(f"  * {package}\n")
+            return True
+        else:
+            return False
+
+    def report_missing_workbenches(self, addon_name:str, wbs) -> None:
+        if len(wbs) == 1:
+            name = wbs[0]
+            message = translate(
+                "AddonsInstaller",
+                "Addon '{}' requires '{}', which is not available in your copy of FreeCAD.",
+            ).format(addon_name, name)
+        else:
+            message = "<p>" + translate(
+                "AddonsInstaller",
+                "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
+            ).format(addon_name) + "</p><ul>"
+            for wb in wbs:
+                message += "<li>" + wb + "</li>"
+            message += "</ul>"
+        QtWidgets.QMessageBox.critical(
+            self.dialog,
+            translate("AddonsInstaller", "Missing Requirement"),
+            message,
+            QtWidgets.QMessageBox.Cancel,
+        )
+
+    def display_dep_resolution_dialog(self, missing) -> None:
+        self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
+            os.path.join(
+                os.path.dirname(__file__), "dependency_resolution_dialog.ui"
+            )
+        )
+
+        for addon in missing.external_addons:
+            self.dependency_dialog.listWidgetAddons.addItem(addon)
+        for mod in missing.python_required:
+            self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
+        for mod in missing.python_optional:
+            item = QtWidgets.QListWidgetItem(mod)
+            item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+            item.setCheckState(QtCore.Qt.Unchecked)
+            self.dependency_dialog.listWidgetPythonOptional.addItem(item)
+
+        self.dependency_dialog.buttonBox.button(
+            QtWidgets.QDialogButtonBox.Yes
+        ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
+        self.dependency_dialog.buttonBox.button(
+            QtWidgets.QDialogButtonBox.Ignore
+        ).clicked.connect(lambda: self.dependency_dialog_ignore_clicked(repo))
+        self.dependency_dialog.buttonBox.button(
+            QtWidgets.QDialogButtonBox.Cancel
+        ).setDefault(True)
+        self.dependency_dialog.exec()
+
+    def resolve_dependencies(self, repo: Addon) -> None:
+        if not repo:
             return
 
-        missing_python_optionals = []
-        for py_dep in deps.python_optional:
-            try:
-                __import__(py_dep)
-            except ImportError:
-                missing_python_optionals.append(py_dep)
+        missing = CommandAddonManager.MissingDependencies(repo, self.item_model.repos)
+        if self.handle_disallowed_python(missing.python_required):
+            return
 
-        # Possible cases
-        # 1) Missing required FreeCAD workbenches. Unrecoverable failure, needs a new version of FreeCAD installation.
-        # 2) Missing required external AddOn(s). List for the user and ask for permission to install them.
-        # 3) Missing required Python modules. List for the user and ask for permission to attempt installation.
-        # 4) Missing optional Python modules. User can choose from the list to attempt to install any or all.
-        # Option 1 is standalone, and simply causes failure to install. Other options can be combined and are
-        # presented through a dialog box with options.
-
-        addon = repo.display_name if repo.display_name else repo.name
-        if missing_wbs:
-            if len(missing_wbs) == 1:
-                name = missing_wbs[0]
-                message = translate(
-                    "AddonsInstaller",
-                    "Addon '{}' requires '{}', which is not available in your copy of FreeCAD.",
-                ).format(addon, name)
-            else:
-                message = "<p>" + translate(
-                    "AddonsInstaller",
-                    "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
-                ).format(addon) + "</p><ul>"
-                for wb in missing_wbs:
-                    message += "<li>" + wb + "</li>"
-                message += "</ul>"
-            QtWidgets.QMessageBox.critical(
-                self.dialog,
-                translate("AddonsInstaller", "Missing Requirement"),
-                message,
-                QtWidgets.QMessageBox.Cancel,
-            )
+        if missing.wbs:
+            # Unrecoverable failure, needs a new version of FreeCAD installation
+            self.report_missing_workbenches(repo.display_name, missing.wbs)
         elif (
-            missing_external_addons
-            or missing_python_requirements
-            or missing_python_optionals
+            missing.external_addons
+            or missing.python_required
+            or missing.python_optional
         ):
-            self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
-                os.path.join(
-                    os.path.dirname(__file__), "dependency_resolution_dialog.ui"
-                )
-            )
-            missing_external_addons.sort()
-            missing_python_requirements.sort()
-            missing_python_optionals.sort()
-            missing_python_optionals = [
-                option
-                for option in missing_python_optionals
-                if option not in missing_python_requirements
-            ]
-
-            for addon in missing_external_addons:
-                self.dependency_dialog.listWidgetAddons.addItem(addon)
-            for mod in missing_python_requirements:
-                self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
-            for mod in missing_python_optionals:
-                item = QtWidgets.QListWidgetItem(mod)
-                item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-                item.setCheckState(QtCore.Qt.Unchecked)
-                self.dependency_dialog.listWidgetPythonOptional.addItem(item)
-
-            self.dependency_dialog.buttonBox.button(
-                QtWidgets.QDialogButtonBox.Yes
-            ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
-            self.dependency_dialog.buttonBox.button(
-                QtWidgets.QDialogButtonBox.Ignore
-            ).clicked.connect(lambda: self.dependency_dialog_ignore_clicked(repo))
-            self.dependency_dialog.buttonBox.button(
-                QtWidgets.QDialogButtonBox.Cancel
-            ).setDefault(True)
-            self.dependency_dialog.exec()
+            # Recoverable: ask the user if they want to install the missing deps
+            self.display_dep_resolution_dialog(missing)
         else:
+            # No missing deps, just install
             self.install(repo)
 
     def dependency_dialog_yes_clicked(self, repo: Addon) -> None:

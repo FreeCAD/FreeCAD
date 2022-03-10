@@ -609,6 +609,7 @@ class PackageDetails(QWidget):
 
     def enable_clicked(self) -> None:
         self.repo.enable()
+        self.repo.set_status(Addon.Status.PENDING_RESTART)
         self.set_disable_button_state()
         self.update_status.emit(self.repo)
         self.ui.labelWarningInfo.show()
@@ -624,6 +625,7 @@ class PackageDetails(QWidget):
 
     def disable_clicked(self) -> None:
         self.repo.disable()
+        self.repo.set_status(Addon.Status.PENDING_RESTART)
         self.set_disable_button_state()
         self.update_status.emit(self.repo)
         self.ui.labelWarningInfo.show()
