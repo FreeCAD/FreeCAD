@@ -625,18 +625,57 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         anglePoints pts;
         Base::Vector3d apex = gen0->apparentInter(gen1);
         Base::Vector3d extPoint0,extPoint1;
+        Base::Vector3d farPoint0, farPoint1;
+        //pick the end of gen0 farthest from the apex
         if ((gen0->getStartPoint() - apex).Length() >
             (gen0->getEndPoint() - apex).Length()) {
-            extPoint0 = gen0->getStartPoint();
+            farPoint0 = gen0->getStartPoint();
         } else {
-            extPoint0 = gen0->getEndPoint();
+            farPoint0 = gen0->getEndPoint();
         }
+        //pick the end of gen1 farthest from the apex
         if ((gen1->getStartPoint() - apex).Length() >
             (gen1->getEndPoint() - apex).Length()) {
-            extPoint1 = gen1->getStartPoint();
+            farPoint1 = gen1->getStartPoint();
         } else {
-            extPoint1 = gen1->getEndPoint();
+            farPoint1 = gen1->getEndPoint();
         }
+        extPoint0 = farPoint0;
+
+        //special case for parallel/anti-parallel edges avoids nan
+        //special case for perpendicular edges avoids nan
+        Base::Vector3d l0Dir = (gen0->getStartPoint() - gen0->getEndPoint()).Normalize();
+        Base::Vector3d l1Dir = (gen1->getStartPoint() - gen1->getEndPoint()).Normalize();
+        double dot = l0Dir.Dot(l1Dir);
+        Base::Vector3d cross = l0Dir.Cross(l1Dir);
+        double crossLength = cross.Length();
+        if (DrawUtil::fpCompare(crossLength, 0.0)) {
+            //parallel edges
+            extPoint1 = farPoint1;
+        } else if (DrawUtil::fpCompare(dot, 0.0)) {
+            //perpendicular edges
+            extPoint1 = farPoint1;
+        } else {
+            //skew edges
+            //project first extension point onto second edge
+            extPoint1 = farPoint0.Perpendicular(apex, l1Dir);
+            if (!DrawUtil::isBetween(extPoint1,
+                                    gen1->getStartPoint(),
+                                    gen1->getEndPoint())) {
+                //extPoint1 is outside range of its edge which will
+                //create the supplementary angle instead of the desired
+                //angle
+                double distStart = (extPoint1 - gen1->getStartPoint()).Length();
+                double distEnd = (extPoint1 - gen1->getEndPoint()).Length();
+                double distToMove = (distStart + distEnd) / 2.0;
+                double dirAdjust = 1.0;
+                if (distStart < distEnd) {
+                    dirAdjust = -1.0;        //reverse direction
+                }
+                extPoint1 = extPoint1 + l1Dir * distToMove * dirAdjust;
+            }
+        }
+
         pts.ends.first  = extPoint0;
         pts.ends.second = extPoint1;
         pts.vertex = apex;
