@@ -2432,123 +2432,124 @@ private:
 
         bool backupManagementError = false; // Note error and report at the end
         if (fi.exists()) {
-            // replace . by - in format to avoid . between base name and extension
-            boost::replace_all(saveBackupDateFormat, ".", "-");
-            {
-                // Remove all extra backups
-                std::string fn = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
-                std::vector<Base::FileInfo> backup;
-                std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                    if (it->isFile()) {
-                        std::string file = it->fileName();
-                        std::string fext = it->extension();
-                        std::string fextUp = fext;
-                        std::transform(fextUp.begin(), fextUp.end(), fextUp.begin(),(int (*)(int))toupper);
-                        // re-enforcing identification of the backup file
+            if (numberOfFiles > 0) {
+                // replace . by - in format to avoid . between base name and extension
+                boost::replace_all(saveBackupDateFormat, ".", "-");
+                {
+                    // Remove all extra backups
+                    std::string fn = fi.fileName();
+                    Base::FileInfo di(fi.dirPath());
+                    std::vector<Base::FileInfo> backup;
+                    std::vector<Base::FileInfo> files = di.getDirectoryContent();
+                    for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
+                        if (it->isFile()) {
+                            std::string file = it->fileName();
+                            std::string fext = it->extension();
+                            std::string fextUp = fext;
+                            std::transform(fextUp.begin(), fextUp.end(), fextUp.begin(),(int (*)(int))toupper);
+                            // re-enforcing identification of the backup file
 
 
-                        // old case : the name starts with the full name of the project and follows with numbers
-                        if ((startsWith(file, fn) &&
-                             (file.length() > fn.length()) &&
-                             checkDigits(file.substr(fn.length()))) ||
-                             // .FCBak case : The bame starts with the base name of the project + "."
-                             // + complement with no "." + ".FCBak"
-                             ((fextUp == "FCBAK") && startsWith(file, pbn) &&
-                             (checkValidComplement(file, pbn, fext)))) {
-                            backup.push_back(*it);
+                            // old case : the name starts with the full name of the project and follows with numbers
+                            if ((startsWith(file, fn) &&
+                                 (file.length() > fn.length()) &&
+                                 checkDigits(file.substr(fn.length()))) ||
+                                 // .FCBak case : The bame starts with the base name of the project + "."
+                                 // + complement with no "." + ".FCBak"
+                                 ((fextUp == "FCBAK") && startsWith(file, pbn) &&
+                                 (checkValidComplement(file, pbn, fext)))) {
+                                backup.push_back(*it);
+                            }
                         }
                     }
-                }
 
-                if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
-                    std::sort (backup.begin(), backup.end(), fileComparisonByDate);
-                    // delete the oldest backup file we found
-                    // Base::FileInfo del = backup.front();
-                    int nb = 0;
-                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                        nb++;
-                        if (nb >= numberOfFiles) {
-                            try {
-                                if (!it->deleteFile()) {
+                    if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
+                        std::sort (backup.begin(), backup.end(), fileComparisonByDate);
+                        // delete the oldest backup file we found
+                        // Base::FileInfo del = backup.front();
+                        int nb = 0;
+                        for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
+                            nb++;
+                            if (nb >= numberOfFiles) {
+                                try {
+                                    if (!it->deleteFile()) {
+                                        backupManagementError = true;
+                                        Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
+                                    }
+                                }
+                                catch (...) {
                                     backupManagementError = true;
                                     Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
                                 }
                             }
-                            catch (...) {
-                                backupManagementError = true;
-                                Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
+                        }
+
+                    }
+                }  //end remove backup
+
+                // create a new backup file
+                {
+                    int ext = 1;
+                    if (useFCBakExtension) {
+                        std::stringstream str;
+                        Base::TimeInfo ti = fi.lastModified();
+                        time_t s =ti.getSeconds();
+                        struct tm * timeinfo = localtime(& s);
+                        char buffer[100];
+
+                        strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),timeinfo);
+                        str << bn << buffer ;
+
+                        fn = str.str();
+                        bool done = false;
+
+                        if ((fn == "") || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
+                            if (fn[fn.length()-1] == ' ') {
+                                fn = fn.substr(0,fn.length()-1);
+                            }
+                        }
+                        else {
+                            if (renameFileNoErase(fi, fn+".FCBak") == false) {
+                                fn = fn + "-";
+                            }
+                            else {
+                                done = true;
+                            }
+                        }
+
+                        if (!done) {
+                            while (ext < numberOfFiles + 10) {
+                                if (renameFileNoErase(fi, fn+std::to_string(ext)+".FCBak"))
+                                    break;
+                                ext++;
                             }
                         }
                     }
-
-                }
-            }  //end remove backup
-
-            // create a new backup file
-            {
-                int ext = 1;
-                if (useFCBakExtension) {
-                    std::stringstream str;
-                    Base::TimeInfo ti = fi.lastModified();
-                    time_t s =ti.getSeconds();
-                    struct tm * timeinfo = localtime(& s);
-                    char buffer[100];
-
-                    strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),timeinfo);
-                    str << bn << buffer ;
-
-                    fn = str.str();
-                    bool done = false;
-
-                    if ((fn == "") || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
-                        if (fn[fn.length()-1] == ' ') {
-                            fn = fn.substr(0,fn.length()-1);
-                        }
-                    }
                     else {
-                        if (renameFileNoErase(fi, fn+".FCBak") == false) {
-                            fn = fn + "-";
-                        }
-                        else {
-                            done = true;
-                        }
-                    }
-
-                    if (!done) {
+                        // changed but simpler and solves also the delay sometimes introduced by google drive
                         while (ext < numberOfFiles + 10) {
-                            if (renameFileNoErase(fi, fn+std::to_string(ext)+".FCBak"))
+                            // linux just replace the file if exists, and then the existence is to be tested before rename
+                            if (renameFileNoErase(fi, fi.filePath()+std::to_string(ext)))
                                 break;
                             ext++;
                         }
                     }
-                }
-                else {
-                    // changed but simpler and solves also the delay sometimes introduced by google drive
-                    while (ext < numberOfFiles + 10) {
-                        // linux just replace the file if exists, and then the existence is to be tested before rename
-                        if (renameFileNoErase(fi, fi.filePath()+std::to_string(ext)))
-                            break;
-                        ext++;
+
+                    if (ext >= numberOfFiles + 10) {
+                        Base::Console().Error("File not saved: Cannot rename project file to backup file\n");
+                        //throw Base::FileException("File not saved: Cannot rename project file to backup file", fi);
                     }
                 }
-
-                if (ext >= numberOfFiles + 10) {
-                    Base::Console().Error("File not saved: Cannot rename project file to backup file\n");
-                    //throw Base::FileException("File not saved: Cannot rename project file to backup file", fi);
+            }
+            else {
+                try {
+                    fi.deleteFile();
+                }
+                catch (...) {
+                    Base::Console().Warning("Cannot remove backup file: %s\n", fi.fileName().c_str());
+                    backupManagementError = true;
                 }
             }
-        }
-
-        if (numberOfFiles <= 0) {
-            try {
-                fi.deleteFile();
-            }
-            catch (...) {
-                Base::Console().Warning("Cannot remove backup file: %s\n", fi.fileName().c_str());
-                backupManagementError = true;
-           }
         }
 
         Base::FileInfo tmp(sourcename);
