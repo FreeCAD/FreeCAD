@@ -637,9 +637,9 @@ void PlyReader::read(const std::string& filename)
                 if (alpha != max_size)
                     a = data(i, alpha);
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
         else if (types[red] == "float") {
@@ -1085,9 +1085,9 @@ void PcdReader::read(const std::string& filename)
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
         else if (types[rgba] == "F") {
@@ -1105,9 +1105,9 @@ void PcdReader::read(const std::string& filename)
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
     }
