@@ -127,10 +127,9 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 void DrawView::checkScale(void)
 {
     TechDraw::DrawPage *page = findParentPage();
-    if(page &&
-       keepUpdated()) {
+    if(page) {
         if (ScaleType.isValue("Page")) {
-            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
                 Scale.purgeTouched();
             }
