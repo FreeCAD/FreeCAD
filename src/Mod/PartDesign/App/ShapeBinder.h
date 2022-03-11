@@ -98,6 +98,7 @@ public:
     App::PropertyXLink Context;
     App::PropertyInteger _Version;
     App::PropertyEnumeration BindCopyOnChange;
+    App::PropertyBool Refine;
 
     enum UpdateOption {
         UpdateNone = 0,

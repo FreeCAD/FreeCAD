@@ -335,6 +335,9 @@ SubShapeBinder::SubShapeBinder()
             "         'CopyOnChange'. Those properties will not longer be kept in sync between the\n"
             "         binder and the binding object");
 
+    ADD_PROPERTY_TYPE(Refine,(true),"Base",(App::PropertyType)(App::Prop_None),
+            "Refine shape (clean up redundant edges) after adding/subtracting");
+
     Context.setScope(App::LinkScope::Hidden);
 
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
@@ -352,6 +355,10 @@ SubShapeBinder::~SubShapeBinder() {
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject **pyObj,
@@ -689,7 +696,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
             if(solids.size()) {
                 result = solid.fuse(solids);
-                result = result.makeRefine();
                 fused = true;
             } else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
@@ -707,6 +713,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 result = result.makeFace(0);
             }catch(...){}
         }
+
+        if (Refine.getValue())
+            result = result.makeRefine();
 
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);
