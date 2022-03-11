@@ -380,8 +380,10 @@ class ObjectDressup:
                 {
                     "X": p0.x + vec_off.x,
                     "Y": p0.y + vec_off.y,
+                    "Z": p1.z,
                     "I": offsetvector.x + vec_off.x,
                     "J": offsetvector.y + vec_off.y,
+                    "K": p1.z,
                     "F": horizFeed,
                 },
             )  # add G2/G3 move
@@ -485,7 +487,15 @@ class ObjectDressup:
                 results.append(extendcommand)
             arcmove = Path.Command(
                 arcdir,
-                {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed},
+                {
+                    "X": leadend.x,
+                    "Y": leadend.y,
+                    "Z": p1.z,
+                    "I": IJ.x,
+                    "J": IJ.y,
+                    "K": p1.z,
+                    "F": horizFeed,
+                },
             )  # add G2/G3 move
             results.append(arcmove)
         elif obj.StyleOff == "Tangent":
