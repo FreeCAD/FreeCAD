@@ -35,6 +35,14 @@ __doc__ = """Path Array object and FreeCAD command"""
 translate = FreeCAD.Qt.translate
 
 
+def getToolController(base):
+    """getToolController(base) ... The tool controller returned is identified depending on base.Proxy class."""
+    if ".PathDressup" in str(type(base.Proxy)):
+        return PathScripts.PathDressup.toolController(base)
+
+    return base.ToolController
+
+
 class ObjectArray:
     def __init__(self, obj):
         obj.addProperty(
@@ -280,7 +288,7 @@ class ObjectArray:
         if len(base) == 0:
             return
 
-        obj.ToolController = base[0].ToolController
+        obj.ToolController = getToolController(base[0])
 
         # Do not generate paths and clear current Path data if operation not
         if not obj.Active:
@@ -376,14 +384,16 @@ class PathArray:
             return None
 
         base = self.baseList
+        baseTC = getToolController(base[0])
         for b in base:
             if not b.isDerivedFrom("Path::Feature"):
                 return
             if not b.Path:
                 return
-            if not b.ToolController:
+            tc = getToolController(b)
+            if not tc:
                 return
-            if b.ToolController != base[0].ToolController:
+            if tc != baseTC:
                 # this may be important if Job output is split by tool controller
                 PathLog.warning(
                     translate(
@@ -516,7 +526,11 @@ class CommandPathArray:
             return False
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+            if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
+                return True
+            if ".PathDressup" in str(type(obj.Proxy)):
+                return True
+            return False
         except (IndexError, AttributeError):
             return False
 
