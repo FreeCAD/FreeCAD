@@ -32,7 +32,8 @@ translate = FreeCAD.Qt.translate
 def ask_to_install_toolbar_button(repo: Addon) -> None:
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     do_not_show_dialog = pref.GetBool("dontShowAddMacroButtonDialog", False)
-    if not do_not_show_dialog:
+    button_exists = check_for_button(repo)
+    if not do_not_show_dialog and not button_exists:
         add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
         )
@@ -44,6 +45,19 @@ def ask_to_install_toolbar_button(repo: Addon) -> None:
         )
         add_toolbar_button_dialog.exec()
 
+def check_for_button(repo: Addon) -> bool:
+    command = FreeCADGui.Command.findCustomCommand(repo.macro.filename)
+    if not command:
+        return False
+    custom_toolbars = FreeCAD.ParamGet(
+        "User parameter:BaseApp/Workbench/Global/Toolbar"
+    )
+    toolbar_groups = custom_toolbars.GetGroups()
+    for group in toolbar_groups:
+        toolbar = custom_toolbars.GetGroup(group)
+        if toolbar.GetString(command, "*") != "*":
+            return True
+    return False
 
 def ask_for_toolbar(
     repo: Addon, custom_toolbars
