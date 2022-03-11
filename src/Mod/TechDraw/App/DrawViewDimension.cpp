@@ -640,16 +640,17 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         } else {
             farPoint1 = gen1->getEndPoint();
         }
+
+        Base::Vector3d l0Dir = (gen0->getStartPoint() - gen0->getEndPoint()).Normalize();
+        Base::Vector3d l1Dir = (gen1->getStartPoint() - gen1->getEndPoint()).Normalize();
         extPoint0 = farPoint0;
+        extPoint1 = farPoint0.Perpendicular(apex, l1Dir);
 
         //special case for parallel/anti-parallel edges avoids nan
         //special case for perpendicular edges avoids nan
-        Base::Vector3d l0Dir = (gen0->getStartPoint() - gen0->getEndPoint()).Normalize();
-        Base::Vector3d l1Dir = (gen1->getStartPoint() - gen1->getEndPoint()).Normalize();
         double dot = l0Dir.Dot(l1Dir);
         Base::Vector3d cross = l0Dir.Cross(l1Dir);
-        double crossLength = cross.Length();
-        if (DrawUtil::fpCompare(crossLength, 0.0)) {
+        if (DrawUtil::fpCompare(cross.Length(), 0.0)) {
             //parallel edges
             extPoint1 = farPoint1;
         } else if (DrawUtil::fpCompare(dot, 0.0)) {
@@ -657,22 +658,34 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             extPoint1 = farPoint1;
         } else {
             //skew edges
-            //project first extension point onto second edge
-            extPoint1 = farPoint0.Perpendicular(apex, l1Dir);
-            if (!DrawUtil::isBetween(extPoint1,
-                                    gen1->getStartPoint(),
-                                    gen1->getEndPoint())) {
-                //extPoint1 is outside range of its edge which will
+            //project farthest points onto opposite edge
+            Base::Vector3d projFar0OnL1 = farPoint0.Perpendicular(apex, l1Dir);
+            Base::Vector3d projFar1OnL0 = farPoint1.Perpendicular(apex, l0Dir);
+            if (DrawUtil::isBetween(projFar0OnL1,
+                                gen1->getStartPoint(),
+                                gen1->getEndPoint())) {
+                extPoint0 = farPoint0;
+                extPoint1 = projFar0OnL1;
+            } else if (DrawUtil::isBetween(projFar1OnL0,
+                                           gen0->getStartPoint(),
+                                           gen0->getEndPoint())) {
+                extPoint0 = projFar1OnL0;
+                extPoint1 = farPoint1;
+            } else {
+                //extPoints are both outside range of respective edges which will
                 //create the supplementary angle instead of the desired
-                //angle
-                double distStart = (extPoint1 - gen1->getStartPoint()).Length();
-                double distEnd = (extPoint1 - gen1->getEndPoint()).Length();
-                double distToMove = (distStart + distEnd) / 2.0;
-                double dirAdjust = 1.0;
-                if (distStart < distEnd) {
-                    dirAdjust = -1.0;        //reverse direction
+                //angle.  Force extPoints to midpoints of edges to get
+                //viable dimension.
+                extPoint0 = (gen0->getStartPoint() + gen0->getEndPoint()) / 2.0;
+                if (extPoint0.IsEqual(apex, Precision::Confusion())) {
+                    //pathological case.  can't make dimension from only 2 points.
+                    extPoint0 = farPoint0;
                 }
-                extPoint1 = extPoint1 + l1Dir * distToMove * dirAdjust;
+                extPoint1 = (gen1->getStartPoint() + gen1->getEndPoint()) / 2.0;
+                if (extPoint1.IsEqual(apex, Precision::Confusion())) {
+                    //pathological case.  can't make dimension from only 2 points.
+                    extPoint1 = farPoint1;
+                }
             }
         }
 
