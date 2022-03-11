@@ -25,6 +25,7 @@ import FreeCADGui
 import Path
 import PathScripts
 from PathScripts import PathLog
+from PathScripts.PathDressup import toolController
 from PySide import QtCore
 import math
 import random
@@ -280,7 +281,7 @@ class ObjectArray:
         if len(base) == 0:
             return
 
-        obj.ToolController = base[0].ToolController
+        obj.ToolController = toolController(base[0])
 
         # Do not generate paths and clear current Path data if operation not
         if not obj.Active:
@@ -381,9 +382,12 @@ class PathArray:
                 return
             if not b.Path:
                 return
-            if not b.ToolController:
+
+            b_tool_controller = toolController(b)
+            if not b_tool_controller:
                 return
-            if b.ToolController != base[0].ToolController:
+
+            if b_tool_controller != toolController(base[0]):
                 # this may be important if Job output is split by tool controller
                 PathLog.warning(
                     translate(
@@ -512,13 +516,8 @@ class CommandPathArray:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
-            return False
-        try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except (IndexError, AttributeError):
-            return False
+        selections = [sel.isDerivedFrom("Path::Feature") for sel in FreeCADGui.Selection.getSelection()]
+        return selections and all(selections)
 
     def Activated(self):
 
