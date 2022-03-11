@@ -42,6 +42,7 @@ import FreeCAD, os, unittest, FreeCADGui
 class MenuCreateCases(unittest.TestCase):
 
     def setUp(self):
+        FreeCADGui.activateWorkbench("TestWorkbench")
         FreeCAD.Console.PrintLog ('Setup Test menu...\n')
         list = ["Test_TestAll","Test_TestDoc","Test_TestBase","Test_TestWork"]
         w = FreeCADGui.getWorkbench('TestWorkbench')
@@ -67,6 +68,7 @@ class MenuCreateCases(unittest.TestCase):
 class MenuDeleteCases(unittest.TestCase):
 
     def setUp(self):
+        FreeCADGui.activateWorkbench("TestWorkbench")
         FreeCAD.Console.PrintLog ('Remove Test menu...\n')
         w = FreeCADGui.getWorkbench('TestWorkbench')
         w.removeMenu("TestMenu")
