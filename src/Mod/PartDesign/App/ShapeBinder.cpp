@@ -688,8 +688,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     solids.push_back(s.getShape());
             }
             if(solids.size()) {
-                solid.fuse(solids);
-                result = solid.makeRefine();
+                result = solid.fuse(solids);
+                result = result.makeRefine();
                 fused = true;
             } else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
