@@ -21,10 +21,21 @@
 # ***************************************************************************
 
 import FreeCADGui
+import FreeCAD
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils
+from PySide import QtGui
+import PathScripts.PathLog as PathLog
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class PathUtilsUserInput(object):
@@ -73,19 +84,19 @@ class PathUtilsUserInput(object):
                 if 1 == len(modelObjectSelected):
                     job = modelObjectSelected[0]
                 else:
-                    form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
                     if modelObjectSelected:
                         mylist = [j.Label for j in modelObjectSelected]
                     else:
                         mylist = [j.Label for j in jobs]
-                    form.cboProject.addItems(mylist)
-                    r = form.exec_()
-                    if r is False or r == 0:
+
+                    jobname, result = QtGui.QInputDialog.getItem(
+                        None, translate("Path", "Choose a Path Job"), None, mylist
+                    )
+
+                    if result is False:
                         return None
                     else:
-                        job = [
-                            j for j in jobs if j.Label == form.cboProject.currentText()
-                        ][0]
+                        job = [j for j in jobs if j.Label == jobname][0]
         return job
 
     def createJob(self):

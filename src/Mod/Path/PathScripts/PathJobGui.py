@@ -623,8 +623,14 @@ class TaskPanel:
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
-        self.form.toolControllerList.horizontalHeaderItem(2).setText(vUnit)
-        self.form.toolControllerList.horizontalHeaderItem(3).setText(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(2).setText(
+            translate("Path", "Feed(H)")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(3).setText(
+            translate("Path", "Feed(V)")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeader().setResizeMode(
             0, QtGui.QHeaderView.Stretch
         )
