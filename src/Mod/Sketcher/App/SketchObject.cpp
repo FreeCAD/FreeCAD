@@ -3291,8 +3291,8 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1,
     }
 
     // get the old splines
-    auto* geo1 = getGeometry(geoId1);
-    auto* geo2 = getGeometry(geoId2);
+    auto* geo1 = dynamic_cast<const Part::GeomCurve *>(getGeometry(geoId1));
+    auto* geo2 = dynamic_cast<const Part::GeomCurve *>(getGeometry(geoId2));
 
     if (GeometryFacade::getConstruction(geo1) != GeometryFacade::getConstruction(geo2)) {
         THROWM(ValueError,"Cannot join construction and non-construction geometries.");
@@ -3300,25 +3300,15 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1,
     }
 
     // TODO: make both curves b-splines here itself
-    if (geo1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
-        THROWM(ValueError,"Please convert both curves to NURBS before attempting to join them.");
-        return -1;
-    }
-
-    if (geo2->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
-        THROWM(ValueError,"Please convert both curves to NURBS before attempting to join them.");
+    if (!geo1 || !geo2) {
         return -1;
     }
 
     // TODO: is there a cleaner way to get our mutable bsp's?
     // we need the splines to be mutable because we may reverse them
     // and/or change their degree
-    auto* constbsp1 = static_cast<const Part::GeomBSplineCurve *>(geo1);
-    auto* constbsp2 = static_cast<const Part::GeomBSplineCurve *>(geo2);
-    const Handle(Geom_BSplineCurve) curve1 = Handle(Geom_BSplineCurve)::DownCast(constbsp1->handle());
-    const Handle(Geom_BSplineCurve) curve2 = Handle(Geom_BSplineCurve)::DownCast(constbsp2->handle());
-    std::unique_ptr<Part::GeomBSplineCurve> bsp1(new Part::GeomBSplineCurve(curve1));
-    std::unique_ptr<Part::GeomBSplineCurve> bsp2(new Part::GeomBSplineCurve(curve2));
+    std::unique_ptr<Part::GeomBSplineCurve> bsp1(geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter()));
+    std::unique_ptr<Part::GeomBSplineCurve> bsp2(geo2->toNurbs(geo2->getFirstParameter(), geo2->getLastParameter()));
 
     if (bsp1->isPeriodic() || bsp2->isPeriodic()) {
         THROWM(ValueError,"It is only possible to join non-periodic curves.");
@@ -3377,8 +3367,8 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1,
         newMults.back() = bsp1->getDegree();
     mults2.erase(mults2.begin());
     newMults.insert(newMults.end(),
-                      std::make_move_iterator(mults2.begin()),
-                      std::make_move_iterator(mults2.end()));
+                    std::make_move_iterator(mults2.begin()),
+                    std::make_move_iterator(mults2.end()));
 
     Part::GeomBSplineCurve* newSpline =
         new Part::GeomBSplineCurve(newPoles, newWeights, newKnots, newMults,
