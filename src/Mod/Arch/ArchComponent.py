@@ -403,6 +403,11 @@ class Component(ArchIFC.IfcProduct):
             if hasattr(parent,"Group"):
                 if obj in parent.Group:
                     return self.getParentHeight(parent)
+        # still not found? check if we are embedded
+        for parent in obj.InList:
+            if hasattr(parent,"Additions"):
+                if obj in parent.Additions:
+                    return self.getParentHeight(parent)
         return 0
 
     def clone(self,obj):
