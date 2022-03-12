@@ -148,7 +148,7 @@ namespace SMESH_MeshAlgos
                                                     const SMDS_MeshElement* e2);
 
   /*!
-   * \brief Return SMESH_NodeSearcher. The caller is responsible for deleteing it
+   * \brief Return SMESH_NodeSearcher. The caller is responsible for deleting it
    */
   SMESHUtils_EXPORT
   SMESH_NodeSearcher* GetNodeSearcher( SMDS_Mesh& mesh );

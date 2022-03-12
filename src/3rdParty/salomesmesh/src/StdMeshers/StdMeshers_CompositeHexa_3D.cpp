@@ -82,7 +82,7 @@ enum EBoxSides{ B_BOTTOM=0, B_RIGHT, B_TOP, B_LEFT, B_FRONT, B_BACK, B_UNDEFINED
 
 //================================================================================
 /*!
- * \brief Convertor of a pair of integers to a sole index
+ * \brief Converter of a pair of integers to a sole index
  */
 struct _Indexer
 {

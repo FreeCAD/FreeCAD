@@ -207,7 +207,7 @@ namespace
 //         list <const SMESHDS_Hypothesis *> hyps2 =
 //           radialQuadAlgo->GetUsedHypothesis( mesh, otherFaceSubMesh->GetSubShape());
 //         if( hyps1.empty() && hyps2.empty() )
-//           return true; // defaul hyps
+//           return true; // default hyps
 //         if ( hyps1.size() != hyps2.size() )
 //           return false;
 //         return *hyps1.front() == *hyps2.front();

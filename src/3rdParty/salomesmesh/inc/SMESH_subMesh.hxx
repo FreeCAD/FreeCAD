@@ -236,7 +236,7 @@ public:
 
   bool CanAddHypothesis(const SMESH_Hypothesis* theHypothesis) const;
   // return true if theHypothesis can be attached to me:
-  // its dimention is checked
+  // its dimension is checked
 
   static bool IsApplicableHypotesis(const SMESH_Hypothesis* theHypothesis,
                                     const TopAbs_ShapeEnum  theShapeType);

@@ -2042,7 +2042,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
   SMESHDS_Mesh* meshDS = sMesh.GetMeshDS();
 
   // quadHelper is used for either
-  // 1) making quadratic elements when a lower dimention mesh is loaded
+  // 1) making quadratic elements when a lower dimension mesh is loaded
   //    to SMESH before convertion to quadratic by NETGEN
   // 2) sewing of quadratic elements with quadratic elements of sub-meshes
   if ( quadHelper && !quadHelper->GetIsQuadratic() && quadHelper->GetTLinkNodeMap().empty() )

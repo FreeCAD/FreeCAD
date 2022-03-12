@@ -181,7 +181,7 @@ namespace
 
   //================================================================================
   /*!
-   * \brief Convertor of a pair of integers to a sole index
+   * \brief Converter of a pair of integers to a sole index
    */
   struct _Indexer
   {
