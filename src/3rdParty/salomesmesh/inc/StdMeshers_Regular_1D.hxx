@@ -26,12 +26,12 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_REGULAR_1D_HXX_
-#define _SMESH_REGULAR_1D_HXX_
+~ifndef _SMESH_REGULAR_1D_HXX_
+~define _SMESH_REGULAR_1D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
 class Adaptor3d_Curve;
 class StdMeshers_Adaptive1D;
@@ -143,4 +143,4 @@ protected:
   bool         _isPropagOfDistribution;
 };
 
-#endif
+~endif

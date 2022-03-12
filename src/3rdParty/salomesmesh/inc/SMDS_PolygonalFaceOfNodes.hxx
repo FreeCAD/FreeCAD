@@ -22,17 +22,17 @@
 
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //
-#ifndef _SMDS_PolygonalFaceOfNodes_HeaderFile
-#define _SMDS_PolygonalFaceOfNodes_HeaderFile
+~ifndef _SMDS_PolygonalFaceOfNodes_HeaderFile
+~define _SMDS_PolygonalFaceOfNodes_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshFace.hxx"
-//#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_Iterator.hxx"
+~include "SMDS_MeshFace.hxx"
+//~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_Iterator.hxx"
 
-#include <iostream>
+~include <iostream>
 
 //class SMDS_PolygonalFaceOfNodes:public SMDS_FaceOfNodes
 class SMDS_EXPORT SMDS_PolygonalFaceOfNodes:public SMDS_MeshFace
@@ -71,4 +71,4 @@ class SMDS_EXPORT SMDS_PolygonalFaceOfNodes:public SMDS_MeshFace
   std::vector<const SMDS_MeshNode *> myNodes;
 };
 
-#endif
+~endif

@@ -19,29 +19,29 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_V2_2_Wrapper_HeaderFile
-#define MED_V2_2_Wrapper_HeaderFile
+~ifndef MED_V2_2_Wrapper_HeaderFile
+~define MED_V2_2_Wrapper_HeaderFile
 
-#ifdef WIN32
- #if defined MEDWRAPPER_V2_2_EXPORTS || defined MEDWrapper_V2_2_EXPORTS
-  #if defined WIN32
-   #define MED_V22_WRAPPER_EXPORT __declspec( dllexport )
-  #else
-   #define MED_V22_WRAPPER_EXPORT
-  #endif
- #else
-  #if defined WIN32
-   #define MED_V22_WRAPPER_EXPORT __declspec( dllimport )
-  #else
-   #define MED_V22_WRAPPER_EXPORT
-  #endif
- #endif
-#else
- #define MED_V22_WRAPPER_EXPORT
-#endif
+~ifdef WIN32
+ ~if defined MEDWRAPPER_V2_2_EXPORTS || defined MEDWrapper_V2_2_EXPORTS
+  ~if defined WIN32
+   ~define MED_V22_WRAPPER_EXPORT __declspec( dllexport )
+  ~else
+   ~define MED_V22_WRAPPER_EXPORT
+  ~endif
+ ~else
+  ~if defined WIN32
+   ~define MED_V22_WRAPPER_EXPORT __declspec( dllimport )
+  ~else
+   ~define MED_V22_WRAPPER_EXPORT
+  ~endif
+ ~endif
+~else
+ ~define MED_V22_WRAPPER_EXPORT
+~endif
 
-#include "MED_Structures.hxx"
-#include "MED_TWrapper.hxx"
+~include "MED_Structures.hxx"
+~include "MED_TWrapper.hxx"
 
 namespace MED
 {
@@ -486,4 +486,4 @@ namespace MED
   }
 }
 
-#endif
+~endif

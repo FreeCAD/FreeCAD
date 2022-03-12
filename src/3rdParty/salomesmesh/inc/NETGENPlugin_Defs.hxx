@@ -24,17 +24,17 @@
 // File      : NETGENPlugin_Defs.hxx
 // Author    : Alexander A. BORODIN
 //
-#ifndef _NETGENPlugin_DEFS_HXX_
-#define _NETGENPlugin_DEFS_HXX_
+~ifndef _NETGENPlugin_DEFS_HXX_
+~define _NETGENPlugin_DEFS_HXX_
 
-#ifdef WIN32
-  #if defined NETGENPLUGIN_EXPORTS || defined NETGENEngine_EXPORTS
-    #define NETGENPLUGIN_EXPORT __declspec( dllexport )
-  #else
-    #define NETGENPLUGIN_EXPORT __declspec( dllimport )
-  #endif
-#else
-  #define NETGENPLUGIN_EXPORT
-#endif
+~ifdef WIN32
+  ~if defined NETGENPLUGIN_EXPORTS || defined NETGENEngine_EXPORTS
+    ~define NETGENPLUGIN_EXPORT __declspec( dllexport )
+  ~else
+    ~define NETGENPLUGIN_EXPORT __declspec( dllimport )
+  ~endif
+~else
+  ~define NETGENPLUGIN_EXPORT
+~endif
 
-#endif
+~endif

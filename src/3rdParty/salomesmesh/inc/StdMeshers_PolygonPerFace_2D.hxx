@@ -23,11 +23,11 @@
 //  File   : StdMeshers_PolygonPerFace_2D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_PolygonPerFace_2D_HXX_
-#define _SMESH_PolygonPerFace_2D_HXX_
+~ifndef _SMESH_PolygonPerFace_2D_HXX_
+~define _SMESH_PolygonPerFace_2D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
-#include "SMESH_Algo.hxx"
+~include "SMESH_StdMeshers.hxx"
+~include "SMESH_Algo.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_PolygonPerFace_2D: public SMESH_2D_Algo
 {
@@ -44,4 +44,4 @@ class STDMESHERS_EXPORT StdMeshers_PolygonPerFace_2D: public SMESH_2D_Algo
                         MapShapeNbElems& aResMap);
 };
 
-#endif
+~endif

@@ -19,10 +19,10 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_SharedPtr_HeaderFile
-#define MED_SharedPtr_HeaderFile
+~ifndef MED_SharedPtr_HeaderFile
+~define MED_SharedPtr_HeaderFile
 
-#include <boost/shared_ptr.hpp>
+~include <boost/shared_ptr.hpp>
 
 namespace MED
 {
@@ -92,4 +92,4 @@ namespace MED
 }
 
 
-#endif
+~endif

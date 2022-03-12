@@ -24,11 +24,11 @@
 //  File   : OpUtil.hxx
 //  Module : SALOME
 //
-#ifndef _OPUTIL_HXX
-#define _OPUTIL_HXX
+~ifndef _OPUTIL_HXX
+~define _OPUTIL_HXX
 
-#include "SALOME_Utils.hxx"
+~include "SALOME_Utils.hxx"
 
 UTILS_EXPORT const char *duplicate(const char * const);
 
-#endif
+~endif

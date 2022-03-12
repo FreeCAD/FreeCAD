@@ -23,20 +23,20 @@
 // Created   : Thu May 28 17:49:53 2015
 // Author    : Edward AGAPOV (eap)
 
-#ifndef __SMESH_MAT2d_HXX__
-#define __SMESH_MAT2d_HXX__
+~ifndef __SMESH_MAT2d_HXX__
+~define __SMESH_MAT2d_HXX__
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <gp.hxx> //added for occ6
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Edge.hxx>
+~include <gp.hxx> //added for occ6
 
-#include <vector>
-#include <map>
+~include <vector>
+~include <map>
 
-#include <boost/polygon/polygon.hpp>
-#include <boost/polygon/voronoi.hpp>
+~include <boost/polygon/polygon.hpp>
+~include <boost/polygon/voronoi.hpp>
 
 class Adaptor3d_Curve;
 
@@ -236,4 +236,4 @@ namespace SMESH_MAT2d
 
 }
 
-#endif
+~endif

@@ -22,10 +22,10 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#ifndef _SMESH_LayerDistribution2D_HXX_
-#define _SMESH_LayerDistribution2D_HXX_
+~ifndef _SMESH_LayerDistribution2D_HXX_
+~define _SMESH_LayerDistribution2D_HXX_
 
-#include "StdMeshers_LayerDistribution.hxx"
+~include "StdMeshers_LayerDistribution.hxx"
 
 
 // =========================================================
@@ -49,5 +49,5 @@ public:
 
 };
 
-#endif
+~endif
 

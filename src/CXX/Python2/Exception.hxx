@@ -35,16 +35,16 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_Exception_h
-#define __CXX_Exception_h
+~ifndef __CXX_Exception_h
+~define __CXX_Exception_h
 
-#include "CXX/WrapPython.h"
-#include "CXX/Version.hxx"
-#include "CXX/Config.hxx"
-#include "CXX/IndirectPythonInterface.hxx"
+~include "CXX/WrapPython.h"
+~include "CXX/Version.hxx"
+~include "CXX/Config.hxx"
+~include "CXX/IndirectPythonInterface.hxx"
 
-#include <string>
-#include <iostream>
+~include <string>
+~include <iostream>
 
 // This mimics the Python structure, in order to minimize confusion
 namespace Py
@@ -257,4 +257,4 @@ namespace Py
 
 }// Py
 
-#endif
+~endif

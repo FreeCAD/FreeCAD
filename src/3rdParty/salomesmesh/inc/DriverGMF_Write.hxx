@@ -24,16 +24,16 @@
 // Author    : Edward AGAPOV (eap)
 
 
-#ifndef __DriverGMF_Write_HXX__
-#define __DriverGMF_Write_HXX__
+~ifndef __DriverGMF_Write_HXX__
+~define __DriverGMF_Write_HXX__
 
-#include "SMESH_DriverGMF.hxx"
+~include "SMESH_DriverGMF.hxx"
 
-#include "Driver_SMESHDS_Mesh.h"
-#include "SMDSAbs_ElementType.hxx"
-#include "SMDS_ElemIterator.hxx"
+~include "Driver_SMESHDS_Mesh.h"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMDS_ElemIterator.hxx"
 
-#include <gp_Pnt.hxx>
+~include <gp_Pnt.hxx>
 
 /*!
  * \brief Class for storing control points for writing GMF size maps
@@ -90,4 +90,4 @@ public:
   std::string mySolFile;
 };
 
-#endif
+~endif

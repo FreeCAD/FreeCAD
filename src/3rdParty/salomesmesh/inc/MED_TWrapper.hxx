@@ -19,11 +19,11 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_TWrapper_HeaderFile
-#define MED_TWrapper_HeaderFile
+~ifndef MED_TWrapper_HeaderFile
+~define MED_TWrapper_HeaderFile
 
-#include "MED_TStructures.hxx"
-#include "MED_Wrapper.hxx"
+~include "MED_TStructures.hxx"
+~include "MED_Wrapper.hxx"
 
 namespace MED
 {
@@ -575,4 +575,4 @@ namespace MED
 }
 
 
-#endif
+~endif

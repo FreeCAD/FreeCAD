@@ -21,20 +21,20 @@
 // Created   : Thu Dec  2 10:05:35 2010
 // Author    : Edward AGAPOV (eap)
 
-#ifndef __SMESH_ProxyMesh_HXX__
-#define __SMESH_ProxyMesh_HXX__
+~ifndef __SMESH_ProxyMesh_HXX__
+~define __SMESH_ProxyMesh_HXX__
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_TypeDefs.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_TypeDefs.hxx"
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include <map>
-#include <vector>
-#include <boost/shared_ptr.hpp>
+~include <map>
+~include <vector>
+~include <boost/shared_ptr.hpp>
 
 class SMDS_MeshNode;
 class SMESHDS_Mesh;
@@ -180,4 +180,4 @@ public:
   mutable SubMesh _subContainer;
 };
 
-#endif
+~endif

@@ -20,16 +20,16 @@
 //  Author : Sergey KUUL, OCC
 //  Module : SMESH
 
-#ifndef _SMESH_QUADRANGLEPARAMS_HXX_
-#define _SMESH_QUADRANGLEPARAMS_HXX_
+~ifndef _SMESH_QUADRANGLEPARAMS_HXX_
+~define _SMESH_QUADRANGLEPARAMS_HXX_
 
-#include "SMESH_StdMeshers.hxx"
-#include "SMESH_Hypothesis.hxx"
+~include "SMESH_StdMeshers.hxx"
+~include "SMESH_Hypothesis.hxx"
 
-#include <gp_Pnt.hxx>
+~include <gp_Pnt.hxx>
 
-#include <vector>
-#include <string>
+~include <vector>
+~include <string>
 
 enum StdMeshers_QuadType
   {
@@ -88,4 +88,4 @@ protected:
   std::vector< gp_Pnt >       _enforcedPoints;
 };
 
-#endif
+~endif

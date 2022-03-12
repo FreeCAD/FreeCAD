@@ -19,20 +19,20 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_SliceArray_HeaderFile
-#define MED_SliceArray_HeaderFile
+~ifndef MED_SliceArray_HeaderFile
+~define MED_SliceArray_HeaderFile
 
-#ifdef WIN32 // for correctly compiling "valarray" in modules, which are includes this file
-  #undef max
-  #undef min
-#endif
+~ifdef WIN32 // for correctly compiling "valarray" in modules, which are includes this file
+  ~undef max
+  ~undef min
+~endif
 
-#include <valarray>
-#include <stdexcept>
+~include <valarray>
+~include <stdexcept>
 
-//#if defined(_DEBUG_)
-#  define MED_TCSLICE_CHECK_RANGE
-//#endif
+//~if defined(_DEBUG_)
+~  define MED_TCSLICE_CHECK_RANGE
+//~endif
 
 namespace MED
 {
@@ -73,9 +73,9 @@ namespace MED
     size_t
     get_id(size_t theId) const
     {
-#ifdef MED_TCSLICE_CHECK_RANGE
+~ifdef MED_TCSLICE_CHECK_RANGE
       check_id(theId);
-#endif
+~endif
       return calculate_id(theId);
     }
     
@@ -180,6 +180,6 @@ namespace MED
 
 }
 
-#undef MED_TCSLICE_CHECK_RANGE
+~undef MED_TCSLICE_CHECK_RANGE
 
-#endif
+~endif

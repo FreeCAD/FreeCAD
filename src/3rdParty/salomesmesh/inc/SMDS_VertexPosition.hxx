@@ -24,12 +24,12 @@
 //  File   : SMDS_VertexPosition.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_VertexPosition_HeaderFile
-#define _SMDS_VertexPosition_HeaderFile
+~ifndef _SMDS_VertexPosition_HeaderFile
+~define _SMDS_VertexPosition_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_Position.hxx"
+~include "SMDS_Position.hxx"
 
 class SMDS_EXPORT SMDS_VertexPosition:public SMDS_Position
 {
@@ -39,4 +39,4 @@ class SMDS_EXPORT SMDS_VertexPosition:public SMDS_Position
         SMDS_VertexPosition();
 };
 
-#endif
+~endif

@@ -24,12 +24,12 @@
 //  File   : StdMeshers_SegmentAroundVertex_0D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_SegmentAroundVertex_0D_HXX_
-#define _SMESH_SegmentAroundVertex_0D_HXX_
+~ifndef _SMESH_SegmentAroundVertex_0D_HXX_
+~define _SMESH_SegmentAroundVertex_0D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
 /*!
  * \brief Algorithm existing in order just to enable assignation of
@@ -51,4 +51,4 @@ public:
                         MapShapeNbElems& aResMap);
 };
 
-#endif
+~endif

@@ -17,14 +17,14 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _SMDS_VTKVOLUME_HXX_
-#define _SMDS_VTKVOLUME_HXX_
+~ifndef _SMDS_VTKVOLUME_HXX_
+~define _SMDS_VTKVOLUME_HXX_
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshVolume.hxx"
-#include "SMDS_UnstructuredGrid.hxx"
-#include <vector>
+~include "SMDS_MeshVolume.hxx"
+~include "SMDS_UnstructuredGrid.hxx"
+~include <vector>
 
 class SMDS_EXPORT SMDS_VtkVolume: public SMDS_MeshVolume
 {
@@ -33,10 +33,10 @@ public:
   SMDS_VtkVolume(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* mesh);
   ~SMDS_VtkVolume();
   void init(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* mesh);
-//#ifdef VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
   void initPoly(const std::vector<vtkIdType>& nodeIds,
                 const std::vector<int>& nbNodesPerFace, SMDS_Mesh* mesh);
-//#endif
+//~endif
   virtual bool ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes);
   virtual bool vtkOrder(const SMDS_MeshNode* nodes[], const int nbNodes);
 
@@ -77,4 +77,4 @@ public:
 protected:
 };
 
-#endif
+~endif

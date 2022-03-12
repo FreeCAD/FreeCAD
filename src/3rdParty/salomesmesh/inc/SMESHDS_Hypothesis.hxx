@@ -25,13 +25,13 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESHDS_HYPOTHESIS_HXX_
-#define _SMESHDS_HYPOTHESIS_HXX_
+~ifndef _SMESHDS_HYPOTHESIS_HXX_
+~define _SMESHDS_HYPOTHESIS_HXX_
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include <string>
-#include <iostream>
+~include <string>
+~include <iostream>
 
 class SMESHDS_EXPORT SMESHDS_Hypothesis
 {
@@ -58,4 +58,4 @@ class SMESHDS_EXPORT SMESHDS_Hypothesis
   hypothesis_type _type;  // enum hypothesis_type
 };
 
-#endif
+~endif

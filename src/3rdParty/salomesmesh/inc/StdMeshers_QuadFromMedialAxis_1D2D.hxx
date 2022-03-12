@@ -24,12 +24,12 @@
 // Author    : Edward AGAPOV (eap)
 
 
-#ifndef __StdMeshers_QuadFromMedialAxis_1D2D_HXX__
-#define __StdMeshers_QuadFromMedialAxis_1D2D_HXX__
+~ifndef __StdMeshers_QuadFromMedialAxis_1D2D_HXX__
+~define __StdMeshers_QuadFromMedialAxis_1D2D_HXX__
 
-#include "StdMeshers_Quadrangle_2D.hxx"
+~include "StdMeshers_Quadrangle_2D.hxx"
 
-#include <vector>
+~include <vector>
 
 /*!
  * \brief Quadrangle mesher using Medial Axis
@@ -66,4 +66,4 @@ class STDMESHERS_EXPORT StdMeshers_QuadFromMedialAxis_1D2D: public StdMeshers_Qu
   const SMESHDS_Hypothesis* _hyp2D;
 };
 
-#endif
+~endif

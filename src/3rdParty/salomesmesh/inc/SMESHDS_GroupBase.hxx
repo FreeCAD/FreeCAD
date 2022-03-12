@@ -25,16 +25,16 @@
 //  Module : SMESH
 //  $Header$
 //
-#ifndef _SMESHDS_GroupBase_HeaderFile
-#define _SMESHDS_GroupBase_HeaderFile
+~ifndef _SMESHDS_GroupBase_HeaderFile
+~define _SMESHDS_GroupBase_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include <string>
-#include "SMDSAbs_ElementType.hxx"
-#include "SMDS_MeshElement.hxx"
+~include <string>
+~include "SMDSAbs_ElementType.hxx"
+~include "SMDS_MeshElement.hxx"
 
-#include <Quantity_Color.hxx>
+~include <Quantity_Color.hxx>
   
 class SMESHDS_Mesh;
 
@@ -112,4 +112,4 @@ class SMESHDS_EXPORT SMESHDS_GroupBase
   static Quantity_Color myDefaultColor;
 };
 
-#endif
+~endif

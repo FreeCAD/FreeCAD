@@ -24,15 +24,15 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#ifndef _SMESH_CartesianParameters3D_HXX_
-#define _SMESH_CartesianParameters3D_HXX_
+~ifndef _SMESH_CartesianParameters3D_HXX_
+~define _SMESH_CartesianParameters3D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <vector>
+~include <vector>
 
 class SMESH_Gen;
 class Bnd_Box;
@@ -173,5 +173,5 @@ public:
   bool   _toAddEdges;
 };
 
-#endif
+~endif
 

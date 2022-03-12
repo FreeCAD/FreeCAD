@@ -25,25 +25,25 @@
 // Author    : Edward AGAPOV (eap)
 // Module    : SMESH
 //
-#ifndef SMESH_MeshEditor_HeaderFile
-#define SMESH_MeshEditor_HeaderFile
+~ifndef SMESH_MeshEditor_HeaderFile
+~define SMESH_MeshEditor_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMESH_Controls.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_TypeDefs.hxx"
-#include "SMESH_ComputeError.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMESH_Controls.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_TypeDefs.hxx"
+~include "SMESH_ComputeError.hxx"
 
-#include <utilities.h>
+~include <utilities.h>
 
-#include <TColStd_HSequenceOfReal.hxx>
-#include <gp_Dir.hxx>
+~include <TColStd_HSequenceOfReal.hxx>
+~include <gp_Dir.hxx>
 
-#include <list>
-#include <map>
-#include <set>
+~include <list>
+~include <map>
+~include <set>
 
 class SMDS_MeshFace;
 class SMDS_MeshNode;
@@ -800,4 +800,4 @@ private:
   SMESH_ComputeErrorPtr   myError;
 };
 
-#endif
+~endif

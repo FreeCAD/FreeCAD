@@ -20,8 +20,8 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef UNV2420_Structure_HeaderFile
-#define UNV2420_Structure_HeaderFile
+~ifndef UNV2420_Structure_HeaderFile
+~define UNV2420_Structure_HeaderFile
 
 // Name:   Coordinate Systems
 // -----------------------------------------------------------------------
@@ -76,10 +76,10 @@
 //     0.0000000000000000E+0    0.0000000000000000E+0    0.0000000000000000E+0
 //     -1
 
-#include "SMESH_DriverUNV.hxx"
+~include "SMESH_DriverUNV.hxx"
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
 namespace UNV2420
 {
@@ -116,4 +116,4 @@ namespace UNV2420
 };
 
 
-#endif
+~endif

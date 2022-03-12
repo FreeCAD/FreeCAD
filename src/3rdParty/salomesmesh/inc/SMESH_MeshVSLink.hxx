@@ -24,58 +24,58 @@
 // Author    : Sioutis Fotios
 // Module    : SMESH
 
-#ifndef _SMESH_MeshVSLink_HeaderFile
-#define _SMESH_MeshVSLink_HeaderFile
+~ifndef _SMESH_MeshVSLink_HeaderFile
+~define _SMESH_MeshVSLink_HeaderFile
 
-#if OCC_VERSION_HEX < 0x070000
-#ifndef _Handle_SMESH_MeshVSLink_HeaderFile
-#include <Handle_SMESH_MeshVSLink.hxx>
-#endif
-#endif
+~if OCC_VERSION_HEX < 0x070000
+~ifndef _Handle_SMESH_MeshVSLink_HeaderFile
+~include <Handle_SMESH_MeshVSLink.hxx>
+~endif
+~endif
 
-#ifndef _Standard_HeaderFile
-#include <Standard.hxx>
-#endif
-#ifndef _TColStd_PackedMapOfInteger_HeaderFile
-#include <TColStd_PackedMapOfInteger.hxx>
-#endif
-#ifndef _TColStd_HArray2OfInteger_HeaderFile
-#include <TColStd_HArray2OfInteger.hxx>
-#endif
-#ifndef _TColStd_HArray2OfReal_HeaderFile
-#include <TColStd_HArray2OfReal.hxx>
-#endif
-#ifndef _MeshVS_DataSource3D_HeaderFile
-#include <MeshVS_DataSource3D.hxx>
-#endif
-#ifndef _Standard_Boolean_HeaderFile
-#include <Standard_Boolean.hxx>
-#endif
-#ifndef _Standard_Integer_HeaderFile
-#include <Standard_Integer.hxx>
-#endif
-#ifndef _MeshVS_EntityType_HeaderFile
-#include <MeshVS_EntityType.hxx>
-#endif
-#ifndef _Standard_Address_HeaderFile
-#include <Standard_Address.hxx>
-#endif
-#ifndef _TColStd_HArray1OfInteger_HeaderFile
-#include <TColStd_HArray1OfInteger.hxx>
-#endif
-#ifndef _Standard_Real_HeaderFile
-#include <Standard_Real.hxx>
-#endif
-#ifndef _SMESH_Mesh_HeaderFile
-#include <SMESH_Mesh.hxx>
-#endif
-#ifndef _Standard_Version_HeaderFile
-#include <Standard_Version.hxx>
-#endif
+~ifndef _Standard_HeaderFile
+~include <Standard.hxx>
+~endif
+~ifndef _TColStd_PackedMapOfInteger_HeaderFile
+~include <TColStd_PackedMapOfInteger.hxx>
+~endif
+~ifndef _TColStd_HArray2OfInteger_HeaderFile
+~include <TColStd_HArray2OfInteger.hxx>
+~endif
+~ifndef _TColStd_HArray2OfReal_HeaderFile
+~include <TColStd_HArray2OfReal.hxx>
+~endif
+~ifndef _MeshVS_DataSource3D_HeaderFile
+~include <MeshVS_DataSource3D.hxx>
+~endif
+~ifndef _Standard_Boolean_HeaderFile
+~include <Standard_Boolean.hxx>
+~endif
+~ifndef _Standard_Integer_HeaderFile
+~include <Standard_Integer.hxx>
+~endif
+~ifndef _MeshVS_EntityType_HeaderFile
+~include <MeshVS_EntityType.hxx>
+~endif
+~ifndef _Standard_Address_HeaderFile
+~include <Standard_Address.hxx>
+~endif
+~ifndef _TColStd_HArray1OfInteger_HeaderFile
+~include <TColStd_HArray1OfInteger.hxx>
+~endif
+~ifndef _Standard_Real_HeaderFile
+~include <Standard_Real.hxx>
+~endif
+~ifndef _SMESH_Mesh_HeaderFile
+~include <SMESH_Mesh.hxx>
+~endif
+~ifndef _Standard_Version_HeaderFile
+~include <Standard_Version.hxx>
+~endif
 
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
 DEFINE_STANDARD_HANDLE(SMESH_MeshVSLink, MeshVS_DataSource3D)
-#endif
+~endif
 class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 
   public:
@@ -134,11 +134,11 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 
 	// Type management
 	//
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
     DEFINE_STANDARD_RTTIEXT(SMESH_MeshVSLink,MeshVS_DataSource3D)
-#else
+~else
     Standard_EXPORT const Handle(Standard_Type)& DynamicType() const;
-#endif
+~endif
 
   protected:
 	// Methods PROTECTED
@@ -158,7 +158,7 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	TColStd_PackedMapOfInteger myElements;
 	TColStd_PackedMapOfInteger myGroups;
 };
-#include <SMESH_MeshVSLink.ixx>
+~include <SMESH_MeshVSLink.ixx>
 // other Inline functions and methods (like "C++: function call" methods)
 //
-#endif
+~endif

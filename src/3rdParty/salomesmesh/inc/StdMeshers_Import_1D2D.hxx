@@ -23,13 +23,13 @@
 //  SMESH SMESH : implementaion of SMESH idl descriptions
 //  Module : SMESH
 //
-#ifndef _SMESH_Import_2D_HXX_
-#define _SMESH_Import_2D_HXX_
+~ifndef _SMESH_Import_2D_HXX_
+~define _SMESH_Import_2D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "SMDS_MeshElement.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMDS_MeshElement.hxx"
 
 class StdMeshers_ImportSource1D;
 
@@ -57,4 +57,4 @@ public:
   StdMeshers_ImportSource1D* _sourceHyp;
 };
 
-#endif
+~endif

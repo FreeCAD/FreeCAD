@@ -23,12 +23,12 @@
 //  File   : StdMeshers_Cartesian_3D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_Cartesian_3D_HXX_
-#define _SMESH_Cartesian_3D_HXX_
+~ifndef _SMESH_Cartesian_3D_HXX_
+~define _SMESH_Cartesian_3D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
 /*!
  * \brief A 3D algorithm generating 3D structured Cartesian mesh in the
@@ -61,4 +61,4 @@ public:
   const StdMeshers_CartesianParameters3D* _hyp;
 };
 
-#endif
+~endif

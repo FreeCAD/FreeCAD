@@ -24,12 +24,12 @@
 //  File   : SMDS_MeshVolume.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshVolume_HeaderFile
-#define _SMDS_MeshVolume_HeaderFile
+~ifndef _SMDS_MeshVolume_HeaderFile
+~define _SMDS_MeshVolume_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshCell.hxx"
+~include "SMDS_MeshCell.hxx"
 
 class SMDS_EXPORT SMDS_MeshVolume:public SMDS_MeshCell
 {
@@ -38,4 +38,4 @@ class SMDS_EXPORT SMDS_MeshVolume:public SMDS_MeshCell
         SMDSAbs_ElementType GetType() const;
   virtual vtkIdType GetVtkType() const;
 };
-#endif
+~endif

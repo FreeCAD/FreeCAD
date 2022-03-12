@@ -24,13 +24,13 @@
 //  File   : StdMeshers_Reversible1D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_Reversible1D_HXX_
-#define _SMESH_Reversible1D_HXX_
+~ifndef _SMESH_Reversible1D_HXX_
+~define _SMESH_Reversible1D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
-#include "SMESH_Hypothesis.hxx"
+~include "SMESH_StdMeshers.hxx"
+~include "SMESH_Hypothesis.hxx"
 
-#include <vector>
+~include <vector>
 
 /*!
  * \brief A base of reversible 1D hypotheses
@@ -56,4 +56,4 @@ protected:
   std::string      _objEntry;
 };
 
-#endif
+~endif

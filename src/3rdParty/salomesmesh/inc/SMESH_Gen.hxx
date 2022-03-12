@@ -25,24 +25,24 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_GEN_HXX_
-#define _SMESH_GEN_HXX_
+~ifndef _SMESH_GEN_HXX_
+~define _SMESH_GEN_HXX_
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Mesh.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Mesh.hxx"
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include <map>
-#include <list>
-#include <vector>
-#include <string>
+~include <map>
+~include <list>
+~include <vector>
+~include <string>
 
 class SMESHDS_Document;
 
@@ -179,4 +179,4 @@ private:
   std::list< SMESH_subMesh* > _sm_current;
 };
 
-#endif
+~endif

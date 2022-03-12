@@ -23,13 +23,13 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_SimpleHypothesis_3D_HXX_
-#define _NETGENPlugin_SimpleHypothesis_3D_HXX_
+~ifndef _NETGENPlugin_SimpleHypothesis_3D_HXX_
+~define _NETGENPlugin_SimpleHypothesis_3D_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
-#include "NETGENPlugin_SimpleHypothesis_2D.hxx"
+~include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_SimpleHypothesis_2D.hxx"
 
-#include <Utils_SALOME_Exception.hxx>
+~include <Utils_SALOME_Exception.hxx>
 
 //  Simplified parameters of NETGEN
 //
@@ -63,4 +63,4 @@ private:
   double _volume;
 };
 
-#endif
+~endif

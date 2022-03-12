@@ -22,8 +22,8 @@
 // Created   : Fri Feb  5 11:03:46 2010
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef __SMDS_StdIterator_HXX__
-#define __SMDS_StdIterator_HXX__
+~ifndef __SMDS_StdIterator_HXX__
+~define __SMDS_StdIterator_HXX__
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -77,4 +77,4 @@ public:
 
 };
 
-#endif
+~endif

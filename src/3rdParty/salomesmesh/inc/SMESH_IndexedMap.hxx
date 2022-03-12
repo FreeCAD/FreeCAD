@@ -3,24 +3,24 @@
 // Author:      Alexander KARTOMIN (akm)
 //              <akm@opencascade.com>
 
-#ifndef SMESH_IndexedMap_HeaderFile
-#define SMESH_IndexedMap_HeaderFile
+~ifndef SMESH_IndexedMap_HeaderFile
+~define SMESH_IndexedMap_HeaderFile
 
-#include <NCollection_BaseCollection.hxx>
-#include <NCollection_BaseMap.hxx>
-#include <NCollection_TListNode.hxx>
-#include <Standard_NoSuchObject.hxx>
-#include <Standard_ImmutableObject.hxx>
+~include <NCollection_BaseCollection.hxx>
+~include <NCollection_BaseMap.hxx>
+~include <NCollection_TListNode.hxx>
+~include <Standard_NoSuchObject.hxx>
+~include <Standard_ImmutableObject.hxx>
 
-#if !defined No_Exception && !defined No_Standard_OutOfRange
-#include <Standard_OutOfRange.hxx>
-#endif
+~if !defined No_Exception && !defined No_Standard_OutOfRange
+~include <Standard_OutOfRange.hxx>
+~endif
 
-#ifdef WNT
+~ifdef WNT
 // Disable the warning "operator new unmatched by delete"
-#pragma warning (push)
-#pragma warning (disable:4291)
-#endif
+~pragma warning (push)
+~pragma warning (disable:4291)
+~endif
 
 /**
  * Purpose:     An indexed map is used to  store  keys and to bind
@@ -97,10 +97,10 @@ template <class TheKeyType> class SMESH_IndexedMap
     //! Value access
     virtual const TheKeyType& Value(void) const
     {
-#if !defined No_Exception && !defined No_Standard_NoSuchObject
+~if !defined No_Exception && !defined No_Standard_NoSuchObject
       if (!More())
         Standard_NoSuchObject::Raise("SMESH_IndexedMap::Iterator::Value");
-#endif
+~endif
       return myMap->FindKey(myIndex);
     }
     //! Value change access denied - use Substitute
@@ -260,10 +260,10 @@ template <class TheKeyType> class SMESH_IndexedMap
   void Substitute (const Standard_Integer theIndex,
                    const TheKeyType& theKey1)
   {
-#if !defined No_Exception && !defined No_Standard_OutOfRange
+~if !defined No_Exception && !defined No_Standard_OutOfRange
     if (theIndex < 1 || theIndex > Extent())
       Standard_OutOfRange::Raise ("SMESH_IndexedMap::Substitute");
-#endif
+~endif
     IndexedMapNode * p;
     // check if theKey1 is not already in the map
     Standard_Integer iK1 = HashCode (theKey1, NbBuckets());
@@ -306,10 +306,10 @@ template <class TheKeyType> class SMESH_IndexedMap
   //! RemoveLast
   void RemoveLast (void)
   {
-#if !defined No_Exception && !defined No_Standard_OutOfRange
+~if !defined No_Exception && !defined No_Standard_OutOfRange
     if (Extent() == 0)
       Standard_OutOfRange::Raise ("SMESH_IndexedMap::RemoveLast");
-#endif
+~endif
     IndexedMapNode * p, * q;
     // Find the node for the last index and remove it
     Standard_Integer iK2 = HashCode (Extent(), NbBuckets());
@@ -346,10 +346,10 @@ template <class TheKeyType> class SMESH_IndexedMap
   //! FindKey
   const TheKeyType& FindKey (const Standard_Integer theKey2) const
   {
-#if !defined No_Exception && !defined No_Standard_OutOfRange
+~if !defined No_Exception && !defined No_Standard_OutOfRange
     if (theKey2 < 1 || theKey2 > Extent())
       Standard_OutOfRange::Raise ("SMESH_IndexedMap::FindKey");
-#endif
+~endif
     IndexedMapNode * pNode2 =
       (IndexedMapNode *) myData2[HashCode(theKey2,NbBuckets())];
     while (pNode2)
@@ -412,8 +412,8 @@ template <class TheKeyType> class SMESH_IndexedMap
 
 };
 
-#ifdef WNT
-#pragma warning (pop)
-#endif
+~ifdef WNT
+~pragma warning (pop)
+~endif
 
-#endif
+~endif

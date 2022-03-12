@@ -24,12 +24,12 @@
 //  File   : SMDS_SpacePosition.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_SpacePosition_HeaderFile
-#define _SMDS_SpacePosition_HeaderFile
+~ifndef _SMDS_SpacePosition_HeaderFile
+~define _SMDS_SpacePosition_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_Position.hxx"
+~include "SMDS_Position.hxx"
 
 class SMDS_EXPORT SMDS_SpacePosition:public SMDS_Position
 {
@@ -42,4 +42,4 @@ private:
   static SMDS_SpacePosition* _originPosition;
 };
 
-#endif
+~endif

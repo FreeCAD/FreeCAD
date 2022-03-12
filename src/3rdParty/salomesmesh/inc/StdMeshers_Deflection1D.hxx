@@ -24,13 +24,13 @@
 //  File   : StdMeshers_Deflection1D.hxx
 //  Module : SMESH
 //
-#ifndef _StdMeshers_Deflection1D_HXX_
-#define _StdMeshers_Deflection1D_HXX_
+~ifndef _StdMeshers_Deflection1D_HXX_
+~define _StdMeshers_Deflection1D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_Deflection1D:public SMESH_Hypothesis
 {
@@ -65,4 +65,4 @@ protected:
   double _value;
 };
 
-#endif
+~endif

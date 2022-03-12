@@ -21,13 +21,13 @@
 //  File   : SMDS_BallElement.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_BallElement_HeaderFile
-#define _SMDS_BallElement_HeaderFile
+~ifndef _SMDS_BallElement_HeaderFile
+~define _SMDS_BallElement_HeaderFile
 
-#include "SMESH_SMDS.hxx"
-#include "SMDS_MeshCell.hxx"
+~include "SMESH_SMDS.hxx"
+~include "SMDS_MeshCell.hxx"
 
-#include <iostream>
+~include <iostream>
 
 class SMDS_EXPORT SMDS_BallElement: public SMDS_MeshCell
 {
@@ -57,4 +57,4 @@ class SMDS_EXPORT SMDS_BallElement: public SMDS_MeshCell
   SMDS_ElemIteratorPtr elementsIterator (SMDSAbs_ElementType type) const;
 };
 
-#endif
+~endif

@@ -22,15 +22,15 @@
 //  File   : SMDS_MeshElementIDFactory.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshNodeIDFactory_HeaderFile
-#define _SMDS_MeshNodeIDFactory_HeaderFile
+~ifndef _SMDS_MeshNodeIDFactory_HeaderFile
+~define _SMDS_MeshNodeIDFactory_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshIDFactory.hxx"
-#include "SMDS_ElemIterator.hxx"
+~include "SMDS_MeshIDFactory.hxx"
+~include "SMDS_ElemIterator.hxx"
 
-#include <vector>
+~include <vector>
 
 class SMDS_MeshElement;
 
@@ -62,4 +62,4 @@ protected:
 
 };
 
-#endif
+~endif

@@ -22,14 +22,14 @@
 //  Author : Edward AGAPOV (OCC)
 //  Module : SMESH
 //
-#ifndef _NETGENPlugin_NETGEN_2D_ONLY_I_HXX_
-#define _NETGENPlugin_NETGEN_2D_ONLY_I_HXX_
+~ifndef _NETGENPlugin_NETGEN_2D_ONLY_I_HXX_
+~define _NETGENPlugin_NETGEN_2D_ONLY_I_HXX_
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+~include <SALOMEconfig.h>
+~include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
-#include "SMESH_2D_Algo_i.hxx"
-#include "NETGENPlugin_NETGEN_2D_ONLY.hxx"
+~include "SMESH_2D_Algo_i.hxx"
+~include "NETGENPlugin_NETGEN_2D_ONLY.hxx"
 
 // ======================================================
 // NETGEN 2D algorithm
@@ -50,4 +50,4 @@ public:
   ::NETGENPlugin_NETGEN_2D_ONLY* GetImpl();
 };
 
-#endif
+~endif

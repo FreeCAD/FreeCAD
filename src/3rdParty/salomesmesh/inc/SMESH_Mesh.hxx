@@ -24,39 +24,39 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_MESH_HXX_
-#define _SMESH_MESH_HXX_
+~ifndef _SMESH_MESH_HXX_
+~define _SMESH_MESH_HXX_
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMDSAbs_ElementType.hxx"
-#include "SMESHDS_Command.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Controls.hxx"
-#include "SMESH_Hypothesis.hxx"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMESHDS_Command.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Controls.hxx"
+~include "SMESH_Hypothesis.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <Standard_Version.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <Standard_Version.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 
-#include <map>
-#include <list>
+~include <map>
+~include <list>
 
 
-#ifdef _MSC_VER
-#pragma warning(disable:4251) // Warning DLL Interface ...
-#pragma warning(disable:4290) // Warning Exception ...
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4251) // Warning DLL Interface ...
+~pragma warning(disable:4290) // Warning Exception ...
+~endif
 
 class SMESH_Gen;
 class SMESHDS_Document;
 class SMESH_Group;
-#if OCC_VERSION_HEX < 0x070000
+~if OCC_VERSION_HEX < 0x070000
 class TopTools_ListOfShape;
-#endif
+~endif
 class SMESH_subMesh;
 class SMESH_HypoFilter;
 class TopoDS_Solid;
@@ -385,4 +385,4 @@ protected:
   SMESH_Mesh(const SMESH_Mesh&) {};
 };
 
-#endif
+~endif

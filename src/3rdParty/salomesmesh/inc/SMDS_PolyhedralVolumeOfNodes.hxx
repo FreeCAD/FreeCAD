@@ -24,12 +24,12 @@
 //  File   : SMDS_PolyhedralVolumeOfNodes.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_PolyhedralVolumeOfNodes_HeaderFile
-#define _SMDS_PolyhedralVolumeOfNodes_HeaderFile
+~ifndef _SMDS_PolyhedralVolumeOfNodes_HeaderFile
+~define _SMDS_PolyhedralVolumeOfNodes_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_VolumeOfNodes.hxx"
+~include "SMDS_VolumeOfNodes.hxx"
 
 class SMDS_EXPORT SMDS_PolyhedralVolumeOfNodes:public SMDS_VolumeOfNodes
 {
@@ -88,4 +88,4 @@ protected:
   std::vector<int> myQuantities;
 };
 
-#endif
+~endif

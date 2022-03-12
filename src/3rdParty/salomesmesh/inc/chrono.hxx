@@ -17,15 +17,15 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _CHRONO_HXX_
-#define _CHRONO_HXX_
+~ifndef _CHRONO_HXX_
+~define _CHRONO_HXX_
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <ctime>
+~include <vector>
+~include <string>
+~include <iostream>
+~include <ctime>
 
 typedef struct acnt
 {
@@ -58,18 +58,18 @@ protected:
   clock_t _start, _end;
 };
 
-#ifdef CHRONODEF
-#define CHRONO(i) counters::_ctrs[i]._ctrNames = (char *)__FILE__; \
+~ifdef CHRONODEF
+~define CHRONO(i) counters::_ctrs[i]._ctrNames = (char *)__FILE__; \
   counters::_ctrs[i]._ctrLines = __LINE__; \
-  chrono aChrono##i(i);
+  chrono aChrono~~i(i);
 
-#define CHRONOSTOP(i) aChrono##i.stop();
+~define CHRONOSTOP(i) aChrono~~i.stop();
 
-#else  // CHRONODEF
+~else  // CHRONODEF
 
-#define CHRONO(i)
-#define CHRONOSTOP(i)
+~define CHRONO(i)
+~define CHRONOSTOP(i)
 
-#endif // CHRONODEF
+~endif // CHRONODEF
 
-#endif // _CHRONO_HXX_
+~endif // _CHRONO_HXX_

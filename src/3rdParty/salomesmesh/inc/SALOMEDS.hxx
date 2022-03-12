@@ -26,12 +26,12 @@
 //  Module : SALOME
 //  $Header$
 //
-#ifndef SALOMEDS_HeaderFile
-#define SALOMEDS_HeaderFile
+~ifndef SALOMEDS_HeaderFile
+~define SALOMEDS_HeaderFile
 
-#include "SALOMEDS_Defines.hxx"
+~include "SALOMEDS_Defines.hxx"
 
-#include <Utils_Mutex.hxx>
+~include <Utils_Mutex.hxx>
 
 namespace SALOMEDS
 {
@@ -65,4 +65,4 @@ namespace SALOMEDS
   void unlock();
 };
 
-#endif
+~endif

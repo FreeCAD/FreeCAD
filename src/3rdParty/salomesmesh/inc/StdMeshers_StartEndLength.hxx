@@ -24,15 +24,15 @@
 //  File   : StdMeshers_StartEndLength.hxx
 //  Module : SMESH
 //
-#ifndef _STDMESHERS_STARTENDLENGTH_HXX_
-#define _STDMESHERS_STARTENDLENGTH_HXX_
+~ifndef _STDMESHERS_STARTENDLENGTH_HXX_
+~define _STDMESHERS_STARTENDLENGTH_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <vector>
+~include <vector>
 
 class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
 {
@@ -78,4 +78,4 @@ protected:
   std::string        _objEntry;
 };
 
-#endif
+~endif

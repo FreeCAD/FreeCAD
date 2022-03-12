@@ -24,18 +24,18 @@
 //  File   : SMESHDS_Mesh.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_Mesh_HeaderFile
-#define _SMESHDS_Mesh_HeaderFile
+~ifndef _SMESHDS_Mesh_HeaderFile
+~define _SMESHDS_Mesh_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
 
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS_Shape.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include <map>
+~include <map>
 
 class TopoDS_Solid ;
 class TopoDS_Shell ;
@@ -56,8 +56,8 @@ class SMDS_BallElement;
  * Using of native hash_map isn't portable and don't work on WIN32 platform.
  * So this functionality implement on new NCollection_DataMap technology
  */
-#include <NCollection_DataMap.hxx>
-#include "SMESHDS_DataMapOfShape.hxx"
+~include <NCollection_DataMap.hxx>
+~include "SMESHDS_DataMapOfShape.hxx"
 typedef std::list<const SMESHDS_Hypothesis*>                          THypList;
 typedef NCollection_DataMap< TopoDS_Shape, THypList, SMESHDS_Hasher > ShapeToHypothesis;
 
@@ -629,4 +629,4 @@ private:
 };
 
 
-#endif
+~endif

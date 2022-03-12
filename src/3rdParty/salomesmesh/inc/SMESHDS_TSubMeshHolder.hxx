@@ -19,11 +19,11 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef __SMESHDS_SubMeshHolder_HXX__
-#define __SMESHDS_SubMeshHolder_HXX__
+~ifndef __SMESHDS_SubMeshHolder_HXX__
+~define __SMESHDS_SubMeshHolder_HXX__
 
-#include <vector>
-#include <map>
+~include <vector>
+~include <map>
 
 //=======================================================================
 /*!
@@ -148,4 +148,4 @@ public:
 };
 
 
-#endif
+~endif

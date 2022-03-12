@@ -26,14 +26,14 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_HEXA_3D_HXX_
-#define _SMESH_HEXA_3D_HXX_
+~ifndef _SMESH_HEXA_3D_HXX_
+~define _SMESH_HEXA_3D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
-#if OCC_VERSION_HEX < 0x070000
-#endif
+~include "SMESH_Algo.hxx"
+~if OCC_VERSION_HEX < 0x070000
+~endif
 
 
 class StdMeshers_ViscousLayers;
@@ -63,4 +63,4 @@ public:
   const StdMeshers_ViscousLayers* _viscousLayersHyp;
 };
 
-#endif
+~endif

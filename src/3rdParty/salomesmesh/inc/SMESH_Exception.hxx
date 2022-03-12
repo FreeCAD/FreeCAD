@@ -19,31 +19,31 @@
 // 
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 
-#if !defined( __SMESH_Exception_hxx__ )
-#define __SMESH_Exception_hxx__
+~if !defined( __SMESH_Exception_hxx__ )
+~define __SMESH_Exception_hxx__
 
-# include <exception>
-# include <iostream>
+~ include <exception>
+~ include <iostream>
 
-#ifdef _DEBUG_
-# define LOCALIZED(message) #message , __FILE__ , __LINE__
-#else
-# define LOCALIZED(message) #message
-#endif
+~ifdef _DEBUG_
+~ define LOCALIZED(message) ~message , __FILE__ , __LINE__
+~else
+~ define LOCALIZED(message) ~message
+~endif
 
-#if defined SMESH_EXPORTS
-#if defined WIN32
-#define SMESH_EXPORT __declspec( dllexport )
-#else
-#define SMESH_EXPORT
-#endif
-#else
-#if defined WNT
-#define SMESH_EXPORT __declspec( dllimport )
-#else
-#define SMESH_EXPORT
-#endif
-#endif
+~if defined SMESH_EXPORTS
+~if defined WIN32
+~define SMESH_EXPORT __declspec( dllexport )
+~else
+~define SMESH_EXPORT
+~endif
+~else
+~if defined WNT
+~define SMESH_EXPORT __declspec( dllimport )
+~else
+~define SMESH_EXPORT
+~endif
+~endif
 
 class SMESH_EXPORT SMESH_Exception : public std::exception
 {
@@ -63,4 +63,4 @@ public :
 } ;
 
 
-#endif		/* #if !defined( __SMESH_Exception_hxx__ ) */
+~endif		/* ~if !defined( __SMESH_Exception_hxx__ ) */

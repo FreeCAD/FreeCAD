@@ -25,23 +25,23 @@
 // Author    : Edward AGAPOV (eap)
 // Module    : SMESH
 //
-#ifndef StdMeshers_FaceSide_HeaderFile
-#define StdMeshers_FaceSide_HeaderFile
+~ifndef StdMeshers_FaceSide_HeaderFile
+~define StdMeshers_FaceSide_HeaderFile
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_ProxyMesh.hxx"
+~include "SMESH_ProxyMesh.hxx"
 
-#include <Geom2d_Curve.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt2d.hxx>
+~include <Geom2d_Curve.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Pnt2d.hxx>
 
-#include <vector>
-#include <list>
-#include <boost/shared_ptr.hpp>
+~include <vector>
+~include <list>
+~include <boost/shared_ptr.hpp>
 
 class SMDS_MeshNode;
 class SMESH_Mesh;
@@ -448,4 +448,4 @@ inline bool StdMeshers_FaceSide::IsReversed(int i) const
   return myFirst[i] > myLast[i];
 }
 
-#endif
+~endif

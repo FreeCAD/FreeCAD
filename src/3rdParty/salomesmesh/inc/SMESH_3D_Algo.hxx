@@ -25,12 +25,12 @@
 //  Module : SMESH
 //  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_3D_Algo.hxx,v 1.9.2.1 2008/11/27 12:25:15 abd Exp $
 //
-#ifndef _SMESH_3D_ALGO_HXX_
-#define _SMESH_3D_ALGO_HXX_
+~ifndef _SMESH_3D_ALGO_HXX_
+~define _SMESH_3D_ALGO_HXX_
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
 class SMESH_EXPORT SMESH_3D_Algo:
   public SMESH_Algo
@@ -41,4 +41,4 @@ public:
 
 };
 
-#endif
+~endif

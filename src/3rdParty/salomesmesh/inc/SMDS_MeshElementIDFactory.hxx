@@ -24,14 +24,14 @@
 //  File   : SMDS_MeshElementIDFactory.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshElementIDFactory_HeaderFile
-#define _SMDS_MeshElementIDFactory_HeaderFile
+~ifndef _SMDS_MeshElementIDFactory_HeaderFile
+~define _SMDS_MeshElementIDFactory_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshNodeIDFactory.hxx"
+~include "SMDS_MeshNodeIDFactory.hxx"
 
-#include <vector>
+~include <vector>
 
 class SMDS_MeshElement;
 class SMDS_Mesh;
@@ -60,4 +60,4 @@ protected:
 
 };
 
-#endif
+~endif

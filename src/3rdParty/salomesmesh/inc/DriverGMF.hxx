@@ -23,10 +23,10 @@
 // Created   : Thu Nov 15 16:45:58 2012
 // Author    : Edward AGAPOV (eap)
 
-#ifndef __DriverGMF_HXX__
-#define __DriverGMF_HXX__
+~ifndef __DriverGMF_HXX__
+~define __DriverGMF_HXX__
 
-#include <string>
+~include <string>
 
 namespace DriverGMF
 {
@@ -43,4 +43,4 @@ namespace DriverGMF
   bool isExtensionCorrect( const std::string& fileName );
 }
 
-#endif
+~endif

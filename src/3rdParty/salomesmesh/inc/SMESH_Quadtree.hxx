@@ -24,12 +24,12 @@
 //  File      : SMESH_Quadtree.hxx
 //  Module    : SMESH
 //
-#ifndef _SMESH_Quadtree_HXX_
-#define _SMESH_Quadtree_HXX_
+~ifndef _SMESH_Quadtree_HXX_
+~define _SMESH_Quadtree_HXX_
 
-#include "SMESH_Utils.hxx"
-#include "SMESH_tree.hxx"
-#include <Bnd_B2d.hxx>
+~include "SMESH_Utils.hxx"
+~include "SMESH_tree.hxx"
+~include <Bnd_B2d.hxx>
 
 /*!
  * \brief 2D tree of anything.
@@ -70,4 +70,4 @@ public:
 //   return (x > mid.X()) + ( y > mid.Y())*2 + (z > mid.Z())*4;
 // }
 
-#endif
+~endif

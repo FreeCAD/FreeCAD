@@ -21,29 +21,29 @@
 // Author:  prascle
 // Created: September 16, 2009, 10:28 PM
 
-#ifndef _SMDS_UNSTRUCTUREDGRID_HXX
-#define _SMDS_UNSTRUCTUREDGRID_HXX
+~ifndef _SMDS_UNSTRUCTUREDGRID_HXX
+~define _SMDS_UNSTRUCTUREDGRID_HXX
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include <vtkUnstructuredGrid.h>
-#include <vtkCellLinks.h>
+~include <vtkUnstructuredGrid.h>
+~include <vtkCellLinks.h>
 
-#include <vector>
-#include <set>
-#include <map>
+~include <vector>
+~include <set>
+~include <map>
 
-//#define VTK_HAVE_POLYHEDRON
-//#ifdef VTK_HAVE_POLYHEDRON
-#define VTK_MAXTYPE VTK_POLYHEDRON
-//#else
-//  #define VTK_MAXTYPE VTK_QUADRATIC_PYRAMID
-//#endif
+//~define VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
+~define VTK_MAXTYPE VTK_POLYHEDRON
+//~else
+//  ~define VTK_MAXTYPE VTK_QUADRATIC_PYRAMID
+//~endif
 
-#define NBMAXNEIGHBORS 100
+~define NBMAXNEIGHBORS 100
 
 // allow very huge polyhedrons in tests
-#define NBMAXNODESINCELL 5000
+~define NBMAXNODESINCELL 5000
 
 class SMDS_Downward;
 class SMDS_Mesh;
@@ -74,9 +74,9 @@ public:
   //virtual void UpdateInformation();
   virtual vtkPoints *GetPoints();
 
-  //#ifdef VTK_HAVE_POLYHEDRON
+  //~ifdef VTK_HAVE_POLYHEDRON
   int InsertNextLinkedCell(int type, int npts, vtkIdType *pts);
-  //#endif
+  //~endif
 
   int CellIdToDownId(int vtkCellId);
   void setCellIdToDownId(int vtkCellId, int downId);
@@ -95,11 +95,11 @@ public:
                                        std::map<int, std::map<long,int> >& nodeQuadDomains);
   vtkCellLinks* GetLinks()
   {
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
     return static_cast<vtkCellLinks*>(GetCellLinks());
-#else
+~else
     return Links;
-#endif
+~endif
   }
   SMDS_Downward* getDownArray(unsigned char vtkType)
   {
@@ -125,5 +125,5 @@ protected:
   std::vector<SMDS_Downward*> _downArray;
 };
 
-#endif  /* _SMDS_UNSTRUCTUREDGRID_HXX */
+~endif  /* _SMDS_UNSTRUCTUREDGRID_HXX */
 

@@ -24,14 +24,14 @@
 //  File   : SMESHDS_Command.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_Command_HeaderFile
-#define _SMESHDS_Command_HeaderFile
+~ifndef _SMESHDS_Command_HeaderFile
+~define _SMESHDS_Command_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMESHDS_CommandType.hxx"
-#include <list>
-#include <vector>
+~include "SMESHDS_CommandType.hxx"
+~include <list>
+~include <vector>
 
 class SMESHDS_EXPORT SMESHDS_Command
 {
@@ -115,4 +115,4 @@ class SMESHDS_EXPORT SMESHDS_Command
         std::list<double> myReals;
         std::list<int> myIntegers;
 };
-#endif
+~endif

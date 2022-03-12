@@ -23,13 +23,13 @@
 //  SMESH SMESH_Tree : tree implementation
 //  File      : SMESH_Tree.hxx
 //  Created   : Tue Jan 16 16:00:00 2007
-//  Author    : Nicolas Geimer & Aurélien Motteux (OCC)
+//  Author    : Nicolas Geimer & Aurï¿½lien Motteux (OCC)
 //  Module    : SMESH
 //
-#ifndef _SMESH_Tree_HXX_
-#define _SMESH_Tree_HXX_
+~ifndef _SMESH_Tree_HXX_
+~define _SMESH_Tree_HXX_
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
 //================================================================================
 // Data limiting the tree height
@@ -275,4 +275,4 @@ int SMESH_Tree<BND_BOX,NB_CHILDREN>::getHeight(const bool full) const
   return heigth + 1;
 }
 
-#endif
+~endif

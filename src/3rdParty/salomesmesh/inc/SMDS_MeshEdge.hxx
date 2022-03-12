@@ -21,12 +21,12 @@
 //  File   : SMDS_MeshEdge.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshEdge_HeaderFile
-#define _SMDS_MeshEdge_HeaderFile
+~ifndef _SMDS_MeshEdge_HeaderFile
+~define _SMDS_MeshEdge_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshCell.hxx"
+~include "SMDS_MeshCell.hxx"
 
 class SMDS_EXPORT SMDS_MeshEdge: public SMDS_MeshCell
 {
@@ -36,4 +36,4 @@ class SMDS_EXPORT SMDS_MeshEdge: public SMDS_MeshCell
   virtual vtkIdType            GetVtkType() const;
   virtual SMDSAbs_GeometryType GetGeomType() const { return SMDSGeom_EDGE; }
 };
-#endif
+~endif

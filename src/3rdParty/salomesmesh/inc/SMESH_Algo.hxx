@@ -25,26 +25,26 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_ALGO_HXX_
-#define _SMESH_ALGO_HXX_
+~ifndef _SMESH_ALGO_HXX_
+~define _SMESH_ALGO_HXX_
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDSAbs_ElementType.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Hypothesis.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Hypothesis.hxx"
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <GeomAbs_Shape.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <GeomAbs_Shape.hxx>
 
-#include <string>
-#include <vector>
-#include <list>
-#include <map>
-#include <set>
+~include <string>
+~include <vector>
+~include <list>
+~include <map>
+~include <set>
 
 class SMESHDS_Mesh;
 class SMESHDS_SubMesh;
@@ -495,4 +495,4 @@ public:
   SMESH_3D_Algo(int hypId, int studyId, SMESH_Gen* gen);
 };
 
-#endif
+~endif

@@ -24,13 +24,13 @@
 //  File   : StdMeshers_Geometric1D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_Geometric1D_HXX_
-#define _SMESH_Geometric1D_HXX_
+~ifndef _SMESH_Geometric1D_HXX_
+~define _SMESH_Geometric1D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "StdMeshers_Reversible1D.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "StdMeshers_Reversible1D.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_Geometric1D: public StdMeshers_Reversible1D
 {
@@ -64,4 +64,4 @@ protected:
   double _begLength, _ratio;
 };
 
-#endif
+~endif

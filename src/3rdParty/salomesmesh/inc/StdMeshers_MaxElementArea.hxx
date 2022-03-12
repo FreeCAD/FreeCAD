@@ -26,13 +26,13 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_MAXELEMENTAREA_HXX_
-#define _SMESH_MAXELEMENTAREA_HXX_
+~ifndef _SMESH_MAXELEMENTAREA_HXX_
+~define _SMESH_MAXELEMENTAREA_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_MaxElementArea:public SMESH_Hypothesis
 {
@@ -67,4 +67,4 @@ protected:
   double _maxArea;
 };
 
-#endif
+~endif

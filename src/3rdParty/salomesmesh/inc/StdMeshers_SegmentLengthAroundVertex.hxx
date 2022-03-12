@@ -25,13 +25,13 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_SegmentLengthAroundVertex_HXX_
-#define _SMESH_SegmentLengthAroundVertex_HXX_
+~ifndef _SMESH_SegmentLengthAroundVertex_HXX_
+~define _SMESH_SegmentLengthAroundVertex_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 /*!
  * \brief This hypothesis specifies length of segments adjacent to the vertex the
@@ -70,4 +70,4 @@ class STDMESHERS_EXPORT StdMeshers_SegmentLengthAroundVertex:public SMESH_Hypoth
   double _length;
 };
 
-#endif
+~endif

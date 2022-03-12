@@ -28,14 +28,14 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_NETGEN_3D_HXX_
-#define _NETGENPlugin_NETGEN_3D_HXX_
+~ifndef _NETGENPlugin_NETGEN_3D_HXX_
+~define _NETGENPlugin_NETGEN_3D_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
-#include "NETGENPlugin_Mesher.hxx"
+~include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Mesher.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Algo.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 class StdMeshers_ViscousLayers;
 class StdMeshers_MaxElementVolume;
@@ -80,4 +80,4 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_NETGEN_3D: public SMESH_3D_Algo
   double                             _progressByTic;
 };
 
-#endif
+~endif

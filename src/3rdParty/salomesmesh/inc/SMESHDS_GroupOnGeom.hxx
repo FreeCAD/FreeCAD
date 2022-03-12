@@ -24,13 +24,13 @@
 //  File   : SMESHDS_GroupOnGeom.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_GroupOnGeom_HeaderFile
-#define _SMESHDS_GroupOnGeom_HeaderFile
+~ifndef _SMESHDS_GroupOnGeom_HeaderFile
+~define _SMESHDS_GroupOnGeom_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMESHDS_GroupBase.hxx"
-#include <TopoDS_Shape.hxx>
+~include "SMESHDS_GroupBase.hxx"
+~include <TopoDS_Shape.hxx>
   
 class SMESHDS_SubMesh;
 
@@ -61,4 +61,4 @@ class SMESHDS_EXPORT SMESHDS_GroupOnGeom: public SMESHDS_GroupBase
   const SMESHDS_SubMesh* mySubMesh;
 };
 
-#endif
+~endif

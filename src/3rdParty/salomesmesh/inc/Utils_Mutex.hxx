@@ -26,12 +26,12 @@
 //  Module :    SALOME
 //  $Header$
 //
-#ifndef Utils_Mutex_HeaderFile
-#define Utils_Mutex_HeaderFile
+~ifndef Utils_Mutex_HeaderFile
+~define Utils_Mutex_HeaderFile
 
-#include "SALOME_Utils.hxx"
+~include "SALOME_Utils.hxx"
 
-#include <pthread.h>
+~include <pthread.h>
 
 class UTILS_EXPORT Utils_Mutex
 {
@@ -59,4 +59,4 @@ private:
   Utils_Mutex* myMutex;
 };
 
-#endif
+~endif

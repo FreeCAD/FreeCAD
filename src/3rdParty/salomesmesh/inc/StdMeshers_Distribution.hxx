@@ -26,16 +26,16 @@
 //  Module : SMESH
 //  $Header$
 //
-#ifndef _STD_MESHERS_DISTRIBUTION_HXX_
-#define _STD_MESHERS_DISTRIBUTION_HXX_
+~ifndef _STD_MESHERS_DISTRIBUTION_HXX_
+~define _STD_MESHERS_DISTRIBUTION_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include <vector>
-#include <math_Function.hxx>
-#include <ExprIntrp_GenExp.hxx>
-#include <Expr_Array1OfNamedUnknown.hxx>
-#include <TColStd_Array1OfReal.hxx>
+~include <vector>
+~include <math_Function.hxx>
+~include <ExprIntrp_GenExp.hxx>
+~include <Expr_Array1OfNamedUnknown.hxx>
+~include <TColStd_Array1OfReal.hxx>
 
 namespace StdMeshers
 {
@@ -116,4 +116,4 @@ STDMESHERS_EXPORT
 bool buildDistribution( const std::vector<double>& f, const int conv, const double start, const double end,
                         const int nbSeg, std::vector<double>& data, const double eps );
 }
-#endif
+~endif

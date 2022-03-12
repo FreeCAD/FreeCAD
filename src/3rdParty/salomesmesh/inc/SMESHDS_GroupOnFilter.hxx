@@ -22,13 +22,13 @@
 //  File   : SMESHDS_GroupOnFilter.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_GroupOnFilter_HeaderFile
-#define _SMESHDS_GroupOnFilter_HeaderFile
+~ifndef _SMESHDS_GroupOnFilter_HeaderFile
+~define _SMESHDS_GroupOnFilter_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMESHDS_GroupBase.hxx"
-#include "SMESH_Controls.hxx"
+~include "SMESHDS_GroupBase.hxx"
+~include "SMESH_Controls.hxx"
   
 /*!
  * \brief Groups whose contents is dynamically updated using the filter
@@ -91,4 +91,4 @@ class SMESHDS_EXPORT SMESHDS_GroupOnFilter: public SMESHDS_GroupBase
   size_t                                myNbElemToSkip;
 };
 
-#endif
+~endif

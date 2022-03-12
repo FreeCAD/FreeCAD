@@ -25,24 +25,24 @@
 // Created   : Thu Oct 26 15:37:24 2006
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef StdMeshers_ProjectionUtils_HeaderFile
-#define StdMeshers_ProjectionUtils_HeaderFile
+~ifndef StdMeshers_ProjectionUtils_HeaderFile
+~define StdMeshers_ProjectionUtils_HeaderFile
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshNode.hxx"
 
-#include <TopTools_DataMapOfShapeShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_GTrsf.hxx>
-#include <gp_GTrsf2d.hxx>
+~include <TopTools_DataMapOfShapeShape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_GTrsf.hxx>
+~include <gp_GTrsf2d.hxx>
 
-#include <list>
-#include <map>
+~include <list>
+~include <map>
 
 class SMDS_MeshNode;
 class SMESH_Algo;
@@ -282,4 +282,4 @@ namespace StdMeshers_ProjectionUtils
                               std::list< TopoDS_Edge >* allBndEdges = 0 );
 };
 
-#endif
+~endif

@@ -24,12 +24,12 @@
 //  File   : StdMeshers_Projection_3D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_Projection_3D_HXX_
-#define _SMESH_Projection_3D_HXX_
+~ifndef _SMESH_Projection_3D_HXX_
+~define _SMESH_Projection_3D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
 class StdMeshers_ProjectionSource3D;
 
@@ -65,4 +65,4 @@ public:
 
 };
 
-#endif
+~endif

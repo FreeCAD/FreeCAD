@@ -20,13 +20,13 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef UNV2412_Structure_HeaderFile
-#define UNV2412_Structure_HeaderFile
+~ifndef UNV2412_Structure_HeaderFile
+~define UNV2412_Structure_HeaderFile
 
-#include "SMESH_DriverUNV.hxx"
+~include "SMESH_DriverUNV.hxx"
 
-#include <vector>
-#include <fstream>
+~include <vector>
+~include <fstream>
 
 namespace UNV2412{
   
@@ -68,4 +68,4 @@ namespace UNV2412{
 };
 
 
-#endif
+~endif

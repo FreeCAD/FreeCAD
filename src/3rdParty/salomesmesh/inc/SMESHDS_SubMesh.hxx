@@ -24,14 +24,14 @@
 //  File   : SMESHDS_SubMesh.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_SubMesh_HeaderFile
-#define _SMESHDS_SubMesh_HeaderFile
+~ifndef _SMESHDS_SubMesh_HeaderFile
+~define _SMESHDS_SubMesh_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMDS_Mesh.hxx"
-#include <set>
-#include <vector>
+~include "SMDS_Mesh.hxx"
+~include <set>
+~include <vector>
 
 class SMESHDS_SubMesh;
 typedef SMDS_Iterator<const SMESHDS_SubMesh*> SMESHDS_SubMeshIterator;
@@ -90,4 +90,4 @@ class SMESHDS_EXPORT SMESHDS_SubMesh
 
   std::set<const SMESHDS_SubMesh*> mySubMeshes;
 };
-#endif
+~endif

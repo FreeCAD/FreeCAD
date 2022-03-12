@@ -24,10 +24,10 @@
 // Created:   20.09.05 09:51:12
 // Author:    Alexander BORODIN
 //
-#ifndef SMESHDS_DataMapOfShape_HeaderFile
-#define SMESHDS_DataMapOfShape_HeaderFile
+~ifndef SMESHDS_DataMapOfShape_HeaderFile
+~define SMESHDS_DataMapOfShape_HeaderFile
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
 /*
  * This method needed for instance NCollection_DataMap with TopoDS_Shape as key
@@ -47,4 +47,4 @@ struct SMESHDS_Hasher
 };
 
 
-#endif
+~endif

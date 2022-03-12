@@ -22,10 +22,10 @@
 
 // Declarations needed for usage of DriverMED
 
-#include "SMDSAbs_ElementType.hxx"
-#include "SMESH_DriverMED.hxx"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMESH_DriverMED.hxx"
 
-#include <boost/shared_ptr.hpp>
+~include <boost/shared_ptr.hpp>
 
 class DriverMED_Family;
 typedef boost::shared_ptr<DriverMED_Family> DriverMED_FamilyPtr;

@@ -22,11 +22,11 @@
 
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_Iterator.hxx"
-#include "SMDS_MeshElement.hxx"
-#include <set>
+~include "SMDS_Iterator.hxx"
+~include "SMDS_MeshElement.hxx"
+~include <set>
 
 
 class SMDS_EXPORT SMDS_IteratorOfElements:public SMDS_ElemIterator

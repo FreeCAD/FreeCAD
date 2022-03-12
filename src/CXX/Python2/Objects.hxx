@@ -35,21 +35,21 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_Objects__h
-#define __CXX_Objects__h
+~ifndef __CXX_Objects__h
+~define __CXX_Objects__h
 
-#include "CXX/WrapPython.h"
-#include "CXX/Version.hxx"
-#include "CXX/Config.hxx"
-#include "CXX/Exception.hxx"
+~include "CXX/WrapPython.h"
+~include "CXX/Version.hxx"
+~include "CXX/Config.hxx"
+~include "CXX/Exception.hxx"
 
-#include <iostream>
-#include STR_STREAM
-#include <string>
-#include <iterator>
-#include <utility>
-#include <typeinfo>
-#include <algorithm>
+~include <iostream>
+~include STR_STREAM
+~include <string>
+~include <iterator>
+~include <utility>
+~include <typeinfo>
+~include <algorithm>
 
 
 namespace Py
@@ -478,10 +478,10 @@ namespace Py
         return Object(Py::_True());
     }
 
-    // TMM: 31May'01 - Added the #ifndef so I can exlude iostreams.
-#ifndef CXX_NO_IOSTREAMS
+    // TMM: 31May'01 - Added the ~ifndef so I can exlude iostreams.
+~ifndef CXX_NO_IOSTREAMS
     PYCXX_EXPORT std::ostream& operator<< (std::ostream& os, const Object& ob);
-#endif
+~endif
 
     // Class Type
     class PYCXX_EXPORT Type: public Object
@@ -661,7 +661,7 @@ namespace Py
             return PyInt_AsLong (ptr());
         }
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
         // convert to long long
         PY_LONG_LONG asLongLong() const
         {
@@ -672,7 +672,7 @@ namespace Py
         {
             return PyLong_AsUnsignedLongLong (ptr());
         }
-#endif
+~endif
 
         // assign from an int
         Int& operator= (int v)
@@ -688,7 +688,7 @@ namespace Py
             return *this;
         }
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
         // assign from long long
         Int& operator= (PY_LONG_LONG v)
         {
@@ -701,7 +701,7 @@ namespace Py
             set (PyLong_FromUnsignedLongLong (v), true);
             return *this;
         }
-#endif
+~endif
     };
 
     // ===============================================
@@ -806,7 +806,7 @@ namespace Py
         }
     };
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
     // ===============================================
     // class LongLong
     class PYCXX_EXPORT LongLong: public Object
@@ -933,7 +933,7 @@ namespace Py
             return *this;
         }
     };
-#endif
+~endif
 
     // ===============================================
     // class Float
@@ -1840,7 +1840,7 @@ namespace Py
         }
     };
 
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
     // String and Bytes compatible with Python3 version in 6.0.0 PyCXX
     class Bytes;
 
@@ -2117,7 +2117,7 @@ namespace Py
         }
     };
 
-#else
+~else
     // original PyCXX 5.4.x version of String
     class PYCXX_EXPORT String: public SeqBase<Char>
     {
@@ -2277,7 +2277,7 @@ namespace Py
             }
         }
     };
-#endif
+~endif
 
     // ==================================================
     // class Tuple
@@ -3492,4 +3492,4 @@ String seqref<T>::repr () const
 }
 
 } // namespace Py
-#endif    // __CXX_Objects__h
+~endif    // __CXX_Objects__h

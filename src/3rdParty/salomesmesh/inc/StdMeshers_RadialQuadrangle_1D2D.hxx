@@ -21,16 +21,16 @@
 //  File   : StdMeshers_RadialQuadrangle_1D2D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_RadialQuadrangle_1D2D_HXX_
-#define _SMESH_RadialQuadrangle_1D2D_HXX_
+~ifndef _SMESH_RadialQuadrangle_1D2D_HXX_
+~define _SMESH_RadialQuadrangle_1D2D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
-#include <TopoDS_Edge.hxx>
+~include <TopoDS_Edge.hxx>
 
-#include <vector>
+~include <vector>
 
 class StdMeshers_NumberOfLayers;
 class StdMeshers_LayerDistribution;
@@ -75,4 +75,4 @@ protected:
   std::vector< double >               myLayerPositions;
 };
 
-#endif
+~endif

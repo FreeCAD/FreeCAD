@@ -19,15 +19,15 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_Vector_HeaderFile
-#define MED_Vector_HeaderFile
+~ifndef MED_Vector_HeaderFile
+~define MED_Vector_HeaderFile
 
-#include <vector>
-#include <stdexcept>
+~include <vector>
+~include <stdexcept>
 
-//#if defined(_DEBUG_)
-#  define MED_TVECTOR_CHECK_RANGE
-//#endif
+//~if defined(_DEBUG_)
+~  define MED_TVECTOR_CHECK_RANGE
+//~endif
 
 namespace MED
 {
@@ -115,18 +115,18 @@ namespace MED
     reference
     operator[](size_type __n)
     {
-#if defined(MED_TVECTOR_CHECK_RANGE)
+~if defined(MED_TVECTOR_CHECK_RANGE)
       check_range(__n);
-#endif
+~endif
       return get_value(__n);
     }
 
     const_reference
     operator[](size_type __n) const
     {
-#if defined(MED_TVECTOR_CHECK_RANGE)
+~if defined(MED_TVECTOR_CHECK_RANGE)
       check_range(__n);
-#endif
+~endif
       return get_value(__n);
     }
 
@@ -147,6 +147,6 @@ namespace MED
 
 }
 
-#undef MED_TVECTOR_CHECK_RANGE
+~undef MED_TVECTOR_CHECK_RANGE
 
-#endif
+~endif

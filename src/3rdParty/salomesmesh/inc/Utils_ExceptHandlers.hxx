@@ -26,46 +26,46 @@
 //  Module : KERNEL
 //  $Header:
 //
-#ifndef Utils_ExceptHandlers_HeaderFile
-#define Utils_ExceptHandlers_HeaderFile
+~ifndef Utils_ExceptHandlers_HeaderFile
+~define Utils_ExceptHandlers_HeaderFile
 
-#include "SALOME_Utils.hxx"
+~include "SALOME_Utils.hxx"
 
-#include <stdexcept>
+~include <stdexcept>
 
 typedef void (*PVF)();
 
 class UTILS_EXPORT Unexpect { //save / retrieve unexpected exceptions treatment
   PVF old;
   public :
-#ifndef _MSC_VER
+~ifndef _MSC_VER
   // std::set_unexpected has been removed in C++17
     Unexpect( PVF f ) 
       { /*old = std::set_unexpected(f);*/old = f; }
   ~Unexpect() { /*std::set_unexpected(old);*/ }
-#else
+~else
     Unexpect( PVF f ) 
       { old = ::set_unexpected(f); }
   ~Unexpect() { ::set_unexpected(old); }
-#endif
+~endif
 };
 
 class UTILS_EXPORT Terminate {//save / retrieve terminate function
   
   PVF old;
   public :
-#ifndef _MSC_VER
+~ifndef _MSC_VER
     Terminate( PVF f ) 
       { old = std::set_terminate(f); }
   ~Terminate() { std::set_terminate(old); }
-#else
+~else
     Terminate( PVF f ) 
       { old = ::set_terminate(f); }
   ~Terminate() { ::set_terminate(old); }
-#endif
+~endif
 };
 
-#define UNEXPECT_CATCH(FuncName, ExceptionConstructor) \
+~define UNEXPECT_CATCH(FuncName, ExceptionConstructor) \
 inline void FuncName () {\
    throw ExceptionConstructor (); \
 }
@@ -87,4 +87,4 @@ inline void FuncName () {\
 UTILS_EXPORT extern void SalomeException();
 UTILS_EXPORT extern void SALOME_SalomeException();
 
-#endif
+~endif

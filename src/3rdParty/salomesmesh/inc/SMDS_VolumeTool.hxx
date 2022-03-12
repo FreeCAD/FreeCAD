@@ -26,19 +26,19 @@
 // Created   : Tue Jul 13 11:27:17 2004
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef SMDS_VolumeTool_HeaderFile
-#define SMDS_VolumeTool_HeaderFile
+~ifndef SMDS_VolumeTool_HeaderFile
+~define SMDS_VolumeTool_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
 class SMDS_MeshElement;
 class SMDS_MeshNode;
 class SMDS_VtkVolume;
 class SMDS_MeshVolume;
 
-#include <vector>
-#include <set>
-#include <map>
+~include <vector>
+~include <set>
+~include <map>
 
 // =========================================================================
 //
@@ -281,7 +281,7 @@ class SMDS_EXPORT SMDS_VolumeTool
   mutable Facet           myCurFace;
 
 };
-#endif
+~endif
 
 
 ///////////////////////////////////////////////////////////////////////////

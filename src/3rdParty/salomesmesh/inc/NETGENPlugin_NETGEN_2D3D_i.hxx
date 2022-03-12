@@ -26,16 +26,16 @@
 //  Module : NETGENPlugin
 //  $Header$
 //
-#ifndef _NETGENPlugin_NETGEN_2D3D_I_HXX_
-#define _NETGENPlugin_NETGEN_2D3D_I_HXX_
+~ifndef _NETGENPlugin_NETGEN_2D3D_I_HXX_
+~define _NETGENPlugin_NETGEN_2D3D_I_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+~include <SALOMEconfig.h>
+~include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
-#include "SMESH_3D_Algo_i.hxx"
-#include "NETGENPlugin_NETGEN_2D3D.hxx"
+~include "SMESH_3D_Algo_i.hxx"
+~include "NETGENPlugin_NETGEN_2D3D.hxx"
 
 // ======================================================
 // NETGEN 3d algorithm
@@ -56,4 +56,4 @@ public:
   ::NETGENPlugin_NETGEN_2D3D* GetImpl();
 };
 
-#endif
+~endif

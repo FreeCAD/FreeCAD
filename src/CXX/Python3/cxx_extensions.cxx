@@ -34,12 +34,12 @@
 // DAMAGE.
 //
 //-----------------------------------------------------------------------------
-#include "CXX/Extensions.hxx"
-#include "CXX/Exception.hxx"
+~include "CXX/Extensions.hxx"
+~include "CXX/Exception.hxx"
 
-#include <assert.h>
+~include <assert.h>
 
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
 //
 //  Functions useful when debugging PyCXX
 //
@@ -51,7 +51,7 @@ void printRefCount( PyObject *obj )
 {
     std::cout << "RefCount of 0x" << std::hex << reinterpret_cast< unsigned int >( obj ) << std::dec << " is " << Py_REFCNT( obj ) << std::endl;
 }
-#endif
+~endif
 
 namespace Py
 {
@@ -61,7 +61,7 @@ void Object::validate()
     // release pointer if not the right type
     if( !accepts( p ) )
     {
-#if defined( _CPPRTTI ) || defined( __GNUG__ )
+~if defined( _CPPRTTI ) || defined( __GNUG__ )
         std::string s( "PyCXX: Error creating object of type " );
         s += (typeid( *this )).name();
 
@@ -75,18 +75,18 @@ void Object::validate()
         {
             s += " from (nil)";
         }
-#endif
+~endif
         release();
         if( PyErr_Occurred() )
         { // Error message already set
             throw Exception();
         }
         // Better error message if RTTI available
-#if defined( _CPPRTTI ) || defined( __GNUG__ )
+~if defined( _CPPRTTI ) || defined( __GNUG__ )
         throw TypeError( s );
-#else
+~else
         throw TypeError( "PyCXX: type error." );
-#endif
+~endif
     }
 }
 
@@ -222,9 +222,9 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
+~if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
     static int print_handler( PyObject *, FILE *, int );
-#endif
+~endif
     static PyObject *getattr_handler( PyObject *, char * );
     static int setattr_handler( PyObject *, char *, PyObject * );
     static PyObject *getattro_handler( PyObject *, PyObject * );
@@ -381,11 +381,11 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
 
     // Methods to implement standard operations
     table->tp_dealloc = (destructor)standard_dealloc;
-#if PY_VERSION_HEX < 0x03080000
+~if PY_VERSION_HEX < 0x03080000
     table->tp_print = 0;
-#else
+~else
     table->tp_vectorcall_offset = 0;
-#endif
+~endif
     table->tp_getattr = 0;
     table->tp_setattr = 0;
     table->tp_repr = 0;
@@ -450,13 +450,13 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
     // Type attribute cache version tag. Added in version 2.6
     table->tp_version_tag = 0;
 
-#ifdef COUNT_ALLOCS
+~ifdef COUNT_ALLOCS
     table->tp_alloc = 0;
     table->tp_free = 0;
     table->tp_maxalloc = 0;
     table->tp_orev = 0;
     table->tp_next = 0;
-#endif
+~endif
 }
 
 PythonType::~PythonType()
@@ -525,15 +525,15 @@ PythonType &PythonType::supportClass()
     return *this;
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
 PythonType &PythonType::supportPrint()
 {
-#if PY_VERSION_HEX < 0x03080000
+~if PY_VERSION_HEX < 0x03080000
     table->tp_print = print_handler;
-#endif
+~endif
     return *this;
 }
-#endif
+~endif
 
 PythonType &PythonType::supportGetattr()
 {
@@ -559,12 +559,12 @@ PythonType &PythonType::supportSetattro()
     return *this;
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
 PythonType &PythonType::supportCompare( void )
 {
     return *this;
 }
-#endif
+~endif
 
 
 PythonType &PythonType::supportRichCompare()
@@ -622,7 +622,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
+~if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -635,7 +635,7 @@ extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
         return -1;    // indicate error
     }
 }
-#endif
+~endif
 
 extern "C" PyObject *getattr_handler( PyObject *self, char *name )
 {
@@ -1138,8 +1138,8 @@ extern "C" void buffer_release_handler( PyObject *self, Py_buffer *buf )
 //    Implementation of PythonExtensionBase
 //
 //================================================================================
-#define missing_method( method ) \
-    throw RuntimeError( "Extension object missing implement of " #method );
+~define missing_method( method ) \
+    throw RuntimeError( "Extension object missing implement of " ~method );
 
 PythonExtensionBase::PythonExtensionBase()
 {
@@ -1245,13 +1245,13 @@ int PythonExtensionBase::genericSetAttro( const Py::String &name, const Py::Obje
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
     return -1;
 }
-#endif
+~endif
 
 Py::Object PythonExtensionBase::getattr( const char * )
 {
@@ -1663,7 +1663,7 @@ Exception::Exception( PyObject *exception, Object &reason )
     PyErr_SetObject( exception, reason.ptr() );
 }
 
-#if 1
+~if 1
 //------------------------------------------------------------
 // compare operators
 bool operator!=( const Long &a, const Long &b )
@@ -1821,7 +1821,7 @@ bool operator<=( const Long &a, long b )
     return a.as_long() <= b;
 }
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
 //------------------------------
 bool operator!=( const Long &a, PY_LONG_LONG b )
 {
@@ -1887,8 +1887,8 @@ bool operator<=( PY_LONG_LONG a, const Long &b )
 {
     return a <= b.as_long_long();
 }
-#endif
-#endif
+~endif
+~endif
 
 //------------------------------------------------------------
 // compare operators

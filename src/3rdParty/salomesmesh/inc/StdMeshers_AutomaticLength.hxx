@@ -25,15 +25,15 @@
 //  Author : Edward AGAPOV, OCC
 //  Module : SMESH
 //
-#ifndef _SMESH_AutomaticLength_HXX_
-#define _SMESH_AutomaticLength_HXX_
+~ifndef _SMESH_AutomaticLength_HXX_
+~define _SMESH_AutomaticLength_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <map>
+~include <map>
 
 class SMESH_Mesh;
 class TopoDS_Shape;
@@ -105,4 +105,4 @@ protected:
   double _fineness, _S0, _minLen;
 };
 
-#endif
+~endif

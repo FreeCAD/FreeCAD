@@ -24,14 +24,14 @@
 //  File   : SMDS_MeshNode.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshNode_HeaderFile
-#define _SMDS_MeshNode_HeaderFile
+~ifndef _SMDS_MeshNode_HeaderFile
+~define _SMDS_MeshNode_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_Position.hxx"
-#include "ObjectPool.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_Position.hxx"
+~include "ObjectPool.hxx"
 
 class SMDS_EXPORT SMDS_MeshNode: public SMDS_MeshElement
 {
@@ -78,4 +78,4 @@ private:
   SMDS_PositionPtr myPosition;
 };
 
-#endif
+~endif

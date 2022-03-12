@@ -27,20 +27,20 @@
 //  Author    : Nicolas Geimer & Aurelien Motteux  (OCC)
 //  Module    : SMESH
 //
-#ifndef _SMESH_OCTREENODE_HXX_
-#define _SMESH_OCTREENODE_HXX_
+~ifndef _SMESH_OCTREENODE_HXX_
+~define _SMESH_OCTREENODE_HXX_
 
-#include "SMDS_ElemIterator.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_Octree.hxx"
-#include "SMESH_Utils.hxx"
+~include "SMDS_ElemIterator.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_Octree.hxx"
+~include "SMESH_Utils.hxx"
 
-#include <gp_Pnt.hxx>
+~include <gp_Pnt.hxx>
 
-#include <list>
-#include <set>
-#include <map>
-#include <vector>
+~include <list>
+~include <set>
+~include <map>
+~include <vector>
 
 //forward declaration
 class SMDS_MeshNode;
@@ -142,4 +142,4 @@ protected:
 
 };
 
-#endif
+~endif

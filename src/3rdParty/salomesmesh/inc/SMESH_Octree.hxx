@@ -23,15 +23,15 @@
 //  SMESH SMESH_Octree : Octree implementation
 //  File      : SMESH_Octree.hxx
 //  Created   : Tue Jan 16 16:00:00 2007
-//  Author    : Nicolas Geimer & Aurélien Motteux (OCC)
+//  Author    : Nicolas Geimer & Aurï¿½lien Motteux (OCC)
 //  Module    : SMESH
 //
-#ifndef _SMESH_OCTREE_HXX_
-#define _SMESH_OCTREE_HXX_
+~ifndef _SMESH_OCTREE_HXX_
+~define _SMESH_OCTREE_HXX_
 
-#include "SMESH_Utils.hxx"
-#include "SMESH_tree.hxx"
-#include <Bnd_B3d.hxx>
+~include "SMESH_Utils.hxx"
+~include "SMESH_tree.hxx"
+~include <Bnd_B3d.hxx>
 
 //================================================================================
 /*!
@@ -72,4 +72,4 @@ inline int SMESH_Octree::getChildIndex(double x, double y, double z, const gp_XY
   return (x > mid.X()) + ( y > mid.Y())*2 + (z > mid.Z())*4;
 }
 
-#endif
+~endif

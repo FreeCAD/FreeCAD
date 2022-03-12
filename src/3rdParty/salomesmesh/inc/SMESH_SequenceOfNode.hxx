@@ -23,25 +23,25 @@
 // Created:   11.11.05 10:00:04
 // Author:    Sergey KUUL
 //
-#ifndef SMESH_SequenceOfNode_HeaderFile
-#define SMESH_SequenceOfNode_HeaderFile
+~ifndef SMESH_SequenceOfNode_HeaderFile
+~define SMESH_SequenceOfNode_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include <NCollection_DefineSequence.hxx>
-#if OCC_VERSION_HEX >= 0x060703
-#include <NCollection_IncAllocator.hxx>
-#include <NCollection_Sequence.hxx>
-#endif
+~include <NCollection_DefineSequence.hxx>
+~if OCC_VERSION_HEX >= 0x060703
+~include <NCollection_IncAllocator.hxx>
+~include <NCollection_Sequence.hxx>
+~endif
 
 typedef const SMDS_MeshNode* SMDS_MeshNodePtr;
 
-#if OCC_VERSION_HEX >= 0x060703
+~if OCC_VERSION_HEX >= 0x060703
 typedef NCollection_Sequence<SMDS_MeshNodePtr> SMESH_SequenceOfNode;
-#else
+~else
 DEFINE_BASECOLLECTION (SMESH_BaseCollectionNodePtr, SMDS_MeshNodePtr)
 DEFINE_SEQUENCE(SMESH_SequenceOfNode,
                 SMESH_BaseCollectionNodePtr, SMDS_MeshNodePtr)
-#endif
+~endif
 
-#endif
+~endif

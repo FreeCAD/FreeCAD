@@ -23,15 +23,15 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_SimpleHypothesis_2D_i_HXX_
-#define _NETGENPlugin_SimpleHypothesis_2D_i_HXX_
+~ifndef _NETGENPlugin_SimpleHypothesis_2D_i_HXX_
+~define _NETGENPlugin_SimpleHypothesis_2D_i_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+~include <SALOMEconfig.h>
+~include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
-#include "SMESH_Hypothesis_i.hxx"
+~include "SMESH_Hypothesis_i.hxx"
 
 class SMESH_Gen;
 class NETGENPlugin_SimpleHypothesis_2D;
@@ -83,4 +83,4 @@ class NETGENPLUGIN_EXPORT  NETGENPlugin_SimpleHypothesis_2D_i:
   virtual std::string getMethodOfParameter(const int paramIndex, int nbVars) const;
 };
 
-#endif
+~endif

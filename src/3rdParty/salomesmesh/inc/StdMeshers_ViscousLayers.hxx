@@ -21,16 +21,16 @@
 // Created   : Wed Dec  1 15:15:34 2010
 // Author    : Edward AGAPOV (eap)
 
-#ifndef __StdMeshers_ViscousLayers_HXX__
-#define __StdMeshers_ViscousLayers_HXX__
+~ifndef __StdMeshers_ViscousLayers_HXX__
+~define __StdMeshers_ViscousLayers_HXX__
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_ComputeError.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_ComputeError.hxx"
 
-#include <vector>
+~include <vector>
 
 /*!
  * \brief Hypothesis defining parameters of viscous layers
@@ -128,4 +128,4 @@ namespace VISCOUS_3D
   void ToClearSubWithMain( SMESH_subMesh* sub, const TopoDS_Shape& main);
 }
 
-#endif
+~endif

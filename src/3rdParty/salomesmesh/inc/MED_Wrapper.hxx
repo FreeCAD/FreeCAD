@@ -20,15 +20,15 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef MED_Wrapper_HeaderFile
-#define MED_Wrapper_HeaderFile
+~ifndef MED_Wrapper_HeaderFile
+~define MED_Wrapper_HeaderFile
 
-#include "MED_WrapperBase.hxx"
+~include "MED_WrapperBase.hxx"
 
-#include "MED_Structures.hxx"
-#include "MED_Algorithm.hxx"
+~include "MED_Structures.hxx"
+~include "MED_Algorithm.hxx"
 
-#include <boost/thread/mutex.hpp>
+~include <boost/thread/mutex.hpp>
 
 namespace MED
 {
@@ -986,7 +986,7 @@ namespace MED
     TWrapper * operator-> () const;
   };
 
-#if 0
+~if 0
   //----------------------------------------------------------------------------
   //! To specialize the SharedPtr for TWrapper
   template<> 
@@ -1047,7 +1047,7 @@ namespace MED
 
   //----------------------------------------------------------------------------
   typedef SharedPtr<TWrapper> PWrapper;
-#endif
+~endif
 }
 
-#endif
+~endif

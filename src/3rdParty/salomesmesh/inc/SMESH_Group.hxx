@@ -25,16 +25,16 @@
 //  Author : Michael Sazonov (OCC)
 //  Module : SMESH
 //
-#ifndef _SMESH_Group_HeaderFile
-#define _SMESH_Group_HeaderFile
+~ifndef _SMESH_Group_HeaderFile
+~define _SMESH_Group_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMDSAbs_ElementType.hxx"
-#include "SMESH_Controls.hxx"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMESH_Controls.hxx"
 
-#include <string>
-#include <TopoDS_Shape.hxx>
+~include <string>
+~include <TopoDS_Shape.hxx>
 
 class SMESHDS_GroupBase;
 class SMESH_Mesh;
@@ -68,4 +68,4 @@ class SMESH_EXPORT  SMESH_Group
   std::string         myName;
 };
 
-#endif
+~endif

@@ -24,22 +24,22 @@
 // Created   : Mon Aug  2 10:30:00 2004
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef SMESH_Pattern_HeaderFile
-#define SMESH_Pattern_HeaderFile
+~ifndef SMESH_Pattern_HeaderFile
+~define SMESH_Pattern_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include <vector>
-#include <list>
-#include <map>
-#include <set>
-#include <iostream>
+~include <vector>
+~include <list>
+~include <map>
+~include <set>
+~include <iostream>
 
-#include <TopoDS_Vertex.hxx>
-#include <TopTools_IndexedMapOfOrientedShape.hxx>
-#include <gp_XYZ.hxx>
-#include <gp_XY.hxx>
-#include <gp_Pnt.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopTools_IndexedMapOfOrientedShape.hxx>
+~include <gp_XYZ.hxx>
+~include <gp_XY.hxx>
+~include <gp_Pnt.hxx>
 
 class SMDS_MeshElement;
 class SMDS_MeshFace;
@@ -392,4 +392,4 @@ private:
 };
 
 
-#endif
+~endif

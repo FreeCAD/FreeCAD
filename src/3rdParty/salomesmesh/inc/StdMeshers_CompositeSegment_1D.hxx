@@ -24,11 +24,11 @@
 //  File   : StdMeshers_CompositeSegment_1D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_CompositeSegment_1D_HXX_
-#define _SMESH_CompositeSegment_1D_HXX_
+~ifndef _SMESH_CompositeSegment_1D_HXX_
+~define _SMESH_CompositeSegment_1D_HXX_
 
-#include "StdMeshers_Regular_1D.hxx"
-#include "SMESH_StdMeshers.hxx"
+~include "StdMeshers_Regular_1D.hxx"
+~include "SMESH_StdMeshers.hxx"
 
 class SMESH_subMeshEventListener;
 class SMESH_Mesh;
@@ -67,4 +67,4 @@ public:
 
 };
 
-#endif
+~endif

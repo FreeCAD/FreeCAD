@@ -26,26 +26,26 @@
 // Date      : 31/03/2006
 // Project   : SALOME
 //
-#ifndef _NETGENPlugin_Mesher_HXX_
-#define _NETGENPlugin_Mesher_HXX_
-#include <TopTools_IndexedMapOfShape.hxx>
-#include "NETGENPlugin_Defs.hxx"
+~ifndef _NETGENPlugin_Mesher_HXX_
+~define _NETGENPlugin_Mesher_HXX_
+~include <TopTools_IndexedMapOfShape.hxx>
+~include "NETGENPlugin_Defs.hxx"
 
-#include <StdMeshers_FaceSide.hxx>
-#include <SMDS_MeshElement.hxx>
-#include <SMESH_Algo.hxx>
-#include <SMESH_ProxyMesh.hxx>
+~include <StdMeshers_FaceSide.hxx>
+~include <SMDS_MeshElement.hxx>
+~include <SMESH_Algo.hxx>
+~include <SMESH_ProxyMesh.hxx>
 
-#define NETGEN_VERSION_STRING(a,b,c) (a << 16) + (b << 8) + (c)
+~define NETGEN_VERSION_STRING(a,b,c) (a << 16) + (b << 8) + (c)
 
 namespace nglib {
-#include <nglib.h>
+~include <nglib.h>
 }
 
-#include <map>
-#include <vector>
-#include <set>
-#include <memory>
+~include <map>
+~include <vector>
+~include <set>
+~include <memory>
 
 class SMESHDS_Mesh;
 class SMESH_Comment;
@@ -85,11 +85,11 @@ struct NETGENPlugin_ngMeshInfo
 struct NETGENPLUGIN_EXPORT NETGENPlugin_NetgenLibWrapper
 {
   bool             _isComputeOk;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   nglib::Ng_Mesh * _ngMesh;
-#else
+~else
   std::shared_ptr<nglib::Ng_Mesh> _ngMesh;
-#endif
+~endif
 
   NETGENPlugin_NetgenLibWrapper();
   ~NETGENPlugin_NetgenLibWrapper();
@@ -204,11 +204,11 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Mesher
   bool                 _optimize;
   int                  _fineness;
   bool                 _isViscousLayers2D;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   netgen::Mesh*        _ngMesh;
-#else
+~else
   std::shared_ptr<netgen::Mesh> _ngMesh;
-#endif
+~endif
   netgen::OCCGeometry* _occgeom;
 
   int                  _curShapeIndex;
@@ -293,4 +293,4 @@ public:
 
 };
 
-#endif
+~endif

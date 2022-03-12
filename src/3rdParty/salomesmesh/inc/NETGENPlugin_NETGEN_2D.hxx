@@ -27,13 +27,13 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_NETGEN_2D_HXX_
-#define _NETGENPlugin_NETGEN_2D_HXX_
+~ifndef _NETGENPlugin_NETGEN_2D_HXX_
+~define _NETGENPlugin_NETGEN_2D_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Mesh.hxx"
 
 class NETGENPlugin_Mesher;
 
@@ -64,4 +64,4 @@ protected:
   NETGENPlugin_Mesher *     _mesher;
 };
 
-#endif
+~endif

@@ -26,24 +26,24 @@
 //  Project   : SALOME
 //  Module    : SALOMEDS
 //
-#ifndef __SALOMEDS_Tool_H__
-#define __SALOMEDS_Tool_H__
+~ifndef __SALOMEDS_Tool_H__
+~define __SALOMEDS_Tool_H__
 
-#include <string>
-#include <list> 
-#include <SALOMEDS.hxx>
+~include <string>
+~include <list> 
+~include <SALOMEDS.hxx>
 
 // IDL headers
 
-#ifdef WIN32
-# if defined TOOLSDS_EXPORTS
-#  define TOOLSDS_EXPORT __declspec( dllexport )
-# else
-#  define TOOLSDS_EXPORT __declspec( dllimport )
-# endif
-#else
-# define TOOLSDS_EXPORT
-#endif
+~ifdef WIN32
+~ if defined TOOLSDS_EXPORTS
+~  define TOOLSDS_EXPORT __declspec( dllexport )
+~ else
+~  define TOOLSDS_EXPORT __declspec( dllimport )
+~ endif
+~else
+~ define TOOLSDS_EXPORT
+~endif
 
 class TOOLSDS_EXPORT SALOMEDS_Tool                                
 {
@@ -99,7 +99,7 @@ public:
                               std::list<SALOMEDS::SObject_var>& theList );
 
 };
-#endif
+~endif
 
 
 

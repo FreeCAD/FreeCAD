@@ -35,11 +35,11 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
-#define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+~ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+~define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
 
-#include "CXX/WrapPython.h"
-#include "CXX/Config.hxx"
+~include "CXX/WrapPython.h"
+~include "CXX/Config.hxx"
 
 namespace Py
 {
@@ -75,18 +75,18 @@ PYCXX_EXPORT PyObject * _Exc_SystemExit();
 PYCXX_EXPORT PyObject * _Exc_TypeError();
 PYCXX_EXPORT PyObject * _Exc_ValueError();
 PYCXX_EXPORT PyObject * _Exc_ZeroDivisionError();
-#ifdef MS_WINDOWS
+~ifdef MS_WINDOWS
 PYCXX_EXPORT PyObject * _Exc_WindowsError();
-#endif
+~endif
 
 PYCXX_EXPORT PyObject * _Exc_MemoryErrorInst();
 
-#if PY_MAJOR_VERSION >= 2
+~if PY_MAJOR_VERSION >= 2
 PYCXX_EXPORT PyObject * _Exc_IndentationError();
 PYCXX_EXPORT PyObject * _Exc_TabError();
 PYCXX_EXPORT PyObject * _Exc_UnboundLocalError();
 PYCXX_EXPORT PyObject * _Exc_UnicodeError();
-#endif
+~endif
 
 //
 //    Wrap Object variables as function calls
@@ -174,10 +174,10 @@ PYCXX_EXPORT bool _TraceBack_Check( PyObject *v );
 PYCXX_EXPORT PyTypeObject * _Tuple_Type();
 PYCXX_EXPORT bool _Tuple_Check( PyObject *op );
 
-#if PY_MAJOR_VERSION >= 2
+~if PY_MAJOR_VERSION >= 2
 PYCXX_EXPORT PyTypeObject * _Unicode_Type();
 PYCXX_EXPORT bool _Unicode_Check( PyObject *op );
-#endif
+~endif
 
 PYCXX_EXPORT int &_Py_DebugFlag();
 PYCXX_EXPORT int &_Py_InteractiveFlag();
@@ -186,9 +186,9 @@ PYCXX_EXPORT int &_Py_NoSiteFlag();
 PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
 
-#if PY_MAJOR_VERSION >= 2
+~if PY_MAJOR_VERSION >= 2
 PYCXX_EXPORT int &_Py_UnicodeFlag();
-#endif
+~endif
 
 PYCXX_EXPORT void _XINCREF( PyObject *op );
 PYCXX_EXPORT void _XDECREF( PyObject *op );
@@ -196,4 +196,4 @@ PYCXX_EXPORT void _XDECREF( PyObject *op );
 PYCXX_EXPORT const char *__Py_PackageContext();
 }
 
-#endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+~endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

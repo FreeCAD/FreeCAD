@@ -23,49 +23,49 @@
 // Created   : Mon Dec 17 15:43:38 2012
 // Author    : Edward AGAPOV (eap)
 
-#ifndef __SMESH_TryCatch_HXX__
-#define __SMESH_TryCatch_HXX__
+~ifndef __SMESH_TryCatch_HXX__
+~define __SMESH_TryCatch_HXX__
 
-#include "SMESH_Comment.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Utils.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Utils.hxx"
 
-#include <Utils_SALOME_Exception.hxx>
-#include <Standard_Failure.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <Basics_OCCTVersion.hxx>
-#include <utilities.h>
+~include <Utils_SALOME_Exception.hxx>
+~include <Standard_Failure.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Basics_OCCTVersion.hxx>
+~include <utilities.h>
 
 // IMPORTANT: include this file _after_ OCC ones, else OCC_CATCH_SIGNALS can be undefined!
 
-#ifndef OCC_CATCH_SIGNALS
-#define OCC_CATCH_SIGNALS
-#endif
+~ifndef OCC_CATCH_SIGNALS
+~define OCC_CATCH_SIGNALS
+~endif
 
 // Define macros to catch and convert some of possible exceptions into text or SALOME_Exception
 
 //-------------------------------------------------------------------------------------
-#define SMESH_TRY                               \
+~define SMESH_TRY                               \
   try {                                         \
   OCC_CATCH_SIGNALS                             \
 
 //-------------------------------------------------------------------------------------
 // A macro to add a custom catch clause to SMESH_CATCH
 // To add your own catch close, define SMY_OWN_CATCH macro before including this file.
-#ifndef SMY_OWN_CATCH
-#define SMY_OWN_CATCH
-#endif
+~ifndef SMY_OWN_CATCH
+~define SMY_OWN_CATCH
+~endif
 
 //-------------------------------------------------------------------------------------
 // A macro allowing to retrieve a result returned by onExceptionFun
-#define SMESH_CAUGHT
+~define SMESH_CAUGHT
 
 //-------------------------------------------------------------------------------------
 // A macro makes description of a caught exception and calls onExceptionFun(const char*).
 // Two onExceptionFun() are defined here: SMESH::throwSalomeEx() and SMESH::doNothing().
 // To add your own catch close, define SMY_OWN_CATCH macro before including this file.
 
-#define SMESH_CATCH( onExceptionFun )                                   \
+~define SMESH_CATCH( onExceptionFun )                                   \
   }                                                                     \
   catch (Standard_Failure& ex)                                          \
   {                                                                     \
@@ -106,4 +106,4 @@ namespace SMESH
   SMESHUtils_EXPORT void doNothing(const char* txt);
 }
 
-#endif
+~endif

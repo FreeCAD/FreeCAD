@@ -21,19 +21,19 @@
 // Created   : Wed Mar 10 10:33:04 2010
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef __SMESH_File_HXX__
-#define __SMESH_File_HXX__
+~ifndef __SMESH_File_HXX__
+~define __SMESH_File_HXX__
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
-#ifdef WIN32
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
+~ifdef WIN32
+~include <windows.h>
+~else
+~include <dlfcn.h>
+~endif
 
 /*!
  * \brief High level util for effective file reading and other file operations
@@ -111,14 +111,14 @@ private:
   std::string _name; //!< file name
   int         _size; //!< file size
   std::string _error;
-#ifdef WIN32
+~ifdef WIN32
   HANDLE      _file, _mapObj;
-#else
+~else
   int         _file;
-#endif
+~endif
   void*       _map;
   const char* _pos; //!< current position
   const char* _end; //!< position after file end
 };
 
-#endif
+~endif

@@ -24,13 +24,13 @@
 //  File   : StdMeshers_QuadraticMesh.hxx
 //  Module : SMESH
 //
-#ifndef _StdMeshers_QuadraticMesh_HXX_
-#define _StdMeshers_QuadraticMesh_HXX_
+~ifndef _StdMeshers_QuadraticMesh_HXX_
+~define _StdMeshers_QuadraticMesh_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 /*!
  * \brief Hypothesis for StdMeshers_Regular_1D, forcing construction of quadratic edges.
@@ -69,4 +69,4 @@ class STDMESHERS_EXPORT StdMeshers_QuadraticMesh:public SMESH_Hypothesis
 
 };
 
-#endif
+~endif

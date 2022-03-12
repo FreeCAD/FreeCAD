@@ -24,17 +24,17 @@
 //  Author : Alexander A. BORODIN
 //  Module : SALOME
 //
-#ifndef _SALOME_UTILS_HXX_
-#define _SALOME_UTILS_HXX_
+~ifndef _SALOME_UTILS_HXX_
+~define _SALOME_UTILS_HXX_
 
-#ifdef WIN32
-# if defined UTILS_EXPORTS || defined OpUtil_EXPORTS
-#  define UTILS_EXPORT __declspec( dllexport )
-# else
-#  define UTILS_EXPORT __declspec( dllimport )
-# endif
-#else
-# define UTILS_EXPORT
-#endif
+~ifdef WIN32
+~ if defined UTILS_EXPORTS || defined OpUtil_EXPORTS
+~  define UTILS_EXPORT __declspec( dllexport )
+~ else
+~  define UTILS_EXPORT __declspec( dllimport )
+~ endif
+~else
+~ define UTILS_EXPORT
+~endif
 
-#endif
+~endif

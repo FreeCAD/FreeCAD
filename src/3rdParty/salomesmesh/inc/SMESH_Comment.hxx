@@ -24,11 +24,11 @@
 // Module    : SMESH
 // $Header: 
 //
-#ifndef SMESH_Comment_HeaderFile
-#define SMESH_Comment_HeaderFile
+~ifndef SMESH_Comment_HeaderFile
+~define SMESH_Comment_HeaderFile
 
-# include <string>
-# include <sstream>
+~ include <string>
+~ include <sstream>
 
 using namespace std;
 
@@ -73,4 +73,4 @@ public :
 };
 
 
-#endif
+~endif

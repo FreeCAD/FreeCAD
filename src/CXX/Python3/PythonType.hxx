@@ -35,8 +35,8 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_PythonType__h
-#define __CXX_PythonType__h
+~ifndef __CXX_PythonType__h
+~define __CXX_PythonType__h
 
 namespace Py
 {
@@ -57,16 +57,16 @@ namespace Py
         PythonType &doc( const char *d );
 
         PythonType &supportClass( void );
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
         PythonType &supportPrint( void );
-#endif
+~endif
         PythonType &supportGetattr( void );
         PythonType &supportSetattr( void );
         PythonType &supportGetattro( void );
         PythonType &supportSetattro( void );
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
         PythonType &supportCompare( void );
-#endif
+~endif
         PythonType &supportRichCompare( void );
         PythonType &supportRepr( void );
         PythonType &supportStr( void );
@@ -111,4 +111,4 @@ namespace Py
 } // Namespace Py
 
 // End of __CXX_PythonType__h
-#endif
+~endif

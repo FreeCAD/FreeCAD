@@ -19,12 +19,12 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_GaussUtils_HeaderFile
-#define MED_GaussUtils_HeaderFile
+~ifndef MED_GaussUtils_HeaderFile
+~define MED_GaussUtils_HeaderFile
 
-#include "MED_WrapperBase.hxx"
+~include "MED_WrapperBase.hxx"
 
-#include "MED_Structures.hxx"
+~include "MED_Structures.hxx"
 
 namespace MED
 {
@@ -362,4 +362,4 @@ namespace MED
 
 }
 
-#endif
+~endif

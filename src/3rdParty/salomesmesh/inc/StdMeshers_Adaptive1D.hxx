@@ -22,14 +22,14 @@
 //  File   : StdMeshers_Adaptive1D.hxx
 //  Module : SMESH
 //
-#ifndef _StdMeshers_Adaptive1D_HXX_
-#define _StdMeshers_Adaptive1D_HXX_
+~ifndef _StdMeshers_Adaptive1D_HXX_
+~define _StdMeshers_Adaptive1D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "StdMeshers_Regular_1D.hxx"
+~include "StdMeshers_Regular_1D.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 /*!
  * \brief Adaptive 1D hypothesis
@@ -87,4 +87,4 @@ protected:
   SMESH_Algo* myAlgo; // StdMeshers_AdaptiveAlgo_1D implemented in cxx file
 };
 
-#endif
+~endif

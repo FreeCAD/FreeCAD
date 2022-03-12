@@ -24,12 +24,12 @@
 //  File   : SMDS_FacePosition.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_FacePosition_HeaderFile
-#define _SMDS_FacePosition_HeaderFile
+~ifndef _SMDS_FacePosition_HeaderFile
+~define _SMDS_FacePosition_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_Position.hxx"
+~include "SMDS_Position.hxx"
 
 class SMDS_EXPORT SMDS_FacePosition:public SMDS_Position
 {
@@ -47,4 +47,4 @@ class SMDS_EXPORT SMDS_FacePosition:public SMDS_Position
         double myUParameter;
         double myVParameter;
 };
-#endif
+~endif

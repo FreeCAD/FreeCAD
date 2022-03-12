@@ -24,17 +24,17 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 
-#ifndef _SMESH_QUADRANGLE_2D_HXX_
-#define _SMESH_QUADRANGLE_2D_HXX_
+~ifndef _SMESH_QUADRANGLE_2D_HXX_
+~define _SMESH_QUADRANGLE_2D_HXX_
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_StdMeshers.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_QuadrangleParams.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_StdMeshers.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_QuadrangleParams.hxx"
 
-#include <TopoDS_Face.hxx>
-#include <Bnd_B2d.hxx>
+~include <TopoDS_Face.hxx>
+~include <Bnd_B2d.hxx>
 
 class SMDS_MeshNode;
 class SMESH_Mesh;
@@ -256,4 +256,4 @@ class STDMESHERS_EXPORT StdMeshers_Quadrangle_2D: public SMESH_2D_Algo
   std::vector< ForcedPoint >         myForcedPnts;
 };
 
-#endif
+~endif

@@ -26,11 +26,11 @@
 //  Created:   12.01.05 18:02:52
 //  Author:    Michael Sazonov
 //
-#ifndef SMDS_ElemIterator_HeaderFile
-#define SMDS_ElemIterator_HeaderFile
+~ifndef SMDS_ElemIterator_HeaderFile
+~define SMDS_ElemIterator_HeaderFile
 
-#include "SMDS_Iterator.hxx"
-#include <boost/shared_ptr.hpp>
+~include "SMDS_Iterator.hxx"
+~include <boost/shared_ptr.hpp>
 
 class SMDS_MeshElement;
 class SMDS_MeshNode;
@@ -57,4 +57,4 @@ typedef boost::shared_ptr<SMDS_Iterator<const SMDS_MeshFace *> > SMDS_FaceIterat
 typedef SMDS_Iterator<const SMDS_MeshVolume *> SMDS_VolumeIterator;
 typedef boost::shared_ptr<SMDS_Iterator<const SMDS_MeshVolume *> > SMDS_VolumeIteratorPtr;
 
-#endif
+~endif

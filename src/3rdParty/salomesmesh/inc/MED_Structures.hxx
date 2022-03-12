@@ -20,15 +20,15 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef MED_Structures_HeaderFile
-#define MED_Structures_HeaderFile
+~ifndef MED_Structures_HeaderFile
+~define MED_Structures_HeaderFile
 
-#include "MED_Common.hxx"
-#include "MED_Utilities.hxx"
+~include "MED_Common.hxx"
+~include "MED_Utilities.hxx"
 
-#ifdef WIN32
-#pragma warning(disable:4251)
-#endif
+~ifdef WIN32
+~pragma warning(disable:4251)
+~endif
 
 namespace MED
 {
@@ -1078,4 +1078,4 @@ namespace MED
 
 }
 
-#endif
+~endif

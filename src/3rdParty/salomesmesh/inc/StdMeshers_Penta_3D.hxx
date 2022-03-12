@@ -24,29 +24,29 @@
 //  File   : StdMeshers_Penta_3D.hxx
 //  Module : SMESH
 //
-#ifndef StdMeshers_Penta_3D_HeaderFile
-#define StdMeshers_Penta_3D_HeaderFile
+~ifndef StdMeshers_Penta_3D_HeaderFile
+~define StdMeshers_Penta_3D_HeaderFile
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include <map>
+~include <map>
 
 ////////////////////////////////////////////////////////////////////////
 //
 //  class StdMeshers_SMESHBlock
 //
 ////////////////////////////////////////////////////////////////////////
-#include <TColStd_MapOfInteger.hxx>
-#include <TopTools_IndexedMapOfOrientedShape.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_XYZ.hxx>
+~include <TColStd_MapOfInteger.hxx>
+~include <TopTools_IndexedMapOfOrientedShape.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_XYZ.hxx>
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_MesherHelper.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_MesherHelper.hxx"
 
 typedef std::map< double, std::vector<const SMDS_MeshNode*> > StdMeshers_IJNodeMap;
 
@@ -108,7 +108,7 @@ protected:
 //  class StdMeshers_TNode
 //
 ////////////////////////////////////////////////////////////////////////
-#include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshNode.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_TNode {
 
@@ -165,8 +165,8 @@ private:
 //  class StdMeshers_Penta_3D
 //
 ////////////////////////////////////////////////////////////////////////
-#include "SMESH_Mesh.hxx"
-#include <TopoDS_Shape.hxx>
+~include "SMESH_Mesh.hxx"
+~include <TopoDS_Shape.hxx>
 //
 class STDMESHERS_EXPORT StdMeshers_Penta_3D {
 //
@@ -273,4 +273,4 @@ class STDMESHERS_EXPORT StdMeshers_Penta_3D {
     SMESH_MesherHelper* myTool; // tool building quadratic elements
 };
 
-#endif
+~endif

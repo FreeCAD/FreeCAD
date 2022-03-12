@@ -24,12 +24,12 @@
 //  File   : SMDS_QuadraticVolumeOfNodes.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_QuadraticFaceOfNodes_HeaderFile
-#define _SMDS_QuadraticFaceOfNodes_HeaderFile
+~ifndef _SMDS_QuadraticFaceOfNodes_HeaderFile
+~define _SMDS_QuadraticFaceOfNodes_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshFace.hxx"
+~include "SMDS_MeshFace.hxx"
 
 class SMDS_EXPORT SMDS_QuadraticFaceOfNodes:public SMDS_MeshFace
 {
@@ -80,4 +80,4 @@ protected:
   std::vector<const SMDS_MeshNode *> myNodes;
 };
 
-#endif
+~endif

@@ -24,8 +24,8 @@
 //  File   : SMDS_TypeOfPosition.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_TypeOfPosition_HeaderFile
-#define _SMDS_TypeOfPosition_HeaderFile
+~ifndef _SMDS_TypeOfPosition_HeaderFile
+~define _SMDS_TypeOfPosition_HeaderFile
 
 enum SMDS_TypeOfPosition // Value is equal to shape dimention
 {
@@ -36,4 +36,4 @@ enum SMDS_TypeOfPosition // Value is equal to shape dimention
         SMDS_TOP_3DSPACE = 3
 };
 
-#endif
+~endif

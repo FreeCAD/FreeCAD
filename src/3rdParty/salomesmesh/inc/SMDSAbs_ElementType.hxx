@@ -24,8 +24,8 @@
 //  File   : SMDSAbs_ElementType.hxx
 //  Module : SMESH
 //
-#ifndef _SMDSAbs_ElementType_HeaderFile
-#define _SMDSAbs_ElementType_HeaderFile
+~ifndef _SMDSAbs_ElementType_HeaderFile
+~define _SMDSAbs_ElementType_HeaderFile
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Type (node, edge, face or volume) of elements
@@ -90,9 +90,9 @@ enum SMDSAbs_EntityType
   SMDSEntity_Quad_Quadrangle,
   SMDSEntity_BiQuad_Quadrangle,
   SMDSEntity_Polygon,
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   SMDSEntity_Quad_Polygon,
-#endif
+~endif
   SMDSEntity_Tetra,
   SMDSEntity_Quad_Tetra,
   SMDSEntity_Pyramid,
@@ -109,4 +109,4 @@ enum SMDSAbs_EntityType
   SMDSEntity_Last
 };
 
-#endif
+~endif

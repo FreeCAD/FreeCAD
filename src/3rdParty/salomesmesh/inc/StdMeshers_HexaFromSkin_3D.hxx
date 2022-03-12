@@ -21,11 +21,11 @@
 // Created   : Wed Jan 27 12:23:21 2010
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef __StdMeshers_HexaFromSkin_3D_HXX__
-#define __StdMeshers_HexaFromSkin_3D_HXX__
+~ifndef __StdMeshers_HexaFromSkin_3D_HXX__
+~define __StdMeshers_HexaFromSkin_3D_HXX__
 
-#include "SMESH_StdMeshers.hxx"
-#include "SMESH_Algo.hxx"
+~include "SMESH_StdMeshers.hxx"
+~include "SMESH_Algo.hxx"
 
 /*!
  * \brief Alorithm generating hexahedral mesh from 2D skin of block
@@ -51,4 +51,4 @@ public:
   
 };
 
-#endif
+~endif

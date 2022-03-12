@@ -21,14 +21,14 @@
 //  File   : SMDS_Mesh0DElement.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_Mesh0DElement_HeaderFile
-#define _SMDS_Mesh0DElement_HeaderFile
+~ifndef _SMDS_Mesh0DElement_HeaderFile
+~define _SMDS_Mesh0DElement_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshCell.hxx"
+~include "SMDS_MeshCell.hxx"
 
-#include <iostream>
+~include <iostream>
 
 class SMDS_EXPORT SMDS_Mesh0DElement: public SMDS_MeshCell
 {
@@ -52,4 +52,4 @@ class SMDS_EXPORT SMDS_Mesh0DElement: public SMDS_MeshCell
   const SMDS_MeshNode* myNode;
 };
 
-#endif
+~endif

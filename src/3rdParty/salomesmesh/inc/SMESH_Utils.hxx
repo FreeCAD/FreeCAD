@@ -24,17 +24,17 @@
 //  Author : Alexander A. BORODIN
 //  Module : SMESH
 //
-#ifndef _SMESH_Utils_hxx_
-#define _SMESH_Utils_hxx_
+~ifndef _SMESH_Utils_hxx_
+~define _SMESH_Utils_hxx_
 
-#ifdef WIN32
- #if defined SMESHUtils_EXPORTS
-  #define SMESHUtils_EXPORT __declspec( dllexport )
- #else
-  #define SMESHUtils_EXPORT __declspec( dllimport )
- #endif
-#else
- #define SMESHUtils_EXPORT
-#endif
+~ifdef WIN32
+ ~if defined SMESHUtils_EXPORTS
+  ~define SMESHUtils_EXPORT __declspec( dllexport )
+ ~else
+  ~define SMESHUtils_EXPORT __declspec( dllimport )
+ ~endif
+~else
+ ~define SMESHUtils_EXPORT
+~endif
 
-#endif
+~endif

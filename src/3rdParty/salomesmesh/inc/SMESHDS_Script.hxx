@@ -24,15 +24,15 @@
 //  File   : SMESHDS_Script.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_Script_HeaderFile
-#define _SMESHDS_Script_HeaderFile
+~ifndef _SMESHDS_Script_HeaderFile
+~define _SMESHDS_Script_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMESHDS_Command.hxx"
+~include "SMESHDS_Command.hxx"
 
-#include <list>
-#include <vector>
+~include <list>
+~include <vector>
 
 
 class SMESHDS_EXPORT SMESHDS_Script
@@ -124,4 +124,4 @@ class SMESHDS_EXPORT SMESHDS_Script
         bool myIsModified;
 };
 
-#endif
+~endif

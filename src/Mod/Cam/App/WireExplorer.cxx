@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "WireExplorer.h"
-#include <BRep_Tool.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <Precision.hxx>
+~include "WireExplorer.h"
+~include <BRep_Tool.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopExp.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <Precision.hxx>
 
 
 WireExplorer::WireExplorer(const TopoDS_Wire& wire)
@@ -203,7 +203,7 @@ void WireExplorer::Perform(const TopoDS_Edge& edge)
        iter.first->second.push_back(edge);
 }
 
-#include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Curve.hxx>
 
 bool WireExplorer::IsValidEdge(const TopoDS_Edge& edge)
 {

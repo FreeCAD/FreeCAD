@@ -25,15 +25,15 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_Hypothesis_2D_ONLY_i_HXX_
-#define _NETGENPlugin_Hypothesis_2D_ONLY_i_HXX_
+~ifndef _NETGENPlugin_Hypothesis_2D_ONLY_i_HXX_
+~define _NETGENPlugin_Hypothesis_2D_ONLY_i_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+~include <SALOMEconfig.h>
+~include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
-#include "NETGENPlugin_Hypothesis_2D_i.hxx"
+~include "NETGENPlugin_Hypothesis_2D_i.hxx"
 
 class SMESH_Gen;
 
@@ -54,4 +54,4 @@ class NETGENPLUGIN_EXPORT  NETGENPlugin_Hypothesis_2D_ONLY_i:
   char* GetName();
 };
 
-#endif
+~endif

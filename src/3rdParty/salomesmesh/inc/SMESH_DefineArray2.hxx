@@ -17,20 +17,20 @@
 //              for (j = A.LowerCol(); j <= A.UpperCol(); j++)
 //            
 
-#ifndef SMESH_DefineArray2_HeaderFile
-#define SMESH_DefineArray2_HeaderFile
+~ifndef SMESH_DefineArray2_HeaderFile
+~define SMESH_DefineArray2_HeaderFile
 
-#include <NCollection_DefineBaseCollection.hxx>
-#include <SMESH_Array2.hxx>
+~include <NCollection_DefineBaseCollection.hxx>
+~include <SMESH_Array2.hxx>
 
-#ifdef WNT
+~ifdef WNT
 // Disable the warning "operator new unmatched by delete"
-#pragma warning (disable:4291)
-#endif
+~pragma warning (disable:4291)
+~endif
 
 // *********************************************** Template for Array2 class
 
-#define SMESH_DEFINE_ARRAY2(_ClassName_, _BaseCollection_, TheItemType)              \
+~define SMESH_DEFINE_ARRAY2(_ClassName_, _BaseCollection_, TheItemType)              \
         typedef SMESH_Array2<TheItemType > _ClassName_;
 
-#endif
+~endif

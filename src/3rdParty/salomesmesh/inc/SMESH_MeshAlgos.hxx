@@ -27,17 +27,17 @@
 // to make them accessible from Controls package
 
 
-#ifndef __SMESH_MeshAlgos_HXX__
-#define __SMESH_MeshAlgos_HXX__
+~ifndef __SMESH_MeshAlgos_HXX__
+~define __SMESH_MeshAlgos_HXX__
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
-#include "SMDSAbs_ElementType.hxx"
-#include "SMDS_ElemIterator.hxx"
-#include "SMESH_TypeDefs.hxx"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMDS_ElemIterator.hxx"
+~include "SMESH_TypeDefs.hxx"
 
-#include <TopAbs_State.hxx>
-#include <vector>
+~include <TopAbs_State.hxx>
+~include <vector>
 
 class gp_Pnt;
 class gp_Ax1;
@@ -198,4 +198,4 @@ namespace SMESH_MeshAlgos
 
 } // SMESH_MeshAlgos
 
-#endif
+~endif

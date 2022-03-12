@@ -24,32 +24,32 @@
 //  File   : SMDS_MeshElement.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshElement_HeaderFile
-#define _SMDS_MeshElement_HeaderFile
+~ifndef _SMDS_MeshElement_HeaderFile
+~define _SMDS_MeshElement_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
         
-#include "SMDSAbs_ElementType.hxx"
-#include "SMDS_MeshObject.hxx"
-#include "SMDS_ElemIterator.hxx"
-#include "SMDS_MeshElementIDFactory.hxx"
-#include "SMDS_StdIterator.hxx"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMDS_MeshObject.hxx"
+~include "SMDS_ElemIterator.hxx"
+~include "SMDS_MeshElementIDFactory.hxx"
+~include "SMDS_StdIterator.hxx"
 
-#include <vector>
-#include <iostream>
+~include <vector>
+~include <iostream>
 
-#include <vtkType.h>
-#include <vtkCellType.h>
-#include <vtkCellArray.h>
+~include <vtkType.h>
+~include <vtkCellType.h>
+~include <vtkCellArray.h>
 
 //typedef unsigned short UShortType;
 typedef short ShortType;
 typedef int   LongType;
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
 typedef const vtkIdType* vtkIdTypePtr;
-#else
+~else
 typedef vtkIdType* vtkIdTypePtr;
-#endif
+~endif
 class SMDS_MeshNode;
 class SMDS_MeshEdge;
 class SMDS_MeshFace;
@@ -225,4 +225,4 @@ struct TIDCompare {
   { return e1->GetID() < e2->GetID(); }
 };
 
-#endif
+~endif

@@ -20,26 +20,26 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef MED_Common_HeaderFile
-#define MED_Common_HeaderFile
+~ifndef MED_Common_HeaderFile
+~define MED_Common_HeaderFile
 
-#include "MED_WrapperBase.hxx"
+~include "MED_WrapperBase.hxx"
 
-#include <string>
-#include <set>
-#include <map>
+~include <string>
+~include <set>
+~include <map>
 
-#include <hdf5.h>
+~include <hdf5.h>
 
-#include <boost/tuple/tuple.hpp>
+~include <boost/tuple/tuple.hpp>
 
-#include "MED_Vector.hxx"
-#include "MED_SharedPtr.hxx"
-#include "MED_SliceArray.hxx"
+~include "MED_Vector.hxx"
+~include "MED_SharedPtr.hxx"
+~include "MED_SliceArray.hxx"
 
-#ifdef WIN32
-#pragma warning(disable:4099)
-#endif
+~ifdef WIN32
+~pragma warning(disable:4099)
+~endif
 
 namespace MED{
 
@@ -47,11 +47,11 @@ namespace MED{
   
   typedef enum {eFAUX, eVRAI} EBooleen ; 
   typedef double TFloat;
-#if defined(HAVE_F77INT64)
+~if defined(HAVE_F77INT64)
   typedef long TInt;
-#else
+~else
   typedef int TInt;
-#endif 
+~endif 
   typedef hid_t TIdt;
   typedef herr_t TErr;
 
@@ -181,4 +181,4 @@ namespace MED{
 }
 
 
-#endif
+~endif

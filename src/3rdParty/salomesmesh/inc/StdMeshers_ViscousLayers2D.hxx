@@ -21,10 +21,10 @@
 // Created   : 23 Jul 2012
 // Author    : Edward AGAPOV (eap)
 
-#ifndef __StdMeshers_ViscousLayers2D_HXX__
-#define __StdMeshers_ViscousLayers2D_HXX__
+~ifndef __StdMeshers_ViscousLayers2D_HXX__
+~define __StdMeshers_ViscousLayers2D_HXX__
 
-#include "StdMeshers_ViscousLayers.hxx"
+~include "StdMeshers_ViscousLayers.hxx"
 
 class TopoDS_Face;
 
@@ -75,4 +75,4 @@ public:
  private:
 };
 
-#endif
+~endif

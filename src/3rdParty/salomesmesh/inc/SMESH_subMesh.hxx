@@ -24,23 +24,23 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_SUBMESH_HXX_
-#define _SMESH_SUBMESH_HXX_
+~ifndef _SMESH_SUBMESH_HXX_
+~define _SMESH_SUBMESH_HXX_
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Algo.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Algo.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include <list>
-#include <map>
+~include <list>
+~include <map>
 
 class SMESH_Mesh;
 class SMESH_Hypothesis;
@@ -344,4 +344,4 @@ protected:
 
 };
 
-#endif
+~endif

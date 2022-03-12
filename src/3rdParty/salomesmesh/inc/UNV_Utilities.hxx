@@ -20,18 +20,18 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef MED_Utilities_HeaderFile
-#define MED_Utilities_HeaderFile
+~ifndef MED_Utilities_HeaderFile
+~define MED_Utilities_HeaderFile
 
-#include "SMESH_DriverUNV.hxx"
+~include "SMESH_DriverUNV.hxx"
 
-#include <iostream>     
-#include <sstream>      
-#include <fstream>
-#include <string>
-#include <stdexcept>
-#include <cassert>
-#include <cstdlib>
+~include <iostream>     
+~include <sstream>      
+~include <fstream>
+~include <string>
+~include <stdexcept>
+~include <cassert>
+~include <cstdlib>
 
 namespace UNV{
   using namespace std;
@@ -145,25 +145,25 @@ namespace UNV{
 };
 
 
-#ifndef MESSAGE
+~ifndef MESSAGE
 
-#define MESSAGE(msg) std::cout<<__FILE__<<"["<<__LINE__<<"]::"<<msg<<endl;
+~define MESSAGE(msg) std::cout<<__FILE__<<"["<<__LINE__<<"]::"<<msg<<endl;
 
-#define BEGMSG(msg) std::cout<<UNV::PrefixPrinter::GetPrefix()<<msg
+~define BEGMSG(msg) std::cout<<UNV::PrefixPrinter::GetPrefix()<<msg
 
-#define ADDMSG(msg) std::cout<<msg
+~define ADDMSG(msg) std::cout<<msg
 
-#endif
+~endif
 
 
-#ifndef EXCEPTION
+~ifndef EXCEPTION
 
-#define EXCEPTION(TYPE, MSG) {\
+~define EXCEPTION(TYPE, MSG) {\
   std::ostringstream aStream;\
   aStream<<__FILE__<<"["<<__LINE__<<"]::"<<MSG;\
   throw TYPE(aStream.str());\
 }
 
-#endif
+~endif
 
-#endif
+~endif

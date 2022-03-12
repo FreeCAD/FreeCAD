@@ -24,13 +24,13 @@
 //  Module : SMESH
 //  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/StdMeshers/Attic/StdMeshers_TrianglePreference.hxx,v 1.1.4.2 2008/11/27 13:03:50 abd Exp $
 //
-#ifndef _StdMeshers_TrianglePreference_HXX_
-#define _StdMeshers_TrianglePreference_HXX_
+~ifndef _StdMeshers_TrianglePreference_HXX_
+~define _StdMeshers_TrianglePreference_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_Exception.hxx"
 
 /*!
  * \brief Hypothesis for StdMeshers_Quadrangle_2D, forcing construction
@@ -66,4 +66,4 @@ class STDMESHERS_EXPORT StdMeshers_TrianglePreference:public SMESH_Hypothesis
 
 };
 
-#endif
+~endif

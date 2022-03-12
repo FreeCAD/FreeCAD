@@ -20,14 +20,14 @@
 //  File   : StdMeshers_QuadToTriaAdaptor.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_QuadToTriaAdaptor_HXX_
-#define _SMESH_QuadToTriaAdaptor_HXX_
+~ifndef _SMESH_QuadToTriaAdaptor_HXX_
+~define _SMESH_QuadToTriaAdaptor_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_ProxyMesh.hxx"
-#include <TColgp_HArray1OfPnt.hxx>
-#include <TColgp_HArray1OfVec.hxx>
+~include "SMESH_ProxyMesh.hxx"
+~include <TColgp_HArray1OfPnt.hxx>
+~include <TColgp_HArray1OfVec.hxx>
 class SMESH_Mesh;
 struct SMESH_ElementSearcher;
 class SMDS_MeshElement;
@@ -39,11 +39,11 @@ class gp_Pnt;
 class gp_Vec;
 
 
-#include <set>
-#include <list>
-#include <vector>
+~include <set>
+~include <list>
+~include <vector>
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
 /*!
  * \brief "Transforms" quadrilateral faces into triangular ones by creation of pyramids
@@ -95,4 +95,4 @@ protected:
   const SMESH_ElementSearcher*      myElemSearcher;
 };
 
-#endif
+~endif

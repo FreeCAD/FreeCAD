@@ -19,14 +19,14 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_TStructures_HeaderFile
-#define MED_TStructures_HeaderFile
+~ifndef MED_TStructures_HeaderFile
+~define MED_TStructures_HeaderFile
 
-#include "MED_Structures.hxx"
+~include "MED_Structures.hxx"
 
-#ifdef WIN32
-#pragma warning(disable:4250)
-#endif
+~ifdef WIN32
+~pragma warning(disable:4250)
+~endif
 
 namespace MED
 {
@@ -1212,4 +1212,4 @@ namespace MED
   };
 }
 
-#endif
+~endif

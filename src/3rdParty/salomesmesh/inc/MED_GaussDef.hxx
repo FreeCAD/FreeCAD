@@ -19,13 +19,13 @@
 // File   : MED_GaussDef.hxx
 // Author : Edward AGAPOV (eap)
 //
-#ifndef MED_GaussDef_HeaderFile
-#define MED_GaussDef_HeaderFile
+~ifndef MED_GaussDef_HeaderFile
+~define MED_GaussDef_HeaderFile
 
-#include "MED_WrapperBase.hxx"
+~include "MED_WrapperBase.hxx"
 
-//#include "MED_GaussUtils.hxx" <<<---- avoid dependence on boost
-#include <vector>
+//~include "MED_GaussUtils.hxx" <<<---- avoid dependence on boost
+~include <vector>
 
 namespace MED
 {
@@ -66,4 +66,4 @@ namespace MED
   };
 }
 
-#endif
+~endif

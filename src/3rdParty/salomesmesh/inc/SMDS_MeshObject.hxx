@@ -24,14 +24,14 @@
 //  File   : SMDS_MeshObject.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshObject_HeaderFile
-#define _SMDS_MeshObject_HeaderFile
+~ifndef _SMDS_MeshObject_HeaderFile
+~define _SMDS_MeshObject_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
 class SMDS_EXPORT SMDS_MeshObject
 {
  public:
   virtual ~SMDS_MeshObject() {}
 };
-#endif
+~endif

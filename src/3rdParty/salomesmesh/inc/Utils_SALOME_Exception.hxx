@@ -26,37 +26,37 @@
 //  Module : SALOME
 //  $Header$
 //
-#if !defined( __Utils_SALOME_Exception_hxx__ )
-#define __Utils_SALOME_Exception_hxx__
+~if !defined( __Utils_SALOME_Exception_hxx__ )
+~define __Utils_SALOME_Exception_hxx__
 
-//#include "SALOME_Utils.hxx"
+//~include "SALOME_Utils.hxx"
 
-# include <exception>
-# include <iostream>
+~ include <exception>
+~ include <iostream>
 
-#ifdef LOCALIZED
-#undef LOCALIZED
-#endif
-#if defined(_DEBUG_) || defined(_DEBUG)
-# define LOCALIZED(message) #message , __FILE__ , __LINE__
-#else
-# define LOCALIZED(message) #message
-#endif
+~ifdef LOCALIZED
+~undef LOCALIZED
+~endif
+~if defined(_DEBUG_) || defined(_DEBUG)
+~ define LOCALIZED(message) ~message , __FILE__ , __LINE__
+~else
+~ define LOCALIZED(message) ~message
+~endif
 
 //swig tool on Linux doesn't pass defines from header SALOME_Utils.hxx
 //therefore (temporary solution) defines are placed below
 
-#ifdef WIN32
-# if defined UTILS_EXPORTS || defined OpUtil_EXPORTS
-#  define UTILS_EXPORT __declspec( dllexport )
-# else
-#  define UTILS_EXPORT __declspec( dllimport )
-#  undef LOCALIZED
-#  define LOCALIZED(message) #message
-# endif
-#else
-# define UTILS_EXPORT
-#endif
+~ifdef WIN32
+~ if defined UTILS_EXPORTS || defined OpUtil_EXPORTS
+~  define UTILS_EXPORT __declspec( dllexport )
+~ else
+~  define UTILS_EXPORT __declspec( dllimport )
+~  undef LOCALIZED
+~  define LOCALIZED(message) ~message
+~ endif
+~else
+~ define UTILS_EXPORT
+~endif
 
 class SALOME_Exception;
 
@@ -82,4 +82,4 @@ public :
 } ;
 
 
-#endif          /* #if !defined( __Utils_SALOME_Exception_hxx__ ) */
+~endif          /* ~if !defined( __Utils_SALOME_Exception_hxx__ ) */

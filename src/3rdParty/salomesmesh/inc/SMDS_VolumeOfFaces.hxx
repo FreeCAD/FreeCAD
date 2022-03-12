@@ -24,15 +24,15 @@
 //  File   : SMDS_VolumeOfFaces.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_VolumeOfFaces_HeaderFile
-#define _SMDS_VolumeOfFaces_HeaderFile
+~ifndef _SMDS_VolumeOfFaces_HeaderFile
+~define _SMDS_VolumeOfFaces_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshVolume.hxx"
-#include "SMDS_MeshFace.hxx"
-#include "SMDS_Iterator.hxx"
-#include <iostream>
+~include "SMDS_MeshVolume.hxx"
+~include "SMDS_MeshFace.hxx"
+~include "SMDS_Iterator.hxx"
+~include <iostream>
 
 
 class SMDS_EXPORT SMDS_VolumeOfFaces:public SMDS_MeshVolume
@@ -68,4 +68,4 @@ class SMDS_EXPORT SMDS_VolumeOfFaces:public SMDS_MeshVolume
         const SMDS_MeshFace * myFaces[6];
         int                   myNbFaces;
 };
-#endif
+~endif

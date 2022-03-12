@@ -17,10 +17,10 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _SMDS_MESHCELL_HXX_
-#define _SMDS_MESHCELL_HXX_
+~ifndef _SMDS_MESHCELL_HXX_
+~define _SMDS_MESHCELL_HXX_
 
-#include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshElement.hxx"
 
 /*!
  * \brief Base class for all cells
@@ -80,4 +80,4 @@ protected:
   }
 };
 
-#endif
+~endif

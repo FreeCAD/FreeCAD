@@ -24,17 +24,17 @@
 //  Author : Alexander A. BORODIN
 //  Module : SMESH
 //
-#ifndef _SMESH_DriverDAT_HXX_
-#define _SMESH_DriverDAT_HXX_
+~ifndef _SMESH_DriverDAT_HXX_
+~define _SMESH_DriverDAT_HXX_
 
-#ifdef WIN32
- #if defined MESHDRIVERDAT_EXPORTS || defined MeshDriverDAT_EXPORTS
-  #define MESHDRIVERDAT_EXPORT __declspec( dllexport )
- #else
-  #define MESHDRIVERDAT_EXPORT __declspec( dllimport )
- #endif
-#else
- #define MESHDRIVERDAT_EXPORT
-#endif
+~ifdef WIN32
+ ~if defined MESHDRIVERDAT_EXPORTS || defined MeshDriverDAT_EXPORTS
+  ~define MESHDRIVERDAT_EXPORT __declspec( dllexport )
+ ~else
+  ~define MESHDRIVERDAT_EXPORT __declspec( dllimport )
+ ~endif
+~else
+ ~define MESHDRIVERDAT_EXPORT
+~endif
 
-#endif
+~endif

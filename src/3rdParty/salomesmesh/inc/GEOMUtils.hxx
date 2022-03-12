@@ -20,30 +20,30 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _GEOMUtils_HXX_
-#define _GEOMUtils_HXX_
+~ifndef _GEOMUtils_HXX_
+~define _GEOMUtils_HXX_
 
-#include <Standard_Macro.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <Standard_Macro.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#include <TopTools_ListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
 
-#include <TopAbs.hxx>
+~include <TopAbs.hxx>
 
-#include <gp_Ax3.hxx>
-#include <gp_Vec.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Vec.hxx>
 
-#include <V3d_View.hxx>
+~include <V3d_View.hxx>
 
-#include <NCollection_DataMap.hxx>
+~include <NCollection_DataMap.hxx>
 
-#include <functional>
+~include <functional>
 
-#include <map>
-#include <vector>
-#include <string>
-#include <utility>
+~include <map>
+~include <vector>
+~include <string>
+~include <utility>
 
 class Bnd_Box;
 
@@ -346,4 +346,4 @@ namespace GEOMUtils
 
 };
 
-#endif
+~endif

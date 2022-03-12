@@ -23,14 +23,14 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_SimpleHypothesis_3D_i_HXX_
-#define _NETGENPlugin_SimpleHypothesis_3D_i_HXX_
+~ifndef _NETGENPlugin_SimpleHypothesis_3D_i_HXX_
+~define _NETGENPlugin_SimpleHypothesis_3D_i_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
-#include "NETGENPlugin_SimpleHypothesis_2D_i.hxx"
+~include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_SimpleHypothesis_2D_i.hxx"
 
-#include <SALOMEconfig.h>
-#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+~include <SALOMEconfig.h>
+~include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
 class SMESH_Gen;
 class NETGENPlugin_SimpleHypothesis_3D;
@@ -61,4 +61,4 @@ class NETGENPLUGIN_EXPORT  NETGENPlugin_SimpleHypothesis_3D_i:
   CORBA::Boolean IsDimSupported( SMESH::Dimension type );
 };
 
-#endif
+~endif

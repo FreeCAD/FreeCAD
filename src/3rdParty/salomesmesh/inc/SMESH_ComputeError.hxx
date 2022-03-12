@@ -21,14 +21,14 @@
 //  Author : Edward AGAPOV (eap)
 //  Module : SMESH
 //
-#ifndef SMESH_ComputeError_HeaderFile
-#define SMESH_ComputeError_HeaderFile
+~ifndef SMESH_ComputeError_HeaderFile
+~define SMESH_ComputeError_HeaderFile
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
-#include <string>
-#include <list>
-#include <boost/shared_ptr.hpp>
+~include <string>
+~include <list>
+~include <boost/shared_ptr.hpp>
 
 class SMESH_Algo;
 class SMDS_MeshElement;
@@ -102,4 +102,4 @@ struct SMESHUtils_EXPORT SMESH_ComputeError
                                       SMESH_ComputeErrorPtr er2 );
 };
 
-#endif
+~endif

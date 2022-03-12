@@ -35,26 +35,26 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_Extensions__h
-#define __CXX_Extensions__h
+~ifndef __CXX_Extensions__h
+~define __CXX_Extensions__h
 
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 // disable warning C4786: symbol greater than 255 character,
 // okay to ignore
-#pragma warning( disable: 4786 )
-#endif
+~pragma warning( disable: 4786 )
+~endif
 
-#include "CXX/WrapPython.h"
-#include "CXX/Version.hxx"
-#include "CXX/Python3/Config.hxx"
-#include "CXX/Python3/CxxDebug.hxx"
-#include "CXX/Python3/Objects.hxx"
+~include "CXX/WrapPython.h"
+~include "CXX/Version.hxx"
+~include "CXX/Python3/Config.hxx"
+~include "CXX/Python3/CxxDebug.hxx"
+~include "CXX/Python3/Objects.hxx"
 
 extern "C" { extern PyObject py_object_initializer; }
 
-#include <vector>
-#include <map>
+~include <vector>
+~include <map>
 
 // ----------------------------------------------------------------------
 
@@ -179,11 +179,11 @@ namespace Py
     };
 } // Namespace Py
 
-#include "CXX/Python3/ExtensionModule.hxx"
-#include "CXX/Python3/PythonType.hxx"
-#include "CXX/Python3/ExtensionTypeBase.hxx"
-#include "CXX/Python3/ExtensionOldType.hxx"
-#include "CXX/Python3/ExtensionType.hxx"
+~include "CXX/Python3/ExtensionModule.hxx"
+~include "CXX/Python3/PythonType.hxx"
+~include "CXX/Python3/ExtensionTypeBase.hxx"
+~include "CXX/Python3/ExtensionOldType.hxx"
+~include "CXX/Python3/ExtensionType.hxx"
 
 // End of CXX_Extensions.h
-#endif
+~endif

@@ -25,10 +25,10 @@
 // Created   : Feb 27 2006
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef SMDS_SetIterator_HeaderFile
-#define SMDS_SetIterator_HeaderFile
+~ifndef SMDS_SetIterator_HeaderFile
+~define SMDS_SetIterator_HeaderFile
 
-#include "SMDS_Iterator.hxx"
+~include "SMDS_Iterator.hxx"
 
 namespace SMDS {
 
@@ -120,7 +120,7 @@ public:
 /// map iterators
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <map>
+~include <map>
 /*!
  * \brief iterator on values of a map
  */
@@ -175,7 +175,7 @@ struct SMDS_mapKeyReverseIterator : public SMDS_SetIterator< typename M::key_typ
 // useful specifications
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <vector>
+~include <vector>
 
 class SMDS_MeshElement;
 class SMDS_MeshNode;
@@ -210,4 +210,4 @@ typedef SMDS_SetIterator< SMDS_pNode, SMDS_pNode const * >
 SMDS_NodeArrayIterator;
 
 
-#endif
+~endif

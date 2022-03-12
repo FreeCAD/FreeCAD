@@ -24,19 +24,19 @@
 //  File   : SMESH_HypoFilter.hxx
 //  Module : SMESH
 //
-#ifndef SMESH_HypoFilter_HeaderFile
-#define SMESH_HypoFilter_HeaderFile
+~ifndef SMESH_HypoFilter_HeaderFile
+~define SMESH_HypoFilter_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
 // ===========================
 // Filter of SMESH_Hypothesis
 // ===========================
 
-#include <list>
-#include <string>
-#include <TopoDS_Shape.hxx>
-#include <TopTools_MapOfShape.hxx>
+~include <list>
+~include <string>
+~include <TopoDS_Shape.hxx>
+~include <TopTools_MapOfShape.hxx>
 
 class SMESH_HypoFilter;
 class SMESH_Hypothesis;
@@ -193,4 +193,4 @@ class SMESH_EXPORT SMESH_HypoFilter: public SMESH_HypoPredicate
 };
 
 
-#endif
+~endif

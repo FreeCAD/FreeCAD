@@ -26,14 +26,14 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_NUMBEROFSEGMENTS_HXX_
-#define _SMESH_NUMBEROFSEGMENTS_HXX_
+~ifndef _SMESH_NUMBEROFSEGMENTS_HXX_
+~define _SMESH_NUMBEROFSEGMENTS_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
-#include <vector>
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
+~include <vector>
 
 /*!
  * \brief This class represents hypothesis for 1d algorithm
@@ -198,4 +198,4 @@ protected:
   std::string         _objEntry;          //!< Entry of the main object to reverse edges
 };
 
-#endif
+~endif

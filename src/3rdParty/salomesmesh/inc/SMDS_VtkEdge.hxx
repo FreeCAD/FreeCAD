@@ -21,14 +21,14 @@
 //  File   : SMDS_VtkEdge.hxx
 //  Module : SMESH
 
-#ifndef _SMDS_VTKEDGE_HXX_
-#define _SMDS_VTKEDGE_HXX_
+~ifndef _SMDS_VTKEDGE_HXX_
+~define _SMDS_VTKEDGE_HXX_
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshEdge.hxx"
-#include <vtkUnstructuredGrid.h>
-#include <vector>
+~include "SMDS_MeshEdge.hxx"
+~include <vtkUnstructuredGrid.h>
+~include <vector>
 
 class SMDS_EXPORT SMDS_VtkEdge: public SMDS_MeshEdge
 {
@@ -56,4 +56,4 @@ public:
   virtual SMDS_NodeIteratorPtr interlacedNodesIterator() const;
 protected:
 };
-#endif
+~endif

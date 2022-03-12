@@ -21,11 +21,11 @@
 // Project   : SALOME
 // Author    : Edward AGAPOV (OCC)
 //
-#ifndef _NETGENPlugin_NETGEN_2D_ONLY_HXX_
-#define _NETGENPlugin_NETGEN_2D_ONLY_HXX_
+~ifndef _NETGENPlugin_NETGEN_2D_ONLY_HXX_
+~define _NETGENPlugin_NETGEN_2D_ONLY_HXX_
 
-#include <SMESH_Algo.hxx>
-#include <SMESH_Mesh.hxx>
+~include <SMESH_Algo.hxx>
+~include <SMESH_Mesh.hxx>
 
 class StdMeshers_MaxElementArea;
 class StdMeshers_LengthFromEdges;
@@ -68,4 +68,4 @@ protected:
   double                                 _progressByTic;
 };
 
-#endif
+~endif

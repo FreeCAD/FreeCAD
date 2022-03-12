@@ -24,10 +24,10 @@
 // File      : SMDS_IteratorOnIterators.hxx
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef SMDS_IteratorOnIterators_HeaderFile
-#define SMDS_IteratorOnIterators_HeaderFile
+~ifndef SMDS_IteratorOnIterators_HeaderFile
+~define SMDS_IteratorOnIterators_HeaderFile
 
-#include "SMDS_Iterator.hxx"
+~include "SMDS_Iterator.hxx"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// SMDS_Iterator iterating over all elements provided by other iterators
@@ -64,4 +64,4 @@ public:
   }
 };
 
-#endif
+~endif

@@ -22,10 +22,10 @@
 
 //  SMESH SMDS : implementaion of Salome mesh data structure
 //
-#ifndef _SMDS_Iterator_HeaderFile
-#define _SMDS_Iterator_HeaderFile
+~ifndef _SMDS_Iterator_HeaderFile
+~define _SMDS_Iterator_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
 ///////////////////////////////////////////////////////////////////////////////
 ///Abstract class for iterators
@@ -48,4 +48,4 @@ template<typename VALUE> class SMDS_Iterator
         virtual ~SMDS_Iterator(){}
 };
 
-#endif
+~endif

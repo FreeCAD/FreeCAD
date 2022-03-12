@@ -35,14 +35,14 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_ExtensionClass__h
-#define __CXX_ExtensionClass__h
+~ifndef __CXX_ExtensionClass__h
+~define __CXX_ExtensionClass__h
 
-#define PYCXX_NOARGS_METHOD_NAME( NAME ) _callNoArgsMethod__##NAME
-#define PYCXX_VARARGS_METHOD_NAME( NAME ) _callVarArgsMethod__##NAME
-#define PYCXX_KEYWORDS_METHOD_NAME( NAME ) _callKeywordsMethod__##NAME
+~define PYCXX_NOARGS_METHOD_NAME( NAME ) _callNoArgsMethod__~~NAME
+~define PYCXX_VARARGS_METHOD_NAME( NAME ) _callVarArgsMethod__~~NAME
+~define PYCXX_KEYWORDS_METHOD_NAME( NAME ) _callKeywordsMethod__~~NAME
 
-#define PYCXX_NOARGS_METHOD_DECL( CLS, NAME ) \
+~define PYCXX_NOARGS_METHOD_DECL( CLS, NAME ) \
     static PyObject *PYCXX_NOARGS_METHOD_NAME( NAME )( PyObject *_self, PyObject *, PyObject * ) \
     { \
         try \
@@ -57,7 +57,7 @@
             return 0; \
         } \
     }
-#define PYCXX_VARARGS_METHOD_DECL( CLS, NAME ) \
+~define PYCXX_VARARGS_METHOD_DECL( CLS, NAME ) \
     static PyObject *PYCXX_VARARGS_METHOD_NAME( NAME )( PyObject *_self, PyObject *_a, PyObject * ) \
     { \
         try \
@@ -73,7 +73,7 @@
             return 0; \
         } \
     }
-#define PYCXX_KEYWORDS_METHOD_DECL( CLS, NAME ) \
+~define PYCXX_KEYWORDS_METHOD_DECL( CLS, NAME ) \
     static PyObject *PYCXX_KEYWORDS_METHOD_NAME( NAME )( PyObject *_self, PyObject *_a, PyObject *_k ) \
     { \
         try \
@@ -95,12 +95,12 @@
 
 // need to support METH_STATIC and METH_CLASS
 
-#define PYCXX_ADD_NOARGS_METHOD( PYNAME, NAME, docs ) \
-    add_method( #PYNAME, (PyCFunction)PYCXX_NOARGS_METHOD_NAME( NAME ), METH_NOARGS, docs )
-#define PYCXX_ADD_VARARGS_METHOD( PYNAME, NAME, docs ) \
-    add_method( #PYNAME, (PyCFunction)(void (*) (void))PYCXX_VARARGS_METHOD_NAME( NAME ), METH_VARARGS, docs )
-#define PYCXX_ADD_KEYWORDS_METHOD( PYNAME, NAME, docs ) \
-    add_method( #PYNAME, (PyCFunction)(void (*) (void))PYCXX_KEYWORDS_METHOD_NAME( NAME ), METH_VARARGS | METH_KEYWORDS, docs )
+~define PYCXX_ADD_NOARGS_METHOD( PYNAME, NAME, docs ) \
+    add_method( ~PYNAME, (PyCFunction)PYCXX_NOARGS_METHOD_NAME( NAME ), METH_NOARGS, docs )
+~define PYCXX_ADD_VARARGS_METHOD( PYNAME, NAME, docs ) \
+    add_method( ~PYNAME, (PyCFunction)(void (*) (void))PYCXX_VARARGS_METHOD_NAME( NAME ), METH_VARARGS, docs )
+~define PYCXX_ADD_KEYWORDS_METHOD( PYNAME, NAME, docs ) \
+    add_method( ~PYNAME, (PyCFunction)(void (*) (void))PYCXX_KEYWORDS_METHOD_NAME( NAME ), METH_VARARGS | METH_KEYWORDS, docs )
 
 namespace Py
 {
@@ -214,11 +214,11 @@ namespace Py
             static PythonType *p;
             if( p == NULL ) 
             {
-#if defined( _CPPRTTI ) || defined( __GNUG__ )
+~if defined( _CPPRTTI ) || defined( __GNUG__ )
                 const char *default_name = (typeid( T )).name();
-#else
+~else
                 const char *default_name = "unknown";
-#endif
+~endif
                 p = new PythonType( sizeof( PythonClassInstance ), 0, default_name );
                 p->set_tp_new( extension_object_new );
                 p->set_tp_init( extension_object_init );
@@ -237,9 +237,9 @@ namespace Py
 
         static PyObject *extension_object_new( PyTypeObject *subtype, PyObject * /*args*/, PyObject * /*kwds*/ )
         {
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
             std::cout << "extension_object_new()" << std::endl;
-#endif
+~endif
             PythonClassInstance *o = reinterpret_cast<PythonClassInstance *>( subtype->tp_alloc( subtype, 0 ) );
             if( o == NULL )
                 return NULL;
@@ -247,9 +247,9 @@ namespace Py
             o->m_pycxx_object = NULL;
 
             PyObject *self = reinterpret_cast<PyObject *>( o );
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
             std::cout << "extension_object_new() => self=0x" << std::hex << reinterpret_cast< unsigned int >( self ) << std::dec << std::endl;
-#endif
+~endif
             return self;
         }
 
@@ -263,23 +263,23 @@ namespace Py
                     kwds = kwds_;
 
                 PythonClassInstance *self = reinterpret_cast<PythonClassInstance *>( _self );
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
                 std::cout << "extension_object_init( self=0x" << std::hex << reinterpret_cast< unsigned int >( self ) << std::dec << " )" << std::endl;
                 std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
-#endif
+~endif
 
                 if( self->m_pycxx_object == NULL )
                 {
                     self->m_pycxx_object = new T( self, args, kwds );
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
                     std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
-#endif
+~endif
                 }
                 else
                 {
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
                     std::cout << "    reinit - self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
-#endif
+~endif
                     self->m_pycxx_object->reinit( args, kwds );
                 }
             }
@@ -293,10 +293,10 @@ namespace Py
         static void extension_object_deallocator( PyObject *_self )
         {
             PythonClassInstance *self = reinterpret_cast< PythonClassInstance * >( _self );
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
             std::cout << "extension_object_deallocator( self=0x" << std::hex << reinterpret_cast< unsigned int >( self ) << std::dec << " )" << std::endl;
             std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
-#endif
+~endif
             delete self->m_pycxx_object;
             _self->ob_type->tp_free( _self );
         }
@@ -400,4 +400,4 @@ namespace Py
 } // Namespace Py
 
 // End of __CXX_ExtensionClass__h
-#endif
+~endif

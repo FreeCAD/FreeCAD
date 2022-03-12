@@ -24,25 +24,25 @@
 // Author    : Sioutis Fotios
 // Module    : SMESH
 
-#ifndef _Handle_SMESH_MeshVSLink_HeaderFile
-#define _Handle_SMESH_MeshVSLink_HeaderFile
+~ifndef _Handle_SMESH_MeshVSLink_HeaderFile
+~define _Handle_SMESH_MeshVSLink_HeaderFile
 
-#ifndef _Standard_Macro_HeaderFile
-#include <Standard_Macro.hxx>
-#endif
-#ifndef _Standard_HeaderFile
-#include <Standard.hxx>
-#endif
-#ifndef _Standard_Version_HeaderFile
-#include <Standard_Version.hxx>
-#endif
+~ifndef _Standard_Macro_HeaderFile
+~include <Standard_Macro.hxx>
+~endif
+~ifndef _Standard_HeaderFile
+~include <Standard.hxx>
+~endif
+~ifndef _Standard_Version_HeaderFile
+~include <Standard_Version.hxx>
+~endif
 
-#if OCC_VERSION_HEX < 0x070000
-#ifndef _Handle_MeshVS_DataSource3D_HeaderFile
-//#include <Handle_MeshVS_DataSource3D.hxx>
-#include <MeshVS_DataSource3D.hxx>
-#include <SMESH_MeshVSLink.hxx>
-#endif
+~if OCC_VERSION_HEX < 0x070000
+~ifndef _Handle_MeshVS_DataSource3D_HeaderFile
+//~include <Handle_MeshVS_DataSource3D.hxx>
+~include <MeshVS_DataSource3D.hxx>
+~include <SMESH_MeshVSLink.hxx>
+~endif
 
 class Standard_Transient;
 class Standard_Type;
@@ -80,5 +80,5 @@ class Handle(SMESH_MeshVSLink) : public Handle(MeshVS_DataSource3D) {
  
    Standard_EXPORT static const Handle(SMESH_MeshVSLink) DownCast(const Handle(Standard_Transient)& AnObject);
 };
-#endif // OCC_VERSION_HEX < 0x070000
-#endif
+~endif // OCC_VERSION_HEX < 0x070000
+~endif

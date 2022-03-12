@@ -24,13 +24,13 @@
 //  File   : SMDS_QuadraticEdge.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_QuadraticEdge_HeaderFile
-#define _SMDS_QuadraticEdge_HeaderFile
+~ifndef _SMDS_QuadraticEdge_HeaderFile
+~define _SMDS_QuadraticEdge_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_LinearEdge.hxx"
-#include <iostream>
+~include "SMDS_LinearEdge.hxx"
+~include <iostream>
 
 class SMDS_EXPORT SMDS_QuadraticEdge: public SMDS_LinearEdge
 {
@@ -61,4 +61,4 @@ protected:
   elementsIterator(SMDSAbs_ElementType type) const;
 
 };
-#endif
+~endif

@@ -27,13 +27,13 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_Hypothesis_2D_HXX_
-#define _NETGENPlugin_Hypothesis_2D_HXX_
+~ifndef _NETGENPlugin_Hypothesis_2D_HXX_
+~define _NETGENPlugin_Hypothesis_2D_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-#include "NETGENPlugin_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "NETGENPlugin_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 //  Parameters for work of NETGEN.
 // This class is just to give 2D dimension, actually
@@ -57,4 +57,4 @@ public:
 //   bool _quadAllowed;
 };
 
-#endif
+~endif

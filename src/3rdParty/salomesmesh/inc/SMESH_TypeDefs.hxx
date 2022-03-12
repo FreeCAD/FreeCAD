@@ -24,20 +24,20 @@
 // Author    : Edward AGAPOV (eap)
 
 
-#ifndef __SMESH_TypeDefs_HXX__
-#define __SMESH_TypeDefs_HXX__
+~ifndef __SMESH_TypeDefs_HXX__
+~define __SMESH_TypeDefs_HXX__
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
-#include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshNode.hxx"
 
-#include <gp_XYZ.hxx>
-#include <gp_XY.hxx>
+~include <gp_XYZ.hxx>
+~include <gp_XY.hxx>
 
-#include <map>
-#include <list>
-#include <set>
-#include <cassert>
+~include <map>
+~include <list>
+~include <set>
+~include <cassert>
 
 typedef std::map<const SMDS_MeshElement*,
                  std::list<const SMDS_MeshElement*>, TIDCompare > TElemOfElemListMap;
@@ -185,7 +185,7 @@ typedef std::vector< UVPtStruct > UVPtStructVec;
 
 // --------------------------------------------------------------------------------
 // class SMESH_SequenceOfElemPtr
-#include <NCollection_DefineSequence.hxx>
+~include <NCollection_DefineSequence.hxx>
 
 class SMDS_MeshElement;
 
@@ -201,4 +201,4 @@ typedef const SMDS_MeshNode* SMDS_MeshNodePtr;
 DEFINE_SEQUENCE(SMESH_SequenceOfNode,
                 SMESH_BaseCollectionNodePtr, SMDS_MeshNodePtr)
 
-#endif
+~endif

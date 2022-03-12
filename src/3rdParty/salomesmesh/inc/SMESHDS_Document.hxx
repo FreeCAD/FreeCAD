@@ -24,14 +24,14 @@
 //  File   : SMESHDS_Document.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_Document_HeaderFile
-#define _SMESHDS_Document_HeaderFile
+~ifndef _SMESHDS_Document_HeaderFile
+~define _SMESHDS_Document_HeaderFile
 
-#include "SMESH_SMESHDS.hxx"
+~include "SMESH_SMESHDS.hxx"
 
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_Hypothesis.hxx"
-#include <map>
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_Hypothesis.hxx"
+~include <map>
 
 
 class SMESHDS_EXPORT SMESHDS_Document
@@ -62,4 +62,4 @@ class SMESHDS_EXPORT SMESHDS_Document
         std::map<int,SMESHDS_Hypothesis*>::iterator myHypothesisIt;
 };
 
-#endif
+~endif

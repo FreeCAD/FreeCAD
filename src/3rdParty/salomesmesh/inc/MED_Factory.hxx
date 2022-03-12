@@ -20,11 +20,11 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef MED_Factory_HeaderFile
-#define MED_Factory_HeaderFile
+~ifndef MED_Factory_HeaderFile
+~define MED_Factory_HeaderFile
 
-#include "MED_WrapperFactory.hxx"
-#include "MED_Wrapper.hxx"
+~include "MED_WrapperFactory.hxx"
+~include "MED_Wrapper.hxx"
 
 namespace MED
 {
@@ -46,4 +46,4 @@ namespace MED
   CrWrapper(const std::string& theFileName, EVersion theId);
 }
 
-#endif
+~endif

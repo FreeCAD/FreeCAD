@@ -35,8 +35,8 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_ExtensionOldType__h
-#define __CXX_ExtensionOldType__h
+~ifndef __CXX_ExtensionOldType__h
+~define __CXX_ExtensionOldType__h
 
 namespace Py
 {
@@ -97,11 +97,11 @@ namespace Py
             static PythonType* p;
             if( p == NULL )
             {
-#if defined( _CPPRTTI ) || defined( __GNUG__ )
+~if defined( _CPPRTTI ) || defined( __GNUG__ )
                 const char *default_name =( typeid( T ) ).name();
-#else
+~else
                 const char *default_name = "unknown";
-#endif
+~endif
                 p = new PythonType( sizeof( T ), 0, default_name );
                 p->set_tp_dealloc( extension_object_deallocator );
             }
@@ -254,7 +254,7 @@ namespace Py
                 Object result;
 
                 // Adding try & catch in case of STL debug-mode exceptions.
-                #ifdef _STLP_DEBUG
+                ~ifdef _STLP_DEBUG
                 try
                 {
                     result = (self->*meth_def->ext_noargs_function)();
@@ -264,9 +264,9 @@ namespace Py
                     // throw cxx::RuntimeError( sErrMsg );
                     throw RuntimeError( "Error message not set yet." );
                 }
-                #else
+                ~else
                 result = (self->*meth_def->ext_noargs_function)();
-                #endif // _STLP_DEBUG
+                ~endif // _STLP_DEBUG
 
                 return new_reference_to( result.ptr() );
             }
@@ -292,7 +292,7 @@ namespace Py
                 Object result;
 
                 // Adding try & catch in case of STL debug-mode exceptions.
-                #ifdef _STLP_DEBUG
+                ~ifdef _STLP_DEBUG
                 try
                 {
                     result = (self->*meth_def->ext_varargs_function)( args );
@@ -301,9 +301,9 @@ namespace Py
                 {
                     throw RuntimeError( "Error message not set yet." );
                 }
-                #else
+                ~else
                 result = (self->*meth_def->ext_varargs_function)( args );
-                #endif // _STLP_DEBUG
+                ~endif // _STLP_DEBUG
 
                 return new_reference_to( result.ptr() );
             }
@@ -407,4 +407,4 @@ namespace Py
 } // Namespace Py
 
 // End of __CXX_ExtensionOldType__h
-#endif
+~endif

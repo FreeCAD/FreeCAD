@@ -21,13 +21,13 @@
 //  File   : StdMeshers_MaxLength.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_MaxLength_HXX_
-#define _SMESH_MaxLength_HXX_
+~ifndef _SMESH_MaxLength_HXX_
+~define _SMESH_MaxLength_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_MaxLength: public SMESH_Hypothesis
 {
@@ -67,4 +67,4 @@ class STDMESHERS_EXPORT StdMeshers_MaxLength: public SMESH_Hypothesis
   bool   _preestimation;
 };
 
-#endif
+~endif

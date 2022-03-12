@@ -21,13 +21,13 @@
 // Created: Jun 3, 2010
 // Author: prascle
 
-#ifndef SMDS_DOWNWARD_HXX_
-#define SMDS_DOWNWARD_HXX_
+~ifndef SMDS_DOWNWARD_HXX_
+~define SMDS_DOWNWARD_HXX_
 
-#include "SMDS_UnstructuredGrid.hxx"
+~include "SMDS_UnstructuredGrid.hxx"
 
-#include <vector>
-#include <set>
+~include <vector>
+~include <set>
 
 typedef struct
 {
@@ -378,4 +378,4 @@ protected:
 //protected:
 //};
 
-#endif /* SMDS_DOWNWARD_HXX_ */
+~endif /* SMDS_DOWNWARD_HXX_ */

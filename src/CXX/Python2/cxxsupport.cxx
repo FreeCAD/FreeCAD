@@ -35,7 +35,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "CXX/Objects.hxx"
+~include "CXX/Objects.hxx"
 namespace Py {
 
 Py_UNICODE unicode_null_string[1] = { 0 };
@@ -161,14 +161,14 @@ bool operator!=(const Mapping::const_iterator& left, const Mapping::const_iterat
     return left.neq( right );
 }
 
-// TMM: 31May'01 - Added the #ifndef so I can exclude iostreams.
-#ifndef CXX_NO_IOSTREAMS
+// TMM: 31May'01 - Added the ~ifndef so I can exclude iostreams.
+~ifndef CXX_NO_IOSTREAMS
 // output
 
 std::ostream& operator<< (std::ostream& os, const Object& ob)
 {
     return (os << static_cast<std::string>(ob.str()));
 }  
-#endif
+~endif
 
 } // Py

@@ -24,13 +24,13 @@
 // Created : Mon Nov 13 10:45:49 2006
 // Author  : Edward AGAPOV (eap)
 //
-#ifndef SMESH_subMeshEventListener_HeaderFile
-#define SMESH_subMeshEventListener_HeaderFile
+~ifndef SMESH_subMeshEventListener_HeaderFile
+~define SMESH_subMeshEventListener_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include <list>
-#include <set>
+~include <list>
+~include <set>
 
 class  SMESH_subMesh;
 class  SMESH_Hypothesis;
@@ -116,4 +116,4 @@ public:
 };
 
 
-#endif
+~endif

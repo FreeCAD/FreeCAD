@@ -25,12 +25,12 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _SMESH_HYPOTHESIS_HXX_
-#define _SMESH_HYPOTHESIS_HXX_
+~ifndef _SMESH_HYPOTHESIS_HXX_
+~define _SMESH_HYPOTHESIS_HXX_
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMESHDS_Hypothesis.hxx"
+~include "SMESHDS_Hypothesis.hxx"
 
 class SMESH_Gen;
 class TopoDS_Shape;
@@ -141,4 +141,4 @@ private:
   std::string _lastParameters;
 };
 
-#endif
+~endif

@@ -20,26 +20,26 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _SMESH_CONTROLS_HXX_
-#define _SMESH_CONTROLS_HXX_
+~ifndef _SMESH_CONTROLS_HXX_
+~define _SMESH_CONTROLS_HXX_
 
 // This file is named incosistently with others, i.e. not SMESHDS_Controls.hxx,
 // because it was moved from ../Controls/SMESH_Controls.hxx.
 // It was moved here for the sake of SMESHDS_GroupOnFilter
 
-#include "SMDSAbs_ElementType.hxx"
+~include "SMDSAbs_ElementType.hxx"
 
-#include <boost/shared_ptr.hpp>
+~include <boost/shared_ptr.hpp>
 
-#ifdef WIN32
- #if defined SMESHCONTROLS_EXPORTS || defined SMESHControls_EXPORTS
-  #define SMESHCONTROLS_EXPORT __declspec( dllexport )
- #else
-  #define SMESHCONTROLS_EXPORT __declspec( dllimport )
- #endif
-#else
- #define SMESHCONTROLS_EXPORT
-#endif
+~ifdef WIN32
+ ~if defined SMESHCONTROLS_EXPORTS || defined SMESHControls_EXPORTS
+  ~define SMESHCONTROLS_EXPORT __declspec( dllexport )
+ ~else
+  ~define SMESHCONTROLS_EXPORT __declspec( dllimport )
+ ~endif
+~else
+ ~define SMESHCONTROLS_EXPORT
+~endif
 
 class SMDS_Mesh;
 
@@ -80,4 +80,4 @@ namespace SMESH{
 typedef SMESH::Controls::PredicatePtr SMESH_PredicatePtr;
 
 
-#endif
+~endif

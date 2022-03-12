@@ -20,31 +20,31 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _SMESH_CONTROLSDEF_HXX_
-#define _SMESH_CONTROLSDEF_HXX_
+~ifndef _SMESH_CONTROLSDEF_HXX_
+~define _SMESH_CONTROLSDEF_HXX_
 
-#include "SMESH_Controls.hxx"
+~include "SMESH_Controls.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_TypeDefs.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_TypeDefs.hxx"
 
-#include <BRepClass3d_SolidClassifier.hxx>
-#include <Bnd_B3d.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Quantity_Color.hxx>
-#include <TColStd_MapOfInteger.hxx>
-#include <TColStd_SequenceOfInteger.hxx>
-#include <TCollection_AsciiString.hxx>
-#include <TopAbs.hxx>
-#include <TopoDS_Face.hxx>
-#include <gp_XYZ.hxx>
+~include <BRepClass3d_SolidClassifier.hxx>
+~include <Bnd_B3d.hxx>
+~include <GeomAPI_ProjectPointOnCurve.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <Quantity_Color.hxx>
+~include <TColStd_MapOfInteger.hxx>
+~include <TColStd_SequenceOfInteger.hxx>
+~include <TCollection_AsciiString.hxx>
+~include <TopAbs.hxx>
+~include <TopoDS_Face.hxx>
+~include <gp_XYZ.hxx>
 
-#include <set>
-#include <map>
-#include <vector>
+~include <set>
+~include <map>
+~include <vector>
 
-#include <boost/shared_ptr.hpp>
+~include <boost/shared_ptr.hpp>
 
 class SMDS_MeshElement;
 class SMDS_MeshFace;
@@ -1154,4 +1154,4 @@ namespace SMESH{
 };
 
 
-#endif
+~endif

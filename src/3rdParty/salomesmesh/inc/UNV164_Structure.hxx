@@ -20,8 +20,8 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef UNV164_Structure_HeaderFile
-#define UNV164_Structure_HeaderFile
+~ifndef UNV164_Structure_HeaderFile
+~define UNV164_Structure_HeaderFile
 
 // Universal Dataset Number: 164
 // Name:   Units
@@ -65,9 +65,9 @@
 //   4.59670000000000002D+02
 //     -1
 
-#include "SMESH_DriverUNV.hxx"
+~include "SMESH_DriverUNV.hxx"
 
-#include <string>
+~include <string>
 
 namespace UNV164
 {
@@ -91,4 +91,4 @@ namespace UNV164
 };
 
 
-#endif
+~endif

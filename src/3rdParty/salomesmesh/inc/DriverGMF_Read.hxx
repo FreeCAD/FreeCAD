@@ -24,15 +24,15 @@
 // Author    : Edward AGAPOV (eap)
 
 
-#ifndef __DriverGMF_Read_HXX__
-#define __DriverGMF_Read_HXX__
+~ifndef __DriverGMF_Read_HXX__
+~define __DriverGMF_Read_HXX__
 
-#include "SMESH_DriverGMF.hxx"
+~include "SMESH_DriverGMF.hxx"
 
-#include "Driver_SMESHDS_Mesh.h"
+~include "Driver_SMESHDS_Mesh.h"
 
-#include <vector>
-#include <string>
+~include <vector>
+~include <string>
 
 /*!
  * \brief Driver reading a mesh from the GMF file. The mesh to read is selected by 
@@ -61,4 +61,4 @@ public:
 };
 
 
-#endif
+~endif

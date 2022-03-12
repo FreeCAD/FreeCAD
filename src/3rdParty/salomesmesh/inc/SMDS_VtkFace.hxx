@@ -17,14 +17,14 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _SMDS_VTKFACE_HXX_
-#define _SMDS_VTKFACE_HXX_
+~ifndef _SMDS_VTKFACE_HXX_
+~define _SMDS_VTKFACE_HXX_
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshFace.hxx"
-#include <vtkUnstructuredGrid.h>
-#include <vector>
+~include "SMDS_MeshFace.hxx"
+~include <vtkUnstructuredGrid.h>
+~include <vector>
 
 class SMDS_EXPORT SMDS_VtkFace: public SMDS_MeshFace
 {
@@ -61,4 +61,4 @@ public:
 protected:
 };
 
-#endif
+~endif

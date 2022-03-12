@@ -26,15 +26,15 @@
 // Date      : 27/03/2006
 // Project   : SALOME
 //
-#ifndef _NETGENPlugin_Hypothesis_HXX_
-#define _NETGENPlugin_Hypothesis_HXX_
+~ifndef _NETGENPlugin_Hypothesis_HXX_
+~define _NETGENPlugin_Hypothesis_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <map>
+~include <map>
 
 //  Parameters for work of NETGEN
 //
@@ -146,4 +146,4 @@ private:
   bool          _fuseEdges;
 };
 
-#endif
+~endif

@@ -35,11 +35,11 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
-#define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+~ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+~define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
 
-#include "CXX/WrapPython.h"
-#include "CXX/Config.hxx"
+~include "CXX/WrapPython.h"
+~include "CXX/Config.hxx"
 
 namespace Py
 {
@@ -75,9 +75,9 @@ PYCXX_EXPORT PyObject * _Exc_SystemExit();
 PYCXX_EXPORT PyObject * _Exc_TypeError();
 PYCXX_EXPORT PyObject * _Exc_ValueError();
 PYCXX_EXPORT PyObject * _Exc_ZeroDivisionError();
-#ifdef MS_WINDOWS
+~ifdef MS_WINDOWS
 PYCXX_EXPORT PyObject * _Exc_WindowsError();
-#endif
+~endif
 
 PYCXX_EXPORT PyObject * _Exc_IndentationError();
 PYCXX_EXPORT PyObject * _Exc_TabError();
@@ -181,4 +181,4 @@ PYCXX_EXPORT void _XDECREF( PyObject *op );
 PYCXX_EXPORT const char *__Py_PackageContext();
 }
 
-#endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+~endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

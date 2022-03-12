@@ -24,32 +24,32 @@
 //  File   : StdMeshers_Prism_3D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_Prism_3D_HXX_
-#define _SMESH_Prism_3D_HXX_
+~ifndef _SMESH_Prism_3D_HXX_
+~define _SMESH_Prism_3D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_TypeOfPosition.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_TypeDefs.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_TypeOfPosition.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_TypeDefs.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <Adaptor2d_Curve2d.hxx>
-#include <Adaptor3d_Curve.hxx>
-#include <Adaptor3d_Surface.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <TopTools_IndexedMapOfOrientedShape.hxx>
-#include <TopoDS_Face.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_XYZ.hxx>
+~include <Adaptor2d_Curve2d.hxx>
+~include <Adaptor3d_Curve.hxx>
+~include <Adaptor3d_Surface.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <TopTools_IndexedMapOfOrientedShape.hxx>
+~include <TopoDS_Face.hxx>
+~include <gp_Trsf.hxx>
+~include <gp_XYZ.hxx>
 
-#include <vector>
+~include <vector>
 
 namespace Prism_3D
 {
@@ -579,4 +579,4 @@ private:
 
 }; // class StdMeshers_Prism_3D
 
-#endif
+~endif

@@ -34,11 +34,11 @@
 // DAMAGE.
 //
 //-----------------------------------------------------------------------------
-#include "CXX/Extensions.hxx"
-#include "CXX/Exception.hxx"
-#include <assert.h>
+~include "CXX/Extensions.hxx"
+~include "CXX/Exception.hxx"
+~include <assert.h>
 
-#ifdef PYCXX_DEBUG
+~ifdef PYCXX_DEBUG
 //
 //  Functions useful when debugging PyCXX
 //
@@ -50,11 +50,11 @@ void printRefCount( PyObject *obj )
 {
     std::cout << "RefCount of 0x" << std::hex << reinterpret_cast< unsigned int >( obj ) << std::dec << " is " << Py_REFCNT( obj ) << std::endl;
 }
-#endif
+~endif
 
 namespace Py
 {
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
 std::string String::as_std_string( const char *encoding, const char *error ) const
 {
     if( isUnicode() )
@@ -80,7 +80,7 @@ Bytes String::encode( const char *encoding, const char *error ) const
     }
 }
 
-#else
+~else
 std::string String::as_std_string( const char *encoding, const char *error ) const
 {
     if( isUnicode() )
@@ -93,14 +93,14 @@ std::string String::as_std_string( const char *encoding, const char *error ) con
         return std::string( PyString_AsString( ptr() ), static_cast<size_type>( PyString_Size( ptr() ) ) );
     }
 }
-#endif
+~endif
 
 void Object::validate()
 {
     // release pointer if not the right type
     if( !accepts( p ) )
     {
-#if defined( _CPPRTTI ) || defined( __GNUG__ )
+~if defined( _CPPRTTI ) || defined( __GNUG__ )
         std::string s( "PyCXX: Error creating object of type " );
         s += (typeid( *this )).name();
 
@@ -114,18 +114,18 @@ void Object::validate()
         {
             s += " from (nil)";
         }
-#endif
+~endif
         release();
         if( PyErr_Occurred() )
         { // Error message already set
             throw Exception();
         }
         // Better error message if RTTI available
-#if defined( _CPPRTTI ) || defined( __GNUG__ )
+~if defined( _CPPRTTI ) || defined( __GNUG__ )
         throw TypeError( s );
-#else
+~else
         throw TypeError( "PyCXX: type error." );
-#endif
+~endif
     }
 }
 
@@ -260,16 +260,16 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-#if defined( PYCXX_PYTHON_2TO3 )
+~if defined( PYCXX_PYTHON_2TO3 )
     static int print_handler( PyObject *, FILE *, int );
-#endif
+~endif
     static PyObject *getattr_handler( PyObject *, char * );
     static int setattr_handler( PyObject *, char *, PyObject * );
     static PyObject *getattro_handler( PyObject *, PyObject * );
     static int setattro_handler( PyObject *, PyObject *, PyObject * );
-#if defined( PYCXX_PYTHON_2TO3 )
+~if defined( PYCXX_PYTHON_2TO3 )
     static int compare_handler( PyObject *, PyObject * );
-#endif
+~endif
     static PyObject *rich_compare_handler( PyObject *, PyObject *, int );
     static PyObject *repr_handler( PyObject * );
     static PyObject *str_handler( PyObject * );
@@ -462,36 +462,36 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
     // Documentation string
     table->tp_doc = 0;
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 0)
+~if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 0)
     table->tp_traverse = 0L;
 
     // delete references to contained objects
     table->tp_clear = 0L;
-#else
+~else
     table->tp_xxx5 = 0L;
     table->tp_xxx6 = 0L;
-#endif
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
+~endif
+~if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
     // first defined in 2.1
     table->tp_richcompare = 0L;
     // weak reference enabler
     table->tp_weaklistoffset = 0L;
-#else
+~else
     table->tp_xxx7 = 0L;
     table->tp_xxx8 = 0L;
-#endif
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 2)
+~endif
+~if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 2)
     // first defined in 2.3
     // Iterators
     table->tp_iter = 0L;
     table->tp_iternext = 0L;
-#endif
-#ifdef COUNT_ALLOCS
+~endif
+~ifdef COUNT_ALLOCS
     table->tp_alloc = 0;
     table->tp_free = 0;
     table->tp_maxalloc = 0;
     table->tp_next = 0;
-#endif
+~endif
 }
 
 PythonType::~PythonType()
@@ -566,13 +566,13 @@ PythonType &PythonType::dealloc( void( *f )( PyObject * ))
     return *this;
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
+~if defined( PYCXX_PYTHON_2TO3 )
 PythonType &PythonType::supportPrint()
 {
     table->tp_print = print_handler;
     return *this;
 }
-#endif
+~endif
 
 PythonType &PythonType::supportGetattr()
 {
@@ -598,21 +598,21 @@ PythonType &PythonType::supportSetattro()
     return *this;
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
+~if defined( PYCXX_PYTHON_2TO3 )
 PythonType &PythonType::supportCompare()
 {
     table->tp_compare = compare_handler;
     return *this;
 }
-#endif
+~endif
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
+~if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
 PythonType &PythonType::supportRichCompare()
 {
     table->tp_richcompare = rich_compare_handler;
     return *this;
 }
-#endif
+~endif
 
 PythonType &PythonType::supportRepr()
 {
@@ -664,7 +664,7 @@ PYCXX_EXPORT PythonExtensionBase *getPythonExtensionBase( PyObject *self )
 }
 
 
-#if defined( PYCXX_PYTHON_2TO3 )
+~if defined( PYCXX_PYTHON_2TO3 )
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -677,7 +677,7 @@ extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
         return -1;    // indicate error
     }
 }
-#endif
+~endif
 
 extern "C" PyObject *getattr_handler( PyObject *self, char *name )
 {
@@ -731,7 +731,7 @@ extern "C" int setattro_handler( PyObject *self, PyObject *name, PyObject *value
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
+~if defined( PYCXX_PYTHON_2TO3 )
 extern "C" int compare_handler( PyObject *self, PyObject *other )
 {
     try
@@ -744,9 +744,9 @@ extern "C" int compare_handler( PyObject *self, PyObject *other )
         return -1;    // indicate error
     }
 }
-#endif
+~endif
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
+~if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
 extern "C" PyObject *rich_compare_handler( PyObject *self, PyObject *other, int op )
 {
     try
@@ -759,7 +759,7 @@ extern "C" PyObject *rich_compare_handler( PyObject *self, PyObject *other, int 
         return NULL;    // indicate error
     }
 }
-#endif
+~endif
 
 extern "C" PyObject *repr_handler( PyObject *self )
 {
@@ -1306,8 +1306,8 @@ extern "C" Py_ssize_t buffer_getsegcount_handler( PyObject *self, Py_ssize_t *co
 //    Implementation of PythonExtensionBase
 //
 //================================================================================
-#define missing_method( method ) \
-    throw RuntimeError( "Extension object missing implement of " #method );
+~define missing_method( method ) \
+    throw RuntimeError( "Extension object missing implement of " ~method );
 
 PythonExtensionBase::PythonExtensionBase()
 {
@@ -1446,14 +1446,14 @@ int PythonExtensionBase::compare( const Py::Object &)
     return -1;
 }
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
+~if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
 Py::Object PythonExtensionBase::rich_compare( const Py::Object &, int /*op*/ )
 {
     missing_method( rich_compare );
     return Py::None();
 }
 
-#endif
+~endif
 Py::Object PythonExtensionBase::repr()
 {
     missing_method( repr );
@@ -1794,7 +1794,7 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
     {
         return 0;
     }
-#if 0
+~if 0
     try
     {
         Tuple self_and_name_tuple( _self_and_name_tuple );
@@ -1817,9 +1817,9 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
     {
         return 0;
     }
-#else
+~else
     return 0;
-#endif
+~endif
 }
 
 extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple, PyObject *_args )

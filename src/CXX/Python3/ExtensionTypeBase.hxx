@@ -35,8 +35,8 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_ExtensionTypeBase__h
-#define __CXX_ExtensionTypeBase__h
+~ifndef __CXX_ExtensionTypeBase__h
+~define __CXX_ExtensionTypeBase__h
 
 namespace Py
 {
@@ -70,9 +70,9 @@ namespace Py
         virtual void reinit( Tuple &args, Dict &kwds );
 
         // object basics
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
         virtual int print( FILE *, int );
-#endif
+~endif
         virtual Object getattr( const char * );
         virtual int setattr( const char *, const Object & );
         virtual Object getattro( const String & );
@@ -167,4 +167,4 @@ namespace Py
 } // Namespace Py
 
 // End of __CXX_ExtensionTypeBase__h
-#endif
+~endif

@@ -24,28 +24,28 @@
 // Created   : Tue Nov 30 12:42:18 2004
 // Author    : Edward AGAPOV (eap)
 //
-#ifndef SMESH_Block_HeaderFile
-#define SMESH_Block_HeaderFile
+~ifndef SMESH_Block_HeaderFile
+~define SMESH_Block_HeaderFile
 
-#include "SMESH_Utils.hxx"
+~include "SMESH_Utils.hxx"
 
-// #include <Geom2d_Curve.hxx>
-// #include <Geom_Curve.hxx>
-// #include <Geom_Surface.hxx>
+// ~include <Geom2d_Curve.hxx>
+// ~include <Geom_Curve.hxx>
+// ~include <Geom_Surface.hxx>
 
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfOrientedShape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_XY.hxx>
-#include <gp_XYZ.hxx>
-#include <math_FunctionSetWithDerivatives.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfOrientedShape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_XY.hxx>
+~include <gp_XYZ.hxx>
+~include <math_FunctionSetWithDerivatives.hxx>
 
-#include <ostream>
-#include <vector>
-#include <list>
+~include <ostream>
+~include <vector>
+~include <list>
 
 class SMDS_MeshVolume;
 class SMDS_MeshNode;
@@ -404,4 +404,4 @@ public:
 };
 
 
-#endif
+~endif

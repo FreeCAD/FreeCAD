@@ -23,18 +23,18 @@
 //  Module : SALOME
 //  $Header$
 //
-#ifndef _SALOME_BASICS_HXX_
-#define _SALOME_BASICS_HXX_
+~ifndef _SALOME_BASICS_HXX_
+~define _SALOME_BASICS_HXX_
 
 
-#ifdef WIN32
-# if defined BASICS_EXPORTS || defined SALOMEBasics_EXPORTS
-#  define BASICS_EXPORT __declspec( dllexport )
-# else
-#  define BASICS_EXPORT __declspec( dllimport )
-# endif
-#else
-# define BASICS_EXPORT
-#endif
+~ifdef WIN32
+~ if defined BASICS_EXPORTS || defined SALOMEBasics_EXPORTS
+~  define BASICS_EXPORT __declspec( dllexport )
+~ else
+~  define BASICS_EXPORT __declspec( dllimport )
+~ endif
+~else
+~ define BASICS_EXPORT
+~endif
 
-#endif //_SALOME_BASICS_HXX_
+~endif //_SALOME_BASICS_HXX_

@@ -17,12 +17,12 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _OBJECTPOOL_HXX_
-#define _OBJECTPOOL_HXX_
+~ifndef _OBJECTPOOL_HXX_
+~define _OBJECTPOOL_HXX_
 
-#include <vector>
-//#include <stack>
-#include <iostream>
+~include <vector>
+//~include <stack>
+~include <iostream>
 
 namespace
 {
@@ -171,4 +171,4 @@ public:
 
 };
 
-#endif
+~endif

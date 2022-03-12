@@ -24,8 +24,8 @@
 //  File   : SMESHDS_CommandType.hxx
 //  Module : SMESH
 //
-#ifndef _SMESHDS_CommandType_HeaderFile
-#define _SMESHDS_CommandType_HeaderFile
+~ifndef _SMESHDS_CommandType_HeaderFile
+~define _SMESHDS_CommandType_HeaderFile
 
 enum SMESHDS_CommandType { 
   SMESHDS_AddNode,
@@ -64,4 +64,4 @@ enum SMESHDS_CommandType {
 };
 
 
-#endif
+~endif

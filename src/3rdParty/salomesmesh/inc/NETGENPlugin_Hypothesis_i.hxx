@@ -27,16 +27,16 @@
 // Project   : SALOME
 //=============================================================================
 //
-#ifndef _NETGENPlugin_Hypothesis_i_HXX_
-#define _NETGENPlugin_Hypothesis_i_HXX_
+~ifndef _NETGENPlugin_Hypothesis_i_HXX_
+~define _NETGENPlugin_Hypothesis_i_HXX_
 
-#include "NETGENPlugin_Defs.hxx"
+~include "NETGENPlugin_Defs.hxx"
 
-//#include <SALOMEconfig.h>
-//#include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
+//~include <SALOMEconfig.h>
+//~include CORBA_SERVER_HEADER(NETGENPlugin_Algorithm)
 
-// #include "SMESH_Hypothesis_i.hxx"
-#include "NETGENPlugin_Hypothesis.hxx"
+// ~include "SMESH_Hypothesis_i.hxx"
+~include "NETGENPlugin_Hypothesis.hxx"
 
 class SMESH_Gen;
 //class GEOM_Object;
@@ -148,4 +148,4 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Hypothesis_i:
   virtual std::string getMethodOfParameter(const int paramIndex, int nbVars) const;
 };
 
-#endif
+~endif

@@ -4,22 +4,22 @@
 //              <a-kartomin@opencascade.com>
 // Copyright:   Open Cascade 2002
 
-#ifndef SMESH_Array1_HeaderFile
-#define SMESH_Array1_HeaderFile
+~ifndef SMESH_Array1_HeaderFile
+~define SMESH_Array1_HeaderFile
 
-#ifndef No_Exception
-#include <Standard_DimensionMismatch.hxx>
-#include <Standard_OutOfMemory.hxx>
-#include <Standard_OutOfRange.hxx>
-#endif
+~ifndef No_Exception
+~include <Standard_DimensionMismatch.hxx>
+~include <Standard_OutOfMemory.hxx>
+~include <Standard_OutOfRange.hxx>
+~endif
 
-#include <NCollection_BaseCollection.hxx>
+~include <NCollection_BaseCollection.hxx>
 
-#ifdef WNT
+~ifdef WNT
 // Disable the warning "operator new unmatched by delete"
-#pragma warning (push)
-#pragma warning (disable:4291)
-#endif
+~pragma warning (push)
+~pragma warning (disable:4291)
+~endif
 
 // *********************************************** Template for Array1 class
 
@@ -106,15 +106,15 @@ template <class TheItemType> class SMESH_Array1
                 myUpperBound                             (theUpper),
                 myDeletable                              (Standard_True)
   {
-#if !defined No_Exception && !defined No_Standard_RangeError
+~if !defined No_Exception && !defined No_Standard_RangeError
     if (theUpper < theLower)
       Standard_RangeError::Raise ("SMESH_Array1::Create");
-#endif
+~endif
     TheItemType* pBegin = new TheItemType[Length()];
-#if !defined No_Exception && !defined No_Standard_OutOfMemory
+~if !defined No_Exception && !defined No_Standard_OutOfMemory
     if (!pBegin)
       Standard_OutOfMemory::Raise ("SMESH_Array1 : Allocation failed");
-#endif
+~endif
 
     myData = pBegin - theLower;
   }
@@ -127,10 +127,10 @@ template <class TheItemType> class SMESH_Array1
     myDeletable                                 (Standard_True)
   {
     TheItemType* pBegin = new TheItemType[Length()];
-#if !defined No_Exception && !defined No_Standard_OutOfMemory
+~if !defined No_Exception && !defined No_Standard_OutOfMemory
     if (!pBegin)
       Standard_OutOfMemory::Raise ("SMESH_Array1 : Allocation failed");
-#endif
+~endif
     myData = pBegin - myLowerBound;
 
     *this = theOther;
@@ -145,10 +145,10 @@ template <class TheItemType> class SMESH_Array1
     myUpperBound                                (theUpper),
     myDeletable                                 (Standard_False)
   {
-#if !defined No_Exception && !defined No_Standard_RangeError
+~if !defined No_Exception && !defined No_Standard_RangeError
     if (theUpper < theLower)
       Standard_RangeError::Raise ("SMESH_Array1::Array1");
-#endif
+~endif
     myData = (TheItemType *) &theBegin - theLower; 
   }
 
@@ -189,10 +189,10 @@ template <class TheItemType> class SMESH_Array1
   {
     if (&theOther == this)
       return;
-#if !defined No_Exception && !defined No_Standard_DimensionMismatch
+~if !defined No_Exception && !defined No_Standard_DimensionMismatch
     if (Length() != theOther.Size())
       Standard_DimensionMismatch::Raise ("SMESH_Array1::Assign");
-#endif
+~endif
     TYPENAME NCollection_BaseCollection<TheItemType>::Iterator& anIter2 = 
       theOther.CreateIterator();
     TheItemType * const pEndItem = &myData[myUpperBound];
@@ -206,10 +206,10 @@ template <class TheItemType> class SMESH_Array1
   {
     if (&theOther == this)
       return *this;
-#if !defined No_Exception && !defined No_Standard_DimensionMismatch
+~if !defined No_Exception && !defined No_Standard_DimensionMismatch
     if (Length() != theOther.Length())
       Standard_DimensionMismatch::Raise ("SMESH_Array1::operator=");
-#endif
+~endif
     TheItemType * pMyItem        = &myData[myLowerBound];
     TheItemType * const pEndItem = &(theOther.myData)[theOther.myUpperBound];
     TheItemType * pItem          = &(theOther.myData)[theOther.myLowerBound];
@@ -220,10 +220,10 @@ template <class TheItemType> class SMESH_Array1
   //! Constant value access
   const TheItemType& Value (const Standard_Integer theIndex) const
   {
-#if !defined No_Exception && !defined No_Standard_OutOfRange
+~if !defined No_Exception && !defined No_Standard_OutOfRange
     if (theIndex < myLowerBound || theIndex > myUpperBound)
       Standard_OutOfRange::Raise ("SMESH_Array1::Value");
-#endif
+~endif
     return myData[theIndex];
   }
 
@@ -234,10 +234,10 @@ template <class TheItemType> class SMESH_Array1
   //! Variable value access
   TheItemType& ChangeValue (const Standard_Integer theIndex)
   {
-#if !defined No_Exception && !defined No_Standard_OutOfRange
+~if !defined No_Exception && !defined No_Standard_OutOfRange
     if (theIndex < myLowerBound || theIndex > myUpperBound)
       Standard_OutOfRange::Raise ("SMESH_Array1::ChangeValue");
-#endif
+~endif
     return myData[theIndex];
   }
 
@@ -249,10 +249,10 @@ template <class TheItemType> class SMESH_Array1
   void SetValue (const Standard_Integer theIndex,
                  const TheItemType&     theItem)
   {
-#if !defined No_Exception && !defined No_Standard_OutOfRange
+~if !defined No_Exception && !defined No_Standard_OutOfRange
     if (theIndex < myLowerBound || theIndex > myUpperBound)
       Standard_OutOfRange::Raise ("SMESH_Array1::SetValue");
-#endif
+~endif
     myData[theIndex] = theItem;
   }
 
@@ -277,8 +277,8 @@ template <class TheItemType> class SMESH_Array1
   TheItemType*         myData;      //!< Pointer to '0'th array item
 };
 
-#ifdef WNT
-#pragma warning (pop)
-#endif
+~ifdef WNT
+~pragma warning (pop)
+~endif
 
-#endif
+~endif

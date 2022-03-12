@@ -24,23 +24,23 @@
 // Created:   15.02.06 14:48:09
 // Author:    Sergey KUUL
 //
-#ifndef SMESH_MesherHelper_HeaderFile
-#define SMESH_MesherHelper_HeaderFile
+~ifndef SMESH_MesherHelper_HeaderFile
+~define SMESH_MesherHelper_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include "SMESH_MeshEditor.hxx" // needed for many meshers
-#include <SMDS_MeshNode.hxx>
-#include <SMDS_QuadraticEdge.hxx>
+~include "SMESH_MeshEditor.hxx" // needed for many meshers
+~include <SMDS_MeshNode.hxx>
+~include <SMDS_QuadraticEdge.hxx>
 
-#include <Geom_Surface.hxx>
-#include <ShapeAnalysis_Surface.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Pnt2d.hxx>
+~include <Geom_Surface.hxx>
+~include <ShapeAnalysis_Surface.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Shape.hxx>
+~include <gp_Pnt2d.hxx>
 
-#include <map>
-#include <vector>
+~include <map>
+~include <vector>
 
 class GeomAPI_ProjectPointOnSurf;
 class GeomAPI_ProjectPointOnCurve;
@@ -491,9 +491,9 @@ public:
    *       calling gp_XY::Added(gp_XY), which is to be used like following
    *       ApplyIn2D(surf, uv1, uv2, gp_XY_Added)
    */
-#define gp_XY_FunPtr(meth) \
-  static gp_XY __gpXY_##meth (const gp_XY& uv1, const gp_XY& uv2) { return uv1.meth( uv2 ); } \
-  static xyFunPtr gp_XY_##meth = & __gpXY_##meth
+~define gp_XY_FunPtr(meth) \
+  static gp_XY __gpXY_~~meth (const gp_XY& uv1, const gp_XY& uv2) { return uv1.meth( uv2 ); } \
+  static xyFunPtr gp_XY_~~meth = & __gpXY_~~meth
 
   /*!
    * \brief Perform given operation on two 2d points in parameric space of given surface.
@@ -779,4 +779,4 @@ SMESH_MesherHelper::calcTFI(double x, double y,
 }
 //=======================================================================
 
-#endif
+~endif

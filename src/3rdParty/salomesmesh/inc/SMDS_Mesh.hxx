@@ -24,39 +24,39 @@
 //  File   : SMDS_Mesh.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_Mesh_HeaderFile
-#define _SMDS_Mesh_HeaderFile
+~ifndef _SMDS_Mesh_HeaderFile
+~define _SMDS_Mesh_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_MeshCell.hxx"
-#include "SMDS_Mesh0DElement.hxx"
-#include "SMDS_MeshEdge.hxx"
-#include "SMDS_MeshFace.hxx"
-#include "SMDS_MeshVolume.hxx"
-#include "SMDS_MeshNodeIDFactory.hxx"
-#include "SMDS_MeshElementIDFactory.hxx"
-#include "SMDS_MeshInfo.hxx"
-#include "SMDS_ElemIterator.hxx"
-#include "SMDS_VolumeOfNodes.hxx"
-#include "SMDS_VtkEdge.hxx"
-#include "SMDS_VtkFace.hxx"
-#include "SMDS_VtkVolume.hxx"
-#include "ObjectPool.hxx"
-#include "SMDS_UnstructuredGrid.hxx"
-#include "SMDS_BallElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshCell.hxx"
+~include "SMDS_Mesh0DElement.hxx"
+~include "SMDS_MeshEdge.hxx"
+~include "SMDS_MeshFace.hxx"
+~include "SMDS_MeshVolume.hxx"
+~include "SMDS_MeshNodeIDFactory.hxx"
+~include "SMDS_MeshElementIDFactory.hxx"
+~include "SMDS_MeshInfo.hxx"
+~include "SMDS_ElemIterator.hxx"
+~include "SMDS_VolumeOfNodes.hxx"
+~include "SMDS_VtkEdge.hxx"
+~include "SMDS_VtkFace.hxx"
+~include "SMDS_VtkVolume.hxx"
+~include "ObjectPool.hxx"
+~include "SMDS_UnstructuredGrid.hxx"
+~include "SMDS_BallElement.hxx"
 
-#include <boost/shared_ptr.hpp>
-#include <set>
-#include <list>
-#include <vector>
-#include <vtkSystemIncludes.h>
-#include <cassert>
+~include <boost/shared_ptr.hpp>
+~include <set>
+~include <list>
+~include <vector>
+~include <vtkSystemIncludes.h>
+~include <cassert>
 
-#include "Utils_SALOME_Exception.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#define MYASSERT(val) if (!(val)) throw SALOME_Exception(LOCALIZED("assertion not verified"));
+~define MYASSERT(val) if (!(val)) throw SALOME_Exception(LOCALIZED("assertion not verified"));
 
 class SMDS_EXPORT SMDS_Mesh : public SMDS_MeshObject
 {
@@ -860,4 +860,4 @@ protected:
 };
 
 
-#endif
+~endif

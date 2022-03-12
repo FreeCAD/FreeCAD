@@ -26,12 +26,12 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#ifndef _StdMeshers_MEFISTO_2D_HXX_
-#define _StdMeshers_MEFISTO_2D_HXX_
+~ifndef _StdMeshers_MEFISTO_2D_HXX_
+~define _StdMeshers_MEFISTO_2D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
 class TopoDS_Face;
 class StdMeshers_MaxElementArea;
@@ -40,9 +40,9 @@ class SMDS_MeshNode;
 class SMESH_MesherHelper;
 class StdMeshers_FaceSide;
 
-#include <vector>
-#include <list>
-#include "Rn.h"
+~include <vector>
+~include <list>
+~include "Rn.h"
 
 class STDMESHERS_EXPORT StdMeshers_MEFISTO_2D: public SMESH_2D_Algo
 {
@@ -88,4 +88,4 @@ protected:
   SMESH_MesherHelper* _helper; // tool for working with quadratic elements
 };
 
-#endif
+~endif

@@ -25,15 +25,15 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#ifndef _SMESH_LayerDistribution_HXX_
-#define _SMESH_LayerDistribution_HXX_
+~ifndef _SMESH_LayerDistribution_HXX_
+~define _SMESH_LayerDistribution_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <string>
+~include <string>
 
 class SMESH_Gen;
 
@@ -93,5 +93,5 @@ protected:
   std::string       mySavedHyp;
 };
 
-#endif
+~endif
 

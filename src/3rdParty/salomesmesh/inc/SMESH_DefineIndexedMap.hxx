@@ -13,20 +13,20 @@
 //              discussion about the number of buckets.
 //              
 
-#ifndef SMESH_DefineIndexedMap_HeaderFile
-#define SMESH_DefineIndexedMap_HeaderFile
+~ifndef SMESH_DefineIndexedMap_HeaderFile
+~define SMESH_DefineIndexedMap_HeaderFile
 
-#include <NCollection_DefineBaseCollection.hxx>
-#include <SMESH_IndexedMap.hxx>
+~include <NCollection_DefineBaseCollection.hxx>
+~include <SMESH_IndexedMap.hxx>
 
-#ifdef WNT
+~ifdef WNT
 // Disable the warning "operator new unmatched by delete"
-#pragma warning (disable:4291)
-#endif
+~pragma warning (disable:4291)
+~endif
 
 // *********************************************** Class IndexedMap ***********
 
-#define SMESH_DEFINE_INDEXEDMAP(_ClassName_, _BaseCollection_, TheKeyType)           \
+~define SMESH_DEFINE_INDEXEDMAP(_ClassName_, _BaseCollection_, TheKeyType)           \
         typedef SMESH_IndexedMap <TheKeyType > _ClassName_;
 
-#endif
+~endif

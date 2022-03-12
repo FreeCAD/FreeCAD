@@ -24,23 +24,23 @@
 
 //
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "BRepAdaptor_CompCurve2.h"
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_HCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
-#include <BRepAdaptor_HArray1OfCurve.hxx>
-#include <TColStd_HArray1OfReal.hxx>
-#include <BRep_Tool.hxx>
+~include "BRepAdaptor_CompCurve2.h"
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_HCurve.hxx>
+~include <BRepAdaptor_HCompCurve.hxx>
+~include <BRepAdaptor_HArray1OfCurve.hxx>
+~include <TColStd_HArray1OfReal.hxx>
+~include <BRep_Tool.hxx>
 
-#include <TopAbs_Orientation.hxx>
+~include <TopAbs_Orientation.hxx>
 
-#include <GCPnts_AbscissaPoint.hxx>
-#include <ElCLib.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Vertex.hxx>
-#include "WireExplorer.h"
+~include <GCPnts_AbscissaPoint.hxx>
+~include <ElCLib.hxx>
+~include <TopExp.hxx>
+~include <TopoDS_Vertex.hxx>
+~include "WireExplorer.h"
 
 BRepAdaptor_CompCurve2::BRepAdaptor_CompCurve2()
 {

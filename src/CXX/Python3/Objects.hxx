@@ -35,22 +35,22 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __CXX_Objects__h
-#define __CXX_Objects__h
+~ifndef __CXX_Objects__h
+~define __CXX_Objects__h
 
-#include "CXX/WrapPython.h"
-#include "CXX/Version.hxx"
-#include "CXX/Python3/Config.hxx"
-#include "CXX/Python3/CxxDebug.hxx"
-#include "CXX/Python3/Exception.hxx"
+~include "CXX/WrapPython.h"
+~include "CXX/Version.hxx"
+~include "CXX/Python3/Config.hxx"
+~include "CXX/Python3/CxxDebug.hxx"
+~include "CXX/Python3/Exception.hxx"
 
-#include <iostream>
-#include STR_STREAM
-#include <string>
-#include <iterator>
-#include <utility>
-#include <typeinfo>
-#include <algorithm>
+~include <iostream>
+~include STR_STREAM
+~include <string>
+~include <iterator>
+~include <utility>
+~include <typeinfo>
+~include <algorithm>
 
 namespace Py
 {
@@ -479,10 +479,10 @@ namespace Py
         return Object( Py::_True() );
     }
 
-    // TMM: 31May'01 - Added the #ifndef so I can exclude iostreams.
-#ifndef CXX_NO_IOSTREAMS
+    // TMM: 31May'01 - Added the ~ifndef so I can exclude iostreams.
+~ifndef CXX_NO_IOSTREAMS
     PYCXX_EXPORT std::ostream &operator<<( std::ostream &os, const Object &ob );
-#endif
+~endif
 
     // Class Type
     class PYCXX_EXPORT Type: public Object
@@ -633,7 +633,7 @@ namespace Py
             validate();
         }
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
         // create from long long
         explicit Long( PY_LONG_LONG v )
         : Object( PyLong_FromLongLong( v ), true )
@@ -647,7 +647,7 @@ namespace Py
         {
             validate();
         }
-#endif
+~endif
 
         // Membership
         virtual bool accepts( PyObject *pyob ) const
@@ -689,7 +689,7 @@ namespace Py
             return *this;
         }
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
         Long &operator=( PY_LONG_LONG v )
         {
             set( PyLong_FromLongLong( v ), true );
@@ -701,7 +701,7 @@ namespace Py
             set( PyLong_FromUnsignedLongLong( v ), true );
             return *this;
         }
-#endif
+~endif
 
         //operator bool() const
         //{
@@ -745,7 +745,7 @@ namespace Py
             return as_double();
         }
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
         PY_LONG_LONG as_long_long() const
         {
             return PyLong_AsLongLong( ptr() );
@@ -765,7 +765,7 @@ namespace Py
         {
             return as_unsigned_long_long();
         }
-#endif
+~endif
 
         // prefix ++
         Long operator++()
@@ -798,15 +798,15 @@ namespace Py
         }
     };
 
-#ifdef PYCXX_PYTHON_2TO3
+~ifdef PYCXX_PYTHON_2TO3
     // PyCXX for Python2 had an Int and LongLong classes
     typedef Long Int;
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
     typedef Long LongLong;
-#endif
-#endif
+~endif
+~endif
 
-#if 1
+~if 1
     //------------------------------------------------------------
     // compare operators
     bool operator!=( const Long &a, const Long &b );
@@ -845,7 +845,7 @@ namespace Py
     bool operator<=( const Long &a, int b );
     bool operator<=( const Long &a, long b );
 
-#ifdef HAVE_LONG_LONG
+~ifdef HAVE_LONG_LONG
     //------------------------------
     bool operator!=( const Long &a, PY_LONG_LONG b );
     bool operator!=( PY_LONG_LONG a, const Long &b );
@@ -864,8 +864,8 @@ namespace Py
     //------------------------------
     bool operator<=( const Long &a, PY_LONG_LONG b );
     bool operator<=( PY_LONG_LONG a, const Long &b );
-#endif
-#endif
+~endif
+~endif
 
     // ===============================================
     // class Float
@@ -2138,7 +2138,7 @@ namespace Py
             return PyUnicode_GetLength( ptr() );
         }
 
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
+~if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
         const Py_UNICODE *unicode_data() const
         {
             return PyUnicode_AS_UNICODE( ptr() );
@@ -2148,7 +2148,7 @@ namespace Py
         {
             return unicodestring( unicode_data(), PyUnicode_GetLength( ptr() ) );
         }
-#endif
+~endif
 
         operator std::string() const
         {
@@ -2644,7 +2644,7 @@ namespace Py
         }
     }; // end of mapref
 
-#if 0
+~if 0
     // TMM: now for mapref<T>
     template< class T >
     bool operator==( const mapref<T> &left, const mapref<T> &right )
@@ -2657,7 +2657,7 @@ namespace Py
     {
         return true;    // not completed.
     }
-#endif
+~endif
 
     template<TEMPLATE_TYPENAME T>
     class MapBase: public Object
@@ -3176,18 +3176,18 @@ namespace Py
         // Call with keywords
         Object apply( const Tuple &args, const Dict &kw ) const
         {
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+~if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
             PyObject *result = PyObject_Call( ptr(), args.ptr(), kw.ptr() );
-#else
+~else
             PyObject *result = PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() );
-#endif
+~endif
             if( result == NULL )
             {
                 throw Exception();
             }
             return asObject( result );
         }
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+~if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
         Object apply() const
         {
             PyObject *result = PyObject_CallNoArgs( ptr() );
@@ -3205,7 +3205,7 @@ namespace Py
                 return apply( Tuple( pargs ) );
             }
         }
-#else
+~else
         Object apply( PyObject *pargs = 0 ) const
         {
             if( pargs == 0 )
@@ -3217,7 +3217,7 @@ namespace Py
                 return apply( Tuple( pargs ) );
             }
         }
-#endif
+~endif
     };
 
     class PYCXX_EXPORT Module: public Object
@@ -3492,4 +3492,4 @@ namespace Py
     }
 
 } // namespace Py
-#endif    // __CXX_Objects__h
+~endif    // __CXX_Objects__h

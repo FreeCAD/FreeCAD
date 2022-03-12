@@ -23,10 +23,10 @@
 //  File   : StdMeshers_Projection_1D2D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_Projection_1D2D_HXX_
-#define _SMESH_Projection_1D2D_HXX_
+~ifndef _SMESH_Projection_1D2D_HXX_
+~define _SMESH_Projection_1D2D_HXX_
 
-#include "StdMeshers_Projection_2D.hxx"
+~include "StdMeshers_Projection_2D.hxx"
 
 class STDMESHERS_EXPORT StdMeshers_Projection_1D2D: public StdMeshers_Projection_2D
 {
@@ -49,4 +49,4 @@ public:
   virtual void SetEventListener(SMESH_subMesh* whenSetToSubMesh);
 };
 
-#endif
+~endif

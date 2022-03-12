@@ -16,12 +16,12 @@
  ****************************************************************************/
 
 
-#include "utility_io.h"
-#include "error.h"
+~include "utility_io.h"
+~include "error.h"
 
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+~include <stdlib.h>
+~include <ctype.h>
+~include <string.h>
 
 namespace KDL {
 
@@ -82,7 +82,7 @@ int _EatSpace( std::istream& is,int* countp=NULL) {
 
         ch = is.get(); 
         count++;
-        if (ch == '#') {
+        if (ch == '~') {
             ch = _EatUntilEndOfLine(is,&count);
         }
         if (ch == '/') {

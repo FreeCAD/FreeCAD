@@ -22,13 +22,13 @@
 //  File   : SMDS_LinearEdge.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_LinearEdge_HeaderFile
-#define _SMDS_LinearEdge_HeaderFile
+~ifndef _SMDS_LinearEdge_HeaderFile
+~define _SMDS_LinearEdge_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_MeshEdge.hxx"
-#include <iostream>
+~include "SMDS_MeshEdge.hxx"
+~include <iostream>
 
 class SMDS_EXPORT SMDS_LinearEdge: public SMDS_MeshEdge
 {
@@ -65,4 +65,4 @@ protected:
   const SMDS_MeshNode* myNodes[3];
 
 };
-#endif
+~endif

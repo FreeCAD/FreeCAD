@@ -24,13 +24,13 @@
 //  File   : SMDS_Position.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_Position_HeaderFile
-#define _SMDS_Position_HeaderFile
+~ifndef _SMDS_Position_HeaderFile
+~define _SMDS_Position_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_TypeOfPosition.hxx"
-#include <boost/shared_ptr.hpp>
+~include "SMDS_TypeOfPosition.hxx"
+~include <boost/shared_ptr.hpp>
 
 class SMDS_Position;
 //typedef boost::shared_ptr<SMDS_Position> SMDS_PositionPtr;
@@ -49,4 +49,4 @@ class SMDS_EXPORT SMDS_Position
 };
 
 
-#endif
+~endif

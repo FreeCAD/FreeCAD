@@ -22,10 +22,10 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#ifndef _SMESH_NumberOfLayers2D_HXX_
-#define _SMESH_NumberOfLayers2D_HXX_
+~ifndef _SMESH_NumberOfLayers2D_HXX_
+~define _SMESH_NumberOfLayers2D_HXX_
 
-#include "StdMeshers_NumberOfLayers.hxx"
+~include "StdMeshers_NumberOfLayers.hxx"
 
 
 // =========================================================
@@ -48,5 +48,5 @@ public:
   virtual ~StdMeshers_NumberOfLayers2D();
 };
 
-#endif
+~endif
 

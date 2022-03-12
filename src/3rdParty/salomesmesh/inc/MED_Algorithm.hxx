@@ -19,13 +19,13 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef MED_Algorithm_HeaderFile
-#define MED_Algorithm_HeaderFile
+~ifndef MED_Algorithm_HeaderFile
+~define MED_Algorithm_HeaderFile
 
-#include "MED_WrapperBase.hxx"
-#include "MED_Structures.hxx"
+~include "MED_WrapperBase.hxx"
+~include "MED_Structures.hxx"
 
-#include <set>
+~include <set>
 
 namespace MED
 {
@@ -153,4 +153,4 @@ namespace MED
 
 }
 
-#endif
+~endif

@@ -24,13 +24,13 @@
 //  File   : SMDS_MeshGroup.hxx
 //  Module : SMESH
 //
-#ifndef _SMDS_MeshGroup_HeaderFile
-#define _SMDS_MeshGroup_HeaderFile
+~ifndef _SMDS_MeshGroup_HeaderFile
+~define _SMDS_MeshGroup_HeaderFile
 
-#include "SMESH_SMDS.hxx"
+~include "SMESH_SMDS.hxx"
 
-#include "SMDS_Mesh.hxx"
-#include <set>
+~include "SMDS_Mesh.hxx"
+~include <set>
 
 class SMDS_EXPORT SMDS_MeshGroup:public SMDS_MeshObject
 {
@@ -90,4 +90,4 @@ class SMDS_EXPORT SMDS_MeshGroup:public SMDS_MeshObject
         TGroupIterator                          myGroupIterator;
         int                                     myTic; // to track changes
 };
-#endif
+~endif

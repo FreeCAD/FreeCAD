@@ -25,15 +25,15 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#ifndef _SMESH_ProjectionSource3D_HXX_
-#define _SMESH_ProjectionSource3D_HXX_
+~ifndef _SMESH_ProjectionSource3D_HXX_
+~define _SMESH_ProjectionSource3D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <TopoDS_Vertex.hxx>
+~include <TopoDS_Vertex.hxx>
 
 class SMESH_Gen;
 
@@ -154,5 +154,5 @@ protected:
 
 };
 
-#endif
+~endif
 

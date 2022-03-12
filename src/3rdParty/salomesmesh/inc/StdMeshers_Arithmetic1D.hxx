@@ -25,17 +25,17 @@
 //  Author : Damien COQUERET, OCC
 //  Module : SMESH
 //
-#ifndef _SMESH_ARITHMETIC1D_HXX_
-#define _SMESH_ARITHMETIC1D_HXX_
+~ifndef _SMESH_ARITHMETIC1D_HXX_
+~define _SMESH_ARITHMETIC1D_HXX_
 
 
 
-#include "SMESH_StdMeshers.hxx"
+~include "SMESH_StdMeshers.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
-#include <vector>
+~include <vector>
 
 class STDMESHERS_EXPORT StdMeshers_Arithmetic1D:
   public SMESH_Hypothesis
@@ -81,4 +81,4 @@ protected:
   std::string        _objEntry;
 };
 
-#endif
+~endif

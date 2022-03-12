@@ -22,23 +22,23 @@
 //  Autor  : Alexander A. BORODIN
 //  Module : SALOME
 //
-#ifndef _Basics_UTILS_HXX_
-#define _Basics_UTILS_HXX_
+~ifndef _Basics_UTILS_HXX_
+~define _Basics_UTILS_HXX_
 
-#include "SALOME_Basics.hxx"
-#include <string>
-#include <iostream>
+~include "SALOME_Basics.hxx"
+~include <string>
+~include <iostream>
 
-#ifndef WIN32
-#include <sys/time.h>
-#else
+~ifndef WIN32
+~include <sys/time.h>
+~else
 // avoid name collision with std::byte in C++17
-#define NOCRYPT
-#define NOGDI NOGDI
-#include <winsock2.h>
-#include <windows.h>
-#pragma comment(lib,"winmm.lib")
-#endif
+~define NOCRYPT
+~define NOGDI NOGDI
+~include <winsock2.h>
+~include <windows.h>
+~pragma comment(lib,"winmm.lib")
+~endif
 
 
 namespace Kernel_Utils
@@ -62,13 +62,13 @@ namespace Kernel_Utils
 
   //! Get predefined GUID
   BASICS_EXPORT std::string GetGUID( GUIDtype );
-#ifndef WIN32
+~ifndef WIN32
   BASICS_EXPORT void print_traceback();
-#else
-#if (_MSC_VER >= 1400) // Visual Studio 2005
+~else
+~if (_MSC_VER >= 1400) // Visual Studio 2005
   BASICS_EXPORT int setenv(const char*, const char*, int);
-#endif
-#endif
+~endif
+~endif
 }
 
 
@@ -77,27 +77,27 @@ namespace Kernel_Utils
 // Helper macro for time analysis
 // =============================================================
 //
-#ifndef WIN32
-#define START_TIMING(name) static long name##tcount=0;static long name##cumul;long name##tt0; timeval name##tv; gettimeofday(&name##tv,0); \
-                           name##tt0=name##tv.tv_usec+name##tv.tv_sec*1000000; \
-                           if(name##tcount==0)std::cerr<<__FILE__<<":"<<__LINE__<<":"<<#name<<std::endl;
+~ifndef WIN32
+~define START_TIMING(name) static long name~~tcount=0;static long name~~cumul;long name~~tt0; timeval name~~tv; gettimeofday(&name~~tv,0); \
+                           name~~tt0=name~~tv.tv_usec+name~~tv.tv_sec*1000000; \
+                           if(name~~tcount==0)std::cerr<<__FILE__<<":"<<__LINE__<<":"<<~name<<std::endl;
 
-#define END_TIMING(name,NUMBER) name##tcount=name##tcount+1;gettimeofday(&name##tv,0); \
-                                name##cumul=name##cumul+name##tv.tv_usec+name##tv.tv_sec*1000000 -name##tt0; \
-                                if(name##tcount==NUMBER){ \
-                                  std::cerr <<__FILE__<<":"<<__LINE__<<":"<<#name<<" temps CPU(mus): "<< name##cumul<<std::endl; \
-                                  name##tcount=0;name##cumul=0;}
-#else
+~define END_TIMING(name,NUMBER) name~~tcount=name~~tcount+1;gettimeofday(&name~~tv,0); \
+                                name~~cumul=name~~cumul+name~~tv.tv_usec+name~~tv.tv_sec*1000000 -name~~tt0; \
+                                if(name~~tcount==NUMBER){ \
+                                  std::cerr <<__FILE__<<":"<<__LINE__<<":"<<~name<<" temps CPU(mus): "<< name~~cumul<<std::endl; \
+                                  name~~tcount=0;name~~cumul=0;}
+~else
 
-#define START_TIMING(name) static long name##tcount=0;static DWORD name##cumul;DWORD  name##tv;DWORD  name##tt0 = timeGetTime(); \
-                           if(name##tcount==0)std::cerr<<__FILE__<<":"<<__LINE__<<":"<<#name<<std::endl;
+~define START_TIMING(name) static long name~~tcount=0;static DWORD name~~cumul;DWORD  name~~tv;DWORD  name~~tt0 = timeGetTime(); \
+                           if(name~~tcount==0)std::cerr<<__FILE__<<":"<<__LINE__<<":"<<~name<<std::endl;
 
-#define END_TIMING(name,NUMBER) name##tcount=name##tcount+1; name##tv = timeGetTime(); \
-                                name##cumul=name##cumul+name##tv - name##tt0; \
-                                if(name##tcount==NUMBER){ \
-                                  std::cerr <<__FILE__<<":"<<__LINE__<<":"<<#name<<" temps CPU(mus): "<< name##cumul<<std::endl; \
-                                  name##tcount=0;name##cumul=0;}
-#endif
+~define END_TIMING(name,NUMBER) name~~tcount=name~~tcount+1; name~~tv = timeGetTime(); \
+                                name~~cumul=name~~cumul+name~~tv - name~~tt0; \
+                                if(name~~tcount==NUMBER){ \
+                                  std::cerr <<__FILE__<<":"<<__LINE__<<":"<<~name<<" temps CPU(mus): "<< name~~cumul<<std::endl; \
+                                  name~~tcount=0;name~~cumul=0;}
+~endif
 
 
 
@@ -106,9 +106,9 @@ namespace Kernel_Utils
 // Macro and template functions for type conversions.
 // =============================================================
 //
-#include <string>
-#include <sstream>
-#include <stdlib.h>
+~include <string>
+~include <sstream>
+~include <stdlib.h>
 
 template < class T >
 std::string ToString(const T &arg)
@@ -131,16 +131,16 @@ double ToDouble(const T &arg) {
 // Simple Logger macros (no dependency with SALOME)
 // =============================================================
 //
-#if defined(_DEBUG_) || defined(_DEBUG)
-#define STDLOG(msg) {std::cerr<<std::flush<<__FILE__<<" ["<<__LINE__<<"] : "<<msg<<std::endl<<std::flush;}
-#else
-#define STDLOG(msg)
-#endif
+~if defined(_DEBUG_) || defined(_DEBUG)
+~define STDLOG(msg) {std::cerr<<std::flush<<__FILE__<<" ["<<__LINE__<<"] : "<<msg<<std::endl<<std::flush;}
+~else
+~define STDLOG(msg)
+~endif
 
-#ifdef LOG
-#undef LOG
-#endif
-#define LOG STDLOG
+~ifdef LOG
+~undef LOG
+~endif
+~define LOG STDLOG
 
 
-#endif //_Basics_UTILS_HXX_
+~endif //_Basics_UTILS_HXX_

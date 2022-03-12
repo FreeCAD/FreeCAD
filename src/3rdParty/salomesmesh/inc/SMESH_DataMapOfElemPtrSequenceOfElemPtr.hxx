@@ -23,14 +23,14 @@
 // Created:   26.09.05 17:41:10
 // Author:    Sergey KUUL
 //
-#ifndef SMESH_DataMapOfElemPtrSequenceOfElemPtr_HeaderFile
-#define SMESH_DataMapOfElemPtrSequenceOfElemPtr_HeaderFile
+~ifndef SMESH_DataMapOfElemPtrSequenceOfElemPtr_HeaderFile
+~define SMESH_DataMapOfElemPtrSequenceOfElemPtr_HeaderFile
 
-#include "SMESH_SMESH.hxx"
+~include "SMESH_SMESH.hxx"
 
-#include <SMESH_SequenceOfElemPtr.hxx>
+~include <SMESH_SequenceOfElemPtr.hxx>
 
-#include <NCollection_DefineDataMap.hxx>
+~include <NCollection_DefineDataMap.hxx>
 
 SMESH_EXPORT 
 inline Standard_Integer HashCode(SMDS_MeshElementPtr theElem,
@@ -51,4 +51,4 @@ DEFINE_BASECOLLECTION (SMESH_BaseCollectionSequenceOfElemPtr, SMESH_SequenceOfEl
 DEFINE_DATAMAP (SMESH_DataMapOfElemPtrSequenceOfElemPtr,
                 SMESH_BaseCollectionSequenceOfElemPtr,
                 SMDS_MeshElementPtr, SMESH_SequenceOfElemPtr)
-#endif 
+~endif 
