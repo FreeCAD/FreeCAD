@@ -92,7 +92,7 @@ bool isCreateConstraintActive(Gui::Document *doc)
 }
 
 // Utility method to avoid repeating the same code over and over again
-void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, bool isDriven=true, unsigned int numberofconstraints = 1)
+void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, bool isDriving=true, unsigned int numberofconstraints = 1)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
@@ -138,7 +138,7 @@ void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, b
     bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
 
     // Ask for the value of the distance immediately
-    if (show && isDriven) {
+    if (show && isDriving) {
         EditDatumDialog editDatumDialog(sketch, ConStr.size() - 1);
         editDatumDialog.exec();
     }
@@ -4920,7 +4920,6 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
     int GeoId = selSeq.at(0).GeoId;
     double radius = 0.0;
 
-    bool commitNeeded=false;
     bool updateNeeded=false;
 
     switch (seqIndex) {
@@ -4969,8 +4968,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
         //updateActive();
         getSelection().clearSelection();
 
-        if(commitNeeded)
-            commitCommand();
+        commitCommand();
 
         if(updateNeeded) {
             tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
@@ -5199,7 +5197,6 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
     int GeoId = selSeq.at(0).GeoId;
     double diameter = 0.0;
 
-    bool commitNeeded=false;
     bool updateNeeded=false;
 
     switch (seqIndex) {
@@ -5245,8 +5242,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             //updateActive();
             getSelection().clearSelection();
 
-            if(commitNeeded)
-                commitCommand();
+            commitCommand();
 
             if(updateNeeded) {
                 tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
@@ -5506,7 +5502,6 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
     int GeoId = selSeq.at(0).GeoId;
     double radiam = 0.0;
 
-    bool commitNeeded=false;
     bool updateNeeded=false;
 
     bool isCircle = false;
@@ -5560,8 +5555,7 @@ void CmdSketcherConstrainRadiam::applyConstraint(std::vector<SelIdPair> &selSeq,
             //updateActive();
             getSelection().clearSelection();
 
-            if(commitNeeded)
-                commitCommand();
+            commitCommand();
 
             if(updateNeeded) {
                 tryAutoRecomputeIfNotSolve(Obj); // we have to update the solver after this aborted addition.
