@@ -213,11 +213,12 @@ void Action::setToolTip(const QString & s, const QString & title)
                 title.isEmpty() ? _action->text() : title, 
                 _action->font(),
                 _action->shortcut().toString(QKeySequence::NativeText),
-                this));
+                _pcCmd));
 }
 
-static QString & actionTitle(QString & title)
+QString Action::cleanTitle(const QString & text)
 {
+    QString title(text);
     // Deal with QAction title mnemonic
     static QRegularExpression re(QStringLiteral("&(.)"));
     title.replace(re, QStringLiteral("\\1"));
@@ -227,19 +228,63 @@ static QString & actionTitle(QString & title)
     return title;
 }
 
-static inline QString actionTitle(const QString &title)
+QString Action::commandToolTip(const Command *cmd, bool richFormat)
 {
-    QString text(title);
-    return actionTitle(text);
+    if (!cmd)
+        return QString();
+
+    if (richFormat) {
+        if (auto action = cmd->getAction())
+            return action->_action->toolTip();
+    }
+
+    QString title, tooltip;
+    if (dynamic_cast<const MacroCommand*>(cmd)) {
+        if (auto txt = cmd->getMenuText())
+            title = QString::fromUtf8(txt);
+        if (auto txt = cmd->getToolTipText())
+            tooltip = QString::fromUtf8(txt);
+    } else {
+        if (auto txt = cmd->getMenuText())
+            title = qApp->translate(cmd->className(), txt);
+        if (auto txt = cmd->getToolTipText())
+            tooltip = qApp->translate(cmd->className(), txt);
+    }
+
+    if (!richFormat)
+        return tooltip;
+    return createToolTip(tooltip, title, QFont(), cmd->getShortcut(), cmd);
+}
+
+QString Action::commandMenuText(const Command *cmd)
+{
+    if (!cmd)
+        return QString();
+    
+    QString title;
+    if (auto action = cmd->getAction())
+        title = action->text();
+    else if (dynamic_cast<const MacroCommand*>(cmd)) {
+        if (auto txt = cmd->getMenuText())
+            title = QString::fromUtf8(txt);
+    } else {
+        if (auto txt = cmd->getMenuText())
+            title = qApp->translate(cmd->className(), txt);
+    }
+    if (title.isEmpty())
+        title = QString::fromUtf8(cmd->getName());
+    else
+        title = cleanTitle(title);
+    return title;
 }
 
 QString Action::createToolTip(QString _tooltip,
                               const QString & title,
                               const QFont &font,
                               const QString &sc,
-                              Action *act)
+                              const Command *pcCmd)
 {
-    QString text = actionTitle(title);
+    QString text = cleanTitle(title);
 
     if (text.isEmpty())
         return _tooltip;
@@ -263,17 +308,18 @@ QString Action::createToolTip(QString _tooltip,
             text.toHtmlEscaped(), shortcut.toHtmlEscaped());
 
     QString cmdName;
-    auto pcCmd = act ? act->_pcCmd : nullptr;
     if (pcCmd && pcCmd->getName()) {
         cmdName = QString::fromLatin1(pcCmd->getName());
-        if (auto groupcmd = dynamic_cast<GroupCommand*>(pcCmd)) {
-            int idx = act->property("defaultAction").toInt();
-            auto cmd = groupcmd->getCommand(idx);
-            if (cmd && cmd->getName())
-                cmdName = QStringLiteral("%1 (%2:%3)")
-                    .arg(QString::fromLatin1(cmd->getName()))
-                    .arg(cmdName)
-                    .arg(idx);
+        if (auto groupcmd = dynamic_cast<const GroupCommand*>(pcCmd)) {
+            if (auto act = pcCmd->getAction()) {
+                int idx = act->property("defaultAction").toInt();
+                auto cmd = groupcmd->getCommand(idx);
+                if (cmd && cmd->getName())
+                    cmdName = QStringLiteral("%1 (%2:%3)")
+                        .arg(QString::fromLatin1(cmd->getName()))
+                        .arg(cmdName)
+                        .arg(idx);
+            }
         }
         cmdName = QStringLiteral("<p style='white-space:pre; margin-top:0.5em;'><i>%1</i></p>")
             .arg(cmdName.toHtmlEscaped());
@@ -1365,203 +1411,6 @@ void WindowAction::addTo ( QWidget * w )
         connect(menu, SIGNAL(aboutToShow()),
                 getMainWindow(), SLOT(onWindowsMenuAboutToShow()));
     }
-}
-
-// --------------------------------------------------------------------
-
-struct CmdInfo {
-    Command *cmd = nullptr;
-    QString text;
-    QString tooltip;
-    QIcon icon;
-    bool iconChecked = false;
-};
-static std::vector<CmdInfo> _Commands;
-static int _CommandRevision;
-static const int CommandNameRole = Qt::UserRole;
-
-class CommandModel : public QAbstractItemModel
-{
-public:
-    CommandModel(QObject* parent)
-        : QAbstractItemModel(parent)
-    {
-        update();
-    }
-
-    void update()
-    {
-        auto &manager = Application::Instance->commandManager();
-        if (_CommandRevision == manager.getRevision())
-            return;
-        beginResetModel();
-        _CommandRevision = manager.getRevision();
-        _Commands.clear();
-        for (auto &v : manager.getCommands()) {
-            _Commands.emplace_back();
-            auto &info = _Commands.back();
-            info.cmd = v.second;
-        }
-        endResetModel();
-    }
-
-    virtual QModelIndex parent(const QModelIndex &) const
-    {
-        return QModelIndex();
-    }
-
-    virtual QVariant data(const QModelIndex & index, int role) const
-    {
-        if (index.row() < 0 || index.row() >= (int)_Commands.size())
-            return QVariant();
-
-        auto &info = _Commands[index.row()];
-
-        switch(role) {
-        case Qt::DisplayRole:
-        case Qt::EditRole:
-            if (info.text.isEmpty()) {
-                info.text = QStringLiteral("%2 (%1)").arg(
-                        QString::fromLatin1(info.cmd->getName()),
-                        qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
-                actionTitle(info.text);
-                if (info.text.isEmpty())
-                    info.text = QString::fromLatin1(info.cmd->getName());
-            }
-            return info.text;
-
-        case Qt::DecorationRole:
-            if (!info.iconChecked) {
-                info.iconChecked = true;
-                if(info.cmd->getPixmap())
-                    info.icon = BitmapFactory().iconFromTheme(info.cmd->getPixmap());
-            }
-            return info.icon;
-
-        case Qt::ToolTipRole:
-            if (info.tooltip.isEmpty()) {
-                info.tooltip = QString::fromLatin1("%1: %2").arg(
-                        QString::fromLatin1(info.cmd->getName()),
-                        qApp->translate(info.cmd->className(), info.cmd->getMenuText()));
-                QString tooltip = qApp->translate(info.cmd->className(), info.cmd->getToolTipText());
-                if (tooltip.size())
-                    info.tooltip += QString::fromLatin1("\n\n") + tooltip;
-            }
-            return info.tooltip;
-
-        case CommandNameRole:
-            return QByteArray(info.cmd->getName());
-
-        default:
-            return QVariant();
-        }
-    }
-
-    virtual QModelIndex index(int row, int, const QModelIndex &) const
-    {
-        return this->createIndex(row, 0);
-    }
-
-    virtual int rowCount(const QModelIndex &) const
-    {
-        return (int)(_Commands.size());
-    }
-
-    virtual int columnCount(const QModelIndex &) const
-    {
-        return 1;
-    }
-};
-
-
-// --------------------------------------------------------------------
-
-CommandCompleter::CommandCompleter(QLineEdit *lineedit, QObject *parent)
-    : QCompleter(parent)
-{
-    this->setModel(new CommandModel(this));
-    this->setFilterMode(Qt::MatchContains);
-    this->setCaseSensitivity(Qt::CaseInsensitive);
-    this->setCompletionMode(QCompleter::PopupCompletion);
-    this->setWidget(lineedit);
-    connect(lineedit, SIGNAL(textEdited(QString)), this, SLOT(onTextChanged(QString)));
-    connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(onCommandActivated(QModelIndex)));
-    connect(this, SIGNAL(highlighted(QString)), lineedit, SLOT(setText(QString)));
-}
-
-bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
-{
-    if (ev->type() == QEvent::KeyPress
-            && (o == this->widget() || o == this->popup()))
-    {
-        QKeyEvent * ke = static_cast<QKeyEvent*>(ev);
-        switch(ke->key()) {
-        case Qt::Key_Escape: {
-            auto edit = qobject_cast<QLineEdit*>(this->widget());
-            if (edit && edit->text().size()) {
-                edit->setText(QString());
-                popup()->hide();
-                return true;
-            } else if (popup()->isVisible()) {
-                popup()->hide();
-                return true;
-            }
-            break;
-        }
-        case Qt::Key_Tab: {
-            if (this->popup()->isVisible()) {
-                QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
-                qApp->sendEvent(this->popup(), &kevent);
-                return true;
-            }
-            break;
-        }
-        case Qt::Key_Backtab: {
-            if (this->popup()->isVisible()) {
-                QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
-                qApp->sendEvent(this->popup(), &kevent);
-                return true;
-            }
-            break;
-        }
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            if (o == this->widget()) {
-                auto index = currentIndex();
-                if (index.isValid())
-                    onCommandActivated(index);
-                else
-                    complete();
-                ev->setAccepted(true);
-                return true;
-            }
-        default:
-            break;
-        }
-    }
-    return QCompleter::eventFilter(o, ev);
-}
-
-void CommandCompleter::onCommandActivated(const QModelIndex &index)
-{
-    QByteArray name = completionModel()->data(index, CommandNameRole).toByteArray();
-    Q_EMIT commandActivated(name);
-}
-
-void CommandCompleter::onTextChanged(const QString &txt)
-{
-    // Do not activate completer if less than 3 characters for better
-    // performance.
-    if (txt.size() < 3 || !widget())
-        return;
-
-    static_cast<CommandModel*>(this->model())->update();
-
-    this->setCompletionPrefix(txt);
-    QRect rect = widget()->rect();
-    if (rect.width() < 300)
-        rect.setWidth(300);
-    this->complete(rect);
 }
 
 #include "moc_Action.cpp"
