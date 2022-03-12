@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PATH_ViewProviderPathShape_H
-#define PATH_ViewProviderPathShape_H
+~ifndef PATH_ViewProviderPathShape_H
+~define PATH_ViewProviderPathShape_H
 
-#include "ViewProviderPath.h"
+~include "ViewProviderPath.h"
 
 namespace PathGui
 {
@@ -54,4 +54,4 @@ public:
 } //namespace PathGui
 
 
-#endif // PATH_ViewProviderPathShape_H
+~endif // PATH_ViewProviderPathShape_H

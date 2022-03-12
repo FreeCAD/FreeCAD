@@ -20,17 +20,17 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef Element_Header_HEADER
-#define Element_Header_HEADER
+~ifndef Element_Header_HEADER
+~define Element_Header_HEADER
 
-#include <istream>
-#include <stdint.h>
-#include <assert.h>
+~include <istream>
+~include <stdint.h>
+~include <assert.h>
 
-#include "Context.h"
-#include "GUID.h"
-#include "UChar.h"
-#include "I32.h"
+~include "Context.h"
+~include "GUID.h"
+~include "UChar.h"
+~include "I32.h"
 
 
 
@@ -65,7 +65,7 @@ struct Element_Header
 
 
 
-#endif
+~endif
 
 
 

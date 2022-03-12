@@ -1,5 +1,5 @@
-#ifndef QUARTER_BASIC_H
-#define QUARTER_BASIC_H
+~ifndef QUARTER_BASIC_H
+~define QUARTER_BASIC_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -34,44 +34,44 @@
 \**************************************************************************/
 
 /*
-  See Coin's Inventor/C/basic.h for an explanation to the below #define
+  See Coin's Inventor/C/basic.h for an explanation to the below ~define
   setup.
 */
 
-#ifdef QUARTER_DLL_API
-#error Leave the QUARTER_DLL_API define alone
-#endif // QUARTER_MAKE_DLL
+~ifdef QUARTER_DLL_API
+~error Leave the QUARTER_DLL_API define alone
+~endif // QUARTER_MAKE_DLL
 
-#ifdef QUARTER_INTERNAL
-# ifdef QUARTER_NOT_DLL
-#  error The QUARTER_DLL define should not be used when building the library - only when building win32 applications.
-# endif // QUARTER_NOT_DLL
-# ifdef QUARTER_DLL
-#  error The QUARTER_NOT_DLL define should not be used when building the library - only when building win32 applications.
-# endif // QUARTER_DLL
-#endif // QUARTER_INTERNAL
+~ifdef QUARTER_INTERNAL
+~ ifdef QUARTER_NOT_DLL
+~  error The QUARTER_DLL define should not be used when building the library - only when building win32 applications.
+~ endif // QUARTER_NOT_DLL
+~ ifdef QUARTER_DLL
+~  error The QUARTER_NOT_DLL define should not be used when building the library - only when building win32 applications.
+~ endif // QUARTER_DLL
+~endif // QUARTER_INTERNAL
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-# ifdef QUARTER_INTERNAL
-#  ifdef QUARTER_MAKE_DLL
-#   define QUARTER_DLL_API __declspec(dllexport)
-#  endif // QUARTER_MAKE_DLL
-# else // !QUARTER_INTERNAL
-#  ifdef QUARTER_DLL
-#   ifdef QUARTER_NOT_DLL
-#    error Define _either_ QUARTER_DLL or QUARTER_NOT_DLL as appropriate for your linkage -- not both at the same time! See the Coin Inventor/C/basic.h for further instructions.
-#   endif // QUARTER_NOT_DLL
-#   define QUARTER_DLL_API __declspec(dllimport)
-#  else // !QUARTER_DLL
-#   ifndef QUARTER_NOT_DLL
-#    error Define either QUARTER_DLL or QUARTER_NOT_DLL as appropriate for your linkage. See the Coin Inventor/C/basic.h for further instructions.
-#   endif // !QUARTER_NOT_DLL
-#  endif // !QUARTER_DLL
-# endif // !QUARTER_INTERNAL
-#endif // Microsoft Windows
+~if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+~ ifdef QUARTER_INTERNAL
+~  ifdef QUARTER_MAKE_DLL
+~   define QUARTER_DLL_API __declspec(dllexport)
+~  endif // QUARTER_MAKE_DLL
+~ else // !QUARTER_INTERNAL
+~  ifdef QUARTER_DLL
+~   ifdef QUARTER_NOT_DLL
+~    error Define _either_ QUARTER_DLL or QUARTER_NOT_DLL as appropriate for your linkage -- not both at the same time! See the Coin Inventor/C/basic.h for further instructions.
+~   endif // QUARTER_NOT_DLL
+~   define QUARTER_DLL_API __declspec(dllimport)
+~  else // !QUARTER_DLL
+~   ifndef QUARTER_NOT_DLL
+~    error Define either QUARTER_DLL or QUARTER_NOT_DLL as appropriate for your linkage. See the Coin Inventor/C/basic.h for further instructions.
+~   endif // !QUARTER_NOT_DLL
+~  endif // !QUARTER_DLL
+~ endif // !QUARTER_INTERNAL
+~endif // Microsoft Windows
 
-#ifndef QUARTER_DLL_API
-# define QUARTER_DLL_API
-#endif // !QUARTER_DLL_API
+~ifndef QUARTER_DLL_API
+~ define QUARTER_DLL_API
+~endif // !QUARTER_DLL_API
 
-#endif // !QUARTER_BASIC_H
+~endif // !QUARTER_BASIC_H

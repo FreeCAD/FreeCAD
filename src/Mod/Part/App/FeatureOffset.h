@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREOFFSET_H
-#define PART_FEATUREOFFSET_H
+~ifndef PART_FEATUREOFFSET_H
+~define PART_FEATUREOFFSET_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Part
 {
@@ -80,4 +80,4 @@ public:
 };
 
 }
-#endif // PART_FEATUREOFFSET_H
+~endif // PART_FEATUREOFFSET_H

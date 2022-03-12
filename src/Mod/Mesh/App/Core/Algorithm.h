@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef MESHALGORITHM_H
-#define MESHALGORITHM_H
+~ifndef MESHALGORITHM_H
+~define MESHALGORITHM_H
 
-#include <set>
-#include <vector>
-#include <map>
+~include <set>
+~include <vector>
+~include <map>
 
-#include "MeshKernel.h"
-#include "Elements.h"
-#include <Base/Vector3D.h>
+~include "MeshKernel.h"
+~include "Elements.h"
+~include <Base/Vector3D.h>
 
 // forward declarations
 
@@ -545,4 +545,4 @@ protected:
 
 } // namespace MeshCore 
 
-#endif  // MESH_ALGORITHM_H 
+~endif  // MESH_ALGORITHM_H 

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SOLVERGEOMETRYEXTENSION_H
-#define SKETCHER_SOLVERGEOMETRYEXTENSION_H
+~ifndef SKETCHER_SOLVERGEOMETRYEXTENSION_H
+~define SKETCHER_SOLVERGEOMETRYEXTENSION_H
 
-#include <Mod/Part/App/GeometryExtension.h>
+~include <Mod/Part/App/GeometryExtension.h>
 
 namespace Sketcher
 {
@@ -92,4 +92,4 @@ private:
 } //namespace Sketcher
 
 
-#endif // SKETCHER_SOLVERGEOMETRYEXTENSION_H
+~endif // SKETCHER_SOLVERGEOMETRYEXTENSION_H

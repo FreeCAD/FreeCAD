@@ -24,19 +24,19 @@
  */
 
 
-#ifndef PATH_FeaturePathShape_H
-#define PATH_FeaturePathShape_H
+~ifndef PATH_FeaturePathShape_H
+~define PATH_FeaturePathShape_H
 
-#include <App/DocumentObject.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
-#include <App/FeaturePython.h>
-#include "Mod/Part/App/PropertyTopoShape.h"
+~include <App/DocumentObject.h>
+~include <App/GeoFeature.h>
+~include <App/PropertyGeo.h>
+~include <App/FeaturePython.h>
+~include "Mod/Part/App/PropertyTopoShape.h"
 
-#include "PropertyPath.h"
-#include "FeaturePath.h"
-#include "FeatureArea.h"
-#include "Area.h"
+~include "PropertyPath.h"
+~include "FeaturePath.h"
+~include "FeatureArea.h"
+~include "Area.h"
 
 namespace Path
 {
@@ -77,4 +77,4 @@ typedef App::FeaturePythonT<FeatureShape> FeatureShapePython;
 } //namespace Path
 
 
-#endif // PATH_FeaturePathShape_H
+~endif // PATH_FeaturePathShape_H

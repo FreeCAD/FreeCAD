@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSIONPYTHON_H
-#define APP_EXTENSIONPYTHON_H
+~ifndef APP_EXTENSIONPYTHON_H
+~define APP_EXTENSIONPYTHON_H
 
-#include <Base/Interpreter.h>
-#include "Extension.h"
-#include "PropertyPythonObject.h"
+~include <Base/Interpreter.h>
+~include "Extension.h"
+~include "PropertyPythonObject.h"
 
 namespace App {
 
@@ -53,7 +53,7 @@ public:
 typedef ExtensionPythonT<App::Extension> ExtensionPython;
 
 // Helper macros to define python extensions
-#define EXTENSION_PROXY_FIRST(function) \
+~define EXTENSION_PROXY_FIRST(function) \
     Base::PyGILStateLocker lock;\
     Py::Object result;\
     try {\
@@ -67,13 +67,13 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
 
 
 
-#define EXTENSION_PROXY_SECOND(function)\
+~define EXTENSION_PROXY_SECOND(function)\
                     result = method.apply(args);\
                 }\
                 else {\
                     Py::Callable method(feature.getAttr(std::string("function")));
 
-#define EXTENSION_PROXY_THIRD()\
+~define EXTENSION_PROXY_THIRD()\
                     result = method.apply(args);\
                 }\
             }\
@@ -84,7 +84,7 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
         e.ReportException();\
     }
 
-#define EXTENSION_PROXY_NOARG(function)\
+~define EXTENSION_PROXY_NOARG(function)\
     EXTENSION_PROXY_FIRST(function) \
     Py::Tuple args;\
     EXTENSION_PROXY_SECOND(function) \
@@ -92,7 +92,7 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
     args.setItem(0, Py::Object(this->getExtensionPyObject(), true));\
     EXTENSION_PROXY_THIRD()
 
-#define EXTENSION_PROXY_ONEARG(function, arg)\
+~define EXTENSION_PROXY_ONEARG(function, arg)\
     EXTENSION_PROXY_FIRST(function) \
     Py::Tuple args;\
     args.setItem(0, arg); \
@@ -102,12 +102,12 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
     args.setItem(1, arg); \
     EXTENSION_PROXY_THIRD()
 
-#define EXTENSION_PYTHON_OVERRIDE_VOID_NOARGS(function)\
+~define EXTENSION_PYTHON_OVERRIDE_VOID_NOARGS(function)\
     virtual void function() override {\
         EXTENSION_PROXY_NOARGS(function)\
     };
 
-#define EXTENSION_PYTHON_OVERRIDE_OBJECT_NOARGS(function)\
+~define EXTENSION_PYTHON_OVERRIDE_OBJECT_NOARGS(function)\
     virtual PyObject* function() override {\
         EXTENSION_PROXY_NOARGS(function)\
         return res.ptr();\
@@ -115,4 +115,4 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
 
 } //App
 
-#endif // APP_EXTENSIONPYTHON_H
+~endif // APP_EXTENSIONPYTHON_H

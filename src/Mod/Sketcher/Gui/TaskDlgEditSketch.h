@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_TaskDlgEditSketch_H
-#define SKETCHERGUI_TaskDlgEditSketch_H
+~ifndef SKETCHERGUI_TaskDlgEditSketch_H
+~define SKETCHERGUI_TaskDlgEditSketch_H
 
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include "ViewProviderSketch.h"
-#include "TaskSketcherConstraints.h"
-#include "TaskSketcherElements.h"
-#include "TaskSketcherGeneral.h"
-#include "TaskSketcherMessages.h"
-#include "TaskSketcherSolverAdvanced.h"
-#include <boost_signals2.hpp>
+~include "ViewProviderSketch.h"
+~include "TaskSketcherConstraints.h"
+~include "TaskSketcherElements.h"
+~include "TaskSketcherGeneral.h"
+~include "TaskSketcherMessages.h"
+~include "TaskSketcherSolverAdvanced.h"
+~include <boost_signals2.hpp>
 
 typedef boost::signals2::connection Connection;
 
@@ -83,4 +83,4 @@ protected:
 
 } //namespace SketcherGui
 
-#endif // SKETCHERGUI_TaskDlgEditSketch_H
+~endif // SKETCHERGUI_TaskDlgEditSketch_H

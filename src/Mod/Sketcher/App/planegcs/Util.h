@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_UTIL_H
-#define PLANEGCS_UTIL_H
+~ifndef PLANEGCS_UTIL_H
+~define PLANEGCS_UTIL_H
 
-#include <vector>
-#include <map>
-#include <set>
+~include <vector>
+~include <map>
+~include <set>
 
 namespace GCS
 {
@@ -38,10 +38,10 @@ namespace GCS
     typedef std::set<double *> SET_pD;
     typedef std::set<int> SET_I;
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+~ifndef M_PI
+~define M_PI 3.14159265358979323846
+~endif
 
 } //namespace GCS
 
-#endif // PLANEGCS_UTIL_H
+~endif // PLANEGCS_UTIL_H

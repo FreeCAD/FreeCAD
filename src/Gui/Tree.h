@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREE_H
-#define GUI_TREE_H
+~ifndef GUI_TREE_H
+~define GUI_TREE_H
 
-#include <unordered_map>
-#include <QElapsedTimer>
-#include <QStyledItemDelegate>
-#include <QTreeWidget>
+~include <unordered_map>
+~include <QElapsedTimer>
+~include <QStyledItemDelegate>
+~include <QTreeWidget>
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Base/Parameter.h>
-#include <Base/Persistence.h>
-#include <Gui/DockWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/TreeItemMode.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Base/Parameter.h>
+~include <Base/Persistence.h>
+~include <Gui/DockWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/TreeItemMode.h>
 
 class QLineEdit;
 
@@ -511,7 +511,7 @@ public:
     void OnChange(Base::Subject<const char*> &, const char* sReason);
     static TreeParams *Instance();
 
-#define FC_TREEPARAM_DEFS \
+~define FC_TREEPARAM_DEFS \
     FC_TREEPARAM_DEF2(SyncSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF2(CheckBoxesSelection,bool,Bool,false) \
     FC_TREEPARAM_DEF(SyncView,bool,Bool,true) \
@@ -528,26 +528,26 @@ public:
     FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
     FC_TREEPARAM_DEF(Indentation,int,Int,0) \
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    _type _name() const {return _##_name;} \
-    void set##_name(_type);\
+~undef FC_TREEPARAM_DEF
+~define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    _type _name() const {return _~~_name;} \
+    void set~~_name(_type);\
 
-#undef FC_TREEPARAM_DEF2
-#define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
+~undef FC_TREEPARAM_DEF2
+~define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
     FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    void on##_name##Changed();\
+    void on~~_name~~Changed();\
 
     FC_TREEPARAM_DEFS
 
 private:
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    _type _##_name;
+~undef FC_TREEPARAM_DEF
+~define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    _type _~~_name;
 
-#undef FC_TREEPARAM_DEF2
-#define FC_TREEPARAM_DEF2 FC_TREEPARAM_DEF
+~undef FC_TREEPARAM_DEF2
+~define FC_TREEPARAM_DEF2 FC_TREEPARAM_DEF
 
     FC_TREEPARAM_DEFS
 
@@ -556,4 +556,4 @@ private:
 
 }
 
-#endif // GUI_TREE_H
+~endif // GUI_TREE_H

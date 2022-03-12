@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_GRAPHVIZVIEW_H
-#define GUI_GRAPHVIZVIEW_H
+~ifndef GUI_GRAPHVIZVIEW_H
+~define GUI_GRAPHVIZVIEW_H
 
-#include "MDIView.h"
+~include "MDIView.h"
 
 
 class QGraphicsScene;
@@ -89,4 +89,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_GRAPHVIZVIEW_H
+~endif // GUI_GRAPHVIZVIEW_H

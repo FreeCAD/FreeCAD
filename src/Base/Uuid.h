@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UUID_H
-#define BASE_UUID_H
+~ifndef BASE_UUID_H
+~define BASE_UUID_H
 
 // Std. configurations
 
-#include <string>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <string>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace Base
 {
@@ -61,5 +61,5 @@ private:
 
 } //namespace Base
 
-#endif // BASE_UUID_H
+~endif // BASE_UUID_H
 

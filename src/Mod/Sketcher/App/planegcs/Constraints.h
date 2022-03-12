@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_CONSTRAINTS_H
-#define PLANEGCS_CONSTRAINTS_H
+~ifndef PLANEGCS_CONSTRAINTS_H
+~define PLANEGCS_CONSTRAINTS_H
 
-#include "Geo.h"
-#include "Util.h"
-#include <boost/graph/graph_concepts.hpp>
+~include "Geo.h"
+~include "Util.h"
+~include <boost/graph/graph_concepts.hpp>
 
-//#define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debugging code intended to extract information to file bug reports against Eigen, not for production code
+//~define _GCS_EXTRACT_SOLVER_SUBSYSTEM_ // This enables debugging code intended to extract information to file bug reports against Eigen, not for production code
 
-#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
-#define _PROTECTED_UNLESS_EXTRACT_MODE_ public
-#else
-#define _PROTECTED_UNLESS_EXTRACT_MODE_ protected
-#endif
+~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+~define _PROTECTED_UNLESS_EXTRACT_MODE_ public
+~else
+~define _PROTECTED_UNLESS_EXTRACT_MODE_ protected
+~endif
 
 namespace GCS
 {
@@ -169,9 +169,9 @@ namespace GCS
         inline double* distance() { return pvec[4]; }
     public:
         ConstraintP2PDistance(Point &p1, Point &p2, double *d);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintP2PDistance(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -191,9 +191,9 @@ namespace GCS
         double da;
     public:
         ConstraintP2PAngle(Point &p1, Point &p2, double *a, double da_=0.);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintP2PAngle(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -214,9 +214,9 @@ namespace GCS
         inline double* distance() { return pvec[6]; }
     public:
         ConstraintP2LDistance(Point &p, Line &l, double *d);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintP2LDistance(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -238,9 +238,9 @@ namespace GCS
     public:
         ConstraintPointOnLine(Point &p, Line &l);
         ConstraintPointOnLine(Point &p, Point &lp1, Point &lp2);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnLine(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -261,9 +261,9 @@ namespace GCS
     public:
         ConstraintPointOnPerpBisector(Point &p, Line &l);
         ConstraintPointOnPerpBisector(Point &p, Point &lp1, Point &lp2);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnPerpBisector(){};
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
 
@@ -285,9 +285,9 @@ namespace GCS
         inline double* l2p2y() { return pvec[7]; }
     public:
         ConstraintParallel(Line &l1, Line &l2);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintParallel(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -309,9 +309,9 @@ namespace GCS
     public:
         ConstraintPerpendicular(Line &l1, Line &l2);
         ConstraintPerpendicular(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPerpendicular(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -335,9 +335,9 @@ namespace GCS
         ConstraintL2LAngle(Line &l1, Line &l2, double *a);
         ConstraintL2LAngle(Point &l1p1, Point &l1p2,
                            Point &l2p1, Point &l2p2, double *a);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintL2LAngle(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -360,9 +360,9 @@ namespace GCS
     public:
         ConstraintMidpointOnLine(Line &l1, Line &l2);
         ConstraintMidpointOnLine(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintMidpointOnLine(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -383,9 +383,9 @@ namespace GCS
     public:
         ConstraintTangentCircumf(Point &p1, Point &p2,
                                  double *rd1, double *rd2, bool internal_=false);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintTangentCircumf(bool internal_){internal=internal_;}
-        #endif
+        ~endif
         inline bool getInternal() {return internal;};
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
@@ -406,9 +406,9 @@ namespace GCS
     public:
         ConstraintPointOnEllipse(Point &p, Ellipse &e);
         ConstraintPointOnEllipse(Point &p, ArcOfEllipse &a);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnEllipse(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -532,9 +532,9 @@ namespace GCS
     public:
         ConstraintPointOnHyperbola(Point &p, Hyperbola &e);
         ConstraintPointOnHyperbola(Point &p, ArcOfHyperbola &a);
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnHyperbola(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -553,9 +553,9 @@ namespace GCS
         ConstraintPointOnParabola(Point &p, Parabola &e);
         ConstraintPointOnParabola(Point &p, ArcOfParabola &a);
 	~ConstraintPointOnParabola();
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnParabola(){}
-        #endif
+        ~endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -635,4 +635,4 @@ namespace GCS
 
 } //namespace GCS
 
-#endif // PLANEGCS_CONSTRAINTS_H
+~endif // PLANEGCS_CONSTRAINTS_H

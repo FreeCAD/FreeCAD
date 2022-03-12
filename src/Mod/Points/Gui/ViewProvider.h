@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTSGUI_VIEWPROVIDERPOINTS_H
-#define POINTSGUI_VIEWPROVIDERPOINTS_H
+~ifndef POINTSGUI_VIEWPROVIDERPOINTS_H
+~define POINTSGUI_VIEWPROVIDERPOINTS_H
 
-#include <Base/Vector3D.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Gui/ViewProviderBuilder.h>
-#include <Inventor/SbVec2f.h>
-#include <Mod/Points/PointsGlobal.h>
+~include <Base/Vector3D.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Gui/ViewProviderBuilder.h>
+~include <Inventor/SbVec2f.h>
+~include <Mod/Points/PointsGlobal.h>
 
 
 class SoSwitch;
@@ -174,5 +174,5 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderScattered> ViewProviderPytho
 } // namespace PointsGui
 
 
-#endif // POINTSGUI_VIEWPROVIDERPOINTS_H
+~endif // POINTSGUI_VIEWPROVIDERPOINTS_H
 

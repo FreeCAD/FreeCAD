@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
+~include <QObject>
+~include <QPainter>
+~include <QString>
 
-#include "QGIView.h"
+~include "QGIView.h"
 
 namespace TechDraw {
 class DrawViewImage;
@@ -62,4 +62,4 @@ protected:
 };
 
 } // namespace
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H

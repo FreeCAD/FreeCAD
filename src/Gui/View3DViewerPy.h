@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DVIEWERPY_H
-#define GUI_VIEW3DVIEWERPY_H
+~ifndef GUI_VIEW3DVIEWERPY_H
+~define GUI_VIEW3DVIEWERPY_H
 
-#include <CXX/Extensions.hxx>
-#include <list>
+~include <CXX/Extensions.hxx>
+~include <list>
 
 
 namespace Gui {
@@ -90,4 +90,4 @@ private:
 
 } // namespace Gui
 
-#endif //GUI_VIEW3DPY_H
+~endif //GUI_VIEW3DPY_H

@@ -17,27 +17,27 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _MEMOIRE_H_
-#define _MEMOIRE_H_
+~ifndef _MEMOIRE_H_
+~define _MEMOIRE_H_
 
-// #include <malloc>
-#include <iostream>
+// ~include <malloc>
+~include <iostream>
 
 void memostat(const char* f, int l);
 
 void memostat(const char* f, int l)
 {
-#ifdef WIN32
+~ifdef WIN32
         //rnv: TODO: find alternative of the malloc_stats() on windows platform
-#else
+~else
   /*  struct mallinfo mem = mallinfo(); */
   /*  std::cerr << f << ":"<< l << " " << mem.arena << " " << mem.ordblks << " " << mem.hblks << " " << mem.hblkhd << " "  << mem.uordblks << " "  << mem.fordblks << " " << mem.keepcost << std::endl; */
   std::cerr << f << ":" << l << " --------------------------" << std::endl;
   // malloc_stats();
   std::cerr << f << ":" << l << " --------------------------" << std::endl;
-#endif
+~endif
 }
 
-#define MEMOSTAT //memostat( __FILE__, __LINE__ )
+~define MEMOSTAT //memostat( __FILE__, __LINE__ )
 
-#endif
+~endif

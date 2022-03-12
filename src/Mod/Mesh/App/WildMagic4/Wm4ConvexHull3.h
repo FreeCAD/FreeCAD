@@ -6,13 +6,13 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONVEXHULL3_H
-#define WM4CONVEXHULL3_H
+~ifndef WM4CONVEXHULL3_H
+~define WM4CONVEXHULL3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4ConvexHull1.h"
-#include "Wm4ConvexHull2.h"
-#include "Wm4Query3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4ConvexHull1.h"
+~include "Wm4ConvexHull2.h"
+~include "Wm4Query3.h"
 
 namespace Wm4
 {
@@ -123,4 +123,4 @@ typedef ConvexHull3<double> ConvexHull3d;
 
 }
 
-#endif
+~endif

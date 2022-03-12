@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TRATIONAL_H
-#define WM4TRATIONAL_H
+~ifndef WM4TRATIONAL_H
+~define WM4TRATIONAL_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4TInteger.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4TInteger.h"
 
 namespace Wm4
 {
@@ -107,6 +107,6 @@ TRational<N> operator/ (const TInteger<N>& rkI, const TRational<N>& rkR);
 
 }
 
-#include "Wm4TRational.inl"
+~include "Wm4TRational.inl"
 
-#endif
+~endif

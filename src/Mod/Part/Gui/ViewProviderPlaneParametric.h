@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
+~ifndef PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
+~define PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
 
-#include "ViewProviderPrimitive.h"
+~include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;
@@ -72,5 +72,5 @@ public:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
+~endif // PARTGUI_VIEWPROVIDERPLANEPARAMETRIC_H
 

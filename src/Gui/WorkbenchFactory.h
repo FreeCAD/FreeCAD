@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCHFACTORY_H
-#define GUI_WORKBENCHFACTORY_H
+~ifndef GUI_WORKBENCHFACTORY_H
+~define GUI_WORKBENCHFACTORY_H
 
-#include <list>
-#include <string>
-#include <Base/Factory.h>
+~include <list>
+~include <string>
+~include <Base/Factory.h>
 
 namespace Gui {
 class Workbench;
@@ -90,4 +90,4 @@ public:
 
 } // namespace Gui
 
-#endif // GUI_WORKBENCHFACTORY_H
+~endif // GUI_WORKBENCHFACTORY_H

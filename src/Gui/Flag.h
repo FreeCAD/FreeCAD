@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_FLAG_H
-#define GUI_FLAG_H
+~ifndef GUI_FLAG_H
+~define GUI_FLAG_H
 
-#include <QLayout>
-#include <QRect>
-#include <QWidgetItem>
-#include <Inventor/SbVec3f.h>
-#include <Gui/GLPainter.h>
+~include <QLayout>
+~include <QRect>
+~include <QWidgetItem>
+~include <Inventor/SbVec3f.h>
+~include <Gui/GLPainter.h>
 
 namespace Gui {
 class View3DInventorViewer;
@@ -36,7 +36,7 @@ class View3DInventorViewer;
 /**
  * @author Werner Mayer
  */
-#if 1
+~if 1
 class GuiExport Flag : public QtGLWidget
 {
     Q_OBJECT
@@ -67,7 +67,7 @@ private:
     SbVec3f coord;
     QPoint dragPosition;
 };
-#else
+~else
 class GuiExport Flag : public QWidget
 {
     Q_OBJECT
@@ -95,7 +95,7 @@ private:
     QPoint dragPosition;
     QImage image;
 };
-#endif
+~endif
 
 class FlagLayout : public QLayout
 {
@@ -162,4 +162,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_FLAG_H
+~endif // GUI_FLAG_H

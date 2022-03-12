@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPartReference_H
-#define PARTGUI_ViewProviderPartReference_H
+~ifndef PARTGUI_ViewProviderPartReference_H
+~define PARTGUI_ViewProviderPartReference_H
 
-#include <Standard_math.hxx>
-#include <Standard_Boolean.hxx>
-#include <TopoDS_Shape.hxx>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
-#include <map>
+~include <Standard_math.hxx>
+~include <Standard_Boolean.hxx>
+~include <TopoDS_Shape.hxx>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderBuilder.h>
+~include <map>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -109,5 +109,5 @@ private:
 } // namespace PartGui
 
 
-#endif // PARTGUI_ViewProviderPartReference_H
+~endif // PARTGUI_ViewProviderPartReference_H
 

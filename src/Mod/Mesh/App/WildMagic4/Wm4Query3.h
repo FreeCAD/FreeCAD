@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3_H
-#define WM4QUERY3_H
+~ifndef WM4QUERY3_H
+~define WM4QUERY3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -85,7 +85,7 @@ protected:
 
 }
 
-#include "Wm4Query3.inl"
+~include "Wm4Query3.inl"
 
 namespace Wm4
 {
@@ -94,4 +94,4 @@ typedef Query3<double> Query3d;
 
 }
 
-#endif
+~endif

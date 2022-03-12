@@ -1,4 +1,4 @@
-#pragma once
+~pragma once
 /*
  * Original work Copyright 2009 - 2010 Kevin Ackley (kackley@gwi.net)
  * Modified work Copyright 2018 - 2020 Andy Maloney <asmaloney@gmail.com>
@@ -26,7 +26,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "NodeImpl.h"
+~include "NodeImpl.h"
 
 namespace e57
 {
@@ -50,9 +50,9 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
 
    private:
       ustring value_;

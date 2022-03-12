@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3TRATIONAL_H
-#define WM4QUERY3TRATIONAL_H
+~ifndef WM4QUERY3TRATIONAL_H
+~define WM4QUERY3TRATIONAL_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query3.h"
-#include "Wm4RVector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query3.h"
+~include "Wm4RVector3.h"
 
 namespace Wm4
 {
@@ -88,7 +88,7 @@ private:
 
 }
 
-#include "Wm4Query3TRational.inl"
+~include "Wm4Query3TRational.inl"
 
 namespace Wm4
 {
@@ -97,4 +97,4 @@ typedef Query3TRational<double> Query3TRationald;
 
 }
 
-#endif
+~endif

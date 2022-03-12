@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef _AppPlacement_h_
-#define _AppPlacement_h_
+~ifndef _AppPlacement_h_
+~define _AppPlacement_h_
 
-#include "FeaturePython.h"
+~include "FeaturePython.h"
 
 namespace App
 {
@@ -54,4 +54,4 @@ typedef App::FeaturePythonT<App::Placement> PlacementPython;
 } //namespace App
 
 
-#endif
+~endif

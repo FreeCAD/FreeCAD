@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYTRAJECTORY_H
-#define PROPERTYTRAJECTORY_H
+~ifndef PROPERTYTRAJECTORY_H
+~define PROPERTYTRAJECTORY_H
 
-#include "Trajectory.h"
-#include <App/Property.h>
-#include <Base/BoundBox.h>
+~include "Trajectory.h"
+~include <App/Property.h>
+~include <Base/BoundBox.h>
 
 namespace Robot
 {
@@ -82,4 +82,4 @@ private:
 } //namespace Robot
 
 
-#endif // PROPERTYTOPOSHAPE_H
+~endif // PROPERTYTOPOSHAPE_H

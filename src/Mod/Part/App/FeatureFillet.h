@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREFILLET_H
-#define PART_FEATUREFILLET_H
+~ifndef PART_FEATUREFILLET_H
+~define PART_FEATUREFILLET_H
 
-#include <App/PropertyStandard.h>
-#include "PartFeature.h"
+~include <App/PropertyStandard.h>
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -51,4 +51,4 @@ public:
 } //namespace Part
 
 
-#endif // PART_FEATUREFILLET_H
+~endif // PART_FEATUREFILLET_H

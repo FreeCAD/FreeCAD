@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2_H
-#define WM4QUERY2_H
+~ifndef WM4QUERY2_H
+~define WM4QUERY2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query.h"
-#include "Wm4Vector2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query.h"
+~include "Wm4Vector2.h"
 
 namespace Wm4
 {
@@ -79,7 +79,7 @@ protected:
 
 }
 
-#include "Wm4Query2.inl"
+~include "Wm4Query2.inl"
 
 namespace Wm4
 {
@@ -87,4 +87,4 @@ typedef Query2<float> Query2f;
 typedef Query2<double> Query2d;
 }
 
-#endif
+~endif

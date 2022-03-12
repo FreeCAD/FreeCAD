@@ -7,10 +7,10 @@
  * License:   LGPL
  **************************************************************/
 
-#ifndef WXWIDGETSAPP_H
-#define WXWIDGETSAPP_H
+~ifndef WXWIDGETSAPP_H
+~define WXWIDGETSAPP_H
 
-#include <wx/app.h>
+~include <wx/app.h>
 
 class wxWidgetsApp : public wxApp
 {
@@ -18,4 +18,4 @@ class wxWidgetsApp : public wxApp
         virtual bool OnInit();
 };
 
-#endif // WXWIDGETSAPP_H
+~endif // WXWIDGETSAPP_H

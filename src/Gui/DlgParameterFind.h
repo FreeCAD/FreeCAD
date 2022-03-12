@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPARAMETERFIND_H
-#define GUI_DIALOG_DLGPARAMETERFIND_H
+~ifndef GUI_DIALOG_DLGPARAMETERFIND_H
+~define GUI_DIALOG_DLGPARAMETERFIND_H
 
-#include <QDialog>
-#include <Base/Parameter.h>
+~include <QDialog>
+~include <Base/Parameter.h>
 
 class QTreeWidgetItem;
 
@@ -71,4 +71,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGPARAMETERFIND_H
+~endif // GUI_DIALOG_DLGPARAMETERFIND_H

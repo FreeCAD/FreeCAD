@@ -21,29 +21,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_INTERPRETER_H
-#define BASE_INTERPRETER_H
+~ifndef BASE_INTERPRETER_H
+~define BASE_INTERPRETER_H
 
-#if defined (_POSIX_C_SOURCE)
-#   undef  _POSIX_C_SOURCE
-#endif // (re-)defined in pyconfig.h
-#if defined (_XOPEN_SOURCE)
-#   undef _XOPEN_SOURCE
-#endif // (re-)defined in pyconfig.h
+~if defined (_POSIX_C_SOURCE)
+~   undef  _POSIX_C_SOURCE
+~endif // (re-)defined in pyconfig.h
+~if defined (_XOPEN_SOURCE)
+~   undef _XOPEN_SOURCE
+~endif // (re-)defined in pyconfig.h
 
-#ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
-#endif
+~ifdef FC_OS_MACOSX
+~undef toupper
+~undef tolower
+~undef isupper
+~undef islower
+~undef isspace
+~undef isalpha
+~undef isalnum
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <string>
-#include "Exception.h"
+~include <CXX/Extensions.hxx>
+~include <string>
+~include "Exception.h"
 
 
 /** Helper macro to obtain callable from an object
@@ -54,7 +54,7 @@
  *
  *  See FeaturePythonImp::init() for example usage
  */
-#define FC_PY_GetCallable(_pyobj,_name,_var) \
+~define FC_PY_GetCallable(_pyobj,_name,_var) \
     do {\
         _var = Py::Object();\
         if(PyObject_HasAttrString(_pyobj, _name)) {\
@@ -72,7 +72,7 @@
  *
  *  See FeaturePythonImp::init() for example usage
  */
-#define FC_PY_GetObject(_pyobj,_name,_var) \
+~define FC_PY_GetObject(_pyobj,_name,_var) \
     do {\
         _var = Py::Object();\
         if(PyObject_HasAttrString(_pyobj, _name))\
@@ -325,4 +325,4 @@ inline InterpreterSingleton &Interpreter()
 
 } //namespace Base
 
-#endif // BASE_INTERPRETER_H
+~endif // BASE_INTERPRETER_H

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PART_PROPERTYTOPOSHAPE_H
-#define PART_PROPERTYTOPOSHAPE_H
+~ifndef PART_PROPERTYTOPOSHAPE_H
+~define PART_PROPERTYTOPOSHAPE_H
 
-#include "TopoShape.h"
-#include <TopAbs_ShapeEnum.hxx>
-#include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
-#include <map>
-#include <vector>
+~include "TopoShape.h"
+~include <TopAbs_ShapeEnum.hxx>
+~include <App/DocumentObject.h>
+~include <App/PropertyGeo.h>
+~include <map>
+~include <vector>
 
 namespace Part
 {
@@ -213,4 +213,4 @@ private:
 } //namespace Part
 
 
-#endif // PART_PROPERTYTOPOSHAPE_H
+~endif // PART_PROPERTYTOPOSHAPE_H

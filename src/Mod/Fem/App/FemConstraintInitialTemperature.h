@@ -24,10 +24,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTINITIALTEMPERATURE_H
-#define FEM_CONSTRAINTINITIALTEMPERATURE_H
+~ifndef FEM_CONSTRAINTINITIALTEMPERATURE_H
+~define FEM_CONSTRAINTINITIALTEMPERATURE_H
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem
 {
@@ -62,4 +62,4 @@ protected:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTINITIALTEMPERATURE_H
+~endif // FEM_CONSTRAINTINITIALTEMPERATURE_H

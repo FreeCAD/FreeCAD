@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKSHAPEBUILDER_H
-#define PARTGUI_TASKSHAPEBUILDER_H
+~ifndef PARTGUI_TASKSHAPEBUILDER_H
+~define PARTGUI_TASKSHAPEBUILDER_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/Selection.h>
 
 namespace PartGui { 
 
@@ -87,4 +87,4 @@ private:
 
 } //namespace PartGui
 
-#endif // PARTGUI_TASKSHAPEBUILDER_H
+~endif // PARTGUI_TASKSHAPEBUILDER_H

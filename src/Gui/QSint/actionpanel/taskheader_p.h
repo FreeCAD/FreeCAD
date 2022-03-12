@@ -5,13 +5,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKHEADER_P_H
-#define TASKHEADER_P_H
+~ifndef TASKHEADER_P_H
+~define TASKHEADER_P_H
 
-#include "actionpanelscheme.h"
-#include "actionlabel.h"
+~include "actionpanelscheme.h"
+~include "actionlabel.h"
 
-#include <QLabel>
+~include <QLabel>
 
 
 namespace QSint
@@ -71,4 +71,4 @@ protected:
 
 }
 
-#endif // TASKHEADER_P_H
+~endif // TASKHEADER_P_H

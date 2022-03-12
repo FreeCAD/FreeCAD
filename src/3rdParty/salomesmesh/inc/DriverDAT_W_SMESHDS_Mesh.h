@@ -23,14 +23,14 @@
 //  File   : DriverDAT_W_SMESHDS_Mesh.h
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DRIVERDAT_W_SMESHDS_MESH
-#define _INCLUDE_DRIVERDAT_W_SMESHDS_MESH
+~ifndef _INCLUDE_DRIVERDAT_W_SMESHDS_MESH
+~define _INCLUDE_DRIVERDAT_W_SMESHDS_MESH
 
-#include "SMESH_DriverDAT.hxx"
+~include "SMESH_DriverDAT.hxx"
 
-#include "Driver_SMESHDS_Mesh.h"
+~include "Driver_SMESHDS_Mesh.h"
 
 class MESHDRIVERDAT_EXPORT DriverDAT_W_SMESHDS_Mesh: public Driver_SMESHDS_Mesh
 {};
 
-#endif
+~endif

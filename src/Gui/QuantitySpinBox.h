@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_QUANTITYSPINBOX_H
-#define GUI_QUANTITYSPINBOX_H
+~ifndef GUI_QUANTITYSPINBOX_H
+~define GUI_QUANTITYSPINBOX_H
 
-#include <Base/UnitsSchema.h>
-#include <Gui/MetaTypes.h>
-#include <Gui/SpinBox.h>
+~include <Base/UnitsSchema.h>
+~include <Gui/MetaTypes.h>
+~include <Gui/SpinBox.h>
 
-#ifdef Q_MOC_RUN
+~ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
-#endif
+~endif
 
 namespace Gui {
 
@@ -188,4 +188,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_QUANTITYSPINBOX_H
+~endif // GUI_QUANTITYSPINBOX_H

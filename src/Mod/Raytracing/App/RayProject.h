@@ -23,12 +23,12 @@
  
 
 
-#ifndef _RayProject_h_
-#define _RayProject_h_
+~ifndef _RayProject_h_
+~define _RayProject_h_
 
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyFile.h>
 
 namespace Raytracing
 {
@@ -71,4 +71,4 @@ public:
 
 
 
-#endif //_RayFeature_h_
+~endif //_RayFeature_h_

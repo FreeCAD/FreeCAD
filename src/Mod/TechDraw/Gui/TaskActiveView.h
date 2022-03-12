@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
-#define TECHDRAWGUI_TASKACTIVEVIEW_H
+~ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
+~define TECHDRAWGUI_TASKACTIVEVIEW_H
 
-#include <QPushButton>
+~include <QPushButton>
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
+~include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
 class Ui_TaskActiveView;
 
@@ -126,4 +126,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
+~endif // ~ifndef TECHDRAWGUI_TASKACTIVEVIEW_H

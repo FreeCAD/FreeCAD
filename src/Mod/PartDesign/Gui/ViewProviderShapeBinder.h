@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderShapeBinder_H
-#define PARTGUI_ViewProviderShapeBinder_H
+~ifndef PARTGUI_ViewProviderShapeBinder_H
+~define PARTGUI_ViewProviderShapeBinder_H
 
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartDesignGui {
 
@@ -89,4 +89,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder> ViewProvider
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderShapeBinder_H
+~endif // PARTGUI_ViewProviderShapeBinder_H

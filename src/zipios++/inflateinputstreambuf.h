@@ -1,14 +1,14 @@
-#ifndef INFLATEINPUTSTREAMBUF_H
-#define INFLATEINPUTSTREAMBUF_H
+~ifndef INFLATEINPUTSTREAMBUF_H
+~define INFLATEINPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <vector>
+~include "meta-iostreams.h"
+~include <vector>
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "filterinputstreambuf.h"
+~include "filterinputstreambuf.h"
 
 namespace zipios {
 
@@ -63,7 +63,7 @@ private:
 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines InflateInputStreambuf.

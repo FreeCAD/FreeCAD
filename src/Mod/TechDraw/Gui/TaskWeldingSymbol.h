@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
-#define TECHDRAWGUI_TASKWELDINGSYMBOL_H
+~ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
+~define TECHDRAWGUI_TASKWELDINGSYMBOL_H
 
-#include <QPushButton>
+~include <QPushButton>
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
+~include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 class Ui_TaskWeldingSymbol;
 
@@ -207,4 +207,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
+~endif // ~ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H

@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCUNIFIEDSELECTION_H
-#define GUI_SOFCUNIFIEDSELECTION_H
+~ifndef GUI_SOFCUNIFIEDSELECTION_H
+~define GUI_SOFCUNIFIEDSELECTION_H
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodes/SoLightModel.h>
-#include "View3DInventorViewer.h"
-#include "SoFCSelectionContext.h"
-#include <list>
-#include <unordered_set>
-#include <unordered_map>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/fields/SoSFBool.h>
+~include <Inventor/fields/SoSFColor.h>
+~include <Inventor/fields/SoSFEnum.h>
+~include <Inventor/fields/SoSFString.h>
+~include <Inventor/nodes/SoLightModel.h>
+~include "View3DInventorViewer.h"
+~include "SoFCSelectionContext.h"
+~include <list>
+~include <unordered_set>
+~include <unordered_map>
 
 class SoFullPath;
 class SoPickedPoint;
@@ -486,4 +486,4 @@ private:
 
 } // namespace Gui
 
-#endif // !GUI_SOFCUNIFIEDSELECTION_H
+~endif // !GUI_SOFCUNIFIEDSELECTION_H

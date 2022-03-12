@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELAUNAY2_H
-#define WM4DELAUNAY2_H
+~ifndef WM4DELAUNAY2_H
+~define WM4DELAUNAY2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Delaunay1.h"
-#include "Wm4DelTriangle.h"
-#include "Wm4Query2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Delaunay1.h"
+~include "Wm4DelTriangle.h"
+~include "Wm4Query2.h"
 
 namespace Wm4
 {
@@ -172,4 +172,4 @@ typedef Delaunay2<double> Delaunay2d;
 
 }
 
-#endif
+~endif

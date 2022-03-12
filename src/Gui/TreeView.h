@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREEVIEW_H
-#define GUI_TREEVIEW_H
+~ifndef GUI_TREEVIEW_H
+~define GUI_TREEVIEW_H
 
-#include <QTreeView>
+~include <QTreeView>
 
 namespace Gui {
 
@@ -44,5 +44,5 @@ protected:
 }
 
 
-#endif // GUI_TREEVIEW_H
+~endif // GUI_TREEVIEW_H
 

@@ -14,8 +14,8 @@
 //
 // Version: 4.0.1 (2006/08/19)
 
-#ifndef WM4MATRIX4_H
-#define WM4MATRIX4_H
+~ifndef WM4MATRIX4_H
+~define WM4MATRIX4_H
 
 // Matrix operations are applied on the left.  For example, given a matrix M
 // and a vector V, matrix-times-vector is M*V.  That is, V is treated as a
@@ -36,9 +36,9 @@
 // r (0 <= r < N) and column c (0 <= c < N) is stored at index i = c+N*r
 // (0 <= i < N*N).
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Plane3.h"
-#include "Wm4Vector4.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Plane3.h"
+~include "Wm4Vector4.h"
 
 namespace Wm4
 {
@@ -153,7 +153,7 @@ Vector4<Real> operator* (const Vector4<Real>& rkV, const Matrix4<Real>& rkM);
 
 } //namespace Wm4
 
-#include "Wm4Matrix4.inl"
+~include "Wm4Matrix4.inl"
 
 namespace Wm4
 {
@@ -161,4 +161,4 @@ typedef Matrix4<float> Matrix4f;
 typedef Matrix4<double> Matrix4d;
 }
 
-#endif
+~endif

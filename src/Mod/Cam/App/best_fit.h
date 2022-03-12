@@ -21,23 +21,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BEST_FIT_H
-#define BEST_FIT_H
+~ifndef BEST_FIT_H
+~define BEST_FIT_H
 
 
-#include <Mod/Mesh/App/Core/Approximation.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Base/Exception.h>
-#include <gp_Vec.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMDS_VolumeTool.hxx>
+~include <Mod/Mesh/App/Core/Approximation.h>
+~include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Base/Exception.h>
+~include <gp_Vec.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Face.hxx>
+~include <SMESH_Mesh.hxx>
+~include <SMDS_VolumeTool.hxx>
 
 
-#define SMALL_NUM  1e-6
-#define ERR_TOL    0.001        // Abort criterion for least square matching
+~define SMALL_NUM  1e-6
+~define ERR_TOL    0.001        // Abort criterion for least square matching
                                 // (error change in two successive iteration steps)
 
 
@@ -253,4 +253,4 @@ private:
 	// bool Intersect(const Base::Vector3f &normal,const MeshCore::MeshKernel &mesh, Base::Vector3f &P, Base::Vector3f &I);
 };
 
-#endif
+~endif

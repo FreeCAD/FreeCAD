@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTCONTACT_H
-#define FEM_CONSTRAINTCONTACT_H
+~ifndef FEM_CONSTRAINTCONTACT_H
+~define FEM_CONSTRAINTCONTACT_H
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem
 {
@@ -70,4 +70,4 @@ protected:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTCONTACT_H
+~endif // FEM_CONSTRAINTCONTACT_H

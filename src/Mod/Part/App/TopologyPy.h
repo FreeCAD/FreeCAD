@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef __TOPOLOGY_H__
-#define __TOPOLOGY_H__
-#if 0
+~ifndef __TOPOLOGY_H__
+~define __TOPOLOGY_H__
+~if 0
 // Std. configurations
 
-#include <Base/PyObjectBase.h>
+~include <Base/PyObjectBase.h>
 
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
 namespace Part
 {
@@ -100,5 +100,5 @@ protected:
 
 
 } //namespace App
-#endif
-#endif // __TOPOLOGY_H__
+~endif
+~endif // __TOPOLOGY_H__

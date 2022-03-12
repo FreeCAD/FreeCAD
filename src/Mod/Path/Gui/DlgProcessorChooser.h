@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_DlgProcessorChooser_H
-#define PATH_DlgProcessorChooser_H
+~ifndef PATH_DlgProcessorChooser_H
+~define PATH_DlgProcessorChooser_H
 
-#include <QDialog>
-#include <QString>
-#include <App/DocumentObject.h>
+~include <QDialog>
+~include <QString>
+~include <App/DocumentObject.h>
 
 class Ui_DlgProcessorChooser;
 
@@ -53,4 +53,4 @@ private:
 
 }
 
-#endif // PATH_DlgProcessorChooser_H
+~endif // PATH_DlgProcessorChooser_H

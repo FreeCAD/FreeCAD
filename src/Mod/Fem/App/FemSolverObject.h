@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSolverObject_H
-#define Fem_FemSolverObject_H
+~ifndef Fem_FemSolverObject_H
+~define Fem_FemSolverObject_H
 
-#include <App/FeaturePython.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <App/FeaturePython.h>
+~include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
@@ -59,4 +59,4 @@ typedef App::FeaturePythonT<FemSolverObject> FemSolverObjectPython;
 } //namespace Fem
 
 
-#endif // Fem_FemSolverObject_H
+~endif // Fem_FemSolverObject_H

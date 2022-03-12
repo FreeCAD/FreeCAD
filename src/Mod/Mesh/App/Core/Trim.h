@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHTRIM_H
-#define MESHTRIM_H
+~ifndef MESHTRIM_H
+~define MESHTRIM_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Base/Tools2D.h>
-#include <Base/ViewProj.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Base/Tools2D.h>
+~include <Base/ViewProj.h>
 
 namespace MeshCore {
 
@@ -105,4 +105,4 @@ private:
 
 } //namespace MeshCore
 
-#endif //MESHTRIM_H
+~endif //MESHTRIM_H

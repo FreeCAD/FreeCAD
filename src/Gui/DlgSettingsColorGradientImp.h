@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
-#define GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
+~ifndef GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
+~define GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
 
-#include <App/ColorModel.h>
-#include <QDialog>
-#include <memory>
+~include <App/ColorModel.h>
+~include <QDialog>
+~include <memory>
 
 class QDoubleValidator;
 
@@ -86,4 +86,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
+~endif // GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H

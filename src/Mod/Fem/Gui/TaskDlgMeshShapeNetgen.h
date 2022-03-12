@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskDlgMeshShapeNetgen_H
-#define FEMGUI_TaskDlgMeshShapeNetgen_H
+~ifndef FEMGUI_TaskDlgMeshShapeNetgen_H
+~define FEMGUI_TaskDlgMeshShapeNetgen_H
 
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 namespace Fem {
     class FemMeshShapeNetgenObject;
@@ -72,4 +72,4 @@ protected:
 
 } //namespace FemGui
 
-#endif // FEMGUI_TaskDlgMeshShapeNetgen_H
+~endif // FEMGUI_TaskDlgMeshShapeNetgen_H

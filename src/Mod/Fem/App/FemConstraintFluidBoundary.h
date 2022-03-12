@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef FEM_FLUIDBOUNDARY_H
-#define FEM_FLUIDBOUNDARY_H
+~ifndef FEM_FLUIDBOUNDARY_H
+~define FEM_FLUIDBOUNDARY_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem
 {
@@ -81,4 +81,4 @@ private:
 } //namespace Fem
 
 
-#endif // FEM_FLUIDBOUNDARY_H
+~endif // FEM_FLUIDBOUNDARY_H

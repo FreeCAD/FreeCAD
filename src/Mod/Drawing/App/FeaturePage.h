@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef _FeaturePage_h_
-#define _FeaturePage_h_
+~ifndef _FeaturePage_h_
+~define _FeaturePage_h_
 
 
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyFile.h>
 
 
 namespace Drawing
@@ -75,4 +75,4 @@ private:
 } //namespace Drawing
 
 
-#endif
+~endif

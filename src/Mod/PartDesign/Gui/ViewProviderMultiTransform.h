@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMultiTransform_H
-#define PARTGUI_ViewProviderMultiTransform_H
+~ifndef PARTGUI_ViewProviderMultiTransform_H
+~define PARTGUI_ViewProviderMultiTransform_H
 
-#include "ViewProviderTransformed.h"
+~include "ViewProviderTransformed.h"
 
 namespace PartDesignGui {
 
@@ -51,4 +51,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderMultiTransform_H
+~endif // PARTGUI_ViewProviderMultiTransform_H

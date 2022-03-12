@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEVPROVIDERIMPORT_H
-#define PARTGUI_VIEVPROVIDERIMPORT_H
+~ifndef PARTGUI_VIEVPROVIDERIMPORT_H
+~define PARTGUI_VIEVPROVIDERIMPORT_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 class TopoDS_Shape;
@@ -54,5 +54,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEVPROVIDERIMPORT_H
+~endif // PARTGUI_VIEVPROVIDERIMPORT_H
 

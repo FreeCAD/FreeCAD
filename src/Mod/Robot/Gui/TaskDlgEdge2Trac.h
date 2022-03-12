@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef ROBOTGUI_TaskDlgEdge2Trac_H
-#define ROBOTGUI_TaskDlgEdge2Trac_H
+~ifndef ROBOTGUI_TaskDlgEdge2Trac_H
+~define ROBOTGUI_TaskDlgEdge2Trac_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Edge2TracObject.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/Edge2TracObject.h>
 
-#include "TaskEdge2TracParameter.h"
+~include "TaskEdge2TracParameter.h"
 
 // forward
 namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
@@ -73,4 +73,4 @@ protected:
 
 } //namespace RobotGui
 
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+~endif // ROBOTGUI_TASKDLGSIMULATE_H

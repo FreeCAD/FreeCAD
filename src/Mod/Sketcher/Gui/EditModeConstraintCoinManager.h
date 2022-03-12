@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_EditModeConstraintCoinManager_H
-#define SKETCHERGUI_EditModeConstraintCoinManager_H
+~ifndef SKETCHERGUI_EditModeConstraintCoinManager_H
+~define SKETCHERGUI_EditModeConstraintCoinManager_H
 
-#include <vector>
-#include <functional>
+~include <vector>
+~include <functional>
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
+~include <Base/Parameter.h>
+~include <App/Application.h>
 
-#include <Mod/Sketcher/App/GeoList.h>
+~include <Mod/Sketcher/App/GeoList.h>
 
-#include "EditModeCoinManagerParameters.h"
+~include "EditModeCoinManagerParameters.h"
 
 class SbVec3f;
 class SoRayPickAction;
@@ -254,5 +254,5 @@ private:
 } // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_EditModeConstraintCoinManager_H
+~endif // SKETCHERGUI_EditModeConstraintCoinManager_H
 

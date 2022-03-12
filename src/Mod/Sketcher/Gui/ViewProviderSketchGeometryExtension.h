@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+~ifndef SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+~define SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
 
-#include <Mod/Part/App/Geometry.h>
+~include <Mod/Part/App/Geometry.h>
 
 namespace SketcherGui {
 
@@ -63,4 +63,4 @@ private:
 } //namespace SketcherGui
 
 
-#endif // SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+~endif // SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H

@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGISECTIONLINE_H
-#define TECHDRAWGUI_QGISECTIONLINE_H
+~ifndef TECHDRAWGUI_QGISECTIONLINE_H
+~define TECHDRAWGUI_QGISECTIONLINE_H
 
-#include <QFont>
-#include <QPointF>
-#include <QGraphicsTextItem>
-#include <QPainterPath>
-#include <QColor>
+~include <QFont>
+~include <QPointF>
+~include <QGraphicsTextItem>
+~include <QPainterPath>
+~include <QColor>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include "QGIArrow.h"
-#include "QGCustomText.h"
-#include "QGIDecoration.h"
+~include "QGIArrow.h"
+~include "QGCustomText.h"
+~include "QGIDecoration.h"
 
 namespace TechDrawGui
 {
@@ -103,4 +103,4 @@ private:
 
 }
 
-#endif // TECHDRAWGUI_QGISECTIONLINE_H
+~endif // TECHDRAWGUI_QGISECTIONLINE_H

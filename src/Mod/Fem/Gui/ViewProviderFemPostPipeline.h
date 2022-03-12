@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
-#define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+~ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+~define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 
-#include "ViewProviderFemPostObject.h"
+~include "ViewProviderFemPostObject.h"
 
 namespace FemGui
 {
@@ -50,4 +50,4 @@ protected:
 } //namespace FemGui
 
 
-#endif // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+~endif // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H

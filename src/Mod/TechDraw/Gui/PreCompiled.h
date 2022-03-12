@@ -21,66 +21,66 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_PRECOMPILED_H
-#define DRAWINGGUI_PRECOMPILED_H
+~ifndef DRAWINGGUI_PRECOMPILED_H
+~define DRAWINGGUI_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-//# define DrawingAppExport __declspec(dllimport)
-# define TechDrawExport      __declspec(dllimport)
-# define PartExport         __declspec(dllimport)
-# define TechDrawGuiExport   __declspec(dllexport)
-# define SpreadsheetExport  __declspec(dllimport)
-# define ImportExport  __declspec(dllimport)
-#else // for Linux
-# define TechDrawExport
-# define PartExport
-# define TechDrawGuiExport
-# define SpreadsheetExport
-# define ImportExport
-#endif
+~ifdef FC_OS_WIN32
+//~ define DrawingAppExport __declspec(dllimport)
+~ define TechDrawExport      __declspec(dllimport)
+~ define PartExport         __declspec(dllimport)
+~ define TechDrawGuiExport   __declspec(dllexport)
+~ define SpreadsheetExport  __declspec(dllimport)
+~ define ImportExport  __declspec(dllimport)
+~else // for Linux
+~ define TechDrawExport
+~ define PartExport
+~ define TechDrawGuiExport
+~ define SpreadsheetExport
+~ define ImportExport
+~endif
 
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#endif
+~ifdef _MSC_VER
+~   pragma warning(disable : 4005)
+~endif
 
-#ifdef FC_OS_WIN32
-#   define NOMINMAX
-#endif
+~ifdef FC_OS_WIN32
+~   define NOMINMAX
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
+~include <iostream>
+~include <cassert>
+~include <cmath>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif // DRAWINGGUI_PRECOMPILED_H
+~endif // DRAWINGGUI_PRECOMPILED_H

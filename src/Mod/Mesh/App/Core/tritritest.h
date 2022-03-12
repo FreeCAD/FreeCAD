@@ -41,36 +41,36 @@ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 */
 
 
-#include <cmath>
+~include <cmath>
 
-#define FABS(x) ((float)fabs(x))        /* implement as is fastest on your machine */
+~define FABS(x) ((float)fabs(x))        /* implement as is fastest on your machine */
 
 /* if USE_EPSILON_TEST is true then we do a check:
          if |dv|<EPSILON then dv=0.0;
    else no check is done (which is less robust)
 */
-#define USE_EPSILON_TEST 1
-#define EPSILON 0.000001
+~define USE_EPSILON_TEST 1
+~define EPSILON 0.000001
 
 
 /* some macros */
-#define CROSS(dest,v1,v2)                      \
+~define CROSS(dest,v1,v2)                      \
               dest[0]=v1[1]*v2[2]-v1[2]*v2[1]; \
               dest[1]=v1[2]*v2[0]-v1[0]*v2[2]; \
               dest[2]=v1[0]*v2[1]-v1[1]*v2[0];
 
-#define DOT(v1,v2) (v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2])
+~define DOT(v1,v2) (v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2])
 
-#define SUB(dest,v1,v2) dest[0]=v1[0]-v2[0]; dest[1]=v1[1]-v2[1]; dest[2]=v1[2]-v2[2];
+~define SUB(dest,v1,v2) dest[0]=v1[0]-v2[0]; dest[1]=v1[1]-v2[1]; dest[2]=v1[2]-v2[2];
 
-#define ADD(dest,v1,v2) dest[0]=v1[0]+v2[0]; dest[1]=v1[1]+v2[1]; dest[2]=v1[2]+v2[2];
+~define ADD(dest,v1,v2) dest[0]=v1[0]+v2[0]; dest[1]=v1[1]+v2[1]; dest[2]=v1[2]+v2[2];
 
-#define MULT(dest,v,factor) dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
+~define MULT(dest,v,factor) dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
 
-#define SET(dest,src) dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2];
+~define SET(dest,src) dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2];
 
 /* sort so that a<=b */
-#define SORT(a,b)       \
+~define SORT(a,b)       \
              if(a>b)    \
              {          \
                float c; \
@@ -79,12 +79,12 @@ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
                b=c;     \
              }
 
-#define ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1) \
+~define ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1) \
               isect0=VV0+(VV1-VV0)*D0/(D0-D1);    \
               isect1=VV0+(VV2-VV0)*D0/(D0-D2);
 
 
-#define COMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1) \
+~define COMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1) \
   if(D0D1>0.0f)                                         \
   {                                                     \
     /* here we know that D0D2<=0.0 */                   \
@@ -120,7 +120,7 @@ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 /* this edge to edge test is based on Franlin Antonio's gem:
    "Faster Line Segment Intersection", in Graphics Gems III,
    pp. 199-202 */
-#define EDGE_EDGE_TEST(V0,U0,U1)                      \
+~define EDGE_EDGE_TEST(V0,U0,U1)                      \
   Bx=U0[i0]-U1[i0];                                   \
   By=U0[i1]-U1[i1];                                   \
   Cx=V0[i0]-U0[i0];                                   \
@@ -140,7 +140,7 @@ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
     }                                                 \
   }
 
-#define EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2) \
+~define EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2) \
 {                                              \
   float Ax,Ay,Bx,By,Cx,Cy,e,d,f;               \
   Ax=V1[i0]-V0[i0];                            \
@@ -153,7 +153,7 @@ OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
   EDGE_EDGE_TEST(V0,U2,U0);                    \
 }
 
-#define POINT_IN_TRI(V0,U0,U1,U2)           \
+~define POINT_IN_TRI(V0,U0,U1,U2)           \
 {                                           \
   float a,b,c,d0,d1,d2;                     \
   /* is T1 completely inside T2? */         \
@@ -255,11 +255,11 @@ int tri_tri_intersect(float V0[3],float V1[3],float V2[3],
   du2=DOT(N1,U2)+d1;
 
   /* coplanarity robustness check */
-#if USE_EPSILON_TEST
+~if USE_EPSILON_TEST
   if(fabs(du0)<EPSILON) du0=0.0;
   if(fabs(du1)<EPSILON) du1=0.0;
   if(fabs(du2)<EPSILON) du2=0.0;
-#endif
+~endif
   du0du1=du0*du1;
   du0du2=du0*du2;
 
@@ -278,11 +278,11 @@ int tri_tri_intersect(float V0[3],float V1[3],float V2[3],
   dv1=DOT(N2,V1)+d2;
   dv2=DOT(N2,V2)+d2;
 
-#if USE_EPSILON_TEST
+~if USE_EPSILON_TEST
   if(fabs(dv0)<EPSILON) dv0=0.0;
   if(fabs(dv1)<EPSILON) dv1=0.0;
   if(fabs(dv2)<EPSILON) dv2=0.0;
-#endif
+~endif
 
   dv0dv1=dv0*dv1;
   dv0dv2=dv0*dv2;
@@ -324,7 +324,7 @@ int tri_tri_intersect(float V0[3],float V1[3],float V2[3],
 }
 
 
-#define NEWCOMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,A,B,C,X0,X1) \
+~define NEWCOMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,A,B,C,X0,X1) \
 { \
         if(D0D1>0.0f) \
         { \
@@ -389,11 +389,11 @@ int NoDivTriTriIsect(float V0[3],float V1[3],float V2[3],
   du2=DOT(N1,U2)+d1;
 
   /* coplanarity robustness check */
-#if USE_EPSILON_TEST
+~if USE_EPSILON_TEST
   if(FABS(du0)<EPSILON) du0=0.0;
   if(FABS(du1)<EPSILON) du1=0.0;
   if(FABS(du2)<EPSILON) du2=0.0;
-#endif
+~endif
   du0du1=du0*du1;
   du0du2=du0*du2;
 
@@ -412,11 +412,11 @@ int NoDivTriTriIsect(float V0[3],float V1[3],float V2[3],
   dv1=DOT(N2,V1)+d2;
   dv2=DOT(N2,V2)+d2;
 
-#if USE_EPSILON_TEST
+~if USE_EPSILON_TEST
   if(FABS(dv0)<EPSILON) dv0=0.0;
   if(FABS(dv1)<EPSILON) dv1=0.0;
   if(FABS(dv2)<EPSILON) dv2=0.0;
-#endif
+~endif
 
   dv0dv1=dv0*dv1;
   dv0dv2=dv0*dv2;
@@ -470,7 +470,7 @@ int NoDivTriTriIsect(float V0[3],float V1[3],float V2[3],
 }
 
 /* sort so that a<=b */
-#define SORT2(a,b,smallest)       \
+~define SORT2(a,b,smallest)       \
              if(a>b)       \
              {             \
                float c;    \
@@ -499,8 +499,8 @@ inline void isect2(float VTX0[3],float VTX1[3],float VTX2[3],float VV0,float VV1
 }
 
 
-#if 0
-#define ISECT2(VTX0,VTX1,VTX2,VV0,VV1,VV2,D0,D1,D2,isect0,isect1,isectpoint0,isectpoint1) \
+~if 0
+~define ISECT2(VTX0,VTX1,VTX2,VV0,VV1,VV2,D0,D1,D2,isect0,isect1,isectpoint0,isectpoint1) \
               tmp=D0/(D0-D1);                    \
               isect0=VV0+(VV1-VV0)*tmp;          \
       SUB(diff,VTX1,VTX0);               \
@@ -511,7 +511,7 @@ inline void isect2(float VTX0[3],float VTX1[3],float VTX2[3],float VV0,float VV1
 /*              SUB(diff,VTX2,VTX0);               \     */
 /*              MULT(diff,diff,tmp);               \   */
 /*              ADD(isectpoint1,VTX0,diff);           */
-#endif
+~endif
 
 inline int compute_intervals_isectline(float VERT0[3],float VERT1[3],float VERT2[3],
        float VV0,float VV1,float VV2,float D0,float D1,float D2,
@@ -550,14 +550,14 @@ inline int compute_intervals_isectline(float VERT0[3],float VERT1[3],float VERT2
   return 0;
 }
 
-#define COMPUTE_INTERVALS_ISECTLINE(VERT0,VERT1,VERT2,VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1,isectpoint0,isectpoint1) \
+~define COMPUTE_INTERVALS_ISECTLINE(VERT0,VERT1,VERT2,VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1,isectpoint0,isectpoint1) \
   if(D0D1>0.0f)                                         \
   {                                                     \
     /* here we know that D0D2<=0.0 */                   \
     /* that is D0, D1 are on the same side, D2 on the other or on the plane */ \
     isect2(VERT2,VERT0,VERT1,VV2,VV0,VV1,D2,D0,D1,&isect0,&isect1,isectpoint0,isectpoint1);          \
   }
-#if 0
+~if 0
   else if(D0D2>0.0f)                                    \
   {                                                     \
     /* here we know that d0d1<=0.0 */                   \
@@ -582,7 +582,7 @@ inline int compute_intervals_isectline(float VERT0[3],float VERT1[3],float VERT2
     coplanar=1;                                         \
     return coplanar_tri_tri(N1,V0,V1,V2,U0,U1,U2);      \
   }
-#endif
+~endif
 
 int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
      float U0[3],float U1[3],float U2[3],int *coplanar,
@@ -615,11 +615,11 @@ int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
   du2=DOT(N1,U2)+d1;
 
   /* coplanarity robustness check */
-#if USE_EPSILON_TEST
+~if USE_EPSILON_TEST
   if(fabs(du0)<EPSILON) du0=0.0;
   if(fabs(du1)<EPSILON) du1=0.0;
   if(fabs(du2)<EPSILON) du2=0.0;
-#endif
+~endif
   du0du1=du0*du1;
   du0du2=du0*du2;
 
@@ -638,11 +638,11 @@ int tri_tri_intersect_with_isectline(float V0[3],float V1[3],float V2[3],
   dv1=DOT(N2,V1)+d2;
   dv2=DOT(N2,V2)+d2;
 
-#if USE_EPSILON_TEST
+~if USE_EPSILON_TEST
   if(fabs(dv0)<EPSILON) dv0=0.0;
   if(fabs(dv1)<EPSILON) dv1=0.0;
   if(fabs(dv2)<EPSILON) dv2=0.0;
-#endif
+~endif
 
   dv0dv1=dv0*dv1;
   dv0dv2=dv0*dv2;

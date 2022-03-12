@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef BASE_COORDINATESYSTEM_H
-#define BASE_COORDINATESYSTEM_H
+~ifndef BASE_COORDINATESYSTEM_H
+~define BASE_COORDINATESYSTEM_H
 
-#include "Axis.h"
+~include "Axis.h"
 
 namespace Base {
 /**
@@ -101,4 +101,4 @@ private:
 
 }
 
-#endif // BASE_COORDINATESYSTEM_H
+~endif // BASE_COORDINATESYSTEM_H

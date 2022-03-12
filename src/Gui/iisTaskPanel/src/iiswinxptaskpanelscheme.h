@@ -5,10 +5,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISWINXPTASKPANELSCHEME_H
-#define IISWINXPTASKPANELSCHEME_H
+~ifndef IISWINXPTASKPANELSCHEME_H
+~define IISWINXPTASKPANELSCHEME_H
 
-#include "iistaskpanelscheme.h"
+~include "iistaskpanelscheme.h"
 
 
 class IISTASKPANEL_EXPORT iisWinXPTaskPanelScheme : public iisTaskPanelScheme
@@ -36,4 +36,4 @@ protected:
 	static iisWinXPTaskPanelScheme2 *myDefaultXPScheme;
 };
 
-#endif // IISWINXPTASKPANELSCHEME_H
+~endif // IISWINXPTASKPANELSCHEME_H

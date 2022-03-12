@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
-#define GUI_TASKVIEW_TaskPrimitiveParameters_H
+~ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
+~define GUI_TASKVIEW_TaskPrimitiveParameters_H
 
-#include <memory>
-#include <Gui/DocumentObserver.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <memory>
+~include <Gui/DocumentObserver.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "ViewProviderPrimitive.h"
-#include "TaskDatumParameters.h"
+~include "ViewProviderPrimitive.h"
+~include "TaskDatumParameters.h"
 
 namespace App {
 class Property;
@@ -129,4 +129,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

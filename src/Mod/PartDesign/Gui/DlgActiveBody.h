@@ -23,14 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGNGUI_DLGACTIVEBODY_H
-#define PARTDESIGNGUI_DLGACTIVEBODY_H
+~ifndef PARTDESIGNGUI_DLGACTIVEBODY_H
+~define PARTDESIGNGUI_DLGACTIVEBODY_H
 
-#include <QDialog>
-#include <memory>
-#include <App/Document.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
+~include <QDialog>
+~include <memory>
+~include <App/Document.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/PartDesignGlobal.h>
 
 
 namespace PartDesignGui {
@@ -59,4 +59,4 @@ private:
 
 } // namespace PartDesignGui
 
-#endif // PARTDESIGNGUI_DLGACTIVEBODY_H
+~endif // PARTDESIGNGUI_DLGACTIVEBODY_H

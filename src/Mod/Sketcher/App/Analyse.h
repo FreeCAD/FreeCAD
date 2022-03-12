@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_ANALYSE_H
-#define SKETCHER_ANALYSE_H
+~ifndef SKETCHER_ANALYSE_H
+~define SKETCHER_ANALYSE_H
 
-#include <vector>
-#include <Mod/Sketcher/App/Constraint.h>
+~include <vector>
+~include <Mod/Sketcher/App/Constraint.h>
 
 namespace Sketcher {
 
@@ -61,4 +61,4 @@ struct Constraint_Equal
 
 } //namespace Sketcher
 
-#endif // SKETCHER_ANALYSE_H
+~endif // SKETCHER_ANALYSE_H

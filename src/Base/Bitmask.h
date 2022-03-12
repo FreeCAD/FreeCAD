@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BITMASK_H
-#define BASE_BITMASK_H
+~ifndef BASE_BITMASK_H
+~define BASE_BITMASK_H
 
-#include <type_traits>
+~include <type_traits>
 
 /*!
  Using enum classes as type-safe bitmasks.
@@ -99,7 +99,7 @@ constexpr enum_traits<>::t<T, T&> operator^=(T& a, T b) {
     return a;
 }
 
-#define ENABLE_BITMASK_OPERATORS(x)  \
+~define ENABLE_BITMASK_OPERATORS(x)  \
 template<>                           \
 struct enum_traits<x> :              \
        enum_traits<>::allow_bitops {};
@@ -123,4 +123,4 @@ public:
 };
 }
 
-#endif
+~endif

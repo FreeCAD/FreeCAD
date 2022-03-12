@@ -23,12 +23,12 @@
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
-#ifndef TECHDRAWGUI_TASKDIALOG
-#define TECHDRAWGUI_TASKDIALOG
+~ifndef TECHDRAWGUI_TASKDIALOG
+~define TECHDRAWGUI_TASKDIALOG
 
-#include <QWidget>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <QWidget>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
 class QCheckBox;
 
@@ -93,4 +93,4 @@ private:
 
 
 
-#endif // TECHDRAWGUI_TASKDIALOG
+~endif // TECHDRAWGUI_TASKDIALOG

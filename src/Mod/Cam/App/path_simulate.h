@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Path_Simulate_h
-#define Path_Simulate_h
+~ifndef Path_Simulate_h
+~define Path_Simulate_h
 
 
-#include <Base/Vector3D.h>
-#include <Base/Builder3D.h>
-#include <TColStd_Array1OfReal.hxx>
-#include "cutting_tools.h"
-#include <sstream>
+~include <Base/Vector3D.h>
+~include <Base/Builder3D.h>
+~include <TColStd_Array1OfReal.hxx>
+~include "cutting_tools.h"
+~include <sstream>
 
-//#include <Base/Builder3D.h>
+//~include <Base/Builder3D.h>
 
 /*! \brief The main class for the path_simulate routine
 
@@ -340,7 +340,7 @@ private:
 };
 
 
-#endif //Path_Simulate_h
+~endif //Path_Simulate_h
 
 
 

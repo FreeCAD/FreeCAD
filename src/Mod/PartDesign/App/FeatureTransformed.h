@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureTransformed_H
-#define PARTDESIGN_FeatureTransformed_H
+~ifndef PARTDESIGN_FeatureTransformed_H
+~define PARTDESIGN_FeatureTransformed_H
 
-#include <gp_Trsf.hxx>
+~include <gp_Trsf.hxx>
 
-#include <App/PropertyStandard.h>
-#include "Feature.h"
+~include <App/PropertyStandard.h>
+~include "Feature.h"
 
 
 namespace PartDesign
@@ -104,4 +104,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureTransformed_H
+~endif // PARTDESIGN_FeatureTransformed_H

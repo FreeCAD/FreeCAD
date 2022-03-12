@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PYTHONWRAPPER_H
-#define GUI_PYTHONWRAPPER_H
+~ifndef GUI_PYTHONWRAPPER_H
+~define GUI_PYTHONWRAPPER_H
 
-#include <QGraphicsItem>
-#include <Base/PyObjectBase.h>
-#include <FCGlobal.h>
+~include <QGraphicsItem>
+~include <Base/PyObjectBase.h>
+~include <FCGlobal.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -64,4 +64,4 @@ public:
 
 } // namespace Gui
 
-#endif // GUI_PYTHONWRAPPER_H
+~endif // GUI_PYTHONWRAPPER_H

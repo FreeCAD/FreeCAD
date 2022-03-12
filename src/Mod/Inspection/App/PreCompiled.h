@@ -21,52 +21,52 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+~ifndef APP_PRECOMPILED_H
+~define APP_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define InspectionExport __declspec(dllexport)
-# define MeshExport          __declspec(dllimport)
-# define PointsExport     __declspec(dllimport)
-# define PartExport       __declspec(dllimport)
-#else // for Linux
-# define InspectionExport
-# define MeshExport
-# define PointsExport
-# define PartExport
-#endif
+~ifdef FC_OS_WIN32
+~ define InspectionExport __declspec(dllexport)
+~ define MeshExport          __declspec(dllimport)
+~ define PointsExport     __declspec(dllimport)
+~ define PartExport       __declspec(dllimport)
+~else // for Linux
+~ define InspectionExport
+~ define MeshExport
+~ define PointsExport
+~ define PartExport
+~endif
 
-#ifdef _MSC_VER
-# pragma warning(disable : 4290)
-# pragma warning(disable : 4275)
-#endif
+~ifdef _MSC_VER
+~ pragma warning(disable : 4290)
+~ pragma warning(disable : 4275)
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
+~include <cstdio>
+~include <cassert>
+~include <iostream>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <iostream>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
 
 // Xerces
-#include <xercesc/util/XercesDefs.hpp>
+~include <xercesc/util/XercesDefs.hpp>
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif
+~endif
 

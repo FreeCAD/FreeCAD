@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderLinearPattern_H
-#define PARTGUI_ViewProviderLinearPattern_H
+~ifndef PARTGUI_ViewProviderLinearPattern_H
+~define PARTGUI_ViewProviderLinearPattern_H
 
-#include "ViewProviderTransformed.h"
+~include "ViewProviderTransformed.h"
 
 namespace PartDesignGui {
 
@@ -46,4 +46,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderLinearPattern_H
+~endif // PARTGUI_ViewProviderLinearPattern_H

@@ -25,9 +25,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {
@@ -68,14 +68,14 @@ namespace e57
 
       virtual ~NodeImpl() = default;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       virtual void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
 
    private:
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       bool _verifyPathNameAbsolute( const ustring &inPathName );
-#endif
+~endif
 
       NodeImplSharedPtr _verifyAndGetRoot();
 

@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4ETMANIFOLDMESH_H
-#define WM4ETMANIFOLDMESH_H
+~ifndef WM4ETMANIFOLDMESH_H
+~define WM4ETMANIFOLDMESH_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4EdgeKey.h"
-#include "Wm4TriangleKey.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4EdgeKey.h"
+~include "Wm4TriangleKey.h"
 
 namespace Wm4
 {
@@ -111,6 +111,6 @@ protected:
 
 } //namespace Wm4
 
-#include "Wm4ETManifoldMesh.inl"
+~include "Wm4ETManifoldMesh.inl"
 
-#endif
+~endif

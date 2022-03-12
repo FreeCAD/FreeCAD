@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskRobotControl_H
-#define GUI_TASKVIEW_TaskRobotControl_H
+~ifndef GUI_TASKVIEW_TaskRobotControl_H
+~define GUI_TASKVIEW_TaskRobotControl_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskRobotControl;
@@ -70,4 +70,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

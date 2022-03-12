@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
-#define GUI_TASKVIEW_TaskRevolutionParameters_H
+~ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
+~define GUI_TASKVIEW_TaskRevolutionParameters_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "TaskSketchBasedParameters.h"
-#include "ViewProviderRevolution.h"
+~include "TaskSketchBasedParameters.h"
+~include "ViewProviderRevolution.h"
 
 class Ui_TaskRevolutionParameters;
 
@@ -118,4 +118,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

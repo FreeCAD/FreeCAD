@@ -21,17 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
-#include <QByteArray>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
+~include <QObject>
+~include <QPainter>
+~include <QString>
+~include <QByteArray>
+~include <QSvgRenderer>
+~include <QGraphicsSvgItem>
 
-#include "QGIView.h"
+~include "QGIView.h"
 
 namespace TechDraw {
 class DrawViewSymbol;
@@ -68,4 +68,4 @@ protected:
 };
 
 } // namespace
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H

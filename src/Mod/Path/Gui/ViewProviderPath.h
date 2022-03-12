@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PATH_ViewProviderPath_H
-#define PATH_ViewProviderPath_H
+~ifndef PATH_ViewProviderPath_H
+~define PATH_ViewProviderPath_H
 
-#include <App/PropertyGeo.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+~include <App/PropertyGeo.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/SoFCSelection.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Part/Gui/SoBrepEdgeSet.h>
 
 class SoCoordinate3;
 class SoDrawStyle;
@@ -122,4 +122,4 @@ protected:
 } //namespace PathGui
 
 
-#endif // PATH_VIEWPROVIDERPATH_H
+~endif // PATH_VIEWPROVIDERPATH_H

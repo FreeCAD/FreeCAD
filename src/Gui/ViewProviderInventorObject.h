@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_INVENTOROBJECT_H
-#define GUI_VIEWPROVIDER_INVENTOROBJECT_H
+~ifndef GUI_VIEWPROVIDER_INVENTOROBJECT_H
+~define GUI_VIEWPROVIDER_INVENTOROBJECT_H
 
-#include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObject.h"
 
 
 namespace Gui
@@ -58,4 +58,4 @@ protected:
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDER_INVENTOROBJECT_H
+~endif // GUI_VIEWPROVIDER_INVENTOROBJECT_H

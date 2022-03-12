@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_CONSTRAINT_H
-#define SKETCHER_CONSTRAINT_H
+~ifndef SKETCHER_CONSTRAINT_H
+~define SKETCHER_CONSTRAINT_H
 
 
-#include <Base/Persistence.h>
-#include <Base/Quantity.h>
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
+~include <Base/Persistence.h>
+~include <Base/Quantity.h>
+~include <boost/uuid/uuid.hpp>
+~include <boost/uuid/uuid_generators.hpp>
 
-#include "GeoEnum.h"
+~include "GeoEnum.h"
 
 namespace Sketcher
 {
@@ -153,4 +153,4 @@ protected:
 } //namespace Sketcher
 
 
-#endif // SKETCHER_CONSTRAINT_H
+~endif // SKETCHER_CONSTRAINT_H

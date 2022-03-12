@@ -21,13 +21,13 @@
 
 
 /* Methods are inlined */
-#define KDL_INLINE 1
+~define KDL_INLINE 1
 
 /* Column width that is used form printing frames */
-#define KDL_FRAME_WIDTH 12
+~define KDL_FRAME_WIDTH 12
 
 /* Indices are checked when accessing members of the objects */
-#define KDL_INDEX_CHECK 1
+~define KDL_INDEX_CHECK 1
 
 /* use KDL implementation for == operator */
-#define KDL_USE_EQUAL 1
+~define KDL_USE_EQUAL 1

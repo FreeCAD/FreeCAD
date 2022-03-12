@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef RAY_POVRAYHIGHLIGHTER_H
-#define RAY_POVRAYHIGHLIGHTER_H
+~ifndef RAY_POVRAYHIGHLIGHTER_H
+~define RAY_POVRAYHIGHLIGHTER_H
 
-#include <Gui/SyntaxHighlighter.h>
+~include <Gui/SyntaxHighlighter.h>
 
 namespace RaytracingGui {
 class PovrayHighlighterP;
@@ -48,4 +48,4 @@ private:
 
 } // namespace Gui
 
-#endif // RAY_POVRAYHIGHLIGHTER_H
+~endif // RAY_POVRAYHIGHLIGHTER_H

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef MESH_HELPERS_H
-#define MESH_HELPERS_H
+~ifndef MESH_HELPERS_H
+~define MESH_HELPERS_H
 
-#include "Elements.h"
+~include "Elements.h"
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
 namespace MeshCore {
 
@@ -169,4 +169,4 @@ inline void MeshEdgeBuilder::Add (PointIndex ulInd1, PointIndex ulInd2,
 
 } // namespace MeshCore
 
-#endif // MESH_HELPERS_H 
+~endif // MESH_HELPERS_H 

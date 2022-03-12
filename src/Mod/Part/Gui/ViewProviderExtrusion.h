@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDEREXTRUSION_H
-#define PARTGUI_VIEWPROVIDEREXTRUSION_H
+~ifndef PARTGUI_VIEWPROVIDEREXTRUSION_H
+~define PARTGUI_VIEWPROVIDEREXTRUSION_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 namespace PartGui {
@@ -46,4 +46,4 @@ public:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDEREXTRUSION_H
+~endif // PARTGUI_VIEWPROVIDEREXTRUSION_H

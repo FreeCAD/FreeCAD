@@ -5,12 +5,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONPANEL_H
-#define ACTIONPANEL_H
+~ifndef ACTIONPANEL_H
+~define ACTIONPANEL_H
 
-#include <QFrame>
-#include <QSpacerItem>
-#include "qsint_global.h"
+~include <QFrame>
+~include <QSpacerItem>
+~include "qsint_global.h"
 
 
 namespace QSint
@@ -101,4 +101,4 @@ protected:
 
 } // namespace
 
-#endif // ACTIONPANEL_H
+~endif // ACTIONPANEL_H

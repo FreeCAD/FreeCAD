@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTEXTENSION_H
-#define APP_DOCUMENTOBJECTEXTENSION_H
+~ifndef APP_DOCUMENTOBJECTEXTENSION_H
+~define APP_DOCUMENTOBJECTEXTENSION_H
 
-#include "Extension.h"
+~include "Extension.h"
 
 namespace Base {
 class Matrix4D;
@@ -102,4 +102,4 @@ public:
 
 } //App
 
-#endif // APP_DOCUMENTOBJECTEXTENSION_H
+~endif // APP_DOCUMENTOBJECTEXTENSION_H

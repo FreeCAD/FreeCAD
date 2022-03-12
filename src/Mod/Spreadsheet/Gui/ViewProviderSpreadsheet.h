@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEET_ViewProviderImagePlane_H
-#define SPREADSHEET_ViewProviderImagePlane_H
+~ifndef SPREADSHEET_ViewProviderImagePlane_H
+~define SPREADSHEET_ViewProviderImagePlane_H
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <QPointer>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <QPointer>
 
 namespace Spreadsheet {
 class Sheet;
@@ -84,4 +84,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderSheet> ViewProviderSheetPyth
 } //namespace Spreadsheet
 
 
-#endif // SPREADSHEET_ViewProviderSpreadsheet_H
+~endif // SPREADSHEET_ViewProviderSpreadsheet_H

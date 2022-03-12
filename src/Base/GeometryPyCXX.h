@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef PY_GEOMETRYPY_H
-#define PY_GEOMETRYPY_H
+~ifndef PY_GEOMETRYPY_H
+~define PY_GEOMETRYPY_H
 
-#include <CXX/Extensions.hxx>
-#include <FCGlobal.h>
+~include <CXX/Extensions.hxx>
+~include <FCGlobal.h>
 
-#include <Base/BoundBoxPy.h>
-#include <Base/Matrix.h>
-#include <Base/MatrixPy.h>
-#include <Base/Rotation.h>
-#include <Base/RotationPy.h>
-#include <Base/Placement.h>
-#include <Base/PlacementPy.h>
-#include <Base/Vector3D.h>
+~include <Base/BoundBoxPy.h>
+~include <Base/Matrix.h>
+~include <Base/MatrixPy.h>
+~include <Base/Rotation.h>
+~include <Base/RotationPy.h>
+~include <Base/Placement.h>
+~include <Base/PlacementPy.h>
+~include <Base/Vector3D.h>
 
 
 namespace Base {
@@ -254,4 +254,4 @@ typedef GeometryT<Base::Placement, Base::PlacementPy,
 
 }
 
-#endif // PY_GEOMETRYPY_H
+~endif // PY_GEOMETRYPY_H

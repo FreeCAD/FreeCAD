@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_GROUPEXTENSION_H
-#define APP_GROUPEXTENSION_H
+~ifndef APP_GROUPEXTENSION_H
+~define APP_GROUPEXTENSION_H
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectExtension.h>
-#include <App/ExtensionPython.h>
-#include <vector>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectExtension.h>
+~include <App/ExtensionPython.h>
+~include <vector>
 
 
 namespace App
@@ -165,4 +165,4 @@ typedef ExtensionPythonT<GroupExtensionPythonT<GroupExtension>> GroupExtensionPy
 } //namespace App
 
 
-#endif // APP_GROUPEXTENSION_H
+~endif // APP_GROUPEXTENSION_H

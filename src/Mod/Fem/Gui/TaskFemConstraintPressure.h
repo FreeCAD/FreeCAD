@@ -24,22 +24,22 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintPressure_H
-#define GUI_TASKVIEW_TaskFemConstraintPressure_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintPressure_H
+~define GUI_TASKVIEW_TaskFemConstraintPressure_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Base/Quantity.h>
 
-#include "TaskFemConstraint.h"
-#include "TaskFemConstraintOnBoundary.h"
-#include "ViewProviderFemConstraintPressure.h"
+~include "TaskFemConstraint.h"
+~include "TaskFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintPressure.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
+~include <QObject>
+~include <Base/Console.h>
+~include <App/DocumentObject.h>
+~include <QKeyEvent>
 
 class Ui_TaskFemConstraintPressure;
 
@@ -85,4 +85,4 @@ public:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintPressure_H
+~endif // GUI_TASKVIEW_TaskFemConstraintPressure_H

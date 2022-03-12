@@ -19,14 +19,14 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#ifndef _INCLUDE_DRIVERUNV_R_SMESHDS_DOCUMENT
-#define _INCLUDE_DRIVERUNV_R_SMESHDS_DOCUMENT
+~ifndef _INCLUDE_DRIVERUNV_R_SMESHDS_DOCUMENT
+~define _INCLUDE_DRIVERUNV_R_SMESHDS_DOCUMENT
 
-#include "SMESH_DriverUNV.hxx"
+~include "SMESH_DriverUNV.hxx"
 
-#include "Driver_Document.h"
+~include "Driver_Document.h"
 
 class MESHDRIVERUNV_EXPORT DriverUNV_R_SMESHDS_Document: public Driver_Document
 {};
 
-#endif
+~endif

@@ -21,53 +21,53 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+~ifndef APP_PRECOMPILED_H
+~define APP_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SandboxAppExport __declspec(dllexport)
-# define MeshExport       __declspec(dllimport)
-#else // for Linux
-# define SandboxAppExport
-# define MeshExport
-#endif
+~ifdef FC_OS_WIN32
+~ define SandboxAppExport __declspec(dllexport)
+~ define MeshExport       __declspec(dllimport)
+~else // for Linux
+~ define SandboxAppExport
+~ define MeshExport
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
+~include <cstdio>
+~include <cassert>
+~include <iostream>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <iostream>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
 
 // Xerces
-#include <xercesc/util/XercesDefs.hpp>
+~include <xercesc/util/XercesDefs.hpp>
 
 // QtCore
-#include <QObject>
-#include <QCoreApplication>
-#include <QEvent>
-#include <QMutex>
-#include <QMutexLocker>
-#include <QWaitCondition>
-#include <QSemaphore>
-#include <QThread>
+~include <QObject>
+~include <QCoreApplication>
+~include <QEvent>
+~include <QMutex>
+~include <QMutexLocker>
+~include <QWaitCondition>
+~include <QSemaphore>
+~include <QThread>
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif
+~endif
 

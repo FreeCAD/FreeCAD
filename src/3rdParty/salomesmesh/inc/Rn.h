@@ -23,12 +23,12 @@
 //  Authors: Frederic HECHT & Alain PERRONNET
 //  Date   : 13 novembre 2006
 
-#ifndef Rn__h
-#define Rn__h
+~ifndef Rn__h
+~define Rn__h
 
-#include <gp_Pnt.hxx>      //Dans OpenCascade
-#include <gp_Vec.hxx>      //Dans OpenCascade
-#include <gp_Dir.hxx>      //Dans OpenCascade
+~include <gp_Pnt.hxx>      //Dans OpenCascade
+~include <gp_Vec.hxx>      //Dans OpenCascade
+~include <gp_Dir.hxx>      //Dans OpenCascade
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // BUT:   Definir les espaces affines R R2 R3 R4 soit Rn pour n=1,2,3,4
@@ -36,8 +36,8 @@
 // AUTEUR : Frederic HECHT      ANALYSE NUMERIQUE UPMC  PARIS   OCTOBRE   2000
 // MODIFS : Alain    PERRONNET  ANALYSE NUMERIQUE UPMC  PARIS   NOVEMBRE  2000
 //...............................................................................
-#include <iostream>
-#include <cmath>
+~include <iostream>
+~include <cmath>
 
 
 template<class T> inline T Abs (const T &a){return a <0 ? -a : a;}
@@ -60,19 +60,19 @@ typedef char Nom[1+24];
 
 //le type N des nombres entiers positifs
 //=========
-#ifndef PCLINUX64
+~ifndef PCLINUX64
 typedef unsigned long int N;
-#else 
+~else 
 typedef unsigned int N;
-#endif
+~endif
 
 //le type Z des nombres entiers relatifs
 //=========
-#ifndef PCLINUX64
+~ifndef PCLINUX64
 typedef long int Z;
-#else
+~else
 typedef int Z;
-#endif
+~endif
 
 //le type R des nombres "reels"
 //=========
@@ -81,7 +81,7 @@ typedef double R;
 //le type XPoint  des coordonnees d'un pixel dans une fenetre
 //==============
 //typedef struct { short int x,y } XPoint;  //en fait ce type est defini dans X11-Window
-                                            // #include <X11/Xlib.h>
+                                            // ~include <X11/Xlib.h>
 //la classe R2
 //============
 class R2 
@@ -233,4 +233,4 @@ inline R3 Min(R3 P, R3 Q)
 inline R3 Max(R3 P, R3 Q) 
 {return R3(P.x>Q.x ? P.x : Q.x, P.y>Q.y ? P.y : Q.y, P.z>Q.z ? P.z : Q.z);} //Pt de xyz Max
 
-#endif
+~endif

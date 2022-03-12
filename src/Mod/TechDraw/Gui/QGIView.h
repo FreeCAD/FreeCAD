@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEW_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
-#include <QGraphicsItemGroup>
-#include <QObject>
-#include <QPen>
-#include <QFont>
-#include <QColor>
-#include <QCursor>
-#include <QPointF>
+~include <QGraphicsItemGroup>
+~include <QObject>
+~include <QPen>
+~include <QFont>
+~include <QColor>
+~include <QCursor>
+~include <QPointF>
 
-#include <App/DocumentObject.h>
-#include <Base/Parameter.h>
-#include <Gui/ViewProvider.h>
+~include <App/DocumentObject.h>
+~include <Base/Parameter.h>
+~include <Gui/ViewProvider.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawView.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -186,4 +186,4 @@ protected:
 
 } // namespace
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H

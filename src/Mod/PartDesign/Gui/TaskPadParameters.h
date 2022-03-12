@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPadParameters_H
-#define GUI_TASKVIEW_TaskPadParameters_H
+~ifndef GUI_TASKVIEW_TaskPadParameters_H
+~define GUI_TASKVIEW_TaskPadParameters_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "TaskExtrudeParameters.h"
-#include "ViewProviderPad.h"
+~include "TaskExtrudeParameters.h"
+~include "ViewProviderPad.h"
 
 namespace App {
 class Property;
@@ -70,4 +70,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

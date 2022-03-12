@@ -20,12 +20,12 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _INCLUDE_DRIVERSTL_R_SMDS_MESH
-#define _INCLUDE_DRIVERSTL_R_SMDS_MESH
+~ifndef _INCLUDE_DRIVERSTL_R_SMDS_MESH
+~define _INCLUDE_DRIVERSTL_R_SMDS_MESH
 
-#include "SMESH_DriverSTL.hxx"
+~include "SMESH_DriverSTL.hxx"
 
-#include "Driver_SMDS_Mesh.h"
+~include "Driver_SMDS_Mesh.h"
 
 class SMESH_File;
 
@@ -47,4 +47,4 @@ class MESHDRIVERSTL_EXPORT DriverSTL_R_SMDS_Mesh: public Driver_SMDS_Mesh
   bool myIsAscii;
 };
 
-#endif
+~endif

@@ -1,8 +1,8 @@
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+~ifndef MAINWINDOW_H
+~define MAINWINDOW_H
 
-#include <QMainWindow>
+~include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -37,4 +37,4 @@ private:
     QAction *aboutAct;
 };
 
-#endif
+~endif

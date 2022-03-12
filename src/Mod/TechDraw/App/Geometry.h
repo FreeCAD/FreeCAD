@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_GEOMETRY_H
-#define TECHDRAW_GEOMETRY_H
+~ifndef TECHDRAW_GEOMETRY_H
+~define TECHDRAW_GEOMETRY_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <boost/uuid/uuid_generators.hpp>
+~include <boost/uuid/uuid.hpp>
+~include <boost/uuid/uuid_io.hpp>
+~include <boost/uuid/uuid_generators.hpp>
 
-#include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <Base/Tools2D.h>
+~include <Base/Vector3D.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Face.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS_Face.hxx>
 
-#include <memory>
+~include <memory>
 
 namespace TechDraw {
 
@@ -399,4 +399,4 @@ class TechDrawExport GeometryUtils
 
 } //end namespace TechDraw
 
-#endif //TECHDRAW_GEOMETRY_H
+~endif //TECHDRAW_GEOMETRY_H

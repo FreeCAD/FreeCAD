@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_Recompute_H
-#define SKETCHERGUI_Recompute_H
+~ifndef SKETCHERGUI_Recompute_H
+~define SKETCHERGUI_Recompute_H
 
 namespace Sketcher {
     enum class PointPos : int;
@@ -91,5 +91,5 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 }
 
 }
-#endif // SKETCHERGUI_Recompute_H
+~endif // SKETCHERGUI_Recompute_H
 

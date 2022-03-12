@@ -23,14 +23,14 @@
  
 
 
-#ifndef _FeatureView_h_
-#define _FeatureView_h_
+~ifndef _FeatureView_h_
+~define _FeatureView_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
+~include <App/FeaturePython.h>
 
 
 namespace Drawing
@@ -72,4 +72,4 @@ typedef App::FeaturePythonT<FeatureView> FeatureViewPython;
 
 
 
-#endif
+~endif

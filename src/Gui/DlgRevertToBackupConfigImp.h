@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
-#define GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
+~ifndef GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
+~define GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
 
-#include <memory>
-#include <QDialog>
+~include <memory>
+~include <QDialog>
 
 namespace Gui {
 namespace Dialog {
@@ -57,4 +57,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif //GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP
+~endif //GUI_DIALOG_DLG_REVERT_TO_BACKUP_CONFIG_IMP

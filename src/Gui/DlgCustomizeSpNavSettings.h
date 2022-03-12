@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef DLGCUSTOMIZESPNAVSETTINGS_H
-#define DLGCUSTOMIZESPNAVSETTINGS_H
+~ifndef DLGCUSTOMIZESPNAVSETTINGS_H
+~define DLGCUSTOMIZESPNAVSETTINGS_H
 
-#include "PropertyPage.h"
-#include <Base/Parameter.h>
-#include <memory>
+~include "PropertyPage.h"
+~include <Base/Parameter.h>
+~include <memory>
 
 class Ui_DlgCustomizeSpNavSettings;
 
@@ -87,4 +87,4 @@ namespace Gui
     }
 }
 
-#endif // DLGCUSTOMIZESPNAVSETTINGS_H
+~endif // DLGCUSTOMIZESPNAVSETTINGS_H

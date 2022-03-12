@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMCLIP_H
-#define DRAWINGGUI_QGRAPHICSITEMCLIP_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMCLIP_H
+~define DRAWINGGUI_QGRAPHICSITEMCLIP_H
 
-#include <QObject>
-#include <QPainter>
+~include <QObject>
+~include <QPainter>
 
-#include "QGIView.h"
+~include "QGIView.h"
 
 namespace TechDrawGui
 {
@@ -61,4 +61,4 @@ private:
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMCLIP_H
+~endif // DRAWINGGUI_QGRAPHICSITEMCLIP_H

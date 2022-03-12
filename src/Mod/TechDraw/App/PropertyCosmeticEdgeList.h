@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_PropertyCosmeticEdgeList_H
-#define TECHDRAW_PropertyCosmeticEdgeList_H
+~ifndef TECHDRAW_PropertyCosmeticEdgeList_H
+~define TECHDRAW_PropertyCosmeticEdgeList_H
 
 // Std. configurations
 
-#include <vector>
-#include <string>
-#include <App/Property.h>
+~include <vector>
+~include <string>
+~include <App/Property.h>
 
-#include <Mod/TechDraw/App/CosmeticEdgePy.h>
+~include <Mod/TechDraw/App/CosmeticEdgePy.h>
 
-#include "Cosmetic.h"
+~include "Cosmetic.h"
 
 namespace Base {
 class Writer;
@@ -95,4 +95,4 @@ private:
 } // namespace TechDraw
 
 
-#endif // TECHDRAW_PropertyCosmeticEdgeList_H
+~endif // TECHDRAW_PropertyCosmeticEdgeList_H

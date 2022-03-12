@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIDECORATION_H
-#define DRAWINGGUI_QGIDECORATION_H
+~ifndef DRAWINGGUI_QGIDECORATION_H
+~define DRAWINGGUI_QGIDECORATION_H
 
-#include <QGraphicsItemGroup>
-#include <QPen>
-#include <QBrush>
+~include <QGraphicsItemGroup>
+~include <QPen>
+~include <QBrush>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
+~include <Base/Parameter.h>
+~include <Base/Console.h>
+~include <Base/Vector3D.h>
 
 namespace TechDrawGui
 {
@@ -77,4 +77,4 @@ private:
 };
 
 }
-#endif
+~endif

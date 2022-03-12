@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
-#define GUI_TASKVIEW_TaskSketcherConstraints_H
+~ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
+~define GUI_TASKVIEW_TaskSketcherConstraints_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
-#include <QListWidget>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <boost_signals2.hpp>
+~include <QListWidget>
 
-#include <Mod/Sketcher/App/Constraint.h>
+~include <Mod/Sketcher/App/Constraint.h>
 
-#include "ConstraintFilters.h"
+~include "ConstraintFilters.h"
 
 namespace App {
 class Property;
@@ -141,4 +141,4 @@ private:
 
 } //namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

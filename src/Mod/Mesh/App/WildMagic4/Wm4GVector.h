@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4GVECTOR_H
-#define WM4GVECTOR_H
+~ifndef WM4GVECTOR_H
+~define WM4GVECTOR_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Math.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Math.h"
 
 namespace Wm4
 {
@@ -84,7 +84,7 @@ GVector<Real> operator* (Real fScalar, const GVector<Real>& rkV);
 
 } //namespace Wm4
 
-#include "Wm4GVector.inl"
+~include "Wm4GVector.inl"
 
 namespace Wm4
 {
@@ -92,4 +92,4 @@ typedef GVector<float> GVectorf;
 typedef GVector<double> GVectord;
 }
 
-#endif
+~endif

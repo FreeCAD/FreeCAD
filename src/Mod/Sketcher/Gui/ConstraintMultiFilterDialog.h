@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ConstraintMultiFilter_H
-#define SKETCHERGUI_ConstraintMultiFilter_H
+~ifndef SKETCHERGUI_ConstraintMultiFilter_H
+~define SKETCHERGUI_ConstraintMultiFilter_H
 
-#include <QDialog>
+~include <QDialog>
 
-#include "ConstraintFilters.h"
+~include "ConstraintFilters.h"
 
 namespace SketcherGui {
 
@@ -56,4 +56,4 @@ private:
 
 }
 
-#endif // SKETCHERGUI_ConstraintMultiFilter_H
+~endif // SKETCHERGUI_ConstraintMultiFilter_H

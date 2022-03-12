@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#ifndef MESH_SETOPERATIONS_H
-#define MESH_SETOPERATIONS_H
+~ifndef MESH_SETOPERATIONS_H
+~define MESH_SETOPERATIONS_H
 
-#include <list>
-#include <map>
-#include <set>
+~include <list>
+~include <map>
+~include <set>
 
-#include "MeshKernel.h"
-#include "Elements.h"
-#include "Iterator.h"
-#include "Visitor.h"
+~include "MeshKernel.h"
+~include "Elements.h"
+~include "Iterator.h"
+~include "Visitor.h"
 
-#include <Base/Builder3D.h>
+~include <Base/Builder3D.h>
 
 // forward declarations
 
@@ -235,4 +235,4 @@ private:
 
 } // namespace MeshCore
 
-#endif  // MESH_SETOPERATIONS_H
+~endif  // MESH_SETOPERATIONS_H

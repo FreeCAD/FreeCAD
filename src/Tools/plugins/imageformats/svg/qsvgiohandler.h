@@ -39,12 +39,12 @@
 **
 ****************************************************************************/
 
-#ifndef QSVGIOHANDLER_H
-#define QSVGIOHANDLER_H
+~ifndef QSVGIOHANDLER_H
+~define QSVGIOHANDLER_H
 
-#include <QtGui/qimageiohandler.h>
+~include <QtGui/qimageiohandler.h>
 
-#ifndef QT_NO_SVGRENDERER
+~ifndef QT_NO_SVGRENDERER
 
 QT_BEGIN_NAMESPACE
 
@@ -73,5 +73,5 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // QT_NO_SVGRENDERER
-#endif // QSVGIOHANDLER_H
+~endif // QT_NO_SVGRENDERER
+~endif // QSVGIOHANDLER_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLG_EVALUATE_SETTINGS_H
-#define MESHGUI_DLG_EVALUATE_SETTINGS_H
+~ifndef MESHGUI_DLG_EVALUATE_SETTINGS_H
+~define MESHGUI_DLG_EVALUATE_SETTINGS_H
 
-#include <QDialog>
+~include <QDialog>
 
 namespace MeshGui {
 
@@ -56,4 +56,4 @@ private:
 
 } // namespace MeshGui
 
-#endif // MESHGUI_DLG_EVALUATE_SETTINGS_H
+~endif // MESHGUI_DLG_EVALUATE_SETTINGS_H

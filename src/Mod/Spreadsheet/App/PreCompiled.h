@@ -22,57 +22,57 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEET_PRECOMPILED_H
-#define SPREADSHEET_PRECOMPILED_H
+~ifndef SPREADSHEET_PRECOMPILED_H
+~define SPREADSHEET_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define SpreadsheetExport __declspec(dllexport)
-#else // for Linux
-# define SpreadsheetExport
-#endif
+~ifdef FC_OS_WIN32
+~ define SpreadsheetExport __declspec(dllexport)
+~else // for Linux
+~ define SpreadsheetExport
+~endif
 
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-# pragma warning( disable : 4251 )
-# pragma warning( disable : 4275 )
-# pragma warning( disable : 4503 )
-# pragma warning( disable : 4786 )  // specifier longer then 255 chars
-#endif
+~ifdef _MSC_VER
+~ pragma warning( disable : 4251 )
+~ pragma warning( disable : 4275 )
+~ pragma warning( disable : 4503 )
+~ pragma warning( disable : 4786 )  // specifier longer then 255 chars
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // standard
-#include <iostream>
-#include <assert.h>
-#include <math.h>
+~include <iostream>
+~include <assert.h>
+~include <math.h>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif // SPREADSHEET_PRECOMPILED_H
+~endif // SPREADSHEET_PRECOMPILED_H

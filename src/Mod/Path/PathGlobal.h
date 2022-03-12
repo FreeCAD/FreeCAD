@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+~include <FCGlobal.h>
 
-#ifndef PATH_GLOBAL_H
-#define PATH_GLOBAL_H
+~ifndef PATH_GLOBAL_H
+~define PATH_GLOBAL_H
 
 
 // Path
-#ifndef PathExport
-#ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
-#else
-#  define PathExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+~ifndef PathExport
+~ifdef Path_EXPORTS
+~  define PathExport      FREECAD_DECL_EXPORT
+~else
+~  define PathExport      FREECAD_DECL_IMPORT
+~endif
+~endif
 
 // PathGui
-#ifndef PathGuiExport
-#ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+~ifndef PathGuiExport
+~ifdef PathGui_EXPORTS
+~  define PathGuiExport   FREECAD_DECL_EXPORT
+~else
+~  define PathGuiExport   FREECAD_DECL_IMPORT
+~endif
+~endif
 
-#endif //PATH_GLOBAL_H
+~endif //PATH_GLOBAL_H

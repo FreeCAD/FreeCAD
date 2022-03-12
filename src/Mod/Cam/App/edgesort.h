@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EDGESORT_H
-#define EDGESORT_H
+~ifndef EDGESORT_H
+~define EDGESORT_H
 
-#include <gp_Pnt.hxx>
-#include <TopoDS_Edge.hxx>
-#include <Base/BoundBox.h>
-#include <list>
-#include <map>
+~include <gp_Pnt.hxx>
+~include <TopoDS_Edge.hxx>
+~include <Base/BoundBox.h>
+~include <list>
+~include <map>
 
 struct Edgesort_gp_Pnt_Less
 {
@@ -96,5 +96,5 @@ private:
 
 };
 
-#endif
+~endif
 

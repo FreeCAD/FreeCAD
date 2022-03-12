@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGCREATENEWTHEMEIMP_H
-#define GUI_DIALOG_DLGCREATENEWTHEMEIMP_H
+~ifndef GUI_DIALOG_DLGCREATENEWTHEMEIMP_H
+~define GUI_DIALOG_DLGCREATENEWTHEMEIMP_H
 
-#include <memory>
-#include <QDialog>
-#include <QRegExpValidator>
+~include <memory>
+~include <QDialog>
+~include <QRegExpValidator>
 
-#include "PreferencePackManager.h"
+~include "PreferencePackManager.h"
 
 class QTreeWidgetItem;
 
@@ -79,4 +79,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGCREATENEWTHEMEIMP_H
+~endif // GUI_DIALOG_DLGCREATENEWTHEMEIMP_H

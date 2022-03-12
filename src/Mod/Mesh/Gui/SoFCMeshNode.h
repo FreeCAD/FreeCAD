@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOFC_MESH_NODE_H
-#define MESHGUI_SOFC_MESH_NODE_H
+~ifndef MESHGUI_SOFC_MESH_NODE_H
+~define MESHGUI_SOFC_MESH_NODE_H
 
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/fields/SoMFVec3f.h>
-#include <Inventor/fields/SoMFInt32.h>
+~include <Inventor/nodes/SoNode.h>
+~include <Inventor/nodes/SoShape.h>
+~include <Inventor/fields/SoMFVec3f.h>
+~include <Inventor/fields/SoMFInt32.h>
 
 namespace Mesh {
 class MeshObject;
@@ -106,5 +106,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_SOFC_MESH_NODE_H
+~endif // MESHGUI_SOFC_MESH_NODE_H
 

@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKDIMENSION_H
-#define TASKDIMENSION_H
+~ifndef TASKDIMENSION_H
+~define TASKDIMENSION_H
 
-#include <gp_Vec.hxx>
-#include <gp_Lin.hxx>
+~include <gp_Vec.hxx>
+~include <gp_Lin.hxx>
 
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodekits/SoSeparatorKit.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/engines/SoSubEngine.h>
-#include <Inventor/engines/SoEngine.h>
+~include <Inventor/fields/SoSFVec3f.h>
+~include <Inventor/fields/SoSFMatrix.h>
+~include <Inventor/fields/SoSFString.h>
+~include <Inventor/nodekits/SoSeparatorKit.h>
+~include <Inventor/fields/SoSFColor.h>
+~include <Inventor/fields/SoSFRotation.h>
+~include <Inventor/fields/SoSFFloat.h>
+~include <Inventor/engines/SoSubEngine.h>
+~include <Inventor/engines/SoEngine.h>
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Base/Matrix.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Base/Matrix.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -367,4 +367,4 @@ bool evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapter &vecto
 void goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, const VectorAdapter &vector2Adapter);
 }
 
-#endif // TASKDIMENSION_H
+~endif // TASKDIMENSION_H

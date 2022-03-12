@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawDimHelper_h_
-#define _DrawDimHelper_h_
+~ifndef _DrawDimHelper_h_
+~define _DrawDimHelper_h_
 
-#include <Geom2d_Curve.hxx>
+~include <Geom2d_Curve.hxx>
 
-#include <string>
-#include <Base/Vector3D.h>
+~include <string>
+~include <Base/Vector3D.h>
 
 class gp_Pnt2d;
 
@@ -69,4 +69,4 @@ class TechDrawExport DrawDimHelper {
 };
 
 } //end namespace TechDraw
-#endif
+~endif

@@ -24,12 +24,12 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  * Used under BSD license 2.0 *
 
-#ifndef _QDOMNODEMODEL_H_
-#define _QDOMNODEMODEL_H_
+~ifndef _QDOMNODEMODEL_H_
+~define _QDOMNODEMODEL_H_
 
-#include <QAbstractXmlNodeModel>
-#include <QXmlNamePool>
-#include <QDomDocument>
+~include <QAbstractXmlNodeModel>
+~include <QXmlNamePool>
+~include <QDomDocument>
 
 class TechDrawExport QDomNodeModel: public QAbstractXmlNodeModel
 {
@@ -64,4 +64,4 @@ private:
     bool m_ReadOnly;
 };
 
-#endif // _QDOMNODEMODEL_H_
+~endif // _QDOMNODEMODEL_H_

@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PROGRESSDIALOG_H
-#define GUI_PROGRESSDIALOG_H
+~ifndef GUI_PROGRESSDIALOG_H
+~define GUI_PROGRESSDIALOG_H
 
-#include <Base/Sequencer.h>
-#include <QProgressDialog>
-#ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
-#endif
+~include <Base/Sequencer.h>
+~include <QProgressDialog>
+~ifdef QT_WINEXTRAS_LIB
+~include <QWinTaskbarButton>
+~include <QWinTaskbarProgress>
+~endif
 
 
 namespace Gui {
@@ -105,15 +105,15 @@ protected:
 private:
     SequencerDialog* sequencer;
 
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     /* Set up the taskbar progress in windows */
     void setupTaskBarProgress(void);
     QWinTaskbarProgress* m_taskbarProgress;
     QWinTaskbarButton* m_taskbarButton;
-#endif
+~endif
     friend class SequencerDialog;
 };
 
 } // namespace Gui
 
-#endif // GUI_PROGRESSDIALOG_H
+~endif // GUI_PROGRESSDIALOG_H

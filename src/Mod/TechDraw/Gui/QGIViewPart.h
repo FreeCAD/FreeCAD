@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 
-#include <QObject>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
+~include <QObject>
+~include <QPainter>
+~include <QStyleOptionGraphicsItem>
 
-#include <Mod/TechDraw/App/Geometry.h>
-#include "QGIView.h"
+~include <Mod/TechDraw/App/Geometry.h>
+~include "QGIView.h"
 
 namespace TechDraw {
 class DrawViewPart;
@@ -120,4 +120,4 @@ private:
 
 } // namespace
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVIEWPART_H

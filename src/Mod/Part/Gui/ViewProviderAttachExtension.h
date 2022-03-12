@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERATTACHEXTENSION_H
-#define GUI_VIEWPROVIDERATTACHEXTENSION_H
+~ifndef GUI_VIEWPROVIDERATTACHEXTENSION_H
+~define GUI_VIEWPROVIDERATTACHEXTENSION_H
 
-#include <App/Extension.h>
-#include <Gui/ViewProviderExtensionPython.h>
+~include <App/Extension.h>
+~include <Gui/ViewProviderExtensionPython.h>
 
 namespace PartGui
 {
@@ -52,4 +52,4 @@ typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension> 
 
 } //namespace Part::Gui
 
-#endif // GUI_VIEWPROVIDERATTACHMENTEXTENSION_H
+~endif // GUI_VIEWPROVIDERATTACHMENTEXTENSION_H

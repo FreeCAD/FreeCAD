@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef MESH_KDTREE_H
-#define MESH_KDTREE_H
+~ifndef MESH_KDTREE_H
+~define MESH_KDTREE_H
 
-#include "Elements.h"
+~include "Elements.h"
 
 namespace MeshCore
 {
@@ -62,4 +62,4 @@ private:
 } // namespace MeshCore
 
 
-#endif  // MESH_KDTREE_H 
+~endif  // MESH_KDTREE_H 

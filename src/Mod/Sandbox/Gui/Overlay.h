@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOXGUI_OVERLAY_H
-#define SANDBOXGUI_OVERLAY_H
+~ifndef SANDBOXGUI_OVERLAY_H
+~define SANDBOXGUI_OVERLAY_H
 
-#include <QtOpenGL.h>
-#include <Gui/MouseSelection.h>
-#include <QColor>
-#include <QPoint>
-#include <QList>
+~include <QtOpenGL.h>
+~include <Gui/MouseSelection.h>
+~include <QColor>
+~include <QPoint>
+~include <QList>
 
 namespace SandboxGui {
 class DrawingPlane : public Gui::BaseMouseSelection
@@ -60,4 +60,4 @@ private:
 
 } // SandboxGui
 
-#endif // SANDBOXGUI_OVERLAY_H
+~endif // SANDBOXGUI_OVERLAY_H

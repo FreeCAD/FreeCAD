@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PYTHONCONSOLE_H
-#define GUI_PYTHONCONSOLE_H
+~ifndef GUI_PYTHONCONSOLE_H
+~define GUI_PYTHONCONSOLE_H
 
-#include <Python.h>
-#include "PythonEditor.h"
+~include <Python.h>
+~include "PythonEditor.h"
 
 
 class QPlainTextEdit;
@@ -185,4 +185,4 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_PYTHONCONSOLE_H
+~endif // GUI_PYTHONCONSOLE_H

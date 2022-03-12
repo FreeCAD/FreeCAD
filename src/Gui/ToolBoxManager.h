@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TOOLBOXMANAGER_H
-#define GUI_TOOLBOXMANAGER_H
+~ifndef GUI_TOOLBOXMANAGER_H
+~define GUI_TOOLBOXMANAGER_H
 
 namespace Gui {
 
@@ -62,4 +62,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_TOOLBOXMANAGER_H
+~endif // GUI_TOOLBOXMANAGER_H

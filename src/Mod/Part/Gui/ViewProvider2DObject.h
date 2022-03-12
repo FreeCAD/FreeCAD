@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDER2DOBJECT_H
-#define PARTGUI_VIEWPROVIDER2DOBJECT_H
+~ifndef PARTGUI_VIEWPROVIDER2DOBJECT_H
+~define PARTGUI_VIEWPROVIDER2DOBJECT_H
 
-#include "ViewProvider.h"
-#include <App/PropertyUnits.h>
-#include <Gui/ViewProviderPythonFeature.h>
+~include "ViewProvider.h"
+~include <App/PropertyUnits.h>
+~include <Gui/ViewProviderPythonFeature.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -103,5 +103,5 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObje
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDER2DOBJECT_H
+~endif // PARTGUI_VIEWPROVIDER2DOBJECT_H
 

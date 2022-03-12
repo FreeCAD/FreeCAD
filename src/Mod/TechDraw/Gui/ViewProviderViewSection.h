@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
-#define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
+~ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
+~define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
 
-#include "ViewProviderViewPart.h"
+~include "ViewProviderViewPart.h"
 
 namespace TechDrawGui {
 
@@ -74,4 +74,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
+~endif // TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef WIZARD_H
-#define WIZARD_H
+~ifndef WIZARD_H
+~define WIZARD_H
 
 
-#include <QtDesigner/QDesignerContainerExtension>
-#include <QtDesigner/QExtensionFactory>
-#include <QDialog>
+~include <QtDesigner/QDesignerContainerExtension>
+~include <QtDesigner/QExtensionFactory>
+~include <QDialog>
 
 class QLabel;
 class QFrame;
@@ -116,4 +116,4 @@ protected:
     QObject *createExtension(QObject *object, const QString &iid, QObject *parent) const;
 };
 
-#endif
+~endif

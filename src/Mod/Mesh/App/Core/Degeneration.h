@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef MESH_DEGENERATION_H
-#define MESH_DEGENERATION_H
+~ifndef MESH_DEGENERATION_H
+~define MESH_DEGENERATION_H
 
-#include <bitset>
-#include <string>
-#include <vector>
+~include <bitset>
+~include <string>
+~include <vector>
 
-#include "Evaluation.h"
-#include "Definitions.h"
+~include "Evaluation.h"
+~include "Definitions.h"
 
 namespace MeshCore {
 
@@ -807,4 +807,4 @@ private:
 
 } // namespace MeshCore
 
-#endif // MESH_DEGENERATION_H
+~endif // MESH_DEGENERATION_H

@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4POLYNOMIAL1_H
-#define WM4POLYNOMIAL1_H
+~ifndef WM4POLYNOMIAL1_H
+~define WM4POLYNOMIAL1_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Math.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Math.h"
 
 namespace Wm4
 {
@@ -96,7 +96,7 @@ Polynomial1<Real> operator* (Real fScalar, const Polynomial1<Real>& rkPoly);
 
 } // namespace Wm4
 
-#include "Wm4Polynomial1.inl"
+~include "Wm4Polynomial1.inl"
 
 namespace Wm4
 {
@@ -104,4 +104,4 @@ typedef Polynomial1<float> Polynomial1f;
 typedef Polynomial1<double> Polynomial1d;
 }
 
-#endif
+~endif

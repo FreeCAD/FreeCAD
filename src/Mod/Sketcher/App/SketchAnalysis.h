@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_SKETCHANALYSIS_H
-#define SKETCHER_SKETCHANALYSIS_H
+~ifndef SKETCHER_SKETCHANALYSIS_H
+~define SKETCHER_SKETCHANALYSIS_H
 
-#include <vector>
-#include <memory>
-#include <Base/Vector3D.h>
-#include "Analyse.h"
-#include "SketchObject.h"
+~include <vector>
+~include <memory>
+~include <Base/Vector3D.h>
+~include "Analyse.h"
+~include "SketchObject.h"
 
 namespace Sketcher {
 
@@ -150,4 +150,4 @@ protected:
 
 } //namespace Sketcher
 
-#endif // SKETCHER_SKETCHANALYSIS_H
+~endif // SKETCHER_SKETCHANALYSIS_H

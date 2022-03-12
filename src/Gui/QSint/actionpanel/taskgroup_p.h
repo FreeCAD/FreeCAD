@@ -5,14 +5,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKGROUP_P_H
-#define TASKGROUP_P_H
+~ifndef TASKGROUP_P_H
+~define TASKGROUP_P_H
 
-#include "actionpanelscheme.h"
-#include "actionlabel.h"
+~include "actionpanelscheme.h"
+~include "actionlabel.h"
 
-#include <QFrame>
-#include <QBoxLayout>
+~include <QFrame>
+~include <QBoxLayout>
 
 
 namespace QSint
@@ -52,4 +52,4 @@ protected:
 
 }
 
-#endif // TASKGROUP_P_H
+~endif // TASKGROUP_P_H

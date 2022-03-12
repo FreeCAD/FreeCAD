@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef FeatureMeshCurvature_H
-#define FeatureMeshCurvature_H
+~ifndef FeatureMeshCurvature_H
+~define FeatureMeshCurvature_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
-#include "Mesh.h"
-#include "MeshProperties.h"
+~include "Mesh.h"
+~include "MeshProperties.h"
 
 namespace Mesh
 {
@@ -62,4 +62,4 @@ public:
 
 }
 
-#endif // Curvature_H 
+~endif // Curvature_H 

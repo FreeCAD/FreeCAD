@@ -25,24 +25,24 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //**************************************************************************
 
-#ifndef TECHDRAW_EDGEWALKER_H
-#define TECHDRAW_EDGEWALKER_H
+~ifndef TECHDRAW_EDGEWALKER_H
+~define TECHDRAW_EDGEWALKER_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <vector>
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/properties.hpp>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <boost/graph/boyer_myrvold_planar_test.hpp>
-#include <boost/graph/is_kuratowski_subgraph.hpp>
-#include <boost/graph/planar_face_traversal.hpp>
-#include <boost/ref.hpp>
+~include <vector>
+~include <boost_graph_adjacency_list.hpp>
+~include <boost/graph/properties.hpp>
+~include <boost/graph/graph_traits.hpp>
+~include <boost/property_map/property_map.hpp>
+~include <boost/graph/boyer_myrvold_planar_test.hpp>
+~include <boost/graph/is_kuratowski_subgraph.hpp>
+~include <boost/graph/planar_face_traversal.hpp>
+~include <boost/ref.hpp>
 
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Wire.hxx>
 
 namespace TechDraw {
 //using namespace boost;
@@ -195,4 +195,4 @@ private:
 
 }  //end namespace TechDraw
 
-#endif //TECHDRAW_EDGEWALKER_H
+~endif //TECHDRAW_EDGEWALKER_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGINPUTDIALOGIMP_H
-#define GUI_DIALOG_DLGINPUTDIALOGIMP_H
+~ifndef GUI_DIALOG_DLGINPUTDIALOGIMP_H
+~define GUI_DIALOG_DLGINPUTDIALOGIMP_H
 
-#include <memory>
-#include <QDialog>
+~include <memory>
+~include <QDialog>
 
 class QSpinBox;
 class QDoubleSpinBox;
@@ -78,4 +78,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGINPUTDIALOGIMP_H
+~endif // GUI_DIALOG_DLGINPUTDIALOGIMP_H

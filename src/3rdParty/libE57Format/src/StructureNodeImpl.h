@@ -25,9 +25,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include "NodeImpl.h"
+~include "NodeImpl.h"
 
 namespace e57
 {
@@ -58,9 +58,9 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
 
    protected:
       friend class CompressedVectorReaderImpl;

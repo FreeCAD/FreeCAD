@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MDIVIEW_H
-#define GUI_MDIVIEW_H
+~ifndef GUI_MDIVIEW_H
+~define GUI_MDIVIEW_H
 
-#include <boost_signals2.hpp>
-#include <QMainWindow>
-#include <Gui/ActiveObjectList.h>
-#include <Gui/View.h>
+~include <boost_signals2.hpp>
+~include <QMainWindow>
+~include <Gui/ActiveObjectList.h>
+~include <Gui/View.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -186,4 +186,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_MDIVIEW_H
+~endif // GUI_MDIVIEW_H

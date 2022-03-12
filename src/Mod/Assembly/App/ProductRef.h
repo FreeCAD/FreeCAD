@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef ProductRef_ProductRef_H
-#define ProductRef_ProductRef_H
+~ifndef ProductRef_ProductRef_H
+~define ProductRef_ProductRef_H
 
-#include <App/PropertyStandard.h>
+~include <App/PropertyStandard.h>
 
-#include "Item.h"
-#include "Solver/Solver.h"
+~include "Item.h"
+~include "Solver/Solver.h"
 
 namespace Assembly
 {
@@ -61,4 +61,4 @@ public:
 } //namespace Assembly
 
 
-#endif // Assembly_ProductRef_H
+~endif // Assembly_ProductRef_H

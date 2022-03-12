@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKFEATUREPARAMETERS_H_NAHKE2YZ
-#define TASKFEATUREPARAMETERS_H_NAHKE2YZ
+~ifndef TASKFEATUREPARAMETERS_H_NAHKE2YZ
+~define TASKFEATUREPARAMETERS_H_NAHKE2YZ
 
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/DocumentObserver.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/DocumentObserver.h>
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 namespace PartDesignGui {
 
@@ -89,4 +89,4 @@ protected:
 } //namespace PartDesignGui
 
 
-#endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */
+~endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */

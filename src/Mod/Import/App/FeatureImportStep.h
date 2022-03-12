@@ -22,11 +22,11 @@
 
 
 
-#ifndef __FeatureImportStep_H__
-#define __FeatureImportStep_H__
+~ifndef __FeatureImportStep_H__
+~define __FeatureImportStep_H__
 
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Import
 {
@@ -53,4 +53,4 @@ public:
 
 
 
-#endif // __FeatureImportStep_H__
+~endif // __FeatureImportStep_H__

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef REEN_REGIONGROWING_H
-#define REEN_REGIONGROWING_H
+~ifndef REEN_REGIONGROWING_H
+~define REEN_REGIONGROWING_H
 
-#include <Base/Vector3D.h>
-#include <vector>
-#include <list>
+~include <Base/Vector3D.h>
+~include <vector>
+~include <list>
 
 namespace Points {class PointKernel;}
 
@@ -52,5 +52,5 @@ private:
 
 } // namespace Reen
 
-#endif // REEN_REGIONGROWING_H
+~endif // REEN_REGIONGROWING_H
 

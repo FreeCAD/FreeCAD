@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETOBSERVER_H
-#define SHEETOBSERVER_H
+~ifndef SHEETOBSERVER_H
+~define SHEETOBSERVER_H
 
-#include <App/DocumentObserver.h>
+~include <App/DocumentObserver.h>
 
 namespace Spreadsheet {
 
@@ -48,4 +48,4 @@ private:
 
 }
 
-#endif // SHEETOBSERVER_H
+~endif // SHEETOBSERVER_H

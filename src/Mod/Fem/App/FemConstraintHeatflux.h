@@ -24,10 +24,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTHEATFLUX_H
-#define FEM_CONSTRAINTHEATFLUX_H
+~ifndef FEM_CONSTRAINTHEATFLUX_H
+~define FEM_CONSTRAINTHEATFLUX_H
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem {
 
@@ -59,4 +59,4 @@ protected:
 
 }
 
-#endif // FEM_CONSTRAINTHEATFLUX_H
+~endif // FEM_CONSTRAINTHEATFLUX_H

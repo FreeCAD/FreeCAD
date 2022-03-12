@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGUNDOREDO_H
-#define GUI_DIALOG_DLGUNDOREDO_H
+~ifndef GUI_DIALOG_DLGUNDOREDO_H
+~define GUI_DIALOG_DLGUNDOREDO_H
 
-#include <QMenu>
+~include <QMenu>
 
 namespace Gui {
 namespace Dialog {
@@ -64,4 +64,4 @@ protected Q_SLOTS:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGUNDOREDO_H
+~endif // GUI_DIALOG_DLGUNDOREDO_H

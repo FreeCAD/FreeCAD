@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef Assembly_ConstraintGroup_H
-#define Assembly_ConstraintGroup_H
+~ifndef Assembly_ConstraintGroup_H
+~define Assembly_ConstraintGroup_H
 
-#include <App/PropertyLinks.h>
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
+~include <App/PropertyLinks.h>
+~include <App/DocumentObject.h>
+~include <App/FeaturePython.h>
 
-#include "Constraint.h"
-#include "Solver/Solver.h"
+~include "Constraint.h"
+~include "Solver/Solver.h"
 
 namespace Assembly
 {
@@ -62,4 +62,4 @@ public:
 } //namespace Assembly
 
 
-#endif // Assembly_ConstraintGroup_H
+~endif // Assembly_ConstraintGroup_H

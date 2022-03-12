@@ -25,15 +25,15 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include <limits>
-#include <stack>
+~include <limits>
+~include <stack>
 
-#include <xercesc/sax/InputSource.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
+~include <xercesc/sax/InputSource.hpp>
+~include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "Common.h"
+~include "Common.h"
 
 using namespace XERCES_CPP_NAMESPACE;
 

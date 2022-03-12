@@ -15,13 +15,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ImageView_H
-#define ImageView_H
+~ifndef ImageView_H
+~define ImageView_H
 
-#include <QMouseEvent>
-#include <Gui/MDIView.h>
-#include <Mod/Image/Gui/OpenGLImageBox.h>
-#include <Mod/Image/ImageGlobal.h>
+~include <QMouseEvent>
+~include <Gui/MDIView.h>
+~include <Mod/Image/Gui/OpenGLImageBox.h>
+~include <Mod/Image/ImageGlobal.h>
 
 class QSlider;
 class QAction;
@@ -134,4 +134,4 @@ protected:
 
 } // namespace ImageViewGui
 
-#endif // ImageView_H
+~endif // ImageView_H

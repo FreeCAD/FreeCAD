@@ -26,11 +26,11 @@
  ********************************/
 
 
-#ifndef _MRICHTEXTEDIT_H_
-#define _MRICHTEXTEDIT_H_
+~ifndef _MRICHTEXTEDIT_H_
+~define _MRICHTEXTEDIT_H_
 
-#include <QPointer>
-#include "ui_mrichtextedit.h"
+~include <QPointer>
+~include "ui_mrichtextedit.h"
 
 /**
  * @brief A simple rich-text editor
@@ -117,4 +117,4 @@ Q_SIGNALS:
     QString m_defFont;
 };
 
-#endif
+~endif

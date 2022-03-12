@@ -1,5 +1,5 @@
-#ifndef QUARTER_SIGNALTHREAD_H
-#define QUARTER_SIGNALTHREAD_H
+~ifndef QUARTER_SIGNALTHREAD_H
+~define QUARTER_SIGNALTHREAD_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,9 +33,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QMutex>
-#include <QThread>
-#include <QWaitCondition>
+~include <QMutex>
+~include <QThread>
+~include <QWaitCondition>
 
 
 class SoQtP;
@@ -64,4 +64,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_SIGNALTHREAD_H
+~endif // QUARTER_SIGNALTHREAD_H

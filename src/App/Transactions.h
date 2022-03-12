@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTION_H
-#define APP_TRANSACTION_H
+~ifndef APP_TRANSACTION_H
+~define APP_TRANSACTION_H
 
-#include <unordered_map>
-#include <Base/Factory.h>
-#include <Base/Persistence.h>
-#include <App/PropertyContainer.h>
+~include <unordered_map>
+~include <Base/Factory.h>
+~include <Base/Persistence.h>
+~include <App/PropertyContainer.h>
 
 namespace App
 {
@@ -194,5 +194,5 @@ public:
 
 } //namespace App
 
-#endif // APP_TRANSACTION_H
+~endif // APP_TRANSACTION_H
 

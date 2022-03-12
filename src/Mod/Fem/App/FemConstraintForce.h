@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTFORCE_H
-#define FEM_CONSTRAINTFORCE_H
+~ifndef FEM_CONSTRAINTFORCE_H
+~define FEM_CONSTRAINTFORCE_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem
 {
@@ -67,4 +67,4 @@ private:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTFORCE_H
+~endif // FEM_CONSTRAINTFORCE_H

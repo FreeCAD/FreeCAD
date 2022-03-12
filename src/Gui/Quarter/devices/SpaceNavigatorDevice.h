@@ -1,5 +1,5 @@
-#ifndef QUARTER_SPACENAVIGATORDEVICE_H
-#define QUARTER_SPACENAVIGATORDEVICE_H
+~ifndef QUARTER_SPACENAVIGATORDEVICE_H
+~define QUARTER_SPACENAVIGATORDEVICE_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Quarter/devices/InputDevice.h>
+~include <Quarter/devices/InputDevice.h>
 
 class SoEvent;
 class QEvent;
@@ -53,4 +53,4 @@ class QUARTER_DLL_API SpaceNavigatorDevice : public InputDevice {
 };
 
 }}}
-#endif // !QUARTER_SPACENAVIGATORDEVICE_H
+~endif // !QUARTER_SPACENAVIGATORDEVICE_H

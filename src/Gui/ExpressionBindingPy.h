@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONBINDINGPY_H
-#define EXPRESSIONBINDINGPY_H
+~ifndef EXPRESSIONBINDINGPY_H
+~define EXPRESSIONBINDINGPY_H
 
-#include <CXX/Extensions.hxx>
+~include <CXX/Extensions.hxx>
 
 namespace Gui {
 class ExpressionBinding;
@@ -54,4 +54,4 @@ private:
 
 }
 
-#endif // EXPRESSIONBINDING_H
+~endif // EXPRESSIONBINDING_H

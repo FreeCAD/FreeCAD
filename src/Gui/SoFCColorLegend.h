@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCCOLORLEGEND_H
-#define GUI_SOFCCOLORLEGEND_H
+~ifndef GUI_SOFCCOLORLEGEND_H
+~define GUI_SOFCCOLORLEGEND_H
 
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/SbBox2f.h>
-#include "SoFCColorBar.h"
-#include <App/ColorModel.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/SbBox2f.h>
+~include "SoFCColorBar.h"
+~include <App/ColorModel.h>
 
 class SoCoordinate3;
 class SoMFString;
@@ -94,5 +94,5 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SOFCCOLORLEGEND_H
+~endif // GUI_SOFCCOLORLEGEND_H
 

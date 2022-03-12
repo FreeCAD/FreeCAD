@@ -22,17 +22,17 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
-#define GUI_TASKVIEW_TaskFemConstraintBearing_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
+~define GUI_TASKVIEW_TaskFemConstraintBearing_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include "TaskFemConstraint.h"
-#include "ViewProviderFemConstraintBearing.h"
+~include "TaskFemConstraint.h"
+~include "ViewProviderFemConstraintBearing.h"
 
-#include <QKeyEvent>
+~include <QKeyEvent>
 
 class Ui_TaskFemConstraintBearing;
 
@@ -93,4 +93,4 @@ public:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintBearing_H
+~endif // GUI_TASKVIEW_TaskFemConstraintBearing_H

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
-#define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+~ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+~define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
 
-#include <vector>
+~include <vector>
 
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/actions/SoRayPickAction.h>
+~include <Inventor/SbVec2f.h>
+~include <Inventor/SbVec3f.h>
+~include <Inventor/actions/SoRayPickAction.h>
 
 
 namespace Base {
@@ -251,7 +251,7 @@ inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(const Vie
 } // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+~endif // SKETCHERGUI_ViewProviderSketchCoinAttorney_H
 
 
 

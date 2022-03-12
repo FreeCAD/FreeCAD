@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
+~ifndef PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
+~define PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
 
-#include "ViewProviderPrimitive.h"
+~include "ViewProviderPrimitive.h"
 
 namespace PartGui {
 
@@ -59,5 +59,5 @@ public:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
+~endif // PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
 

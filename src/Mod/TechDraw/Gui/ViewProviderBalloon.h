@@ -23,13 +23,13 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
-#define DRAWINGGUI_VIEWPROVIDERBALLOON_H
+~ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
+~define DRAWINGGUI_VIEWPROVIDERBALLOON_H
 
-#include <App/PropertyUnits.h>
+~include <App/PropertyUnits.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include "ViewProviderDrawingView.h"
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
 
 
 namespace TechDrawGui {
@@ -73,4 +73,4 @@ protected:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERBALLOON_H
+~endif // DRAWINGGUI_VIEWPROVIDERBALLOON_H

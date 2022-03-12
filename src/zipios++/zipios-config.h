@@ -1,59 +1,59 @@
-#ifndef ZIPIOS_CONFIG_H
-#define ZIPIOS_CONFIG_H
+~ifndef ZIPIOS_CONFIG_H
+~define ZIPIOS_CONFIG_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 
 // This is fine for VC++ 5.0 sp 3
-#define HAVE_STD_IOSTREAM
-#define USE_STD_IOSTREAM
+~define HAVE_STD_IOSTREAM
+~define USE_STD_IOSTREAM
 
 // Visual C++
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 
 // Disable class-browser warning about truncated template-names
-#pragma warning( disable : 4786 )
+~pragma warning( disable : 4786 )
 
-#endif //_MSC_VER
+~endif //_MSC_VER
 
 // Needed for FilePath
-#ifndef S_ISREG
-#define S_ISREG(mode)	(((mode) & _S_IFREG) == _S_IFREG)
-#endif
-#ifndef S_ISDIR
-#define S_ISDIR(mode)	(((mode) & _S_IFDIR) == _S_IFDIR)
-#endif
-#ifndef S_ISCHR
-#define S_ISCHR(mode)	(((mode) & _S_IFCHR) == _S_IFCHR)
-#endif
-#ifndef S_ISBLK
-#define S_ISBLK(mode)	0
-#endif
-#ifndef S_ISSOCK
-#define S_ISSOCK(mode)	0
-#endif
-#ifndef S_ISFIFO
-#define S_ISFIFO(mode)	(((mode) & _S_IFIFO) == _S_IFIFO)
-#endif
+~ifndef S_ISREG
+~define S_ISREG(mode)	(((mode) & _S_IFREG) == _S_IFREG)
+~endif
+~ifndef S_ISDIR
+~define S_ISDIR(mode)	(((mode) & _S_IFDIR) == _S_IFDIR)
+~endif
+~ifndef S_ISCHR
+~define S_ISCHR(mode)	(((mode) & _S_IFCHR) == _S_IFCHR)
+~endif
+~ifndef S_ISBLK
+~define S_ISBLK(mode)	0
+~endif
+~ifndef S_ISSOCK
+~define S_ISSOCK(mode)	0
+~endif
+~ifndef S_ISFIFO
+~define S_ISFIFO(mode)	(((mode) & _S_IFIFO) == _S_IFIFO)
+~endif
 
 
 // Convenient place to include any debugging-headers
-#include <assert.h>
+~include <assert.h>
 
-#else // gcc and others
-#ifndef S_ISSOCK
-#define S_ISSOCK(mode)	0
-#endif
-#include <stdint.h>
-# if HAVE_CONFIG_H
-#	  include <config.h>
-# endif // HAVE_CONFIG_H
+~else // gcc and others
+~ifndef S_ISSOCK
+~define S_ISSOCK(mode)	0
+~endif
+~include <stdint.h>
+~ if HAVE_CONFIG_H
+~	  include <config.h>
+~ endif // HAVE_CONFIG_H
 
-#endif //_MSC_VER
+~endif //_MSC_VER
 
-#endif // ZIPIOS_CONFIG_H
+~endif // ZIPIOS_CONFIG_H
 
 /** \file
     Configuration header file that allows compatibility with win32 compilers

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTIONALOBJECT_H
-#define APP_TRANSACTIONALOBJECT_H
+~ifndef APP_TRANSACTIONALOBJECT_H
+~define APP_TRANSACTIONALOBJECT_H
 
-#include <App/ExtensionContainer.h>
+~include <App/ExtensionContainer.h>
 
 namespace App
 {
@@ -51,4 +51,4 @@ protected:
 } //namespace App
 
 
-#endif // APP_TRANSACTIONALOBJECT_H
+~endif // APP_TRANSACTIONALOBJECT_H

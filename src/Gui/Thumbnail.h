@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_THUMBNAIL_H
-#define GUI_THUMBNAIL_H
+~ifndef GUI_THUMBNAIL_H
+~define GUI_THUMBNAIL_H
 
-#include <Base/Persistence.h>
-#include <QUrl>
+~include <Base/Persistence.h>
+~include <QUrl>
 
 class QImage;
 
@@ -63,4 +63,4 @@ private:
 
 }
 
-#endif // GUI_THUMBNAIL_H
+~endif // GUI_THUMBNAIL_H

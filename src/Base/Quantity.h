@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef BASE_Quantity_H
-#define BASE_Quantity_H
+~ifndef BASE_Quantity_H
+~define BASE_Quantity_H
 
-#include "Unit.h"
-#include <QString>
+~include "Unit.h"
+~include <QString>
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
+~ifndef  DOUBLE_MAX
+~ define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+~endif
+~ifndef  DOUBLE_MIN
+~ define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+~endif
 
 namespace Base {
 class UnitsSchema;
@@ -337,4 +337,4 @@ protected:
 
 } // namespace Base
 
-#endif // BASE_Quantity_H
+~endif // BASE_Quantity_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskTetParameter_H
-#define FEMGUI_TaskTetParameter_H
+~ifndef FEMGUI_TaskTetParameter_H
+~define FEMGUI_TaskTetParameter_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
 
 class Ui_TaskTetParameter;
@@ -80,4 +80,4 @@ private:
 
 } //namespace FemGui
 
-#endif // FEMGUI_TaskTetParameter_H
+~endif // FEMGUI_TaskTetParameter_H

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef REVERSEENGINEERINGGUI_SEGMENTATION_H
-#define REVERSEENGINEERINGGUI_SEGMENTATION_H
+~ifndef REVERSEENGINEERINGGUI_SEGMENTATION_H
+~define REVERSEENGINEERINGGUI_SEGMENTATION_H
 
-#include <QWidget>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <App/DocumentObserver.h>
-#include <memory>
+~include <QWidget>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <App/DocumentObserver.h>
+~include <memory>
 
 // forward declarations
 namespace Mesh { class Feature; }
@@ -75,4 +75,4 @@ private:
 
 }
 
-#endif // REVERSEENGINEERINGGUI_SEGMENTATION_H
+~endif // REVERSEENGINEERINGGUI_SEGMENTATION_H

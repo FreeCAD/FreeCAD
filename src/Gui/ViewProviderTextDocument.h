@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ViewProviderTextDocument_H
-#define GUI_ViewProviderTextDocument_H
+~ifndef GUI_ViewProviderTextDocument_H
+~define GUI_ViewProviderTextDocument_H
 
-#include <QPointer>
-#include "ViewProviderDocumentObject.h"
+~include <QPointer>
+~include "ViewProviderDocumentObject.h"
 
 
 class QPlainTextEdit;
@@ -60,5 +60,5 @@ private:
 
 }
 
-#endif
+~endif
 

@@ -22,10 +22,10 @@
 
 //! LineGroup - Classes related to processing LineGroup definition CSV files
 
-#ifndef _TechDraw_LINEGROUP_H_
-#define _TechDraw_LINEGROUP_H_
+~ifndef _TechDraw_LINEGROUP_H_
+~define _TechDraw_LINEGROUP_H_
 
-#include <string>
+~include <string>
 
 namespace TechDraw
 {
@@ -68,4 +68,4 @@ protected:
 };
 
 }
-#endif
+~endif

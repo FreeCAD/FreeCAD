@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCSELECTION_H
-#define GUI_SOFCSELECTION_H
+~ifndef GUI_SOFCSELECTION_H
+~define GUI_SOFCSELECTION_H
 
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# ifdef FC_OS_WIN32
-#  ifndef NOMINMAX
-#  define NOMINMAX
-#  endif
-#  include <windows.h>
-# endif
-# include <GL/gl.h>
-# endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ ifdef FC_OS_WIN32
+~  ifndef NOMINMAX
+~  define NOMINMAX
+~  endif
+~  include <windows.h>
+~ endif
+~ include <GL/gl.h>
+~ endif
 
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoLightModel.h>
+~include <Inventor/fields/SoSFBool.h>
+~include <Inventor/fields/SoSFColor.h>
+~include <Inventor/fields/SoSFEnum.h>
+~include <Inventor/fields/SoSFString.h>
+~include <Inventor/nodes/SoGroup.h>
+~include <Inventor/nodes/SoLightModel.h>
 
-#include "SoFCSelectionContext.h"
+~include "SoFCSelectionContext.h"
 
 class SoFullPath;
 class SoPickedPoint;
@@ -138,4 +138,4 @@ private:
 
 } // namespace Gui
 
-#endif // !GUI_SOFCSELECTION_H
+~endif // !GUI_SOFCSELECTION_H

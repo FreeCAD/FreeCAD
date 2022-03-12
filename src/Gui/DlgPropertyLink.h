@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPROPERTYLINK_H
-#define GUI_DIALOG_DLGPROPERTYLINK_H
+~ifndef GUI_DIALOG_DLGPROPERTYLINK_H
+~define GUI_DIALOG_DLGPROPERTYLINK_H
 
-#include <QDialog>
-#include <QAbstractItemView>
-#include <QTimer>
-#include <QPushButton>
-#include <QPointer>
+~include <QDialog>
+~include <QAbstractItemView>
+~include <QTimer>
+~include <QPushButton>
+~include <QPointer>
 
-#define FC_XLINK_VALUE_INDEX 5
+~define FC_XLINK_VALUE_INDEX 5
 
 namespace Gui { namespace Dialog {
 
@@ -126,5 +126,5 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_DIALOG_DLGPROPERTYLINK_H
+~endif // GUI_DIALOG_DLGPROPERTYLINK_H
 

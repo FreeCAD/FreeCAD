@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATURE_H
-#define PART_FEATURE_H
+~ifndef PART_FEATURE_H
+~define PART_FEATURE_H
 
-#include "TopoShape.h"
-#include "PropertyTopoShape.h"
-#include <App/GeoFeature.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyGeo.h>
+~include "TopoShape.h"
+~include "PropertyTopoShape.h"
+~include <App/GeoFeature.h>
+~include <App/FeaturePython.h>
+~include <App/PropertyGeo.h>
 // includes for findAllFacesCutBy()
-#include <TopoDS_Face.hxx>
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <Mod/Part/PartGlobal.h>
+~include <TopoDS_Face.hxx>
+~include <BRep_Builder.hxx>
+~include <TopoDS_Compound.hxx>
+~include <Mod/Part/PartGlobal.h>
 
 class gp_Dir;
 class BRepBuilderAPI_MakeShape;
@@ -191,5 +191,5 @@ bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
 } //namespace Part
 
 
-#endif // PART_FEATURE_H
+~endif // PART_FEATURE_H
 

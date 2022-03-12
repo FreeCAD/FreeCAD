@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
-#define BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
+~ifndef BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
+~define BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
 
-#include <QString>
-#include "UnitsSchema.h"
+~include <QString>
+~include "UnitsSchema.h"
 
 
 namespace Base {
@@ -48,4 +48,4 @@ public:
 } // namespace Base
 
 
-#endif // BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H
+~endif // BASE_UNITSSCHEMAFEMMLLIMETERNEWTON_H

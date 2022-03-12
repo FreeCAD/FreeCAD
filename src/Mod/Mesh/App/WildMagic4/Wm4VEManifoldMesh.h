@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4VEMANIFOLDMESH_H
-#define WM4VEMANIFOLDMESH_H
+~ifndef WM4VEMANIFOLDMESH_H
+~define WM4VEMANIFOLDMESH_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -103,6 +103,6 @@ protected:
 
 }
 
-#include "Wm4VEManifoldMesh.inl"
+~include "Wm4VEManifoldMesh.inl"
 
-#endif
+~endif

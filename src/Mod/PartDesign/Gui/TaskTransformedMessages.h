@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedMessages_H
-#define GUI_TASKVIEW_TaskTransformedMessages_H
+~ifndef GUI_TASKVIEW_TaskTransformedMessages_H
+~define GUI_TASKVIEW_TaskTransformedMessages_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
 class Ui_TaskTransformedMessages;
 typedef boost::signals2::connection Connection;
@@ -60,4 +60,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskTransformedMessages_H
+~endif // GUI_TASKVIEW_TaskTransformedMessages_H

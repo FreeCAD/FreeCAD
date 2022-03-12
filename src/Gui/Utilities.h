@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_UTILITIES_H
-#define GUI_UTILITIES_H
+~ifndef GUI_UTILITIES_H
+~define GUI_UTILITIES_H
 
-#include <vector>
-#include <App/Material.h>
-#include <Base/Converter.h>
-#include <Base/ViewProj.h>
-#include <Inventor/SbColor.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbViewVolume.h>
+~include <vector>
+~include <App/Material.h>
+~include <Base/Converter.h>
+~include <Base/ViewProj.h>
+~include <Inventor/SbColor.h>
+~include <Inventor/SbMatrix.h>
+~include <Inventor/SbRotation.h>
+~include <Inventor/SbVec2f.h>
+~include <Inventor/SbViewVolume.h>
 
 
 class SbViewVolume;
@@ -156,4 +156,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_UTILITIES_H
+~endif // GUI_UTILITIES_H

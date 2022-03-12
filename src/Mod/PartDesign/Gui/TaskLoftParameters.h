@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskLoftParameters_H
-#define GUI_TASKVIEW_TaskLoftParameters_H
+~ifndef GUI_TASKVIEW_TaskLoftParameters_H
+~define GUI_TASKVIEW_TaskLoftParameters_H
 
-#include <Gui/Selection.h>
+~include <Gui/Selection.h>
 
-#include "TaskSketchBasedParameters.h"
-#include "ViewProviderLoft.h"
+~include "TaskSketchBasedParameters.h"
+~include "ViewProviderLoft.h"
 
 class Ui_TaskLoftParameters;
 class QListWidget;
@@ -101,4 +101,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

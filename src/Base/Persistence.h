@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_PERSISTENCE_H
-#define APP_PERSISTENCE_H
+~ifndef APP_PERSISTENCE_H
+~define APP_PERSISTENCE_H
 
-#include "BaseClass.h"
+~include "BaseClass.h"
 
 namespace Base
 {
@@ -162,4 +162,4 @@ private:
 } //namespace Base
 
 
-#endif // APP_PERSISTENCE_H
+~endif // APP_PERSISTENCE_H

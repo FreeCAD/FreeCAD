@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTileWeld_h_
-#define _TechDraw_DrawTileWeld_h_
+~ifndef _TechDraw_DrawTileWeld_h_
+~define _TechDraw_DrawTileWeld_h_
 
-#include <QString>
+~include <QString>
 
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyStandard.h>
+~include <App/DocumentObject.h>
+~include <App/FeaturePython.h>
+~include <App/PropertyFile.h>
+~include <App/PropertyStandard.h>
 
-#include "DrawTile.h"
+~include "DrawTile.h"
 
 namespace TechDraw
 {
@@ -75,4 +75,4 @@ private:
 typedef App::FeaturePythonT<DrawTileWeld> DrawTileWeldPython;
 
 } //namespace TechDraw
-#endif
+~endif

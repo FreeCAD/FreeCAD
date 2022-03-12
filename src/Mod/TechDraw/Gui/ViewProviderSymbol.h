@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERSYMBOL_H
-#define DRAWINGGUI_VIEWPROVIDERSYMBOL_H
+~ifndef DRAWINGGUI_VIEWPROVIDERSYMBOL_H
+~define DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include "ViewProviderDrawingView.h"
-#include "ViewProviderDrawingView.h"
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewSymbol.h>
+~include "ViewProviderDrawingView.h"
+~include "ViewProviderDrawingView.h"
 
 namespace TechDrawGui {
 
@@ -79,4 +79,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERSYMBOL_H
+~endif // DRAWINGGUI_VIEWPROVIDERSYMBOL_H

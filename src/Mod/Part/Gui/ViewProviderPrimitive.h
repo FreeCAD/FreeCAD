@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPRIMITIVE_H
-#define PARTGUI_VIEWPROVIDERPRIMITIVE_H
+~ifndef PARTGUI_VIEWPROVIDERPRIMITIVE_H
+~define PARTGUI_VIEWPROVIDERPRIMITIVE_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+~include <Mod/Part/Gui/ViewProvider.h>
+~include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 
 
 namespace PartGui {
@@ -53,5 +53,5 @@ private:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPRIMITIVE_H
+~endif // PARTGUI_VIEWPROVIDERPRIMITIVE_H
 

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SHAPEFROMMESH_H
-#define PARTGUI_SHAPEFROMMESH_H
+~ifndef PARTGUI_SHAPEFROMMESH_H
+~define PARTGUI_SHAPEFROMMESH_H
 
-#include <QDialog>
-#include <memory>
+~include <QDialog>
+~include <memory>
 
 namespace PartGui {
 
@@ -46,4 +46,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_SHAPEFROMMESH_H
+~endif // PARTGUI_SHAPEFROMMESH_H

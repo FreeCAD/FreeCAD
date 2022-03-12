@@ -20,24 +20,24 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_AREA_H
-#define PATH_AREA_H
+~ifndef PATH_AREA_H
+~define PATH_AREA_H
 
-#include <QCoreApplication>
-#include <chrono>
-#include <memory>
-#include <vector>
-#include <list>
-#include <TopoDS.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Circ.hxx>
-#include <gp_GTrsf.hxx>
+~include <QCoreApplication>
+~include <chrono>
+~include <memory>
+~include <vector>
+~include <list>
+~include <TopoDS.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Circ.hxx>
+~include <gp_GTrsf.hxx>
 
-#include <Base/Console.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartPyCXX.h>
-#include "Path.h"
-#include "AreaParams.h"
+~include <Base/Console.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/PartPyCXX.h>
+~include "Path.h"
+~include "AreaParams.h"
 
 class CArea;
 class CCurve;
@@ -58,7 +58,7 @@ struct PathExport AreaParams: CAreaParams {
     PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_AREA)
 
     bool operator==(const AreaParams &other) const {
-#define AREA_COMPARE(_param) \
+~define AREA_COMPARE(_param) \
          if(PARAM_FIELD(NAME,_param)!=other.PARAM_FIELD(NAME,_param)) return false;
         PARAM_FOREACH(AREA_COMPARE,AREA_PARAMS_CAREA)
         PARAM_FOREACH(AREA_COMPARE,AREA_PARAMS_AREA)
@@ -149,14 +149,14 @@ protected:
 
     /** Obtain a list of offset areas
      *
-     * See #AREA_PARAMS_OFFSET for description of the arguments.
+     * See ~AREA_PARAMS_OFFSET for description of the arguments.
      */
     void makeOffset(std::list<std::shared_ptr<CArea> > &areas,
                     PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET), bool from_center=false);
 
     /** Make a pocket of the combined shape
      *
-     * User #AREA_PARAMS_POCKET setting in myParams.
+     * User ~AREA_PARAMS_POCKET setting in myParams.
      */
     TopoDS_Shape makePocket();
 
@@ -167,7 +167,7 @@ protected:
     std::list<Shape> getProjectedShapes(const gp_Trsf &trsf, bool inverse=true) const;
 
 public:
-    /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
+    /** Declare all parameters defined in ~AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
     Area(const AreaParams *params = NULL);
@@ -206,14 +206,14 @@ public:
      * coplanar
      *
      * \arg \c shape: the child shape
-     * \arg \c op: operation code, see #AREA_PARAMS_OPCODE
+     * \arg \c op: operation code, see ~AREA_PARAMS_OPCODE
      */
     void add(const TopoDS_Shape &shape,PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OPCODE));
 
 
     /** Generate an offset of the combined shape
      *
-     * See #AREA_PARAMS_OFFSET for description of the arguments.
+     * See ~AREA_PARAMS_OFFSET for description of the arguments.
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
@@ -222,7 +222,7 @@ public:
 
     /** Make a pocket of the combined shape
      *
-     * See #AREA_PARAMS_POCKET for description of the arguments.
+     * See ~AREA_PARAMS_POCKET for description of the arguments.
      */
     TopoDS_Shape makePocket(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
 
@@ -235,7 +235,7 @@ public:
      * \arg \c plane: the section plane if the section mode is
      * SectionModeWorkplane, otherwise ignored
      *
-     * See #AREA_PARAMS_EXTRA for description of the arguments. Currently, there
+     * See ~AREA_PARAMS_EXTRA for description of the arguments. Currently, there
      * is only one argument, namely \c mode for section mode.
      */
     std::vector<std::shared_ptr<Area> > makeSections(
@@ -347,9 +347,9 @@ public:
      * \arg \c stepdown_hint: optional output of a hint of step down as the max
      * distance between two sections.
      * \arg \c arc_plane: optional arc plane selection, if given the found plane
-     * will be returned. See #AREA_PARAMS_ARC_PLANE for more details.
+     * will be returned. See ~AREA_PARAMS_ARC_PLANE for more details.
      *
-     * See #AREA_PARAMS_SORT for other arguments
+     * See ~AREA_PARAMS_SORT for other arguments
      *
      * \return sorted wires
      */
@@ -364,7 +364,7 @@ public:
      * \arg \c pstart: output start point,
      * \arg \c pend: optional output containing the ending point of the returned
      *
-     * See #AREA_PARAMS_PATH for other arguments
+     * See ~AREA_PARAMS_PATH for other arguments
      */
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
@@ -389,4 +389,4 @@ public:
 
 } //namespace Path
 
-#endif //PATH_AREA_H
+~endif //PATH_AREA_H

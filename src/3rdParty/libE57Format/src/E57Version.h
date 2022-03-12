@@ -1,8 +1,8 @@
-#pragma once
+~pragma once
 // SPDX-License-Identifier: MIT
 // Copyright 2020 Andy Maloney <asmaloney@gmail.com>
 
-#include <cstdint>
+~include <cstdint>
 
 namespace e57
 {

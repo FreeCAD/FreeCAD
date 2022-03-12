@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
-#define GUI_TEXTDOCUMENTEDITORVIEW_H
+~ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
+~define GUI_TEXTDOCUMENTEDITORVIEW_H
 
-#include <string>
-#include <QPlainTextEdit>
+~include <string>
+~include <QPlainTextEdit>
 
-#include <App/TextDocument.h>
-#include <Gui/MDIView.h>
+~include <App/TextDocument.h>
+~include <Gui/MDIView.h>
 
 
 namespace Gui {
@@ -78,4 +78,4 @@ private:
 
 }
 
-#endif
+~endif

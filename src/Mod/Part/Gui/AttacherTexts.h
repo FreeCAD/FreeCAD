@@ -25,15 +25,15 @@
   * of attachment modes, as well as help texts, and the like.
   */
 
-#ifndef PARTATTACHERTEXTS_H
-#define PARTATTACHERTEXTS_H
+~ifndef PARTATTACHERTEXTS_H
+~define PARTATTACHERTEXTS_H
 
 
-#include <vector>
-#include <QString>
-#include <QStringList>
-#include <CXX/Objects.hxx>
-#include <Mod/Part/App/Attacher.h>
+~include <vector>
+~include <QString>
+~include <QStringList>
+~include <CXX/Objects.hxx>
+~include <Mod/Part/App/Attacher.h>
 
 
 namespace AttacherGui {
@@ -65,4 +65,4 @@ public:
 };
 
 }
-#endif
+~endif

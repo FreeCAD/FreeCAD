@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DlgActivateWindowImp_H
-#define GUI_DIALOG_DlgActivateWindowImp_H
+~ifndef GUI_DIALOG_DlgActivateWindowImp_H
+~define GUI_DIALOG_DlgActivateWindowImp_H
 
-#include <QDialog>
-#include <memory>
-#include <Base/Quantity.h>
-#include <Base/Unit.h>
+~include <QDialog>
+~include <memory>
+~include <Base/Quantity.h>
+~include <Base/Unit.h>
 
 namespace Gui {
 namespace Dialog {
@@ -70,4 +70,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DlgActivateWindowImp_H
+~endif // GUI_DIALOG_DlgActivateWindowImp_H

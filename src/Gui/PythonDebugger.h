@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PYTHONDEBUG_H
-#define GUI_PYTHONDEBUG_H
+~ifndef GUI_PYTHONDEBUG_H
+~define GUI_PYTHONDEBUG_H
 
-#include <CXX/Extensions.hxx>
-#include <frameobject.h>
-#include <set>
+~include <CXX/Extensions.hxx>
+~include <frameobject.h>
+~include <set>
 
 
 namespace Gui {
@@ -185,4 +185,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_PYTHONDEBUG_H
+~endif // GUI_PYTHONDEBUG_H

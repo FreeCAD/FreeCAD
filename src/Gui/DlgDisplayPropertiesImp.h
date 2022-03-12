@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
-#define GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
+~ifndef GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
+~define GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
 
-#include <memory>
-#include <vector>
-#include <QDialog>
+~include <memory>
+~include <vector>
+~include <QDialog>
 
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <App/Material.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <App/Material.h>
 
 namespace App
 {
@@ -126,4 +126,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
+~endif // GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H

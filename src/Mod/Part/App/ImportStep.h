@@ -23,11 +23,11 @@
  
 
 
-#ifndef _ImportStep_h_
-#define _ImportStep_h_
+~ifndef _ImportStep_h_
+~define _ImportStep_h_
 
-#include <TopoDS_Shape.hxx>
-#include <App/ComplexGeoData.h>
+~include <TopoDS_Shape.hxx>
+~include <App/ComplexGeoData.h>
 
 namespace App {
 class Document;
@@ -55,4 +55,4 @@ inline std::list<std::string> supportedSTEPSchemes() {
 
 
 
-#endif
+~endif

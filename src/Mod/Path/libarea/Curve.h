@@ -27,13 +27,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==============================*/
 
 
-#pragma once
+~pragma once
 
-#include <vector>
-#include <list>
-#include <math.h>
-#include "Point.h"
-#include "Box2D.h"
+~include <vector>
+~include <list>
+~include <math.h>
+~include "Point.h"
+~include "Box2D.h"
 
 class Line{
 public:

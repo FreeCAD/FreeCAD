@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDEREXTENSIONPYTHON_H
-#define GUI_VIEWPROVIDEREXTENSIONPYTHON_H
+~ifndef GUI_VIEWPROVIDEREXTENSIONPYTHON_H
+~define GUI_VIEWPROVIDEREXTENSIONPYTHON_H
 
-#include "ViewProviderExtension.h"
-#include <App/PropertyPythonObject.h>
+~include "ViewProviderExtension.h"
+~include <App/PropertyPythonObject.h>
 
 namespace Gui {
 
@@ -53,4 +53,4 @@ typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExt
 
 } //Gui
 
-#endif // GUI_VIEWPROVIDEREXTENSIONPYTHON_H
+~endif // GUI_VIEWPROVIDEREXTENSIONPYTHON_H

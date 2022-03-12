@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATURECHAMFER_H
-#define PART_FEATURECHAMFER_H
+~ifndef PART_FEATURECHAMFER_H
+~define PART_FEATURECHAMFER_H
 
-#include <App/PropertyStandard.h>
-#include "PartFeature.h"
+~include <App/PropertyStandard.h>
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -51,5 +51,5 @@ public:
 } //namespace Part
 
 
-#endif // PART_FEATURECHAMFER_H
+~endif // PART_FEATURECHAMFER_H
 

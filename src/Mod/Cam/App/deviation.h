@@ -22,13 +22,13 @@
 ***************************************************************************/
 
 
-#ifndef DEVIATION_H
-#define DEVIATION_H
+~ifndef DEVIATION_H
+~define DEVIATION_H
 
-#include "best_fit.h"
-#include "SpringbackCorrection.h"
-#include <string.h>
-#include <QString>
+~include "best_fit.h"
+~include "SpringbackCorrection.h"
+~include <string.h>
+~include <QString>
 
 class CamExport Deviation : public SpringbackCorrection
 {
@@ -49,4 +49,4 @@ public:
 };
 
 
-#endif //DEVIATION_H
+~endif //DEVIATION_H

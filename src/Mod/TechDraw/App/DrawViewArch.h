@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewArch_h_
-#define _DrawViewArch_h_
+~ifndef _DrawViewArch_h_
+~define _DrawViewArch_h_
 
-#include <App/DocumentObject.h>
-#include <Base/BoundBox.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
+~include <App/DocumentObject.h>
+~include <Base/BoundBox.h>
+~include <App/FeaturePython.h>
+~include <App/PropertyLinks.h>
 
-#include "DrawViewSymbol.h"
+~include "DrawViewSymbol.h"
 
 namespace TechDraw
 {
@@ -80,4 +80,4 @@ private:
 } //namespace TechDraw
 
 
-#endif
+~endif

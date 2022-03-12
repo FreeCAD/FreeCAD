@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCUMENT_H
-#define GUI_DOCUMENT_H
+~ifndef GUI_DOCUMENT_H
+~define GUI_DOCUMENT_H
 
-#include <list>
-#include <map>
-#include <string>
-#include <boost_signals2.hpp>
-#include <QString>
+~include <list>
+~include <map>
+~include <string>
+~include <boost_signals2.hpp>
+~include <QString>
 
-#include <Base/Persistence.h>
-#include <Gui/TreeItemMode.h>
+~include <Base/Persistence.h>
+~include <Gui/TreeItemMode.h>
 
 class SoNode;
 class SoPath;
@@ -331,4 +331,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_DOCUMENT_H
+~endif // GUI_DOCUMENT_H

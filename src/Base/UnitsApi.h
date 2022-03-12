@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UNITSAPI_H
-#define BASE_UNITSAPI_H
+~ifndef BASE_UNITSAPI_H
+~define BASE_UNITSAPI_H
 
-#include <memory>
-#include <QString>
-#include "UnitsSchema.h"
-#include "Quantity.h"
+~include <memory>
+~include <QString>
+~include "UnitsSchema.h"
+~include "Quantity.h"
 
 typedef struct _object PyObject;
 typedef struct PyMethodDef PyMethodDef;
@@ -118,4 +118,4 @@ protected:
 } // namespace Base
 
 
-#endif // BASE_UNITSAPI_H
+~endif // BASE_UNITSAPI_H

@@ -1,8 +1,8 @@
-#pragma once
+~pragma once
 
-#include <string>
-#include <vector>
-#include "TOC_Entry.h"
+~include <string>
+~include <vector>
+~include "TOC_Entry.h"
 
 class LodHandler;
 

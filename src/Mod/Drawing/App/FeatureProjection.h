@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef DRAWING_FEATUREPROJECTION
-#define DRAWING_FEATUREPROJECTION
+~ifndef DRAWING_FEATUREPROJECTION
+~define DRAWING_FEATUREPROJECTION
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 namespace Drawing
@@ -70,4 +70,4 @@ public:
 
 
 
-#endif // DRAWING_FEATUREPROJECTION
+~endif // DRAWING_FEATUREPROJECTION

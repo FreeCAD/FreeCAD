@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDERMESHNODE_H
-#define MESHGUI_VIEWPROVIDERMESHNODE_H
+~ifndef MESHGUI_VIEWPROVIDERMESHNODE_H
+~define MESHGUI_VIEWPROVIDERMESHNODE_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Mod/Mesh/App/Core/Elements.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Mod/Mesh/App/Core/Elements.h>
 
-#include <vector>
-#include <Inventor/fields/SoSFVec2f.h>
+~include <vector>
+~include <Inventor/fields/SoSFVec2f.h>
 
 class SbViewVolume;
 class SoBaseColor;
@@ -93,5 +93,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESHNODE_H
+~endif // MESHGUI_VIEWPROVIDERMESHNODE_H
 

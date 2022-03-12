@@ -14,11 +14,11 @@
 //
 // Version: 4.0.2 (2006/07/25)
 
-#ifndef WM4VECTOR3_H
-#define WM4VECTOR3_H
+~ifndef WM4VECTOR3_H
+~define WM4VECTOR3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Math.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Math.h"
 
 namespace Wm4
 {
@@ -136,7 +136,7 @@ std::ostream& operator<< (std::ostream& rkOStr, const Vector3<Real>& rkV);
 
 }
 
-#include "Wm4Vector3.inl"
+~include "Wm4Vector3.inl"
 
 namespace Wm4
 {
@@ -145,4 +145,4 @@ typedef Vector3<double> Vector3d;
 
 }
 
-#endif
+~endif

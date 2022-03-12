@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_Origin_H
-#define APP_Origin_H
+~ifndef APP_Origin_H
+~define APP_Origin_H
 
-#include "GeoFeatureGroupExtension.h"
-#include "OriginFeature.h"
+~include "GeoFeatureGroupExtension.h"
+~include "OriginFeature.h"
 
 
 namespace App
@@ -147,4 +147,4 @@ private:
 
 } //namespace App
 
-#endif // APP_Origin_H
+~endif // APP_Origin_H

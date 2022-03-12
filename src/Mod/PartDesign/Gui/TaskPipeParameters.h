@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPipeParameters_H
-#define GUI_TASKVIEW_TaskPipeParameters_H
+~ifndef GUI_TASKVIEW_TaskPipeParameters_H
+~define GUI_TASKVIEW_TaskPipeParameters_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "TaskSketchBasedParameters.h"
-#include "ViewProviderPipe.h"
-#include "TaskDressUpParameters.h"
+~include "TaskSketchBasedParameters.h"
+~include "ViewProviderPipe.h"
+~include "TaskDressUpParameters.h"
 
 
 namespace App {
@@ -210,4 +210,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

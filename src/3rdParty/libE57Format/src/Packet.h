@@ -25,12 +25,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include <cstdint>
-#include <vector>
+~include <cstdint>
+~include <vector>
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {
@@ -56,9 +56,9 @@ namespace e57
       std::unique_ptr<PacketLock> lock( uint64_t packetLogicalOffset,
                                         char *&pkt ); //??? pkt could be const
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout );
-#endif
+~endif
 
    protected:
       /// Only PacketLock can unlock the cache
@@ -109,9 +109,9 @@ namespace e57
 
       void verify( unsigned bufferLength = 0 ) const; //???use
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
       const uint8_t packetType = DATA_PACKET;
 
       uint8_t packetFlags = 0;
@@ -128,9 +128,9 @@ namespace e57
       char *getBytestream( unsigned bytestreamNumber, unsigned &byteCount );
       unsigned getBytestreamBufferLength( unsigned bytestreamNumber );
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
 
       static constexpr int PayloadSize = DATA_PACKET_MAX - sizeof( DataPacketHeader );
 

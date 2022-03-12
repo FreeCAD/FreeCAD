@@ -21,62 +21,62 @@
  ***************************************************************************/
 
 
-#ifndef ROBOTGUI_PRECOMPILED_H
-#define ROBOTGUI_PRECOMPILED_H
+~ifndef ROBOTGUI_PRECOMPILED_H
+~define ROBOTGUI_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define RobotExport    __declspec(dllimport)
-# define PartExport     __declspec(dllimport)
-# define PartGuiExport  __declspec(dllimport)
-# define RobotGuiExport    __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define RobotExport
-# define PartGuiExport
-# define RobotGuiExport
-#endif
+~ifdef FC_OS_WIN32
+~ define RobotExport    __declspec(dllimport)
+~ define PartExport     __declspec(dllimport)
+~ define PartGuiExport  __declspec(dllimport)
+~ define RobotGuiExport    __declspec(dllexport)
+~else // for Linux
+~ define PartExport
+~ define RobotExport
+~ define PartGuiExport
+~ define RobotGuiExport
+~endif
 
-#include <Standard_math.hxx>
+~include <Standard_math.hxx>
 
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#   pragma warning(disable : 4273)
-#endif
+~ifdef _MSC_VER
+~   pragma warning(disable : 4005)
+~   pragma warning(disable : 4273)
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
+~include <iostream>
+~include <assert.h>
+~include <cmath>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif // ROBOTGUI_PRECOMPILED_H
+~endif // ROBOTGUI_PRECOMPILED_H

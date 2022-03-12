@@ -18,20 +18,20 @@
 /* Defines                                                                                                      */
 /*----------------------------------------------------------*/
 
-#include "SMESH_DriverGMF.hxx"
+~include "SMESH_DriverGMF.hxx"
 
-#define GmfStrSiz 1024
-#define GmfMaxTyp 1000
-#define GmfMaxKwd 80
-#define GmfMshVer 1
-#define GmfRead 1
-#define GmfWrite 2
-#define GmfSca 1
-#define GmfVec 2
-#define GmfSymMat 3
-#define GmfMat 4
-#define GmfFloat 1
-#define GmfDouble 2
+~define GmfStrSiz 1024
+~define GmfMaxTyp 1000
+~define GmfMaxKwd 80
+~define GmfMshVer 1
+~define GmfRead 1
+~define GmfWrite 2
+~define GmfSca 1
+~define GmfVec 2
+~define GmfSymMat 3
+~define GmfMat 4
+~define GmfFloat 1
+~define GmfDouble 2
 
 enum GmfKwdCod
 {
@@ -136,20 +136,20 @@ MESHDriverGMF_EXPORT extern void GmfSetLin(int, int, ...);
 /* Fortran 77 API                                                                                       */
 /*----------------------------------------------------------*/
 
-#if defined(F77_NO_UNDER_SCORE)
-#define call(x) x
-#else
-#define call(x) x ## _
-#endif
+~if defined(F77_NO_UNDER_SCORE)
+~define call(x) x
+~else
+~define call(x) x ~~ _
+~endif
 
 
 /*----------------------------------------------------------*/
 /* Transmesh private API                                                                        */
 /*----------------------------------------------------------*/
 
-#ifdef TRANSMESH
+~ifdef TRANSMESH
 
 MESHDriverGMF_EXPORT extern char *GmfKwdFmt[ GmfMaxKwd + 1 ][4];
 MESHDriverGMF_EXPORT extern int GmfCpyLin(int, int, int);
 
-#endif
+~endif

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_LandmarkDimension_h_
-#define _TechDraw_LandmarkDimension_h_
+~ifndef _TechDraw_LandmarkDimension_h_
+~define _TechDraw_LandmarkDimension_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+~ include <App/DocumentObject.h>
+~ include <App/FeaturePython.h>
+~ include <App/PropertyLinks.h>
 
-#include "DrawViewDimension.h"
+~include "DrawViewDimension.h"
 
 class TopoDS_Shape;
 class gp_Ax2;
@@ -77,4 +77,4 @@ private:
 };
 
 } //namespace TechDraw
-#endif
+~endif

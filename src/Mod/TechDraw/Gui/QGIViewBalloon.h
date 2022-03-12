@@ -21,21 +21,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIVBALLOON_H
-#define TECHDRAWGUI_QGIVBALLOON_H
+~ifndef TECHDRAWGUI_QGIVBALLOON_H
+~define TECHDRAWGUI_QGIVBALLOON_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QColor>
-#include <QFont>
-#include <Base/Vector3D.h>
-#include "QGIView.h"
-#include "QGIViewPart.h"
-#include "QGCustomText.h"
-#include "QGIViewDimension.h"
+~include <QObject>
+~include <QGraphicsView>
+~include <QStyleOptionGraphicsItem>
+~include <QGraphicsItem>
+~include <QGraphicsObject>
+~include <QColor>
+~include <QFont>
+~include <Base/Vector3D.h>
+~include "QGIView.h"
+~include "QGIViewPart.h"
+~include "QGCustomText.h"
+~include "QGIViewDimension.h"
 
 namespace TechDraw {
 class DrawViewBalloon;
@@ -193,4 +193,4 @@ protected:
 
 } // namespace
 
-#endif // TECHDRAWGUI_QGIVBALLOON_H
+~endif // TECHDRAWGUI_QGIVBALLOON_H

@@ -1,5 +1,5 @@
-#ifndef QUARTER_EVENTFILTER_H
-#define QUARTER_EVENTFILTER_H
+~ifndef QUARTER_EVENTFILTER_H
+~define QUARTER_EVENTFILTER_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Quarter/Basic.h>
-#include <QtCore/QObject>
+~include <Quarter/Basic.h>
+~include <QtCore/QObject>
 
 class QEvent;
 class QPoint;
@@ -64,4 +64,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_EVENTFILTER_H
+~endif // QUARTER_EVENTFILTER_H

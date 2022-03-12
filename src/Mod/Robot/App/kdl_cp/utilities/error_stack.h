@@ -35,12 +35,12 @@
  * \par history
  *   - changed layout of the comments to accommodate doxygen
  */
-#ifndef ERROR_STACK_H
-#define ERROR_STACK_H
+~ifndef ERROR_STACK_H
+~define ERROR_STACK_H
 
-#include "utility.h"
-#include "utility_io.h"
-#include <string>
+~include "utility.h"
+~include "utility_io.h"
+~include <string>
 
 
 namespace KDL {
@@ -66,5 +66,5 @@ void IOTracePopStr(char* buffer,int size);
 
 }
 
-#endif
+~endif
 

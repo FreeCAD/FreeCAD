@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_SKETCHGEOMETRYEXTENSION_H
+~ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
+~define SKETCHER_SKETCHGEOMETRYEXTENSION_H
 
-#include <Mod/Part/App/Geometry.h>
-#include <atomic>
-#include <bitset>
-#include <array>
+~include <Mod/Part/App/Geometry.h>
+~include <atomic>
+~include <bitset>
+~include <array>
 
 namespace Sketcher
 {
@@ -131,4 +131,4 @@ private:
 } //namespace Sketcher
 
 
-#endif // SKETCHER_SKETCHGEOMETRYEXTENSION_H
+~endif // SKETCHER_SKETCHGEOMETRYEXTENSION_H

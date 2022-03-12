@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TRIANGLEKEY_H
-#define WM4TRIANGLEKEY_H
+~ifndef WM4TRIANGLEKEY_H
+~define WM4TRIANGLEKEY_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -34,6 +34,6 @@ public:
 
 }
 
-#include "Wm4TriangleKey.inl"
+~include "Wm4TriangleKey.inl"
 
-#endif
+~endif

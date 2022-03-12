@@ -27,11 +27,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
 //! @file E57SimpleData.h Data structures for E57 Simple API
 
-#include "E57Format.h"
+~include "E57Format.h"
 
 namespace e57
 {

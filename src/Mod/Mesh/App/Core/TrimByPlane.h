@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHTRIM_BY_PLANE_H
-#define MESHTRIM_BY_PLANE_H
+~ifndef MESHTRIM_BY_PLANE_H
+~define MESHTRIM_BY_PLANE_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
 
 namespace MeshCore {
 
@@ -63,4 +63,4 @@ private:
 
 } //namespace MeshCore
 
-#endif //MESHTRIM_BY_PLANE_H
+~endif //MESHTRIM_BY_PLANE_H

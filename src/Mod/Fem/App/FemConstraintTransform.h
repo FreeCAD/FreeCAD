@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTTransform_H
-#define FEM_CONSTRAINTTransform_H
+~ifndef FEM_CONSTRAINTTransform_H
+~define FEM_CONSTRAINTTransform_H
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem
 {
@@ -65,4 +65,4 @@ protected:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTTransform_H
+~endif // FEM_CONSTRAINTTransform_H

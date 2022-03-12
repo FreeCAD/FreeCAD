@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Grabber3d_h_
-#define _Grabber3d_h_
+~ifndef _Grabber3d_h_
+~define _Grabber3d_h_
 
 
 class SoSeparator;
@@ -42,7 +42,7 @@ class Document;
 class View3DInventorViewer;
 }
 
-#include "MDIViewPage.h"
+~include "MDIViewPage.h"
 
 namespace TechDraw {
 }
@@ -79,4 +79,4 @@ class TechDrawGuiExport Grabber3d {
 };
 
 } //end namespace TechDrawGui
-#endif
+~endif

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ACTION_H
-#define GUI_ACTION_H
+~ifndef GUI_ACTION_H
+~define GUI_ACTION_H
 
-#include <memory>
-#include <QAction>
-#include <QComboBox>
-#include <QKeySequence>
+~include <memory>
+~include <QAction>
+~include <QComboBox>
+~include <QKeySequence>
 
 namespace Gui
 {
@@ -359,4 +359,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_ACTION_H
+~endif // GUI_ACTION_H

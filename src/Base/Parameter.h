@@ -29,40 +29,40 @@
  * 3rd party Xerces-C++ XML parser is used to parse and write the XML.
  */
 
-#ifndef BASE__PARAMETER_H
-#define BASE__PARAMETER_H
+~ifndef BASE__PARAMETER_H
+~define BASE__PARAMETER_H
 
  // Python stuff
 typedef struct _object PyObject;
 
-#ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
-#endif
+~ifdef FC_OS_MACOSX
+~undef toupper
+~undef tolower
+~undef isupper
+~undef islower
+~undef isspace
+~undef isalpha
+~undef isalnum
+~endif
 
-#ifdef FC_OS_LINUX
-#include <sstream>
-#endif
+~ifdef FC_OS_LINUX
+~include <sstream>
+~endif
 
-#include <map>
-#include <vector>
-#include <xercesc/util/XercesDefs.hpp>
+~include <map>
+~include <vector>
+~include <xercesc/util/XercesDefs.hpp>
 
-#include "Handle.h"
-#include "Observer.h"
+~include "Handle.h"
+~include "Observer.h"
 
-#ifdef _MSC_VER
-#	pragma warning( disable : 4251 )
-#	pragma warning( disable : 4503 )
-#	pragma warning( disable : 4786 )  // specifier longer then 255 chars
-#	pragma warning( disable : 4290 )  // not implemented throw specification
-#	pragma warning( disable : 4275 )
-#endif
+~ifdef _MSC_VER
+~	pragma warning( disable : 4251 )
+~	pragma warning( disable : 4503 )
+~	pragma warning( disable : 4786 )  // specifier longer then 255 chars
+~	pragma warning( disable : 4290 )  // not implemented throw specification
+~	pragma warning( disable : 4275 )
+~endif
 
 
 XERCES_CPP_NAMESPACE_BEGIN
@@ -344,4 +344,4 @@ private:
 BaseExport PyObject* GetPyObject( const Base::Reference<ParameterGrp> &hcParamGrp);
 
 
-#endif // BASE__PARAMETER_H
+~endif // BASE__PARAMETER_H

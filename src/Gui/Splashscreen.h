@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SPLASHSCREEN_H
-#define GUI_SPLASHSCREEN_H
+~ifndef GUI_SPLASHSCREEN_H
+~define GUI_SPLASHSCREEN_H
 
-#include <QSplashScreen>
-#include <QDialog>
-#include <QTextBrowser>
-#include <Gui/MDIView.h>
+~include <QSplashScreen>
+~include <QDialog>
+~include <QTextBrowser>
+~include <Gui/MDIView.h>
 
 namespace Gui {
 
@@ -121,4 +121,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SPLASHSCREEN_H
+~endif // GUI_SPLASHSCREEN_H

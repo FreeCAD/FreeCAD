@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_ABAQUSHIGHLIGHTER_H
-#define FEMGUI_ABAQUSHIGHLIGHTER_H
+~ifndef FEMGUI_ABAQUSHIGHLIGHTER_H
+~define FEMGUI_ABAQUSHIGHLIGHTER_H
 
-#include <Gui/SyntaxHighlighter.h>
+~include <Gui/SyntaxHighlighter.h>
 
 namespace FemGui {
 
@@ -44,4 +44,4 @@ protected:
 
 } // namespace FemGui
 
-#endif // FEMGUI_ABAQUSHIGHLIGHTER_H
+~endif // FEMGUI_ABAQUSHIGHLIGHTER_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef MESH_INFO_H
-#define MESH_INFO_H
+~ifndef MESH_INFO_H
+~define MESH_INFO_H
 
-#include "MeshKernel.h"
+~include "MeshKernel.h"
 
 namespace MeshCore {
 
@@ -88,4 +88,4 @@ private:
 
 } // namespace MeshCore
 
-#endif
+~endif

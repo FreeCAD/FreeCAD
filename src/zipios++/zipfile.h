@@ -1,14 +1,14 @@
-#ifndef ZIPFILE_H
-#define ZIPFILE_H
+~ifndef ZIPFILE_H
+~define ZIPFILE_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <vector>
-#include "meta-iostreams.h"
+~include <vector>
+~include "meta-iostreams.h"
 
-#include "fcoll.h"
-#include "ziphead.h"
-#include "virtualseeker.h"
+~include "fcoll.h"
+~include "ziphead.h"
+~include "virtualseeker.h"
 
 namespace zipios {
 
@@ -78,7 +78,7 @@ private:
 
 }
 
-#endif
+~endif
 
 /** \file
     Header file that defines ZipFile.

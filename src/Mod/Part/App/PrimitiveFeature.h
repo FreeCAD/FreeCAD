@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef PART_PRIMITIVEFEATURE_H
-#define PART_PRIMITIVEFEATURE_H
+~ifndef PART_PRIMITIVEFEATURE_H
+~define PART_PRIMITIVEFEATURE_H
 
-#include <App/PropertyUnits.h>
-#include "PartFeature.h"
-#include "AttachExtension.h"
-#include "PrismExtension.h"
+~include <App/PropertyUnits.h>
+~include "PartFeature.h"
+~include "AttachExtension.h"
+~include "PrismExtension.h"
 
 namespace Part
 {
@@ -432,4 +432,4 @@ private:
 } //namespace Part
 
 
-#endif // PART_PRIMITIVEFEATURE_H
+~endif // PART_PRIMITIVEFEATURE_H

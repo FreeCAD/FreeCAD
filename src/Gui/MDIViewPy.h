@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MDIVIEWPY_H
-#define GUI_MDIVIEWPY_H
+~ifndef GUI_MDIVIEWPY_H
+~define GUI_MDIVIEWPY_H
 
-#include <Base/PyObjectBase.h>
-#include <CXX/Extensions.hxx>
-#include <QPointer>
-#include <FCGlobal.h>
+~include <Base/PyObjectBase.h>
+~include <CXX/Extensions.hxx>
+~include <QPointer>
+~include <FCGlobal.h>
 
 namespace Gui {
 class MDIView;
@@ -74,4 +74,4 @@ private:
 
 } // namespace Gui
 
-#endif //GUI_MDIVIEWPY_H
+~endif //GUI_MDIVIEWPY_H

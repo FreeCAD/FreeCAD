@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawView_h_
-#define _DrawView_h_
+~ifndef _DrawView_h_
+~define _DrawView_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp>
+~include <boost_signals2.hpp>
 
-#include <QCoreApplication>
-#include <QRectF>
+~include <QCoreApplication>
+~include <QRectF>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyUnits.h>
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
+~include <App/PropertyUnits.h>
+~include <App/FeaturePython.h>
 
 namespace TechDraw
 {
@@ -126,4 +126,4 @@ typedef App::FeaturePythonT<DrawView> DrawViewPython;
 
 } //namespace TechDraw
 
-#endif
+~endif

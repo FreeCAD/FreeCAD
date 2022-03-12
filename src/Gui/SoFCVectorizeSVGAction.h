@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCVECTORIZESVGACTION_H
-#define GUI_SOFCVECTORIZESVGACTION_H
+~ifndef GUI_SOFCVECTORIZESVGACTION_H
+~define GUI_SOFCVECTORIZESVGACTION_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+~ifndef __InventorAll__
+~ include "InventorAll.h"
+~endif
 
-#include <fstream>
+~include <fstream>
 
 
 namespace Gui {
@@ -86,4 +86,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_SOFCVECTORIZESVGACTION_H
+~endif // GUI_SOFCVECTORIZESVGACTION_H

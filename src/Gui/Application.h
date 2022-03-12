@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+~ifndef APPLICATION_H
+~define APPLICATION_H
 
-#include <QPixmap>
-#include <map>
-#include <string>
+~include <QPixmap>
+~include <map>
+~include <string>
 
-#define  putpix()
+~define  putpix()
 
-#include <App/Application.h>
+~include <App/Application.h>
 
 class QCloseEvent;
 class SoNode;
@@ -335,4 +335,4 @@ private:
 
 } //namespace Gui
 
-#endif
+~endif

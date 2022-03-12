@@ -25,9 +25,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include "E57SimpleData.h"
+~include "E57SimpleData.h"
 
 namespace e57
 {

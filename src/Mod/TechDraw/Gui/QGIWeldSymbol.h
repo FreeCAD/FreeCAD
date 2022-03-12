@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
+~define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
-#include <QFont>
-#include <QPointF>
+~include <QObject>
+~include <QGraphicsView>
+~include <QStyleOptionGraphicsItem>
+~include <QGraphicsItem>
+~include <QGraphicsObject>
+~include <QPainterPath>
+~include <QColor>
+~include <QFont>
+~include <QPointF>
 
-#include <Base/Vector3D.h>
-#include "QGIView.h"
+~include <Base/Vector3D.h>
+~include "QGIView.h"
 
 namespace App {
 class Document;
@@ -133,4 +133,4 @@ protected:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
+~endif // DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H

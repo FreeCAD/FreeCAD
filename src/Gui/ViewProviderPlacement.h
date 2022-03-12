@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ViewProviderPlacement_H
-#define GUI_ViewProviderPlacement_H
+~ifndef GUI_ViewProviderPlacement_H
+~define GUI_ViewProviderPlacement_H
 
-#include "AxisOrigin.h"
-#include "ViewProviderGeometryObject.h"
-#include "ViewProviderPythonFeature.h"
+~include "AxisOrigin.h"
+~include "ViewProviderGeometryObject.h"
+~include "ViewProviderPythonFeature.h"
 
 
 class SoFontStyle;
@@ -72,4 +72,4 @@ typedef ViewProviderPythonFeatureT<ViewProviderPlacement> ViewProviderPlacementP
 } //namespace Gui
 
 
-#endif // GUI_ViewProviderPlacement_H
+~endif // GUI_ViewProviderPlacement_H

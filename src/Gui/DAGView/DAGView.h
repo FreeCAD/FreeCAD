@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGVIEW_H
-#define DAGVIEW_H
+~ifndef DAGVIEW_H
+~define DAGVIEW_H
 
-#include <memory>
-#include <QGraphicsView>
-#include <boost_signals2.hpp>
+~include <memory>
+~include <QGraphicsView>
+~include <boost_signals2.hpp>
 
-#include <Gui/DockWindow.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
+~include <Gui/DockWindow.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
 
-#include "DAGModel.h"
+~include "DAGModel.h"
 
 
 namespace Gui
@@ -75,4 +75,4 @@ namespace Gui
   }
 }
 
-#endif // DAGVIEW_H
+~endif // DAGVIEW_H

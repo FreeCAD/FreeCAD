@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TRANSACTIONOBJECT_H
-#define GUI_TRANSACTIONOBJECT_H
+~ifndef GUI_TRANSACTIONOBJECT_H
+~define GUI_TRANSACTIONOBJECT_H
 
-#include <App/Transactions.h>
+~include <App/Transactions.h>
 
 namespace Gui
 {
@@ -43,4 +43,4 @@ public:
 } //namespace Gui
 
 
-#endif // GUI_TRANSACTIONOBJECT_H
+~endif // GUI_TRANSACTIONOBJECT_H

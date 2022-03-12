@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderAnalysis_H
-#define FEM_ViewProviderAnalysis_H
+~ifndef FEM_ViewProviderAnalysis_H
+~define FEM_ViewProviderAnalysis_H
 
-#include <Gui/ViewProviderDocumentObjectGroup.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Fem/FemGlobal.h>
-#include <QCoreApplication>
+~include <Gui/ViewProviderDocumentObjectGroup.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Fem/FemGlobal.h>
+~include <QCoreApplication>
 
 namespace FemGui
 {
@@ -92,4 +92,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemAnalysis> ViewProviderFem
 } //namespace FemGui
 
 
-#endif // FEM_ViewProviderAnalysis_H
+~endif // FEM_ViewProviderAnalysis_H

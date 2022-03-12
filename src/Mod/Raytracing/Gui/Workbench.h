@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef RAY_WORKBENCH_H
-#define RAY_WORKBENCH_H
+~ifndef RAY_WORKBENCH_H
+~define RAY_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace RaytracingGui {
 
@@ -47,4 +47,4 @@ protected:
 } // namespace RaytracingGui
 
 
-#endif // RAY_WORKBENCH_H 
+~endif // RAY_WORKBENCH_H 

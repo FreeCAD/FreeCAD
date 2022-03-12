@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_GEOMETRYEXTERNALFACADE_H
-#define SKETCHER_GEOMETRYEXTERNALFACADE_H
+~ifndef SKETCHER_GEOMETRYEXTERNALFACADE_H
+~define SKETCHER_GEOMETRYEXTERNALFACADE_H
 
-#include <Base/BaseClass.h>
+~include <Base/BaseClass.h>
 
-#include <Base/Console.h> // Only for Debug - To be removed
-#include <boost/uuid/uuid_io.hpp>
+~include <Base/Console.h> // Only for Debug - To be removed
+~include <boost/uuid/uuid_io.hpp>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchGeometryExtension.h>
-#include <Mod/Sketcher/App/ExternalGeometryExtension.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/SketchGeometryExtension.h>
+~include <Mod/Sketcher/App/ExternalGeometryExtension.h>
 
 namespace Sketcher
 {
@@ -170,4 +170,4 @@ private:
 } //namespace Sketcher
 
 
-#endif // SKETCHER_GEOMETRYEXTERNALFACADE_H
+~endif // SKETCHER_GEOMETRYEXTERNALFACADE_H

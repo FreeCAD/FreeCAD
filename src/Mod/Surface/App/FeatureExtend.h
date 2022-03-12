@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREEXTEND_H
-#define SURFACE_FEATUREEXTEND_H
+~ifndef SURFACE_FEATUREEXTEND_H
+~define SURFACE_FEATUREEXTEND_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyLinks.h>
+~include <Mod/Part/App/FeaturePartSpline.h>
 
 namespace Surface
 {
@@ -70,4 +70,4 @@ private:
 
 }//Namespace Surface
 
-#endif
+~endif

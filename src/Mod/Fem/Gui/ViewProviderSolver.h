@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderSolver_H
-#define FEM_ViewProviderSolver_H
+~ifndef FEM_ViewProviderSolver_H
+~define FEM_ViewProviderSolver_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderBuilder.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Fem/FemGlobal.h>
 
 class SoCoordinate3;
 class SoDrawStyle;
@@ -65,4 +65,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderSolver> ViewProviderSolverPy
 } //namespace FemGui
 
 
-#endif // FEM_ViewProviderSolver_H
+~endif // FEM_ViewProviderSolver_H

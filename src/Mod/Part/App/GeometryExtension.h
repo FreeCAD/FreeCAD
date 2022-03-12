@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRYEXTENSION_H
-#define PART_GEOMETRYEXTENSION_H
+~ifndef PART_GEOMETRYEXTENSION_H
+~define PART_GEOMETRYEXTENSION_H
 
-#include <Base/Persistence.h>
-#include <memory>
-#include <string>
+~include <Base/Persistence.h>
+~include <memory>
+~include <string>
 
 
 namespace Part {
@@ -82,4 +82,4 @@ protected:
 
 }
 
-#endif // PART_GEOMETRYEXTENSION_H
+~endif // PART_GEOMETRYEXTENSION_H

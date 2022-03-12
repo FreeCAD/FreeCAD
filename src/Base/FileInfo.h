@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FILEINFO_H
-#define BASE_FILEINFO_H
+~ifndef BASE_FILEINFO_H
+~define BASE_FILEINFO_H
 
-#include <string>
-#include <vector>
-#include <Base/TimeInfo.h>
+~include <string>
+~include <vector>
+~include <Base/TimeInfo.h>
 
 
 namespace Base
@@ -146,4 +146,4 @@ protected:
 } //namespace Base
 
 
-#endif // BASE_FILEINFO_H
+~endif // BASE_FILEINFO_H

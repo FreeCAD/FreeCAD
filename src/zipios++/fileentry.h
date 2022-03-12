@@ -1,14 +1,14 @@
-#ifndef FILEENTRY_H
-#define FILEENTRY_H
+~ifndef FILEENTRY_H
+~define FILEENTRY_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <string>
-#include <vector>
-#include "meta-iostreams.h"
+~include <string>
+~include <vector>
+~include "meta-iostreams.h"
 
-#include "simplesmartptr.h"
-#include "zipios_defs.h"
+~include "simplesmartptr.h"
+~include "zipios_defs.h"
 
 namespace zipios {
 
@@ -213,7 +213,7 @@ inline ostream &operator<< ( ostream &os, const ConstEntryPointer &entry ) {
 
 } // namespace
 
-#endif
+~endif
 
 
 /** \file

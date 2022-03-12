@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_FILEDIALOG_H
-#define GUI_FILEDIALOG_H
+~ifndef GUI_FILEDIALOG_H
+~define GUI_FILEDIALOG_H
 
-#include <QCompleter>
-#include <QFileDialog>
-#include <QFileIconProvider>
-#include <QFileSystemModel>
-#include <QPointer>
-#include <FCGlobal.h>
+~include <QCompleter>
+~include <QFileDialog>
+~include <QFileIconProvider>
+~include <QFileSystemModel>
+~include <QPointer>
+~include <FCGlobal.h>
 
 class QButtonGroup;
 class QGridLayout;
@@ -277,4 +277,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_FILEDIALOG_H
+~endif // GUI_FILEDIALOG_H

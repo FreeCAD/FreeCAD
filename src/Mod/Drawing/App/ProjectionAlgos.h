@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef _ProjectionAlgos_h_
-#define _ProjectionAlgos_h_
+~ifndef _ProjectionAlgos_h_
+~define _ProjectionAlgos_h_
 
-#include <TopoDS_Shape.hxx>
-#include <Base/Vector3D.h>
-#include <string>
+~include <TopoDS_Shape.hxx>
+~include <Base/Vector3D.h>
+~include <string>
 
 class BRepAdaptor_Curve;
 
@@ -79,4 +79,4 @@ public:
 } //namespace Drawing
 
 
-#endif
+~endif

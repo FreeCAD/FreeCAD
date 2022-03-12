@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
-#define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+~ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+~define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
 
-#include <Gui/ViewProviderFeature.h>
+~include <Gui/ViewProviderFeature.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
+~include "ViewProviderDrawingView.h"
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewAnnotation.h>
 
 namespace TechDrawGui {
 
@@ -58,4 +58,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERANNOTATION_H
+~endif // DRAWINGGUI_VIEWPROVIDERANNOTATION_H

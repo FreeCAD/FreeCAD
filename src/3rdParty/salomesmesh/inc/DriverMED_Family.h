@@ -25,29 +25,29 @@
 //  Author : Julia DOROVSKIKH
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DRIVERMED_FAMILY
-#define _INCLUDE_DRIVERMED_FAMILY
+~ifndef _INCLUDE_DRIVERMED_FAMILY
+~define _INCLUDE_DRIVERMED_FAMILY
 
-#include "SMESH_DriverMED.hxx"
-#include "DriverMED.hxx"
+~include "SMESH_DriverMED.hxx"
+~include "DriverMED.hxx"
 
-#include "SMDS_Mesh.hxx"
-#include "SMESHDS_GroupBase.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "MED_Common.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMESHDS_GroupBase.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "MED_Common.hxx"
 
-#include <boost/shared_ptr.hpp>
-#include <set>
+~include <boost/shared_ptr.hpp>
+~include <set>
 
-#define REST_NODES_FAMILY 1
-#define FIRST_NODE_FAMILY 2
+~define REST_NODES_FAMILY 1
+~define FIRST_NODE_FAMILY 2
 
-#define REST_EDGES_FAMILY   -1
-#define REST_FACES_FAMILY   -2
-#define REST_VOLUMES_FAMILY -3
-#define REST_0DELEM_FAMILY  -4
-#define REST_BALL_FAMILY    -5
-#define FIRST_ELEM_FAMILY   -6
+~define REST_EDGES_FAMILY   -1
+~define REST_FACES_FAMILY   -2
+~define REST_VOLUMES_FAMILY -3
+~define REST_0DELEM_FAMILY  -4
+~define REST_BALL_FAMILY    -5
+~define FIRST_ELEM_FAMILY   -6
 
 typedef std::list<DriverMED_FamilyPtr               > DriverMED_FamilyPtrList;
 typedef std::map<int,SMESHDS_SubMesh*               > SMESHDS_SubMeshPtrMap;
@@ -141,4 +141,4 @@ class MESHDRIVERMED_EXPORT DriverMED_Family
   std::set<SMDSAbs_ElementType> myTypes; // Issue 0020576
 };
 
-#endif
+~endif

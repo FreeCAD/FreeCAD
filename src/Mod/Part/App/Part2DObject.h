@@ -22,14 +22,14 @@
 
 
 
-#ifndef PART_PART2DOBJECT_H
-#define PART_PART2DOBJECT_H
+~ifndef PART_PART2DOBJECT_H
+~define PART_PART2DOBJECT_H
 
-#include <App/PropertyStandard.h>
-#include <Base/Axis.h>
+~include <App/PropertyStandard.h>
+~include <Base/Axis.h>
 
-#include "PartFeature.h"
-#include "AttachExtension.h"
+~include "PartFeature.h"
+~include "AttachExtension.h"
 
 class TopoDS_Face;
 
@@ -107,4 +107,4 @@ typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;
 } //namespace Part
 
 
-#endif // PART_PART2DOBJECT_H
+~endif // PART_PART2DOBJECT_H

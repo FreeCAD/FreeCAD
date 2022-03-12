@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISFREECADTASKPANELSCHEME_H
-#define IISFREECADTASKPANELSCHEME_H
+~ifndef IISFREECADTASKPANELSCHEME_H
+~define IISFREECADTASKPANELSCHEME_H
 
-#include "iistaskpanelscheme.h"
+~include "iistaskpanelscheme.h"
 
 
 class IISTASKPANEL_EXPORT iisFreeCADTaskPanelScheme : public iisTaskPanelScheme
@@ -39,4 +39,4 @@ protected:
     QPixmap drawFoldIcon(const QPalette&) const;
 };
 
-#endif // IISFREECADTASKPANELSCHEME_H
+~endif // IISFREECADTASKPANELSCHEME_H

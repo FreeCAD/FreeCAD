@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawRichAnno_h_
-#define _TechDraw_DrawRichAnno_h_
+~ifndef _TechDraw_DrawRichAnno_h_
+~define _TechDraw_DrawRichAnno_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
+~ include <App/DocumentObject.h>
+~ include <App/FeaturePython.h>
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 
 namespace TechDraw
@@ -64,4 +64,4 @@ private:
 typedef App::FeaturePythonT<DrawRichAnno> DrawRichAnnoPython;
 
 } //namespace TechDraw
-#endif
+~endif

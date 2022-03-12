@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureMultiTransform_H
-#define PARTDESIGN_FeatureMultiTransform_H
+~ifndef PARTDESIGN_FeatureMultiTransform_H
+~define PARTDESIGN_FeatureMultiTransform_H
 
-#include "FeatureTransformed.h"
+~include "FeatureTransformed.h"
 
 
 namespace PartDesign
@@ -65,4 +65,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureMultiTransform_H
+~endif // PARTDESIGN_FeatureMultiTransform_H

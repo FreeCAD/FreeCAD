@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREREVOLUTION_H
-#define PART_FEATUREREVOLUTION_H
+~ifndef PART_FEATUREREVOLUTION_H
+~define PART_FEATUREREVOLUTION_H
 
-#include <App/PropertyStandard.h>
-#include "PartFeature.h"
-#include <Base/Vector3D.h>
+~include <App/PropertyStandard.h>
+~include "PartFeature.h"
+~include <Base/Vector3D.h>
 
 namespace Part
 {
@@ -88,4 +88,4 @@ protected:
 } //namespace Part
 
 
-#endif // PART_FEATUREREVOLUTION_H
+~endif // PART_FEATUREREVOLUTION_H

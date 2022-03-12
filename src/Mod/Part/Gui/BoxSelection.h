@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_BOXSELECTION_H
-#define PARTGUI_BOXSELECTION_H
+~ifndef PARTGUI_BOXSELECTION_H
+~define PARTGUI_BOXSELECTION_H
 
 class SoEventCallback;
 class TopoDS_Shape;
@@ -57,4 +57,4 @@ private:
 
 } //namespace PartGui
 
-#endif // PARTGUI_BOXSELECTION_H
+~endif // PARTGUI_BOXSELECTION_H

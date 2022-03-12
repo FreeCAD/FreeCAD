@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderThickness_H
-#define PARTGUI_ViewProviderThickness_H
+~ifndef PARTGUI_ViewProviderThickness_H
+~define PARTGUI_ViewProviderThickness_H
 
-#include "ViewProviderDressUp.h"
+~include "ViewProviderDressUp.h"
 
 
 namespace PartDesignGui {
@@ -49,4 +49,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderThickness_H
+~endif // PARTGUI_ViewProviderThickness_H

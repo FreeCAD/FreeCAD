@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTPOLYGON_H
-#define PART_FEATUREPARTPOLYGON_H
+~ifndef PART_FEATUREPARTPOLYGON_H
+~define PART_FEATUREPARTPOLYGON_H
 
-#include <App/PropertyGeo.h>
+~include <App/PropertyGeo.h>
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -52,4 +52,4 @@ public:
 
 } //namespace Part
 
-#endif // PART_FEATUREPARTPOLYGON_H
+~endif // PART_FEATUREPARTPOLYGON_H

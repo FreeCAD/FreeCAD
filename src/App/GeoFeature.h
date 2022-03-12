@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_GEOFEATURE_H
-#define APP_GEOFEATURE_H
+~ifndef APP_GEOFEATURE_H
+~define APP_GEOFEATURE_H
 
-#include "DocumentObject.h"
-#include "PropertyGeo.h"
+~include "DocumentObject.h"
+~include "PropertyGeo.h"
 
 
 namespace App
@@ -125,4 +125,4 @@ public:
 } //namespace App
 
 
-#endif // APP_GEOFEATURE_H
+~endif // APP_GEOFEATURE_H

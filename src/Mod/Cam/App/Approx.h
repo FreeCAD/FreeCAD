@@ -27,19 +27,19 @@
 *    LAPACK
 ********************************************/
 
-#ifndef APPROX_H
-#define APPROX_H
+~ifndef APPROX_H
+~define APPROX_H
 
-#ifndef NDEBUG //This is for faster matrix operations. In fact, some checks are turned off in the uBlas functions
-#define NDEBUG
-#endif
+~ifndef NDEBUG //This is for faster matrix operations. In fact, some checks are turned off in the uBlas functions
+~define NDEBUG
+~endif
 /*******MAIN INCLUDE*********/
-#include "routine.h"
+~include "routine.h"
 
-#include <GeomAdaptor_Surface.hxx>
+~include <GeomAdaptor_Surface.hxx>
 
 /*******BOOST********/
-#include <boost/numeric/ublas/matrix.hpp>
+~include <boost/numeric/ublas/matrix.hpp>
 
 /*****NAMESPACE******/
 using namespace boost::numeric;
@@ -130,5 +130,5 @@ private:
 
 };
 
-#endif  /*APPROX_H DEFINED*/
+~endif  /*APPROX_H DEFINED*/
 

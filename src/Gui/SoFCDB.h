@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCDB_H
-#define GUI_SOFCDB_H
+~ifndef GUI_SOFCDB_H
+~define GUI_SOFCDB_H
 
-#include <map>
-#include <string>
-#include <iosfwd>
-#include <Inventor/SbBasic.h>
+~include <map>
+~include <string>
+~include <iosfwd>
+~include <Inventor/SbBasic.h>
 
 class SoNode;
 class SoGroup;
@@ -69,4 +69,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_SOFCDB_H
+~endif // GUI_SOFCDB_H

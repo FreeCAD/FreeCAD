@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CSYSDRAGGER_H
-#define CSYSDRAGGER_H
+~ifndef CSYSDRAGGER_H
+~define CSYSDRAGGER_H
 
-#include <Inventor/draggers/SoDragger.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/projectors/SbLineProjector.h>
-#include <Inventor/projectors/SbPlaneProjector.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/sensors/SoIdleSensor.h>
+~include <Inventor/draggers/SoDragger.h>
+~include <Inventor/fields/SoSFColor.h>
+~include <Inventor/fields/SoSFDouble.h>
+~include <Inventor/fields/SoSFFloat.h>
+~include <Inventor/fields/SoSFInt32.h>
+~include <Inventor/fields/SoSFRotation.h>
+~include <Inventor/projectors/SbLineProjector.h>
+~include <Inventor/projectors/SbPlaneProjector.h>
+~include <Inventor/sensors/SoFieldSensor.h>
+~include <Inventor/sensors/SoIdleSensor.h>
 
 class SoCamera;
 
@@ -271,4 +271,4 @@ private:
 
 }
 
-#endif // CSYSDRAGGER_H
+~endif // CSYSDRAGGER_H

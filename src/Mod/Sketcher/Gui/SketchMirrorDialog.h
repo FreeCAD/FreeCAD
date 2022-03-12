@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchMirrorDialog_H
-#define SKETCHERGUI_SketchMirrorDialog_H
+~ifndef SKETCHERGUI_SketchMirrorDialog_H
+~define SKETCHERGUI_SketchMirrorDialog_H
 
-#include <QDialog>
-#include "../App/Constraint.h"
+~include <QDialog>
+~include "../App/Constraint.h"
 
 namespace SketcherGui {
 
@@ -48,4 +48,4 @@ private:
 
 }
 
-#endif // SKETCHERGUI_SketchMirrorDialog_H
+~endif // SKETCHERGUI_SketchMirrorDialog_H

@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4LINEARSYSTEM_H
-#define WM4LINEARSYSTEM_H
+~ifndef WM4LINEARSYSTEM_H
+~define WM4LINEARSYSTEM_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4BandedMatrix.h"
-#include "Wm4GMatrix.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4BandedMatrix.h"
+~include "Wm4GMatrix.h"
 
 namespace Wm4
 {
@@ -144,4 +144,4 @@ typedef LinearSystem<double> LinearSystemd;
 
 }
 
-#endif
+~endif

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef _GTSAlgos_h_
-#define _GTSAlgos_h_
+~ifndef _GTSAlgos_h_
+~define _GTSAlgos_h_
 
-#include <gts.h>
-#include <vector>
+~include <gts.h>
+~include <vector>
 
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include "Mesh.h"
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
+~include "Mesh.h"
 
 
 namespace Mesh
@@ -68,4 +68,4 @@ private:
 
 
 } // namespace Mesh
-#endif 
+~endif 

@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBoolean_H
-#define PARTGUI_ViewProviderBoolean_H
+~ifndef PARTGUI_ViewProviderBoolean_H
+~define PARTGUI_ViewProviderBoolean_H
 
-#include "ViewProvider.h"
-#include <Gui/ViewProviderGeoFeatureGroupExtension.h>
+~include "ViewProvider.h"
+~include <Gui/ViewProviderGeoFeatureGroupExtension.h>
 
 
 namespace PartDesignGui {
@@ -61,4 +61,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderBoolean_H
+~endif // PARTGUI_ViewProviderBoolean_H

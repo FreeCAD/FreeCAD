@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
-#define GUI_TASKVIEW_TaskFemConstraintPulley_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
+~define GUI_TASKVIEW_TaskFemConstraintPulley_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include "TaskFemConstraintGear.h"
-#include "ViewProviderFemConstraintPulley.h"
+~include "TaskFemConstraintGear.h"
+~include "ViewProviderFemConstraintPulley.h"
 
 namespace FemGui {
 
@@ -72,4 +72,4 @@ public:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintPulley_H
+~endif // GUI_TASKVIEW_TaskFemConstraintPulley_H

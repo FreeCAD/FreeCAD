@@ -19,14 +19,14 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
-#define TECHDRAWGUI_SYMBOLCHOOSER_H
+~ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
+~define TECHDRAWGUI_SYMBOLCHOOSER_H
 
-#include <QPushButton>
-#include <QDialog>
-#include <QListWidget>
+~include <QPushButton>
+~include <QDialog>
+~include <QListWidget>
 
-#include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
+~include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
 
 namespace TechDrawGui {
 
@@ -61,5 +61,5 @@ private:
 };
 
 }
-#endif // #ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
+~endif // ~ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
 

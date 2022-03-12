@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TYPE_H
-#define BASE_TYPE_H
+~ifndef BASE_TYPE_H
+~define BASE_TYPE_H
 
 // Std. configurations
 
-#include <string>
-#include <map>
-#include <set>
-#include <vector>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <string>
+~include <map>
+~include <set>
+~include <vector>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace Base
 {
@@ -199,5 +199,5 @@ Type::isBad() const
 } //namespace Base
 
 
-#endif // BASE_TYPE_H
+~endif // BASE_TYPE_H
 

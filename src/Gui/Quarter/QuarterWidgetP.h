@@ -1,5 +1,5 @@
-#ifndef QUARTER_QUARTERWIDGETP_H
-#define QUARTER_QUARTERWIDGETP_H
+~ifndef QUARTER_QUARTERWIDGETP_H
+~define QUARTER_QUARTERWIDGETP_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,10 +33,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
-#include <QList>
-#include <QUrl>
-#include <QtOpenGL.h>
+~include <Inventor/SbBasic.h>
+~include <QList>
+~include <QUrl>
+~include <QtOpenGL.h>
 
 
 class SoNode;
@@ -116,6 +116,6 @@ public:
   static void removeFromCacheContext(QuarterWidgetP_cachecontext * context, const QtGLWidget * widget);
 };
 
-#endif // QUARTER_QUARTERWIDGETP_H
+~endif // QUARTER_QUARTERWIDGETP_H
 
 }}} // namespace

@@ -22,10 +22,10 @@
 
 
 
-#ifndef PART_FEATUREPARTSPLINE_H
-#define PART_FEATUREPARTSPLINE_H
+~ifndef PART_FEATUREPARTSPLINE_H
+~define PART_FEATUREPARTSPLINE_H
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -45,5 +45,5 @@ public:
 } //namespace Part
 
 
-#endif // PART_FEATUREPARTSPLINE_H
+~endif // PART_FEATUREPARTSPLINE_H
 

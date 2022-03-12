@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef TESTGUI_UNITTESTPY_H
-#define TESTGUI_UNITTESTPY_H
+~ifndef TESTGUI_UNITTESTPY_H
+~define TESTGUI_UNITTESTPY_H
 
-#include <Base/PyObjectBase.h>
-#include <CXX/Extensions.hxx>
+~include <Base/PyObjectBase.h>
+~include <CXX/Extensions.hxx>
 
 
 namespace TestGui
@@ -68,5 +68,5 @@ private:
 } //namespace TESTGUI_UNITTESTPY_H
 
 
-#endif
+~endif
 

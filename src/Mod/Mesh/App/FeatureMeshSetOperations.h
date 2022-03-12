@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef FEATURE_MESH_SETOPERATIONS_H
-#define FEATURE_MESH_SETOPERATIONS_H
+~ifndef FEATURE_MESH_SETOPERATIONS_H
+~define FEATURE_MESH_SETOPERATIONS_H
 
-#include <App/PropertyStandard.h>
+~include <App/PropertyStandard.h>
 
-#include "MeshFeature.h"
+~include "MeshFeature.h"
 
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
 
 namespace Mesh
@@ -61,4 +61,4 @@ public:
 
 }
 
-#endif // FEATURE_MESH_SEGMENT_H 
+~endif // FEATURE_MESH_SEGMENT_H 

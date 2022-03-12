@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderFemMeshShape_H
-#define FEM_ViewProviderFemMeshShape_H
+~ifndef FEM_ViewProviderFemMeshShape_H
+~define FEM_ViewProviderFemMeshShape_H
 
-#include "ViewProviderFemMesh.h"
+~include "ViewProviderFemMesh.h"
 
 namespace FemGui
 {
@@ -44,4 +44,4 @@ public:
 } //namespace FemGui
 
 
-#endif // FEM_ViewProviderFemMeshShape_H
+~endif // FEM_ViewProviderFemMeshShape_H

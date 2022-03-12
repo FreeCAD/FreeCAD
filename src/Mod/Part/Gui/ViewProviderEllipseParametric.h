@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
+~ifndef PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
+~define PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
 
-#include "ViewProviderPrimitive.h"
+~include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;
@@ -55,5 +55,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
+~endif // PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
 

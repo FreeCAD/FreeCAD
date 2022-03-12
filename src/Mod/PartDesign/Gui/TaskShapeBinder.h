@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDatumShapeBinder_H
-#define GUI_TASKVIEW_TaskDatumShapeBinder_H
+~ifndef GUI_TASKVIEW_TaskDatumShapeBinder_H
+~define GUI_TASKVIEW_TaskDatumShapeBinder_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "ViewProviderShapeBinder.h"
+~include "ViewProviderShapeBinder.h"
 
 class Ui_TaskShapeBinder;
 class QListWidget;
@@ -103,4 +103,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

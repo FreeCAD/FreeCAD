@@ -1,5 +1,5 @@
-#ifndef SMALLCHANGE_SWITCHBOARD_H
-#define SMALLCHANGE_SWITCHBOARD_H
+~ifndef SMALLCHANGE_SWITCHBOARD_H
+~define SMALLCHANGE_SWITCHBOARD_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/fields/SoMFBool.h>
-#include <Inventor/nodes/SoGroup.h>
+~include <Inventor/fields/SoMFBool.h>
+~include <Inventor/nodes/SoGroup.h>
 
 
 class GuiExport SmSwitchboard : public SoGroup {
@@ -62,4 +62,4 @@ protected:
 
 };
 
-#endif // !SMALLCHANGE_SWITCHBOARD_H
+~endif // !SMALLCHANGE_SWITCHBOARD_H

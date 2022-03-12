@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskMirroredParameters_H
-#define GUI_TASKVIEW_TaskMirroredParameters_H
+~ifndef GUI_TASKVIEW_TaskMirroredParameters_H
+~define GUI_TASKVIEW_TaskMirroredParameters_H
 
-#include <Gui/Selection.h>
+~include <Gui/Selection.h>
 
-#include "TaskTransformedParameters.h"
-#include "ViewProviderMirrored.h"
+~include "TaskTransformedParameters.h"
+~include "ViewProviderMirrored.h"
 
 class Ui_TaskMirroredParameters;
 
@@ -97,4 +97,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+~ifndef Fem_FemMeshShapeObject_H
+~define Fem_FemMeshShapeObject_H
 
 
-#include "FemMeshObject.h"
+~include "FemMeshObject.h"
 
 namespace Fem
 {
@@ -58,4 +58,4 @@ protected:
 } //namespace Fem
 
 
-#endif // Fem_FemMeshShapeObject_H
+~endif // Fem_FemMeshShapeObject_H

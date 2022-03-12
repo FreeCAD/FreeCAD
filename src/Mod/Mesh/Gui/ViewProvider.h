@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDERMESH_H
-#define MESHGUI_VIEWPROVIDERMESH_H
+~ifndef MESHGUI_VIEWPROVIDERMESH_H
+~define MESHGUI_VIEWPROVIDERMESH_H
 
-#include <vector>
-#include <Inventor/fields/SoSFVec2f.h>
+~include <vector>
+~include <Inventor/fields/SoSFVec2f.h>
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Types.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
-#include <App/PropertyStandard.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Types.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderBuilder.h>
+~include <App/PropertyStandard.h>
 
 
 class SoGroup;
@@ -292,5 +292,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESH_H
+~endif // MESHGUI_VIEWPROVIDERMESH_H
 

@@ -1,5 +1,5 @@
-#ifndef QUARTER_INPUTDEVICE_H
-#define QUARTER_INPUTDEVICE_H
+~ifndef QUARTER_INPUTDEVICE_H
+~define QUARTER_INPUTDEVICE_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Quarter/Basic.h>
-#include <Inventor/SbVec2s.h>
+~include <Quarter/Basic.h>
+~include <Inventor/SbVec2s.h>
 
 class QEvent;
 class SoEvent;
@@ -68,4 +68,4 @@ protected:
 
 }}} // namespace
 
-#endif // QUARTER_INPUTDEVICE_H
+~endif // QUARTER_INPUTDEVICE_H

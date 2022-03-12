@@ -22,20 +22,20 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
-#define GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
+~define GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Base/Quantity.h>
 
-#include "TaskFemConstraint.h"
+~include "TaskFemConstraint.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
+~include <QObject>
+~include <Base/Console.h>
+~include <App/DocumentObject.h>
+~include <QKeyEvent>
 
 namespace FemGui {
 
@@ -71,4 +71,4 @@ protected:
 
 } // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
+~endif // GUI_TASKVIEW_TaskFemConstraintOnBoundary_H

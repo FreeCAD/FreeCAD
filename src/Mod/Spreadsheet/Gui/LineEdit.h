@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef LINEEDIT_H
-#define LINEEDIT_H
+~ifndef LINEEDIT_H
+~define LINEEDIT_H
 
-#include <Gui/ExpressionCompleter.h>
-#include <QWidget>
-#include <QModelIndex>
+~include <Gui/ExpressionCompleter.h>
+~include <QWidget>
+~include <QModelIndex>
 
 namespace SpreadsheetGui {
 
@@ -51,4 +51,4 @@ private:
 
 }
 
-#endif // LINEEDIT_H
+~endif // LINEEDIT_H

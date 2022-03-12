@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandler_H
-#define SKETCHERGUI_DrawSketchHandler_H
+~ifndef SKETCHERGUI_DrawSketchHandler_H
+~define SKETCHERGUI_DrawSketchHandler_H
 
-#include <Base/Tools2D.h>
-#include <Mod/Sketcher/App/Constraint.h>
-#include <Gui/Selection.h>
+~include <Base/Tools2D.h>
+~include <Mod/Sketcher/App/Constraint.h>
+~include <Gui/Selection.h>
 
 class QPixmap;
 
@@ -178,5 +178,5 @@ protected:
 } // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_DrawSketchHandler_H
+~endif // SKETCHERGUI_DrawSketchHandler_H
 

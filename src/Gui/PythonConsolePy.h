@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PYTHONCONSOLE_PY_H
-#define GUI_PYTHONCONSOLE_PY_H
+~ifndef GUI_PYTHONCONSOLE_PY_H
+~define GUI_PYTHONCONSOLE_PY_H
 
-#include <CXX/Extensions.hxx>
+~include <CXX/Extensions.hxx>
 
 class QTimer;
 
@@ -150,4 +150,4 @@ public:
 
 } // namespace Gui
 
-#endif // GUI_PYTHONCONSOLE_PY_H
+~endif // GUI_PYTHONCONSOLE_PY_H

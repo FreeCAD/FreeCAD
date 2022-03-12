@@ -1,14 +1,14 @@
-#ifndef ZIPHEAD_H
-#define ZIPHEAD_H
+~ifndef ZIPHEAD_H
+~define ZIPHEAD_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <string>
-#include <vector>
+~include "meta-iostreams.h"
+~include <string>
+~include <vector>
 
-#include "fileentry.h"
-#include "zipios_defs.h"
+~include "fileentry.h"
+~include "zipios_defs.h"
 
 namespace zipios {
 
@@ -214,7 +214,7 @@ inline bool operator!= ( const ZipCDirEntry &ze, const ZipLocalEntry &zlh ) {
 
 } // namespace
 
-#endif
+~endif
 
 
 /** \file

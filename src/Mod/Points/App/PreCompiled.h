@@ -21,49 +21,49 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_PRECOMPILED_H
-#define POINTS_PRECOMPILED_H
+~ifndef POINTS_PRECOMPILED_H
+~define POINTS_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define PointsExport __declspec(dllexport)
-#else // for Linux
-# define PointsExport
-#endif
+~ifdef FC_OS_WIN32
+~ define PointsExport __declspec(dllexport)
+~else // for Linux
+~ define PointsExport
+~endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-# pragma warning( disable : 4181 )
-# pragma warning( disable : 4305 )
-# pragma warning( disable : 4522 )
-#endif
+~ifdef _MSC_VER
+~ pragma warning( disable : 4181 )
+~ pragma warning( disable : 4305 )
+~ pragma warning( disable : 4522 )
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+~include <stdio.h>
+~include <assert.h>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
-#include <bitset>
-#include <float.h>
-#include <cmath>
-#include <stdlib.h>
+~include <algorithm>
+~include <iostream>
+~include <fstream>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
+~include <bitset>
+~include <float.h>
+~include <cmath>
+~include <stdlib.h>
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif
+~endif
 

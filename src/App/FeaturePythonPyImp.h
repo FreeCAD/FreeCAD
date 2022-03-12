@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_FEATUREPYTHONPYIMP_H
-#define APP_FEATUREPYTHONPYIMP_H
+~ifndef APP_FEATUREPYTHONPYIMP_H
+~define APP_FEATUREPYTHONPYIMP_H
 
-#include <Base/BaseClass.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+~include <Base/BaseClass.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmissing-field-initializers"
-#elif defined(__GNUC__) || defined(__GNUG__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmissing-field-initializers"
+~elif defined(__GNUC__) || defined(__GNUG__)
+~ pragma GCC diagnostic push
+~ pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+~endif
 
-#define PYTHON_TYPE_DEF(_class_, _subclass_) \
+~define PYTHON_TYPE_DEF(_class_, _subclass_) \
     class _class_ : public _subclass_ \
     { \
     public: \
@@ -45,22 +45,22 @@
         virtual ~_class_(); \
     };
 
-#if PY_VERSION_HEX >= 0x03090000
-#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#elif PY_VERSION_HEX >= 0x03080000
-#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#else
-#define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#endif \
+~if PY_VERSION_HEX >= 0x03090000
+~define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+~elif PY_VERSION_HEX >= 0x03080000
+~define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+~else
+~define PYTHON_TYPE_SLOTS 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+~endif \
 
-#define PYTHON_TYPE_IMP(_class_, _subclass_) \
+~define PYTHON_TYPE_IMP(_class_, _subclass_) \
     PyTypeObject _class_::Type = { \
         PyVarObject_HEAD_INIT(&PyType_Type, 0) \
-        ""#_class_"",  \
+        ""~_class_"",  \
         sizeof(_class_),  \
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
         Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT, \
-        ""#_class_"", \
+        ""~_class_"", \
         0, 0, 0, 0, 0, 0, 0, 0, 0, \
         &_subclass_::Type, \
         PYTHON_TYPE_SLOTS \
@@ -106,12 +106,12 @@ private:
 
 } //namespace App
 
-#include "FeaturePythonPyImp.inl"
+~include "FeaturePythonPyImp.inl"
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined(__GNUC__) || defined(__GNUG__)
-# pragma GCC diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~elif defined(__GNUC__) || defined(__GNUG__)
+~ pragma GCC diagnostic pop
+~endif
 
-#endif // APP_FEATUREPYTHONPYIMP_H
+~endif // APP_FEATUREPYTHONPYIMP_H

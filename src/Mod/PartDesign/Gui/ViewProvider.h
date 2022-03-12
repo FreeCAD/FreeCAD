@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProvider_H
-#define PARTGUI_ViewProvider_H
+~ifndef PARTGUI_ViewProvider_H
+~define PARTGUI_ViewProvider_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
-#include "ViewProviderBody.h"
-#include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Part/Gui/ViewProvider.h>
+~include "ViewProviderBody.h"
+~include <Gui/ViewProviderPythonFeature.h>
 
-#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
+~include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+~include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesignGui {
 
@@ -96,4 +96,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderHole_H
+~endif // PARTGUI_ViewProviderHole_H

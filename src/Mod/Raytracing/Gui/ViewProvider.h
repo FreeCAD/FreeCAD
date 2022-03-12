@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef RAYTRACINGGUI_VIEWPROVIDER_H
-#define RAYTRACINGGUI_VIEWPROVIDER_H
+~ifndef RAYTRACINGGUI_VIEWPROVIDER_H
+~define RAYTRACINGGUI_VIEWPROVIDER_H
 
 
-#include <Gui/ViewProviderDocumentObjectGroup.h>
-#include <QCoreApplication>
+~include <Gui/ViewProviderDocumentObjectGroup.h>
+~include <QCoreApplication>
 
 namespace RaytracingGui {
 
@@ -66,5 +66,5 @@ protected:
 
 } // namespace RaytracingGui
 
-#endif // RAYTRACINGGUI_VIEWPROVIDER_H
+~endif // RAYTRACINGGUI_VIEWPROVIDER_H
 

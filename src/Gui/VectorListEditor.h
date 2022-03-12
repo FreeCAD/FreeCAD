@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VECTORLISTEDITOR_H
-#define GUI_VECTORLISTEDITOR_H
+~ifndef GUI_VECTORLISTEDITOR_H
+~define GUI_VECTORLISTEDITOR_H
 
-#include <QAbstractTableModel>
-#include <QDialog>
-#include <QItemDelegate>
-#include <QList>
+~include <QAbstractTableModel>
+~include <QDialog>
+~include <QItemDelegate>
+~include <QList>
 
-#include <memory>
-#include <Base/Vector3D.h>
+~include <memory>
+~include <Base/Vector3D.h>
 
 
 namespace Gui {
@@ -109,4 +109,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_VECTORLISTEDITOR_H
+~endif // GUI_VECTORLISTEDITOR_H

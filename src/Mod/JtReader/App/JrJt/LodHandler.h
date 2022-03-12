@@ -20,8 +20,8 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef LodHandler_HEADER
-#define LodHandler_HEADER
+~ifndef LodHandler_HEADER
+~define LodHandler_HEADER
 
 
 
@@ -36,6 +36,6 @@ public:
 
 
 
-#endif
+~endif
 
 

@@ -21,13 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UNIGRIDAPPROX_H
-#define UNIGRIDAPPROX_H
+~ifndef UNIGRIDAPPROX_H
+~define UNIGRIDAPPROX_H
 
-#include "routine.h"
-#include <boost/numeric/ublas/matrix.hpp>
-#include <GeomAdaptor_Surface.hxx>
-#include <TopoDS_Face.hxx>
+~include "routine.h"
+~include <boost/numeric/ublas/matrix.hpp>
+~include <GeomAdaptor_Surface.hxx>
+~include <TopoDS_Face.hxx>
 
 using namespace boost::numeric;
 
@@ -79,4 +79,4 @@ protected:
 
 };
 
-#endif
+~endif

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
-#define GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+~ifndef GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+~define GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
 class Ui_TaskSketcherSolverAdvanced;
 
@@ -81,4 +81,4 @@ private:
 
 } //namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TaskSketcherSolverAdvanced_H
+~endif // GUI_TASKVIEW_TaskSketcherSolverAdvanced_H

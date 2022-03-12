@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_APPLICATION_H
-#define GUI_APPLICATION_H
+~ifndef GUI_APPLICATION_H
+~define GUI_APPLICATION_H
 
-#include "GuiApplicationNativeEventAware.h"
-#include <Base/Interpreter.h> // For Base::SystemExitException
-#include <QList>
-#include <memory>
+~include "GuiApplicationNativeEventAware.h"
+~include <Base/Interpreter.h> // For Base::SystemExitException
+~include <QList>
+~include <memory>
 
 class QSessionManager;
 
@@ -103,4 +103,4 @@ public:
 
 }
 
-#endif // GUI_APPLICATION_H
+~endif // GUI_APPLICATION_H

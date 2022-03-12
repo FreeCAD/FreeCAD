@@ -23,14 +23,14 @@
  
 
 
-#ifndef _FeatureViewAnnotation_h_
-#define _FeatureViewAnnotation_h_
+~ifndef _FeatureViewAnnotation_h_
+~define _FeatureViewAnnotation_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include "FeatureView.h"
+~include <App/FeaturePython.h>
 
 
 namespace Drawing
@@ -70,4 +70,4 @@ typedef App::FeaturePythonT<FeatureViewAnnotation> FeatureViewAnnotationPython;
 } //namespace Drawing
 
 
-#endif
+~endif

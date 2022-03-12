@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef REG_EXP_DIALOG_H
-#define REG_EXP_DIALOG_H
+~ifndef REG_EXP_DIALOG_H
+~define REG_EXP_DIALOG_H
 
-#include <qdialog.h>
-#include <qregexp.h>
-#include <qsyntaxhighlighter.h>
+~include <qdialog.h>
+~include <qregexp.h>
+~include <qsyntaxhighlighter.h>
 
 class RegExpSyntaxHighlighter;
 class Ui_RegExpDialog;
@@ -64,4 +64,4 @@ private:
     QRegExp regexp;
 };
 
-#endif // REG_EXP_DIALOG_H
+~endif // REG_EXP_DIALOG_H

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRYMIGRATIONEXTENSION_H
-#define PART_GEOMETRYMIGRATIONEXTENSION_H
+~ifndef PART_GEOMETRYMIGRATIONEXTENSION_H
+~define PART_GEOMETRYMIGRATIONEXTENSION_H
 
-#include <Mod/Part/App/Geometry.h>
-#include <bitset>
+~include <Mod/Part/App/Geometry.h>
+~include <bitset>
 
 namespace Part
 {
@@ -81,4 +81,4 @@ private:
 } //namespace Part
 
 
-#endif // PART_GEOMETRYMIGRATIONEXTENSION_H
+~endif // PART_GEOMETRYMIGRATIONEXTENSION_H

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTCUT_H
-#define PART_FEATUREPARTCUT_H
+~ifndef PART_FEATUREPARTCUT_H
+~define PART_FEATUREPARTCUT_H
 
-#include <App/PropertyLinks.h>
+~include <App/PropertyLinks.h>
 
-#include "FeaturePartBoolean.h"
+~include "FeaturePartBoolean.h"
 
 namespace Part
 {
@@ -48,4 +48,4 @@ protected:
 
 }
 
-#endif // PART_FEATUREPARTCUT_H
+~endif // PART_FEATUREPARTCUT_H

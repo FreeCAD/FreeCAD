@@ -27,15 +27,15 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
 //! @file  E57Format.h header file for the E57 API
 
-#include <cfloat>
-#include <memory>
-#include <vector>
+~include <cfloat>
+~include <memory>
+~include <vector>
 
-#include "E57Exception.h"
+~include "E57Exception.h"
 
 namespace e57
 {
@@ -138,21 +138,21 @@ namespace e57
 // defines symbol E57_INTERNAL_IMPLEMENTATION_ENABLE. Normal API users should
 // not define this symbol. Basically the internal version allows access to the
 // pointer to the implementation (impl_)
-#ifdef E57_INTERNAL_IMPLEMENTATION_ENABLE
-#define E57_OBJECT_IMPLEMENTATION( T )                                                                                 \
+~ifdef E57_INTERNAL_IMPLEMENTATION_ENABLE
+~define E57_OBJECT_IMPLEMENTATION( T )                                                                                 \
 public:                                                                                                                \
-   std::shared_ptr<T##Impl> impl() const                                                                               \
+   std::shared_ptr<T~~Impl> impl() const                                                                               \
    {                                                                                                                   \
       return ( impl_ );                                                                                                \
    }                                                                                                                   \
                                                                                                                        \
 protected:                                                                                                             \
-   std::shared_ptr<T##Impl> impl_;
-#else
-#define E57_OBJECT_IMPLEMENTATION( T )                                                                                 \
+   std::shared_ptr<T~~Impl> impl_;
+~else
+~define E57_OBJECT_IMPLEMENTATION( T )                                                                                 \
 protected:                                                                                                             \
-   std::shared_ptr<T##Impl> impl_;
-#endif
+   std::shared_ptr<T~~Impl> impl_;
+~endif
    //! @endcond
 
    class BlobNode;
@@ -201,9 +201,9 @@ protected:                                                                      
 
 //! \cond documentNonPublic   The following isn't part of the API, and isn't
 //! documented.
-#ifdef E57_INTERNAL_IMPLEMENTATION_ENABLE
+~ifdef E57_INTERNAL_IMPLEMENTATION_ENABLE
       explicit Node( std::shared_ptr<NodeImpl> ); // internal use only
-#endif
+~endif
 
    private:
       friend class NodeImpl;

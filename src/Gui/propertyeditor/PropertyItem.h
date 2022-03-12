@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITORITEM_H
-#define PROPERTYEDITORITEM_H
+~ifndef PROPERTYEDITORITEM_H
+~define PROPERTYEDITORITEM_H
 
-#include <QItemEditorFactory>
-#include <QObject>
-#include <QPointer>
-#include <vector>
+~include <QItemEditorFactory>
+~include <QObject>
+~include <QPointer>
+~include <vector>
 
-#include <App/PropertyStandard.h>
-#include <Base/Factory.h>
-#include <Base/Matrix.h>
-#include <Base/Placement.h>
-#include <Base/Quantity.h>
-#include <Base/Vector3D.h>
-#include <Base/UnitsApi.h>
-#include <Gui/ExpressionBinding.h>
-#include <Gui/MetaTypes.h>
-#include <Gui/Widgets.h>
+~include <App/PropertyStandard.h>
+~include <Base/Factory.h>
+~include <Base/Matrix.h>
+~include <Base/Placement.h>
+~include <Base/Quantity.h>
+~include <Base/Vector3D.h>
+~include <Base/UnitsApi.h>
+~include <Gui/ExpressionBinding.h>
+~include <Gui/MetaTypes.h>
+~include <Gui/Widgets.h>
 
-#include <FCGlobal.h>
+~include <FCGlobal.h>
 
-#ifdef Q_MOC_RUN
+~ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
 Q_DECLARE_METATYPE(QList<Base::Vector3d>)
@@ -51,20 +51,20 @@ Q_DECLARE_METATYPE(Base::Placement)
 Q_DECLARE_METATYPE(Base::Rotation)
 Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
-#endif
+~endif
 
 
-#define PROPERTYITEM_HEADER \
+~define PROPERTYITEM_HEADER \
 public: \
     static void *create(void); \
     static void init(void);
 
-#define PROPERTYITEM_SOURCE(_class_) \
+~define PROPERTYITEM_SOURCE(_class_) \
 void * _class_::create(void) { \
    return new _class_ ();\
 } \
 void _class_::init(void) { \
-    (void)new Gui::PropertyEditor::PropertyItemProducer<_class_>(#_class_); \
+    (void)new Gui::PropertyEditor::PropertyItemProducer<_class_>(~_class_); \
 }
 
 namespace Gui {
@@ -1199,4 +1199,4 @@ public:
 } // namespace PropertyEditor
 } // namespace Gui
 
-#endif // PROPERTYEDITORITEM_H
+~endif // PROPERTYEDITORITEM_H

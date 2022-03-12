@@ -10,12 +10,12 @@
 // * Fix compiler warnings
 // * Remove macros loop,i,j,k
 
-#include <vector>
-#include <Base/Vector3D.h>
+~include <vector>
+~include <Base/Vector3D.h>
 
-#ifndef _USE_MATH_DEFINES
-#define _USE_MATH_DEFINES
-#endif
+~ifndef _USE_MATH_DEFINES
+~define _USE_MATH_DEFINES
+~endif
 
 typedef Base::Vector3f vec3f;
 

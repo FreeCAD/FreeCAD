@@ -20,46 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawUtil_h_
-#define _DrawUtil_h_
+~ifndef _DrawUtil_h_
+~define _DrawUtil_h_
 
-#include <string>
+~include <string>
 
-#include <QString>
-#include <QByteArray>
-#include <QPointF>
+~include <QString>
+~include <QByteArray>
+~include <QPointF>
 
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Dir2d.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Vec.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Dir2d.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Vec.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include <App/DocumentObject.h>
-#include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
+~include <App/DocumentObject.h>
+~include <Base/Tools2D.h>
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include "LineGroup.h"
+~include "LineGroup.h"
 
 
-#ifndef M_2PI
-    #define M_2PI ((M_PI)*2.0)
-#endif
+~ifndef M_2PI
+    ~define M_2PI ((M_PI)*2.0)
+~endif
 
-#define VERTEXTOLERANCE (2.0 * Precision::Confusion())
+~define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 
-#define SVG_NS_URI         "http://www.w3.org/2000/svg"
-#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+~define SVG_NS_URI         "http://www.w3.org/2000/svg"
+~define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
 
 namespace TechDraw
 {
@@ -185,4 +185,4 @@ class TechDrawExport DrawUtil {
 };
 
 } //end namespace TechDraw
-#endif
+~endif

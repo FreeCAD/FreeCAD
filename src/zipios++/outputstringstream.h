@@ -1,18 +1,18 @@
-#ifndef OUTPUTSTRINGSTREAM_H
-#define OUTPUTSTRINGSTREAM_H
+~ifndef OUTPUTSTRINGSTREAM_H
+~define OUTPUTSTRINGSTREAM_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <string>
+~include "meta-iostreams.h"
+~include <string>
 
 namespace zipios {
 
-#if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
+~if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
 
 typedef std::ostringstream OutputStringStream ;
 
-#else
+~else
 
 /** OutputStringStream is typedefed to ostringstream if sstream is
     part of the standard library (unless Zipios++ has been explicitly
@@ -38,12 +38,12 @@ private:
   std::string str() const ; 
 };
 
-#endif
+~endif
 
 } // namespace 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines OutputStringStream.

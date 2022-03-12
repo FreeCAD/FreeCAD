@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef ROBOTGUI_TASKWATCHER_H
-#define ROBOTGUI_TASKWATCHER_H
+~ifndef ROBOTGUI_TASKWATCHER_H
+~define ROBOTGUI_TASKWATCHER_H
 
 
 
-#include <Gui/TaskView/TaskWatcher.h>
-#include "TaskRobot6Axis.h"
-#include "TaskRobotControl.h"
+~include <Gui/TaskView/TaskWatcher.h>
+~include "TaskRobot6Axis.h"
+~include "TaskRobotControl.h"
 
-#include <QObject>
+~include <QObject>
 
 namespace RobotGui {
 
@@ -56,4 +56,4 @@ protected:
 
 } //namespace RobotGui
 
-#endif // ROBOTGUI_TASKWATCHER_H
+~endif // ROBOTGUI_TASKWATCHER_H

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
-#define MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
+~ifndef MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
+~define MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
-#include <Gui/PropertyPage.h>
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
+~include <Gui/PropertyPage.h>
 
 namespace MeshGui {
 
@@ -55,5 +55,5 @@ private:
 
 } // namespace MeshGui
 
-#endif // MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
+~endif // MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 

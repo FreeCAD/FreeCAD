@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS_H
-#define BASE_TOOLS_H
+~ifndef BASE_TOOLS_H
+~define BASE_TOOLS_H
 
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
-#include <functional>
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <boost_signals2.hpp>
-#include <QString>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
+~include <functional>
+~include <algorithm>
+~include <cmath>
+~include <iostream>
+~include <vector>
+~include <string>
+~include <boost_signals2.hpp>
+~include <QString>
 
 // ----------------------------------------------------------------------------
 
@@ -111,9 +111,9 @@ inline T sgn (T t)
         return (t > 0) ? T(1) : T(-1);
 }
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
 
 template<class T>
 inline T toRadians(T d)
@@ -280,4 +280,4 @@ struct BaseExport Tools
 
 } // namespace Base
 
-#endif // BASE_TOOLS_H
+~endif // BASE_TOOLS_H

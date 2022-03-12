@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_BULLSEYE_H
-#define PART_FACEMAKER_BULLSEYE_H
+~ifndef PART_FACEMAKER_BULLSEYE_H
+~define PART_FACEMAKER_BULLSEYE_H
 
-#include "FaceMaker.h"
+~include "FaceMaker.h"
 
-#include <Geom_Surface.hxx>
-#include <gp_Pln.hxx>
+~include <Geom_Surface.hxx>
+~include <gp_Pln.hxx>
 
 namespace Part
 {
@@ -101,4 +101,4 @@ protected:
 
 
 }//namespace Part
-#endif // PART_FACEMAKER_BULLSEYE_H
+~endif // PART_FACEMAKER_BULLSEYE_H

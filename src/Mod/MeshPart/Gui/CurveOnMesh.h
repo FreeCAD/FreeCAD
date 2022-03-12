@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPARTGUI_CURVEONMESH_H
-#define MESHPARTGUI_CURVEONMESH_H
+~ifndef MESHPARTGUI_CURVEONMESH_H
+~define MESHPARTGUI_CURVEONMESH_H
 
-#include <QObject>
-#include <Geom_BSplineCurve.hxx>
-#include <GeomAbs_Shape.hxx>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <memory>
+~include <QObject>
+~include <Geom_BSplineCurve.hxx>
+~include <GeomAbs_Shape.hxx>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <memory>
 
 class SbVec3f;
 class SoCoordinate3;
@@ -101,4 +101,4 @@ private:
 
 }
 
-#endif // MESHPARTGUI_CURVEONMESH_H
+~endif // MESHPARTGUI_CURVEONMESH_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCUMENTMODEL_H
-#define GUI_DOCUMENTMODEL_H
+~ifndef GUI_DOCUMENTMODEL_H
+~define GUI_DOCUMENTMODEL_H
 
-#include <QAbstractItemModel>
-#include <vector>
+~include <QAbstractItemModel>
+~include <vector>
 
 
 namespace App {
@@ -77,4 +77,4 @@ private:
 } //namespace Gui
 
 
-#endif //GUI_DOCUMENTMODEL_H
+~endif //GUI_DOCUMENTMODEL_H

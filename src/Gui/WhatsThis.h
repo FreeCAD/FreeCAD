@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WHATSTHIS_H
-#define GUI_WHATSTHIS_H
+~ifndef GUI_WHATSTHIS_H
+~define GUI_WHATSTHIS_H
 
-#include <QString>
-#include "Command.h"
+~include <QString>
+~include "Command.h"
 
 namespace Gui {
 
@@ -54,4 +54,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_WHATSTHIS_H
+~endif // GUI_WHATSTHIS_H

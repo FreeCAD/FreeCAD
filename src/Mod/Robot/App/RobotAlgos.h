@@ -23,14 +23,14 @@
  
 
 
-#ifndef _RobotAlgos_h_
-#define _RobotAlgos_h_
+~ifndef _RobotAlgos_h_
+~define _RobotAlgos_h_
 
-#include <Base/Vector3D.h>
-#include <string>
+~include <Base/Vector3D.h>
+~include <string>
 
-#include "kdl_cp/frames_io.hpp"
-#include <Base/Placement.h>
+~include "kdl_cp/frames_io.hpp"
+~include <Base/Placement.h>
 
 namespace Robot
 {
@@ -62,4 +62,4 @@ inline  Base::Placement toPlacement(const KDL::Frame &To){
 
 
 
-#endif
+~endif

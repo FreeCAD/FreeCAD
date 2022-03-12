@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef APP_BRANDING_H
-#define APP_BRANDING_H
+~ifndef APP_BRANDING_H
+~define APP_BRANDING_H
 
-#include <string>
-#include <QDomDocument>
-#include <QMap>
-#include <QString>
-#include <QVector>
+~include <string>
+~include <QDomDocument>
+~include <QMap>
+~include <QString>
+~include <QVector>
 
 
 class QIODevice;
@@ -52,4 +52,4 @@ private:
 
 }
 
-#endif // APP_BRANDING_H
+~endif // APP_BRANDING_H

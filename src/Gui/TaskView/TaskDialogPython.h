@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKDIALOGPYTHON_H
-#define GUI_TASKVIEW_TASKDIALOGPYTHON_H
+~ifndef GUI_TASKVIEW_TASKDIALOGPYTHON_H
+~define GUI_TASKVIEW_TASKDIALOGPYTHON_H
 
-#include "TaskDialog.h"
-#include "TaskWatcher.h"
+~include "TaskDialog.h"
+~include "TaskWatcher.h"
 
 
 namespace Gui {
@@ -112,5 +112,5 @@ private:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKDIALOGPYTHON_H
+~endif // GUI_TASKVIEW_TASKDIALOGPYTHON_H
 

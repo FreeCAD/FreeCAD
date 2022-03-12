@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKRICHANNO_H
-#define TECHDRAWGUI_TASKRICHANNO_H
+~ifndef TECHDRAWGUI_TASKRICHANNO_H
+~define TECHDRAWGUI_TASKRICHANNO_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
+~include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
 
 class MRichTextEdit;
 
@@ -169,4 +169,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKRICHANNO_H
+~endif // ~ifndef TECHDRAWGUI_TASKRICHANNO_H

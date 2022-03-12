@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#include <Eigen/Dense>
+~include <Eigen/Dense>
 
 int qp_eq(Eigen::MatrixXd &H, Eigen::VectorXd &g, Eigen::MatrixXd &A, Eigen::VectorXd &c,
           Eigen::VectorXd &x, Eigen::MatrixXd &Y, Eigen::MatrixXd &Z);

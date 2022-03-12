@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_View3DInventorRiftViewer_H
-#define GUI_View3DInventorRiftViewer_H
+~ifndef GUI_View3DInventorRiftViewer_H
+~define GUI_View3DInventorRiftViewer_H
 
-#if BUILD_VR
+~if BUILD_VR
 
-#include "CoinRiftWidget.h"
+~include "CoinRiftWidget.h"
 
 namespace Gui {
 
@@ -51,6 +51,6 @@ protected:
 
 } //namespace Gui
 
-#endif //BUILD_VR
+~endif //BUILD_VR
 
-#endif //GUI_View3DInventorRiftViewer_H
+~endif //GUI_View3DInventorRiftViewer_H

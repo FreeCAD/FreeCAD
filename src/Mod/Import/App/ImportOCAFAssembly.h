@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_ImportOCAFAssembly_H
-#define IMPORT_ImportOCAFAssembly_H
+~ifndef IMPORT_ImportOCAFAssembly_H
+~define IMPORT_ImportOCAFAssembly_H
 
-#include <Quantity_Color.hxx>
-#include <TopoDS_Shape.hxx>
-#include <climits>
-#include <string>
-#include <set>
-#include <map>
-#include <vector>
-#include <App/Material.h>
+~include <Quantity_Color.hxx>
+~include <TopoDS_Shape.hxx>
+~include <climits>
+~include <string>
+~include <set>
+~include <map>
+~include <vector>
+~include <App/Material.h>
 
 class TDF_Label;
 class TopLoc_Location;
@@ -78,4 +78,4 @@ private:
 
 } // namespace Import {
 
-#endif //IMPORT_ImportOCAFAssembly_H
+~endif //IMPORT_ImportOCAFAssembly_H

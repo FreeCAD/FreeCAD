@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef _PointsAlgos_h_
-#define _PointsAlgos_h_
+~ifndef _PointsAlgos_h_
+~define _PointsAlgos_h_
 
-#include "Points.h"
-#include "Properties.h"
-#include <Eigen/Core>
+~include "Points.h"
+~include "Properties.h"
+~include <Eigen/Core>
 
 namespace Points
 {
@@ -176,4 +176,4 @@ public:
 } // namespace Points
 
 
-#endif
+~endif

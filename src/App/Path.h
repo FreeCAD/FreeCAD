@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_Path_H
-#define APP_Path_H
+~ifndef APP_Path_H
+~define APP_Path_H
 
-#include <Base/Persistence.h>
+~include <Base/Persistence.h>
 
 
 namespace App
@@ -51,4 +51,4 @@ public:
 } //namespace App
 
 
-#endif // APP_Path_H
+~endif // APP_Path_H

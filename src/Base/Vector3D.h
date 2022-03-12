@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#ifndef BASE_VECTOR3D_H
-#define BASE_VECTOR3D_H
+~ifndef BASE_VECTOR3D_H
+~define BASE_VECTOR3D_H
 
 
-#include <cmath>
-#include <cfloat>
+~include <cmath>
+~include <cfloat>
 
-#ifndef  F_PI
-# define F_PI  3.1415926f
-#endif
+~ifndef  F_PI
+~ define F_PI  3.1415926f
+~endif
 
-#ifndef  D_PI
-# define D_PI  3.141592653589793
-#endif
+~ifndef  D_PI
+~ define D_PI  3.141592653589793
+~endif
 
-#ifndef  FLOAT_MAX
-# define FLOAT_MAX 3.402823466E+38F
-#endif
+~ifndef  FLOAT_MAX
+~ define FLOAT_MAX 3.402823466E+38F
+~endif
 
-#ifndef  FLOAT_MIN
-# define FLOAT_MIN 1.175494351E-38F
-#endif
+~ifndef  FLOAT_MIN
+~ define FLOAT_MIN 1.175494351E-38F
+~endif
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
+~ifndef  DOUBLE_MAX
+~ define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+~endif
 
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
+~ifndef  DOUBLE_MIN
+~ define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+~endif
 
 
 namespace Base {
@@ -251,4 +251,4 @@ typedef Vector3<double> Vector3d;
 
 } // namespace Base
 
-#endif // BASE_VECTOR3D_H
+~endif // BASE_VECTOR3D_H

@@ -25,32 +25,32 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include <iomanip>
-#include <iostream>
-#include <set>
-#include <sstream>
-#include <string>
-#include <vector>
+~include <iomanip>
+~include <iostream>
+~include <set>
+~include <sstream>
+~include <string>
+~include <vector>
 
 // Define the following symbol adds some functions to the API for implementation
 // purposes. These functions are not available to a normal API user.
-#define E57_INTERNAL_IMPLEMENTATION_ENABLE 1
-#include "E57Format.h"
+~define E57_INTERNAL_IMPLEMENTATION_ENABLE 1
+~include "E57Format.h"
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 // Disable MSVC warning: warning C4224: nonstandard extension used : formal
 // parameter 'locale' was previously defined as a type
-#pragma warning( disable : 4224 )
-#endif
+~pragma warning( disable : 4224 )
+~endif
 
 namespace e57
 {
 //!!! inline these rather than macros?
-#define E57_EXCEPTION1( ecode )                                                                                        \
+~define E57_EXCEPTION1( ecode )                                                                                        \
    ( E57Exception( ( ecode ), ustring(), __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) ) )
-#define E57_EXCEPTION2( ecode, context )                                                                               \
+~define E57_EXCEPTION2( ecode, context )                                                                               \
    ( E57Exception( ( ecode ), ( context ), __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) ) )
 
    /// Create whitespace of given length, for indenting printouts in dump()

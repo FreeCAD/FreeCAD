@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKOFFSET_H
-#define PARTGUI_TASKOFFSET_H
+~ifndef PARTGUI_TASKOFFSET_H
+~define PARTGUI_TASKOFFSET_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 namespace Part { class Offset; }
 namespace PartGui { 
@@ -84,4 +84,4 @@ private:
 
 } //namespace PartGui
 
-#endif // PARTGUI_TASKOFFSET_H
+~endif // PARTGUI_TASKOFFSET_H

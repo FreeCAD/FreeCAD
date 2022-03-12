@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAssemblyConstraints_H
-#define GUI_TASKVIEW_TaskAssemblyConstraints_H
+~ifndef GUI_TASKVIEW_TaskAssemblyConstraints_H
+~define GUI_TASKVIEW_TaskAssemblyConstraints_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include "ViewProviderConstraint.h"
-#include <opendcm/core.hpp>
-#include <Solver/Solver.h>
-#include "ui_TaskAssemblyConstraints.h"
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include "ViewProviderConstraint.h"
+~include <opendcm/core.hpp>
+~include <Solver/Solver.h>
+~include "ui_TaskAssemblyConstraints.h"
 
 namespace App {
 class Property;
@@ -72,4 +72,4 @@ private:
 
 } //namespace AssemblyGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+~ifndef GUINATIVEEVENT_H
+~define GUINATIVEEVENT_H
 
-#include "GuiAbstractNativeEvent.h"
+~include "GuiAbstractNativeEvent.h"
 
 class QMainWindow;
 
-#include <IOKit/IOKitLib.h>
-#include <ConnexionClientAPI.h>
+~include <IOKit/IOKitLib.h>
+~include <ConnexionClientAPI.h>
 extern int16_t SetConnexionHandlers(ConnexionMessageHandlerProc messageHandler,
                                     ConnexionAddedHandlerProc addedHandler,
                                     ConnexionRemovedHandlerProc removedHandler,
@@ -77,5 +77,5 @@ namespace Gui
 	};
 }
 
-#endif //GUINATIVEEVENT_H
+~endif //GUINATIVEEVENT_H
 

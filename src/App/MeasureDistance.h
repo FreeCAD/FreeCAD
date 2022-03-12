@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_MEASUREDISTANCE_H
-#define APP_MEASUREDISTANCE_H
+~ifndef APP_MEASUREDISTANCE_H
+~define APP_MEASUREDISTANCE_H
 
-#include "DocumentObject.h"
-#include "PropertyGeo.h"
-#include "PropertyUnits.h"
+~include "DocumentObject.h"
+~include "PropertyGeo.h"
+~include "PropertyUnits.h"
 
 
 namespace App
@@ -60,4 +60,4 @@ protected:
 } //namespace App
 
 
-#endif // APP_MEASUREDISTANCE_H
+~endif // APP_MEASUREDISTANCE_H

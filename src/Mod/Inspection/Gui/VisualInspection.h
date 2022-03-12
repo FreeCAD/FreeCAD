@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef INSPECTIONGUI_VISUALINSPECTION_H
-#define INSPECTIONGUI_VISUALINSPECTION_H
+~ifndef INSPECTIONGUI_VISUALINSPECTION_H
+~define INSPECTIONGUI_VISUALINSPECTION_H
 
-#include <QDialog>
-#include <vector>
+~include <QDialog>
+~include <vector>
 
 class QTreeWidgetItem;
 class QPushButton;
@@ -54,4 +54,4 @@ private:
 
 } // namespace InspectionGui
 
-#endif // INSPECTIONGUI_VISUALINSPECTION_H
+~endif // INSPECTIONGUI_VISUALINSPECTION_H

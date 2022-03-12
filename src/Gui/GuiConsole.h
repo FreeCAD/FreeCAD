@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GUICONSOLE_H
-#define GUI_GUICONSOLE_H
+~ifndef GUI_GUICONSOLE_H
+~define GUI_GUICONSOLE_H
 
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 namespace Gui {
 
@@ -57,5 +57,5 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_GUICONSOLE_H
+~endif // GUI_GUICONSOLE_H
 

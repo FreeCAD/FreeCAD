@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderGroove_H
-#define PARTGUI_ViewProviderGroove_H
+~ifndef PARTGUI_ViewProviderGroove_H
+~define PARTGUI_ViewProviderGroove_H
 
-#include "ViewProviderSketchBased.h"
+~include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
@@ -54,4 +54,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderGroove_H
+~endif // PARTGUI_ViewProviderGroove_H

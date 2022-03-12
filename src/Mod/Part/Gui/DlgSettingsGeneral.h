@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGSGENERAL_H
-#define PARTGUI_DLGSETTINGSGENERAL_H
+~ifndef PARTGUI_DLGSETTINGSGENERAL_H
+~define PARTGUI_DLGSETTINGSGENERAL_H
 
-#include <Gui/PropertyPage.h>
+~include <Gui/PropertyPage.h>
 
 class QButtonGroup;
 
@@ -87,4 +87,4 @@ private:
 
 } // namespace Gui
 
-#endif // PARTGUI_DLGSETTINGSGENERAL_H
+~endif // PARTGUI_DLGSETTINGSGENERAL_H

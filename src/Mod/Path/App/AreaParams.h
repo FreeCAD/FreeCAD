@@ -20,39 +20,39 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_AreaParams_H
-#define PATH_AreaParams_H
+~ifndef PATH_AreaParams_H
+~define PATH_AreaParams_H
 
 // define this to enable offset algo selection
-// #define AREA_OFFSET_ALGO
+// ~define AREA_OFFSET_ALGO
 
 /** \file
  * Parameters definition for Path::Area and its companion
  * See \ref ParamPage "here" for details of parameter definition.
  */
 
-#include "ParamsHelper.h"
+~include "ParamsHelper.h"
 
 /** clipper fill type */
-#define AREA_CLIPPER_FILL_TYPE \
+~define AREA_CLIPPER_FILL_TYPE \
     (NonZero)(EvenOdd)(Positive)(Negative),(ClipperLib::PolyFillType,ClipperLib::pft)
 
 /** Parameters of clipper fill types */
-#define AREA_PARAMS_CLIPPER_FILL \
+~define AREA_PARAMS_CLIPPER_FILL \
     ((enum2,subject_fill,SubjectFill,0,\
         "ClipperLib subject fill type. \nSee https://goo.gl/5pYQQP",AREA_CLIPPER_FILL_TYPE))\
     ((enum2,clip_fill,ClipFill,0,\
         "ClipperLib clip fill type. \nSee https://goo.gl/5pYQQP",AREA_CLIPPER_FILL_TYPE))
 
 /** Deflection parameter */
-#define AREA_PARAMS_DEFLECTION \
+~define AREA_PARAMS_DEFLECTION \
     ((double,deflection,Deflection,0.01,\
         "Deflection for non circular curve discretization. It also also used for\n"\
         "discretizing circular wires when you 'Explode' the shape for wire operations",\
         App::PropertyPrecision))
 
 /** Base parameters */
-#define AREA_PARAMS_BASE \
+~define AREA_PARAMS_BASE \
     ((enum,fill,Fill,2,"Fill the output wires to make a face. \n"\
         "Auto means make a face if any of the children has a face.",(None)(Face)(Auto)))\
     ((enum,coplanar,Coplanar,2,\
@@ -74,11 +74,11 @@
     AREA_PARAMS_DEFLECTION \
     AREA_PARAMS_CLIPPER_FILL
 
-#define AREA_PARAMS_FIT_ARCS \
+~define AREA_PARAMS_FIT_ARCS \
     ((bool,fit_arcs,FitArcs,true,"Enable arc fitting"))
 
 /** libarea algorithm option parameters */
-#define AREA_PARAMS_CAREA \
+~define AREA_PARAMS_CAREA \
     ((double,tolerance,Tolerance,Precision::Confusion(),\
         "Point coincidence tolerance",App::PropertyPrecision))\
     AREA_PARAMS_FIT_ARCS \
@@ -98,7 +98,7 @@
  *
  * These parameters corresponds to CAreaPocketParams in libarea
  * */
-#define AREA_PARAMS_POCKET \
+~define AREA_PARAMS_POCKET \
     ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",\
         (None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)(Line)(Grid)(Triangle)))\
 	((double,tool_radius,ToolRadius,1.0,"Tool radius for pocketing",App::PropertyLength))\
@@ -116,18 +116,18 @@
         "This gives a 3D pattern mainly for 3D printing. The shift only applies to 'Offset', 'Grid'\n"\
         "and 'Triangle'", App::PropertyDistance))
 
-#define AREA_PARAMS_POCKET_CONF \
+~define AREA_PARAMS_POCKET_CONF \
     ((bool,thicken,Thicken,false,"Thicken the resulting wires with ToolRadius"))
 
 /** Operation code */
-#define AREA_PARAMS_OPCODE \
+~define AREA_PARAMS_OPCODE \
     ((enum,op,Operation,0,"Boolean operation.\n"\
         "For the first four operations, see https://goo.gl/Gj8RUu.\n"\
         "'Compound' means no operation, normally used to do Area.sortWires().",\
         (Union)(Difference)(Intersection)(Xor)(Compound)))
 
 /** Offset parameters */
-#define AREA_PARAMS_OFFSET \
+~define AREA_PARAMS_OFFSET \
     ((double,offset,Offset,0.0,\
         "Offset value, positive for expansion, negative for shrinking",App::PropertyDistance))\
     ((long,extra_pass,ExtraPass,0,"Number of extra offset pass to generate."))\
@@ -137,7 +137,7 @@
         "Cutter diameter to step over for the last loop when shrinking with ExtraPass<0, i.e. for\n"\
         "offset pocketing. If =0, use 0.5*Offset.", App::PropertyLength))
 
-#define AREA_PARAMS_SECTION_EXTRA \
+~define AREA_PARAMS_SECTION_EXTRA \
     ((enum,mode,SectionMode,2,"Section offset coordinate mode.\n"\
         "'Absolute' means the absolute Z height (given in SectionOffset) to start slicing.\n"\
         "'BoundBox' means relative Z height to the bounding box of all the children shape.\n"\
@@ -149,7 +149,7 @@
         "of all added shapes to the section plane, instead of slicing."))
 
 /** Section parameters */
-#define AREA_PARAMS_SECTION \
+~define AREA_PARAMS_SECTION \
     ((long,count,SectionCount,0,"Number of sections to generate. -1 means full sections."))\
     ((double,stepdown,Stepdown,1.0,"Step down distance for each section.\n"\
         "Positive value means going from top down, and negative the other way round",App::PropertyDistance))\
@@ -162,15 +162,15 @@
         App::PropertyPrecision))\
      AREA_PARAMS_SECTION_EXTRA
 
-#ifdef AREA_OFFSET_ALGO
-#   define AREA_PARAMS_OFFSET_ALGO \
+~ifdef AREA_OFFSET_ALGO
+~   define AREA_PARAMS_OFFSET_ALGO \
     ((enum,algo,Algo,0,"Offset algorithm type",(Clipper)(libarea)))
-#else
-#   define AREA_PARAMS_OFFSET_ALGO
-#endif
+~else
+~   define AREA_PARAMS_OFFSET_ALGO
+~endif
 
 /** Offset configuration parameters */
-#define AREA_PARAMS_OFFSET_CONF \
+~define AREA_PARAMS_OFFSET_CONF \
     AREA_PARAMS_OFFSET_ALGO \
     ((enum2,join_type,JoinType,0,"ClipperOffset join type. \nSee https://goo.gl/4odfQh",\
         (Round)(Square)(Miter),(ClipperLib::JoinType,ClipperLib::jt)))\
@@ -182,13 +182,13 @@
         "Round joint precision. If =0, it defaults to Accuracy. \n"\
         "See https://goo.gl/4odfQh",App::PropertyPrecision))
 
-#define AREA_PARAMS_MIN_DIST \
+~define AREA_PARAMS_MIN_DIST \
     ((double, min_dist, MinDistance, 0.0, \
         "minimum distance for the generated new wires. Wires maybe broken if the\n"\
         "algorithm see fits. Set to zero to disable wire breaking.",App::PropertyLength))
 
 /** Arc plane */
-#define AREA_PARAMS_ARC_PLANE \
+~define AREA_PARAMS_ARC_PLANE \
     ((enum, arc_plane, ArcPlane, 1, "Arc drawing plane, corresponding to G17, G18, and G19.\n"\
         "If not 'None', the output wires will be transformed to align with the selected plane,\n"\
         "and the corresponding GCode will be inserted.\n"\
@@ -198,13 +198,13 @@
         "arc encountered.",\
         (None)(Auto)(XY)(ZX)(YZ)(Variable)))
 
-#define AREA_PARAMS_ORIENTATION \
+~define AREA_PARAMS_ORIENTATION \
     ((enum, orientation, Orientation, 0, "Enforce loop orientation\n"\
         "'Normal' means CCW for outer wires when looking against the positive axis direction, \n"\
         "and CW for inner wires. 'Reversed' means the other way round", (Normal)(Reversed)))
 
 /** Area wire sorting parameters */
-#define AREA_PARAMS_SORT \
+~define AREA_PARAMS_SORT \
     ((enum, sort_mode, SortMode, 1, "Wire sorting mode to optimize travel distance.\n"\
         "'2D5' explode shapes into wires, and groups the shapes by its plane. The 'start' position\n"\
         "chooses the first plane to start. The algorithm will then sort within the plane and then\n"\
@@ -228,7 +228,7 @@
     ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))
 
 /** Area path generation parameters */
-#define AREA_PARAMS_PATH \
+~define AREA_PARAMS_PATH \
     AREA_PARAMS_ARC_PLANE \
     AREA_PARAMS_SORT \
     ((double, retraction, Retraction, 0.0,"Tool retraction absolute coordinate along retraction axis",\
@@ -247,7 +247,7 @@
     AREA_PARAMS_DEFLECTION
 
 /** Group of all Area configuration parameters except CArea's*/
-#define AREA_PARAMS_AREA \
+~define AREA_PARAMS_AREA \
     AREA_PARAMS_BASE \
     AREA_PARAMS_OFFSET \
     AREA_PARAMS_OFFSET_CONF \
@@ -256,16 +256,16 @@
     AREA_PARAMS_SECTION
 
 /** Group of all Area configuration parameters */
-#define AREA_PARAMS_CONF \
+~define AREA_PARAMS_CONF \
     AREA_PARAMS_CAREA \
     AREA_PARAMS_AREA
 
 /** Group of all Area parameters */
-#define AREA_PARAMS_ALL \
+~define AREA_PARAMS_ALL \
     AREA_PARAMS_CONF \
     AREA_PARAMS_OPCODE
 
-#define AREA_PARAMS_STATIC_CONF \
+~define AREA_PARAMS_STATIC_CONF \
     AREA_PARAMS_CONF
 
-#endif //PATH_AreaParam_H
+~endif //PATH_AreaParam_H

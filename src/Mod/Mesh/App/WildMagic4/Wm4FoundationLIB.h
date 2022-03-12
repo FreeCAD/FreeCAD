@@ -14,22 +14,22 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4FOUNDATIONLIB_H
-#define WM4FOUNDATIONLIB_H
+~ifndef WM4FOUNDATIONLIB_H
+~define WM4FOUNDATIONLIB_H
 
 // For the DLL library.
-#ifdef WM4_FOUNDATION_DLL_EXPORT
-#define WM4_FOUNDATION_ITEM __declspec(dllexport)
+~ifdef WM4_FOUNDATION_DLL_EXPORT
+~define WM4_FOUNDATION_ITEM __declspec(dllexport)
 
 // For a client of the DLL library.
-#else
-#ifdef WM4_FOUNDATION_DLL_IMPORT
-#define WM4_FOUNDATION_ITEM __declspec(dllimport)
+~else
+~ifdef WM4_FOUNDATION_DLL_IMPORT
+~define WM4_FOUNDATION_ITEM __declspec(dllimport)
 
 // For the static library.
-#else
-#define WM4_FOUNDATION_ITEM
+~else
+~define WM4_FOUNDATION_ITEM
 
-#endif
-#endif
-#endif
+~endif
+~endif
+~endif

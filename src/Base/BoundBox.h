@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BOUNDBOX_H
-#define BASE_BOUNDBOX_H
+~ifndef BASE_BOUNDBOX_H
+~define BASE_BOUNDBOX_H
 
-#include <limits>
-#include "Matrix.h"
-#include "Tools2D.h"
-#include "ViewProj.h"
+~include <limits>
+~include "Matrix.h"
+~include "Tools2D.h"
+~include "ViewProj.h"
 
 
 namespace Base {
@@ -824,7 +824,7 @@ inline typename BoundBox3<_Precision>::SIDE BoundBox3<_Precision>::GetSideFromRa
 template <class _Precision>
 inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_Precision> &rclPt) const
 {
-#if 0
+~if 0
     // Get the nearest point of the bb, point MUST be inside the bb!
     _Precision fMinDist = std::numeric_limits<_Precision>::max();
     Vector3<_Precision> cBase, cNormal, clRet;
@@ -841,7 +841,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
     }
 
     return clRet;
-#else
+~else
     Vector3<_Precision> closest = rclPt;
 
     Vector3<_Precision> center = GetCenter();
@@ -867,7 +867,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
     closest.z = std::min<_Precision>(std::max<_Precision>(closest.z, MinZ), MaxZ);
 
     return closest;
-#endif
+~endif
 }
 
 template <class _Precision>
@@ -989,5 +989,5 @@ typedef BoundBox3<double> BoundBox3d;
 
 } // namespace Base
 
-#endif  // BASE_BOUNDBOX_H
+~endif  // BASE_BOUNDBOX_H
 

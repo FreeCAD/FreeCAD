@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef APP_MATERIAL_H
-#define APP_MATERIAL_H
+~ifndef APP_MATERIAL_H
+~define APP_MATERIAL_H
 
-#ifdef __GNUC__
-# include <cstdint>
-#endif
+~ifdef __GNUC__
+~ include <cstdint>
+~endif
 
-#include <sstream>
-#include <iomanip>
-#include <FCGlobal.h>
+~include <sstream>
+~include <iomanip>
+~include <FCGlobal.h>
 
 namespace App
 {
@@ -120,12 +120,12 @@ public:
         return(T(int(r*255.0f),int(g*255.0f),int(b*255.0f)));
     }
     /**
-     * returns color as hex color "#RRGGBB"
+     * returns color as hex color "~RRGGBB"
      *
      */
     std::string asHexString() const {
         std::stringstream ss;
-        ss << "#" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << int(r*255.0f)
+        ss << "~" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << int(r*255.0f)
                                                                      << std::setw(2) << int(g*255.0f)
                                                                      << std::setw(2) << int(b*255.0f);
         return ss.str();
@@ -137,13 +137,13 @@ public:
         return asHexString();
     }
     /**
-     * gets color from hex color "#RRGGBB"
+     * gets color from hex color "~RRGGBB"
      *
      */
     bool fromHexString(const std::string& hex) {
-        if (hex.size() < 7 || hex[0] != '#')
+        if (hex.size() < 7 || hex[0] != '~')
             return false;
-        // #RRGGBB
+        // ~RRGGBB
         if (hex.size() == 7) {
             std::stringstream ss(hex);
             unsigned int rgb;
@@ -160,7 +160,7 @@ public:
 
             return true;
         }
-        // #RRGGBBAA
+        // ~RRGGBBAA
         if (hex.size() == 9) {
             std::stringstream ss(hex);
             unsigned int rgba;
@@ -301,4 +301,4 @@ private:
 
 } //namespace App
 
-#endif // APP_MATERIAL_H
+~endif // APP_MATERIAL_H

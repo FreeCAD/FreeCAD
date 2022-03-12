@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ACTIONFUNCTION_H
-#define GUI_ACTIONFUNCTION_H
+~ifndef GUI_ACTIONFUNCTION_H
+~define GUI_ACTIONFUNCTION_H
 
-#include <QObject>
-#include <QVariant>
-#include <boost/function.hpp>
+~include <QObject>
+~include <QVariant>
+~include <boost/function.hpp>
 
 class QAction;
 
@@ -58,7 +58,7 @@ class ActionFunctionPrivate;
 
   @author Werner Mayer
 
-  http://www.boost.org/doc/libs/1_57_0/libs/bind/bind.html#with_boost_function
+  http://www.boost.org/doc/libs/1_57_0/libs/bind/bind.html~with_boost_function
 */
 class GuiExport ActionFunction : public QObject
 {
@@ -115,4 +115,4 @@ private:
 } //namespace Gui
 
 
-#endif // GUI_ACTIONFUNCTION_H
+~endif // GUI_ACTIONFUNCTION_H

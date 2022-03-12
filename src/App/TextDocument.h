@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_TEXTDOCUMENT_H
-#define APP_TEXTDOCUMENT_H
+~ifndef APP_TEXTDOCUMENT_H
+~define APP_TEXTDOCUMENT_H
 
-#include "DocumentObject.h"
-#include "PropertyStandard.h"
+~include "DocumentObject.h"
+~include "PropertyStandard.h"
 
 
 namespace App
@@ -56,4 +56,4 @@ private:
 }
 
 
-#endif
+~endif

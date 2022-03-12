@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GLPAINTER_H
-#define GUI_GLPAINTER_H
+~ifndef GUI_GLPAINTER_H
+~define GUI_GLPAINTER_H
 
-#ifdef FC_OS_WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
+~ifdef FC_OS_WIN32
+~ifndef NOMINMAX
+~define NOMINMAX
+~endif
+~include <windows.h>
+~endif
+~ifdef FC_OS_MACOSX
+~include <OpenGL/gl.h>
+~else
+~include <GL/gl.h>
+~endif
 
-#include <Base/BaseClass.h>
-#include <QtOpenGL.h>
-#include <QPoint>
+~include <Base/BaseClass.h>
+~include <QtOpenGL.h>
+~include <QPoint>
 
 class QPaintDevice;
 
@@ -145,5 +145,5 @@ public:
 
 } // namespace Gui
 
-#endif  // GUI_GLPAINTER_H
+~endif  // GUI_GLPAINTER_H
 

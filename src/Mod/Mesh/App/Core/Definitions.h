@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#ifndef MESH_DEFINITIONS_H
-#define MESH_DEFINITIONS_H
+~ifndef MESH_DEFINITIONS_H
+~define MESH_DEFINITIONS_H
 
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
 
-#include <climits>
+~include <climits>
 
 // default values
-#define MESH_MIN_PT_DIST           1.0e-6f
-#define MESH_MIN_EDGE_LEN          1.0e-3f
-#define MESH_MIN_EDGE_ANGLE        2.0
-#define MESH_REMOVE_MIN_LEN        true
-#define MESH_REMOVE_G3_EDGES       true
+~define MESH_MIN_PT_DIST           1.0e-6f
+~define MESH_MIN_EDGE_LEN          1.0e-3f
+~define MESH_MIN_EDGE_ANGLE        2.0
+~define MESH_REMOVE_MIN_LEN        true
+~define MESH_REMOVE_G3_EDGES       true
 
 /*
  * general constant definitions
  */
-#define FLOAT_EPS   1.0e-4f 
+~define FLOAT_EPS   1.0e-4f 
 
-#ifndef  FLOAT_MAX
-# define FLOAT_MAX 1e30f
-#endif
+~ifndef  FLOAT_MAX
+~ define FLOAT_MAX 1e30f
+~endif
 
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
+~ifndef  DOUBLE_MAX
+~ define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+~endif
 
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
+~ifndef  DOUBLE_MIN
+~ define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+~endif
 
 namespace MeshCore {
 
@@ -99,4 +99,4 @@ public:
 
 } // namespace MeshCore
 
-#endif // MESH_DEFINITIONS_H 
+~endif // MESH_DEFINITIONS_H 

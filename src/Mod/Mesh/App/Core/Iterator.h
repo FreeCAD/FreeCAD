@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESH_ITERATOR_H
-#define MESH_ITERATOR_H
+~ifndef MESH_ITERATOR_H
+~define MESH_ITERATOR_H
 
-#include "MeshKernel.h"
-#include "Elements.h"
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
-#include <climits>
+~include "MeshKernel.h"
+~include "Elements.h"
+~include <Base/Matrix.h>
+~include <Base/Vector3D.h>
+~include <climits>
 
 namespace MeshCore {
 
@@ -476,4 +476,4 @@ inline MeshPointIterator& MeshPointIterator::operator = (const MeshPointIterator
 } // namespace MeshCore
 
 
-#endif // MESH_ITERATOR_H 
+~endif // MESH_ITERATOR_H 

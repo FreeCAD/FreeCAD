@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TOOLS_H
-#define GUI_TOOLS_H
+~ifndef GUI_TOOLS_H
+~define GUI_TOOLS_H
 
-#include <QFontMetrics>
-#include <QKeyEvent>
-#include <QKeySequence>
-#include <FCGlobal.h>
+~include <QFontMetrics>
+~include <QKeyEvent>
+~include <QKeySequence>
+~include <FCGlobal.h>
 
 namespace Gui {
 
@@ -37,18 +37,18 @@ namespace Gui {
 class GuiExport QtTools {
 public:
     static int horizontalAdvance(const QFontMetrics& fm, QChar ch) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
         return fm.horizontalAdvance(ch);
-#else
+~else
         return fm.width(ch);
-#endif
+~endif
     }
     static int horizontalAdvance(const QFontMetrics& fm, const QString& text, int len = -1) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
         return fm.horizontalAdvance(text, len);
-#else
+~else
         return fm.width(text, len);
-#endif
+~endif
     }
     static bool matches(QKeyEvent* ke, const QKeySequence& ks) {
         uint searchkey = (ke->modifiers() | ke->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
@@ -58,4 +58,4 @@ public:
 
 } // namespace Gui
 
-#endif // GUI_TOOLS_H
+~endif // GUI_TOOLS_H

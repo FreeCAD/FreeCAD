@@ -5,15 +5,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISTASKGROUP_H
-#define IISTASKGROUP_H
+~ifndef IISTASKGROUP_H
+~define IISTASKGROUP_H
 
-#include <QBoxLayout>
-#include <QFrame>
-#include <QPaintEvent>
-#include <QWidget>
+~include <QBoxLayout>
+~include <QFrame>
+~include <QPaintEvent>
+~include <QWidget>
 
-#include "iistaskpanel_global.h"
+~include "iistaskpanel_global.h"
 
 
 class iisTaskPanelScheme;
@@ -47,4 +47,4 @@ protected:
 	bool myHasHeader;
 };
 
-#endif // IISTASKGROUP_H
+~endif // IISTASKGROUP_H

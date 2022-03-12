@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WIREEXPLORER_H
-#define WIREEXPLORER_H
+~ifndef WIREEXPLORER_H
+~define WIREEXPLORER_H
 
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Edge.hxx>
-#include <gp_Pnt.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <map>
-#include <list>
-#include <vector>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS_Edge.hxx>
+~include <gp_Pnt.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <map>
+~include <list>
+~include <vector>
 
 struct WireExplorer_gp_PntLess
 {
@@ -76,5 +76,5 @@ private:
     tEdgeVector::const_iterator m_edgeIter;
 };
 
-#endif
+~endif
 

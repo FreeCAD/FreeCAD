@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderResult_H
-#define FEM_ViewProviderResult_H
+~ifndef FEM_ViewProviderResult_H
+~define FEM_ViewProviderResult_H
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui
 {
@@ -54,4 +54,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPy
 } //namespace FemGui
 
 
-#endif // FEM_ViewProviderResult_H
+~endif // FEM_ViewProviderResult_H

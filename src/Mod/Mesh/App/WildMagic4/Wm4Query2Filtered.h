@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2FILTERED_H
-#define WM4QUERY2FILTERED_H
+~ifndef WM4QUERY2FILTERED_H
+~define WM4QUERY2FILTERED_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query2TRational.h"
-#include "Wm4Vector2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query2TRational.h"
+~include "Wm4Vector2.h"
 
 namespace Wm4
 {
@@ -60,7 +60,7 @@ private:
 
 }
 
-#include "Wm4Query2Filtered.inl"
+~include "Wm4Query2Filtered.inl"
 
 namespace Wm4
 {
@@ -69,4 +69,4 @@ typedef Query2Filtered<double> Query2Filteredd;
 
 }
 
-#endif
+~endif

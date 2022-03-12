@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
-#define DRAWINGGUI_TEMPLATETEXTFIELD_H
+~ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
+~define DRAWINGGUI_TEMPLATETEXTFIELD_H
 
-#include <QGraphicsRectItem>
+~include <QGraphicsRectItem>
 
-#include "Mod/TechDraw/App/DrawTemplate.h"
+~include "Mod/TechDraw/App/DrawTemplate.h"
 
 namespace TechDrawGui
 {
@@ -61,4 +61,4 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
 };
 }   // namespace TechDrawGui
 
-#endif // #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
+~endif // ~ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H

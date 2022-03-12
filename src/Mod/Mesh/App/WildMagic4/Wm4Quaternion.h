@@ -6,11 +6,11 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4QUATERNION_H
-#define WM4QUATERNION_H
+~ifndef WM4QUATERNION_H
+~define WM4QUATERNION_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Matrix3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Matrix3.h"
 
 namespace Wm4
 {
@@ -316,11 +316,11 @@ private:
 template <class Real>
 inline Quaternion<Real> operator* (Real fScalar, const Quaternion<Real>& rkQ);
 
-#include "Wm4Quaternion.inl"
+~include "Wm4Quaternion.inl"
 
 typedef Quaternion<float> Quaternionf;
 typedef Quaternion<double> Quaterniond;
 
 }
 
-#endif
+~endif

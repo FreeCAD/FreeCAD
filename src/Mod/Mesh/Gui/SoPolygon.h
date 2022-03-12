@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOPOLYGON_H
-#define MESHGUI_SOPOLYGON_H
+~ifndef MESHGUI_SOPOLYGON_H
+~define MESHGUI_SOPOLYGON_H
 
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
+~include <Inventor/fields/SoSFUInt32.h>
+~include <Inventor/fields/SoSFInt32.h>
+~include <Inventor/fields/SoSFBool.h>
+~include <Inventor/fields/SoSubField.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoShape.h>
+~include <Inventor/elements/SoReplacedElement.h>
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
 
 namespace MeshGui {
 
@@ -64,5 +64,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_SOPOLYGON_H
+~endif // MESHGUI_SOPOLYGON_H
 

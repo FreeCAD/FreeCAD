@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCOSVERTEX_H
-#define TECHDRAWGUI_TASKCOSVERTEX_H
+~ifndef TECHDRAWGUI_TASKCOSVERTEX_H
+~define TECHDRAWGUI_TASKCOSVERTEX_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
+~include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
 
-#include "QGTracker.h"
+~include "QGTracker.h"
 
 //TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
+~define TRACKERPICK 0
+~define TRACKEREDIT 1
+~define TRACKERCANCEL 2
+~define TRACKERCANCELEDIT 3
 
 class Ui_TaskCosVertex;
 
@@ -160,4 +160,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
+~endif // ~ifndef TECHDRAWGUI_TASKCOSVERTEX_H

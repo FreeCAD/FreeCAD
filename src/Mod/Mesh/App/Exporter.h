@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_EXPORTER_H
-#define MESH_EXPORTER_H
+~ifndef MESH_EXPORTER_H
+~define MESH_EXPORTER_H
 
-#include <map>
-#include <vector>
-#include <ostream>
+~include <map>
+~include <vector>
+~include <ostream>
 
-#include "Base/Type.h"
+~include "Base/Type.h"
 
-#include "App/Property.h"
+~include "App/Property.h"
 
-#include "MeshFeature.h"
-#include "Core/MeshIO.h"
-#include "Core/MeshKernel.h"
+~include "MeshFeature.h"
+~include "Core/MeshIO.h"
+~include "Core/MeshKernel.h"
 
 namespace Mesh
 {
@@ -135,4 +135,4 @@ class AmfExporter : public Exporter
 };  // class AmfExporter
 
 } // namespace Mesh
-#endif // MESH_EXPORTER_H
+~endif // MESH_EXPORTER_H

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGEXTRUSION_H
-#define PARTGUI_DLGEXTRUSION_H
+~ifndef PARTGUI_DLGEXTRUSION_H
+~define PARTGUI_DLGEXTRUSION_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <string>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <string>
 
-#include <Mod/Part/App/FeatureExtrusion.h>
+~include <Mod/Part/App/FeatureExtrusion.h>
 
 class TopoDS_Shape;
 
@@ -120,4 +120,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGEXTRUSION_H
+~endif // PARTGUI_DLGEXTRUSION_H

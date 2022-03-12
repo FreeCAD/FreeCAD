@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESH_FACET_H
-#define MESH_FACET_H
+~ifndef MESH_FACET_H
+~define MESH_FACET_H
 
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
-#include <Base/Handle.h>
+~include <Base/Matrix.h>
+~include <Base/Vector3D.h>
+~include <Base/Handle.h>
 
-#include <Mod/Mesh/App/Edge.h>
+~include <Mod/Mesh/App/Edge.h>
 
 namespace Mesh
 {
@@ -60,4 +60,4 @@ public:
 } // namespace Mesh
 
 
-#endif // MESH_FACET_H
+~endif // MESH_FACET_H

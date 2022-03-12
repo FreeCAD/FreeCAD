@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTBOOLEAN_H
-#define PART_FEATUREPARTBOOLEAN_H
+~ifndef PART_FEATUREPARTBOOLEAN_H
+~define PART_FEATUREPARTBOOLEAN_H
 
-#include <App/PropertyLinks.h>
-#include "PartFeature.h"
+~include <App/PropertyLinks.h>
+~include "PartFeature.h"
 
 class BRepAlgoAPI_BooleanOperation;
 
@@ -62,4 +62,4 @@ protected:
 
 }
 
-#endif // PART_FEATUREPARTBOOLEAN_H
+~endif // PART_FEATUREPARTBOOLEAN_H

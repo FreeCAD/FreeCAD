@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
-#define DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
+~define DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
 
-# include "QGIPrimPath.h"
+~ include "QGIPrimPath.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -62,4 +62,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMDIMLINES_H
+~endif // DRAWINGGUI_QGRAPHICSITEMDIMLINES_H

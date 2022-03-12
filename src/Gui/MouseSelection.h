@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MOUSESELECTION_H
-#define MOUSESELECTION_H
+~ifndef MOUSESELECTION_H
+~define MOUSESELECTION_H
 
-#include <bitset>
-#include <vector>
-#include <QCursor>
-#include <Gui/GLPainter.h>
-#include <Gui/Namespace.h>
+~include <bitset>
+~include <vector>
+~include <QCursor>
+~include <Gui/GLPainter.h>
+~include <Gui/Namespace.h>
 
 
 // forwards
@@ -256,4 +256,4 @@ public:
 
 } // namespace Gui
 
-#endif // MOUSESELECTION_H
+~endif // MOUSESELECTION_H

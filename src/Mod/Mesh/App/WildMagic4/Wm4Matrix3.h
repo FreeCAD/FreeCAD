@@ -14,8 +14,8 @@
 //
 // Version: 4.0.2 (2006/09/05)
 
-#ifndef WM4MATRIX3_H
-#define WM4MATRIX3_H
+~ifndef WM4MATRIX3_H
+~define WM4MATRIX3_H
 
 // Matrix operations are applied on the left.  For example, given a matrix M
 // and a vector V, matrix-times-vector is M*V.  That is, V is treated as a
@@ -51,8 +51,8 @@
 //           0       0       1
 // where t > 0 indicates a counterclockwise rotation in the xy-plane.
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -249,7 +249,7 @@ Vector3<Real> operator* (const Vector3<Real>& rkV, const Matrix3<Real>& rkM);
 
 } //namespace Wm4
 
-#include "Wm4Matrix3.inl"
+~include "Wm4Matrix3.inl"
 
 namespace Wm4
 {
@@ -257,4 +257,4 @@ typedef Matrix3<float> Matrix3f;
 typedef Matrix3<double> Matrix3d;
 }
 
-#endif
+~endif

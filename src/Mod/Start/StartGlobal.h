@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+~include <FCGlobal.h>
 
-#ifndef START_GLOBAL_H
-#define START_GLOBAL_H
+~ifndef START_GLOBAL_H
+~define START_GLOBAL_H
 
 
 // Start
-#ifndef StartExport
-#ifdef Start_EXPORTS
-#  define StartExport      FREECAD_DECL_EXPORT
-#else
-#  define StartExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+~ifndef StartExport
+~ifdef Start_EXPORTS
+~  define StartExport      FREECAD_DECL_EXPORT
+~else
+~  define StartExport      FREECAD_DECL_IMPORT
+~endif
+~endif
 
 // StartGui
-#ifndef StartGuiExport
-#ifdef StartGui_EXPORTS
-#  define StartGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define StartGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+~ifndef StartGuiExport
+~ifdef StartGui_EXPORTS
+~  define StartGuiExport   FREECAD_DECL_EXPORT
+~else
+~  define StartGuiExport   FREECAD_DECL_IMPORT
+~endif
+~endif
 
-#endif //START_GLOBAL_H
+~endif //START_GLOBAL_H

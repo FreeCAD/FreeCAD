@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef _FeatureClip_h_
-#define _FeatureClip_h_
+~ifndef _FeatureClip_h_
+~define _FeatureClip_h_
 
 
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyStandard.h>
 
 namespace Drawing
 {
@@ -69,4 +69,4 @@ protected:
 } //namespace Drawing
 
 
-#endif
+~endif

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ConstraintFilters_H
-#define SKETCHERGUI_ConstraintFilters_H
+~ifndef SKETCHERGUI_ConstraintFilters_H
+~define SKETCHERGUI_ConstraintFilters_H
 
-#include <array>
-#include <bitset>
+~include <array>
+~include <bitset>
 
 namespace SketcherGui {
 
@@ -148,4 +148,4 @@ namespace ConstraintFilter {
 
 }
 
-#endif // SKETCHERGUI_ConstraintFilters_H
+~endif // SKETCHERGUI_ConstraintFilters_H

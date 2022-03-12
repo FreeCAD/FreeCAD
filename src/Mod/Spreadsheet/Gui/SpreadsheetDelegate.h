@@ -22,10 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEETDELEGATE_H
-#define SPREADSHEETDELEGATE_H
+~ifndef SPREADSHEETDELEGATE_H
+~define SPREADSHEETDELEGATE_H
 
-#include <QStyledItemDelegate>
+~include <QStyledItemDelegate>
 
 namespace Spreadsheet {
 class Sheet;
@@ -58,4 +58,4 @@ private:
 
 }
 
-#endif // SPREADSHEETDELEGATE_H
+~endif // SPREADSHEETDELEGATE_H

@@ -21,11 +21,11 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureScaled_H
-#define PARTDESIGN_FeatureScaled_H
+~ifndef PARTDESIGN_FeatureScaled_H
+~define PARTDESIGN_FeatureScaled_H
 
-#include <App/PropertyStandard.h>
-#include "FeatureTransformed.h"
+~include <App/PropertyStandard.h>
+~include "FeatureTransformed.h"
 
 
 namespace PartDesign
@@ -66,4 +66,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureScaled_H
+~endif // PARTDESIGN_FeatureScaled_H

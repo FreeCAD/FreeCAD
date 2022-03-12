@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGRECTITEM_H
-#define DAGRECTITEM_H
+~ifndef DAGRECTITEM_H
+~define DAGRECTITEM_H
 
-#include <QBrush>
-#include <QGraphicsRectItem>
+~include <QBrush>
+~include <QGraphicsRectItem>
 
 
 namespace Gui
@@ -62,4 +62,4 @@ namespace Gui
   }
 }
 
-#endif // DAGRECTITEM_H
+~endif // DAGRECTITEM_H

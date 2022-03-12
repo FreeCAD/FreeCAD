@@ -21,62 +21,62 @@
  ***************************************************************************/
 
 
-#ifndef POINTSGUI_PRECOMPILED_H
-#define POINTSGUI_PRECOMPILED_H
+~ifndef POINTSGUI_PRECOMPILED_H
+~define POINTSGUI_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define PointsExport    __declspec(dllimport)
-# define PointsGuiExport __declspec(dllexport)
-#else // for Linux
-# define PointsExport
-# define PointsGuiExport
-#endif
+~ifdef FC_OS_WIN32
+~ define PointsExport    __declspec(dllimport)
+~ define PointsGuiExport __declspec(dllexport)
+~else // for Linux
+~ define PointsExport
+~ define PointsGuiExport
+~endif
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-#endif
+~ifdef FC_OS_WIN32
+~ ifndef NOMINMAX
+~ define NOMINMAX
+~ endif
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+~include <stdio.h>
+~include <assert.h>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
-#include <bitset>
+~include <algorithm>
+~include <iostream>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
+~include <bitset>
 
-#include <Python.h>
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~include <Python.h>
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
 // Inventor
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
+~ifndef __InventorAll__
+~ include <Gui/InventorAll.h>
+~endif
 
 
-#endif  //_PreComp_
+~endif  //_PreComp_
 
-#endif // POINTSGUI_PRECOMPILED_H
+~endif // POINTSGUI_PRECOMPILED_H

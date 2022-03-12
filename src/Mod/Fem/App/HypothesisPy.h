@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_HYPOTHESISPY_H
-#define FEM_HYPOTHESISPY_H
+~ifndef FEM_HYPOTHESISPY_H
+~define FEM_HYPOTHESISPY_H
 
-#include <CXX/Extensions.hxx>
-#include <memory>
-#include <SMESH_Version.h>
+~include <CXX/Extensions.hxx>
+~include <memory>
+~include <SMESH_Version.h>
 
 class SMESH_Hypothesis;
 class SMESH_Gen;
@@ -61,13 +61,13 @@ public:
     Py::Object repr();
     Py::Object getLibName(const Py::Tuple& args);
     Py::Object setLibName(const Py::Tuple& args);
-#if SMESH_VERSION_MAJOR < 7
+~if SMESH_VERSION_MAJOR < 7
     Py::Object setParameters(const Py::Tuple& args);
     Py::Object getParameters(const Py::Tuple& args);
     Py::Object setLastParameters(const Py::Tuple& args);
     Py::Object getLastParameters(const Py::Tuple& args);
     Py::Object clearParameters(const Py::Tuple& args);
-#endif
+~endif
     Py::Object isAuxiliary(const Py::Tuple& args);
     Py::Object setParametersByMesh(const Py::Tuple& args);
 
@@ -86,7 +86,7 @@ private:
     std::shared_ptr<SMESH_Hypothesis> hyp;
 };
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 class StdMeshers_Arithmetic1DPy : public SMESH_HypothesisPy<StdMeshers_Arithmetic1DPy>
 {
 public:
@@ -381,7 +381,7 @@ public:
     Py::Object setLayerDistribution(const Py::Tuple& args);
     Py::Object getLayerDistribution(const Py::Tuple& args);
 };
-#else
+~else
 class StdMeshers_Arithmetic1DPy : public SMESH_HypothesisPy<StdMeshers_Arithmetic1DPy>
 {
 public:
@@ -518,7 +518,7 @@ public:
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Hexa_3DPy();
 };
-#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
+~if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
 class StdMeshers_TrianglePreferencePy : public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
@@ -526,7 +526,7 @@ public:
     StdMeshers_TrianglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_TrianglePreferencePy();
 };
-#endif // --------------------------------------------------------------------
+~endif // --------------------------------------------------------------------
 
 class StdMeshers_StartEndLengthPy : public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {
@@ -717,8 +717,8 @@ public:
     Py::Object setLayerDistribution(const Py::Tuple& args);
     Py::Object getLayerDistribution(const Py::Tuple& args);
 };
-#endif
+~endif
 
 } // namespace Fem
 
-#endif // FEM_HYPOTHESISPY_H
+~endif // FEM_HYPOTHESISPY_H

@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
+~ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
+~define DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawAdvancedImp;
@@ -50,4 +50,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H
+~endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPADVANCED_H

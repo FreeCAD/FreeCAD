@@ -22,17 +22,17 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECT_H
-#define APP_DOCUMENTOBJECT_H
+~ifndef APP_DOCUMENTOBJECT_H
+~define APP_DOCUMENTOBJECT_H
 
-#include <App/TransactionalObject.h>
-#include <App/PropertyExpressionEngine.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <Base/SmartPtrPy.h>
+~include <App/TransactionalObject.h>
+~include <App/PropertyExpressionEngine.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyStandard.h>
+~include <Base/SmartPtrPy.h>
 
-#include <bitset>
-#include <unordered_map>
+~include <bitset>
+~include <unordered_map>
 
 namespace Base
 {
@@ -138,7 +138,7 @@ public:
     long getID() const {return _Id;}
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
-    /// Return the object full name of the form DocName#ObjName
+    /// Return the object full name of the form DocName~ObjName
     virtual std::string getFullName() const override;
     virtual bool isAttachedToDocument() const override;
     virtual const char* detachFromDocument() override;
@@ -233,12 +233,12 @@ public:
     void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const
-#else
+~else
     const std::vector<App::DocumentObject*> &getInList(void) const;
-#endif
+~endif
     /// get all objects link directly or indirectly to this object
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
     /** Get a set of all objects linking to this object, including possible external parent objects
@@ -644,4 +644,4 @@ private:
 
 } //namespace App
 
-#endif // APP_DOCUMENTOBJECT_H
+~endif // APP_DOCUMENTOBJECT_H

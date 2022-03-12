@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef Inspection_WORKBENCH_H
-#define Inspection_WORKBENCH_H
+~ifndef Inspection_WORKBENCH_H
+~define Inspection_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace InspectionGui {
 
@@ -44,4 +44,4 @@ protected:
 } // namespace InspectionGui
 
 
-#endif // Inspection_WORKBENCH_H 
+~endif // Inspection_WORKBENCH_H 

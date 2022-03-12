@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4GMATRIX_H
-#define WM4GMATRIX_H
+~ifndef WM4GMATRIX_H
+~define WM4GMATRIX_H
 
 // Matrix operations are applied on the left.  For example, given a matrix M
 // and a vector V, matrix-times-vector is M*V.  That is, V is treated as a
@@ -30,8 +30,8 @@
 //
 // Matrices are stored in row-major order, matrix[row][col].
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4GVector.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4GVector.h"
 
 namespace Wm4
 {
@@ -138,7 +138,7 @@ GVector<Real> operator* (const GVector<Real>& rkV, const GMatrix<Real>& rkM);
 
 } //namespace Wm4
 
-#include "Wm4GMatrix.inl"
+~include "Wm4GMatrix.inl"
 
 namespace Wm4
 {
@@ -146,4 +146,4 @@ typedef GMatrix<float> GMatrixf;
 typedef GMatrix<double> GMatrixd;
 }
 
-#endif
+~endif

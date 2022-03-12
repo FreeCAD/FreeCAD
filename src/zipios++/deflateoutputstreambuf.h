@@ -1,16 +1,16 @@
-#ifndef DEFLATEOUTPUTSTREAMBUF_H
-#define DEFLATEOUTPUTSTREAMBUF_H
+~ifndef DEFLATEOUTPUTSTREAMBUF_H
+~define DEFLATEOUTPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <vector>
+~include "meta-iostreams.h"
+~include <vector>
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "filteroutputstreambuf.h"
-#include "ziphead.h"
-#include "zipios_defs.h"
+~include "filteroutputstreambuf.h"
+~include "ziphead.h"
+~include "zipios_defs.h"
 
 namespace zipios {
 
@@ -83,7 +83,7 @@ protected: // FIXME: reconsider design?
 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines DeflateOutputStreambuf.

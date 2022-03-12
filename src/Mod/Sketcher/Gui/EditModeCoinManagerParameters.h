@@ -21,31 +21,31 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_EditModeCoinManagerParameters_H
-#define SKETCHERGUI_EditModeCoinManagerParameters_H
+~ifndef SKETCHERGUI_EditModeCoinManagerParameters_H
+~define SKETCHERGUI_EditModeCoinManagerParameters_H
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SbColor.h>
-#endif  // #ifndef _PreComp_
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoGroup.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/SbColor.h>
+~endif  // ~ifndef _PreComp_
 
-#include <Gui/Inventor/SmSwitchboard.h>
+~include <Gui/Inventor/SmSwitchboard.h>
 
-#include <qstring.h>
-#include <qcolor.h>
+~include <qstring.h>
+~include <qcolor.h>
 
-#include <Mod/Sketcher/App/GeoList.h>
+~include <Mod/Sketcher/App/GeoList.h>
 
-#include <vector>
-#include <map>
+~include <vector>
+~include <map>
 
 
 namespace Part {
@@ -415,5 +415,5 @@ struct CoinMapping {
 
 } // namespace SketcherGui
 
-#endif // SKETCHERGUI_EditModeCoinManagerParameters_H
+~endif // SKETCHERGUI_EditModeCoinManagerParameters_H
 

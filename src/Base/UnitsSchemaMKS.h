@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UNITSSCHEMAMKS_H
-#define BASE_UNITSSCHEMAMKS_H
+~ifndef BASE_UNITSSCHEMAMKS_H
+~define BASE_UNITSSCHEMAMKS_H
 
-#include <QString>
-#include "UnitsSchema.h"
+~include <QString>
+~include "UnitsSchema.h"
 
 
 namespace Base {
@@ -44,4 +44,4 @@ public:
 } // namespace Base
 
 
-#endif // BASE_UNITSSCHEMAMKS_H
+~endif // BASE_UNITSSCHEMAMKS_H

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
-#define DRAWINGGUI_QGRAPHICSITEMARROW_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
+~define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-# include "QGIPrimPath.h"
+~ include "QGIPrimPath.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -101,4 +101,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMARROW_H
+~endif // DRAWINGGUI_QGRAPHICSITEMARROW_H

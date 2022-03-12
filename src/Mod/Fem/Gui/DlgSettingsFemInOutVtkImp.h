@@ -23,10 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
-#define FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
+~ifndef FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
+~define FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
 
-#include <Gui/PropertyPage.h>
+~include <Gui/PropertyPage.h>
 
 namespace FemGui {
 
@@ -50,4 +50,4 @@ private:
 
 } // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
+~endif // FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H

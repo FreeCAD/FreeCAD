@@ -20,26 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
-#define TECHDRAWGUI_QGIHIGHLIGHT_H
+~ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
+~define TECHDRAWGUI_QGIHIGHLIGHT_H
 
-#include <QFont>
-#include <QPointF>
-#include <QObject>
-#include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsEllipseItem>
-#include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
-#include <QPainterPath>
-#include <QColor>
+~include <QFont>
+~include <QPointF>
+~include <QObject>
+~include <QGraphicsTextItem>
+~include <QGraphicsRectItem>
+~include <QGraphicsEllipseItem>
+~include <QGraphicsScene>
+~include <QGraphicsSceneEvent>
+~include <QPainterPath>
+~include <QColor>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include "QGIArrow.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
-#include "QGIDecoration.h"
+~include "QGIArrow.h"
+~include "QGCustomText.h"
+~include "QGCustomRect.h"
+~include "QGIDecoration.h"
 
 namespace TechDrawGui
 {
@@ -90,4 +90,4 @@ private:
 
 }
 
-#endif // TECHDRAWGUI_QGIHIGHLIGHT_H
+~endif // TECHDRAWGUI_QGIHIGHLIGHT_H

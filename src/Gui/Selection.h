@@ -21,20 +21,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTION_H
-#define GUI_SELECTION_H
+~ifndef GUI_SELECTION_H
+~define GUI_SELECTION_H
 
-#include <deque>
-#include <list>
-#include <string>
-#include <vector>
-#include <CXX/Objects.hxx>
+~include <deque>
+~include <list>
+~include <string>
+~include <vector>
+~include <CXX/Objects.hxx>
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
-#include <Base/Observer.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObserver.h>
+~include <Base/Observer.h>
 
-#include "SelectionObject.h"
+~include "SelectionObject.h"
 
 
 namespace App
@@ -183,13 +183,13 @@ public:
 // errors under Mac OS X. Thus, we check for version between 4.1 and 4.4.
 // It seems that for Mac OS X this can be completely ignored
 
-#if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(FC_OS_MACOSX)
-#define GNUC_VERSION (((__GNUC__)<<16)+((__GNUC_MINOR__)<<8))
-#if GNUC_VERSION >= 0x040100 && GNUC_VERSION < 0x040400
+~if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(FC_OS_MACOSX)
+~define GNUC_VERSION (((__GNUC__)<<16)+((__GNUC_MINOR__)<<8))
+~if GNUC_VERSION >= 0x040100 && GNUC_VERSION < 0x040400
 template class GuiExport Base::Subject<const Gui::SelectionChanges&>;
-#endif
-#undef GNUC_VERSION
-#endif
+~endif
+~undef GNUC_VERSION
+~endif
 
 namespace Gui
 {
@@ -282,7 +282,7 @@ private:
 private:
     Py::Object inst;
 
-#define FC_PY_SEL_OBSERVER \
+~define FC_PY_SEL_OBSERVER \
     FC_PY_ELEMENT(onSelectionChanged) \
     FC_PY_ELEMENT(addSelection) \
     FC_PY_ELEMENT(removeSelection) \
@@ -292,8 +292,8 @@ private:
     FC_PY_ELEMENT(removePreselection) \
     FC_PY_ELEMENT(pickedListChanged)
 
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) Py::Object py_~~_name;
 
     FC_PY_SEL_OBSERVER
 
@@ -765,4 +765,4 @@ private:
 
 } //namespace Gui
 
-#endif // GUI_SELECTION_H
+~endif // GUI_SELECTION_H

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef Sandbox_WORKBENCH_H
-#define Sandbox_WORKBENCH_H
+~ifndef Sandbox_WORKBENCH_H
+~define Sandbox_WORKBENCH_H
 
-#include <Gui/Workbench.h>
-#include <Inventor/nodes/SoShape.h>
-#include <QPointer>
-#include <QImage>
+~include <Gui/Workbench.h>
+~include <Inventor/nodes/SoShape.h>
+~include <QPointer>
+~include <QImage>
 
 namespace SandboxGui {
 
@@ -74,4 +74,4 @@ private:
 } // namespace SandboxGui
 
 
-#endif // Sandbox_WORKBENCH_H 
+~endif // Sandbox_WORKBENCH_H 

@@ -25,11 +25,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include <algorithm>
+~include <algorithm>
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {

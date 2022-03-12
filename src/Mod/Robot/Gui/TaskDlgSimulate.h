@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef ROBOTGUI_TASKDLGSIMULATE_H
-#define ROBOTGUI_TASKDLGSIMULATE_H
+~ifndef ROBOTGUI_TASKDLGSIMULATE_H
+~define ROBOTGUI_TASKDLGSIMULATE_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
 
-#include "TaskRobot6Axis.h"
-#include "TaskTrajectory.h"
-#include "TaskRobotControl.h"
-#include "TaskRobotMessages.h"
+~include "TaskRobot6Axis.h"
+~include "TaskTrajectory.h"
+~include "TaskRobotControl.h"
+~include "TaskRobotMessages.h"
 
 namespace RobotGui {
 
@@ -73,4 +73,4 @@ protected:
 
 } //namespace RobotGui
 
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+~endif // ROBOTGUI_TASKDLGSIMULATE_H

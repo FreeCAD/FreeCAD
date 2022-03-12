@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMSHAPE_H
-#define PARTDESIGN_DATUMSHAPE_H
+~ifndef PARTDESIGN_DATUMSHAPE_H
+~define PARTDESIGN_DATUMSHAPE_H
 
-#include <App/PropertyLinks.h>
-#include <App/DocumentObserver.h>
-#include <App/FeaturePython.h>
-#include <Mod/Part/App/DatumFeature.h>
+~include <App/PropertyLinks.h>
+~include <App/DocumentObserver.h>
+~include <App/FeaturePython.h>
+~include <Mod/Part/App/DatumFeature.h>
 
 namespace PartDesign
 {
@@ -150,4 +150,4 @@ typedef App::FeaturePythonT<SubShapeBinder> SubShapeBinderPython;
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMSHAPE_H
+~endif // PARTDESIGN_DATUMSHAPE_H

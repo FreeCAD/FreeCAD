@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_SEQUENCER_H
-#define BASE_SEQUENCER_H
+~ifndef BASE_SEQUENCER_H
+~define BASE_SEQUENCER_H
 
-#include <memory>
-#include <CXX/Extensions.hxx>
+~include <memory>
+~include <CXX/Extensions.hxx>
 
-#include "Exception.h"
+~include "Exception.h"
 
 
 namespace Base
@@ -43,7 +43,7 @@ class SequencerLauncher;
  * Here are some code snippets of how to use the sequencer:
  *  \code
  *
- *  #include <Base/Sequencer.h>
+ *  ~include <Base/Sequencer.h>
  *
  *  //first example
  *  Base::SequencerLauncher seq("my text", 10)
@@ -295,7 +295,7 @@ private:
  *
  * \code
  *
- *  #include <Base/Sequencer.h>
+ *  ~include <Base/Sequencer.h>
  *
  *  void runOperation();
  *
@@ -330,7 +330,7 @@ private:
  *
  * \code
  *
- *  #include <Base/Sequencer.h>
+ *  ~include <Base/Sequencer.h>
  *
  *  void runOperation();
  *
@@ -407,4 +407,4 @@ private:
 
 } // namespace Base
 
-#endif // BASE_SEQUENCER_H
+~endif // BASE_SEQUENCER_H

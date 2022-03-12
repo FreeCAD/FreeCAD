@@ -18,16 +18,16 @@
  *
  */
 
-#ifndef SIM_COIN3D_SOQTQUARTERADAPTOR_H
-#define SIM_COIN3D_SOQTQUARTERADAPTOR_H
+~ifndef SIM_COIN3D_SOQTQUARTERADAPTOR_H
+~define SIM_COIN3D_SOQTQUARTERADAPTOR_H
 
-#include <Inventor/SoType.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/lists/SoCallbackList.h>
-#include <Inventor/sensors/SoTimerSensor.h>
+~include <Inventor/SoType.h>
+~include <Inventor/actions/SoGetMatrixAction.h>
+~include <Inventor/actions/SoSearchAction.h>
+~include <Inventor/lists/SoCallbackList.h>
+~include <Inventor/sensors/SoTimerSensor.h>
 
-#include "QuarterWidget.h"
+~include "QuarterWidget.h"
 
 
 class SbViewportRegion;
@@ -144,4 +144,4 @@ protected:
 } //Coin3D
 } //
 
-#endif // SIM_COIN3D_SOQTQUARTERADAPTOR_H
+~endif // SIM_COIN3D_SOQTQUARTERADAPTOR_H

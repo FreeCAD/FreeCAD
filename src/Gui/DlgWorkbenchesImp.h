@@ -22,11 +22,11 @@
 // Based on DlgToolbars.h file
 
 
-#ifndef GUI_DIALOG_DLGWORKBENCHES_IMP_H
-#define GUI_DIALOG_DLGWORKBENCHES_IMP_H
+~ifndef GUI_DIALOG_DLGWORKBENCHES_IMP_H
+~define GUI_DIALOG_DLGWORKBENCHES_IMP_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 class QListWidgetCustom;
 class QListWidgetItem;
@@ -76,4 +76,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGWORKBENCHES_IMP_H
+~endif // GUI_DIALOG_DLGWORKBENCHES_IMP_H

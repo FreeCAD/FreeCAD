@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef WEBGUI_WORKBENCH_H
-#define WEBGUI_WORKBENCH_H
+~ifndef WEBGUI_WORKBENCH_H
+~define WEBGUI_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace WebGui {
 
@@ -56,4 +56,4 @@ protected:
 }; // namespace WebGui
 
 }
-#endif // WEB_WORKBENCH_H
+~endif // WEB_WORKBENCH_H

@@ -5,16 +5,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISTASKPANELSCHEME_H
-#define IISTASKPANELSCHEME_H
+~ifndef IISTASKPANELSCHEME_H
+~define IISTASKPANELSCHEME_H
 
-#include <QtGui>
-#include <QBrush>
-#include <QColor>
-#include <QPen>
-#include <QSize>
+~include <QtGui>
+~include <QBrush>
+~include <QColor>
+~include <QPen>
+~include <QSize>
 
-#include "iistaskpanel_global.h"
+~include "iistaskpanel_global.h"
 
 
 struct IISTASKPANEL_EXPORT iisIconLabelScheme
@@ -56,4 +56,4 @@ protected:
 	static iisTaskPanelScheme *myDefaultScheme;
 };
 
-#endif // IISTASKPANELSCHEME_H
+~endif // IISTASKPANELSCHEME_H

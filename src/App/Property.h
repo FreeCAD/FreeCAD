@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTY_H
-#define APP_PROPERTY_H
+~ifndef APP_PROPERTY_H
+~define APP_PROPERTY_H
 
-#include <Base/Exception.h>
-#include <Base/Persistence.h>
-#include <boost/any.hpp>
-#include <boost/signals2.hpp>
-#include <bitset>
-#include <string>
-#include <FCGlobal.h>
+~include <Base/Exception.h>
+~include <Base/Persistence.h>
+~include <boost/any.hpp>
+~include <boost/signals2.hpp>
+~include <bitset>
+~include <string>
+~include <FCGlobal.h>
 
 namespace Py {
 class Object;
@@ -575,4 +575,4 @@ protected:
 
 } // namespace App
 
-#endif // APP_PROPERTY_H
+~endif // APP_PROPERTY_H

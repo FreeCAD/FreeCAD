@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUADRICSURFACE_H
-#define WM4QUADRICSURFACE_H
+~ifndef WM4QUADRICSURFACE_H
+~define WM4QUADRICSURFACE_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4ImplicitSurface.h"
-#include "Wm4RVector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4ImplicitSurface.h"
+~include "Wm4RVector3.h"
 
 namespace Wm4
 {
@@ -156,4 +156,4 @@ typedef QuadricSurface<double> QuadricSurfaced;
 
 }
 
-#endif
+~endif

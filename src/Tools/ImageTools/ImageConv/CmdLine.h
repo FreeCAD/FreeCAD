@@ -48,7 +48,7 @@
       Also, assume that the app displays a 'help' screen if the '-h' switch
       is present on the command line.
 
-   #include "CmdLine.h"
+   ~include "CmdLine.h"
 
    void main(int argc, char **argv)
    {
@@ -108,25 +108,25 @@
    and argv variables. 
 
 ------------------------------------------------------*/
-#ifndef SACMDSH
-#define SACMDSH
+~ifndef SACMDSH
+~define SACMDSH
 
 
-#ifdef __AFX_H__
+~ifdef __AFX_H__
 // if we're using MFC, use CStrings 
-#define StringType CString
-#else
+~define StringType CString
+~else
 // if we're not using MFC, use STL strings
-#define StringType string
-#endif
+~define StringType string
+~endif
 
 // tell the compiler to shut up
-#pragma warning(disable:4786)
+~pragma warning(disable:4786)
 
-//#include <iostream> // you may need this
-#include <map>
-#include <string>
-#include <vector>
+//~include <iostream> // you may need this
+~include <map>
+~include <string>
+~include <vector>
 using namespace std ;
 
 // handy little container for our argument vector
@@ -232,4 +232,4 @@ protected:
    bool        IsSwitch(const char *pParam);
 };
 
-#endif
+~endif

@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef APP_PropertyGeometryList_H
-#define APP_PropertyGeometryList_H
+~ifndef APP_PropertyGeometryList_H
+~define APP_PropertyGeometryList_H
 
 // Std. configurations
 
 
-#include <vector>
-#include <string>
-#include <App/Property.h>
-#include "Geometry.h"
+~include <vector>
+~include <string>
+~include <App/Property.h>
+~include "Geometry.h"
 
 namespace Base {
 class Writer;
@@ -95,4 +95,4 @@ private:
 } // namespace Part
 
 
-#endif // APP_PropertyGeometryList_H
+~endif // APP_PropertyGeometryList_H

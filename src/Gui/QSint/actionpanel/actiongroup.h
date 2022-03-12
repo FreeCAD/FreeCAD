@@ -5,13 +5,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONGROUP_H
-#define ACTIONGROUP_H
+~ifndef ACTIONGROUP_H
+~define ACTIONGROUP_H
 
-#include <QTimer>
-#include <QWidget>
-#include <QBoxLayout>
-#include "qsint_global.h"
+~include <QTimer>
+~include <QWidget>
+~include <QBoxLayout>
+~include "qsint_global.h"
 
 
 namespace QSint
@@ -172,4 +172,4 @@ protected:
 
 } // namespace
 
-#endif // ACTIONGROUP_H
+~endif // ACTIONGROUP_H

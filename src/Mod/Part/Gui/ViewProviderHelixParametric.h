@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
+~ifndef PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
+~define PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
 
-#include "ViewProviderSpline.h"
-#include "ViewProviderPrimitive.h"
+~include "ViewProviderSpline.h"
+~include "ViewProviderPrimitive.h"
 
 namespace PartGui {
 
@@ -65,5 +65,5 @@ private:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
+~endif // PARTGUI_VIEWPROVIDERHELIXPARAMETRIC_H
 

@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#ifndef APP_PropertyConstraintList_H
-#define APP_PropertyConstraintList_H
+~ifndef APP_PropertyConstraintList_H
+~define APP_PropertyConstraintList_H
 
 // Std. configurations
 
 
-#include <vector>
-#include <string>
-#include <App/Property.h>
-#include <Mod/Part/App/Geometry.h>
-#include "Constraint.h"
-#include <boost_signals2.hpp>
-#include <boost/unordered/unordered_map.hpp>
+~include <vector>
+~include <string>
+~include <App/Property.h>
+~include <Mod/Part/App/Geometry.h>
+~include "Constraint.h"
+~include <boost_signals2.hpp>
+~include <boost/unordered/unordered_map.hpp>
 
 namespace Base {
 class Writer;
@@ -175,4 +175,4 @@ private:
 } // namespace Sketcher
 
 
-#endif // APP_PropertyConstraintList_H
+~endif // APP_PropertyConstraintList_H

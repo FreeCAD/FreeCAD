@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef MESHPARTGUI_WORKBENCH_H
-#define MESHPARTGUI_WORKBENCH_H
+~ifndef MESHPARTGUI_WORKBENCH_H
+~define MESHPARTGUI_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace MeshPartGui {
 
@@ -47,4 +47,4 @@ protected:
 } // namespace MeshPartGui
 
 
-#endif // MESHPARTGUI_WORKBENCH_H 
+~endif // MESHPARTGUI_WORKBENCH_H 

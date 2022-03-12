@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
-#define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
+~ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
+~define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 
-#include <Inventor/SoType.h>
+~include <Inventor/SoType.h>
 
-#include "ViewProvider.h"
-#include <App/DocumentObject.h>
+~include "ViewProvider.h"
+~include <App/DocumentObject.h>
 
 class SoMaterial;
 class SoDrawStyle;
@@ -225,5 +225,5 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
+~endif // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
 

@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef QUARTER_CONTEXTMENUHANDLERP_H
-#define QUARTER_CONTEXTMENUHANDLERP_H
+~ifndef QUARTER_CONTEXTMENUHANDLERP_H
+~define QUARTER_CONTEXTMENUHANDLERP_H
 
-#include <QtCore/QObject>
+~include <QtCore/QObject>
 
 class QMenu;
 class QAction;
@@ -67,4 +67,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_CONTEXTMENUHANDLERP_H
+~endif // QUARTER_CONTEXTMENUHANDLERP_H

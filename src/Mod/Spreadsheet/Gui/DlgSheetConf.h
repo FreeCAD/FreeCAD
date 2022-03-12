@@ -20,11 +20,11 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_SHEETCONF_H
-#define DLG_SHEETCONF_H
+~ifndef DLG_SHEETCONF_H
+~define DLG_SHEETCONF_H
 
-#include <QDialog>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <QDialog>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 namespace Ui {
 class DlgSheetConf;
@@ -55,4 +55,4 @@ private:
 
 }
 
-#endif // DLG_SHEETCONF_H
+~endif // DLG_SHEETCONF_H

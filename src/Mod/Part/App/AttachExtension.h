@@ -24,24 +24,24 @@
   * them attachable.
   */
 
-#ifndef PARTATTACHABLEOBJECT_H
-#define PARTATTACHABLEOBJECT_H
+~ifndef PARTATTACHABLEOBJECT_H
+~define PARTATTACHABLEOBJECT_H
 
-#include <App/ExtensionPython.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
-#include <App/DocumentObjectExtension.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
-#include <Base/Exception.h>
+~include <App/ExtensionPython.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyLinks.h>
+~include <App/GeoFeature.h>
+~include <App/DocumentObjectExtension.h>
+~include <Base/Vector3D.h>
+~include <Base/Placement.h>
+~include <Base/Exception.h>
 
-#include "PartFeature.h"
-#include "Attacher.h"
+~include "PartFeature.h"
+~include "Attacher.h"
 
-#include <QString>
+~include <QString>
 
-#include <gp_Vec.hxx>
+~include <gp_Vec.hxx>
 
 namespace Part
 {
@@ -139,4 +139,4 @@ typedef App::ExtensionPythonT<AttachExtension> AttachExtensionPython;
 
 } // namespace Part
 
-#endif // PARTATTACHABLEOBJECT_H
+~endif // PARTATTACHABLEOBJECT_H

@@ -20,39 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PYOBJECTBASE_H
-#define BASE_PYOBJECTBASE_H
+~ifndef BASE_PYOBJECTBASE_H
+~define BASE_PYOBJECTBASE_H
 
 // Std. configurations
 
 // (re-)defined in pyconfig.h
-#if defined (_POSIX_C_SOURCE)
-#   undef    _POSIX_C_SOURCE
-#endif
-#if defined (_XOPEN_SOURCE)
-#   undef    _XOPEN_SOURCE
-#endif
+~if defined (_POSIX_C_SOURCE)
+~   undef    _POSIX_C_SOURCE
+~endif
+~if defined (_XOPEN_SOURCE)
+~   undef    _XOPEN_SOURCE
+~endif
 
 // needed header
-#undef slots
-#include <Python.h>
-#ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
-#endif
-#define slots
-#include <bitset>
+~undef slots
+~include <Python.h>
+~ifdef FC_OS_MACOSX
+~undef toupper
+~undef tolower
+~undef isupper
+~undef islower
+~undef isspace
+~undef isalpha
+~undef isalnum
+~endif
+~define slots
+~include <bitset>
 
-#include "Exception.h"
-#ifndef PYCXX_PYTHON_2TO3
-#define PYCXX_PYTHON_2TO3
-#endif
-#include <CXX/Objects.hxx>
+~include "Exception.h"
+~ifndef PYCXX_PYTHON_2TO3
+~define PYCXX_PYTHON_2TO3
+~endif
+~include <CXX/Objects.hxx>
 
 
 /** Python static class macro for definition
@@ -66,7 +66,7 @@
  * @see PYFUNCIMP_S
  * @see FCPythonExport
  */
-#define PYFUNCDEF_S(SFUNC)   static PyObject* SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
+~define PYFUNCDEF_S(SFUNC)   static PyObject* SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
 
 
 /** Python static class macro for implementation
@@ -82,13 +82,13 @@
  * @see PYFUNCDEF_S
  * @see FCPythonExport
  */
-#define PYFUNCIMP_S(CLASS,SFUNC) PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
+~define PYFUNCIMP_S(CLASS,SFUNC) PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
 
 
 /** Macro for initialization function of Python modules.
  */
-#define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
-#define PyMOD_Return(name) return name
+~define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_~~name(void)
+~define PyMOD_Return(name) return name
 
 /**
  * Union to convert from PyTypeObject to PyObject pointer.
@@ -129,23 +129,23 @@ inline void Assert(int expr, char *msg)         // C++ assert
 ------------------------------*/
 
 /// some basic python macros
-#define Py_NEWARGS 1
+~define Py_NEWARGS 1
 /// return with no return value if nothing happens
-#define Py_Return return Py_INCREF(Py_None), Py_None
+~define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
-#define Py_Error(E, M)   _Py_Error(return(nullptr),E,M)
-#define _Py_Error(R, E, M)   {PyErr_SetString(E, M); R;}
+~define Py_Error(E, M)   _Py_Error(return(nullptr),E,M)
+~define _Py_Error(R, E, M)   {PyErr_SetString(E, M); R;}
 /// returns an error
-#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(nullptr),E,O)
-#define _Py_ErrorObj(R, E, O)   {PyErr_SetObject(E, O); R;}
+~define Py_ErrorObj(E, O)   _Py_ErrorObj(return(nullptr),E,O)
+~define _Py_ErrorObj(R, E, O)   {PyErr_SetObject(E, O); R;}
 /// checks on a condition and returns an error on failure
-#define Py_Try(F) {if (!(F)) return NULL;}
+~define Py_Try(F) {if (!(F)) return NULL;}
 /// assert which returns with an error on failure
-#define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return nullptr;}}
+~define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return nullptr;}}
 
 
 /// This must be the first line of each PyC++ class
-#define Py_Header                                           \
+~define Py_Header                                           \
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
@@ -365,8 +365,8 @@ private:
  * @see PYFUNCIMP_D
  * @see PyObjectBase
  */
-#define PYFUNCDEF_D(CLASS,DFUNC)	PyObject * DFUNC (PyObject *args);  \
-static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){return (( CLASS *)self)-> DFUNC (args);};
+~define PYFUNCDEF_D(CLASS,DFUNC)	PyObject * DFUNC (PyObject *args);  \
+static PyObject * s~~DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){return (( CLASS *)self)-> DFUNC (args);};
 
 /** Python dynamic class macro for implementation
  * used to set up an implementation for PYFUNCDEF_D definition.
@@ -380,7 +380,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  * @see PYFUNCDEF_D
  * @see PyObjectBase
  */
-#define PYFUNCIMP_D(CLASS,DFUNC) PyObject* CLASS::DFUNC (PyObject *args)
+~define PYFUNCIMP_D(CLASS,DFUNC) PyObject* CLASS::DFUNC (PyObject *args)
 
 
 
@@ -408,10 +408,10 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  * @see PYFUNCDEF_D
  * @see PyObjectBase
  */
-#define PYMETHODEDEF(FUNC)	{"" #FUNC "",(PyCFunction) s##FUNC,Py_NEWARGS},
+~define PYMETHODEDEF(FUNC)	{"" ~FUNC "",(PyCFunction) s~~FUNC,Py_NEWARGS},
 
 BaseExport extern PyObject* BaseExceptionFreeCADError;
-#define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
+~define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
  BaseExceptionFreeCADError : PyExc_RuntimeError)
 
 BaseExport extern PyObject* BaseExceptionFreeCADAbort;
@@ -453,9 +453,9 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * @see PYMETHODEDEF
  * @see PyObjectBase
  */
-#define PY_TRY	try
+~define PY_TRY	try
 
-#define __PY_CATCH(R)                                               \
+~define __PY_CATCH(R)                                               \
     catch(Base::Exception &e)                                       \
     {                                                               \
         auto pye = e.getPyExceptionType();                          \
@@ -472,21 +472,21 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
         R;                                                          \
     }                                                               \
 
-#ifndef DONT_CATCH_CXX_EXCEPTIONS
+~ifndef DONT_CATCH_CXX_EXCEPTIONS
 /// see docu of PY_TRY
-#  define _PY_CATCH(R)                                              \
+~  define _PY_CATCH(R)                                              \
     __PY_CATCH(R)                                                   \
     catch(...)                                                      \
     {                                                               \
         _Py_Error(R,Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
     }
 
-#else
+~else
 /// see docu of PY_TRY
-#  define _PY_CATCH(R) __PY_CATCH(R)
-#endif  // DONT_CATCH_CXX_EXCEPTIONS
+~  define _PY_CATCH(R) __PY_CATCH(R)
+~endif  // DONT_CATCH_CXX_EXCEPTIONS
 
-#define PY_CATCH _PY_CATCH(return(nullptr))
+~define PY_CATCH _PY_CATCH(return(nullptr))
 
 /** Python helper class
  *  This class encapsulate the Decoding of UTF8 to a python object.
@@ -511,4 +511,4 @@ inline PyObject * PyAsUnicodeObject(const std::string &str)
 } // namespace Base
 
 
-#endif // BASE_PYOBJECTBASE_H
+~endif // BASE_PYOBJECTBASE_H

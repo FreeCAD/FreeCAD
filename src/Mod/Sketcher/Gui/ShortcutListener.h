@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_SHORTCUTLISTENER_H
-#define SKETCHERGUI_SHORTCUTLISTENER_H
+~ifndef SKETCHERGUI_SHORTCUTLISTENER_H
+~define SKETCHERGUI_SHORTCUTLISTENER_H
 
-#include <QObject>
+~include <QObject>
 
 
 namespace SketcherGui {
@@ -56,5 +56,5 @@ protected:
 } // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_SHORTCUTLISTENER_H
+~endif // SKETCHERGUI_SHORTCUTLISTENER_H
 

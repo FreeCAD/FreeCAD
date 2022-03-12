@@ -23,14 +23,14 @@
  
 
 
-#ifndef _FeatureViewSymbol_h_
-#define _FeatureViewSymbol_h_
+~ifndef _FeatureViewSymbol_h_
+~define _FeatureViewSymbol_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include "FeatureView.h"
+~include <App/FeaturePython.h>
 
 
 namespace Drawing
@@ -72,4 +72,4 @@ typedef App::FeaturePythonT<FeatureViewSymbol> FeatureViewSymbolPython;
 } //namespace Drawing
 
 
-#endif
+~endif

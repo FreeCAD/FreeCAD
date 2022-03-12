@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GLBUFFER_H
-#define GUI_GLBUFFER_H
+~ifndef GUI_GLBUFFER_H
+~define GUI_GLBUFFER_H
 
-#include <map>
-#include <Inventor/C/glue/gl.h>
+~include <map>
+~include <Inventor/C/glue/gl.h>
 
 namespace Gui {
 
@@ -91,4 +91,4 @@ private:
 
 } // namespace Gui
 
-#endif  // GUI_GLBUFFER_H
+~endif  // GUI_GLBUFFER_H

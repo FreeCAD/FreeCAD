@@ -27,10 +27,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==============================*/
 
 
-#pragma once
+~pragma once
 
-#include <cmath>
-#include "kurve/geometry.h"
+~include <cmath>
+~include "kurve/geometry.h"
 
 class Point{
 public:

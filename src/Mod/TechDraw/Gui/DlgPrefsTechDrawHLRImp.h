@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
+~ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
+~define DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawHLRImp;
@@ -50,4 +50,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
+~endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H

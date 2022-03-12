@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawGuiUtil_h_
-#define _DrawGuiUtil_h_
+~ifndef _DrawGuiUtil_h_
+~define _DrawGuiUtil_h_
 
-#include <string>
-#include <QCoreApplication>
-#include <QRectF>
-#include <QPointF>
-#include <QComboBox>
-#include <Base/Vector3D.h>
+~include <string>
+~include <QCoreApplication>
+~include <QRectF>
+~include <QPointF>
+~include <QComboBox>
+~include <Base/Vector3D.h>
 
-#include <App/DocumentObject.h>
+~include <App/DocumentObject.h>
 
-/*#include <Gui/PrefWidgets.h>*/
+/*~include <Gui/PrefWidgets.h>*/
 
 namespace Part {
 class Feature;
@@ -71,4 +71,4 @@ class TechDrawGuiExport DrawGuiUtil {
 };
 
 } //end namespace TechDrawGui
-#endif
+~endif

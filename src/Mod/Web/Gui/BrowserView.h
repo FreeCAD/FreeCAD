@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#ifndef WEBGUI_BROWSERVIEW_H
-#define WEBGUI_BROWSERVIEW_H
+~ifndef WEBGUI_BROWSERVIEW_H
+~define WEBGUI_BROWSERVIEW_H
 
 
-#include <Gui/MDIView.h>
-#include <Gui/Window.h>
-#include <QLineEdit>
+~include <Gui/MDIView.h>
+~include <Gui/Window.h>
+~include <QLineEdit>
 
-#if defined(QTWEBENGINE)
-#include <QWebEngineView>
+~if defined(QTWEBENGINE)
+~include <QWebEngineView>
 namespace WebGui {
 class WebEngineUrlRequestInterceptor;
 }
-#elif defined(QTWEBKIT)
-#include <QWebView>
-#endif
+~elif defined(QTWEBKIT)
+~include <QWebView>
+~endif
 
 class QUrl;
 class QNetworkRequest;
@@ -45,11 +45,11 @@ class QNetworkReply;
 namespace WebGui {
 class UrlWidget;
 
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
 class WebGuiExport WebView : public QWebEngineView
-#else
+~else
 class WebGuiExport WebView : public QWebView
-#endif
+~endif
 {
     Q_OBJECT
 
@@ -101,10 +101,10 @@ public:
 
     bool canClose (void);
 
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
 public Q_SLOTS:
     void setWindowIcon(const QIcon &icon);
-#endif
+~endif
 
 protected Q_SLOTS:
     void onLoadStarted();
@@ -112,14 +112,14 @@ protected Q_SLOTS:
     void onLoadFinished(bool);
     bool chckHostAllowed(const QString& host);
     void urlFilter(const QUrl &url);
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
     void onDownloadRequested(QWebEngineDownloadItem *request);
     void onLinkHovered(const QString& url);
-#else
+~else
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
     void onLinkHovered(const QString& link, const QString& title, const QString& textContent);
-#endif
+~endif
     void onViewSource(const QUrl &url);
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
@@ -128,11 +128,11 @@ private:
     WebView* view;
     bool isLoading;
     UrlWidget *urlWgt;
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
     WebEngineUrlRequestInterceptor *interceptLinks;
-#else
+~else
     float textSizeMultiplier;
-#endif
+~endif
 };
 
 // the URL ardressbar lineedit
@@ -150,4 +150,4 @@ protected:
 
 } // namespace WebGui
 
-#endif // WEBGUI_BROWSERVIEW_H
+~endif // WEBGUI_BROWSERVIEW_H

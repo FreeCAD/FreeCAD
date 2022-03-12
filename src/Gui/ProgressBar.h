@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PROGRESSBAR_H
-#define GUI_PROGRESSBAR_H
+~ifndef GUI_PROGRESSBAR_H
+~define GUI_PROGRESSBAR_H
 
-#include <QProgressBar>
-#ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarButton>
-#include <QWinTaskbarProgress>
-#endif
+~include <QProgressBar>
+~ifdef QT_WINEXTRAS_LIB
+~include <QWinTaskbarButton>
+~include <QWinTaskbarProgress>
+~endif
 
-#include <Base/Sequencer.h>
+~include <Base/Sequencer.h>
 
 
 namespace Gui {
@@ -196,15 +196,15 @@ private:
     ProgressBarPrivate* d;
     SequencerBar* sequencer;
 
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     /* Set up the taskbar progress in windows */
     void setupTaskBarProgress(void);
     QWinTaskbarProgress* m_taskbarProgress;
     QWinTaskbarButton* m_taskbarButton;
-#endif
+~endif
     friend class SequencerBar;
 };
 
 } // namespace Gui
 
-#endif // GUI_PROGRESSBAR_H
+~endif // GUI_PROGRESSBAR_H

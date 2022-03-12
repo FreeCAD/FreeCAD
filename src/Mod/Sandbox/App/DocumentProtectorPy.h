@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTPROTECTORPY_H
-#define SANDBOX_DOCUMENTPROTECTORPY_H
+~ifndef SANDBOX_DOCUMENTPROTECTORPY_H
+~define SANDBOX_DOCUMENTPROTECTORPY_H
 
-#include <CXX/Extensions.hxx>
+~include <CXX/Extensions.hxx>
 
 namespace App {
 class DocumentPy;
@@ -83,5 +83,5 @@ private:
 
 }
 
-#endif // SANDBOX_DOCUMENTPROTECTORPY_H
+~endif // SANDBOX_DOCUMENTPROTECTORPY_H
 

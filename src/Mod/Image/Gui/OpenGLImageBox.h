@@ -16,20 +16,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef OPENGLIMAGEBOX_H
-#define OPENGLIMAGEBOX_H
+~ifndef OPENGLIMAGEBOX_H
+~define OPENGLIMAGEBOX_H
 
-#include <Mod/Image/App/ImageBase.h>
-#include <QOpenGLWidget>
+~include <Mod/Image/App/ImageBase.h>
+~include <QOpenGLWidget>
 
 class QOpenGLDebugMessage;
 
 namespace ImageGui
 {
 
-#define IV_DISPLAY_NOCHANGE     0       // no change to view settings when displaying a new image
-#define IV_DISPLAY_FITIMAGE     1       // fit-image when displaying a new image (other settings remain the same)
-#define IV_DISPLAY_RESET        2       // reset settings when displaying a new image (image will be displayed at 1:1 scale with no color map)
+~define IV_DISPLAY_NOCHANGE     0       // no change to view settings when displaying a new image
+~define IV_DISPLAY_FITIMAGE     1       // fit-image when displaying a new image (other settings remain the same)
+~define IV_DISPLAY_RESET        2       // reset settings when displaying a new image (image will be displayed at 1:1 scale with no color map)
 
 class ImageGuiExport GLImageBox : public QOpenGLWidget
 {
@@ -119,4 +119,4 @@ private:
 
 } // namespace ImageGui
 
-#endif // OPENGLIMAGEBOX_H
+~endif // OPENGLIMAGEBOX_H

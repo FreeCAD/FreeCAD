@@ -14,10 +14,10 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY_H
-#define WM4QUERY_H
+~ifndef WM4QUERY_H
+~define WM4QUERY_H
 
-#include "Wm4FoundationLIB.h"
+~include "Wm4FoundationLIB.h"
 
 namespace Wm4
 {
@@ -46,6 +46,6 @@ protected:
 
 }
 
-#include "Wm4Query.inl"
+~include "Wm4Query.inl"
 
-#endif
+~endif

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGFILTER_H
-#define DAGFILTER_H
+~ifndef DAGFILTER_H
+~define DAGFILTER_H
 
-#include <QString>
+~include <QString>
 
-#include "DAGModelGraph.h"
+~include "DAGModelGraph.h"
 
 namespace Gui
 {
@@ -70,4 +70,4 @@ namespace Gui
   }
 }
 
-#endif // DAGFILTER_H
+~endif // DAGFILTER_H

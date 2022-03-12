@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TTUPLE_H
-#define WM4TTUPLE_H
+~ifndef WM4TTUPLE_H
+~define WM4TTUPLE_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 // The class TYPE is either native data or is class data that has the
 // following member functions:
@@ -65,6 +65,6 @@ private:
 
 }
 
-#include "Wm4TTuple.inl"
+~include "Wm4TTuple.inl"
 
-#endif
+~endif

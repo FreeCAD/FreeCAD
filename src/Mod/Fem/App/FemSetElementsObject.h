@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetElementsObjec_H
-#define Fem_FemSetElementsObjec_H
+~ifndef Fem_FemSetElementsObjec_H
+~define Fem_FemSetElementsObjec_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include "FemSetObject.h"
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include "FemSetObject.h"
 
 namespace Fem
 {
@@ -56,4 +56,4 @@ public:
 } //namespace Fem
 
 
-#endif // Fem_FemSetElementsObjec_H
+~endif // Fem_FemSetElementsObjec_H

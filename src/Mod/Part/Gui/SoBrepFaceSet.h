@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPFACESET_H
-#define PARTGUI_SOBREPFACESET_H
+~ifndef PARTGUI_SOBREPFACESET_H
+~define PARTGUI_SOBREPFACESET_H
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
-#include <memory>
-#include <Gui/SoFCSelectionContext.h>
+~include <Inventor/fields/SoSFInt32.h>
+~include <Inventor/fields/SoMFInt32.h>
+~include <Inventor/fields/SoSFNode.h>
+~include <Inventor/fields/SoSubField.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoIndexedFaceSet.h>
+~include <Inventor/elements/SoLazyElement.h>
+~include <Inventor/elements/SoReplacedElement.h>
+~include <vector>
+~include <memory>
+~include <Gui/SoFCSelectionContext.h>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-// #define RENDER_GLARRAYS
+// ~define RENDER_GLARRAYS
 
 namespace PartGui {
 
@@ -138,16 +138,16 @@ private:
 
     bool overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2);
 
-#ifdef RENDER_GLARRAYS
+~ifdef RENDER_GLARRAYS
     void renderSimpleArray();
     void renderColoredArray(SoMaterialBundle *const materials);
-#endif
+~endif
 
 private:
-#ifdef RENDER_GLARRAYS
+~ifdef RENDER_GLARRAYS
     std::vector<int32_t> index_array;
     std::vector<float> vertex_array;
-#endif
+~endif
     SelContextPtr selContext;
     SelContextPtr selContext2;
     std::vector<int32_t> matIndex;
@@ -162,5 +162,5 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_SOBREPFACESET_H
+~endif // PARTGUI_SOBREPFACESET_H
 

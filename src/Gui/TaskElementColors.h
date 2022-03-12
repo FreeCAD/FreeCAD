@@ -20,12 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_TASKELEMENTCOLORS_H
-#define GUI_TASKELEMENTCOLORS_H
+~ifndef GUI_TASKELEMENTCOLORS_H
+~define GUI_TASKELEMENTCOLORS_H
 
-#include <QListWidgetItem>
-#include "TaskView/TaskDialog.h"
-#include "TaskView/TaskView.h"
+~include <QListWidgetItem>
+~include "TaskView/TaskDialog.h"
+~include "TaskView/TaskView.h"
 
 
 namespace Gui {
@@ -91,4 +91,4 @@ private:
 
 } //namespace Gui
 
-#endif // GUI_TASKELEMENTCOLORS_H
+~endif // GUI_TASKELEMENTCOLORS_H

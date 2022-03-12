@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Revolution_H
-#define PARTDESIGN_Revolution_H
+~ifndef PARTDESIGN_Revolution_H
+~define PARTDESIGN_Revolution_H
 
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+~include <App/PropertyUnits.h>
+~include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
@@ -75,4 +75,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PART_Revolution_H
+~endif // PART_Revolution_H

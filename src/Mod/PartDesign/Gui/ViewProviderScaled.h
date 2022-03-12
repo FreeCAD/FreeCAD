@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderScaled_H
-#define PARTGUI_ViewProviderScaled_H
+~ifndef PARTGUI_ViewProviderScaled_H
+~define PARTGUI_ViewProviderScaled_H
 
-#include "ViewProviderTransformed.h"
+~include "ViewProviderTransformed.h"
 
 namespace PartDesignGui {
 
@@ -47,4 +47,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderScaled_H
+~endif // PARTGUI_ViewProviderScaled_H

@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEW3DINVENTORVIEWER_H
-#define GUI_VIEW3DINVENTORVIEWER_H
+~ifndef GUI_VIEW3DINVENTORVIEWER_H
+~define GUI_VIEW3DINVENTORVIEWER_H
 
-#include <list>
-#include <map>
-#include <set>
-#include <vector>
+~include <list>
+~include <map>
+~include <set>
+~include <vector>
 
-#include <QCursor>
-#include <QImage>
+~include <QCursor>
+~include <QImage>
 
-#include <Inventor/SbRotation.h>
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoSwitch.h>
+~include <Inventor/SbRotation.h>
+~include <Inventor/nodes/SoEventCallback.h>
+~include <Inventor/nodes/SoSwitch.h>
 
-#include <Base/Placement.h>
+~include <Base/Placement.h>
 
-#include "Namespace.h"
-#include "Selection.h"
-#include "Quarter/SoQTQuarterAdaptor.h"
+~include "Namespace.h"
+~include "Selection.h"
+~include "Quarter/SoQTQuarterAdaptor.h"
 
 
 class SoTranslation;
@@ -496,4 +496,4 @@ private:
 
 } // namespace Gui
 
-#endif  // GUI_VIEW3DINVENTORVIEWER_H
+~endif  // GUI_VIEW3DINVENTORVIEWER_H

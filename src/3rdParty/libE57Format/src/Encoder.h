@@ -25,9 +25,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {
@@ -59,9 +59,9 @@ namespace e57
          return bytestreamNumber_;
       }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       virtual void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
    protected:
       Encoder( unsigned bytestreamNumber );
 
@@ -86,9 +86,9 @@ namespace e57
       size_t outputGetMaxSize() override;
       void outputSetMaxSize( unsigned byteCount ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
    protected:
       BitpackEncoder( unsigned bytestreamNumber, SourceDestBuffer &sbuf, unsigned outputMaxSize,
                       unsigned alignmentSize );
@@ -115,9 +115,9 @@ namespace e57
       bool registerFlushToOutput() override;
       float bitsPerRecord() override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
    protected:
       FloatPrecision precision_;
    };
@@ -131,9 +131,9 @@ namespace e57
       bool registerFlushToOutput() override;
       float bitsPerRecord() override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
    protected:
       uint64_t totalBytesProcessed_;
       bool isStringActive_;
@@ -152,9 +152,9 @@ namespace e57
       bool registerFlushToOutput() override;
       float bitsPerRecord() override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
    protected:
       bool isScaledInteger_;
       int64_t minimum_;
@@ -186,9 +186,9 @@ namespace e57
       size_t outputGetMaxSize() override;
       void outputSetMaxSize( unsigned byteCount ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
-#endif
+~endif
    protected:
       std::shared_ptr<SourceDestBufferImpl> sourceBuffer_;
       uint64_t currentRecordIndex_;

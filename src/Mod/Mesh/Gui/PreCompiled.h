@@ -21,75 +21,75 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_PRECOMPILED_H
-#define MESHGUI_PRECOMPILED_H
+~ifndef MESHGUI_PRECOMPILED_H
+~define MESHGUI_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define MeshExport    __declspec(dllimport)
-# define MeshGuiExport __declspec(dllexport)
-#else // for Linux
-# define MeshExport
-# define MeshGuiExport
-#endif
+~ifdef FC_OS_WIN32
+~ define MeshExport    __declspec(dllimport)
+~ define MeshGuiExport __declspec(dllexport)
+~else // for Linux
+~ define MeshExport
+~ define MeshGuiExport
+~endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#   pragma warning( disable : 4005 )
-#   pragma warning( disable : 4251 )
-#   pragma warning( disable : 4503 )
-#   pragma warning( disable : 4275 )
-#   pragma warning( disable : 4273 )
-#   pragma warning( disable : 4786 )  // specifier longer then 255 chars
-#endif
+~ifdef _MSC_VER
+~   pragma warning( disable : 4005 )
+~   pragma warning( disable : 4251 )
+~   pragma warning( disable : 4503 )
+~   pragma warning( disable : 4275 )
+~   pragma warning( disable : 4273 )
+~   pragma warning( disable : 4786 )  // specifier longer then 255 chars
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Gts
-#ifdef FC_USE_GTS
-#  include <gts.h>
-#endif
+~ifdef FC_USE_GTS
+~  include <gts.h>
+~endif
 // standard
-#include <stdio.h>
-#include <assert.h>
+~include <stdio.h>
+~include <assert.h>
 
 // STL
-#include <algorithm>
-#include <bitset>
-#include <iostream>
-#include <fstream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <bitset>
+~include <iostream>
+~include <fstream>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
 
-#include <Python.h>
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~include <Python.h>
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
 // Inventor
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-# include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
-#endif
+~ifndef __InventorAll__
+~ include <Gui/InventorAll.h>
+~ include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
+~endif
 
-#elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <Windows.h>
-#endif  //_PreComp_
+~elif defined(FC_OS_WIN32)
+~ifndef NOMINMAX
+~define NOMINMAX
+~endif
+~include <Windows.h>
+~endif  //_PreComp_
 
-#endif // MESHGUI_PRECOMPILED_H 
+~endif // MESHGUI_PRECOMPILED_H 

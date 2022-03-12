@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_COMBOVIEW_H
-#define GUI_DOCKWND_COMBOVIEW_H
+~ifndef GUI_DOCKWND_COMBOVIEW_H
+~define GUI_DOCKWND_COMBOVIEW_H
 
-#include "DockWindow.h"
+~include "DockWindow.h"
 
 
 class QTabWidget;
@@ -108,4 +108,4 @@ private:
 } // namespace DockWnd
 } // namespace Gui
 
-#endif // GUI_DOCKWND_SELECTIONVIEW_H
+~endif // GUI_DOCKWND_SELECTIONVIEW_H

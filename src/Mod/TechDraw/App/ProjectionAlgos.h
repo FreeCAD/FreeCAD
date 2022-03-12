@@ -23,14 +23,14 @@
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
-#ifndef _TechDrawProjectionAlgos_h_
-#define _TechDrawProjectionAlgos_h_
+~ifndef _TechDrawProjectionAlgos_h_
+~define _TechDrawProjectionAlgos_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <TopoDS_Shape.hxx>
-#include <Base/Vector3D.h>
-#include <string>
+~include <TopoDS_Shape.hxx>
+~include <Base/Vector3D.h>
+~include <string>
 
 class BRepAdaptor_Curve;
 
@@ -83,4 +83,4 @@ public:
 } //namespace TechDraw
 
 
-#endif
+~endif

@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAttacher_H
-#define GUI_TASKVIEW_TaskAttacher_H
+~ifndef GUI_TASKVIEW_TaskAttacher_H
+~define GUI_TASKVIEW_TaskAttacher_H
 
-#include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Part/App/Attacher.h>
-#include <boost/function.hpp>
+~include <Gui/Selection.h>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/Part/App/Attacher.h>
+~include <boost/function.hpp>
 
 
 class Ui_TaskAttacher;
@@ -183,4 +183,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_COMMAND_H
-#define GUI_COMMAND_H
+~ifndef GUI_COMMAND_H
+~define GUI_COMMAND_H
 
-#include <list>
+~include <list>
 
-#include <Base/Type.h>
-#include <Gui/Application.h>
+~include <Base/Type.h>
+~include <Gui/Application.h>
 
 /** @defgroup CommandMacros Helper macros for running commands through Python interpreter */
 //@{
@@ -48,11 +48,11 @@
  *       Gui.getDocument('DocName').getObject('ObjName')
  * @endcode
  */
-#define _FCMD_DOC_CMD(_type,_doc,_cmd) do{\
+~define _FCMD_DOC_CMD(_type,_doc,_cmd) do{\
     auto __doc = _doc;\
     if(__doc && __doc->getName()) {\
         std::ostringstream _str;\
-        _str << #_type ".getDocument('" << __doc->getName() << "')." << _cmd;\
+        _str << ~_type ".getDocument('" << __doc->getName() << "')." << _cmd;\
         Gui::Command::runCommand(Gui::Command::Doc,_str.str().c_str());\
     }\
 }while(0)
@@ -63,14 +63,14 @@
  * @param _cmd: command string, streamable
  * @sa _FCMD_DOC_CMD()
  */
-#define FCMD_DOC_CMD(_doc,_cmd) _FCMD_DOC_CMD(App,_doc,_cmd)
+~define FCMD_DOC_CMD(_doc,_cmd) _FCMD_DOC_CMD(App,_doc,_cmd)
 
 /** Runs a command for accessing an object's document attribute or method
  * @param _type: type of the document, Gui or App
  * @param _obj: pointer to a DocumentObject
  * @param _cmd: command string, streamable
  */
-#define _FCMD_OBJ_DOC_CMD(_type,_obj,_cmd) do{\
+~define _FCMD_OBJ_DOC_CMD(_type,_obj,_cmd) do{\
     auto __obj = _obj;\
     if(__obj)\
         _FCMD_DOC_CMD(_type,__obj->getDocument(),_cmd);\
@@ -80,13 +80,13 @@
  * @param _obj: pointer to a DocumentObject
  * @param _cmd: command string, streamable
  */
-#define FCMD_OBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(App,_obj,_cmd)
+~define FCMD_OBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(App,_obj,_cmd)
 
 /** Runs a command for accessing an object's Gui::Document attribute or method
  * @param _obj: pointer to a DocumentObject
  * @param _cmd: command string, streamable
  */
-#define FCMD_VOBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(Gui,_obj,_cmd)
+~define FCMD_VOBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(Gui,_obj,_cmd)
 
 /** Runs a command for accessing a document/view object's attribute or method
  * @param _type: type of the object, Gui or App
@@ -104,11 +104,11 @@
  *       Gui.getDocument('DocName').getObject('ObjName').Visibility = True
  * @endcode
  */
-#define _FCMD_OBJ_CMD(_type,_cmd_type,_obj,_cmd) do{\
+~define _FCMD_OBJ_CMD(_type,_cmd_type,_obj,_cmd) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         std::ostringstream _str;\
-        _str << #_type ".getDocument('" << __obj->getDocument()->getName() \
+        _str << ~_type ".getDocument('" << __obj->getDocument()->getName() \
              << "').getObject('" <<  __obj->getNameInDocument() << "')." << _cmd;\
         Gui::Command::runCommand(Gui::Command::_cmd_type,_str.str().c_str());\
     }\
@@ -119,14 +119,14 @@
  * @param _cmd: command string, streamable
  * @sa _FCMD_OBJ_CMD()
  */
-#define FCMD_OBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(App,Doc,_obj,_cmd)
+~define FCMD_OBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(App,Doc,_obj,_cmd)
 
 /** Runs a command for accessing an view object's attribute or method
  * @param _obj: pointer to a DocumentObject
  * @param _cmd: command string, streamable
  * @sa _FCMD_OBJ_CMD()
  */
-#define FCMD_VOBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(Gui,Gui,_obj,_cmd)
+~define FCMD_VOBJ_CMD(_obj,_cmd) _FCMD_OBJ_CMD(Gui,Gui,_obj,_cmd)
 
 /** Runs a command for accessing a document object's attribute or method
  * @param _cmd: command string, supporting printf like formatter
@@ -143,11 +143,11 @@
  *       App.getDocument('DocName').getObject('ObjName').Visibility = True
  * @endcode
  */
-#define FCMD_OBJ_CMD2(_cmd,_obj,...) do{\
+~define FCMD_OBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').getObject('%s')." _cmd,\
-                __obj->getDocument()->getName(),__obj->getNameInDocument(),## __VA_ARGS__);\
+                __obj->getDocument()->getName(),__obj->getNameInDocument(),~~ __VA_ARGS__);\
     }\
 }while(0)
 
@@ -156,11 +156,11 @@
  * @param _obj: pointer to a DocumentObject
  * @sa FCMD_OBJ_CMD2()
  */
-#define FCMD_VOBJ_CMD2(_cmd,_obj,...) do{\
+~define FCMD_VOBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').getObject('%s')." _cmd,\
-                __obj->getDocument()->getName(),__obj->getNameInDocument(),## __VA_ARGS__);\
+                __obj->getDocument()->getName(),__obj->getNameInDocument(),~~ __VA_ARGS__);\
     }\
 }while(0)
 
@@ -172,7 +172,7 @@
  * in-place editing an object, which may be brought in through linking to an
  * external group.
  */
-#define FCMD_SET_EDIT(_obj) do{\
+~define FCMD_SET_EDIT(_obj) do{\
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
@@ -183,10 +183,10 @@
 
 
 /// Hides an object
-#define FCMD_OBJ_HIDE(_obj) FCMD_OBJ_CMD(_obj,"Visibility = False")
+~define FCMD_OBJ_HIDE(_obj) FCMD_OBJ_CMD(_obj,"Visibility = False")
 
 /// Shows an object
-#define FCMD_OBJ_SHOW(_obj) FCMD_OBJ_CMD(_obj,"Visibility = True")
+~define FCMD_OBJ_SHOW(_obj) FCMD_OBJ_CMD(_obj,"Visibility = True")
 
 //@}
 
@@ -445,16 +445,16 @@ public:
     static void printCaller(const char *file, int line);
 
     // ISO C++11 requires at least one argument for the "..." in a variadic macro
-    // https://en.wikipedia.org/wiki/Variadic_macro#Example
+    // https://en.wikipedia.org/wiki/Variadic_macro~Example
     /** Convenience macro to run a command with printf like formatter
      *
      * @sa Command::_doCommand()
      */
-#ifdef _MSC_VER
-#define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
-#else
-#define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
-#endif
+~ifdef _MSC_VER
+~define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,~~__VA_ARGS__)
+~else
+~define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
+~endif
 
     /** Run a command with printf like formatter
      *
@@ -472,7 +472,7 @@ public:
      *
      * @sa Command::_runCommand()
      */
-#define runCommand(_type,_cmd) _runCommand(__FILE__,__LINE__,_type,_cmd)
+~define runCommand(_type,_cmd) _runCommand(__FILE__,__LINE__,_type,_cmd)
 
     /** Run a command
      *
@@ -503,7 +503,7 @@ public:
      *
      * @sa _assureWorkbench()
      */
-#define assureWorkbench(_name) _assureWorkbench(__FILE__,__LINE__,_name)
+~define assureWorkbench(_name) _assureWorkbench(__FILE__,__LINE__,_name)
 
     /** Assures the switch to a certain workbench
      *
@@ -521,7 +521,7 @@ public:
     /** @name Methods for copying visiual properties */
     //@{
     /// Convenience macro to copy visual properties
-#define copyVisual(...) _copyVisual(__FILE__,__LINE__,__VA_ARGS__)
+~define copyVisual(...) _copyVisual(__FILE__,__LINE__,__VA_ARGS__)
     static void _copyVisual(const char *file, int line, const char* to, const char* attr, const char* from);
     static void _copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from);
     static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr, const App::DocumentObject *from);
@@ -901,12 +901,12 @@ private:
  *  The parameters are the class name.
  *  @author Jürgen Riegel
  */
-#define DEF_STD_CMD(X) class X : public Gui::Command \
+~define DEF_STD_CMD(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
 };
@@ -916,13 +916,13 @@ protected: \
  *  The parameters are the class name
  *  @author Jürgen Riegel
  */
-#define DEF_STD_CMD_A(X) class X : public Gui::Command \
+~define DEF_STD_CMD_A(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual ~X(){}\
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
@@ -933,13 +933,13 @@ protected: \
  *  The parameters are the class name
  *  @author Jürgen Riegel
  */
-#define DEF_STD_CMD_C(X) class X : public Gui::Command \
+~define DEF_STD_CMD_C(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual ~X(){}\
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual Gui::Action * createAction(void);\
@@ -950,13 +950,13 @@ protected: \
  *  The parameters are the class name
  *  @author Werner Mayer
  */
-#define DEF_STD_CMD_AC(X) class X : public Gui::Command \
+~define DEF_STD_CMD_AC(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual ~X(){}\
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
@@ -968,14 +968,14 @@ protected: \
  *  The parameters are the class name
  *  @author Werner Mayer
  */
-#define DEF_STD_CMD_AU(X) class X : public Gui::Command \
+~define DEF_STD_CMD_AU(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual ~X(){}\
     virtual void updateAction(int mode); \
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
@@ -987,14 +987,14 @@ protected: \
  *  The parameters are the class name
  *  @author Werner Mayer
  */
-#define DEF_STD_CMD_ACL(X) class X : public Gui::Command \
+~define DEF_STD_CMD_ACL(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual ~X(){}\
     virtual void languageChange(); \
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
@@ -1007,7 +1007,7 @@ protected: \
  *  The parameters are the class name
  *  @author Werner Mayer
  */
-#define DEF_STD_CMD_ACLU(X) class X : public Gui::Command \
+~define DEF_STD_CMD_ACLU(X) class X : public Gui::Command \
 {\
 public:\
     X();\
@@ -1015,7 +1015,7 @@ public:\
     virtual void languageChange(); \
     virtual void updateAction(int mode); \
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void);\
@@ -1028,13 +1028,13 @@ protected: \
  *  The parameters are the class name
  *  @author Jürgen Riegel
  */
-#define DEF_3DV_CMD(X) class X : public Gui::Command \
+~define DEF_3DV_CMD(X) class X : public Gui::Command \
 {\
 public:\
     X();\
     virtual ~X(){}\
     virtual const char* className() const\
-    { return #X; }\
+    { return ~X; }\
 protected: \
     virtual void activated(int iMsg);\
     virtual bool isActive(void)\
@@ -1044,4 +1044,4 @@ protected: \
     }\
 };
 
-#endif // GUI_COMMAND_H
+~endif // GUI_COMMAND_H

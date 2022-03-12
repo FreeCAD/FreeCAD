@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#ifndef START_PRECOMPILED_H
-#define START_PRECOMPILED_H
+~ifndef START_PRECOMPILED_H
+~define START_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define AppStartExport __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-#else // for Linux
-# define AppStartExport
-# define PartExport
-# define MeshExport
-#endif
+~ifdef FC_OS_WIN32
+~ define AppStartExport __declspec(dllexport)
+~ define PartExport  __declspec(dllimport)
+~ define MeshExport     __declspec(dllimport)
+~else // for Linux
+~ define AppStartExport
+~ define PartExport
+~ define MeshExport
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
+~include <iostream>
+~include <sstream>
+~include <stdio.h>
+~include <assert.h>
+~include <string>
+~include <map>
+~include <vector>
+~include <set>
+~include <bitset>
 
-#include <Python.h>
+~include <Python.h>
 
 
-#endif // _PreComp_
-#endif
+~endif // _PreComp_
+~endif
 

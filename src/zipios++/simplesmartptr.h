@@ -1,7 +1,7 @@
-#ifndef SIMPLESMARTPTR_H
-#define SIMPLESMARTPTR_H
+~ifndef SIMPLESMARTPTR_H
+~define SIMPLESMARTPTR_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
 namespace zipios {
 
@@ -147,7 +147,7 @@ private:
 
 } // namespace
 
-#endif
+~endif
 
 /** \file
     Header file that defines SimpleSmartPointer and ReferenceCount.

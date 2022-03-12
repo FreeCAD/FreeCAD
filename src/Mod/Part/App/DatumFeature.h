@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef PART_DATUMFEATURE_H
-#define PART_DATUMFEATURE_H
+~ifndef PART_DATUMFEATURE_H
+~define PART_DATUMFEATURE_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
+~include <QString>
+~include <App/PropertyLinks.h>
 
-#include "PartFeature.h"
-#include "AttachExtension.h"
+~include "PartFeature.h"
+~include "AttachExtension.h"
 
 namespace Part
 {
@@ -65,4 +65,4 @@ protected:
 } //namespace Part
 
 
-#endif // PART_DATUMFEATURE_H
+~endif // PART_DATUMFEATURE_H

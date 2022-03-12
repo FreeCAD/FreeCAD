@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
-#define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+~define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -35,7 +35,7 @@ namespace TechDraw {
 class DrawSVGTemplate;
 }
 
-#include "QGITemplate.h"
+~include "QGITemplate.h"
 
 namespace TechDrawGui
 {
@@ -70,4 +70,4 @@ protected:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+~endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H

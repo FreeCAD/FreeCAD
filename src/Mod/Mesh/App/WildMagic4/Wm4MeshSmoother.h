@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MESHSMOOTHER_H
-#define WM4MESHSMOOTHER_H
+~ifndef WM4MESHSMOOTHER_H
+~define WM4MESHSMOOTHER_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -74,4 +74,4 @@ typedef MeshSmoother<double> MeshSmootherd;
 
 }
 
-#endif
+~endif

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ProjectView_H
-#define GUI_ProjectView_H
+~ifndef GUI_ProjectView_H
+~define GUI_ProjectView_H
 
-#include <QTreeView>
+~include <QTreeView>
 
 
 class QFileSystemModel;
@@ -51,5 +51,5 @@ private:
 }
 
 
-#endif // GUI_ProjectView_H
+~endif // GUI_ProjectView_H
 

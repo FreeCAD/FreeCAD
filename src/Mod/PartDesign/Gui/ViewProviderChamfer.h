@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderChamfer_H
-#define PARTGUI_ViewProviderChamfer_H
+~ifndef PARTGUI_ViewProviderChamfer_H
+~define PARTGUI_ViewProviderChamfer_H
 
-#include "ViewProviderDressUp.h"
+~include "ViewProviderDressUp.h"
 
 
 namespace PartDesignGui {
@@ -51,4 +51,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderChamfer_H
+~endif // PARTGUI_ViewProviderChamfer_H

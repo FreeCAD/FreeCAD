@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTGear_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTGear_H
+~ifndef GUI_VIEWPROVIDERFEMCONSTRAINTGear_H
+~define GUI_VIEWPROVIDERFEMCONSTRAINTGear_H
 
-#include "ViewProviderFemConstraint.h"
+~include "ViewProviderFemConstraint.h"
 
 namespace FemGui
 {
@@ -48,4 +48,4 @@ protected:
 } //namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTGear_H
+~endif // GUI_VIEWPROVIDERFEMCONSTRAINTGear_H

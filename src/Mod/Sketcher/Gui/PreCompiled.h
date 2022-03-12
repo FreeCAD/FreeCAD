@@ -21,115 +21,115 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+~ifndef __PRECOMPILED_GUI__
+~define __PRECOMPILED_GUI__
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define SketcherExport    __declspec(dllimport)
-# define PartExport        __declspec(dllimport)
-# define PartGuiExport     __declspec(dllimport)
-# define SketcherGuiExport __declspec(dllexport)
-#else // for Linux
-# define SketcherExport
-# define PartExport
-# define PartAppExport
-# define PartGuiExport
-# define SketcherGuiExport
-#endif
+~ifdef FC_OS_WIN32
+~ define SketcherExport    __declspec(dllimport)
+~ define PartExport        __declspec(dllimport)
+~ define PartGuiExport     __declspec(dllimport)
+~ define SketcherGuiExport __declspec(dllexport)
+~else // for Linux
+~ define SketcherExport
+~ define PartExport
+~ define PartAppExport
+~ define PartGuiExport
+~ define SketcherGuiExport
+~endif
 
 
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#endif
+~ifdef _MSC_VER
+~   pragma warning(disable : 4005)
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
+~include <iostream>
+~include <cassert>
+~include <cmath>
 
-#include <stdlib.h>
+~include <stdlib.h>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <bitset>
 
 // Boost
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/scoped_ptr.hpp>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <boost/bind/bind.hpp>
+~include <boost/scoped_ptr.hpp>
 
-#ifdef FC_OS_WIN32
-# define NOMINMAX
-# include <windows.h>
-#endif
+~ifdef FC_OS_WIN32
+~ define NOMINMAX
+~ include <windows.h>
+~endif
 
 // OCC
-#include <Standard_Version.hxx>
-#include <GC_MakeEllipse.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <Standard_Version.hxx>
+~include <GC_MakeEllipse.hxx>
+~include <BRep_Tool.hxx>
+~include <gp_Pnt.hxx>
+~include <Precision.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
-# include <QGuiApplication>
-# include <QMessageBox>
-#include <qdebug.h>
-#include <QString>
+~ include <QGuiApplication>
+~ include <QMessageBox>
+~include <qdebug.h>
+~include <QString>
 
 // all of Inventor
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
+~ifndef __InventorAll__
+~ include <Gui/InventorAll.h>
+~endif
 
-#include <Inventor/SbImage.h>
-#include <Inventor/sensors/SoSensor.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoInfo.h>
-#include <Inventor/SbTime.h>
+~include <Inventor/SbImage.h>
+~include <Inventor/sensors/SoSensor.h>
+~include <Inventor/actions/SoGetMatrixAction.h>
+~include <Inventor/elements/SoFontNameElement.h>
+~include <Inventor/elements/SoFontSizeElement.h>
+~include <Inventor/elements/SoModelMatrixElement.h>
+~include <Inventor/elements/SoProjectionMatrixElement.h>
+~include <Inventor/elements/SoViewingMatrixElement.h>
+~include <Inventor/elements/SoViewVolumeElement.h>
+~include <Inventor/elements/SoViewportRegionElement.h>
+~include <Inventor/actions/SoGetMatrixAction.h>
+~include <Inventor/actions/SoGLRenderAction.h>
+~include <Inventor/elements/SoModelMatrixElement.h>
+~include <Inventor/elements/SoProjectionMatrixElement.h>
+~include <Inventor/elements/SoViewingMatrixElement.h>
+~include <Inventor/elements/SoViewVolumeElement.h>
+~include <Inventor/elements/SoViewportRegionElement.h>
+~include <Inventor/nodes/SoCamera.h>
+~include <Inventor/nodes/SoInfo.h>
+~include <Inventor/SbTime.h>
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif // __PRECOMPILED_GUI__
+~endif // __PRECOMPILED_GUI__

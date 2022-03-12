@@ -14,14 +14,14 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4EIGEN_H
-#define WM4EIGEN_H
+~ifndef WM4EIGEN_H
+~define WM4EIGEN_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Matrix2.h"
-#include "Wm4Matrix3.h"
-#include "Wm4Matrix4.h"
-#include "Wm4GMatrix.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Matrix2.h"
+~include "Wm4Matrix3.h"
+~include "Wm4Matrix4.h"
+~include "Wm4GMatrix.h"
 
 namespace Wm4
 {
@@ -112,4 +112,4 @@ typedef Eigen<double> Eigend;
 
 }
 
-#endif
+~endif

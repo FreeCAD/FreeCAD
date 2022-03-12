@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMTEXT_H
-#define DRAWINGGUI_QGCUSTOMTEXT_H
+~ifndef DRAWINGGUI_QGCUSTOMTEXT_H
+~define DRAWINGGUI_QGCUSTOMTEXT_H
 
-#include <QGraphicsItem>
-#include <QGraphicsTextItem>
-#include <QPointF>
+~include <QGraphicsItem>
+~include <QGraphicsTextItem>
+~include <QPointF>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
-#include <Base/Parameter.h>
-#include <Base/Vector3D.h>
+~include <Base/Parameter.h>
+~include <Base/Vector3D.h>
 
 namespace TechDrawGui
 {
@@ -94,4 +94,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGCUSTOMTEXT_H
+~endif // DRAWINGGUI_QGCUSTOMTEXT_H

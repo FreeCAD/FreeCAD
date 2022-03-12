@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKLINKDIM_H
-#define GUI_TASKVIEW_TASKLINKDIM_H
+~ifndef GUI_TASKVIEW_TASKLINKDIM_H
+~define GUI_TASKVIEW_TASKLINKDIM_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
+~include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
 
-#include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
 
 
 namespace Gui {
@@ -102,4 +102,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef GUI_TASKVIEW_TASKLINKDIM_H
+~endif // ~ifndef GUI_TASKVIEW_TASKLINKDIM_H

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchOrientationDialog_H
-#define SKETCHERGUI_SketchOrientationDialog_H
+~ifndef SKETCHERGUI_SketchOrientationDialog_H
+~define SKETCHERGUI_SketchOrientationDialog_H
 
-#include <Base/Placement.h>
-#include <QDialog>
+~include <Base/Placement.h>
+~include <QDialog>
 
 namespace SketcherGui {
 
@@ -51,4 +51,4 @@ private:
 
 }
 
-#endif // SKETCHERGUI_SketchOrientationDialog_H
+~endif // SKETCHERGUI_SketchOrientationDialog_H

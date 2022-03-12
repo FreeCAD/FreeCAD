@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREMIRRORING_H
-#define PART_FEATUREMIRRORING_H
+~ifndef PART_FEATUREMIRRORING_H
+~define PART_FEATUREMIRRORING_H
 
-#include <App/PropertyStandard.h>
-#include "PartFeature.h"
-#include <Base/Matrix.h>
+~include <App/PropertyStandard.h>
+~include "PartFeature.h"
+~include <Base/Matrix.h>
 
 namespace Part
 {
@@ -63,4 +63,4 @@ protected:
 } //namespace Part
 
 
-#endif // PART_FEATUREMIRRORING_H
+~endif // PART_FEATUREMIRRORING_H

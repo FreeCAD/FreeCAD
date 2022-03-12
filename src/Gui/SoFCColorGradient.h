@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCCOLORGRADIENT_H
-#define GUI_SOFCCOLORGRADIENT_H
+~ifndef GUI_SOFCCOLORGRADIENT_H
+~define GUI_SOFCCOLORGRADIENT_H
 
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/SbBox2f.h>
-#include "SoFCColorBar.h"
-#include <App/ColorModel.h>
-#include <vector>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/SbBox2f.h>
+~include "SoFCColorBar.h"
+~include <App/ColorModel.h>
+~include <vector>
 
 class SoCoordinate3;
 class SoMFString;
@@ -112,4 +112,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SOFCCOLORGRADIENT_H
+~endif // GUI_SOFCCOLORGRADIENT_H

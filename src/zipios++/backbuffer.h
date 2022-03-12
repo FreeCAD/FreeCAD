@@ -1,18 +1,18 @@
-#ifndef BACKBUFFER_H
-#define BACKBUFFER_H
+~ifndef BACKBUFFER_H
+~define BACKBUFFER_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <algorithm>
+~include <algorithm>
 
-#include "meta-iostreams.h"
-#include <vector>
+~include "meta-iostreams.h"
+~include <vector>
 
-#include "fcollexceptions.h"
-#include "ziphead.h"
-#include "zipheadio.h"
-#include "virtualseeker.h"
-#include "zipios_common.h"
+~include "fcollexceptions.h"
+~include "ziphead.h"
+~include "zipheadio.h"
+~include "virtualseeker.h"
+~include "zipios_common.h"
 
 namespace zipios {
 
@@ -92,7 +92,7 @@ int BackBuffer::readChunk( int &read_pointer ) {
 }
 
 }
-#endif
+~endif
 
 /** \file
     The header file for BackBuffer

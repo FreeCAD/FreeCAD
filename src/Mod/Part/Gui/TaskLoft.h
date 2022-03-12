@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKLOFT_H
-#define PARTGUI_TASKLOFT_H
+~ifndef PARTGUI_TASKLOFT_H
+~define PARTGUI_TASKLOFT_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 class QTreeWidgetItem;
 
@@ -78,4 +78,4 @@ private:
 
 } //namespace PartGui
 
-#endif // PARTGUI_TASKLOFT_H
+~endif // PARTGUI_TASKLOFT_H

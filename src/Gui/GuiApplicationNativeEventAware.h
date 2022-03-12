@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUIAPPLICATIONNATIVEEVENTAWARE_H
-#define GUIAPPLICATIONNATIVEEVENTAWARE_H
+~ifndef GUIAPPLICATIONNATIVEEVENTAWARE_H
+~define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
-#include <QApplication>
-#include <vector>
+~include <QApplication>
+~include <vector>
 
 
 class QMainWindow;
 
 namespace Gui
 {
-#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+~if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     class GuiNativeEvent;
-#endif // Spacemice
+~endif // Spacemice
     class GUIApplicationNativeEventAware : public QApplication
     {
         Q_OBJECT
@@ -50,10 +50,10 @@ namespace Gui
         bool spaceballPresent;
         void importSettings(std::vector<int>& motionDataArray);
         float convertPrefToSensitivity(int value);
-      #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+      ~if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
         GuiNativeEvent *nativeEvent;
-      #endif
+      ~endif
     }; // end class GUIApplicationNativeEventAware
 } // end namespace Gui
 
-#endif // GUIAPPLICATIONNATIVEEVENTAWARE_H
+~endif // GUIAPPLICATIONNATIVEEVENTAWARE_H

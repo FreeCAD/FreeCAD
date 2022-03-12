@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef POINTSGUI_DLGREADPOINTS_H
-#define POINTSGUI_DLGREADPOINTS_H
+~ifndef POINTSGUI_DLGREADPOINTS_H
+~define POINTSGUI_DLGREADPOINTS_H
 
-#include <string>
-#include <memory>
-#include <QDialog>
+~include <string>
+~include <memory>
+~include <QDialog>
 
 namespace PointsGui {
 class Ui_DlgPointsRead;
@@ -48,4 +48,4 @@ private:
 
 } // namespace PointsGui
 
-#endif // POINTSGUI_DLGREADPOINTS_H
+~endif // POINTSGUI_DLGREADPOINTS_H

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
-#define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
+~ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
+~define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
+~include "ViewProviderDrawingView.h"
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
 
 namespace TechDrawGui {
 
@@ -90,4 +90,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERVIEWPART_H
+~endif // DRAWINGGUI_VIEWPROVIDERVIEWPART_H

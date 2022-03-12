@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_INPUTVECTOR_H
-#define GUI_INPUTVECTOR_H
+~ifndef GUI_INPUTVECTOR_H
+~define GUI_INPUTVECTOR_H
 
-#include <memory>
-#include <QApplication>
-#include <QDialog>
-#include <QMessageBox>
-#include <Gui/propertyeditor/PropertyItem.h>
+~include <memory>
+~include <QApplication>
+~include <QDialog>
+~include <QMessageBox>
+~include <Gui/propertyeditor/PropertyItem.h>
 
 class QGridLayout;
 class QLabel;
@@ -578,4 +578,4 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_INPUTVECTOR_H
+~endif // GUI_INPUTVECTOR_H

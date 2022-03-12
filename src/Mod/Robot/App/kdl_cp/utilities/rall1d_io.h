@@ -15,11 +15,11 @@
  *      $Id: rall1d_io.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $ 
  ****************************************************************************/
-#ifndef Rall_IO_H
-#define Rall_IO_H
+~ifndef Rall_IO_H
+~define Rall_IO_H
 
-#include "utility_io.h"
-#include "rall1d.h"
+~include "utility_io.h"
+~include "rall1d.h"
 
 namespace KDL {
 
@@ -34,4 +34,4 @@ inline std::ostream& operator << (std::ostream& os,const Rall1d<T,V,S>& r)
 }
 
 
-#endif
+~endif

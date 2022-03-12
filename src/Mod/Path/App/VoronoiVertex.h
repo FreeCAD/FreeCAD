@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_VORONOIVERTEX_H
-#define PATH_VORONOIVERTEX_H
+~ifndef PATH_VORONOIVERTEX_H
+~define PATH_VORONOIVERTEX_H
 
-#include <Base/BaseClass.h>
-#include "Voronoi.h"
+~include <Base/BaseClass.h>
+~include "Voronoi.h"
 
 
 namespace Path
@@ -50,4 +50,4 @@ public:
 };
 
 }
-#endif
+~endif

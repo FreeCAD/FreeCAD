@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef _SoFCSelectionAction_h
-#define _SoFCSelectionAction_h
+~ifndef _SoFCSelectionAction_h
+~define _SoFCSelectionAction_h
 
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/SbColor.h>
-#include <vector>
+~include <Inventor/actions/SoGLRenderAction.h>
+~include <Inventor/fields/SoSFColor.h>
+~include <Inventor/fields/SoSFString.h>
+~include <Inventor/SbColor.h>
+~include <vector>
 
 class SoSFString;
 class SoSFColor;
@@ -369,4 +369,4 @@ private:
 } // namespace Gui
 
 
-#endif // _SoFCSelectionAction_h
+~endif // _SoFCSelectionAction_h

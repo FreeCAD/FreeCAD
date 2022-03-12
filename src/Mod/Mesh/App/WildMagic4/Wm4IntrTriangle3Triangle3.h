@@ -14,14 +14,14 @@
 //
 // Version: 4.0.1 (2006/07/25)
 
-#ifndef WM4INTRTRIANGLE3TRIANGLE3_H
-#define WM4INTRTRIANGLE3TRIANGLE3_H
+~ifndef WM4INTRTRIANGLE3TRIANGLE3_H
+~define WM4INTRTRIANGLE3TRIANGLE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Intersector.h"
-#include "Wm4Triangle3.h"
-#include "Wm4Line3.h"
-#include "Wm4Plane3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Intersector.h"
+~include "Wm4Triangle3.h"
+~include "Wm4Line3.h"
+~include "Wm4Plane3.h"
 
 namespace Wm4
 {
@@ -141,4 +141,4 @@ typedef IntrTriangle3Triangle3<double> IntrTriangle3Triangle3d;
 
 }
 
-#endif
+~endif

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef PART_EDGECLUSTER_H
-#define PART_EDGECLUSTER_H
+~ifndef PART_EDGECLUSTER_H
+~define PART_EDGECLUSTER_H
 
-#include <gp_Pnt.hxx>
-#include <TopoDS_Edge.hxx>
-#include <vector>
-#include <map>
+~include <gp_Pnt.hxx>
+~include <TopoDS_Edge.hxx>
+~include <vector>
+~include <map>
 
 
 namespace Part {
@@ -83,4 +83,4 @@ private:
 
 }
 
-#endif // PART_EDGECLUSTER_H
+~endif // PART_EDGECLUSTER_H

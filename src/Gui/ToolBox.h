@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_TOOLBOX_H
-#define GUI_DOCKWND_TOOLBOX_H
+~ifndef GUI_DOCKWND_TOOLBOX_H
+~define GUI_DOCKWND_TOOLBOX_H
 
 class QToolBox;
 
@@ -105,5 +105,5 @@ private:
 } // namespace DockWnd
 } // namespace Gui
 
-#endif // GUI_DOCKWND_TOOLBOX_H
+~endif // GUI_DOCKWND_TOOLBOX_H
 

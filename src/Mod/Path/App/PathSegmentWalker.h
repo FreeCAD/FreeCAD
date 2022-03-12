@@ -19,13 +19,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHSEGMENTWALKER_H
-#define PATHSEGMENTWALKER_H
+~ifndef PATHSEGMENTWALKER_H
+~define PATHSEGMENTWALKER_H
 
-#include <Base/Vector3D.h>
-#include <Mod/Path/App/Path.h>
+~include <Base/Vector3D.h>
+~include <Mod/Path/App/Path.h>
 
-#include <deque>
+~include <deque>
 
 namespace Path
 {
@@ -69,4 +69,4 @@ private:
 
 }
 
-#endif // PATHSEGMENTWALKER_H
+~endif // PATHSEGMENTWALKER_H

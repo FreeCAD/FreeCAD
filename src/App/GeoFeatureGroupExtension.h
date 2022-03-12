@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_GeoFeatureGroup_H
-#define APP_GeoFeatureGroup_H
+~ifndef APP_GeoFeatureGroup_H
+~define APP_GeoFeatureGroup_H
 
-#include "DocumentObject.h"
-#include "GroupExtension.h"
-#include "PropertyGeo.h"
+~include "DocumentObject.h"
+~include "GroupExtension.h"
+~include "PropertyGeo.h"
 
 
 namespace App
@@ -144,4 +144,4 @@ typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFea
 } //namespace App
 
 
-#endif // APP_GeoFeatureGroup_H
+~endif // APP_GeoFeatureGroup_H

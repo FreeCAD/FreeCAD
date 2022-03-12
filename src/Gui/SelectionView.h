@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_SELECTIONVIEW_H
-#define GUI_DOCKWND_SELECTIONVIEW_H
+~ifndef GUI_DOCKWND_SELECTIONVIEW_H
+~define GUI_DOCKWND_SELECTIONVIEW_H
 
-#include "DockWindow.h"
-#include "Selection.h"
+~include "DockWindow.h"
+~include "Selection.h"
 
 
 class QListWidget;
@@ -114,4 +114,4 @@ private:
 } // namespace DockWnd
 } // namespace Gui
 
-#endif // GUI_DOCKWND_SELECTIONVIEW_H
+~endif // GUI_DOCKWND_SELECTIONVIEW_H

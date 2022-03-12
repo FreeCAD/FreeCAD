@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MENUMANAGER_H
-#define GUI_MENUMANAGER_H
+~ifndef GUI_MENUMANAGER_H
+~define GUI_MENUMANAGER_H
 
-#include <string>
-#include <FCGlobal.h>
+~include <string>
+~include <FCGlobal.h>
 
 
 class QAction;
@@ -104,4 +104,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_MENUMANAGER_H
+~endif // GUI_MENUMANAGER_H

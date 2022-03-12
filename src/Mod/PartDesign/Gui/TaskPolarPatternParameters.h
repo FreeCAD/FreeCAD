@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPolarPatternParameters_H
-#define GUI_TASKVIEW_TaskPolarPatternParameters_H
+~ifndef GUI_TASKVIEW_TaskPolarPatternParameters_H
+~define GUI_TASKVIEW_TaskPolarPatternParameters_H
 
-#include <Gui/Selection.h>
+~include <Gui/Selection.h>
 
-#include "TaskTransformedParameters.h"
-#include "ViewProviderPolarPattern.h"
+~include "TaskTransformedParameters.h"
+~include "ViewProviderPolarPattern.h"
 
 class QTimer;
 class Ui_TaskPolarPatternParameters;
@@ -105,4 +105,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

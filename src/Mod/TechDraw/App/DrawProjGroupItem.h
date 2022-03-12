@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjGroupItem_h_
-#define _DrawProjGroupItem_h_
+~ifndef _DrawProjGroupItem_h_
+~define _DrawProjGroupItem_h_
 
-#include <gp_Ax2.hxx>
+~include <gp_Ax2.hxx>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/FeaturePython.h>
-#include "DrawViewPart.h"
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/FeaturePython.h>
+~include "DrawViewPart.h"
 
 namespace TechDraw
 {
@@ -104,4 +104,4 @@ private:
 
 } //namespace TechDraw
 
-#endif
+~endif

@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKSECTIONS_H
-#define SURFACEGUI_TASKSECTIONS_H
+~ifndef SURFACEGUI_TASKSECTIONS_H
+~define SURFACEGUI_TASKSECTIONS_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureSections.h>
-#include <memory>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/DocumentObserver.h>
+~include <Base/BoundBox.h>
+~include <Mod/Part/Gui/ViewProviderSpline.h>
+~include <Mod/Surface/App/FeatureSections.h>
+~include <memory>
 
 class QListWidgetItem;
 
@@ -125,4 +125,4 @@ private:
 
 } //namespace SurfaceGui
 
-#endif // SURFACEGUI_TASKSECTIONS_H
+~endif // SURFACEGUI_TASKSECTIONS_H

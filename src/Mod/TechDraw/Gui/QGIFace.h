@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
-#define DRAWINGGUI_QGRAPHICSITEMFACE_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
+~define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
-#include <Qt>
-#include <QGraphicsItem>
-#include <QSvgRenderer>
-#include <QByteArray>
-#include <QBrush>
-#include <QPixmap>
-#include <QImage>
+~include <Qt>
+~include <QGraphicsItem>
+~include <QSvgRenderer>
+~include <QByteArray>
+~include <QBrush>
+~include <QPixmap>
+~include <QImage>
 
-#include <Mod/TechDraw/App/HatchLine.h>
-#include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/HatchLine.h>
+~include <Mod/TechDraw/App/Geometry.h>
 
-#include "QGIPrimPath.h"
+~include "QGIPrimPath.h"
 
 namespace TechDrawGui
 {
@@ -44,7 +44,7 @@ class QGCustomImage;
 
     const double SVGSIZEW = 64.0;                     //width and height of standard FC SVG pattern
     const double SVGSIZEH = 64.0;
-    const std::string SVGCOLDEFAULT = "#000000";
+    const std::string SVGCOLDEFAULT = "~000000";
 
 class QGIFace : public QGIPrimPath
 {
@@ -163,4 +163,4 @@ private:
 };
 
 }
-#endif // DRAWINGGUI_QGRAPHICSITEMFACE_H
+~endif // DRAWINGGUI_QGRAPHICSITEMFACE_H

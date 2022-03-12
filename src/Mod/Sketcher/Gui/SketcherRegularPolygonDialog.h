@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketcherRegularPolygonDialog_H
-#define SKETCHERGUI_SketcherRegularPolygonDialog_H
+~ifndef SKETCHERGUI_SketcherRegularPolygonDialog_H
+~define SKETCHERGUI_SketcherRegularPolygonDialog_H
 
-#include <Base/Placement.h>
-#include <QDialog>
+~include <Base/Placement.h>
+~include <QDialog>
 
 namespace SketcherGui {
 
@@ -49,4 +49,4 @@ private:
 
 }
 
-#endif // SKETCHERGUI_SketcherRegularPolygonDialog_H
+~endif // SKETCHERGUI_SketcherRegularPolygonDialog_H

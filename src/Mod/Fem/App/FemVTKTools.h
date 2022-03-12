@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#ifndef FEM_VTK_TOOLS_H
-#define FEM_VTK_TOOLS_H
+~ifndef FEM_VTK_TOOLS_H
+~define FEM_VTK_TOOLS_H
 
-#include "FemMesh.h"
-#include "FemMeshObject.h"
-#include <App/DocumentObject.h>
-#include "FemResultObject.h"
+~include "FemMesh.h"
+~include "FemMeshObject.h"
+~include <App/DocumentObject.h>
+~include "FemResultObject.h"
 
-#include <vtkSmartPointer.h>
-#include <vtkDataSet.h>
-#include <vtkUnstructuredGrid.h>
+~include <vtkSmartPointer.h>
+~include <vtkDataSet.h>
+~include <vtkUnstructuredGrid.h>
 
-#include <cstring>
+~include <cstring>
 
 namespace Fem
 {
@@ -71,5 +71,5 @@ namespace Fem
     };
 }
 
-#endif //FEM_VTK_TOOLS_H
+~endif //FEM_VTK_TOOLS_H
 

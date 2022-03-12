@@ -5,10 +5,10 @@ Development tools and related technology provided under license from 3Dconnexion
 */
 
 
-#ifndef T3D_MOUSE_PARAMS_H
-#define T3D_MOUSE_PARAMS_H
+~ifndef T3D_MOUSE_PARAMS_H
+~define T3D_MOUSE_PARAMS_H
 
-#include "I3dMouseParams.h"
+~include "I3dMouseParams.h"
 
 
 class MouseParameters : public I3dMouseParam
@@ -52,5 +52,5 @@ private:
 	ESpeed				fSpeed;
 };
 
-#endif // T3D_MOUSE_PARAMS_H
+~endif // T3D_MOUSE_PARAMS_H
 

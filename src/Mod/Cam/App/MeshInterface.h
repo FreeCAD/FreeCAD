@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef MESH_INTERFACE_H
-#define MESH_INTERFACE_H
+~ifndef MESH_INTERFACE_H
+~define MESH_INTERFACE_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Base/Vector3D.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Base/Vector3D.h>
 
-#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
-#error
+~include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
+~error
 namespace Mesh
 {
 
@@ -129,4 +129,4 @@ public:
 } // namespace Mesh
 
 
-#endif  // MESH_INTERFACE_H 
+~endif  // MESH_INTERFACE_H 

@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4PLANE3_H
-#define WM4PLANE3_H
+~ifndef WM4PLANE3_H
+~define WM4PLANE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -68,7 +68,7 @@ public:
 
 } //namespace Wm4
 
-#include "Wm4Plane3.inl"
+~include "Wm4Plane3.inl"
 
 namespace Wm4
 {
@@ -76,4 +76,4 @@ typedef Plane3<float> Plane3f;
 typedef Plane3<double> Plane3d;
 }
 
-#endif
+~endif

@@ -5,10 +5,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MACPANELSCHEME_H
-#define MACPANELSCHEME_H
+~ifndef MACPANELSCHEME_H
+~define MACPANELSCHEME_H
 
-#include "actionpanelscheme.h"
+~include "actionpanelscheme.h"
 
 
 namespace QSint
@@ -36,4 +36,4 @@ public:
 
 }
 
-#endif // MACPANELSCHEME_H
+~endif // MACPANELSCHEME_H

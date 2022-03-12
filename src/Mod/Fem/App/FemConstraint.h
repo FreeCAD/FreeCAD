@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+~ifndef FEM_CONSTRAINT_H
+~define FEM_CONSTRAINT_H
 
-#include <Base/Vector3D.h>
-#include <App/FeaturePython.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <Base/Vector3D.h>
+~include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
+~include <Mod/Fem/FemGlobal.h>
 
 namespace Fem {
 
@@ -249,4 +249,4 @@ typedef App::FeaturePythonT<Constraint> ConstraintPython;
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINT_H
+~endif // FEM_CONSTRAINT_H

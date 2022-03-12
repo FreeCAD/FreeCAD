@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_DOCUMENT_H
-#define APP_DOCUMENT_H
+~ifndef APP_DOCUMENT_H
+~define APP_DOCUMENT_H
 
-#include "PropertyContainer.h"
-#include "PropertyLinks.h"
-#include "PropertyStandard.h"
+~include "PropertyContainer.h"
+~include "PropertyLinks.h"
+~include "PropertyStandard.h"
 
-#include <map>
-#include <vector>
+~include <map>
+~include <vector>
 
 namespace Base {
     class Writer;
@@ -555,7 +555,7 @@ protected:
     void _abortTransaction();
 
 private:
-    // # Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ~ Data Member of the document +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     std::list<Transaction*> mUndoTransactions;
     std::map<int,Transaction*> mUndoMap;
     std::list<Transaction*> mRedoTransactions;
@@ -581,4 +581,4 @@ inline std::vector<T*> Document::getObjectsOfType() const
 
 } //namespace App
 
-#endif // APP_DOCUMENT_H
+~endif // APP_DOCUMENT_H

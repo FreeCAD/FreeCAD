@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef STARTGUI_WORKBENCH_H
-#define STARTGUI_WORKBENCH_H
+~ifndef STARTGUI_WORKBENCH_H
+~define STARTGUI_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace StartGui {
 
@@ -59,4 +59,4 @@ protected:
 }; // namespace StartGui
 
 }
-#endif // START_WORKBENCH_H
+~endif // START_WORKBENCH_H

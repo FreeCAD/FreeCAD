@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYTOOLTABLE_H
-#define PROPERTYTOOLTABLE_H
+~ifndef PROPERTYTOOLTABLE_H
+~define PROPERTYTOOLTABLE_H
 
-#include "Tooltable.h"
-#include <App/Property.h>
+~include "Tooltable.h"
+~include <App/Property.h>
 
 namespace Path
 {
@@ -72,4 +72,4 @@ private:
 } //namespace Path
 
 
-#endif // PROPERTYTOOLTABLE_H
+~endif // PROPERTYTOOLTABLE_H

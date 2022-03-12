@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFilletParameters_H
-#define GUI_TASKVIEW_TaskFilletParameters_H
+~ifndef GUI_TASKVIEW_TaskFilletParameters_H
+~define GUI_TASKVIEW_TaskFilletParameters_H
 
-#include "TaskDressUpParameters.h"
-#include "ViewProviderFillet.h"
+~include "TaskDressUpParameters.h"
+~include "ViewProviderFillet.h"
 
 class Ui_TaskFilletParameters;
 
@@ -74,4 +74,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskFilletParameters_H
+~endif // GUI_TASKVIEW_TaskFilletParameters_H

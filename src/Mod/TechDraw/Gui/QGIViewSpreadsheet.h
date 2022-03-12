@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 
-#include "QGIViewSymbol.h"
+~include "QGIViewSymbol.h"
 
 namespace TechDraw {
 class DrawViewSpreadsheet;
@@ -47,4 +47,4 @@ public:
 
 } // end namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H

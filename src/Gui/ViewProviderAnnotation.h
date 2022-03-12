@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERANNOTATION_H
-#define GUI_VIEWPROVIDERANNOTATION_H
+~ifndef GUI_VIEWPROVIDERANNOTATION_H
+~define GUI_VIEWPROVIDERANNOTATION_H
 
-#include "ViewProviderDocumentObject.h"
-#include <App/PropertyUnits.h>
+~include "ViewProviderDocumentObject.h"
+~include <App/PropertyUnits.h>
 
 class SoFont;
 class SoText2;
@@ -137,4 +137,4 @@ private:
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDERANNOTATION_H
+~endif // GUI_VIEWPROVIDERANNOTATION_H

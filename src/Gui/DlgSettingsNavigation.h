@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSNAVIGATION_H
-#define GUI_DIALOG_DLGSETTINGSNAVIGATION_H
+~ifndef GUI_DIALOG_DLGSETTINGSNAVIGATION_H
+~define GUI_DIALOG_DLGSETTINGSNAVIGATION_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 class QDoubleSpinBox;
 
@@ -86,4 +86,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSNAVIGATION_H
+~endif // GUI_DIALOG_DLGSETTINGSNAVIGATION_H

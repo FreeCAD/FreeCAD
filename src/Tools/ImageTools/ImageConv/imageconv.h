@@ -16,24 +16,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMAGECONV_H
-#define IMAGECONV_H
+~ifndef IMAGECONV_H
+~define IMAGECONV_H
 
 // includes
-#include "CmdLine.h"
-#include <string>
-#include <map>
-#include <string>
-#include <vector>
+~include "CmdLine.h"
+~include <string>
+~include <map>
+~include <string>
+~include <vector>
 
-#include <QPixmap>
-#include <QDir>
+~include <QPixmap>
+~include <QDir>
 
 // defines
-#define TString std::string
-#define TVector std::vector
-#define TMap    std::map
-#define TPair   std::pair
+~define TString std::string
+~define TVector std::vector
+~define TMap    std::map
+~define TPair   std::pair
 
 
 // the command line parser class
@@ -95,4 +95,4 @@ private:
     QDir     m_Dir;           // directory
 };
 
-#endif // IMAGECONV_H
+~endif // IMAGECONV_H

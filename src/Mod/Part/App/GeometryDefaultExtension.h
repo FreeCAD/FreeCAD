@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRYDEFAULTEXTENSION_H
-#define PART_GEOMETRYDEFAULTEXTENSION_H
+~ifndef PART_GEOMETRYDEFAULTEXTENSION_H
+~define PART_GEOMETRYDEFAULTEXTENSION_H
 
-#include <string>
-#include "GeometryExtension.h"
+~include <string>
+~include "GeometryExtension.h"
 
 namespace Part {
 
@@ -113,4 +113,4 @@ namespace Part {
     using GeometryDoubleExtension = GeometryDefaultExtension<double>;
 }
 
-#endif // PART_GEOMETRYDEFAULTEXTENSION_H
+~endif // PART_GEOMETRYDEFAULTEXTENSION_H

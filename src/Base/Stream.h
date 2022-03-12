@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef BASE_STREAM_H
-#define BASE_STREAM_H
+~ifndef BASE_STREAM_H
+~define BASE_STREAM_H
 
-#ifdef __GNUC__
-# include <cstdint>
-#endif
+~ifdef __GNUC__
+~ include <cstdint>
+~endif
 
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
-#include "FileInfo.h"
+~include <fstream>
+~include <iostream>
+~include <string>
+~include <vector>
+~include "FileInfo.h"
 
 
 class QByteArray;
@@ -341,11 +341,11 @@ class ofstream : public std::ofstream
 public:
     ofstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::out | std::ios::trunc)
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     : std::ofstream(fi.toStdWString().c_str(), mode)
-#else
+~else
     : std::ofstream(fi.filePath().c_str(), mode)
-#endif
+~endif
     {
     }
     virtual ~ofstream()
@@ -364,11 +364,11 @@ class ifstream : public std::ifstream
 public:
     ifstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::in)
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     : std::ifstream(fi.toStdWString().c_str(), mode)
-#else
+~else
     : std::ifstream(fi.filePath().c_str(), mode)
-#endif
+~endif
     {
     }
     virtual ~ifstream()
@@ -378,4 +378,4 @@ public:
 
 } // namespace Base
 
-#endif // BASE_STREAM_H
+~endif // BASE_STREAM_H

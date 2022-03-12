@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCKWINDOW_H
-#define GUI_DOCKWINDOW_H
+~ifndef GUI_DOCKWINDOW_H
+~define GUI_DOCKWINDOW_H
 
-#include <Gui/View.h>
-#include <QWidget>
+~include <Gui/View.h>
+~include <QWidget>
 
 
 namespace Gui {
@@ -81,4 +81,4 @@ Q_SIGNALS:
 
 } // namespace Gui
 
-#endif // GUI_DOCKWINDOW_H
+~endif // GUI_DOCKWINDOW_H

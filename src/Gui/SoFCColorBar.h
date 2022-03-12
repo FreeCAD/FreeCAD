@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCCOLORBAR_H
-#define GUI_SOFCCOLORBAR_H
+~ifndef GUI_SOFCCOLORBAR_H
+~define GUI_SOFCCOLORBAR_H
 
-#include <Inventor/SbVec2s.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <QElapsedTimer>
-#include <Base/Observer.h>
-#include <App/ColorModel.h>
-#include <vector>
+~include <Inventor/SbVec2s.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <QElapsedTimer>
+~include <Base/Observer.h>
+~include <App/ColorModel.h>
+~include <vector>
 
 class SoSwitch;
 class SoEventCallback;
@@ -199,4 +199,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SOFCCOLORBAR_H
+~endif // GUI_SOFCCOLORBAR_H

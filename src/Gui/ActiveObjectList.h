@@ -23,11 +23,11 @@
 ***************************************************************************/
 
 
-#ifndef GUI_ActiveObjectList_H
-#define GUI_ActiveObjectList_H
+~ifndef GUI_ActiveObjectList_H
+~define GUI_ActiveObjectList_H
 
-#include <map>
-#include <Gui/TreeItemMode.h>
+~include <map>
+~include <Gui/TreeItemMode.h>
 
 
 namespace App {
@@ -87,4 +87,4 @@ namespace Gui
 static const char PDBODYKEY[] = "pdbody";
 static const char PARTKEY[] = "part";
 
-#endif
+~endif

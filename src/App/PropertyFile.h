@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTFILE_H
-#define APP_PROPERTFILE_H
+~ifndef APP_PROPERTFILE_H
+~define APP_PROPERTFILE_H
 
-#include <string>
+~include <string>
 
-#include "PropertyStandard.h"
+~include "PropertyStandard.h"
 
 
 namespace Base {
@@ -131,4 +131,4 @@ protected:
 
 } // namespace App
 
-#endif // APP_PROPERTFILE_H
+~endif // APP_PROPERTFILE_H

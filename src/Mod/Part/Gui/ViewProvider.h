@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPART_H
-#define PARTGUI_VIEWPROVIDERPART_H
+~ifndef PARTGUI_VIEWPROVIDERPART_H
+~define PARTGUI_VIEWPROVIDERPART_H
 
-#include <Gui/ViewProviderBuilder.h>
-#include <Mod/Part/Gui/ViewProviderExt.h>
+~include <Gui/ViewProviderBuilder.h>
+~include <Mod/Part/Gui/ViewProviderExt.h>
 
 class SoSeparator;
 
@@ -64,5 +64,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPART_H
+~endif // PARTGUI_VIEWPROVIDERPART_H
 

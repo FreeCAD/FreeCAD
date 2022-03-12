@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewImage_h_
-#define _DrawViewImage_h_
+~ifndef _DrawViewImage_h_
+~define _DrawViewImage_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyFile.h>
-#include "DrawView.h"
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyFile.h>
+~include "DrawView.h"
+~include <App/FeaturePython.h>
 
-#include <Base/BoundBox.h>
+~include <Base/BoundBox.h>
 
 namespace TechDraw
 {
@@ -70,4 +70,4 @@ typedef App::FeaturePythonT<DrawViewImage> DrawViewImagePython;
 } //namespace TechDraw
 
 
-#endif
+~endif

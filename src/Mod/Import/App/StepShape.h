@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_STEPSHAPE_H
-#define IMPORT_STEPSHAPE_H
+~ifndef IMPORT_STEPSHAPE_H
+~define IMPORT_STEPSHAPE_H
 
 
 
@@ -47,4 +47,4 @@ public:
 } // namespace Import
 
 
-#endif // IMPORT_STEPSHAPE_H
+~endif // IMPORT_STEPSHAPE_H

@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOFCSHAPEOBJECT_H
-#define PARTGUI_SOFCSHAPEOBJECT_H
+~ifndef PARTGUI_SOFCSHAPEOBJECT_H
+~define PARTGUI_SOFCSHAPEOBJECT_H
 
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/elements/SoReplacedElement.h>
+~include <Inventor/fields/SoSFUInt32.h>
+~include <Inventor/fields/SoSFColor.h>
+~include <Inventor/fields/SoSubField.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoShape.h>
+~include <Inventor/elements/SoReplacedElement.h>
 
 namespace PartGui {
 
@@ -60,5 +60,5 @@ private:
 } // namespace PartGui
 
 
-#endif // PARTGUI_SOFCSHAPEOBJECT_H
+~endif // PARTGUI_SOFCSHAPEOBJECT_H
 

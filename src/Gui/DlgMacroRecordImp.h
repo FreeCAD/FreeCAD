@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGMACRORECORDIMP_H
-#define GUI_DIALOG_DLGMACRORECORDIMP_H
+~ifndef GUI_DIALOG_DLGMACRORECORDIMP_H
+~define GUI_DIALOG_DLGMACRORECORDIMP_H
 
-#include "Window.h"
-#include <QDialog>
-#include <memory>
+~include "Window.h"
+~include <QDialog>
+~include <memory>
 
 
 namespace Gui {
@@ -63,4 +63,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGMACRORECORDIMP_H
+~endif // GUI_DIALOG_DLGMACRORECORDIMP_H

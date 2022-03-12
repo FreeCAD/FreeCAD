@@ -26,10 +26,10 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==============================*/
 
-#pragma once
+~pragma once
 
-#include <string.h>	// for memcpy() prototype
-#include <math.h>	// for sqrt() prototype
+~include <string.h>	// for memcpy() prototype
+~include <math.h>	// for sqrt() prototype
 
 class CBox2D{
 public:

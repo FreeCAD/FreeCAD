@@ -20,11 +20,11 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef U16_HEADER
-#define U16_HEADER
+~ifndef U16_HEADER
+~define U16_HEADER
 
-#include <istream>
-#include <stdint.h>
+~include <istream>
+~include <stdint.h>
 
 using namespace std;
 
@@ -54,4 +54,4 @@ struct U16
 
 
 
-#endif
+~endif

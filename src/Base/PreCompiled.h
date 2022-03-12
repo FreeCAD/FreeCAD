@@ -21,118 +21,118 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PRECOMPILED_H
-#define BASE_PRECOMPILED_H
+~ifndef BASE_PRECOMPILED_H
+~define BASE_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // standard
-#include <fcntl.h>
-#include <cstdio>
-#include <cassert>
-#include <time.h>
-#include <cfloat>
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES
-#endif // FC_OS_WIN32
-#include <cmath>
-#include <climits>
+~include <fcntl.h>
+~include <cstdio>
+~include <cassert>
+~include <time.h>
+~include <cfloat>
+~ifdef FC_OS_WIN32
+~define _USE_MATH_DEFINES
+~endif // FC_OS_WIN32
+~include <cmath>
+~include <climits>
 
-#ifdef FC_OS_WIN32
-#include <direct.h>
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#include <crtdbg.h>
-#include <shellapi.h>
-#include <Rpc.h>
-#endif
+~ifdef FC_OS_WIN32
+~include <direct.h>
+~define WIN32_LEAN_AND_MEAN
+~ifndef NOMINMAX
+~define NOMINMAX
+~endif
+~include <windows.h>
+~include <crtdbg.h>
+~include <shellapi.h>
+~include <Rpc.h>
+~endif
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-#include <dirent.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#endif
+~if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~include <dirent.h>
+~include <unistd.h>
+~include <sys/stat.h>
+~endif
 
 // STL
-#include <string>
-#include <list>
-#include <map>
-#include <vector>
-#include <set>
-#include <stack>
-#include <queue>
-#include <memory>
-#include <bitset>
+~include <string>
+~include <list>
+~include <map>
+~include <vector>
+~include <set>
+~include <stack>
+~include <queue>
+~include <memory>
+~include <bitset>
 
 //streams
-#include <iostream>
-#include <fstream>
-#include <sstream>
+~include <iostream>
+~include <fstream>
+~include <sstream>
 
 // Xerces
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XercesVersion.hpp>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
-#if (XERCES_VERSION_MAJOR == 2)
-#include <xercesc/dom/DOMWriter.hpp>
-#endif
-#include <xercesc/dom/DOMDocument.hpp>
-#include <xercesc/dom/DOMElement.hpp>
-#include <xercesc/dom/DOMText.hpp>
-#include <xercesc/framework/StdOutFormatTarget.hpp>
-#include <xercesc/framework/LocalFileFormatTarget.hpp>
-#include <xercesc/framework/LocalFileInputSource.hpp>
-#include <xercesc/framework/MemBufFormatTarget.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/util/XMLUni.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
-#include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
-#include <xercesc/sax/SAXException.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
+~include <xercesc/util/PlatformUtils.hpp>
+~include <xercesc/util/XercesVersion.hpp>
+~include <xercesc/dom/DOM.hpp>
+~include <xercesc/dom/DOMImplementation.hpp>
+~include <xercesc/dom/DOMImplementationLS.hpp>
+~if (XERCES_VERSION_MAJOR == 2)
+~include <xercesc/dom/DOMWriter.hpp>
+~endif
+~include <xercesc/dom/DOMDocument.hpp>
+~include <xercesc/dom/DOMElement.hpp>
+~include <xercesc/dom/DOMText.hpp>
+~include <xercesc/framework/StdOutFormatTarget.hpp>
+~include <xercesc/framework/LocalFileFormatTarget.hpp>
+~include <xercesc/framework/LocalFileInputSource.hpp>
+~include <xercesc/framework/MemBufFormatTarget.hpp>
+~include <xercesc/framework/MemBufInputSource.hpp>
+~include <xercesc/parsers/XercesDOMParser.hpp>
+~include <xercesc/util/XMLUni.hpp>
+~include <xercesc/util/XMLUniDefs.hpp>
+~include <xercesc/util/XMLString.hpp>
+~include <xercesc/util/PlatformUtils.hpp>
+~include <xercesc/sax/SAXParseException.hpp>
+~include <xercesc/sax/ErrorHandler.hpp>
+~include <xercesc/sax/SAXParseException.hpp>
+~include <xercesc/sax/SAXException.hpp>
+~include <xercesc/sax2/Attributes.hpp>
+~include <xercesc/sax2/DefaultHandler.hpp>
+~include <xercesc/sax2/Attributes.hpp>
+~include <xercesc/sax2/SAX2XMLReader.hpp>
+~include <xercesc/sax2/XMLReaderFactory.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
-#include <boost/regex.hpp>
+~include <boost/filesystem/path.hpp>
+~include <boost/filesystem/operations.hpp>
+~include <boost/filesystem/exception.hpp>
+~include <boost/regex.hpp>
 
 // QtCore
-#include <QBuffer>
-#include <QByteArray>
-#include <QCoreApplication>
-#include <QEvent>
-#include <QIODevice>
-#include <QDataStream>
-#include <QDateTime>
-#include <QElapsedTimer>
-#include <QWriteLocker>
-#include <QReadLocker>
-#include <QReadWriteLock>
-#include <QMutex>
-#include <QMutexLocker>
-#include <QTime>
-#include <QUuid>
+~include <QBuffer>
+~include <QByteArray>
+~include <QCoreApplication>
+~include <QEvent>
+~include <QIODevice>
+~include <QDataStream>
+~include <QDateTime>
+~include <QElapsedTimer>
+~include <QWriteLocker>
+~include <QReadLocker>
+~include <QReadWriteLock>
+~include <QMutex>
+~include <QMutexLocker>
+~include <QTime>
+~include <QUuid>
 
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif // BASE_PRECOMPILED_H
+~endif // BASE_PRECOMPILED_H
 

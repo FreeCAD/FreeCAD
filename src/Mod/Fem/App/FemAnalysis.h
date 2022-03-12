@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemAnalysis_H
-#define Fem_FemAnalysis_H
+~ifndef Fem_FemAnalysis_H
+~define Fem_FemAnalysis_H
 
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
-#include <App/FeaturePython.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyLinks.h>
+~include <App/FeaturePython.h>
+~include <Mod/Fem/FemGlobal.h>
 
 
 namespace Fem {
@@ -98,4 +98,4 @@ typedef App::FeaturePythonT<DocumentObject> FeaturePython;
 } //namespace Fem
 
 
-#endif // Fem_FemAnalysis_H
+~endif // Fem_FemAnalysis_H

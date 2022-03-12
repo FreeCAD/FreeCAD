@@ -1,4 +1,4 @@
-#pragma once
+~pragma once
 /*
  * Original work Copyright 2009 - 2010 Kevin Ackley (kackley@gwi.net)
  * Modified work Copyright 2018 - 2020 Andy Maloney <asmaloney@gmail.com>
@@ -26,7 +26,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "DecodeChannel.h"
+~include "DecodeChannel.h"
 
 namespace e57
 {
@@ -45,9 +45,9 @@ namespace e57
       std::shared_ptr<CompressedVectorNodeImpl> compressedVectorNode() const;
       void close();
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout );
-#endif
+~endif
 
    private:
       void checkImageFileOpen( const char *srcFileName, int srcLineNumber, const char *srcFunctionName ) const;

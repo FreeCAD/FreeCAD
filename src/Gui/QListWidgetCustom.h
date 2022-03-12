@@ -21,11 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef QLISTWIDGETCUSTOM_HPP
-#define QLISTWIDGETCUSTOM_HPP
+~ifndef QLISTWIDGETCUSTOM_HPP
+~define QLISTWIDGETCUSTOM_HPP
 
-#include <QDragMoveEvent>
-#include <QListWidget>
+~include <QDragMoveEvent>
+~include <QListWidget>
 
 
 class QListWidgetCustom : public QListWidget
@@ -40,4 +40,4 @@ protected:
     void dragMoveEvent(QDragMoveEvent *e);
 };
 
-#endif
+~endif

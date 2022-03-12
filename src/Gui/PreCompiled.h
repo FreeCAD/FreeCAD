@@ -21,89 +21,89 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+~ifndef GUI_PRECOMPILED_H
+~define GUI_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#endif
+~ifdef FC_OS_WIN32
+~define WIN32_LEAN_AND_MEAN
+~ifndef NOMINMAX
+~define NOMINMAX
+~endif
+~endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#pragma warning( disable : 4251 )
-#pragma warning( disable : 4273 )
-#pragma warning( disable : 4275 )
-#pragma warning( disable : 4503 )
-#pragma warning( disable : 4786 )  // specifier longer then 255 chars
-#endif
+~ifdef _MSC_VER
+~pragma warning( disable : 4251 )
+~pragma warning( disable : 4273 )
+~pragma warning( disable : 4275 )
+~pragma warning( disable : 4503 )
+~pragma warning( disable : 4786 )  // specifier longer then 255 chars
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <typeinfo>
-#include <float.h>
-#include <limits.h>
+~include <stdio.h>
+~include <assert.h>
+~include <fcntl.h>
+~include <ctype.h>
+~include <typeinfo>
+~include <float.h>
+~include <limits.h>
 
-#ifdef FC_OS_WIN32
-#include <Windows.h>
-#include <io.h>
-#include <shellapi.h>
-#endif
+~ifdef FC_OS_WIN32
+~include <Windows.h>
+~include <io.h>
+~include <shellapi.h>
+~endif
 
 // null-terminated byte string
-#include <cctype>
+~include <cctype>
 
 // streams
-#include <iostream>
-#include <iomanip>
+~include <iostream>
+~include <iomanip>
 
 // STL
-#include <atomic>
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <sstream>
-#include <bitset>
-#include <unordered_set>
-#include <unordered_map>
-#include <tuple>
+~include <atomic>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <sstream>
+~include <bitset>
+~include <unordered_set>
+~include <unordered_map>
+~include <tuple>
 
 // Boost
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/program_options.hpp>
-#include <boost/utility.hpp>
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
+~include <boost_signals2.hpp>
+~include <boost/bind/bind.hpp>
+~include <boost/program_options.hpp>
+~include <boost/utility.hpp>
+~include <boost_graph_adjacency_list.hpp>
+~include <boost/filesystem/path.hpp>
+~include <boost/filesystem/operations.hpp>
+~include <boost/filesystem/exception.hpp>
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // Xerces
-#include <xercesc/util/TranscodingException.hpp>
-#include <xercesc/util/XMLString.hpp>
+~include <xercesc/util/TranscodingException.hpp>
+~include <xercesc/util/XMLString.hpp>
 
-#include "InventorAll.h"
-#include "QtAll.h"
+~include "InventorAll.h"
+~include "QtAll.h"
 
-#elif defined(FC_OS_WIN32)
-#include <windows.h>
-#endif  //_PreComp_
+~elif defined(FC_OS_WIN32)
+~include <windows.h>
+~endif  //_PreComp_
 
-#endif // GUI_PRECOMPILED_H
+~endif // GUI_PRECOMPILED_H

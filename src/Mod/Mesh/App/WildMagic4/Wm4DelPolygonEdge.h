@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELPOLYGONEDGE_H
-#define WM4DELPOLYGONEDGE_H
+~ifndef WM4DELPOLYGONEDGE_H
+~define WM4DELPOLYGONEDGE_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4VEManifoldMesh.h"
-#include "Wm4DelTriangle.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4VEManifoldMesh.h"
+~include "Wm4DelTriangle.h"
 
 namespace Wm4
 {
@@ -42,4 +42,4 @@ typedef DelPolygonEdge<double> DelPolygonEdged;
 
 }
 
-#endif
+~endif

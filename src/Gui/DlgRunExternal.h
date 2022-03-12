@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DlgRunExternal_H
-#define GUI_DIALOG_DlgRunExternal_H
+~ifndef GUI_DIALOG_DlgRunExternal_H
+~define GUI_DIALOG_DlgRunExternal_H
 
-#include <QProcess>
-#include <QDialog>
+~include <QProcess>
+~include <QDialog>
 
 namespace Gui {
 namespace Dialog {
@@ -68,4 +68,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DlgRunExternal_H
+~endif // GUI_DIALOG_DlgRunExternal_H

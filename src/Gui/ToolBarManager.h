@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TOOLBARMANAGER_H
-#define GUI_TOOLBARMANAGER_H
+~ifndef GUI_TOOLBARMANAGER_H
+~define GUI_TOOLBARMANAGER_H
 
-#include <string>
-#include <QStringList>
+~include <string>
+~include <QStringList>
 
 class QAction;
 class QToolBar;
@@ -99,4 +99,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_TOOLBARMANAGER_H
+~endif // GUI_TOOLBARMANAGER_H

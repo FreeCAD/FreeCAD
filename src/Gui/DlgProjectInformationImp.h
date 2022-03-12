@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
-#define GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
+~ifndef GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
+~define GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
 
-#include <QDialog>
+~include <QDialog>
 
 namespace App {
 class Document;
@@ -57,5 +57,5 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
+~endif // GUI_DIALOG_DLGPROJECTINFORMATIONIMP_H
 

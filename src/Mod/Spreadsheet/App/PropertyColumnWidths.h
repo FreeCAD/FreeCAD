@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYCOLUMNWIDTHS_H
-#define PROPERTYCOLUMNWIDTHS_H
+~ifndef PROPERTYCOLUMNWIDTHS_H
+~define PROPERTYCOLUMNWIDTHS_H
 
-#include <map>
-#include <App/Property.h>
-#include <CXX/Objects.hxx>
+~include <map>
+~include <App/Property.h>
+~include <CXX/Objects.hxx>
 
 namespace Spreadsheet {
 
@@ -82,4 +82,4 @@ private:
 
 }
 
-#endif // PROPERTYCOLUMNWIDTHS_H
+~endif // PROPERTYCOLUMNWIDTHS_H

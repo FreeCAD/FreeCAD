@@ -21,34 +21,34 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TIMEINFO_H
-#define BASE_TIMEINFO_H
+~ifndef BASE_TIMEINFO_H
+~define BASE_TIMEINFO_H
 
 // Std. configurations
 
 
-#include <cstdio>
-#if defined(FC_OS_BSD)
-#include <sys/time.h>
-#else
-#include <sys/timeb.h>
-#endif
-#include <ctime>
+~include <cstdio>
+~if defined(FC_OS_BSD)
+~include <sys/time.h>
+~else
+~include <sys/timeb.h>
+~endif
+~include <ctime>
 
-#ifdef __GNUC__
-# include <cstdint>
-#endif
+~ifdef __GNUC__
+~ include <cstdint>
+~endif
 
-#include <string>
-#include <FCGlobal.h>
+~include <string>
+~include <FCGlobal.h>
 
-#if defined(FC_OS_BSD)
+~if defined(FC_OS_BSD)
 struct timeb
 {
     int64_t time;
     unsigned short millitm;
 };
-#endif
+~endif
 
 namespace Base
 {
@@ -86,11 +86,11 @@ public:
     static TimeInfo null();
 
 protected:
-#if defined (_MSC_VER)
+~if defined (_MSC_VER)
     struct _timeb timebuffer;
-#elif defined(__GNUC__)
+~elif defined(__GNUC__)
     struct timeb timebuffer;
-#endif
+~endif
 };
 
 
@@ -161,5 +161,5 @@ TimeInfo::operator >  (const TimeInfo &time) const
 } //namespace Base
 
 
-#endif // BASE_TIMEINFO_H
+~endif // BASE_TIMEINFO_H
 

@@ -14,23 +14,23 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MEMORY_H
-#define WM4MEMORY_H
+~ifndef WM4MEMORY_H
+~define WM4MEMORY_H
 
-#ifndef WM4_MEMORY_MANAGER
+~ifndef WM4_MEMORY_MANAGER
 
 // Use the default memory manager.
-#define WM4_NEW new
-#define WM4_DELETE delete
+~define WM4_NEW new
+~define WM4_DELETE delete
 
-#else
+~else
 
 // Overrides of the global new and delete operators.  These enhance the
 // default memory manager by keeping track of information about allocations
 // and deallocations.
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Platforms.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Platforms.h"
 
 namespace Wm4
 {
@@ -121,10 +121,10 @@ public:
 
 } //namespace Wm4
 
-#include "Wm4Memory.inl"
+~include "Wm4Memory.inl"
 
-#define WM4_NEW new(__FILE__,__LINE__)
-#define WM4_DELETE delete
+~define WM4_NEW new(__FILE__,__LINE__)
+~define WM4_DELETE delete
 
 void* operator new (size_t uiSize);
 void* operator new[](size_t uiSize);
@@ -135,5 +135,5 @@ void operator delete[] (void* pvAddr);
 void operator delete (void* pvAddr, char* acFile, unsigned int uiLine);
 void operator delete[] (void* pvAddr, char* acFile, unsigned int uiLine);
 
-#endif
-#endif
+~endif
+~endif

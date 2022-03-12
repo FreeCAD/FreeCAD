@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
-#define GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+~ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+~define GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
 
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderGroupExtension.h"
-#include "ViewProviderPythonFeature.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderGroupExtension.h"
+~include "ViewProviderPythonFeature.h"
 
 
 namespace Gui {
@@ -59,5 +59,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderDocumentObjectGroup> ViewProvider
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+~endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
 

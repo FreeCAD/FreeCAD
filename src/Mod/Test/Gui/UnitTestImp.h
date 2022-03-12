@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef TESTGUI_UNITTESTIMP_H
-#define TESTGUI_UNITTESTIMP_H
+~ifndef TESTGUI_UNITTESTIMP_H
+~define TESTGUI_UNITTESTIMP_H
 
-#include <QDialog>
-#include <memory>
+~include <QDialog>
+~include <memory>
 
-#include <Base/PyObjectBase.h>
+~include <Base/PyObjectBase.h>
 
 class QTreeWidgetItem;
 
@@ -78,5 +78,5 @@ private:
 } // namespace TestGui
 
 
-#endif // TESTGUI_UNITTESTIMP_H
+~endif // TESTGUI_UNITTESTIMP_H
 

@@ -23,17 +23,17 @@
 //  SMESH DriverMED : driver to write a field to 'med' file
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DriverMED_W_Field
-#define _INCLUDE_DriverMED_W_Field
+~ifndef _INCLUDE_DriverMED_W_Field
+~define _INCLUDE_DriverMED_W_Field
 
-#include "SMESH_DriverMED.hxx"
+~include "SMESH_DriverMED.hxx"
 
-#include "Driver_SMESHDS_Mesh.h"
-#include "SMDSAbs_ElementType.hxx"
-#include "SMDS_ElemIterator.hxx"
+~include "Driver_SMESHDS_Mesh.h"
+~include "SMDSAbs_ElementType.hxx"
+~include "SMDS_ElemIterator.hxx"
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
 class MESHDRIVERMED_EXPORT DriverMED_W_Field: public Driver_SMESHDS_Mesh
 {
@@ -80,4 +80,4 @@ class MESHDRIVERMED_EXPORT DriverMED_W_Field: public Driver_SMESHDS_Mesh
   std::vector< std::pair< SMDSAbs_EntityType, int > > _nbElemsByGeom;
 };
 
-#endif
+~endif

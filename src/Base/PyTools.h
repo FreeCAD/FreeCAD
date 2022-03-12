@@ -60,22 +60,22 @@ for any purpose and without fee is hereby granted.  This software
 is provided on an as is basis, without warranties of any kind.
 */
 
-#ifndef PPEMBED_H
-#define PPEMBED_H
+~ifndef PPEMBED_H
+~define PPEMBED_H
 
-#ifdef __cplusplus
+~ifdef __cplusplus
 extern "C" {             /* a C library, but callable from C++ */
-#endif     
+~endif     
 
-#include <stdio.h>
+~include <stdio.h>
 // Python
-#if defined (_POSIX_C_SOURCE)
-#	undef  _POSIX_C_SOURCE
-#endif // (re-)defined in pyconfig.h
-#include <Python.h>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~if defined (_POSIX_C_SOURCE)
+~	undef  _POSIX_C_SOURCE
+~endif // (re-)defined in pyconfig.h
+~include <Python.h>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 extern int PP_RELOAD;    /* 1=reload py modules when attributes referenced */
 extern int PP_DEBUG;     /* 1=start debugger when string/function/member run */
@@ -188,8 +188,8 @@ extern PyObject *PP_last_traceback;   /* saved exception traceback object */
 extern PyObject *PP_last_exception_type;   /* saved exception type */
 
 
-#ifdef __cplusplus
+~ifdef __cplusplus
 }
-#endif
+~endif
 
-#endif /*PREEMBED_H*/
+~endif /*PREEMBED_H*/

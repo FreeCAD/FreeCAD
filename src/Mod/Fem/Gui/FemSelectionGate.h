@@ -20,10 +20,10 @@
  ******************************************************************************/
 
 
-#ifndef GUI_FemSelectionGate_H
-#define GUI_FemSelectionGate_H
+~ifndef GUI_FemSelectionGate_H
+~define GUI_FemSelectionGate_H
 
-#include <Gui/SelectionFilter.h>
+~include <Gui/SelectionFilter.h>
 
 namespace FemGui {
 
@@ -50,4 +50,4 @@ class FemSelectionGate : public Gui::SelectionFilterGate
 
 } //namespace FemGui
 
-#endif // GUI_FemSelectionGate_H
+~endif // GUI_FemSelectionGate_H

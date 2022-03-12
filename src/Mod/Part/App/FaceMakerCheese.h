@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_CHEESE_H
-#define PART_FACEMAKER_CHEESE_H
+~ifndef PART_FACEMAKER_CHEESE_H
+~define PART_FACEMAKER_CHEESE_H
 
-#include "FaceMaker.h"
-#include <list>
+~include "FaceMaker.h"
+~include <list>
 
 namespace Part
 {
@@ -68,4 +68,4 @@ protected:
 
 
 }//namespace Part
-#endif // PART_FACEMAKER_CHEESE_H
+~endif // PART_FACEMAKER_CHEESE_H

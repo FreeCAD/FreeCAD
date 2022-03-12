@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef _FeatureViewSpreadsheet_h_
-#define _FeatureViewSpreadsheet_h_
+~ifndef _FeatureViewSpreadsheet_h_
+~define _FeatureViewSpreadsheet_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include "FeatureView.h"
 
 namespace Drawing
 {
@@ -65,4 +65,4 @@ public:
 } //namespace Drawing
 
 
-#endif
+~endif

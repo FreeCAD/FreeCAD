@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ConstraintSettingsDialog_H
-#define SKETCHERGUI_ConstraintSettingsDialog_H
+~ifndef SKETCHERGUI_ConstraintSettingsDialog_H
+~define SKETCHERGUI_ConstraintSettingsDialog_H
 
-#include <QDialog>
+~include <QDialog>
 
-#include "ConstraintFilters.h"
+~include "ConstraintFilters.h"
 
 namespace SketcherGui {
 
@@ -67,4 +67,4 @@ private:
 
 }
 
-#endif // SKETCHERGUI_ConstraintSettingsDialog_H
+~endif // SKETCHERGUI_ConstraintSettingsDialog_H

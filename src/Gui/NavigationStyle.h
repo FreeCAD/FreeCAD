@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NAVIGATIONSTYLE_H
-#define GUI_NAVIGATIONSTYLE_H
+~ifndef GUI_NAVIGATIONSTYLE_H
+~define GUI_NAVIGATIONSTYLE_H
 
-#include <Inventor/C/basic.h>
-#include <Inventor/SbBox2s.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbTime.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec2s.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/events/SoEvents.h>
+~include <Inventor/C/basic.h>
+~include <Inventor/SbBox2s.h>
+~include <Inventor/SbPlane.h>
+~include <Inventor/SbRotation.h>
+~include <Inventor/SbTime.h>
+~include <Inventor/SbVec2f.h>
+~include <Inventor/SbVec2s.h>
+~include <Inventor/SbVec3f.h>
+~include <Inventor/events/SoEvents.h>
 
-#include <QEvent>
-#include <Base/BaseClass.h>
-#include <Gui/Namespace.h>
-#include <FCGlobal.h>
+~include <QEvent>
+~include <Base/BaseClass.h>
+~include <Gui/Namespace.h>
+~include <FCGlobal.h>
 
 
 // forward declarations
@@ -438,4 +438,4 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
 
-#endif // GUI_NAVIGATIONSTYLE_H
+~endif // GUI_NAVIGATIONSTYLE_H

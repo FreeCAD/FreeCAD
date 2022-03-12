@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
-#define GUI_DIALOG_DLGEXPRESSIONINPUT_H
+~ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
+~define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
-#include <QDialog>
-#include <Base/Unit.h>
-#include <App/ObjectIdentifier.h>
-#include <memory>
+~include <QDialog>
+~include <Base/Unit.h>
+~include <App/ObjectIdentifier.h>
+~include <memory>
 
 namespace Ui {
 class DlgExpressionInput;
@@ -88,4 +88,4 @@ private:
 }
 }
 
-#endif // GUI_DIALOG_EXPRESSIONINPUT_H
+~endif // GUI_DIALOG_EXPRESSIONINPUT_H

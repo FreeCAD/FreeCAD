@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 
-#include "QGIView.h"
+~include "QGIView.h"
 
 namespace TechDraw {
 class DrawViewAnnotation;
@@ -66,4 +66,4 @@ protected:
 
 } // end namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H

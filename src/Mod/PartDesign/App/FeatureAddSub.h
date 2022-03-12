@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureAdditive_H
-#define PARTDESIGN_FeatureAdditive_H
+~ifndef PARTDESIGN_FeatureAdditive_H
+~define PARTDESIGN_FeatureAdditive_H
 
-#include "Feature.h"
+~include "Feature.h"
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign
@@ -80,4 +80,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureAdditive_H
+~endif // PARTDESIGN_FeatureAdditive_H

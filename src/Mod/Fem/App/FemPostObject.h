@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemPostObject_H
-#define Fem_FemPostObject_H
+~ifndef Fem_FemPostObject_H
+~define Fem_FemPostObject_H
 
-#include <App/GeoFeature.h>
-#include "PropertyPostDataObject.h"
-#include <vtkBoundingBox.h>
+~include <App/GeoFeature.h>
+~include "PropertyPostDataObject.h"
+~include <vtkBoundingBox.h>
 
 
 namespace Fem
@@ -50,4 +50,4 @@ public:
 } //namespace Fem
 
 
-#endif // Fem_FemPostObject_H
+~endif // Fem_FemPostObject_H

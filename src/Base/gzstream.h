@@ -26,22 +26,22 @@
 // Standard C++ Library".
 // ============================================================================
 
-#ifndef GZSTREAM_H
-#define GZSTREAM_H 1
+~ifndef GZSTREAM_H
+~define GZSTREAM_H 1
 
-#include <sstream>
-#include <zlib.h>
+~include <sstream>
+~include <zlib.h>
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 using std::ostream;
 using std::istream;
-#endif
+~endif
 
 
 namespace Base {
 
 
-#define BUFFERSIZE 47+256
+~define BUFFERSIZE 47+256
 //const int bufferSize = 47+256;    // size of data buff
 
 
@@ -99,17 +99,17 @@ public:
 class BaseExport igzstream : public gzstreambase, public std::istream {
 public:
     igzstream()
-#ifdef _MSC_VER
+~ifdef _MSC_VER
       : istream( &buf) {} 
-#else
+~else
       : std::istream( &buf) {} 
-#endif
+~endif
     igzstream( const char* name, int open_mode = std::ios_base::in, int comp = 1)
-#ifdef _MSC_VER
+~ifdef _MSC_VER
       : gzstreambase( name, open_mode, comp ), istream( &buf) {}  
-#else
+~else
       : gzstreambase( name, open_mode, comp), std::istream( &buf) {}  
-#endif
+~endif
     gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }
     void open( const char* name, int open_mode = std::ios_base::in, int comp = 1) {
         gzstreambase::open( name, open_mode, comp);
@@ -119,17 +119,17 @@ public:
 class BaseExport ogzstream : public gzstreambase, public std::ostream {
 public:
     ogzstream()
-#ifdef _MSC_VER
+~ifdef _MSC_VER
       : ostream( &buf) {}
-#else
+~else
       : std::ostream( &buf) {}
-#endif
+~endif
     ogzstream( const char* name, int mode = std::ios_base::out, int comp = 1)
-#ifdef _MSC_VER
+~ifdef _MSC_VER
       : gzstreambase( name, mode, comp), ostream( &buf) {}  
-#else
+~else
       : gzstreambase( name, mode, comp), std::ostream( &buf) {}  
-#endif
+~endif
     gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }
     void open( const char* name, int open_mode = std::ios_base::out, int comp = 1) {
         gzstreambase::open( name, open_mode, comp);
@@ -138,7 +138,7 @@ public:
 
 } // namespace BAse
 
-#endif // GZSTREAM_H
+~endif // GZSTREAM_H
 // ============================================================================
 // EOF //
 

@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderLine_H
-#define GUI_ViewProviderLine_H
+~ifndef GUI_ViewProviderLine_H
+~define GUI_ViewProviderLine_H
 
-#include "ViewProviderOriginFeature.h"
+~include "ViewProviderOriginFeature.h"
 
 namespace Gui
 {
@@ -43,4 +43,4 @@ public:
 } //namespace Gui
 
 
-#endif // GUI_ViewProviderLine_H
+~endif // GUI_ViewProviderLine_H

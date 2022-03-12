@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef REEN_APPROXSURFACE_H
-#define REEN_APPROXSURFACE_H
+~ifndef REEN_APPROXSURFACE_H
+~define REEN_APPROXSURFACE_H
 
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <math_Matrix.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TColStd_Array1OfInteger.hxx>
+~include <TColgp_Array1OfPnt.hxx>
+~include <TColgp_Array2OfPnt.hxx>
+~include <TColgp_Array1OfPnt2d.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <math_Matrix.hxx>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
 namespace Base {
 class SequencerLauncher;
@@ -485,4 +485,4 @@ protected:
 
 } // namespace Reen
 
-#endif // REEN_APPROXSURFACE_H
+~endif // REEN_APPROXSURFACE_H

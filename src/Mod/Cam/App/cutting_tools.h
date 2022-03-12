@@ -24,18 +24,18 @@
 
 This is the place where all the prototypes are declared and the members are defined
 */
-#ifndef Cutting_Tools
-#define Cutting_Tools
+~ifndef Cutting_Tools
+~define Cutting_Tools
 
 
-#include <Handle_Geom_BSplineCurve.hxx>
-#include <TColgp_Array1OfVec.hxx>
-#include <Handle_TColgp_HArray1OfPnt.hxx>
-#include <Base/BoundBox.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <map>
+~include <Handle_Geom_BSplineCurve.hxx>
+~include <TColgp_Array1OfVec.hxx>
+~include <Handle_TColgp_HArray1OfPnt.hxx>
+~include <Base/BoundBox.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <map>
 
-#include "stuff.h"
+~include "stuff.h"
 
 namespace MeshCore {
 class MeshAlgorithm;
@@ -228,6 +228,6 @@ private:
     std::vector<std::pair<Base::Vector3f,TopoDS_Face> > m_MachiningOrder;
 };
 
-#endif
+~endif
 
 

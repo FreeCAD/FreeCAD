@@ -24,15 +24,15 @@
 
 
 
-#ifndef _DrawViewAnnotation_h_
-#define _DrawViewAnnotation_h_
+~ifndef _DrawViewAnnotation_h_
+~define _DrawViewAnnotation_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/FeaturePython.h>
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 namespace TechDraw
 {
@@ -82,4 +82,4 @@ typedef App::FeaturePythonT<DrawViewAnnotation> DrawViewAnnotationPython;
 } //namespace TechDraw
 
 
-#endif
+~endif

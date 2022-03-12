@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SelectionObject_H
-#define GUI_SelectionObject_H
+~ifndef GUI_SelectionObject_H
+~define GUI_SelectionObject_H
 
-#include <Base/BaseClass.h>
-#include <Base/Vector3D.h>
-#include <string>
+~include <Base/BaseClass.h>
+~include <Base/Vector3D.h>
+~include <string>
 
 namespace App {
     class DocumentObject;
@@ -98,4 +98,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SelectionObject_H
+~endif // GUI_SelectionObject_H

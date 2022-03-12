@@ -22,19 +22,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewSection_h_
-#define _DrawViewSection_h_
+~ifndef _DrawViewSection_h_
+~define _DrawViewSection_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
-#include <App/FeaturePython.h>
-#include <App/Material.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyFile.h>
+~include <App/FeaturePython.h>
+~include <App/Material.h>
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Compound.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Compound.hxx>
 
-#include "DrawViewPart.h"
+~include "DrawViewPart.h"
 
 class Bnd_Box;
 class gp_Pln;
@@ -152,4 +152,4 @@ typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;
 
 } //namespace TechDraw
 
-#endif
+~endif

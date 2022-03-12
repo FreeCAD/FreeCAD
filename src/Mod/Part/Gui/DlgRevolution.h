@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGREVOLUTION_H
-#define PARTGUI_DLGREVOLUTION_H
+~ifndef PARTGUI_DLGREVOLUTION_H
+~define PARTGUI_DLGREVOLUTION_H
 
-#include <Gui/Selection.h>
-#include <Gui/InputVector.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/InputVector.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
 namespace PartGui {
 
@@ -102,4 +102,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGREVOLUTION_H
+~endif // PARTGUI_DLGREVOLUTION_H

@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+~ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+~define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
 
-#include "ViewProviderGeoFeatureGroup.h"
+~include "ViewProviderGeoFeatureGroup.h"
 
 
 namespace Gui
@@ -63,4 +63,4 @@ typedef ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension> View
 
 } //namespace Gui
 
-#endif // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+~endif // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H

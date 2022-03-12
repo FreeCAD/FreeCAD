@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WINDOW_H
-#define GUI_WINDOW_H
+~ifndef GUI_WINDOW_H
+~define GUI_WINDOW_H
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
 namespace Gui {
 
@@ -52,4 +52,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_WINDOW_H
+~endif // GUI_WINDOW_H

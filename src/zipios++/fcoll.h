@@ -1,13 +1,13 @@
-#ifndef fcoll_H
-#define fcoll_H
+~ifndef fcoll_H
+~define fcoll_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <vector>
-#include <string>
+~include <vector>
+~include <string>
 
-#include "fcollexceptions.h"
-#include "fileentry.h"
+~include "fcollexceptions.h"
+~include "fileentry.h"
 
 namespace zipios {
 
@@ -136,7 +136,7 @@ inline ostream & operator<< (ostream &os, const FileCollection& collection) {
 
 } // namespace
 
-#endif
+~endif
 
 /** \file
     Header file that defines FileCollection.

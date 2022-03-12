@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMCS_H
-#define PARTDESIGN_DATUMCS_H
+~ifndef PARTDESIGN_DATUMCS_H
+~define PARTDESIGN_DATUMCS_H
 
-#include <Mod/Part/App/DatumFeature.h>
+~include <Mod/Part/App/DatumFeature.h>
 
 namespace PartDesign
 {
@@ -52,4 +52,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMCS_H
+~endif // PARTDESIGN_DATUMCS_H

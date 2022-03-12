@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELPOLYHEDRONFACE_H
-#define WM4DELPOLYHEDRONFACE_H
+~ifndef WM4DELPOLYHEDRONFACE_H
+~define WM4DELPOLYHEDRONFACE_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4ETManifoldMesh.h"
-#include "Wm4DelTetrahedron.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4ETManifoldMesh.h"
+~include "Wm4DelTetrahedron.h"
 
 namespace Wm4
 {
@@ -42,4 +42,4 @@ typedef DelPolyhedronFace<double> DelPolyhedronFaced;
 
 }
 
-#endif
+~endif

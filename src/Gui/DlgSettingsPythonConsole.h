@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
-#define GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
+~ifndef GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
+~define GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 namespace Gui {
 namespace Dialog {
@@ -57,4 +57,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H
+~endif // GUI_DIALOG_DLGSETTINGSPYTHONCONSOLE_H

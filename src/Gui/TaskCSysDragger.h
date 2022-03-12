@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKCSYSDRAGGER_H
-#define TASKCSYSDRAGGER_H
+~ifndef TASKCSYSDRAGGER_H
+~define TASKCSYSDRAGGER_H
 
-#include "TaskView/TaskDialog.h"
-#include <App/DocumentObserver.h>
+~include "TaskView/TaskDialog.h"
+~include <App/DocumentObserver.h>
 
 
 namespace Gui
@@ -55,4 +55,4 @@ namespace Gui
   };
 }
 
-#endif // TASKCSYSDRAGGER_H
+~endif // TASKCSYSDRAGGER_H

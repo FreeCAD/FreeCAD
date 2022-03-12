@@ -24,20 +24,20 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintContact_H
-#define GUI_TASKVIEW_TaskFemConstraintContact_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintContact_H
+~define GUI_TASKVIEW_TaskFemConstraintContact_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Base/Quantity.h>
 
-#include "TaskFemConstraint.h"
-#include "ViewProviderFemConstraintContact.h"
+~include "TaskFemConstraint.h"
+~include "ViewProviderFemConstraintContact.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
+~include <QObject>
+~include <Base/Console.h>
+~include <App/DocumentObject.h>
 
 class Ui_TaskFemConstraintContact;
 
@@ -84,4 +84,4 @@ public:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintContact_H
+~endif // GUI_TASKVIEW_TaskFemConstraintContact_H

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
-#define FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
+~ifndef FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
+~define FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Mod/Fem/App/FemPostFunction.h>
-#include <Inventor/SbMatrix.h>
-#include <QWidget>
-#include <boost_signals2.hpp>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <Mod/Fem/App/FemPostFunction.h>
+~include <Inventor/SbMatrix.h>
+~include <QWidget>
+~include <boost_signals2.hpp>
 
 class SoScale;
 class SoSurroundScale;
@@ -219,4 +219,4 @@ protected:
 } //namespace FemGui
 
 
-#endif // FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
+~endif // FEM_VIEWPROVIDERFEMPOSTFUNCTION_H

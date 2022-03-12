@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawHatch_h_
-#define _TechDraw_DrawHatch_h_
+~ifndef _TechDraw_DrawHatch_h_
+~define _TechDraw_DrawHatch_h_
 
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/Material.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
+~include <App/DocumentObject.h>
+~include <App/FeaturePython.h>
+~include <App/Material.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyFile.h>
 
 namespace TechDraw
 {
@@ -78,4 +78,4 @@ private:
 typedef App::FeaturePythonT<DrawHatch> DrawHatchPython;
 
 } //namespace TechDraw
-#endif
+~endif

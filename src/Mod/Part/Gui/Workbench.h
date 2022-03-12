@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PART_WORKBENCH_H
-#define PART_WORKBENCH_H
+~ifndef PART_WORKBENCH_H
+~define PART_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace PartGui {
 
@@ -48,4 +48,4 @@ protected:
 } // namespace PartGui
 
 
-#endif // PART_WORKBENCH_H 
+~endif // PART_WORKBENCH_H 

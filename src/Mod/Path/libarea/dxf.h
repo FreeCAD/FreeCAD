@@ -1,23 +1,23 @@
 // dxf.h
 // Copyright (c) 2009, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
-#pragma once
+~pragma once
 
-#include <algorithm>
-#include <list>
-#include <vector>
-#include <map>
-#include <set>
-#include <string>
-#include <iosfwd>
-#include <cstdio>
-#include <cstring>
-#include <cmath>
+~include <algorithm>
+~include <list>
+~include <vector>
+~include <map>
+~include <set>
+~include <string>
+~include <iosfwd>
+~include <cstdio>
+~include <cstring>
+~include <cmath>
 
 //Following is required to be defined on Ubuntu with OCC 6.3.1
-#ifndef HAVE_IOSTREAM
-#define HAVE_IOSTREAM
-#endif
+~ifndef HAVE_IOSTREAM
+~define HAVE_IOSTREAM
+~endif
 
 typedef int Aci_t; // AutoCAD color index
 

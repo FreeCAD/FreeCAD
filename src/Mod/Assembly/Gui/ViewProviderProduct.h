@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLYGUI_ViewProviderProduct_H
-#define ASSEMBLYGUI_ViewProviderProduct_H
+~ifndef ASSEMBLYGUI_ViewProviderProduct_H
+~define ASSEMBLYGUI_ViewProviderProduct_H
 
-#include "ViewProvider.h"
-#include <QMenu>
-#include <QObject>
+~include "ViewProvider.h"
+~include <QMenu>
+~include <QObject>
 
 
 namespace AssemblyGui {
@@ -66,4 +66,4 @@ public:
 } // namespace AssemblyGui
 
 
-#endif // ASSEMBLYGUI_ViewProviderProduct_H
+~endif // ASSEMBLYGUI_ViewProviderProduct_H

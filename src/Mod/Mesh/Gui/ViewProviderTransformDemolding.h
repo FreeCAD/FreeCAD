@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
-#define MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
+~ifndef MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
+~define MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
 
-#include <Inventor/nodes/SoRotation.h>
+~include <Inventor/nodes/SoRotation.h>
 
 class SoSeparator;
 class SbVec3f;
@@ -43,8 +43,8 @@ namespace Gui {
 }
 
 
-#include "ViewProvider.h"
-#include <Base/Vector3D.h>
+~include "ViewProvider.h"
+~include <Base/Vector3D.h>
 
 namespace MeshGui {
 
@@ -93,5 +93,5 @@ protected:
 } // namespace MeshGui
 
 
-#endif // MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
+~endif // MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
 

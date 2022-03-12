@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_HANDLE_H
-#define BASE_HANDLE_H
+~ifndef BASE_HANDLE_H
+~define BASE_HANDLE_H
 
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 
 class QAtomicInt;
@@ -178,4 +178,4 @@ private:
 
 } // namespace Base
 
-#endif // BASE_HANDLE_H
+~endif // BASE_HANDLE_H

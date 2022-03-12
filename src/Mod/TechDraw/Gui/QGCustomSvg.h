@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMSVG_H
-#define DRAWINGGUI_QGCUSTOMSVG_H
+~ifndef DRAWINGGUI_QGCUSTOMSVG_H
+~define DRAWINGGUI_QGCUSTOMSVG_H
 
-#include <QGraphicsItem>
-#include <QGraphicsSvgItem>
-#include <QPointF>
-#include <QByteArray>
-#include <QSvgRenderer>
+~include <QGraphicsItem>
+~include <QGraphicsSvgItem>
+~include <QPointF>
+~include <QByteArray>
+~include <QSvgRenderer>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -59,4 +59,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGCUSTOMSVG_H
+~endif // DRAWINGGUI_QGCUSTOMSVG_H

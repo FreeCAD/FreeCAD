@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_GUI_NAVICUBE_H_
-#define SRC_GUI_NAVICUBE_H_
+~ifndef SRC_GUI_NAVICUBE_H_
+~define SRC_GUI_NAVICUBE_H_
 
-#include <CXX/Extensions.hxx>
+~include <CXX/Extensions.hxx>
 
 class SoEvent;
 
@@ -59,4 +59,4 @@ public:
 	static void init_type() ;
 };
 
-#endif /* SRC_GUI_NAVICUBE_H_ */
+~endif /* SRC_GUI_NAVICUBE_H_ */

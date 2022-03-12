@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBSERVERPYTHON_H
-#define APP_DOCUMENTOBSERVERPYTHON_H
+~ifndef APP_DOCUMENTOBSERVERPYTHON_H
+~define APP_DOCUMENTOBSERVERPYTHON_H
 
 
 namespace App
@@ -152,4 +152,4 @@ private:
 
 } //namespace App
 
-#endif // APP_DOCUMENTOBSERVERPYTHON_H
+~endif // APP_DOCUMENTOBSERVERPYTHON_H

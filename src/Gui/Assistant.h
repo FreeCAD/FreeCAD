@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ASSISTANT_H
-#define GUI_ASSISTANT_H
+~ifndef GUI_ASSISTANT_H
+~define GUI_ASSISTANT_H
 
-#include <QObject>
+~include <QObject>
 
 class QProcess;
 
@@ -50,4 +50,4 @@ private:
 
 }
 
-#endif // GUI_ASSISTANT_H
+~endif // GUI_ASSISTANT_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYITEMDELEGATE_H
-#define PROPERTYITEMDELEGATE_H
+~ifndef PROPERTYITEMDELEGATE_H
+~define PROPERTYITEMDELEGATE_H
 
-#include <QItemDelegate>
+~include <QItemDelegate>
 
 namespace Gui {
 namespace PropertyEditor {
@@ -62,4 +62,4 @@ private:
 } // namespace PropertyEditor
 } // namespace Gui
 
-#endif // PROPERTYITEMDELEGATE_H
+~endif // PROPERTYITEMDELEGATE_H

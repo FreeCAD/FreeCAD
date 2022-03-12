@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
+~ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
+~define DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawScaleImp;
@@ -53,4 +53,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
+~endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H

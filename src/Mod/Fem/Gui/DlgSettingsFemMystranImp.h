@@ -23,11 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
-#define FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
+~ifndef FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
+~define FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace FemGui {
 
@@ -51,4 +51,4 @@ private:
 
 } // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H
+~endif // FEMGUI_DLGSETTINGSFEMMYSTRANIMP_H

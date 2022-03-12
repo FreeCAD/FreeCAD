@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+~define DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
 
-#include "QGIViewPart.h"
+~include "QGIViewPart.h"
 
 namespace TechDrawGui
 {
@@ -48,4 +48,4 @@ protected:
 
 } // end namespace TechDrawGui
 
-#endif // #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
+~endif // ~ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H

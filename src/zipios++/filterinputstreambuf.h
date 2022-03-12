@@ -1,9 +1,9 @@
-#ifndef FILTERINPUTSTREAMBUF_H
-#define FILTERINPUTSTREAMBUF_H
+~ifndef FILTERINPUTSTREAMBUF_H
+~define FILTERINPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
 namespace zipios {
 
@@ -40,7 +40,7 @@ private:
 } // namespace 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines FilterInputStreambuf.

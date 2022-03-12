@@ -22,18 +22,18 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
-#define TECHDRAWGUI_VIEWPROVIDERVIEW_H
+~ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
+~define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp> 
+~include <boost_signals2.hpp> 
 
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+~include <Gui/ViewProviderFeature.h>
+~include <Gui/ViewProviderDocumentObjectGroup.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include "QGIView.h"
+~include <Mod/TechDraw/App/DrawView.h>
+~include "QGIView.h"
 
 namespace TechDraw {
 class DrawView;
@@ -95,4 +95,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // TECHDRAWGUI_VIEWPROVIDERVIEW_H
+~endif // TECHDRAWGUI_VIEWPROVIDERVIEW_H

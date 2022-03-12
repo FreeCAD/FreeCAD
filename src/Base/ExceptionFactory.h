@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_EXCEPTIONFACTORY_H
-#define BASE_EXCEPTIONFACTORY_H
+~ifndef BASE_EXCEPTIONFACTORY_H
+~define BASE_EXCEPTIONFACTORY_H
 
 
-#include "Factory.h"
-#include <typeinfo>
+~include "Factory.h"
+~include <typeinfo>
 
 // Python stuff
 typedef struct _object PyObject;
@@ -88,5 +88,5 @@ public:
 } //namespace Base
 
 
-#endif
+~endif
 

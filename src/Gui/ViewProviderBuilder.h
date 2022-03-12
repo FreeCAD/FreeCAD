@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERBUILDER_H
-#define GUI_VIEWPROVIDERBUILDER_H
+~ifndef GUI_VIEWPROVIDERBUILDER_H
+~define GUI_VIEWPROVIDERBUILDER_H
 
-#include <map>
-#include <vector>
-#include <Base/Type.h>
+~include <map>
+~include <vector>
+~include <Base/Type.h>
 
 
 class SoNode;
@@ -67,4 +67,4 @@ public:
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDERBUILDER_H
+~endif // GUI_VIEWPROVIDERBUILDER_H

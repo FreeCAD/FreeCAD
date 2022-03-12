@@ -15,25 +15,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMAGEBASE_H
-#define IMAGEBASE_H
+~ifndef IMAGEBASE_H
+~define IMAGEBASE_H
 
-#include <Mod/Image/ImageGlobal.h>
+~include <Mod/Image/ImageGlobal.h>
 
 namespace Image
 {
 
-#define IB_CF_GREY8     1       // 8-bit grey level images
-#define IB_CF_GREY16    2		// 16-bit grey level images
-#define IB_CF_GREY32    3		// 32-bit grey level images
-#define IB_CF_RGB24     4		// 24-bit (8,8,8) RGB color images
-#define IB_CF_RGB48     5		// 48-bit (16,16,16) RGB color images
-#define IB_CF_BGR24     6		// 24-bit (8,8,8) BGR color images
-#define IB_CF_BGR48     7		// 48-bit (16,16,16) BGR color images
-#define IB_CF_RGBA32    8		// 32-bit (8,8,8,8) RGBA color images (A = alpha)
-#define IB_CF_RGBA64    9		// 64-bit (16,16,16,16) RGBA color images (A = alpha)
-#define IB_CF_BGRA32    10		// 32-bit (8,8,8,8) BGRA color images (A = alpha)
-#define IB_CF_BGRA64    11		// 64-bit (16,16,16,16) BGRA color images (A = alpha)
+~define IB_CF_GREY8     1       // 8-bit grey level images
+~define IB_CF_GREY16    2		// 16-bit grey level images
+~define IB_CF_GREY32    3		// 32-bit grey level images
+~define IB_CF_RGB24     4		// 24-bit (8,8,8) RGB color images
+~define IB_CF_RGB48     5		// 48-bit (16,16,16) RGB color images
+~define IB_CF_BGR24     6		// 24-bit (8,8,8) BGR color images
+~define IB_CF_BGR48     7		// 48-bit (16,16,16) BGR color images
+~define IB_CF_RGBA32    8		// 32-bit (8,8,8,8) RGBA color images (A = alpha)
+~define IB_CF_RGBA64    9		// 64-bit (16,16,16,16) RGBA color images (A = alpha)
+~define IB_CF_BGRA32    10		// 32-bit (8,8,8,8) BGRA color images (A = alpha)
+~define IB_CF_BGRA64    11		// 64-bit (16,16,16,16) BGRA color images (A = alpha)
 
 class ImageExport ImageBase
 {
@@ -81,4 +81,4 @@ protected:
 
 } // namespace ImageApp
 
-#endif // IMAGEBASE_H
+~endif // IMAGEBASE_H

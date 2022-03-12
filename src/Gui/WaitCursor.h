@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_WAIT_CURSOR_H
-#define GUI_WAIT_CURSOR_H
+~ifndef GUI_WAIT_CURSOR_H
+~define GUI_WAIT_CURSOR_H
 
 
 namespace Gui {
@@ -82,5 +82,5 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_WAIT_CURSOR_H
+~endif // GUI_WAIT_CURSOR_H
 

@@ -24,11 +24,11 @@
 
 
 
-#ifndef BASE_CONSOLEOBSERVER_H
-#define BASE_CONSOLEOBSERVER_H
+~ifndef BASE_CONSOLEOBSERVER_H
+~define BASE_CONSOLEOBSERVER_H
 
-#include <Base/Console.h>
-#include <Base/Stream.h>
+~include <Base/Console.h>
+~include <Base/Stream.h>
 
 namespace Base {
 
@@ -112,4 +112,4 @@ private:
 
 } // namespace Base
 
-#endif // BASE_CONSOLEOBSERVER_H
+~endif // BASE_CONSOLEOBSERVER_H

@@ -1,5 +1,5 @@
-#ifndef QUARTER_QTCOINCOMPATIBILITY_H
-#define QUARTER_QTCOINCOMPATIBILITY_H
+~ifndef QUARTER_QTCOINCOMPATIBILITY_H
+~define QUARTER_QTCOINCOMPATIBILITY_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -36,7 +36,7 @@
 class QImage;
 class SbImage;
 
-#include "Basic.h"
+~include "Basic.h"
 
 
 namespace SIM { namespace Coin3D { namespace Quarter {
@@ -48,4 +48,4 @@ namespace QtCoinCompatibility {
 
 }}} // namespace
 
-#endif // QUARTER_QTCOINCOMPATIBILITY_H
+~endif // QUARTER_QTCOINCOMPATIBILITY_H

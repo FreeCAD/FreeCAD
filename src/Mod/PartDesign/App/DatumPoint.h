@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMPOINT_H
-#define PARTDESIGN_DATUMPOINT_H
+~ifndef PARTDESIGN_DATUMPOINT_H
+~define PARTDESIGN_DATUMPOINT_H
 
-#include <Mod/Part/App/DatumFeature.h>
+~include <Mod/Part/App/DatumFeature.h>
 
 namespace PartDesign
 {
@@ -58,4 +58,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMPOINT_H
+~endif // PARTDESIGN_DATUMPOINT_H

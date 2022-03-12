@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeaturePrimitive_H
-#define PARTDESIGN_FeaturePrimitive_H
+~ifndef PARTDESIGN_FeaturePrimitive_H
+~define PARTDESIGN_FeaturePrimitive_H
 
-#include "FeatureAddSub.h"
-#include <Mod/Part/App/AttachExtension.h>
-#include <Mod/Part/App/PrismExtension.h>
+~include "FeatureAddSub.h"
+~include <Mod/Part/App/AttachExtension.h>
+~include <Mod/Part/App/PrismExtension.h>
 
 namespace PartDesign
 {
@@ -385,4 +385,4 @@ class PartDesignExport SubtractiveWedge : public Wedge {
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeaturePrimitive_H
+~endif // PARTDESIGN_FeaturePrimitive_H

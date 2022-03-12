@@ -21,12 +21,12 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureBoolean_H
-#define PARTDESIGN_FeatureBoolean_H
+~ifndef PARTDESIGN_FeatureBoolean_H
+~define PARTDESIGN_FeatureBoolean_H
 
-#include <App/GeoFeatureGroupExtension.h>
-#include <App/PropertyStandard.h>
-#include "Feature.h"
+~include <App/GeoFeatureGroupExtension.h>
+~include <App/PropertyStandard.h>
+~include "Feature.h"
 
 
 namespace PartDesign
@@ -73,4 +73,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureBoolean_H
+~endif // PARTDESIGN_FeatureBoolean_H

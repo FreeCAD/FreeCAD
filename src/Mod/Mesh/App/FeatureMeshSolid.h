@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef FEATURE_MESH_SOLID_H
-#define FEATURE_MESH_SOLID_H
+~ifndef FEATURE_MESH_SOLID_H
+~define FEATURE_MESH_SOLID_H
 
-#include "MeshFeature.h"
+~include "MeshFeature.h"
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyLinks.h>
 
 namespace Mesh
 {
@@ -171,4 +171,4 @@ public:
 
 }
 
-#endif // FEATURE_MESH_SOLID_H 
+~endif // FEATURE_MESH_SOLID_H 

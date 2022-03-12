@@ -22,12 +22,12 @@
 
 
 
-#ifndef PART_FeatureGeometrySet_H
-#define PART_FeatureGeometrySet_H
+~ifndef PART_FeatureGeometrySet_H
+~define PART_FeatureGeometrySet_H
 
-#include "PropertyGeometryList.h"
+~include "PropertyGeometryList.h"
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -57,4 +57,4 @@ public:
 } //namespace Part
 
 
-#endif // PART_FeatureGeometrySet_H
+~endif // PART_FeatureGeometrySet_H

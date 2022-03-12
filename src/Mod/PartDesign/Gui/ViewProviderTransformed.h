@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderTransformed_H
-#define PARTGUI_ViewProviderTransformed_H
+~ifndef PARTGUI_ViewProviderTransformed_H
+~define PARTGUI_ViewProviderTransformed_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 namespace PartDesignGui {
 
@@ -77,4 +77,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderTransformed_H
+~endif // PARTGUI_ViewProviderTransformed_H

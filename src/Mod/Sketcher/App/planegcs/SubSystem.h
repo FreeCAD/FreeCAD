@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_SUBSYSTEM_H
-#define PLANEGCS_SUBSYSTEM_H
+~ifndef PLANEGCS_SUBSYSTEM_H
+~define PLANEGCS_SUBSYSTEM_H
 
-#undef min
-#undef max
+~undef min
+~undef max
 
-#include <Eigen/Core>
-#include "Constraints.h"
+~include <Eigen/Core>
+~include "Constraints.h"
 
 namespace GCS
 {
@@ -88,4 +88,4 @@ namespace GCS
 
 } //namespace GCS
 
-#endif // PLANEGCS_SUBSYSTEM_H
+~endif // PLANEGCS_SUBSYSTEM_H

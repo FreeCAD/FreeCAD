@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTIESDIALOG_H
-#define PROPERTIESDIALOG_H
+~ifndef PROPERTIESDIALOG_H
+~define PROPERTIESDIALOG_H
 
-#include <QDialog>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <QDialog>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 namespace Ui {
 class PropertiesDialog;
@@ -74,4 +74,4 @@ private:
 
 }
 
-#endif // PROPERTIESDIALOG_H
+~endif // PROPERTIESDIALOG_H

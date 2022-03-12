@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DlgPartImportIgesImp_H
-#define DlgPartImportIgesImp_H
+~ifndef DlgPartImportIgesImp_H
+~define DlgPartImportIgesImp_H
 
-#include <QDialog>
-#include <memory>
+~include <QDialog>
+~include <memory>
 
 namespace PartGui {
 class Ui_DlgPartImportIges;
@@ -46,4 +46,4 @@ private:
 
 } // namespace PartGui
 
-#endif // DlgPartImportIgesImp_H
+~endif // DlgPartImportIgesImp_H

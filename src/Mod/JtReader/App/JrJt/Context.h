@@ -20,12 +20,12 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef Context_HEADER
-#define Context_HEADER
+~ifndef Context_HEADER
+~define Context_HEADER
 
-#include <istream>
-#include <stdint.h>
-#include "Context.h"
+~include <istream>
+~include <stdint.h>
+~include "Context.h"
 
 using namespace std;
 
@@ -44,5 +44,5 @@ public:
 
 
 
-#endif
+~endif
 

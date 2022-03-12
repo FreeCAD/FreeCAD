@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CONTROL_H
-#define GUI_CONTROL_H
+~ifndef GUI_CONTROL_H
+~define GUI_CONTROL_H
 
 // Std. configurations
 
-#include <QObject>
-#include <bitset>
-#include <stack>
+~include <QObject>
+~include <bitset>
+~include <stack>
 
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 class QTabWidget;
 
@@ -135,4 +135,4 @@ inline ControlSingleton& Control(void)
 
 } //namespace Gui
 
-#endif // GUI_CONTROL_H
+~endif // GUI_CONTROL_H

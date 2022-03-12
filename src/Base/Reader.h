@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_READER_H
-#define BASE_READER_H
+~ifndef BASE_READER_H
+~define BASE_READER_H
 
-#include <bitset>
-#include <map>
-#include <memory>
-#include <sstream>
-#include <string>
+~include <bitset>
+~include <map>
+~include <memory>
+~include <sstream>
+~include <string>
 
-#include <xercesc/framework/XMLPScanToken.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
+~include <xercesc/framework/XMLPScanToken.hpp>
+~include <xercesc/sax2/Attributes.hpp>
+~include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "FileInfo.h"
+~include "FileInfo.h"
 
 
 namespace zipios {
@@ -227,13 +227,13 @@ protected:
     virtual void endDocument();
     virtual void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs);
     virtual void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname);
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
     virtual void characters         (const XMLCh* const chars, const unsigned int length);
     virtual void ignorableWhitespace(const XMLCh* const chars, const unsigned int length);
-#else
+~else
     virtual void characters         (const XMLCh* const chars, const XMLSize_t length);
     virtual void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length);
-#endif
+~endif
     //@}
 
     /** @name Lexical handler */
@@ -312,4 +312,4 @@ private:
 }
 
 
-#endif
+~endif

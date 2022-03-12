@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef MESH_SMOOTHING_H
-#define MESH_SMOOTHING_H
+~ifndef MESH_SMOOTHING_H
+~define MESH_SMOOTHING_H
 
-#include <vector>
-#include "Definitions.h"
+~include <vector>
+~include "Definitions.h"
 
 namespace MeshCore
 {
@@ -110,4 +110,4 @@ protected:
 } // namespace MeshCore
 
 
-#endif  // MESH_SMOOTHING_H 
+~endif  // MESH_SMOOTHING_H 

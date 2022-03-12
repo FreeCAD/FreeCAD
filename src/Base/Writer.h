@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_WRITER_H
-#define BASE_WRITER_H
+~ifndef BASE_WRITER_H
+~define BASE_WRITER_H
 
 
-#include <set>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <cassert>
+~include <set>
+~include <string>
+~include <sstream>
+~include <vector>
+~include <cassert>
 
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
+~ifdef _MSC_VER
+~include <zipios++/zipios-config.h>
+~endif
+~include <zipios++/zipfile.h>
+~include <zipios++/zipinputstream.h>
+~include <zipios++/zipoutputstream.h>
+~include <zipios++/meta-iostreams.h>
 
-#include "FileInfo.h"
+~include "FileInfo.h"
 
 
 
@@ -216,4 +216,4 @@ protected:
 }  //namespace Base
 
 
-#endif // BASE_WRITER_H
+~endif // BASE_WRITER_H

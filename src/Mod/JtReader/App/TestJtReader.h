@@ -3,7 +3,7 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-#include "JrJt/JtReader.h"
+~include "JrJt/JtReader.h"
 
 
 class TestJtReader: public JtReader

@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPolarPattern_H
-#define PARTGUI_ViewProviderPolarPattern_H
+~ifndef PARTGUI_ViewProviderPolarPattern_H
+~define PARTGUI_ViewProviderPolarPattern_H
 
-#include "ViewProviderTransformed.h"
+~include "ViewProviderTransformed.h"
 
 namespace PartDesignGui {
 
@@ -47,4 +47,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPolarPattern_H
+~endif // PARTGUI_ViewProviderPolarPattern_H

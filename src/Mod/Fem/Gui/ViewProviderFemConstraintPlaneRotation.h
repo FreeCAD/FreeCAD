@@ -23,10 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
+~ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
+~define GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
 
-#include "ViewProviderFemConstraint.h"
+~include "ViewProviderFemConstraint.h"
 
 namespace FemGui {
 
@@ -45,4 +45,4 @@ protected:
 
 }
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H
+~endif // GUI_VIEWPROVIDERFEMCONSTRAINTPLANEROTATION_H

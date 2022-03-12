@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
-#define DRAWINGGUI_VIEWPROVIDERVIEW_H
+~ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
+~define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+~include <Gui/ViewProviderFeature.h>
+~include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
 namespace DrawingGui {
@@ -96,5 +96,5 @@ public:
 } // namespace DrawingGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
+~endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
 

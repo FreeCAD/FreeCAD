@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_MaterialObject_H
-#define APP_MaterialObject_H
+~ifndef APP_MaterialObject_H
+~define APP_MaterialObject_H
 
-#include "DocumentObject.h"
-#include "FeaturePython.h"
+~include "DocumentObject.h"
+~include "FeaturePython.h"
 
 
 namespace App
@@ -56,4 +56,4 @@ typedef App::FeaturePythonT<MaterialObject> MaterialObjectPython;
 } //namespace App
 
 
-#endif // APP_MaterialObject_H
+~endif // APP_MaterialObject_H

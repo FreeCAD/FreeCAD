@@ -1,13 +1,13 @@
-#ifndef GZIPOUTPUTSTREAMBUF_H
-#define GZIPOUTPUTSTREAMBUF_H
+~ifndef GZIPOUTPUTSTREAMBUF_H
+~define GZIPOUTPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <vector>
+~include <vector>
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "deflateoutputstreambuf.h"
+~include "deflateoutputstreambuf.h"
 
 namespace zipios {
 
@@ -53,7 +53,7 @@ private:
 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines ZipOutputStreambuf.

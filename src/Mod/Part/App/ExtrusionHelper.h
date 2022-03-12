@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef PART_EXTRUSIONHELPER_H
-#define PART_EXTRUSIONHELPER_H
+~ifndef PART_EXTRUSIONHELPER_H
+~define PART_EXTRUSIONHELPER_H
 
-#include <list>
-#include <vector>
-#include <gp_Dir.hxx>
-#include <TopoDS_Shape.hxx>
+~include <list>
+~include <vector>
+~include <gp_Dir.hxx>
+~include <TopoDS_Shape.hxx>
 
 namespace Part
 {
@@ -71,4 +71,4 @@ public:
 
 } //namespace Part
 
-#endif // PART_EXTRUSIONHELPER_H
+~endif // PART_EXTRUSIONHELPER_H

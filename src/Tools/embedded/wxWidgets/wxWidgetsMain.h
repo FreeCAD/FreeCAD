@@ -7,14 +7,14 @@
  * License:   LGPL
  **************************************************************/
 
-#ifndef WXWIDGETSMAIN_H
-#define WXWIDGETSMAIN_H
+~ifndef WXWIDGETSMAIN_H
+~define WXWIDGETSMAIN_H
 
-#ifndef WX_PRECOMP
-    #include <wx/wx.h>
-#endif
+~ifndef WX_PRECOMP
+    ~include <wx/wx.h>
+~endif
 
-#include "wxWidgetsApp.h"
+~include "wxWidgetsApp.h"
 
 class wxWidgetsFrame: public wxFrame
 {
@@ -40,4 +40,4 @@ class wxWidgetsFrame: public wxFrame
 };
 
 
-#endif // WXWIDGETSMAIN_H
+~endif // WXWIDGETSMAIN_H

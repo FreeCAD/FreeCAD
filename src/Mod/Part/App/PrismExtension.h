@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PRISM_EXTENSION_H
-#define PART_PRISM_EXTENSION_H
+~ifndef PART_PRISM_EXTENSION_H
+~define PART_PRISM_EXTENSION_H
 
-#include <App/DocumentObjectExtension.h>
-#include <App/PropertyUnits.h>
-#include <TopoDS_Face.hxx>
+~include <App/DocumentObjectExtension.h>
+~include <App/PropertyUnits.h>
+~include <TopoDS_Face.hxx>
 
 namespace Part
 {
@@ -52,4 +52,4 @@ protected:
 
 } // namespace Part
 
-#endif // PART_PRISM_EXTENSION_H
+~endif // PART_PRISM_EXTENSION_H

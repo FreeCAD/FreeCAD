@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
-#define INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
+~ifndef INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
+~define INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
 
-#include <Base/Observer.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+~include <Base/Observer.h>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/ViewProviderDocumentObjectGroup.h>
 
 class SoGroup;
 class SoMaterial;
@@ -113,5 +113,5 @@ public:
 } // namespace InspectionGui
 
 
-#endif // INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
+~endif // INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
 

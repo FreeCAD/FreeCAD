@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGREGULARSOLID_IMP_H
-#define MESHGUI_DLGREGULARSOLID_IMP_H
+~ifndef MESHGUI_DLGREGULARSOLID_IMP_H
+~define MESHGUI_DLGREGULARSOLID_IMP_H
 
-#include <QDialog>
-#include <memory>
+~include <QDialog>
+~include <memory>
 
 namespace MeshGui {
 class Ui_DlgRegularSolid;
@@ -49,4 +49,4 @@ private:
 
 }
 
-#endif // MESHGUI_DLGREGULARSOLID_IMP_H
+~endif // MESHGUI_DLGREGULARSOLID_IMP_H

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawGeomHatch_h_
-#define _TechDraw_DrawGeomHatch_h_
+~ifndef _TechDraw_DrawGeomHatch_h_
+~define _TechDraw_DrawGeomHatch_h_
 
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/Material.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
+~include <App/DocumentObject.h>
+~include <App/FeaturePython.h>
+~include <App/Material.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyFile.h>
 
 class TopoDS_Edge;
 class TopoDS_Face;
@@ -116,4 +116,4 @@ typedef App::FeaturePythonT<DrawGeomHatch> DrawGeomHatchPython;
 
 
 } //namespace TechDraw
-#endif
+~endif

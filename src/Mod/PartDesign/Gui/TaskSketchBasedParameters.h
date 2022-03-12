@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
-#define GUI_TASKVIEW_TaskSketchBasedParameters_H
+~ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
+~define GUI_TASKVIEW_TaskSketchBasedParameters_H
 
-#include <Gui/Selection.h>
-#include "ViewProvider.h"
+~include <Gui/Selection.h>
+~include "ViewProvider.h"
 
-#include "TaskFeatureParameters.h"
-#include "EnumFlags.h"
+~include "TaskFeatureParameters.h"
+~include "EnumFlags.h"
 
 namespace App {
 class Property;
@@ -91,4 +91,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskSketchBasedParameters_H
+~endif // GUI_TASKVIEW_TaskSketchBasedParameters_H

@@ -1,5 +1,5 @@
-#ifndef QUARTER_KEYBOARDHANDLERP_H
-#define QUARTER_KEYBOARDHANDLERP_H
+~ifndef QUARTER_KEYBOARDHANDLERP_H
+~define QUARTER_KEYBOARDHANDLERP_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QKeyEvent>
-#include <Inventor/events/SoKeyboardEvent.h>
+~include <QKeyEvent>
+~include <Inventor/events/SoKeyboardEvent.h>
 
 
 class SoEvent;
@@ -63,4 +63,4 @@ public:
 
 }}} // namespace
 
-#endif // QUARTER_KEYBOARDHANDLERP_H
+~endif // QUARTER_KEYBOARDHANDLERP_H

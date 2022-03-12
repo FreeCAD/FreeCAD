@@ -1,12 +1,12 @@
-#ifndef COLLCOLL_H
-#define COLLCOLL_H
+~ifndef COLLCOLL_H
+~define COLLCOLL_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
-#include "fcoll.h"
+~include "fcoll.h"
 
 namespace zipios {
 
@@ -149,7 +149,7 @@ CollectionCollection::operator= ( const CollectionCollection &src ) {
 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines CollectionCollection.

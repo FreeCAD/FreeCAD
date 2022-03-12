@@ -6,8 +6,8 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONVEXHULL1_H
-#define WM4CONVEXHULL1_H
+~ifndef WM4CONVEXHULL1_H
+~define WM4CONVEXHULL1_H
 
 // A fancy class to compute the minimum and maximum of a collection of
 // real-valued numbers, but this provides some convenience for ConvexHull2 and
@@ -15,8 +15,8 @@
 // the containing space.  The interface of ConvexHull1 is also the model for
 // those of ConvexHull2 and ConvexHull3.
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4ConvexHull.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4ConvexHull.h"
 
 namespace Wm4
 {
@@ -70,4 +70,4 @@ typedef ConvexHull1<double> ConvexHull1d;
 
 }
 
-#endif
+~endif

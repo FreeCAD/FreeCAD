@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef Surface_WORKBENCH_H
-#define Surface_WORKBENCH_H
+~ifndef Surface_WORKBENCH_H
+~define Surface_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace SurfaceGui {
 
@@ -44,4 +44,4 @@ protected:
 } // namespace SurfaceGui
 
 
-#endif // Surface_WORKBENCH_H
+~endif // Surface_WORKBENCH_H

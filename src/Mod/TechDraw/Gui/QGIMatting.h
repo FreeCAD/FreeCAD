@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIMATTING_H
-#define DRAWINGGUI_QGIMATTING_H
+~ifndef DRAWINGGUI_QGIMATTING_H
+~define DRAWINGGUI_QGIMATTING_H
 
-#include <QGraphicsItem>
-#include <QGraphicsItemGroup>
-#include <QGraphicsRectItem>
-#include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QPointF>
+~include <QGraphicsItem>
+~include <QGraphicsItemGroup>
+~include <QGraphicsRectItem>
+~include <QGraphicsPathItem>
+~include <QPainterPath>
+~include <QPointF>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -79,4 +79,4 @@ private:
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGIMATTING_H
+~endif // DRAWINGGUI_QGIMATTING_H

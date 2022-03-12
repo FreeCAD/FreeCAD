@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKCHECKGEOMETRY_H
-#define TASKCHECKGEOMETRY_H
+~ifndef TASKCHECKGEOMETRY_H
+~define TASKCHECKGEOMETRY_H
 
-#include <tuple>
-#include <BRepCheck_Analyzer.hxx>
-#include <BRepCheck_Status.hxx>
-#include <Message_ProgressIndicator.hxx>
-#include <Standard_Version.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <QAbstractItemModel>
-#include <QProgressDialog>
-#include <QElapsedTimer>
+~include <tuple>
+~include <BRepCheck_Analyzer.hxx>
+~include <BRepCheck_Status.hxx>
+~include <Message_ProgressIndicator.hxx>
+~include <Standard_Version.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <QAbstractItemModel>
+~include <QProgressDialog>
+~include <QElapsedTimer>
 
 class SoSeparator;
 class SoSwitch;
@@ -119,13 +119,13 @@ private:
     void dispatchError(ResultEntry *entry, const BRepCheck_Status &stat);
     bool split(QString &input, QString &doc, QString &object, QString &sub);
     void setupFunctionMap();
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Handle(Message_ProgressIndicator)& theProgress);
-#else
+~else
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Message_ProgressScope& theScope);
-#endif
+~endif
     void buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
@@ -203,13 +203,13 @@ public:
     BOPProgressIndicator (const QString &title, QWidget* parent);
     virtual ~BOPProgressIndicator ();
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
     virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
-#else
+~else
     virtual void Show (const Message_ProgressScope& theScope,
                        const Standard_Boolean isForce);
     virtual void Reset();
-#endif
+~endif
     virtual Standard_Boolean UserBreak();
 
 private:
@@ -220,4 +220,4 @@ private:
 };
 }
 
-#endif // TASKCHECKGEOMETRY_H
+~endif // TASKCHECKGEOMETRY_H

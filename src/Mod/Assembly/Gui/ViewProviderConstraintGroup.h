@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLYGUI_ViewProviderConstraintGroup_H
-#define ASSEMBLYGUI_ViewProviderConstraintGroup_H
+~ifndef ASSEMBLYGUI_ViewProviderConstraintGroup_H
+~define ASSEMBLYGUI_ViewProviderConstraintGroup_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
 
 namespace AssemblyGui {
@@ -58,4 +58,4 @@ public:
 } // namespace AssemblyGui
 
 
-#endif // ASSEMBLYGUI_ViewProviderAssembly_H
+~endif // ASSEMBLYGUI_ViewProviderAssembly_H

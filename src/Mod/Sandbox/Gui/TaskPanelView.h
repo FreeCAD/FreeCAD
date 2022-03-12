@@ -22,10 +22,10 @@
 
 
 
-#ifndef SANDBOXGUI_TASKPANELVIEW_H
-#define SANDBOXGUI_TASKPANELVIEW_H
+~ifndef SANDBOXGUI_TASKPANELVIEW_H
+~define SANDBOXGUI_TASKPANELVIEW_H
 
-#include <QWidget>
+~include <QWidget>
 
 namespace SandboxGui {
 
@@ -62,4 +62,4 @@ private:
 
 } // namespace SandboxGui
 
-#endif // SANDBOXGUI_TASKPANELVIEW_H
+~endif // SANDBOXGUI_TASKPANELVIEW_H

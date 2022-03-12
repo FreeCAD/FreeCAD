@@ -21,52 +21,52 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_PRECOMPILED_H
-#define TECHDRAW_PRECOMPILED_H
+~ifndef TECHDRAW_PRECOMPILED_H
+~define TECHDRAW_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define TechDrawExport  __declspec(dllexport)
-# define DrawingExport   __declspec(dllexport)
-# define PartExport      __declspec(dllimport)
-# define MeasureExport   __declspec(dllimport)
-# define MeshExport      __declspec(dllimport)
-# define SpreadsheetExport     __declspec(dllimport)
-# define ImportExport    __declspec(dllimport)
-#else // for Linux
-# define TechDrawExport
-# define DrawingExport
-# define MeasureExport
-# define PartExport
-# define MeshExport
-# define SpreadsheetExport
-# define ImportExport
-#endif
+~ifdef FC_OS_WIN32
+~ define TechDrawExport  __declspec(dllexport)
+~ define DrawingExport   __declspec(dllexport)
+~ define PartExport      __declspec(dllimport)
+~ define MeasureExport   __declspec(dllimport)
+~ define MeshExport      __declspec(dllimport)
+~ define SpreadsheetExport     __declspec(dllimport)
+~ define ImportExport    __declspec(dllimport)
+~else // for Linux
+~ define TechDrawExport
+~ define DrawingExport
+~ define MeasureExport
+~ define PartExport
+~ define MeshExport
+~ define SpreadsheetExport
+~ define ImportExport
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
+~include <fstream>
+~include <iostream>
+~include <sstream>
+~include <stdio.h>
+~include <assert.h>
+~include <string>
+~include <map>
+~include <vector>
+~include <set>
+~include <bitset>
 
-#include <boost/uuid/uuid_io.hpp>
+~include <boost/uuid/uuid_io.hpp>
 
 // OpenCasCade =====================================================================================
-#include <Mod/Part/App/OpenCascadeAll.h>
+~include <Mod/Part/App/OpenCascadeAll.h>
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 
-#endif // _PreComp_
-#endif
+~endif // _PreComp_
+~endif

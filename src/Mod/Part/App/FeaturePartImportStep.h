@@ -22,13 +22,13 @@
 
 
 
-#ifndef PART_FEATUREPARTIMPORTSTEP_H
-#define PART_FEATUREPARTIMPORTSTEP_H
+~ifndef PART_FEATUREPARTIMPORTSTEP_H
+~define PART_FEATUREPARTIMPORTSTEP_H
 
 
-#include <App/PropertyStandard.h>
+~include <App/PropertyStandard.h>
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
 
 
@@ -60,4 +60,4 @@ public:
 }
 
 
-#endif // PART_FEATUREPARTIMPORTSTEP_H
+~endif // PART_FEATUREPARTIMPORTSTEP_H

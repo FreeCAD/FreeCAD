@@ -30,13 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifndef QUARTER_QUARTERP_H
-#define QUARTER_QUARTERP_H
-#include <Inventor/SbName.h>
-#include <QCursor>
-#ifndef _MSC_VER
-#include <config.h>
-#endif
+~ifndef QUARTER_QUARTERP_H
+~define QUARTER_QUARTERP_H
+~include <Inventor/SbName.h>
+~include <QCursor>
+~ifndef _MSC_VER
+~include <config.h>
+~endif
 
 template <class Key, class T> class QMap;
 
@@ -58,14 +58,14 @@ class QuarterP {
 
 }}}
 
-#define QUARTER_MAJOR_VERSION 1
-#define QUARTER_MINOR_VERSION 0
-#define QUARTER_MICRO_VERSION 0
+~define QUARTER_MAJOR_VERSION 1
+~define QUARTER_MINOR_VERSION 0
+~define QUARTER_MICRO_VERSION 0
 
-#define COIN_CT_ASSERT(expr)                                            \
+~define COIN_CT_ASSERT(expr)                                            \
   do { switch ( 0 ) { case 0: case (expr): break; } } while ( 0 )
 
-#define COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO,REASON) \
+~define COMPILE_ONLY_BEFORE(MAJOR,MINOR,MICRO,REASON) \
   COIN_CT_ASSERT( (QUARTER_MAJOR_VERSION < MAJOR) || (QUARTER_MAJOR_VERSION == MAJOR && ((QUARTER_MINOR_VERSION < MINOR) || ( QUARTER_MINOR_VERSION == MINOR && (QUARTER_MICRO_VERSION < MICRO )))))
 
-#endif //QUARTER_QUARTERP_H
+~endif //QUARTER_QUARTERP_H

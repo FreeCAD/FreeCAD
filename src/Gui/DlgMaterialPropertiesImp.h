@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
-#define GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
+~ifndef GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
+~define GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
 
-#include <QDialog>
-#include <vector>
-#include <memory>
+~include <QDialog>
+~include <vector>
+~include <memory>
 
 namespace Gui {
 class ViewProvider;
@@ -60,5 +60,5 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
+~endif // GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
 

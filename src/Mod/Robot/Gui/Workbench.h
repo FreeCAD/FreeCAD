@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef IMAGE_WORKBENCH_H
-#define IMAGE_WORKBENCH_H
+~ifndef IMAGE_WORKBENCH_H
+~define IMAGE_WORKBENCH_H
 
-#include <Gui/Workbench.h>
-#include <Gui/TaskView/TaskWatcher.h>
+~include <Gui/Workbench.h>
+~include <Gui/TaskView/TaskWatcher.h>
 
 namespace RobotGui {
 
@@ -56,4 +56,4 @@ protected:
 } // namespace RobotGui
 
 
-#endif // IMAGE_WORKBENCH_H 
+~endif // IMAGE_WORKBENCH_H 

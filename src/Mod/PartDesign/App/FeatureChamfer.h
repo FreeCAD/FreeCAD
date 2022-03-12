@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURECHAMFER_H
-#define PARTDESIGN_FEATURECHAMFER_H
+~ifndef PARTDESIGN_FEATURECHAMFER_H
+~define PARTDESIGN_FEATURECHAMFER_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include "FeatureDressUp.h"
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include "FeatureDressUp.h"
 
 namespace PartDesign
 {
@@ -70,4 +70,4 @@ protected:
 } //namespace Part
 
 
-#endif // PARTDESIGN_FEATURECHAMFER_H
+~endif // PARTDESIGN_FEATURECHAMFER_H

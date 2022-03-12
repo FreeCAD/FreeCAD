@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SOTOUCHEVENTS_H
-#define SOTOUCHEVENTS_H
+~ifndef SOTOUCHEVENTS_H
+~define SOTOUCHEVENTS_H
 
-#include <QGesture>
-#include <Quarter/devices/InputDevice.h>
-#include <Inventor/SbLinear.h>
-#include <Inventor/events/SoEvent.h>
+~include <QGesture>
+~include <Quarter/devices/InputDevice.h>
+~include <Inventor/SbLinear.h>
+~include <Inventor/events/SoEvent.h>
 
 
 class QWidget;
@@ -123,4 +123,4 @@ protected:
     QWidget* widget;
 };
 
-#endif // SOTOUCHEVENTS_H
+~endif // SOTOUCHEVENTS_H

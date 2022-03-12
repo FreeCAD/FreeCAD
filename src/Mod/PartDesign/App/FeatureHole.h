@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Hole_H
-#define PARTDESIGN_Hole_H
+~ifndef PARTDESIGN_Hole_H
+~define PARTDESIGN_Hole_H
 
-#include <App/PropertyUnits.h>
-#include "json_fwd.hpp"
-#include "FeatureSketchBased.h"
+~include <App/PropertyUnits.h>
+~include "json_fwd.hpp"
+~include "FeatureSketchBased.h"
 
 class Property;
 
@@ -233,4 +233,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PART_Hole_H
+~endif // PART_Hole_H

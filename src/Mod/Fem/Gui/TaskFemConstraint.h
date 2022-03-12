@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraint_H
-#define GUI_TASKVIEW_TaskFemConstraint_H
+~ifndef GUI_TASKVIEW_TaskFemConstraint_H
+~define GUI_TASKVIEW_TaskFemConstraint_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include "ViewProviderFemConstraint.h"
+~include "ViewProviderFemConstraint.h"
 
 class QAction;
 class QListWidget;
@@ -113,4 +113,4 @@ protected:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraint_H
+~endif // GUI_TASKVIEW_TaskFemConstraint_H

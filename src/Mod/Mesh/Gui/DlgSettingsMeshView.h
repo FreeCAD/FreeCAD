@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGSETTINGSMESHVIEW_H
-#define MESHGUI_DLGSETTINGSMESHVIEW_H
+~ifndef MESHGUI_DLGSETTINGSMESHVIEW_H
+~define MESHGUI_DLGSETTINGSMESHVIEW_H
 
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
-#include <Gui/PropertyPage.h>
-#include <memory>
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace MeshGui {
 class Ui_DlgSettingsMeshView;
@@ -56,4 +56,4 @@ private:
 
 } // namespace Gui
 
-#endif // MESHGUI_DLGSETTINGSMESHVIEW_H
+~endif // MESHGUI_DLGSETTINGSMESHVIEW_H

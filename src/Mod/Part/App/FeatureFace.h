@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PART_FACE_H
-#define PART_FACE_H
+~ifndef PART_FACE_H
+~define PART_FACE_H
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Part
 {
@@ -55,4 +55,4 @@ public:
 } //namespace Part
 
 
-#endif // PART_FACE_H
+~endif // PART_FACE_H

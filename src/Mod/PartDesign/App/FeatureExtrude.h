@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURE_EXTRUDE_H
-#define PARTDESIGN_FEATURE_EXTRUDE_H
+~ifndef PARTDESIGN_FEATURE_EXTRUDE_H
+~define PARTDESIGN_FEATURE_EXTRUDE_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include "FeatureSketchBased.h"
 
 class gp_Dir;
 class TopoDS_Face;
@@ -116,4 +116,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FEATURE_EXTRUDE_H
+~endif // PARTDESIGN_FEATURE_EXTRUDE_H

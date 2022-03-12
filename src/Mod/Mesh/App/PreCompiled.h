@@ -21,69 +21,69 @@
  ***************************************************************************/
 
 
-#ifndef MESH_PRECOMPILED_H
-#define MESH_PRECOMPILED_H
+~ifndef MESH_PRECOMPILED_H
+~define MESH_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-#   define    MeshExport __declspec(dllexport)
-#else // for Linux
-#   define    MeshExport
-#endif
+~ifdef FC_OS_WIN32
+~   define    MeshExport __declspec(dllexport)
+~else // for Linux
+~   define    MeshExport
+~endif
 
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
-#ifdef _MSC_VER
-#   pragma warning( disable : 4251 )
-#   pragma warning( disable : 4503 )
-#   pragma warning( disable : 4275 )
-#   pragma warning( disable : 4786 )  // specifier longer then 255 chars
-#   pragma warning( disable : 4661 )  // no suitable definition provided for explicit
-#endif                                // template instantiation request
+~ifdef _MSC_VER
+~   pragma warning( disable : 4251 )
+~   pragma warning( disable : 4503 )
+~   pragma warning( disable : 4275 )
+~   pragma warning( disable : 4786 )  // specifier longer then 255 chars
+~   pragma warning( disable : 4661 )  // no suitable definition provided for explicit
+~endif                                // template instantiation request
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
-#include <cmath>
-#include <float.h>
-#include <fcntl.h>
-#include <ios>
+~include <stdio.h>
+~include <assert.h>
+~include <cmath>
+~include <float.h>
+~include <fcntl.h>
+~include <ios>
 
-#ifdef FC_USE_GTS
-#  include <gts.h>
-#endif
+~ifdef FC_USE_GTS
+~  include <gts.h>
+~endif
 // STL
-#include <algorithm>
-#include <bitset>
-#include <iostream>
-#include <iomanip>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <bitset>
+~include <iostream>
+~include <iomanip>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
 
 // FIXME: Causes problem with boost/numeric/bindings/lapack/syev.hpp(117)
-#ifdef FC_OS_WIN32
-//# include <windows.h>
-#include <io.h>
-#endif
+~ifdef FC_OS_WIN32
+//~ include <windows.h>
+~include <io.h>
+~endif
 
-#include <boost/algorithm/string/replace.hpp>
+~include <boost/algorithm/string/replace.hpp>
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif
+~endif
 

@@ -25,13 +25,13 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include <exception>
-#include <iostream>
-#include <string>
+~include <exception>
+~include <iostream>
+~include <string>
 
-#include "E57Export.h"
+~include "E57Export.h"
 
 namespace e57
 {

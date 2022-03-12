@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_TRACKER_H
-#define DRAWINGGUI_TRACKER_H
+~ifndef DRAWINGGUI_TRACKER_H
+~define DRAWINGGUI_TRACKER_H
 
-#include <QGraphicsItem>
+~include <QGraphicsItem>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
-#include "QGIPrimPath.h"
+~include "QGIPrimPath.h"
 
 namespace TechDrawGui
 {
@@ -106,4 +106,4 @@ private:
 
 } // namespace
 
-#endif // DRAWINGGUI_TRACKER_H
+~endif // DRAWINGGUI_TRACKER_H

@@ -20,15 +20,15 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_LINK_H
-#define GUI_VIEWPROVIDER_LINK_H
+~ifndef GUI_VIEWPROVIDER_LINK_H
+~define GUI_VIEWPROVIDER_LINK_H
 
-#include <App/Link.h>
+~include <App/Link.h>
 
-#include "SoFCUnifiedSelection.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderExtension.h"
-#include "ViewProviderPythonFeature.h"
+~include "SoFCUnifiedSelection.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderExtension.h"
+~include "ViewProviderPythonFeature.h"
 
 
 class SoBase;
@@ -333,10 +333,10 @@ typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;
 
 } //namespace Gui
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 // forward declaration to please VC 2013
 void intrusive_ptr_add_ref(Gui::LinkInfo *px);
 void intrusive_ptr_release(Gui::LinkInfo *px);
-#endif
+~endif
 
-#endif // GUI_VIEWPROVIDER_LINK_H
+~endif // GUI_VIEWPROVIDER_LINK_H

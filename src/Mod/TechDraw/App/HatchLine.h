@@ -22,22 +22,22 @@
 
 //! HatchLine - Classes related to processing PAT files
 
-#ifndef _TechDraw_HATCHLINE_H_
-#define _TechDraw_HATCHLINE_H_
+~ifndef _TechDraw_HATCHLINE_H_
+~define _TechDraw_HATCHLINE_H_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <vector>
-#include <string>
+~include <vector>
+~include <string>
 
-#include <TopoDS_Edge.hxx>
-#include <Bnd_Box.hxx>
-#include <Base/Vector3D.h>
+~include <TopoDS_Edge.hxx>
+~include <Bnd_Box.hxx>
+~include <Base/Vector3D.h>
 
 //class TopoDS_Edge;
 //class Bnd_Box;
 
-#include "Geometry.h"
+~include "Geometry.h"
 
 namespace TechDraw
 {
@@ -160,4 +160,4 @@ private:
 
 } //end namespace
 
-#endif
+~endif

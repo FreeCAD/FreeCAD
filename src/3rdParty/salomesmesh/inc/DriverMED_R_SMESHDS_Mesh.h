@@ -24,17 +24,17 @@
 //  File   : DriverMED_R_SMESHDS_Mesh.h
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DRIVERMED_R_SMESHDS_MESH
-#define _INCLUDE_DRIVERMED_R_SMESHDS_MESH
+~ifndef _INCLUDE_DRIVERMED_R_SMESHDS_MESH
+~define _INCLUDE_DRIVERMED_R_SMESHDS_MESH
 
-#include "SMESH_DriverMED.hxx"
+~include "SMESH_DriverMED.hxx"
 
-#include "DriverMED.hxx"
-#include "Driver_SMESHDS_Mesh.h"
-#include "SMDSAbs_ElementType.hxx"
+~include "DriverMED.hxx"
+~include "Driver_SMESHDS_Mesh.h"
+~include "SMDSAbs_ElementType.hxx"
 
-#include <list>
-#include <map>
+~include <list>
+~include <map>
 
 class SMESHDS_Mesh;
 class SMESHDS_Group;
@@ -61,4 +61,4 @@ class MESHDRIVERMED_EXPORT DriverMED_R_SMESHDS_Mesh: public Driver_SMESHDS_Mesh
 
 };
 
-#endif
+~endif

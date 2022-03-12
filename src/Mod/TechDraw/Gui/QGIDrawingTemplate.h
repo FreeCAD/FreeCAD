@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
-#define DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
+~define DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
 
-#include "QGITemplate.h"
+~include "QGITemplate.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -62,4 +62,4 @@ protected:
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
+~endif // DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H

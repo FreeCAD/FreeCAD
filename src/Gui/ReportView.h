@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_REPORTVIEW_H
-#define GUI_DOCKWND_REPORTVIEW_H
+~ifndef GUI_DOCKWND_REPORTVIEW_H
+~define GUI_DOCKWND_REPORTVIEW_H
 
-#include <QPointer>
-#include <QTextEdit>
-#include <QSyntaxHighlighter>
+~include <QPointer>
+~include <QTextEdit>
+~include <QSyntaxHighlighter>
 
-#include "Window.h"
-#include <FCGlobal.h>
+~include "Window.h"
+~include <FCGlobal.h>
 
 
 class QTabWidget;
@@ -218,4 +218,4 @@ protected:
 } // namespace DockWnd
 } // namespace Gui
 
-#endif //GUI_DOCKWND_REPORTVIEW_H
+~endif //GUI_DOCKWND_REPORTVIEW_H

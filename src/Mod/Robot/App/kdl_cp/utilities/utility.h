@@ -20,44 +20,44 @@
  */
 
 
-#ifndef KDL_UTILITY_H
-#define KDL_UTILITY_H
+~ifndef KDL_UTILITY_H
+~define KDL_UTILITY_H
 
-#include "kdl-config.h"
-#include <cstdlib>
-#include <cassert>
-#include <cmath>
+~include "kdl-config.h"
+~include <cstdlib>
+~include <cassert>
+~include <cmath>
 
 
 /////////////////////////////////////////////////////////////
 // configurable options for the frames library.
 
-#ifdef KDL_INLINE
-    #ifdef _MSC_VER
+~ifdef KDL_INLINE
+    ~ifdef _MSC_VER
         // Microsoft Visual C
-        #define IMETHOD __forceinline
-    #else
+        ~define IMETHOD __forceinline
+    ~else
         // Some other compiler, e.g. gcc
-        #define IMETHOD inline
-    #endif
-#else
-    #define IMETHOD
-#endif
+        ~define IMETHOD inline
+    ~endif
+~else
+    ~define IMETHOD
+~endif
 
 
 
 //! turn on or off frames bounds checking. If turned on, assert() can still
 //! be turned off with -DNDEBUG.
-#ifdef KDL_INDEX_CHECK
-    #define FRAMES_CHECKI(a) assert(a)
-#else
-    #define FRAMES_CHECKI(a)
-#endif
+~ifdef KDL_INDEX_CHECK
+    ~define FRAMES_CHECKI(a) assert(a)
+~else
+    ~define FRAMES_CHECKI(a)
+~endif
 
 
 namespace KDL {
 
-#ifdef __GNUC__
+~ifdef __GNUC__
     // so that sin,cos can be overloaded and complete 
     // resolution of overloaded functions work.
     using ::sin;
@@ -77,14 +77,14 @@ namespace KDL {
     using ::acos;
     using ::tanh;
     using ::atan2;
-#endif
-#ifndef __GNUC__
+~endif
+~ifndef __GNUC__
     //only real solution : get Rall1d and varia out of namespaces.
-    #pragma warning (disable:4786)
-    #pragma warning (disable:4244)
-    #pragma warning (disable:4267)
-    #pragma warning (disable:4800)
-    #pragma warning (disable:4996)
+    ~pragma warning (disable:4786)
+    ~pragma warning (disable:4244)
+    ~pragma warning (disable:4267)
+    ~pragma warning (disable:4800)
+    ~pragma warning (disable:4996)
 
     inline double sin(double a) {
         return ::sin(a);
@@ -129,7 +129,7 @@ namespace KDL {
     inline double atan2(double a,double b) {
         return ::atan2(a,b);
     }
-#endif  
+~endif  
 
 
 
@@ -197,8 +197,8 @@ extern int          VSIZE;
 
 
 
-#ifndef _MFC_VER
-#undef max
+~ifndef _MFC_VER
+~undef max
 inline double max(double a,double b) {
     if (b<a) 
         return a;
@@ -206,24 +206,24 @@ inline double max(double a,double b) {
         return b;
 }
 
-#undef min
+~undef min
 inline double min(double a,double b) {
     if (b<a) 
         return b;
     else
         return a;
 }
-#endif
+~endif
 
 
-#ifdef _MSC_VER
-    //#pragma inline_depth( 255 )
-    //#pragma inline_recursion( on )
-    #define INLINE __forceinline
-    //#define INLINE inline
-#else
-    #define INLINE inline
-#endif
+~ifdef _MSC_VER
+    //~pragma inline_depth( 255 )
+    //~pragma inline_recursion( on )
+    ~define INLINE __forceinline
+    //~define INLINE inline
+~else
+    ~define INLINE inline
+~endif
 
 
 inline double LinComb(double alfa,double a,
@@ -255,10 +255,10 @@ inline double Norm(double arg) {
     return fabs(  (double)arg );
 }
 
-#if defined __WIN32__ && !defined __GNUC__
+~if defined __WIN32__ && !defined __GNUC__
 inline double hypot(double y,double x) { return ::_hypot(y,x);}
 inline double abs(double x) { return ::fabs(x);}
-#endif
+~endif
 
 // compares whether 2 doubles are equal in an eps-interval.
 // Does not check whether a or b represents numbers
@@ -296,4 +296,4 @@ inline double addDelta(double a,double da,double dt) {
 
 
 
-#endif
+~endif

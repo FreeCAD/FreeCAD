@@ -21,49 +21,49 @@
  ***************************************************************************/
 
 
-//#ifndef APP_PRECOMPILED_H
-//#define APP_PRECOMPILED_H
-#ifndef PRECOMPILED_H
-#define PRECOMPILED_H
+//~ifndef APP_PRECOMPILED_H
+//~define APP_PRECOMPILED_H
+~ifndef PRECOMPILED_H
+~define PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SurfaceExport __declspec(dllexport)
-# define PartExport     __declspec(dllimport)
-#else // for Linux
-# define SurfaceExport
-# define PartExport
-#endif
+~ifdef FC_OS_WIN32
+~ define SurfaceExport __declspec(dllexport)
+~ define PartExport     __declspec(dllimport)
+~else // for Linux
+~ define SurfaceExport
+~ define PartExport
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
+~include <cstdio>
+~include <cassert>
+~include <iostream>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <iostream>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <sstream>
+~include <stack>
+~include <string>
+~include <vector>
 
 // Xerces
-#include <xercesc/util/XercesDefs.hpp>
+~include <xercesc/util/XercesDefs.hpp>
 
 //opencascade
-#include "OpenCascadeAll.h"
-#include <GeomFill_NSections.hxx>
+~include "OpenCascadeAll.h"
+~include <GeomFill_NSections.hxx>
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif
+~endif
 

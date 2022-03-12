@@ -20,11 +20,11 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_ViewProviderArea_H
-#define PATH_ViewProviderArea_H
+~ifndef PATH_ViewProviderArea_H
+~define PATH_ViewProviderArea_H
 
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Part/Gui/ViewProviderPlaneParametric.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Part/Gui/ViewProviderPlaneParametric.h>
 
 namespace PathGui
 {
@@ -79,4 +79,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderAreaView> ViewProviderAreaVi
 } //namespace PathGui
 
 
-#endif // PATH_ViewProviderArea_H
+~endif // PATH_ViewProviderArea_H

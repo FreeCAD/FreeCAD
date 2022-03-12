@@ -23,39 +23,39 @@
 //  Module : SMESH
 //  Date   : 13 novembre 2006
 
-#ifndef aptrte__h
-#define aptrte__h
+~ifndef aptrte__h
+~define aptrte__h
 
-#include <climits>   // limites min max int long real ...
-#ifndef WIN32
-#include <unistd.h>   // gethostname, ...
-#endif
-#include <stdio.h>
-#ifndef WIN32
-#include <iostream> // pour cout cin ...
-#include <iomanip>  // pour le format des io setw, stx, setfill, ...
-#endif
-#include <string.h>   // pour les fonctions sur les chaines de caracteres
-#include <ctype.h>
-#include <stdlib.h>
-#include <math.h>     // pour les fonctions mathematiques
-#include <time.h>
+~include <climits>   // limites min max int long real ...
+~ifndef WIN32
+~include <unistd.h>   // gethostname, ...
+~endif
+~include <stdio.h>
+~ifndef WIN32
+~include <iostream> // pour cout cin ...
+~include <iomanip>  // pour le format des io setw, stx, setfill, ...
+~endif
+~include <string.h>   // pour les fonctions sur les chaines de caracteres
+~include <ctype.h>
+~include <stdlib.h>
+~include <math.h>     // pour les fonctions mathematiques
+~include <time.h>
 
-#include <sys/types.h>
-#ifndef WIN32
-#include <sys/time.h>
-#endif
+~include <sys/types.h>
+~ifndef WIN32
+~include <sys/time.h>
+~endif
 
-#ifdef WIN32
- #if defined MEFISTO2D_EXPORTS
-  #define MEFISTO2D_EXPORT __declspec( dllexport )
- #else
-  #define MEFISTO2D_EXPORT __declspec( dllimport )
- #endif
- #define F2C_BUILD
-#else
- #define MEFISTO2D_EXPORT
-#endif
+~ifdef WIN32
+ ~if defined MEFISTO2D_EXPORTS
+  ~define MEFISTO2D_EXPORT __declspec( dllexport )
+ ~else
+  ~define MEFISTO2D_EXPORT __declspec( dllimport )
+ ~endif
+ ~define F2C_BUILD
+~else
+ ~define MEFISTO2D_EXPORT
+~endif
 
 
 MEFISTO2D_EXPORT
@@ -108,58 +108,58 @@ MEFISTO2D_EXPORT
 // auteur : Alain Perronnet  Analyse Numerique Paris UPMC   decembre 2001
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if WIN32 & DFORTRAN
-  #define tempscpu TEMPSCPU
-  #define deltacpu DELTACPU
-  #define insoar   INSOAR
-  #define azeroi   AZEROI
-  #define fasoar   FASOAR
-  #define teajte   TEAJTE
-  #define tehote   TEHOTE
-  #define tetrte   TETRTE
-  #define aisoar   AISOAR
-  #define tedela   TEDELA
-  #define terefr   TEREFR
-  #define tesuex   TESUEX
-  #define teamqt   TEAMQT
-  #define nusotr   NUSOTR
-  #define qutr2d   QUTR2D
-  #define surtd2   SURTD2
-  #define qualitetrte   QUALITETRTE
+~if WIN32 & DFORTRAN
+  ~define tempscpu TEMPSCPU
+  ~define deltacpu DELTACPU
+  ~define insoar   INSOAR
+  ~define azeroi   AZEROI
+  ~define fasoar   FASOAR
+  ~define teajte   TEAJTE
+  ~define tehote   TEHOTE
+  ~define tetrte   TETRTE
+  ~define aisoar   AISOAR
+  ~define tedela   TEDELA
+  ~define terefr   TEREFR
+  ~define tesuex   TESUEX
+  ~define teamqt   TEAMQT
+  ~define nusotr   NUSOTR
+  ~define qutr2d   QUTR2D
+  ~define surtd2   SURTD2
+  ~define qualitetrte   QUALITETRTE
   
-  #define areteideale ARETEIDEALE
+  ~define areteideale ARETEIDEALE
   
-#else
-  #define tempscpu tempscpu_
-  #define deltacpu deltacpu_
-  #define insoar   insoar_
-  #define azeroi   azeroi_
-  #define fasoar   fasoar_
-  #define teajte   teajte_
-  #define tehote   tehote_
-  #define tetrte   tetrte_
-  #define aisoar   aisoar_
-  #define tedela   tedela_
-  #define terefr   terefr_
-  #define tesuex   tesuex_
-  #define teamqt   teamqt_
-  #define nusotr   nusotr_
-  #define qutr2d   qutr2d_
-  #define surtd2   surtd2_
-  #define qualitetrte   qualitetrte_
+~else
+  ~define tempscpu tempscpu_
+  ~define deltacpu deltacpu_
+  ~define insoar   insoar_
+  ~define azeroi   azeroi_
+  ~define fasoar   fasoar_
+  ~define teajte   teajte_
+  ~define tehote   tehote_
+  ~define tetrte   tetrte_
+  ~define aisoar   aisoar_
+  ~define tedela   tedela_
+  ~define terefr   terefr_
+  ~define tesuex   tesuex_
+  ~define teamqt   teamqt_
+  ~define nusotr   nusotr_
+  ~define qutr2d   qutr2d_
+  ~define surtd2   surtd2_
+  ~define qualitetrte   qualitetrte_
 
-  #define areteideale areteideale_
+  ~define areteideale areteideale_
 
-#endif
+~endif
 
 
 extern "C" { void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
    qualitetrte( R3 *mnpxyd,
                    Z & mosoar, Z & mxsoar, Z *mnsoar,
                    Z & moartr, Z & mxartr, Z *mnartr,
@@ -194,24 +194,24 @@ extern "C" { void
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 extern "C" {  void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   tempscpu( double & tempsec );
 }
     
 //Retourne le temps CPU utilise en secondes
 
 extern "C" { void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   deltacpu( R & dtcpu );
 }
     
@@ -219,33 +219,33 @@ extern "C" { void
 
 //initialiser le tableau mnsoar pour le hachage des aretes
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   insoar( Z & mxsomm, Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar );
 }
 
 //mettre a zero les nb entiers de tab
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   azeroi( Z & nb, Z * tab );
 }
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   fasoar( Z & ns1, Z & ns2, Z & nt1, Z & nt2, Z & nolign,
                           Z & mosoar,  Z & mxsoar,  Z & n1soar,  Z * mnsoar,  Z * mnarst,
                           Z & noar, Z & ierr );
@@ -295,24 +295,24 @@ extern "C" {void
 
 //initialisation du tableau letree et ajout dans letree des sommets 1 a nbsomm
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   teajte( Z & mxsomm, Z &  nbsomm, R3 * mnpxyd,  R3 * comxmi,
                             R & aretmx,  Z & mxtree, Z * letree,
                             Z & ierr );
 }
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   tehote( Z & nutysu, Z & nbarpi, Z &  mxsomm, Z &  nbsomm, R3 * mnpxyd,
                             R3 * comxmi, R & aretmx,
                             Z * letree, Z & mxqueu, Z * mnqueu,
@@ -322,12 +322,12 @@ extern "C" {void
 // prise en compte des tailles d'aretes souhaitees autour des sommets initiaux
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   tetrte( R3 * comxmi, R & aretmx, Z & nbarpi, Z & mxsomm, R3 * mnpxyd,
                             Z & mxqueu,  Z * mnqueu,  Z * mntree,
                             Z & mosoar,  Z & mxsoar,  Z & n1soar, Z * mnsoar,
@@ -338,23 +338,23 @@ extern "C" {void
 // et des points de la frontiere, des points internes imposes interieurs
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   aisoar( Z & mosoar, Z & mxsoar, Z * mnsoar, Z & na );
 }
 // formation du chainage 6 des aretes internes a echanger eventuellement
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   tedela( R3 * mnpxyd, Z * mnarst,
                             Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar, Z & na,
                             Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z & n );
@@ -363,12 +363,12 @@ extern "C" {void
 // avec echange des 2 diagonales afin de rendre la triangulation delaunay
  
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   terefr( Z & nbarpi, R3 * mnpxyd,
                             Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
                             Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr, Z * mnarst,
@@ -380,12 +380,12 @@ extern "C" {void
 // triangulation frontale pour les restaurer
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   tesuex( Z & nblf, Z * nulftr,
                             Z & ndtri0, Z & nbsomm, R3 * mnpxyd, Z * mnslig,
                             Z & mosoar, Z & mxsoar, Z * mnsoar,
@@ -395,12 +395,12 @@ extern "C" {void
 // suppression des triangles externes a la surface
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   teamqt( Z & nutysu, R & aretmx, R & airemx,
                             Z * mnarst, Z & mosoar, Z & mxsoar, Z & n1soar, Z * mnsoar,
                             Z & moartr, Z & mxartr, Z & n1artr, Z * mnartr,
@@ -417,36 +417,36 @@ extern "C" {void
 // mise en delaunay de la triangulation
  
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   nusotr( Z & nt, Z & mosoar, Z * mnsoar, Z & moartr, Z * mnartr,Z * nosotr );
 }
 //retrouver les numero des 3 sommets du triangle nt
 
 extern "C" {void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   qutr2d( R3 & p1, R3 & p2, R3 & p3, R & qualite );
 }
 //calculer la qualite d'un triangle de R2 de sommets p1, p2, p3
 
 extern "C" { R
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
   surtd2( R3 & p1, R3 & p2, R3 & p3 );
 }
 //calcul de la surface d'un triangle defini par 3 points de r**2
 
-#endif
+~endif

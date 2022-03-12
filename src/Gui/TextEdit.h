@@ -22,12 +22,12 @@
 
 /* Text completion mechanism */
 
-#ifndef GUI_TEXTEDIT_H
-#define GUI_TEXTEDIT_H
+~ifndef GUI_TEXTEDIT_H
+~define GUI_TEXTEDIT_H
 
-#include <QListWidget>
-#include <QPlainTextEdit>
-#include "Window.h"
+~include <QListWidget>
+~include <QPlainTextEdit>
+~include "Window.h"
 
 
 namespace Gui {
@@ -163,4 +163,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_TEXTEDIT_H
+~endif // GUI_TEXTEDIT_H

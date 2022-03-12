@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_ROBOTOBJECT_H
-#define ROBOT_ROBOTOBJECT_H
+~ifndef ROBOT_ROBOTOBJECT_H
+~define ROBOT_ROBOTOBJECT_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
+~include <App/GeoFeature.h>
+~include <App/PropertyFile.h>
+~include <App/PropertyGeo.h>
+~include <App/PropertyLinks.h>
 
-#include "Robot6Axis.h"
+~include "Robot6Axis.h"
 
 namespace Robot
 {
@@ -86,4 +86,4 @@ protected:
 } //namespace Robot
 
 
-#endif // ROBOT_ROBOTOBJECT_H
+~endif // ROBOT_ROBOTOBJECT_H

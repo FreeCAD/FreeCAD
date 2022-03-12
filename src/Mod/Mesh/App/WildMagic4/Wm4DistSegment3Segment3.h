@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTSEGMENT3SEGMENT3_H
-#define WM4DISTSEGMENT3SEGMENT3_H
+~ifndef WM4DISTSEGMENT3SEGMENT3_H
+~define WM4DISTSEGMENT3SEGMENT3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Distance.h"
-#include "Wm4Segment3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Distance.h"
+~include "Wm4Segment3.h"
 
 namespace Wm4
 {
@@ -67,4 +67,4 @@ typedef DistSegment3Segment3<double> DistSegment3Segment3d;
 
 }
 
-#endif
+~endif

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCBACKGROUNDGRADIENT_H
-#define GUI_SOFCBACKGROUNDGRADIENT_H
+~ifndef GUI_SOFCBACKGROUNDGRADIENT_H
+~define GUI_SOFCBACKGROUNDGRADIENT_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+~ifndef __InventorAll__
+~ include "InventorAll.h"
+~endif
 
 class SbColor;
 class SoGLRenderAction;
@@ -56,5 +56,5 @@ protected:
 } // namespace Gui
 
 
-#endif // GUI_SOFCBACKGROUNDGRADIENT_H
+~endif // GUI_SOFCBACKGROUNDGRADIENT_H
 

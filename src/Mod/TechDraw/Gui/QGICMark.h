@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMCMARK_H
-#define DRAWINGGUI_QGRAPHICSITEMCMARK_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMCMARK_H
+~define DRAWINGGUI_QGRAPHICSITEMCMARK_H
 
-# include "QGIVertex.h"
+~ include "QGIVertex.h"
 
 namespace TechDrawGui
 {
@@ -59,4 +59,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMCMARK_H
+~endif // DRAWINGGUI_QGRAPHICSITEMCMARK_H

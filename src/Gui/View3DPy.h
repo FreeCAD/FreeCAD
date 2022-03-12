@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DPY_H
-#define GUI_VIEW3DPY_H
+~ifndef GUI_VIEW3DPY_H
+~define GUI_VIEW3DPY_H
 
-#include "MDIView.h"
-#include "MDIViewPy.h"
+~include "MDIView.h"
+~include "MDIViewPy.h"
 
 
 class SoEventCallback;
@@ -163,4 +163,4 @@ private:
 
 } // namespace Gui
 
-#endif //GUI_VIEW3DPY_H
+~endif //GUI_VIEW3DPY_H

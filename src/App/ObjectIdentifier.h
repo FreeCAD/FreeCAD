@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef APP_PATH_H
-#define APP_PATH_H
+~ifndef APP_PATH_H
+~define APP_PATH_H
 
-#include <bitset>
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
-#include <boost/any.hpp>
-#include <FCConfig.h>
+~include <bitset>
+~include <map>
+~include <set>
+~include <string>
+~include <vector>
+~include <boost/any.hpp>
+~include <FCConfig.h>
 
 namespace Py {
 class Object;
@@ -60,7 +60,7 @@ AppExport std::string quote(const std::string &input, bool toPython=false);
 
 // Unfortunately VS2013 does not support default move constructor, so we have
 // to implement them manually
-#define FC_DEFAULT_CTORS(_t) \
+~define FC_DEFAULT_CTORS(_t) \
     _t(const _t &) = default;\
     _t &operator=(const _t &) = default;\
     _t(_t &&other) { *this = std::move(other); }\
@@ -514,4 +514,4 @@ struct hash<App::ObjectIdentifier> {
 };
 }
 
-#endif
+~endif

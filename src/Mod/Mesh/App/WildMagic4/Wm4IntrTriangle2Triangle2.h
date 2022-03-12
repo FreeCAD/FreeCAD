@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTRTRIANGLE2TRIANGLE2_H
-#define WM4INTRTRIANGLE2TRIANGLE2_H
+~ifndef WM4INTRTRIANGLE2TRIANGLE2_H
+~define WM4INTRTRIANGLE2TRIANGLE2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Intersector.h"
-#include "Wm4Intersector1.h"
-#include "Wm4Triangle2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Intersector.h"
+~include "Wm4Intersector1.h"
+~include "Wm4Triangle2.h"
 
 namespace Wm4
 {
@@ -105,4 +105,4 @@ typedef IntrTriangle2Triangle2<double> IntrTriangle2Triangle2d;
 
 }
 
-#endif
+~endif

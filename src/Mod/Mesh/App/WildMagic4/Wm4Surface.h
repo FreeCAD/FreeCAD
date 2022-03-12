@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4SURFACE_H
-#define WM4SURFACE_H
+~ifndef WM4SURFACE_H
+~define WM4SURFACE_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -39,4 +39,4 @@ typedef Surface<double> Surfaced;
 
 }
 
-#endif
+~endif

@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEET_WORKBENCH_H
-#define SPREADSHEET_WORKBENCH_H
+~ifndef SPREADSHEET_WORKBENCH_H
+~define SPREADSHEET_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 class QtColorPicker;
 class QColor;
@@ -66,4 +66,4 @@ protected:
 } // namespace SpreadsheetModGui
 
 
-#endif // SPREADSHEET_WORKBENCH_H
+~endif // SPREADSHEET_WORKBENCH_H

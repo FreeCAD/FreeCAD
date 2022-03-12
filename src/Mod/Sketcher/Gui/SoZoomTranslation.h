@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SOZOOMTRANSLATION_H
-#define SKETCHERGUI_SOZOOMTRANSLATION_H
+~ifndef SKETCHERGUI_SOZOOMTRANSLATION_H
+~define SKETCHERGUI_SOZOOMTRANSLATION_H
 
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoTransformation.h>
+~include <Inventor/nodes/SoTranslation.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoTransformation.h>
 
 namespace SketcherGui {
 
@@ -52,4 +52,4 @@ protected:
 };
 
 }
-#endif // SKETCHERGUI_SOZOOMTRANSLATION_H
+~endif // SKETCHERGUI_SOZOOMTRANSLATION_H

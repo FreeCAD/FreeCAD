@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef MESH_KERNEL_H
-#define MESH_KERNEL_H
+~ifndef MESH_KERNEL_H
+~define MESH_KERNEL_H
 
-#include <cassert>
-#include <iosfwd>
+~include <cassert>
+~include <iosfwd>
 
-#include "Elements.h"
-#include "Helpers.h"
+~include "Elements.h"
+~include "Helpers.h"
 
-#include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
+~include <Base/BoundBox.h>
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
 
 namespace Base{
   class Polygon2d;
@@ -563,4 +563,4 @@ inline void MeshKernel::GetFacetPoints (FacetIndex ulFaIndex, PointIndex &rclP0,
 
 } // namespace MeshCore
 
-#endif // MESH_KERNEL_H 
+~endif // MESH_KERNEL_H 

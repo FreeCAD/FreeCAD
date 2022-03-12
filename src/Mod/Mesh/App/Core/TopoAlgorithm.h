@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef MESH_TOPOALGORITHM_H
-#define MESH_TOPOALGORITHM_H
+~ifndef MESH_TOPOALGORITHM_H
+~define MESH_TOPOALGORITHM_H
 
-#include <map>
-#include <vector>
+~include <map>
+~include <vector>
 
-#include "Definitions.h"
-#include "Iterator.h"
-#include "MeshKernel.h"
-#include "Elements.h"
-#include "Visitor.h"
-#include "Algorithm.h"
+~include "Definitions.h"
+~include "Iterator.h"
+~include "MeshKernel.h"
+~include "Elements.h"
+~include "Visitor.h"
+~include "Algorithm.h"
 
-#include <Base/Vector3D.h>
-#include <Base/Sequencer.h>
+~include <Base/Vector3D.h>
+~include <Base/Sequencer.h>
 
 namespace MeshCore {
 class AbstractPolygonTriangulator;
@@ -369,4 +369,4 @@ protected:
 
 } // namespace MeshCore
 
-#endif // MESH_TOPOALGORITHM_H
+~endif // MESH_TOPOALGORITHM_H

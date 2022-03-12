@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESH_SEGMENT_H
-#define MESH_SEGMENT_H
+~ifndef MESH_SEGMENT_H
+~define MESH_SEGMENT_H
 
-#include <vector>
-#include <string>
-#include "Facet.h"
-#include "Types.h"
-#include "Core/Iterator.h"
+~include <vector>
+~include <string>
+~include "Facet.h"
+~include "Types.h"
+~include "Core/Iterator.h"
 
 namespace Mesh
 {
@@ -101,4 +101,4 @@ public:
 } // namespace Mesh
 
 
-#endif // MESH_SEGMENT_H
+~endif // MESH_SEGMENT_H

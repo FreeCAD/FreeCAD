@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SECTIONCUTTING_H
-#define PARTGUI_SECTIONCUTTING_H
+~ifndef PARTGUI_SECTIONCUTTING_H
+~define PARTGUI_SECTIONCUTTING_H
 
-#include <QDialog>
-#include <App/DocumentObserver.h>
+~include <QDialog>
+~include <App/DocumentObserver.h>
 
 namespace PartGui {
 
@@ -83,4 +83,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_SECTIONCUTTING_H
+~endif // PARTGUI_SECTIONCUTTING_H

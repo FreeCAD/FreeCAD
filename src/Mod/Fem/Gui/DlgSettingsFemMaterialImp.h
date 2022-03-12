@@ -23,11 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
-#define FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
+~ifndef FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
+~define FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace FemGui {
 class Ui_DlgSettingsFemMaterialImp;
@@ -51,4 +51,4 @@ private:
 
 } // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
+~endif // FEMGUI_DLGSETTINGSFEMMATERIALIMP_H

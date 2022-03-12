@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef MESH_FUNCTIONAL_H
-#define MESH_FUNCTIONAL_H
+~ifndef MESH_FUNCTIONAL_H
+~define MESH_FUNCTIONAL_H
 
-#include <algorithm>
-#include <QtConcurrentRun>
-#include <QFuture>
-#include <QThread>
+~include <algorithm>
+~include <QtConcurrentRun>
+~include <QFuture>
+~include <QThread>
 
 namespace MeshCore
 {
@@ -61,4 +61,4 @@ namespace MeshCore
 } // namespace MeshCore
 
 
-#endif  // MESH_FUNCTIONAL_H 
+~endif  // MESH_FUNCTIONAL_H 

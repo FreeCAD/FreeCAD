@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGS3DVIEWIMP_H
-#define PARTGUI_DLGSETTINGS3DVIEWIMP_H
+~ifndef PARTGUI_DLGSETTINGS3DVIEWIMP_H
+~define PARTGUI_DLGSETTINGS3DVIEWIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace PartGui {
 class Ui_DlgSettings3DViewPart;
@@ -57,4 +57,4 @@ private:
 
 } // namespace Gui
 
-#endif // PARTGUI_DLGSETTINGS3DVIEWIMP_H
+~endif // PARTGUI_DLGSETTINGS3DVIEWIMP_H

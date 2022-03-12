@@ -23,12 +23,12 @@
  
 
 
-#ifndef _LuxProject_h_
-#define _LuxProject_h_
+~ifndef _LuxProject_h_
+~define _LuxProject_h_
 
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyFile.h>
 
 namespace Raytracing
 {
@@ -71,4 +71,4 @@ public:
 
 
 
-#endif //_LuxFeature_h_
+~endif //_LuxFeature_h_

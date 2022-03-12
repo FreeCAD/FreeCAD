@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderFillet_H
-#define PARTGUI_ViewProviderFillet_H
+~ifndef PARTGUI_ViewProviderFillet_H
+~define PARTGUI_ViewProviderFillet_H
 
-#include "ViewProviderDressUp.h"
+~include "ViewProviderDressUp.h"
 
 
 namespace PartDesignGui {
@@ -49,4 +49,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderFillet_H
+~endif // PARTGUI_ViewProviderFillet_H

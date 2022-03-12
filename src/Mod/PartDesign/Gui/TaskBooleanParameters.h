@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskBooleanParameters_H
-#define GUI_TASKVIEW_TaskBooleanParameters_H
+~ifndef GUI_TASKVIEW_TaskBooleanParameters_H
+~define GUI_TASKVIEW_TaskBooleanParameters_H
 
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "ViewProviderBoolean.h"
+~include "ViewProviderBoolean.h"
 
 class Ui_TaskBooleanParameters;
 
@@ -116,4 +116,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

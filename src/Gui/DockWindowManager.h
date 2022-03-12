@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWINDOWMANAGER_H
-#define GUI_DOCKWINDOWMANAGER_H
+~ifndef GUI_DOCKWINDOWMANAGER_H
+~define GUI_DOCKWINDOWMANAGER_H
 
-#include <QObject>
-#include <FCGlobal.h>
+~include <QObject>
+~include <FCGlobal.h>
 
 
 class QDockWidget;
@@ -116,4 +116,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_DOCKWINDOWMANAGER_H
+~endif // GUI_DOCKWINDOWMANAGER_H

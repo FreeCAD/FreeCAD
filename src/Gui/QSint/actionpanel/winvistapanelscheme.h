@@ -5,11 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WINVISTAPANELSCHEME_H
-#define WINVISTAPANELSCHEME_H
+~ifndef WINVISTAPANELSCHEME_H
+~define WINVISTAPANELSCHEME_H
 
 
-#include "actionpanelscheme.h"
+~include "actionpanelscheme.h"
 
 
 namespace QSint
@@ -38,4 +38,4 @@ public:
 }
 
 
-#endif // WINVISTAPANELSCHEME_H
+~endif // WINVISTAPANELSCHEME_H

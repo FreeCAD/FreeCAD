@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERORIGINGROUP_H
-#define VIEWPROVIDERORIGINGROUP_H
+~ifndef VIEWPROVIDERORIGINGROUP_H
+~define VIEWPROVIDERORIGINGROUP_H
 
-#include "ViewProviderOriginGroupExtension.h"
+~include "ViewProviderOriginGroupExtension.h"
 
 namespace Gui {
 
@@ -39,4 +39,4 @@ public:
 } /* Gui  */
 
 
-#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H */
+~endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H */

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PLACEMENT_H
-#define BASE_PLACEMENT_H
+~ifndef BASE_PLACEMENT_H
+~define BASE_PLACEMENT_H
 
-#include "Rotation.h"
-#include "Vector3D.h"
+~include "Rotation.h"
+~include "Vector3D.h"
 
 
 namespace Base {
@@ -89,6 +89,6 @@ protected:
 } // namespace Base
 
 
-#endif // BASE_PLACEMENT_H
+~endif // BASE_PLACEMENT_H
 
 

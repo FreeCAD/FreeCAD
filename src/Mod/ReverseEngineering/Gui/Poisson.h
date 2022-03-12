@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef REENGUI_POISSON_H
-#define REENGUI_POISSON_H
+~ifndef REENGUI_POISSON_H
+~define REENGUI_POISSON_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObserver.h>
 
 namespace ReenGui {
 
@@ -70,4 +70,4 @@ private:
 
 } //namespace ReenGui
 
-#endif // REENGUI_POISSON_H
+~endif // REENGUI_POISSON_H

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _PreferencesGui_h_
-#define _PreferencesGui_h_
+~ifndef _PreferencesGui_h_
+~define _PreferencesGui_h_
 
 class QFont;
 class QString;
 class QColor;
 
-#include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/Preferences.h>
 
 namespace TechDrawGui
 {
@@ -71,4 +71,4 @@ static double gridSpacing();
 };
 
 } //end namespace TechDrawGui
-#endif
+~endif

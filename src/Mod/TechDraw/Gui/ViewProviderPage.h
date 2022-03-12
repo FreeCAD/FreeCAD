@@ -22,17 +22,17 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
-#define DRAWINGGUI_VIEWPROVIDERPAGE_H
+~ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
+~define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QPointer>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <QPointer>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include <boost_signals2.hpp> 
+~include <boost_signals2.hpp> 
 
-#include <App/PropertyUnits.h>
+~include <App/PropertyUnits.h>
 
 namespace TechDraw{
     class DrawPage;
@@ -115,4 +115,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERPAGE_H
+~endif // DRAWINGGUI_VIEWPROVIDERPAGE_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderSetNodes_H
-#define FEM_ViewProviderSetNodes_H
+~ifndef FEM_ViewProviderSetNodes_H
+~define FEM_ViewProviderSetNodes_H
 
-#include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderGeometryObject.h>
 
 namespace FemGui
 {
@@ -44,4 +44,4 @@ protected:
 } //namespace FemGui
 
 
-#endif // FEM_ViewProviderSetNodes_H
+~endif // FEM_ViewProviderSetNodes_H

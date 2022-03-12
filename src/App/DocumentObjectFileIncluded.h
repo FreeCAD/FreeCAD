@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTFILEINCLUDED_H
-#define APP_DOCUMENTOBJECTFILEINCLUDED_H
+~ifndef APP_DOCUMENTOBJECTFILEINCLUDED_H
+~define APP_DOCUMENTOBJECTFILEINCLUDED_H
 
-#include "DocumentObject.h"
-#include "PropertyFile.h"
+~include "DocumentObject.h"
+~include "PropertyFile.h"
 
 
 namespace App
@@ -54,4 +54,4 @@ public:
 } //namespace App
 
 
-#endif // APP_DOCUMENTOBJECTFILEINCLUDED_H
+~endif // APP_DOCUMENTOBJECTFILEINCLUDED_H

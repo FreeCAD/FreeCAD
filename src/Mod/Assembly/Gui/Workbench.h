@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_WORKBENCH_H
-#define ASSEMBLY_WORKBENCH_H
+~ifndef ASSEMBLY_WORKBENCH_H
+~define ASSEMBLY_WORKBENCH_H
 
-#include <Gui/Workbench.h>
-#include <Gui/Application.h>
+~include <Gui/Workbench.h>
+~include <Gui/Application.h>
 
 namespace AssemblyGui {
 
@@ -60,4 +60,4 @@ private:
 } // namespace AssemblyGui
 
 
-#endif // ASSEMBLY_WORKBENCH_H 
+~endif // ASSEMBLY_WORKBENCH_H 

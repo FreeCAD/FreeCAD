@@ -21,75 +21,75 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+~ifndef __PRECOMPILED__
+~define __PRECOMPILED__
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SketcherExport     __declspec(dllexport)
-# define PartExport         __declspec(dllimport)
-# define PartDesignExport   __declspec(dllimport)
-# define MeshExport         __declspec(dllimport)
-#else // for Linux
-# define SketcherExport
-# define PartExport
-# define PartDesignExport
-# define MeshExport
-#endif
+~ifdef FC_OS_WIN32
+~ define SketcherExport     __declspec(dllexport)
+~ define PartExport         __declspec(dllimport)
+~ define PartDesignExport   __declspec(dllimport)
+~ define MeshExport         __declspec(dllimport)
+~else // for Linux
+~ define SketcherExport
+~ define PartExport
+~ define PartDesignExport
+~ define MeshExport
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <memory>
-#include <vector>
-#include <set>
-#include <bitset>
+~include <iostream>
+~include <sstream>
+~include <stdio.h>
+~include <assert.h>
+~include <string>
+~include <map>
+~include <memory>
+~include <vector>
+~include <set>
+~include <bitset>
 
-#include <cmath>
-#include <algorithm>
+~include <cmath>
+~include <algorithm>
 
 // QT
-#include <QDateTime>
+~include <QDateTime>
 
 // Boost
-#include <boost/bind/bind.hpp>
+~include <boost/bind/bind.hpp>
 
 // Opencascade
-#include <Mod/Part/App/OpenCascadeAll.h>
+~include <Mod/Part/App/OpenCascadeAll.h>
 
 // Other needed opencascade
-# include <ShapeFix_Wire.hxx>
-# include <BRepOffsetAPI_NormalProjection.hxx>
-# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
+~ include <ShapeFix_Wire.hxx>
+~ include <BRepOffsetAPI_NormalProjection.hxx>
+~ include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRep_Tool.hxx>
+~include <gp_Pnt.hxx>
+~include <Precision.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#include <Python.h>
+~include <Python.h>
 
-#elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#endif // _PreComp_
-#endif
+~elif defined(FC_OS_WIN32)
+~ifndef NOMINMAX
+~define NOMINMAX
+~endif
+~include <windows.h>
+~endif // _PreComp_
+~endif
 

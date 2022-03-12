@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_SketchBased_H
-#define PARTDESIGN_SketchBased_H
+~ifndef PARTDESIGN_SketchBased_H
+~define PARTDESIGN_SketchBased_H
 
-#include <Mod/Part/App/Part2DObject.h>
-#include "FeatureAddSub.h"
+~include <Mod/Part/App/Part2DObject.h>
+~include "FeatureAddSub.h"
 
 class gp_Dir;
 class gp_Lin;
@@ -166,4 +166,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_SketchBased_H
+~endif // PARTDESIGN_SketchBased_H

@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCUMENTOBSERVERPYTHON_H
-#define GUI_DOCUMENTOBSERVERPYTHON_H
+~ifndef GUI_DOCUMENTOBSERVERPYTHON_H
+~define GUI_DOCUMENTOBSERVERPYTHON_H
 
 
 namespace Gui
@@ -96,4 +96,4 @@ private:
 
 } //namespace Gui
 
-#endif // GUI_DOCUMENTOBSERVERPYTHON_H
+~endif // GUI_DOCUMENTOBSERVERPYTHON_H

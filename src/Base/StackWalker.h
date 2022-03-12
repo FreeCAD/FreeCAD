@@ -33,21 +33,21 @@
  *
  * **********************************************************************/
 
-#pragma once
+~pragma once
 
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 // special defines for VC5/6 (if no actual PSDK is installed):
-#if _MSC_VER < 1300
+~if _MSC_VER < 1300
 typedef unsigned __int64 DWORD64, *PDWORD64;
-#if defined(_WIN64)
+~if defined(_WIN64)
 typedef unsigned __int64 SIZE_T, *PSIZE_T;
-#else
+~else
 typedef unsigned long SIZE_T, *PSIZE_T;
-#endif
-#endif  // _MSC_VER < 1300
+~endif
+~endif  // _MSC_VER < 1300
 
 class StackWalkerInternal;  // forward
 class BaseExport StackWalker
@@ -114,11 +114,11 @@ public:
     LPVOID pUserData = NULL  // optional to identify some data in the 'readMemoryFunction'-callback
     );
 
-#if _MSC_VER >= 1300
+~if _MSC_VER >= 1300
 // due to some reasons, the "STACKWALK_MAX_NAMELEN" must be declared as "public" 
 // in older compilers in order to use it... starting with VC7 we can declare it as "protected"
 protected:
-#endif
+~endif
 	enum { STACKWALK_MAX_NAMELEN = 1024 }; // max name length for found symbols
 
 protected:
@@ -172,13 +172,13 @@ protected:
 
 // INFO: If you want, you can use the RtlCaptureContext if you only target XP and later...
 //       But I currently use it in x64/IA64 environments...
-//#if defined(_M_IX86) && (_WIN32_WINNT <= 0x0500) && (_MSC_VER < 1400)
+//~if defined(_M_IX86) && (_WIN32_WINNT <= 0x0500) && (_MSC_VER < 1400)
 
-#if defined(_M_IX86)
-#ifdef CURRENT_THREAD_VIA_EXCEPTION
+~if defined(_M_IX86)
+~ifdef CURRENT_THREAD_VIA_EXCEPTION
 // TODO: The following is not a "good" implementation, 
 // because the callstack is only valid in the "__except" block...
-#define GET_CURRENT_CONTEXT(c, contextFlags) \
+~define GET_CURRENT_CONTEXT(c, contextFlags) \
   do { \
     memset(&c, 0, sizeof(CONTEXT)); \
     EXCEPTION_POINTERS *pExp = NULL; \
@@ -189,9 +189,9 @@ protected:
       memcpy(&c, pExp->ContextRecord, sizeof(CONTEXT)); \
       c.ContextFlags = contextFlags; \
   } while(0);
-#else
+~else
 // The following should be enough for walking the callstack...
-#define GET_CURRENT_CONTEXT(c, contextFlags) \
+~define GET_CURRENT_CONTEXT(c, contextFlags) \
   do { \
     memset(&c, 0, sizeof(CONTEXT)); \
     c.ContextFlags = contextFlags; \
@@ -201,15 +201,15 @@ protected:
     __asm    mov c.Ebp, ebp \
     __asm    mov c.Esp, esp \
   } while(0);
-#endif
+~endif
 
-#else
+~else
 
 // The following is defined for x86 (XP and higher), x64 and IA64:
-#define GET_CURRENT_CONTEXT(c, contextFlags) \
+~define GET_CURRENT_CONTEXT(c, contextFlags) \
   do { \
     memset(&c, 0, sizeof(CONTEXT)); \
     c.ContextFlags = contextFlags; \
     RtlCaptureContext(&c); \
 } while(0);
-#endif
+~endif

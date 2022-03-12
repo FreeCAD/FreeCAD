@@ -5,16 +5,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISTASKBOX_H
-#define IISTASKBOX_H
+~ifndef IISTASKBOX_H
+~define IISTASKBOX_H
 
-#include <QBoxLayout>
-#include <QFrame>
-#include <QPaintEvent>
-#include <QPixmap>
-#include <QWidget>
+~include <QBoxLayout>
+~include <QFrame>
+~include <QPaintEvent>
+~include <QPixmap>
+~include <QWidget>
 
-#include "iistaskpanel_global.h"
+~include "iistaskpanel_global.h"
 
 
 class iisTaskHeader;
@@ -62,4 +62,4 @@ protected:
 	iisTaskPanelScheme *myScheme;
 };
 
-#endif // IISTASKBOX_H
+~endif // IISTASKBOX_H

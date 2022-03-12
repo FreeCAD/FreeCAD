@@ -20,12 +20,12 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef UChar_HEADER
-#define UChar_HEADER
+~ifndef UChar_HEADER
+~define UChar_HEADER
 
-#include <istream>
-#include <stdint.h>
-#include "Context.h"
+~include <istream>
+~include <stdint.h>
+~include "Context.h"
 
 using namespace std;
 
@@ -53,4 +53,4 @@ struct UChar
 
 
 
-#endif
+~endif

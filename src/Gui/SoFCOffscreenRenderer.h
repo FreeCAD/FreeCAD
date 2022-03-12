@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCOFFSCREENRENDERER_H
-#define GUI_SOFCOFFSCREENRENDERER_H
+~ifndef GUI_SOFCOFFSCREENRENDERER_H
+~define GUI_SOFCOFFSCREENRENDERER_H
 
-#include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbColor4f.h>
-#include <QImage>
-#include <QStringList>
-#include <QtOpenGL.h>
+~include <Inventor/SoOffscreenRenderer.h>
+~include <Inventor/SbMatrix.h>
+~include <Inventor/SbColor4f.h>
+~include <QImage>
+~include <QStringList>
+~include <QtOpenGL.h>
 
 namespace Gui {
 
@@ -152,4 +152,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_SOFCOFFSCREENRENDERER_H
+~endif // GUI_SOFCOFFSCREENRENDERER_H

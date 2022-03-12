@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
-#define GUI_DIALOG_DLGMACROEXECUTEIMP_H
+~ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
+~define GUI_DIALOG_DLGMACROEXECUTEIMP_H
 
-#include "Window.h"
-#include <QDialog>
-#include <memory>
+~include "Window.h"
+~include <QDialog>
+~include <memory>
 
 class QTreeWidgetItem;
 
@@ -77,4 +77,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGMACROEXECUTEIMP_H
+~endif // GUI_DIALOG_DLGMACROEXECUTEIMP_H

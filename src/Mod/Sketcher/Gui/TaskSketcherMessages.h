@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherMessages_H
-#define GUI_TASKVIEW_TaskSketcherMessages_H
+~ifndef GUI_TASKVIEW_TaskSketcherMessages_H
+~define GUI_TASKVIEW_TaskSketcherMessages_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <boost_signals2.hpp>
 
 class Ui_TaskSketcherMessages;
 typedef boost::signals2::connection Connection;
@@ -66,4 +66,4 @@ private:
 
 } //namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TaskSketcherMessages_H
+~endif // GUI_TASKVIEW_TaskSketcherMessages_H

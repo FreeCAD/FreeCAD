@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSLATOR_H
-#define GUI_TRANSLATOR_H
+~ifndef GUI_TRANSLATOR_H
+~define GUI_TRANSLATOR_H
 
-#include <QObject>
-#include <list>
-#include <map>
-#include <string>
+~include <QObject>
+~include <list>
+~include <map>
+~include <string>
 
 
 class QDir;
@@ -87,4 +87,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_TRANSLATOR_H
+~endif // GUI_TRANSLATOR_H

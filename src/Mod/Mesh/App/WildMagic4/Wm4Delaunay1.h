@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELAUNAY1_H
-#define WM4DELAUNAY1_H
+~ifndef WM4DELAUNAY1_H
+~define WM4DELAUNAY1_H
 
 // A fancy class to sort a collection of real-valued numbers, but this
 // provides some convenience for Delaunay2 and Delaunay3 when the input point
@@ -23,8 +23,8 @@
 // interface of Delaunay1 is also the model for those of Delaunay2 and
 // Delaunay3.
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Delaunay.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Delaunay.h"
 
 namespace Wm4
 {
@@ -114,4 +114,4 @@ typedef Delaunay1<double> Delaunay1d;
 
 }
 
-#endif
+~endif

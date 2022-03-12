@@ -27,14 +27,14 @@
 **
 **************************************************************************/
 
-#ifndef CHECKABLEMESSAGEBOX_H
-#define CHECKABLEMESSAGEBOX_H
+~ifndef CHECKABLEMESSAGEBOX_H
+~define CHECKABLEMESSAGEBOX_H
 
-//#include "utils_global.h"
+//~include "utils_global.h"
 
-#include <QDialogButtonBox>
-#include <QMessageBox>
-#include <QDialog>
+~include <QDialogButtonBox>
+~include <QMessageBox>
+~include <QDialog>
 
 namespace Gui {
 namespace Dialog {
@@ -123,4 +123,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // CHECKABLEMESSAGEBOX_H
+~endif // CHECKABLEMESSAGEBOX_H

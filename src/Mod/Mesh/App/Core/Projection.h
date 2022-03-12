@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef MESH_PROJECTION_H
-#define MESH_PROJECTION_H
+~ifndef MESH_PROJECTION_H
+~define MESH_PROJECTION_H
 
-#include <vector>
-#include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
-#include <Mod/Mesh/App/Core/Elements.h>
+~include <vector>
+~include <Base/BoundBox.h>
+~include <Base/Vector3D.h>
+~include <Mod/Mesh/App/Core/Elements.h>
 
 using Base::Vector3f;
 
-#ifdef FC_USE_OCC
+~ifdef FC_USE_OCC
 class TopoDS_Edge;
 class TopoDS_Shape;
-#endif
+~endif
 
 namespace MeshCore
 {
@@ -64,4 +64,4 @@ private:
 
 } // namespace MeshCore
 
-#endif  // MESH_PROJECTION_H 
+~endif  // MESH_PROJECTION_H 

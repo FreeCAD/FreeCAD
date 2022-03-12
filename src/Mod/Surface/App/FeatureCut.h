@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURECUT_H
-#define SURFACE_FEATURECUT_H
+~ifndef SURFACE_FEATURECUT_H
+~define SURFACE_FEATURECUT_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyLinks.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Surface
 {
@@ -52,4 +52,4 @@ public:
 
 }//Namespace Surface
 
-#endif
+~endif

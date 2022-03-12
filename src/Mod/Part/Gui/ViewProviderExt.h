@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
-#define PARTGUI_VIEWPROVIDERPARTEXT_H
+~ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
+~define PARTGUI_VIEWPROVIDERPARTEXT_H
 
-#include <Standard_math.hxx>
-#include <Standard_Boolean.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
-#include <Poly_Triangulation.hxx>
-#include <TColgp_Array1OfDir.hxx>
-#include <App/PropertyUnits.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <map>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/PartGlobal.h>
+~include <Standard_math.hxx>
+~include <Standard_Boolean.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Face.hxx>
+~include <Poly_Triangulation.hxx>
+~include <TColgp_Array1OfDir.hxx>
+~include <App/PropertyUnits.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <map>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/PartGlobal.h>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -192,4 +192,4 @@ private:
 
 }
 
-#endif // PARTGUI_VIEWPROVIDERPARTEXT_H
+~endif // PARTGUI_VIEWPROVIDERPARTEXT_H

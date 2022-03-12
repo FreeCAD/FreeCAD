@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FREECADTASKPANELSCHEME_H
-#define FREECADTASKPANELSCHEME_H
+~ifndef FREECADTASKPANELSCHEME_H
+~define FREECADTASKPANELSCHEME_H
 
-#include "actionpanelscheme.h"
+~include "actionpanelscheme.h"
 
 
 namespace QSint
@@ -72,4 +72,4 @@ private:
 
 }
 
-#endif // IISFREECADTASKPANELSCHEME_H
+~endif // IISFREECADTASKPANELSCHEME_H

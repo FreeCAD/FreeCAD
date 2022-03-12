@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SelectionFilter_H
-#define GUI_SelectionFilter_H
+~ifndef GUI_SelectionFilter_H
+~define GUI_SelectionFilter_H
 
-#include <memory>
-#include <string>
-#include <CXX/Extensions.hxx>
-#include "Selection.h"
+~include <memory>
+~include <string>
+~include <CXX/Extensions.hxx>
+~include "Selection.h"
 
 namespace App {
     class DocumentObject;
@@ -232,5 +232,5 @@ struct Node_Block
 } // namespace Gui
 
 
-#endif // GUI_SelectionFilter_H
+~endif // GUI_SelectionFilter_H
 

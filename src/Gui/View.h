@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEW_H
-#define GUI_VIEW_H
+~ifndef GUI_VIEW_H
+~define GUI_VIEW_H
 
-#include <Base/BaseClass.h>
+~include <Base/BaseClass.h>
 
 namespace App
 {
@@ -110,4 +110,4 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_VIEW_H
+~endif // GUI_VIEW_H

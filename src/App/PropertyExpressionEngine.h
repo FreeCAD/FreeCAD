@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONENGINE_H
-#define EXPRESSIONENGINE_H
+~ifndef EXPRESSIONENGINE_H
+~define EXPRESSIONENGINE_H
 
-#include <boost/unordered/unordered_map.hpp>
-#include <boost/function.hpp>
-#include <boost_signals2.hpp>
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/topological_sort.hpp>
-#include <App/PropertyLinks.h>
-#include <set>
+~include <boost/unordered/unordered_map.hpp>
+~include <boost/function.hpp>
+~include <boost_signals2.hpp>
+~include <boost_graph_adjacency_list.hpp>
+~include <boost/graph/topological_sort.hpp>
+~include <App/PropertyLinks.h>
+~include <set>
 
 namespace Base {
 class Writer;
@@ -177,11 +177,11 @@ private:
     typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS > DiGraph;
     typedef std::pair<int, int> Edge;
     // Note: use std::map instead of unordered_map to keep the binding order stable
-    #ifdef FC_OS_MACOSX
+    ~ifdef FC_OS_MACOSX
     typedef std::map<App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
-    #else
+    ~else
     typedef std::map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
-    #endif
+    ~endif
 
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 
@@ -221,4 +221,4 @@ private:
 
 }
 
-#endif // EXPRESSIONENGINE_H
+~endif // EXPRESSIONENGINE_H

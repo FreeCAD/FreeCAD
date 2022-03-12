@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
-#define DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
+~ifndef DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
+~define DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 
-#include <Gui/ViewProviderFeature.h>
+~include <Gui/ViewProviderFeature.h>
 
 namespace TechDraw{
     class DrawTemplate;
@@ -66,5 +66,5 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
+~endif // DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 

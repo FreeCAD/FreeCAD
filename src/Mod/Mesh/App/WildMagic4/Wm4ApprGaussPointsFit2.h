@@ -6,11 +6,11 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4APPRGAUSSPOINTSFIT2_H
-#define WM4APPRGAUSSPOINTSFIT2_H
+~ifndef WM4APPRGAUSSPOINTSFIT2_H
+~define WM4APPRGAUSSPOINTSFIT2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Box2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Box2.h"
 
 namespace Wm4
 {
@@ -25,4 +25,4 @@ Box2<Real> GaussPointsFit2 (int iQuantity, const Vector2<Real>* akPoint);
 
 }
 
-#endif
+~endif

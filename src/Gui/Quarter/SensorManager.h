@@ -1,5 +1,5 @@
-#ifndef QUARTER_SENSORMANAGER_H
-#define QUARTER_SENSORMANAGER_H
+~ifndef QUARTER_SENSORMANAGER_H
+~define QUARTER_SENSORMANAGER_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QObject>
+~include <QObject>
 
 class QTimer;
 
@@ -67,4 +67,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_SENSORMANAGER_H
+~endif // QUARTER_SENSORMANAGER_H

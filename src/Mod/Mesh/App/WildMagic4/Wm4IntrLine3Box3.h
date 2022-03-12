@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTRLINE3BOX3_H
-#define WM4INTRLINE3BOX3_H
+~ifndef WM4INTRLINE3BOX3_H
+~define WM4INTRLINE3BOX3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Intersector.h"
-#include "Wm4Line3.h"
-#include "Wm4Box3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Intersector.h"
+~include "Wm4Line3.h"
+~include "Wm4Box3.h"
 
 namespace Wm4
 {
@@ -73,4 +73,4 @@ typedef IntrLine3Box3<double> IntrLine3Box3d;
 
 }
 
-#endif
+~endif

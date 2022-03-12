@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskChamferParameters_H
-#define GUI_TASKVIEW_TaskChamferParameters_H
+~ifndef GUI_TASKVIEW_TaskChamferParameters_H
+~define GUI_TASKVIEW_TaskChamferParameters_H
 
-#include "TaskDressUpParameters.h"
-#include "ViewProviderChamfer.h"
+~include "TaskDressUpParameters.h"
+~include "ViewProviderChamfer.h"
 
 class Ui_TaskChamferParameters;
 namespace PartDesign {
@@ -88,4 +88,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskChamferParameters_H
+~endif // GUI_TASKVIEW_TaskChamferParameters_H

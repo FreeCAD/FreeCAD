@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKAPPERANCE_H
-#define GUI_TASKVIEW_TASKAPPERANCE_H
+~ifndef GUI_TASKVIEW_TASKAPPERANCE_H
+~define GUI_TASKVIEW_TASKAPPERANCE_H
 
-#include <Gui/Selection.h>
-#include "TaskView.h"
+~include <Gui/Selection.h>
+~include "TaskView.h"
 
 
 namespace App {
@@ -78,4 +78,4 @@ private:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Base64.h>
-#include <Base/TimeInfo.h>
-//#include <xlocale.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Base64.h>
+~include <Base/TimeInfo.h>
+//~include <xlocale.h>
 
-#include <App/PropertyContainer.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/Document.h>
+~include <App/PropertyContainer.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyLinks.h>
+~include <App/Document.h>
 
-#include <xercesc/framework/XMLPScanToken.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
+~include <xercesc/framework/XMLPScanToken.hpp>
+~include <xercesc/sax2/Attributes.hpp>
+~include <xercesc/sax2/DefaultHandler.hpp>
 
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/sax/HandlerBase.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
+~include <xercesc/parsers/XercesDOMParser.hpp>
+~include <xercesc/dom/DOM.hpp>
+~include <xercesc/sax/HandlerBase.hpp>
+~include <xercesc/framework/MemBufInputSource.hpp>
 
 XERCES_CPP_NAMESPACE_BEGIN
     class DOMNode;

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
-#define DRAWINGGUI_DLGTEMPLATEFIELD_H
+~ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
+~define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
-#include <QDialog>
-#include <QString>
+~include <QDialog>
+~include <QString>
 
-#include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
+~include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
 
 namespace TechDrawGui {
 
@@ -53,4 +53,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGTEMPLATEFIELD_H
+~endif // DRAWINGGUI_DLGTEMPLATEFIELD_H

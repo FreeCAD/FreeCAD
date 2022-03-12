@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_CROSSSECTION_H
-#define PART_CROSSSECTION_H
+~ifndef PART_CROSSSECTION_H
+~define PART_CROSSSECTION_H
 
-#include <list>
-#include <TopTools_IndexedMapOfShape.hxx>
+~include <list>
+~include <TopTools_IndexedMapOfShape.hxx>
 
 class TopoDS_Shape;
 class TopoDS_Wire;
@@ -51,4 +51,4 @@ private:
 
 }
 
-#endif // PART_CROSSSECTION_H
+~endif // PART_CROSSSECTION_H

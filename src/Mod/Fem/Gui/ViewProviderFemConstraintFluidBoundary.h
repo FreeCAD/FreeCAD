@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERFEMFLUIDBOUNDARY_H
-#define GUI_VIEWPROVIDERFEMFLUIDBOUNDARY_H
+~ifndef GUI_VIEWPROVIDERFEMFLUIDBOUNDARY_H
+~define GUI_VIEWPROVIDERFEMFLUIDBOUNDARY_H
 
-#include "ViewProviderFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui
 {
@@ -48,4 +48,4 @@ protected:
 } //namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMConstraintFluidBoundary_H
+~endif // GUI_VIEWPROVIDERFEMConstraintFluidBoundary_H

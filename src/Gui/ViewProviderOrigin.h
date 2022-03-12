@@ -21,12 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
-#define GUI_VIEWPROVIDER_ViewProviderOrigin_H
+~ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
+~define GUI_VIEWPROVIDER_ViewProviderOrigin_H
 
-#include <App/PropertyGeo.h>
+~include <App/PropertyGeo.h>
 
-#include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObject.h"
 
 
 namespace Gui {
@@ -88,5 +88,5 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_ViewProviderOrigin_H
+~endif // GUI_VIEWPROVIDER_ViewProviderOrigin_H
 

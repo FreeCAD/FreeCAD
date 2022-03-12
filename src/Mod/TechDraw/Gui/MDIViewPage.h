@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
-#define TECHDRAWGUI_MDIVIEWPAGE_H
+~ifndef TECHDRAWGUI_MDIVIEWPAGE_H
+~define TECHDRAWGUI_MDIVIEWPAGE_H
 
-#include "ViewProviderPage.h"
+~include "ViewProviderPage.h"
 
-#include <Gui/MDIView.h>
-#include <Gui/MDIViewPy.h>
-#include <Gui/Selection.h>
+~include <Gui/MDIView.h>
+~include <Gui/MDIViewPy.h>
+~include <Gui/Selection.h>
 
-#include <QPrinter>
-#include <QGraphicsScene>
-#include <QPointF>
+~include <QPrinter>
+~include <QGraphicsScene>
+~include <QPointF>
 
-#include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawPage.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -197,4 +197,4 @@ protected:
 
 } // namespace MDIViewPageGui
 
-#endif // TECHDRAWGUI_MDIVIEWPAGE_H
+~endif // TECHDRAWGUI_MDIVIEWPAGE_H

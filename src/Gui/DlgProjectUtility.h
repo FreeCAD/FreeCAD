@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPROJECTUTILITY_H
-#define GUI_DIALOG_DLGPROJECTUTILITY_H
+~ifndef GUI_DIALOG_DLGPROJECTUTILITY_H
+~define GUI_DIALOG_DLGPROJECTUTILITY_H
 
-#include <QDialog>
-#include <string>
+~include <QDialog>
+~include <string>
 
 namespace Gui { namespace Dialog {
 
@@ -51,5 +51,5 @@ protected:
 } // namespace Gui
 
 
-#endif // GUI_DIALOG_DLGPROJECTUTILITY_H
+~endif // GUI_DIALOG_DLGPROJECTUTILITY_H
 

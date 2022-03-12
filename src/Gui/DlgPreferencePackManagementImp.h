@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
-#define GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
+~ifndef GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
+~define GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
 
-#include <memory>
-#include <QDialog>
-#include <boost/filesystem.hpp>
+~include <memory>
+~include <QDialog>
+~include <boost/filesystem.hpp>
 
 
 class QTreeWidgetItem;
@@ -83,4 +83,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H
+~endif // GUI_DIALOG_DLGPREFERENCEPACKMANAGEMENTIMP_H

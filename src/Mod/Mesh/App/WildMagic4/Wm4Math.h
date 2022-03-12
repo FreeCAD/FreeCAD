@@ -14,11 +14,11 @@
 //
 // Version: 4.0.1 (2006/08/22)
 
-#ifndef WM4MATH_H
-#define WM4MATH_H
+~ifndef WM4MATH_H
+~define WM4MATH_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -143,15 +143,15 @@ public:
 
 } //namespace Wm4
 
-#include "Wm4Math.inl"
+~include "Wm4Math.inl"
 
 namespace Wm4
 {
-#include "Wm4MathMCR.h"
+~include "Wm4MathMCR.h"
 
 typedef Math<float> Mathf;
 typedef Math<double> Mathd;
 
 }
 
-#endif
+~endif

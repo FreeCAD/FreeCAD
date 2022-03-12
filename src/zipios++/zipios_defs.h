@@ -1,7 +1,7 @@
-#ifndef ZIPIOS_DEFS_H
-#define ZIPIOS_DEFS_H
+~ifndef ZIPIOS_DEFS_H
+~define ZIPIOS_DEFS_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
 namespace zipios {
 
@@ -10,7 +10,7 @@ typedef uint32_t uint32 ;
 
 } // namespace
 
-#endif
+~endif
 
 /** \file
     Header file that defines some simple data types.

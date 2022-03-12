@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
-#define SKETCHERGUI_VIEWPROVIDERSKETCH_H
+~ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
+~define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
-#include <memory>
+~include <memory>
 
-#include <Mod/Part/Gui/ViewProvider2DObject.h>
-#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Base/Tools2D.h>
-#include <Base/Parameter.h>
-#include <Base/Placement.h>
-#include <Gui/Selection.h>
-#include <Gui/GLPainter.h>
-#include <App/Part.h>
-#include <boost_signals2.hpp>
-#include <QCoreApplication>
-#include <Gui/Document.h>
-#include "ShortcutListener.h"
+~include <Mod/Part/Gui/ViewProvider2DObject.h>
+~include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+~include <Mod/Part/App/BodyBase.h>
+~include <Base/Tools2D.h>
+~include <Base/Parameter.h>
+~include <Base/Placement.h>
+~include <Gui/Selection.h>
+~include <Gui/GLPainter.h>
+~include <App/Part.h>
+~include <boost_signals2.hpp>
+~include <QCoreApplication>
+~include <Gui/Document.h>
+~include "ShortcutListener.h"
 
-#include <Mod/Sketcher/App/GeoList.h>
+~include <Mod/Sketcher/App/GeoList.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -762,5 +762,5 @@ private:
 } // namespace PartGui
 
 
-#endif // SKETCHERGUI_VIEWPROVIDERSKETCH_H
+~endif // SKETCHERGUI_VIEWPROVIDERSKETCH_H
 

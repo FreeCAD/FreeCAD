@@ -19,10 +19,10 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
-#ifndef GUI_DLGOBJECTSELECTION_H
-#define GUI_DLGOBJECTSELECTION_H
+~ifndef GUI_DLGOBJECTSELECTION_H
+~define GUI_DLGOBJECTSELECTION_H
 
-#include <QDialog>
+~include <QDialog>
 
 namespace Gui {
 
@@ -70,5 +70,5 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_DLGOBJECTSELECTION_H
+~endif // GUI_DLGOBJECTSELECTION_H
 

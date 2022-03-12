@@ -1,5 +1,5 @@
-#ifndef QUARTER_KEYBOARD_H
-#define QUARTER_KEYBOARD_H
+~ifndef QUARTER_KEYBOARD_H
+~define QUARTER_KEYBOARD_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Quarter/Basic.h>
-#include <Quarter/devices/InputDevice.h>
+~include <Quarter/Basic.h>
+~include <Quarter/devices/InputDevice.h>
 
 class QEvent;
 class SoEvent;
@@ -56,4 +56,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_KEYBOARD_H
+~endif // QUARTER_KEYBOARD_H

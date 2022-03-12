@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYPYTHONOBJECT_H
-#define APP_PROPERTYPYTHONOBJECT_H
+~ifndef APP_PROPERTYPYTHONOBJECT_H
+~define APP_PROPERTYPYTHONOBJECT_H
 
-#include <string>
-#include <CXX/Objects.hxx>
+~include <string>
+~include <CXX/Objects.hxx>
 
-#include "Property.h"
+~include "Property.h"
 
 
 namespace Base {
@@ -82,4 +82,4 @@ private:
 
 } // namespace App
 
-#endif // APP_PROPERTYPYTHONOBJECT_H
+~endif // APP_PROPERTYPYTHONOBJECT_H

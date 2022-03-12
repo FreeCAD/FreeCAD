@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYSTANDARD_H
-#define APP_PROPERTYSTANDARD_H
+~ifndef APP_PROPERTYSTANDARD_H
+~define APP_PROPERTYSTANDARD_H
 
-#include <list>
-#include <memory>
-#include <string>
-#include <vector>
-#include <boost/dynamic_bitset.hpp>
-#include <boost/filesystem/path.hpp>
-#include <Base/Uuid.h>
+~include <list>
+~include <memory>
+~include <string>
+~include <vector>
+~include <boost/dynamic_bitset.hpp>
+~include <boost/filesystem/path.hpp>
+~include <Base/Uuid.h>
 
-#include "Property.h"
-#include "Enumeration.h"
-#include "Material.h"
+~include "Property.h"
+~include "Enumeration.h"
+~include "Material.h"
 
 
 namespace Base {
@@ -1131,4 +1131,4 @@ protected:
 
 } // namespace App
 
-#endif // APP_PROPERTYSTANDARD_H
+~endif // APP_PROPERTYSTANDARD_H

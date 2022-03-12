@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_MERGEDOCUMENTS_H
-#define APP_MERGEDOCUMENTS_H
+~ifndef APP_MERGEDOCUMENTS_H
+~define APP_MERGEDOCUMENTS_H
 
-#include <Base/Persistence.h>
+~include <Base/Persistence.h>
 
 namespace zipios {
 class ZipInputStream;
@@ -65,4 +65,4 @@ private:
 
 } // namespace App
 
-#endif // APP_MERGEDOCUMENTS_H
+~endif // APP_MERGEDOCUMENTS_H

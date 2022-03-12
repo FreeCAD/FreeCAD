@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef RANGE_H
-#define RANGE_H
+~ifndef RANGE_H
+~define RANGE_H
 
-#include <string>
-#include <Base/Bitmask.h>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <string>
+~include <Base/Bitmask.h>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace App {
 
@@ -180,4 +180,4 @@ private:
 
 ENABLE_BITMASK_OPERATORS(App::CellAddress::Cell)
 
-#endif // RANGE_H
+~endif // RANGE_H

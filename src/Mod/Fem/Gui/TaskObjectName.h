@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskObjectName_H
-#define GUI_TASKVIEW_TaskObjectName_H
+~ifndef GUI_TASKVIEW_TaskObjectName_H
+~define GUI_TASKVIEW_TaskObjectName_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
 
 
@@ -69,4 +69,4 @@ private:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskObjectName_H
+~endif // GUI_TASKVIEW_TaskObjectName_H

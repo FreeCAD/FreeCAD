@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDressUp_H
-#define PARTGUI_ViewProviderDressUp_H
+~ifndef PARTGUI_ViewProviderDressUp_H
+~define PARTGUI_ViewProviderDressUp_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 namespace PartDesignGui {
@@ -70,4 +70,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDressUp_H
+~endif // PARTGUI_ViewProviderDressUp_H

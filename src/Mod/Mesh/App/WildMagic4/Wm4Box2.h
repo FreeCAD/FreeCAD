@@ -6,11 +6,11 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4BOX2_H
-#define WM4BOX2_H
+~ifndef WM4BOX2_H
+~define WM4BOX2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector2.h"
 
 namespace Wm4
 {
@@ -38,11 +38,11 @@ public:
     Real Extent[2];         // must be nonnegative
 };
 
-#include "Wm4Box2.inl"
+~include "Wm4Box2.inl"
 
 typedef Box2<float> Box2f;
 typedef Box2<double> Box2d;
 
 }
 
-#endif
+~endif

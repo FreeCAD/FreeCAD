@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+~include <FCGlobal.h>
 
-#ifndef SPREADSHEET_GLOBAL_H
-#define SPREADSHEET_GLOBAL_H
+~ifndef SPREADSHEET_GLOBAL_H
+~define SPREADSHEET_GLOBAL_H
 
 
 // Spreadsheet
-#ifndef SpreadsheetExport
-#ifdef Spreadsheet_EXPORTS
-#  define SpreadsheetExport      FREECAD_DECL_EXPORT
-#else
-#  define SpreadsheetExport      FREECAD_DECL_IMPORT
-#endif
-#endif
+~ifndef SpreadsheetExport
+~ifdef Spreadsheet_EXPORTS
+~  define SpreadsheetExport      FREECAD_DECL_EXPORT
+~else
+~  define SpreadsheetExport      FREECAD_DECL_IMPORT
+~endif
+~endif
 
 // SpreadsheetGui
-#ifndef SpreadsheetGuiExport
-#ifdef SpreadsheetGui_EXPORTS
-#  define SpreadsheetGuiExport   FREECAD_DECL_EXPORT
-#else
-#  define SpreadsheetGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+~ifndef SpreadsheetGuiExport
+~ifdef SpreadsheetGui_EXPORTS
+~  define SpreadsheetGuiExport   FREECAD_DECL_EXPORT
+~else
+~  define SpreadsheetGuiExport   FREECAD_DECL_IMPORT
+~endif
+~endif
 
-#endif //SPREADSHEET_GLOBAL_H
+~endif //SPREADSHEET_GLOBAL_H

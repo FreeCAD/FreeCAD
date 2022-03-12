@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4UNIQUEVERTICESTRIANGLES_H
-#define WM4UNIQUEVERTICESTRIANGLES_H
+~ifndef WM4UNIQUEVERTICESTRIANGLES_H
+~define WM4UNIQUEVERTICESTRIANGLES_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -86,6 +86,6 @@ private:
 
 }
 
-#include "Wm4UniqueVerticesTriangles.inl"
+~include "Wm4UniqueVerticesTriangles.inl"
 
-#endif
+~endif

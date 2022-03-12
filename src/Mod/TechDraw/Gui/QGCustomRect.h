@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMRECT_H
-#define DRAWINGGUI_QGCUSTOMRECT_H
+~ifndef DRAWINGGUI_QGCUSTOMRECT_H
+~define DRAWINGGUI_QGCUSTOMRECT_H
 
-#include <QGraphicsItem>
-#include <QGraphicsRectItem>
-#include <QPointF>
+~include <QGraphicsItem>
+~include <QGraphicsRectItem>
+~include <QPointF>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -56,5 +56,5 @@ private:
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGCUSTOMRECT_H
+~endif // DRAWINGGUI_QGCUSTOMRECT_H
 

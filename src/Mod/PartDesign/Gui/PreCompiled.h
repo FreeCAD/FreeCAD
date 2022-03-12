@@ -21,94 +21,94 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+~ifndef __PRECOMPILED_GUI__
+~define __PRECOMPILED_GUI__
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartDesignExport     __declspec(dllimport)
-# define PartDesignGuiExport  __declspec(dllexport)
-# define PartExport           __declspec(dllimport)
-# define PartGuiExport        __declspec(dllimport)
-# define SketcherExport       __declspec(dllimport)
-# define SketcherGuiExport    __declspec(dllimport)
-#else // for Linux
-# define PartDesignExport
-# define PartDesignGuiExport
-# define PartExport
-# define PartGuiExport
-# define SketcherExport
-# define SketcherGuiExport
-#endif
+~ifdef FC_OS_WIN32
+~ define PartDesignExport     __declspec(dllimport)
+~ define PartDesignGuiExport  __declspec(dllexport)
+~ define PartExport           __declspec(dllimport)
+~ define PartGuiExport        __declspec(dllimport)
+~ define SketcherExport       __declspec(dllimport)
+~ define SketcherGuiExport    __declspec(dllimport)
+~else // for Linux
+~ define PartDesignExport
+~ define PartDesignGuiExport
+~ define PartExport
+~ define PartGuiExport
+~ define SketcherExport
+~ define SketcherGuiExport
+~endif
 
 
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#endif
+~ifdef _MSC_VER
+~   pragma warning(disable : 4005)
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
-#include <sstream>
+~include <iostream>
+~include <assert.h>
+~include <cmath>
+~include <sstream>
 
-#include <algorithm>
+~include <algorithm>
 
 // Boost
-#include <boost/bind/bind.hpp>
+~include <boost/bind/bind.hpp>
 
 // OCC
-#include <Standard_math.hxx>
-#include <Standard_Version.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomLib_IsPlanarSurface.hxx>
-#include <TopoDS.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <BRepAdaptor_Surface.hxx>
+~include <Standard_math.hxx>
+~include <Standard_Version.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepMesh_IncrementalMesh.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomLib_IsPlanarSurface.hxx>
+~include <TopoDS.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <BRepAdaptor_Surface.hxx>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
-#include <QMessageBox>
-#include <QMenu>
-#include <QAction>
-#include <QMessageBox>
+~include <QMessageBox>
+~include <QMenu>
+~include <QAction>
+~include <QMessageBox>
 
 // Inventor
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
+~ifndef __InventorAll__
+~ include <Gui/InventorAll.h>
+~endif
 
-#endif // _PreComp_
-#endif // __PRECOMPILED_GUI__
+~endif // _PreComp_
+~endif // __PRECOMPILED_GUI__

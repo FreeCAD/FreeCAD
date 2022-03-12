@@ -20,17 +20,17 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef Segment_Header_HEADER
-#define Segment_Header_HEADER
+~ifndef Segment_Header_HEADER
+~define Segment_Header_HEADER
 
-#include <istream>
-#include <stdint.h>
+~include <istream>
+~include <stdint.h>
 
-#include "Context.h"
-#include "GUID.h"
-#include "U16.h"
-#include "U32.h"
-#include "I32.h"
+~include "Context.h"
+~include "GUID.h"
+~include "U16.h"
+~include "U32.h"
+~include "I32.h"
 
 
 
@@ -62,7 +62,7 @@ struct Segment_Header
 
 
 
-#endif
+~endif
 
 
 

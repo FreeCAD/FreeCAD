@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+~ifndef GUINATIVEEVENT_H
+~define GUINATIVEEVENT_H
 
-#include "GuiAbstractNativeEvent.h"
+~include "GuiAbstractNativeEvent.h"
 
 class QMainWindow;
 
@@ -47,5 +47,5 @@ namespace Gui
 	};
 }
 
-#endif //GUINATIVEEVENT_H
+~endif //GUINATIVEEVENT_H
 

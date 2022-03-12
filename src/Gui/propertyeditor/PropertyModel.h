@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYMODEL_H
-#define PROPERTYMODEL_H
+~ifndef PROPERTYMODEL_H
+~define PROPERTYMODEL_H
 
-#include <QAbstractItemModel>
-#include <QStringList>
-#include <map>
-#include <unordered_map>
-#include <vector>
-#include "PropertyItem.h"
+~include <QAbstractItemModel>
+~include <QStringList>
+~include <map>
+~include <unordered_map>
+~include <vector>
+~include "PropertyItem.h"
 
 
 namespace App {
@@ -90,4 +90,4 @@ private:
 } //namespace Gui
 
 
-#endif //PROPERTYMODEL_H
+~endif //PROPERTYMODEL_H

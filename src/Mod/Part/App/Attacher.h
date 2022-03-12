@@ -25,20 +25,20 @@
   *plane placement.
   */
 
-#ifndef PARTATTACHER_H
-#define PARTATTACHER_H
+~ifndef PARTATTACHER_H
+~define PARTATTACHER_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
-#include <Base/Exception.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyLinks.h>
+~include <App/GeoFeature.h>
+~include <Base/Vector3D.h>
+~include <Base/Placement.h>
+~include <Base/Exception.h>
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
-#include <gp_Vec.hxx>
-#include <GProp_GProps.hxx>
+~include <gp_Vec.hxx>
+~include <GProp_GProps.hxx>
 
 namespace Attacher
 {
@@ -472,4 +472,4 @@ public:
 
 } // namespace Attacher
 
-#endif // PARTATTACHER_H
+~endif // PARTATTACHER_H

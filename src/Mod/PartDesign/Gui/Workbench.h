@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_WORKBENCH_H
-#define PARTDESIGN_WORKBENCH_H
+~ifndef PARTDESIGN_WORKBENCH_H
+~define PARTDESIGN_WORKBENCH_H
 
-#include <Gui/Workbench.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
+~include <Gui/Workbench.h>
+~include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace Gui {
 
@@ -85,4 +85,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTDESIGN_WORKBENCH_H
+~endif // PARTDESIGN_WORKBENCH_H

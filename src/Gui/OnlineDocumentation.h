@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ONLINEDOCUMENTATION_H
-#define GUI_ONLINEDOCUMENTATION_H
+~ifndef GUI_ONLINEDOCUMENTATION_H
+~define GUI_ONLINEDOCUMENTATION_H
 
-#include <QObject>
-#include <QTcpServer>
-#include "Command.h"
+~include <QObject>
+~include <QTcpServer>
+~include "Command.h"
 
 
 namespace Gui {
@@ -94,4 +94,4 @@ private:
 
 }
 
-#endif // GUI_ONLINEDOCUMENTATION_H
+~endif // GUI_ONLINEDOCUMENTATION_H

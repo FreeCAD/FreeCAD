@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef REENGUI_FITBSPLINESURFACE_H
-#define REENGUI_FITBSPLINESURFACE_H
+~ifndef REENGUI_FITBSPLINESURFACE_H
+~define REENGUI_FITBSPLINESURFACE_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObserver.h>
 
 namespace ReenGui {
 
@@ -75,4 +75,4 @@ private:
 
 } //namespace ReenGui
 
-#endif // REENGUI_FITBSPLINESURFACE_H
+~endif // REENGUI_FITBSPLINESURFACE_H

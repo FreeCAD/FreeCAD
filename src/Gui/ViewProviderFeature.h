@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_FEATURE_H
-#define GUI_VIEWPROVIDER_FEATURE_H
+~ifndef GUI_VIEWPROVIDER_FEATURE_H
+~define GUI_VIEWPROVIDER_FEATURE_H
 
-#include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObject.h"
 
 
 class SbVec2s;
@@ -53,5 +53,5 @@ public:
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_FEATURE_H
+~endif // GUI_VIEWPROVIDER_FEATURE_H
 

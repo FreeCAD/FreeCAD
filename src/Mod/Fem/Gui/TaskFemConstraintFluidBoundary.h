@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
-#define GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
+~define GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
 
-#include <App/PropertyStandard.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Fem/App/FemSolverObject.h>
+~include <App/PropertyStandard.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/Fem/App/FemSolverObject.h>
 
-#include "TaskFemConstraint.h"
-#include "TaskFemConstraintOnBoundary.h"
-#include "ViewProviderFemConstraintFluidBoundary.h"
+~include "TaskFemConstraint.h"
+~include "TaskFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintFluidBoundary.h"
 
-#include <QKeyEvent>
+~include <QKeyEvent>
 
 class Ui_TaskFemConstraintFluidBoundary;
 
@@ -127,4 +127,4 @@ public:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
+~endif // GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H

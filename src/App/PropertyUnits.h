@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYUNITS_H
-#define APP_PROPERTYUNITS_H
+~ifndef APP_PROPERTYUNITS_H
+~define APP_PROPERTYUNITS_H
 
-#include <Base/Quantity.h>
-#include <Base/Unit.h>
+~include <Base/Quantity.h>
+~include <Base/Unit.h>
 
-#include "PropertyStandard.h"
+~include "PropertyStandard.h"
 
 namespace Base {
 class Writer;
@@ -266,4 +266,4 @@ public:
 
 } // namespace App
 
-#endif // APP_PROPERTYUNITS_H
+~endif // APP_PROPERTYUNITS_H

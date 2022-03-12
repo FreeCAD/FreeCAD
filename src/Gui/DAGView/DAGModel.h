@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGMODEL_H
-#define DAGMODEL_H
+~ifndef DAGMODEL_H
+~define DAGMODEL_H
 
-#include <memory>
-#include <vector>
+~include <memory>
+~include <vector>
 
-#include <boost_signals2.hpp>
+~include <boost_signals2.hpp>
 
-#include <QBrush>
-#include <QGraphicsScene>
-#include <QLineEdit>
+~include <QBrush>
+~include <QGraphicsScene>
+~include <QLineEdit>
 
-#include "DAGFilter.h"
-#include "DAGModelGraph.h"
-#include "DAGRectItem.h"
+~include "DAGFilter.h"
+~include "DAGModelGraph.h"
+~include "DAGRectItem.h"
 
 
 class QGraphicsSceneHoverEvent;
@@ -168,4 +168,4 @@ namespace Gui
   }
 }
 
-#endif // DAGMODEL_H
+~endif // DAGMODEL_H

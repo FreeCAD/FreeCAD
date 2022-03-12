@@ -1,9 +1,9 @@
-#ifndef VIRTUALSEEKER_H
-#define VIRTUALSEEKER_H
+~ifndef VIRTUALSEEKER_H
+~define VIRTUALSEEKER_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
 
 namespace zipios {
@@ -79,7 +79,7 @@ int  VirtualSeeker::vtellg( istream &is ) const {
 
 } // namespace
 
-#endif
+~endif
 
 /** \file 
     Header file that defines VirtualSeeker.

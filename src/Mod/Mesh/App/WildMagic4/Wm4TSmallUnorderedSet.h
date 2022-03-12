@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TSET_H
-#define WM4TSET_H
+~ifndef WM4TSET_H
+~define WM4TSET_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Memory.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Memory.h"
 
 // This template class is for unordered sets of objects.  The intent is that
 // the sets are not too large.  If you do not plan on searching the set and
@@ -76,6 +76,6 @@ private:
 
 }
 
-#include "Wm4TSmallUnorderedSet.inl"
+~include "Wm4TSmallUnorderedSet.inl"
 
-#endif
+~endif

@@ -22,11 +22,11 @@
  ****************************************************************************/
 
 
-#ifndef EXPRESSION_PARSER_H
-#define EXPRESSION_PARSER_H
+~ifndef EXPRESSION_PARSER_H
+~define EXPRESSION_PARSER_H
 
-#include "Expression.h"
-#include <Base/Quantity.h>
+~include "Expression.h"
+~include <Base/Quantity.h>
 
 namespace App {
 
@@ -496,13 +496,13 @@ public:
                   , func({FunctionExpression::NONE, std::string()}) {}
 };
 
-#define YYSTYPE semantic_type
-#include "ExpressionParser.tab.h"
-#undef YYTOKENTYPE
-#undef YYSTYPE
-#undef YYSTYPE_ISDECLARED
+~define YYSTYPE semantic_type
+~include "ExpressionParser.tab.h"
+~undef YYTOKENTYPE
+~undef YYSTYPE
+~undef YYSTYPE_ISDECLARED
 }
 
 }
 
-#endif //EXPRESSION_PARSER_H
+~endif //EXPRESSION_PARSER_H

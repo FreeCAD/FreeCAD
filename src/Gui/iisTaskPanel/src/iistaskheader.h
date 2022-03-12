@@ -5,15 +5,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISTASKHEADER_H
-#define IISTASKHEADER_H
+~ifndef IISTASKHEADER_H
+~define IISTASKHEADER_H
 
-#include <QEvent>
-#include <QFrame>
-#include <QLabel>
-#include <QMouseEvent>
+~include <QEvent>
+~include <QFrame>
+~include <QLabel>
+~include <QMouseEvent>
 
-#include "iistaskpanel_global.h"
+~include "iistaskpanel_global.h"
 
 
 class iisTaskPanelScheme;
@@ -60,4 +60,4 @@ protected:
 	QLabel *myButton;
 };
 
-#endif // IISTASKHEADER_H
+~endif // IISTASKHEADER_H

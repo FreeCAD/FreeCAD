@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PY_SMARTPTRPY_H
-#define PY_SMARTPTRPY_H
+~ifndef PY_SMARTPTRPY_H
+~define PY_SMARTPTRPY_H
 
 // forward declarations
 typedef struct _object PyObject;
@@ -83,4 +83,4 @@ BaseExport PyObject* new_reference_to(const SmartPtr&);
 
 }
 
-#endif // PY_SMARTPTRPY_H
+~endif // PY_SMARTPTRPY_H

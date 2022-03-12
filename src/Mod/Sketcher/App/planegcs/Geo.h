@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_GEO_H
-#define PLANEGCS_GEO_H
+~ifndef PLANEGCS_GEO_H
+~define PLANEGCS_GEO_H
 
-#include <cmath>
-#include "Util.h"
+~include <cmath>
+~include "Util.h"
 
 namespace GCS
 {
@@ -302,4 +302,4 @@ namespace GCS
 
 } //namespace GCS
 
-#endif // PLANEGCS_GEO_H
+~endif // PLANEGCS_GEO_H

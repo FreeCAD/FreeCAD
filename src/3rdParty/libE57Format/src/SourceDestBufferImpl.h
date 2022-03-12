@@ -25,9 +25,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {
@@ -102,9 +102,9 @@ namespace e57
 
       void checkCompatible( const std::shared_ptr<SourceDestBufferImpl> &newBuf ) const;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout );
-#endif
+~endif
 
    private:
       template <typename T> void _setNextReal( T inValue );

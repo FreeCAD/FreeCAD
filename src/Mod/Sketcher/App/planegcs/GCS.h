@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_GCS_H
-#define PLANEGCS_GCS_H
+~ifndef PLANEGCS_GCS_H
+~define PLANEGCS_GCS_H
 
-#include "SubSystem.h"
-#include <boost/concept_check.hpp>
-#include <boost/graph/graph_concepts.hpp>
+~include "SubSystem.h"
+~include <boost/concept_check.hpp>
+~include <boost/graph/graph_concepts.hpp>
 
-#include <Eigen/QR>
+~include <Eigen/QR>
 
-#define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
+~define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
 + EIGEN_MAJOR_VERSION * 100 \
 + EIGEN_MINOR_VERSION)
 
-#if EIGEN_VERSION >= 30202
-    #define EIGEN_SPARSEQR_COMPATIBLE
-    #include <Eigen/Sparse>
-#endif
+~if EIGEN_VERSION >= 30202
+    ~define EIGEN_SPARSEQR_COMPATIBLE
+    ~include <Eigen/Sparse>
+~endif
 
 namespace GCS
 {
     ///////////////////////////////////////
     // Other BFGS Solver parameters
     ///////////////////////////////////////
-    #define XconvergenceRough 1e-8
-    #define smallF            1e-20
+    ~define XconvergenceRough 1e-8
+    ~define smallF            1e-20
 
     ///////////////////////////////////////
     // Solver
@@ -144,12 +144,12 @@ namespace GCS
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
                                         int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
         void makeSparseQRDecomposition( const Eigen::MatrixXd &J,
                                         const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
                                         int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
-#endif
+~endif
         // This function name is long for a reason:
         // - Only for DenseQR
         // - Only for Transposed Jacobian QR decomposition
@@ -172,12 +172,12 @@ namespace GCS
 
         void eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd &R, int rank);
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
         void identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
                                                   const GCS::VEC_pD &pdiagnoselist,
                                                   bool silent=true);
-#endif
+~endif
 
         void identifyDependentParametersDenseQR(  const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
@@ -191,9 +191,9 @@ namespace GCS
                                             const GCS::VEC_pD &pdiagnoselist,
                                             bool silent=true);
 
-        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
-        #endif
+        ~endif
     public:
         int maxIter;
         int maxIterRedundant;
@@ -387,4 +387,4 @@ namespace GCS
 
 } //namespace GCS
 
-#endif // PLANEGCS_GCS_H
+~endif // PLANEGCS_GCS_H

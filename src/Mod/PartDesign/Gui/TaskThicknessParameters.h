@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskThicknessParameters_H
-#define GUI_TASKVIEW_TaskThicknessParameters_H
+~ifndef GUI_TASKVIEW_TaskThicknessParameters_H
+~define GUI_TASKVIEW_TaskThicknessParameters_H
 
-#include "TaskDressUpParameters.h"
-#include "ViewProviderThickness.h"
+~include "TaskDressUpParameters.h"
+~include "ViewProviderThickness.h"
 
 class Ui_TaskThicknessParameters;
 
@@ -79,4 +79,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

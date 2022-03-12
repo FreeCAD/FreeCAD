@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MANUALALIGNMENT_H
-#define GUI_MANUALALIGNMENT_H
+~ifndef GUI_MANUALALIGNMENT_H
+~define GUI_MANUALALIGNMENT_H
 
-#include <QPointer>
-#include <Base/BoundBox.h>
-#include <Base/Placement.h>
-#include <Base/Vector3D.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <QPointer>
+~include <Base/BoundBox.h>
+~include <Base/Placement.h>
+~include <Base/Vector3D.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
 class SbVec3f;
 class SoPickedPoint;
@@ -267,5 +267,5 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_MANUALALIGNMENT_H
+~endif // GUI_MANUALALIGNMENT_H
 

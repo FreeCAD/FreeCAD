@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPART_GUI_TASKCURVEONMESH_H
-#define MESHPART_GUI_TASKCURVEONMESH_H
+~ifndef MESHPART_GUI_TASKCURVEONMESH_H
+~define MESHPART_GUI_TASKCURVEONMESH_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <QPointer>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <QPointer>
 
 namespace Gui {
 class View3DInventor;
@@ -81,4 +81,4 @@ private:
 
 } //namespace MeshPartGui
 
-#endif // MESHPART_GUI_TASKCURVEONMESH_H
+~endif // MESHPART_GUI_TASKCURVEONMESH_H

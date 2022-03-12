@@ -17,16 +17,16 @@
  *     functions and macro definitions related to file/stream I/O.
  */
 
-#ifndef KDL_UTILITY_IO_H_84822
-#define KDL_UTILITY_IO_H_84822
+~ifndef KDL_UTILITY_IO_H_84822
+~define KDL_UTILITY_IO_H_84822
 
-//#include <kdl/kdl-config.h>
+//~include <kdl/kdl-config.h>
 
 
 // Standard includes
-#include <iostream>
-#include <iomanip>
-#include <fstream>
+~include <iostream>
+~include <iomanip>
+~include <fstream>
 
 
 namespace KDL {
@@ -76,4 +76,4 @@ void EatEnd( std::istream& is, int delim );
 }
 
 
-#endif
+~endif

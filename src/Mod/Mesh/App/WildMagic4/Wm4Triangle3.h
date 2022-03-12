@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TRIANGLE3_H
-#define WM4TRIANGLE3_H
+~ifndef WM4TRIANGLE3_H
+~define WM4TRIANGLE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -44,7 +44,7 @@ public:
 
 }
 
-#include "Wm4Triangle3.inl"
+~include "Wm4Triangle3.inl"
 
 namespace Wm4
 {
@@ -53,4 +53,4 @@ typedef Triangle3<double> Triangle3d;
 
 }
 
-#endif
+~endif

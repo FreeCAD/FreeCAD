@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jï¿½rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREEITEMMODE_H
-#define GUI_TREEITEMMODE_H
+~ifndef GUI_TREEITEMMODE_H
+~define GUI_TREEITEMMODE_H
 
 namespace Gui {
 
@@ -46,4 +46,4 @@ namespace Gui {
     };
 }
 
-#endif // GUI_TREEITEMMODE_H
+~endif // GUI_TREEITEMMODE_H

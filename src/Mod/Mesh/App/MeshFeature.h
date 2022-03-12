@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef MESH_FEATURE_H
-#define MESH_FEATURE_H
+~ifndef MESH_FEATURE_H
+~define MESH_FEATURE_H
 
-#include <App/GeoFeature.h>
-#include <App/FeatureCustom.h>
-#include <App/FeaturePython.h>
+~include <App/GeoFeature.h>
+~include <App/FeatureCustom.h>
+~include <App/FeaturePython.h>
 
-#include "Core/MeshKernel.h"
-#include "Mesh.h"
-#include "MeshProperties.h"
+~include "Core/MeshKernel.h"
+~include "Mesh.h"
+~include "MeshProperties.h"
 
 namespace Base{
   class XMLReader;
@@ -92,4 +92,4 @@ typedef App::FeaturePythonT<Feature> FeaturePython;
 
 
 
-#endif 
+~endif 

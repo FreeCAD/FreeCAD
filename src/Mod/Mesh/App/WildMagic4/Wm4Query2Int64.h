@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2INT64_H
-#define WM4QUERY2INT64_H
+~ifndef WM4QUERY2INT64_H
+~define WM4QUERY2INT64_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query2.h"
 
 namespace Wm4
 {
@@ -58,7 +58,7 @@ private:
 
 }
 
-#include "Wm4Query2Int64.inl"
+~include "Wm4Query2Int64.inl"
 
 namespace Wm4
 {
@@ -67,4 +67,4 @@ typedef Query2Int64<double> Query2Int64d;
 
 }
 
-#endif
+~endif

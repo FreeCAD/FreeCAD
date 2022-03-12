@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
+~ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
+~define GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
 
-#include "ViewProviderFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui
 {
@@ -52,4 +52,4 @@ private:
 } //namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H
+~endif // GUI_VIEWPROVIDERFEMCONSTRAINTFORCE_H

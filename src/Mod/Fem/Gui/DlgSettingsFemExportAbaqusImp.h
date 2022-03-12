@@ -23,10 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
-#define FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
+~ifndef FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
+~define FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
 
-#include <Gui/PropertyPage.h>
+~include <Gui/PropertyPage.h>
 
 namespace FemGui {
 
@@ -50,4 +50,4 @@ private:
 
 } // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H
+~endif // FEMGUI_DLGSETTINGSFEMEXPORTABAQUSIMP_H

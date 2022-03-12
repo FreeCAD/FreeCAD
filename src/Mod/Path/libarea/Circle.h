@@ -27,9 +27,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==============================*/
 
 
-#pragma once
+~pragma once
 
-#include "Point.h"
+~include "Point.h"
 
 class Circle{
 public:

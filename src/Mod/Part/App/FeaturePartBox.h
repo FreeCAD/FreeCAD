@@ -22,12 +22,12 @@
 
 
 
-#ifndef PART_FEATUREPARTBOX_H
-#define PART_FEATUREPARTBOX_H
+~ifndef PART_FEATUREPARTBOX_H
+~define PART_FEATUREPARTBOX_H
 
-#include <App/PropertyStandard.h>
+~include <App/PropertyStandard.h>
 
-#include "PrimitiveFeature.h"
+~include "PrimitiveFeature.h"
 
 namespace Part
 {
@@ -61,4 +61,4 @@ protected:
 } //namespace Part
 
 
-#endif // PART_FEATUREPARTBOX_H
+~endif // PART_FEATUREPARTBOX_H

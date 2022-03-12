@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WORKFLOWMANAGER_H_PB7A5GCM
-#define WORKFLOWMANAGER_H_PB7A5GCM
+~ifndef WORKFLOWMANAGER_H_PB7A5GCM
+~define WORKFLOWMANAGER_H_PB7A5GCM
 
 namespace App {
     class Document;
@@ -124,4 +124,4 @@ inline bool isModernWorkflow (App::Document *doc) {
 
 } /* PartDesignGui  */
 
-#endif /* end of include guard: WORKFLOWMANAGER_H_PB7A5GCM */
+~endif /* end of include guard: WORKFLOWMANAGER_H_PB7A5GCM */

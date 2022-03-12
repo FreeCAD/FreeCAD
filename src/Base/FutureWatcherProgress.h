@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FUTUREWATCHER_H
-#define BASE_FUTUREWATCHER_H
+~ifndef BASE_FUTUREWATCHER_H
+~define BASE_FUTUREWATCHER_H
 
-#include <QObject>
-#include <Base/Sequencer.h>
+~include <QObject>
+~include <Base/Sequencer.h>
 
 
 namespace Base
@@ -48,4 +48,4 @@ private:
 };
 }
 
-#endif // BASE_FUTUREWATCHER_H
+~endif // BASE_FUTUREWATCHER_H

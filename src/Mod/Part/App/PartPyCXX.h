@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PYCXX_H
-#define PART_PYCXX_H
+~ifndef PART_PYCXX_H
+~define PART_PYCXX_H
 
-#include <CXX/Extensions.hxx>
-#include <Mod/Part/App/TopoShapePy.h>
+~include <CXX/Extensions.hxx>
+~include <Mod/Part/App/TopoShapePy.h>
 
 namespace Py {
     typedef ExtensionObject<Part::TopoShapePy> TopoShape;
@@ -39,4 +39,4 @@ namespace Part {
     PartExport std::vector<TopoShape> getPyShapes(PyObject *obj);
 }
 
-#endif //PART_PYCXX_H
+~endif //PART_PYCXX_H

@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKORTHOVIEWS_H
-#define GUI_TASKVIEW_TASKORTHOVIEWS_H
+~ifndef GUI_TASKVIEW_TASKORTHOVIEWS_H
+~define GUI_TASKVIEW_TASKORTHOVIEWS_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/BoundBox.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Base/BoundBox.h>
 
-#include <gp_Ax2.hxx>
-#include <vector>
-#include <boost_signals2.hpp>
+~include <gp_Ax2.hxx>
+~include <vector>
+~include <boost_signals2.hpp>
 
-#include <Mod/Drawing/App/FeatureViewPart.h>
+~include <Mod/Drawing/App/FeatureViewPart.h>
 
 
 
@@ -226,5 +226,5 @@ private:
 } //namespace DrawingGui
 
 
-#endif // GUI_TASKVIEW_OrthoViews_H
+~endif // GUI_TASKVIEW_OrthoViews_H
 

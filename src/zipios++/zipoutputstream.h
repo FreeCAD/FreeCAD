@@ -1,14 +1,14 @@
-#ifndef ZIPOUTPUTSTREAM_H
-#define ZIPOUTPUTSTREAM_H
+~ifndef ZIPOUTPUTSTREAM_H
+~define ZIPOUTPUTSTREAM_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include <string>
+~include <string>
 
-#include "ziphead.h"
-#include "zipoutputstreambuf.h"
+~include "ziphead.h"
+~include "zipoutputstreambuf.h"
 
 namespace zipios {
 
@@ -74,7 +74,7 @@ private:
  
 } // namespace.
 
-#endif
+~endif
 
 /** \file 
     Header file that defines ZipOutputStream.

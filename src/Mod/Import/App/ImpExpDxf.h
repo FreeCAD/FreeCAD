@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPEXPDXF_H
-#define IMPEXPDXF_H
+~ifndef IMPEXPDXF_H
+~define IMPEXPDXF_H
 
-#include "dxf.h"
-#include <Mod/Part/App/TopoShape.h>
-#include <App/Document.h>
-#include <gp_Pnt.hxx>
+~include "dxf.h"
+~include <Mod/Part/App/TopoShape.h>
+~include <App/Document.h>
+~include <gp_Pnt.hxx>
 
 class BRepAdaptor_Curve;
 
@@ -118,4 +118,4 @@ namespace Import
 
 }
 
-#endif // IMPEXPDXF_H
+~endif // IMPEXPDXF_H

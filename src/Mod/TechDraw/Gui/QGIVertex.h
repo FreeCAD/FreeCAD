@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
-#define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+~define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
 
-# include "QGIPrimPath.h"
+~ include "QGIPrimPath.h"
 
 namespace TechDrawGui
 {
@@ -52,4 +52,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+~endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H

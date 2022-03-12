@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
-#define GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+~ifndef GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+~define GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 namespace Gui {
 namespace Dialog {
@@ -106,4 +106,4 @@ public:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+~endif // GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H

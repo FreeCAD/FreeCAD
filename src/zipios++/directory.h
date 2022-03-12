@@ -22,36 +22,36 @@
 
 // -------------------------------------------------------------------------- 
 
-#if !defined(BOOST_DIRECTORY_H)
-#define BOOST_DIRECTORY_H 1
+~if !defined(BOOST_DIRECTORY_H)
+~define BOOST_DIRECTORY_H 1
 
 // --------------------------------------------------------------------------
 
-#include <iterator>
-#include <string>
-#include <cstddef>
-#include <ctime>
-#include <stdexcept>
+~include <iterator>
+~include <string>
+~include <cstddef>
+~include <ctime>
+~include <stdexcept>
 
-// #include <boost.h>  Contents of boost.h
+// ~include <boost.h>  Contents of boost.h
 
 // Allow control over DLL version being built
-#if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
-#  define BOOST_DECL
-#elif defined(ZIPIOS_DLL)
-#  ifdef ZIPIOS_EXPORTS
-#    define BOOST_DECL __declspec(dllexport)
-#  else
-#    define BOOST_DECL __declspec(dllimport)
-#  endif
-#else
-#  define BOOST_DECL
-#endif
+~if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
+~  define BOOST_DECL
+~elif defined(ZIPIOS_DLL)
+~  ifdef ZIPIOS_EXPORTS
+~    define BOOST_DECL __declspec(dllexport)
+~  else
+~    define BOOST_DECL __declspec(dllimport)
+~  endif
+~else
+~  define BOOST_DECL
+~endif
 // end of contents of boost.h
 
-#if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
-#include <sys/types.h>
-#endif
+~if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
+~include <sys/types.h>
+~endif
 
 // --------------------------------------------------------------------------
 
@@ -61,24 +61,24 @@ namespace boost
 	{
 		class dir_it;
 
-#if defined(__GNUG__)
+~if defined(__GNUG__)
 		template <class Property>
 			typename Property::value_type get(dir_it const &);
 		template <class Property>
 			void set(dir_it const &, typename Property::value_type);
-#else
+~else
 		template <class Property> class get;
 		template <class Property> class set;
-#endif
+~endif
 
 	class BOOST_DECL dir_it //: public std::iterator<std::input_iterator_tag, std::string>
 		{
-#if defined(__GNUG__)
+~if defined(__GNUG__)
 			template <class Property>
 			friend typename Property::value_type get(dir_it const &);
 			template <class Property>
 			friend void set(dir_it const &, typename Property::value_type);
-#endif
+~endif
 
 			struct representation;
 			
@@ -111,9 +111,9 @@ namespace boost
 			bool operator== (dir_it const &) const;
 			bool operator!= (dir_it const &) const;
 
-#if defined(__GNUG__)
+~if defined(__GNUG__)
 		private:
-#endif
+~endif
 			representation *rep;
 		};
 		
@@ -128,7 +128,7 @@ namespace boost
 		struct user_write { typedef bool value_type; };
 		struct user_execute { typedef bool value_type; };
 
-#if defined(__GNUG__)
+~if defined(__GNUG__)
 		template <> size::value_type get<size>(dir_it const &);
 		template <> mtime::value_type get<mtime>(dir_it const &);
 		template <> bool get<is_directory>(dir_it const &);
@@ -140,7 +140,7 @@ namespace boost
 		template <> void set<user_write>(dir_it const &, bool);
 		template <> bool get<user_execute>(dir_it const &);
 		template <> void set<user_execute>(dir_it const &, bool);
-#else
+~else
 		template <> class BOOST_DECL get<size>
 		{
 			typedef size::value_type value_type;
@@ -231,9 +231,9 @@ namespace boost
 			dir_it const &m_it;
 		};
 
-#endif
+~endif
 
-#if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
+~if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
 
 		struct is_link { typedef bool value_type; };
 		template <> bool get<is_link>(dir_it const &);
@@ -345,7 +345,7 @@ namespace boost
 		template<> std::string get<gname>(dir_it const &);
 		template<> void set<gname>(dir_it const &, std::string );
 
-#endif
+~endif
 
 	} // namespace filesystem
 } // namespace boost
@@ -366,4 +366,4 @@ namespace std
 
 // --------------------------------------------------------------------------
 
-#endif /* BOOST_DIRECTORY_H */
+~endif /* BOOST_DIRECTORY_H */

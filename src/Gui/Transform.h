@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSFORM_H
-#define GUI_TRANSFORM_H
+~ifndef GUI_TRANSFORM_H
+~define GUI_TRANSFORM_H
 
-#include <set>
-#include <Base/Placement.h>
+~include <set>
+~include <Base/Placement.h>
 
-#include "InputVector.h"
-#include "Selection.h"
-#include "TaskView/TaskDialog.h"
-#include "TaskView/TaskView.h"
+~include "InputVector.h"
+~include "Selection.h"
+~include "TaskView/TaskDialog.h"
+~include "TaskView/TaskView.h"
 
 
 namespace Gui {
@@ -132,4 +132,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_TRANSFORM_H
+~endif // GUI_TRANSFORM_H

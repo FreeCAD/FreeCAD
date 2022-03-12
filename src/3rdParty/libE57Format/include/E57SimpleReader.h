@@ -27,11 +27,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
 //! @file E57SimpleReader.h E57 Simple API for reading E57
 
-#include "E57SimpleData.h"
+~include "E57SimpleData.h"
 
 namespace e57
 {

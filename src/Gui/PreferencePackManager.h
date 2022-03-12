@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PREFERENCEPACKMANAGER_H 
-#define BASE_PREFERENCEPACKMANAGER_H 
+~ifndef BASE_PREFERENCEPACKMANAGER_H 
+~define BASE_PREFERENCEPACKMANAGER_H 
 
-#include <vector>
-#include <string>
-#include <mutex>
+~include <vector>
+~include <string>
+~include <mutex>
 
-#include "App/Metadata.h"
+~include "App/Metadata.h"
 
 namespace Gui {
 
@@ -209,4 +209,4 @@ namespace Gui {
 Q_DECLARE_METATYPE(Gui::PreferencePackManager::TemplateFile) // So it can be used with QVariant
 
 
-#endif
+~endif

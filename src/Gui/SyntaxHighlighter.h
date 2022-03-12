@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SYNTAXHIGHLIGHTER_H
-#define GUI_SYNTAXHIGHLIGHTER_H
+~ifndef GUI_SYNTAXHIGHLIGHTER_H
+~define GUI_SYNTAXHIGHLIGHTER_H
 
-#include <QSyntaxHighlighter>
+~include <QSyntaxHighlighter>
 
 namespace Gui {
 class SyntaxHighlighterP;
@@ -64,4 +64,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_SYNTAXHIGHLIGHTER_H
+~endif // GUI_SYNTAXHIGHLIGHTER_H

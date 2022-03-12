@@ -1,5 +1,5 @@
-#ifndef QUARTER_QUARTERWIDGET_H
-#define QUARTER_QUARTERWIDGET_H
+~ifndef QUARTER_QUARTERWIDGET_H
+~define QUARTER_QUARTERWIDGET_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,15 +33,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/SoRenderManager.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+~include <Inventor/SoRenderManager.h>
+~include <Inventor/actions/SoGLRenderAction.h>
 
-#include <QColor>
-#include <QGraphicsView>
-#include <QUrl>
-#include <QtOpenGL.h>
+~include <QColor>
+~include <QGraphicsView>
+~include <QUrl>
+~include <QtOpenGL.h>
 
-#include "Basic.h"
+~include "Basic.h"
 
 
 class QMenu;
@@ -210,4 +210,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_QUARTERWIDGET_H
+~endif // QUARTER_QUARTERWIDGET_H

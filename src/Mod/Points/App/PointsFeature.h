@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_FEATURE_H
-#define POINTS_FEATURE_H
+~ifndef POINTS_FEATURE_H
+~define POINTS_FEATURE_H
 
-#include <App/GeoFeature.h>
-#include <App/FeatureCustom.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-#include "Points.h"
-#include "PropertyPointKernel.h"
+~include <App/GeoFeature.h>
+~include <App/FeatureCustom.h>
+~include <App/FeaturePython.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
+~include "Points.h"
+~include "PropertyPointKernel.h"
 
 
 namespace Base{
@@ -87,4 +87,4 @@ typedef App::FeaturePythonT<Feature> FeaturePython;
 } //namespace Points
 
 
-#endif
+~endif

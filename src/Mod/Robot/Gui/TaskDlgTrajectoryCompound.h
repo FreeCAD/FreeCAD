@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef ROBOTGUI_TaskDlgTrajectoryCompound_H
-#define ROBOTGUI_TaskDlgTrajectoryCompound_H
+~ifndef ROBOTGUI_TaskDlgTrajectoryCompound_H
+~define ROBOTGUI_TaskDlgTrajectoryCompound_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Robot/App/TrajectoryCompound.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/Robot/App/TrajectoryCompound.h>
 
 
 // forward
@@ -67,4 +67,4 @@ protected:
 
 } //namespace RobotGui
 
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+~endif // ROBOTGUI_TASKDLGSIMULATE_H

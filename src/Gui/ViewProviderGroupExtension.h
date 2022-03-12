@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERGROUPEXTENSION_H
+~ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
+~define GUI_VIEWPROVIDERGROUPEXTENSION_H
 
-#include "ViewProviderExtensionPython.h"
+~include "ViewProviderExtensionPython.h"
 
 
 namespace Gui
@@ -60,4 +60,4 @@ typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProvid
 
 } //namespace Gui
 
-#endif // GUI_VIEWPROVIDERGROUPEXTENSION_H
+~endif // GUI_VIEWPROVIDERGROUPEXTENSION_H

@@ -23,12 +23,12 @@
  *      $Name:  $ 
  ****************************************************************************/
 
-#ifndef Rall2D_H
-#define Rall2D_H
+~ifndef Rall2D_H
+~define Rall2D_H
 
-#include <math.h>
-#include <assert.h>
-#include "utility.h"
+~include <math.h>
+~include <assert.h>
+~include "utility.h"
 
 
 namespace KDL {
@@ -535,4 +535,4 @@ INLINE  bool Equal(const Rall2d<T,V,S>& y,const Rall2d<T,V,S>& x,double eps=epsi
 }
 
 
-#endif
+~endif

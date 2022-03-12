@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTGear_H
-#define FEM_CONSTRAINTGear_H
+~ifndef FEM_CONSTRAINTGear_H
+~define FEM_CONSTRAINTGear_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
-#include "FemConstraintBearing.h"
+~include "FemConstraintBearing.h"
 
 namespace Fem
 {
@@ -68,4 +68,4 @@ private:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTGear_H
+~endif // FEM_CONSTRAINTGear_H

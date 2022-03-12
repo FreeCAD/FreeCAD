@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
-#define GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
+~ifndef GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
+~define GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
 
-#include <QTreeView>
-#include <QListView>
-#include <QComboBox>
-#include <QAbstractListModel>
-#include "PropertyPage.h"
+~include <QTreeView>
+~include <QListView>
+~include <QComboBox>
+~include <QAbstractListModel>
+~include "PropertyPage.h"
 
-#include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
+~include <boost/foreach.hpp>
+~include <boost/property_tree/ptree.hpp>
+~include <boost/property_tree/xml_parser.hpp>
 
 class Command;
 class QPushButton;
@@ -179,4 +179,4 @@ namespace Gui
     }
 }
 
-#endif //GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
+~endif //GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H

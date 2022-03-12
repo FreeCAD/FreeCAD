@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Body_H
-#define PARTDESIGN_Body_H
+~ifndef PARTDESIGN_Body_H
+~define PARTDESIGN_Body_H
 
-#include <Mod/Part/App/BodyBase.h>
+~include <Mod/Part/App/BodyBase.h>
 
 namespace App {
     class Origin;
@@ -158,4 +158,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PART_Body_H
+~endif // PART_Body_H

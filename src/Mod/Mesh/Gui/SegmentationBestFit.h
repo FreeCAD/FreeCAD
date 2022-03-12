@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_SEGMENTATIONBESTFIT_H
-#define MESHGUI_SEGMENTATIONBESTFIT_H
+~ifndef MESHGUI_SEGMENTATIONBESTFIT_H
+~define MESHGUI_SEGMENTATIONBESTFIT_H
 
-#include <QDialog>
-#include <list>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include "MeshSelection.h"
+~include <QDialog>
+~include <list>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include "MeshSelection.h"
 
 class QDoubleSpinBox;
 
@@ -125,4 +125,4 @@ private:
 
 }
 
-#endif // MESHGUI_SEGMENTATIONBESTFIT_H
+~endif // MESHGUI_SEGMENTATIONBESTFIT_H

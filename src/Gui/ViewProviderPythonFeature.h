@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
-#define GUI_VIEWPROVIDERPYTHONFEATURE_H
+~ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
+~define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
-#include <App/AutoTransaction.h>
-#include <App/PropertyPythonObject.h>
-#include <App/FeaturePython.h>
+~include <App/AutoTransaction.h>
+~include <App/PropertyPythonObject.h>
+~include <App/FeaturePython.h>
 
-#include "ViewProviderGeometryObject.h"
-#include "Document.h"
+~include "ViewProviderGeometryObject.h"
+~include "Document.h"
 
 
 class SoSensor;
@@ -131,7 +131,7 @@ private:
     App::PropertyPythonObject &Proxy;
     bool has__object__;
 
-#define FC_PY_VIEW_OBJECT \
+~define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
@@ -173,13 +173,13 @@ private:
     FC_PY_ELEMENT(getLinkedViewProvider) \
     FC_PY_ELEMENT(editProperty) \
 
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
 
     FC_PY_VIEW_OBJECT
 
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_FLAG(_name)
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_FLAG(_name)
 
     enum Flag {
         FC_PY_VIEW_OBJECT
@@ -622,5 +622,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderGeometryObject> ViewProviderPytho
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDERPYTHONFEATURE_H
+~endif // GUI_VIEWPROVIDERPYTHONFEATURE_H
 

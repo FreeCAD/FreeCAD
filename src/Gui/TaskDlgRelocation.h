@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKDLGRELOCATE_H
-#define GUI_TASKDLGRELOCATE_H
+~ifndef GUI_TASKDLGRELOCATE_H
+~define GUI_TASKDLGRELOCATE_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
 
 class Ui_DlgLocationPos;
@@ -103,4 +103,4 @@ protected:
 
 } //namespace Gui
 
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+~endif // ROBOTGUI_TASKDLGSIMULATE_H

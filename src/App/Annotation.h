@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_ANNOTATION_H
-#define APP_ANNOTATION_H
+~ifndef APP_ANNOTATION_H
+~define APP_ANNOTATION_H
 
-#include "DocumentObject.h"
-#include "PropertyGeo.h"
-#include "PropertyStandard.h"
+~include "DocumentObject.h"
+~include "PropertyGeo.h"
+~include "PropertyStandard.h"
 
 
 namespace App
@@ -72,4 +72,4 @@ public:
 } //namespace App
 
 
-#endif // APP_ANNOTATION_H
+~endif // APP_ANNOTATION_H

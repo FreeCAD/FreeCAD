@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGFILLETEDGES_H
-#define PARTGUI_DLGFILLETEDGES_H
+~ifndef PARTGUI_DLGFILLETEDGES_H
+~define PARTGUI_DLGFILLETEDGES_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <QDialog>
-#include <QStandardItemModel>
-#include <QItemDelegate>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <QDialog>
+~include <QStandardItemModel>
+~include <QItemDelegate>
 
 namespace Base {
     class Quantity;
@@ -194,4 +194,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGFILLETEDGES_H
+~endif // PARTGUI_DLGFILLETEDGES_H

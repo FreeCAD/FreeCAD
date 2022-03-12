@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DOWNLOADMANAGER_H
-#define GUI_DIALOG_DOWNLOADMANAGER_H
+~ifndef GUI_DIALOG_DOWNLOADMANAGER_H
+~define GUI_DIALOG_DOWNLOADMANAGER_H
 
-#include <QAbstractListModel>
-#include <QDialog>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QUrl>
+~include <QAbstractListModel>
+~include <QDialog>
+~include <QNetworkAccessManager>
+~include <QNetworkReply>
+~include <QUrl>
 
 
 class AutoSaver;
@@ -117,4 +117,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DOWNLOADMANAGER_H
+~endif // GUI_DIALOG_DOWNLOADMANAGER_H

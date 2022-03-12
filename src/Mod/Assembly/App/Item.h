@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 
-#ifndef Assembly_Item_H
-#define Assembly_Item_H
+~ifndef Assembly_Item_H
+~define Assembly_Item_H
 
-#include <App/PropertyStandard.h>
-#include <App/GeoFeature.h>
-#include <TopoDS_Shape.hxx>
+~include <App/PropertyStandard.h>
+~include <App/GeoFeature.h>
+~include <TopoDS_Shape.hxx>
 
 namespace Assembly
 {
@@ -62,4 +62,4 @@ public:
 } //namespace Assembly
 
 
-#endif // ASSEMBLY_Item_H
+~endif // ASSEMBLY_Item_H

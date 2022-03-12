@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
-#define PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
+~ifndef PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
+~define PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 
-#include "ViewProviderPrimitive.h"
+~include "ViewProviderPrimitive.h"
 
 
 namespace PartGui {
@@ -49,5 +49,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
+~endif // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 

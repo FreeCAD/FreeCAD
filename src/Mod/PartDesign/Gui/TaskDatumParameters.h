@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDatumParameters_H
-#define GUI_TASKVIEW_TaskDatumParameters_H
+~ifndef GUI_TASKVIEW_TaskDatumParameters_H
+~define GUI_TASKVIEW_TaskDatumParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/Gui/TaskAttacher.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Mod/Part/Gui/TaskAttacher.h>
 
-#include "ViewProviderDatum.h"
+~include "ViewProviderDatum.h"
 
 class Ui_TaskDatumParameters;
 class QLineEdit;
@@ -69,4 +69,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

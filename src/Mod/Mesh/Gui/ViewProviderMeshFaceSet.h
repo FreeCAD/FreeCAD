@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDERMESHFACESET_H
-#define MESHGUI_VIEWPROVIDERMESHFACESET_H
+~ifndef MESHGUI_VIEWPROVIDERMESHFACESET_H
+~define MESHGUI_VIEWPROVIDERMESHFACESET_H
 
-#include <Mod/Mesh/Gui/ViewProvider.h>
+~include <Mod/Mesh/Gui/ViewProvider.h>
 
 namespace MeshGui {
 class SoFCIndexedFaceSet;
@@ -74,5 +74,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESHFACESET_H
+~endif // MESHGUI_VIEWPROVIDERMESHFACESET_H
 

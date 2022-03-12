@@ -14,10 +14,10 @@
 //
 // Version: 4.0.2 (2006/10/15)
 
-#ifndef WM4TMINHEAP_H
-#define WM4TMINHEAP_H
+~ifndef WM4TMINHEAP_H
+~define WM4TMINHEAP_H
 
-#include "Wm4System.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -92,6 +92,6 @@ private:
 
 }
 
-#include "Wm4TMinHeap.inl"
+~include "Wm4TMinHeap.inl"
 
-#endif
+~endif

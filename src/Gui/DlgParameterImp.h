@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPARAMETER_H
-#define GUI_DIALOG_DLGPARAMETER_H
+~ifndef GUI_DIALOG_DLGPARAMETER_H
+~define GUI_DIALOG_DLGPARAMETER_H
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
-#include <QTreeWidgetItem>
-#include <QTreeWidget>
-#include <QDialog>
-#include <QPointer>
+~include <QTreeWidgetItem>
+~include <QTreeWidget>
+~include <QDialog>
+~include <QPointer>
 
 namespace Gui {
 namespace Dialog {
@@ -354,4 +354,4 @@ protected:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGPARAMETER_H
+~endif // GUI_DIALOG_DLGPARAMETER_H

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef Fem_PropertyFemMesh_H
-#define Fem_PropertyFemMesh_H
+~ifndef Fem_PropertyFemMesh_H
+~define Fem_PropertyFemMesh_H
 
-#include "FemMesh.h"
-#include <App/PropertyGeo.h>
-#include <Base/BoundBox.h>
+~include "FemMesh.h"
+~include <App/PropertyGeo.h>
+~include <Base/BoundBox.h>
 
 namespace Fem
 {
@@ -90,4 +90,4 @@ private:
 } //namespace Fem
 
 
-#endif // PROPERTYTOPOSHAPE_H
+~endif // PROPERTYTOPOSHAPE_H

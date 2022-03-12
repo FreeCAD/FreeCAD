@@ -25,9 +25,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#pragma once
+~pragma once
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {
@@ -48,9 +48,9 @@ namespace e57
       {
          return bytestreamNumber_;
       }
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       virtual void dump( int indent = 0, std::ostream &os = std::cout ) = 0;
-#endif
+~endif
 
    protected:
       Decoder( unsigned bytestreamNumber );
@@ -73,9 +73,9 @@ namespace e57
 
       void stateReset() override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) override;
-#endif
+~endif
    protected:
       BitpackDecoder( unsigned bytestreamNumber, SourceDestBuffer &dbuf, unsigned alignmentSize,
                       uint64_t maxRecordCount );
@@ -103,9 +103,9 @@ namespace e57
 
       size_t inputProcessAligned( const char *inbuf, const size_t firstBit, const size_t endBit ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) override;
-#endif
+~endif
    protected:
       FloatPrecision precision_ = E57_SINGLE;
    };
@@ -117,9 +117,9 @@ namespace e57
 
       size_t inputProcessAligned( const char *inbuf, const size_t firstBit, const size_t endBit ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) override;
-#endif
+~endif
    protected:
       bool readingPrefix_ = true;
       int prefixLength_ = 1;
@@ -138,9 +138,9 @@ namespace e57
 
       size_t inputProcessAligned( const char *inbuf, const size_t firstBit, const size_t endBit ) override;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) override;
-#endif
+~endif
    protected:
       bool isScaledInteger_;
       int64_t minimum_;
@@ -163,9 +163,9 @@ namespace e57
       }
       size_t inputProcess( const char *source, const size_t availableByteCount ) override;
       void stateReset() override;
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) override;
-#endif
+~endif
    protected:
       uint64_t currentRecordIndex_ = 0;
       uint64_t maxRecordCount_;

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGBOOLEANOPERATION_H
-#define PARTGUI_DLGBOOLEANOPERATION_H
+~ifndef PARTGUI_DLGBOOLEANOPERATION_H
+~define PARTGUI_DLGBOOLEANOPERATION_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <boost_signals2.hpp>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <boost_signals2.hpp>
 
 class QTreeWidgetItem;
 
@@ -94,4 +94,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGBOOLEANOPERATION_H
+~endif // PARTGUI_DLGBOOLEANOPERATION_H

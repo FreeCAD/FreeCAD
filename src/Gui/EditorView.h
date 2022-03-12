@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_EDITORVIEW_H
-#define GUI_EDITORVIEW_H
+~ifndef GUI_EDITORVIEW_H
+~define GUI_EDITORVIEW_H
 
-#include "MDIView.h"
-#include "Window.h"
+~include "MDIView.h"
+~include "Window.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -180,4 +180,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_EDITORVIEW_H
+~endif // GUI_EDITORVIEW_H

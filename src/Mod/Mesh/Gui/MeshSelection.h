@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_MESHSELECTION_H
-#define MESHGUI_MESHSELECTION_H
+~ifndef MESHGUI_MESHSELECTION_H
+~define MESHGUI_MESHSELECTION_H
 
-#include <vector>
-#include <QWidget>
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
+~include <vector>
+~include <QWidget>
+~include <Inventor/nodes/SoEventCallback.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
 
 namespace Gui {
     class View3DInventorViewer;
@@ -100,4 +100,4 @@ private:
 
 }
 
-#endif // MESHGUI_MESHSELECTION_H
+~endif // MESHGUI_MESHSELECTION_H

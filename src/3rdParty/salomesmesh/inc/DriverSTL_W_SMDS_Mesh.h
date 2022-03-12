@@ -24,15 +24,15 @@
 //  File   : DriverSTL_W_SMDS_Mesh.h
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DRIVERSTL_W_SMDS_MESH
-#define _INCLUDE_DRIVERSTL_W_SMDS_MESH
+~ifndef _INCLUDE_DRIVERSTL_W_SMDS_MESH
+~define _INCLUDE_DRIVERSTL_W_SMDS_MESH
 
-#include "SMESH_DriverSTL.hxx"
+~include "SMESH_DriverSTL.hxx"
 
-#include "Driver_SMDS_Mesh.h"
-#include "SMDS_ElemIterator.hxx"
+~include "Driver_SMDS_Mesh.h"
+~include "SMDS_ElemIterator.hxx"
 
-#include <vector>
+~include <vector>
 
 /*!
  * \brief Writer of a mesh in STL (STereoLithography) file format.
@@ -61,4 +61,4 @@ class MESHDRIVERSTL_EXPORT DriverSTL_W_SMDS_Mesh: public Driver_SMDS_Mesh
   std::vector<const SMDS_MeshElement*> myVolumeFacets; // tmp faces
 };
 
-#endif
+~endif

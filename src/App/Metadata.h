@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_METADATAREADER_H 
-#define BASE_METADATAREADER_H 
+~ifndef BASE_METADATAREADER_H 
+~define BASE_METADATAREADER_H 
 
-#include "FCConfig.h"
+~include "FCConfig.h"
 
-#include <boost/filesystem.hpp>
+~include <boost/filesystem.hpp>
 
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
+~include <map>
+~include <memory>
+~include <string>
+~include <vector>
 
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
+~include <xercesc/dom/DOM.hpp>
+~include <xercesc/parsers/XercesDOMParser.hpp>
 
 
 namespace App {
@@ -310,4 +310,4 @@ namespace App {
 
 }
 
-#endif
+~endif

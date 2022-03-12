@@ -22,18 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewMulti_h_
-#define _DrawViewMulti_h_
+~ifndef _DrawViewMulti_h_
+~define _DrawViewMulti_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
-#include <App/FeaturePython.h>
-#include <App/Material.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyFile.h>
+~include <App/FeaturePython.h>
+~include <App/Material.h>
 
-#include <TopoDS_Compound.hxx>
+~include <TopoDS_Compound.hxx>
 
-#include "DrawViewPart.h"
+~include "DrawViewPart.h"
 
 class gp_Pln;
 class TopoDS_Face;
@@ -83,4 +83,4 @@ typedef App::FeaturePythonT<DrawViewMulti> DrawViewMultiPython;
 
 } //namespace TechDraw
 
-#endif
+~endif

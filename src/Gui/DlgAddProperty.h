@@ -20,10 +20,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_DIALOG_DLGADDPROPERTY_H
-#define GUI_DIALOG_DLGADDPROPERTY_H
+~ifndef GUI_DIALOG_DLGADDPROPERTY_H
+~define GUI_DIALOG_DLGADDPROPERTY_H
 
-#include <unordered_set>
+~include <unordered_set>
 
 namespace App {
 class PropertyContainer;
@@ -51,4 +51,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGADDPROPERTY_H
+~endif // GUI_DIALOG_DLGADDPROPERTY_H

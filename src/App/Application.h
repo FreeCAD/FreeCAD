@@ -21,16 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_APPLICATION_H
-#define APP_APPLICATION_H
+~ifndef APP_APPLICATION_H
+~define APP_APPLICATION_H
 
-#include <boost_signals2.hpp>
+~include <boost_signals2.hpp>
 
-#include <deque>
-#include <vector>
+~include <deque>
+~include <vector>
 
-#include <Base/Observer.h>
-#include <Base/Parameter.h>
+~include <Base/Observer.h>
+~include <Base/Parameter.h>
 
 // forward declarations
 typedef struct _object PyObject;
@@ -632,4 +632,4 @@ inline App::Application &GetApplication(void){
 } // namespace App
 
 
-#endif // APP_APPLICATION_H
+~endif // APP_APPLICATION_H

@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATUREDRAFT_H
-#define PARTDESIGN_FEATUREDRAFT_H
+~ifndef PARTDESIGN_FEATUREDRAFT_H
+~define PARTDESIGN_FEATUREDRAFT_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include "FeatureDressUp.h"
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyLinks.h>
+~include "FeatureDressUp.h"
 
 namespace PartDesign
 {
@@ -64,4 +64,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FEATUREDRAFT_H
+~endif // PARTDESIGN_FEATUREDRAFT_H

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGPARTCYLINDERIMP_H
-#define PARTGUI_DLGPARTCYLINDERIMP_H
+~ifndef PARTGUI_DLGPARTCYLINDERIMP_H
+~define PARTGUI_DLGPARTCYLINDERIMP_H
 
-#include <Gui/InputVector.h>
+~include <Gui/InputVector.h>
 
 namespace PartGui {
 class Ui_DlgPartCylinder;
@@ -46,4 +46,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGPARTCYLINDERIMP_H
+~endif // PARTGUI_DLGPARTCYLINDERIMP_H

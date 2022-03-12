@@ -1,5 +1,5 @@
-#ifndef QUARTER_DRAGDROPHANDLER_H
-#define QUARTER_DRAGDROPHANDLER_H
+~ifndef QUARTER_DRAGDROPHANDLER_H
+~define QUARTER_DRAGDROPHANDLER_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QObject>
-#include <Quarter/Basic.h>
+~include <QtCore/QObject>
+~include <Quarter/Basic.h>
 
 class QEvent;
 class SoEvent;
@@ -59,4 +59,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_DRAGDROPHANDLER_H
+~endif // QUARTER_DRAGDROPHANDLER_H

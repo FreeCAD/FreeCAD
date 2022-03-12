@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPACEBALLEVENT_H
-#define SPACEBALLEVENT_H
+~ifndef SPACEBALLEVENT_H
+~define SPACEBALLEVENT_H
 
-#include <QInputEvent>
+~include <QInputEvent>
 
 namespace Spaceball
 {
@@ -87,4 +87,4 @@ namespace Spaceball
         int button;
     };
 }
-#endif // SPACEBALLEVENT_H
+~endif // SPACEBALLEVENT_H

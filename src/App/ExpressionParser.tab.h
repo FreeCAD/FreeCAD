@@ -30,19 +30,19 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED
-# define YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED
+~ifndef YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED
+~ define YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED
 /* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
+~ifndef YYDEBUG
+~ define YYDEBUG 0
+~endif
+~if YYDEBUG
 extern int yydebug;
-#endif
+~endif
 
 /* Token type.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+~ifndef YYTOKENTYPE
+~ define YYTOKENTYPE
   enum yytokentype
   {
     FUNC = 258,
@@ -69,7 +69,7 @@ extern int yydebug;
     NEG = 279,
     POS = 280
   };
-#endif
+~endif
 
 /* Value type.  */
 
@@ -78,4 +78,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED  */
+~endif /* !YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED  */

@@ -23,17 +23,17 @@
 ***************************************************************************/
 
 
-#ifndef PATHSIMULATOR_VolSim_H
-#define PATHSIMULATOR_VolSim_H
+~ifndef PATHSIMULATOR_VolSim_H
+~define PATHSIMULATOR_VolSim_H
 
-#include <vector>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Path/App/Command.h>
+~include <vector>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Path/App/Command.h>
 
-#define SIM_EPSILON 0.00001
-#define SIM_TESSEL_TOP		1
-#define SIM_TESSEL_BOT		2
-#define SIM_WALK_RES		0.6   // step size in pixel units (to make sure all pixels in the path are visited)
+~define SIM_EPSILON 0.00001
+~define SIM_TESSEL_TOP		1
+~define SIM_TESSEL_BOT		2
+~define SIM_WALK_RES		0.6   // step size in pixel units (to make sure all pixels in the path are visited)
 
 struct toolShapePoint {
   float radiusPos;
@@ -180,4 +180,4 @@ private:
 	cStock *stock;
 };
 
-#endif  // PATHSIMULATOR_VolSim_H
+~endif  // PATHSIMULATOR_VolSim_H

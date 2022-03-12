@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTPROTECTOR_H
-#define SANDBOX_DOCUMENTPROTECTOR_H
+~ifndef SANDBOX_DOCUMENTPROTECTOR_H
+~define SANDBOX_DOCUMENTPROTECTOR_H
 
-#include <string>
-#include <App/DocumentObserver.h>
+~include <string>
+~include <App/DocumentObserver.h>
 
 namespace App {
     class Document;
@@ -128,5 +128,5 @@ private:
 
 }
 
-#endif // SANDBOX_DOCUMENTPROTECTOR_H
+~endif // SANDBOX_DOCUMENTPROTECTOR_H
 

@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
+~ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
+~define DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawColorsImp;
@@ -50,4 +50,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
+~endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H

@@ -5,11 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ANDROIDPANELSCHEME_H
-#define ANDROIDPANELSCHEME_H
+~ifndef ANDROIDPANELSCHEME_H
+~define ANDROIDPANELSCHEME_H
 
 
-#include "actionpanelscheme.h"
+~include "actionpanelscheme.h"
 
 
 namespace QSint
@@ -38,4 +38,4 @@ public:
 }
 
 
-#endif // ANDROIDPANELSCHEME_H
+~endif // ANDROIDPANELSCHEME_H

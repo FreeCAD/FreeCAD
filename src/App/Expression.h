@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSION_H
-#define EXPRESSION_H
+~ifndef EXPRESSION_H
+~define EXPRESSION_H
 
-#include <deque>
-#include <set>
-#include <string>
+~include <deque>
+~include <set>
+~include <string>
 
-#include <App/PropertyLinks.h>
-#include <App/ObjectIdentifier.h>
-#include <App/Range.h>
-#include <Base/Exception.h>
-#include <Base/BaseClass.h>
+~include <App/PropertyLinks.h>
+~include <App/ObjectIdentifier.h>
+~include <App/Range.h>
+~include <Base/Exception.h>
+~include <Base/BaseClass.h>
 
 
 namespace Base
@@ -223,4 +223,4 @@ public:
 
 }
 
-#endif // EXPRESSION_H
+~endif // EXPRESSION_H

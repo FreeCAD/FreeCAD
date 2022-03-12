@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef REENGUI_WORKBENCH_H
-#define REENGUI_WORKBENCH_H
+~ifndef REENGUI_WORKBENCH_H
+~define REENGUI_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace ReverseEngineeringGui {
 
@@ -48,4 +48,4 @@ protected:
 } // namespace ReverseEngineeringGui
 
 
-#endif // REENGUI_WORKBENCH_H
+~endif // REENGUI_WORKBENCH_H

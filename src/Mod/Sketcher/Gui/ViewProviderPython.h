@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef SketcherGui_VIEWPROVIDERPYTHON_H
-#define SketcherGui_VIEWPROVIDERPYTHON_H
+~ifndef SketcherGui_VIEWPROVIDERPYTHON_H
+~define SketcherGui_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Sketcher/Gui/ViewProviderSketch.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 namespace SketcherGui {
 
@@ -51,5 +51,5 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderCustom> ViewProviderCustomPy
 } // namespace SketcherGui
 
 
-#endif // SketcherGui_VIEWPROVIDERPYTHON_H
+~endif // SketcherGui_VIEWPROVIDERPYTHON_H
 

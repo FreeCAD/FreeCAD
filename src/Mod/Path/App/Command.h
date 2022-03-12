@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef PATH_COMMAND_H
-#define PATH_COMMAND_H
+~ifndef PATH_COMMAND_H
+~define PATH_COMMAND_H
 
-#include <map>
-#include <string>
-#include <Base/Persistence.h>
-#include <Base/Placement.h>
-#include <Base/Vector3D.h>
+~include <map>
+~include <string>
+~include <Base/Persistence.h>
+~include <Base/Placement.h>
+~include <Base/Vector3D.h>
 
 namespace Path
 {
@@ -73,4 +73,4 @@ namespace Path
     
 } //namespace Path
 
-#endif // PATH_COMMAND_H
+~endif // PATH_COMMAND_H

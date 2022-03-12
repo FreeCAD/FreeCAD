@@ -22,11 +22,11 @@
 
 
 
-#ifndef __FeatureImportIges_H__
-#define __FeatureImportIges_H__
+~ifndef __FeatureImportIges_H__
+~define __FeatureImportIges_H__
 
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Import
 {
@@ -55,4 +55,4 @@ public:
 
 
 
-#endif // __FeaturePartImportIges_H__
+~endif // __FeaturePartImportIges_H__

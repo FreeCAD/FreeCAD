@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef WEBGUI_COOKIEJAR_H
-#define WEBGUI_COOKIEJAR_H
+~ifndef WEBGUI_COOKIEJAR_H
+~define WEBGUI_COOKIEJAR_H
 
-#include <QNetworkCookieJar>
+~include <QNetworkCookieJar>
 
 class QNetworkCookieJar;
 
@@ -56,4 +56,4 @@ namespace WebGui {
 
 }
 
-#endif // WEBGUI_COOKIEJAR_H
+~endif // WEBGUI_COOKIEJAR_H

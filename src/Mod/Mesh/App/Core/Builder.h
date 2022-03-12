@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_BUILDER_H
-#define MESH_BUILDER_H
+~ifndef MESH_BUILDER_H
+~define MESH_BUILDER_H
 
-#include <set>
-#include <vector>
+~include <set>
+~include <vector>
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
+~include "MeshKernel.h"
+~include <Base/Vector3D.h>
 
 namespace Base {
 class SequencerLauncher;
@@ -215,4 +215,4 @@ private:
 
 } // namespace MeshCore
 
-#endif 
+~endif 

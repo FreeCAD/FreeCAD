@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumPlane_H
-#define PARTGUI_ViewProviderDatumPlane_H
+~ifndef PARTGUI_ViewProviderDatumPlane_H
+~define PARTGUI_ViewProviderDatumPlane_H
 
-#include "ViewProviderDatum.h"
+~include "ViewProviderDatum.h"
 
 namespace PartDesignGui {
 
@@ -51,4 +51,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDatumPlane_H
+~endif // PARTGUI_ViewProviderDatumPlane_H

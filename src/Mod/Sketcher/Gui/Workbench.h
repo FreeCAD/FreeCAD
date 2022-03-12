@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_WORKBENCH_H
-#define SKETCHER_WORKBENCH_H
+~ifndef SKETCHER_WORKBENCH_H
+~define SKETCHER_WORKBENCH_H
 
-#include <Gui/Workbench.h>
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+~include <Gui/Workbench.h>
+~include <Gui/MenuManager.h>
+~include <Gui/ToolBarManager.h>
 
 namespace SketcherGui {
 
@@ -63,4 +63,4 @@ SketcherGuiExport void addSketcherWorkbenchVirtualSpace(Gui::ToolBarItem& virtua
 
 } // namespace SketcherGui
 
-#endif // SKETCHER_WORKBENCH_H
+~endif // SKETCHER_WORKBENCH_H

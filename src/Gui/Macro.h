@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MACRO_H
-#define GUI_MACRO_H
+~ifndef GUI_MACRO_H
+~define GUI_MACRO_H
 
-#include <QString>
-#include <QStringList>
-#include <Base/Observer.h>
-#include <Base/Parameter.h>
+~include <QString>
+~include <QStringList>
+~include <Base/Observer.h>
+~include <Base/Parameter.h>
 
 
 namespace Gui {
@@ -115,4 +115,4 @@ protected:
 } // namespace Gui
 
 
-#endif // GUI_MACRO_H
+~endif // GUI_MACRO_H

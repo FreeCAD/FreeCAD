@@ -14,14 +14,14 @@
   - use QSpacerItem directly
 */
 
-#ifndef IISTASKPANEL_H
-#define IISTASKPANEL_H
+~ifndef IISTASKPANEL_H
+~define IISTASKPANEL_H
 
-#include <QPaintEvent>
-#include <QSpacerItem>
-#include <QWidget>
+~include <QPaintEvent>
+~include <QSpacerItem>
+~include <QWidget>
 
-#include "iistaskpanel_global.h"
+~include "iistaskpanel_global.h"
 
 
 class iisTaskPanelScheme;
@@ -46,4 +46,4 @@ protected:
 	QSpacerItem *mySpacer;
 };
 
-#endif // IISTASKPANEL_H
+~endif // IISTASKPANEL_H

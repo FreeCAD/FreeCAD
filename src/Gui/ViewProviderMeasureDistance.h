@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERMEASUREDISTANCE_H
-#define GUI_VIEWPROVIDERMEASUREDISTANCE_H
+~ifndef GUI_VIEWPROVIDERMEASUREDISTANCE_H
+~define GUI_VIEWPROVIDERMEASUREDISTANCE_H
 
-#include "ViewProviderDocumentObject.h"
-#include <QObject>
+~include "ViewProviderDocumentObject.h"
+~include <QObject>
 
 class SoFontStyle;
 class SoText2;
@@ -115,4 +115,4 @@ private:
 } //namespace Gui
 
 
-#endif // GUI_VIEWPROVIDERMEASUREDISTANCE_H
+~endif // GUI_VIEWPROVIDERMEASUREDISTANCE_H

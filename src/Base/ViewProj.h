@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_VIEWPROJ_H
-#define BASE_VIEWPROJ_H
+~ifndef BASE_VIEWPROJ_H
+~define BASE_VIEWPROJ_H
 
-#include "Vector3D.h"
-#include "Matrix.h"
+~include "Vector3D.h"
+~include "Matrix.h"
 
 
 namespace Base {
@@ -114,4 +114,4 @@ protected:
 
 } // namespace Base
 
-#endif // BASE_VIEWPROJ_H
+~endif // BASE_VIEWPROJ_H

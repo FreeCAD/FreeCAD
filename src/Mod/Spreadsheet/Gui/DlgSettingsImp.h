@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEETGUI_DLGSETTINGSIMP_H
-#define SPREADSHEETGUI_DLGSETTINGSIMP_H
+~ifndef SPREADSHEETGUI_DLGSETTINGSIMP_H
+~define SPREADSHEETGUI_DLGSETTINGSIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace SpreadsheetGui {
 class Ui_DlgSettings;
@@ -54,4 +54,4 @@ private:
 
 } // namespace SpreadsheetGui
 
-#endif // SPREADSHEETGUI_DLGSETTINGSIMP_H
+~endif // SPREADSHEETGUI_DLGSETTINGSIMP_H

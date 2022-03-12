@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_H
-#define PART_FACEMAKER_H
+~ifndef PART_FACEMAKER_H
+~define PART_FACEMAKER_H
 
-#include <BRepBuilderAPI_MakeShape.hxx>
-#include <Base/BaseClass.h>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
+~include <BRepBuilderAPI_MakeShape.hxx>
+~include <Base/BaseClass.h>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Wire.hxx>
 
-#include <memory>
+~include <memory>
 
 namespace Part
 {
@@ -142,4 +142,4 @@ protected:
 
 
 }//namespace Part
-#endif // PART_FACEMAKER_H
+~endif // PART_FACEMAKER_H

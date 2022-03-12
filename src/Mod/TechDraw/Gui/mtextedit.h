@@ -20,12 +20,12 @@
 **
 ** $QT_END_LICENSE$
 */
-#ifndef _MTEXTEDIT_H_
-#define _MTEXTEDIT_H_
+~ifndef _MTEXTEDIT_H_
+~define _MTEXTEDIT_H_
 
-#include <QTextEdit>
-#include <QMimeData>
-#include <QImage>
+~include <QTextEdit>
+~include <QMimeData>
+~include <QImage>
 
 class MTextEdit : public QTextEdit {
     Q_OBJECT
@@ -41,4 +41,4 @@ class MTextEdit : public QTextEdit {
 
 };
 
-#endif
+~endif

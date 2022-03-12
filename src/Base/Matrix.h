@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef BASE_MATRIX_H
-#define BASE_MATRIX_H
+~ifndef BASE_MATRIX_H
+~define BASE_MATRIX_H
 
-#include <string>
+~include <string>
 
-#include "Vector3D.h"
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include "Vector3D.h"
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 
 namespace Base {
@@ -461,6 +461,6 @@ inline void Matrix4D::setTrace(const Vector3d& v)
 } // namespace Base
 
 
-#endif // BASE_MATRIX_H
+~endif // BASE_MATRIX_H
 
 

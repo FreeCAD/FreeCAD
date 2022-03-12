@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIRICHANNO_H
-#define TECHDRAWGUI_QGIRICHANNO_H
+~ifndef TECHDRAWGUI_QGIRICHANNO_H
+~define TECHDRAWGUI_QGIRICHANNO_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
-#include <QFont>
-#include <QPointF>
-#include <QPen>
+~include <QObject>
+~include <QGraphicsView>
+~include <QStyleOptionGraphicsItem>
+~include <QGraphicsItem>
+~include <QGraphicsObject>
+~include <QPainterPath>
+~include <QColor>
+~include <QFont>
+~include <QPointF>
+~include <QPen>
 
-#include <Base/Vector3D.h>
-#include "QGILeaderLine.h"
+~include <Base/Vector3D.h>
+~include "QGILeaderLine.h"
 
 namespace TechDraw {
 class DrawRichAnno;
@@ -109,4 +109,4 @@ protected:
 
 }
 
-#endif // TECHDRAWGUI_QGIRICHANNO_H
+~endif // TECHDRAWGUI_QGIRICHANNO_H

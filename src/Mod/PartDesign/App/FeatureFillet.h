@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATUREFILLET_H
-#define PARTDESIGN_FEATUREFILLET_H
+~ifndef PARTDESIGN_FEATUREFILLET_H
+~define PARTDESIGN_FEATUREFILLET_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include "FeatureDressUp.h"
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include "FeatureDressUp.h"
 
 namespace PartDesign
 {
@@ -60,4 +60,4 @@ protected:
 } //namespace Part
 
 
-#endif // PARTDESIGN_FEATUREFILLET_H
+~endif // PARTDESIGN_FEATUREFILLET_H

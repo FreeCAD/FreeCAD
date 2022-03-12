@@ -1,9 +1,9 @@
-#ifndef _BRepUtils_HeaderFile
-#define _BRepUtils_HeaderFile
+~ifndef _BRepUtils_HeaderFile
+~define _BRepUtils_HeaderFile
 
-#ifndef _Standard_Macro_HeaderFile
-#include <Standard_Macro.hxx>
-#endif
+~ifndef _Standard_Macro_HeaderFile
+~include <Standard_Macro.hxx>
+~endif
 
 class TopoDS_Edge;
 class TopoDS_Shape;
@@ -18,5 +18,5 @@ public:
 };
 
 
-#endif //_BRepUtils_HeaderFile
+~endif //_BRepUtils_HeaderFile
 

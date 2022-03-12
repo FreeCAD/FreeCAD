@@ -3,28 +3,28 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#ifndef _dxf_h_
-#define _dxf_h_
+~ifndef _dxf_h_
+~define _dxf_h_
 
-#pragma once
+~pragma once
 
-#include <algorithm>
-#include <list>
-#include <vector>
-#include <map>
-#include <set>
-#include <string>
-#include <iosfwd>
-#include <cstdio>
-#include <cstring>
-#include <cmath>
+~include <algorithm>
+~include <list>
+~include <vector>
+~include <map>
+~include <set>
+~include <string>
+~include <iosfwd>
+~include <cstdio>
+~include <cstring>
+~include <cmath>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
 //Following is required to be defined on Ubuntu with OCC 6.3.1
-#ifndef HAVE_IOSTREAM
-#define HAVE_IOSTREAM
-#endif
+~ifndef HAVE_IOSTREAM
+~define HAVE_IOSTREAM
+~endif
 
 typedef int Aci_t; // AutoCAD color index
 
@@ -310,4 +310,4 @@ public:
     std::string LayerName() const;
 
 };
-#endif
+~endif

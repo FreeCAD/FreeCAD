@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRLINEFIT3_H
-#define WM4APPRLINEFIT3_H
+~ifndef WM4APPRLINEFIT3_H
+~define WM4APPRLINEFIT3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Line3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Line3.h"
 
 namespace Wm4
 {
@@ -30,4 +30,4 @@ Line3<Real> OrthogonalLineFit3 (int iQuantity, const Vector3<Real>* akPoint);
 
 }
 
-#endif
+~endif

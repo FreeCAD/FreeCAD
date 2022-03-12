@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_AUTOSAVER_H
-#define GUI_AUTOSAVER_H
+~ifndef GUI_AUTOSAVER_H
+~define GUI_AUTOSAVER_H
 
-#include <QObject>
+~include <QObject>
 
-#include <map>
-#include <set>
-#include <string>
-#include <boost_signals2.hpp>
-#include <Base/Writer.h>
+~include <map>
+~include <set>
+~include <string>
+~include <boost_signals2.hpp>
+~include <Base/Writer.h>
 
 namespace App {
 class Document;
@@ -119,4 +119,4 @@ private:
 } //namespace Gui
 
 
-#endif //GUI_AUTOSAVER_H
+~endif //GUI_AUTOSAVER_H

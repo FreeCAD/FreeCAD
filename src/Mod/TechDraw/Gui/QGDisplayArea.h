@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGDISPLAYAREA_H
-#define DRAWINGGUI_QGDISPLAYAREA_H
+~ifndef DRAWINGGUI_QGDISPLAYAREA_H
+~define DRAWINGGUI_QGDISPLAYAREA_H
 
-#include <QGraphicsItem>
-#include <QPointF>
-#include <QRectF>
+~include <QGraphicsItem>
+~include <QPointF>
+~include <QRectF>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -57,5 +57,5 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGDISPLAYAREA_H
+~endif // DRAWINGGUI_QGDISPLAYAREA_H
 

@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_PROPERTYEDITOR_MESH_H
-#define MESHGUI_PROPERTYEDITOR_MESH_H
+~ifndef MESHGUI_PROPERTYEDITOR_MESH_H
+~define MESHGUI_PROPERTYEDITOR_MESH_H
 
-#include <Gui/propertyeditor/PropertyItem.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
+~include <Gui/propertyeditor/PropertyItem.h>
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
 
 namespace MeshGui {
 
@@ -68,5 +68,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_PROPERTYEDITOR_MESH_H
+~endif // MESHGUI_PROPERTYEDITOR_MESH_H
 

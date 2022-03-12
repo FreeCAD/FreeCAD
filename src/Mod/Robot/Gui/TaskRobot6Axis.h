@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskRobot6Axis_H
-#define GUI_TASKVIEW_TaskRobot6Axis_H
+~ifndef GUI_TASKVIEW_TaskRobot6Axis_H
+~define GUI_TASKVIEW_TaskRobot6Axis_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskRobot6Axis;
@@ -81,4 +81,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

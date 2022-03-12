@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumCoordinateSystem_H
-#define PARTGUI_ViewProviderDatumCoordinateSystem_H
+~ifndef PARTGUI_ViewProviderDatumCoordinateSystem_H
+~define PARTGUI_ViewProviderDatumCoordinateSystem_H
 
-#include "ViewProviderDatum.h"
+~include "ViewProviderDatum.h"
 
 class SoCoordinate3;
 class SoFont;
@@ -74,4 +74,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDatumCoordinateSystem_H
+~endif // PARTGUI_ViewProviderDatumCoordinateSystem_H

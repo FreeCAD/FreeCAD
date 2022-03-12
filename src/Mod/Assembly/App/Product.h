@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef ItemAssembly_ItemAssembly_H
-#define ItemAssembly_ItemAssembly_H
+~ifndef ItemAssembly_ItemAssembly_H
+~define ItemAssembly_ItemAssembly_H
 
-#include <App/PropertyStandard.h>
+~include <App/PropertyStandard.h>
 
-#include "Item.h"
-#include "Solver/Solver.h"
+~include "Item.h"
+~include "Solver/Solver.h"
 
 namespace Assembly
 {
@@ -93,4 +93,4 @@ public:
 } //namespace Assembly
 
 
-#endif // Assembly_ItemAssembly_H
+~endif // Assembly_ItemAssembly_H

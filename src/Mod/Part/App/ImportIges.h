@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PART_IMPORT_IGES_H
-#define PART_IMPORT_IGES_H
+~ifndef PART_IMPORT_IGES_H
+~define PART_IMPORT_IGES_H
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
 namespace App {
 class Document;
@@ -37,4 +37,4 @@ PartExport int ImportIgesParts(App::Document *pcDoc, const char* Name);
 
 } //namespace Part
 
-#endif // PART_IMPORT_IGES_H
+~endif // PART_IMPORT_IGES_H

@@ -1,10 +1,10 @@
-#ifndef RALLND_H
-#define RALLND_H
+~ifndef RALLND_H
+~define RALLND_H
 
-#include "rall1d.h"
-#include "rall1d_io.h"
-#include "rall2d.h"
-#include "rall2d_io.h"
+~include "rall1d.h"
+~include "rall1d_io.h"
+~include "rall2d.h"
+~include "rall2d_io.h"
 /**
  * The Rall1d class allows for a 24-line implementation of rall numbers
  * generalized to the Nth derivative !
@@ -98,5 +98,5 @@ public:
 	}
 };
 
-#endif
+~endif
 

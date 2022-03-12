@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_FEATURETEST_H
-#define APP_FEATURETEST_H
+~ifndef APP_FEATURETEST_H
+~define APP_FEATURETEST_H
 
-#include "DocumentObject.h"
-#include "PropertyGeo.h"
-#include "PropertyLinks.h"
-#include "PropertyUnits.h"
+~include "DocumentObject.h"
+~include "PropertyGeo.h"
+~include "PropertyLinks.h"
+~include "PropertyUnits.h"
 
 
 namespace App
@@ -138,4 +138,4 @@ public:
 
 } //namespace App
 
-#endif // APP_FEATURETEST_H
+~endif // APP_FEATURETEST_H

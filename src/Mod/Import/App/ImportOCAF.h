@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_IMPORTOCAF_H
-#define IMPORT_IMPORTOCAF_H
+~ifndef IMPORT_IMPORTOCAF_H
+~define IMPORT_IMPORTOCAF_H
 
-#include <TDocStd_Document.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <Quantity_ColorRGBA.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TDF_LabelMapHasher.hxx>
-#include <climits>
-#include <string>
-#include <set>
-#include <map>
-#include <unordered_map>
-#include <vector>
-#include <App/Material.h>
-#include <App/Part.h>
-#include <Mod/Part/App/FeatureCompound.h>
+~include <TDocStd_Document.hxx>
+~include <XCAFDoc_ColorTool.hxx>
+~include <XCAFDoc_ShapeTool.hxx>
+~include <Quantity_ColorRGBA.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TDF_LabelMapHasher.hxx>
+~include <climits>
+~include <string>
+~include <set>
+~include <map>
+~include <unordered_map>
+~include <vector>
+~include <App/Material.h>
+~include <App/Part.h>
+~include <Mod/Part/App/FeatureCompound.h>
 
 
 class TDF_Label;
@@ -123,4 +123,4 @@ private:
 
 }
 
-#endif //IMPORT_IMPORTOCAF_H
+~endif //IMPORT_IMPORTOCAF_H

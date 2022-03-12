@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHCORE_CURVATURE_H
-#define MESHCORE_CURVATURE_H
+~ifndef MESHCORE_CURVATURE_H
+~define MESHCORE_CURVATURE_H
 
-#include <vector>
-#include <Base/Vector3D.h>
-#include "Definitions.h"
+~include <vector>
+~include <Base/Vector3D.h>
+~include "Definitions.h"
 
 namespace MeshCore {
 
@@ -73,4 +73,4 @@ private:
 
 } // MeshCore
 
-#endif // MESHCORE_CURVATURE_H
+~endif // MESHCORE_CURVATURE_H

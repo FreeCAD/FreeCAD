@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Loft_H
-#define PARTDESIGN_Loft_H
+~ifndef PARTDESIGN_Loft_H
+~define PARTDESIGN_Loft_H
 
-#include "FeatureSketchBased.h"
+~include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
@@ -76,4 +76,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PART_Loft_H
+~endif // PART_Loft_H

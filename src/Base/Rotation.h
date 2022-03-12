@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_ROTATION_H
-#define BASE_ROTATION_H
+~ifndef BASE_ROTATION_H
+~define BASE_ROTATION_H
 
-#include "Vector3D.h"
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include "Vector3D.h"
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace Base {
 
@@ -170,4 +170,4 @@ private:
 
 }
 
-#endif // BASE_ROTATION_H
+~endif // BASE_ROTATION_H

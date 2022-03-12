@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_METATYPES_H
-#define GUI_METATYPES_H
+~ifndef GUI_METATYPES_H
+~define GUI_METATYPES_H
 
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include <Base/Placement.h>
-#include <Base/Quantity.h>
-#include <App/DocumentObserver.h>
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
+~include <Base/Placement.h>
+~include <Base/Quantity.h>
+~include <App/DocumentObserver.h>
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
@@ -40,4 +40,4 @@ Q_DECLARE_METATYPE(QList<Base::Quantity>)
 Q_DECLARE_METATYPE(App::SubObjectT)
 Q_DECLARE_METATYPE(QList<App::SubObjectT>)
 
-#endif // GUI_METATYPES_H
+~endif // GUI_METATYPES_H

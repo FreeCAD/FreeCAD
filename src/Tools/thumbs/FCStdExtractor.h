@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef FC_STD_EXTRACTOR_H
-#define FC_STD_EXTRACTOR_H
+~ifndef FC_STD_EXTRACTOR_H
+~define FC_STD_EXTRACTOR_H
 
-#include "resource.h"               // main symbols
-#include <shlguid.h>
-#include <AtlCom.h>
-#include <shlobj.h>
-#include "IExtractImage.h"
+~include "resource.h"               // main symbols
+~include <shlguid.h>
+~include <AtlCom.h>
+~include <shlobj.h>
+~include "IExtractImage.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CFCStdExtractor
@@ -96,4 +96,4 @@ private:
     TCHAR m_szFile[1000];
 };
 
-#endif //FC_STD_EXTRACTOR_H
+~endif //FC_STD_EXTRACTOR_H

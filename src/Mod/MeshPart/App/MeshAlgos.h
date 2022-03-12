@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef _MeshAlgos_h_
-#define _MeshAlgos_h_
+~ifndef _MeshAlgos_h_
+~define _MeshAlgos_h_
 
-#ifdef FC_USE_GTS
-#  include <gts.h>
-#endif
+~ifdef FC_USE_GTS
+~  include <gts.h>
+~endif
 
-#include <vector>
+~include <vector>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include "CurveProjector.h"
+~include "CurveProjector.h"
 
 class TopoDS_Edge;
 class TopoDS_Shape;
@@ -67,7 +67,7 @@ public:
   */
   static MeshCore::MeshKernel* boolean(MeshCore::MeshKernel* Mesh1, MeshCore::MeshKernel* Mesh2, MeshCore::MeshKernel* pResult, int Type=0);
 
-#ifdef FC_USE_GTS
+~ifdef FC_USE_GTS
 
   /** Creates a GTS Surface from a MeshKernel
   */
@@ -77,7 +77,7 @@ public:
   */
 
   static void fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* pSurface);
-#endif
+~endif
 
   static void cutByShape(const TopoDS_Shape &aShape,const MeshCore::MeshKernel* pMesh,MeshCore::MeshKernel* pToolMesh);
 
@@ -109,4 +109,4 @@ public:
 
 } // namespace MeshPart
 
-#endif 
+~endif 

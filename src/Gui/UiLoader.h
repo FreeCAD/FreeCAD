@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_UILOADER_H
-#define GUI_UILOADER_H
+~ifndef GUI_UILOADER_H
+~define GUI_UILOADER_H
 
-#if !defined (__MINGW32__)
-#define HAVE_QT_UI_TOOLS
-#endif
+~if !defined (__MINGW32__)
+~define HAVE_QT_UI_TOOLS
+~endif
 
-#if defined (HAVE_QT_UI_TOOLS)
-#include <QUiLoader>
-#else
-#include <QObject>
-#endif
+~if defined (HAVE_QT_UI_TOOLS)
+~include <QUiLoader>
+~else
+~include <QObject>
+~endif
 
-#include <CXX/Extensions.hxx>
+~include <CXX/Extensions.hxx>
 
 
 QT_BEGIN_NAMESPACE
@@ -61,7 +61,7 @@ private:
     Py::Object createCustomWidget(const Py::Tuple&);
 };
 
-#if !defined (HAVE_QT_UI_TOOLS)
+~if !defined (HAVE_QT_UI_TOOLS)
 class QUiLoader : public QObject
 {
     Q_OBJECT
@@ -96,7 +96,7 @@ public:
 private:
     Py::Object uiloader;
 };
-#endif
+~endif
 
 /**
  * The UiLoader class provides the abitlity to use the widget factory
@@ -144,4 +144,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_UILOADER_H
+~endif // GUI_UILOADER_H

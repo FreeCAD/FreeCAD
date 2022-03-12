@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
-#define DRAWINGGUI_QGRAPHICSITEMEDGE_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
+~define DRAWINGGUI_QGRAPHICSITEMEDGE_H
 
-#include "QGIPrimPath.h"
+~include "QGIPrimPath.h"
 
 namespace TechDrawGui
 {
@@ -66,4 +66,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMEDGE_H
+~endif // DRAWINGGUI_QGRAPHICSITEMEDGE_H

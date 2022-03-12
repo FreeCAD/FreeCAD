@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTCOMMON_H
-#define PART_FEATUREPARTCOMMON_H
+~ifndef PART_FEATUREPARTCOMMON_H
+~define PART_FEATUREPARTCOMMON_H
 
-#include <App/PropertyLinks.h>
-#include "FeaturePartBoolean.h"
+~include <App/PropertyLinks.h>
+~include "FeaturePartBoolean.h"
 
 namespace Part
 {
@@ -71,4 +71,4 @@ public:
 
 }
 
-#endif // PART_FEATUREPARTCOMMON_H
+~endif // PART_FEATUREPARTCOMMON_H

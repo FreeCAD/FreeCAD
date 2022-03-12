@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_PROPERTYVIEW_H
-#define GUI_DOCKWND_PROPERTYVIEW_H
+~ifndef GUI_DOCKWND_PROPERTYVIEW_H
+~define GUI_DOCKWND_PROPERTYVIEW_H
 
-#include "DockWindow.h"
-#include "Selection.h"
+~include "DockWindow.h"
+~include "Selection.h"
 
 
 class QPixmap;
@@ -127,4 +127,4 @@ public:
 } // namespace DockWnd
 } // namespace Gui
 
-#endif // GUI_DOCKWND_PROPERTYVIEW_H
+~endif // GUI_DOCKWND_PROPERTYVIEW_H

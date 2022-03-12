@@ -19,11 +19,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditDatumDialog_H
-#define SKETCHERGUI_EditDatumDialog_H
+~ifndef SKETCHERGUI_EditDatumDialog_H
+~define SKETCHERGUI_EditDatumDialog_H
 
-#include <QObject>
-#include <memory>
+~include <QObject>
+~include <memory>
 
 namespace Sketcher {
 class Constraint;
@@ -59,4 +59,4 @@ private Q_SLOTS:
 };
 
 }
-#endif // SKETCHERGUI_DrawSketchHandler_H
+~endif // SKETCHERGUI_DrawSketchHandler_H

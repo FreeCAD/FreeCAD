@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
-#define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
+~ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
+~define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
-#include <QFont>
-#include <QPointF>
+~include <QObject>
+~include <QGraphicsView>
+~include <QStyleOptionGraphicsItem>
+~include <QGraphicsItem>
+~include <QGraphicsObject>
+~include <QPainterPath>
+~include <QColor>
+~include <QFont>
+~include <QPointF>
 
-#include <Base/Vector3D.h>
-#include "QGIView.h"
+~include <Base/Vector3D.h>
+~include "QGIView.h"
 
 namespace TechDraw {
 class DrawLeaderLine;
@@ -140,4 +140,4 @@ protected:
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
+~endif // DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H

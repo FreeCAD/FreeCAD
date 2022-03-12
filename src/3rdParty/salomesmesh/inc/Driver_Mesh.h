@@ -24,23 +24,23 @@
 //  File   : Mesh_Reader.h
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DRIVER_MESH
-#define _INCLUDE_DRIVER_MESH
+~ifndef _INCLUDE_DRIVER_MESH
+~define _INCLUDE_DRIVER_MESH
 
-#include "SMESH_ComputeError.hxx"
+~include "SMESH_ComputeError.hxx"
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
-#ifdef WIN32
- #if defined MESHDRIVER_EXPORTS || defined MeshDriver_EXPORTS
-  #define MESHDRIVER_EXPORT __declspec( dllexport )
- #else
-  #define MESHDRIVER_EXPORT __declspec( dllimport )
- #endif
-#else
- #define MESHDRIVER_EXPORT
-#endif
+~ifdef WIN32
+ ~if defined MESHDRIVER_EXPORTS || defined MeshDriver_EXPORTS
+  ~define MESHDRIVER_EXPORT __declspec( dllexport )
+ ~else
+  ~define MESHDRIVER_EXPORT __declspec( dllimport )
+ ~endif
+~else
+ ~define MESHDRIVER_EXPORT
+~endif
 
 class MESHDRIVER_EXPORT Driver_Mesh
 {
@@ -80,4 +80,4 @@ class MESHDRIVER_EXPORT Driver_Mesh
   Status                     myStatus;
 };
 
-#endif
+~endif

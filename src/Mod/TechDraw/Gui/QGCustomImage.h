@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMIMAGE_H
-#define DRAWINGGUI_QGCUSTOMIMAGE_H
+~ifndef DRAWINGGUI_QGCUSTOMIMAGE_H
+~define DRAWINGGUI_QGCUSTOMIMAGE_H
 
-#include <QGraphicsItem>
-#include <QGraphicsPixmapItem>
-#include <QPointF>
-#include <QSize>
-#include <QByteArray>
-#include <QPixmap>
+~include <QGraphicsItem>
+~include <QGraphicsPixmapItem>
+~include <QPointF>
+~include <QSize>
+~include <QByteArray>
+~include <QPixmap>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -63,4 +63,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGCUSTOMIMAGE_H
+~endif // DRAWINGGUI_QGCUSTOMIMAGE_H

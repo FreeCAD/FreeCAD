@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DressUp_H
-#define PARTDESIGN_DressUp_H
+~ifndef PARTDESIGN_DressUp_H
+~define PARTDESIGN_DressUp_H
 
-#include "FeatureAddSub.h"
+~include "FeatureAddSub.h"
 
 namespace PartDesign
 {
@@ -70,4 +70,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_DressUp_H
+~endif // PARTDESIGN_DressUp_H

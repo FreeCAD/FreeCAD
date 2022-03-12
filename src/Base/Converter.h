@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_CONVERTER_H
-#define BASE_CONVERTER_H
+~ifndef BASE_CONVERTER_H
+~define BASE_CONVERTER_H
 
-#include <tuple>
-#include "Rotation.h"
-#include "Vector3D.h"
+~include <tuple>
+~include "Rotation.h"
+~include "Vector3D.h"
 
 
 namespace Base {
@@ -105,4 +105,4 @@ inline _Vec1 convertTo(const _Vec2& v)
 
 }
 
-#endif // BASE_CONVERTER_H
+~endif // BASE_CONVERTER_H

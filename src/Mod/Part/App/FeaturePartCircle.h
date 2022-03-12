@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTCIRCLE_H
-#define PART_FEATUREPARTCIRCLE_H
+~ifndef PART_FEATUREPARTCIRCLE_H
+~define PART_FEATUREPARTCIRCLE_H
 
-#include <App/PropertyUnits.h>
-#include "PrimitiveFeature.h"
+~include <App/PropertyUnits.h>
+~include "PrimitiveFeature.h"
 
 namespace Part
 {
@@ -63,4 +63,4 @@ private:
 
 } //namespace Part
 
-#endif // PART_FEATUREPARTCIRCLE_H
+~endif // PART_FEATUREPARTCIRCLE_H

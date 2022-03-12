@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTrajectory_H
-#define GUI_TASKVIEW_TaskTrajectory_H
+~ifndef GUI_TASKVIEW_TaskTrajectory_H
+~define GUI_TASKVIEW_TaskTrajectory_H
 
-#include <Base/UnitsApi.h>
+~include <Base/UnitsApi.h>
 
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/Robot6Axis.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Trajectory.h>
-#include <Mod/Robot/App/Simulation.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/Robot6Axis.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/Trajectory.h>
+~include <Mod/Robot/App/Simulation.h>
 
-#include "ViewProviderRobotObject.h"
+~include "ViewProviderRobotObject.h"
 
 
 class Ui_TaskTrajectory;
@@ -102,4 +102,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

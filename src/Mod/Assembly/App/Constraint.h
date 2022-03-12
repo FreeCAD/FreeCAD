@@ -22,16 +22,16 @@
  ***************************************************************************/
 
 
-#ifndef Assembly_Constraint_H
-#define Assembly_Constraint_H
+~ifndef Assembly_Constraint_H
+~define Assembly_Constraint_H
 
-#include <App/PropertyLinks.h>
-#include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/DocumentObject.h>
 
-#include <TopoDS_Shape.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include "Solver/Solver.h"
-#include "Product.h"
+~include "Solver/Solver.h"
+~include "Product.h"
 
 
 namespace Assembly
@@ -71,4 +71,4 @@ private:
 } //namespace Assembly
 
 
-#endif // Assembly_Constraint_H
+~endif // Assembly_Constraint_H

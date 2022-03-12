@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOAUTOZOOMTRANSLATION_H
-#define GUI_SOAUTOZOOMTRANSLATION_H
+~ifndef GUI_SOAUTOZOOMTRANSLATION_H
+~define GUI_SOAUTOZOOMTRANSLATION_H
 
-#include <Inventor/nodes/SoTransformation.h>
+~include <Inventor/nodes/SoTransformation.h>
 
 
 namespace Gui {
@@ -55,4 +55,4 @@ private:
 };
 
 }
-#endif // GUI_SOAUTOZOOMTRANSLATION_H
+~endif // GUI_SOAUTOZOOMTRANSLATION_H

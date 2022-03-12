@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PATH_ViewProviderPathCompound_H
-#define PATH_ViewProviderPathCompound_H
+~ifndef PATH_ViewProviderPathCompound_H
+~define PATH_ViewProviderPathCompound_H
 
-#include "ViewProviderPath.h"
+~include "ViewProviderPath.h"
 
 namespace PathGui
 {
@@ -53,4 +53,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderPathCompound> ViewProviderPa
 } //namespace PathGui
 
 
-#endif // PATH_ViewProviderPathCompound_H
+~endif // PATH_ViewProviderPathCompound_H

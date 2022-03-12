@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLG_REPORT_VIEW_IMP
-#define GUI_DIALOG_DLG_REPORT_VIEW_IMP
+~ifndef GUI_DIALOG_DLG_REPORT_VIEW_IMP
+~define GUI_DIALOG_DLG_REPORT_VIEW_IMP
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 namespace Gui {
 namespace Dialog {
@@ -56,4 +56,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif //GUI_DIALOG_DLG_REPORT_VIEW_IMP
+~endif //GUI_DIALOG_DLG_REPORT_VIEW_IMP

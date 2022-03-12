@@ -5,13 +5,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONBOX_H
-#define ACTIONBOX_H
+~ifndef ACTIONBOX_H
+~define ACTIONBOX_H
 
-#include "actionlabel.h"
+~include "actionlabel.h"
 
-#include <QLabel>
-#include <QVBoxLayout>
+~include <QLabel>
+~include <QVBoxLayout>
 
 
 namespace QSint
@@ -116,21 +116,21 @@ namespace QSint
         "}"
 
         "QSint--ActionBox:hover {"
-            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-            "border: 1px solid #DAF2FC;"
+            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ~F9FDFF, stop: 1 ~EAF7FF);"
+            "border: 1px solid ~DAF2FC;"
         "}"
 
         // customization of ActionBox's header
         "QSint--ActionBox QSint--ActionLabel[class='header'] {"
             "text-align: left;"
             "font: 14px;"
-            "color: #006600;"
+            "color: ~006600;"
             "background-color: transparent;"
             "border: none;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='header']:hover {"
-            "color: #00cc00;"
+            "color: ~00cc00;"
             "text-decoration: underline;"
         "}"
 
@@ -138,19 +138,19 @@ namespace QSint
         "QSint--ActionBox QSint--ActionLabel[class='action'] {"
             "background-color: transparent;"
             "border: none;"
-            "color: #0033ff;"
+            "color: ~0033ff;"
             "text-align: left;"
             "font: 11px;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='action']:hover {"
-            "color: #0099ff;"
+            "color: ~0099ff;"
             "text-decoration: underline;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='action']:on {"
-            "background-color: #ddeeff;"
-            "color: #006600;"
+            "background-color: ~ddeeff;"
+            "color: ~006600;"
         "}"
     ;
 
@@ -255,4 +255,4 @@ protected:
 
 } // namespace
 
-#endif // ACTIONBOX_H
+~endif // ACTIONBOX_H

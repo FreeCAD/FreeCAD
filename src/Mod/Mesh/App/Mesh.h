@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef MESH_MESH_H
-#define MESH_MESH_H
+~ifndef MESH_MESH_H
+~define MESH_MESH_H
 
-#include <vector>
-#include <list>
-#include <set>
-#include <string>
-#include <map>
+~include <vector>
+~include <list>
+~include <set>
+~include <string>
+~include <map>
 
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
+~include <Base/Matrix.h>
+~include <Base/Vector3D.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/ComplexGeoData.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
+~include <App/ComplexGeoData.h>
 
-#include "Core/MeshKernel.h"
-#include "Core/MeshIO.h"
-#include "Core/Iterator.h"
-#include "MeshPoint.h"
-#include "Facet.h"
-#include "MeshPoint.h"
-#include "Segment.h"
+~include "Core/MeshKernel.h"
+~include "Core/MeshIO.h"
+~include "Core/Iterator.h"
+~include "MeshPoint.h"
+~include "Facet.h"
+~include "MeshPoint.h"
+~include "Segment.h"
 
 namespace Py {
 class List;
@@ -424,4 +424,4 @@ private:
 } // namespace Mesh
 
 
-#endif // MESH_MESH_H
+~endif // MESH_MESH_H

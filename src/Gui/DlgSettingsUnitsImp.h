@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSUnitsIMP_H
-#define GUI_DIALOG_DLGSETTINGSUnitsIMP_H
+~ifndef GUI_DIALOG_DLGSETTINGSUnitsIMP_H
+~define GUI_DIALOG_DLGSETTINGSUnitsIMP_H
 
-#include "PropertyPage.h"
+~include "PropertyPage.h"
 
 namespace Gui {
 namespace Dialog {
@@ -59,4 +59,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGSUnitsIMP_H
+~endif // GUI_DIALOG_DLGSETTINGSUnitsIMP_H

@@ -1,5 +1,5 @@
-#ifndef QUARTER_NATIVEEVENT_H
-#define QUARTER_NATIVEEVENT_H
+~ifndef QUARTER_NATIVEEVENT_H
+~define QUARTER_NATIVEEVENT_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,22 +33,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QEvent>
+~include <QEvent>
 
-#ifdef HAVE_SPACENAV_LIB
-#include <X11/Xlib.h>
-#endif
+~ifdef HAVE_SPACENAV_LIB
+~include <X11/Xlib.h>
+~endif
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
 class NativeEvent : public QEvent {
 public:
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
   NativeEvent(XEvent * nativeevent);
   XEvent * getEvent() const;
-#else // !HAVE_SPACENAV_LIB
+~else // !HAVE_SPACENAV_LIB
   NativeEvent();
-#endif // !HAVE_SPACENAV_LIB
+~endif // !HAVE_SPACENAV_LIB
 
   virtual ~NativeEvent();
 
@@ -58,4 +58,4 @@ private:
 
 }}}
 
-#endif // !QUARTER_NATIVEEVENT_H
+~endif // !QUARTER_NATIVEEVENT_H

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGPARTBOXIMP_H
-#define PARTGUI_DLGPARTBOXIMP_H
+~ifndef PARTGUI_DLGPARTBOXIMP_H
+~define PARTGUI_DLGPARTBOXIMP_H
 
-#include <Gui/InputVector.h>
+~include <Gui/InputVector.h>
 
 namespace PartGui {
 class Ui_DlgPartBox;
@@ -40,4 +40,4 @@ public:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGPARTBOXIMP_H
+~endif // PARTGUI_DLGPARTBOXIMP_H

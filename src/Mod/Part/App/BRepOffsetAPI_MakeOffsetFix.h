@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
-#define PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
+~ifndef PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
+~define PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
 
-#include <BRepOffsetAPI_MakeOffset.hxx>
-#include <list>
-#include <map>
+~include <BRepOffsetAPI_MakeOffset.hxx>
+~include <list>
+~include <map>
 
 namespace Part {
 /*!
@@ -82,4 +82,4 @@ private:
 
 }
 
-#endif // PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
+~endif // PART_BREPOFFSETAPI_MAKEOFFSETFIX_H

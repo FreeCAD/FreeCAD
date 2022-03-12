@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONCOMPLETER_H
-#define EXPRESSIONCOMPLETER_H
+~ifndef EXPRESSIONCOMPLETER_H
+~define EXPRESSIONCOMPLETER_H
 
-#include <QCompleter>
-#include <QLineEdit>
-#include <QObject>
-#include <QPlainTextEdit>
-#include <App/DocumentObserver.h>
+~include <QCompleter>
+~include <QLineEdit>
+~include <QObject>
+~include <QPlainTextEdit>
+~include <App/DocumentObserver.h>
 
 class QStandardItem;
 
@@ -139,4 +139,4 @@ public:
 
 }
 
-#endif // EXPRESSIONCOMPLETER_H
+~endif // EXPRESSIONCOMPLETER_H

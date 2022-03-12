@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureMirrored_H
-#define PARTDESIGN_FeatureMirrored_H
+~ifndef PARTDESIGN_FeatureMirrored_H
+~define PARTDESIGN_FeatureMirrored_H
 
-#include "FeatureTransformed.h"
+~include "FeatureTransformed.h"
 
 
 namespace PartDesign
@@ -61,4 +61,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureMirrored_H
+~endif // PARTDESIGN_FeatureMirrored_H

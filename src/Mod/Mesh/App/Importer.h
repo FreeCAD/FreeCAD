@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_IMPORTER_H
-#define MESH_IMPORTER_H
+~ifndef MESH_IMPORTER_H
+~define MESH_IMPORTER_H
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
 namespace App {
 class Document;
@@ -60,4 +60,4 @@ private:
 
 } // namespace Mesh
 
-#endif // MESH_IMPORTER_H
+~endif // MESH_IMPORTER_H

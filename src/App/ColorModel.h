@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef APP_COLORMODEL_H
-#define APP_COLORMODEL_H
+~ifndef APP_COLORMODEL_H
+~define APP_COLORMODEL_H
 
-#include "Material.h"
+~include "Material.h"
 
-#include <algorithm>
-#include <deque>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <deque>
+~include <string>
+~include <vector>
 
 
 namespace App
@@ -533,4 +533,4 @@ inline const ColorModel& ColorGradient::getColorModel () const
 
 } // namespace App
 
-#endif // APP_COLORMODEL_H
+~endif // APP_COLORMODEL_H

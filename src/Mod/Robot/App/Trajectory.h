@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_Trajectory_H
-#define ROBOT_Trajectory_H
+~ifndef ROBOT_Trajectory_H
+~define ROBOT_Trajectory_H
 
-#include "kdl_cp/trajectory.hpp"
+~include "kdl_cp/trajectory.hpp"
 
-#include "Waypoint.h"
+~include "Waypoint.h"
 
-#include <Base/Persistence.h>
-#include <Base/Placement.h>
+~include <Base/Persistence.h>
+~include <Base/Placement.h>
 
-#include <vector>
+~include <vector>
 
 namespace KDL {class Trajectory_Composite;}
 
@@ -85,4 +85,4 @@ protected:
 } //namespace Part
 
 
-#endif // PART_TOPOSHAPE_H
+~endif // PART_TOPOSHAPE_H

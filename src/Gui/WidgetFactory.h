@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WIDGETFACTORY_H
-#define GUI_WIDGETFACTORY_H
+~ifndef GUI_WIDGETFACTORY_H
+~define GUI_WIDGETFACTORY_H
 
-#include <vector>
+~include <vector>
 
-#include <Base/Factory.h>
-#include "DlgCustomizeImp.h"
-#include "DlgPreferencesImp.h"
-#include "PropertyPage.h"
-#include <CXX/Extensions.hxx>
+~include <Base/Factory.h>
+~include "DlgCustomizeImp.h"
+~include "DlgPreferencesImp.h"
+~include "PropertyPage.h"
+~include <CXX/Extensions.hxx>
 
 QT_BEGIN_NAMESPACE
 class QDir;
@@ -297,9 +297,9 @@ private:
  * \remark The callback function must have exactly one parameter. This parameter
  * points to the dialog you have just created.
  * \code
- * # define a callback function with one argument
+ * ~ define a callback function with one argument
  * def TestCall(obj):
- *      # sets the value from lineedit if "Button_Name" was pressed
+ *      ~ sets the value from lineedit if "Button_Name" was pressed
  *      obj.setValue("lineedit", "text", "Show this text here!")
  *      print "Button clicked"
  *
@@ -312,7 +312,7 @@ private:
  * printed.
  * For example if you have a QLineEdit inside your widget you can set the text with
  * \code
- * # sets "Show this text here!" to the text property
+ * ~ sets "Show this text here!" to the text property
  * d.setValue("lineedit", "text", "Show this text here!")
  * d.show()
  * \endcode
@@ -399,4 +399,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_WIDGETFACTORY_H
+~endif // GUI_WIDGETFACTORY_H

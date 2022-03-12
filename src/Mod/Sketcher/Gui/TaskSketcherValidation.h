@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_TASKSKETCHERVALIDATION_H
-#define SKETCHERGUI_TASKSKETCHERVALIDATION_H
+~ifndef SKETCHERGUI_TASKSKETCHERVALIDATION_H
+~define SKETCHERGUI_TASKSKETCHERVALIDATION_H
 
-#include <vector>
-#include <memory>
-#include <Base/Vector3D.h>
-#include <App/DocumentObserver.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Sketcher/App/SketchAnalysis.h>
+~include <vector>
+~include <memory>
+~include <Base/Vector3D.h>
+~include <App/DocumentObserver.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/Sketcher/App/SketchAnalysis.h>
 
 class SoGroup;
 namespace Sketcher { class SketchObject; } 
@@ -86,4 +86,4 @@ public:
 
 } //namespace SketcherGui
 
-#endif // SKETCHERGUI_TASKSKETCHERVALIDATION_H
+~endif // SKETCHERGUI_TASKSKETCHERVALIDATION_H

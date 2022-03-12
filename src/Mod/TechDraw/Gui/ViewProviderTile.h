@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERTILE_H
-#define DRAWINGGUI_VIEWPROVIDERTILE_H
+~ifndef DRAWINGGUI_VIEWPROVIDERTILE_H
+~define DRAWINGGUI_VIEWPROVIDERTILE_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawTile.h>
+~include <Mod/TechDraw/App/DrawTile.h>
 
 namespace TechDrawGui {
 
@@ -57,4 +57,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERTILE_H
+~endif // DRAWINGGUI_VIEWPROVIDERTILE_H

@@ -21,11 +21,11 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_Groove_H
-#define PARTDESIGN_Groove_H
+~ifndef PARTDESIGN_Groove_H
+~define PARTDESIGN_Groove_H
 
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
+~include <App/PropertyUnits.h>
+~include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
@@ -75,4 +75,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PART_Groove_H
+~endif // PART_Groove_H

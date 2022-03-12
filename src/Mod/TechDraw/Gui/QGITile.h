@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGITILE_H
-#define TECHDRAWGUI_QGITILE_H
+~ifndef TECHDRAWGUI_QGITILE_H
+~define TECHDRAWGUI_QGITILE_H
 
-#include <QFont>
-#include <QPointF>
-#include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsEllipseItem>
-#include <QPainterPath>
-#include <QColor>
-#include <QGraphicsColorizeEffect>
+~include <QFont>
+~include <QPointF>
+~include <QGraphicsTextItem>
+~include <QGraphicsRectItem>
+~include <QGraphicsEllipseItem>
+~include <QPainterPath>
+~include <QColor>
+~include <QGraphicsColorizeEffect>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include "QGIArrow.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
-#include "QGCustomSvg.h"
-#include "QGIDecoration.h"
+~include "QGIArrow.h"
+~include "QGCustomText.h"
+~include "QGCustomRect.h"
+~include "QGCustomSvg.h"
+~include "QGIDecoration.h"
 
 namespace TechDraw {
 class DrawTile;
@@ -122,4 +122,4 @@ private:
 
 }
 
-#endif // TECHDRAWGUI_QGITILE_H
+~endif // TECHDRAWGUI_QGITILE_H

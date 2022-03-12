@@ -21,14 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKBALLOON_H
-#define GUI_TASKVIEW_TASKBALLOON_H
+~ifndef GUI_TASKVIEW_TASKBALLOON_H
+~define GUI_TASKVIEW_TASKBALLOON_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include "QGIViewBalloon.h"
-#include "ViewProviderBalloon.h"
+~include "QGIViewBalloon.h"
+~include "ViewProviderBalloon.h"
 
 namespace TechDrawGui
 {
@@ -98,4 +98,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef GUI_TASKVIEW_TASKBALLOON_H
+~endif // ~ifndef GUI_TASKVIEW_TASKBALLOON_H

@@ -31,44 +31,44 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE     *
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.      *
 \****************************************************************************/
-#ifndef GUI_CoinRiftWidget
-#define GUI_CoinRiftWidget
+~ifndef GUI_CoinRiftWidget
+~define GUI_CoinRiftWidget
 
-#if BUILD_VR
+~if BUILD_VR
 
 // defines which method to use to render
-#define USE_SO_OFFSCREEN_RENDERER
-//#define USE_FRAMEBUFFER
+~define USE_SO_OFFSCREEN_RENDERER
+//~define USE_FRAMEBUFFER
 
-#ifdef USE_SO_OFFSCREEN_RENDERER
-# ifdef USE_FRAMEBUFFER
-# error "Mutually exclusive options defined."
-# endif
-#endif
+~ifdef USE_SO_OFFSCREEN_RENDERER
+~ ifdef USE_FRAMEBUFFER
+~ error "Mutually exclusive options defined."
+~ endif
+~endif
 
-#include <algorithm>
-#include <QApplication>
-#include <QGLWidget>
-#include <QTimer>
-#include <QDebug>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInput.h>
-#ifdef USE_SO_OFFSCREEN_RENDERER
-# include <Inventor/SoOffscreenRenderer.h>
-#endif
-#ifdef USE_FRAMEBUFFER
-# include <Inventor/SoSceneManager.h>
-#endif
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoFrustumCamera.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
+~include <algorithm>
+~include <QApplication>
+~include <QGLWidget>
+~include <QTimer>
+~include <QDebug>
+~include <Inventor/SoDB.h>
+~include <Inventor/SoInput.h>
+~ifdef USE_SO_OFFSCREEN_RENDERER
+~ include <Inventor/SoOffscreenRenderer.h>
+~endif
+~ifdef USE_FRAMEBUFFER
+~ include <Inventor/SoSceneManager.h>
+~endif
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/nodes/SoFrustumCamera.h>
+~include <Inventor/nodes/SoDirectionalLight.h>
 
-#include <OVR.h>
-#include <OVR_Kernel.h>
-#include <OVR_Version.h>
-//#include <OVR_CAPI_GL.h>
-#include <../Src/OVR_CAPI_GL.h>
-#include <../Src/CAPI/GL/CAPI_GL_Util.h> // For framebuffer functions.
+~include <OVR.h>
+~include <OVR_Kernel.h>
+~include <OVR_Version.h>
+//~include <OVR_CAPI_GL.h>
+~include <../Src/OVR_CAPI_GL.h>
+~include <../Src/CAPI/GL/CAPI_GL_Util.h> // For framebuffer functions.
 
 
 
@@ -80,17 +80,17 @@ class CoinRiftWidget : public QGLWidget
     ovrEyeRenderDesc eyeRenderDesc[2];
     ovrTexture eyeTexture[2];
 
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
     GLuint frameBufferID[2], depthBufferID[2];
     // A SoSceneManager has a SoRenderManager to do the rendering -- should we not use SoRenderManager instead?
     // We are probably not that interested in events. SoSceneManager::setSceneGraph() searches for the camera
     // and sets it in SoRenderManager, but its is actually only used for built-in stereo rendering.
     // FIXME: We should probably eliminate that search...
     SoSceneManager *m_sceneManager;
-#endif
-#ifdef USE_SO_OFFSCREEN_RENDERER
+~endif
+~ifdef USE_SO_OFFSCREEN_RENDERER
     SoOffscreenRenderer *renderer;
-#endif
+~endif
     SoSeparator *rootScene[2];
     SoFrustumCamera *camera[2];
     SoNode *scene;
@@ -115,6 +115,6 @@ protected:
 };
 
 
-#endif //BUILD_VR
+~endif //BUILD_VR
 
-#endif // GUI_CoinRiftWidget
+~endif // GUI_CoinRiftWidget

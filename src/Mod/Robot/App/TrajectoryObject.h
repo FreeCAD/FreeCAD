@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_TrajectoryObject_H
-#define ROBOT_TrajectoryObject_H
+~ifndef ROBOT_TrajectoryObject_H
+~define ROBOT_TrajectoryObject_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
+~include <App/GeoFeature.h>
+~include <App/PropertyFile.h>
+~include <App/PropertyGeo.h>
 
-#include "Trajectory.h"
-#include "PropertyTrajectory.h"
+~include "Trajectory.h"
+~include "PropertyTrajectory.h"
 
 namespace Robot
 {
@@ -66,4 +66,4 @@ protected:
 } //namespace Robot
 
 
-#endif // ROBOT_ROBOTOBJECT_H
+~endif // ROBOT_ROBOTOBJECT_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef STARTGUI_DLGSTARTPREFERENCESIMP_H
-#define STARTGUI_DLGSTARTPREFERENCESIMP_H
+~ifndef STARTGUI_DLGSTARTPREFERENCESIMP_H
+~define STARTGUI_DLGSTARTPREFERENCESIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 class Ui_DlgStartPreferences;
 namespace StartGui {
@@ -48,4 +48,4 @@ namespace StartGui {
 
 } // namespace StartGui
 
-#endif // STARTGUI_DLGSTARTPREFERENCESIMP_H
+~endif // STARTGUI_DLGSTARTPREFERENCESIMP_H

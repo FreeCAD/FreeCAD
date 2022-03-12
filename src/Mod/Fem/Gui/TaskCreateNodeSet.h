@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
-#define GUI_TASKVIEW_TaskCreateNodeSet_H
+~ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
+~define GUI_TASKVIEW_TaskCreateNodeSet_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Fem/App/FemSetNodesObject.h>
+~include <Mod/Fem/App/FemSetNodesObject.h>
 
 
 class Ui_TaskCreateNodeSet;
@@ -82,4 +82,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskCreateNodeSet_H
+~endif // GUI_TASKVIEW_TaskCreateNodeSet_H

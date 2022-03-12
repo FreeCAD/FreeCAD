@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskScaledParameters_H
-#define GUI_TASKVIEW_TaskScaledParameters_H
+~ifndef GUI_TASKVIEW_TaskScaledParameters_H
+~define GUI_TASKVIEW_TaskScaledParameters_H
 
-#include <Gui/Selection.h>
+~include <Gui/Selection.h>
 
-#include "TaskTransformedParameters.h"
-#include "ViewProviderScaled.h"
+~include "TaskTransformedParameters.h"
+~include "ViewProviderScaled.h"
 
 class Ui_TaskScaledParameters;
 
@@ -94,4 +94,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

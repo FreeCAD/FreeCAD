@@ -20,10 +20,10 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _INCLUDE_DRIVER_SMDS_MESH
-#define _INCLUDE_DRIVER_SMDS_MESH
+~ifndef _INCLUDE_DRIVER_SMDS_MESH
+~define _INCLUDE_DRIVER_SMDS_MESH
 
-#include "Driver_Mesh.h"
+~include "Driver_Mesh.h"
 
 class SMDS_Mesh;
 
@@ -38,4 +38,4 @@ class MESHDRIVER_EXPORT Driver_SMDS_Mesh: public Driver_Mesh
 
 };
 
-#endif
+~endif

@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELTRIANGLE_H
-#define WM4DELTRIANGLE_H
+~ifndef WM4DELTRIANGLE_H
+~define WM4DELTRIANGLE_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query2.h"
 
 namespace Wm4
 {
@@ -45,4 +45,4 @@ typedef DelTriangle<double> DelTriangled;
 
 }
 
-#endif
+~endif

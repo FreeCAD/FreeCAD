@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
-#define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
+~ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
+~define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 
-#include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderGeometryObject.h>
 
-#include <CXX/Objects.hxx>
-#include <Base/Observer.h>
-#include <Mod/Fem/FemGlobal.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkOutlineFilter.h>
-#include <vtkOutlineCornerFilter.h>
-#include <vtkLookupTable.h>
-#include <vtkExtractEdges.h>
-#include <vtkAppendPolyData.h>
-#include <vtkGeometryFilter.h>
-#include <vtkVertexGlyphFilter.h>
+~include <CXX/Objects.hxx>
+~include <Base/Observer.h>
+~include <Mod/Fem/FemGlobal.h>
+~include <vtkSmartPointer.h>
+~include <vtkPolyDataMapper.h>
+~include <vtkOutlineFilter.h>
+~include <vtkOutlineCornerFilter.h>
+~include <vtkLookupTable.h>
+~include <vtkExtractEdges.h>
+~include <vtkAppendPolyData.h>
+~include <vtkGeometryFilter.h>
+~include <vtkVertexGlyphFilter.h>
 
 class SoIndexedPointSet;
 class vtkUnsignedCharArray;
@@ -160,4 +160,4 @@ private:
 } //namespace FemGui
 
 
-#endif // FEM_VIEWPROVIDERFEMPOSTOBJECT_H
+~endif // FEM_VIEWPROVIDERFEMPOSTOBJECT_H

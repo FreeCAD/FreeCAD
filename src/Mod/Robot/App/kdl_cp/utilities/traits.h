@@ -1,7 +1,7 @@
-#ifndef KDLPV_TRAITS_H 
-#define KDLPV_TRAITS_H 
+~ifndef KDLPV_TRAITS_H 
+~define KDLPV_TRAITS_H 
 
-#include "utility.h"
+~include "utility.h"
 
  
 // forwards declarations :
@@ -105,7 +105,7 @@ struct Traits<KDL::VectorVel> {
 
 
 
-#endif
+~endif
 
 
 

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_VIEWPROVIDERROBOTOBJECT_H
-#define ROBOT_VIEWPROVIDERROBOTOBJECT_H
+~ifndef ROBOT_VIEWPROVIDERROBOTOBJECT_H
+~define ROBOT_VIEWPROVIDERROBOTOBJECT_H
 
-#include <Inventor/VRMLnodes/SoVRMLTransform.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/SoFCSelection.h>
-#include <Base/Placement.h>
+~include <Inventor/VRMLnodes/SoVRMLTransform.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/SoFCSelection.h>
+~include <Base/Placement.h>
 
 class SoDragger;
 class SoJackDragger;
@@ -91,4 +91,4 @@ protected:
 } //namespace RobotGui
 
 
-#endif // ROBOT_VIEWPROVIDERROBOTOBJECT_H
+~endif // ROBOT_VIEWPROVIDERROBOTOBJECT_H

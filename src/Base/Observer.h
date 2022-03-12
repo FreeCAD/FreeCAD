@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef BASE_OBSERVER_H
-#define BASE_OBSERVER_H
+~ifndef BASE_OBSERVER_H
+~define BASE_OBSERVER_H
 
-#include <cassert>
-#include <cstring>
-#include <set>
-#include "Console.h"
-#include "Exception.h"
+~include <cassert>
+~include <cstring>
+~include <set>
+~include "Console.h"
+~include "Exception.h"
 
 
 namespace Base
@@ -131,15 +131,15 @@ public:
    */
   void Attach(Observer<_MessageType> *ToObserv)
   {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     size_t count = _ObserverSet.size();
     //printf("Attach observer %p\n", ToObserv);
     _ObserverSet.insert(ToObserv);
     if ( _ObserverSet.size() == count )
       printf("Observer %p already attached\n", static_cast<void*>(ToObserv));
-#else
+~else
     _ObserverSet.insert(ToObserv);
-#endif
+~endif
   }
 
   /** Detach an Observer
@@ -150,15 +150,15 @@ public:
    */
   void Detach(Observer<_MessageType> *ToObserv)
   {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     size_t count = _ObserverSet.size();
     //printf("Detach observer %p\n", ToObserv);
     _ObserverSet.erase(ToObserv);
     if ( _ObserverSet.size() == count )
       printf("Observer %p already detached\n", static_cast<void*>(ToObserv));
-#else
+~else
     _ObserverSet.erase(ToObserv);
-#endif
+~endif
   }
 
   /** Notify all Observers
@@ -220,4 +220,4 @@ protected:
 } //namespace Base
 
 
-#endif // BASE_OBSERVER_H
+~endif // BASE_OBSERVER_H

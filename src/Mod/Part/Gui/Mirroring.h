@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_MIRRORING_H
-#define PARTGUI_MIRRORING_H
+~ifndef PARTGUI_MIRRORING_H
+~define PARTGUI_MIRRORING_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
 class QTreeWidgetItem;
 
@@ -80,4 +80,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_MIRRORING_H
+~endif // PARTGUI_MIRRORING_H

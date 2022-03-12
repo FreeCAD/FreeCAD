@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef BASE_DEBUGGER_H
-#define BASE_DEBUGGER_H
+~ifndef BASE_DEBUGGER_H
+~define BASE_DEBUGGER_H
 
-#include <QEventLoop>
-#include <QObject>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <QEventLoop>
+~include <QObject>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace Base {
 /**
@@ -76,4 +76,4 @@ private:
 
 }
 
-#endif // BASE_DEBUGGER_H
+~endif // BASE_DEBUGGER_H

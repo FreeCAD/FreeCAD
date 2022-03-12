@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_PROPERTYPAGE_H
-#define GUI_DIALOG_PROPERTYPAGE_H
+~ifndef GUI_DIALOG_PROPERTYPAGE_H
+~define GUI_DIALOG_PROPERTYPAGE_H
 
-#include <QWidget>
-#include <FCGlobal.h>
+~include <QWidget>
+~include <FCGlobal.h>
 
 namespace Gui {
 namespace Dialog {
@@ -130,4 +130,4 @@ protected Q_SLOTS:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_PROPERTYPAGE_H
+~endif // GUI_DIALOG_PROPERTYPAGE_H

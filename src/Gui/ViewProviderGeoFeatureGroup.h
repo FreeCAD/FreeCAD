@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
-#define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
+~ifndef GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
+~define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 
 
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderGeoFeatureGroupExtension.h"
-#include "ViewProviderPythonFeature.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderGeoFeatureGroupExtension.h"
+~include "ViewProviderPythonFeature.h"
 
 namespace Gui {
 
@@ -48,5 +48,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoF
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
+~endif // GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 

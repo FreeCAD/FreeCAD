@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLYGUI_ViewProvider_H
-#define ASSEMBLYGUI_ViewProvider_H
+~ifndef ASSEMBLYGUI_ViewProvider_H
+~define ASSEMBLYGUI_ViewProvider_H
 
-#include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderGeometryObject.h>
 
 class SoGroup;
 
@@ -57,4 +57,4 @@ private:
 } // namespace AssemblyGui
 
 
-#endif // ASSEMBLYGUI_ViewProvider_H
+~endif // ASSEMBLYGUI_ViewProvider_H

@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#ifndef MESH_MESHPROPERTIES_H
-#define MESH_MESHPROPERTIES_H
+~ifndef MESH_MESHPROPERTIES_H
+~define MESH_MESHPROPERTIES_H
 
-#include <vector>
-#include <list>
-#include <set>
-#include <string>
-#include <map>
+~include <vector>
+~include <list>
+~include <set>
+~include <string>
+~include <map>
 
-#include <Base/Handle.h>
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
+~include <Base/Handle.h>
+~include <Base/Matrix.h>
+~include <Base/Vector3D.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
 
-#include "Core/MeshKernel.h"
-#include "Mesh.h"
+~include "Core/MeshKernel.h"
+~include "Mesh.h"
 
 
 namespace Mesh
@@ -256,4 +256,4 @@ private:
 
 } // namespace Mesh
 
-#endif // MESH_MESHPROPERTIES_H
+~endif // MESH_MESHPROPERTIES_H

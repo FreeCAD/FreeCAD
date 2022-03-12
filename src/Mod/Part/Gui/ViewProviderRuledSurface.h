@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERRULEDSURFACE_H
-#define PARTGUI_VIEWPROVIDERRULEDSURFACE_H
+~ifndef PARTGUI_VIEWPROVIDERRULEDSURFACE_H
+~define PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 
@@ -55,5 +55,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERRULEDSURFACE_H
+~endif // PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 

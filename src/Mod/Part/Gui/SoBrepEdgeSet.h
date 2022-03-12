@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPEDGESET_H
-#define PARTGUI_SOBREPEDGESET_H
+~ifndef PARTGUI_SOBREPEDGESET_H
+~define PARTGUI_SOBREPEDGESET_H
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
-#include <memory>
-#include <Gui/SoFCSelectionContext.h>
+~include <Inventor/fields/SoSFInt32.h>
+~include <Inventor/fields/SoMFInt32.h>
+~include <Inventor/fields/SoSFNode.h>
+~include <Inventor/fields/SoSubField.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoIndexedLineSet.h>
+~include <Inventor/elements/SoLazyElement.h>
+~include <Inventor/elements/SoReplacedElement.h>
+~include <vector>
+~include <memory>
+~include <Gui/SoFCSelectionContext.h>
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -83,5 +83,5 @@ private:
 } // namespace PartGui
 
 
-#endif // PARTGUI_SOBREPEDGESET_H
+~endif // PARTGUI_SOBREPEDGESET_H
 

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_Part_H
-#define APP_Part_H
+~ifndef APP_Part_H
+~define APP_Part_H
 
-#include "GeoFeature.h"
-#include "OriginGroupExtension.h"
-#include "PropertyLinks.h"
+~include "GeoFeature.h"
+~include "OriginGroupExtension.h"
+~include "PropertyLinks.h"
 
 
 namespace App
@@ -103,4 +103,4 @@ public:
 } //namespace App
 
 
-#endif // APP_Part_H
+~endif // APP_Part_H

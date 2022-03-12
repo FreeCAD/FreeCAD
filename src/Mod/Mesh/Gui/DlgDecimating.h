@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGDECIMATING_H
-#define MESHGUI_DLGDECIMATING_H
+~ifndef MESHGUI_DLGDECIMATING_H
+~define MESHGUI_DLGDECIMATING_H
 
-#include <QDialog>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <memory>
+~include <QDialog>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <memory>
 
 namespace MeshGui {
 class Ui_DlgDecimating;
@@ -77,4 +77,4 @@ private:
 
 }
 
-#endif // MESHGUI_DLGDECIMATING_H
+~endif // MESHGUI_DLGDECIMATING_H

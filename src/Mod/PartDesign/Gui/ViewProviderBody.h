@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBody_H
-#define PARTGUI_ViewProviderBody_H
+~ifndef PARTGUI_ViewProviderBody_H
+~define PARTGUI_ViewProviderBody_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Gui/ViewProviderOriginGroupExtension.h>
-#include <QCoreApplication>
+~include <Mod/Part/Gui/ViewProvider.h>
+~include <Gui/ViewProviderOriginGroupExtension.h>
+~include <QCoreApplication>
 
 class SoGroup;
 class SoSeparator;
@@ -105,4 +105,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderHole_H
+~endif // PARTGUI_ViewProviderHole_H

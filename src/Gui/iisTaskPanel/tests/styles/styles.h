@@ -5,11 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TEST_H
-#define TEST_H
+~ifndef TEST_H
+~define TEST_H
 
-#include <QtGui/QMainWindow>
-#include "ui_styles.h"
+~include <QtGui/QMainWindow>
+~include "ui_styles.h"
 
 class iisTaskBox;
 class iisTaskGroup;
@@ -33,4 +33,4 @@ private:
 	iisTaskGroup *tb4;
 };
 
-#endif // TEST_H
+~endif // TEST_H

@@ -21,12 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _SpringbackCorrection_H_
-#define _SpringbackCorrection_H_
+~ifndef _SpringbackCorrection_H_
+~define _SpringbackCorrection_H_
 
 
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include "cutting_tools.h"
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include "cutting_tools.h"
 
 /** @brief The main class for the SpringbackCorrection routine
 
@@ -40,8 +40,8 @@ class MeshFacet;
 
 
 
-# define cMin    15.0
-# define toolRad  5.0
+~ define cMin    15.0
+~ define toolRad  5.0
 
 /** @brief a struct referring to the edges of the input-shape
  
@@ -338,4 +338,4 @@ public:
     std::vector<TopoDS_Face> m_FixFaces;
 };
 
-#endif
+~endif

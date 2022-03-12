@@ -20,14 +20,14 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef _INCLUDE_DRIVERUNV_R_SMDS_MESH
-#define _INCLUDE_DRIVERUNV_R_SMDS_MESH
+~ifndef _INCLUDE_DRIVERUNV_R_SMDS_MESH
+~define _INCLUDE_DRIVERUNV_R_SMDS_MESH
 
-#include "SMESH_DriverUNV.hxx"
+~include "SMESH_DriverUNV.hxx"
 
-#include "Driver_SMDS_Mesh.h"
-#include <map>
-#include <string>
+~include "Driver_SMDS_Mesh.h"
+~include <map>
+~include <string>
 
 
 class SMDS_Mesh;
@@ -58,4 +58,4 @@ class MESHDRIVERUNV_EXPORT DriverUNV_R_SMDS_Mesh: public Driver_SMDS_Mesh
   TGroupIdMap    myGroupId;
 };
 
-#endif
+~endif

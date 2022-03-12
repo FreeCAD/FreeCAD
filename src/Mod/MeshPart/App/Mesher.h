@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPART_MESHER_H
-#define MESHPART_MESHER_H
+~ifndef MESHPART_MESHER_H
+~define MESHPART_MESHER_H
 
-#include <sstream>
-#include <Base/Stream.h>
-#ifdef HAVE_SMESH
-#include <SMESH_Version.h>
-#endif
+~include <sstream>
+~include <Base/Stream.h>
+~ifdef HAVE_SMESH
+~include <SMESH_Version.h>
+~endif
 
 class TopoDS_Shape;
 class SMESH_Gen;
@@ -42,9 +42,9 @@ public:
     enum Method {
         None = 0,
         Mefisto = 1,
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
         Netgen = 2,
-#endif
+~endif
         Standard = 3
     };
 
@@ -98,7 +98,7 @@ public:
     { colors = c; }
     //@}
 
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
     /** @name Netgen settings */
     //@{
     void setFineness(int s)
@@ -130,7 +130,7 @@ public:
     bool isQuadAllowed() const
     { return allowquad; }
     //@}
-#endif
+~endif
 
     Mesh::MeshObject* createMesh() const;
 
@@ -150,7 +150,7 @@ private:
     bool relative;
     bool regular;
     bool segments;
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
     int fineness;
     double growthRate;
     double nbSegPerEdge;
@@ -158,7 +158,7 @@ private:
     bool secondOrder;
     bool optimize;
     bool allowquad;
-#endif
+~endif
     std::vector<uint32_t> colors;
 
     static SMESH_Gen *_mesh_gen;
@@ -179,4 +179,4 @@ private:
 
 } // namespace MeshPart
 
-#endif // MESHPART_MESHER_H
+~endif // MESHPART_MESHER_H

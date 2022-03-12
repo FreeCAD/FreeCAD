@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatum_H
-#define PARTGUI_ViewProviderDatum_H
+~ifndef PARTGUI_ViewProviderDatum_H
+~define PARTGUI_ViewProviderDatum_H
 
-#include "Gui/ViewProviderGeometryObject.h"
-#include <Base/BoundBox.h>
+~include "Gui/ViewProviderGeometryObject.h"
+~include <Base/BoundBox.h>
 
-#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
+~include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+~include <Mod/PartDesign/PartDesignGlobal.h>
 
 class SoPickStyle;
 class SbBox3f;
@@ -139,4 +139,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDatum_H
+~endif // PARTGUI_ViewProviderDatum_H

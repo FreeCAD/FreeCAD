@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DOCUMENTRECOVERY_H
-#define GUI_DIALOG_DOCUMENTRECOVERY_H
+~ifndef GUI_DIALOG_DOCUMENTRECOVERY_H
+~define GUI_DIALOG_DOCUMENTRECOVERY_H
 
-#include <QDialog>
-#include <QFileInfo>
-#include <QFileInfoList>
-#include <QList>
-#include <QScopedPointer>
+~include <QDialog>
+~include <QFileInfo>
+~include <QFileInfoList>
+~include <QList>
+~include <QScopedPointer>
 
 
 namespace Gui { namespace Dialog {
@@ -103,4 +103,4 @@ private:
 } //namespace Gui
 
 
-#endif //GUI_DIALOG_DOCUMENTRECOVERY_H
+~endif //GUI_DIALOG_DOCUMENTRECOVERY_H

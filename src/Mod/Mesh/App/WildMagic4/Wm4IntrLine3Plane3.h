@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTRLINE3PLANE3_H
-#define WM4INTRLINE3PLANE3_H
+~ifndef WM4INTRLINE3PLANE3_H
+~define WM4INTRLINE3PLANE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Intersector.h"
-#include "Wm4Line3.h"
-#include "Wm4Plane3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Intersector.h"
+~include "Wm4Line3.h"
+~include "Wm4Plane3.h"
 
 namespace Wm4
 {
@@ -63,4 +63,4 @@ typedef IntrLine3Plane3<double> IntrLine3Plane3d;
 
 }
 
-#endif
+~endif

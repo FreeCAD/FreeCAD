@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskMultiTransformParameters_H
-#define GUI_TASKVIEW_TaskMultiTransformParameters_H
+~ifndef GUI_TASKVIEW_TaskMultiTransformParameters_H
+~define GUI_TASKVIEW_TaskMultiTransformParameters_H
 
-#include <Gui/Selection.h>
+~include <Gui/Selection.h>
 
-#include "TaskTransformedParameters.h"
-#include "ViewProviderMultiTransform.h"
+~include "TaskTransformedParameters.h"
+~include "ViewProviderMultiTransform.h"
 
 class Ui_TaskMultiTransformParameters;
 class QModelIndex;
@@ -124,4 +124,4 @@ public:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREEXTRUSION_H
-#define PART_FEATUREEXTRUSION_H
+~ifndef PART_FEATUREEXTRUSION_H
+~define PART_FEATUREEXTRUSION_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
 
-#include "PartFeature.h"
-#include "FaceMakerCheese.h"
+~include "PartFeature.h"
+~include "FaceMakerCheese.h"
 
 namespace Part
 {
@@ -144,4 +144,4 @@ protected:
 } //namespace Part
 
 
-#endif // PART_FEATUREEXTRUSION_H
+~endif // PART_FEATUREEXTRUSION_H

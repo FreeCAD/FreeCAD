@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTERSECTOR1_H
-#define WM4INTERSECTOR1_H
+~ifndef WM4INTERSECTOR1_H
+~define WM4INTERSECTOR1_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Math.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Math.h"
 
 namespace Wm4
 {
@@ -72,4 +72,4 @@ typedef Intersector1<double> Intersector1d;
 
 }
 
-#endif
+~endif

@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTPulley_H
-#define FEM_CONSTRAINTPulley_H
+~ifndef FEM_CONSTRAINTPulley_H
+~define FEM_CONSTRAINTPulley_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
-#include "FemConstraintGear.h"
+~include "FemConstraintGear.h"
 
 namespace Fem
 {
@@ -71,4 +71,4 @@ protected:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTPulley_H
+~endif // FEM_CONSTRAINTPulley_H

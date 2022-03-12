@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 /******CONVERTDYNA.H******/
-#ifndef CONVERTDYNA_H
-#define CONVERTDYNA_H
+~ifndef CONVERTDYNA_H
+~define CONVERTDYNA_H
 
 /******MAIN INCLUDES******/
-#include <fstream>
-#include <vector>
-#include <map>
-#include <string>
+~include <fstream>
+~include <vector>
+~include <map>
+~include <string>
 
 /******MESH INCLUDES******/
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Builder.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Builder.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/MeshPy.h>
+~include <Mod/Mesh/App/Mesh.h>
 
 /******STRUCTS******/
 //This structure will be used internally in this routine without any affects of outside variable
@@ -99,5 +99,5 @@ private:
     std::vector<STLINDEX> Stllist;
 
 };
-#endif  /*CONVERTDYNA_H DEFINED*/
+~endif  /*CONVERTDYNA_H DEFINED*/
 

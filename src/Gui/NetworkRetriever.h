@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NETWORKRETRIEVER_H
-#define GUI_NETWORKRETRIEVER_H
+~ifndef GUI_NETWORKRETRIEVER_H
+~define GUI_NETWORKRETRIEVER_H
 
-#include <QProcess>
+~include <QProcess>
 
-#include "Command.h"
+~include "Command.h"
 
 
 namespace Gui {
@@ -102,4 +102,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_NETWORKRETRIEVER_H
+~endif // GUI_NETWORKRETRIEVER_H

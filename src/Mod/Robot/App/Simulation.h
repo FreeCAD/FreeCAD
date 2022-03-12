@@ -21,15 +21,15 @@
  ***************************************************************************/
 
  
-#ifndef _Simulation_h_
-#define _Simulation_h_
+~ifndef _Simulation_h_
+~define _Simulation_h_
 
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
-#include <string>
+~include <Base/Vector3D.h>
+~include <Base/Placement.h>
+~include <string>
 
-#include "Trajectory.h"
-#include "Robot6Axis.h"
+~include "Trajectory.h"
+~include "Robot6Axis.h"
 
 namespace Robot
 {
@@ -71,4 +71,4 @@ public:
 
 
 
-#endif
+~endif

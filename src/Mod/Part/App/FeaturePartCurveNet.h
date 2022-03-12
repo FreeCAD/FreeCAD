@@ -22,11 +22,11 @@
 
 
 
-#ifndef PART_FeaturePartCurveNet_H
-#define PART_FeaturePartCurveNet_H
+~ifndef PART_FeaturePartCurveNet_H
+~define PART_FeaturePartCurveNet_H
 
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -56,4 +56,4 @@ public:
 }
 
 
-#endif // PART_FeaturePartCurveNet_H
+~endif // PART_FeaturePartCurveNet_H

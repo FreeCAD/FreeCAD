@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderRevolution_H
-#define PARTGUI_ViewProviderRevolution_H
+~ifndef PARTGUI_ViewProviderRevolution_H
+~define PARTGUI_ViewProviderRevolution_H
 
-#include "ViewProviderSketchBased.h"
+~include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
@@ -52,4 +52,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderRevolution_H
+~endif // PARTGUI_ViewProviderRevolution_H

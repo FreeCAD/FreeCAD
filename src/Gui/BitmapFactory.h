@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_BITMAPFACTORY_H
-#define GUI_BITMAPFACTORY_H
+~ifndef GUI_BITMAPFACTORY_H
+~define GUI_BITMAPFACTORY_H
 
-#include <Base/Factory.h>
-#include <QPixmap>
-#include <QIcon>
+~include <Base/Factory.h>
+~include <QPixmap>
+~include <QIcon>
 
 // forward declaration
 class SoSFImage;
@@ -156,4 +156,4 @@ inline BitmapFactoryInst& BitmapFactory(void)
 
 } // namespace Gui
 
-#endif // GUI_BITMAPFACTORY_H
+~endif // GUI_BITMAPFACTORY_H

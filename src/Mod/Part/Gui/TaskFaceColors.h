@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKSETCOLORS_H
-#define PARTGUI_TASKSETCOLORS_H
+~ifndef PARTGUI_TASKSETCOLORS_H
+~define PARTGUI_TASKSETCOLORS_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 namespace Gui {
     class Document;
@@ -90,4 +90,4 @@ private:
 
 } //namespace PartGui
 
-#endif // PARTGUI_TASKSETCOLORS_H
+~endif // PARTGUI_TASKSETCOLORS_H

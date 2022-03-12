@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLG_EVALUATE_MESH_IMP_H
-#define MESHGUI_DLG_EVALUATE_MESH_IMP_H
+~ifndef MESHGUI_DLG_EVALUATE_MESH_IMP_H
+~define MESHGUI_DLG_EVALUATE_MESH_IMP_H
 
-#include <map>
-#include <QPointer>
-#include <QDialog>
+~include <map>
+~include <QPointer>
+~include <QDialog>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObserver.h>
-#include <Mod/Mesh/App/Types.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObserver.h>
+~include <Mod/Mesh/App/Types.h>
 
 class QAbstractButton;
 class QScrollArea;
@@ -166,4 +166,4 @@ private:
 
 } // namespace MeshGui
 
-#endif // MESHGUI_DLG_EVALUATE_MESH_IMP_H
+~endif // MESHGUI_DLG_EVALUATE_MESH_IMP_H

@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef BASE_XMLTOOLS_H
-#define BASE_XMLTOOLS_H
+~ifndef BASE_XMLTOOLS_H
+~define BASE_XMLTOOLS_H
 
-#include <memory>
-#include <iostream>
-#include <xercesc/util/TransService.hpp>
+~include <memory>
+~include <iostream>
+~include <xercesc/util/TransService.hpp>
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
 
 XERCES_CPP_NAMESPACE_BEGIN
@@ -211,4 +211,4 @@ inline const XMLCh* XUTF8Str::unicodeForm() const
     return str.c_str();
 }
 
-#endif // BASE_XMLTOOLS_H
+~endif // BASE_XMLTOOLS_H

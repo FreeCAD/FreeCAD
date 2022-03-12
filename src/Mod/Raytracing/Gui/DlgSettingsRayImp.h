@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
-#define RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
+~ifndef RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
+~define RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace RaytracingGui {
 class Ui_DlgSettingsRay;
@@ -54,4 +54,4 @@ private:
 
 } // namespace RaytracingGui
 
-#endif // RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
+~endif // RAYTRACINGGUI_DLGSETTINGSRAYIMP_H

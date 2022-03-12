@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_VRMLOROBJECT_H
-#define APP_VRMLOROBJECT_H
+~ifndef APP_VRMLOROBJECT_H
+~define APP_VRMLOROBJECT_H
 
-#include "GeoFeature.h"
-#include "PropertyFile.h"
+~include "GeoFeature.h"
+~include "PropertyFile.h"
 
 
 namespace App
@@ -72,4 +72,4 @@ private:
 } //namespace App
 
 
-#endif // APP_INVENTOROBJECT_H
+~endif // APP_INVENTOROBJECT_H

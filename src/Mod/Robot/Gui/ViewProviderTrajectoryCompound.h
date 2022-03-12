@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_ViewProviderTrajectoryCompound_H
-#define ROBOT_ViewProviderTrajectoryCompound_H
+~ifndef ROBOT_ViewProviderTrajectoryCompound_H
+~define ROBOT_ViewProviderTrajectoryCompound_H
 
-#include "ViewProviderTrajectory.h"
+~include "ViewProviderTrajectory.h"
 
 namespace RobotGui
 {
@@ -47,4 +47,4 @@ protected:
 } //namespace RobotGui
 
 
-#endif // ROBOT_ViewProviderTrajectoryCompound_H
+~endif // ROBOT_ViewProviderTrajectoryCompound_H

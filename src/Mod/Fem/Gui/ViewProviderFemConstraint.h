@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINT_H
+~ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
+~define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Fem/FemGlobal.h>
-#include <QObject>
-#include <QVBoxLayout>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Fem/FemGlobal.h>
+~include <QObject>
+~include <QVBoxLayout>
 
 class SoFontStyle;
 class SoText2;
@@ -132,4 +132,4 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint> ViewProviderF
 } //namespace FemGui
 
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINT_H
+~endif // GUI_VIEWPROVIDERFEMCONSTRAINT_H

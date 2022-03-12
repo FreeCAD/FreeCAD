@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
-#define GUI_TASKVIEW_TaskExtrudeParameters_H
+~ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
+~define GUI_TASKVIEW_TaskExtrudeParameters_H
 
-#include <Gui/Selection.h>
+~include <Gui/Selection.h>
 
-#include "TaskSketchBasedParameters.h"
-#include "ViewProviderSketchBased.h"
+~include "TaskSketchBasedParameters.h"
+~include "ViewProviderSketchBased.h"
 
 class Ui_TaskPadPocketParameters;
 
@@ -138,4 +138,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskExtrudeParameters_H
+~endif // GUI_TASKVIEW_TaskExtrudeParameters_H

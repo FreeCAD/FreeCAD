@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTVECTOR3PLANE3_H
-#define WM4DISTVECTOR3PLANE3_H
+~ifndef WM4DISTVECTOR3PLANE3_H
+~define WM4DISTVECTOR3PLANE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Distance.h"
-#include "Wm4Plane3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Distance.h"
+~include "Wm4Plane3.h"
 
 namespace Wm4
 {
@@ -59,4 +59,4 @@ typedef DistVector3Plane3<double> DistVector3Plane3d;
 
 }
 
-#endif
+~endif

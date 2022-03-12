@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMAGEGUI_IMAGEORIENTATIONDIALOG_H
-#define IMAGEGUI_IMAGEORIENTATIONDIALOG_H
+~ifndef IMAGEGUI_IMAGEORIENTATIONDIALOG_H
+~define IMAGEGUI_IMAGEORIENTATIONDIALOG_H
 
-#include <Base/Placement.h>
-#include <QDialog>
+~include <Base/Placement.h>
+~include <QDialog>
 
 namespace ImageGui {
 
@@ -51,4 +51,4 @@ private:
 
 }
 
-#endif // IMAGEGUI_IMAGEORIENTATIONDIALOG_H
+~endif // IMAGEGUI_IMAGEORIENTATIONDIALOG_H

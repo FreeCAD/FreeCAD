@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4SEGMENT3_H
-#define WM4SEGMENT3_H
+~ifndef WM4SEGMENT3_H
+~define WM4SEGMENT3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -50,7 +50,7 @@ public:
 
 }
 
-#include "Wm4Segment3.inl"
+~include "Wm4Segment3.inl"
 
 namespace Wm4
 {
@@ -59,4 +59,4 @@ typedef Segment3<double> Segment3d;
 
 }
 
-#endif
+~endif

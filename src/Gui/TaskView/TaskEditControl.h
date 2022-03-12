@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKEDITCONTROL_H
-#define GUI_TASKVIEW_TASKEDITCONTROL_H
+~ifndef GUI_TASKVIEW_TASKEDITCONTROL_H
+~define GUI_TASKVIEW_TASKEDITCONTROL_H
 
-#include "TaskView.h"
+~include "TaskView.h"
 
 
 class Ui_TaskEditControl;
@@ -59,4 +59,4 @@ protected:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

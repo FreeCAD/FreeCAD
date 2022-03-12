@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGVIEW_H
-#define TECHDRAWGUI_QGVIEW_H
+~ifndef TECHDRAWGUI_QGVIEW_H
+~define TECHDRAWGUI_QGVIEW_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QLabel>
-#include <QPainterPath>
+~include <QGraphicsScene>
+~include <QGraphicsView>
+~include <QLabel>
+~include <QPainterPath>
 
 class QTemporaryFile;
 
@@ -190,4 +190,4 @@ private:
 
 } // namespace 
 
-#endif // TECHDRAWGUI_QGVIEW_H
+~endif // TECHDRAWGUI_QGVIEW_H

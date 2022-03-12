@@ -1,4 +1,4 @@
-#pragma once
+~pragma once
 /*
  * Original work Copyright 2009 - 2010 Kevin Ackley (kackley@gwi.net)
  * Modified work Copyright 2018 - 2020 Andy Maloney <asmaloney@gmail.com>
@@ -26,7 +26,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "Common.h"
+~include "Common.h"
 
 namespace e57
 {
@@ -43,9 +43,9 @@ namespace e57
       uint8_t reserved1[7] = {};         // must be zero
       uint64_t sectionLogicalLength = 0; // byte length of whole section
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout );
-#endif
+~endif
    };
 
    struct CompressedVectorSectionHeader
@@ -60,8 +60,8 @@ namespace e57
       CompressedVectorSectionHeader();
       void verify( uint64_t filePhysicalSize = 0 );
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
    };
 }

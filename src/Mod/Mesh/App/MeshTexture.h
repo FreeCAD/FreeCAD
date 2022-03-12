@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESH_MESHTEXTURE_H
-#define MESH_MESHTEXTURE_H
+~ifndef MESH_MESHTEXTURE_H
+~define MESH_MESHTEXTURE_H
 
-#include <memory>
-#include "Core/Algorithm.h"
-#include "Core/MeshKernel.h"
-#include "Core/KDTree.h"
-#include "Mesh.h"
+~include <memory>
+~include "Core/Algorithm.h"
+~include "Core/MeshKernel.h"
+~include "Core/KDTree.h"
+~include "Mesh.h"
 
 
 namespace Mesh
@@ -95,4 +95,4 @@ private:
 
 } // namespace Mesh
 
-#endif // MESH_MESHTEXTURE_H
+~endif // MESH_MESHTEXTURE_H

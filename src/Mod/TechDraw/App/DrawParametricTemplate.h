@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_DrawParametricTemplate_h_
-#define _TECHDRAW_DrawParametricTemplate_h_
+~ifndef _TECHDRAW_DrawParametricTemplate_h_
+~define _TECHDRAW_DrawParametricTemplate_h_
 
-#include <App/PropertyFile.h>
-#include <App/FeaturePython.h>
+~include <App/PropertyFile.h>
+~include <App/FeaturePython.h>
 
-#include "Geometry.h"
-#include "DrawTemplate.h"
+~include "Geometry.h"
+~include "DrawTemplate.h"
 
 namespace TechDraw
 {
@@ -93,4 +93,4 @@ typedef App::FeaturePythonT<DrawParametricTemplate> DrawParametricTemplatePython
 
 
 
-#endif //_TECHDRAW_DrawParametricTemplate_h_
+~endif //_TECHDRAW_DrawParametricTemplate_h_

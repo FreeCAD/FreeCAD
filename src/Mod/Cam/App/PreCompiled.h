@@ -21,64 +21,64 @@
  ***************************************************************************/
 
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+~ifndef __PRECOMPILED__
+~define __PRECOMPILED__
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 
 // Exporting of App classes
-#ifdef FC_OS_WIN32
-    # define CamExport   __declspec(dllexport)
-    # define CamExport      __declspec(dllexport)
-    # define PartExport     __declspec(dllimport)
-    # define MeshExport     __declspec(dllimport)
-#else // for Linux
-    # define CamExport
-    # define CamExport
-    # define PartExport
-    # define MeshExport
-#endif
+~ifdef FC_OS_WIN32
+    ~ define CamExport   __declspec(dllexport)
+    ~ define CamExport      __declspec(dllexport)
+    ~ define PartExport     __declspec(dllimport)
+    ~ define MeshExport     __declspec(dllimport)
+~else // for Linux
+    ~ define CamExport
+    ~ define CamExport
+    ~ define PartExport
+    ~ define MeshExport
+~endif
 
-#ifdef _MSC_VER
-    # pragma warning(disable : 4251)
-    # pragma warning(disable : 4290)
-    # pragma warning(disable : 4275)
-    # pragma warning(disable : 4503)
-    # pragma warning(disable : 4786)
-    # pragma warning(disable : 4101)
-#endif
+~ifdef _MSC_VER
+    ~ pragma warning(disable : 4251)
+    ~ pragma warning(disable : 4290)
+    ~ pragma warning(disable : 4275)
+    ~ pragma warning(disable : 4503)
+    ~ pragma warning(disable : 4786)
+    ~ pragma warning(disable : 4101)
+~endif
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
     // STL
-    #include <vector>
-    #include <list>
-    #include <map>
-    #include <string>
-    #include <set>
-    #include <algorithm>
-    #include <stack>
-    #include <queue>
-    #include <bitset>
+    ~include <vector>
+    ~include <list>
+    ~include <map>
+    ~include <string>
+    ~include <set>
+    ~include <algorithm>
+    ~include <stack>
+    ~include <queue>
+    ~include <bitset>
 
-    #include <Python.h>
+    ~include <Python.h>
 
-    #ifdef FC_OS_WIN32
-        #include <windows.h>
-    #endif
+    ~ifdef FC_OS_WIN32
+        ~include <windows.h>
+    ~endif
 
     // Xerces
-    #include <xercesc/util/XercesDefs.hpp>
+    ~include <xercesc/util/XercesDefs.hpp>
 
     // OpenCasCade Base
-    #include <Standard_Failure.hxx>
+    ~include <Standard_Failure.hxx>
 
     // OpenCascade View
-    #include <Mod/Part/App/OpenCascadeAll.h>
+    ~include <Mod/Part/App/OpenCascadeAll.h>
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif //__PRECOMPILED__
+~endif //__PRECOMPILED__
 
 

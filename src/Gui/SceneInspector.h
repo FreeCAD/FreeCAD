@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SCENEINSPECTOR_H
-#define GUI_SCENEINSPECTOR_H
+~ifndef GUI_SCENEINSPECTOR_H
+~define GUI_SCENEINSPECTOR_H
 
-#include <QDialog>
-#include <QHash>
-#include <QStandardItemModel>
+~include <QDialog>
+~include <QHash>
+~include <QStandardItemModel>
 
 class SoNode;
 
@@ -91,4 +91,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_SCENEINSPECTOR_H
+~endif // GUI_SCENEINSPECTOR_H

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_VIEWPROVIDEREXTEND_H
-#define SURFACEGUI_VIEWPROVIDEREXTEND_H
+~ifndef SURFACEGUI_VIEWPROVIDEREXTEND_H
+~define SURFACEGUI_VIEWPROVIDEREXTEND_H
 
-#include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/FeatureExtend.h>
+~include <Mod/Part/Gui/ViewProviderSpline.h>
+~include <Mod/Surface/App/FeatureExtend.h>
 
 namespace SurfaceGui
 {
@@ -39,4 +39,4 @@ public:
 
 } //namespace SurfaceGui
 
-#endif // SURFACEGUI_VIEWPROVIDEREXTEND_H
+~endif // SURFACEGUI_VIEWPROVIDEREXTEND_H

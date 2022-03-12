@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DRAGGER_H
-#define GUI_VIEWPROVIDER_DRAGGER_H
+~ifndef GUI_VIEWPROVIDER_DRAGGER_H
+~define GUI_VIEWPROVIDER_DRAGGER_H
 
-#include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObject.h"
 
 class SoDragger;
 class SoTransform;
@@ -85,5 +85,5 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_VIEWPROVIDER_DRAGGER_H
+~endif // GUI_VIEWPROVIDER_DRAGGER_H
 

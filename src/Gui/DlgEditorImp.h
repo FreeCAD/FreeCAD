@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGEDITORSETTINGSIMP_H
-#define GUI_DIALOG_DLGEDITORSETTINGSIMP_H
+~ifndef GUI_DIALOG_DLGEDITORSETTINGSIMP_H
+~define GUI_DIALOG_DLGEDITORSETTINGSIMP_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 class QTreeWidgetItem;
 
@@ -73,4 +73,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGEDITORSETTINGSIMP_H
+~endif // GUI_DIALOG_DLGEDITORSETTINGSIMP_H

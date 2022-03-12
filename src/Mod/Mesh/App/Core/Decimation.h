@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef MESH_DECIMATION_H
-#define MESH_DECIMATION_H
+~ifndef MESH_DECIMATION_H
+~define MESH_DECIMATION_H
 
 
 namespace MeshCore
@@ -44,4 +44,4 @@ private:
 } // namespace MeshCore
 
 
-#endif  // MESH_DECIMATION_H
+~endif  // MESH_DECIMATION_H

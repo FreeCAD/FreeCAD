@@ -21,13 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_FEATUREVIEWCOLLECTION_h_
-#define _TECHDRAW_FEATUREVIEWCOLLECTION_h_
+~ifndef _TECHDRAW_FEATUREVIEWCOLLECTION_h_
+~define _TECHDRAW_FEATUREVIEWCOLLECTION_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 namespace TechDraw
 {
@@ -71,4 +71,4 @@ protected:
 
 } //namespace TechDraw
 
-#endif // _TECHDRAW_FEATUREVIEWCOLLECTION_h_
+~endif // _TECHDRAW_FEATUREVIEWCOLLECTION_h_

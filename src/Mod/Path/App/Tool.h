@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_TOOL_H
-#define PATH_TOOL_H
+~ifndef PATH_TOOL_H
+~define PATH_TOOL_H
 
-#include <memory>
-#include <vector>
-#include <string>
-#include <map>
-#include <Base/Persistence.h>
+~include <memory>
+~include <vector>
+~include <string>
+~include <map>
+~include <Base/Persistence.h>
 
 namespace Path
 {
@@ -104,4 +104,4 @@ namespace Path
     using ToolPtr = std::shared_ptr<Tool>;
 } //namespace Path
 
-#endif // PATH_TOOL_H
+~endif // PATH_TOOL_H

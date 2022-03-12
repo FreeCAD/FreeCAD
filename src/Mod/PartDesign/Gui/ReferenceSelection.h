@@ -21,11 +21,11 @@
  ******************************************************************************/
 
 
-#ifndef GUI_ReferenceSelection_H
-#define GUI_ReferenceSelection_H
+~ifndef GUI_ReferenceSelection_H
+~define GUI_ReferenceSelection_H
 
-#include <Gui/SelectionFilter.h>
-#include <Mod/PartDesign/Gui/EnumFlags.h>
+~include <Gui/SelectionFilter.h>
+~include <Mod/PartDesign/Gui/EnumFlags.h>
 
 namespace App {
 class OriginGroupExtension;
@@ -109,4 +109,4 @@ std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & 
         const std::vector<std::string>& subs);
 } //namespace PartDesignGui
 
-#endif // GUI_ReferenceSelection_H
+~endif // GUI_ReferenceSelection_H

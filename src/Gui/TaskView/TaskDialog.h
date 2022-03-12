@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKDIALOG_H
-#define GUI_TASKVIEW_TASKDIALOG_H
+~ifndef GUI_TASKVIEW_TASKDIALOG_H
+~define GUI_TASKVIEW_TASKDIALOG_H
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
-#include <QDialogButtonBox>
+~include <QDialogButtonBox>
 
 
 namespace App {
@@ -145,4 +145,4 @@ private:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKDIALOG_H
+~endif // GUI_TASKVIEW_TASKDIALOG_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_ENUMERATION_H
-#define BASE_ENUMERATION_H
+~ifndef BASE_ENUMERATION_H
+~define BASE_ENUMERATION_H
 
-#include <string>
-#include <vector>
+~include <string>
+~include <vector>
 
 
 namespace App
@@ -39,9 +39,9 @@ namespace App
      * namespaces, etc. and as the data type stored by App::PropertyEnumeration
      *
      * Internally, Enumeration maintains
-     *  -# Either a const pointer to an array of C-style strings, or a vector
+     *  -~ Either a const pointer to an array of C-style strings, or a vector
      *  of C++ std::strings
-     *  -# An integer index into that array/vector representing the string
+     *  -~ An integer index into that array/vector representing the string
      *  representing the instance's value.
      *
      * If built with FC_DEBUG defined, some boundaries of passed in pointers
@@ -193,4 +193,4 @@ namespace App
     };  // class Enumeration
 }   // namespace App
 
-#endif // #ifndef BASE_ENUMERATION_H
+~endif // ~ifndef BASE_ENUMERATION_H

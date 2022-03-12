@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_CLIPPING_H
-#define GUI_DIALOG_CLIPPING_H
+~ifndef GUI_DIALOG_CLIPPING_H
+~define GUI_DIALOG_CLIPPING_H
 
-#include <QDialog>
+~include <QDialog>
 
 namespace Gui {
 class View3DInventor;
@@ -71,4 +71,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_CLIPPING_H
+~endif // GUI_DIALOG_CLIPPING_H

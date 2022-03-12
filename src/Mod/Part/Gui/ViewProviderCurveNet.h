@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERCURVENET_H
-#define PARTGUI_VIEWPROVIDERCURVENET_H
+~ifndef PARTGUI_VIEWPROVIDERCURVENET_H
+~define PARTGUI_VIEWPROVIDERCURVENET_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 class TopoDS_Shape;
@@ -89,5 +89,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERCURVENET_H
+~endif // PARTGUI_VIEWPROVIDERCURVENET_H
 

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef Assembly_ItemPart_H
-#define Assembly_ItemPart_H
+~ifndef Assembly_ItemPart_H
+~define Assembly_ItemPart_H
 
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
+~include <App/PropertyLinks.h>
+~include <App/GeoFeature.h>
 
-#include "Solver/Solver.h"
+~include "Solver/Solver.h"
 
 
 namespace Assembly
@@ -71,4 +71,4 @@ public:
 } //namespace Assembly
 
 
-#endif // Assembly_ItemPart_H
+~endif // Assembly_ItemPart_H

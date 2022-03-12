@@ -30,11 +30,11 @@
  *
  */
 
-#ifndef GRAPHICSVIEWZOOM_H
-#define GRAPHICSVIEWZOOM_H
+~ifndef GRAPHICSVIEWZOOM_H
+~define GRAPHICSVIEWZOOM_H
 
-#include <QObject>
-#include <QPointF>
+~include <QObject>
+~include <QPointF>
 
 
 /*!
@@ -90,4 +90,4 @@ private:
   bool eventFilter(QObject* object, QEvent* event);
 };
 
-#endif // GRAPHICSVIEWZOOM_H
+~endif // GRAPHICSVIEWZOOM_H

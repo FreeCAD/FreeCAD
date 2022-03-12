@@ -1,5 +1,5 @@
-#ifndef QUARTER_QUARTER_H
-#define QUARTER_QUARTER_H
+~ifndef QUARTER_QUARTER_H
+~define QUARTER_QUARTER_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "Basic.h"
+~include "Basic.h"
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -45,4 +45,4 @@ namespace Quarter {
 
 }}} // namespace
 
-#endif // QUARTER_QUARTER_H
+~endif // QUARTER_QUARTER_H

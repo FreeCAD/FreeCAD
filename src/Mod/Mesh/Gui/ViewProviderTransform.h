@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
-#define MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
+~ifndef MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
+~define MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 
 class SoSeparator;
 class SbVec3f;
@@ -39,7 +39,7 @@ namespace Gui {
 }
 
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 namespace MeshGui {
 
@@ -77,5 +77,5 @@ protected:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
+~endif // MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 

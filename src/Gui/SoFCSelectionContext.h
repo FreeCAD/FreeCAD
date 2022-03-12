@@ -20,15 +20,15 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_SOFCSELECTIONCONTEXT_H
-#define GUI_SOFCSELECTIONCONTEXT_H
+~ifndef GUI_SOFCSELECTIONCONTEXT_H
+~define GUI_SOFCSELECTIONCONTEXT_H
 
-#include <map>
-#include <vector>
-#include <set>
-#include <memory>
-#include <climits>
-#include <App/Material.h>
+~include <map>
+~include <vector>
+~include <set>
+~include <memory>
+~include <climits>
+~include <App/Material.h>
 
 namespace Gui {
 
@@ -132,4 +132,4 @@ protected:
 };
 
 }
-#endif //GUI_SOFCSELECTIONCONTEXT_H
+~endif //GUI_SOFCSELECTIONCONTEXT_H

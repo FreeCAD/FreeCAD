@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4LINE3_H
-#define WM4LINE3_H
+~ifndef WM4LINE3_H
+~define WM4LINE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -40,7 +40,7 @@ public:
 
 } //namespace Wm4
 
-#include "Wm4Line3.inl"
+~include "Wm4Line3.inl"
 
 namespace Wm4
 {
@@ -48,4 +48,4 @@ typedef Line3<float> Line3f;
 typedef Line3<double> Line3d;
 }
 
-#endif
+~endif

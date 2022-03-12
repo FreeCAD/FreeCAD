@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef APP_INVENTOROBJECT_H
-#define APP_INVENTOROBJECT_H
+~ifndef APP_INVENTOROBJECT_H
+~define APP_INVENTOROBJECT_H
 
-#include "GeoFeature.h"
-#include "PropertyStandard.h"
+~include "GeoFeature.h"
+~include "PropertyStandard.h"
 
 
 namespace App
@@ -57,4 +57,4 @@ public:
 } //namespace App
 
 
-#endif // APP_INVENTOROBJECT_H
+~endif // APP_INVENTOROBJECT_H

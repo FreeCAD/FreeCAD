@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTERSECTOR_H
-#define WM4INTERSECTOR_H
+~ifndef WM4INTERSECTOR_H
+~define WM4INTERSECTOR_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4LinComp.h"
-#include "Wm4Vector2.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4LinComp.h"
+~include "Wm4Vector2.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -81,4 +81,4 @@ typedef Intersector<double, Vector3<double> > Intersector3d;
 
 }
 
-#endif
+~endif

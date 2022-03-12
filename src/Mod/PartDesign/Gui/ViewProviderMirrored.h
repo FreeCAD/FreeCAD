@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMirrored_H
-#define PARTGUI_ViewProviderMirrored_H
+~ifndef PARTGUI_ViewProviderMirrored_H
+~define PARTGUI_ViewProviderMirrored_H
 
-#include "ViewProviderTransformed.h"
+~include "ViewProviderTransformed.h"
 
 namespace PartDesignGui {
 
@@ -47,4 +47,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderMirrored_H
+~endif // PARTGUI_ViewProviderMirrored_H

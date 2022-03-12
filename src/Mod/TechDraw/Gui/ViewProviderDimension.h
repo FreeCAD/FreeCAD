@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
-#define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
+~ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
+~define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
-#include <App/PropertyUnits.h>
+~include <App/PropertyUnits.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawViewDimension.h>
+~include "ViewProviderDrawingView.h"
+~include <Mod/TechDraw/App/DrawViewDimension.h>
 
 
 namespace TechDrawGui {
@@ -98,4 +98,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERDIMENSION_H
+~endif // DRAWINGGUI_VIEWPROVIDERDIMENSION_H

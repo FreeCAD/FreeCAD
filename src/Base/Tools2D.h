@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS2D_H
-#define BASE_TOOLS2D_H
+~ifndef BASE_TOOLS2D_H
+~define BASE_TOOLS2D_H
 
 
-#include <algorithm>
-#include <cmath>
-#include <cfloat>
-#include <cstdio>
-#include <list>
-#include <vector>
+~include <algorithm>
+~include <cmath>
+~include <cfloat>
+~include <cstdio>
+~include <list>
+~include <vector>
 
-#include "Vector3D.h"
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include "Vector3D.h"
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace Base {
 
@@ -568,6 +568,6 @@ inline void BoundBox2d::Add(const Vector2d &v)
 
 } // namespace Base
 
-#endif // BASE_TOOLS2D_H
+~endif // BASE_TOOLS2D_H
 
 

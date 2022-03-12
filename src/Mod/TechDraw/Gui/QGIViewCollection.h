@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
-#define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+~ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+~define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
-#include <QGraphicsItemGroup>
-#include <QObject>
+~include <QGraphicsItemGroup>
+~include <QObject>
 
-#include "QGIView.h"
+~include "QGIView.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -55,4 +55,4 @@ protected:
 
 } // namespace MDIViewPageGui
 
-#endif // _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+~endif // _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H

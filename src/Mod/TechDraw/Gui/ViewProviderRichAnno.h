@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
-#define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
+~ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
+~define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 
-#include <App/PropertyUnits.h>
+~include <App/PropertyUnits.h>
 
-#include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
 
-#include "ViewProviderDrawingView.h"
+~include "ViewProviderDrawingView.h"
 
 namespace TechDraw {
 class DrawRichAnno;
@@ -79,4 +79,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
+~endif // TECHDRAWGUI_VIEWPROVIDERRICHANNO_H

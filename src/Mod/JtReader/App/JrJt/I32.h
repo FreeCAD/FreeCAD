@@ -20,11 +20,11 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef I32_HEADER
-#define I32_HEADER
+~ifndef I32_HEADER
+~define I32_HEADER
 
-#include <istream>
-#include <stdint.h>
+~include <istream>
+~include <stdint.h>
 
 using namespace std;
 
@@ -52,4 +52,4 @@ struct I32
 
 
 
-#endif
+~endif

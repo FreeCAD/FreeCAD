@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WIDGETS_H
-#define GUI_WIDGETS_H
+~ifndef GUI_WIDGETS_H
+~define GUI_WIDGETS_H
 
-#include <memory>
-#include <FCGlobal.h>
+~include <memory>
+~include <FCGlobal.h>
 
-#include <QBasicTimer>
-#include <QButtonGroup>
-#include <QDialog>
-#include <QElapsedTimer>
-#include <QLabel>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QPlainTextEdit>
-#include <QPointer>
-#include <QPushButton>
-#include <QToolButton>
+~include <QBasicTimer>
+~include <QButtonGroup>
+~include <QDialog>
+~include <QElapsedTimer>
+~include <QLabel>
+~include <QLineEdit>
+~include <QListWidget>
+~include <QPlainTextEdit>
+~include <QPointer>
+~include <QPushButton>
+~include <QToolButton>
 
-#include <Base/Parameter.h>
-#include "ExpressionBinding.h"
+~include <Base/Parameter.h>
+~include "ExpressionBinding.h"
 
 class QGridLayout;
 class QVBoxLayout;
@@ -609,4 +609,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_WIDGETS_H
+~endif // GUI_WIDGETS_H

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINFEATURE_H
-#define ORIGINFEATURE_H
+~ifndef ORIGINFEATURE_H
+~define ORIGINFEATURE_H
 
-#include "GeoFeature.h"
+~include "GeoFeature.h"
 
 namespace App
 {
@@ -66,4 +66,4 @@ public:
 
 } //namespace App
 
-#endif /* end of include guard: ORIGINFEATURE_H */
+~endif /* end of include guard: ORIGINFEATURE_H */

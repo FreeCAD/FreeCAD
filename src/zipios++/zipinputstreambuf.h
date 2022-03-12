@@ -1,15 +1,15 @@
-#ifndef ZIPINPUTSTREAMBUF_H
-#define ZIPINPUTSTREAMBUF_H
+~ifndef ZIPINPUTSTREAMBUF_H
+~define ZIPINPUTSTREAMBUF_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <vector>
+~include <vector>
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "fcoll.h"
-#include "inflateinputstreambuf.h"
-#include "ziphead.h"
+~include "fcoll.h"
+~include "inflateinputstreambuf.h"
+~include "ziphead.h"
 
 namespace zipios {
 
@@ -63,7 +63,7 @@ private:
 
 
 
-#endif
+~endif
 
 /** \file
     Header file that defines ZipInputStreambuf.

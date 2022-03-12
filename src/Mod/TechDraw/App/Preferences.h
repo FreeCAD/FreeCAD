@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Preferences_h_
-#define _Preferences_h_
+~ifndef _Preferences_h_
+~define _Preferences_h_
 
-#include <string>
+~include <string>
 
-//#include <QString>
-//#include <QFont>
+//~include <QString>
+//~include <QFont>
 
 //class QFont;
 class QString;
@@ -75,4 +75,4 @@ static int          altDecimals();
 };
 
 } //end namespace TechDraw
-#endif
+~endif

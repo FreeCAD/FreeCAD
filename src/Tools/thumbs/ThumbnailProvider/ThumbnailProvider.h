@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#pragma once
+~pragma once
 
 //class CThumbnailProvider : public IThumbnailProvider, IObjectWithSite, IInitializeWithStream
 class CThumbnailProvider : public IThumbnailProvider, IObjectWithSite, IInitializeWithFile

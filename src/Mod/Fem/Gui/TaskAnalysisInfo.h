@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
+~ifndef FEMGUI_TaskAnalysisInfo_H
+~define FEMGUI_TaskAnalysisInfo_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Fem/App/FemSetNodesObject.h>
+~include <Mod/Fem/App/FemSetNodesObject.h>
 
 
 class Ui_TaskAnalysisInfo;
@@ -75,4 +75,4 @@ private:
 
 } //namespace FEMGUI_TaskAnalysisInfo_H
 
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+~endif // GUI_TASKVIEW_TaskAnalysisInfo_H

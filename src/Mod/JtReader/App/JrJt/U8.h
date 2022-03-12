@@ -20,12 +20,12 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef U8_HEADER
-#define U8_HEADER
+~ifndef U8_HEADER
+~define U8_HEADER
 
-#include <istream>
-#include <stdint.h>
-#include "Context.h"
+~include <istream>
+~include <stdint.h>
+~include "Context.h"
 
 using namespace std;
 
@@ -56,4 +56,4 @@ struct U8
 };
 
 
-#endif
+~endif

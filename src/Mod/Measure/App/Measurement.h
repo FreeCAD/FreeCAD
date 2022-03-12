@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MEASURE_MEASUREMENT_H
-#define MEASURE_MEASUREMENT_H
+~ifndef MEASURE_MEASUREMENT_H
+~define MEASURE_MEASUREMENT_H
 
-#include <Base/BaseClass.h>
-#include <Base/SmartPtrPy.h>
-#include <Base/Vector3D.h>
+~include <Base/BaseClass.h>
+~include <Base/SmartPtrPy.h>
+~include <Base/Vector3D.h>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
 
 class TopoDS_Shape;
 namespace Measure
@@ -92,4 +92,4 @@ protected:
 } //namespace measure
 
 
-#endif // MEASURE_MEASUREMENT_H
+~endif // MEASURE_MEASUREMENT_H

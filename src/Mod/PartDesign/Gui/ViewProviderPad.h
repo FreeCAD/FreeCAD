@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPad_H
-#define PARTGUI_ViewProviderPad_H
+~ifndef PARTGUI_ViewProviderPad_H
+~define PARTGUI_ViewProviderPad_H
 
-#include "ViewProviderSketchBased.h"
+~include "ViewProviderSketchBased.h"
 
 namespace PartDesignGui {
 
@@ -50,4 +50,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPad_H
+~endif // PARTGUI_ViewProviderPad_H

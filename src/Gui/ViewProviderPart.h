@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
-#define GUI_VIEWPROVIDER_ViewProviderPart_H
+~ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
+~define GUI_VIEWPROVIDER_ViewProviderPart_H
 
-#include "ViewProviderDragger.h"
-#include "ViewProviderOriginGroup.h"
-#include "ViewProviderPythonFeature.h"
+~include "ViewProviderDragger.h"
+~include "ViewProviderOriginGroup.h"
+~include "ViewProviderPythonFeature.h"
 
 
 namespace Gui {
@@ -60,5 +60,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_ViewProviderPart_H
+~endif // GUI_VIEWPROVIDER_ViewProviderPart_H
 

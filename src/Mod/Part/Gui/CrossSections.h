@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_CROSSSECTIONS_H
-#define PARTGUI_CROSSSECTIONS_H
+~ifndef PARTGUI_CROSSSECTIONS_H
+~define PARTGUI_CROSSSECTIONS_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Base/BoundBox.h>
-#include <QDialog>
-#include <QPointer>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Base/BoundBox.h>
+~include <QDialog>
+~include <QPointer>
 
 namespace Gui {
 class View3DInventor;
@@ -99,4 +99,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_CROSSSECTIONS_H
+~endif // PARTGUI_CROSSSECTIONS_H

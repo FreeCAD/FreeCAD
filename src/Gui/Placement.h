@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PLACEMENT_H
-#define GUI_PLACEMENT_H
+~ifndef GUI_PLACEMENT_H
+~define GUI_PLACEMENT_H
 
-#include <Gui/InputVector.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/InputVector.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
 
 class QSignalMapper;
@@ -160,4 +160,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_PLACEMENT_H
+~endif // GUI_PLACEMENT_H

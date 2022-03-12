@@ -21,18 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMGUI_CUTTING_H
-#define CAMGUI_CUTTING_H
+~ifndef CAMGUI_CUTTING_H
+~define CAMGUI_CUTTING_H
 
-#include "ui_Cutting.h"
+~include "ui_Cutting.h"
 
-#include <Base/Vector3D.h>
-#include <QProcess>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Cam/App/cutting_tools.h>
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Mod/Cam/App/mergedata.h>
-#include <zlib.h>
+~include <Base/Vector3D.h>
+~include <QProcess>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Cam/App/cutting_tools.h>
+~include <Inventor/nodes/SoEventCallback.h>
+~include <Mod/Cam/App/mergedata.h>
+~include <zlib.h>
 
 class best_fit;
 class cutting_tools;
@@ -134,4 +134,4 @@ private:
 
 }
 
-#endif
+~endif

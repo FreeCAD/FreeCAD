@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PART_CUSTOMFEATURE_H
-#define PART_CUSTOMFEATURE_H
+~ifndef PART_CUSTOMFEATURE_H
+~define PART_CUSTOMFEATURE_H
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Part
 {
@@ -59,4 +59,4 @@ typedef App::FeaturePythonT<CustomFeature> CustomFeaturePython;
 } //namespace Part
 
 
-#endif // PART_CUSTOMFEATURE_H
+~endif // PART_CUSTOMFEATURE_H

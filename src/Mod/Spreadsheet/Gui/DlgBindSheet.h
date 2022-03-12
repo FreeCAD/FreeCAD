@@ -20,11 +20,11 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_BINDSHEET_H
-#define DLG_BINDSHEET_H
+~ifndef DLG_BINDSHEET_H
+~define DLG_BINDSHEET_H
 
-#include <QDialog>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <QDialog>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 namespace Ui {
 class DlgBindSheet;
@@ -53,4 +53,4 @@ private:
 
 }
 
-#endif // DLG_BINDSHEET_H
+~endif // DLG_BINDSHEET_H

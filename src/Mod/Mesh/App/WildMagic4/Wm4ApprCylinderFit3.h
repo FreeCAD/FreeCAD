@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRCYLINDERFIT3_H
-#define WM4APPRCYLINDERFIT3_H
+~ifndef WM4APPRCYLINDERFIT3_H
+~define WM4APPRCYLINDERFIT3_H
 
 // Least-squares fit of a finite cylinder to (x,y,z) data.  The cylinder has
 // center C, unit-length axis direction U, radius r, and height h.  The end
@@ -44,8 +44,8 @@
 //         break;
 // }
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -79,4 +79,4 @@ typedef CylinderFit3<double> CylinderFit3d;
 
 }
 
-#endif
+~endif

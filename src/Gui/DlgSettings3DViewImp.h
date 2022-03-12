@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
-#define GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
+~ifndef GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
+~define GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 class QDoubleSpinBox;
 
@@ -63,4 +63,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
+~endif // GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H

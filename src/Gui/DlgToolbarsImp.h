@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
-#define GUI_DIALOG_DLGTOOLBARS_IMP_H
+~ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
+~define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
-#include "PropertyPage.h"
-#include <memory>
+~include "PropertyPage.h"
+~include <memory>
 
 namespace Gui {
 namespace Dialog {
@@ -136,4 +136,4 @@ protected:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGTOOLBARS_IMP_H
+~endif // GUI_DIALOG_DLGTOOLBARS_IMP_H

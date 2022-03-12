@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDEREXTENSION_H
-#define GUI_VIEWPROVIDEREXTENSION_H
+~ifndef GUI_VIEWPROVIDEREXTENSION_H
+~define GUI_VIEWPROVIDEREXTENSION_H
 
-#include <QIcon>
-#include <App/Extension.h>
+~include <QIcon>
+~include <App/Extension.h>
 
 
 class SoDetail;
@@ -129,4 +129,4 @@ private:
 
 } //Gui
 
-#endif // GUI_VIEWPROVIDEREXTENSION_H
+~endif // GUI_VIEWPROVIDEREXTENSION_H

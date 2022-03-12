@@ -1,5 +1,5 @@
-#ifndef QUARTER_INTERACTIONMODE_H
-#define QUARTER_INTERACTIONMODE_H
+~ifndef QUARTER_INTERACTIONMODE_H
+~define QUARTER_INTERACTIONMODE_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -33,11 +33,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QCursor>
-#include <QObject>
-#include <Inventor/SoEventManager.h>
+~include <QCursor>
+~include <QObject>
+~include <Inventor/SoEventManager.h>
 
-#include "Basic.h"
+~include "Basic.h"
 
 
 class QEvent;
@@ -78,4 +78,4 @@ private:
 
 }}} // namespace
 
-#endif // QUARTER_INTERACTIONMODE_H
+~endif // QUARTER_INTERACTIONMODE_H

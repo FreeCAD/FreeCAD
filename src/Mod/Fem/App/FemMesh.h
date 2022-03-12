@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#ifndef FEM_FEMMESH_H
-#define FEM_FEMMESH_H
+~ifndef FEM_FEMMESH_H
+~define FEM_FEMMESH_H
 
-#include <App/ComplexGeoData.h>
-#include <Base/Placement.h>
-#include <Base/Quantity.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <App/ComplexGeoData.h>
+~include <Base/Placement.h>
+~include <Base/Quantity.h>
+~include <Mod/Fem/FemGlobal.h>
 
-#include <vector>
-#include <list>
-#include <memory>
-#include <SMESH_Version.h>
-#include <SMDSAbs_ElementType.hxx>
+~include <vector>
+~include <list>
+~include <memory>
+~include <SMESH_Version.h>
+~include <SMDSAbs_ElementType.hxx>
 
 class SMESH_Gen;
 class SMESH_Mesh;
@@ -186,4 +186,4 @@ private:
 } //namespace Part
 
 
-#endif // FEM_FEMMESH_H
+~endif // FEM_FEMMESH_H

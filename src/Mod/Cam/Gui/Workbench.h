@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef CAMGUI_WORKBENCH_H
-#define CAMGUI_WORKBENCH_H
+~ifndef CAMGUI_WORKBENCH_H
+~define CAMGUI_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace CamGui
 {
@@ -49,4 +49,4 @@ protected:
 } // namespace CamGui
 
 
-#endif // CAMGUI_WORKBENCH_H
+~endif // CAMGUI_WORKBENCH_H

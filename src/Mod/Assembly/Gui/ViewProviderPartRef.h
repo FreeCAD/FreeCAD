@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLYGUI_ViewProviderPartRef_H
-#define ASSEMBLYGUI_ViewProviderPartRef_H
+~ifndef ASSEMBLYGUI_ViewProviderPartRef_H
+~define ASSEMBLYGUI_ViewProviderPartRef_H
 
-#include "ViewProvider.h"
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoMarkerSet.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoSwitch.h>
+~include "ViewProvider.h"
+~include <Inventor/nodes/SoAnnotation.h>
+~include <Inventor/nodes/SoMarkerSet.h>
+~include <Inventor/nodes/SoCoordinate3.h>
+~include <Inventor/nodes/SoMaterial.h>
+~include <Inventor/nodes/SoSwitch.h>
 
 
 namespace AssemblyGui {
@@ -61,7 +61,7 @@ public:
     virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
 
     
-#ifdef ASSEMBLY_DEBUG_FACILITIES
+~ifdef ASSEMBLY_DEBUG_FACILITIES
     //draw the dcm points
     SoAnnotation*  m_anno;
     SoSwitch*      m_switch;
@@ -71,7 +71,7 @@ public:
     virtual void onChanged(const App::Property* prop);
     
     App::PropertyBool ShowScalePoints;
-#endif
+~endif
 };
 
 
@@ -79,4 +79,4 @@ public:
 } // namespace AssemblyGui
 
 
-#endif // ASSEMBLYGUI_ViewProviderPartRef_H
+~endif // ASSEMBLYGUI_ViewProviderPartRef_H

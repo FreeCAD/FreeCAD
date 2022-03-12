@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef _LuxTools_h_
-#define _LuxTools_h_
+~ifndef _LuxTools_h_
+~define _LuxTools_h_
 
-#include <gp_Vec.hxx>
-#include <vector>
+~include <gp_Vec.hxx>
+~include <vector>
 
-#include "PovTools.h"
+~include "PovTools.h"
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -47,4 +47,4 @@ namespace Raytracing
     };
 } // namespace Raytracing
 
-#endif // _LuxTools_h_
+~endif // _LuxTools_h_

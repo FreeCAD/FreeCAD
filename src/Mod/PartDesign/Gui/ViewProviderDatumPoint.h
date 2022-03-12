@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumPoint_H
-#define PARTGUI_ViewProviderDatumPoint_H
+~ifndef PARTGUI_ViewProviderDatumPoint_H
+~define PARTGUI_ViewProviderDatumPoint_H
 
-#include "ViewProviderDatum.h"
+~include "ViewProviderDatum.h"
 
 namespace PartDesignGui {
 
@@ -49,4 +49,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderDatumPoint_H
+~endif // PARTGUI_ViewProviderDatumPoint_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_SWAP_H
-#define BASE_SWAP_H
+~ifndef BASE_SWAP_H
+~define BASE_SWAP_H
 
-#define LOW_ENDIAN	(unsigned short) 0x4949
-#define HIGH_ENDIAN	(unsigned short) 0x4D4D
+~define LOW_ENDIAN	(unsigned short) 0x4949
+~define HIGH_ENDIAN	(unsigned short) 0x4D4D
 
 
 namespace Base {
@@ -61,4 +61,4 @@ void SwapEndian(T& v)
 } // namespace Base
 
 
-#endif // BASE_SWAP_H
+~endif // BASE_SWAP_H

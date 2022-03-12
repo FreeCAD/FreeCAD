@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CALLTIPS_H
-#define GUI_CALLTIPS_H
+~ifndef GUI_CALLTIPS_H
+~define GUI_CALLTIPS_H
 
-#include <QListWidget>
+~include <QListWidget>
 
 class QPlainTextEdit;
 
@@ -88,4 +88,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_CALLTIPS_H
+~endif // GUI_CALLTIPS_H

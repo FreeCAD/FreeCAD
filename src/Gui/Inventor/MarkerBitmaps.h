@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_INVENTOR_MARKERBITMAPS_H
-#define GUI_INVENTOR_MARKERBITMAPS_H
+~ifndef GUI_INVENTOR_MARKERBITMAPS_H
+~define GUI_INVENTOR_MARKERBITMAPS_H
 
-#include <list>
-#include <map>
-#include <string>
+~include <list>
+~include <map>
+~include <string>
 
 
 namespace Gui { namespace Inventor {
@@ -49,5 +49,5 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_INVENTOR_MARKERBITMAPS_H
+~endif // GUI_INVENTOR_MARKERBITMAPS_H
 

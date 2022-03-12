@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOFCMESHOBJECT_H
-#define MESHGUI_SOFCMESHOBJECT_H
+~ifndef MESHGUI_SOFCMESHOBJECT_H
+~define MESHGUI_SOFCMESHOBJECT_H
 
-#include <Inventor/fields/SoSField.h>
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/fields/SoSFVec3s.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Mesh.h>
+~include <Inventor/fields/SoSField.h>
+~include <Inventor/fields/SoSFUInt32.h>
+~include <Inventor/fields/SoSubField.h>
+~include <Inventor/fields/SoSFVec3f.h>
+~include <Inventor/fields/SoSFVec3s.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoShape.h>
+~include <Inventor/elements/SoReplacedElement.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Mesh.h>
 
 typedef unsigned int GLuint;
 typedef int GLint;
@@ -283,5 +283,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_SOFCMESHOBJECT_H
+~endif // MESHGUI_SOFCMESHOBJECT_H
 

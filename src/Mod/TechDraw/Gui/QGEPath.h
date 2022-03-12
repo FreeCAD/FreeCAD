@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_EDITABLEPATH_H
-#define TECHDRAWGUI_EDITABLEPATH_H
+~ifndef TECHDRAWGUI_EDITABLEPATH_H
+~define TECHDRAWGUI_EDITABLEPATH_H
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
-#include <QObject>
+~include <QGraphicsScene>
+~include <QGraphicsSceneHoverEvent>
+~include <QMouseEvent>
+~include <QObject>
 
-#include <Base/Vector3D.h>
-#include "QGIVertex.h"
-#include "QGIPrimPath.h"
+~include <Base/Vector3D.h>
+~include "QGIVertex.h"
+~include "QGIPrimPath.h"
 
 namespace TechDrawGui
 {
@@ -144,4 +144,4 @@ protected:
 
 }
 
-#endif // TECHDRAWGUI_EDITABLEPATH_H
+~endif // TECHDRAWGUI_EDITABLEPATH_H

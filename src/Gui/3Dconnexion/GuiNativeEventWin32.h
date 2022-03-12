@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+~ifndef GUINATIVEEVENT_H
+~define GUINATIVEEVENT_H
 
-#include "GuiAbstractNativeEvent.h"
+~include "GuiAbstractNativeEvent.h"
 
-#include "3Dconnexion/MouseParameters.h"
+~include "3Dconnexion/MouseParameters.h"
 
-#include <map>
+~include <map>
 
-//#define _WIN32_WINNT 0x0501  //target at least windows XP
-#include <Windows.h>
-#if QT_VERSION >= 0x050000
-#include "GuiRawInputEventFilter.h"
-#endif
+//~define _WIN32_WINNT 0x0501  //target at least windows XP
+~include <Windows.h>
+~if QT_VERSION >= 0x050000
+~include "GuiRawInputEventFilter.h"
+~endif
 
 class QMainWindow;
 class GUIApplicationNativeEventAware;
@@ -102,5 +102,5 @@ namespace Gui
 	};
 }
 
-#endif //GUINATIVEEVENT_H
+~endif //GUINATIVEEVENT_H
 

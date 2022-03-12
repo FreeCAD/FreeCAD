@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemPostPipeline_H
-#define Fem_FemPostPipeline_H
+~ifndef Fem_FemPostPipeline_H
+~define Fem_FemPostPipeline_H
 
-#include "FemPostObject.h"
-#include "FemPostFilter.h"
-#include "FemPostFunction.h"
-#include "FemResultObject.h"
+~include "FemPostObject.h"
+~include "FemPostFilter.h"
+~include "FemPostFunction.h"
+~include "FemResultObject.h"
 
-#include <vtkSmartPointer.h>
-#include <vtkDataSet.h>
+~include <vtkSmartPointer.h>
+~include <vtkDataSet.h>
 
 namespace Fem
 {
@@ -85,4 +85,4 @@ private:
 } //namespace Fem
 
 
-#endif // Fem_FemPostPipeline_H
+~endif // Fem_FemPostPipeline_H

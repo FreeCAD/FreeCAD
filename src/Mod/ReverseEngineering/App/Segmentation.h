@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef REEN_SEGMENTATION_H
-#define REEN_SEGMENTATION_H
+~ifndef REEN_SEGMENTATION_H
+~define REEN_SEGMENTATION_H
 
-#include <Base/Vector3D.h>
-#include <vector>
-#include <list>
+~include <Base/Vector3D.h>
+~include <vector>
+~include <list>
 
 namespace Points {class PointKernel;}
 
@@ -79,5 +79,5 @@ private:
 
 } // namespace Reen
 
-#endif // REEN_SEGMENTATION_H
+~endif // REEN_SEGMENTATION_H
 

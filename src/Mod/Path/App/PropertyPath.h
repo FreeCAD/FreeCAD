@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYPATH_H
-#define PROPERTYPATH_H
+~ifndef PROPERTYPATH_H
+~define PROPERTYPATH_H
 
-#include "Path.h"
-#include <App/Property.h>
+~include "Path.h"
+~include <App/Property.h>
 
 namespace Path
 {
@@ -74,4 +74,4 @@ private:
 } //namespace Path
 
 
-#endif // PROPERTYPATH_H
+~endif // PROPERTYPATH_H

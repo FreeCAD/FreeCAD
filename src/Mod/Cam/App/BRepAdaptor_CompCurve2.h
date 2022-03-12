@@ -22,45 +22,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _BRepAdaptor_CompCurve2_HeaderFile
-#define _BRepAdaptor_CompCurve2_HeaderFile
+~ifndef _BRepAdaptor_CompCurve2_HeaderFile
+~define _BRepAdaptor_CompCurve2_HeaderFile
 
-#ifndef _TopoDS_Wire_HeaderFile
-#include <TopoDS_Wire.hxx>
-#endif
-#ifndef _Standard_Real_HeaderFile
-#include <Standard_Real.hxx>
-#endif
-#ifndef _Handle_BRepAdaptor_HArray1OfCurve_HeaderFile
-#include <Handle_BRepAdaptor_HArray1OfCurve.hxx>
-#endif
-#ifndef _Handle_TColStd_HArray1OfReal_HeaderFile
-#include <Handle_TColStd_HArray1OfReal.hxx>
-#endif
-#ifndef _Standard_Integer_HeaderFile
-#include <Standard_Integer.hxx>
-#endif
-#ifndef _Standard_Boolean_HeaderFile
-#include <Standard_Boolean.hxx>
-#endif
-#ifndef _Adaptor3d_Curve_HeaderFile
-#include <Adaptor3d_Curve.hxx>
-#endif
-#ifndef _GeomAbs_Shape_HeaderFile
-#include <GeomAbs_Shape.hxx>
-#endif
-#ifndef _Handle_Adaptor3d_HCurve_HeaderFile
-#include <Handle_Adaptor3d_HCurve.hxx>
-#endif
-#ifndef _GeomAbs_CurveType_HeaderFile
-#include <GeomAbs_CurveType.hxx>
-#endif
-#ifndef _Handle_Geom_BezierCurve_HeaderFile
-#include <Handle_Geom_BezierCurve.hxx>
-#endif
-#ifndef _Handle_Geom_BSplineCurve_HeaderFile
-#include <Handle_Geom_BSplineCurve.hxx>
-#endif
+~ifndef _TopoDS_Wire_HeaderFile
+~include <TopoDS_Wire.hxx>
+~endif
+~ifndef _Standard_Real_HeaderFile
+~include <Standard_Real.hxx>
+~endif
+~ifndef _Handle_BRepAdaptor_HArray1OfCurve_HeaderFile
+~include <Handle_BRepAdaptor_HArray1OfCurve.hxx>
+~endif
+~ifndef _Handle_TColStd_HArray1OfReal_HeaderFile
+~include <Handle_TColStd_HArray1OfReal.hxx>
+~endif
+~ifndef _Standard_Integer_HeaderFile
+~include <Standard_Integer.hxx>
+~endif
+~ifndef _Standard_Boolean_HeaderFile
+~include <Standard_Boolean.hxx>
+~endif
+~ifndef _Adaptor3d_Curve_HeaderFile
+~include <Adaptor3d_Curve.hxx>
+~endif
+~ifndef _GeomAbs_Shape_HeaderFile
+~include <GeomAbs_Shape.hxx>
+~endif
+~ifndef _Handle_Adaptor3d_HCurve_HeaderFile
+~include <Handle_Adaptor3d_HCurve.hxx>
+~endif
+~ifndef _GeomAbs_CurveType_HeaderFile
+~include <GeomAbs_CurveType.hxx>
+~endif
+~ifndef _Handle_Geom_BezierCurve_HeaderFile
+~include <Handle_Geom_BezierCurve.hxx>
+~endif
+~ifndef _Handle_Geom_BSplineCurve_HeaderFile
+~include <Handle_Geom_BSplineCurve.hxx>
+~endif
 class BRepAdaptor_HArray1OfCurve;
 class TColStd_HArray1OfReal;
 class Standard_NullObject;
@@ -82,12 +82,12 @@ class Geom_BezierCurve;
 class Geom_BSplineCurve;
 
 
-#ifndef _Standard_HeaderFile
-#include <Standard.hxx>
-#endif
-#ifndef _Standard_Macro_HeaderFile
-#include <Standard_Macro.hxx>
-#endif
+~ifndef _Standard_HeaderFile
+~include <Standard.hxx>
+~endif
+~ifndef _Standard_Macro_HeaderFile
+~include <Standard_Macro.hxx>
+~endif
 
 //! The Curve from BRepAdaptor allows to use a Wire of the BRep topology
 //! like a 3D curve. <br>
@@ -282,4 +282,4 @@ private:
 
 
 
-#endif
+~endif

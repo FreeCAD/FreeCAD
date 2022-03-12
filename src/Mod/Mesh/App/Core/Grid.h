@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#ifndef MESH_GRID_H
-#define MESH_GRID_H
+~ifndef MESH_GRID_H
+~define MESH_GRID_H
 
-#include <set>
+~include <set>
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
-#include <Base/BoundBox.h>
+~include "MeshKernel.h"
+~include <Base/Vector3D.h>
+~include <Base/BoundBox.h>
 
-#define  MESH_CT_GRID          256     // Default value for number of elements per grid
-#define  MESH_MAX_GRIDS        100000  // Default value for maximum number of grids
-#define  MESH_CT_GRID_PER_AXIS 20
+~define  MESH_CT_GRID          256     // Default value for number of elements per grid
+~define  MESH_MAX_GRIDS        100000  // Default value for maximum number of grids
+~define  MESH_CT_GRID_PER_AXIS 20
 
 
 namespace MeshCore {
@@ -41,8 +41,8 @@ class MeshKernel;
 class MeshGeomFacet;
 class MeshGrid;
 
-//#define MESHGRID_BBOX_EXTENSION 1.0e-3f
-#define MESHGRID_BBOX_EXTENSION 10.0f
+//~define MESHGRID_BBOX_EXTENSION 1.0e-3f
+~define MESHGRID_BBOX_EXTENSION 10.0f
 
 /**
  * The MeshGrid allows to divide a global mesh object into smaller regions
@@ -484,4 +484,4 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, ElementIndex
 
 } // namespace MeshCore
 
-#endif // MESH_GRID_H
+~endif // MESH_GRID_H

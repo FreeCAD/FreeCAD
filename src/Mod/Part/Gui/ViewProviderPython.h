@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPYTHON_H
-#define PARTGUI_VIEWPROVIDERPYTHON_H
+~ifndef PARTGUI_VIEWPROVIDERPYTHON_H
+~define PARTGUI_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <Gui/ViewProviderPythonFeature.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartGui {
 
@@ -51,5 +51,5 @@ typedef Gui::ViewProviderPythonFeatureT<ViewProviderCustom> ViewProviderCustomPy
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPYTHON_H
+~endif // PARTGUI_VIEWPROVIDERPYTHON_H
 

@@ -24,8 +24,8 @@
 // LeastSquareConformalMapping + fem relaxing
 // ------------------------------------------
 // 
-#ifndef UNWRAP_H
-#define UNWRAP_H
+~ifndef UNWRAP_H
+~define UNWRAP_H
 
 // 1: local coordinates 2d representation  q_l_0
 // 2: least square conformal map -> flat_vertices_0
@@ -35,14 +35,14 @@
 // 6: K.u=forces ->u
 // 7: x1, y1 += w * u
 
-#include "MeshFlattening.h"
+~include "MeshFlattening.h"
 
-#include <vector>
-#include <memory>
-#include <tuple>
+~include <vector>
+~include <memory>
+~include <tuple>
 
-#include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
+~include <Eigen/Geometry>
+~include <Eigen/IterativeLinearSolvers>
 
 typedef Eigen::SparseMatrix<double> spMat;
 
@@ -124,4 +124,4 @@ public:
 
 }
 
-#endif
+~endif

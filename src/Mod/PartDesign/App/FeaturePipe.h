@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pipe_H
-#define PARTDESIGN_Pipe_H
+~ifndef PARTDESIGN_Pipe_H
+~define PARTDESIGN_Pipe_H
 
-#include "FeatureSketchBased.h"
-#include <BRepOffsetAPI_MakePipeShell.hxx>
+~include "FeatureSketchBased.h"
+~include <BRepOffsetAPI_MakePipeShell.hxx>
 
 namespace PartDesign
 {
@@ -87,4 +87,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_Pipe_H
+~endif // PARTDESIGN_Pipe_H

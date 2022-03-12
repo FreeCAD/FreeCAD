@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_WORKBENCH_H
-#define IMPORT_WORKBENCH_H
+~ifndef IMPORT_WORKBENCH_H
+~define IMPORT_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace ImportGui {
 
@@ -47,4 +47,4 @@ protected:
 } // namespace ImportGui
 
 
-#endif // IMPORT_WORKBENCH_H 
+~endif // IMPORT_WORKBENCH_H 

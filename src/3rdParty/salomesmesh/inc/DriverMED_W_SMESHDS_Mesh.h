@@ -24,18 +24,18 @@
 //  File   : DriverMED_W_SMESHDS_Mesh.h
 //  Module : SMESH
 //
-#ifndef _INCLUDE_DRIVERMED_W_SMESHDS_MESH
-#define _INCLUDE_DRIVERMED_W_SMESHDS_MESH
+~ifndef _INCLUDE_DRIVERMED_W_SMESHDS_MESH
+~define _INCLUDE_DRIVERMED_W_SMESHDS_MESH
 
-#include "SMESH_DriverMED.hxx"
+~include "SMESH_DriverMED.hxx"
 
-#include "Driver_SMESHDS_Mesh.h"
-#include "MED_Common.hxx"
+~include "Driver_SMESHDS_Mesh.h"
+~include "MED_Common.hxx"
 
-#include <string>
-#include <list>
-#include <map>
-#include <vector>
+~include <string>
+~include <list>
+~include <map>
+~include <vector>
 
 class SMESHDS_Mesh;
 class SMESHDS_GroupBase;
@@ -90,4 +90,4 @@ class MESHDRIVERMED_EXPORT DriverMED_W_SMESHDS_Mesh: public Driver_SMESHDS_Mesh
   bool myAddODOnVertices;
 };
 
-#endif
+~endif

@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CUSTOMWIDGETS_H
-#define GUI_CUSTOMWIDGETS_H
+~ifndef GUI_CUSTOMWIDGETS_H
+~define GUI_CUSTOMWIDGETS_H
 
-#include <QButtonGroup>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QDoubleSpinBox>
-#include <QFontComboBox>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QPushButton>
-#include <QRadioButton>
-#include <QSpinBox>
-#include <QTreeWidget>
-#include <QWidget>
+~include <QButtonGroup>
+~include <QCheckBox>
+~include <QComboBox>
+~include <QDoubleSpinBox>
+~include <QFontComboBox>
+~include <QGridLayout>
+~include <QGroupBox>
+~include <QLabel>
+~include <QLineEdit>
+~include <QListWidget>
+~include <QPushButton>
+~include <QRadioButton>
+~include <QSpinBox>
+~include <QTreeWidget>
+~include <QWidget>
 
 namespace Base {
     class Exception {
@@ -865,4 +865,4 @@ private:
 };
 } // namespace Gui
 
-#endif // GUI_CUSTOMWIDGETS_H
+~endif // GUI_CUSTOMWIDGETS_H

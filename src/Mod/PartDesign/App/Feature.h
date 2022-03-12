@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Feature_H
-#define PARTDESIGN_Feature_H
+~ifndef PARTDESIGN_Feature_H
+~define PARTDESIGN_Feature_H
 
-#include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/PartDesign/PartDesignGlobal.h>
+~include <App/PropertyStandard.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/PartDesign/PartDesignGlobal.h>
 
 class gp_Pnt;
 class gp_Pln;
@@ -101,4 +101,4 @@ typedef App::FeaturePythonT<Feature> FeaturePython;
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_Feature_H
+~endif // PARTDESIGN_Feature_H

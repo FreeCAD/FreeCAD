@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#pragma once
+~pragma once
 
 class CClassFactory : public IClassFactory
 {

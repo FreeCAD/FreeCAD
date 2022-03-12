@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CELL_H
-#define CELL_H
+~ifndef CELL_H
+~define CELL_H
 
-#include <string>
-#include <set>
-#include <App/Material.h>
-#include <App/Range.h>
-#include <App/Expression.h>
-#include "DisplayUnit.h"
-#include "Utils.h"
+~include <string>
+~include <set>
+~include <App/Material.h>
+~include <App/Range.h>
+~include <App/Expression.h>
+~include "DisplayUnit.h"
+~include "Utils.h"
 
 namespace Base {
 class Unit;
@@ -196,4 +196,4 @@ private:
 
 }
 
-#endif // CELL_H
+~endif // CELL_H

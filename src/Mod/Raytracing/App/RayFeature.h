@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef _RayFeature_h_
-#define _RayFeature_h_
+~ifndef _RayFeature_h_
+~define _RayFeature_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyStandard.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyFile.h>
+~include <App/PropertyStandard.h>
 
-#include "RaySegment.h"
+~include "RaySegment.h"
 
 
 namespace Raytracing
@@ -66,4 +66,4 @@ public:
 
 } //namespace Raytracing
 
-#endif //_RayFeature_h_
+~endif //_RayFeature_h_

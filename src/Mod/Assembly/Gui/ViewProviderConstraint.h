@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINT_H
-#define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINT_H
+~ifndef ASSEMBLYGUI_VIEWPROVIDERCONSTRAINT_H
+~define ASSEMBLYGUI_VIEWPROVIDERCONSTRAINT_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Base/Placement.h>
-#include <Gui/Selection.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include "Mod/Assembly/App/Item.h"
+~include <Mod/Part/Gui/ViewProvider.h>
+~include <Base/Placement.h>
+~include <Gui/Selection.h>
+~include <Inventor/nodes/SoAnnotation.h>
+~include "Mod/Assembly/App/Item.h"
 
 namespace AssemblyGui {
 
@@ -113,4 +113,4 @@ private:
 
 };
 
-#endif // VIEWPROVIDERCONSTRAINTFIX_H
+~endif // VIEWPROVIDERCONSTRAINTFIX_H

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHANGEDYNA_H
-#define CHANGEDYNA_H
+~ifndef CHANGEDYNA_H
+~define CHANGEDYNA_H
 
-#include <iosfwd>
-#include <string>
-#include <vector>
+~include <iosfwd>
+~include <string>
+~include <vector>
 
 class CamExport ChangeDyna
 {
@@ -40,5 +40,5 @@ private:
     std::vector<std::pair<float,float> > m_ProperTime;
 
 };
-#endif
+~endif
 

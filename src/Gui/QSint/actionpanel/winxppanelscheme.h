@@ -5,10 +5,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WinXPPanelScheme_H
-#define WinXPPanelScheme_H
+~ifndef WinXPPanelScheme_H
+~define WinXPPanelScheme_H
 
-#include "actionpanelscheme.h"
+~include "actionpanelscheme.h"
 
 namespace QSint
 {
@@ -54,4 +54,4 @@ public:
 
 }
 
-#endif // WinXPPanelScheme_H
+~endif // WinXPPanelScheme_H

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKTHICKNESS_H
-#define PARTGUI_TASKTHICKNESS_H
+~ifndef PARTGUI_TASKTHICKNESS_H
+~define PARTGUI_TASKTHICKNESS_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 namespace Part { class Thickness; }
 namespace PartGui { 
@@ -84,4 +84,4 @@ private:
 
 } //namespace PartGui
 
-#endif // PARTGUI_TASKTHICKNESS_H
+~endif // PARTGUI_TASKTHICKNESS_H

@@ -23,11 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_DLGSETTINGSFEMGMSHIMP_H
-#define FEMGUI_DLGSETTINGSFEMGMSHIMP_H
+~ifndef FEMGUI_DLGSETTINGSFEMGMSHIMP_H
+~define FEMGUI_DLGSETTINGSFEMGMSHIMP_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace FemGui {
 class Ui_DlgSettingsFemGmshImp;
@@ -50,4 +50,4 @@ private:
 
 } // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMGMSHIMP_H
+~endif // FEMGUI_DLGSETTINGSFEMGMSHIMP_H

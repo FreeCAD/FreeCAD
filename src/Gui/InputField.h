@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef GUI_INPUTFIELD_H
-#define GUI_INPUTFIELD_H
+~ifndef GUI_INPUTFIELD_H
+~define GUI_INPUTFIELD_H
 
-#include <QValidator>
-#include <Base/Parameter.h>
+~include <QValidator>
+~include <Base/Parameter.h>
 
-#include "ExpressionBinding.h"
-#include "ExpressionCompleter.h"
-#include "MetaTypes.h"
-#include "Widgets.h"
+~include "ExpressionBinding.h"
+~include "ExpressionCompleter.h"
+~include "MetaTypes.h"
+~include "Widgets.h"
 
 
-#ifdef Q_MOC_RUN
+~ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
-#endif
+~endif
 
 namespace App {
 class DocumentObject;
@@ -229,4 +229,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_INPUTFIELD_H
+~endif // GUI_INPUTFIELD_H

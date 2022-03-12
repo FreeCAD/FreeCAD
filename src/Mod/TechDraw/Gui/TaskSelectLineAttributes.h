@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
-#define TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
+~ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
+~define TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/App/Cosmetic.h>
+~include <Mod/TechDraw/App/Cosmetic.h>
 
 class dimAttributes {
     double cascadeSpacing;
@@ -152,4 +152,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
+~endif // ~ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H

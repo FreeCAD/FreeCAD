@@ -22,8 +22,8 @@
 
 
 
-#ifndef APP_FEATURECUSTOM_H
-#define APP_FEATURECUSTOM_H
+~ifndef APP_FEATURECUSTOM_H
+~define APP_FEATURECUSTOM_H
 
 
 namespace App
@@ -89,4 +89,4 @@ protected:
 
 } //namespace App
 
-#endif // APP_FEATURECUSTOM_H
+~endif // APP_FEATURECUSTOM_H

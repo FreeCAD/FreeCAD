@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskDlgAnalysis_H
-#define FEMGUI_TaskDlgAnalysis_H
+~ifndef FEMGUI_TaskDlgAnalysis_H
+~define FEMGUI_TaskDlgAnalysis_H
 
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 
 namespace Fem{
@@ -69,4 +69,4 @@ protected:
 
 } //namespace FemGui
 
-#endif // FEMGUI_TaskDlgAnalysis_H
+~endif // FEMGUI_TaskDlgAnalysis_H

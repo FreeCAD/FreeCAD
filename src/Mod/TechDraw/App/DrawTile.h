@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTile_h_
-#define _TechDraw_DrawTile_h_
+~ifndef _TechDraw_DrawTile_h_
+~define _TechDraw_DrawTile_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
+~ include <App/DocumentObject.h>
+~ include <App/FeaturePython.h>
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 namespace TechDraw
 {
@@ -63,4 +63,4 @@ private:
 typedef App::FeaturePythonT<DrawTile> DrawTilePython;
 
 } //namespace TechDraw
-#endif
+~endif

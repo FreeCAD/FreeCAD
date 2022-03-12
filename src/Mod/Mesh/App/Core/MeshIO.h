@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef MESH_IO_H
-#define MESH_IO_H
+~ifndef MESH_IO_H
+~define MESH_IO_H
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include <App/Material.h>
+~include "MeshKernel.h"
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
+~include <App/Material.h>
 
 namespace Base {
 class XMLReader;
@@ -323,4 +323,4 @@ private:
 
 } // namespace MeshCore
 
-#endif // MESH_IO_H
+~endif // MESH_IO_H

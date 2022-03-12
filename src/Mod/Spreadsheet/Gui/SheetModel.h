@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETMODEL_H
-#define SHEETMODEL_H
+~ifndef SHEETMODEL_H
+~define SHEETMODEL_H
 
-#include <QAbstractTableModel>
-#include <Mod/Spreadsheet/App/Utils.h>
-#include <App/Range.h>
+~include <QAbstractTableModel>
+~include <Mod/Spreadsheet/App/Utils.h>
+~include <App/Range.h>
 
 namespace Spreadsheet {
 class Sheet;
@@ -63,4 +63,4 @@ private:
 
 }
 
-#endif // SHEETMODEL_H
+~endif // SHEETMODEL_H

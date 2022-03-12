@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SOFCINTERACTIVEELEMENT_H
-#define GUI_SOFCINTERACTIVEELEMENT_H
+~ifndef GUI_SOFCINTERACTIVEELEMENT_H
+~define GUI_SOFCINTERACTIVEELEMENT_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+~ifndef __InventorAll__
+~ include "InventorAll.h"
+~endif
 
-#include <QtOpenGL.h>
+~include <QtOpenGL.h>
 
 namespace Gui {
 /**
@@ -150,4 +150,4 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_SOFCINTERACTIVEELEMENT_H
+~endif // GUI_SOFCINTERACTIVEELEMENT_H

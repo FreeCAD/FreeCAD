@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UTILS_H_CS5LK2ZQ
-#define UTILS_H_CS5LK2ZQ
+~ifndef UTILS_H_CS5LK2ZQ
+~define UTILS_H_CS5LK2ZQ
 
 /** \file PartDesign/Gui/Utils.h
  *  This file contains some utility function used over PartDesignGui module
@@ -104,4 +104,4 @@ void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
 
 } /* PartDesignGui */
 
-#endif /* end of include guard: UTILS_H_CS5LK2ZQ */
+~endif /* end of include guard: UTILS_H_CS5LK2ZQ */

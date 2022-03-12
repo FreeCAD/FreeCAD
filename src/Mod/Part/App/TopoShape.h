@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef PART_TOPOSHAPE_H
-#define PART_TOPOSHAPE_H
+~ifndef PART_TOPOSHAPE_H
+~define PART_TOPOSHAPE_H
 
-#include <iosfwd>
-#include <list>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <App/ComplexGeoData.h>
-#include <Base/Exception.h>
-#include <Mod/Part/PartGlobal.h>
+~include <iosfwd>
+~include <list>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <App/ComplexGeoData.h>
+~include <Base/Exception.h>
+~include <Mod/Part/PartGlobal.h>
 
 class gp_Ax1;
 class gp_Ax2;
@@ -377,4 +377,4 @@ private:
 } //namespace Part
 
 
-#endif // PART_TOPOSHAPE_H
+~endif // PART_TOPOSHAPE_H

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
-#define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
+~ifndef RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
+~define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 
-#include "Expression.h"
+~include "Expression.h"
 
 namespace App {
 
@@ -122,4 +122,4 @@ private:
 
 }
 
-#endif // RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
+~endif // RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
-#define DRAWINGGUI_VIEWPROVIDERPAGE_H
+~ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
+~define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
-#include <QPointer>
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+~include <QPointer>
+~include <Gui/ViewProviderFeature.h>
+~include <Gui/ViewProviderDocumentObjectGroup.h>
 
-#include "DrawingView.h"
+~include "DrawingView.h"
 
 namespace Drawing{
     class FeaturePage;
@@ -80,5 +80,5 @@ private:
 } // namespace DrawingGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERPAGE_H
+~endif // DRAWINGGUI_VIEWPROVIDERPAGE_H
 

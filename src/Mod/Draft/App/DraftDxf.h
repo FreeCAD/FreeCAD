@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAFTDXF_H
-#define DRAFTDXF_H
+~ifndef DRAFTDXF_H
+~define DRAFTDXF_H
 
-#include "dxf.h"
-#include <Mod/Part/App/TopoShape.h>
-#include <App/Document.h>
-#include <gp_Pnt.hxx>
+~include "dxf.h"
+~include <Mod/Part/App/TopoShape.h>
+~include <App/Document.h>
+~include <gp_Pnt.hxx>
 
 namespace DraftUtils
 {
@@ -63,4 +63,4 @@ namespace DraftUtils
     };
 }
 
-#endif // DRAFTDXF_H
+~endif // DRAFTDXF_H

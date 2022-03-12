@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_SKETCHERSETTINGS_H
-#define SKETCHERGUI_SKETCHERSETTINGS_H
+~ifndef SKETCHERGUI_SKETCHERSETTINGS_H
+~define SKETCHERGUI_SKETCHERSETTINGS_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace SketcherGui {
 class Ui_SketcherSettings;
@@ -104,4 +104,4 @@ private:
 
 } // namespace SketcherGui
 
-#endif // SKETCHERGUI_SKETCHERSETTINGS_H
+~endif // SKETCHERGUI_SKETCHERSETTINGS_H

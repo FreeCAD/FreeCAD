@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
-#define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
+~ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
+~define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
 
-#include "ViewProviderAddSub.h"
+~include "ViewProviderAddSub.h"
 
 namespace PartDesignGui {
 
@@ -49,4 +49,4 @@ public:
 
 } /* PartDesignGui  */
 
-#endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */
+~endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */

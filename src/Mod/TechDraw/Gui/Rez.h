@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_REZ_H
-#define DRAWINGGUI_REZ_H
+~ifndef DRAWINGGUI_REZ_H
+~define DRAWINGGUI_REZ_H
 
-#include <QPointF>
-#include <QRectF>
-#include <QSize>
-#include <Base/Vector3D.h>
-#include <Base/Tools2D.h>
+~include <QPointF>
+~include <QRectF>
+~include <QSize>
+~include <Base/Vector3D.h>
+~include <Base/Tools2D.h>
 
 namespace TechDrawGui
 {
@@ -62,4 +62,4 @@ private:
 };
 
 } //end namespace TechDrawGui
-#endif
+~endif

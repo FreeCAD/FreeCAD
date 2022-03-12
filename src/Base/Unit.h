@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#ifndef BASE_Unit_H
-#define BASE_Unit_H
+~ifndef BASE_Unit_H
+~define BASE_Unit_H
 
-#include <cstdint>
-#include <QString>
-#include <FCGlobal.h>
+~include <cstdint>
+~include <QString>
+~include <FCGlobal.h>
 
 namespace Base {
 
-#define UnitSignatureLengthBits 4
-#define UnitSignatureMassBits 4
-#define UnitSignatureTimeBits 4
-#define UnitSignatureElectricCurrentBits 4
-#define UnitSignatureThermodynamicTemperatureBits 4
-#define UnitSignatureAmountOfSubstanceBits 4
-#define UnitSignatureLuminousIntensityBits 4
-#define UnitSignatureAngleBits 4
+~define UnitSignatureLengthBits 4
+~define UnitSignatureMassBits 4
+~define UnitSignatureTimeBits 4
+~define UnitSignatureElectricCurrentBits 4
+~define UnitSignatureThermodynamicTemperatureBits 4
+~define UnitSignatureAmountOfSubstanceBits 4
+~define UnitSignatureLuminousIntensityBits 4
+~define UnitSignatureAngleBits 4
 
 // Hint:
 // https://en.cppreference.com/w/cpp/language/bit_field
@@ -166,4 +166,4 @@ inline Unit& Unit::operator /=(const Unit& that)
 
 } // namespace Base
 
-#endif // BASE_Unit_H
+~endif // BASE_Unit_H

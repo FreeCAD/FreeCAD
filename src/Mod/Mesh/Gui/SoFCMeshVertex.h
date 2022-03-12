@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOFCMESHVERTEX_H
-#define MESHGUI_SOFCMESHVERTEX_H
+~ifndef MESHGUI_SOFCMESHVERTEX_H
+~define MESHGUI_SOFCMESHVERTEX_H
 
-#include <Inventor/fields/SoSField.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <Mod/Mesh/App/Core/Elements.h>
+~include <Inventor/fields/SoSField.h>
+~include <Inventor/fields/SoSubField.h>
+~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/elements/SoReplacedElement.h>
+~include <Mod/Mesh/App/Core/Elements.h>
 
 namespace MeshGui {
 
@@ -96,5 +96,5 @@ protected:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_SOFCMESHVERTEX_H
+~endif // MESHGUI_SOFCMESHVERTEX_H
 

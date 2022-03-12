@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherElements_H
-#define GUI_TASKVIEW_TaskSketcherElements_H
+~ifndef GUI_TASKVIEW_TaskSketcherElements_H
+~define GUI_TASKVIEW_TaskSketcherElements_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
-#include <QListWidget>
-#include <QIcon>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <boost_signals2.hpp>
+~include <QListWidget>
+~include <QIcon>
 
 namespace App {
 class Property;
@@ -152,4 +152,4 @@ private:
 
 } //namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMCLIP_H
-#define DRAWINGGUI_QGCUSTOMCLIP_H
+~ifndef DRAWINGGUI_QGCUSTOMCLIP_H
+~define DRAWINGGUI_QGCUSTOMCLIP_H
 
-#include <QGraphicsItem>
-#include <QPointF>
-#include <QRectF>
+~include <QGraphicsItem>
+~include <QPointF>
+~include <QRectF>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -65,5 +65,5 @@ private:
 
 } // namespace MDIViewPageGui
 
-#endif // DRAWINGGUI_QGCUSTOMCLIP_H
+~endif // DRAWINGGUI_QGCUSTOMCLIP_H
 

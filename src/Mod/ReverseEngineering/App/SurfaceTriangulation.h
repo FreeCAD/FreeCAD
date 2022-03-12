@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef REEN_SURFACETRIANGULATION_H
-#define REEN_SURFACETRIANGULATION_H
+~ifndef REEN_SURFACETRIANGULATION_H
+~define REEN_SURFACETRIANGULATION_H
 
-#include <Base/Vector3D.h>
-#include <vector>
+~include <Base/Vector3D.h>
+~include <vector>
 
 namespace Points {class PointKernel;}
 namespace Mesh {class MeshObject;}
@@ -189,5 +189,5 @@ private:
 
 } // namespace Reen
 
-#endif // REEN_SURFACETRIANGULATION_H
+~endif // REEN_SURFACETRIANGULATION_H
 

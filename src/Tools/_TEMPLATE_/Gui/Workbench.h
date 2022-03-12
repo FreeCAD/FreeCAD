@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef _TEMPLATE__WORKBENCH_H
-#define _TEMPLATE__WORKBENCH_H
+~ifndef _TEMPLATE__WORKBENCH_H
+~define _TEMPLATE__WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace _TEMPLATE_Gui {
 
@@ -44,4 +44,4 @@ protected:
 } // namespace _TEMPLATE_Gui
 
 
-#endif // _TEMPLATE__WORKBENCH_H 
+~endif // _TEMPLATE__WORKBENCH_H 

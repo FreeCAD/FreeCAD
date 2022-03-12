@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DRAWINGVIEW_H
-#define DRAWINGGUI_DRAWINGVIEW_H
+~ifndef DRAWINGGUI_DRAWINGVIEW_H
+~define DRAWINGGUI_DRAWINGVIEW_H
 
-#include <Gui/MDIView.h>
-#include <QGraphicsView>
-#include <QPrinter>
+~include <Gui/MDIView.h>
+~include <QGraphicsView>
+~include <QPrinter>
 
 QT_BEGIN_NAMESPACE
 class QSlider;
@@ -107,11 +107,11 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
     void findPrinterSettings(const QString&);
-#if QT_VERSION >= 0x050300
+~if QT_VERSION >= 0x050300
     QPageSize::PageSizeId getPageSize(int w, int h) const;
-#else
+~else
     QPrinter::PageSize getPageSize(int w, int h) const;
-#endif
+~endif
 
 private:
     QAction *m_nativeAction;
@@ -125,15 +125,15 @@ private:
     std::string m_objectName;
 
     QString m_currentPath;
-#if QT_VERSION >= 0x050300
+~if QT_VERSION >= 0x050300
     QPageLayout::Orientation m_orientation;
     QPageSize::PageSizeId m_pageSize;
-#else
+~else
     QPrinter::Orientation m_orientation;
     QPrinter::PageSize m_pageSize;
-#endif
+~endif
 };
 
 } // namespace DrawingViewGui
 
-#endif // DRAWINGGUI_DRAWINGVIEW_H
+~endif // DRAWINGGUI_DRAWINGVIEW_H

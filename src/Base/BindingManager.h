@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BINDINGMANAGER_H
-#define BASE_BINDINGMANAGER_H
+~ifndef BASE_BINDINGMANAGER_H
+~define BASE_BINDINGMANAGER_H
 
-#include <memory>
-#include <FCGlobal.h>
+~include <memory>
+~include <FCGlobal.h>
 
 typedef struct _object PyObject;
 
@@ -54,4 +54,4 @@ private:
 
 }
 
-#endif // BASE_BINDINGMANAGER_H
+~endif // BASE_BINDINGMANAGER_H

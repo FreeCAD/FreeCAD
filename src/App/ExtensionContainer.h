@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSIONCONTAINER_H
-#define APP_EXTENSIONCONTAINER_H
+~ifndef APP_EXTENSIONCONTAINER_H
+~define APP_EXTENSIONCONTAINER_H
 
-#include "PropertyContainer.h"
+~include "PropertyContainer.h"
 
 
 namespace App {
@@ -188,16 +188,16 @@ private:
     std::map<Base::Type, App::Extension*> _extensions;
 };
 
-#define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
+~define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
   PROPERTY_HEADER_WITH_OVERRIDE(_class)
 
 /// We make sure that the PropertyData of the container is not connected to the one of the extension
-#define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \
+~define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \
     PROPERTY_SOURCE(_class_, _parentclass_)
 
-#define PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(_class_, _parentclass_) \
+~define PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(_class_, _parentclass_) \
     PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_)
 
 } //App
 
-#endif // APP_EXTENSIONCONTAINER_H
+~endif // APP_EXTENSIONCONTAINER_H

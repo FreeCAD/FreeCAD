@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Helix_H
-#define PARTDESIGN_Helix_H
+~ifndef PARTDESIGN_Helix_H
+~define PARTDESIGN_Helix_H
 
-#include <App/PropertyUnits.h>
-#include "FeatureSketchBased.h"
-#include <TopoDS_Shape.hxx>
+~include <App/PropertyUnits.h>
+~include "FeatureSketchBased.h"
+~include <TopoDS_Shape.hxx>
 
 namespace PartDesign
 {
@@ -122,4 +122,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PART_Helix_H
+~endif // PART_Helix_H

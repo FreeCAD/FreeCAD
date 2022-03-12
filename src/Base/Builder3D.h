@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BUILDER3D_H
-#define BASE_BUILDER3D_H
+~ifndef BASE_BUILDER3D_H
+~define BASE_BUILDER3D_H
 
 // Std. configurations
 
-#include <sstream>
-#include <vector>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <sstream>
+~include <vector>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 namespace Base
 {
@@ -342,4 +342,4 @@ private:
 
 } //namespace Base
 
-#endif // BASE_BUILDER3D_H
+~endif // BASE_BUILDER3D_H

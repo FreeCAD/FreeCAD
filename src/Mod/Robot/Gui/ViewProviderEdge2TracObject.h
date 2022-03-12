@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
-#define ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
+~ifndef ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
+~define ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
 
-#include "ViewProviderTrajectory.h"
+~include "ViewProviderTrajectory.h"
 
 namespace RobotGui
 {
@@ -44,4 +44,4 @@ protected:
 } //namespace RobotGui
 
 
-#endif // ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
+~endif // ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H

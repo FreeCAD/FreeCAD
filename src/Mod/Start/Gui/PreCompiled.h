@@ -21,52 +21,52 @@
  ***************************************************************************/
 
 
-#ifndef STARTGUI_PRECOMPILED_H
-#define STARTGUI_PRECOMPILED_H
+~ifndef STARTGUI_PRECOMPILED_H
+~define STARTGUI_PRECOMPILED_H
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
 // Importing of App classes
-#ifdef FC_OS_WIN32
-# define StartAppExport __declspec(dllimport)
-# define StartGuiExport __declspec(dllexport)
-#else // for Linux
-# define StartAppExport
-# define StartGuiExport
-#endif
+~ifdef FC_OS_WIN32
+~ define StartAppExport __declspec(dllimport)
+~ define StartGuiExport __declspec(dllexport)
+~else // for Linux
+~ define StartAppExport
+~ define StartGuiExport
+~endif
 
 
-#ifdef _PreComp_
+~ifdef _PreComp_
 
 // Python
-#include <Python.h>
+~include <Python.h>
 
 // standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
+~include <iostream>
+~include <assert.h>
+~include <cmath>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+~include <vector>
+~include <map>
+~include <string>
+~include <list>
+~include <set>
+~include <algorithm>
+~include <stack>
+~include <queue>
+~include <bitset>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
+~ifdef FC_OS_WIN32
+~ include <windows.h>
+~endif
 
 
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+~ifndef __QtAll__
+~ include <Gui/QtAll.h>
+~endif
 
-#endif //_PreComp_
+~endif //_PreComp_
 
-#endif // STARTGUI_PRECOMPILED_H
+~endif // STARTGUI_PRECOMPILED_H

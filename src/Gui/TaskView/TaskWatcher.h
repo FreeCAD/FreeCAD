@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKWATCHER_H
-#define GUI_TASKVIEW_TASKWATCHER_H
+~ifndef GUI_TASKVIEW_TASKWATCHER_H
+~define GUI_TASKVIEW_TASKWATCHER_H
 
-#include <vector>
-#include <QObject>
+~include <vector>
+~include <QObject>
 
-#include <Gui/SelectionFilter.h>
+~include <Gui/SelectionFilter.h>
 
 
 namespace Gui {
@@ -110,4 +110,4 @@ public:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKWATCHER_H
+~endif // GUI_TASKVIEW_TASKWATCHER_H

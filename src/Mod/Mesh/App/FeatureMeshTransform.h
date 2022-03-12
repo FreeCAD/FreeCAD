@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef FEATURE_MESH_TRANSFORM_H
-#define FEATURE_MESH_TRANSFORM_H
+~ifndef FEATURE_MESH_TRANSFORM_H
+~define FEATURE_MESH_TRANSFORM_H
 
-#include "MeshFeature.h"
+~include "MeshFeature.h"
 
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyGeo.h>
 
 
 namespace Mesh
@@ -62,4 +62,4 @@ public:
 
 }
 
-#endif // FEATURE_MESH_TRANSFORM_H 
+~endif // FEATURE_MESH_TRANSFORM_H 

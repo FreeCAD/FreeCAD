@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_FEATUREVIEWGROUP_H_
-#define _TECHDRAW_FEATUREVIEWGROUP_H_
+~ifndef _TECHDRAW_FEATUREVIEWGROUP_H_
+~define _TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <string>
-# include <QRectF>
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
+~include <string>
+~ include <QRectF>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyLinks.h>
 
 
-#include <Base/BoundBox.h>
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
+~include <Base/BoundBox.h>
+~include <Base/Matrix.h>
+~include <Base/Vector3D.h>
 
-#include "DrawViewCollection.h"
+~include "DrawViewCollection.h"
 
 class gp_Dir;
 class gp_Pnt;
@@ -185,4 +185,4 @@ protected:
 
 } //namespace TechDraw
 
-#endif // _TECHDRAW_FEATUREVIEWGROUP_H_
+~endif // _TECHDRAW_FEATUREVIEWGROUP_H_

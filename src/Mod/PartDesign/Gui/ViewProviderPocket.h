@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPocket_H
-#define PARTGUI_ViewProviderPocket_H
+~ifndef PARTGUI_ViewProviderPocket_H
+~define PARTGUI_ViewProviderPocket_H
 
-#include "ViewProviderSketchBased.h"
+~include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
@@ -52,4 +52,4 @@ protected:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPocket_H
+~endif // PARTGUI_ViewProviderPocket_H

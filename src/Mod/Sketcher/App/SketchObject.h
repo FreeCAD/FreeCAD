@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHOBJECT_H
-#define SKETCHER_SKETCHOBJECT_H
+~ifndef SKETCHER_SKETCHOBJECT_H
+~define SKETCHER_SKETCHOBJECT_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
-#include <App/FeaturePython.h>
-#include <Base/Axis.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyFile.h>
+~include <App/FeaturePython.h>
+~include <Base/Axis.h>
 
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Part/App/PropertyGeometryList.h>
-#include <Mod/Sketcher/App/PropertyConstraintList.h>
+~include <Mod/Part/App/Part2DObject.h>
+~include <Mod/Part/App/PropertyGeometryList.h>
+~include <Mod/Sketcher/App/PropertyConstraintList.h>
 
-#include <Mod/Sketcher/App/SketchAnalysis.h>
+~include <Mod/Sketcher/App/SketchAnalysis.h>
 
-#include "GeometryFacade.h"
+~include "GeometryFacade.h"
 
-#include "Analyse.h"
+~include "Analyse.h"
 
-#include "Sketch.h"
+~include "Sketch.h"
 
-#include "SketchGeometryExtension.h"
+~include "SketchGeometryExtension.h"
 
-#include "GeoEnum.h"
+~include "GeoEnum.h"
 
-#include "GeoList.h"
+~include "GeoList.h"
 
 namespace Sketcher
 {
@@ -714,4 +714,4 @@ typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
 } //namespace Sketcher
 
 
-#endif // SKETCHER_SKETCHOBJECT_H
+~endif // SKETCHER_SKETCHOBJECT_H

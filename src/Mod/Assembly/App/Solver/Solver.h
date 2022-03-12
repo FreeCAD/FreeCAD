@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SOLVER_H
-#define SOLVER_H
+~ifndef SOLVER_H
+~define SOLVER_H
 
-#include "opendcm/core.hpp"
+~include "opendcm/core.hpp"
 
-#ifdef ASSEMBLY_DEBUG_FACILITIES
-#include "opendcm/modulestate.hpp"
-#endif
-#include "opendcm/module3d.hpp"
-#include "opendcm/modulepart.hpp"
+~ifdef ASSEMBLY_DEBUG_FACILITIES
+~include "opendcm/modulestate.hpp"
+~endif
+~include "opendcm/module3d.hpp"
+~include "opendcm/modulepart.hpp"
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
+~include <Base/Placement.h>
+~include <Base/Console.h>
 
-#include <gp_Pnt.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Cylinder.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Cylinder.hxx>
 
 struct gp_pnt_accessor {
 
@@ -398,15 +398,15 @@ typedef dcm::Kernel<double> Kernel;
 typedef dcm::Module3D< mpl::vector4< gp_Pnt, gp_Lin, gp_Pln, gp_Cylinder>, std::string > Module3D;
 typedef dcm::ModulePart< mpl::vector1< Base::Placement >, std::string > ModulePart;
 
-#ifdef ASSEMBLY_DEBUG_FACILITIES
+~ifdef ASSEMBLY_DEBUG_FACILITIES
 typedef dcm::System<Kernel, Module3D, ModulePart, dcm::ModuleState> Solver;
-#else
+~else
 typedef dcm::System<Kernel, Module3D, ModulePart> Solver;
-#endif
+~endif
 
 typedef ModulePart::type<Solver>::Part Part3D;
 typedef Module3D::type<Solver>::Geometry3D Geometry3D;
 typedef Module3D::type<Solver>::Constraint3D Constraint3D;
 
 
-#endif //SOLVER_H
+~endif //SOLVER_H

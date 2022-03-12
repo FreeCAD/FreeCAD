@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGSMOOTHING_H
-#define MESHGUI_DLGSMOOTHING_H
+~ifndef MESHGUI_DLGSMOOTHING_H
+~define MESHGUI_DLGSMOOTHING_H
 
-#include <QDialog>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
+~include <QDialog>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~ifndef MESH_GLOBAL_H
+~include <Mod/Mesh/MeshGlobal.h>
+~endif
 
 class QButtonGroup;
 
@@ -120,4 +120,4 @@ private:
 
 }
 
-#endif // MESHGUI_DLGSMOOTHING_H
+~endif // MESHGUI_DLGSMOOTHING_H

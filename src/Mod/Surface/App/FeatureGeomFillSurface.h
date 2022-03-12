@@ -21,17 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATUREGEOMFILLSURFACE_H
-#define FEATUREGEOMFILLSURFACE_H
+~ifndef FEATUREGEOMFILLSURFACE_H
+~define FEATUREGEOMFILLSURFACE_H
 
-#include <Geom_BoundedSurface.hxx>
-#include <GeomFill_FillingStyle.hxx>
-#include <ShapeExtend_WireData.hxx>
+~include <Geom_BoundedSurface.hxx>
+~include <GeomFill_FillingStyle.hxx>
+~include <ShapeExtend_WireData.hxx>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyLinks.h>
+~include <Mod/Part/App/FeaturePartSpline.h>
 
 namespace Surface
 {
@@ -90,4 +90,4 @@ private:
 
 }
 
-#endif // FEATUREGEOMFILLSURFACE_H
+~endif // FEATUREGEOMFILLSURFACE_H

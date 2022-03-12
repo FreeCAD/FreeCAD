@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef DRAWING_WORKBENCH_H
-#define DRAWING_WORKBENCH_H
+~ifndef DRAWING_WORKBENCH_H
+~define DRAWING_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace DrawingGui {
 
@@ -48,4 +48,4 @@ protected:
 } // namespace DrawingGui
 
 
-#endif // DRAWING_WORKBENCH_H 
+~endif // DRAWING_WORKBENCH_H 

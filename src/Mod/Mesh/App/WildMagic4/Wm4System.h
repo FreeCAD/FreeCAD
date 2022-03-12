@@ -14,40 +14,40 @@
 //
 // Version: 4.0.1 (2006/08/15)
 
-#ifndef WM4SYSTEM_H
-#define WM4SYSTEM_H
+~ifndef WM4SYSTEM_H
+~define WM4SYSTEM_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Platforms.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Platforms.h"
 
 // common standard library headers
-#include <cassert>
-#include <cctype>
-#include <cfloat>
-#include <cmath>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <iostream>
-#include <fstream>
+~include <cassert>
+~include <cctype>
+~include <cfloat>
+~include <cmath>
+~include <cstdarg>
+~include <cstddef>
+~include <cstdio>
+~include <cstdlib>
+~include <cstring>
+~include <ctime>
+~include <iostream>
+~include <fstream>
 
 // STL headers
-#include <algorithm>
-#include <exception>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
+~include <algorithm>
+~include <exception>
+~include <list>
+~include <map>
+~include <queue>
+~include <set>
+~include <stack>
+~include <string>
+~include <utility>
+~include <vector>
 
 // memory management
-#include "Wm4Memory.h"
+~include "Wm4Memory.h"
 
 namespace Wm4
 {
@@ -199,16 +199,16 @@ template <class T> void Deallocate (T***& raaatArray);
 
 }
 
-#include "Wm4System.inl"
+~include "Wm4System.inl"
 
 // Miscellaneous support.  STL does not yet formally have hash structures.
 // The includes are placed here because the hash structures use System
 // wrappers for memcpy.
-#include "Wm4THashSet.h"
-#include "Wm4THashTable.h"
-#include "Wm4TMinHeap.h"
-#include "Wm4TStringHashTable.h"
-#include "Wm4TSmallUnorderedSet.h"  // useful for meshes
-#include "Wm4TTuple.h"  // tuples in any type and any dimension
+~include "Wm4THashSet.h"
+~include "Wm4THashTable.h"
+~include "Wm4TMinHeap.h"
+~include "Wm4TStringHashTable.h"
+~include "Wm4TSmallUnorderedSet.h"  // useful for meshes
+~include "Wm4TTuple.h"  // tuples in any type and any dimension
 
-#endif
+~endif

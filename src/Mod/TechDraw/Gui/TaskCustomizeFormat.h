@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
-#define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
+~ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
+~define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/App/Cosmetic.h>
+~include <Mod/TechDraw/App/Cosmetic.h>
 
 namespace App {
 class DocumentObject;
@@ -123,5 +123,5 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
+~endif // ~ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 

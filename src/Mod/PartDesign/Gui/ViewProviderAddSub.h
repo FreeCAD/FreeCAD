@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderAddSub_H
-#define PARTGUI_ViewProviderAddSub_H
+~ifndef PARTGUI_ViewProviderAddSub_H
+~define PARTGUI_ViewProviderAddSub_H
 
-#include "ViewProvider.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
+~include "ViewProvider.h"
+~include <Mod/Part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 
@@ -59,4 +59,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderBoolean_H
+~endif // PARTGUI_ViewProviderBoolean_H

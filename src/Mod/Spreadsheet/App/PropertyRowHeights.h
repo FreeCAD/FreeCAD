@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYROWHEIGHTS_H
-#define PROPERTYROWHEIGHTS_H
+~ifndef PROPERTYROWHEIGHTS_H
+~define PROPERTYROWHEIGHTS_H
 
-#include <map>
-#include <App/Property.h>
-#include <CXX/Objects.hxx>
+~include <map>
+~include <App/Property.h>
+~include <CXX/Objects.hxx>
 
 namespace Spreadsheet {
 
@@ -81,4 +81,4 @@ private:
 
 }
 
-#endif // PROPERTYROWHEIGHTS_H
+~endif // PROPERTYROWHEIGHTS_H

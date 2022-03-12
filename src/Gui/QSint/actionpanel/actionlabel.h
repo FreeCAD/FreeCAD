@@ -5,11 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONLABEL_H
-#define ACTIONLABEL_H
+~ifndef ACTIONLABEL_H
+~define ACTIONLABEL_H
 
-#include <QToolButton>
-#include "qsint_global.h"
+~include <QToolButton>
+~include "qsint_global.h"
 
 
 namespace QSint
@@ -40,13 +40,13 @@ namespace QSint
         "QSint--ActionLabel[class='action'] {"
             "background-color: transparent;"
             "border: 1px solid transparent;"
-            "color: #0033ff;"
+            "color: ~0033ff;"
             "text-align: left;"
             "font: 11px;"
         "}"
 
         "QSint--ActionLabel[class='action']:hover {"
-            "color: #0099ff;"
+            "color: ~0099ff;"
             "text-decoration: underline;"
         "}"
 
@@ -55,8 +55,8 @@ namespace QSint
         "}"
 
         "QSint--ActionLabel[class='action']:on {"
-            "background-color: #ddeeff;"
-            "color: #006600;"
+            "background-color: ~ddeeff;"
+            "color: ~006600;"
         "}"
     ;
 
@@ -91,4 +91,4 @@ protected:
 
 } // namespace
 
-#endif // ACTIONLABEL_H
+~endif // ACTIONLABEL_H

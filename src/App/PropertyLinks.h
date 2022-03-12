@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYLINKS_H
-#define APP_PROPERTYLINKS_H
+~ifndef APP_PROPERTYLINKS_H
+~define APP_PROPERTYLINKS_H
 
-#include <list>
-#include <map>
-#include <string>
-#include <vector>
-#include "Property.h"
+~include <list>
+~include <map>
+~include <string>
+~include <vector>
+~include "Property.h"
 
 namespace Base {
 class Writer;
@@ -1363,4 +1363,4 @@ private:
 } // namespace App
 
 
-#endif // APP_PROPERTYLINKS_H
+~endif // APP_PROPERTYLINKS_H

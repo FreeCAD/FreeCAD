@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DISPLAYUNIT_H
-#define DISPLAYUNIT_H
+~ifndef DISPLAYUNIT_H
+~define DISPLAYUNIT_H
 
-#include <string>
-#include <Base/Unit.h>
+~include <string>
+~include <Base/Unit.h>
 
 namespace Spreadsheet {
 
@@ -58,4 +58,4 @@ public:
 
 }
 
-#endif // DISPLAYUNIT_H
+~endif // DISPLAYUNIT_H

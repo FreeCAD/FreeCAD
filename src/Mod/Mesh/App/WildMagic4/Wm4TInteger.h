@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TINTEGER_H
-#define WM4TINTEGER_H
+~ifndef WM4TINTEGER_H
+~define WM4TINTEGER_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -116,6 +116,6 @@ TInteger<N> operator* (int i, const TInteger<N>& rkI);
 
 }
 
-#include "Wm4TInteger.inl"
+~include "Wm4TInteger.inl"
 
-#endif
+~endif

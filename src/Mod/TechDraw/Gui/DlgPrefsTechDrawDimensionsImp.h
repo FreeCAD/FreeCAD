@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
+~ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
+~define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawDimensionsImp;
@@ -52,4 +52,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
+~endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H

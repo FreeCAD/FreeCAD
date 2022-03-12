@@ -24,37 +24,37 @@
 
 
 
-#ifndef BASE_CONSOLE_H
-#define BASE_CONSOLE_H
+~ifndef BASE_CONSOLE_H
+~define BASE_CONSOLE_H
 
 // Std. configurations
-#include <chrono>
-#include <map>
-#include <set>
-#include <string>
-#include <sstream>
+~include <chrono>
+~include <map>
+~include <set>
+~include <string>
+~include <sstream>
 
 // Python stuff
 typedef struct _object PyObject;
 typedef struct PyMethodDef PyMethodDef;
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+~endif
 
 //**************************************************************************
 // Logging levels
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
 /// switch on the logging of python object creation and destruction
-#  undef FC_LOGPYOBJECTS
+~  undef FC_LOGPYOBJECTS
 /// switch on the logging of Feature update and execution
-#  define FC_LOGFEATUREUPDATE
+~  define FC_LOGFEATUREUPDATE
 /// switch on the logging of the Update execution through Doc, App, GuiApp and GuiDoc
-#  undef FC_LOGUPDATECHAIN
-#endif
+~  undef FC_LOGUPDATECHAIN
+~endif
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,18 +90,18 @@ typedef struct PyMethodDef PyMethodDef;
  * Predefined log levels are,
  *
  * \code{.c}
- * #define FC_LOGLEVEL_ERR 0
- * #define FC_LOGLEVEL_WARN 1
- * #define FC_LOGLEVEL_MSG 2
- * #define FC_LOGLEVEL_LOG 3
- * #define FC_LOGLEVEL_TRACE 4
+ * ~define FC_LOGLEVEL_ERR 0
+ * ~define FC_LOGLEVEL_WARN 1
+ * ~define FC_LOGLEVEL_MSG 2
+ * ~define FC_LOGLEVEL_LOG 3
+ * ~define FC_LOGLEVEL_TRACE 4
  * \endcode
  *
  * Bigger log level integer values have lower priorities. There is a special log
  * level,
  *
  * \code{.c}
- * #define FC_LOGLEVEL_DEFAULT -1
+ * ~define FC_LOGLEVEL_DEFAULT -1
  * \endcode
  *
  * Actually, any negative log level behave the same, which is for tags
@@ -123,7 +123,7 @@ typedef struct PyMethodDef PyMethodDef;
  * log level.
  *
  * You can fine tune how the log is output by passing extra parameters to
- * #FC_LOG_LEVEL_INIT(). All the extra parameters are boolean value, which are
+ * ~FC_LOG_LEVEL_INIT(). All the extra parameters are boolean value, which are
  * shown blew along with their default values.
  *
  * \code{.c}
@@ -323,41 +323,41 @@ typedef struct PyMethodDef PyMethodDef;
  * Then, define a second set of logging macros as
  *
  * \code{.c}
- * #define MY_MSG(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_MSG,Message,_msg)
- * #define MY_WARN(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_WARN,Warning,_msg)
- * #define MY_ERR(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_ERR,Error,_msg)
- * #define MY_LOG(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_LOG,Log,_msg)
- * #define MY_TRACE(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_TRACE,Log,_msg)
+ * ~define MY_MSG(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_MSG,Message,_msg)
+ * ~define MY_WARN(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_WARN,Warning,_msg)
+ * ~define MY_ERR(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_ERR,Error,_msg)
+ * ~define MY_LOG(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_LOG,Log,_msg)
+ * ~define MY_TRACE(_msg) _FC_PRINT(instance_name,FC_LOGLEVEL_TRACE,Log,_msg)
  * \endcode
  *
  * Note, replace \c instance_name with your actual desired name.
  *
  * You can also define your own log levels the same way. Macro
- * #_FC_PRINT(_instance,_l,_func,_msg) checks to see if the log shall proceed,
+ * ~_FC_PRINT(_instance,_l,_func,_msg) checks to see if the log shall proceed,
  * where \c _instance is the static loglevel instance name (default is
  * \c FC_LOG_INSTANCE), and \c _l is the log level constant to be checked,
  * \c _func is the Base::Console() function to print the log.
  *
  */
 
-#define FC_LOGLEVEL_DEFAULT -1
-#define FC_LOGLEVEL_ERR 0
-#define FC_LOGLEVEL_WARN 1
-#define FC_LOGLEVEL_MSG 2
-#define FC_LOGLEVEL_LOG 3
-#define FC_LOGLEVEL_TRACE 4
+~define FC_LOGLEVEL_DEFAULT -1
+~define FC_LOGLEVEL_ERR 0
+~define FC_LOGLEVEL_WARN 1
+~define FC_LOGLEVEL_MSG 2
+~define FC_LOGLEVEL_LOG 3
+~define FC_LOGLEVEL_TRACE 4
 
-#define _FC_LOG_LEVEL_INIT(_name,_tag,...) \
-    static Base::LogLevel _name(_tag,## __VA_ARGS__);
+~define _FC_LOG_LEVEL_INIT(_name,_tag,...) \
+    static Base::LogLevel _name(_tag,~~ __VA_ARGS__);
 
-#ifndef FC_LOG_INSTANCE
-#   define FC_LOG_INSTANCE _s_fclvl
-#endif
+~ifndef FC_LOG_INSTANCE
+~   define FC_LOG_INSTANCE _s_fclvl
+~endif
 
-#define FC_LOG_LEVEL_INIT(_tag,...) \
-    _FC_LOG_LEVEL_INIT(FC_LOG_INSTANCE, _tag, ## __VA_ARGS__)
+~define FC_LOG_LEVEL_INIT(_tag,...) \
+    _FC_LOG_LEVEL_INIT(FC_LOG_INSTANCE, _tag, ~~ __VA_ARGS__)
 
-#define __FC_PRINT(_instance,_l,_func,_msg,_file,_line) do{\
+~define __FC_PRINT(_instance,_l,_func,_msg,_file,_line) do{\
     if(_instance.isEnabled(_l)) {\
         std::stringstream _str;\
         _instance.prefix(_str,_file,_line) << _msg;\
@@ -368,84 +368,84 @@ typedef struct PyMethodDef PyMethodDef;
     }\
 }while(0)
 
-#define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,_msg,__FILE__,__LINE__)
+~define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,_msg,__FILE__,__LINE__)
 
-#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg)
-#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg)
-#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg)
-#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg)
-#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg)
+~define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg)
+~define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg)
+~define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg)
+~define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg)
+~define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg)
 
-#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg,_file,_line)
-#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg,_file,_line)
-#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg,_file,_line)
-#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg,_file,_line)
-#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg,_file,_line)
+~define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg,_file,_line)
+~define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg,_file,_line)
+~define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg,_file,_line)
+~define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg,_file,_line)
+~define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg,_file,_line)
 
-#define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
-#define FC_xy(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
-#define FC_xyz(_pt) '('<<(_pt).x<<", " << (_pt).y<<", " << (_pt).z<<')'
+~define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
+~define FC_xy(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+~define FC_xyz(_pt) '('<<(_pt).x<<", " << (_pt).y<<", " << (_pt).z<<')'
 
-#ifndef FC_LOG_NO_TIMING
-#   define FC_TIME_CLOCK high_resolution_clock
-#   define FC_TIME_POINT std::chrono::FC_TIME_CLOCK::time_point
-#   define FC_DURATION std::chrono::duration<double>
+~ifndef FC_LOG_NO_TIMING
+~   define FC_TIME_CLOCK high_resolution_clock
+~   define FC_TIME_POINT std::chrono::FC_TIME_CLOCK::time_point
+~   define FC_DURATION std::chrono::duration<double>
 
-#   define _FC_TIME_INIT(_t) _t=std::chrono::FC_TIME_CLOCK::now()
-#   define FC_TIME_INIT(_t) FC_TIME_POINT _FC_TIME_INIT(_t)
-#   define FC_TIME_INIT2(_t1,_t2) FC_TIME_INIT(_t1),_t2=_t1
-#   define FC_TIME_INIT3(_t1,_t2,_t3) FC_TIME_INIT(_t1),_t2=_t1,_t3=_t1
+~   define _FC_TIME_INIT(_t) _t=std::chrono::FC_TIME_CLOCK::now()
+~   define FC_TIME_INIT(_t) FC_TIME_POINT _FC_TIME_INIT(_t)
+~   define FC_TIME_INIT2(_t1,_t2) FC_TIME_INIT(_t1),_t2=_t1
+~   define FC_TIME_INIT3(_t1,_t2,_t3) FC_TIME_INIT(_t1),_t2=_t1,_t3=_t1
 
-#   define _FC_DURATION_PRINT(_l,_d,_msg) \
-        FC_##_l(_msg<< " time: " << _d.count()<<'s');
+~   define _FC_DURATION_PRINT(_l,_d,_msg) \
+        FC_~~_l(_msg<< " time: " << _d.count()<<'s');
 
-#   define FC_DURATION_MSG(_d,_msg) _FC_DURATION_PRINT(MSG,_d,_msg)
-#   define FC_DURATION_LOG(_d,_msg) _FC_DURATION_PRINT(LOG,_d,_msg)
-#   define FC_DURATION_TRACE(_d,_msg) _FC_DURATION_PRINT(TRACE,_d,_msg)
+~   define FC_DURATION_MSG(_d,_msg) _FC_DURATION_PRINT(MSG,_d,_msg)
+~   define FC_DURATION_LOG(_d,_msg) _FC_DURATION_PRINT(LOG,_d,_msg)
+~   define FC_DURATION_TRACE(_d,_msg) _FC_DURATION_PRINT(TRACE,_d,_msg)
 
-#   define _FC_TIME_PRINT(_l,_t,_msg) \
+~   define _FC_TIME_PRINT(_l,_t,_msg) \
         _FC_DURATION_PRINT(_l,Base::GetDuration(_t),_msg);
 
-#   define FC_TIME_MSG(_t,_msg) _FC_TIME_PRINT(MSG,_t,_msg)
-#   define FC_TIME_LOG(_t,_msg) _FC_TIME_PRINT(LOG,_t,_msg)
-#   define FC_TIME_TRACE(_t,_msg) _FC_TIME_PRINT(TRACE,_t,_msg)
+~   define FC_TIME_MSG(_t,_msg) _FC_TIME_PRINT(MSG,_t,_msg)
+~   define FC_TIME_LOG(_t,_msg) _FC_TIME_PRINT(LOG,_t,_msg)
+~   define FC_TIME_TRACE(_t,_msg) _FC_TIME_PRINT(TRACE,_t,_msg)
 
-#   define FC_DURATION_DECLARE(_d) FC_DURATION _d
-#   define FC_DURATION_DECLARE2(_d,_d1) FC_DURATION_DECLARE(_d),_d1
-#   define FC_DURATION_DECLARE3(_d,_d1) FC_DURATION_DECLARE2(_d,_d1),_d2
+~   define FC_DURATION_DECLARE(_d) FC_DURATION _d
+~   define FC_DURATION_DECLARE2(_d,_d1) FC_DURATION_DECLARE(_d),_d1
+~   define FC_DURATION_DECLARE3(_d,_d1) FC_DURATION_DECLARE2(_d,_d1),_d2
 
-#   define FC_DURATION_INIT(_d) _d=FC_DURATION(0)
-#   define FC_DURATION_INIT2(_d,_d1) _d=_d1=FC_DURATION(0)
-#   define FC_DURATION_INIT3(_d,_d1,_d2) _d=_d1=_d2=FC_DURATION(0)
+~   define FC_DURATION_INIT(_d) _d=FC_DURATION(0)
+~   define FC_DURATION_INIT2(_d,_d1) _d=_d1=FC_DURATION(0)
+~   define FC_DURATION_INIT3(_d,_d1,_d2) _d=_d1=_d2=FC_DURATION(0)
 
-#   define FC_DURATION_DECL_INIT(_d) FC_DURATION _d(0)
-#   define FC_DURATION_DECL_INIT2(_d,_d1) FC_DURATION_DECL_INIT(_d),_d1(0)
-#   define FC_DURATION_DECL_INIT3(_d,_d1) FC_DURATION_DECL_INIT2(_d,_d1),_d3(0)
+~   define FC_DURATION_DECL_INIT(_d) FC_DURATION _d(0)
+~   define FC_DURATION_DECL_INIT2(_d,_d1) FC_DURATION_DECL_INIT(_d),_d1(0)
+~   define FC_DURATION_DECL_INIT3(_d,_d1) FC_DURATION_DECL_INIT2(_d,_d1),_d3(0)
 
-#   define FC_DURATION_PLUS(_d,_t) _d += Base::GetDuration(_t)
+~   define FC_DURATION_PLUS(_d,_t) _d += Base::GetDuration(_t)
 
-#else //FC_LOG_NO_TIMING
-#   define FC_TIME_POINT
-#   define _FC_TIME_INIT(...) do{}while(0)
-#   define FC_TIME_INIT(...) do{}while(0)
-#   define FC_TIME_INIT2(...) do{}while(0)
-#   define FC_TIME_INIT3(...) do{}while(0)
-#   define _FC_DURATION_PRINT(...) do{}while(0)
-#   define _FC_TIME(_t) do{}while(0)
-#   define FC_DURATION_PRINT(...) do{}while(0)
-#   define FC_DURATION
-#   define FC_DURATION_INIT(...) do{}while(0)
-#   define FC_DURATION_INIT1(...) do{}while(0)
-#   define FC_DURATION_INIT2(...) do{}while(0)
-#   define FC_DURATION_DECLARE(...)
-#   define FC_DURATION_DECLARE1(...)
-#   define FC_DURATION_DECLARE2(...)
-#   define FC_DURATION_DECL_INIT(...) do{}while(0)
-#   define FC_DURATION_DECL_INIT2(...) do{}while(0)
-#   define FC_DURATION_DECL_INIT3(...) do{}while(0)
-#   define FC_DURATION_PLUS(...) do{}while(0)
+~else //FC_LOG_NO_TIMING
+~   define FC_TIME_POINT
+~   define _FC_TIME_INIT(...) do{}while(0)
+~   define FC_TIME_INIT(...) do{}while(0)
+~   define FC_TIME_INIT2(...) do{}while(0)
+~   define FC_TIME_INIT3(...) do{}while(0)
+~   define _FC_DURATION_PRINT(...) do{}while(0)
+~   define _FC_TIME(_t) do{}while(0)
+~   define FC_DURATION_PRINT(...) do{}while(0)
+~   define FC_DURATION
+~   define FC_DURATION_INIT(...) do{}while(0)
+~   define FC_DURATION_INIT1(...) do{}while(0)
+~   define FC_DURATION_INIT2(...) do{}while(0)
+~   define FC_DURATION_DECLARE(...)
+~   define FC_DURATION_DECLARE1(...)
+~   define FC_DURATION_DECLARE2(...)
+~   define FC_DURATION_DECL_INIT(...) do{}while(0)
+~   define FC_DURATION_DECL_INIT2(...) do{}while(0)
+~   define FC_DURATION_DECL_INIT3(...) do{}while(0)
+~   define FC_DURATION_PLUS(...) do{}while(0)
 
-#endif //FC_LOG_NO_TIMING
+~endif //FC_LOG_NO_TIMING
 
 //TODO: Get rid of this forward-declaration
 namespace Base {
@@ -457,7 +457,7 @@ typedef unsigned int ConsoleMsgFlags;
 
 namespace Base {
 
-#ifndef FC_LOG_NO_TIMING
+~ifndef FC_LOG_NO_TIMING
 inline FC_DURATION GetDuration(FC_TIME_POINT &t)
 {
     auto tnow = std::chrono::FC_TIME_CLOCK::now();
@@ -465,7 +465,7 @@ inline FC_DURATION GetDuration(FC_TIME_POINT &t)
     t = tnow;
     return d;
 }
-#endif
+~endif
 
 /** Used to identify log level*/
 enum class LogStyle{
@@ -507,7 +507,7 @@ public:
  *  ConsoleSingleton is a singleton! That means you can access the only
  *  instance of the class from every where in c++ by simply using:
  *  \code
- *  #include <Base/Console.h>
+ *  ~include <Base/Console.h>
  *  Base::Console().Log("Stage: %d",i);
  *  \endcode
  *  \par
@@ -671,8 +671,8 @@ public:
 
 } // namespace Base
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
-#endif // BASE_CONSOLE_H
+~endif // BASE_CONSOLE_H

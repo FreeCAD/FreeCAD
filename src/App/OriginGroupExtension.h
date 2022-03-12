@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINGROUP_H_QHTU73IF
-#define ORIGINGROUP_H_QHTU73IF
+~ifndef ORIGINGROUP_H_QHTU73IF
+~define ORIGINGROUP_H_QHTU73IF
 
-#include "GeoFeatureGroupExtension.h"
+~include "GeoFeatureGroupExtension.h"
 
 namespace App {
 class Origin;
@@ -84,4 +84,4 @@ typedef ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>> OriginGrou
 
 } /* App */
 
-#endif /* end of include guard: ORIGINGROUP_H_QHTU73IF */
+~endif /* end of include guard: ORIGINGROUP_H_QHTU73IF */

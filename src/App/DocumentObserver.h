@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBSERVER_H
-#define APP_DOCUMENTOBSERVER_H
+~ifndef APP_DOCUMENTOBSERVER_H
+~define APP_DOCUMENTOBSERVER_H
 
-#include <Base/BaseClass.h>
-#include <boost_signals2.hpp>
-#include <memory>
-#include <set>
+~include <Base/BaseClass.h>
+~include <boost_signals2.hpp>
+~include <memory>
+~include <set>
 
 
 namespace App
@@ -515,4 +515,4 @@ private:
 
 } //namespace App
 
-#endif // APP_DOCUMENTOBSERVER_H
+~endif // APP_DOCUMENTOBSERVER_H

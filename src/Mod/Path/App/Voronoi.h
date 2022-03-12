@@ -19,24 +19,24 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef PATH_VORONOI_H
-#define PATH_VORONOI_H
+~ifndef PATH_VORONOI_H
+~define PATH_VORONOI_H
 
-#include <climits>
-#include <map>
-#include <vector>
-#include <Base/BaseClass.h>
-#include <Base/Handle.h>
-#include <Base/Vector3D.h>
+~include <climits>
+~include <map>
+~include <vector>
+~include <Base/BaseClass.h>
+~include <Base/Handle.h>
+~include <Base/Vector3D.h>
 
-#include <boost/polygon/polygon.hpp>
-#include <boost/polygon/voronoi.hpp>
+~include <boost/polygon/polygon.hpp>
+~include <boost/polygon/voronoi.hpp>
 
-#if (SIZE_MAX == UINT_MAX)
-# define PATH_VORONOI_COLOR_MASK 0x07FFFFFFul
-#else
-# define PATH_VORONOI_COLOR_MASK 0x07FFFFFFFFFFFFFFul
-#endif
+~if (SIZE_MAX == UINT_MAX)
+~ define PATH_VORONOI_COLOR_MASK 0x07FFFFFFul
+~else
+~ define PATH_VORONOI_COLOR_MASK 0x07FFFFFFFFFFFFFFul
+~endif
 
 namespace Path
 {
@@ -133,4 +133,4 @@ namespace Path
 
 } //namespace Path
 
-#endif // PATH_VORONOI_H
+~endif // PATH_VORONOI_H

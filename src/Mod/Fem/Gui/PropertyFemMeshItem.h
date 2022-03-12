@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_PROPERTY_FEMMESH_ITEM_H
-#define FEMGUI_PROPERTY_FEMMESH_ITEM_H
+~ifndef FEMGUI_PROPERTY_FEMMESH_ITEM_H
+~define FEMGUI_PROPERTY_FEMMESH_ITEM_H
 
-#include <Gui/propertyeditor/PropertyItem.h>
+~include <Gui/propertyeditor/PropertyItem.h>
 
 namespace FemGui {
 
@@ -77,5 +77,5 @@ private:
 } // namespace FemGui
 
 
-#endif // FEMGUI_PROPERTY_FEMMESH_ITEM_H
+~endif // FEMGUI_PROPERTY_FEMMESH_ITEM_H
 

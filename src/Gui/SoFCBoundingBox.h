@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef COIN_SOFCBOUNDINGBOX_H
-#define COIN_SOFCBOUNDINGBOX_H
+~ifndef COIN_SOFCBOUNDINGBOX_H
+~define COIN_SOFCBOUNDINGBOX_H
 
-#include <Inventor/SbLinear.h>
-#include <Inventor/actions/SoAction.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFVec4f.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/fields/SoSFBool.h>
+~include <Inventor/SbLinear.h>
+~include <Inventor/actions/SoAction.h>
+~include <Inventor/fields/SoSFFloat.h>
+~include <Inventor/fields/SoSFVec4f.h>
+~include <Inventor/fields/SoSFString.h>
+~include <Inventor/nodes/SoCoordinate3.h>
+~include <Inventor/nodes/SoIndexedLineSet.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/nodes/SoText2.h>
+~include <Inventor/nodes/SoTransform.h>
+~include <Inventor/nodes/SoShape.h>
+~include <Inventor/fields/SoSFBool.h>
 
 namespace Gui {
 
@@ -107,4 +107,4 @@ protected:
 } // namespace Gui
 
 
-#endif //COIN_SOFCBOUNDINGBOX_H
+~endif //COIN_SOFCBOUNDINGBOX_H

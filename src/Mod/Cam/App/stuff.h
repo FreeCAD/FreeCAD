@@ -23,12 +23,12 @@
 \brief Mostly functors for less operators can be found here
 */
 
-#ifndef STUFF_H
-#define STUFF_H
+~ifndef STUFF_H
+~define STUFF_H
 
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
 
 /**\brief Functor to sort a pair of type pair<float,TopoDS_Wire> 
 
@@ -74,5 +74,5 @@ struct projectPointContainer
     TopoDS_Face face;
 };
 
-#endif /*DEFINE STUFF_H*/
+~endif /*DEFINE STUFF_H*/
 

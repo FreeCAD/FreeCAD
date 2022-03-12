@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERHATCH_H
-#define DRAWINGGUI_VIEWPROVIDERHATCH_H
+~ifndef DRAWINGGUI_VIEWPROVIDERHATCH_H
+~define DRAWINGGUI_VIEWPROVIDERHATCH_H
 
-#include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
 namespace TechDraw{
     class DrawHatch;
@@ -71,4 +71,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERHATCH_H
+~endif // DRAWINGGUI_VIEWPROVIDERHATCH_H

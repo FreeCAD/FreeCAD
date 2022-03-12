@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_POINT_H
-#define POINTS_POINT_H
+~ifndef POINTS_POINT_H
+~define POINTS_POINT_H
 
-#include <vector>
-#include <iterator>
+~include <vector>
+~include <iterator>
 
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include <App/ComplexGeoData.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <Mod/Points/PointsGlobal.h>
+~include <App/ComplexGeoData.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
+~include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {
@@ -196,4 +196,4 @@ public:
 } // namespace Points
 
 
-#endif // POINTS_POINTPROPERTIES_H
+~endif // POINTS_POINTPROPERTIES_H

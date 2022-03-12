@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3INT64_H
-#define WM4QUERY3INT64_H
+~ifndef WM4QUERY3INT64_H
+~define WM4QUERY3INT64_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query3.h"
 
 namespace Wm4
 {
@@ -62,7 +62,7 @@ private:
 
 }
 
-#include "Wm4Query3Int64.inl"
+~include "Wm4Query3Int64.inl"
 
 namespace Wm4
 {
@@ -71,4 +71,4 @@ typedef Query3Int64<double> Query3Int64d;
 
 }
 
-#endif
+~endif

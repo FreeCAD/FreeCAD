@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2TINTEGER_H
-#define WM4QUERY2TINTEGER_H
+~ifndef WM4QUERY2TINTEGER_H
+~define WM4QUERY2TINTEGER_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query2.h"
-#include "Wm4TInteger.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query2.h"
+~include "Wm4TInteger.h"
 
 namespace Wm4
 {
@@ -62,7 +62,7 @@ private:
 
 }
 
-#include "Wm4Query2TInteger.inl"
+~include "Wm4Query2TInteger.inl"
 
 namespace Wm4
 {
@@ -71,4 +71,4 @@ typedef Query2TInteger<double> Query2TIntegerd;
 
 }
 
-#endif
+~endif

@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+~ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+~define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawAnnotationImp;
@@ -55,4 +55,4 @@ private:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+~endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H

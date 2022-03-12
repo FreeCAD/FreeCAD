@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYSHEET_H
-#define PROPERTYSHEET_H
+~ifndef PROPERTYSHEET_H
+~define PROPERTYSHEET_H
 
-#include <map>
-#include <App/DocumentObserver.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyLinks.h>
-#include <Base/SmartPtrPy.h>
-#include "Cell.h"
+~include <map>
+~include <App/DocumentObserver.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyLinks.h>
+~include <Base/SmartPtrPy.h>
+~include "Cell.h"
 
 namespace Spreadsheet
 {
@@ -293,4 +293,4 @@ private:
 };
 
 }
-#endif // PROPERTYSHEET_H
+~endif // PROPERTYSHEET_H

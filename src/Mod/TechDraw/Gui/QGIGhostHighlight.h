@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
-#define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
+~ifndef TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
+~define TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
 
-#include <QObject>
-#include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
-#include <QPointF>
+~include <QObject>
+~include <QGraphicsScene>
+~include <QGraphicsSceneEvent>
+~include <QPointF>
 
-#include "QGIHighlight.h"
+~include "QGIHighlight.h"
 
 //a movable, selectable surrogate for detail highlights in QGIVPart
 
@@ -63,4 +63,4 @@ private:
 
 }
 
-#endif // TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H
+~endif // TECHDRAWGUI_QGIGHOSTHIGHLIGHT_H

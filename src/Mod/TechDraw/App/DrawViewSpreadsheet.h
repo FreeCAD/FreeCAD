@@ -23,17 +23,17 @@
 
 
 
-#ifndef _DrawViewSpreadsheet_h_
-#define _DrawViewSpreadsheet_h_
+~ifndef _DrawViewSpreadsheet_h_
+~define _DrawViewSpreadsheet_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
+~include <App/FeaturePython.h>
 
-#include "DrawViewSymbol.h"
+~include "DrawViewSymbol.h"
 
 namespace TechDraw
 {
@@ -80,4 +80,4 @@ typedef App::FeaturePythonT<DrawViewSpreadsheet> DrawViewSpreadsheetPython;
 } //namespace TechDraw
 
 
-#endif
+~endif

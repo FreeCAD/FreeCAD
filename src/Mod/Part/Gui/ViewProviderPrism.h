@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPRISM_H
-#define PARTGUI_VIEWPROVIDERPRISM_H
+~ifndef PARTGUI_VIEWPROVIDERPRISM_H
+~define PARTGUI_VIEWPROVIDERPRISM_H
 
-#include "ViewProviderPrimitive.h"
+~include "ViewProviderPrimitive.h"
 
 
 namespace PartGui {
@@ -65,5 +65,5 @@ protected:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPRISM_H
+~endif // PARTGUI_VIEWPROVIDERPRISM_H
 

@@ -21,53 +21,53 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRY_H
-#define PART_GEOMETRY_H
+~ifndef PART_GEOMETRY_H
+~define PART_GEOMETRY_H
 
-#include <Adaptor3d_Curve.hxx>
-#include <Geom_CartesianPoint.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Ellipse.hxx>
-#include <Geom_Hyperbola.hxx>
-#include <Geom_Parabola.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_OffsetCurve.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_BezierSurface.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_ConicalSurface.hxx>
-#include <Geom_SphericalSurface.hxx>
-#include <Geom_ToroidalSurface.hxx>
-#include <Geom_Plane.hxx>
-#include <Geom_OffsetSurface.hxx>
-#include <GeomPlate_Surface.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
-#include <Geom_SurfaceOfRevolution.hxx>
-#include <Geom_SurfaceOfLinearExtrusion.hxx>
-#include <GeomPlate_BuildPlateSurface.hxx>
-#include <Plate_Plate.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <list>
-#include <memory>
-#include <vector>
-#include <Base/Persistence.h>
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include <Base/Placement.h>
+~include <Adaptor3d_Curve.hxx>
+~include <Geom_CartesianPoint.hxx>
+~include <Geom_BezierCurve.hxx>
+~include <Geom_BSplineCurve.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_Ellipse.hxx>
+~include <Geom_Hyperbola.hxx>
+~include <Geom_Parabola.hxx>
+~include <Geom_Line.hxx>
+~include <Geom_OffsetCurve.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <Geom_Surface.hxx>
+~include <Geom_BezierSurface.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Geom_CylindricalSurface.hxx>
+~include <Geom_ConicalSurface.hxx>
+~include <Geom_SphericalSurface.hxx>
+~include <Geom_ToroidalSurface.hxx>
+~include <Geom_Plane.hxx>
+~include <Geom_OffsetSurface.hxx>
+~include <GeomPlate_Surface.hxx>
+~include <Geom_RectangularTrimmedSurface.hxx>
+~include <Geom_SurfaceOfRevolution.hxx>
+~include <Geom_SurfaceOfLinearExtrusion.hxx>
+~include <GeomPlate_BuildPlateSurface.hxx>
+~include <Plate_Plate.hxx>
+~include <TopoDS_Shape.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Vec.hxx>
+~include <list>
+~include <memory>
+~include <vector>
+~include <Base/Persistence.h>
+~include <Base/Vector3D.h>
+~include <Base/Matrix.h>
+~include <Base/Placement.h>
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
+~include <boost/uuid/uuid.hpp>
+~include <boost/uuid/uuid_generators.hpp>
 
-#include <Mod/Part/PartGlobal.h>
-#include "GeometryExtension.h"
+~include <Mod/Part/PartGlobal.h>
+~include "GeometryExtension.h"
 
 namespace Part {
 
@@ -1129,4 +1129,4 @@ PartExport
 std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&);
 }
 
-#endif // PART_GEOMETRY_H
+~endif // PART_GEOMETRY_H

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTTHREAD_H
-#define SANDBOX_DOCUMENTTHREAD_H
+~ifndef SANDBOX_DOCUMENTTHREAD_H
+~define SANDBOX_DOCUMENTTHREAD_H
 
-#include <QThread>
-#include <QMutex>
-#include <Base/Handle.h>
-#include <App/DocumentObject.h>
+~include <QThread>
+~include <QMutex>
+~include <Base/Handle.h>
+~include <App/DocumentObject.h>
 
 namespace Mesh {
     class MeshObject;
@@ -128,5 +128,5 @@ private:
 
 }
 
-#endif // SANDBOX_DOCUMENTTHREAD_H
+~endif // SANDBOX_DOCUMENTTHREAD_H
 

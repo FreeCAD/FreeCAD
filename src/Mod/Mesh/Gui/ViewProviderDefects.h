@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
-#define MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
+~ifndef MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
+~define MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 class SoCoordinate3;
 class SoPointSet;
@@ -216,5 +216,5 @@ protected:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
+~endif // MESHGUI_VIEWPROVIDER_MESH_DEFECTS_H
 

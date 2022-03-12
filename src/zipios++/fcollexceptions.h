@@ -1,10 +1,10 @@
-#ifndef FCOLLEXCEPTIONS_H
-#define FCOLLEXCEPTIONS_H
+~ifndef FCOLLEXCEPTIONS_H
+~define FCOLLEXCEPTIONS_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <stdexcept>
-#include <string>
+~include <stdexcept>
+~include <string>
 
 namespace zipios {
 
@@ -73,7 +73,7 @@ private:
 
 
 } // namespace
-#endif
+~endif
 
 /** \file
     Header file that defines a number of exceptions used by FileCollection and

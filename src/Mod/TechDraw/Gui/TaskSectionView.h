@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
-#define GUI_TASKVIEW_TASKSECTIONVIEW_H
+~ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
+~define GUI_TASKVIEW_TASKSECTIONVIEW_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
+~include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
 
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
 
 
 class Ui_TaskSectionView;
@@ -158,4 +158,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
+~endif // ~ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H

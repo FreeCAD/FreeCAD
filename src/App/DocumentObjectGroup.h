@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTGROUP_H
-#define APP_DOCUMENTOBJECTGROUP_H
+~ifndef APP_DOCUMENTOBJECTGROUP_H
+~define APP_DOCUMENTOBJECTGROUP_H
 
-#include "DocumentObject.h"
-#include "FeaturePython.h"
-#include "GroupExtension.h"
+~include "DocumentObject.h"
+~include "FeaturePython.h"
+~include "GroupExtension.h"
 
 
 namespace App
@@ -55,4 +55,4 @@ typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;
 } //namespace App
 
 
-#endif // APP_DOCUMENTOBJECTGROUP_H
+~endif // APP_DOCUMENTOBJECTGROUP_H

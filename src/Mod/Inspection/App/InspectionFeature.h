@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef INSPECTION_FEATURE_H
-#define INSPECTION_FEATURE_H
+~ifndef INSPECTION_FEATURE_H
+~define INSPECTION_FEATURE_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/DocumentObjectGroup.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/DocumentObjectGroup.h>
 
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Points/App/Points.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Points/App/Points.h>
 
 class TopoDS_Shape;
 class BRepExtrema_DistShapeShape;
@@ -261,4 +261,4 @@ public:
 } //namespace Inspection
 
 
-#endif // INSPECTION_FEATURE_H
+~endif // INSPECTION_FEATURE_H

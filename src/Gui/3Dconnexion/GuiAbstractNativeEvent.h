@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUIABSTRACTNATIVEEVENT_H
-#define GUIABSTRACTNATIVEEVENT_H
+~ifndef GUIABSTRACTNATIVEEVENT_H
+~define GUIABSTRACTNATIVEEVENT_H
 
-#include <QObject>
-#include <vector>
+~include <QObject>
+~include <vector>
 
 class QMainWindow;
 
@@ -50,4 +50,4 @@ namespace Gui
 }
 
 
-#endif //GUIABSTRACTNATIVEEVENT_H
+~endif //GUIABSTRACTNATIVEEVENT_H

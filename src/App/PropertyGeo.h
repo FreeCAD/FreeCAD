@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYGEO_H
-#define APP_PROPERTYGEO_H
+~ifndef APP_PROPERTYGEO_H
+~define APP_PROPERTYGEO_H
 
-#include <Base/BoundBox.h>
-#include <Base/Matrix.h>
-#include <Base/Placement.h>
-#include <Base/Unit.h>
-#include <Base/Vector3D.h>
+~include <Base/BoundBox.h>
+~include <Base/Matrix.h>
+~include <Base/Placement.h>
+~include <Base/Unit.h>
+~include <Base/Vector3D.h>
 
-#include "PropertyLinks.h"
-#include <FCGlobal.h>
+~include "PropertyLinks.h"
+~include <FCGlobal.h>
 
 
 namespace Base {
@@ -542,4 +542,4 @@ public:
 } // namespace App
 
 
-#endif // APP_PROPERTYGEO_H
+~endif // APP_PROPERTYGEO_H

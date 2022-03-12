@@ -20,16 +20,16 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_FeatureArea_H
-#define PATH_FeatureArea_H
+~ifndef PATH_FeatureArea_H
+~define PATH_FeatureArea_H
 
-#include <App/DocumentObject.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyUnits.h>
-#include <App/FeaturePython.h>
-#include "Mod/Part/App/PartFeature.h"
+~include <App/DocumentObject.h>
+~include <App/GeoFeature.h>
+~include <App/PropertyUnits.h>
+~include <App/FeaturePython.h>
+~include "Mod/Part/App/PartFeature.h"
 
-#include "Area.h"
+~include "Area.h"
 
 namespace Path
 {
@@ -97,4 +97,4 @@ typedef App::FeaturePythonT<FeatureAreaView> FeatureAreaViewPython;
 } //namespace Path
 
 
-#endif // PATH_FeaturePath_H
+~endif // PATH_FeaturePath_H

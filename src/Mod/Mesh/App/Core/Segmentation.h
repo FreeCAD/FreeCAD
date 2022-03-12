@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHCORE_SEGMENTATION_H
-#define MESHCORE_SEGMENTATION_H
+~ifndef MESHCORE_SEGMENTATION_H
+~define MESHCORE_SEGMENTATION_H
 
-#include "MeshKernel.h"
-#include "Curvature.h"
-#include "Visitor.h"
-#include <vector>
-#include <memory>
+~include "MeshKernel.h"
+~include "Curvature.h"
+~include "Visitor.h"
+~include <vector>
+~include <memory>
 
 namespace MeshCore {
 
@@ -278,4 +278,4 @@ private:
 
 } // MeshCore
 
-#endif // MESHCORE_SEGMENTATION_H
+~endif // MESHCORE_SEGMENTATION_H

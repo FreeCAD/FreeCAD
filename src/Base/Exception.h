@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_EXCEPTION_H
-#define BASE_EXCEPTION_H
+~ifndef BASE_EXCEPTION_H
+~define BASE_EXCEPTION_H
 
-#include <csignal>
-#include <string>
-#include "BaseClass.h"
-#include "FileInfo.h"
+~include <csignal>
+~include <string>
+~include "BaseClass.h"
+~include "FileInfo.h"
 
 
 typedef struct _object PyObject;
@@ -45,40 +45,40 @@ typedef struct _object PyObject;
 /// if you ask for a translation (and the translator have provided one) at that time it gets translated (e.g. in the UI before showing the message
 /// of the exception).
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 
-# define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
-# define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
-# define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
+~ define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
+~ define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
+~ define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); throw myexcp;}
 
-# define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
-# define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
-# define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__FUNCSIG__); myexcp.setTranslatable(true); throw myexcp;}
 
-#elif defined(__GNUC__)
+~elif defined(__GNUC__)
 
-# define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
-# define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
-# define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
+~ define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
+~ define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
+~ define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); throw myexcp;}
 
-# define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
-# define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
-# define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__PRETTY_FUNCTION__); myexcp.setTranslatable(true); throw myexcp;}
 
-#else
+~else
 
-# define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
-# define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
-# define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__);  throw myexcp;}
+~ define THROW(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
+~ define THROWM(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); throw myexcp;}
+~ define THROWMF_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__);  throw myexcp;}
 
-# define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
-# define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
-# define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWT(exception) {exception myexcp; myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWMT(exception, message) {exception myexcp(message); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
+~ define THROWMFT_FILEEXCEPTION(message,filenameorfileinfo) {FileException myexcp(message, filenameorfileinfo); myexcp.setDebugInformation(__FILE__,__LINE__,__func__); myexcp.setTranslatable(true); throw myexcp;}
 
 
-#endif
+~endif
 
-#define FC_THROWM(_exception,_msg) do {\
+~define FC_THROWM(_exception,_msg) do {\
     std::stringstream ss;\
     ss << _msg;\
     THROWM(_exception,ss.str().c_str());\
@@ -302,12 +302,12 @@ public:
  * The MemoryException is thrown if not enough memory can be allocated.
  * @author Werner Mayer
  */
-#if defined (__GNUC__)
+~if defined (__GNUC__)
 // It seems that the calling instance of our new handler expects a bad_alloc exception
 class BaseExport MemoryException : public Exception, virtual public std::bad_alloc
-#else
+~else
 class BaseExport MemoryException : public Exception
-#endif
+~endif
 {
 public:
   /// Construction
@@ -318,10 +318,10 @@ public:
   virtual ~MemoryException() throw() {}
   /// Assignment operator
   MemoryException &operator=(const MemoryException &inst);
-#if defined (__GNUC__)
+~if defined (__GNUC__)
   /// Description of the exception
   virtual const char* what() const throw() override;
-#endif
+~endif
 };
 
 /**
@@ -731,7 +731,7 @@ inline void Exception::setTranslatable(bool translatable)
     _isTranslatable = translatable;
 }
 
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+~if defined(__GNUC__) && defined (FC_OS_LINUX)
 class SignalException
 {
 public:
@@ -745,8 +745,8 @@ private:
     struct sigaction new_action, old_action;
     bool ok;
 };
-#endif
+~endif
 
 } //namespace Base
 
-#endif // BASE_EXCEPTION_H
+~endif // BASE_EXCEPTION_H

@@ -5,13 +5,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IISICONLABEL_H
-#define IISICONLABEL_H
+~ifndef IISICONLABEL_H
+~define IISICONLABEL_H
 
-#include <QtGui>
-#include <QWidget>
+~include <QtGui>
+~include <QWidget>
 
-#include "iistaskpanel_global.h"
+~include "iistaskpanel_global.h"
 
 struct iisIconLabelScheme;
 
@@ -62,4 +62,4 @@ protected:
 	bool m_changeCursorOver, m_underlineOver;
 };
 
-#endif // IISICONLABEL_H
+~endif // IISICONLABEL_H

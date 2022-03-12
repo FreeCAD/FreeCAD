@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewDetail_h_
-#define _DrawViewDetail_h_
+~ifndef _DrawViewDetail_h_
+~define _DrawViewDetail_h_
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
-#include <App/FeaturePython.h>
-#include <App/Material.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyFile.h>
+~include <App/FeaturePython.h>
+~include <App/Material.h>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include <TopoDS_Compound.hxx>
+~include <TopoDS_Compound.hxx>
 
-#include "DrawViewPart.h"
+~include "DrawViewPart.h"
 
 class gp_Pln;
 class gp_Ax2;
@@ -89,4 +89,4 @@ typedef App::FeaturePythonT<DrawViewDetail> DrawViewDetailPython;
 
 } //namespace TechDraw
 
-#endif
+~endif

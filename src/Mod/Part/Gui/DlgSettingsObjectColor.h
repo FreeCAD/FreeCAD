@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
-#define PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
+~ifndef PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
+~define PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace PartGui {
 class Ui_DlgSettingsObjectColor;
@@ -55,4 +55,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
+~endif // PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H

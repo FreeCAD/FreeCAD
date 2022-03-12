@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_REMESHGMSH_H
-#define MESHGUI_REMESHGMSH_H
+~ifndef MESHGUI_REMESHGMSH_H
+~define MESHGUI_REMESHGMSH_H
 
-#include <memory>
-#include <QDialog>
-#include <QPointer>
-#include <QProcess>
-#include <App/DocumentObserver.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <memory>
+~include <QDialog>
+~include <QPointer>
+~include <QProcess>
+~include <App/DocumentObserver.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
 
 namespace Mesh {
 class Feature;
@@ -128,4 +128,4 @@ private:
 
 }
 
-#endif // MESHGUI_REMESHGMSH_H
+~endif // MESHGUI_REMESHGMSH_H

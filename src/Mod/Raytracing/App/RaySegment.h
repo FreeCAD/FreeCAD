@@ -23,13 +23,13 @@
  
 
 
-#ifndef _RaySegment_h_
-#define _RaySegment_h_
+~ifndef _RaySegment_h_
+~define _RaySegment_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyGeo.h>
 
 
 namespace Raytracing
@@ -67,4 +67,4 @@ public:
 
 
 
-#endif
+~endif

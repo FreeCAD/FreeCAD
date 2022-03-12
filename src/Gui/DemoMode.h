@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DEMOMODE_H
-#define GUI_DIALOG_DEMOMODE_H
+~ifndef GUI_DIALOG_DEMOMODE_H
+~define GUI_DIALOG_DEMOMODE_H
 
-#include <QDialog>
+~include <QDialog>
 
 
 class QTimer;
@@ -84,4 +84,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DEMOMODE_H
+~endif // GUI_DIALOG_DEMOMODE_H

@@ -22,27 +22,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewPart_h_
-#define _DrawViewPart_h_
+~ifndef _DrawViewPart_h_
+~define _DrawViewPart_h_
 
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/FeaturePython.h>
 
-#include <Base/BoundBox.h>
+~include <Base/BoundBox.h>
 
-#include "PropertyGeomFormatList.h"
-#include "PropertyCenterLineList.h"
-#include "PropertyCosmeticEdgeList.h"
-#include "PropertyCosmeticVertexList.h"
-#include "CosmeticExtension.h"
-#include "DrawView.h"
+~include "PropertyGeomFormatList.h"
+~include "PropertyCenterLineList.h"
+~include "PropertyCosmeticEdgeList.h"
+~include "PropertyCosmeticVertexList.h"
+~include "CosmeticExtension.h"
+~include "DrawView.h"
 
 class gp_Pnt;
 class gp_Pln;
@@ -254,4 +254,4 @@ typedef App::FeaturePythonT<DrawViewPart> DrawViewPartPython;
 
 } //namespace TechDraw
 
-#endif  // #ifndef _DrawViewPart_h_
+~endif  // ~ifndef _DrawViewPart_h_

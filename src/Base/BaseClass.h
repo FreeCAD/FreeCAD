@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BASECLASS_H
-#define BASE_BASECLASS_H
+~ifndef BASE_BASECLASS_H
+~define BASE_BASECLASS_H
 
-#include "Type.h"
+~include "Type.h"
 
 // Python stuff
 typedef struct _object PyObject;
 
 
 /// define for subclassing Base::BaseClass
-#define TYPESYSTEM_HEADER() \
+~define TYPESYSTEM_HEADER() \
 public: \
   static Base::Type getClassTypeId(void); \
   virtual Base::Type getTypeId(void) const; \
@@ -42,7 +42,7 @@ private: \
 
 
 /// Like TYPESYSTEM_HEADER, but declare getTypeId as 'override'
-#define TYPESYSTEM_HEADER_WITH_OVERRIDE() \
+~define TYPESYSTEM_HEADER_WITH_OVERRIDE() \
 public: \
   static Base::Type getClassTypeId(void); \
   virtual Base::Type getTypeId(void) const override; \
@@ -53,7 +53,7 @@ private: \
 
 
 /// define to implement a  subclass of Base::BaseClass
-#define TYPESYSTEM_SOURCE_P(_class_) \
+~define TYPESYSTEM_SOURCE_P(_class_) \
 Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
 Base::Type _class_::classTypeId = Base::Type::badType();  \
@@ -62,7 +62,7 @@ void * _class_::create(void){\
 }
 
 /// define to implement a  subclass of Base::BaseClass
-#define TYPESYSTEM_SOURCE_TEMPLATE_P(_class_) \
+~define TYPESYSTEM_SOURCE_TEMPLATE_P(_class_) \
 template<> Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 template<> Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
 template<> void * _class_::create(void){\
@@ -70,7 +70,7 @@ template<> void * _class_::create(void){\
 }
 
 /// define to implement a  subclass of Base::BaseClass
-#define TYPESYSTEM_SOURCE_ABSTRACT_P(_class_) \
+~define TYPESYSTEM_SOURCE_ABSTRACT_P(_class_) \
 Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
 Base::Type _class_::classTypeId = Base::Type::badType();  \
@@ -78,24 +78,24 @@ void * _class_::create(void){return 0;}
 
 
 /// define to implement a subclass of Base::BaseClass
-#define TYPESYSTEM_SOURCE(_class_, _parentclass_) \
+~define TYPESYSTEM_SOURCE(_class_, _parentclass_) \
 TYPESYSTEM_SOURCE_P(_class_)\
 void _class_::init(void){\
-  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+  initSubclass(_class_::classTypeId, ~_class_ , ~_parentclass_, &(_class_::create) ); \
 }
 
 /// define to implement a subclass of Base::BaseClass
-#define TYPESYSTEM_SOURCE_TEMPLATE_T(_class_, _parentclass_) \
+~define TYPESYSTEM_SOURCE_TEMPLATE_T(_class_, _parentclass_) \
 TYPESYSTEM_SOURCE_TEMPLATE_P(_class_)\
 template<> void _class_::init(void){\
-    initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+    initSubclass(_class_::classTypeId, ~_class_ , ~_parentclass_, &(_class_::create) ); \
 }
 
 /// define to implement a subclass of Base::BaseClass
-#define TYPESYSTEM_SOURCE_ABSTRACT(_class_, _parentclass_) \
+~define TYPESYSTEM_SOURCE_ABSTRACT(_class_, _parentclass_) \
 TYPESYSTEM_SOURCE_ABSTRACT_P(_class_)\
 void _class_::init(void){\
-  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+  initSubclass(_class_::classTypeId, ~_class_ , ~_parentclass_, &(_class_::create) ); \
 }
 
 namespace Base
@@ -158,5 +158,5 @@ template<typename T> const T * freecad_dynamic_cast(const Base::BaseClass * t)
 
 } //namespace Base
 
-#endif // BASE_BASECLASS_H
+~endif // BASE_BASECLASS_H
 

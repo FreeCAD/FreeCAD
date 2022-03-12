@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_MEMDEBUG_H
-#define BASE_MEMDEBUG_H
-#ifndef FC_GLOBAL_H
-#include <crtdbg.h>
-#include <FCGlobal.h>
-#endif
+~ifndef BASE_MEMDEBUG_H
+~define BASE_MEMDEBUG_H
+~ifndef FC_GLOBAL_H
+~include <crtdbg.h>
+~include <FCGlobal.h>
+~endif
 
 namespace Base
 {
 
 
 // Std. configurations
-#if defined(_MSC_VER)
+~if defined(_MSC_VER)
 class BaseExport MemCheck
 {
 public:
@@ -48,9 +48,9 @@ private:
     _CrtMemState s1, s2, s3;
 };
 
-#endif
+~endif
 
 } //namespace Base
 
-#endif // BASE_MEMDEBUG_H
+~endif // BASE_MEMDEBUG_H
 

@@ -19,23 +19,23 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef PARTGUI_DLGPROJECTIONONSURFACE_H
-#define PARTGUI_DLGPROJECTIONONSURFACE_H
+~ifndef PARTGUI_DLGPROJECTIONONSURFACE_H
+~define PARTGUI_DLGPROJECTIONONSURFACE_H
 
-#include <QWidget>
-#include <QDoubleSpinBox>
+~include <QWidget>
+~include <QDoubleSpinBox>
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "../App/PartFeature.h"
-#include <App/DocumentObserver.h>
+~include "../App/PartFeature.h"
+~include <App/DocumentObserver.h>
 
-#include "TopoDS_Shape.hxx"
-#include "TopoDS_Edge.hxx"
-#include "TopoDS_Face.hxx"
-#include "TopoDS_Wire.hxx"
-#include "gp_Dir.hxx"
+~include "TopoDS_Shape.hxx"
+~include "TopoDS_Edge.hxx"
+~include "TopoDS_Face.hxx"
+~include "TopoDS_Wire.hxx"
+~include "gp_Dir.hxx"
 
 namespace PartGui {
 
@@ -171,4 +171,4 @@ private:
 
 
 } // namespace PartGui
-#endif // PARTGUI_DLGPROJECTIONONSURFACE_H
+~endif // PARTGUI_DLGPROJECTIONONSURFACE_H

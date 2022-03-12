@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUIRAWNATIVEINPUTEVENTFILTER_H
-#define GUIRAWNATIVEINPUTEVENTFILTER_H
+~ifndef GUIRAWNATIVEINPUTEVENTFILTER_H
+~define GUIRAWNATIVEINPUTEVENTFILTER_H
 
-#include <QAbstractNativeEventFilter>
+~include <QAbstractNativeEventFilter>
 
 namespace Gui
 {
@@ -45,4 +45,4 @@ namespace Gui
     };
 } //namespace Gui
 
-#endif //GUIRAWNATIVEINPUTEVENTFILTER_H
+~endif //GUIRAWNATIVEINPUTEVENTFILTER_H

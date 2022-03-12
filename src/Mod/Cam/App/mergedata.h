@@ -22,11 +22,11 @@
 ***************************************************************************/
 
 
-#ifndef MERGEDATA_H
-#define MERGEDATA_H
+~ifndef MERGEDATA_H
+~define MERGEDATA_H
 
-#include <QStringList>
-#include <vector>
+~include <QStringList>
+~include <vector>
 
 class CamExport MergeData
 {
@@ -45,4 +45,4 @@ private:
 };
 
 
-#endif
+~endif

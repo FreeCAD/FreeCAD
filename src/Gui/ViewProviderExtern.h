@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_EXTERN_H
-#define GUI_VIEWPROVIDER_EXTERN_H
+~ifndef GUI_VIEWPROVIDER_EXTERN_H
+~define GUI_VIEWPROVIDER_EXTERN_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 class SoNode;
@@ -62,5 +62,5 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_EXTERN_H
+~endif // GUI_VIEWPROVIDER_EXTERN_H
 

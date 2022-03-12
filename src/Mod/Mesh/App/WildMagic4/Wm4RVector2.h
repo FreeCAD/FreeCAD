@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4RVECTOR2_H
-#define WM4RVECTOR2_H
+~ifndef WM4RVECTOR2_H
+~define WM4RVECTOR2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4TRVector.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4TRVector.h"
 
 namespace Wm4
 {
@@ -31,7 +31,7 @@ public:
     RVector2 ();
     RVector2 (const RVector2& rkV);
 
-#ifdef WM4_USING_VC70
+~ifdef WM4_USING_VC70
     RVector2 (const TRVector<2,ISIZE>& rkV)
     {
         // The inline body is here because of an apparent MSVC++ .NET 2002
@@ -53,9 +53,9 @@ public:
         m_akTuple[0] = rkV[0];
         m_akTuple[1] = rkV[1];
     }
-#else
+~else
     RVector2 (const TRVector<2,ISIZE>& rkV);
-#endif
+~endif
 
     RVector2 (const TRational<ISIZE>& rkX, const TRational<ISIZE>& rkY);
 
@@ -68,7 +68,7 @@ public:
     // assignment
     RVector2& operator= (const RVector2& rkV);
 
-#ifdef WM4_USING_VC70
+~ifdef WM4_USING_VC70
     RVector2& operator= (const TRVector<2,ISIZE>& rkV)
     {
         // The inline body is here because of an apparent MSVC++ .NET 2002
@@ -89,9 +89,9 @@ public:
         m_akTuple[1] = rkV[1];
         return *this;
     }
-#else
+~else
     RVector2& operator= (const TRVector<2,ISIZE>& rkV);
-#endif
+~endif
 
     // returns Dot(this,V)
     TRational<ISIZE> Dot (const RVector2& rkV) const;
@@ -108,7 +108,7 @@ protected:
 
 }
 
-#include "Wm4RVector2.inl"
+~include "Wm4RVector2.inl"
 
 
-#endif
+~endif

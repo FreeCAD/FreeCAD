@@ -6,12 +6,12 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONTBOX3_H
-#define WM4CONTBOX3_H
+~ifndef WM4CONTBOX3_H
+~define WM4CONTBOX3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Box3.h"
-#include "Wm4Query.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Box3.h"
+~include "Wm4Query.h"
 
 namespace Wm4
 {
@@ -45,4 +45,4 @@ Box3<Real> MergeBoxes (const Box3<Real>& rkBox0, const Box3<Real>& rkBox1);
 
 }
 
-#endif
+~endif

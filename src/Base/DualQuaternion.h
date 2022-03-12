@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREECAD_BASE_DUAL_QUATERNION_H
-#define FREECAD_BASE_DUAL_QUATERNION_H
+~ifndef FREECAD_BASE_DUAL_QUATERNION_H
+~define FREECAD_BASE_DUAL_QUATERNION_H
 
-#include "DualNumber.h"
-#include <FCGlobal.h>
+~include "DualNumber.h"
+~include <FCGlobal.h>
 
 
 namespace Base {
@@ -106,4 +106,4 @@ DualQuat operator*(DualNumber a, DualQuat b);
 
 } //namespace
 
-#endif
+~endif

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pocket_H
-#define PARTDESIGN_Pocket_H
+~ifndef PARTDESIGN_Pocket_H
+~define PARTDESIGN_Pocket_H
 
-#include "FeatureExtrude.h"
+~include "FeatureExtrude.h"
 
 namespace PartDesign
 {
@@ -61,4 +61,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PART_Pocket_H
+~endif // PART_Pocket_H

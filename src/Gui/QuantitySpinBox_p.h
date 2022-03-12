@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef QUANTITYSPINBOX_P_H
-#define QUANTITYSPINBOX_P_H
+~ifndef QUANTITYSPINBOX_P_H
+~define QUANTITYSPINBOX_P_H
 
-#include <QLabel>
-#include <QMouseEvent>
+~include <QLabel>
+~include <QMouseEvent>
 
 class ExpressionLabel : public QLabel
 {
@@ -54,4 +54,4 @@ private:
     const QString formulaEditorTooltipPrefix = tr("Expression: ");
 };
 
-#endif // QUANTITYSPINBOX_P_H
+~endif // QUANTITYSPINBOX_P_H

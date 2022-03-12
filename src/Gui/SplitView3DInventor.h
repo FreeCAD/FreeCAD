@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPLITVIEW3DINVENTOR_H
-#define GUI_SPLITVIEW3DINVENTOR_H
+~ifndef GUI_SPLITVIEW3DINVENTOR_H
+~define GUI_SPLITVIEW3DINVENTOR_H
 
-#include "MDIView.h"
-#include "MDIViewPy.h"
+~include "MDIView.h"
+~include "MDIViewPy.h"
 
-#include <Base/Parameter.h>
-#include <vector>
+~include <Base/Parameter.h>
+~include <vector>
 
 
 namespace Gui {
@@ -120,5 +120,5 @@ public:
 
 } // namespace Gui
 
-#endif  //GUI_SPLITVIEW3DINVENTOR_H
+~endif  //GUI_SPLITVIEW3DINVENTOR_H
 

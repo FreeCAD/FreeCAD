@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef FEM_WORKBENCH_H
-#define FEM_WORKBENCH_H
+~ifndef FEM_WORKBENCH_H
+~define FEM_WORKBENCH_H
 
-#include <Gui/Workbench.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <Gui/Workbench.h>
+~include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui {
 
@@ -49,4 +49,4 @@ protected:
 } // namespace FemGui
 
 
-#endif // FEM_WORKBENCH_H
+~endif // FEM_WORKBENCH_H

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
-#define ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
+~ifndef ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
+~define ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include "TaskAssemblyConstraints.h"
-#include "ViewProviderConstraint.h"
+~include <Gui/TaskView/TaskDialog.h>
+~include "TaskAssemblyConstraints.h"
+~include "ViewProviderConstraint.h"
 
 namespace AssemblyGui {
 
@@ -67,4 +67,4 @@ protected:
 
 } //namespace AssemblyGui
 
-#endif // ASSEMBLYGUI_TaskDlgAssemblyConstraints_H
+~endif // ASSEMBLYGUI_TaskDlgAssemblyConstraints_H

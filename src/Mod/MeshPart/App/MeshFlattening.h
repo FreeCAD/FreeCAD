@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#ifndef MESHFLATTENING
-#define MESHFLATTENING
+~ifndef MESHFLATTENING
+~define MESHFLATTENING
 
 // idea:
 // - unwrap any meshed shells and output a 2d face (meshing is done externally)
 // - unwrap faces which are nurbs and return nurbs (no cuts, meshing internally)
 // 	- TODO: map any curves from origin to flattened faces
 
-#include "MeshFlatteningNurbs.h"
-#include <BRepTools.hxx>
-#include <TopoDS_Face.hxx>
-#include <vector>
+~include "MeshFlatteningNurbs.h"
+~include <BRepTools.hxx>
+~include <TopoDS_Face.hxx>
+~include <vector>
 
-#include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
-#include <Eigen/SparseCore>
-#include <Eigen/QR>
+~include <Eigen/Geometry>
+~include <Eigen/IterativeLinearSolvers>
+~include <Eigen/SparseCore>
+~include <Eigen/QR>
 
-#include <vector>
+~include <vector>
 
 
 typedef Eigen::Vector3d Vector3;
@@ -82,4 +82,4 @@ public:
 
 };
 
-#endif // MESHFLATTENING
+~endif // MESHFLATTENING

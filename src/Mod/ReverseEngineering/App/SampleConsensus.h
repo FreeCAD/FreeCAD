@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef REEN_SAMPLECONSENSUS_H
-#define REEN_SAMPLECONSENSUS_H
+~ifndef REEN_SAMPLECONSENSUS_H
+~define REEN_SAMPLECONSENSUS_H
 
-#include <Base/Vector3D.h>
-#include <vector>
+~include <Base/Vector3D.h>
+~include <vector>
 
 namespace Points {class PointKernel;}
 
@@ -56,5 +56,5 @@ private:
 
 } // namespace Reen
 
-#endif // REEN_SAMPLECONSENSUS_H
+~endif // REEN_SAMPLECONSENSUS_H
 

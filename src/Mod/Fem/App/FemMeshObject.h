@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshObject_H
-#define Fem_FemMeshObject_H
+~ifndef Fem_FemMeshObject_H
+~define Fem_FemMeshObject_H
 
-#include <App/FeaturePython.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
+~include <App/FeaturePython.h>
+~include <App/GeoFeature.h>
+~include <App/PropertyFile.h>
+~include <App/PropertyGeo.h>
 
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
+~include "FemMesh.h"
+~include "FemMeshProperty.h"
 
 namespace Fem
 {
@@ -67,4 +67,4 @@ typedef App::FeaturePythonT<FemMeshObject> FemMeshObjectPython;
 } //namespace Fem
 
 
-#endif // Fem_FemMeshObject_H
+~endif // Fem_FemMeshObject_H

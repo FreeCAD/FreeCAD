@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef PATH_TOOLTABLE_H
-#define PATH_TOOLTABLE_H
+~ifndef PATH_TOOLTABLE_H
+~define PATH_TOOLTABLE_H
 
-#include <vector>
-#include <string>
-#include <map>
-#include <Base/Persistence.h>
-#include "Tool.h"
+~include <vector>
+~include <string>
+~include <map>
+~include <Base/Persistence.h>
+~include "Tool.h"
 
 namespace Path
 {    /** The representation of a table of tools */
@@ -65,4 +65,4 @@ namespace Path
 
 } //namespace Path
 
-#endif // PATH_TOOLTABLE_H
+~endif // PATH_TOOLTABLE_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MERGEDOCUMENTS_H
-#define GUI_MERGEDOCUMENTS_H
+~ifndef GUI_MERGEDOCUMENTS_H
+~define GUI_MERGEDOCUMENTS_H
 
-#include <Base/Persistence.h>
+~include <Base/Persistence.h>
 
 namespace zipios {
 class ZipInputStream;
@@ -63,4 +63,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_MERGEDOCUMENTS_H
+~endif // GUI_MERGEDOCUMENTS_H

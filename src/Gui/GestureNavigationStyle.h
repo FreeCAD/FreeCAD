@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GESTURENAVIGATIONSTYLE2_H
-#define GESTURENAVIGATIONSTYLE2_H
+~ifndef GESTURENAVIGATIONSTYLE2_H
+~define GESTURENAVIGATIONSTYLE2_H
 
-#include "NavigationStyle.h"
+~include "NavigationStyle.h"
 
-#include <queue>
-#include <memory>
+~include <queue>
+~include <memory>
 
 namespace Gui {
 
@@ -112,4 +112,4 @@ public: //gesture reactions
 };
 
 }
-#endif // GESTURENAVIGATIONSTYLE2_H
+~endif // GESTURENAVIGATIONSTYLE2_H

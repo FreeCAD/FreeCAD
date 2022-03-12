@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETTABLEVIEW_H
-#define SHEETTABLEVIEW_H
+~ifndef SHEETTABLEVIEW_H
+~define SHEETTABLEVIEW_H
 
-#include <QTableView>
-#include <QHeaderView>
-#include <QKeyEvent>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <Mod/Spreadsheet/App/Utils.h>
+~include <QTableView>
+~include <QHeaderView>
+~include <QKeyEvent>
+~include <Mod/Spreadsheet/App/Sheet.h>
+~include <Mod/Spreadsheet/App/Utils.h>
 
 namespace SpreadsheetGui {
 
@@ -113,4 +113,4 @@ protected:
 
 }
 
-#endif // SHEETTABLEVIEW_H
+~endif // SHEETTABLEVIEW_H

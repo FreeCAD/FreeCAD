@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3TINTEGER_H
-#define WM4QUERY3TINTEGER_H
+~ifndef WM4QUERY3TINTEGER_H
+~define WM4QUERY3TINTEGER_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query3.h"
-#include "Wm4TInteger.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query3.h"
+~include "Wm4TInteger.h"
 
 namespace Wm4
 {
@@ -68,7 +68,7 @@ private:
 
 }
 
-#include "Wm4Query3TInteger.inl"
+~include "Wm4Query3TInteger.inl"
 
 namespace Wm4
 {
@@ -77,4 +77,4 @@ typedef Query3TInteger<double> Query3TIntegerd;
 
 }
 
-#endif
+~endif

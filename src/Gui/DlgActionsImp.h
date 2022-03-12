@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGACTIONS_IMP_H
-#define GUI_DIALOG_DLGACTIONS_IMP_H
+~ifndef GUI_DIALOG_DLGACTIONS_IMP_H
+~define GUI_DIALOG_DLGACTIONS_IMP_H
 
-#include <memory>
-#include "PropertyPage.h"
-#include <QDialog>
-#include <QList>
-#include <QPair>
+~include <memory>
+~include "PropertyPage.h"
+~include <QDialog>
+~include <QList>
+~include <QPair>
 
 class QListWidgetItem;
 class QTreeWidgetItem;
@@ -133,4 +133,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGACTIONS_IMP_H
+~endif // GUI_DIALOG_DLGACTIONS_IMP_H

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTrajectoryDressUpParameter_h
-#define GUI_TASKVIEW_TaskTrajectoryDressUpParameter_h
+~ifndef GUI_TASKVIEW_TaskTrajectoryDressUpParameter_h
+~define GUI_TASKVIEW_TaskTrajectoryDressUpParameter_h
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/TrajectoryDressUpObject.h>
+~include <Mod/Robot/App/Edge2TracObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/TrajectoryDressUpObject.h>
 
 
 class Ui_TaskTrajectoryDressUpParameter;
@@ -68,4 +68,4 @@ private:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

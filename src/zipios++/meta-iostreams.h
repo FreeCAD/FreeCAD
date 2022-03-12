@@ -1,20 +1,20 @@
-#ifndef META_IOSTREAMS_H
-#define META_IOSTREAMS_H
+~ifndef META_IOSTREAMS_H
+~define META_IOSTREAMS_H
 
 // Includes the different iostream libraries
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <iostream>
-#include <fstream>
+~include <iostream>
+~include <fstream>
 
-#if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
-#include <sstream>
-#else
-#include <strstream>
-#endif
+~if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
+~include <sstream>
+~else
+~include <strstream>
+~endif
 
-#endif
+~endif
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.

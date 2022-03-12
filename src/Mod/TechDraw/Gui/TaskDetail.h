@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKDETAIL_H
-#define TECHDRAWGUI_TASKDETAIL_H
+~ifndef TECHDRAWGUI_TASKDETAIL_H
+~define TECHDRAWGUI_TASKDETAIL_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <App/DocumentObject.h>
+~include <Base/Vector3D.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskDetail.h>
+~include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
 //TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
+~define TRACKERPICK 0
+~define TRACKEREDIT 1
+~define TRACKERCANCEL 2
+~define TRACKERCANCELEDIT 3
 
 class Ui_TaskDetail;
 
@@ -178,4 +178,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKDETAIL_H
+~endif // ~ifndef TECHDRAWGUI_TASKDETAIL_H

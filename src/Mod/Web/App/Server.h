@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef WEB_SERVER_H
-#define WEB_SERVER_H
+~ifndef WEB_SERVER_H
+~define WEB_SERVER_H
 
-#include <QByteArray>
-#include <QObject>
-#include <QEvent>
-#include <QTcpSocket>
-#include <QTcpServer>
-#include <CXX/Objects.hxx>
+~include <QByteArray>
+~include <QObject>
+~include <QEvent>
+~include <QTcpSocket>
+~include <QTcpServer>
+~include <CXX/Objects.hxx>
 
 
 namespace Web {
@@ -104,4 +104,4 @@ private:
 
 }
 
-#endif //Web_SERVER_H
+~endif //Web_SERVER_H

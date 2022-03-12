@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_GeometryCoinConverter_H
-#define SKETCHERGUI_GeometryCoinConverter_H
+~ifndef SKETCHERGUI_GeometryCoinConverter_H
+~define SKETCHERGUI_GeometryCoinConverter_H
 
-#include <vector>
+~include <vector>
 
 namespace Base {
     template< typename T >
@@ -159,5 +159,5 @@ private:
 } // namespace SketcherGui
 
 
-#endif // SKETCHERGUI_GeometryCoinConverter_H
+~endif // SKETCHERGUI_GeometryCoinConverter_H
 

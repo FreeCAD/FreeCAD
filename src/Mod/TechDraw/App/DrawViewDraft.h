@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewDraft_h_
-#define _DrawViewDraft_h_
+~ifndef _DrawViewDraft_h_
+~define _DrawViewDraft_h_
 
-#include <App/DocumentObject.h>
-#include <Base/BoundBox.h>
-#include <App/FeaturePython.h>
-#include <App/PropertyLinks.h>
+~include <App/DocumentObject.h>
+~include <Base/BoundBox.h>
+~include <App/FeaturePython.h>
+~include <App/PropertyLinks.h>
 
-#include "DrawViewSymbol.h"
+~include "DrawViewSymbol.h"
 
 namespace TechDraw
 {
@@ -78,4 +78,4 @@ typedef App::FeaturePythonT<DrawViewDraft> DrawViewDraftPython;
 } //namespace TechDraw
 
 
-#endif
+~endif

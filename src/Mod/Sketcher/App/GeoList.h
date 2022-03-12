@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_GeoList_H
-#define SKETCHER_GeoList_H
+~ifndef SKETCHER_GeoList_H
+~define SKETCHER_GeoList_H
 
-#include <vector>
-#include <memory>
+~include <vector>
+~include <memory>
 
-#include <Mod/Sketcher/App/GeoEnum.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Sketcher/App/GeoEnum.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
 
 namespace Base {
     template< typename T >
@@ -236,5 +236,5 @@ GeoListFacade getGeoListFacade(const GeoList & geolist);
 } // namespace Sketcher
 
 
-#endif // SKETCHER_GeoList_H
+~endif // SKETCHER_GeoList_H
 

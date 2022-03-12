@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREECAD_BASE_DUAL_NUMBER_H
-#define FREECAD_BASE_DUAL_NUMBER_H
+~ifndef FREECAD_BASE_DUAL_NUMBER_H
+~define FREECAD_BASE_DUAL_NUMBER_H
 
-#include <cmath>
+~include <cmath>
 
 namespace Base {
 
@@ -91,4 +91,4 @@ inline DualNumber pow(DualNumber a, double pw){
 } //namespace
 
 
-#endif
+~endif

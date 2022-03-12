@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef MESH_SPHERE_FIT_H
-#define MESH_SPHERE_FIT_H
+~ifndef MESH_SPHERE_FIT_H
+~define MESH_SPHERE_FIT_H
 
-#include "Approximation.h"
-#include <Eigen/Eigenvalues>
+~include "Approximation.h"
+~include <Eigen/Eigenvalues>
 
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
@@ -127,4 +127,4 @@ protected:
 
 } // namespace MeshCore
 
-#endif // MESH_SPHERE_FIT_H
+~endif // MESH_SPHERE_FIT_H

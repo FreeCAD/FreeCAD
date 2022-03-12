@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCH_H
-#define GUI_WORKBENCH_H
+~ifndef GUI_WORKBENCH_H
+~define GUI_WORKBENCH_H
 
-#include <list>
-#include <string>
-#include <Base/BaseClass.h>
-#include <Base/Parameter.h>
-#include <Gui/TaskView/TaskWatcher.h>
+~include <list>
+~include <string>
+~include <Base/BaseClass.h>
+~include <Base/Parameter.h>
+~include <Gui/TaskView/TaskWatcher.h>
 
 namespace Base {
 class PyObjectBase;
@@ -332,4 +332,4 @@ protected:
 } // namespace Gui
 
 
-#endif // GUI_WORKBENCH_H
+~endif // GUI_WORKBENCH_H

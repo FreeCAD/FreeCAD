@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_PROPERTYPOINTKERNEL_H
-#define POINTS_PROPERTYPOINTKERNEL_H
+~ifndef POINTS_PROPERTYPOINTKERNEL_H
+~define POINTS_PROPERTYPOINTKERNEL_H
 
-#include "Points.h"
+~include "Points.h"
 
 namespace Points
 {
@@ -93,4 +93,4 @@ private:
 } // namespace Points
 
 
-#endif // POINTS_PROPERTYPOINTKERNEL_H 
+~endif // POINTS_PROPERTYPOINTKERNEL_H 

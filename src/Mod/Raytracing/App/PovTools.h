@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef _PovTools_h_
-#define _PovTools_h_
+~ifndef _PovTools_h_
+~define _PovTools_h_
 
-#include <gp_Vec.hxx>
-#include <vector>
+~include <gp_Vec.hxx>
+~include <vector>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -115,4 +115,4 @@ public:
 
 } // namespace Raytracing
 
-#endif // _PovTools_h_
+~endif // _PovTools_h_

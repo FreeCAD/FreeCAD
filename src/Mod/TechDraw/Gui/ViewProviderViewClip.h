@@ -22,12 +22,12 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
-#define DRAWINGGUI_VIEWPROVIDERCLIP_H
+~ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
+~define DRAWINGGUI_VIEWPROVIDERCLIP_H
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include "ViewProviderDrawingView.h"
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewClip.h>
+~include "ViewProviderDrawingView.h"
 
 namespace TechDrawGui {
 
@@ -63,4 +63,4 @@ public:
 };
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_VIEWPROVIDERCLIP_H
+~endif // DRAWINGGUI_VIEWPROVIDERCLIP_H

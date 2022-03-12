@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPipe_H
-#define PARTGUI_ViewProviderPipe_H
+~ifndef PARTGUI_ViewProviderPipe_H
+~define PARTGUI_ViewProviderPipe_H
 
-#include "ViewProviderAddSub.h"
+~include "ViewProviderAddSub.h"
 
 namespace PartDesignGui {
 
@@ -71,4 +71,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPipe_H
+~endif // PARTGUI_ViewProviderPipe_H

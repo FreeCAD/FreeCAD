@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGICAPTION_H
-#define DRAWINGGUI_QGICAPTION_H
+~ifndef DRAWINGGUI_QGICAPTION_H
+~define DRAWINGGUI_QGICAPTION_H
 
-#include "QGCustomText.h"
+~include "QGCustomText.h"
 
 namespace TechDrawGui
 {
@@ -41,4 +41,4 @@ public:
 
 }
 
-#endif // DRAWINGGUI_QGICAPTION_H
+~endif // DRAWINGGUI_QGICAPTION_H

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderMaterialObject_H
-#define GUI_ViewProviderMaterialObject_H
+~ifndef GUI_ViewProviderMaterialObject_H
+~define GUI_ViewProviderMaterialObject_H
 
 
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderPythonFeature.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderPythonFeature.h"
 
 namespace Gui {
 
@@ -53,5 +53,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderMaterialObject> ViewProviderMater
 
 } // namespace Gui
 
-#endif // GUI_ViewProviderMaterialObject_H
+~endif // GUI_ViewProviderMaterialObject_H
 

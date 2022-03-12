@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_REMOVECOMPONENTS_H
-#define MESHGUI_REMOVECOMPONENTS_H
+~ifndef MESHGUI_REMOVECOMPONENTS_H
+~define MESHGUI_REMOVECOMPONENTS_H
 
-#include <QDialog>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include "MeshSelection.h"
+~include <QDialog>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
+~include "MeshSelection.h"
 
 namespace MeshGui {
 class Ui_RemoveComponents;
@@ -117,4 +117,4 @@ private:
 
 }
 
-#endif // MESHGUI_REMOVECOMPONENTS_H
+~endif // MESHGUI_REMOVECOMPONENTS_H

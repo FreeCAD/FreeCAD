@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
-#define GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
+~ifndef GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
+~define GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
 
-#include "DlgRunExternal.h"
-#include <App/PropertyFile.h>
+~include "DlgRunExternal.h"
+~include <App/PropertyFile.h>
 
 namespace Gui {
 namespace Dialog {
@@ -52,4 +52,4 @@ protected:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
+~endif // GUI_DIALOG_DlgEditFileIncludePropertyExternal_H

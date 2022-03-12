@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERPARTSPLINE_H
-#define PARTGUI_VIEWPROVIDERPARTSPLINE_H
+~ifndef PARTGUI_VIEWPROVIDERPARTSPLINE_H
+~define PARTGUI_VIEWPROVIDERPARTSPLINE_H
 
-#include <Mod/Part/Gui/ViewProviderExt.h>
-#include <Gui/ViewProviderExtensionPython.h>
+~include <Mod/Part/Gui/ViewProviderExt.h>
+~include <Gui/ViewProviderExtensionPython.h>
 
 namespace PartGui
 {
@@ -74,5 +74,5 @@ typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension> 
 } //namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERPARTSPLINE_H
+~endif // PARTGUI_VIEWPROVIDERPARTSPLINE_H
 

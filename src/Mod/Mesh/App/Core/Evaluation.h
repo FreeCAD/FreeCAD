@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef MESH_EVALUATION_H
-#define MESH_EVALUATION_H
+~ifndef MESH_EVALUATION_H
+~define MESH_EVALUATION_H
 
-#include <list>
-#include <cmath>
+~include <list>
+~include <cmath>
 
-#include "MeshKernel.h"
-#include "Visitor.h"
+~include "MeshKernel.h"
+~include "Visitor.h"
 
 namespace MeshCore {
 
@@ -382,4 +382,4 @@ private:
 
 } // namespace MeshCore
 
-#endif // MESH_EVALUATION_H
+~endif // MESH_EVALUATION_H

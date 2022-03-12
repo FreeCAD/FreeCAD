@@ -20,17 +20,17 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef TOC_Entry_HEADER
-#define TOC_Entry_HEADER
+~ifndef TOC_Entry_HEADER
+~define TOC_Entry_HEADER
 
-#include <istream>
-#include <stdint.h>
+~include <istream>
+~include <stdint.h>
 
-#include "Context.h"
-#include "GUID.h"
-#include "U16.h"
-#include "U32.h"
-#include "I32.h"
+~include "Context.h"
+~include "GUID.h"
+~include "U16.h"
+~include "U32.h"
+~include "I32.h"
 
 
 
@@ -76,4 +76,4 @@ struct TOC_Entry
 
 
 
-#endif
+~endif

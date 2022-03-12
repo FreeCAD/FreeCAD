@@ -22,13 +22,13 @@
 
 
 
-#ifndef NURBS_H
-#define NURBS_H
+~ifndef NURBS_H
+~define NURBS_H
 
-#include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
-#include <Eigen/SparseCore>
-#include <tuple>
+~include <Eigen/Geometry>
+~include <Eigen/IterativeLinearSolvers>
+~include <Eigen/SparseCore>
+~include <tuple>
 
 namespace nurbs{
 
@@ -116,4 +116,4 @@ struct NurbsBase1D
 
 }
 
-#endif
+~endif

@@ -23,13 +23,13 @@
  
 
 
-#ifndef _PageGroup_h_
-#define _PageGroup_h_
+~ifndef _PageGroup_h_
+~define _PageGroup_h_
 
 
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyLinks.h>
 
 
 namespace Drawing
@@ -60,4 +60,4 @@ public:
 
 
 
-#endif
+~endif

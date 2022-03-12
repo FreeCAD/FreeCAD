@@ -1,10 +1,10 @@
-#ifndef FILEPATH_H
-#define FILEPATH_H
+~ifndef FILEPATH_H
+~define FILEPATH_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <stdexcept>
-#include <string>
+~include <stdexcept>
+~include <string>
 
 namespace zipios {
 
@@ -176,7 +176,7 @@ bool FilePath::isFifo() const {
 
 
 } // namespace
-#endif
+~endif
 
 /** \file
     Header file that defines FilePath.

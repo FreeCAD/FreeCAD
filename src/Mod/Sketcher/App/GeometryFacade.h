@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_GEOMETRYFACADE_H
-#define SKETCHER_GEOMETRYFACADE_H
+~ifndef SKETCHER_GEOMETRYFACADE_H
+~define SKETCHER_GEOMETRYFACADE_H
 
-#include <Base/BaseClass.h>
+~include <Base/BaseClass.h>
 
-#include <Base/Console.h> // Only for Debug - To be removed
-#include <boost/uuid/uuid_io.hpp>
+~include <Base/Console.h> // Only for Debug - To be removed
+~include <boost/uuid/uuid_io.hpp>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/SketchGeometryExtension.h>
 
 namespace Sketcher
 {
@@ -303,4 +303,4 @@ public: // Factory methods
 } //namespace Sketcher
 
 
-#endif // SKETCHER_GEOMETRYFACADE_H
+~endif // SKETCHER_GEOMETRYFACADE_H

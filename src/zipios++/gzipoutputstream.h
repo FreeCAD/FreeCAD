@@ -1,13 +1,13 @@
-#ifndef GZIPOUTPUTSTREAM_H
-#define GZIPOUTPUTSTREAM_H
+~ifndef GZIPOUTPUTSTREAM_H
+~define GZIPOUTPUTSTREAM_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include <string>
+~include <string>
 
-#include "gzipoutputstreambuf.h"
+~include "gzipoutputstreambuf.h"
 
 namespace zipios {
 
@@ -46,7 +46,7 @@ private:
  
 } // namespace.
 
-#endif
+~endif
 
 /** \file 
     Header file that defines GZIPOutputStream.

@@ -23,10 +23,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
+~ifndef GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
+~define GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
 
-#include "ViewProviderFemConstraint.h"
+~include "ViewProviderFemConstraint.h"
 
 namespace FemGui {
 
@@ -45,4 +45,4 @@ protected:
 
 }
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
+~endif // GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H

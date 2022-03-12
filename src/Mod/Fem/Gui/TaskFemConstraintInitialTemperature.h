@@ -24,21 +24,21 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
-#define GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
+~ifndef GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
+~define GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Base/Quantity.h>
 
-#include "TaskFemConstraint.h"
-#include "ViewProviderFemConstraintInitialTemperature.h"
+~include "TaskFemConstraint.h"
+~include "ViewProviderFemConstraintInitialTemperature.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QListWidgetItem>
+~include <QObject>
+~include <Base/Console.h>
+~include <App/DocumentObject.h>
+~include <QListWidgetItem>
 
 class Ui_TaskFemConstraintInitialTemperature;
 
@@ -75,4 +75,4 @@ public:
 
 } //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H
+~endif // GUI_TASKVIEW_TaskFemConstraintInitialTemperature_H

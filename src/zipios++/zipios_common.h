@@ -1,9 +1,9 @@
-#ifndef ZIPIOS_COMMON_H
-#define ZIPIOS_COMMON_H
+~ifndef ZIPIOS_COMMON_H
+~define ZIPIOS_COMMON_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <vector>
+~include <vector>
 
 namespace zipios {
 
@@ -26,7 +26,7 @@ inline const T& min( const T& a, const T& b ) {
 
 } // namespace
 
-#endif
+~endif
 
 /** \file
     Header file containing miscellaneous small functions.

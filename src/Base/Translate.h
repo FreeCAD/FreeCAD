@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TRANSLATE_H
-#define BASE_TRANSLATE_H
+~ifndef BASE_TRANSLATE_H
+~define BASE_TRANSLATE_H
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-#include <QTranslator>
-#include <memory>
-#include <list>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
+~include <QTranslator>
+~include <memory>
+~include <list>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 
 namespace Base {
@@ -56,4 +56,4 @@ private:
 
 } // namespace Base
 
-#endif // BASE_TRANSLATE_H
+~endif // BASE_TRANSLATE_H

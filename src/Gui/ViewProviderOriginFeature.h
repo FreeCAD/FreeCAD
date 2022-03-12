@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL
-#define VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL
+~ifndef VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL
+~define VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL
 
-#include "ViewProviderGeometryObject.h"
+~include "ViewProviderGeometryObject.h"
 
 class SoAsciiText;
 class SoScale;
@@ -74,4 +74,4 @@ protected:
 
 } /* Gui */
 
-#endif /* end of include guard: VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL */
+~endif /* end of include guard: VIEWPROVIDEORIGINFEATURE_H_BYJRZNDL */

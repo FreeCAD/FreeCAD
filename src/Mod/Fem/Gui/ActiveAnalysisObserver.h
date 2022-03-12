@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_ACTIVEANALYSISOBSERVER_H
-#define FEMGUI_ACTIVEANALYSISOBSERVER_H
+~ifndef FEMGUI_ACTIVEANALYSISOBSERVER_H
+~define FEMGUI_ACTIVEANALYSISOBSERVER_H
 
-#include <App/DocumentObserver.h>
-#include <Gui/Tree.h>
+~include <App/DocumentObserver.h>
+~include <Gui/Tree.h>
 
 namespace Gui {
     class Document;
@@ -62,4 +62,4 @@ private:
 
 } //namespace FemGui
 
-#endif // FEMGUI_ACTIVEANALYSISOBSERVER_H
+~endif // FEMGUI_ACTIVEANALYSISOBSERVER_H

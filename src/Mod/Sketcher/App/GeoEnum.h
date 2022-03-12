@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GeoEnum_H
-#define SKETCHER_GeoEnum_H
+~ifndef SKETCHER_GeoEnum_H
+~define SKETCHER_GeoEnum_H
 
-#include <functional>
-#include <Mod/Sketcher/SketcherGlobal.h>
+~include <functional>
+~include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace Sketcher
 {
@@ -147,11 +147,11 @@ inline int GeoElementId::posIdAsInt() const {
     return static_cast<int>(Pos);
 }
 
-#ifndef FC_OS_WIN32
+~ifndef FC_OS_WIN32
 constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
 constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
 constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::none);
-#endif
+~endif
 
 } // namespace Sketcher
 
@@ -166,5 +166,5 @@ namespace std
     };
 } // namespace std
 
-#endif // SKETCHER_GeoEnum_H
+~endif // SKETCHER_GeoEnum_H
 

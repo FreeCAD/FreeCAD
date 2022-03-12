@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SpreadsheetView_H
-#define SpreadsheetView_H
+~ifndef SpreadsheetView_H
+~define SpreadsheetView_H
 
-#include <Gui/MDIView.h>
-#include <Gui/MDIViewPy.h>
-#include <QHeaderView>
-#include "SheetModel.h"
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <Gui/MDIView.h>
+~include <Gui/MDIViewPy.h>
+~include <QHeaderView>
+~include "SheetModel.h"
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 class QSlider;
 class QAction;
@@ -154,4 +154,4 @@ protected:
 
 } // namespace SpreadsheetModGui
 
-#endif // SpreadsheetView_H
+~endif // SpreadsheetView_H

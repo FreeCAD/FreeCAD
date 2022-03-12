@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURESEWING_H
-#define SURFACE_FEATURESEWING_H
+~ifndef SURFACE_FEATURESEWING_H
+~define SURFACE_FEATURESEWING_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyLinks.h>
+~include <Mod/Part/App/PartFeature.h>
 
 namespace Surface
 {
@@ -53,4 +53,4 @@ public:
 
 }//Namespace Surface
 
-#endif // SURFACE_FEATURESEWING_H
+~endif // SURFACE_FEATURESEWING_H

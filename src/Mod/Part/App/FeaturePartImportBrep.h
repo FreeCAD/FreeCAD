@@ -22,11 +22,11 @@
 
 
 
-#ifndef PART_FEATUREPARTIMPORTBREP_H
-#define PART_FEATUREPARTIMPORTBREP_H
+~ifndef PART_FEATUREPARTIMPORTBREP_H
+~define PART_FEATUREPARTIMPORTBREP_H
 
 
-#include "PartFeature.h"
+~include "PartFeature.h"
 
 namespace Part
 {
@@ -56,4 +56,4 @@ public:
 }
 
 
-#endif // PART_FEATUREPARTIMPORTBREP_H
+~endif // PART_FEATUREPARTIMPORTBREP_H

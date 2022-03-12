@@ -23,14 +23,14 @@
 //QGMText.h
 //a movable, editable text item
 
-#ifndef TECHDRAWGUI_MOVABLETEXT_H
-#define TECHDRAWGUI_MOVABLETEXT_H
+~ifndef TECHDRAWGUI_MOVABLETEXT_H
+~define TECHDRAWGUI_MOVABLETEXT_H
 
-#include <QGraphicsTextItem>
-#include <QObject>
-//#include <QDocument>
+~include <QGraphicsTextItem>
+~include <QObject>
+//~include <QDocument>
 
-#include "QGCustomText.h"
+~include "QGCustomText.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -85,4 +85,4 @@ private:
 
 }
 
-#endif // TECHDRAWGUI_MOVABLETEXT_H
+~endif // TECHDRAWGUI_MOVABLETEXT_H

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITOR_H
-#define PROPERTYEDITOR_H
+~ifndef PROPERTYEDITOR_H
+~define PROPERTYEDITOR_H
 
-#include <unordered_set>
+~include <unordered_set>
 
-#include <QTreeView>
+~include <QTreeView>
 
-#include "PropertyItem.h"
-#include "PropertyModel.h"
+~include "PropertyItem.h"
+~include "PropertyModel.h"
 
 
 namespace App {
@@ -143,4 +143,4 @@ private:
 } //namespace PropertyEditor
 } //namespace Gui
 
-#endif // PROPERTYEDITOR_H
+~endif // PROPERTYEDITOR_H

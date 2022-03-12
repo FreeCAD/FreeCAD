@@ -14,12 +14,12 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2TRATIONAL_H
-#define WM4QUERY2TRATIONAL_H
+~ifndef WM4QUERY2TRATIONAL_H
+~define WM4QUERY2TRATIONAL_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Query2.h"
-#include "Wm4RVector2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Query2.h"
+~include "Wm4RVector2.h"
 
 namespace Wm4
 {
@@ -80,7 +80,7 @@ private:
 
 }
 
-#include "Wm4Query2TRational.inl"
+~include "Wm4Query2TRational.inl"
 
 namespace Wm4
 {
@@ -89,4 +89,4 @@ typedef Query2TRational<double> Query2TRationald;
 
 }
 
-#endif
+~endif

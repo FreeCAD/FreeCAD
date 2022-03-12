@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRY2D_H
-#define PART_GEOMETRY2D_H
+~ifndef PART_GEOMETRY2D_H
+~define PART_GEOMETRY2D_H
 
-#include <Adaptor2d_Curve2d.hxx>
-#include <Geom2d_CartesianPoint.hxx>
-#include <Geom2d_BezierCurve.hxx>
-#include <Geom2d_BSplineCurve.hxx>
-#include <Geom2d_Circle.hxx>
-#include <Geom2d_Ellipse.hxx>
-#include <Geom2d_Hyperbola.hxx>
-#include <Geom2d_Parabola.hxx>
-#include <Geom2d_Line.hxx>
-#include <Geom2d_OffsetCurve.hxx>
-#include <Geom2d_TrimmedCurve.hxx>
-#include <Geom_Surface.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Ax22d.hxx>
-#include <list>
-#include <vector>
-#include <memory>
-#include <Base/Persistence.h>
-#include <Base/Tools2D.h>
-#include <Mod/Part/PartGlobal.h>
+~include <Adaptor2d_Curve2d.hxx>
+~include <Geom2d_CartesianPoint.hxx>
+~include <Geom2d_BezierCurve.hxx>
+~include <Geom2d_BSplineCurve.hxx>
+~include <Geom2d_Circle.hxx>
+~include <Geom2d_Ellipse.hxx>
+~include <Geom2d_Hyperbola.hxx>
+~include <Geom2d_Parabola.hxx>
+~include <Geom2d_Line.hxx>
+~include <Geom2d_OffsetCurve.hxx>
+~include <Geom2d_TrimmedCurve.hxx>
+~include <Geom_Surface.hxx>
+~include <TopoDS_Shape.hxx>
+~include <gp_Ax22d.hxx>
+~include <list>
+~include <vector>
+~include <memory>
+~include <Base/Persistence.h>
+~include <Base/Tools2D.h>
+~include <Mod/Part/PartGlobal.h>
 
 namespace Part {
 
@@ -574,4 +574,4 @@ std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d&);
 
 }
 
-#endif // PART_GEOMETRY2D_H
+~endif // PART_GEOMETRY2D_H

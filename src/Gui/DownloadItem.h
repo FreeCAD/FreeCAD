@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DOWNLOADITEM_H
-#define GUI_DIALOG_DOWNLOADITEM_H
+~ifndef GUI_DIALOG_DOWNLOADITEM_H
+~define GUI_DIALOG_DOWNLOADITEM_H
 
-#include <QBasicTimer>
-#include <QElapsedTimer>
-#include <QFile>
-#include <QLabel>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QTableView>
-#include <QTime>
-#include <QUrl>
+~include <QBasicTimer>
+~include <QElapsedTimer>
+~include <QFile>
+~include <QLabel>
+~include <QNetworkAccessManager>
+~include <QNetworkReply>
+~include <QTableView>
+~include <QTime>
+~include <QUrl>
 
 
 class AutoSaver;
@@ -100,7 +100,7 @@ private Q_SLOTS:
     void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth);
 };
 
-#include "ui_DownloadItem.h"
+~include "ui_DownloadItem.h"
 
 namespace Gui {
 namespace Dialog {
@@ -153,4 +153,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DOWNLOADITEM_H
+~endif // GUI_DIALOG_DOWNLOADITEM_H

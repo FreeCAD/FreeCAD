@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef Cloud_WORKBENCH_H
-#define Cloud_WORKBENCH_H
+~ifndef Cloud_WORKBENCH_H
+~define Cloud_WORKBENCH_H
 
-#include <Gui/Workbench.h>
+~include <Gui/Workbench.h>
 
 namespace CloudGui {
 
@@ -44,4 +44,4 @@ protected:
 } // namespace CloudGui
 
 
-#endif // Cloud_WORKBENCH_H 
+~endif // Cloud_WORKBENCH_H 

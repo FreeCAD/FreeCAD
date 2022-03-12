@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchRectangularArrayDialog_H
-#define SKETCHERGUI_SketchRectangularArrayDialog_H
+~ifndef SKETCHERGUI_SketchRectangularArrayDialog_H
+~define SKETCHERGUI_SketchRectangularArrayDialog_H
 
-#include <Base/Placement.h>
-#include <QDialog>
+~include <Base/Placement.h>
+~include <QDialog>
 
 namespace SketcherGui {
 
@@ -53,4 +53,4 @@ private:
 
 }
 
-#endif // SKETCHERGUI_SketchRectangularArrayDialog_H
+~endif // SKETCHERGUI_SketchRectangularArrayDialog_H

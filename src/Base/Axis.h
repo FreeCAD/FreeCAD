@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_AXIS_H
-#define BASE_AXIS_H
+~ifndef BASE_AXIS_H
+~define BASE_AXIS_H
 
-#include "Placement.h"
-#include "Vector3D.h"
+~include "Placement.h"
+~include "Vector3D.h"
 
 namespace Base {
 
@@ -67,4 +67,4 @@ protected:
 
 } // namespace Base
 
-#endif // BASE_AXIS_H
+~endif // BASE_AXIS_H

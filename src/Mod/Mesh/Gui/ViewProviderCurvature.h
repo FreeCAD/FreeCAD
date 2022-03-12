@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
-#define MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
+~ifndef MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
+~define MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
 
-#include <Base/Observer.h>
-#include <App/DocumentObserver.h>
-#include "ViewProvider.h"
+~include <Base/Observer.h>
+~include <App/DocumentObserver.h>
+~include "ViewProvider.h"
 
 class SoSeparator;
 class SbVec3f;
@@ -117,5 +117,5 @@ private:
 } // namespace MeshGui
 
 
-#endif // MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
+~endif // MESHGUI_VIEWPROVIDER_MESH_CURVATURE_H
 

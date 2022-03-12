@@ -14,15 +14,15 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELAUNAY_H
-#define WM4DELAUNAY_H
+~ifndef WM4DELAUNAY_H
+~define WM4DELAUNAY_H
 
 // The base class for Delaunay algorithms stores the number of mesh components
 // and the connectivity information for the mesh.
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4System.h"
-#include "Wm4Query.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4System.h"
+~include "Wm4Query.h"
 
 namespace Wm4
 {
@@ -166,4 +166,4 @@ typedef Delaunay<double> Delaunayd;
 
 }
 
-#endif
+~endif

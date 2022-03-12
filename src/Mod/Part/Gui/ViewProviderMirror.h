@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERMIRROR_H
-#define PARTGUI_VIEWPROVIDERMIRROR_H
+~ifndef PARTGUI_VIEWPROVIDERMIRROR_H
+~define PARTGUI_VIEWPROVIDERMIRROR_H
 
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartGui {
 
@@ -218,4 +218,4 @@ public:
 } // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDERMIRROR_H
+~endif // PARTGUI_VIEWPROVIDERMIRROR_H

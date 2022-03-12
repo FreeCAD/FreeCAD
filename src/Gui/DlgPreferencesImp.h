@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
-#define GUI_DIALOG_DLGPREFERENCESIMP_H
+~ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
+~define GUI_DIALOG_DLGPREFERENCESIMP_H
 
-#include <QDialog>
-#include <memory>
-#include <FCGlobal.h>
+~include <QDialog>
+~include <memory>
+~include <FCGlobal.h>
 
 class QAbstractButton;
 class QListWidgetItem;
@@ -160,4 +160,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_DIALOG_DLGPREFERENCESIMP_H
+~endif // GUI_DIALOG_DLGPREFERENCESIMP_H

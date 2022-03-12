@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef MESH_TRIANGULATION_H
-#define MESH_TRIANGULATION_H
+~ifndef MESH_TRIANGULATION_H
+~define MESH_TRIANGULATION_H
 
-#include "Elements.h"
-#include <Base/Vector3D.h>
+~include "Elements.h"
+~include <Base/Vector3D.h>
 
 namespace MeshCore
 {
@@ -232,7 +232,7 @@ private:
     float fMaxArea;
 };
 
-#if 0
+~if 0
 class MeshExport Triangulator : public AbstractPolygonTriangulator
 {
 public:
@@ -250,9 +250,9 @@ protected:
 
     const MeshKernel& _kernel;
 };
-#endif
+~endif
 
 } // namespace MeshCore
 
 
-#endif  // MESH_TRIANGULATION_H
+~endif  // MESH_TRIANGULATION_H

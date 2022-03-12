@@ -5,14 +5,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKPANELSCHEME_H
-#define TASKPANELSCHEME_H
+~ifndef TASKPANELSCHEME_H
+~define TASKPANELSCHEME_H
 
-#include <QtCore/QString>
-#include <QtCore/QSize>
+~include <QtCore/QString>
+~include <QtCore/QSize>
 
-#include <QtGui/QPixmap>
-#include "qsint_global.h"
+~include <QtGui/QPixmap>
+~include "qsint_global.h"
 
 
 namespace QSint
@@ -81,4 +81,4 @@ public:
 
 }
 
-#endif // TASKPANELSCHEME_H
+~endif // TASKPANELSCHEME_H

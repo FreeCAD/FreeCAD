@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UTILS_H
-#define UTILS_H
+~ifndef UTILS_H
+~define UTILS_H
 
-#include <string>
-#include <map>
-#include <set>
-#include <memory>
-#include <Base/BaseClass.h>
+~include <string>
+~include <map>
+~include <set>
+~include <memory>
+~include <Base/BaseClass.h>
 
 namespace Spreadsheet {
 
@@ -40,4 +40,4 @@ SpreadsheetExport std::string unquote(const std::string & input);
 
 }
 
-#endif // UTILS_H
+~endif // UTILS_H

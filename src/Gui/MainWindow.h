@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOW_H
-#define GUI_MAINWINDOW_H
+~ifndef GUI_MAINWINDOW_H
+~define GUI_MAINWINDOW_H
 
-#include <QEvent>
-#include <QMainWindow>
-#include <QMdiArea>
+~include <QEvent>
+~include <QMainWindow>
+~include <QMdiArea>
 
-#include "Window.h"
+~include "Window.h"
 
 class QMimeData;
 class QUrl;
@@ -382,4 +382,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_MAINWINDOW_H
+~endif // GUI_MAINWINDOW_H

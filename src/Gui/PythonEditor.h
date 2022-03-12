@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PYTHONEDITOR_H
-#define GUI_PYTHONEDITOR_H
+~ifndef GUI_PYTHONEDITOR_H
+~define GUI_PYTHONEDITOR_H
 
-#include "SyntaxHighlighter.h"
-#include "TextEdit.h"
+~include "SyntaxHighlighter.h"
+~include "TextEdit.h"
 
 
 namespace Gui {
@@ -49,13 +49,13 @@ public:
     void hideDebugMarker();
 
 public Q_SLOTS:
-    /** Inserts a '#' at the beginning of each selected line or the current line if
+    /** Inserts a '~' at the beginning of each selected line or the current line if
      * nothing is selected
      */
     void onComment();
     /**
-     * Removes the leading '#' from each selected line or the current line if
-     * nothing is selected. In case a line hasn't a leading '#' then
+     * Removes the leading '~' from each selected line or the current line if
+     * nothing is selected. In case a line hasn't a leading '~' then
      * this line is skipped.
      */
     void onUncomment();
@@ -90,4 +90,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_PYTHONEDITOR_H
+~endif // GUI_PYTHONEDITOR_H

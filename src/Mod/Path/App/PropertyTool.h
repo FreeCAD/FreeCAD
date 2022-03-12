@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYTOOL_H
-#define PROPERTYTOOL_H
+~ifndef PROPERTYTOOL_H
+~define PROPERTYTOOL_H
 
-#include "Tool.h"
-#include <App/Property.h>
+~include "Tool.h"
+~include <App/Property.h>
 
 namespace Path
 {
@@ -72,4 +72,4 @@ private:
 } //namespace Path
 
 
-#endif // PROPERTYTOOL_H
+~endif // PROPERTYTOOL_H

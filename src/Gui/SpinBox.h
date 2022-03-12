@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPINBOX_H
-#define GUI_SPINBOX_H
+~ifndef GUI_SPINBOX_H
+~define GUI_SPINBOX_H
 
-#include <QSpinBox>
-#include <QValidator>
-#include "ExpressionBinding.h"
+~include <QSpinBox>
+~include <QValidator>
+~include "ExpressionBinding.h"
 
 
 class QStyleOptionSpinBox;
@@ -198,4 +198,4 @@ public:
 
 } // namespace Gui
 
-#endif // GUI_SPINBOX_H
+~endif // GUI_SPINBOX_H

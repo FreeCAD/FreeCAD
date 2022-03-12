@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURETHICKNESS_H
-#define PARTDESIGN_FEATURETHICKNESS_H
+~ifndef PARTDESIGN_FEATURETHICKNESS_H
+~define PARTDESIGN_FEATURETHICKNESS_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include "FeatureDressUp.h"
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include "FeatureDressUp.h"
 
 namespace PartDesign
 {
@@ -62,4 +62,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FEATURETHICKNESS_H
+~endif // PARTDESIGN_FEATURETHICKNESS_H

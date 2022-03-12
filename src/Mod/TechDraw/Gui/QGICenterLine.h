@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGICENTERLINE_H
-#define TECHDRAWGUI_QGICENTERLINE_H
+~ifndef TECHDRAWGUI_QGICENTERLINE_H
+~define TECHDRAWGUI_QGICENTERLINE_H
 
-#include <QPointF>
-#include <QPainterPath>
-#include <QColor>
+~include <QPointF>
+~include <QPainterPath>
+~include <QColor>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include "QGIDecoration.h"
+~include "QGIDecoration.h"
 
 namespace TechDrawGui
 {
@@ -65,4 +65,4 @@ private:
 
 }
 
-#endif // TECHDRAWGUI_QGICENTERLINE_H
+~endif // TECHDRAWGUI_QGICENTERLINE_H

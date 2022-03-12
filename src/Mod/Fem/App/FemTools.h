@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef FEM_TOOLS_H
-#define FEM_TOOLS_H
+~ifndef FEM_TOOLS_H
+~define FEM_TOOLS_H
 
-#include <Base/Vector3D.h>
-#include <gp_XYZ.hxx>
-#include <Mod/Fem/FemGlobal.h>
+~include <Base/Vector3D.h>
+~include <gp_XYZ.hxx>
+~include <Mod/Fem/FemGlobal.h>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -72,4 +72,4 @@ public:
 } //namespace Fem
 
 
-#endif // FEM_TOOLS_H
+~endif // FEM_TOOLS_H

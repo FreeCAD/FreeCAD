@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRPLANEFIT3_H
-#define WM4APPRPLANEFIT3_H
+~ifndef WM4APPRPLANEFIT3_H
+~define WM4APPRPLANEFIT3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Plane3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Plane3.h"
 
 namespace Wm4
 {
@@ -40,4 +40,4 @@ Plane3<Real> OrthogonalPlaneFit3 (int iQuantity,
 
 }
 
-#endif
+~endif

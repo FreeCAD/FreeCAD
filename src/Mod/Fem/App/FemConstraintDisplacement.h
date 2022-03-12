@@ -24,10 +24,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTDISPLACEMENT_H
-#define FEM_CONSTRAINTDISPLACEMENT_H
+~ifndef FEM_CONSTRAINTDISPLACEMENT_H
+~define FEM_CONSTRAINTDISPLACEMENT_H
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem
 {
@@ -79,4 +79,4 @@ protected:
 } //namespace Fem
 
 
-#endif // FEM_CONSTRAINTDISPLACEMENT_H
+~endif // FEM_CONSTRAINTDISPLACEMENT_H

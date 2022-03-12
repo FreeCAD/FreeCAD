@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#ifndef _AppComplexGeoData_h_
-#define _AppComplexGeoData_h_
+~ifndef _AppComplexGeoData_h_
+~define _AppComplexGeoData_h_
 
-#include <Base/Handle.h>
-#include <Base/Matrix.h>
-#include <Base/Persistence.h>
+~include <Base/Handle.h>
+~include <Base/Matrix.h>
+~include <Base/Persistence.h>
 
-#ifdef __GNUC__
-# include <stdint.h>
-#endif
+~ifdef __GNUC__
+~ include <stdint.h>
+~endif
 
 
 namespace Base
@@ -222,4 +222,4 @@ public:
 } //namespace App
 
 
-#endif
+~endif

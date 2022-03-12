@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTPRESSURE_H
-#define FEM_CONSTRAINTPRESSURE_H
+~ifndef FEM_CONSTRAINTPRESSURE_H
+~define FEM_CONSTRAINTPRESSURE_H
 
-#include "FemConstraint.h"
+~include "FemConstraint.h"
 
 namespace Fem {
 
@@ -53,4 +53,4 @@ protected:
 
 }
 
-#endif // FEM_CONSTRAINTPRESSURE_H
+~endif // FEM_CONSTRAINTPRESSURE_H

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SONAVIGATIONDRAGGER_H
-#define SONAVIGATIONDRAGGER_H
+~ifndef SONAVIGATIONDRAGGER_H
+~define SONAVIGATIONDRAGGER_H
 
 //  Geometry resources and part names for this dragger:
 
@@ -38,10 +38,10 @@
 // rotTransRotatorFeedbackActive      XRotator.feedbackActive
 // (and similarly for parts of the YRotator and ZRotator)
 
-#include <Inventor/draggers/SoDragger.h>
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/sensors/SoFieldSensor.h>
+~include <Inventor/draggers/SoDragger.h>
+~include <Inventor/fields/SoSFRotation.h>
+~include <Inventor/fields/SoSFVec3f.h>
+~include <Inventor/sensors/SoFieldSensor.h>
 
 
 //class TranslateRadialDragger;
@@ -121,5 +121,5 @@ class RotTransDragger : public SoDragger
    ~RotTransDragger();
 };
 
-#endif //SONAVIGATIONDRAGGER_H
+~endif //SONAVIGATIONDRAGGER_H
 

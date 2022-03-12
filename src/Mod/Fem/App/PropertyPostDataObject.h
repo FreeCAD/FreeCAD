@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef FEM_PROPERTYPOSTDATASET_H
-#define FEM_PROPERTYPOSTDATASET_H
+~ifndef FEM_PROPERTYPOSTDATASET_H
+~define FEM_PROPERTYPOSTDATASET_H
 
-#include <App/Property.h>
-#include <vtkSmartPointer.h>
-#include <vtkDataObject.h>
-#include <vtkDataSet.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <App/Property.h>
+~include <vtkSmartPointer.h>
+~include <vtkDataObject.h>
+~include <vtkDataSet.h>
+~include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
@@ -86,4 +86,4 @@ protected:
 } //namespace FEM
 
 
-#endif // FEM_PROPERTYPOSTDATASET_H
+~endif // FEM_PROPERTYPOSTDATASET_H

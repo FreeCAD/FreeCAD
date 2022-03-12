@@ -22,15 +22,15 @@
 
 // "DrawGuiStd.h"
 // standard includes for TechDraw/Gui files
-#ifndef TECHDRAWGUI_STANDARD_H
-#define TECHDRAWGUI_STANDARD_H
+~ifndef TECHDRAWGUI_STANDARD_H
+~define TECHDRAWGUI_STANDARD_H
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "DrawGuiUtil.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "DrawGuiUtil.h"
 
-#endif // #ifndef TECHDRAWGUI_STANDARD_H
+~endif // ~ifndef TECHDRAWGUI_STANDARD_H

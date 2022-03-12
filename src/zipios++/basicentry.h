@@ -1,15 +1,15 @@
-#ifndef BASICENTRY_H
-#define BASICENTRY_H
+~ifndef BASICENTRY_H
+~define BASICENTRY_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <string>
+~include "meta-iostreams.h"
+~include <string>
 
-#include "fcollexceptions.h"
-#include "fileentry.h"
-#include "filepath.h"
-#include "zipios_defs.h"
+~include "fcollexceptions.h"
+~include "fileentry.h"
+~include "filepath.h"
+~include "zipios_defs.h"
 
 namespace zipios {
 
@@ -62,7 +62,7 @@ protected:
 };
 
 }
-#endif
+~endif
 
 /** \file
     Header file that defines BasicEntry.

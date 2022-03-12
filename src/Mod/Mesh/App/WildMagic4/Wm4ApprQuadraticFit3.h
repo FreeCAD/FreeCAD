@@ -14,11 +14,11 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRQUADRATICFIT3_H
-#define WM4APPRQUADRATICFIT3_H
+~ifndef WM4APPRQUADRATICFIT3_H
+~define WM4APPRQUADRATICFIT3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Vector3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Vector3.h"
 
 namespace Wm4
 {
@@ -72,4 +72,4 @@ Real QuadraticSphereFit3 (int iQuantity, const Vector3<Real>* akPoint,
 
 }
 
-#endif
+~endif

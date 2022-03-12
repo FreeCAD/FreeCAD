@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
+~ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
+~define GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 
-#include "ViewProviderFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui {
 
@@ -43,4 +43,4 @@ protected:
 
 }
 
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
+~endif // GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H

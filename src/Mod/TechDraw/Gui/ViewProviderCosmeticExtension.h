@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERCOSMETICEXTENSION_H
-#define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
+~ifndef GUI_VIEWPROVIDERCOSMETICEXTENSION_H
+~define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 
-#include <App/Extension.h>
-#include <Gui/ViewProviderExtensionPython.h>
+~include <App/Extension.h>
+~include <Gui/ViewProviderExtensionPython.h>
 
 namespace TechDrawGui
 {
@@ -49,4 +49,4 @@ typedef Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExten
 
 } //namespace TechDrawGui
 
-#endif // GUI_VIEWPROVIDERCOSMETICEXTENSION_H
+~endif // GUI_VIEWPROVIDERCOSMETICEXTENSION_H

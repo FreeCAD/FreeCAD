@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MATHMCR_H
-#define WM4MATHMCR_H
+~ifndef WM4MATHMCR_H
+~define WM4MATHMCR_H
 
 //----------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@
 //   iLog = L
 //   iInt = I
 
-#define WM4_SCALED_FLOAT_TO_INT(fFloat,iLog,iInt)\
+~define WM4_SCALED_FLOAT_TO_INT(fFloat,iLog,iInt)\
 { \
     int iShift = 150 - iLog - ((*(int*)(&fFloat) >> 23) & 0xFF); \
     if ( iShift < 24 ) \
@@ -46,4 +46,4 @@
 
 //----------------------------------------------------------------------------
 
-#endif
+~endif

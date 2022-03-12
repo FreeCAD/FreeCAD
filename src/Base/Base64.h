@@ -24,11 +24,11 @@
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
 */
-#ifndef BASE_BASE64_H
-#define BASE_BASE64_H
+~ifndef BASE_BASE64_H
+~define BASE_BASE64_H
 
-#include <FCGlobal.h>
-#include <string>
+~include <FCGlobal.h>
+~include <string>
 
 
 namespace Base
@@ -39,4 +39,4 @@ namespace Base
 
 }
 
-#endif 
+~endif 

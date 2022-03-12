@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshShapeNetgenObject_H
-#define Fem_FemMeshShapeNetgenObject_H
+~ifndef Fem_FemMeshShapeNetgenObject_H
+~define Fem_FemMeshShapeNetgenObject_H
 
 
-#include "FemMesh.h"
-#include "FemMeshShapeObject.h"
-#include <App/PropertyStandard.h>
+~include "FemMesh.h"
+~include "FemMeshShapeObject.h"
+~include <App/PropertyStandard.h>
 
 namespace Fem
 {
@@ -68,4 +68,4 @@ protected:
 } //namespace Fem
 
 
-#endif // Fem_FemMeshShapeNetgenObject_H
+~endif // Fem_FemMeshShapeNetgenObject_H

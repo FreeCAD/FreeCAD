@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_VIEW_FEATURE_H
-#define POINTS_VIEW_FEATURE_H
+~ifndef POINTS_VIEW_FEATURE_H
+~define POINTS_VIEW_FEATURE_H
 
-#include "PointsFeature.h"
+~include "PointsFeature.h"
 
 
 namespace Points
@@ -62,4 +62,4 @@ typedef App::FeatureCustomT<Structured> StructuredCustom;
 } //namespace Points
 
 
-#endif
+~endif

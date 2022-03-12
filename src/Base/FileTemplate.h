@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FILETEMPLATE_H
-#define BASE_FILETEMPLATE_H
+~ifndef BASE_FILETEMPLATE_H
+~define BASE_FILETEMPLATE_H
 
-#include <string>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+~include <string>
+~ifndef FC_GLOBAL_H
+~include <FCGlobal.h>
+~endif
 
 
 namespace Base
@@ -39,7 +39,7 @@ namespace Base
  *  \par
  *  bla blablablablablablabl:
  *  \code
- *  #include <Base/Console.h>
+ *  ~include <Base/Console.h>
  *  Base::Console().Log("Stage: %d",i);
  *  \endcode
  *  \par
@@ -140,5 +140,5 @@ public:
 
 } //namespace Base
 
-#endif // BASE_FILETEMPLATE_H
+~endif // BASE_FILETEMPLATE_H
 

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GRAPHICSVIEW_H
-#define GUI_GRAPHICSVIEW_H
+~ifndef GUI_GRAPHICSVIEW_H
+~define GUI_GRAPHICSVIEW_H
 
-#include <QGraphicsScene>
-#include <QTime>
-#include <Gui/MDIView.h>
-#include <Base/Parameter.h>
+~include <QGraphicsScene>
+~include <QTime>
+~include <Gui/MDIView.h>
+~include <Base/Parameter.h>
 
 class QUrl;
 class QGraphicsView;
@@ -161,5 +161,5 @@ private:
 
 } // namespace Gui
 
-#endif  // GUI_GRAPHICSVIEW_H
+~endif  // GUI_GRAPHICSVIEW_H
 

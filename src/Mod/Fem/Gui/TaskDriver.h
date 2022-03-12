@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskDriver_H
-#define FEMGUI_TaskDriver_H
+~ifndef FEMGUI_TaskDriver_H
+~define FEMGUI_TaskDriver_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Fem/App/FemSetNodesObject.h>
+~include <Mod/Fem/App/FemSetNodesObject.h>
 
 
 class Ui_TaskDriver;
@@ -76,4 +76,4 @@ private:
 
 } //namespace FemGui
 
-#endif // FEMGUI_TaskDriver_H
+~endif // FEMGUI_TaskDriver_H

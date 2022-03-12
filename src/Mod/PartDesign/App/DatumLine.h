@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMLINE_H
-#define PARTDESIGN_DATUMLINE_H
+~ifndef PARTDESIGN_DATUMLINE_H
+~define PARTDESIGN_DATUMLINE_H
 
-#include <Mod/Part/App/DatumFeature.h>
-#include <App/PropertyUnits.h>
+~include <Mod/Part/App/DatumFeature.h>
+~include <App/PropertyUnits.h>
 
 namespace PartDesign
 {
@@ -56,4 +56,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMLINE_H
+~endif // PARTDESIGN_DATUMLINE_H

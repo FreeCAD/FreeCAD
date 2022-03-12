@@ -22,17 +22,17 @@
  ***************************************************************************/
 
 
-#ifndef _DrawViewClip_h_
-#define _DrawViewClip_h_
+~ifndef _DrawViewClip_h_
+~define _DrawViewClip_h_
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/PropertyLinks.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <App/FeaturePython.h>
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 namespace TechDraw
 {
@@ -82,4 +82,4 @@ typedef App::FeaturePythonT<DrawViewClip> DrawViewClipPython;
 } //namespace TechDraw
 
 
-#endif
+~endif

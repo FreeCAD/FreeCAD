@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pad_H
-#define PARTDESIGN_Pad_H
+~ifndef PARTDESIGN_Pad_H
+~define PARTDESIGN_Pad_H
 
-#include "FeatureExtrude.h"
+~include "FeatureExtrude.h"
 
 namespace PartDesign
 {
@@ -65,4 +65,4 @@ private:
 } //namespace PartDesign
 
 
-#endif // PART_Pad_H
+~endif // PART_Pad_H

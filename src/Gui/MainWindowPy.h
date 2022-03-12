@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOWPY_H
-#define GUI_MAINWINDOWPY_H
+~ifndef GUI_MAINWINDOWPY_H
+~define GUI_MAINWINDOWPY_H
 
-#include <Base/PyObjectBase.h>
-#include <CXX/Extensions.hxx>
-#include <QPointer>
-#include <FCGlobal.h>
+~include <Base/PyObjectBase.h>
+~include <CXX/Extensions.hxx>
+~include <QPointer>
+~include <FCGlobal.h>
 
 namespace Gui {
 class MainWindow;
@@ -58,4 +58,4 @@ private:
 
 } // namespace Gui
 
-#endif //GUI_MAINWINDOWPY_H
+~endif //GUI_MAINWINDOWPY_H

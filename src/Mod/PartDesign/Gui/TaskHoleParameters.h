@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskHoleParameters_H
-#define GUI_TASKVIEW_TaskHoleParameters_H
+~ifndef GUI_TASKVIEW_TaskHoleParameters_H
+~define GUI_TASKVIEW_TaskHoleParameters_H
 
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "TaskSketchBasedParameters.h"
-#include "ViewProviderHole.h"
+~include "TaskSketchBasedParameters.h"
+~include "ViewProviderHole.h"
 
 class Ui_TaskHoleParameters;
 
@@ -156,4 +156,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

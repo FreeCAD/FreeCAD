@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONBINDING_H
-#define EXPRESSIONBINDING_H
+~ifndef EXPRESSIONBINDING_H
+~define EXPRESSIONBINDING_H
 
-#include <memory>
-#include <string>
-#include <App/ObjectIdentifier.h>
-#include <QPalette>
-#include <boost_signals2.hpp>
+~include <memory>
+~include <string>
+~include <App/ObjectIdentifier.h>
+~include <QPalette>
+~include <boost_signals2.hpp>
 
 
 namespace App {
@@ -90,4 +90,4 @@ protected:
 
 }
 
-#endif // EXPRESSIONBINDING_H
+~endif // EXPRESSIONBINDING_H

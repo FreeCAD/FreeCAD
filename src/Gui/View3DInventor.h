@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DINVENTOR_H
-#define GUI_VIEW3DINVENTOR_H
+~ifndef GUI_VIEW3DINVENTOR_H
+~define GUI_VIEW3DINVENTOR_H
 
-#include <QImage>
-#include <QtOpenGL.h>
+~include <QImage>
+~include <QtOpenGL.h>
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
-#include "MDIView.h"
+~include "MDIView.h"
 
 
 class QPrinter;
@@ -146,5 +146,5 @@ private:
 
 } // namespace Gui
 
-#endif  // GUI_VIEW3DINVENTOR_H
+~endif  // GUI_VIEW3DINVENTOR_H
 

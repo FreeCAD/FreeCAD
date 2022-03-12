@@ -3,11 +3,11 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // repository now moved to github
 
-#ifndef AREA_HEADER
-#define AREA_HEADER
+~ifndef AREA_HEADER
+~define AREA_HEADER
 
-#include "Curve.h"
-#include "clipper.hpp"
+~include "Curve.h"
+~include "clipper.hpp"
 
 enum PocketMode
 {
@@ -90,9 +90,9 @@ public:
     void ChangeStartToNearest(const Point *pstart=NULL, double min_dist=1.0);
 
     //Avoid outside direct accessing static member variable because of Windows DLL issue
-#define CAREA_PARAM_DECLARE(_type,_name) \
-    static _type get_##_name();\
-    static void set_##_name(_type _name);
+~define CAREA_PARAM_DECLARE(_type,_name) \
+    static _type get_~~_name();\
+    static void set_~~_name(_type _name);
 
     CAREA_PARAM_DECLARE(double,tolerance)
     CAREA_PARAM_DECLARE(bool,fit_arcs)
@@ -125,4 +125,4 @@ eOverlapType GetOverlapType(const CArea& a1, const CArea& a2);
 bool IsInside(const Point& p, const CCurve& c);
 bool IsInside(const Point& p, const CArea& a);
 
-#endif // #define AREA_HEADER
+~endif // ~define AREA_HEADER

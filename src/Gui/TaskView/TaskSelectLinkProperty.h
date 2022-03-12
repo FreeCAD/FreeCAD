@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSelectLinkProperty_H
-#define GUI_TASKVIEW_TaskSelectLinkProperty_H
+~ifndef GUI_TASKVIEW_TaskSelectLinkProperty_H
+~define GUI_TASKVIEW_TaskSelectLinkProperty_H
 
-#include "TaskView.h"
-#include <Gui/Selection.h>
-#include <App/PropertyLinks.h>
+~include "TaskView.h"
+~include <Gui/Selection.h>
+~include <App/PropertyLinks.h>
 
 
 class Ui_TaskSelectLinkProperty;
@@ -112,4 +112,4 @@ private:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

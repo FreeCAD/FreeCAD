@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TEXTUREMAPPING_H
-#define GUI_TEXTUREMAPPING_H
+~ifndef GUI_TEXTUREMAPPING_H
+~define GUI_TEXTUREMAPPING_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/TaskView/TaskView.h>
 
 class SoGroup;
 class SoTexture2;
@@ -83,4 +83,4 @@ private:
 } // namespace Dialog
 } // namespace Gui
 
-#endif // GUI_TEXTUREMAPPING_H
+~endif // GUI_TEXTUREMAPPING_H

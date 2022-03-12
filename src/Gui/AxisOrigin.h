@@ -20,10 +20,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_AxisOrigin_H
-#define GUI_AxisOrigin_H
+~ifndef GUI_AxisOrigin_H
+~define GUI_AxisOrigin_H
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 namespace Gui {
 
@@ -106,4 +106,4 @@ private:
 
 } // namespace Gui
 
-#endif //GUI_AxisOrigin_H
+~endif //GUI_AxisOrigin_H

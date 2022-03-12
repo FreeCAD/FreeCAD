@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_INVENTOR_SODRAWINGGRID_H
-#define GUI_INVENTOR_SODRAWINGGRID_H
+~ifndef GUI_INVENTOR_SODRAWINGGRID_H
+~define GUI_INVENTOR_SODRAWINGGRID_H
 
-//#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
+//~include <Inventor/nodes/SoSubNode.h>
+~include <Inventor/nodes/SoShape.h>
 
 
 namespace Gui { namespace Inventor {
@@ -56,4 +56,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_INVENTOR_SODRAWINGGRID_H
+~endif // GUI_INVENTOR_SODRAWINGGRID_H

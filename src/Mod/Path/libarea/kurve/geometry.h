@@ -9,21 +9,21 @@
 // This program is released under the BSD license. See the file COPYING for details.
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-#pragma once
-#ifdef _MSC_VER
-#pragma warning( disable : 4996 )
-#ifndef WINVER
-	#define WINVER 0x501
-#endif
-#endif
+~pragma once
+~ifdef _MSC_VER
+~pragma warning( disable : 4996 )
+~ifndef WINVER
+	~define WINVER 0x501
+~endif
+~endif
 
-#include <math.h>
-#include <algorithm>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <fstream>
-#include <string.h>
+~include <math.h>
+~include <algorithm>
+~include <vector>
+~include <list>
+~include <iostream>
+~include <fstream>
+~include <string.h>
 
 using namespace std;
 
@@ -81,34 +81,34 @@ inline bool FNE(double a, double b, double tolerance = TOLERANCE) {return fabs(a
 inline bool FEQZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) <= tolerance;}
 inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) > tolerance;}
 
-#define PI 3.1415926535897932384626433832795e0
-#define DegreesToRadians (PI / 180.0e0)
-#define RadiansToDegrees (180.0e0 / PI)
-#define NEARLY_ONE 0.99999999999e0
-#define CPTANGENTTOL 1.0e-04			// normalised vector crossproduct tolerance sin A  so A = .0057deg
+~define PI 3.1415926535897932384626433832795e0
+~define DegreesToRadians (PI / 180.0e0)
+~define RadiansToDegrees (180.0e0 / PI)
+~define NEARLY_ONE 0.99999999999e0
+~define CPTANGENTTOL 1.0e-04			// normalised vector crossproduct tolerance sin A  so A = .0057deg
 
-#define TANTO		-1
-#define ANTITANTO	1
+~define TANTO		-1
+~define ANTITANTO	1
 
-#define TANGENT		0
+~define TANGENT		0
 
-#define NEARINT		1
-#define FARINT		-1
+~define NEARINT		1
+~define FARINT		-1
 
-#define LEFTINT		1
-#define RIGHTINT	-1
+~define LEFTINT		1
+~define RIGHTINT	-1
 
-#define CFILLET			0	// corner fillet
-#define CHAMFER			1	// chamfer
+~define CFILLET			0	// corner fillet
+~define CHAMFER			1	// chamfer
 
-#define GEOFF_LEFT 1
-#define NONE 0
-#define GEOFF_RIGHT -1
+~define GEOFF_LEFT 1
+~define NONE 0
+~define GEOFF_RIGHT -1
 
 
-#define LINEAR 0	// linear
-#define ACW 1		// anti-clockwise
-#define CW -1		// clockwise
+~define LINEAR 0	// linear
+~define ACW 1		// anti-clockwise
+~define CW -1		// clockwise
 
 	const wchar_t* getMessage(const wchar_t* original);							// dummy
 	void FAILURE(const wchar_t* str);
@@ -240,10 +240,10 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	};
 
 
-#define INVALID_POINT	Point(9.9999999e50, 0, false)
-#define INVALID_POINT3D	Point3d(9.9999999e50, 0, 0, false)
-#define INVALID_CLINE	CLine(INVALID_POINT, 1, 0, false)
-#define INVALID_CIRCLE	Circle(INVALID_POINT, 0)
+~define INVALID_POINT	Point(9.9999999e50, 0, false)
+~define INVALID_POINT3D	Point3d(9.9999999e50, 0, 0, false)
+~define INVALID_CLINE	CLine(INVALID_POINT, 1, 0, false)
+~define INVALID_CIRCLE	Circle(INVALID_POINT, 0)
 
 	// 3d point class
 	class Point3d {
@@ -277,9 +277,9 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 		// methods
-#ifdef PEPSDLL
+~ifdef PEPSDLL
 		void	ToPeps(int id, bool draw = true);									// copy Point to Peps
-#endif
+~endif
 		Point3d Transform(const Matrix& m);
 		double Dist(const Point3d& p)const;													// distance between 2 points
 		double DistSq(const Point3d& p)const;													// distance squared between 2 points
@@ -424,11 +424,11 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 	};
 
-#define ORIGIN Point3d(0,0,0)
-#define NULL_VECTOR Vector3d(0,0,0)
-#define Z_VECTOR Vector3d(0,0,1)
-#define Y_VECTOR Vector3d(0,1,0)
-#define X_VECTOR Vector3d(1,0,0)
+~define ORIGIN Point3d(0,0,0)
+~define NULL_VECTOR Vector3d(0,0,0)
+~define Z_VECTOR Vector3d(0,0,1)
+~define Y_VECTOR Vector3d(0,1,0)
+~define X_VECTOR Vector3d(1,0,0)
 
 	// 2D cline x = x0 + t * dx;    y = y0 + t * dy
 	class CLine{
@@ -453,10 +453,10 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		// methods
 		double c();																// returns c
 		void Normalise();														// normalise dx,dy
-#ifdef PEPSDLL
+~ifdef PEPSDLL
 		void ToPeps(int id, bool draw = true);									// to Peps
 		void DelPeps(int id);													// delete Peps CLine
-#endif
+~endif
 		CLine Transform(Matrix& m);												// transform a CLine
 		Point Intof(const CLine& s);													// intersection of 2 clines
 		Point Intof(int NF, const Circle& c);											// intersection of cline & circle
@@ -467,7 +467,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 //		~CLine();
 	};
 
-#define HORIZ_CLINE CLine(geoff_geometry::Point(0,0), 1.0, 0.0, true)
+~define HORIZ_CLINE CLine(geoff_geometry::Point(0,0), 1.0, 0.0, true)
 
 
 	// 2D circle
@@ -486,10 +486,10 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Circle( const Span& sp);														// constructor
 
 		// methods
-#ifdef PEPSDLL
+~ifdef PEPSDLL
 		void ToPeps(int id, bool draw = true);									// to Peps
 		void DelPeps(int id);													// delete Peps Circle
-#endif
+~endif
 		bool operator==(const Circle &c)const;									// c == cc
 		bool operator!=(const Circle &c)const { return !(*this == c);}
 		Circle Transform(Matrix& m);											// transform a Circle
@@ -709,7 +709,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 
-#define SPANSTORAGE 32			// lessens number of object pointers
+~define SPANSTORAGE 32			// lessens number of object pointers
 
 	class spVertex {
 		friend wostream& operator <<(wostream& op, spVertex& sp);
@@ -772,9 +772,9 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 
-#ifdef _MSC_VER
-#pragma warning(disable:4522)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4522)
+~endif
 
 	class Kurve : public Matrix{
 	friend wofstream& operator << (wofstream& op, Kurve& k);
@@ -889,7 +889,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 //		void Kurve::AddEllipse(int dir, Plane *plEllipse, Vector3d *cylAxis, Point3d *cylCentre, double cylradius, Point3d *pStart, Point3d *pEnd, double tolerance);		/// elliptical curve - biarc in tolerance
 
 		void	Spiral(const Point& centre, double startAngle, double startRadius, double radiusRisePerRevolution, double endRadius);
-#ifdef PARASOLID
+~ifdef PARASOLID
 		int ToPKcurve(PK_CURVE_t *curves, PK_INTERVAL_t *ranges, int start_spanno, int n_spans); // Convert to PK Curve
 
 		PK_BODY_t ToPKwire();												// Convert to PK Wire Body
@@ -900,11 +900,11 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		// Convert to PK Body (open kurve >> sheet)
 		PK_BODY_t ToPKlofted_sheet_body(Kurve &sec);						// Convert 2 kurves to lofted sheet body
 		PK_BODY_t ToPKlofted_thickened_body(Kurve &sec, double thickness);
-#endif
+~endif
 	};
-#ifdef _MSC_VER
-#pragma warning(default:4522)
-#endif
+~ifdef _MSC_VER
+~pragma warning(default:4522)
+~endif
 
 	void tangential_arc(const Point &p0, const Point &p1, const Vector2d &v0, Point &c, int &dir);
 

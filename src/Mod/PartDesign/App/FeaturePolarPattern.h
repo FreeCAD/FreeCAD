@@ -21,12 +21,12 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeaturePolarPattern_H
-#define PARTDESIGN_FeaturePolarPattern_H
+~ifndef PARTDESIGN_FeaturePolarPattern_H
+~define PARTDESIGN_FeaturePolarPattern_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include "FeatureTransformed.h"
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include "FeatureTransformed.h"
 
 
 namespace PartDesign
@@ -75,4 +75,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeaturePolarPattern_H
+~endif // PARTDESIGN_FeaturePolarPattern_H

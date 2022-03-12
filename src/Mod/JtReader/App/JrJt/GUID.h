@@ -20,22 +20,22 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef GUID_HEADER
-#define GUID_HEADER
+~ifndef GUID_HEADER
+~define GUID_HEADER
 
-#include <iostream>
-#include <sstream>
-#include <stdint.h>
+~include <iostream>
+~include <sstream>
+~include <stdint.h>
 
-#include "U8.h"
-#include "U16.h"
-#include "U32.h"
+~include "U8.h"
+~include "U16.h"
+~include "U32.h"
 
 
 
 using namespace std;
 
-#undef _C2 
+~undef _C2 
 
 struct GUID
 {
@@ -110,4 +110,4 @@ struct GUID
 
 
 
-#endif
+~endif

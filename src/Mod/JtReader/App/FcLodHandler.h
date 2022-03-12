@@ -20,10 +20,10 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef FcLodHandler_HEADER
-#define FcLodHandler_HEADER
+~ifndef FcLodHandler_HEADER
+~define FcLodHandler_HEADER
 
-#include "JrJt/LodHandler.h"
+~include "JrJt/LodHandler.h"
 
 class FcLodHandler: public LodHandler
 {
@@ -36,7 +36,7 @@ public:
 
 
 
-#endif
+~endif
 
 
 

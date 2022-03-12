@@ -21,20 +21,20 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedParameters_H
-#define GUI_TASKVIEW_TaskTransformedParameters_H
+~ifndef GUI_TASKVIEW_TaskTransformedParameters_H
+~define GUI_TASKVIEW_TaskTransformedParameters_H
 
-#include <QComboBox>
+~include <QComboBox>
 
-#include <Gui/DocumentObserver.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/PartDesign/Gui/EnumFlags.h>
+~include <Gui/DocumentObserver.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Mod/Part/App/Part2DObject.h>
+~include <Mod/PartDesign/Gui/EnumFlags.h>
 
-#include "TaskFeatureParameters.h"
-#include "TaskTransformedMessages.h"
-#include "ViewProviderTransformed.h"
+~include "TaskFeatureParameters.h"
+~include "TaskTransformedMessages.h"
+~include "ViewProviderTransformed.h"
 
 class QListWidget;
 
@@ -257,4 +257,4 @@ protected:
 
 } //namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

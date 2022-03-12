@@ -1,12 +1,12 @@
-#ifndef DIRCOLL_H
-#define DIRCOLL_H
+~ifndef DIRCOLL_H
+~define DIRCOLL_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
 
-#include "fcoll.h"
-#include "basicentry.h"
-#include "filepath.h"
+~include "fcoll.h"
+~include "basicentry.h"
+~include "filepath.h"
 
 namespace zipios {
 
@@ -68,7 +68,7 @@ protected:
  
 } // namespace
 
-#endif
+~endif
 
 /** \file
     Header file that defines DirectoryCollection.

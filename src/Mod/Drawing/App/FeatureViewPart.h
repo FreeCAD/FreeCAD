@@ -23,14 +23,14 @@
  
 
 
-#ifndef _FeatureViewPart_h_
-#define _FeatureViewPart_h_
+~ifndef _FeatureViewPart_h_
+~define _FeatureViewPart_h_
 
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include "FeatureView.h"
-#include <App/FeaturePython.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
+~include "FeatureView.h"
+~include <App/FeaturePython.h>
 
 
 namespace Drawing
@@ -78,4 +78,4 @@ typedef App::FeaturePythonT<FeatureViewPart> FeatureViewPartPython;
 } //namespace Drawing
 
 
-#endif
+~endif

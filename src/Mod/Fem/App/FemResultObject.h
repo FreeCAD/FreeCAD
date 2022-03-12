@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemResultObject_H
-#define Fem_FemResultObject_H
+~ifndef Fem_FemResultObject_H
+~define Fem_FemResultObject_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include <App/FeaturePython.h>
-#include <Mod/Fem/FemGlobal.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyUnits.h>
+~include <App/PropertyStandard.h>
+~include <App/FeaturePython.h>
+~include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
@@ -72,4 +72,4 @@ typedef App::FeaturePythonT<FemResultObject> FemResultObjectPython;
 } //namespace Fem
 
 
-#endif // Fem_FemResultObject_H
+~endif // Fem_FemResultObject_H

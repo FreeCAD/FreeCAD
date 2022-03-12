@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCHMANAGER_H
-#define GUI_WORKBENCHMANAGER_H
+~ifndef GUI_WORKBENCHMANAGER_H
+~define GUI_WORKBENCHMANAGER_H
 
-#include <list>
+~include <list>
 
 namespace Gui {
 
@@ -74,4 +74,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_WORKBENCHMANAGER_H
+~endif // GUI_WORKBENCHMANAGER_H

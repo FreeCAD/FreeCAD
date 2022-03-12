@@ -14,10 +14,10 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4THASHTABLE_H
-#define WM4THASHTABLE_H
+~ifndef WM4THASHTABLE_H
+~define WM4THASHTABLE_H
 
-#include "Wm4FoundationLIB.h"
+~include "Wm4FoundationLIB.h"
 
 // The class TKEY is either native data or is class data that has the
 // following member functions:
@@ -36,7 +36,7 @@
 //   TVALUE::TVALUE ()
 //   TVALUE& TVALUE::operator= (const TVALUE&)
 
-#include "Wm4System.h"
+~include "Wm4System.h"
 
 namespace Wm4
 {
@@ -94,6 +94,6 @@ private:
 
 }
 
-#include "Wm4THashTable.inl"
+~include "Wm4THashTable.inl"
 
-#endif
+~endif

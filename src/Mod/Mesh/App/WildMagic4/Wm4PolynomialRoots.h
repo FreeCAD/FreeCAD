@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4POLYNOMIALROOTS_H
-#define WM4POLYNOMIALROOTS_H
+~ifndef WM4POLYNOMIALROOTS_H
+~define WM4POLYNOMIALROOTS_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4GMatrix.h"
-#include "Wm4Vector3.h"
-#include "Wm4Polynomial1.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4GMatrix.h"
+~include "Wm4Vector3.h"
+~include "Wm4Polynomial1.h"
 
 namespace Wm4
 {
@@ -161,4 +161,4 @@ typedef PolynomialRoots<double> PolynomialRootsd;
 
 }
 
-#endif
+~endif

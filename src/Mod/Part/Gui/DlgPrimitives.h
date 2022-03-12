@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGPRIMITIVES_H
-#define PARTGUI_DLGPRIMITIVES_H
+~ifndef PARTGUI_DLGPRIMITIVES_H
+~define PARTGUI_DLGPRIMITIVES_H
 
-#include <memory>
-#include <QEventLoop>
-#include <QPointer>
-#include <App/DocumentObserver.h>
-#include <Gui/TaskView/TaskDialog.h>
+~include <memory>
+~include <QEventLoop>
+~include <QPointer>
+~include <App/DocumentObserver.h>
+~include <Gui/TaskView/TaskDialog.h>
 
 class gp_Ax2;
 class SoPickedPoint;
@@ -197,4 +197,4 @@ private:
 
 } // namespace PartGui
 
-#endif // PARTGUI_DLGPRIMITIVES_H
+~endif // PARTGUI_DLGPRIMITIVES_H

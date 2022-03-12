@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PREFWIDGETS_H
-#define GUI_PREFWIDGETS_H
+~ifndef GUI_PREFWIDGETS_H
+~define GUI_PREFWIDGETS_H
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QFontComboBox>
-#include <QRadioButton>
-#include <QTextEdit>
+~include <QCheckBox>
+~include <QComboBox>
+~include <QFontComboBox>
+~include <QRadioButton>
+~include <QTextEdit>
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
-#include "Widgets.h"
-#include "FileDialog.h"
-#include "SpinBox.h"
-#include "QuantitySpinBox.h"
-#include "Window.h"
+~include "Widgets.h"
+~include "FileDialog.h"
+~include "SpinBox.h"
+~include "QuantitySpinBox.h"
+~include "Window.h"
 
 
 namespace Gui {
@@ -393,4 +393,4 @@ protected:
 
 } // namespace Gui
 
-#endif // GUI_PREFWIDGETS_H
+~endif // GUI_PREFWIDGETS_H

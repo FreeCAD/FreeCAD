@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMLABEL_H
-#define DRAWINGGUI_QGCUSTOMLABEL_H
+~ifndef DRAWINGGUI_QGCUSTOMLABEL_H
+~define DRAWINGGUI_QGCUSTOMLABEL_H
 
-#include <QGraphicsItem>
-#include <QGraphicsTextItem>
-#include <QPointF>
+~include <QGraphicsItem>
+~include <QGraphicsTextItem>
+~include <QPointF>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -56,4 +56,4 @@ private:
 
 }
 
-#endif // DRAWINGGUI_QGCUSTOMLABEL_H
+~endif // DRAWINGGUI_QGCUSTOMLABEL_H

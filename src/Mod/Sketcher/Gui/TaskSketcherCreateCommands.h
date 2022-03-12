@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherCreateCommands_H
-#define GUI_TASKVIEW_TaskSketcherCreateCommands_H
+~ifndef GUI_TASKVIEW_TaskSketcherCreateCommands_H
+~define GUI_TASKVIEW_TaskSketcherCreateCommands_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/Selection.h>
 
 
 
@@ -64,4 +64,4 @@ private:
 } //namespace TaskView
 } //namespace Gui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+~endif // GUI_TASKVIEW_TASKAPPERANCE_H

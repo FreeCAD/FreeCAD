@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawLeaderLine_h_
-#define _TechDraw_DrawLeaderLine_h_
-#include <tuple>
+~ifndef _TechDraw_DrawLeaderLine_h_
+~define _TechDraw_DrawLeaderLine_h_
+~include <tuple>
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+~ include <App/DocumentObject.h>
+~ include <App/FeaturePython.h>
+~ include <App/PropertyLinks.h>
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 
 namespace TechDraw
@@ -89,4 +89,4 @@ private:
 typedef App::FeaturePythonT<DrawLeaderLine> DrawLeaderLinePython;
 
 } //namespace TechDraw
-#endif
+~endif

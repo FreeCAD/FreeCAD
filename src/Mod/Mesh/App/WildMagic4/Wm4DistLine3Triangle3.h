@@ -14,13 +14,13 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTLINE4TRIANGLE3_H
-#define WM4DISTLINE4TRIANGLE3_H
+~ifndef WM4DISTLINE4TRIANGLE3_H
+~define WM4DISTLINE4TRIANGLE3_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4Distance.h"
-#include "Wm4Line3.h"
-#include "Wm4Triangle3.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4Distance.h"
+~include "Wm4Line3.h"
+~include "Wm4Triangle3.h"
 
 namespace Wm4
 {
@@ -68,4 +68,4 @@ typedef DistLine3Triangle3<double> DistLine3Triangle3d;
 
 }
 
-#endif
+~endif

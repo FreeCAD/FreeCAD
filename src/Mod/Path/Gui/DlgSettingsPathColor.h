@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
-#define PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
+~ifndef PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
+~define PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+~include <Gui/PropertyPage.h>
+~include <memory>
 
 namespace PathGui {
 class Ui_DlgSettingsPathColor;
@@ -50,4 +50,4 @@ private:
 
 } // namespace PathGui
 
-#endif // PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
+~endif // PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H

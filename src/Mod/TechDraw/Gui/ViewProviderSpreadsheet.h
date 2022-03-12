@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
-#define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
+~ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
+~define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 
-#include "ViewProviderSymbol.h"
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
+~include "ViewProviderSymbol.h"
+~include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+~include <Mod/TechDraw/App/DrawViewSymbol.h>
 
-#include "ViewProviderSymbol.h"
+~include "ViewProviderSymbol.h"
 
 namespace TechDrawGui {
 
@@ -57,4 +57,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
+~endif // DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H

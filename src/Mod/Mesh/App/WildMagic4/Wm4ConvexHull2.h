@@ -6,12 +6,12 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONVEXHULL2_H
-#define WM4CONVEXHULL2_H
+~ifndef WM4CONVEXHULL2_H
+~define WM4CONVEXHULL2_H
 
-#include "Wm4FoundationLIB.h"
-#include "Wm4ConvexHull1.h"
-#include "Wm4Query2.h"
+~include "Wm4FoundationLIB.h"
+~include "Wm4ConvexHull1.h"
+~include "Wm4Query2.h"
 
 namespace Wm4
 {
@@ -93,4 +93,4 @@ typedef ConvexHull2<double> ConvexHull2d;
 
 }
 
-#endif
+~endif

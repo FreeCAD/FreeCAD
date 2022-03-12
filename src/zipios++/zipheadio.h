@@ -1,21 +1,21 @@
-#ifndef ZIPHEADIO_H
-#define ZIPHEADIO_H
+~ifndef ZIPHEADIO_H
+~define ZIPHEADIO_H
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <string>
-#include <vector>
+~include "meta-iostreams.h"
+~include <string>
+~include <vector>
 
-#include "ziphead.h"
-#include "zipios_defs.h"
-#include "fcollexceptions.h"
+~include "ziphead.h"
+~include "zipios_defs.h"
+~include "fcollexceptions.h"
 
 namespace zipios {
 
 // byte order conversion functions. 
 // ztohs (zip-to-host-short)
-#ifdef MY_BIG_ENDIAN
+~ifdef MY_BIG_ENDIAN
 
 inline uint16 ztohs ( unsigned char *buf ) {
   uint16 out ;
@@ -38,7 +38,7 @@ inline uint32 ztohl ( unsigned char *buf ) {
   return out;
 }
 
-#else
+~else
 
 inline uint16 ztohs ( unsigned char *buf ) {
   uint16 out ;
@@ -63,7 +63,7 @@ inline uint32 ztohl ( unsigned char *buf ) {
 }
 
 
-#endif
+~endif
 
 // htozl (host-to-zip-long)
 inline uint32 htozl ( unsigned char *buf ) {
@@ -179,7 +179,7 @@ ostream &operator<< ( ostream &os, const EndOfCentralDirectory &eocd ) ;
 
 } // namespace
 
-#endif
+~endif
 
 /** \file
     Header file that defines I/O functions for the header structures

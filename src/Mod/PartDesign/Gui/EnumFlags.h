@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGNGUI_ENUMFLAGS_H
-#define PARTDESIGNGUI_ENUMFLAGS_H
+~ifndef PARTDESIGNGUI_ENUMFLAGS_H
+~define PARTDESIGNGUI_ENUMFLAGS_H
 
 namespace PartDesignGui {
 
@@ -46,4 +46,4 @@ Q_DECLARE_FLAGS(AllowSelectionFlags, AllowSelection)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(PartDesignGui::AllowSelectionFlags)
 
-#endif // PARTDESIGNGUI_ENUMFLAGS_H
+~endif // PARTDESIGNGUI_ENUMFLAGS_H
