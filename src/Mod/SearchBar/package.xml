@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>SearchBar</name>
-  <description> A FreeCAD Mod which adds a search bar to the user inferface. The results include tools, document objects and (still to do) preferences.</description>
+  <description>Adds a search bar widget for tools, document objects, and preferences</description>
   <version>1.0.1</version>
   <date>2022-03-12</date>
+  <author email="searchbar@suzanne.soy">Suzanne Soy</author>
   <maintainer email="searchbar@suzanne.soy">Suzanne Soy</maintainer>
-  <license file="LICENSE">CC0</license>
-  <url type="repository" branch="main">https://github.com/SuzanneSoy/SearchBar</url>
+  <license file="LICENSE">CCOv1</license>
+  <url type="repository" branch="main">https://github.com/SuzanneSoy/SearchBar/</url>
+  <url type="bugtracker" branch="main">https://github.com/SuzanneSoy/SearchBar/issues</url>
+  <url type="documentation" branch="main">https://github.com/SuzanneSoy/SearchBar</url>
   <icon>Tango-System-search.svg</icon>
   <content>
-    <preferencepack>
+    <workbench>
       <name>SearchBar</name>
-      <version>1.0.1</version>
-      <url type="readme">https://github.com/SuzanneSoy/SearchBar</url>
-      <icon>Tango-System-search.svg</icon>
-      <subdirectory>./</subdirectory>
-    <preferencepack>
+      <description>Adds a search bar widget for tools, document objects, and preferences</description>
+      <classname></classname>
+      <subdirectory></subdirectory>
+      <icon></icon>
+      <tag>search</tag>
+      <tag>widget</tag>
+      <tag>ui/ux</tag>
+      <version></version>
+    </workbench>
   </content>
 </package>
