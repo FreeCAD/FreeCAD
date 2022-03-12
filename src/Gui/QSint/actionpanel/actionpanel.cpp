@@ -9,7 +9,7 @@
 #include "actionpanelscheme.h"
 #include "actiongroup.h"
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 
 namespace QSint
