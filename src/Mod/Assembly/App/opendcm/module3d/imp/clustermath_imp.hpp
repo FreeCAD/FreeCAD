@@ -529,7 +529,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
         m_transform*=typename Kernel::Transform3D::Scaling(1./(scale*SKALEFAKTOR));
         m_ssrTransform*=typename Kernel::Transform3D::Scaling(1./(scale*SKALEFAKTOR));
         typename Kernel::DiffTransform3D diff(m_transform);
-        //now calculate the scaled geometrys
+        //now calculate the scaled geometries
         typedef typename std::vector<Geom>::iterator iter;
         for(iter it = m_geometry.begin(); it != m_geometry.end(); it++) {
             (*it)->recalculate(diff);

@@ -101,15 +101,15 @@ struct basic_geometry : public bg {
     typedef mpl::vector0<> sub_stack;
 };
 
-//build up stacked geometry. these are geometrys which can be splitted into multiple basic geometries. For
+//build up stacked geometry. these are geometries which can be split into multiple basic geometries. For
 //example lines can be splittet into a point and a direction. Make sure you order the basic geometry in a
-//sensible rotation/translation manner. Remember: geometrie is first rotated, than translated. Therefore
+//sensible rotation/translation manner. Remember: geometry is first rotated, than translated. Therefore
 //everything that gets rotated and translated needs to be first, than the rotation only stuff, then the
 //untransformed. For a line this would be <point, direction>
 template<typename weight_type, typename T1, typename T2>
 struct stacked2_geometry {
 
-    //be sure we only stack base geometrys
+    //be sure we only stack base geometries
     BOOST_MPL_ASSERT((boost::is_base_of< bg, T1 >));
     BOOST_MPL_ASSERT((boost::is_base_of< bg, T2 >));
 
@@ -123,7 +123,7 @@ struct stacked2_geometry {
 template<typename weight_type, typename T1, typename T2, typename T3>
 struct stacked3_geometry {
 
-    //be sure we only stack base geometrys
+    //be sure we only stack base geometries
     BOOST_MPL_ASSERT((boost::is_base_of< bg, T1 >));
     BOOST_MPL_ASSERT((boost::is_base_of< bg, T2 >));
     BOOST_MPL_ASSERT((boost::is_base_of< bg, T3 >));

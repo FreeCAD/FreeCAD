@@ -260,7 +260,7 @@ public:
     /**
      * @brief The property bundle for GlobalEdges
      *
-     * A local edge in a cluster can hold multiple global ones. Therefor we need an extra bundle for
+     * A local edge in a cluster can hold multiple global ones. Therefore we need an extra bundle for
      * the GlobalEdges. This bundle holds the objects which are added to that global edge and its identifier.
      * Note that global edges don't have properties, these are only for local ones.
      **/
@@ -950,7 +950,7 @@ public:
      * @brief recreate the internal index maps for edges and vertices
      *
      * Quite many boost graph algorithms need the indices for vertices and edges which are provided by property
-     * maps. As we use list, and not vector, as underlaying storage we don't get that property for free and
+     * maps. As we use list, and not vector, as underlying storage we don't get that property for free and
      * need to create it ourself. To ease that procedure the internal property vertex_index_prop and edge_index_prop
      * can be used as property maps and can be initialized by calling this function.
      *

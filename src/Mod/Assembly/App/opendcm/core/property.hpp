@@ -66,11 +66,11 @@ namespace dcm {
  * object by assigning. If not, the data object can be uncopyable and it should be used by
  * retrieving its reference with get-methods.
  *
- * Propertys are further designed to fit in the concept of compile-time modularisation. To allow the extension
- * of all data-holding entities with new data types, propertys store their own purpose. That's
+ * Properties are further designed to fit in the concept of compile-time modularisation. To allow the extension
+ * of all data-holding entities with new data types, properties store their own purpose. That's
  * done by extending the property struct with a second typedef which is named kind and which specifies of which
  * kind the property is. That means, that this typedef defines when the property shall be used and for which
- * context it is designed for. Depending on the propertys kind, it will be added to different places inside the dcm.
+ * context it is designed for. Depending on the properties kind, it will be added to different places inside the dcm.
  * A property of kind @ref vertex_property will added to vertices, a property of kind @ref object_property to all
  * objects and so on.
  *
@@ -151,7 +151,7 @@ struct cluster_property {};
  *@brief Identifier for general object properties
  *
  * A property with this struct as 'kind' type will be added to all existing objects, no matter of individual
- * type. Use this only for general, sharable properties. To add a property to a single object, use its
+ * type. Use this only for general, shareable properties. To add a property to a single object, use its
  * type as 'kind'.
  **/
 struct object_property {};
@@ -357,7 +357,7 @@ struct is_object_property : boost::is_same<typename T::kind, object_property> {}
  * Boost graph algorithms use property maps as generic storage for process data. In most cases the user
  * needs to provide these maps. The simplest way is to create them on the stack right before their
  * usage. If, however, the stored information is of use and one wants to store it permanently, this way
- * is not practical. Therefor vertex and edge properties were introduced, they allow to store arbitrary
+ * is not practical. Therefore vertex and edge properties were introduced, they allow to store arbitrary
  * information at their entity. To use this in combination with boost graph algorithms, this class can
  * be used to expose vertex and edge properties as propertie maps to the boost algorithms. All process
  * information is then stored permanently at the relevant position.
@@ -414,7 +414,7 @@ struct PropertyOwner {
     /**
     * @brief Access properties
     *
-    * Returns a reference to the propertys actual value. The property type has to be owned by this class,
+    * Returns a reference to the properties actual value. The property type has to be owned by this class,
     * which means it needs to be in the typelist that was given as template parameter to this class.
     * @tparam Prop property type which should be accessed
     * @return Prop::type& a reference to the properties actual value.
