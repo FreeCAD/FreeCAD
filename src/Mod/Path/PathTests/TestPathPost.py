@@ -381,7 +381,7 @@ class TestPathPostUtils(unittest.TestCase):
             len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4
         )
 
-        results = PostUtils.splitArcs(testpath)
+        results = PostUtils.splitArcs(testpath, deflection=0.01)
         self.assertTrue(len(results.Commands) == 41)
         self.assertTrue(
             len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
