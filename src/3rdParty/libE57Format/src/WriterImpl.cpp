@@ -1069,7 +1069,7 @@ namespace e57
    template CompressedVectorWriter WriterImpl::SetUpData3DPointsData( int64_t dataIndex, size_t pointCount,
                                                                       const Data3DPointsData_t<double> &buffers );
 
-   // This funtion writes out the group data
+   // This function writes out the group data
    bool WriterImpl::WriteData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
                                            int64_t *startPointIndex, int64_t *pointCount )
    {

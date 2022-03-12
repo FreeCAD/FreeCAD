@@ -311,7 +311,7 @@ namespace e57
          case E57_ERROR_HOMOGENEOUS_VIOLATION:
             return "attempted to add an E57 Element that would have made the "
                    "children of a "
-                   "homogenous Vector have different types "
+                   "homogeneous Vector have different types "
                    "(E57_ERROR_HOMOGENEOUS_VIOLATION)";
          case E57_ERROR_VALUE_NOT_REPRESENTABLE:
             return "a value could not be represented in the requested type "
