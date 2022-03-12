@@ -145,7 +145,9 @@ public:
     virtual std::string getFormattedToleranceValue(int partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
-    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
+    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
+
+    virtual bool haveTolerance(void);
 
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
