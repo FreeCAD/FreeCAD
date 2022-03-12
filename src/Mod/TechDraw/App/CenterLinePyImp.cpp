@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-# include <boost/uuid/uuid_io.hpp>
-#endif
+~ include <boost/uuid/uuid_io.hpp>
+~endif
 
-#include "DrawUtil.h"
-#include "Cosmetic.h"
-#include "CenterLinePy.h"
-#include "CenterLinePy.cpp"
+~include "DrawUtil.h"
+~include "Cosmetic.h"
+~include "CenterLinePy.h"
+~include "CenterLinePy.cpp"
 
 using namespace TechDraw;
 

@@ -22,16 +22,16 @@
 *   Juergen Riegel 2014                                                   *
 ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include "ActiveObjectList.h"
-#include "Tree.h"
+~include "ActiveObjectList.h"
+~include "Tree.h"
 
 
 FC_LOG_LEVEL_INIT("MDIView", true, true)

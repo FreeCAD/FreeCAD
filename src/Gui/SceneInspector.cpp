@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <QHeaderView>
-# include <QTextStream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <QHeaderView>
+~ include <QTextStream>
+~endif
 
-#include "SceneInspector.h"
-#include "ui_SceneInspector.h"
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderDocumentObject.h"
+~include "SceneInspector.h"
+~include "ui_SceneInspector.h"
+~include "Application.h"
+~include "Document.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui::Dialog;
@@ -227,4 +227,4 @@ void DlgInspector::on_refreshButton_clicked()
     }
 }
 
-#include "moc_SceneInspector.cpp"
+~include "moc_SceneInspector.cpp"

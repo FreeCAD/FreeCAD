@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QDialogButtonBox>
-# include <QDir>
-# include <QFileDialog>
-# include <QFileInfo>
-# include <QHeaderView>
-# include <QImageReader>
-# include <QKeySequence>
-# include <QLineEdit>
-# include <QMessageBox>
-# include <QTextStream>
-# include <QVBoxLayout>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QDialogButtonBox>
+~ include <QDir>
+~ include <QFileDialog>
+~ include <QFileInfo>
+~ include <QHeaderView>
+~ include <QImageReader>
+~ include <QKeySequence>
+~ include <QLineEdit>
+~ include <QMessageBox>
+~ include <QTextStream>
+~ include <QVBoxLayout>
+~endif
 
-#include "DlgActionsImp.h"
-#include "ui_DlgActions.h"
-#include "Action.h"
-#include "Application.h"
-#include "Command.h"
-#include "BitmapFactory.h"
-#include "Widgets.h"
-#include "ui_DlgChooseIcon.h"
+~include "DlgActionsImp.h"
+~include "ui_DlgActions.h"
+~include "Action.h"
+~include "Application.h"
+~include "Command.h"
+~include "BitmapFactory.h"
+~include "Widgets.h"
+~include "ui_DlgChooseIcon.h"
 
 using namespace Gui::Dialog;
 
@@ -233,12 +233,12 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     item->setData(1, Qt::UserRole, actionName);
     item->setText(1, ui->actionMenu->text());
     item->setSizeHint(0, QSize(32, 32));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     item->setIcon(0, ui->pixmapLabel->pixmap(Qt::ReturnByValue));
-#else
+~else
     if (ui->pixmapLabel->pixmap())
         item->setIcon(0, *ui->pixmapLabel->pixmap());
-#endif
+~endif
 
     // Convert input text into utf8
     if (!ui->actionWhatsThis->text().isEmpty())
@@ -640,4 +640,4 @@ QStringList IconFolders::getPaths() const
     return paths;
 }
 
-#include "moc_DlgActionsImp.cpp"
+~include "moc_DlgActionsImp.cpp"

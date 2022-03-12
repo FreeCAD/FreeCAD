@@ -24,44 +24,44 @@
 //  File   : StdMeshers_Import_1D2D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Import_1D2D.hxx"
+~include "StdMeshers_Import_1D2D.hxx"
 
-#include "StdMeshers_Import_1D.hxx"
-#include "StdMeshers_ImportSource.hxx"
+~include "StdMeshers_Import_1D.hxx"
+~include "StdMeshers_ImportSource.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_OctreeNode.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_OctreeNode.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
-#include "utilities.h"
+~include "Utils_SALOME_Exception.hxx"
+~include "utilities.h"
 
-#include <BRepBndLib.hxx>
-#include <BRepClass_FaceClassifier.hxx>
-#include <BRepTools.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-#include <Bnd_Box.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <GeomAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepClass_FaceClassifier.hxx>
+~include <BRepTools.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B2d.hxx>
+~include <Bnd_Box.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <GeomAdaptor_Surface.hxx>
+~include <Precision.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#include <numeric>
+~include <numeric>
 
 using namespace std;
 
@@ -730,7 +730,7 @@ bool StdMeshers_Import_1D2D::Compute(SMESH_Mesh & theMesh, const TopoDS_Shape & 
     //   sm->SetIsAlwaysComputed( true );
     sm->ComputeStateEngine(SMESH_subMesh::CHECK_COMPUTE_STATE);
     if ( sm->GetComputeState() != SMESH_subMesh::COMPUTE_OK )
-      return error(SMESH_Comment("Failed to create segments on the edge #") << sm->GetId());
+      return error(SMESH_Comment("Failed to create segments on the edge ~") << sm->GetId());
   }
 
   // ============

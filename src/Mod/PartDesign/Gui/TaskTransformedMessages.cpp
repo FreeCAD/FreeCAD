@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Gui/BitmapFactory.h>
+~include <Gui/BitmapFactory.h>
 
-#include "ui_TaskTransformedMessages.h"
-#include "TaskTransformedMessages.h"
-#include "ViewProviderTransformed.h"
+~include "ui_TaskTransformedMessages.h"
+~include "TaskTransformedMessages.h"
+~include "ViewProviderTransformed.h"
 
 using namespace PartDesignGui;
 using namespace Gui::TaskView;
@@ -62,4 +62,4 @@ void TaskTransformedMessages::slotDiagnosis(QString msg)
     ui->labelTransformationStatus->setText(msg);
 }
 
-#include "moc_TaskTransformedMessages.cpp"
+~include "moc_TaskTransformedMessages.cpp"

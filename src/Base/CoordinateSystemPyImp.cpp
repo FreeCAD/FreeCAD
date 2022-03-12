@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "AxisPy.h"
-#include "CoordinateSystemPy.h"
-#include "CoordinateSystemPy.cpp"
-#include "GeometryPyCXX.h"
-#include "PlacementPy.h"
-#include "VectorPy.h"
+~include "AxisPy.h"
+~include "CoordinateSystemPy.h"
+~include "CoordinateSystemPy.cpp"
+~include "GeometryPyCXX.h"
+~include "PlacementPy.h"
+~include "VectorPy.h"
 
 
 using namespace Base;

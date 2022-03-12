@@ -1,16 +1,16 @@
-#define KDTREE_DEFINE_OSTREAM_OPERATORS
+~define KDTREE_DEFINE_OSTREAM_OPERATORS
 
 // Make SURE all our asserts() are checked
-#undef NDEBUG
+~undef NDEBUG
 
-#include <kdtree++/kdtree.hpp>
+~include <kdtree++/kdtree.hpp>
 
-#include <deque>
-#include <iostream>
-#include <vector>
-#include <limits>
-#include <functional>
-#include <set>
+~include <deque>
+~include <iostream>
+~include <vector>
+~include <limits>
+~include <functional>
+~include <set>
 
 // used to ensure all triplets that are accessed via the operator<< are initialised.
 std::set<const void*> registered;

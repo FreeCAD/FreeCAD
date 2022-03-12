@@ -21,57 +21,57 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <gp_Trsf.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepBuilderAPI_MakeShape.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
-# include <TopoDS_Face.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx> // for Precision::Confusion()
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <TopoDS.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepGProp.hxx>
-# include <gce_MakeLin.hxx>
-# include <BRepIntCurveSurface_Inter.hxx>
-# include <IntCurveSurface_IntersectionPoint.hxx>
-# include <gce_MakeDir.hxx>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <gp_Trsf.hxx>
+~ include <gp_Ax1.hxx>
+~ include <BRepBuilderAPI_MakeShape.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepAlgoAPI_Common.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <Standard_Failure.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Pln.hxx> // for Precision::Confusion()
+~ include <Bnd_Box.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <TopoDS.hxx>
+~ include <GProp_GProps.hxx>
+~ include <BRepGProp.hxx>
+~ include <gce_MakeLin.hxx>
+~ include <BRepIntCurveSurface_Inter.hxx>
+~ include <IntCurveSurface_IntersectionPoint.hxx>
+~ include <gce_MakeDir.hxx>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
-#include <Base/Console.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Placement.h>
-#include <Base/Rotation.h>
-#include <App/Application.h>
-#include <App/FeaturePythonPyImp.h>
-#include <App/Document.h>
-#include <App/Link.h>
-#include <App/GeoFeatureGroupExtension.h>
+~include <boost/algorithm/string/predicate.hpp>
+~include <boost_bind_bind.hpp>
+~include <Base/Console.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Placement.h>
+~include <Base/Rotation.h>
+~include <App/Application.h>
+~include <App/FeaturePythonPyImp.h>
+~include <App/Document.h>
+~include <App/Link.h>
+~include <App/GeoFeatureGroupExtension.h>
 
-#include "PartPyCXX.h"
-#include "PartFeature.h"
-#include "PartFeaturePy.h"
-#include "TopoShapePy.h"
+~include "PartPyCXX.h"
+~include "PartFeature.h"
+~include "PartFeaturePy.h"
+~include "TopoShapePy.h"
 
 using namespace Part;
 namespace bp = boost::placeholders;
@@ -137,14 +137,14 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         mat *= Placement.getValue().toMatrix();
 
     if(!pyObj) {
-#if 0
+~if 0
         if(subname==0 || *subname==0 || Shape.getShape().hasSubShape(subname))
             return const_cast<Feature*>(this);
         return nullptr;
-#else
+~else
         // TopoShape::hasSubShape is kind of slow, let's cut outself some slack here.
         return const_cast<Feature*>(this);
-#endif
+~endif
     }
 
     try {
@@ -189,12 +189,12 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         // instance or do simply nothing. For now the error message is degraded to a log message.
         std::ostringstream str;
         Standard_CString msg = e.GetMessageString();
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
         // Avoid name mangling
         str << e.DynamicType()->get_type_name() << " ";
-#else
+~else
         str << typeid(e).name() << " ";
-#endif
+~endif
         if (msg) {str << msg;}
         else     {str << "No OCCT Exception Message";}
         str << ": " << getFullName();
@@ -708,12 +708,12 @@ template class PartExport FeaturePythonT<Part::Feature>;
 
 // ----------------------------------------------------------------
 /*
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <gce_MakeLin.hxx>
-#include <BRepIntCurveSurface_Inter.hxx>
-#include <IntCurveSurface_IntersectionPoint.hxx>
-#include <gce_MakeDir.hxx>
+~include <GProp_GProps.hxx>
+~include <BRepGProp.hxx>
+~include <gce_MakeLin.hxx>
+~include <BRepIntCurveSurface_Inter.hxx>
+~include <IntCurveSurface_IntersectionPoint.hxx>
+~include <gce_MakeDir.hxx>
 */
 std::vector<Part::cutFaces> Part::findAllFacesCutBy(
         const TopoDS_Shape& shape, const TopoDS_Shape& face, const gp_Dir& dir)

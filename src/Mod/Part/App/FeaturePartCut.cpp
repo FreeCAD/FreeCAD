@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_Cut.hxx>
+~endif
 
 
-#include "FeaturePartCut.h"
+~include "FeaturePartCut.h"
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
 using namespace Part;
 

@@ -19,17 +19,17 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
+~ifndef _PreComp_
 
-#endif
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include "Rez.h"
+~include "Rez.h"
 
 using namespace TechDrawGui;
 

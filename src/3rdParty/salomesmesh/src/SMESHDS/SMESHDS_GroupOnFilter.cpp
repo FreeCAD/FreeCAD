@@ -23,13 +23,13 @@
 //  File   : SMESHDS_GroupOnFilter.cxx
 //  Module : SMESH
 //
-#include "SMESHDS_GroupOnFilter.hxx"
+~include "SMESHDS_GroupOnFilter.hxx"
 
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_Mesh.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_Mesh.hxx"
 
-#include <numeric>
-#include <limits>
+~include <numeric>
+~include <limits>
 
 using namespace std;
 

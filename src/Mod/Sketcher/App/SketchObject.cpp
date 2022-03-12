@@ -20,77 +20,77 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax3.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Hypr.hxx>
-# include <gp_Parab.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRep_Tool.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_Parabola.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <Geom_OffsetCurve.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <ProjLib_Plane.hxx>
-# include <BRepOffsetAPI_NormalProjection.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <BRepProj_Projection.hxx>
-# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <GC_MakeCircle.hxx>
-# include <Standard_Version.hxx>
-# include <cmath>
-# include <string>
-# include <vector>
-# include <boost_bind_bind.hpp>
-//# include <QtGlobal>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Ax3.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Elips.hxx>
+~ include <gp_Hypr.hxx>
+~ include <gp_Parab.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRep_Tool.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom_Circle.hxx>
+~ include <Geom_Ellipse.hxx>
+~ include <Geom_Hyperbola.hxx>
+~ include <Geom_Parabola.hxx>
+~ include <Geom_BSplineCurve.hxx>
+~ include <Geom_TrimmedCurve.hxx>
+~ include <Geom_OffsetCurve.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <ProjLib_Plane.hxx>
+~ include <BRepOffsetAPI_NormalProjection.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <GeomAPI_IntSS.hxx>
+~ include <BRepProj_Projection.hxx>
+~ include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+~ include <TColStd_Array1OfInteger.hxx>
+~ include <GC_MakeCircle.hxx>
+~ include <Standard_Version.hxx>
+~ include <cmath>
+~ include <string>
+~ include <vector>
+~ include <boost_bind_bind.hpp>
+//~ include <QtGlobal>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Expression.h>
-#include <App/FeaturePythonPyImp.h>
-#include <App/ObjectIdentifier.h>
-#include <App/OriginFeature.h>
-#include <App/Part.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Expression.h>
+~include <App/FeaturePythonPyImp.h>
+~include <App/ObjectIdentifier.h>
+~include <App/OriginFeature.h>
+~include <App/Part.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Base/Vector3D.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Mod/Part/App/GeometryMigrationExtension.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Part/App/DatumFeature.h>
+~include <Mod/Part/App/BodyBase.h>
+~include <Mod/Part/App/GeometryMigrationExtension.h>
 
-#include <Mod/Sketcher/App/Sketch.h>
-#include <Mod/Sketcher/App/SketchObjectPy.h>
-#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
-#include <Mod/Sketcher/App/SolverGeometryExtension.h>
+~include <Mod/Sketcher/App/Sketch.h>
+~include <Mod/Sketcher/App/SketchObjectPy.h>
+~include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
+~include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
-#include "SketchObject.h"
+~include "SketchObject.h"
 
 
-#undef DEBUG
-//#define DEBUG
+~undef DEBUG
+//~define DEBUG
 
 using namespace Sketcher;
 using namespace Base;
@@ -1938,10 +1938,10 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             THROWM(Base::CADKernelError, "Unable to determine the parameter of the second selected curve at the reference point.")
         }
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("\n\nFILLET DEBUG\n\n");
         Base::Console().Log("Ref param: (%f);(%f)",refparam1,refparam2);
-#endif
+~endif
 
         std::pair<Base::Vector3d, Base::Vector3d> interpoints;
         std::vector<std::pair<Base::Vector3d, Base::Vector3d>> points;
@@ -2047,7 +2047,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         if (radius == .0f) {
             // guess a radius
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=31594&start=50#p266658
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=31594&start=50~p266658
             //
             // We do not know the actual tangency points until we intersect the offset curves, but
             // we do not have offset curves before with decide on a radius.
@@ -2093,38 +2093,38 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         }
 
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("Start param: (%f);(%f)\n",spc1,spc2);
 
         Base::Vector3d c1pf = curve1->pointAtParameter(spc1);
         Base::Vector3d c2pf = curve2->pointAtParameter(spc2);
 
         Base::Console().Log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",c1pf.x,c1pf.y,c1pf.z,c2pf.x,c2pf.y,c2pf.z);
-#endif
+~endif
         // We create Offset curves at the suggested radius, the direction of offset is estimated from the tangency vector
         Base::Vector3d tdir1 = curve1->firstDerivativeAtParameter(refparam1);
         Base::Vector3d tdir2 = curve2->firstDerivativeAtParameter(refparam2);
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",tdir1.x,tdir1.y,tdir1.z,tdir2.x,tdir2.y,tdir2.z);
         Base::Console().Log("inter-ref vector: (%f,%f,%f)\n",ref21.x,ref21.y,ref21.z);
-#endif
+~endif
 
         Base::Vector3d vn(0,0,1);
 
         double sdir1 = tdir1.Cross(ref21).Dot(vn);
         double sdir2 = tdir2.Cross(-ref21).Dot(vn);
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("sign of offset: (%f,%f)\n",sdir1,sdir2);
         Base::Console().Log("radius: %f\n",radius);
-#endif
+~endif
 
         Part::GeomOffsetCurve * ocurve1 = new Part::GeomOffsetCurve(Handle(Geom_Curve)::DownCast(curve1->handle()), (sdir1<0)?radius:-radius, vn);
 
         Part::GeomOffsetCurve * ocurve2 = new Part::GeomOffsetCurve(Handle(Geom_Curve)::DownCast(curve2->handle()), (sdir2<0)?radius:-radius, vn);
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Vector3d oc1pf = ocurve1->pointAtParameter(ocurve1->getFirstParameter());
         Base::Vector3d oc2pf = ocurve2->pointAtParameter(ocurve2->getFirstParameter());
 
@@ -2139,7 +2139,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         printoffsetcurve(ocurve1);
         printoffsetcurve(ocurve2);*/
-#endif
+~endif
 
         // Next we calculate the intersection of offset curves to get the center of the fillet
         std::pair<Base::Vector3d, Base::Vector3d> filletcenterpoint;
@@ -2147,9 +2147,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         try {
             if(!ocurve1->intersect(ocurve2,offsetintersectionpoints)) {
-#ifdef DEBUG
+~ifdef DEBUG
                 Base::Console().Log("No intersection between offset curves\n");
-#endif
+~endif
                 return -1;
 
             }
@@ -2159,20 +2159,20 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             THROWM(Base::CADKernelError,"Unable to find intersection between offset curves.")
         }
 
-#ifdef DEBUG
+~ifdef DEBUG
         for(auto inter:offsetintersectionpoints) {
                 Base::Console().Log("offset int(%f,%f,0)\n",inter.first.x,inter.first.y);
         }
-#endif
+~endif
 
         int res = selectintersection(offsetintersectionpoints,filletcenterpoint,refPnt1, refPnt2);
 
         if(res != 0)
             return res;
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("selected offset int(%f,%f,0)\n",filletcenterpoint.first.x,filletcenterpoint.first.y);
-#endif
+~endif
 
         double refoparam1;
         double refoparam2;
@@ -2199,9 +2199,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         Base::Vector3d refp1 = curve1->pointAtParameter(refoparam1);
         Base::Vector3d refp2 = curve2->pointAtParameter(refoparam2);
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",refp1.x,refp1.y,refp1.z,refp2.x,refp2.y,refp2.z);
-#endif
+~endif
         // Now we create arc for the fillet
         double startAngle, endAngle, range;
 
@@ -2305,9 +2305,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         delete ocurve1;
         delete ocurve2;
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("\n\nEND OF FILLET DEBUG\n\n");
-#endif
+~endif
 
         if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
             solve();
@@ -2687,9 +2687,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if(!getIntersectionParameters(geo, point, pointParam, point1, point1Param, point2, point2Param))
             return -1;
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("Trim sought: GeoId1=%d (%f), GeoId2=%d (%f)\n",GeoId1, point1Param, GeoId2, point2Param);
-#endif
+~endif
 
         // seekTrimPoints enforces that firstParam < point1Param < point2Param < lastParam
         auto paramDistance = [](double param1, double param2) {
@@ -2915,9 +2915,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if(!getIntersectionParameters(geo, point, pointParam, point1, point1Param, point2, point2Param))
             return -1;
 
-#ifdef DEBUG
+~ifdef DEBUG
         Base::Console().Log("Trim sought: GeoId1=%d (%f), GeoId2=%d (%f)\n",GeoId1, point1Param, GeoId2, point2Param);
-#endif
+~endif
 
         //****** Step B.2 (3) => Execute Trimming operation ******//
         // Two intersection points detected
@@ -5212,7 +5212,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
             }
         }
 
-        #if OCC_VERSION_HEX >= 0x060900
+        ~if OCC_VERSION_HEX >= 0x060900
         index=0;
 
         for(it=knotgeoids.begin(), itb=knotpoints.begin(); it!=knotgeoids.end() && itb!=knotpoints.end(); ++it, ++itb, index++) {
@@ -5242,7 +5242,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 incrgeo++;
             }
         }
-        #endif
+        ~endif
 
         Q_UNUSED(isfirstweightconstrained);
         // constraint the first weight to allow for seamless weight modification and proper visualization
@@ -5731,7 +5731,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
 
     // FIXME: Avoid to delete the whole geometry but only delete invalid constraints
     // and unused construction geometries
-#if 0
+~if 0
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -5740,11 +5740,11 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
 
     // AcceptGeometry called from onChanged
     Geometry.setValues(newVals);
-#else
+~else
     delGeometry(GeoId);
     int newId = addGeometry(bspline.release());
     exposeInternalGeometry(newId);
-#endif
+~endif
 
     return true;
 }
@@ -5753,9 +5753,9 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
-    #if OCC_VERSION_HEX < 0x060900
+    ~if OCC_VERSION_HEX < 0x060900
         THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
-    #endif
+    ~endif
 
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
@@ -5907,19 +5907,19 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     }
 
     // * DOCUMENTING OCC ISSUE OCC < 6.9.0
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=9364&start=330#p162528
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=9364&start=330~p162528
     //
     // A segmentation fault is generated:
     //Program received signal SIGSEGV, Segmentation fault.
-    //#0 /lib/x86_64-linux-gnu/libc.so.6(+0x36cb0) [0x7f4b933bbcb0]
-    //#1  0x7f4b0300ea14 in BSplCLib::BuildCache(double, double, bool, int, TColStd_Array1OfReal const&, TColgp_Array1OfPnt const&, TColStd_Array1OfReal const&, TColgp_Array1OfPnt&, TColStd_Array1OfReal&) from /usr/lib/x86_64-linux-gnu/libTKMath.so.10+0x484
-    //#2  0x7f4b033f9582 in Geom_BSplineCurve::ValidateCache(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x202
-    //#3  0x7f4b033f2a7e in Geom_BSplineCurve::D0(double, gp_Pnt&) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xde
-    //#4  0x7f4b033de1b5 in Geom_Curve::Value(double) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x25
-    //#5  0x7f4b03423d73 in GeomLProp_CurveTool::Value(Handle(Geom_Curve) const&, double, gp_Pnt&) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13
-    //#6  0x7f4b03427175 in GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75
-    //#7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
-    //#8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
+    //~0 /lib/x86_64-linux-gnu/libc.so.6(+0x36cb0) [0x7f4b933bbcb0]
+    //~1  0x7f4b0300ea14 in BSplCLib::BuildCache(double, double, bool, int, TColStd_Array1OfReal const&, TColgp_Array1OfPnt const&, TColStd_Array1OfReal const&, TColgp_Array1OfPnt&, TColStd_Array1OfReal&) from /usr/lib/x86_64-linux-gnu/libTKMath.so.10+0x484
+    //~2  0x7f4b033f9582 in Geom_BSplineCurve::ValidateCache(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x202
+    //~3  0x7f4b033f2a7e in Geom_BSplineCurve::D0(double, gp_Pnt&) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xde
+    //~4  0x7f4b033de1b5 in Geom_Curve::Value(double) const from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x25
+    //~5  0x7f4b03423d73 in GeomLProp_CurveTool::Value(Handle(Geom_Curve) const&, double, gp_Pnt&) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x13
+    //~6  0x7f4b03427175 in GeomLProp_CLProps::SetParameter(double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0x75
+    //~7  0x7f4b0342727d in GeomLProp_CLProps::GeomLProp_CLProps(Handle(Geom_Curve) const&, double, int, double) from /usr/lib/x86_64-linux-gnu/libTKG3d.so.10+0xcd
+    //~8  0x7f4b11924b53 in Part::GeomCurve::pointAtParameter(double) const from /home/abdullah/github/freecad-build/Mod/Part/Part.so+0xa7
 
 
 
@@ -5930,9 +5930,9 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 {
     Base::StateLocker lock(managedoperation, true); // TODO: Check if this is still valid: no need to check input data validity as this is an sketchobject managed operation.
 
-    #if OCC_VERSION_HEX < 0x060900
+    ~if OCC_VERSION_HEX < 0x060900
         THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
-    #endif
+    ~endif
 
     // handling unacceptable cases
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
@@ -6471,13 +6471,13 @@ static gp_Vec ProjVecOnPlane_UVN( const gp_Vec& V, const gp_Pln& Pl)
 }
 
 // Auxiliary Method: returns vector projection in XYZ space
-#if 0
+~if 0
 static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
 {
   return V.Dot(Pl.Position().XDirection()) * Pl.Position().XDirection() +
          V.Dot(Pl.Position().YDirection()) * Pl.Position().YDirection();
 }
-#endif
+~endif
 
 // Auxiliary Method: returns point projection in UV space of plane
 static gp_Vec2d ProjPointOnPlane_UV( const gp_Pnt& P, const gp_Pln& Pl)
@@ -6638,9 +6638,9 @@ void SketchObject::rebuildExternalGeometry(void)
     mov.SetValues(invMat[0][0],invMat[0][1],invMat[0][2],invMat[0][3],
                   invMat[1][0],invMat[1][1],invMat[1][2],invMat[1][3],
                   invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3]
-#if OCC_VERSION_HEX < 0x060800
+~if OCC_VERSION_HEX < 0x060800
                   , 0.00001, 0.00001
-#endif
+~endif
                   ); //precision was removed in OCCT CR0025194
 
     gp_Ax3 sketchAx3(gp_Pnt(Pos.x,Pos.y,Pos.z),
@@ -6921,7 +6921,7 @@ void SketchObject::rebuildExternalGeometry(void)
                     // ellipse construction algorithm.
                     //
                     // Doing that solves:
-                    // https://forum.freecadweb.org/viewtopic.php?f=3&t=55284#p477522
+                    // https://forum.freecadweb.org/viewtopic.php?f=3&t=55284~p477522
 
                     // GENERAL ELLIPSE CONSTRUCTION ALGORITHM
                     //
@@ -7929,8 +7929,8 @@ void SketchObject::onChanged(const App::Property* prop)
             }
         }
     }
-#if 0
-    // For now do not delete anything (#0001791). When changing the support
+~if 0
+    // For now do not delete anything (~0001791). When changing the support
     // face it might be better to check which external geometries can be kept.
     else if (prop == &Support) {
         // make sure not to change anything while restoring this object
@@ -7942,7 +7942,7 @@ void SketchObject::onChanged(const App::Property* prop)
             }
         }
     }
-#endif
+~endif
     Part::Part2DObject::onChanged(prop);
 }
 

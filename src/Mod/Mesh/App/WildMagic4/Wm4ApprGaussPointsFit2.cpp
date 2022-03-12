@@ -6,9 +6,9 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4ApprGaussPointsFit2.h"
-#include "Wm4Eigen.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4ApprGaussPointsFit2.h"
+~include "Wm4Eigen.h"
 
 namespace Wm4
 {

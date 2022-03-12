@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/draggers/SoJackDragger.h>
-# include <Inventor/draggers/SoTrackballDragger.h>
-# include <Inventor/VRMLnodes/SoVRMLTransform.h>
-# include <QFile>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/SoDB.h>
+~ include <Inventor/SoInput.h>
+~ include <Inventor/SbVec3f.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/nodes/SoSphere.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/draggers/SoJackDragger.h>
+~ include <Inventor/draggers/SoTrackballDragger.h>
+~ include <Inventor/VRMLnodes/SoVRMLTransform.h>
+~ include <QFile>
+~endif
 
-#include "ViewProviderRobotObject.h"
+~include "ViewProviderRobotObject.h"
 
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <App/Document.h>
-#include <App/VRMLObject.h>
-#include <Gui/Application.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <sstream>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/Gui/ViewProvider.h>
+~include <App/Document.h>
+~include <App/VRMLObject.h>
+~include <Gui/Application.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Console.h>
+~include <sstream>
 using namespace Gui;
 using namespace RobotGui;
 

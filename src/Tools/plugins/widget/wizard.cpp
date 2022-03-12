@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include <QtGui>
+~include <QtGui>
 
-#include "wizard.h"
+~include "wizard.h"
 
 Wizard::Wizard(QWidget *parent)
     : QDialog(parent)

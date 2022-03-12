@@ -25,12 +25,12 @@
 // Created:   16.01.06 16:25:42
 // Author:    Sergey KUUL
 //
-#include "SMDS_QuadraticEdge.hxx"
+~include "SMDS_QuadraticEdge.hxx"
 
-#include "SMDS_SetIterator.hxx"
-#include "SMDS_IteratorOfElements.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "utilities.h"
+~include "SMDS_SetIterator.hxx"
+~include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "utilities.h"
 
 using namespace std;
 

@@ -35,48 +35,48 @@ See also:
 http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc99a6effb5c0c48d9
 */
 
-#include "PreCompiled.h"
-#include <FCConfig.h>
+~include "PreCompiled.h"
+~include <FCConfig.h>
 
-#include "GuiNativeEventWin32.h"
+~include "GuiNativeEventWin32.h"
 
-#include <QGlobalStatic>
-#include <QMainWindow>
-#include <QWidget>
-#include <Base/Console.h>
-#include "GuiApplicationNativeEventAware.h"
-#if QT_VERSION >= 0x050000
-  #include "GuiRawInputEventFilter.h"
-#endif // #if QT_VERSION >= 0x050000
+~include <QGlobalStatic>
+~include <QMainWindow>
+~include <QWidget>
+~include <Base/Console.h>
+~include "GuiApplicationNativeEventAware.h"
+~if QT_VERSION >= 0x050000
+  ~include "GuiRawInputEventFilter.h"
+~endif // ~if QT_VERSION >= 0x050000
 
 Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 
 
 // Windows dependencies, enumerators and global variables
 
-#include <QApplication>
-#include <windows.h>
-#include <cmath>
-#include <map>
+~include <QApplication>
+~include <windows.h>
+~include <cmath>
+~include <map>
 
-#define LOGITECH_VENDOR_ID 0x46d
-#define CONNEXION_VENDOR_ID  0x256f
-#define _CONSTANT_INPUT_PERIOD 0
+~define LOGITECH_VENDOR_ID 0x46d
+~define CONNEXION_VENDOR_ID  0x256f
+~define _CONSTANT_INPUT_PERIOD 0
 
-#ifndef RIDEV_DEVNOTIFY
-#define RIDEV_DEVNOTIFY 0x00002000
-#endif
+~ifndef RIDEV_DEVNOTIFY
+~define RIDEV_DEVNOTIFY 0x00002000
+~endif
 
-#define _TRACE_WM_INPUT_PERIOD 0
-#define _TRACE_RI_TYPE 0
-#define _TRACE_RIDI_DEVICENAME 0
-#define _TRACE_RIDI_DEVICEINFO 0
-#define _TRACE_RI_RAWDATA 0
-#define _TRACE_3DINPUT_PERIOD 0
+~define _TRACE_WM_INPUT_PERIOD 0
+~define _TRACE_RI_TYPE 0
+~define _TRACE_RIDI_DEVICENAME 0
+~define _TRACE_RIDI_DEVICEINFO 0
+~define _TRACE_RI_RAWDATA 0
+~define _TRACE_3DINPUT_PERIOD 0
 
-#ifdef _WIN64
+~ifdef _WIN64
 typedef unsigned __int64 QWORD;
-#endif // _WIN64
+~endif // _WIN64
 
 static const int kTimeToLive = 5;
 
@@ -278,11 +278,11 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
 
         if (InitializeRawInput((HWND)mainWindow->winId())){
             gMouseInput = this;
-#if QT_VERSION >= 0x050000
+~if QT_VERSION >= 0x050000
             qApp->installNativeEventFilter(new Gui::RawInputEventFilter(Gui::GuiNativeEvent::RawInputEventFilter));
-#else
+~else
             qApp->setEventFilter(Gui::GuiNativeEvent::RawInputEventFilter);
-#endif
+~endif
             Base::Console().Log("3Dconnexion device initialized.\n");
         } else {
             Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
@@ -513,9 +513,9 @@ bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
 
 UINT Gui::GuiNativeEvent::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader)
 {
-#ifdef _WIN64
+~ifdef _WIN64
 	return ::GetRawInputBuffer(pData, pcbSize, cbSizeHeader);
-#else
+~else
 	BOOL bIsWow64 = FALSE;
 	// 0002287: Entry Point Not Found IsWow64Process for Windows 2000
 	//::IsWow64Process(GetCurrentProcess(), &bIsWow64);
@@ -561,7 +561,7 @@ UINT Gui::GuiNativeEvent::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT
 		}
 		return nCount;
 	}
-#endif
+~endif
 }
 
 /*!
@@ -601,9 +601,9 @@ void Gui::GuiNativeEvent::On3dmouseInput()
 		}
 	}
 
-#if _TRACE_3DINPUT_PERIOD
+~if _TRACE_3DINPUT_PERIOD
 	qDebug("On3DmouseInput() period is %dms\n", dwElapsedTime);
-#endif
+~endif
 
 	float mouseData2Rotation;
 	// v = w * r,  we don't know r yet so lets assume r=1.)
@@ -749,13 +749,13 @@ void Gui::GuiNativeEvent::OnRawInput(UINT nInputCode, HRAWINPUT hRawInput)
 
 bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput)
 {
-#if _TRACE_RI_TYPE
+~if _TRACE_RI_TYPE
 	qDebug("Rawinput.header.dwType=0x%x\n", pRawInput->header.dwType);
-#endif
+~endif
 	// We are not interested in keyboard or mouse data received via raw input
 	if (pRawInput->header.dwType != RIM_TYPEHID) return false;
 
-#if _TRACE_RIDI_DEVICENAME
+~if _TRACE_RIDI_DEVICENAME
 	UINT dwSize=0;
 	if (::GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_DEVICENAME, NULL, &dwSize) == 0)  {
 		std::vector<wchar_t> szDeviceName(dwSize+1);
@@ -763,14 +763,14 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 			qDebug("Device Name = %s\nDevice handle = 0x%x\n", &szDeviceName[0], pRawInput->header.hDevice);
 		}
 	}
-#endif
+~endif
 
 	RID_DEVICE_INFO sRidDeviceInfo;
 	sRidDeviceInfo.cbSize = sizeof(RID_DEVICE_INFO);
 	UINT cbSize = sizeof(RID_DEVICE_INFO);
 
 	if (::GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_DEVICEINFO, &sRidDeviceInfo, &cbSize) == cbSize) {
-#if _TRACE_RIDI_DEVICEINFO
+~if _TRACE_RIDI_DEVICEINFO
 		switch (sRidDeviceInfo.dwType)  {
 			case RIM_TYPEMOUSE:
 				qDebug("\tsRidDeviceInfo.dwType=RIM_TYPEMOUSE\n");
@@ -787,7 +787,7 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 						sRidDeviceInfo.hid.usUsage);
 				break;
 		}
-#endif
+~endif
 
 		if (sRidDeviceInfo.hid.dwVendorId == LOGITECH_VENDOR_ID  || sRidDeviceInfo.hid.dwVendorId == CONNEXION_VENDOR_ID) {
 			switch (sRidDeviceInfo.hid.dwProductId) {
@@ -831,20 +831,20 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINP
 			deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
 			deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
 
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 			qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
 							pnRawData[0],  pnRawData[1],  pnRawData[2]);
-#endif
+~endif
 			if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
 				// Cache the rotation data
 				deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
 				deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
 				deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
 				deviceData.fIsDirty = true;
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 				qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
 					 pnRawData[3], pnRawData[4], pnRawData[5]);
-#endif
+~endif
 				return true;
 			}
 		} else { // Zero out the data if the app is not in foreground
@@ -864,10 +864,10 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINP
 			deviceData.fAxes[5] = static_cast<float>(pnRawData[2]);
 			deviceData.fIsDirty = true;
 
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 			qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
 				pnRawData[0],  pnRawData[1], pnRawData[2]);
-#endif
+~endif
 			return true;
 		}
 	} else if (pRawInput->data.hid.bRawData[0] == 0x03)  { // Keystate change
@@ -876,10 +876,10 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINP
 
 
 		unsigned long dwKeystate = *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]);
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 		qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
 		qDebug("ButtonData =0x%x\n", dwKeystate);
-#endif
+~endif
 		// Log the keystate changes
 		unsigned long dwOldKeystate = fDevice2Keystate[pRawInput->header.hDevice];
 		if (dwKeystate != 0) {
@@ -927,20 +927,20 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINP
 			deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
 			deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
 
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 			qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
 							pnRawData[0],  pnRawData[1],  pnRawData[2]);
-#endif
+~endif
 			if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
 				// Cache the rotation data
 				deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
 				deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
 				deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
 				deviceData.fIsDirty = true;
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 				qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
 					 pnRawData[3], pnRawData[4], pnRawData[5]);
-#endif
+~endif
 				return true;
 			}
 		} else { // Zero out the data if the app is not in foreground
@@ -960,18 +960,18 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINP
 			deviceData.fAxes[5] = static_cast<float>(pnRawData[2]);
 			deviceData.fIsDirty = true;
 
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 			qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
 				pnRawData[0],  pnRawData[1], pnRawData[2]);
-#endif
+~endif
 			return true;
 		}
 	} else if ((pRawInput->data.hid.bRawData[0] == 0x1c) || (pRawInput->data.hid.bRawData[0] == 0x1d)) {
 
-#if _TRACE_RI_RAWDATA
+~if _TRACE_RI_RAWDATA
 		qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
 		qDebug("ButtonData = 0x%x\n", *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]));
-#endif
+~endif
 		// calculate a KeyCode
 		unsigned long dwKeyCode = pRawInput->data.hid.bRawData[1] << 1;
 		dwKeyCode += (pRawInput->data.hid.bRawData[0] & 0x01);
@@ -1028,16 +1028,16 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINP
 // https://zfx.info/viewtopic.php?f=11&t=2977
 //
 
-#include <hidsdi.h>
-#include <hidpi.h>
-#include <hidusage.h>
+~include <hidsdi.h>
+~include <hidpi.h>
+~include <hidusage.h>
 
-//#pragma comment(lib, "user32.lib")
-//#pragma comment(lib, "hid.lib")
+//~pragma comment(lib, "user32.lib")
+//~pragma comment(lib, "hid.lib")
 
-#define MAX_BUTTONS		128
-#define CHECK(exp)		{ if(!(exp)) goto Error; }
-#define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
+~define MAX_BUTTONS		128
+~define CHECK(exp)		{ if(!(exp)) goto Error; }
+~define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
 
 bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINPUT pRawInput, DWORD /*dwProductId*/)
 {
@@ -1061,9 +1061,9 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     pValueCaps     = NULL;
     hHeap          = GetProcessHeap();
 
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
     qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
-#endif
+~endif
 
     //
     // Get the preparsed data block
@@ -1124,49 +1124,49 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
             switch(pValueCaps[i].Range.UsageMin)
             {
             case HID_USAGE_GENERIC_X:	// X-axis
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
                 qDebug("X-Axis: %d\n", svalue);
-#endif
+~endif
                 deviceData.fAxes[0] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_Y:	// Y-axis
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
                 qDebug("Y-Axis: %d\n", svalue);
-#endif
+~endif
                 deviceData.fAxes[1] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_Z: // Z-axis
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
                 qDebug("Z-Axis: %d\n", svalue);
-#endif
+~endif
                 deviceData.fAxes[2] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_RX: // Rotate-X
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
                 qDebug("X-Rotate: %d\n", svalue);
-#endif
+~endif
                 deviceData.fAxes[3] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_RY: // Rotate-Y
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
                 qDebug("Y-Rotate: %d\n", svalue);
-#endif
+~endif
                 deviceData.fAxes[4] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
 
             case HID_USAGE_GENERIC_RZ: // Rotate-Z
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
                 qDebug("Z-Rotate: %d\n", svalue);
-#endif
+~endif
                 deviceData.fAxes[5] = static_cast<float>(svalue);
                 deviceData.fIsDirty = true;
                 break;
@@ -1180,9 +1180,9 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
         // Zero out the data if the app is not in foreground
         deviceData.fAxes.assign(6, 0.f);
         deviceData.fIsDirty = true;
-#ifdef _TRACE_RI_RAWDATA
+~ifdef _TRACE_RI_RAWDATA
         qDebug("Not in foreground\n");
-#endif
+~endif
     }
 
     //
@@ -1197,4 +1197,4 @@ Error:
     return processed;
 }
 
-#include "3Dconnexion/moc_GuiNativeEventWin32.cpp"
+~include "3Dconnexion/moc_GuiNativeEventWin32.cpp"

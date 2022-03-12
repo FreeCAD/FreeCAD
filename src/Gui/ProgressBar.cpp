@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QElapsedTimer>
-# include <QGenericReturnArgument>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QMetaObject>
-# include <QThread>
-# include <QTime>
-# include <QTimer>
-# include <QWindow>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QElapsedTimer>
+~ include <QGenericReturnArgument>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QMetaObject>
+~ include <QThread>
+~ include <QTime>
+~ include <QTimer>
+~ include <QWindow>
+~endif
 
-#include "ProgressBar.h"
-#include "MainWindow.h"
-#include "ProgressDialog.h"
-#include "WaitCursor.h"
+~include "ProgressBar.h"
+~include "MainWindow.h"
+~include "ProgressDialog.h"
+~include "WaitCursor.h"
 
 
 using namespace Gui;
@@ -390,10 +390,10 @@ QProgressBar* SequencerBar::getProgressBar(QWidget* parent)
 ProgressBar::ProgressBar (SequencerBar* s, QWidget * parent)
     : QProgressBar(parent), sequencer(s)
 {
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
   m_taskbarButton = nullptr;
   m_taskbarButton = nullptr;
-#endif
+~endif
     d = new Gui::ProgressBarPrivate;
     d->minimumDuration = 2000; // 2 seconds
     d->delayShowTimer = new QTimer(this);
@@ -423,28 +423,28 @@ int ProgressBar::minimumDuration() const
 void ProgressBar::resetEx()
 {
   QProgressBar::reset();
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
   setupTaskBarProgress();
   m_taskbarProgress->reset();
-#endif
+~endif
 }
 
 void ProgressBar::setRangeEx(int minimum, int maximum)
 {
   QProgressBar::setRange(minimum, maximum);
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
   setupTaskBarProgress();
   m_taskbarProgress->setRange(minimum, maximum);
-#endif
+~endif
 }
 
 void ProgressBar::setValueEx(int value)
 {
   QProgressBar::setValue(value);
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
   setupTaskBarProgress();
   m_taskbarProgress->setValue(value);
-#endif
+~endif
 }
 
 void ProgressBar::setMinimumDuration (int ms)
@@ -462,10 +462,10 @@ void ProgressBar::aboutToShow()
 {
     // delay showing the bar
     d->delayShowTimer->start(d->minimumDuration);
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->show();
-#endif
+~endif
 }
 
 void ProgressBar::delayedShow()
@@ -478,10 +478,10 @@ void ProgressBar::delayedShow()
 void ProgressBar::aboutToHide()
 {
     hide();
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->hide();
-#endif
+~endif
 }
 
 bool ProgressBar::canAbort() const
@@ -516,28 +516,28 @@ void ProgressBar::enterControlEvents(bool grab)
 
     // Make sure that we get the key events, otherwise the Inventor viewer usurps the key events
     // This also disables accelerators.
-#if defined(Q_OS_LINUX)
+~if defined(Q_OS_LINUX)
     Q_UNUSED(grab)
-#else
+~else
     if (grab)
         grabKeyboard();
-#endif
+~endif
 }
 
 void ProgressBar::leaveControlEvents(bool release)
 {
     qApp->removeEventFilter(this);
 
-#if defined(Q_OS_LINUX)
+~if defined(Q_OS_LINUX)
     Q_UNUSED(release)
-#else
+~else
     // release the keyboard again
     if (release)
         releaseKeyboard();
-#endif
+~endif
 }
 
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
 void ProgressBar::setupTaskBarProgress()
 {
   if (!m_taskbarButton || !m_taskbarProgress)
@@ -549,7 +549,7 @@ void ProgressBar::setupTaskBarProgress()
     m_taskbarProgress = m_taskbarButton->progress();
   }
 }
-#endif
+~endif
 
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 {
@@ -638,4 +638,4 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 }
 
 
-#include "moc_ProgressBar.cpp"
+~include "moc_ProgressBar.cpp"

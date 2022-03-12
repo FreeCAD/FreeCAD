@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QStyle>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QStyle>
+~endif
 
-#include "ViewProviderMaterialObject.h"
-#include "Application.h"
-#include "Document.h"
+~include "ViewProviderMaterialObject.h"
+~include "Application.h"
+~include "Document.h"
 
 
 using namespace Gui;

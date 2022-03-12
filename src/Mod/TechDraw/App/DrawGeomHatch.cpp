@@ -21,64 +21,64 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#include <iomanip>
-#include <cmath>
+~ifndef _PreComp_
+~ include <sstream>
+~include <iomanip>
+~include <cmath>
 
-# include <QFile>
-# include <QFileInfo>
+~ include <QFile>
+~ include <QFileInfo>
 
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRep_Builder.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Pnt.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepBndLib.hxx>
+~include <BRep_Builder.hxx>
 
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepTools.hxx>
-#include <Standard_PrimitiveTypes.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopExp.hxx>
-#include <Precision.hxx>
+~include <BRepAlgoAPI_Common.hxx>
+~include <BRepBuilderAPI_MakeVertex.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBuilderAPI_Transform.hxx>
+~include <BRepTools.hxx>
+~include <Standard_PrimitiveTypes.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopExp.hxx>
+~include <Precision.hxx>
 
-#include <cmath>
+~include <cmath>
 
-#endif
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/UnitsApi.h>
 
-#include "HatchLine.h"
-#include "DrawUtil.h"
-#include "Geometry.h"
-#include "DrawPage.h"
-#include "DrawViewPart.h"
-#include "DrawViewSection.h"
-#include "DrawViewDetail.h"
-#include "DrawGeomHatch.h"
-#include "GeometryObject.h"
+~include "HatchLine.h"
+~include "DrawUtil.h"
+~include "Geometry.h"
+~include "DrawPage.h"
+~include "DrawViewPart.h"
+~include "DrawViewSection.h"
+~include "DrawViewDetail.h"
+~include "DrawGeomHatch.h"
+~include "GeometryObject.h"
 
-#include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
+~include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
 
 using namespace TechDraw;
 using namespace std;

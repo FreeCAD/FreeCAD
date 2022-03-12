@@ -20,38 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QKeyEvent>
-# include <QAction>
-# include <QMenu>
-# include <QApplication>
-# include <QClipboard>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QTextStream>
-#endif
-# include <QTextTableCell>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QKeyEvent>
+~ include <QAction>
+~ include <QMenu>
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QMimeData>
+~ include <QTextStream>
+~endif
+~ include <QTextTableCell>
 
-#include <App/Application.h>
-#include <App/AutoTransaction.h>
-#include <App/Document.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
-#include <Gui/CommandT.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <boost_bind_bind.hpp>
-#include "../App/Utils.h"
-#include "../App/Cell.h"
-#include <App/Range.h>
-#include "SheetTableView.h"
-#include "LineEdit.h"
-#include "PropertiesDialog.h"
-#include "DlgBindSheet.h"
-#include "DlgSheetConf.h"
+~include <App/Application.h>
+~include <App/AutoTransaction.h>
+~include <App/Document.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
+~include <Gui/CommandT.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <boost_bind_bind.hpp>
+~include "../App/Utils.h"
+~include "../App/Cell.h"
+~include <App/Range.h>
+~include "SheetTableView.h"
+~include "LineEdit.h"
+~include "PropertiesDialog.h"
+~include "DlgBindSheet.h"
+~include "DlgSheetConf.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -1002,7 +1002,7 @@ QString SheetTableView::toHtml() const
     boldFormat.setFont(boldFont);
 
     QColor bgColor;
-    bgColor.setNamedColor(QLatin1String("#f0f0f0"));
+    bgColor.setNamedColor(QLatin1String("~f0f0f0"));
     QTextCharFormat bgFormat;
     bgFormat.setBackground(QBrush(bgColor));
 
@@ -1095,4 +1095,4 @@ QString SheetTableView::toHtml() const
     return doc->toHtml();
 }
 
-#include "moc_SheetTableView.cpp"
+~include "moc_SheetTableView.cpp"

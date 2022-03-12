@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "TaskDlgCreateNodeSet.h"
+~include "TaskDlgCreateNodeSet.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include "ViewProviderFemMesh.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Gui/TaskView/TaskSelectLinkProperty.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include "ViewProviderFemMesh.h"
 
 
 using namespace FemGui;
@@ -111,4 +111,4 @@ void TaskDlgCreateNodeSet::helpRequested()
 }
 
 
-#include "moc_TaskDlgCreateNodeSet.cpp"
+~include "moc_TaskDlgCreateNodeSet.cpp"

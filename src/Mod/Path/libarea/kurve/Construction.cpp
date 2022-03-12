@@ -6,7 +6,7 @@
 //
 // ***************************************************************************************************************************************
 
-#include "geometry.h"
+~include "geometry.h"
 using namespace geoff_geometry;
 
 namespace geoff_geometry {
@@ -477,7 +477,7 @@ namespace geoff_geometry {
 	Point Intof( int NF, const CLine& s, const Circle& c, Point& otherInters) {
 		// inters of cline & circle  eg.     p1 = Intof(NEARINT, s1, c1);
 		// otherInters returns the other intersection
-#if 1
+~if 1
 		// solving	x = x0 + dx * t			x = y0 + dy * t
 		//			x = xc + R * cos(a)		y = yc + R * sin(a)		for t
 		// gives :-  t� (dx� + dy�) + 2t(dx*dx0 + dy*dy0) + (x0-xc)� + (y0-yc)� - R� = 0
@@ -497,7 +497,7 @@ namespace geoff_geometry {
 		}
 		return INVALID_POINT;
 	}
-#else
+~else
 		// geometric solution - this is similar to the peps method, and it may offer better tolerancing than above??
 		Point intof;
 		CLine normal = Normal(s, c.pc);
@@ -513,7 +513,7 @@ namespace geoff_geometry {
 
 		return Along(s, -(double)NF * sqrt(q), intof);						// 2 intersections (return near/far case)
 	}
-#endif
+~endif
 	Point Intof( int intMode, const Circle& c0, const Circle& c1)	{
 		// inters of 2 circles		 eg.     p1 = Intof(LEFTINT, c1, c2)
 		Point otherInters;

@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <boost/regex.hpp>
-#include <cassert>
-#include <sstream>
-#include <string>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <boost/regex.hpp>
+~include <cassert>
+~include <sstream>
+~include <string>
+~endif
 
-#include <Base/Exception.h>
-#include "Range.h"
+~include <Base/Exception.h>
+~include "Range.h"
 
 
 using namespace App;

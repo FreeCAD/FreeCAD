@@ -19,18 +19,18 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "MED_GaussUtils.hxx"
-#include "MED_Utilities.hxx"
+~include "MED_GaussUtils.hxx"
+~include "MED_Utilities.hxx"
  
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
 static int MYVALUEDEBUG = 0;
-#else
+~else
 // static int MYDEBUG = 0;
 // static int MYVALUEDEBUG = 0;
-#endif
+~endif
 
-//#define _DEBUG_REF_COORDS_
+//~define _DEBUG_REF_COORDS_
 
 namespace MED
 {
@@ -233,7 +233,7 @@ namespace MED
           }
         }
         if(!anIsEqual){
-#ifdef _DEBUG_
+~ifdef _DEBUG_
           TCCoordSlice aCoord = GetCoord(aRefId);
           INITMSG(MYDEBUG,aRefId + 1<<": aCoord = {");
           TInt aDim = aCoord.size();
@@ -244,11 +244,11 @@ namespace MED
           for(TInt anId = 0; anId < aDim; anId++)
             ADDMSG(MYDEBUG,"\t"<<aCoord2[anId]);
           ADDMSG(MYDEBUG,"}\n");
-#endif
-#ifndef _DEBUG_
+~endif
+~ifndef _DEBUG_
           BEGMSG(MYDEBUG,"anIsSatisfy = "<<anIsSatisfy<<"\n");
           return anIsSatisfy;
-#endif
+~endif
         }
       }
     }
@@ -312,7 +312,7 @@ namespace MED
         }
       }
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
       {
         INITMSG(MYVALUEDEBUG,"theGauss: ");
         for(TInt aGaussId = 0; aGaussId < aNbGauss; aGaussId++){
@@ -338,7 +338,7 @@ namespace MED
         }
         ADDMSG(MYVALUEDEBUG,std::endl);
       }
-#endif
+~endif
       return true;
     }
 
@@ -2029,7 +2029,7 @@ namespace MED
       }
     }
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     for(TInt anElemId = 0; anElemId < aNbElem; anElemId++){
       TCoordSliceArr aCoordSliceArr = theGaussCoord.GetCoordSliceArr(anElemId);
       INITMSG(MYVALUEDEBUG,"");
@@ -2043,7 +2043,7 @@ namespace MED
       }
       ADDMSG(MYVALUEDEBUG,std::endl);
     }
-#endif
+~endif
 
     return true;
   }

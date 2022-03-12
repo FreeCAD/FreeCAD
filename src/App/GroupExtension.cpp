@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Tools.h>
+~include <Base/Tools.h>
 
-#include "Document.h"
-#include "GeoFeatureGroupExtension.h"
-#include "GroupExtensionPy.h"
+~include "Document.h"
+~include "GeoFeatureGroupExtension.h"
+~include "GroupExtensionPy.h"
 
 
 using namespace App;
@@ -148,7 +148,7 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
 
 void GroupExtension::removeObjectsFromDocument()
 {
-#if 1
+~if 1
     while (Group.getSize() > 0) {
         // Remove the objects step by step because it can happen
         // that an object is part of several groups and thus a
@@ -156,7 +156,7 @@ void GroupExtension::removeObjectsFromDocument()
         const std::vector<DocumentObject*> & grp = Group.getValues();
         removeObjectFromDocument(grp.front());
     }
-#else
+~else
     const std::vector<DocumentObject*> & grp = Group.getValues();
     // Use set so iterate on each linked object exactly one time (in case of multiple links to the same document)
     std::set<DocumentObject*> grpSet (grp.begin(), grp.end());
@@ -164,7 +164,7 @@ void GroupExtension::removeObjectsFromDocument()
     for (std::set<DocumentObject*>::iterator it = grpSet.begin(); it != grpSet.end(); ++it) {
         removeObjectFromDocument(*it);
     }
-#endif
+~endif
 }
 
 void GroupExtension::removeObjectFromDocument(DocumentObject* obj)

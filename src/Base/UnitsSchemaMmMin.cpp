@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#include <QString>
+~include <QString>
 
-#include "UnitsSchemaMmMin.h"
+~include "UnitsSchemaMmMin.h"
 
 
 using namespace Base;

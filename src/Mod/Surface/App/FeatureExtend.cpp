@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#include <gp_Pnt.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <GeomAPI_PointsToBSplineSurface.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <Precision.hxx>
-#include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepLProp_SLProps.hxx>
+~include <TColgp_Array2OfPnt.hxx>
+~include <gp_Pnt.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <GeomAPI_PointsToBSplineSurface.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Face.hxx>
+~include <Precision.hxx>
+~include <Standard_Version.hxx>
+~endif
 
-#include "FeatureExtend.h"
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+~include "FeatureExtend.h"
+~include <Base/Tools.h>
+~include <Base/Exception.h>
 
 using namespace Surface;
 
@@ -144,9 +144,9 @@ App::DocumentObjectExecReturn *Extend::execute(void)
 
     Handle(Geom_BSplineSurface) surface(approx.Surface());
     BRepBuilderAPI_MakeFace mkFace(surface
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
-#endif
+~endif
     );
 
     Shape.setValue(mkFace.Face());

@@ -26,34 +26,34 @@
 //  Module : SMESH
 //
 
-//#define CHRONODEF
+//~define CHRONODEF
 
-#include "SMESH_Gen.hxx"
+~include "SMESH_Gen.hxx"
 
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_Document.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_Document.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include "utilities.h"
-#include "OpUtil.hxx"
-#include "Utils_ExceptHandlers.hxx"
+~include "utilities.h"
+~include "OpUtil.hxx"
+~include "Utils_ExceptHandlers.hxx"
 
-#include <TopoDS_Iterator.hxx>
-#include <TopoDS.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopoDS.hxx>
 
-#include "memoire.h"
+~include "memoire.h"
 
-#ifdef WIN32
-  #include <windows.h>
-#endif
+~ifdef WIN32
+  ~include <windows.h>
+~endif
 
 using namespace std;
 
-//#include <vtkDebugLeaks.h>
+//~include <vtkDebugLeaks.h>
 
 
 //=============================================================================
@@ -1011,11 +1011,11 @@ std::vector< std::string > SMESH_Gen::GetPluginXMLPaths()
           break;
         }
       }
-#ifdef WIN32
+~ifdef WIN32
       if (sep.empty() ) sep = "\\";
-#else
+~else
       if (sep.empty() ) sep = "/";
-#endif
+~endif
 
       // get a path to resource file
       string xmlPath = rootDir;
@@ -1026,11 +1026,11 @@ std::vector< std::string > SMESH_Gen::GetPluginXMLPaths()
         xmlPath += tolower( pluginSubDir[pos] );
       xmlPath += sep + plugin + ".xml";
       bool fileOK;
-#ifdef WIN32
+~ifdef WIN32
       fileOK = (GetFileAttributesA(xmlPath.c_str()) != INVALID_FILE_ATTRIBUTES);
-#else
+~else
       fileOK = (access(xmlPath.c_str(), F_OK) == 0);
-#endif
+~endif
       if ( fileOK )
         xmlPaths.push_back( xmlPath );
     }

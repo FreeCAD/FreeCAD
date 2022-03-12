@@ -1,14 +1,14 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "fcollexceptions.h"
-#include "deflateoutputstreambuf.h"
+~include "fcollexceptions.h"
+~include "deflateoutputstreambuf.h"
 
-#include "outputstringstream.h"
+~include "outputstringstream.h"
 
 namespace zipios {
 
@@ -97,9 +97,9 @@ bool DeflateOutputStreambuf::closeStream() {
     return true ;
   else {
     cerr << "DeflateOutputStreambuf::closeStream(): deflateEnd failed" ;
-#ifdef HAVE_ZERROR
+~ifdef HAVE_ZERROR
     cerr << ": " << zError( err ) ;
-#endif
+~endif
     cerr << endl ;
     return false ;
   }
@@ -131,15 +131,15 @@ int DeflateOutputStreambuf::overflow( int c ) {
   setp( &( _invec[ 0 ] ), &( _invec[ 0 ] ) + _invecsize ) ;
   
   if( err != Z_OK && err != Z_STREAM_END ) {
-#if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
+~if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
     // Throw an exception to make istream set badbit
     OutputStringStream msgs ;
     msgs << "Deflation failed" ;
-#ifdef HAVE_ZERROR
+~ifdef HAVE_ZERROR
     msgs << ": " << zError( err ) ;
-#endif
+~endif
     throw IOException( msgs.str() ) ;
-#endif
+~endif
     cerr << "Deflation failed\n" ;
     return EOF ;
   }
@@ -190,9 +190,9 @@ void DeflateOutputStreambuf::endDeflation() {
 
   if ( err != Z_STREAM_END ) {
     cerr << "DeflateOutputStreambuf::endDeflation(): deflation failed:\n" ;
-#ifdef HAVE_ZERROR
+~ifdef HAVE_ZERROR
     cerr << ": " << zError( err ) ;
-#endif
+~endif
     cerr << endl ;
   }
 }

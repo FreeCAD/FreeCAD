@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of FeaturePy.xml)
-#include "FeaturePy.h"
-#include "FeaturePy.cpp"
+~include "FeaturePy.h"
+~include "FeaturePy.cpp"
 
 using namespace PartDesign;
 

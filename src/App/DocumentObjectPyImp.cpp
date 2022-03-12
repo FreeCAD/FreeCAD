@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/MatrixPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/MatrixPy.h>
 
-#include "DocumentObject.h"
-#include "Document.h"
-#include "ExpressionParser.h"
-#include "GeoFeature.h"
-#include "GeoFeatureGroupExtension.h"
-#include "GroupExtension.h"
+~include "DocumentObject.h"
+~include "Document.h"
+~include "ExpressionParser.h"
+~include "GeoFeature.h"
+~include "GeoFeatureGroupExtension.h"
+~include "GroupExtension.h"
 
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
-#include <App/DocumentObjectPy.h>
-#include <App/DocumentObjectPy.cpp>
+~include <App/DocumentObjectPy.h>
+~include <App/DocumentObjectPy.cpp>
 
 using namespace App;
 
@@ -713,15 +713,15 @@ PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
     // Dynamic property is now directly supported in PropertyContainer. So we
     // can comment out here and let PropertyContainerPy handle it.
-#if 1
+~if 1
     (void)attr;
-#else
+~else
     // search for dynamic property
     Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
     if (prop)
         return prop->getPyObject();
     else
-#endif
+~endif
         return 0;
 }
 
@@ -731,10 +731,10 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
     // especially since now dynamic property is directly supported in
     // PropertyContainer. So we can comment out here and let PropertyContainerPy
     // handle it.
-#if 1
+~if 1
     (void)attr;
     (void)obj;
-#else
+~else
     // explicitly search for dynamic property
     try {
         Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
@@ -788,7 +788,7 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
         }
         return 1;
     } 
-#endif
+~endif
 
     return 0;
 }

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Workbench.h"
-#include "WorkbenchManager.h"
+~include "Workbench.h"
+~include "WorkbenchManager.h"
 
 // inclusion of the generated files (generated out of WorkbenchPy.xml)
-#include "WorkbenchPy.h"
-#include "WorkbenchPy.cpp"
+~include "WorkbenchPy.h"
+~include "WorkbenchPy.cpp"
 
 using namespace Gui;
 

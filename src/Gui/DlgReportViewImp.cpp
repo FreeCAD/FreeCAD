@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include "DlgReportViewImp.h"
-#include "ui_DlgReportView.h"
-#include "PrefWidgets.h"
+~include "DlgReportViewImp.h"
+~include "ui_DlgReportView.h"
+~include "PrefWidgets.h"
 
 
 using namespace Gui::Dialog;
@@ -111,4 +111,4 @@ void DlgReportViewImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgReportViewImp.cpp"
+~include "moc_DlgReportViewImp.cpp"

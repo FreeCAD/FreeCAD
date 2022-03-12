@@ -26,36 +26,36 @@
 // Created   : Fri Oct 20 11:37:07 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_Projection_1D.hxx"
+~include "StdMeshers_Projection_1D.hxx"
 
-#include "StdMeshers_ProjectionSource1D.hxx"
-#include "StdMeshers_ProjectionUtils.hxx"
+~include "StdMeshers_ProjectionSource1D.hxx"
+~include "StdMeshers_ProjectionUtils.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Comment.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Comment.hxx"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <gp_Pnt.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRep_Tool.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <gp_Pnt.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
 
 using namespace std;
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
+~define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
 
 //typedef StdMeshers_ProjectionUtils TAssocTool;
 namespace TAssocTool = StdMeshers_ProjectionUtils;
@@ -225,8 +225,8 @@ bool StdMeshers_Projection_1D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
     return error("Vertices association failed" );
 
   srcEdge = TopoDS::Edge( shape2ShapeMap( tgtEdge ).Oriented(TopAbs_FORWARD));
-//   cout << " srcEdge #" << srcMesh->GetMeshDS()->ShapeToIndex( srcEdge )
-//        << " tgtEdge #" << tgtMesh->GetMeshDS()->ShapeToIndex( tgtEdge ) << endl;
+//   cout << " srcEdge ~" << srcMesh->GetMeshDS()->ShapeToIndex( srcEdge )
+//        << " tgtEdge ~" << tgtMesh->GetMeshDS()->ShapeToIndex( tgtEdge ) << endl;
 
   TopoDS_Vertex tgtV[2], srcV[2];
   TopExp::Vertices( tgtEdge, tgtV[0], tgtV[1] );
@@ -413,8 +413,8 @@ bool StdMeshers_Projection_1D::Evaluate(SMESH_Mesh& theMesh,
     return error("Vertices association failed" );
 
   srcEdge = TopoDS::Edge( shape2ShapeMap( tgtEdge ).Oriented(TopAbs_FORWARD));
-//   cout << " srcEdge #" << srcMesh->GetMeshDS()->ShapeToIndex( srcEdge )
-//        << " tgtEdge #" << tgtMesh->GetMeshDS()->ShapeToIndex( tgtEdge ) << endl;
+//   cout << " srcEdge ~" << srcMesh->GetMeshDS()->ShapeToIndex( srcEdge )
+//        << " tgtEdge ~" << tgtMesh->GetMeshDS()->ShapeToIndex( tgtEdge ) << endl;
 
   TopoDS_Vertex tgtV[2], srcV[2];
   TopExp::Vertices( tgtEdge, tgtV[0], tgtV[1] );

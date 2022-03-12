@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <App/Document.h>
-#include <Base/Matrix.h>
-#include <Base/MatrixPy.h>
-#include <Base/Stream.h>
+~include <App/Document.h>
+~include <Base/Matrix.h>
+~include <Base/MatrixPy.h>
+~include <Base/Stream.h>
 
-#include "Application.h"
-#include "MergeDocuments.h"
-#include "MDIView.h"
-#include "ViewProviderExtern.h"
+~include "Application.h"
+~include "MergeDocuments.h"
+~include "MDIView.h"
+~include "ViewProviderExtern.h"
 
 // inclusion of the generated files (generated out of DocumentPy.xml)
-#include "DocumentPy.h"
-#include "DocumentPy.cpp"
-#include <App/DocumentObjectPy.h>
-#include "Tree.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
-#include "ViewProviderPy.h"
-#include "ViewProviderDocumentObjectPy.h"
+~include "DocumentPy.h"
+~include "DocumentPy.cpp"
+~include <App/DocumentObjectPy.h>
+~include "Tree.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObjectPy.h"
+~include "ViewProviderPy.h"
+~include "ViewProviderDocumentObjectPy.h"
 
 
 using namespace Gui;

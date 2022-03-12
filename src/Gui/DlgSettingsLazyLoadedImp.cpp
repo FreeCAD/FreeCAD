@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgSettingsLazyLoadedImp.h"
-#include "ui_DlgSettingsLazyLoaded.h"
-#include "PrefWidgets.h"
-#include "AutoSaver.h"
+~include "DlgSettingsLazyLoadedImp.h"
+~include "ui_DlgSettingsLazyLoaded.h"
+~include "PrefWidgets.h"
+~include "AutoSaver.h"
 
-#include "Application.h"
-#include "WorkbenchManager.h"
-#include "Workbench.h"
+~include "Application.h"
+~include "WorkbenchManager.h"
+~include "Workbench.h"
 
-#include <QCheckBox>
+~include <QCheckBox>
 
-#include <sstream>
+~include <sstream>
 
 using namespace Gui::Dialog;
 
@@ -207,4 +207,4 @@ void DlgSettingsLazyLoadedImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsLazyLoadedImp.cpp"
+~include "moc_DlgSettingsLazyLoadedImp.cpp"

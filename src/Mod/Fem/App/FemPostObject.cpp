@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <vtkPointData.h>
-# include <vtkCellData.h>
-#endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <vtkPointData.h>
+~ include <vtkCellData.h>
+~endif
 
-#include "FemPostObject.h"
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
+~include "FemPostObject.h"
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
 
 
 using namespace Fem;

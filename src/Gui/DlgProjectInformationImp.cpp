@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <App/PropertyStandard.h>
+~include <App/Document.h>
+~include <App/PropertyStandard.h>
 
-#include "DlgProjectInformationImp.h"
-#include "ui_DlgProjectInformation.h"
-#include "Document.h"
+~include "DlgProjectInformationImp.h"
+~include "ui_DlgProjectInformation.h"
+~include "Document.h"
 
-#include <QApplication>
-#include <QByteArray>
-#include <QUrl>
-#include <QDesktopServices>
+~include <QApplication>
+~include <QByteArray>
+~include <QUrl>
+~include <QDesktopServices>
 
 using namespace Gui::Dialog;
 
@@ -92,11 +92,11 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     // When saving the text to XML the newlines get lost. So we store also the newlines as '\n'.
     // See also accept().
     QString comment = QString::fromUtf8(doc->Comment.getValue());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     QStringList lines = comment.split(QLatin1String("\\n"), Qt::KeepEmptyParts);
-#else
+~else
     QStringList lines = comment.split(QLatin1String("\\n"), QString::KeepEmptyParts);
-#endif
+~endif
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText( text );
     connect(ui->pushButtonOpenURL, SIGNAL(clicked()),this, SLOT(open_url()));
@@ -128,11 +128,11 @@ void DlgProjectInformationImp::accept()
 
     // Replace newline escape sequence through '\\n' string
     QStringList lines = ui->textEditComment->toPlainText().split
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
         (QLatin1String("\n"), Qt::KeepEmptyParts);
-#else
+~else
         (QLatin1String("\n"), QString::KeepEmptyParts);
-#endif
+~endif
     QString text = lines.join(QLatin1String("\\n"));
     _doc->Comment.setValue(text.isEmpty() ? "" : text.toUtf8());
 
@@ -184,4 +184,4 @@ void DlgProjectInformationImp::open_url()
     QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
 }
 
-#include "moc_DlgProjectInformationImp.cpp"
+~include "moc_DlgProjectInformationImp.cpp"

@@ -53,17 +53,17 @@
 // We thus solve for 5 unknown parameters.
 // Thus for the solution to succeed the initial axis direction should be reasonable.
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <cstdlib>
-# include <iterator> 
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <cstdlib>
+~ include <iterator> 
+~endif
 
-#include "CylinderFit.h"
-#include <Base/Console.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprLineFit3.h>
+~include "CylinderFit.h"
+~include <Base/Console.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4ApprLineFit3.h>
 
 using namespace MeshCoreFit;
 

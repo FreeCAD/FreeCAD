@@ -30,24 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4267)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4267)
+~endif
 
-#include <QEvent>
-#include <QWidget>
+~include <QEvent>
+~include <QWidget>
 
-#include <Inventor/events/SoEvent.h>
-#include <Inventor/events/SoMotion3Event.h>
-#include <Inventor/events/SoSpaceballButtonEvent.h>
+~include <Inventor/events/SoEvent.h>
+~include <Inventor/events/SoMotion3Event.h>
+~include <Inventor/events/SoSpaceballButtonEvent.h>
 
-#ifdef HAVE_SPACENAV_LIB
-#include <QX11Info>
-#include <spnav.h>
-#endif
+~ifdef HAVE_SPACENAV_LIB
+~include <QX11Info>
+~include <spnav.h>
+~endif
 
-#include "NativeEvent.h"
-#include "devices/SpaceNavigatorDevice.h"
+~include "NativeEvent.h"
+~include "devices/SpaceNavigatorDevice.h"
 
 
 namespace SIM { namespace Coin3D { namespace Quarter {
@@ -78,14 +78,14 @@ public:
 }}}
 
 
-#define PRIVATE(obj) obj->pimpl
+~define PRIVATE(obj) obj->pimpl
 using namespace SIM::Coin3D::Quarter;
 
 SpaceNavigatorDevice::SpaceNavigatorDevice()
 {
   PRIVATE(this) = new SpaceNavigatorDeviceP(this);
 
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
   PRIVATE(this)->hasdevice =
     spnav_x11_open(QX11Info::display(), PRIVATE(this)->windowid) == -1 ? false : true;
 
@@ -94,7 +94,7 @@ SpaceNavigatorDevice::SpaceNavigatorDevice()
     fprintf(stderr, "Quarter:: Could not hook up to Spacenav device.\n");
   }
 
-#endif // HAVE_SPACENAV_LIB
+~endif // HAVE_SPACENAV_LIB
 }
 
 SpaceNavigatorDevice::SpaceNavigatorDevice(QuarterWidget *quarter) :
@@ -102,7 +102,7 @@ SpaceNavigatorDevice::SpaceNavigatorDevice(QuarterWidget *quarter) :
 {
     PRIVATE(this) = new SpaceNavigatorDeviceP(this);
 
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
     PRIVATE(this)->hasdevice =
             spnav_x11_open(QX11Info::display(), PRIVATE(this)->windowid) == -1 ? false : true;
 
@@ -111,7 +111,7 @@ SpaceNavigatorDevice::SpaceNavigatorDevice(QuarterWidget *quarter) :
         fprintf(stderr, "Quarter:: Could not hook up to Spacenav device.\n");
     }
 
-#endif // HAVE_SPACENAV_LIB
+~endif // HAVE_SPACENAV_LIB
 }
 
 SpaceNavigatorDevice::~SpaceNavigatorDevice()
@@ -126,7 +126,7 @@ SpaceNavigatorDevice::translateEvent(QEvent * event)
   Q_UNUSED(event); 
   SoEvent * ret = nullptr;
 
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
   NativeEvent * ce = dynamic_cast<NativeEvent *>(event);
   if (ce && ce->getEvent()) {
     XEvent * xev = ce->getEvent();
@@ -193,11 +193,11 @@ SpaceNavigatorDevice::translateEvent(QEvent * event)
       }
     }
   }
-#endif // HAVE_SPACENAV_LIB
+~endif // HAVE_SPACENAV_LIB
 
   return ret;
 }
 
 
-#undef PRIVATE
-#undef PUBLIC
+~undef PRIVATE
+~undef PUBLIC

@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <SMESH_Version.h>
+~include "PreCompiled.h"
+~include <SMESH_Version.h>
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <SMESH_Gen.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMESH_Mesh.hxx>
-# include <SMDS_VolumeTool.hxx>
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <SMESH_Gen.hxx>
+~ include <SMESHDS_Mesh.hxx>
+~ include <SMESH_Mesh.hxx>
+~ include <SMDS_VolumeTool.hxx>
 
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepTools.hxx>
 
-# ifdef FCWithNetgen
-#  include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-#  include <NETGENPlugin_Hypothesis.hxx>
-#  include <NETGENPlugin_Mesher.hxx>
-# endif
+~ ifdef FCWithNetgen
+~  include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+~  include <NETGENPlugin_Hypothesis.hxx>
+~  include <NETGENPlugin_Mesher.hxx>
+~ endif
 
-#endif
+~endif
 
-#include "FemMeshShapeNetgenObject.h"
-#include "FemMesh.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
+~include "FemMeshShapeNetgenObject.h"
+~include "FemMesh.h"
+~include <App/DocumentObjectPy.h>
+~include <Base/Placement.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
 
 using namespace Fem;
 using namespace App;
@@ -75,7 +75,7 @@ FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
 
 App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 {
-#ifdef FCWithNetgen
+~ifdef FCWithNetgen
 
     Fem::FemMesh newMesh;
 
@@ -83,11 +83,11 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     TopoDS_Shape shape = feat->Shape.getValue();
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,newMesh.getGenerator());
-#else
+~else
     NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,1,newMesh.getGenerator());
-#endif
+~endif
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());
@@ -123,9 +123,9 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
       FemMesh.setValue(newMesh);
     return App::DocumentObject::StdReturn;
-#else
+~else
     return new App::DocumentObjectExecReturn("The FEM module is built without NETGEN support. Meshing will not work!!!", this);
-#endif
+~endif
 }
 
 //short FemMeshShapeNetgenObject::mustExecute(void) const

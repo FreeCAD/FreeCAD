@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/GroupExtension.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/GroupExtension.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
 
-#include "ViewProviderGroupExtension.h"
-#include "ViewProviderDocumentObject.h"
-#include "Command.h"
-#include "Document.h"
-#include "MainWindow.h"
+~include "ViewProviderGroupExtension.h"
+~include "ViewProviderDocumentObject.h"
+~include "Command.h"
+~include "Document.h"
+~include "MainWindow.h"
 
 
 using namespace Gui;
@@ -76,9 +76,9 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     Base::Console().Log("Check ViewProviderGroupExtension");
-#endif
+~endif
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
 

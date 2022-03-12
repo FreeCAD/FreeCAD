@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QFontMetrics>
-# include <QListWidget>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QFontMetrics>
+~ include <QListWidget>
+~ include <QMessageBox>
+~endif
 
-#include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Selection.h>
-#include <Gui/Tools.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeatureChamfer.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Selection.h>
+~include <Gui/Tools.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/FeatureChamfer.h>
 
-#include "ui_TaskChamferParameters.h"
-#include "TaskChamferParameters.h"
+~include "ui_TaskChamferParameters.h"
+~include "TaskChamferParameters.h"
 
 
 using namespace PartDesignGui;
@@ -433,4 +433,4 @@ bool TaskDlgChamferParameters::accept()
     return TaskDlgDressUpParameters::accept();
 }
 
-#include "moc_TaskChamferParameters.cpp"
+~include "moc_TaskChamferParameters.cpp"

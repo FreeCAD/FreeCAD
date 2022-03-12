@@ -14,8 +14,8 @@
 //
 // Version: 4.0.1 (2006/12/02)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4DistSegment3Segment3.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4DistSegment3Segment3.h"
 
 namespace Wm4
 {

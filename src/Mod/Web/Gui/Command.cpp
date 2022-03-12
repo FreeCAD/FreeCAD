@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
 
-#include "BrowserView.h"
+~include "BrowserView.h"
 
 using namespace std;
 using namespace Gui;

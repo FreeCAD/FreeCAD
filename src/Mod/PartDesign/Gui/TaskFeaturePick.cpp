@@ -21,34 +21,34 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QListIterator>
-# include <QListWidgetItem>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <QListIterator>
+~ include <QListWidgetItem>
+~ include <QTimer>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/OriginFeature.h>
-#include <App/Part.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Control.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/ShapeBinder.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <App/OriginFeature.h>
+~include <App/Part.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Control.h>
+~include <Gui/ViewProviderOrigin.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/ShapeBinder.h>
+~include <Mod/PartDesign/App/DatumLine.h>
+~include <Mod/PartDesign/App/DatumPlane.h>
+~include <Mod/PartDesign/App/DatumPoint.h>
+~include <Mod/PartDesign/App/FeaturePrimitive.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ui_TaskFeaturePick.h"
-#include "TaskFeaturePick.h"
-#include "Utils.h"
+~include "ui_TaskFeaturePick.h"
+~include "TaskFeaturePick.h"
+~include "Utils.h"
 
 
 using namespace PartDesignGui;
@@ -600,4 +600,4 @@ void TaskDlgFeaturePick::showExternal(bool val)
 
 
 
-#include "moc_TaskFeaturePick.cpp"
+~include "moc_TaskFeaturePick.cpp"

@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Inventor/nodes/SoAntiSquish.h>
-#include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/sensors/SoFieldSensor.h>
+~include <Inventor/nodes/SoAntiSquish.h>
+~include <Inventor/nodes/SoRotation.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/nodes/SoSurroundScale.h>
+~include <Inventor/sensors/SoFieldSensor.h>
 
 // Include files for child dragger classes.
-#include <Inventor/draggers/SoRotateCylindricalDragger.h>
-#include <Inventor/draggers/SoTranslate1Dragger.h>
+~include <Inventor/draggers/SoRotateCylindricalDragger.h>
+~include <Inventor/draggers/SoTranslate1Dragger.h>
 
 // Include file for our new class.
-#include "SoNavigationDragger.h"
+~include "SoNavigationDragger.h"
 
 // Include file the binaray of SoNavigationDraggerLayout.iv, the layout of the dragger.
-#include "SoNavigationDraggerLayout.h"
+~include "SoNavigationDraggerLayout.h"
 
 
 SO_KIT_SOURCE(RotTransDragger)

@@ -9,37 +9,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QFileDialog>
-# include <QImage>
-# include <QImageReader>
-# include <QMessageBox>
-# include <QTextStream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QFileDialog>
+~ include <QImage>
+~ include <QImageReader>
+~ include <QMessageBox>
+~ include <QTextStream>
+~endif
 
-#include <ctime>
-#if defined(FC_OS_WIN32)
-#include <sys/timeb.h>
-#endif
+~include <ctime>
+~if defined(FC_OS_WIN32)
+~include <sys/timeb.h>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <Gui/BitmapFactory.h>
-#include "ImageOrientationDialog.h"
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Command.h>
+~include <Gui/BitmapFactory.h>
+~include "ImageOrientationDialog.h"
 
-#if HAVE_OPENCV2
-#  include "opencv2/opencv.hpp"
-#endif
+~if HAVE_OPENCV2
+~  include "opencv2/opencv.hpp"
+~endif
 
 
-#include "ImageView.h"
+~include "ImageView.h"
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -187,7 +187,7 @@ void CmdImageScaling::activated(int iMsg)
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#if HAVE_OPENCV2
+~if HAVE_OPENCV2
 DEF_STD_CMD(CmdImageCapturerTest)
 
 CmdImageCapturerTest::CmdImageCapturerTest()
@@ -225,7 +225,7 @@ void CmdImageCapturerTest::activated(int iMsg)
     // the camera will be deinitialized automatically in VideoCapture destructor
 
 }
-#endif
+~endif
 
 void CreateImageCommands()
 {
@@ -233,7 +233,7 @@ void CreateImageCommands()
 
     rcCmdMgr.addCommand(new CmdImageOpen());
     rcCmdMgr.addCommand(new CmdCreateImagePlane());
-#if HAVE_OPENCV2
+~if HAVE_OPENCV2
     rcCmdMgr.addCommand(new CmdImageCapturerTest());
-#endif
+~endif
 }

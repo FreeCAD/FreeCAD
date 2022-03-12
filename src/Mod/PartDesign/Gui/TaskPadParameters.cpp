@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Precision.hxx>
-#endif
+~ifndef _PreComp_
+~ include <Precision.hxx>
+~endif
 
-#include <Mod/PartDesign/App/FeaturePad.h>
-#include "ui_TaskPadPocketParameters.h"
-#include "TaskPadParameters.h"
+~include <Mod/PartDesign/App/FeaturePad.h>
+~include "ui_TaskPadPocketParameters.h"
+~include "TaskPadParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -137,4 +137,4 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newO
 
 //==== calls from the TaskView ===============================================================
 
-#include "moc_TaskPadParameters.cpp"
+~include "moc_TaskPadParameters.cpp"

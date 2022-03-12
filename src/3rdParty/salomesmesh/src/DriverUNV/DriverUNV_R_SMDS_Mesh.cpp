@@ -20,29 +20,29 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "DriverUNV_R_SMDS_Mesh.h"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshGroup.hxx"
+~include "DriverUNV_R_SMDS_Mesh.h"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshGroup.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include "UNV164_Structure.hxx"
-#include "UNV2411_Structure.hxx"
-#include "UNV2412_Structure.hxx"
-#include "UNV2417_Structure.hxx"
-#include "UNV2420_Structure.hxx"
-#include "UNV_Utilities.hxx"
+~include "UNV164_Structure.hxx"
+~include "UNV2411_Structure.hxx"
+~include "UNV2412_Structure.hxx"
+~include "UNV2417_Structure.hxx"
+~include "UNV2420_Structure.hxx"
+~include "UNV_Utilities.hxx"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
 using namespace std;
 
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 1;
-#else
+~else
 static int MYDEBUG = 0;
-#endif
+~endif
 
 namespace
 {
@@ -102,7 +102,7 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
 {
   // Kernel_Utils::Localizer loc;
   Status aResult = DRS_OK;
-  // See http://forum.freecadweb.org/viewtopic.php?f=18&t=14404&p=135981#p136086 (wmayer)
+  // See http://forum.freecadweb.org/viewtopic.php?f=18&t=14404&p=135981~p136086 (wmayer)
   // Line endings in UNIX format cause problems on Windows, thus the file must be opened
   // in binary mode.
   std::ifstream in_stream(myFile.c_str(), std::ios::in | std::ios::binary);

@@ -22,16 +22,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <Base/Tools.h>
+~include <App/Document.h>
+~include <Base/Tools.h>
 
-#include "GeoFeatureGroupExtension.h"
-#include "Link.h"
-#include "Origin.h"
-#include "OriginFeature.h"
-#include "OriginGroupExtension.h"
+~include "GeoFeatureGroupExtension.h"
+~include "Link.h"
+~include "Origin.h"
+~include "OriginFeature.h"
+~include "OriginGroupExtension.h"
 
 
 using namespace App;

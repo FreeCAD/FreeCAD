@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TextDocument.h"
-#include "DocumentObject.h"
+~include "TextDocument.h"
+~include "DocumentObject.h"
 
 
 using namespace App;

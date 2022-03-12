@@ -6,13 +6,13 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4ContBox3.h"
-#include "Wm4ApprGaussPointsFit3.h"
-#include "Wm4ContBox2.h"
-#include "Wm4ConvexHull3.h"
-#include "Wm4EdgeKey.h"
-#include "Wm4Quaternion.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4ContBox3.h"
+~include "Wm4ApprGaussPointsFit3.h"
+~include "Wm4ContBox2.h"
+~include "Wm4ConvexHull3.h"
+~include "Wm4EdgeKey.h"
+~include "Wm4Quaternion.h"
 
 namespace Wm4
 {

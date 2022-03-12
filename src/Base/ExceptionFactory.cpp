@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ExceptionFactory.h"
-#include <CXX/Objects.hxx>
+~include "ExceptionFactory.h"
+~include <CXX/Objects.hxx>
 
 
 using namespace Base;

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iisfreecadscheme.h"
-#include <QApplication>
+~include "iisfreecadscheme.h"
+~include <QApplication>
 
 
 iisFreeCADTaskPanelScheme* iisFreeCADTaskPanelScheme::myDefaultXPScheme = nullptr;
@@ -29,7 +29,7 @@ iisFreeCADTaskPanelScheme* iisFreeCADTaskPanelScheme::myDefaultXPScheme = nullpt
 iisFreeCADTaskPanelScheme::iisFreeCADTaskPanelScheme(QObject *parent)
 	: iisTaskPanelScheme(parent)
 {
-#ifdef Q_OS_WIN32
+~ifdef Q_OS_WIN32
     QLinearGradient panelBackgroundGrd(0,0, 0,300);
     panelBackgroundGrd.setColorAt(1, QColor(51,51,101));
     panelBackgroundGrd.setColorAt(0, QColor(171,171,193));
@@ -59,7 +59,7 @@ iisFreeCADTaskPanelScheme::iisFreeCADTaskPanelScheme(QObject *parent)
 
     taskLabelScheme.text = QColor(0x215dc6);
     taskLabelScheme.textOver = QColor(0x428eff);
-#else
+~else
     QPalette p = QApplication::palette();
     QLinearGradient panelBackgroundGrd(0,0, 0,300);
     panelBackgroundGrd.setColorAt(1, p.color(QPalette::Dark));
@@ -96,7 +96,7 @@ iisFreeCADTaskPanelScheme::iisFreeCADTaskPanelScheme(QObject *parent)
 
     taskLabelScheme.text = p.color(QPalette::Text);
     taskLabelScheme.textOver = p.color(QPalette::Highlight);
-#endif
+~endif
 }
 
 iisFreeCADTaskPanelScheme::~iisFreeCADTaskPanelScheme()

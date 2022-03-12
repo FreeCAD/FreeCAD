@@ -24,22 +24,22 @@
 //  File   : StdMeshers_SegmentLengthAroundVertex.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_SegmentLengthAroundVertex.hxx"
+~include "StdMeshers_SegmentLengthAroundVertex.hxx"
 
-#include "SMESH_Mesh.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_MesherHelper.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_MesherHelper.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
 
 using namespace std;
 

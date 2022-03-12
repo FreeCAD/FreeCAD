@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
-#endif
+~ifndef _PreComp_
+~ include <QPixmap>
+~ include <QDialog>
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include "ui_SketcherRegularPolygonDialog.h"
-#include "SketcherRegularPolygonDialog.h"
+~include "ui_SketcherRegularPolygonDialog.h"
+~include "SketcherRegularPolygonDialog.h"
 
 using namespace SketcherGui;
 
@@ -65,4 +65,4 @@ void SketcherRegularPolygonDialog::updateValues(void)
     sides = ui->sidesQuantitySpinBox->value();
 }
 
-#include "moc_SketcherRegularPolygonDialog.cpp"
+~include "moc_SketcherRegularPolygonDialog.cpp"

@@ -21,37 +21,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTextStream>
 
-# include <sstream>
-#endif
+~ include <sstream>
+~endif
 
-#include "Mod/Fem/App/FemConstraintPressure.h"
-#include "TaskFemConstraintPressure.h"
-#include "ui_TaskFemConstraintPressure.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "Mod/Fem/App/FemConstraintPressure.h"
+~include "TaskFemConstraintPressure.h"
+~include "ui_TaskFemConstraintPressure.h"
+~include <App/Application.h>
+~include <Base/Tools.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -327,4 +327,4 @@ bool TaskDlgFemConstraintPressure::reject()
     return true;
 }
 
-#include "moc_TaskFemConstraintPressure.cpp"
+~include "moc_TaskFemConstraintPressure.cpp"

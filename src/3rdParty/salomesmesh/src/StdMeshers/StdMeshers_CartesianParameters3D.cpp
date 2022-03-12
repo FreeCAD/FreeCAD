@@ -24,34 +24,34 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#include "StdMeshers_CartesianParameters3D.hxx"
+~include "StdMeshers_CartesianParameters3D.hxx"
 
-#include "StdMeshers_NumberOfSegments.hxx"
-#include "StdMeshers_Distribution.hxx"
-#include "SMESH_Gen.hxx"
+~include "StdMeshers_NumberOfSegments.hxx"
+~include "StdMeshers_Distribution.hxx"
+~include "SMESH_Gen.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <map>
-#include <limits>
+~include <map>
+~include <limits>
 
-#include <BRepGProp.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_Box.hxx>
-#include <GProp_GProps.hxx>
-#include <GeomLib_IsPlanarSurface.hxx>
-#include <Geom_Surface.hxx>
-#include <Precision.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_MapIteratorOfMapOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Mat.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Vec.hxx>
+~include <BRepGProp.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_Box.hxx>
+~include <GProp_GProps.hxx>
+~include <GeomLib_IsPlanarSurface.hxx>
+~include <Geom_Surface.hxx>
+~include <Precision.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_MapIteratorOfMapOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Face.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Mat.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Vec.hxx>
 
 using namespace std;
 
@@ -95,7 +95,7 @@ namespace
 
   typedef std::pair< double, std::pair< double, double > > TCooTriple;
 
-#define gpXYZ( cTriple ) gp_XYZ( (cTriple).first, (cTriple).second.first, (cTriple).second.second )
+~define gpXYZ( cTriple ) gp_XYZ( (cTriple).first, (cTriple).second.first, (cTriple).second.second )
 
   //================================================================================
   /*!

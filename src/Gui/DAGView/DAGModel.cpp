@@ -20,38 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <boost_bind_bind.hpp>
-#include <boost/graph/topological_sort.hpp>
-#include <boost_graph_reverse_graph.hpp>
-#include <memory>
-#include <QBrush>
-#include <QColor>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsProxyWidget>
-#include <QGraphicsSceneContextMenuEvent>
-#include <QGraphicsSceneMouseEvent>
-#include <QKeyEvent>
-#include <QMenu>
-#include <QPainter>
-#include <QPen>
-#include <QString>
-#include <QTimer>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <boost_bind_bind.hpp>
+~include <boost/graph/topological_sort.hpp>
+~include <boost_graph_reverse_graph.hpp>
+~include <memory>
+~include <QBrush>
+~include <QColor>
+~include <QGraphicsPixmapItem>
+~include <QGraphicsProxyWidget>
+~include <QGraphicsSceneContextMenuEvent>
+~include <QGraphicsSceneMouseEvent>
+~include <QKeyEvent>
+~include <QMenu>
+~include <QPainter>
+~include <QPen>
+~include <QString>
+~include <QTimer>
+~endif
 
-#include <Base/Console.h>
-#include <Base/TimeInfo.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MenuManager.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <Base/Console.h>
+~include <Base/TimeInfo.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/MenuManager.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include "DAGModel.h"
+~include "DAGModel.h"
 
 
 using namespace Gui;
@@ -127,9 +127,9 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   renameAction = new QAction(this);
   renameAction->setText(tr("Rename"));
   renameAction->setStatusTip(tr("Rename object"));
-#ifndef Q_OS_MAC
+~ifndef Q_OS_MAC
   renameAction->setShortcut(Qt::Key_F2);
-#endif
+~endif
   connect(renameAction, SIGNAL(triggered()), this, SLOT(onRenameSlot()));
   
   editingFinishedAction = new QAction(this);
@@ -1218,4 +1218,4 @@ void Model::visiblyIsolate(Gui::DAG::Vertex sourceIn)
 }
 
 
-#include <moc_DAGModel.cpp>
+~include <moc_DAGModel.cpp>

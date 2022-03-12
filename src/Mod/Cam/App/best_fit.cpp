@@ -27,38 +27,38 @@
 *
 *********************************************/
 
-#include "PreCompiled.h"
-#include "best_fit.h"
-#include "routine.h"
-#include <strstream>
+~include "PreCompiled.h"
+~include "best_fit.h"
+~include "routine.h"
+~include <strstream>
 
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Builder.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/Builder.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 
-#include <Base/Builder3D.h>
+~include <Base/Builder3D.h>
 
-#include <BRep_Tool.hxx>
-#include "BRepUtils.h"
-#include <BRepBuilderAPI_Sewing.hxx>
+~include <BRep_Tool.hxx>
+~include "BRepUtils.h"
+~include <BRepBuilderAPI_Sewing.hxx>
 
-//#include <BRepMeshAdapt.hxx>
-#include <BRepTools.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRepMesh.hxx>
+//~include <BRepMeshAdapt.hxx>
+~include <BRepTools.hxx>
+~include <BRepMesh_IncrementalMesh.hxx>
+~include <BRepMesh.hxx>
 
-#include <BRepGProp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <GProp_PrincipalProps.hxx>
+~include <BRepGProp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <BRepBuilderAPI_Transform.hxx>
+~include <GProp_PrincipalProps.hxx>
 
-#include <Handle_Poly_Triangulation.hxx>
-#include <Poly_Triangulation.hxx>
+~include <Handle_Poly_Triangulation.hxx>
+~include <Poly_Triangulation.hxx>
 
-#include <ANN/ANN.h> // ANN declarations
+~include <ANN/ANN.h> // ANN declarations
 
-#include <SMESH_Gen.hxx>
+~include <SMESH_Gen.hxx>
 
 
 best_fit::best_fit()

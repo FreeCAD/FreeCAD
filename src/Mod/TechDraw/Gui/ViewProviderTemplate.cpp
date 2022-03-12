@@ -21,31 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTextStream>
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
 
-#include <Mod/TechDraw/App/DrawTemplate.h>
-#include <Mod/TechDraw/App/DrawSVGTemplate.h>
+~include <Mod/TechDraw/App/DrawTemplate.h>
+~include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
-#include "QGITemplate.h"
-#include "QGISVGTemplate.h"
-#include "QGVPage.h"
-#include "MDIViewPage.h"
-#include "TemplateTextField.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderTemplate.h"
+~include "QGITemplate.h"
+~include "QGISVGTemplate.h"
+~include "QGVPage.h"
+~include "MDIViewPage.h"
+~include "TemplateTextField.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderTemplate.h"
 
 using namespace TechDrawGui;
 

@@ -20,19 +20,19 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
 
-#include <iostream>
-#include <fstream>
+~include <iostream>
+~include <fstream>
 
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
 
-#include "TestJtReader.h"
-#include "FcLodHandler.h"
+~include "TestJtReader.h"
+~include "FcLodHandler.h"
 
 
 TestJtReader::TestJtReader()

@@ -27,42 +27,42 @@
 // Author    : Edward AGAPOV (eap)
 //
 
-#include "StdMeshers_RadialPrism_3D.hxx"
+~include "StdMeshers_RadialPrism_3D.hxx"
 
-#include <Basics_OCCTVersion.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include "StdMeshers_ProjectionUtils.hxx"
-#include "StdMeshers_NumberOfLayers.hxx"
-#include "StdMeshers_LayerDistribution.hxx"
-#include "StdMeshers_Prism_3D.hxx"
-#include "StdMeshers_Regular_1D.hxx"
+~include "StdMeshers_ProjectionUtils.hxx"
+~include "StdMeshers_NumberOfLayers.hxx"
+~include "StdMeshers_LayerDistribution.hxx"
+~include "StdMeshers_Prism_3D.hxx"
+~include "StdMeshers_Regular_1D.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Solid.hxx>
-#include <gp.hxx>
-#include <gp_Pnt.hxx>
-#include <BRepClass3d.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRep_Tool.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Solid.hxx>
+~include <gp.hxx>
+~include <gp_Pnt.hxx>
+~include <BRepClass3d.hxx>
 
 using namespace std;
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
-#define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
+~define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
+~define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
 
 namespace ProjectionUtils = StdMeshers_ProjectionUtils;
 
@@ -224,7 +224,7 @@ bool StdMeshers_RadialPrism_3D::Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& a
     TopoDS_Face outFace = TopoDS::Face( exp.Current() );
     TopoDS_Face inFace;
     if ( !shape2ShapeMap.IsBound( outFace, /*isOut=*/true )) {
-      return error(SMESH_Comment("Corresponding inner face not found for face #" )
+      return error(SMESH_Comment("Corresponding inner face not found for face ~" )
                    << meshDS->ShapeToIndex( outFace ));
     } else {
       inFace = TopoDS::Face( shape2ShapeMap( outFace, /*isOut=*/true ));
@@ -234,7 +234,7 @@ bool StdMeshers_RadialPrism_3D::Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& a
     ProjectionUtils::TNodeNodeMap nodeIn2OutMap;
     if ( ! ProjectionUtils::FindMatchingNodesOnFaces( inFace, &aMesh, outFace, &aMesh,
                                                       shape2ShapeMap, nodeIn2OutMap ))
-      return error(COMPERR_BAD_INPUT_MESH,SMESH_Comment("Mesh on faces #")
+      return error(COMPERR_BAD_INPUT_MESH,SMESH_Comment("Mesh on faces ~")
                    << meshDS->ShapeToIndex( outFace ) << " and "
                    << meshDS->ShapeToIndex( inFace ) << " seems different" );
 

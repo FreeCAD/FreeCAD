@@ -25,8 +25,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "VectorNodeImpl.h"
-#include "CheckedFile.h"
+~include "VectorNodeImpl.h"
+~include "CheckedFile.h"
 
 namespace e57
 {
@@ -121,7 +121,7 @@ namespace e57
       cf << space( indent ) << "</" << fieldName << ">\n";
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void VectorNodeImpl::dump( int indent, std::ostream &os ) const
    {
       /// don't checkImageFileOpen
@@ -135,5 +135,5 @@ namespace e57
          children_.at( i )->dump( indent + 2, os );
       }
    }
-#endif
+~endif
 }

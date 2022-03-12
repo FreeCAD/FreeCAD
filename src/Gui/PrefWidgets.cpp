@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QContextMenuEvent>
-# include <QMenu>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QContextMenuEvent>
+~ include <QMenu>
+~endif
 
-#include <cstring>
+~include <cstring>
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
 
-#include "PrefWidgets.h"
+~include "PrefWidgets.h"
 
 
 using Base::Console;
@@ -68,13 +68,13 @@ QByteArray PrefWidget::entryName() const
 /** Sets the preference path to \a path. */
 void PrefWidget::setParamGrpPath( const QByteArray& path )
 {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
   if (getWindowParameter().isValid())
   {
     if ( paramGrpPath() != path )
       Base::Console().Warning("Widget already attached\n");
   }
-#endif
+~endif
 
   if ( paramGrpPath() != path )
   {
@@ -116,10 +116,10 @@ void PrefWidget::onSave()
   savePreferences();
   if (getWindowParameter().isValid())
     getWindowParameter()->Notify( entryName() );
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
   else
     qFatal( "No parameter group specified!" );
-#endif
+~endif
 }
 
 /**
@@ -127,10 +127,10 @@ void PrefWidget::onSave()
  */
 void PrefWidget::onRestore()
 {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
   if (getWindowParameter().isNull())
     qWarning( "No parameter group specified!" );
-#endif
+~endif
   restorePreferences();
 }
 
@@ -770,4 +770,4 @@ void PrefFontBox::savePreferences()
   getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
 }
 
-#include "moc_PrefWidgets.cpp"
+~include "moc_PrefWidgets.cpp"

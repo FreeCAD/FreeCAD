@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <Standard_math.hxx>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <Standard_math.hxx>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Reader.h>
-#include <Base/VectorPy.h>
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObserver.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Application.h>
-#ifdef HAVE_PART
-#include <Mod/Part/App/PropertyGeometryList.h>
-#endif
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Reader.h>
+~include <Base/VectorPy.h>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObserver.h>
+~include <Gui/Document.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Application.h>
+~ifdef HAVE_PART
+~include <Mod/Part/App/PropertyGeometryList.h>
+~endif
 
-#include "Workbench.h"
+~include "Workbench.h"
 
 // use a different name to CreateCommand()
 void CreateSandboxCommands(void);
@@ -66,7 +66,7 @@ public:
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
     {
-#ifdef HAVE_PART
+~ifdef HAVE_PART
         if (object == &Obj && Prop.getTypeId() == Part::PropertyGeometryList::getClassTypeId()) {
             const Part::PropertyGeometryList& geom = static_cast<const Part::PropertyGeometryList&>(Prop);
             const std::vector<Part::Geometry*>& items = geom.getValues();
@@ -87,7 +87,7 @@ private:
                 Base::Vector3d a3 = arc->getEndPoint(true);
               //Base::Vector3d l1 = seg->getStartPoint();
                 Base::Vector3d l2 = seg->getEndPoint();
-#if 0
+~if 0
                 Py::Module pd("FilletArc");
                 Py::Callable method(pd.getAttr(std::string("makeFilletArc")));
                 Py::Callable vector(pd.getAttr(std::string("Vector")));
@@ -145,7 +145,7 @@ private:
                 Base::Console().Message("P=<%.4f,%.4f>\n", a3.x,a3.y);
                 Base::Console().Message("Q=<%.4f,%.4f>\n", l2.x,l2.y);
                 Base::Console().Message("\n");
-#else
+~else
                 Py::Module pd("PartDesign");
                 Py::Callable method(pd.getAttr(std::string("makeFilletArc")));
 
@@ -176,17 +176,17 @@ private:
                 Base::Console().Message("P=<%.4f,%.4f>\n", a3.x,a3.y);
                 Base::Console().Message("Q=<%.4f,%.4f>\n", l2.x,l2.y);
                 Base::Console().Message("\n");
-#endif
+~endif
             }
             catch (Py::Exception&) {
                 Base::PyException e; // extract the Python error text
                 Base::Console().Error("%s\n", e.what());
             }
         }
-#else
+~else
         (void)Obj;
         (void)Prop;
-#endif
+~endif
     }
 
     App::DocumentObject* object;

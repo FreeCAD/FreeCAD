@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <QApplication>
-# include <QInputDialog>
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <QApplication>
+~ include <QInputDialog>
+~ include <QMessageBox>
+~endif
 
-#include <App/DocumentObjectGroup.h>
-#include <App/OriginFeature.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/CommandT.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/OriginFeature.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/CommandT.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/DlgEditFileIncludePropertyExternal.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
 
-#include <Mod/Sketcher/App/SketchObjectSF.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/Attacher.h>
-#include <Mod/Part/App/Part2DObject.h>
+~include <Mod/Sketcher/App/SketchObjectSF.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Part/App/Attacher.h>
+~include <Mod/Part/App/Part2DObject.h>
 
-#include "SketchOrientationDialog.h"
-#include "SketchMirrorDialog.h"
-#include "ViewProviderSketch.h"
-#include "TaskSketcherValidation.h"
-#include "../App/Constraint.h"
+~include "SketchOrientationDialog.h"
+~include "SketchMirrorDialog.h"
+~include "ViewProviderSketch.h"
+~include "TaskSketcherValidation.h"
+~include "../App/Constraint.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -414,7 +414,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     std::string camstring;
     switch (Dlg.DirType) {
         case 0:
-            camstring = "#Inventor V2.1 ascii\\n"
+            camstring = "~Inventor V2.1 ascii\\n"
                 "OrthographicCamera {\\n"
                 " viewportMapping ADJUST_CAMERA\\n"
                 "  position 0 0 87\\n"
@@ -426,7 +426,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
                 "  height 143.52005 }";
             break;
         case 1:
-            camstring = "#Inventor V2.1 ascii\\n"
+            camstring = "~Inventor V2.1 ascii\\n"
                 "OrthographicCamera {\\n"
                 " viewportMapping ADJUST_CAMERA\\n"
                 "  position 0 0 -87\\n"
@@ -438,7 +438,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
                 "  height 143.52005 }";
             break;
         case 2:
-            camstring = "#Inventor V2.1 ascii\\n"
+            camstring = "~Inventor V2.1 ascii\\n"
                 "OrthographicCamera {\\n"
                 " viewportMapping ADJUST_CAMERA\\n"
                 "  position 0 -87 0\\n"
@@ -450,7 +450,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
                 "  height 143.52005\\n\\n}";
             break;
         case 3:
-            camstring = "#Inventor V2.1 ascii\\n"
+            camstring = "~Inventor V2.1 ascii\\n"
                 "OrthographicCamera {\\n"
                 " viewportMapping ADJUST_CAMERA\\n"
                 "  position 0 87 0\\n"
@@ -462,7 +462,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
                 "  height 143.52005\\n\\n}";
             break;
         case 4:
-            camstring = "#Inventor V2.1 ascii\\n"
+            camstring = "~Inventor V2.1 ascii\\n"
                 "OrthographicCamera {\\n"
                 " viewportMapping ADJUST_CAMERA\\n"
                 "  position 87 0 0\\n"
@@ -474,7 +474,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
                 "  height 143.52005\\n\\n}";
             break;
         case 5:
-            camstring = "#Inventor V2.1 ascii\\n"
+            camstring = "~Inventor V2.1 ascii\\n"
                 "OrthographicCamera {\\n"
                 " viewportMapping ADJUST_CAMERA\\n"
                 "  position -87 0 0\\n"
@@ -928,7 +928,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         baseConstraints=addedConstraints+1;
     }
 
-    // apply the placement of the first sketch in the list (#0002434)
+    // apply the placement of the first sketch in the list (~0002434)
     doCommand(Doc,
               "App.activeDocument().ActiveObject.Placement = App.activeDocument().%s.Placement",
               selection.front().getFeatName());
@@ -942,7 +942,7 @@ bool CmdSketcherMergeSketches::isActive(void)
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:
 // https://github.com/Spritkopf/freecad-macros/blob/master/clip-sketch/clip_sketch.FCMacro
-// https://forum.freecadweb.org/viewtopic.php?p=231481#p231085
+// https://forum.freecadweb.org/viewtopic.php?p=231481~p231085
 DEF_STD_CMD_A(CmdSketcherViewSection)
 
 CmdSketcherViewSection::CmdSketcherViewSection()

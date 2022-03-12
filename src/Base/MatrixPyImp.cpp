@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of MatrixPy.xml)
-#include "RotationPy.h"
-#include "VectorPy.h"
-#include "GeometryPyCXX.h"
-#include "QuantityPy.h"
-#include "MatrixPy.h"
-#include "MatrixPy.cpp"
+~include "RotationPy.h"
+~include "VectorPy.h"
+~include "GeometryPyCXX.h"
+~include "QuantityPy.h"
+~include "MatrixPy.h"
+~include "MatrixPy.cpp"
 
 
 using namespace Base;

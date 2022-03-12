@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QApplication>
-#include <QPainter>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QApplication>
+~include <QPainter>
+~endif
 
-#include <QStyleOptionViewItem>
+~include <QStyleOptionViewItem>
 
-#include "DAGRectItem.h"
+~include "DAGRectItem.h"
 
 
 using namespace Gui;

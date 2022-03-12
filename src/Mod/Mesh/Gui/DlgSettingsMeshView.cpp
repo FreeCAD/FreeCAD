@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgSettingsMeshView.h"
-#include "ui_DlgSettingsMeshView.h"
-#include <Gui/PrefWidgets.h>
-#include <Gui/Window.h>
+~include "DlgSettingsMeshView.h"
+~include "ui_DlgSettingsMeshView.h"
+~include <Gui/PrefWidgets.h>
+~include <Gui/Window.h>
 
 using namespace MeshGui;
 
@@ -94,4 +94,4 @@ void DlgSettingsMeshView::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsMeshView.cpp"
+~include "moc_DlgSettingsMeshView.cpp"

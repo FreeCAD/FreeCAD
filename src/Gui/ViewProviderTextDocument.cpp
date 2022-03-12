@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QPlainTextEdit>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QPlainTextEdit>
+~endif
 
-#include <App/Application.h>
-#include <Base/Type.h>
+~include <App/Application.h>
+~include <Base/Type.h>
 
-#include "ViewProviderTextDocument.h"
-#include "ActionFunction.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "PythonEditor.h"
-#include "TextDocumentEditorView.h"
-#include "ViewProviderDocumentObject.h"
+~include "ViewProviderTextDocument.h"
+~include "ActionFunction.h"
+~include "Document.h"
+~include "MainWindow.h"
+~include "PythonEditor.h"
+~include "TextDocumentEditorView.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;

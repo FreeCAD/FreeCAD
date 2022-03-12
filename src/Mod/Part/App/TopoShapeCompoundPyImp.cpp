@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TopoShape.h"
+~include "TopoShape.h"
 
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <Standard_Failure.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <Precision.hxx>
+~ include <TopExp_Explorer.hxx>
+~endif
 
-#include "OCCError.h"
+~include "OCCError.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompoundPy.xml)
-#include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompoundPy.cpp"
+~include "TopoShapeCompoundPy.h"
+~include "TopoShapeCompoundPy.cpp"
 
 using namespace Part;
 

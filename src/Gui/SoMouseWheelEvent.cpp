@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "SoMouseWheelEvent.h"
+~include "SoMouseWheelEvent.h"
 
 SO_EVENT_SOURCE(SoMouseWheelEvent);

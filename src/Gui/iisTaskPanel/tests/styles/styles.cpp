@@ -5,9 +5,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "styles.h"
+~include "styles.h"
 
-#include <iisTaskPanel>
+~include <iisTaskPanel>
 
 test::test(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)

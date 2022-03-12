@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include "UnitTestPy.h"
-#include "UnitTestImp.h"
+~include "UnitTestPy.h"
+~include "UnitTestImp.h"
 
-#include <Gui/Language/Translator.h>
-#include <Base/Console.h>
+~include <Gui/Language/Translator.h>
+~include <Base/Console.h>
 
 namespace TestGui {
 class Module : public Py::ExtensionModule<Module>

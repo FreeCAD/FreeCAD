@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QHeaderView>
-# include <QPushButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QHeaderView>
+~ include <QPushButton>
+~endif
 
-#include "DlgActivateWindowImp.h"
-#include "ui_DlgActivateWindow.h"
-#include "MainWindow.h"
-#include "MDIView.h"
+~include "DlgActivateWindowImp.h"
+~include "ui_DlgActivateWindow.h"
+~include "MainWindow.h"
+~include "MDIView.h"
 
 using namespace Gui::Dialog;
 
@@ -102,4 +102,4 @@ void DlgActivateWindowImp::accept()
     QDialog::accept();
 }
 
-#include "moc_DlgActivateWindowImp.cpp"
+~include "moc_DlgActivateWindowImp.cpp"

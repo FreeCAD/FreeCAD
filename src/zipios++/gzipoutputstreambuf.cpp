@@ -1,14 +1,14 @@
 
-#include <ctime>
+~include <ctime>
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <algorithm>
-#include "meta-iostreams.h"
+~include <algorithm>
+~include "meta-iostreams.h"
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "gzipoutputstreambuf.h"
+~include "gzipoutputstreambuf.h"
 
 namespace zipios {
 
@@ -66,8 +66,8 @@ void GZIPOutputStreambuf::writeHeader() {
     flg |= (_comment  == "") ? 0x00 : 0x10;
 
     ostream os( _outbuf ) ;
-    os << (unsigned char)0x1f;  // Magic #
-    os << (unsigned char)0x8b;  // Magic #
+    os << (unsigned char)0x1f;  // Magic ~
+    os << (unsigned char)0x8b;  // Magic ~
     os << (unsigned char)0x08;  // Deflater.DEFLATED
     os << flg;                  // FLG
     os << (unsigned char)0x00;  // MTIME

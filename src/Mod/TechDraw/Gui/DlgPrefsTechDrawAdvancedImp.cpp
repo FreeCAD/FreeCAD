@@ -23,11 +23,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgPrefsTechDrawAdvancedImp.h"
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
-#include <Gui/PrefWidgets.h>
+~include "DlgPrefsTechDrawAdvancedImp.h"
+~include <Mod/TechDraw/Gui/ui_DlgPrefsTechDrawAdvanced.h>
+~include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
@@ -90,4 +90,4 @@ void DlgPrefsTechDrawAdvancedImp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAdvancedImp.cpp>
+~include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAdvancedImp.cpp>

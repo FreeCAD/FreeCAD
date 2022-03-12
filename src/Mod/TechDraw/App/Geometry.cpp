@@ -20,81 +20,81 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <Approx_Curve3d.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <BRepLib.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <Precision.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <gce_MakeCirc.hxx>
-#include <GC_MakeEllipse.hxx>
-#include <GC_MakeArcOfCircle.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
-#include <gp_Ax2.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Geometry.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <GeomLProp_CLProps.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Standard_Version.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
-#include <cmath>
-#endif  // #ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <Approx_Curve3d.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepTools.hxx>
+~include <BRepLib.hxx>
+~include <BRepBuilderAPI_MakeVertex.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepExtrema_DistShapeShape.hxx>
+~include <BRepLProp_CLProps.hxx>
+~include <Precision.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <gce_MakeCirc.hxx>
+~include <GC_MakeEllipse.hxx>
+~include <GC_MakeArcOfCircle.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Circ.hxx>
+~include <gp_Elips.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Vec.hxx>
+~include <gp_Ax2.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_BSplineCurve.hxx>
+~include <Geom_BezierCurve.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_Geometry.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+~include <GeomAPI_PointsToBSpline.hxx>
+~include <GeomLProp_CLProps.hxx>
+~include <GeomAPI_ProjectPointOnCurve.hxx>
+~include <Poly_Polygon3D.hxx>
+~include <Standard_Version.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TColgp_Array1OfPnt2d.hxx>
+~include <TColgp_Array1OfPnt.hxx>
+~if OCC_VERSION_HEX < 0x070600
+~include <BRepAdaptor_HCurve.hxx>
+~endif
+~include <cmath>
+~endif  // ~ifndef _PreComp_
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Tools2D.h>
+~include <Base/Parameter.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include <App/Application.h>
-#include <App/Material.h>
+~include <App/Application.h>
+~include <App/Material.h>
 
-#include "DrawUtil.h"
+~include "DrawUtil.h"
 
-#include "Geometry.h"
+~include "Geometry.h"
 
 using namespace TechDraw;
 using namespace std;
 
-#if OCC_VERSION_HEX >= 0x070600
+~if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
+~endif
 
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
+~define GEOMETRYEDGE 0
+~define COSMETICEDGE 1
+~define CENTERLINE   2
 
 // Collection of Geometric Features
 Wire::Wire()
@@ -548,9 +548,9 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
     // find intersection vertex(es) between two edges
     // permitted are: line, circle or arc of circle
     // call: interPoints = line1.intersection(line2);
-    # define unknown 0
-    # define isGeneric 1
-    # define isArcOrCircle 2
+    ~ define unknown 0
+    ~ define isGeneric 1
+    ~ define isArcOrCircle 2
     // we check the type of the two objects
     int edge1(unknown), edge2(unknown);
     if (this->geomType == TechDraw::CIRCLE ||

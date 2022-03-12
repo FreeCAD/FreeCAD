@@ -20,56 +20,56 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QGraphicsView>
-# include <QMessageBox>
-# include <iostream>
-# include <string>
-# include <sstream>
-# include <cstdlib>
-# include <exception>
-#endif  //#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QGraphicsView>
+~ include <QMessageBox>
+~ include <iostream>
+~ include <string>
+~ include <sstream>
+~ include <cstdlib>
+~ include <exception>
+~endif  //~ifndef _PreComp_
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/ViewProvider.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/ViewProvider.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewCollection.h>
+~include <Mod/TechDraw/App/DrawViewAnnotation.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/Cosmetic.h>
 
-#include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
-#include "TaskLeaderLine.h"
-#include "TaskRichAnno.h"
-#include "TaskCosVertex.h"
-#include "TaskCenterLine.h"
-#include "TaskLineDecor.h"
-#include "TaskWeldingSymbol.h"
-#include "TaskCosmeticLine.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
-#include "QGVPage.h"
+~include "DrawGuiUtil.h"
+~include "MDIViewPage.h"
+~include "TaskLeaderLine.h"
+~include "TaskRichAnno.h"
+~include "TaskCosVertex.h"
+~include "TaskCenterLine.h"
+~include "TaskLineDecor.h"
+~include "TaskWeldingSymbol.h"
+~include "TaskCosmeticLine.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderViewPart.h"
+~include "QGVPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <iomanip>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <App/Property.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include "FeatureViewSpreadsheet.h"
-#include <Mod/Spreadsheet/App/Cell.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <iomanip>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <App/Property.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include "FeatureViewSpreadsheet.h"
+~include <Mod/Spreadsheet/App/Cell.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 using namespace Drawing;
 using namespace std;
@@ -182,7 +182,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             // get colors, style, alignment and span
             int alignment = 0;
             std::string bcolor = "none";
-            std::string fcolor = "#" + hr.str() + hg.str() + hb.str();
+            std::string fcolor = "~" + hr.str() + hg.str() + hb.str();
             std::string textstyle = "";
             Spreadsheet::Cell* cell = sheet->getCell(address);
             if (cell) {
@@ -194,14 +194,14 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                     br << hex << setfill('0') << setw(2) << (int)(255.0*b.r);
                     bg << hex << setfill('0') << setw(2) << (int)(255.0*b.g);
                     bb << hex << setfill('0') << setw(2) << (int)(255.0*b.b);
-                    bcolor = "#" + br.str() + bg.str() + bb.str();
+                    bcolor = "~" + br.str() + bg.str() + bb.str();
                 }
                 if (cell->getForeground(f)) {
                     std::stringstream fr,fg,fb;
                     fr << hex << setfill('0') << setw(2) << (int)(255.0*f.r);
                     fg << hex << setfill('0') << setw(2) << (int)(255.0*f.g);
                     fb << hex << setfill('0') << setw(2) << (int)(255.0*f.b);
-                    fcolor = "#" + fr.str() + fg.str() + fb.str();
+                    fcolor = "~" + fr.str() + fg.str() + fb.str();
                 }
                 if (cell->getStyle(st)) {
                     for (std::set<std::string>::const_iterator i = st.begin(); i != st.end(); ++i) {
@@ -232,7 +232,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
                 result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth 
                        << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
-                       << LineWidth.getValue()/Scale.getValue() << ";stroke:#" << hr.str() << hg.str() << hb.str() << ";\" />" << endl;
+                       << LineWidth.getValue()/Scale.getValue() << ";stroke:~" << hr.str() << hg.str() << hb.str() << ";\" />" << endl;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + FontSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "DlgPartCylinderImp.h"
-#include "ui_DlgPartCylinder.h"
+~include "DlgPartCylinderImp.h"
+~include "ui_DlgPartCylinder.h"
 
 using namespace PartGui;
 
@@ -58,4 +58,4 @@ double DlgPartCylinderImp::getLength() const
     return getUi()->length->value().getValue();
 }
 
-#include "moc_DlgPartCylinderImp.cpp"
+~include "moc_DlgPartCylinderImp.cpp"

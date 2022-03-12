@@ -1,17 +1,17 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <iterator>
-#include <string>
-#include <cassert>
+~include "meta-iostreams.h"
+~include <iterator>
+~include <string>
+~include <cassert>
 
-#include "zipios_common.h"
-#include "ziphead.h"
-#include "zipheadio.h"
-#include "zipios_defs.h"
+~include "zipios_common.h"
+~include "ziphead.h"
+~include "zipheadio.h"
+~include "zipios_defs.h"
 
-#include "outputstringstream.h"
+~include "outputstringstream.h"
 
 namespace zipios {
 
@@ -214,11 +214,11 @@ const uint32 ZipCDirEntry::signature = 0x02014b50 ;
 
 void ZipCDirEntry::setDefaultWriter() {
   writer_version = 0 ;
-#ifdef WIN32
+~ifdef WIN32
     writer_version |= static_cast< uint16 >( 0 ) << 8 ; // Windows, DOS
-#else
+~else
     writer_version |= static_cast< uint16 >( 3 ) << 8 ; // Unix
-#endif
+~endif
     writer_version |= 20 ; // version number
 }
 

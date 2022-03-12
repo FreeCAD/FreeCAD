@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy.xml)
-#include "ViewProviderPy.h"
-#include "ViewProviderPy.cpp"
+~include "ViewProviderPy.h"
+~include "ViewProviderPy.cpp"
 
 using namespace PartDesignGui;
 

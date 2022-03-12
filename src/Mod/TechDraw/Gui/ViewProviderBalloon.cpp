@@ -23,24 +23,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/Control.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <App/DocumentObject.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Control.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/LineGroup.h>
 
-#include "PreferencesGui.h"
-#include "TaskBalloon.h"
-#include "ViewProviderBalloon.h"
+~include "PreferencesGui.h"
+~include "TaskBalloon.h"
+~include "ViewProviderBalloon.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

@@ -23,12 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgSettingsFemElmerImp.h"
-#include "ui_DlgSettingsFemElmer.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+~include "DlgSettingsFemElmerImp.h"
+~include "ui_DlgSettingsFemElmer.h"
+~include <Gui/Application.h>
+~include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
@@ -75,4 +75,4 @@ void DlgSettingsFemElmerImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsFemElmerImp.cpp"
+~include "moc_DlgSettingsFemElmerImp.cpp"

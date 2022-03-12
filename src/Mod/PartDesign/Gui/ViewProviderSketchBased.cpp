@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Gui/Application.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
+~include <Gui/Application.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/PartDesign/App/FeatureSketchBased.h>
 
-#include "ViewProviderSketchBased.h"
+~include "ViewProviderSketchBased.h"
 
 
 using namespace PartDesignGui;

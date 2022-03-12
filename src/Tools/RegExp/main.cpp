@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#include "regexpdialog.h"
-#include <qapplication.h>
+~include "regexpdialog.h"
+~include <qapplication.h>
 
 
 int main( int argc, char** argv )

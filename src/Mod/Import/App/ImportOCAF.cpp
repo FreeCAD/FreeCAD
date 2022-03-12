@@ -21,99 +21,99 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#if defined(__MINGW32__)
-# define WNT // avoid conflict with GUID
-#endif
-#ifndef _PreComp_
-# include <gp_Trsf.hxx>
-# include <gp_Ax1.hxx>
-# include <NCollection_Vector.hxx>
-# include <BRepBuilderAPI_MakeShape.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Face.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx> // for Precision::Confusion()
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <climits>
-# include <Standard_Version.hxx>
-# include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <XCAFDoc_GraphNode.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_Tool.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_ColorRGBA.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPControl_Writer.hxx>
-# include <IGESCAFControl_Reader.hxx>
-# include <IGESCAFControl_Writer.hxx>
-# include <IGESControl_Controller.hxx>
-# include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
-# include <OSD_Exception.hxx>
-#if OCC_VERSION_HEX >= 0x060500
-# include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
-# endif
-#endif
+~include "PreCompiled.h"
+~if defined(__MINGW32__)
+~ define WNT // avoid conflict with GUID
+~endif
+~ifndef _PreComp_
+~ include <gp_Trsf.hxx>
+~ include <gp_Ax1.hxx>
+~ include <NCollection_Vector.hxx>
+~ include <BRepBuilderAPI_MakeShape.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepAlgoAPI_Common.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <Standard_Failure.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Pln.hxx> // for Precision::Confusion()
+~ include <Bnd_Box.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <climits>
+~ include <Standard_Version.hxx>
+~ include <BRep_Builder.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <XCAFDoc_DocumentTool.hxx>
+~ include <XCAFDoc_ShapeTool.hxx>
+~ include <XCAFDoc_ColorTool.hxx>
+~ include <XCAFDoc_Location.hxx>
+~ include <XCAFDoc_GraphNode.hxx>
+~ include <TDF_Label.hxx>
+~ include <TDF_Tool.hxx>
+~ include <TDF_LabelSequence.hxx>
+~ include <TDF_ChildIterator.hxx>
+~ include <TDataStd_Name.hxx>
+~ include <Quantity_ColorRGBA.hxx>
+~ include <STEPCAFControl_Reader.hxx>
+~ include <STEPControl_Writer.hxx>
+~ include <IGESCAFControl_Reader.hxx>
+~ include <IGESCAFControl_Writer.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <Interface_Static.hxx>
+~ include <Transfer_TransientProcess.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_MapOfShape.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <APIHeaderSection_MakeHeader.hxx>
+~ include <OSD_Exception.hxx>
+~if OCC_VERSION_HEX >= 0x060500
+~ include <TDataXtd_Shape.hxx>
+~ else
+~ include <TDataStd_Shape.hxx>
+~ endif
+~endif
 
-#include <boost/algorithm/string.hpp>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Part.h>
-#include <App/Link.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FeatureCompound.h>
-#include "ImportOCAF.h"
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
+~include <boost/algorithm/string.hpp>
+~include <Base/Parameter.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <App/Part.h>
+~include <App/Link.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/FeatureCompound.h>
+~include "ImportOCAF.h"
+~include <Mod/Part/App/ProgressIndicator.h>
+~include <Mod/Part/App/ImportIges.h>
+~include <Mod/Part/App/ImportStep.h>
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectGroup.h>
 
-#ifdef HAVE_TBB
-#include <tbb/parallel_for.h>
-#include <tbb/blocked_range.h>
-#include <tbb/task_group.h>
-#endif
+~ifdef HAVE_TBB
+~include <tbb/parallel_for.h>
+~include <tbb/blocked_range.h>
+~include <tbb/task_group.h>
+~endif
 
 using namespace Import;
 
-#if OCC_VERSION_HEX >= 0x070500
+~if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#   define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
+~   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+~else
+~   define OCC_COLOR_SPACE Quantity_TOC_RGB
+~endif
 
 static inline App::Color convertColor(const Quantity_ColorRGBA &c)
 {
@@ -125,7 +125,7 @@ static inline App::Color convertColor(const Quantity_ColorRGBA &c)
                       1.0f - static_cast<float>(c.Alpha()));
 }
 
-#define OCAF_KEEP_PLACEMENT
+~define OCAF_KEEP_PLACEMENT
 
 ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
     : pDoc(h), doc(d), merge(true), default_name(name)
@@ -156,10 +156,10 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                             std::vector<App::DocumentObject*>& lValue)
 {
     int hash = 0;
-#ifdef HAVE_TBB
+~ifdef HAVE_TBB
     using namespace tbb;
     task_group g;
-#endif
+~endif
     TopoDS_Shape aShape;
 
     std::vector<App::DocumentObject *> localValue;
@@ -201,7 +201,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             part_loc = hLoc->Get();
     }
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     Base::Console().Log("H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
         hash,
         part_name.c_str(),
@@ -215,17 +215,17 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         aShapeTool->IsComponent(label),
         aShapeTool->IsSubShape(label)
     );
-#endif
+~endif
 
-#if defined(OCAF_KEEP_PLACEMENT)
+~if defined(OCAF_KEEP_PLACEMENT)
     std::string asm_name = part_name;
     (void)assembly;
-#else
+~else
     std::string asm_name = assembly;
     if (aShapeTool->IsAssembly(label)) {
         asm_name = part_name;
     }
-#endif
+~endif
 
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
@@ -301,10 +301,10 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
                              std::vector<App::DocumentObject*>& lValue, bool mergeShape)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
-#ifdef HAVE_TBB
+~ifdef HAVE_TBB
     using namespace tbb;
     task_group g;
-#endif
+~endif
 
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
@@ -568,7 +568,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     jt = myColorMap.find(shape.HashCode(INT_MAX));
 
     App::Color partColor(0.8f,0.8f,0.8f);
-#if 0//TODO
+~if 0//TODO
     Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
     if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
         if (jt != myColorMap.end()) {
@@ -581,7 +581,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
 
         partColor = static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue();
     }
-#endif
+~endif
 
     // set label name if defined
     if (setname && !myNameMap.empty()) {
@@ -616,12 +616,12 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
         }
 
         if (found_face_color) {
-#if 0//TODO
+~if 0//TODO
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
             if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
                 static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(faceColors);
             }
-#endif
+~endif
         }
     }
 }
@@ -694,7 +694,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             delete [] str;
         }
 
-#if 0
+~if 0
         // http://www.opencascade.org/org/forum/thread_15174/
         if (aShapeTool->IsAssembly(label)) {
             TDF_LabelSequence shapeLabels;
@@ -704,7 +704,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
                 loadShapes(shapeLabels.Value(i));
             }
         }
-#endif
+~endif
 
         if (label.HasChild()) {
             TDF_ChildIterator it;

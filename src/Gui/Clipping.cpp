@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoClipPlane.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/sensors/SoTimerSensor.h>
-# include <QDockWidget>
-# include <QPointer>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/nodes/SoClipPlane.h>
+~ include <Inventor/nodes/SoGroup.h>
+~ include <Inventor/sensors/SoTimerSensor.h>
+~ include <QDockWidget>
+~ include <QPointer>
+~endif
 
-#include "Clipping.h"
-#include "ui_Clipping.h"
-#include "DockWindowManager.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
+~include "Clipping.h"
+~include "ui_Clipping.h"
+~include "DockWindowManager.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
 
 using namespace Gui::Dialog;
 
@@ -358,4 +358,4 @@ void Clipping::on_dirZ_valueChanged(double)
         d->clipView->plane.setValue(SbPlane(normal,pln.getDistanceFromOrigin()));
 }
 
-#include "moc_Clipping.cpp"
+~include "moc_Clipping.cpp"

@@ -9,40 +9,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QRegExp>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QCoreApplication>
+~ include <QDir>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QMessageBox>
+~ include <QRegExp>
+~endif
 
-#include <vector>
+~include <vector>
 
-#include <Base/Tools.h>
-#include <App/Document.h>
-#include <App/PropertyGeo.h>
+~include <Base/Tools.h>
+~include <App/Document.h>
+~include <App/PropertyGeo.h>
 
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Selection.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Drawing/App/FeaturePage.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Drawing/App/FeaturePage.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 
-#include "DrawingView.h"
-#include "TaskDialog.h"
-#include "TaskOrthoViews.h"
+~include "DrawingView.h"
+~include "TaskDialog.h"
+~include "TaskOrthoViews.h"
 
 using namespace DrawingGui;
 using namespace std;

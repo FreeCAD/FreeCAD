@@ -15,14 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <cstring>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cmath>
+~ include <cstring>
+~endif
 
-#include "ImageBase.h"
-#include <Base/Exception.h>
+~include "ImageBase.h"
+~include <Base/Exception.h>
 
 using namespace Image;
 

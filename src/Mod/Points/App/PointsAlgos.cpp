@@ -21,32 +21,32 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#ifdef FC_OS_LINUX
-# include <unistd.h>
-#endif
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ifdef FC_OS_LINUX
+~ include <unistd.h>
+~endif
+~ include <sstream>
+~endif
 
 
-#include "PointsAlgos.h"
-#include "Points.h"
+~include "PointsAlgos.h"
+~include "Points.h"
 
-#include <Base/Converter.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
+~include <Base/Converter.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
 
-#include <memory>
-#include <boost/regex.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
+~include <memory>
+~include <boost/regex.hpp>
+~include <boost/lexical_cast.hpp>
+~include <boost/algorithm/string.hpp>
+~include <boost/math/special_functions/fpclassify.hpp>
 
-#include <E57Format.h>
+~include <E57Format.h>
 
 using namespace Points;
 
@@ -1887,7 +1887,7 @@ void PcdWriter::write(const std::string& filename)
 
     std::size_t numFields = fields.size();
     Base::ofstream out(filename, std::ios::out);
-    out << "# .PCD v0.7 - Point Cloud Data file format" << std::endl
+    out << "~ .PCD v0.7 - Point Cloud Data file format" << std::endl
         << "VERSION 0.7" << std::endl;
 
     // the fields

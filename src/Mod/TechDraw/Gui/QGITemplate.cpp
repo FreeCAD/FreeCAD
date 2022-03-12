@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QGraphicsScene>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QGraphicsScene>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
-#include <Mod/TechDraw/App/DrawTemplate.h>
+~include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "ZVALUE.h"
-#include "TemplateTextField.h"
-#include "QGITemplate.h"
+~include "ZVALUE.h"
+~include "TemplateTextField.h"
+~include "QGITemplate.h"
 
 using namespace TechDrawGui;
 
@@ -75,4 +75,4 @@ void QGITemplate::updateView(bool update)
     draw();
 }
 
-#include <Mod/TechDraw/Gui/moc_QGITemplate.cpp>
+~include <Mod/TechDraw/Gui/moc_QGITemplate.cpp>

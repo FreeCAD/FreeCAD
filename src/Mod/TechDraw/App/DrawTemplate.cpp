@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/FileInfo.h>
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include <iostream>
-#include <iterator>
+~include <iostream>
+~include <iterator>
 
-#include "DrawPage.h"
-#include "DrawTemplate.h"
-#include <Mod/TechDraw/App/DrawTemplatePy.h>
+~include "DrawPage.h"
+~include "DrawTemplate.h"
+~include <Mod/TechDraw/App/DrawTemplatePy.h>
 
 using namespace TechDraw;
 using namespace std;

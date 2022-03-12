@@ -24,17 +24,17 @@
 //  File   : StdMeshers_Geometric1D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Geometric1D.hxx"
+~include "StdMeshers_Geometric1D.hxx"
 
-#include "SMESH_Mesh.hxx"
+~include "SMESH_Mesh.hxx"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <SMESH_Algo.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <SMESH_Algo.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
 
 //=============================================================================
 /*!

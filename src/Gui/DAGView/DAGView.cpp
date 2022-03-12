@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <boost_bind_bind.hpp>
-#include <QAbstractEventDispatcher>
-#include <QVBoxLayout>
-#include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <boost_bind_bind.hpp>
+~include <QAbstractEventDispatcher>
+~include <QVBoxLayout>
+~include <memory>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
 
-#include "DAGView.h"
-#include "DAGModel.h"
+~include "DAGView.h"
+~include "DAGModel.h"
 
 
 using namespace Gui;
@@ -124,4 +124,4 @@ void View::onSelectionChanged(const SelectionChanges& msg)
 
 
 
-#include "moc_DAGView.cpp"
+~include "moc_DAGView.cpp"

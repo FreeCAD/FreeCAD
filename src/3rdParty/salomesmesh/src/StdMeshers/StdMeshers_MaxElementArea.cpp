@@ -26,17 +26,17 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_MaxElementArea.hxx"
+~include "StdMeshers_MaxElementArea.hxx"
 
-#include "SMESH_ControlsDef.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Mesh.hxx"
+~include "SMESH_ControlsDef.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Mesh.hxx"
 
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Tools.h>
+~include <Base/Tools.h>
 
-#include "Application.h"
-#include "ComplexGeoData.h"
-#include "Document.h"
-#include "DocumentObserver.h"
-#include "GeoFeature.h"
+~include "Application.h"
+~include "ComplexGeoData.h"
+~include "Document.h"
+~include "DocumentObserver.h"
+~include "GeoFeature.h"
 
 using namespace App;
 namespace sp = std::placeholders;

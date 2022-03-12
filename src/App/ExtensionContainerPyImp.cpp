@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Application.h"
+~include "Application.h"
 
-#include <App/ExtensionContainerPy.h>
-#include <App/ExtensionContainerPy.cpp>
-#include <App/Extension.h>
+~include <App/ExtensionContainerPy.h>
+~include <App/ExtensionContainerPy.cpp>
+~include <App/Extension.h>
 
 using namespace App;
 

@@ -21,31 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepFill.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_CompCurve.hxx>
-# include <BRepLib_MakeWire.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <ShapeAnalysis.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <Precision.hxx>
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepFill.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_CompCurve.hxx>
+~ include <BRepLib_MakeWire.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Shell.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepOffsetAPI_MakePipeShell.hxx>
+~ include <ShapeAnalysis.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <Precision.hxx>
+~ include <memory>
+~endif
 
 
-#include "PartFeatures.h"
+~include "PartFeatures.h"
 
 
 using namespace Part;
@@ -511,7 +511,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
             }
             // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
             // If we re-create the wire then everything works fine.
-            // http://forum.freecadweb.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
+            // http://forum.freecadweb.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648~p20268
             if (shape.ShapeType() == TopAbs_FACE) {
                 TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
                 profiles.Append(faceouterWire);

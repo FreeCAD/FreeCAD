@@ -23,21 +23,21 @@
 
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
-#include <Gui/Application.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
+~include <Gui/Application.h>
 
-#include "Workbench.h"
-#include "TaskGeomFillSurface.h"
-#include "TaskFilling.h"
-#include "TaskSections.h"
-#include "ViewProviderExtend.h"
+~include "Workbench.h"
+~include "TaskGeomFillSurface.h"
+~include "TaskFilling.h"
+~include "TaskSections.h"
+~include "ViewProviderExtend.h"
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);

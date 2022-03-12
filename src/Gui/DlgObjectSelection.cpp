@@ -19,20 +19,20 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QTreeWidget>
-# include <QPushButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QTreeWidget>
+~ include <QPushButton>
+~endif
 
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include "DlgObjectSelection.h"
-#include "Application.h"
-#include "ViewProviderDocumentObject.h"
-#include "ui_DlgObjectSelection.h"
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include "DlgObjectSelection.h"
+~include "Application.h"
+~include "ViewProviderDocumentObject.h"
+~include "ui_DlgObjectSelection.h"
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
@@ -390,4 +390,4 @@ void DlgObjectSelection::reject() {
     QDialog::reject();
 }
 
-#include "moc_DlgObjectSelection.cpp"
+~include "moc_DlgObjectSelection.cpp"

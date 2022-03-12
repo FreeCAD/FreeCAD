@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ArrowPropEnum.h"
+~include "ArrowPropEnum.h"
 
 namespace TechDraw {
 

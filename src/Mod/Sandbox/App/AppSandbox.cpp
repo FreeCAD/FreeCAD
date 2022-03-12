@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <App/DocumentPy.h>
-#include <App/DocumentObjectPy.h>
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <Base/Console.h>
+~include <App/DocumentPy.h>
+~include <App/DocumentObjectPy.h>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include "DocumentThread.h"
-#include "DocumentProtector.h"
-#include "DocumentProtectorPy.h"
+~include "DocumentThread.h"
+~include "DocumentProtector.h"
+~include "DocumentProtectorPy.h"
 
 namespace Sandbox {
 class PythonBaseClass : public Py::PythonClass< PythonBaseClass >

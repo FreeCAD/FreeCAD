@@ -26,12 +26,12 @@
 // Date      : 28/03/2006
 // Project   : SALOME
 //
-#include "NETGENPlugin_Hypothesis.hxx"
+~include "NETGENPlugin_Hypothesis.hxx"
 
-#include "NETGENPlugin_Mesher.hxx"
-#include "SMESH_Mesh.hxx"
+~include "NETGENPlugin_Mesher.hxx"
+~include "SMESH_Mesh.hxx"
 
-#include <utilities.h>
+~include <utilities.h>
 
 using namespace std;
 
@@ -338,7 +338,7 @@ ostream & NETGENPlugin_Hypothesis::SaveTo(ostream & save)
     save << " " << "__LOCALSIZE_BEGIN__";
     for ( ; it_sm != _localSize.end(); ++it_sm ) {
         save << " " << it_sm->first
-             << " " << it_sm->second << "%#"; // "%#" is a mark of value end
+             << " " << it_sm->second << "%~"; // "%~" is a mark of value end
     }
     save << " " << "__LOCALSIZE_END__";
   }

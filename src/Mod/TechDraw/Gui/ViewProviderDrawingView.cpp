@@ -21,25 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <boost_bind_bind.hpp>
-#include <boost_signals2.hpp>
-#include <boost/signals2/connection.hpp>
-#endif
+~ifndef _PreComp_
+~include <boost_bind_bind.hpp>
+~include <boost_signals2.hpp>
+~include <boost/signals2/connection.hpp>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawView.h>
 
-#include "ViewProviderDrawingView.h"
-#include "MDIViewPage.h"
-#include "QGIView.h"
-#include "QGVPage.h"
-#include "ViewProviderPage.h"
+~include "ViewProviderDrawingView.h"
+~include "MDIViewPage.h"
+~include "QGIView.h"
+~include "QGVPage.h"
+~include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 namespace bp = boost::placeholders;

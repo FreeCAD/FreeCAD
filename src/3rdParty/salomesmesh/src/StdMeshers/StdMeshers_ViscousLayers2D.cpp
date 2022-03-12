@@ -21,75 +21,75 @@
 // Created   : 23 Jul 2012
 // Author    : Edward AGAPOV (eap)
 
-#include "StdMeshers_ViscousLayers2D.hxx"
+~include "StdMeshers_ViscousLayers2D.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Hypothesis.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_ControlsDef.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_Quadtree.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "StdMeshers_FaceSide.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Hypothesis.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_ControlsDef.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_Quadtree.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "StdMeshers_FaceSide.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Curve2d.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-#include <Bnd_B3d.hxx>
-#include <ElCLib.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom2dInt_GInter.hxx>
-#include <Geom2d_Circle.hxx>
-#include <Geom2d_Line.hxx>
-#include <Geom2d_TrimmedCurve.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <IntRes2d_IntersectionPoint.hxx>
-#include <Precision.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Vec.hxx>
-#include <gp_XY.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Curve2d.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B2d.hxx>
+~include <Bnd_B3d.hxx>
+~include <ElCLib.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <Geom2dAdaptor_Curve.hxx>
+~include <Geom2dInt_GInter.hxx>
+~include <Geom2d_Circle.hxx>
+~include <Geom2d_Line.hxx>
+~include <Geom2d_TrimmedCurve.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Line.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <IntRes2d_IntersectionPoint.hxx>
+~include <Precision.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Vec.hxx>
+~include <gp_XY.hxx>
 
-#include <list>
-#include <string>
-#include <cmath>
-#include <limits>
+~include <list>
+~include <string>
+~include <cmath>
+~include <limits>
 
-#ifdef _DEBUG_
-//#define __myDEBUG
-#endif
+~ifdef _DEBUG_
+//~define __myDEBUG
+~endif
 
 using namespace std;
 
@@ -236,9 +236,9 @@ namespace VISCOUS_2D
 
     bool SetNewLength( const double length );
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     int           _ID;
-#endif
+~endif
   };
   //--------------------------------------------------------------------------------
   /*!
@@ -644,9 +644,9 @@ bool _ViscousBuilder2D::error(const string& text )
       _error->myAlgo = smError->myAlgo;
     smError = _error;
   }
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   cout << "_ViscousBuilder2D::error " << text << endl;
-#endif
+~endif
   return false;
 }
 
@@ -733,7 +733,7 @@ bool _ViscousBuilder2D::findEdgesWithLayers()
             {
               if ( hyp )
                 return error(SMESH_Comment("Several hypotheses define "
-                                           "Viscous Layers on the edge #") << edgeID );
+                                           "Viscous Layers on the edge ~") << edgeID );
               hyp = ignoreEdgesOfHyp[i].second;
             }
         }
@@ -1309,9 +1309,9 @@ void _ViscousBuilder2D::setLayerEdgeData( _LayerEdge&                 lEdge,
   lEdge._ray.SetDirection( lEdge._normal2D );
   lEdge._isBlocked = false;
   lEdge._length2D  = 0;
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   lEdge._ID        = _nbLE++;
-#endif
+~endif
 }
 
 //================================================================================
@@ -1372,9 +1372,9 @@ bool _ViscousBuilder2D::inflate()
   }
   if ( minSize > maxSize ) // no collisions possible
     maxSize = _maxThickness;
-#ifdef __myDEBUG
+~ifdef __myDEBUG
   cout << "-- minSize = " << minSize << ", maxSize = " << maxSize << endl;
-#endif
+~endif
 
   double curThick = 0, stepSize = minSize;
   int nbSteps = 0;

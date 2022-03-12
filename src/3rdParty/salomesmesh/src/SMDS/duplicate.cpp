@@ -33,11 +33,11 @@
  */
 extern "C"
 {
-#include <stdlib.h>
-#include <string.h>
+~include <stdlib.h>
+~include <string.h>
 }
-#include  "utilities.h"
-#include "OpUtil.hxx"
+~include  "utilities.h"
+~include "OpUtil.hxx"
 
 const char* duplicate( const char *const str )
 {

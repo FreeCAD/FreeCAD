@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QColorDialog>
-# include <QDebug>
-# include <QDesktopServices>
-# include <QDialogButtonBox>
-# include <QDrag>
-# include <QEventLoop>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QPainter>
-# include <QPlainTextEdit>
-# include <QStylePainter>
-# include <QTextBlock>
-# include <QTimer>
-# include <QToolTip>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QColorDialog>
+~ include <QDebug>
+~ include <QDesktopServices>
+~ include <QDialogButtonBox>
+~ include <QDrag>
+~ include <QEventLoop>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QMimeData>
+~ include <QPainter>
+~ include <QPlainTextEdit>
+~ include <QStylePainter>
+~ include <QTextBlock>
+~ include <QTimer>
+~ include <QToolTip>
+~endif
 
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <App/ExpressionParser.h>
+~include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <App/ExpressionParser.h>
 
-#include "Widgets.h"
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "DlgExpressionInput.h"
-#include "PrefWidgets.h"
-#include "QuantitySpinBox_p.h"
-#include "Tools.h"
-#include "ui_DlgTreeWidget.h"
+~include "Widgets.h"
+~include "Action.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "DlgExpressionInput.h"
+~include "PrefWidgets.h"
+~include "QuantitySpinBox_p.h"
+~include "Tools.h"
+~include "ui_DlgTreeWidget.h"
 
 using namespace Gui;
 using namespace App;
@@ -522,7 +522,7 @@ void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
 
 // ------------------------------------------------------------------------------
 
-#if QT_VERSION >= 0x050200
+~if QT_VERSION >= 0x050200
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
@@ -542,7 +542,7 @@ void ClearLineEdit::updateClearButton(const QString& text)
 {
     clearAction->setVisible(!text.isEmpty());
 }
-#else
+~else
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
@@ -576,7 +576,7 @@ void ClearLineEdit::updateClearButton(const QString& text)
 {
     clearButton->setVisible(!text.isEmpty());
 }
-#endif
+~endif
 
 // ------------------------------------------------------------------------------
 
@@ -688,10 +688,10 @@ ColorButton::ColorButton(QWidget* parent)
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
     connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
 
-#if 1
+~if 1
     int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
     setIconSize(QSize(2*e, e));
-#endif
+~endif
 }
 
 /**
@@ -780,7 +780,7 @@ bool ColorButton::autoChangeColor() const
  */
 void ColorButton::paintEvent (QPaintEvent * e)
 {
-#if 0
+~if 0
     // first paint the complete button
     QPushButton::paintEvent(e);
 
@@ -809,7 +809,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
 
     QStylePainter p(this);
     p.drawControl(QStyle::CE_PushButtonLabel, opt);
-#else
+~else
     if (d->dirty) {
         QSize isize = iconSize();
         QPixmap pix(isize);
@@ -833,7 +833,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
     }
 
     QPushButton::paintEvent(e);
-#endif
+~endif
 }
 
 /**
@@ -908,7 +908,7 @@ UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
     setToolTip(this->_url);    
     setCursor(Qt::PointingHandCursor);
     if (qApp->styleSheet().isEmpty())
-        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
+        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: ~0000FF;text-decoration: underline;}"));
 }
 
 UrlLabel::~UrlLabel()
@@ -1115,9 +1115,9 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(label);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+~if defined (Q_OS_MAC)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
-#endif
+~endif
     layout->addWidget(button);
 
     connect(button, SIGNAL(clicked()), this, SLOT(browse()));
@@ -1483,9 +1483,9 @@ LabelEditor::LabelEditor (QWidget * parent)
             this, SLOT(validateText(const QString &)));
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+~if defined (Q_OS_MAC)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
-#endif
+~endif
     layout->addWidget(button);
 
     connect(button, SIGNAL(clicked()), this, SLOT(changeText()));
@@ -1760,4 +1760,4 @@ bool ButtonGroup::exclusive() const
 }
 
 
-#include "moc_Widgets.cpp"
+~include "moc_Widgets.cpp"

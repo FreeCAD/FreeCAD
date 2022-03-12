@@ -21,51 +21,51 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <Inventor/SbBox.h>
-# include <Inventor/SoOutput.h>
-# include <Inventor/SoPrimitiveVertex.h>
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/bundles/SoTextureCoordinateBundle.h>
-# include <Inventor/caches/SoBoundingBoxCache.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoLightModelElement.h>
-# include <Inventor/misc/SoState.h>
-# include <Inventor/errors/SoReadError.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <Inventor/SbBox.h>
+~ include <Inventor/SoOutput.h>
+~ include <Inventor/SoPrimitiveVertex.h>
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/bundles/SoTextureCoordinateBundle.h>
+~ include <Inventor/caches/SoBoundingBoxCache.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/elements/SoGLCacheContextElement.h>
+~ include <Inventor/elements/SoLazyElement.h>
+~ include <Inventor/elements/SoLightModelElement.h>
+~ include <Inventor/misc/SoState.h>
+~ include <Inventor/errors/SoReadError.h>
+~endif
 
-#include <Inventor/caches/SoBoundingBoxCache.h>
+~include <Inventor/caches/SoBoundingBoxCache.h>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Gui/SoFCInteractiveElement.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include "SoFCMeshFaceSet.h"
-#include "SoFCMeshVertex.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Gui/SoFCInteractiveElement.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
+~include "SoFCMeshFaceSet.h"
+~include "SoFCMeshVertex.h"
 
 using namespace MeshGui;
 
@@ -92,7 +92,7 @@ void SoSFMeshFacetArray::setValue(const MeshCore::MeshFacetArray& p)
 SbBool SoSFMeshFacetArray::readValue(SoInput *in)
 {
   // This macro is convenient for reading with error detection.
-#define READ_VAL(val) \
+~define READ_VAL(val) \
   if (!in->read(val)) { \
     SoReadError::post(in, "Premature end of file"); \
     return FALSE; \
@@ -162,7 +162,7 @@ SbBool SoSFMeshFacetArray::readValue(SoInput *in)
     }
   }
 
-#undef READ_VAL
+~undef READ_VAL
 
   // Create a dummy point array
   MeshCore::MeshPointArray vertex;
@@ -592,11 +592,11 @@ void SoFCMeshFaceSet::createProxyModel(const MeshCore::MeshPointArray* rPoints, 
     point.touch();
     coordIndex.touch();
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     std::ofstream str( "bbox.stl", std::ios::out | std::ios::binary );
     MeshCore::MeshOutput aWriter(kernel);
     aWriter.SaveBinarySTL( str );
-#endif
+~endif
   }
 }
 
@@ -874,7 +874,7 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
   if ( !rFacets || rPoints->size() < 1 )
     return;
 
-#if 0
+~if 0
   // In case we have too many triangles we just create a rough model of the original mesh
   if ( this->MaximumTriangles < rFacets->size() ) {
     // We notify this shape when the data has changed because just counting the number of triangles won't always work.
@@ -927,7 +927,7 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
     }
     endShape();
   } else {
-#endif
+~endif
     // get material binding
     Binding mbind = this->findMaterialBinding(state);
 
@@ -991,9 +991,9 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
     }
 
     endShape();
-#if 0
+~if 0
   }
-#endif
+~endif
 }
 
 /**
@@ -1007,16 +1007,16 @@ SoDetail * SoFCMeshFaceSet::createTriangleDetail(SoRayPickAction * action,
                                               const SoPrimitiveVertex * v3,
                                               SoPickedPoint * pp)
 {
-#if 0
+~if 0
   if ( this->MaximumTriangles < countTriangles(action) ) {
     return 0;
   } else {
-#endif
+~endif
     SoDetail* detail = inherited::createTriangleDetail(action, v1, v2, v3, pp);
     return detail;
-#if 0
+~if 0
   }
-#endif
+~endif
 }
 
 /**

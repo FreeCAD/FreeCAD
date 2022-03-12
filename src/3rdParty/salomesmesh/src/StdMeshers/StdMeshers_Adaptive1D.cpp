@@ -22,46 +22,46 @@
 //  File   : StdMeshers_Adaptive1D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Adaptive1D.hxx"
+~include "StdMeshers_Adaptive1D.hxx"
 
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_Octree.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_HypoFilter.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_Octree.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_HypoFilter.hxx"
 
-#include <Utils_SALOME_Exception.hxx>
+~include <Utils_SALOME_Exception.hxx>
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B3d.hxx>
-#include <Bnd_Box.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <Poly_Array1OfTriangle.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Standard_Version.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pnt.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepMesh_IncrementalMesh.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B3d.hxx>
+~include <Bnd_Box.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <Poly_Array1OfTriangle.hxx>
+~include <Poly_PolygonOnTriangulation.hxx>
+~include <Poly_Triangulation.hxx>
+~include <Standard_Version.hxx>
+~include <TColgp_Array1OfPnt.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pnt.hxx>
 
-#include <limits>
-#include <vector>
-#include <set>
+~include <limits>
+~include <vector>
+~include <set>
 
 using namespace std;
 
@@ -319,9 +319,9 @@ namespace // internal utils
     {
       myFaceTol         = SMESH_MesherHelper::MaxTolerance( face );
       myTree            = triaTree;
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
       myNodes           = & tr->Nodes();
-#else
+~else
       TColgp_Array1OfPnt* trNodes = new TColgp_Array1OfPnt( 1, tr->NbNodes() );
       for (Standard_Integer i = myNodes->Lower(); i <= myNodes->Upper(); i++)
       {
@@ -329,16 +329,16 @@ namespace // internal utils
       }
       myNodes = trNodes;
       myOwnNodes = true;
-#endif
+~endif
       myPolyTrias       = & tr->Triangles();
       myTriasDeflection = tr->Deflection();
       if ( !loc.IsIdentity() ) // transform nodes if necessary
       {
         TColgp_Array1OfPnt* trsfNodes = new TColgp_Array1OfPnt( myNodes->Lower(), myNodes->Upper() );
         trsfNodes->Assign( *myNodes );
-#if OCC_VERSION_HEX >= 0x070600
+~if OCC_VERSION_HEX >= 0x070600
         delete myNodes; // it's already a copy
-#endif
+~endif
         myNodes    = trsfNodes;
         myOwnNodes = true;
         const gp_Trsf& trsf = loc;
@@ -1335,9 +1335,9 @@ bool AdaptiveAlgo::Compute(SMESH_Mesh &         theMesh,
 
           if ( iLoop > 20 )
           {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
             cout << "Infinite loop in AdaptiveAlgo::Compute()" << endl;
-#endif
+~endif
             sizeDecreased = false;
             break;
           }

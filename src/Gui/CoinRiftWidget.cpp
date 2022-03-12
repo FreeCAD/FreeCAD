@@ -32,16 +32,16 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.    *
 \**************************************************************************/
 
-#include "PreCompiled.h"
-#include "CoinRiftWidget.h"
+~include "PreCompiled.h"
+~include "CoinRiftWidget.h"
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#if BUILD_VR
+~if BUILD_VR
 
 
 
-#undef max
+~undef max
 
 
 
@@ -50,10 +50,10 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 {
     for (int eye = 0; eye < 2; eye++) {
         reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye])->TexId = 0;
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
         frameBufferID[eye] = 0;
         depthBufferID[eye] = 0;
-#endif
+~endif
     }
 
     // OVR will do the swapping.
@@ -84,19 +84,19 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     ovrSizei recommenedTex1Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Right,
                                                            hmd->DefaultEyeFov[1], 1.0f);
 
-#ifdef USE_SO_OFFSCREEN_RENDERER
+~ifdef USE_SO_OFFSCREEN_RENDERER
     renderer = new SoOffscreenRenderer(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
                                                         std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     renderer->setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY);
     BackgroundColor = SbColor(.0f, .0f, .8f);
     renderer->setBackgroundColor(BackgroundColor);
-#endif
-#ifdef USE_FRAMEBUFFER
+~endif
+~ifdef USE_FRAMEBUFFER
     m_sceneManager = new SoSceneManager();
     m_sceneManager->setViewportRegion(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
                                                        std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
-#endif
+~endif
     basePosition = SbVec3f(0.0f, 0.0f, -2.0f);
 
     // light handling
@@ -128,15 +128,15 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     eyeRenderDesc[1].Eye = ovrEye_Right;
     eyeRenderDesc[0].Fov = hmd->DefaultEyeFov[0];
     eyeRenderDesc[1].Fov = hmd->DefaultEyeFov[1];
-#ifdef USE_SO_OFFSCREEN_RENDERER
+~ifdef USE_SO_OFFSCREEN_RENDERER
     eyeTexture[0].Header.TextureSize.w = renderer->getViewportRegion().getViewportSizePixels().getValue()[0];
     eyeTexture[0].Header.TextureSize.h = renderer->getViewportRegion().getViewportSizePixels().getValue()[1];
     eyeTexture[1].Header.TextureSize = eyeTexture[0].Header.TextureSize;
-#endif
-#ifdef USE_FRAMEBUFFER
+~endif
+~ifdef USE_FRAMEBUFFER
     eyeTexture[0].Header.TextureSize = recommenedTex0Size;
     eyeTexture[1].Header.TextureSize = recommenedTex1Size;
-#endif
+~endif
     eyeTexture[0].Header.RenderViewport.Pos.x = 0;
     eyeTexture[0].Header.RenderViewport.Pos.y = 0;
     eyeTexture[0].Header.RenderViewport.Size = eyeTexture[0].Header.TextureSize;
@@ -189,9 +189,9 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 
 CoinRiftWidget::~CoinRiftWidget()
 {
-#ifdef USE_SO_OFFSCREEN_RENDERER
+~ifdef USE_SO_OFFSCREEN_RENDERER
     delete renderer;
-#endif
+~endif
     for (int eye = 0; eye < 2; eye++) {
         rootScene[eye]->unref();
         ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
@@ -199,7 +199,7 @@ CoinRiftWidget::~CoinRiftWidget()
             glDeleteTextures(1, &texData->TexId);
             texData->TexId = 0;
         }
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
         if (frameBufferID[eye] != 0) {
 // OVR::CAPI::GL::glDeleteFramebuffersExt(1, &frameBufferID[eye]); // TODO
             frameBufferID[eye] = 0;
@@ -208,7 +208,7 @@ CoinRiftWidget::~CoinRiftWidget()
 // OVR::CAPI::GL::glDeleteRenderbuffersExt(1, &depthBufferID[eye]); // TODO
             depthBufferID[eye] = 0;
         }
-#endif
+~endif
     }
     scene = 0;
     //ovrHmd_StopSensor(hmd);
@@ -245,7 +245,7 @@ void CoinRiftWidget::initializeGL()
 {
     makeCurrent();
     // Infer hardware capabilities.
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
     OVR::CAPI::GL::InitGLExtensions();
     if (OVR::CAPI::GL::glBindFramebuffer == NULL) {
         qDebug() << "No GL extensions found.";
@@ -255,12 +255,12 @@ void CoinRiftWidget::initializeGL()
     // Store old framebuffer.
     GLint oldfb;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldfb);
-#endif
+~endif
 
     // Create rendering target textures.
     glEnable(GL_TEXTURE_2D);
     for (int eye = 0; eye < 2; eye++) {
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
         OVR::CAPI::GL::glGenFramebuffers(1, &frameBufferID[eye]);
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
         // Create the render buffer.
@@ -276,7 +276,7 @@ void CoinRiftWidget::initializeGL()
                                                     GL_DEPTH_ATTACHMENT_EXT,
                                                     GL_RENDERBUFFER_EXT,
                                                     depthBufferID[eye]);
-#endif
+~endif
         ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
         texData->Header.API = ovrRenderAPI_OpenGL;
         texData->Header.TextureSize = eyeTexture[eye].Header.TextureSize;
@@ -293,7 +293,7 @@ void CoinRiftWidget::initializeGL()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         Q_ASSERT(!glGetError());
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
         // Attach texture to framebuffer color object.
         OVR::CAPI::GL::glFramebufferTexture2D(GL_FRAMEBUFFER_EXT,
                                                  GL_COLOR_ATTACHMENT0_EXT,
@@ -301,15 +301,15 @@ void CoinRiftWidget::initializeGL()
         if (OVR::CAPI::GL::glCheckFramebufferStatus(GL_FRAMEBUFFER) !=
                 GL_FRAMEBUFFER_COMPLETE)
             qDebug() << "ERROR: FrameBuffer is not operational!";
-#endif
+~endif
     }
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
 
-#ifdef USE_FRAMEBUFFER
+~ifdef USE_FRAMEBUFFER
     // Continue rendering to the original frame buffer (likely 0, the onscreen buffer).
     OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, oldfb);
-#endif
+~endif
     doneCurrent();
 }
 
@@ -362,7 +362,7 @@ void CoinRiftWidget::paintGL()
         //                                                      eyeRenderDesc[eye].ViewAdjust.y,
         //                                                      eyeRenderDesc[eye].ViewAdjust.z);
 
-#ifdef USE_SO_OFFSCREEN_RENDERER
+~ifdef USE_SO_OFFSCREEN_RENDERER
         ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
         glBindTexture(GL_TEXTURE_2D, texData->TexId);
         renderer->render(rootScene[eye]);
@@ -373,8 +373,8 @@ void CoinRiftWidget::paintGL()
                      0, GL_RGBA /*GL_BGRA*/, GL_UNSIGNED_BYTE, renderer->getBuffer());
         Q_ASSERT(!glGetError());
         glBindTexture(GL_TEXTURE_2D, 0);
-#endif
-#ifdef USE_FRAMEBUFFER
+~endif
+~ifdef USE_FRAMEBUFFER
         // Clear state pollution from OVR SDK.
         glBindTexture(GL_TEXTURE_2D, 0); // You need this, at least if (hmdDesc.DistortionCaps & ovrDistortion_Chromatic).
         OVR::CAPI::GL::glUseProgram(0); // You need this even more.
@@ -391,7 +391,7 @@ void CoinRiftWidget::paintGL()
         // Continue rendering to the original frame buffer (likely 0, the onscreen buffer).
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, oldfb);
         Q_ASSERT(!glGetError());
-#endif
+~endif
 
         //camera[eye]->position.setValue(originalPosition);
 
@@ -442,7 +442,7 @@ void CoinRiftWidget::handlingSafetyWarning(void)
 }
 
 
-#ifdef BUILD_RIFT_TEST_MAIN
+~ifdef BUILD_RIFT_TEST_MAIN
 
 int main(int argc, char *argv[])
 {
@@ -451,7 +451,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     qAddPostRoutine(cleanup);
 
-    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503
+    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503~p108503
     // Init libovr.
     if (!ovr_Initialize()) {
         qDebug() << "Could not initialize Oculus SDK.";
@@ -463,7 +463,7 @@ int main(int argc, char *argv[])
 
     // An example scene.
     static const char * inlineSceneGraph[] = {
-        "#Inventor V2.1 ascii\n",
+        "~Inventor V2.1 ascii\n",
         "\n",
         "Separator {\n",
         "  Rotation { rotation 1 0 0  0.3 }\n",
@@ -502,6 +502,6 @@ int main(int argc, char *argv[])
     return app.exec();
 }
 
-#endif //BUILD_RIFT_TEST_MAIN
+~endif //BUILD_RIFT_TEST_MAIN
 
-#endif //BUILD_VR
+~endif //BUILD_VR

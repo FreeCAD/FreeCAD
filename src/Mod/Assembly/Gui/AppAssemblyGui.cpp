@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include "Workbench.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
+~include "Workbench.h"
 
-#include "ViewProvider.h"
-#include "ViewProviderProduct.h"
-#include "ViewProviderProductRef.h"
-#include "ViewProviderConstraintGroup.h"
-#include "ViewProviderConstraint.h"
+~include "ViewProvider.h"
+~include "ViewProviderProduct.h"
+~include "ViewProviderProductRef.h"
+~include "ViewProviderConstraintGroup.h"
+~include "ViewProviderConstraint.h"
 
-#include <Mod/Assembly/App/Product.h>
-#include <Mod/Assembly/App/ProductRef.h>
+~include <Mod/Assembly/App/Product.h>
+~include <Mod/Assembly/App/ProductRef.h>
 
-//#include "resources/qrc_Assembly.cpp"
+//~include "resources/qrc_Assembly.cpp"
 
 // use a different name to CreateCommand()
 void CreateAssemblyCommands(void);

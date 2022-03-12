@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "GLPainter.h"
-#include "View3DInventorViewer.h"
+~include "GLPainter.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;

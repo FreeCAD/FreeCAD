@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderEdge2TracObject.h"
-#include <Gui/Control.h>
-#include <Mod/Robot/Gui/TaskDlgEdge2Trac.h>
+~include "ViewProviderEdge2TracObject.h"
+~include <Gui/Control.h>
+~include <Mod/Robot/Gui/TaskDlgEdge2Trac.h>
 
 using namespace Gui;
 using namespace RobotGui;

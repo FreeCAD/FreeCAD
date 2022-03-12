@@ -22,12 +22,12 @@
 //  File       : SMDS_BallElement.cxx
 //  Author     : Edward AGAPOV (eap)
 
-#include "SMDS_BallElement.hxx"
+~include "SMDS_BallElement.hxx"
 
-#include "SMDS_ElemIterator.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_VtkCellIterator.hxx"
+~include "SMDS_ElemIterator.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_VtkCellIterator.hxx"
 
 SMDS_BallElement::SMDS_BallElement()
 {
@@ -67,16 +67,16 @@ void SMDS_BallElement::SetDiameter(double diameter)
 bool SMDS_BallElement::ChangeNode (const SMDS_MeshNode * node)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
   cellPoints->SetId(0, node->getVtkId());
-#else
+~else
   vtkIdType npts = 0;
   vtkIdType* pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
   pts[0] = node->getVtkId();
-#endif
+~endif
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
   return true;
 }

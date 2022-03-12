@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Hypr2d.hxx>
-# include <Geom2d_Hyperbola.hxx>
-# include <GCE2d_MakeArcOfHyperbola.hxx>
-# include <GCE2d_MakeHyperbola.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Hypr2d.hxx>
+~ include <Geom2d_Hyperbola.hxx>
+~ include <GCE2d_MakeArcOfHyperbola.hxx>
+~ include <GCE2d_MakeHyperbola.hxx>
+~ include <Geom2d_TrimmedCurve.hxx>
+~endif
 
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.cpp>
-#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
-#include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/Geometry2d.h>
+~include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
+~include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.cpp>
+~include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
+~include <Mod/Part/App/OCCError.h>
 
-#include <Base/GeometryPyCXX.h>
+~include <Base/GeometryPyCXX.h>
 
 using namespace Part;
 

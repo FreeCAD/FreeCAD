@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom2d_Parabola.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom2d_Parabola.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.cpp>
+~include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/Geometry2d.h>
+~include <Mod/Part/App/Geom2d/Parabola2dPy.h>
+~include <Mod/Part/App/Geom2d/Parabola2dPy.cpp>
 
 using namespace Part;
 

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of QuantityPy.xml)
-#include "QuantityPy.h"
-#include "UnitPy.h"
-#include "QuantityPy.cpp"
+~include "QuantityPy.h"
+~include "UnitPy.h"
+~include "QuantityPy.cpp"
 
 
 using namespace Base;
@@ -34,12 +34,12 @@ using namespace Base;
 std::string QuantityPy::representation() const
 {
     std::stringstream ret;
-#if 0
+~if 0
     //ret.precision(getQuantityPtr()->getFormat().precision);
     //ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << getQuantityPtr()->getValue() << " ";
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
-#else
+~else
     double val= getQuantityPtr()->getValue();
     Unit unit = getQuantityPtr()->getUnit();
 
@@ -48,7 +48,7 @@ std::string QuantityPy::representation() const
     ret << static_cast<std::string>(flt.repr());
     if (!unit.isEmpty())
         ret << " " << unit.getString().toUtf8().constData();
-#endif
+~endif
 
     return ret.str();
 }

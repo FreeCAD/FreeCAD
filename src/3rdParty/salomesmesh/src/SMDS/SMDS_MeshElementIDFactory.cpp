@@ -25,20 +25,20 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_MeshElementIDFactory.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_Mesh.hxx"
+~include "SMDS_MeshElementIDFactory.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_Mesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include "SMDS_UnstructuredGrid.hxx"
-#include <vtkCellType.h>
+~include "SMDS_UnstructuredGrid.hxx"
+~include <vtkCellType.h>
 
-#include <climits>
+~include <climits>
 
 using namespace std;
 

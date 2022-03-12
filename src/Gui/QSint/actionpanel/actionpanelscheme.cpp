@@ -5,7 +5,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "actionpanelscheme.h"
+~include "actionpanelscheme.h"
 
 
 class StaticLibInitializer
@@ -27,37 +27,37 @@ namespace QSint
 const char* ActionPanelDefaultStyle =
 
     "QFrame[class='panel'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #99cccc, stop: 1 #EAF7FF);"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 ~99cccc, stop: 1 ~EAF7FF);"
     "}"
 
     "QSint--ActionGroup QFrame[class='header'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #00aa99;"
-        "border-bottom: 1px solid #99cccc;"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ~F9FDFF, stop: 1 ~EAF7FF);"
+        "border: 1px solid ~00aa99;"
+        "border-bottom: 1px solid ~99cccc;"
         "border-top-left-radius: 3px;"
         "border-top-right-radius: 3px;"
     "}"
 
     "QSint--ActionGroup QFrame[class='header']:hover {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #EAF7FF, stop: 1 #F9FDFF);"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ~EAF7FF, stop: 1 ~F9FDFF);"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header'] {"
         "text-align: left;"
         "font: 14px;"
-        "color: #006600;"
+        "color: ~006600;"
         "background-color: transparent;"
         "border: 1px solid transparent;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: #00cc00;"
+        "color: ~00cc00;"
         "text-decoration: underline;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #00aa99;"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ~F9FDFF, stop: 1 ~EAF7FF);"
+        "border: 1px solid ~00aa99;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'][header='true'] {"
@@ -67,17 +67,17 @@ const char* ActionPanelDefaultStyle =
     "QSint--ActionGroup QToolButton[class='action'] {"
         "background-color: transparent;"
         "border: 1px solid transparent;"
-        "color: #0033ff;"
+        "color: ~0033ff;"
         "text-align: left;"
         "font: 11px;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"
+        "color: ~999999;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #0099ff;"
+        "color: ~0099ff;"
         "text-decoration: underline;"
     "}"
 
@@ -86,8 +86,8 @@ const char* ActionPanelDefaultStyle =
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
 ;
 

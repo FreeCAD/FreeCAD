@@ -1,14 +1,14 @@
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Part/App/AttachExtension.h"
-#include "OCCError.h"
+~include "Mod/Part/App/AttachExtension.h"
+~include "OCCError.h"
 
-#include "AttachEnginePy.h"
+~include "AttachEnginePy.h"
 
 // inclusion of the generated files (generated out of AttachExtensionPy.xml)
-#include "AttachExtensionPy.h"
-#include "AttachExtensionPy.cpp"
+~include "AttachExtensionPy.h"
+~include "AttachExtensionPy.cpp"
 
 using namespace Part;
 

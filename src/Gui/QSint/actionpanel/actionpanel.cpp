@@ -5,11 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "actionpanel.h"
-#include "actionpanelscheme.h"
-#include "actiongroup.h"
+~include "actionpanel.h"
+~include "actionpanelscheme.h"
+~include "actiongroup.h"
 
-#include <QtCore/QVariant>
+~include <QtCore/QVariant>
 
 
 namespace QSint

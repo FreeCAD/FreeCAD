@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4244)
-#pragma warning(disable : 4996)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4244)
+~pragma warning(disable : 4996)
+~endif
 
-//#define _GCS_DEBUG
-//#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-//#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
-//#define PROFILE_DIAGNOSE
-#undef _GCS_DEBUG
-#undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-#undef _DEBUG_TO_FILE
+//~define _GCS_DEBUG
+//~define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+//~define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
+//~define PROFILE_DIAGNOSE
+~undef _GCS_DEBUG
+~undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~undef _DEBUG_TO_FILE
 
 // This has to be included BEFORE any EIGEN include
 // This format is Sage compatible, so you can just copy/paste the matrix into Sage
-#ifdef _GCS_DEBUG
-#define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(3,0,",",",\n","[","]","[","]")
+~ifdef _GCS_DEBUG
+~define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(3,0,",",",\n","[","]","[","]")
 /* Parameters:
  *
  * StreamPrecision,
@@ -47,63 +47,63 @@
  * const std::string &     _rowSuffix = "",
  * const std::string &     _matPrefix = "",
  * const std::string &     _matSuffix = "" )*/
-#endif
+~endif
 
-#include <iostream>
-#include <algorithm>
-#include <cfloat>
-#include <limits>
-#include <future>
+~include <iostream>
+~include <algorithm>
+~include <cfloat>
+~include <limits>
+~include <future>
 
-#include "GCS.h"
-#include "qp_eq.h"
+~include "GCS.h"
+~include "qp_eq.h"
 
 // NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve this:
-// this is needed to fix this SparseQR crash http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146,
+// this is needed to fix this SparseQR crash http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146~p92146,
 // until Eigen library fixes its own problem with the assertion (definitely not solved in 3.2.0 branch)
 // NOTE2: solved in eigen3.3
 
 
 
 // Extraction of Q matrix for Debugging used to crash
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-#if EIGEN_VERSION >= 30304
-#define SPARSE_Q_MATRIX
-#endif
-#endif
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~if EIGEN_VERSION >= 30304
+~define SPARSE_Q_MATRIX
+~endif
+~endif
 
-#if EIGEN_VERSION > 30290   // This regulates that only starting in Eigen 3.3, the problem with
+~if EIGEN_VERSION > 30290   // This regulates that only starting in Eigen 3.3, the problem with
                             // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
                             // was solved in Eigen:
-                            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=60~p106492
                             // https://forum.kde.org/viewtopic.php?f=74&t=129439
-#define EIGEN_STOCK_FULLPIVLU_COMPUTE
-#endif
+~define EIGEN_STOCK_FULLPIVLU_COMPUTE
+~endif
 
-//#undef EIGEN_SPARSEQR_COMPATIBLE
+//~undef EIGEN_SPARSEQR_COMPATIBLE
 
 
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-    #include <Eigen/OrderingMethods>
-#endif
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
+    ~include <Eigen/OrderingMethods>
+~endif
 
 // _GCS_EXTRACT_SOLVER_SUBSYSTEM_ to be enabled in Constraints.h when needed.
-#if defined(_GCS_EXTRACT_SOLVER_SUBSYSTEM_) || defined(_DEBUG_TO_FILE)
-#include <fstream>
+~if defined(_GCS_EXTRACT_SOLVER_SUBSYSTEM_) || defined(_DEBUG_TO_FILE)
+~include <fstream>
 
-#define CASE_NOT_IMP(X) case X: { subsystemfile << "//" #X "not yet implemented" << std::endl; break; }
-#endif
+~define CASE_NOT_IMP(X) case X: { subsystemfile << "//" ~X "not yet implemented" << std::endl; break; }
+~endif
 
-#include <FCConfig.h>
-#include <Base/Console.h>
+~include <FCConfig.h>
+~include <Base/Console.h>
 
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/connected_components.hpp>
+~include <boost_graph_adjacency_list.hpp>
+~include <boost/graph/connected_components.hpp>
 
 typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
 
-#ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
+~ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
 namespace Eigen {
 
     typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
@@ -202,7 +202,7 @@ namespace Eigen {
     }
 
 } // Eigen
-#endif
+~endif
 
 namespace GCS
 {
@@ -240,9 +240,9 @@ private:
     inline void flushStream();
 
 private:
-    #ifdef _DEBUG_TO_FILE
+    ~ifdef _DEBUG_TO_FILE
     std::ofstream stream;
-    #endif
+    ~endif
 };
 
 SolverReportingManager::SolverReportingManager()
@@ -252,28 +252,28 @@ SolverReportingManager::SolverReportingManager()
 
 SolverReportingManager::~SolverReportingManager()
 {
-    #ifdef _DEBUG_TO_FILE
+    ~ifdef _DEBUG_TO_FILE
     stream.flush();
     stream.close();
-    #endif
+    ~endif
 }
 
 void SolverReportingManager::initStream()
 {
-    #ifdef _DEBUG_TO_FILE
+    ~ifdef _DEBUG_TO_FILE
     if(!stream.is_open()) {
         stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
     }
-    #endif
+    ~endif
 }
 
 void SolverReportingManager::flushStream()
 {
     // Akwardly in some systems flushing does not force the write to the file, requiring a close
-    #ifdef _DEBUG_TO_FILE
+    ~ifdef _DEBUG_TO_FILE
     stream.flush();
     stream.close();
-    #endif
+    ~endif
 }
 
 SolverReportingManager& SolverReportingManager::Manager()
@@ -293,25 +293,25 @@ void SolverReportingManager::LogToConsole(const std::string& str)
 
 void SolverReportingManager::LogToFile(const std::string& str)
 {
-    #ifdef _DEBUG_TO_FILE
+    ~ifdef _DEBUG_TO_FILE
     initStream();
 
     stream << str << std::endl;
 
     flushStream();
-    #else
+    ~else
     (void)(str); // silence unused parameter
     LogToConsole("Debugging to file not enabled!");
-    #endif
+    ~endif
 }
 
 void SolverReportingManager::LogString(const std::string& str)
 {
     LogToConsole(str);
 
-    #ifdef _DEBUG_TO_FILE
+    ~ifdef _DEBUG_TO_FILE
     LogToFile(str);
-    #endif
+    ~endif
 }
 
 void SolverReportingManager::LogQRSystemInformation(const System &system, int paramsNum, int constrNum, int rank)
@@ -323,12 +323,12 @@ void SolverReportingManager::LogQRSystemInformation(const System &system, int pa
 
     if (paramsNum > 0) {
         tempstream
-        #ifdef EIGEN_SPARSEQR_COMPATIBLE
+        ~ifdef EIGEN_SPARSEQR_COMPATIBLE
         << ", Threads: " << Eigen::nbThreads()
-        #endif
-        #ifdef EIGEN_VECTORIZE
+        ~endif
+        ~ifdef EIGEN_VECTORIZE
         << ", Vectorization: On"
-        #endif
+        ~endif
         << ", Pivot Threshold: " << system.qrpivotThreshold
         << ", Params: " << paramsNum
         << ", Constr: " << constrNum
@@ -337,12 +337,12 @@ void SolverReportingManager::LogQRSystemInformation(const System &system, int pa
     }
     else {
         tempstream
-        #ifdef EIGEN_SPARSEQR_COMPATIBLE
+        ~ifdef EIGEN_SPARSEQR_COMPATIBLE
         << ", Threads: " << Eigen::nbThreads()
-        #endif
-        #ifdef EIGEN_VECTORIZE
+        ~endif
+        ~ifdef EIGEN_VECTORIZE
         << ", Vectorization: On"
-        #endif
+        ~endif
         << ", Empty Sketch, nothing to solve"
         << std::endl;
     }
@@ -401,7 +401,7 @@ void SolverReportingManager::LogGroupOfParameters(const std::string & str, std::
     LogString(tempstream.str());
 }
 
-#ifdef _GCS_DEBUG
+~ifdef _GCS_DEBUG
 void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix)
 {
     std::stringstream tempstream;
@@ -426,7 +426,7 @@ void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType ma
 
     LogString(tempstream.str());
 }
-#endif
+~endif
 
 
 typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Graph;
@@ -476,9 +476,9 @@ System::System()
 {
     // currently Eigen only supports multithreading for multiplications
     // There is no appreciable gain from using more threads
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
     Eigen::setNbThreads(1);
-#endif
+~endif
 }
 
 /*DeepSOIC: seriously outdated, needs redesign
@@ -1609,9 +1609,9 @@ int System::solve(SubSystem *subsys, bool isFine, Algorithm alg, bool isRedundan
 
 int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolving)
 {
-    #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
-    #endif
+    ~endif
 
     int xsize = subsys->pSize();
     if (xsize == 0)
@@ -1732,9 +1732,9 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
 
 int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 {
-#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
-#endif
+~endif
 
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
@@ -1902,9 +1902,9 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
 int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 {
-#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
-#endif
+~endif
 
     double tolg=(isRedundantsolving?DL_tolgRedundant:DL_tolg);
     double tolx=(isRedundantsolving?DL_tolxRedundant:DL_tolx);
@@ -1979,8 +1979,8 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
             h_sd  = alpha*g;
 
             // get the gauss-newton step
-            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=50#p106220
-            // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
+            // http://forum.freecadweb.org/viewtopic.php?f=10&t=12769&start=50~p106220
+            // https://forum.kde.org/viewtopic.php?f=74&t=129439~p346104
             switch (dogLegGaussStep){
                 case FullPivLU:
                     h_gn = Jx.fullPivLu().solve(-fx);
@@ -2107,7 +2107,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     return (stop == 1) ? Success : Failed;
 }
 
-#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+~ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
 void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
 {
     VEC_pD plistout; //std::vector<double *>
@@ -3635,7 +3635,7 @@ void System::extractSubsystem(SubSystem *subsys, bool isRedundantsolving)
 
     subsystemfile.close();
 }
-#endif
+~endif
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
@@ -3881,9 +3881,9 @@ int System::diagnose(Algorithm alg)
         return dofs;
     }
 
-#ifdef _DEBUG_TO_FILE
+~ifdef _DEBUG_TO_FILE
 SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
-#endif
+~endif
 
     // Input parameters' lists:
     // plist            =>  list of all the parameters of the system, e.g. each coordinate of a point
@@ -3891,7 +3891,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     // When adding an external geometry or a constraint on an external geometry the array 'plist' is empty.
     // So, we must abort here because otherwise we would create an invalid matrix and make the application
-    // eventually crash. This fixes issues #0002372/#0002373.
+    // eventually crash. This fixes issues ~0002372/~0002373.
     if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
         hasDiagnosis = true;
         emptyDiagnoseMatrix = true;
@@ -3972,17 +3972,17 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     // QR decomposition method selection: SparseQR vs DenseQR
 
-#ifndef EIGEN_SPARSEQR_COMPATIBLE
+~ifndef EIGEN_SPARSEQR_COMPATIBLE
     if(qrAlgorithm==EigenSparseQR){
         Base::Console().Warning("SparseQR not supported by you current version of Eigen. It requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
         qrAlgorithm=EigenDenseQR;
     }
-#endif
+~endif
 
     if(qrAlgorithm==EigenDenseQR){
-    #ifdef PROFILE_DIAGNOSE
+    ~ifdef PROFILE_DIAGNOSE
         Base::TimeInfo DenseQR_start_time;
-    #endif
+    ~endif
         if (J.rows() > 0) {
             int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
             Eigen::MatrixXd R;
@@ -4024,20 +4024,20 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                     dofs = paramsNum - nonredundantconstrNum;
             }
         }
-    #ifdef PROFILE_DIAGNOSE
+    ~ifdef PROFILE_DIAGNOSE
         Base::TimeInfo DenseQR_end_time;
 
         auto SolveTime = Base::TimeInfo::diffTimeF(DenseQR_start_time,DenseQR_end_time);
 
         Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
-    #endif
+    ~endif
     }
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
-    #ifdef PROFILE_DIAGNOSE
+    ~ifdef PROFILE_DIAGNOSE
         Base::TimeInfo SparseQR_start_time;
-    #endif
+    ~endif
         if (J.rows() > 0) {
             int rank = 0;
             Eigen::MatrixXd R;
@@ -4078,15 +4078,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             }
         }
 
-        #ifdef PROFILE_DIAGNOSE
+        ~ifdef PROFILE_DIAGNOSE
         Base::TimeInfo SparseQR_end_time;
 
         auto SolveTime = Base::TimeInfo::diffTimeF(SparseQR_start_time,SparseQR_end_time);
 
         Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
-        #endif
+        ~endif
     }
-#endif
+~endif
 
     return dofs;
 }
@@ -4097,15 +4097,15 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
                                         int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
 {
 
-#ifdef _GCS_DEBUG
+~ifdef _GCS_DEBUG
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("J",J);
-#endif
+~endif
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
-#endif
+~endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
     // For a non-transposed J SJG rows are constrNum and cols are paramsNum
@@ -4139,17 +4139,17 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
             colsNum = JG.cols();
         }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
         R2 = qrJT.matrixQR();
         Q = qrJT.matrixQ();
-#endif
+~endif
     }
 
     if(debugMode==IterationLevel && !silent) {
         SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
     }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     if (J.rows() > 0 && !silent) {
         SolverReportingManager::Manager().LogMatrix("R", R);
 
@@ -4158,10 +4158,10 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
         SolverReportingManager::Manager().LogMatrix("Q", Q);
         SolverReportingManager::Manager().LogMatrix("RowTransp", qrJT.rowsTranspositions());
     }
-#endif
+~endif
 }
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
 void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
                                         const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
@@ -4176,15 +4176,15 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
     SJ = J.sparseView();
     SJ.makeCompressed();
 
-    #ifdef _GCS_DEBUG
+    ~ifdef _GCS_DEBUG
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("J",J);
-    #endif
+    ~endif
 
-    #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    ~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
-    #endif
+    ~endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
     // For a non-transposed J SJG rows are constrNum and cols are paramsNum
@@ -4203,10 +4203,10 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
             // Do not ask for Q Matrix!!
             // At Eigen 3.2 still has a bug that this only works for square matrices
             // if enabled it will crash
-            #ifdef SPARSE_Q_MATRIX
+            ~ifdef SPARSE_Q_MATRIX
             Q = SqrJT.matrixQ();
             //Q = QS;
-            #endif
+            ~endif
 
             rowsNum = SqrJT.rows();
             colsNum = SqrJT.cols();
@@ -4219,9 +4219,9 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
                 R = SqrJT.matrixR().topRows(colsNum)
                 .triangularView<Eigen::Upper>();
 
-            #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+            ~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
             R2 = SqrJT.matrixR();
-            #endif
+            ~endif
         }
         else {
             rowsNum = SJG.rows();
@@ -4232,20 +4232,20 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
     if(debugMode==IterationLevel && !silent)
         SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
 
-   #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+   ~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     if (J.rows() > 0 && !silent) {
 
         SolverReportingManager::Manager().LogMatrix("R", R);
 
         SolverReportingManager::Manager().LogMatrix("R2", R2);
 
-        #ifdef SPARSE_Q_MATRIX
+        ~ifdef SPARSE_Q_MATRIX
         SolverReportingManager::Manager().LogMatrix("Q", Q);
-        #endif
+        ~endif
     }
-    #endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    ~endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 }
-#endif // EIGEN_SPARSEQR_COMPATIBLE
+~endif // EIGEN_SPARSEQR_COMPATIBLE
 
 void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
@@ -4262,7 +4262,7 @@ void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
     identifyDependentParameters(qrJ, Rparams, rank, pdiagnoselist, silent);
 }
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+~ifdef EIGEN_SPARSEQR_COMPATIBLE
 void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
                                                   const GCS::VEC_pD &pdiagnoselist,
@@ -4277,7 +4277,7 @@ void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }
-#endif
+~endif
 
 template <typename T>
 void System::identifyDependentParameters(   T & qrJ,
@@ -4293,10 +4293,10 @@ void System::identifyDependentParameters(   T & qrJ,
 
     eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, rank);
 
-#ifdef _GCS_DEBUG
+~ifdef _GCS_DEBUG
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("Rparams_nonzeros_over_pilot", Rparams);
-#endif
+~endif
 
     pDependentParametersGroups.resize(qrJ.cols()-rank);
     for (int j=rank; j < qrJ.cols(); j++) {
@@ -4314,14 +4314,14 @@ void System::identifyDependentParameters(   T & qrJ,
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
 
-#ifdef _GCS_DEBUG
+~ifdef _GCS_DEBUG
     if(!silent) {
         SolverReportingManager::Manager().LogMatrix("PermMatrix", (Eigen::MatrixXd)qrJ.colsPermutation());
 
         SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",pDependentParametersGroups);
     }
 
-#endif
+~endif
 }
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
@@ -4351,9 +4351,9 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
     for(int k = 0; k < rank; ++k)
         rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     std::stringstream stream;
-#endif
+~endif
 
     // params (in the order of J) shown as independent from QR
     std::set<int> indepParamCols;
@@ -4367,16 +4367,16 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 
             // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
             // The cols of J are the parameters, the rows are the constraints.
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
             stream << "R row " << j << " = J col " << origRow << std::endl;
-#endif
+~endif
     }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     std::string tmp = stream.str();
 
     SolverReportingManager::Manager().LogString(tmp);
-#endif
+~endif
 
     // If not independent, must be dependent
     for(int j=0; j < paramsNum; j++) {
@@ -4386,7 +4386,7 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
         }
     }
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+~ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     stream.flush();
 
     stream << "Indep params: [";
@@ -4401,7 +4401,7 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 
     tmp = stream.str();
     SolverReportingManager::Manager().LogString(tmp);
-#endif
+~endif
 
 
     for( auto param : depParamCols) {

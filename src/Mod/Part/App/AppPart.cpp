@@ -21,140 +21,140 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
-# include <OSD.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <Interface_Static.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <STEPControl_Controller.hxx>
+~ include <Standard_Version.hxx>
+~ include <OSD.hxx>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
-#include <Base/ExceptionFactory.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
+~include <Base/ExceptionFactory.h>
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include "Mod/Part/App/ArcOfCirclePy.h"
-#include "Mod/Part/App/ArcOfConicPy.h"
-#include "Mod/Part/App/ArcOfEllipsePy.h"
-#include "Mod/Part/App/ArcOfHyperbolaPy.h"
-#include "Mod/Part/App/ArcOfParabolaPy.h"
-#include "Mod/Part/App/ArcPy.h"
-#include "Mod/Part/App/AttachEnginePy.h"
-#include "Mod/Part/App/BezierCurvePy.h"
-#include "Mod/Part/App/BezierSurfacePy.h"
-#include <Mod/Part/App/BRepFeat/MakePrismPy.h>
-#include "Mod/Part/App/BRepOffsetAPI_MakeFillingPy.h"
-#include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
-#include "Mod/Part/App/BSplineCurvePy.h"
-#include "Mod/Part/App/BSplineSurfacePy.h"
-#include "Mod/Part/App/CirclePy.h"
-#include "Mod/Part/App/ConePy.h"
-#include "Mod/Part/App/ConicPy.h"
-#include "Mod/Part/App/CylinderPy.h"
-#include "Mod/Part/App/EllipsePy.h"
-#include "Mod/Part/App/GeometryBoolExtensionPy.h"
-#include "Mod/Part/App/GeometryDoubleExtensionPy.h"
-#include "Mod/Part/App/GeometryIntExtensionPy.h"
-#include "Mod/Part/App/GeometryStringExtensionPy.h"
-#include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfConic2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/Circle2dPy.h>
-#include <Mod/Part/App/Geom2d/Conic2dPy.h>
-#include <Mod/Part/App/Geom2d/Curve2dPy.h>
-#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
-#include <Mod/Part/App/Geom2d/Geometry2dPy.h>
-#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
-#include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
-#include <Mod/Part/App/Geom2d/Line2dPy.h>
-#include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
-#include <Mod/Part/App/GeomPlate/BuildPlateSurfacePy.h>
-#include <Mod/Part/App/GeomPlate/CurveConstraintPy.h>
-#include <Mod/Part/App/GeomPlate/PointConstraintPy.h>
-#include <Mod/Part/App/HLRBRep/HLRBRep_AlgoPy.h>
-#include <Mod/Part/App/HLRBRep/HLRBRep_PolyAlgoPy.h>
-#include <Mod/Part/App/HLRBRep/HLRToShapePy.h>
-#include <Mod/Part/App/HLRBRep/PolyHLRToShapePy.h>
-#include "Mod/Part/App/HyperbolaPy.h"
-#include "Mod/Part/App/LinePy.h"
-#include "Mod/Part/App/LineSegmentPy.h"
-#include "Mod/Part/App/OffsetCurvePy.h"
-#include "Mod/Part/App/OffsetSurfacePy.h"
-#include "Mod/Part/App/ParabolaPy.h"
-#include "Mod/Part/App/PartFeaturePy.h"
-#include "Mod/Part/App/PlateSurfacePy.h"
-#include "Mod/Part/App/PlanePy.h"
-#include "Mod/Part/App/PointPy.h"
-#include <Mod/Part/App/PrecisionPy.h>
-#include "Mod/Part/App/RectangularTrimmedSurfacePy.h"
-#include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
-#include "Mod/Part/App/SpherePy.h"
-#include "Mod/Part/App/SurfaceOfExtrusionPy.h"
-#include "Mod/Part/App/SurfaceOfRevolutionPy.h"
-#include "Mod/Part/App/ToroidPy.h"
-#include "Mod/Part/App/TopoShapeCompoundPy.h"
-#include "Mod/Part/App/TopoShapeCompSolidPy.h"
-#include "Mod/Part/App/TopoShapeEdgePy.h"
-#include "Mod/Part/App/TopoShapeFacePy.h"
-#include "Mod/Part/App/TopoShapeWirePy.h"
-#include "Mod/Part/App/TopoShapePy.h"
-#include "Mod/Part/App/TopoShapeSolidPy.h"
-#include "Mod/Part/App/TopoShapeVertexPy.h"
-#include "Mod/Part/App/TopoShapeShellPy.h"
+~include "Mod/Part/App/ArcOfCirclePy.h"
+~include "Mod/Part/App/ArcOfConicPy.h"
+~include "Mod/Part/App/ArcOfEllipsePy.h"
+~include "Mod/Part/App/ArcOfHyperbolaPy.h"
+~include "Mod/Part/App/ArcOfParabolaPy.h"
+~include "Mod/Part/App/ArcPy.h"
+~include "Mod/Part/App/AttachEnginePy.h"
+~include "Mod/Part/App/BezierCurvePy.h"
+~include "Mod/Part/App/BezierSurfacePy.h"
+~include <Mod/Part/App/BRepFeat/MakePrismPy.h>
+~include "Mod/Part/App/BRepOffsetAPI_MakeFillingPy.h"
+~include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
+~include "Mod/Part/App/BSplineCurvePy.h"
+~include "Mod/Part/App/BSplineSurfacePy.h"
+~include "Mod/Part/App/CirclePy.h"
+~include "Mod/Part/App/ConePy.h"
+~include "Mod/Part/App/ConicPy.h"
+~include "Mod/Part/App/CylinderPy.h"
+~include "Mod/Part/App/EllipsePy.h"
+~include "Mod/Part/App/GeometryBoolExtensionPy.h"
+~include "Mod/Part/App/GeometryDoubleExtensionPy.h"
+~include "Mod/Part/App/GeometryIntExtensionPy.h"
+~include "Mod/Part/App/GeometryStringExtensionPy.h"
+~include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
+~include <Mod/Part/App/Geom2d/ArcOfConic2dPy.h>
+~include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
+~include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
+~include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
+~include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
+~include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
+~include <Mod/Part/App/Geom2d/Circle2dPy.h>
+~include <Mod/Part/App/Geom2d/Conic2dPy.h>
+~include <Mod/Part/App/Geom2d/Curve2dPy.h>
+~include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
+~include <Mod/Part/App/Geom2d/Geometry2dPy.h>
+~include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
+~include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
+~include <Mod/Part/App/Geom2d/Line2dPy.h>
+~include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
+~include <Mod/Part/App/Geom2d/Parabola2dPy.h>
+~include <Mod/Part/App/GeomPlate/BuildPlateSurfacePy.h>
+~include <Mod/Part/App/GeomPlate/CurveConstraintPy.h>
+~include <Mod/Part/App/GeomPlate/PointConstraintPy.h>
+~include <Mod/Part/App/HLRBRep/HLRBRep_AlgoPy.h>
+~include <Mod/Part/App/HLRBRep/HLRBRep_PolyAlgoPy.h>
+~include <Mod/Part/App/HLRBRep/HLRToShapePy.h>
+~include <Mod/Part/App/HLRBRep/PolyHLRToShapePy.h>
+~include "Mod/Part/App/HyperbolaPy.h"
+~include "Mod/Part/App/LinePy.h"
+~include "Mod/Part/App/LineSegmentPy.h"
+~include "Mod/Part/App/OffsetCurvePy.h"
+~include "Mod/Part/App/OffsetSurfacePy.h"
+~include "Mod/Part/App/ParabolaPy.h"
+~include "Mod/Part/App/PartFeaturePy.h"
+~include "Mod/Part/App/PlateSurfacePy.h"
+~include "Mod/Part/App/PlanePy.h"
+~include "Mod/Part/App/PointPy.h"
+~include <Mod/Part/App/PrecisionPy.h>
+~include "Mod/Part/App/RectangularTrimmedSurfacePy.h"
+~include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
+~include "Mod/Part/App/SpherePy.h"
+~include "Mod/Part/App/SurfaceOfExtrusionPy.h"
+~include "Mod/Part/App/SurfaceOfRevolutionPy.h"
+~include "Mod/Part/App/ToroidPy.h"
+~include "Mod/Part/App/TopoShapeCompoundPy.h"
+~include "Mod/Part/App/TopoShapeCompSolidPy.h"
+~include "Mod/Part/App/TopoShapeEdgePy.h"
+~include "Mod/Part/App/TopoShapeFacePy.h"
+~include "Mod/Part/App/TopoShapeWirePy.h"
+~include "Mod/Part/App/TopoShapePy.h"
+~include "Mod/Part/App/TopoShapeSolidPy.h"
+~include "Mod/Part/App/TopoShapeVertexPy.h"
+~include "Mod/Part/App/TopoShapeShellPy.h"
 
-#include "Attacher.h"
-#include "AttachExtension.h"
-#include "BodyBase.h"
-#include "BodyBasePy.h"
-#include "DatumFeature.h"
-#include "FaceMaker.h"
-#include "FaceMakerBullseye.h"
-#include "FaceMakerCheese.h"
-#include "FeatureChamfer.h"
-#include "FeatureCompound.h"
-#include "FeatureGeometrySet.h"
-#include "FeatureFace.h"
-#include "FeatureExtrusion.h"
-#include "FeatureFillet.h"
-#include "FeatureMirroring.h"
-#include "FeatureRevolution.h"
-#include "FeatureOffset.h"
-#include "FeaturePartBoolean.h"
-#include "FeaturePartBox.h"
-#include "FeaturePartCircle.h"
-#include "FeaturePartCommon.h"
-#include "FeaturePartCurveNet.h"
-#include "FeaturePartCut.h"
-#include "FeaturePartFuse.h"
-#include "FeaturePartImportBrep.h"
-#include "FeaturePartImportIges.h"
-#include "FeaturePartImportStep.h"
-#include "FeaturePartPolygon.h"
-#include "FeaturePartSection.h"
-#include "FeaturePartSpline.h"
-#include "PrimitiveFeature.h"
-#include "PartFeatures.h"
-#include "Part2DObject.h"
-#include "Part2DObjectPy.h"
-#include "CustomFeature.h"
-#include "Geometry.h"
-#include "GeometryDefaultExtension.h"
-#include "GeometryExtension.h"
-#include "GeometryMigrationExtension.h"
-#include "Geometry2d.h"
-#include "OCCError.h"
-#include "PrismExtension.h"
-#include "PropertyGeometryList.h"
+~include "Attacher.h"
+~include "AttachExtension.h"
+~include "BodyBase.h"
+~include "BodyBasePy.h"
+~include "DatumFeature.h"
+~include "FaceMaker.h"
+~include "FaceMakerBullseye.h"
+~include "FaceMakerCheese.h"
+~include "FeatureChamfer.h"
+~include "FeatureCompound.h"
+~include "FeatureGeometrySet.h"
+~include "FeatureFace.h"
+~include "FeatureExtrusion.h"
+~include "FeatureFillet.h"
+~include "FeatureMirroring.h"
+~include "FeatureRevolution.h"
+~include "FeatureOffset.h"
+~include "FeaturePartBoolean.h"
+~include "FeaturePartBox.h"
+~include "FeaturePartCircle.h"
+~include "FeaturePartCommon.h"
+~include "FeaturePartCurveNet.h"
+~include "FeaturePartCut.h"
+~include "FeaturePartFuse.h"
+~include "FeaturePartImportBrep.h"
+~include "FeaturePartImportIges.h"
+~include "FeaturePartImportStep.h"
+~include "FeaturePartPolygon.h"
+~include "FeaturePartSection.h"
+~include "FeaturePartSpline.h"
+~include "PrimitiveFeature.h"
+~include "PartFeatures.h"
+~include "Part2DObject.h"
+~include "Part2DObjectPy.h"
+~include "CustomFeature.h"
+~include "Geometry.h"
+~include "GeometryDefaultExtension.h"
+~include "GeometryExtension.h"
+~include "GeometryMigrationExtension.h"
+~include "Geometry2d.h"
+~include "OCCError.h"
+~include "PrismExtension.h"
+~include "PropertyGeometryList.h"
 
 
 namespace Part {
@@ -178,9 +178,9 @@ PyMOD_INIT_FUNC(Part)
     // The argument must be 'Standard_False' to avoid FPE caused by
     // Python's cmath module.
     // For Linux use segmentation_fault_handler in Application.cpp
-#if !defined(_DEBUG) && !defined(FC_OS_LINUX)
+~if !defined(_DEBUG) && !defined(FC_OS_LINUX)
     //OSD::SetSignal(Standard_False);
-#endif
+~endif
 
     PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");

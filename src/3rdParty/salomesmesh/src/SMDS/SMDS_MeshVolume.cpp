@@ -25,7 +25,7 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_MeshVolume.hxx"
+~include "SMDS_MeshVolume.hxx"
 //=======================================================================
 //function : Print
 //purpose  : 

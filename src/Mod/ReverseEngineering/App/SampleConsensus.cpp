@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "SampleConsensus.h"
-#include <Mod/Points/App/Points.h>
-#include <Base/Exception.h>
-#include <boost/math/special_functions/fpclassify.hpp>
+~include "SampleConsensus.h"
+~include <Mod/Points/App/Points.h>
+~include <Base/Exception.h>
+~include <boost/math/special_functions/fpclassify.hpp>
 
-#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-#include <pcl/point_types.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/sample_consensus/ransac.h>
-#include <pcl/sample_consensus/sac_model_plane.h>
-#include <pcl/sample_consensus/sac_model_sphere.h>
-#include <pcl/sample_consensus/sac_model_cylinder.h>
-#include <pcl/sample_consensus/sac_model_cone.h>
+~if defined(HAVE_PCL_SAMPLE_CONSENSUS)
+~include <pcl/point_types.h>
+~include <pcl/features/normal_3d.h>
+~include <pcl/sample_consensus/ransac.h>
+~include <pcl/sample_consensus/sac_model_plane.h>
+~include <pcl/sample_consensus/sac_model_sphere.h>
+~include <pcl/sample_consensus/sac_model_cylinder.h>
+~include <pcl/sample_consensus/sac_model_cone.h>
 
 using namespace std;
 using namespace Reen;
@@ -65,7 +65,7 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
 
     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal> ());
     if (mySac == SACMODEL_CONE || mySac == SACMODEL_CYLINDER) {
-#if 0
+~if 0
         // Create search tree
         pcl::search::KdTree<pcl::PointXYZ>::Ptr tree;
         tree.reset (new pcl::search::KdTree<PointXYZ> (false));
@@ -78,13 +78,13 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
         n.setSearchMethod (tree);
         n.setKSearch (ksearch);
         n.compute (*normals);
-#else
+~else
         normals->reserve(myNormals.size());
         for (std::vector<Base::Vector3d>::const_iterator it = myNormals.begin(); it != myNormals.end(); ++it) {
             if (!boost::math::isnan(it->x) && !boost::math::isnan(it->y) && !boost::math::isnan(it->z))
                 normals->push_back(pcl::Normal(it->x, it->y, it->z));
         }
-#endif
+~endif
     }
 
     // created RandomSampleConsensus object and compute the appropriated model
@@ -133,5 +133,5 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
     return ransac.getProbability();
 }
 
-#endif // HAVE_PCL_SAMPLE_CONSENSUS
+~endif // HAVE_PCL_SAMPLE_CONSENSUS
 

@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "path_simulate.h"
+~include "PreCompiled.h"
+~include "path_simulate.h"
 
-#include <GeomAPI_ProjectPointOnCurve.hxx>
+~include <GeomAPI_ProjectPointOnCurve.hxx>
 
-#include <TColgp_Array1OfPnt.hxx>
-#include <Base/Exception.h>
-#include <Base/Builder3D.h>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <Geom_BSplineCurve.hxx>
+~include <TColgp_Array1OfPnt.hxx>
+~include <Base/Exception.h>
+~include <Base/Builder3D.h>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <Geom_BSplineCurve.hxx>
 
-#define curvTOL  30.0  // indicates the maximum radius of curvature from which the curve is subdivided
-#define TolDist  1.0   // corresponds to the sampling increment of the curve points for the robot output
+~define curvTOL  30.0  // indicates the maximum radius of curvature from which the curve is subdivided
+~define TolDist  1.0   // corresponds to the sampling increment of the curve points for the robot output
 
 /* Constructor with two path sequences (master tool & supporting die) as input */
 path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplineTop,
@@ -2836,7 +2836,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
             int n = m_Output.size();
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "2,1,0," << c <<  ",1.000000, ," << m_Output_time[n-1] << ","  << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c << std::endl;
 
@@ -2848,7 +2848,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
             anOutputFile << m_Output_time[n-1] - m_Output_time[0] + 0.1 << "," << m_Output[n-1][0].x<< std::endl;
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "3,1,0," << c <<  ",1.000000, ," << m_Output_time[n-1] << ","  << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+1 << std::endl;
 
@@ -2860,7 +2860,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
             anOutputFile << m_Output_time[n-1] - m_Output_time[0] + 0.1 << "," << m_Output[n-1][1].x<< std::endl;
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "2,2,0," << c+1 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+2 << std::endl;
 
@@ -2873,7 +2873,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
 
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "3,2,0," << c+1 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+3 << std::endl;
 
@@ -2886,7 +2886,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
 
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "2,3,0," << c+2 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+4 <<  std::endl;
 
@@ -2899,7 +2899,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
 
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "3,3,0," << c+2 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+5 <<  std::endl;
 
@@ -2935,7 +2935,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
             int n = m_Output.size();
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "2,1,0," << c <<  ",1.000000, ," << m_Output_time[n-1] << ","  << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c << std::endl;
 
@@ -2947,7 +2947,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
             anOutputFile << m_Output_time[n-1] - m_Output_time[0] + 0.1 << "," << m_Output[n-1][0].x<< std::endl;
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "2,2,0," << c+1 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+1 << std::endl;
 
@@ -2959,7 +2959,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
             anOutputFile << m_Output_time[n-1] - m_Output_time[0] + 0.1 << "," << m_Output[n-1][0].y<< std::endl;
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << "2,3,0," << c+2 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c+4 <<  std::endl;
 
@@ -3063,14 +3063,14 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
     if (n>1)
     {
         anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-        anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+        anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
         anOutputFile << ind << ",1,0," << c <<  ",1.000000, ," << Out_time[n-1] << ","  << Out_time[0] << std::endl;
         
 
 		if (beamfl && tool)
         {
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-			anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+			anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
 			anOutputFile << pid << ",1,0," << c <<  ",1.000000, ," << Out_time[n-1] << ","  << Out_time[0] << std::endl;
         }
 		
@@ -3090,14 +3090,14 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
         else      m_PathTimes_Slave.push_back(times);
 
         anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-        anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+        anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
         anOutputFile << ind << ",2,0," << c+1 <<  ",1.000000, ," << Out_time[n-1] << "," << Out_time[0] << std::endl;
         
 
 		if (beamfl && tool)
         {
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-			anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+			anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
 			anOutputFile << pid << ",2,0," << c+1 <<  ",1.000000, ," << Out_time[n-1] << "," << Out_time[0] << std::endl;
         }
 		
@@ -3119,13 +3119,13 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
         if (beamfl && tool)
         {
 			anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << pid << ",3,0," << c+2 <<  ",1.000000, ," << Out_time[n-1] << "," << Out_time[0] << std::endl;
         }
 		else
 		{
 			anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-			anOutputFile << "$#     ind       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+			anOutputFile << "$~     ind       dof       vad      lcid        sf       vid     death     birth" << std::endl;
 			anOutputFile << ind << ",3,0," << c+2 <<  ",1.000000, ," << Out_time[n-1] << "," << Out_time[0] << std::endl;
 		}
 
@@ -3172,7 +3172,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             // MASTER-X
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << pid1 << ",1,0," << c1 <<  ",1.000000, ," << m_Output_time[n-1] << ","  << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c1 << std::endl;
 
@@ -3193,13 +3193,13 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 			// SLAVE-X
 
             anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile2 << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile2 << pid2 << ",1,0," << c2 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
 
 			if (beamfl) // if true, then insert a new part
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-                anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+                anOutputFile2 << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
                 anOutputFile2 << pid3 << ",1,0," << c2<<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             }
 
@@ -3223,7 +3223,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 			// MASTER-Y
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile << pid1 << ",2,0," << c1+1 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c1+1 << std::endl;
 
@@ -3244,13 +3244,13 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 			// SLAVE-Y
 
             anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-            anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+            anOutputFile2 << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile2 << pid2 << ",2,0," << c2+1 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
             
 			if (beamfl) // if true, then insert a new part
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-                anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+                anOutputFile2 << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
                 anOutputFile2 << pid3 << ",2,0," << c2+1 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             }
 			
@@ -3273,7 +3273,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 
 			// MASTER-Z
 			anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-			anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+			anOutputFile << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
 			anOutputFile << pid1 << ",3,0," << c1+2 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
             anOutputFile << "*DEFINE_CURVE" << std::endl << c1+2 <<  std::endl;
 
@@ -3296,14 +3296,14 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 			if (beamfl)
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-                anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+                anOutputFile2 << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
                 anOutputFile2 << pid3 << ",3,0," << c2+2 <<  ",1.000000, ," << m_Output_time[n-1] << "," << m_Output_time[0] << std::endl;
 
             }
 			else
 			{
 				anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
-				anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
+				anOutputFile2 << "$~     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
 				anOutputFile2 << pid2 << ",3,0," << c2+2 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
 			}
 

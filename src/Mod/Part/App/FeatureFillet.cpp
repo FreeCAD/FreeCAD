@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepFilletAPI_MakeFillet.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepFilletAPI_MakeFillet.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~endif
 
 
-#include "FeatureFillet.h"
-#include <Base/Exception.h>
+~include "FeatureFillet.h"
+~include <Base/Exception.h>
 
-#include <Precision.hxx>
+~include <Precision.hxx>
 
 using namespace Part;
 
@@ -55,9 +55,9 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     auto baseShape = Feature::getShape(link);
 
     try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+~if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
-#endif
+~endif
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
         TopTools_IndexedMapOfShape mapOfShape;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        //shapefix re #4285
+        //shapefix re ~4285
         //https://www.forum.freecadweb.org/viewtopic.php?f=3&t=43890&sid=dae2fa6fda71670863a103b42739e47f
         TopoShape* ts = new TopoShape(shape);
         double minTol = 2.0 * Precision::Confusion();
@@ -89,7 +89,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, baseShape);
         this->Shape.setValue(shape);
 
-        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
+        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (~0001889)
         PropertyShapeHistory prop;
         prop.setValue(history);
         prop.setContainer(this);

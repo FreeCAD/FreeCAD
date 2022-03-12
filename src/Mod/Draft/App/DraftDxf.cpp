@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "DraftDxf.h"
+~include "DraftDxf.h"
 
-#include <gp_Circ.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Elips.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
+~include <gp_Circ.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Elips.hxx>
+~include <BRep_Builder.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeVertex.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Shape.hxx>
 
-#include <Base/Parameter.h>
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Annotation.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <Base/Parameter.h>
+~include <Base/Matrix.h>
+~include <Base/Vector3D.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Annotation.h>
+~include <Mod/Part/App/PartFeature.h>
 
 using namespace DraftUtils;
 

@@ -24,16 +24,16 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  * Used under BSD license 2.0 *
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "QDomNodeModel.h"
+~include "QDomNodeModel.h"
 
-#include <QDomNode>
-#include <QDomDocument>
-#include <QUrl>
-#include <QVector>
-#include <QSourceLocation>
-#include <QVariant>
+~include <QDomNode>
+~include <QDomDocument>
+~include <QUrl>
+~include <QVector>
+~include <QSourceLocation>
+~include <QVariant>
 
 class PrivateDomNodeWrapper: public QDomNode
 {
@@ -66,7 +66,7 @@ QUrl QDomNodeModel::baseUri (const QXmlNodeModelIndex &) const
     return QUrl();
 }
 
-#include <QDebug>
+~include <QDebug>
 
 QXmlNodeModelIndex::DocumentOrder QDomNodeModel::compareOrder (
     const QXmlNodeModelIndex & ni1,

@@ -20,30 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QApplication>
-# include <QEvent>
-# include <QFileInfo>
-# include <QMenu>
-# include <QPixmap>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoDetail.h>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QApplication>
+~ include <QEvent>
+~ include <QFileInfo>
+~ include <QMenu>
+~ include <QPixmap>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoDetail.h>
+~endif
 
-#include <App/DocumentObjectPy.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
 
-#include "ViewProviderPythonFeature.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "PythonWrapper.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderDocumentObjectPy.h"
+~include "ViewProviderPythonFeature.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Document.h"
+~include "PythonWrapper.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderDocumentObjectPy.h"
 
 
 FC_LOG_LEVEL_INIT("ViewProviderPythonFeature", true, true)
@@ -52,9 +52,9 @@ FC_LOG_LEVEL_INIT("ViewProviderPythonFeature", true, true)
 using namespace Gui;
 namespace bp = boost::placeholders;
 
-// #0003564: Python objects: updateData calls to proxy instance that should have been deleted
-// See https://forum.freecadweb.org/viewtopic.php?f=22&t=30429&p=252429#p252429
-#if 0
+// ~0003564: Python objects: updateData calls to proxy instance that should have been deleted
+// See https://forum.freecadweb.org/viewtopic.php?f=22&t=30429&p=252429~p252429
+~if 0
 namespace Gui {
 
 struct ProxyInfo {
@@ -96,7 +96,7 @@ private:
     {
         PropertyEvent* pe = static_cast<PropertyEvent*>(e);
         std::set<const Gui::ViewProvider*>::iterator it = viewMap.find(pe->view);
-        // Make sure that the object hasn't been deleted in the meantime (#0001522)
+        // Make sure that the object hasn't been deleted in the meantime (~0001522)
         if (it != viewMap.end()) {
             viewMap.erase(it);
 
@@ -264,7 +264,7 @@ ViewProviderPythonFeatureObserver::ViewProviderPythonFeatureObserver()
 ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
 {
 }
-#endif
+~endif
 
 // ----------------------------------------------------------------------------
 
@@ -272,16 +272,16 @@ ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(
         ViewProviderDocumentObject* vp, App::PropertyPythonObject &proxy)
   : object(vp), Proxy(proxy), has__object__(false)
 {
-#if 0
+~if 0
     (void)ViewProviderPythonFeatureObserver::instance();
-#endif
+~endif
 }
 
 ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
 {
     Base::PyGILStateLocker lock;
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) py_~~_name = Py::None();
 
     FC_PY_VIEW_OBJECT
 }
@@ -290,13 +290,13 @@ void ViewProviderPythonFeatureImp::init(PyObject *pyobj) {
     Base::PyGILStateLocker lock;
     has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
 
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
 
     FC_PY_VIEW_OBJECT
 }
 
-#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
+~define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
 
 QIcon ViewProviderPythonFeatureImp::getIcon() const
 {
@@ -776,7 +776,7 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
             Base::pyCall(py_attach.ptr(),args.ptr());
         }
 
-        // #0000415: Now simulate a property change event to call
+        // ~0000415: Now simulate a property change event to call
         // claimChildren if implemented.
         pcObject->Label.touch();
     }

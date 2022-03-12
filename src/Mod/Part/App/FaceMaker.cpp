@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Builder.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <QtGlobal>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Builder.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <QtGlobal>
+~endif
 
-#include <memory>
+~include <memory>
 
-#include "FaceMaker.h"
-#include "TopoShape.h"
+~include "FaceMaker.h"
+~include "TopoShape.h"
 
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass)

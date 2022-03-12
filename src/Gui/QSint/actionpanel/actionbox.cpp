@@ -5,9 +5,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "actionbox.h"
+~include "actionbox.h"
 
-#include <QtCore/QVariant>
+~include <QtCore/QVariant>
 
 
 namespace QSint
@@ -23,21 +23,21 @@ const char* ActionBoxStyle =
     "}"
 
     "QSint--ActionBox:hover {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #DAF2FC;"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ~F9FDFF, stop: 1 ~EAF7FF);"
+        "border: 1px solid ~DAF2FC;"
     "}"
 
 
     "QSint--ActionBox QSint--ActionLabel[class='header'] {"
         "text-align: left;"
         "font: 14px;"
-        "color: #006600;"
+        "color: ~006600;"
         "background-color: transparent;"
         "border: none;"
     "}"
 
     "QSint--ActionBox QSint--ActionLabel[class='header']:hover {"
-        "color: #00cc00;"
+        "color: ~00cc00;"
         "text-decoration: underline;"
     "}"
 
@@ -45,23 +45,23 @@ const char* ActionBoxStyle =
     "QSint--ActionBox QSint--ActionLabel[class='action'] {"
         "background-color: transparent;"
         "border: none;"
-        "color: #0033ff;"
+        "color: ~0033ff;"
         "text-align: left;"
         "font: 11px;"
     "}"
 
     "QSint--ActionBox QSint--ActionLabel[class='action']:!enabled {"
-        "color: #999999;"
+        "color: ~999999;"
     "}"
 
     "QSint--ActionBox QSint--ActionLabel[class='action']:hover {"
-        "color: #0099ff;"
+        "color: ~0099ff;"
         "text-decoration: underline;"
     "}"
 
     "QSint--ActionBox QSint--ActionLabel[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
 
 ;
@@ -118,15 +118,15 @@ void ActionBox::setIcon(const QPixmap & icon)
 
 QPixmap ActionBox::icon() const
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     return iconLabel->pixmap(Qt::ReturnByValue);
-#else
+~else
     QPixmap p;
     const QPixmap* ptr = iconLabel->pixmap();
     if (ptr)
         p = *ptr;
     return p;
-#endif
+~endif
 }
 
 ActionLabel* ActionBox::createItem(QAction * action, QLayout * l)

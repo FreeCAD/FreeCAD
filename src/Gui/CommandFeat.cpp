@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <App/DocumentObject.h>
-#include "Application.h"
-#include "CommandT.h"
-#include "DockWindowManager.h"
-#include "Document.h"
-#include "PythonConsole.h"
-#include "Selection.h"
-#include "SelectionObject.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderLink.h"
+~include <App/DocumentObject.h>
+~include "Application.h"
+~include "CommandT.h"
+~include "DockWindowManager.h"
+~include "Document.h"
+~include "PythonConsole.h"
+~include "Selection.h"
+~include "SelectionObject.h"
+~include "ViewProvider.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderLink.h"
 
 using namespace Gui;
 

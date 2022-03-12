@@ -1,12 +1,12 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <stdexcept>
-#include <string>
-#include <sys/types.h>
-#include <sys/stat.h>
+~include <stdexcept>
+~include <string>
+~include <sys/types.h>
+~include <sys/stat.h>
 
-#include "filepath.h"
+~include "filepath.h"
 
 namespace zipios {
 
@@ -34,26 +34,26 @@ void FilePath::check() const {
   _is_socket   = false ;
   _is_fifo     = false ;
 
-#if defined (__GNUC__)
+~if defined (__GNUC__)
   struct stat buf ;
   if ( stat( _path.c_str(), &buf ) != -1 ) {
-#else
+~else
   struct _stat buf ;
   if ( _stat( _path.c_str(), &buf ) != -1 ) {
-#endif
+~endif
     _exists    = true ;
-#if defined(BOOST_WINNT)
+~if defined(BOOST_WINNT)
     _is_reg    = _S_IFREG & buf.st_mode ;
     _is_dir    = _S_IFDIR & buf.st_mode ;
     _is_char   = _S_IFCHR & buf.st_mode ;
-#else
+~else
     _is_reg    = S_ISREG ( buf.st_mode ) ;
     _is_dir    = S_ISDIR ( buf.st_mode ) ;
     _is_char   = S_ISCHR ( buf.st_mode ) ;
     _is_block  = S_ISBLK ( buf.st_mode ) ;
     _is_socket = S_ISSOCK( buf.st_mode ) ;
     _is_fifo   = S_ISFIFO( buf.st_mode ) ;
-#endif
+~endif
   } 
 }
 

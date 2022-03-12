@@ -25,9 +25,9 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "SMESHDS_Hypothesis.hxx"
+~include "SMESHDS_Hypothesis.hxx"
 
-#include <sstream>
+~include <sstream>
 
 using namespace std;
 

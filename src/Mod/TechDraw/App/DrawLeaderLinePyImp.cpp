@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Vector3D.h>
 
-#include "DrawLeaderLine.h"
+~include "DrawLeaderLine.h"
 
 // inclusion of the generated files (generated out of DrawLeaderLinePy.xml)
-#include <Base/VectorPy.h>
-#include <Mod/TechDraw/App/DrawLeaderLinePy.h>
-#include <Mod/TechDraw/App/DrawLeaderLinePy.cpp>
+~include <Base/VectorPy.h>
+~include <Mod/TechDraw/App/DrawLeaderLinePy.h>
+~include <Mod/TechDraw/App/DrawLeaderLinePy.cpp>
 
 using namespace TechDraw;
 

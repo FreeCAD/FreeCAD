@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QListWidget>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QListWidget>
+~ include <QMessageBox>
+~endif
 
-#include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeatureThickness.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/FeatureThickness.h>
 
-#include "ui_TaskThicknessParameters.h"
-#include "TaskThicknessParameters.h"
+~include "ui_TaskThicknessParameters.h"
+~include "TaskThicknessParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -371,4 +371,4 @@ bool TaskDlgThicknessParameters::accept()
     return TaskDlgDressUpParameters::accept();
 }
 
-#include "moc_TaskThicknessParameters.cpp"
+~include "moc_TaskThicknessParameters.cpp"

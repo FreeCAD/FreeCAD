@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <QMenu>
+~endif
 
-#include "ViewProviderHelixParametric.h"
+~include "ViewProviderHelixParametric.h"
 
 using namespace PartGui;
 

@@ -19,13 +19,13 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
-#include "AttacherTexts.h"
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
+~include "AttacherTexts.h"
+~include <Base/PyObjectBase.h>
+~include <Base/Console.h>
 
 using namespace Attacher;
 

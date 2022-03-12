@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QDir>
-# include <QFileInfo>
-# include <QMenu>
-# include <QInputDialog>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QDir>
+~ include <QFileInfo>
+~ include <QMenu>
+~ include <QInputDialog>
+~endif
 
-#include "ViewProvider.h"
-#include <Mod/Raytracing/App/LuxProject.h>
-#include <Mod/Raytracing/App/RayProject.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
+~include "ViewProvider.h"
+~include <Mod/Raytracing/App/LuxProject.h>
+~include <Mod/Raytracing/App/RayProject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
 
 
 using namespace RaytracingGui;

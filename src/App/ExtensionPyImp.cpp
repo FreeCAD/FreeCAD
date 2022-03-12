@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Application.h"
+~include "Application.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
-#include <App/ExtensionPy.h>
-#include <App/ExtensionPy.cpp>
+~include <App/ExtensionPy.h>
+~include <App/ExtensionPy.cpp>
 
 using namespace App;
 

@@ -21,55 +21,55 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <CXX/Extensions.hxx>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <CXX/Extensions.hxx>
 
-#include <SMESH_Version.h>
-#include "FemMeshPy.h"
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
-#include "FemAnalysis.h"
-#include "FemMeshObject.h"
-#include "FemMeshShapeObject.h"
-#include "FemMeshShapeNetgenObject.h"
+~include <SMESH_Version.h>
+~include "FemMeshPy.h"
+~include "FemMesh.h"
+~include "FemMeshProperty.h"
+~include "FemAnalysis.h"
+~include "FemMeshObject.h"
+~include "FemMeshShapeObject.h"
+~include "FemMeshShapeNetgenObject.h"
 
-#include "FemSetElementsObject.h"
-#include "FemSetFacesObject.h"
-#include "FemSetGeometryObject.h"
-#include "FemSetNodesObject.h"
+~include "FemSetElementsObject.h"
+~include "FemSetFacesObject.h"
+~include "FemSetGeometryObject.h"
+~include "FemSetNodesObject.h"
 
-#include "HypothesisPy.h"
-#include "FemConstraintBearing.h"
-#include "FemConstraintFixed.h"
-#include "FemConstraintForce.h"
-#include "FemConstraintPressure.h"
-#include "FemConstraintGear.h"
-#include "FemConstraintPulley.h"
-#include "FemConstraintDisplacement.h"
-#include "FemConstraintTemperature.h"
-#include "FemConstraintHeatflux.h"
-#include "FemConstraintInitialTemperature.h"
-#include "FemConstraintPlaneRotation.h"
-#include "FemConstraintContact.h"
-#include "FemConstraintFluidBoundary.h"
-#include "FemConstraintTransform.h"
-#include "FemConstraintSpring.h"
+~include "HypothesisPy.h"
+~include "FemConstraintBearing.h"
+~include "FemConstraintFixed.h"
+~include "FemConstraintForce.h"
+~include "FemConstraintPressure.h"
+~include "FemConstraintGear.h"
+~include "FemConstraintPulley.h"
+~include "FemConstraintDisplacement.h"
+~include "FemConstraintTemperature.h"
+~include "FemConstraintHeatflux.h"
+~include "FemConstraintInitialTemperature.h"
+~include "FemConstraintPlaneRotation.h"
+~include "FemConstraintContact.h"
+~include "FemConstraintFluidBoundary.h"
+~include "FemConstraintTransform.h"
+~include "FemConstraintSpring.h"
 
-#include "FemResultObject.h"
-#include "FemSolverObject.h"
+~include "FemResultObject.h"
+~include "FemSolverObject.h"
 
-#ifdef FC_USE_VTK
-#include "FemPostPipeline.h"
-#include "FemPostFilter.h"
-#include "FemPostFunction.h"
-#include "PropertyPostDataObject.h"
-#endif
+~ifdef FC_USE_VTK
+~include "FemPostPipeline.h"
+~include "FemPostFilter.h"
+~include "FemPostFunction.h"
+~include "PropertyPostDataObject.h"
+~endif
 
 namespace Fem {
 extern PyObject* initModule();
@@ -121,9 +121,9 @@ PyMOD_INIT_FUNC(Fem)
     Fem::StdMeshers_SegmentAroundVertex_0DPy    ::init_type(femModule);
     Fem::StdMeshers_SegmentLengthAroundVertexPy ::init_type(femModule);
     Fem::StdMeshers_StartEndLengthPy            ::init_type(femModule);
-#if SMESH_VERSION_MAJOR < 7
+~if SMESH_VERSION_MAJOR < 7
     Fem::StdMeshers_TrianglePreferencePy        ::init_type(femModule);
-#endif
+~endif
     Fem::StdMeshers_Hexa_3DPy                   ::init_type(femModule);
 
     // Add Types to module
@@ -178,7 +178,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemSolverObject                      ::init();
     Fem::FemSolverObjectPython                ::init();
 
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     Fem::FemPostObject                        ::init();
     Fem::FemPostPipeline                      ::init();
     Fem::FemPostFilter                        ::init();
@@ -195,7 +195,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemPostSphereFunction                ::init();
 
     Fem::PropertyPostDataObject               ::init();
-#endif
+~endif
 
     PyMOD_Return(femModule);
 }

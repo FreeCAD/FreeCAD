@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
+~ifndef _PreComp_
 
-#endif
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include "Tooltable.h"
+~endif
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
+~include "Tooltable.h"
 
 using namespace Base;
 using namespace Path;

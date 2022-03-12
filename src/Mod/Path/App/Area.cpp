@@ -21,90 +21,90 @@
  ****************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // From Boost 1.75 on the geometry component requires C++14
-#define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
+~define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
-#ifndef _PreComp_
-# include <cfloat>
-# include <boost/version.hpp>
-# include <boost/config.hpp>
-# if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
+~ifndef _PreComp_
+~ include <cfloat>
+~ include <boost/version.hpp>
+~ include <boost/config.hpp>
+~ if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
 // for fixing issue https://svn.boost.org/trac/boost/ticket/9332
-#   include "boost_fix/intrusive/detail/memory_util.hpp"
-#   include "boost_fix/container/detail/memory_util.hpp"
-# endif
-# include <boost_geometry.hpp>
-# include <boost/geometry/index/rtree.hpp>
-# include <boost/geometry/geometries/geometries.hpp>
-# include <boost/geometry/geometries/register/point.hpp>
-# include <boost/range/adaptor/indexed.hpp>
-# include <boost/range/adaptor/transformed.hpp>
+~   include "boost_fix/intrusive/detail/memory_util.hpp"
+~   include "boost_fix/container/detail/memory_util.hpp"
+~ endif
+~ include <boost_geometry.hpp>
+~ include <boost/geometry/index/rtree.hpp>
+~ include <boost/geometry/geometries/geometries.hpp>
+~ include <boost/geometry/geometries/register/point.hpp>
+~ include <boost/range/adaptor/indexed.hpp>
+~ include <boost/range/adaptor/transformed.hpp>
 
-# include <BRepLib.hxx>
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBuilderAPI_FindPlane.hxx>
-# include <BRepLib_FindSurface.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepTools.hxx>
-# include <BRepTools_WireExplorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <GeomAbs_JoinType.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Standard_Failure.hxx>
-# include <gp_Circ.hxx>
-# include <gp_GTrsf.hxx>
-# include <Standard_Version.hxx>
-# include <GCPnts_QuasiUniformDeflection.hxx>
-# include <GCPnts_UniformDeflection.hxx>
-# include <GCPnts_UniformAbscissa.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepLib_MakeFace.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <HLRBRep.hxx>
-# include <HLRBRep_Algo.hxx>
-# include <HLRBRep_HLRToShape.hxx>
-# include <HLRAlgo_Projector.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
-# include <ShapeExtend_WireData.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-#endif
+~ include <BRepLib.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepBuilderAPI_FindPlane.hxx>
+~ include <BRepLib_FindSurface.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepTools.hxx>
+~ include <BRepTools_WireExplorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <GeomAbs_JoinType.hxx>
+~ include <Geom_Circle.hxx>
+~ include <Geom_Ellipse.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Standard_Failure.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_GTrsf.hxx>
+~ include <Standard_Version.hxx>
+~ include <GCPnts_QuasiUniformDeflection.hxx>
+~ include <GCPnts_UniformDeflection.hxx>
+~ include <GCPnts_UniformAbscissa.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepLib_MakeFace.hxx>
+~ include <Bnd_Box.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <HLRBRep.hxx>
+~ include <HLRBRep_Algo.hxx>
+~ include <HLRBRep_HLRToShape.hxx>
+~ include <HLRAlgo_Projector.hxx>
+~ include <ShapeFix_ShapeTolerance.hxx>
+~ include <ShapeExtend_WireData.hxx>
+~ include <ShapeFix_Wire.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FaceMakerBullseye.h>
-#include <Mod/Part/App/CrossSection.h>
-#include "Area.h"
-#include "../libarea/Area.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/FaceMakerBullseye.h>
+~include <Mod/Part/App/CrossSection.h>
+~include "Area.h"
+~include "../libarea/Area.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+~endif
 
 
 namespace bg = boost::geometry;
@@ -115,18 +115,18 @@ typedef bgi::linear<16> RParameters;
 BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
         gp_Pnt,double,bg::cs::cartesian,X,Y,Z,SetX,SetY,SetZ)
 
-#define AREA_LOG FC_LOG
-#define AREA_WARN FC_WARN
-#define AREA_ERR FC_ERR
-#define AREA_TRACE FC_TRACE
-#define AREA_XYZ FC_XYZ
-#define AREA_XY AREA_XY
+~define AREA_LOG FC_LOG
+~define AREA_WARN FC_WARN
+~define AREA_ERR FC_ERR
+~define AREA_TRACE FC_TRACE
+~define AREA_XYZ FC_XYZ
+~define AREA_XY AREA_XY
 
-#ifdef FC_DEBUG
-#   define AREA_DBG FC_WARN
-#else
-#   define AREA_DBG(...) do{}while(0)
-#endif
+~ifdef FC_DEBUG
+~   define AREA_DBG FC_WARN
+~else
+~   define AREA_DBG(...) do{}while(0)
+~endif
 
 FC_LOG_LEVEL_INIT("Path.Area",true,true)
 
@@ -142,7 +142,7 @@ AreaParams::AreaParams()
 
 void AreaParams::dump(const char *msg) const {
 
-#define AREA_PARAM_PRINT(_param) \
+~define AREA_PARAM_PRINT(_param) \
     ss << PARAM_FNAME_STR(_param) << " = " << PARAM_FNAME(_param) << '\n';
 
     if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
@@ -156,7 +156,7 @@ void AreaParams::dump(const char *msg) const {
 
 CAreaConfig::CAreaConfig(const CAreaParams &p, bool noFitArcs)
 {
-#define AREA_CONF_SAVE_AND_APPLY(_param) \
+~define AREA_CONF_SAVE_AND_APPLY(_param) \
     PARAM_FNAME(_param) = BOOST_PP_CAT(CArea::get_,PARAM_FARG(_param))();\
     BOOST_PP_CAT(CArea::set_,PARAM_FARG(_param))(p.PARAM_FNAME(_param));
 
@@ -170,7 +170,7 @@ CAreaConfig::CAreaConfig(const CAreaParams &p, bool noFitArcs)
 
 CAreaConfig::~CAreaConfig() {
 
-#define AREA_CONF_RESTORE(_param) \
+~define AREA_CONF_RESTORE(_param) \
     BOOST_PP_CAT(CArea::set_,PARAM_FARG(_param))(PARAM_FNAME(_param));
 
     PARAM_FOREACH(AREA_CONF_RESTORE,AREA_PARAMS_CAREA)
@@ -513,7 +513,7 @@ void Area::add(const TopoDS_Shape &shape,short op) {
 
 
 void Area::setParams(const AreaParams &params) {
-#define AREA_SRC(_param) params.PARAM_FNAME(_param)
+~define AREA_SRC(_param) params.PARAM_FNAME(_param)
     // Validate all enum type of parameters
     PARAM_ENUM_CHECK(AREA_SRC,PARAM_ENUM_EXCEPT,AREA_PARAMS_CONF);
     if(params!=myParams) {
@@ -853,11 +853,11 @@ struct WireJoiner {
         int rcount = 0;
 
         for(auto &info : edges) {
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
             if(BRep_Tool::IsClosed(info.edge))
-#else
+~else
             if(info.p1.SquareDistance(info.p2)<tol)
-#endif
+~endif
             {
                 auto wire = BRepBuilderAPI_MakeWire(info.edge).Wire();
                 Area::showShape(wire,"closed");
@@ -1246,12 +1246,12 @@ int Area::project(TopoDS_Shape &shape_out,
     FC_TIME_LOG(t1,"HLRBrep_Algo");
     WireJoiner joiner;
     try {
-#define ADD_HLR_SHAPE(_name) \
-        shape = hlrToShape._name##Compound();\
+~define ADD_HLR_SHAPE(_name) \
+        shape = hlrToShape._name~~Compound();\
         if(!shape.IsNull()){\
             BRepLib::BuildCurves3d(shape);\
             joiner.add(shape,true);\
-            showShape(shape,"raw_" #_name);\
+            showShape(shape,"raw_" ~_name);\
         }
         TopoDS_Shape shape;
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
@@ -1621,7 +1621,7 @@ void Area::build() {
     if(myShapes.empty())
         throw Base::ValueError("no shape added");
 
-#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
+~define AREA_MY(_param) myParams.PARAM_FNAME(_param)
     PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
 
     if(myHaveSolid && myParams.SectionCount) {
@@ -1748,7 +1748,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
 }
 
 
-#define AREA_SECTION(_op,_index,...) do {\
+~define AREA_SECTION(_op,_index,...) do {\
     if(mySections.size()) {\
         if(_index>=(int)mySections.size())\
             return TopoDS_Shape();\
@@ -1757,7 +1757,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
             TopoDS_Compound compound;\
             builder.MakeCompound(compound);\
             for(shared_ptr<Area> area : mySections){\
-                const TopoDS_Shape &s = area->_op(_index, ## __VA_ARGS__);\
+                const TopoDS_Shape &s = area->_op(_index, ~~ __VA_ARGS__);\
                 if(s.IsNull()) continue;\
                 builder.Add(compound,s);\
             }\
@@ -1765,7 +1765,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
                 return TopoDS_Shape(std::move(compound));\
             return TopoDS_Shape();\
         }\
-        return mySections[_index]->_op(_index, ## __VA_ARGS__);\
+        return mySections[_index]->_op(_index, ~~ __VA_ARGS__);\
     }\
 }while(0)
 
@@ -1928,9 +1928,9 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
     }
 
     PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
-#ifdef AREA_OFFSET_ALGO
+~ifdef AREA_OFFSET_ALGO
     PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
-#endif
+~endif
 
     if(offset<0) {
         stepover = -fabs(stepover);
@@ -1949,7 +1949,7 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
             areas.push_back(make_shared<CArea>());
         CArea &area = from_center?(*areas.front()):(*areas.back());
         CArea areaOpen;
-#ifdef AREA_OFFSET_ALGO
+~ifdef AREA_OFFSET_ALGO
         if(myParams.Algo == Area::Algolibarea) {
             for(const CCurve &c : myArea->m_curves) {
                 if(c.IsClosed())
@@ -1958,10 +1958,10 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
                     areaOpen.append(c);
             }
         }else
-#endif
+~endif
             area = *myArea;
 
-#ifdef AREA_OFFSET_ALGO
+~ifdef AREA_OFFSET_ALGO
         switch(myParams.Algo){
         case Area::Algolibarea:
             // libarea somehow fails offset without Reorder, but ClipperOffset
@@ -1974,13 +1974,13 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
             }
             break;
         case Area::AlgoClipperOffset:
-#endif
+~endif
             area.OffsetWithClipper(offset,JoinType,EndType,
                     myParams.MiterLimit,myParams.RoundPrecision);
-#ifdef AREA_OFFSET_ALGO
+~ifdef AREA_OFFSET_ALGO
             break;
         }
-#endif
+~endif
         if(count>1)
             FC_TIME_LOG(t1,"makeOffset " << i << '/' << count);
         if(area.m_curves.empty()) {
@@ -2224,7 +2224,7 @@ TopoDS_Shape Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) 
         pt = pnext;
     }
 
-#if 0
+~if 0
     if(c.IsClosed() && !BRep_Tool::IsClosed(mkWire.Wire())){
         // This should never happen after changing libarea's
         // Point::tolerance to be the same as Precision::Confusion().
@@ -2237,7 +2237,7 @@ TopoDS_Shape Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) 
             AREA_XYZ(p2)<<endl<<AREA_XYZ(pt)<<endl<<AREA_XYZ(pstart));
         mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pstart).Edge());
     }
-#endif
+~endif
 
     ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
             hEdges, Precision::Confusion(), Standard_False, hWires);
@@ -3468,6 +3468,6 @@ const AreaStaticParams &Area::getDefaultParams() {
     return s_params;
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif

@@ -25,47 +25,47 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_Regular_1D.hxx"
+~include "StdMeshers_Regular_1D.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "StdMeshers_Adaptive1D.hxx"
-#include "StdMeshers_Arithmetic1D.hxx"
-#include "StdMeshers_Geometric1D.hxx"
-#include "StdMeshers_AutomaticLength.hxx"
-#include "StdMeshers_Deflection1D.hxx"
-#include "StdMeshers_Distribution.hxx"
-#include "StdMeshers_FixedPoints1D.hxx"
-#include "StdMeshers_LocalLength.hxx"
-#include "StdMeshers_MaxLength.hxx"
-#include "StdMeshers_NumberOfSegments.hxx"
-#include "StdMeshers_Propagation.hxx"
-#include "StdMeshers_SegmentLengthAroundVertex.hxx"
-#include "StdMeshers_StartEndLength.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "StdMeshers_Adaptive1D.hxx"
+~include "StdMeshers_Arithmetic1D.hxx"
+~include "StdMeshers_Geometric1D.hxx"
+~include "StdMeshers_AutomaticLength.hxx"
+~include "StdMeshers_Deflection1D.hxx"
+~include "StdMeshers_Distribution.hxx"
+~include "StdMeshers_FixedPoints1D.hxx"
+~include "StdMeshers_LocalLength.hxx"
+~include "StdMeshers_MaxLength.hxx"
+~include "StdMeshers_NumberOfSegments.hxx"
+~include "StdMeshers_Propagation.hxx"
+~include "StdMeshers_SegmentLengthAroundVertex.hxx"
+~include "StdMeshers_StartEndLength.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
-#include "utilities.h"
+~include "Utils_SALOME_Exception.hxx"
+~include "utilities.h"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <Precision.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRep_Tool.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <GCPnts_UniformAbscissa.hxx>
+~include <GCPnts_UniformDeflection.hxx>
+~include <Precision.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#include <string>
-#include <limits>
+~include <string>
+~include <limits>
 
 using namespace std;
 using namespace StdMeshers;

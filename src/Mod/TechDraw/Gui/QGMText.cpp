@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#include <QColor>
-#include <QFont>
-#include <QGraphicsScene>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QPainter>
+~include <QStyleOptionGraphicsItem>
+~include <QColor>
+~include <QFont>
+~include <QGraphicsScene>
+~endif
 
-#include "DrawGuiStd.h"
-#include "QGMText.h"
+~include "DrawGuiStd.h"
+~include "QGMText.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -127,4 +127,4 @@ void QGMText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     QGCustomText::paint (painter, &myOption, widget);
 }
 
-#include <Mod/TechDraw/Gui/moc_QGMText.cpp>
+~include <Mod/TechDraw/Gui/moc_QGMText.cpp>

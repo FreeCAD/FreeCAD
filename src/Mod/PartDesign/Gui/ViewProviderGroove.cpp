@@ -21,14 +21,14 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~endif
 
-#include "TaskRevolutionParameters.h"
-#include "ViewProviderGroove.h"
+~include "TaskRevolutionParameters.h"
+~include "ViewProviderGroove.h"
 
 using namespace PartDesignGui;
 

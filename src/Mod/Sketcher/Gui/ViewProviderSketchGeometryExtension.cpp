@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
 
-#include "ViewProviderSketchGeometryExtension.h"
+~include "ViewProviderSketchGeometryExtension.h"
 
 using namespace SketcherGui;
 
@@ -51,11 +51,11 @@ std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::co
 
     copyAttributes(cpy.get());
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
+~if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
-#else
+~else
     return cpy;
-#endif
+~endif
 }
 
 PyObject * ViewProviderSketchGeometryExtension::getPyObject(void)

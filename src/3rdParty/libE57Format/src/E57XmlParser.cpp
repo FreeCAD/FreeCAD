@@ -25,26 +25,26 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
+~include <xercesc/sax2/Attributes.hpp>
+~include <xercesc/sax2/XMLReaderFactory.hpp>
 
-#include <xercesc/util/BinInputStream.hpp>
-#include <xercesc/util/TransService.hpp>
+~include <xercesc/util/BinInputStream.hpp>
+~include <xercesc/util/TransService.hpp>
 
-#include "BlobNodeImpl.h"
-#include "CheckedFile.h"
-#include "CompressedVectorNodeImpl.h"
-#include "E57XmlParser.h"
-#include "FloatNodeImpl.h"
-#include "ImageFileImpl.h"
-#include "IntegerNodeImpl.h"
-#include "ScaledIntegerNodeImpl.h"
-#include "StringNodeImpl.h"
-#include "VectorNodeImpl.h"
+~include "BlobNodeImpl.h"
+~include "CheckedFile.h"
+~include "CompressedVectorNodeImpl.h"
+~include "E57XmlParser.h"
+~include "FloatNodeImpl.h"
+~include "ImageFileImpl.h"
+~include "IntegerNodeImpl.h"
+~include "ScaledIntegerNodeImpl.h"
+~include "StringNodeImpl.h"
+~include "VectorNodeImpl.h"
 
-#if __GNUC__ >= 11
-#include <limits>
-#endif
+~if __GNUC__ >= 11
+~include <limits>
+~endif
 
 using namespace e57;
 using namespace XERCES_CPP_NAMESPACE;
@@ -75,13 +75,13 @@ static const XMLCh att_recordCount[] = { chLatin_r, chLatin_e, chLatin_c, chLati
 
 inline int64_t convertStrToLL( const std::string &inStr )
 {
-#if defined( _MSC_VER )
+~if defined( _MSC_VER )
    return _atoi64( inStr.c_str() );
-#elif defined( __GNUC__ )
+~elif defined( __GNUC__ )
    return strtoll( inStr.c_str(), nullptr, 10 );
-#else
-#error "Need to define string to long long conversion for this compiler"
-#endif
+~else
+~error "Need to define string to long long conversion for this compiler"
+~endif
 }
 
 //=============================================================================
@@ -277,7 +277,7 @@ void E57XmlParser::parse( InputSource &inputSource )
 void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const localName, const XMLCh *const qName,
                                  const Attributes &attributes )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "startElement" << std::endl;
    std::cout << space( 2 ) << "URI:       " << toUString( uri ) << std::endl;
    std::cout << space( 2 ) << "localName: " << toUString( localName ) << std::endl;
@@ -291,7 +291,7 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
       std::cout << space( 4 ) << "qName:     " << toUString( attributes.getQName( i ) ) << std::endl;
       std::cout << space( 4 ) << "value:     " << toUString( attributes.getValue( i ) ) << std::endl;
    }
-#endif
+~endif
    /// Get Type attribute
    ustring node_type = lookupAttribute( attributes, att_type );
 
@@ -302,9 +302,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
 
    if ( node_type == "Integer" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a Integer" << std::endl;
-#endif
+~endif
       //??? check validity of numeric strings
       pi.nodeType = E57_INTEGER;
 
@@ -337,9 +337,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "ScaledInteger" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a ScaledInteger" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_SCALED_INTEGER;
 
       //??? check validity of numeric strings
@@ -394,9 +394,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "Float" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a Float" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_FLOAT;
 
       if ( isAttributeDefined( attributes, att_precision ) )
@@ -466,9 +466,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "String" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a String" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_STRING;
 
       /// Push info so far onto stack
@@ -476,9 +476,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "Blob" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a Blob" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_BLOB;
 
       //??? check validity of numeric strings
@@ -498,9 +498,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "Structure" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a Structure" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_STRUCTURE;
 
       /// Read name space decls, if e57Root element
@@ -514,9 +514,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
             /// Check if declaring the default namespace
             if ( toUString( attributes.getQName( i ) ) == "xmlns" )
             {
-#ifdef E57_VERBOSE
+~ifdef E57_VERBOSE
                std::cout << "declared default namespace, URI=" << toUString( attributes.getValue( i ) ) << std::endl;
-#endif
+~endif
                imf_->extensionsAdd( "", toUString( attributes.getValue( i ) ) );
                gotDefault = true;
             }
@@ -524,10 +524,10 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
             /// Check if declaring a namespace
             if ( toUString( attributes.getURI( i ) ) == "http://www.w3.org/2000/xmlns/" )
             {
-#ifdef E57_VERBOSE
+~ifdef E57_VERBOSE
                std::cout << "declared extension, prefix=" << toUString( attributes.getLocalName( i ) )
                     << " URI=" << toUString( attributes.getValue( i ) ) << std::endl;
-#endif
+~endif
                imf_->extensionsAdd( toUString( attributes.getLocalName( i ) ), toUString( attributes.getValue( i ) ) );
             }
          }
@@ -557,9 +557,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "Vector" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a Vector" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_VECTOR;
 
       if ( isAttributeDefined( attributes, att_allowHeterogeneousChildren ) )
@@ -599,9 +599,9 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
    }
    else if ( node_type == "CompressedVector" )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "got a CompressedVector" << std::endl;
-#endif
+~endif
       pi.nodeType = E57_COMPRESSED_VECTOR;
 
       /// fileOffset is required to be defined
@@ -630,23 +630,23 @@ void E57XmlParser::startElement( const XMLCh *const uri, const XMLCh *const loca
                             "nodeType=" + node_type + " fileName=" + imf_->fileName() + " uri=" + toUString( uri ) +
                                " localName=" + toUString( localName ) + " qName=" + toUString( qName ) );
    }
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    pi.dump( 4 );
-#endif
+~endif
 }
 
 void E57XmlParser::endElement( const XMLCh *const uri, const XMLCh *const localName, const XMLCh *const qName )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "endElement" << std::endl;
-#endif
+~endif
 
    /// Pop the node that just ended
    ParseInfo pi = stack_.top(); //??? really want to make a copy here?
    stack_.pop();
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    pi.dump( 4 );
-#endif
+~endif
 
    /// We should now have all the info we need to create the node
    NodeImplSharedPtr current_ni;
@@ -732,9 +732,9 @@ void E57XmlParser::endElement( const XMLCh *const uri, const XMLCh *const localN
                                                       " localName=" + toUString( localName ) +
                                                       " qName=" + toUString( qName ) );
    }
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    current_ni->dump( 4 );
-#endif
+~endif
 
    /// If first node in file ended, we are all done
    if ( stack_.empty() )
@@ -837,9 +837,9 @@ void E57XmlParser::characters( const XMLCh *const chars, const XMLSize_t length 
 {
    (void)length;
 //??? use length to make ustring
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "characters, chars=\"" << toUString( chars ) << "\" length=" << length << std::endl;
-#endif
+~endif
    /// Get active element
    ParseInfo &pi = stack_.top();
 

@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepLib_FindSurface.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Trsf.hxx>
-# include <Precision.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepLib_FindSurface.hxx>
+~ include <BRepPrimAPI_MakePrism.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Trsf.hxx>
+~ include <Precision.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
 
-#include "FeatureExtrusion.h"
-#include "ExtrusionHelper.h"
-#include "Part2DObject.h"
+~include "FeatureExtrusion.h"
+~include "ExtrusionHelper.h"
+~include "Part2DObject.h"
 
 
 using namespace Part;
@@ -239,13 +239,13 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
         std::fabs(params.taperAngleRev) >= Precision::Angular()) {
         //Tapered extrusion!
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+~if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
-#endif
+~endif
         TopoDS_Shape myShape = source.getShape();
         if (myShape.IsNull())
             Standard_Failure::Raise("Cannot extrude empty shape");
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+        // ~0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
         myShape = BRepBuilderAPI_Copy(myShape).Shape();
 
         std::list<TopoDS_Shape> drafts;
@@ -273,7 +273,7 @@ TopoShape Extrusion::extrudeShape(const TopoShape& source, const Extrusion::Extr
         if (myShape.IsNull())
             Standard_Failure::Raise("Cannot extrude empty shape");
 
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+        // ~0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
         myShape = BRepBuilderAPI_Copy(myShape).Shape();
 
         //apply reverse part of extrusion by shifting the source shape

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderPrism.h"
+~include "ViewProviderPrism.h"
 
 using namespace PartGui;
 using namespace std;

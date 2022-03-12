@@ -38,15 +38,15 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "clipper.hpp"
-#include <cmath>
-#include <vector>
-#include <algorithm>
-#include <stdexcept>
-#include <cstring>
-#include <cstdlib>
-#include <ostream>
-#include <functional>
+~include "clipper.hpp"
+~include <cmath>
+~include <vector>
+~include <algorithm>
+~include <stdexcept>
+~include <cstring>
+~include <cstdlib>
+~include <ostream>
+~include <functional>
 
 namespace ClipperLib {
 
@@ -59,9 +59,9 @@ enum Direction { dRightToLeft, dLeftToRight };
 static int const Unassigned = -1;  //edge not currently 'owning' a solution
 static int const Skip = -2;        //edge that would otherwise close a path
 
-#define HORIZONTAL (-1.0E+40)
-#define TOLERANCE (1.0e-20)
-#define NEAR_ZERO(val) (((val) > -TOLERANCE) && ((val) < TOLERANCE))
+~define HORIZONTAL (-1.0E+40)
+~define TOLERANCE (1.0e-20)
+~define NEAR_ZERO(val) (((val) > -TOLERANCE) && ((val) < TOLERANCE))
 
 struct TEdge {
   IntPoint Bot{0,0};
@@ -234,7 +234,7 @@ bool PolyNode::IsOpen() const
 }  
 //------------------------------------------------------------------------------
 
-#ifndef use_int32
+~ifndef use_int32
 
 //------------------------------------------------------------------------------
 // Int128 class (enables safe math on signed 64bit integers)
@@ -372,7 +372,7 @@ Int128 Int128Mul (long64 lhs, long64 rhs)
   if (negate) tmp = -tmp;
   return tmp;
 };
-#endif
+~endif
 
 //------------------------------------------------------------------------------
 // Miscellaneous global functions
@@ -537,11 +537,11 @@ bool Poly2ContainsPoly1(OutPt *OutPt1, OutPt *OutPt2)
 
 bool SlopesEqual(const TEdge &e1, const TEdge &e2, bool UseFullInt64Range)
 {
-#ifndef use_int32
+~ifndef use_int32
   if (UseFullInt64Range)
     return Int128Mul(e1.Delta.Y, e2.Delta.X) == Int128Mul(e1.Delta.X, e2.Delta.Y);
   else 
-#endif
+~endif
     return e1.Delta.Y * e2.Delta.X == e1.Delta.X * e2.Delta.Y;
 }
 //------------------------------------------------------------------------------
@@ -549,11 +549,11 @@ bool SlopesEqual(const TEdge &e1, const TEdge &e2, bool UseFullInt64Range)
 bool SlopesEqual(const IntPoint pt1, const IntPoint pt2,
   const IntPoint pt3, bool UseFullInt64Range)
 {
-#ifndef use_int32
+~ifndef use_int32
   if (UseFullInt64Range)
     return Int128Mul(pt1.Y-pt2.Y, pt2.X-pt3.X) == Int128Mul(pt1.X-pt2.X, pt2.Y-pt3.Y);
   else 
-#endif
+~endif
     return (pt1.Y-pt2.Y)*(pt2.X-pt3.X) == (pt1.X-pt2.X)*(pt2.Y-pt3.Y);
 }
 //------------------------------------------------------------------------------
@@ -561,11 +561,11 @@ bool SlopesEqual(const IntPoint pt1, const IntPoint pt2,
 bool SlopesEqual(const IntPoint pt1, const IntPoint pt2,
   const IntPoint pt3, const IntPoint pt4, bool UseFullInt64Range)
 {
-#ifndef use_int32
+~ifndef use_int32
   if (UseFullInt64Range)
     return Int128Mul(pt1.Y-pt2.Y, pt3.X-pt4.X) == Int128Mul(pt1.X-pt2.X, pt3.Y-pt4.Y);
   else 
-#endif
+~endif
     return (pt1.Y-pt2.Y)*(pt3.X-pt4.X) == (pt1.X-pt2.X)*(pt3.Y-pt4.Y);
 }
 //------------------------------------------------------------------------------
@@ -618,9 +618,9 @@ inline cInt TopX(TEdge &edge, const cInt currentY)
 
 void IntersectPoint(TEdge &Edge1, TEdge &Edge2, IntPoint &ip)
 {
-#ifdef use_xyz  
+~ifdef use_xyz  
   ip.Z = 0;
-#endif
+~endif
 
   double b1, b2;
   if (Edge1.Dx == Edge2.Dx)
@@ -755,9 +755,9 @@ inline void ReverseHorizontal(TEdge &e)
   //progression of the bounds - ie so their xbots will align with the
   //adjoining lower edge. [Helpful in the ProcessHorizontal() method.]
   Swap(e.Top.X, e.Bot.X);
-#ifdef use_xyz  
+~ifdef use_xyz  
   Swap(e.Top.Z, e.Bot.Z);
-#endif
+~endif
 }
 //------------------------------------------------------------------------------
 
@@ -1047,13 +1047,13 @@ TEdge* ClipperBase::ProcessBound(TEdge* E, bool NextIsForward)
 
 bool ClipperBase::AddPath(const Path &pg, PolyType PolyTyp, bool Closed)
 {
-#ifdef use_lines
+~ifdef use_lines
   if (!Closed && PolyTyp == ptClip)
     throw clipperException("AddPath: Open paths must be subject.");
-#else
+~else
   if (!Closed)
     throw clipperException("AddPath: Open paths have been disabled.");
-#endif
+~endif
 
   int highI = (int)pg.size() -1;
   if (Closed) while (highI > 0 && (pg[highI] == pg[0])) --highI;
@@ -1345,9 +1345,9 @@ Clipper::Clipper(int initOptions) : ClipperBase() //constructor
   m_StrictSimple = ((initOptions & ioStrictlySimple) != 0);
   m_PreserveCollinear = ((initOptions & ioPreserveCollinear) != 0);
   m_HasOpenPaths = false;
-#ifdef use_xyz  
+~ifdef use_xyz  
   m_ZFill = 0;
-#endif
+~endif
   m_ClipType = ctIntersection;
   m_ClipFillType = pftEvenOdd;
   m_SubjFillType = pftEvenOdd;
@@ -1361,13 +1361,13 @@ Clipper::~Clipper() //destructor
 }
 //------------------------------------------------------------------------------
 
-#ifdef use_xyz  
+~ifdef use_xyz  
 void Clipper::ZFillFunction(ZFillCallback zFillFunc)
 {  
   m_ZFill = zFillFunc;
 }
 //------------------------------------------------------------------------------
-#endif
+~endif
 
 void Clipper::Reset()
 {
@@ -1976,7 +1976,7 @@ void Clipper::DeleteFromSEL(TEdge *e)
 }
 //------------------------------------------------------------------------------
 
-#ifdef use_xyz
+~ifdef use_xyz
 void Clipper::SetZ(IntPoint& pt, TEdge& e1, TEdge& e2)
 {
   if (pt.Z != 0 || !m_ZFill) return;
@@ -1987,18 +1987,18 @@ void Clipper::SetZ(IntPoint& pt, TEdge& e1, TEdge& e2)
   else (*m_ZFill)(e1.Bot, e1.Top, e2.Bot, e2.Top, pt); 
 }
 //------------------------------------------------------------------------------
-#endif
+~endif
 
 void Clipper::IntersectEdges(TEdge *e1, TEdge *e2, IntPoint &Pt)
 {
   bool e1Contributing = ( e1->OutIdx >= 0 );
   bool e2Contributing = ( e2->OutIdx >= 0 );
 
-#ifdef use_xyz
+~ifdef use_xyz
         SetZ(Pt, *e1, *e2);
-#endif
+~endif
 
-#ifdef use_lines
+~ifdef use_lines
   //if either edge is on an OPEN path ...
   if (e1->WindDelta == 0 || e2->WindDelta == 0)
   {
@@ -2045,7 +2045,7 @@ void Clipper::IntersectEdges(TEdge *e1, TEdge *e2, IntPoint &Pt)
     }
     return;
   }
-#endif
+~endif
 
   //update winding counts...
   //assumes that e1 will be to the Right of e2 ABOVE the intersection
@@ -2559,7 +2559,7 @@ void GetHorzDirection(TEdge& HorzEdge, Direction& Dir, cInt& Left, cInt& Right)
 /*******************************************************************************
 * Notes: Horizontal edges (HEs) at scanline intersections (ie at the Top or    *
 * Bottom of a scanbeam) are processed as if layered. The order in which HEs    *
-* are processed doesn't matter. HEs intersect with other HE Bot.Xs only [#]    *
+* are processed doesn't matter. HEs intersect with other HE Bot.Xs only [~]    *
 * (or they could intersect with Top.Xs only, ie EITHER Bot.Xs OR Top.Xs),      *
 * and with other non-horizontal edges [*]. Once these intersections are        *
 * processed, intermediate HEs then 'promote' the Edge above (NextInLML) into   *
@@ -2869,7 +2869,7 @@ void Clipper::DoMaxima(TEdge *e)
     DeleteFromAEL(e);
     DeleteFromAEL(eMaxPair);
   }
-#ifdef use_lines
+~ifdef use_lines
   else if (e->WindDelta == 0)
   {
     if (e->OutIdx >= 0) 
@@ -2886,7 +2886,7 @@ void Clipper::DoMaxima(TEdge *e)
     }
     DeleteFromAEL(eMaxPair);
   } 
-#endif
+~endif
   else throw clipperException("DoMaxima error");
 }
 //------------------------------------------------------------------------------
@@ -2936,9 +2936,9 @@ void Clipper::ProcessEdgesAtTopOfScanbeam(const cInt topY)
           (ePrev->Curr.X == e->Curr.X) && (ePrev->WindDelta != 0))
         {
           IntPoint pt = e->Curr;
-#ifdef use_xyz
+~ifdef use_xyz
           SetZ(pt, *ePrev, *e);
-#endif
+~endif
           OutPt* op = AddOutPt(ePrev, pt);
           OutPt* op2 = AddOutPt(e, pt);
           AddJoin(op, op2, pt); //StrictlySimple (type-3) join

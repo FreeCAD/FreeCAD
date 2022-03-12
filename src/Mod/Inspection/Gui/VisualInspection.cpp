@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cfloat>
-#endif
-#include "VisualInspection.h"
-#include "ui_VisualInspection.h"
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cfloat>
+~endif
+~include "VisualInspection.h"
+~include "ui_VisualInspection.h"
 
-#include <Base/UnitsApi.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
+~include <Base/UnitsApi.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/PrefWidgets.h>
 
 using namespace InspectionGui;
 
@@ -283,4 +283,4 @@ void VisualInspection::accept()
     }
 }
 
-#include "moc_VisualInspection.cpp"
+~include "moc_VisualInspection.cpp"

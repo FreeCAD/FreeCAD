@@ -20,45 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# undef min
-# undef max
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <cfloat>
-# include <algorithm>
-# include <QFontMetrics>
-# include <QGLWidget>
-# include <QPainter>
-# include <QPen>
-# include <Inventor/SoPrimitiveVertex.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/misc/SoState.h>
-# include <cmath>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/elements/SoFontNameElement.h>
-# include <Inventor/elements/SoFontSizeElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-#endif // _PreComp_
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ undef min
+~ undef max
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <cfloat>
+~ include <algorithm>
+~ include <QFontMetrics>
+~ include <QGLWidget>
+~ include <QPainter>
+~ include <QPen>
+~ include <Inventor/SoPrimitiveVertex.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/misc/SoState.h>
+~ include <cmath>
+~ include <Inventor/actions/SoGetMatrixAction.h>
+~ include <Inventor/elements/SoFontNameElement.h>
+~ include <Inventor/elements/SoFontSizeElement.h>
+~ include <Inventor/elements/SoModelMatrixElement.h>
+~ include <Inventor/elements/SoProjectionMatrixElement.h>
+~ include <Inventor/elements/SoViewingMatrixElement.h>
+~ include <Inventor/elements/SoViewVolumeElement.h>
+~ include <Inventor/elements/SoViewportRegionElement.h>
+~endif // _PreComp_
 
 
-#include "SoDatumLabel.h"
-#include <Gui/BitmapFactory.h>
-#include <Gui/Tools.h>
+~include "SoDatumLabel.h"
+~include <Gui/BitmapFactory.h>
+~include <Gui/Tools.h>
 
-#define ZCONSTR 0.006f
+~define ZCONSTR 0.006f
 
 using namespace SketcherGui;
 
@@ -437,7 +437,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     // As reference use the center point the camera is looking at on the near plane
     // because then independent of the camera we get a constant scale factor when panning.
     // If we used (0,0,0) instead then the scale factor would change heavily in perspective
-    // rendering mode. See #0002921 and #0002922.
+    // rendering mode. See ~0002921 and ~0002922.
     SbVec3f center = vv.getSightPoint(vv.getNearDist());
     float scale = vv.getWorldToScreenScale(center, 1.f);
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
@@ -940,8 +940,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         glEnable(GL_BLEND);
 
         // glGenTextures/glBindTexture was commented out but it must be active, see:
-        // #0000971: Tracing over a background image in Sketcher: image is overwritten by first dimensional constraint text
-        // #0001185: Planer image changes to number graphic when a part design constraint is made after the planar image
+        // ~0000971: Tracing over a background image in Sketcher: image is overwritten by first dimensional constraint text
+        // ~0001185: Planer image changes to number graphic when a part design constraint is made after the planar image
         //
         // Copy the text bitmap into memory and bind
         GLuint myTexture;
@@ -987,7 +987,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // wmayer: see bug report below which is caused by generating but not
         // deleting the texture.
-        // #0000721: massive memory leak when dragging an unconstrained model
+        // ~0000721: massive memory leak when dragging an unconstrained model
         glDeleteTextures(1, &myTexture);
     }
 

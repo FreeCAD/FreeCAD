@@ -40,11 +40,11 @@
  ****************************************************************************/
 
 
-#include "path_roundedcomposite.hpp"
-#include "path_line.hpp"
-#include "path_circle.hpp"
-#include "utilities/error.h"
-#include <memory>
+~include "path_roundedcomposite.hpp"
+~include "path_line.hpp"
+~include "path_circle.hpp"
+~include "utilities/error.h"
+~include <memory>
 
 
 namespace KDL {

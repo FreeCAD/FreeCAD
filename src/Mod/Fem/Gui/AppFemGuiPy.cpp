@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <QFileInfo>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <QFileInfo>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <App/DocumentObjectPy.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/MainWindow.h>
-#include <Gui/TextEdit.h>
-#include <Gui/EditorView.h>
+~include <App/DocumentObjectPy.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/MainWindow.h>
+~include <Gui/TextEdit.h>
+~include <Gui/EditorView.h>
 
-#include <Mod/Fem/App/FemAnalysis.h>
-#include "ActiveAnalysisObserver.h"
-#include "AbaqusHighlighter.h"
+~include <Mod/Fem/App/FemAnalysis.h>
+~include "ActiveAnalysisObserver.h"
+~include "AbaqusHighlighter.h"
 
 
 namespace FemGui {

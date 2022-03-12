@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cassert>
-#endif
+~ifndef _PreComp_
+~include <cassert>
+~endif
 
-#include <atomic>
-#include <Base/Tools.h>
-#include <Base/Writer.h>
-#include <CXX/Objects.hxx>
+~include <atomic>
+~include <Base/Tools.h>
+~include <Base/Writer.h>
+~include <CXX/Objects.hxx>
 
-#include "Property.h"
-#include "ObjectIdentifier.h"
-#include "PropertyContainer.h"
+~include "Property.h"
+~include "ObjectIdentifier.h"
+~include "PropertyContainer.h"
 
 
 using namespace App;
@@ -94,8 +94,8 @@ std::string Property::getFullName() const {
 short Property::getType(void) const
 {
     short type = 0;
-#define GET_PTYPE(_name) do {\
-        if(testStatus(App::Property::Prop##_name)) type|=Prop_##_name;\
+~define GET_PTYPE(_name) do {\
+        if(testStatus(App::Property::Prop~~_name)) type|=Prop_~~_name;\
     }while(0)
     GET_PTYPE(ReadOnly);
     GET_PTYPE(Hidden);
@@ -107,8 +107,8 @@ short Property::getType(void) const
 }
 
 void Property::syncType(unsigned type) {
-#define SYNC_PTYPE(_name) do{\
-        if(type & Prop_##_name) StatusBits.set((size_t)Prop##_name);\
+~define SYNC_PTYPE(_name) do{\
+        if(type & Prop_~~_name) StatusBits.set((size_t)Prop~~_name);\
     }while(0)
     SYNC_PTYPE(ReadOnly);
     SYNC_PTYPE(Transient);

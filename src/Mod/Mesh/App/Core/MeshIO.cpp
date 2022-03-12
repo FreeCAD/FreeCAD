@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "Definitions.h"
-#include "Iterator.h"
+~include "PreCompiled.h"
+~include "Definitions.h"
+~include "Iterator.h"
 
-#include "MeshKernel.h"
-#include "MeshIO.h"
-#include "Algorithm.h"
-#include "Builder.h"
+~include "MeshKernel.h"
+~include "MeshIO.h"
+~include "Algorithm.h"
+~include "Builder.h"
 
-#include <Base/Builder3D.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/FileInfo.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
-#include <Base/Placement.h>
-#include <Base/Tools.h>
-#include <zipios++/gzipoutputstream.h>
-#include <zipios++/zipoutputstream.h>
+~include <Base/Builder3D.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/FileInfo.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
+~include <Base/Placement.h>
+~include <Base/Tools.h>
+~include <zipios++/gzipoutputstream.h>
+~include <zipios++/zipoutputstream.h>
 
-#include <cmath>
-#include <sstream>
-#include <iomanip>
-#include <algorithm>
-#include <string_view>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/convert.hpp>
-#include <boost/convert/spirit.hpp>
+~include <cmath>
+~include <sstream>
+~include <iomanip>
+~include <algorithm>
+~include <string_view>
+~include <boost/regex.hpp>
+~include <boost/algorithm/string.hpp>
+~include <boost/lexical_cast.hpp>
+~include <boost/convert.hpp>
+~include <boost/convert/spirit.hpp>
 
 
 using namespace MeshCore;
@@ -1356,11 +1356,11 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
     // restart from the beginning
     buf->pubseekoff(0, std::ios::beg, std::ios::in);
 
-#if 0
+~if 0
     MeshBuilder builder(this->_rclMesh);
-#else
+~else
     MeshFastBuilder builder(this->_rclMesh);
-#endif
+~endif
     builder.Initialize(ulFacetCt);
 
     ulVertexCt = 0;
@@ -1425,11 +1425,11 @@ bool MeshInput::LoadBinarySTL (std::istream &rstrIn)
     if (ulCt > ulFac)
         return false;// not a valid STL file
 
-#if 0
+~if 0
     MeshBuilder builder(this->_rclMesh);
-#else
+~else
     MeshFastBuilder builder(this->_rclMesh);
-#endif
+~endif
     builder.Initialize(ulCt);
 
     for (uint32_t i = 0; i < ulCt; i++) {
@@ -2350,7 +2350,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
     }
 
     // Header
-    out << "# Created by FreeCAD <http://www.freecadweb.org>\n";
+    out << "~ Created by FreeCAD <http://www.freecadweb.org>\n";
     if (exportColorPerFace) {
         out << "mtllib " << _material->library << '\n';
     }
@@ -2507,8 +2507,8 @@ bool MeshOutput::SaveMTL(std::ostream &out) const
 
             out.precision(6);
             out.setf(std::ios::fixed | std::ios::showpoint);
-            out << "# Created by FreeCAD <http://www.freecadweb.org>: 'None'\n";
-            out << "# Material Count: " << Kd.size() << '\n';
+            out << "~ Created by FreeCAD <http://www.freecadweb.org>: 'None'\n";
+            out << "~ Material Count: " << Kd.size() << '\n';
 
             for (std::size_t i=0; i<Kd.size(); i++) {
                 out << '\n';
@@ -2540,11 +2540,11 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
 
     // Header
-    out << "#$SMF 1.0\n";
-    out << "#$vertices " << rPoints.size() << '\n';
-    out << "#$faces " << rFacets.size() << '\n';
-    out << "#\n";
-    out << "# Created by FreeCAD <http://www.freecadweb.org>\n";
+    out << "~$SMF 1.0\n";
+    out << "~$vertices " << rPoints.size() << '\n';
+    out << "~$faces " << rFacets.size() << '\n';
+    out << "~\n";
+    out << "~ Created by FreeCAD <http://www.freecadweb.org>\n";
 
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
@@ -3183,7 +3183,7 @@ list xt 1 1 0 0
 list yt -1 -1 1 0
 list zt -1 -1 -1 1
 triplot t xt yt zt 'b'
-#triplot t xt yt zt '#k'
+~triplot t xt yt zt '~k'
 */
     if ((!str) || (str.bad() == true) || (_rclMesh.CountFacets() == 0))
         return false;
@@ -3220,7 +3220,7 @@ triplot t xt yt zt 'b'
     str << std::endl;
 
     str << "triplot t xt yt zt 'b'" << std::endl;
-    str << "#triplot t xt yt zt '#k'" << std::endl;
+    str << "~triplot t xt yt zt '~k'" << std::endl;
 
     return true;
 }
@@ -3471,7 +3471,7 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
     onclick("Top");
     onclick("Bottom");
 
-#if 0 // https://stackoverflow.com/questions/32305678/x3dom-how-to-make-zoom-buttons
+~if 0 // https://stackoverflow.com/questions/32305678/x3dom-how-to-make-zoom-buttons
     function zoom (delta) {
         var x3d = document.getElementById("right");
         var vpt = x3d.getElementsByTagName("Viewpoint")[0];
@@ -3479,7 +3479,7 @@ bool MeshOutput::SaveX3DOM (std::ostream &out) const
     }
 
     <button onclick="zoom(0.15);">Zoom out</button>
-#endif
+~endif
 
     SaveX3DContent(out, true);
 
@@ -3585,7 +3585,7 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
     Base::SequencerLauncher seq("Saving VRML file...",
         _rclMesh.CountPoints() + _rclMesh.CountFacets());
 
-    rstrOut << "#VRML V2.0 utf8\n";
+    rstrOut << "~VRML V2.0 utf8\n";
     rstrOut << "WorldInfo {\n"
             << "  title \"Exported triangle mesh to VRML97\"\n"
             << "  info [\"Created by FreeCAD\"\n"

@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Inventor/events/SoButtonEvent.h>
+~include <Inventor/events/SoButtonEvent.h>
 
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Inspection/App/InspectionFeature.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Inspection/App/InspectionFeature.h>
 
-#include "VisualInspection.h"
-#include "ViewProviderInspection.h"
+~include "VisualInspection.h"
+~include "ViewProviderInspection.h"
 
 
 DEF_STD_CMD_A(CmdVisualInspection)

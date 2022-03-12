@@ -21,32 +21,32 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cfloat>
-# include <Python.h>
+~ifndef _PreComp_
+~ include <cfloat>
+~ include <Python.h>
 
-# include <Standard_math.hxx>
+~ include <Standard_math.hxx>
 
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoDepthBuffer.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-#endif
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoDepthBuffer.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoVertexProperty.h>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <Gui/SoFCBoundingBox.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Reader.h>
+~include <Gui/SoFCBoundingBox.h>
 
-#include "ViewProvider2DObject.h"
+~include "ViewProvider2DObject.h"
 
 
 using namespace PartGui;
@@ -160,11 +160,11 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     // What's the purpose of using SoDepthBuffer here anyway? If the intention
     // is to render grid always on top, shouldn't it be better to use
     // SoAnnotation?
-#if 0
+~if 0
     SoDepthBuffer *depth = new SoDepthBuffer;
     depth->function = SoDepthBuffer::ALWAYS;
     parent->addChild(depth);
-#endif
+~endif
 
     // gridlines
     mycolor = new SoBaseColor;

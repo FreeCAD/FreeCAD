@@ -21,59 +21,59 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QBitmap>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMap>
-# include <QImageReader>
-# include <QPainter>
-# include <QPalette>
-# include <QString>
-# include <QSvgRenderer>
-# include <QStyleOption>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QBitmap>
+~ include <QDir>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QMap>
+~ include <QImageReader>
+~ include <QPainter>
+~ include <QPalette>
+~ include <QString>
+~ include <QSvgRenderer>
+~ include <QStyleOption>
+~endif
 
-#include <string>
-#include <Inventor/fields/SoSFImage.h>
+~include <string>
+~include <Inventor/fields/SoSFImage.h>
 
-#include <App/Application.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <Base/Console.h>
 
-#include "BitmapFactory.h"
+~include "BitmapFactory.h"
 
 using namespace Gui;
 
 /* XPM */
 static const char *not_found[]={
 "24 24 2 1",
-"# c #000000",
-". c #ffffff",
+"~ c ~000000",
+". c ~ffffff",
 "........................",
 "........................",
-"...##..............##...",
-"..####............####..",
-"..#####..........#####..",
-"..######........#####...",
-"...######......######...",
-"....######....######....",
-".....######..######.....",
-"......############......",
-".......##########.......",
-"........########........",
-".........######.........",
-"........########........",
-".......##########.......",
-"......############......",
-".....######..######.....",
-"....######....######....",
-"..#######......######...",
-".#######........######..",
-".######..........#####..",
-"..####.............##...",
+"...~~..............~~...",
+"..~~~~............~~~~..",
+"..~~~~~..........~~~~~..",
+"..~~~~~~........~~~~~...",
+"...~~~~~~......~~~~~~...",
+"....~~~~~~....~~~~~~....",
+".....~~~~~~..~~~~~~.....",
+"......~~~~~~~~~~~~......",
+".......~~~~~~~~~~.......",
+"........~~~~~~~~........",
+".........~~~~~~.........",
+"........~~~~~~~~........",
+".......~~~~~~~~~~.......",
+"......~~~~~~~~~~~~......",
+".....~~~~~~..~~~~~~.....",
+"....~~~~~~....~~~~~~....",
+"..~~~~~~~......~~~~~~...",
+".~~~~~~~........~~~~~~..",
+".~~~~~~..........~~~~~..",
+"..~~~~.............~~...",
 "........................",
 "........................"};
 
@@ -327,8 +327,8 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
     for ( const auto &colorToColor : colorMapping ) {
         ulong fromColor = colorToColor.first;
         ulong toColor = colorToColor.second;
-        QString fromColorString = QString::fromLatin1(":#%1;").arg(fromColor, 6, 16,  QChar::fromLatin1('0'));
-        QString toColorString = QString::fromLatin1(":#%1;").arg(toColor, 6, 16,  QChar::fromLatin1('0'));
+        QString fromColorString = QString::fromLatin1(":~%1;").arg(fromColor, 6, 16,  QChar::fromLatin1('0'));
+        QString toColorString = QString::fromLatin1(":~%1;").arg(toColor, 6, 16,  QChar::fromLatin1('0'));
         stringContents = stringContents.replace(fromColorString, toColorString);
     }
     QByteArray contents = stringContents.toUtf8();
@@ -529,11 +529,11 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[0] = p.width();
     size[1] = p.height();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     int buffersize = static_cast<int>(p.sizeInBytes());
-#else
+~else
     int buffersize = p.byteCount();
-#endif
+~endif
     int numcomponents = 0;
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {

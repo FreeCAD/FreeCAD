@@ -3,16 +3,16 @@
 // This program is released under the BSD license. See the file COPYING for details.
 //
 
-#include "geometry.h"
+~include "geometry.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //            finite intersections
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef WIN32
-#define __min(a,b) ((a<b)?a:b)
-#define __max(a,b) ((a>b)?a:b)
-#endif
+~ifndef WIN32
+~define __min(a,b) ((a<b)?a:b)
+~define __max(a,b) ((a>b)?a:b)
+~endif
 
 namespace geoff_geometry {
 	int Intof(const Span& sp0, const Span& sp1, Point& p0, Point& p1, double t[4])
@@ -124,12 +124,12 @@ namespace geoff_geometry {
 
 	bool Span::OnSpan(const Point& p, double* t)const {
 		// FAST OnSpan test - assumes that p lies ON the unbounded span
-#if _DEBUG
+~if _DEBUG
 		if(this->returnSpanProperties == false) {
 			FAILURE(L"OnSpan - properties no set, incorrect calling code");
 		}
-#endif
-#if 0
+~endif
+~if 0
 		if(NullSpan) {
 			*t = 0.0;
 			return (p == p0);
@@ -144,21 +144,21 @@ namespace geoff_geometry {
 			*t = 1.0;
 			return true;
 		}
-#endif
+~endif
 		bool ret;
 //		if(p == this->p0 || p == this->p1) return true;
 
 		if(dir == LINEAR) {
-#if 1
-#if _DEBUG
+~if 1
+~if _DEBUG
 			// check p is on line
 			CLine cl(*this);
 			double d = fabs(cl.Dist(p));
 			if( d > geoff_geometry::TOLERANCE) {
 				FAILURE(L"OnSpan - point not on linear span, incorrect calling code");
 			}
-#endif
-#endif
+~endif
+~endif
 			Vector2d v0(p0, p);
 			*t = vs * v0;
 //			ret = (*t > - geoff_geometry::TOLERANCE && *t < length + geoff_geometry::TOLERANCE);
@@ -169,17 +169,17 @@ namespace geoff_geometry {
 		}
 		else {
 			// true if p lies on arc span sp (p must be on circle of span)
-#if 1
-#if _DEBUG
+~if 1
+~if _DEBUG
 			// check that p lies on the arc
 			double d = p.Dist(pc);
 			if(FNE(d, radius, geoff_geometry::TOLERANCE)) {
 				FAILURE(L"OnSpan - point not on circular span, incorrect calling code");
 			}
 
-#endif
-#endif
-#if 0	// alt method (faster, but doesn't provide t)
+~endif
+~endif
+~if 0	// alt method (faster, but doesn't provide t)
 			Vector2d v0(p0, p);
 			Vector2d v1(p0, p1);
 
@@ -187,7 +187,7 @@ namespace geoff_geometry {
 			double cp;
 			ret = ((cp = (dir * (v0 ^ v1))) > 0);
 			*t = 0.0;// incorrect !!!
-#else
+~else
 			Vector2d v = ~Vector2d(pc, p);
 			v.normalise();
 			if(dir == CW) v = -v;
@@ -195,7 +195,7 @@ namespace geoff_geometry {
 			double ang = IncludedAngle(vs, v, dir);
 			*t = ang / angle;
 			ret = (*t >= 0 && *t <= 1.0);
-#endif
+~endif
 		}
 
 		return ret;
@@ -380,14 +380,14 @@ namespace geoff_geometry {
 		Vector3d vcp = *vl ^ v;
 		double d = vcp.magnitude(); // l * sina
 		return d;
-#if 0
+~if 0
 		// slower method requires 2 sqrts
 		Vector3d v(*p, *pf);
 		double magv = v.normalise();
 		Vector3d cp = *vl ^ v;
 		double d = magv * cp.magnitude();
 		return d;  // l * sina
-#endif
+~endif
 	}
 
 	double Dist(const Span& sp, const Point& p , Point& pnear ) {
@@ -579,7 +579,7 @@ namespace geoff_geometry {
 		if(this->min.z > b.max.z) return true;
 		return false;
 	}
-#if 0
+~if 0
 	Span3d IsPtsSpan3d(const double* a, int n, double tolerance, double* deviation) {
 		// returns a span3d if all points are within tolerance
 		int np = n / 3;					// number of points
@@ -625,7 +625,7 @@ double tolerance = 10.0 * 1.0e-6;
 		}
 		return Span3d();
 	}
-#endif
+~endif
 
 	Line IsPtsLine(const double* a, int n, double tolerance, double* deviation) {
 		// returns a Line if all points are within tolerance

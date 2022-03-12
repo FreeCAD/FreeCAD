@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Assembly/App/Constraint.h"
+~include "Mod/Assembly/App/Constraint.h"
 
 // inclusion of the generated files (generated out of ItemAssemblyPy.xml)
-#include "ConstraintPy.h"
-#include "ConstraintPy.cpp"
+~include "ConstraintPy.h"
+~include "ConstraintPy.cpp"
 
 using namespace Assembly;
 

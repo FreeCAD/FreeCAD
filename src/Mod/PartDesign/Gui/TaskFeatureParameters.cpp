@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QApplication>
-#include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QApplication>
+~include <QMessageBox>
+~endif
 
-#include <App/DocumentObserver.h>
-#include <Gui/Application.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/PartDesign/App/Feature.h>
-#include <Mod/PartDesign/App/Body.h>
+~include <App/DocumentObserver.h>
+~include <Gui/Application.h>
+~include <Gui/CommandT.h>
+~include <Gui/MainWindow.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/PartDesign/App/Feature.h>
+~include <Mod/PartDesign/App/Body.h>
 
-#include "TaskFeatureParameters.h"
-#include "TaskSketchBasedParameters.h"
+~include "TaskFeatureParameters.h"
+~include "TaskSketchBasedParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -129,11 +129,11 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine
-#if (QT_VERSION >= 0x050000)
+~if (QT_VERSION >= 0x050000)
         QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what());
-#else
+~else
         QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what(), 0, QApplication::UnicodeUTF8);
-#endif
+~endif
         QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
         return false;
     }
@@ -186,4 +186,4 @@ bool TaskDlgFeatureParameters::reject()
     return true;
 }
 
-#include "moc_TaskFeatureParameters.cpp"
+~include "moc_TaskFeatureParameters.cpp"

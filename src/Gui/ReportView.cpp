@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QContextMenuEvent>
-# include <QGridLayout>
-# include <QMenu>
-# include <QTextCursor>
-# include <QTextStream>
-# include <QTime>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QContextMenuEvent>
+~ include <QGridLayout>
+~ include <QMenu>
+~ include <QTextCursor>
+~ include <QTextStream>
+~ include <QTime>
+~endif
 
-#include <Base/Interpreter.h>
+~include <Base/Interpreter.h>
 
-#include "ReportView.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "DockWindowManager.h"
-#include "FileDialog.h"
-#include "PythonConsole.h"
-#include "PythonConsolePy.h"
-#include "Tools.h"
+~include "ReportView.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "DockWindowManager.h"
+~include "FileDialog.h"
+~include "PythonConsole.h"
+~include "PythonConsolePy.h"
+~include "Tools.h"
 
 
 using namespace Gui;
@@ -378,11 +378,11 @@ public:
     static bool redirected_stderr;
     static PyObject* default_stderr;
     static PyObject* replace_stderr;
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     long logMessageSize = 0;
-#else
+~else
     long logMessageSize = 2048;
-#endif
+~endif
 };
 
 bool ReportOutput::Data::redirected_stdout = false;
@@ -784,11 +784,11 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         setFont(font);
         QFontMetrics metric(font);
         int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(width);
-#else
+~else
         setTabStopDistance(width);
-#endif
+~endif
     }
     else if (strcmp(sReason, "RedirectPythonOutput") == 0) {
         bool checked = rclGrp.GetBool(sReason, true);
@@ -805,4 +805,4 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
 }
 
-#include "moc_ReportView.cpp"
+~include "moc_ReportView.cpp"

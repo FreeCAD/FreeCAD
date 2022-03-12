@@ -21,32 +21,32 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#include <QDomDocument>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~include <QDomDocument>
+~endif
 
-#include <iomanip>
-#include <iterator>
+~include <iomanip>
+~include <iterator>
 
-#include <boost/regex.hpp>
+~include <boost/regex.hpp>
 
-#include <QXmlQuery>
-#include <QXmlResultItems>
+~include <QXmlQuery>
+~include <QXmlResultItems>
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
 
-#include "QDomNodeModel.h"
-#include "DrawUtil.h"
-#include "DrawPage.h"
-#include "DrawViewSymbol.h"
+~include "QDomNodeModel.h"
+~include "DrawUtil.h"
+~include "DrawPage.h"
+~include "DrawViewSymbol.h"
 
-#include <Mod/TechDraw/App/DrawViewSymbolPy.h>  // generated from DrawViewSymbolPy.xml
+~include <Mod/TechDraw/App/DrawViewSymbolPy.h>  // generated from DrawViewSymbolPy.xml
 
 using namespace TechDraw;
 using namespace std;

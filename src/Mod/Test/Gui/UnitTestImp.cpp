@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QStyleFactory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QStyleFactory>
+~endif
 
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
-#include <Gui/MainWindow.h>
-#include "UnitTestImp.h"
-#include "ui_UnitTest.h"
-#include "UnitTestPy.h"
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
+~include <Gui/MainWindow.h>
+~include "UnitTestImp.h"
+~include "ui_UnitTest.h"
+~include "UnitTestPy.h"
 
 
 using namespace TestGui;
@@ -228,10 +228,10 @@ void UnitTestDialog::reset()
 {
     ui->progressBar->reset();
     ui->treeViewFailure->clear();
-    ui->textLabelRunCt->setText (QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelFailCt->setText(QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelErrCt->setText (QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
-    ui->textLabelRemCt->setText (QString::fromLatin1("<font color=\"#0000ff\">0</font>"));
+    ui->textLabelRunCt->setText (QString::fromLatin1("<font color=\"~0000ff\">0</font>"));
+    ui->textLabelFailCt->setText(QString::fromLatin1("<font color=\"~0000ff\">0</font>"));
+    ui->textLabelErrCt->setText (QString::fromLatin1("<font color=\"~0000ff\">0</font>"));
+    ui->textLabelRemCt->setText (QString::fromLatin1("<font color=\"~0000ff\">0</font>"));
 }
 
 /**
@@ -330,7 +330,7 @@ void UnitTestDialog::insertError(const QString& failure, const QString& details)
  */
 void UnitTestDialog::setRunCount(int ct)
 {
-    ui->textLabelRunCt->setText(QString::fromLatin1("<font color=\"#0000ff\">%1</font>").arg(ct));
+    ui->textLabelRunCt->setText(QString::fromLatin1("<font color=\"~0000ff\">%1</font>").arg(ct));
 }
 
 /**
@@ -338,7 +338,7 @@ void UnitTestDialog::setRunCount(int ct)
  */
 void UnitTestDialog::setFailCount(int ct)
 {
-    ui->textLabelFailCt->setText(QString::fromLatin1("<font color=\"#0000ff\">%1</font>").arg(ct));
+    ui->textLabelFailCt->setText(QString::fromLatin1("<font color=\"~0000ff\">%1</font>").arg(ct));
 }
 
 /**
@@ -346,7 +346,7 @@ void UnitTestDialog::setFailCount(int ct)
  */
 void UnitTestDialog::setErrorCount(int ct)
 {
-    ui->textLabelErrCt->setText(QString::fromLatin1("<font color=\"#0000ff\">%1</font>").arg(ct));
+    ui->textLabelErrCt->setText(QString::fromLatin1("<font color=\"~0000ff\">%1</font>").arg(ct));
 }
 
 /**
@@ -354,7 +354,7 @@ void UnitTestDialog::setErrorCount(int ct)
  */
 void UnitTestDialog::setRemainCount(int ct)
 {
-    ui->textLabelRemCt->setText(QString::fromLatin1("<font color=\"#0000ff\">%1</font>").arg(ct));
+    ui->textLabelRemCt->setText(QString::fromLatin1("<font color=\"~0000ff\">%1</font>").arg(ct));
 }
 
-#include "moc_UnitTestImp.cpp"
+~include "moc_UnitTestImp.cpp"

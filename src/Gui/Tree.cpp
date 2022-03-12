@@ -21,59 +21,59 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-# include <QAction>
-# include <QActionGroup>
-# include <QApplication>
-# include <QContextMenuEvent>
-# include <QCursor>
-# include <QHeaderView>
-# include <QMenu>
-# include <QMessageBox>
-# include <QPixmap>
-# include <QTimer>
-# include <QToolTip>
-# include <QVBoxLayout>
-#endif
+~ifndef _PreComp_
+~ include <boost_bind_bind.hpp>
+~ include <QAction>
+~ include <QActionGroup>
+~ include <QApplication>
+~ include <QContextMenuEvent>
+~ include <QCursor>
+~ include <QHeaderView>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QPixmap>
+~ include <QTimer>
+~ include <QToolTip>
+~ include <QVBoxLayout>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <Base/Writer.h>
+~include <Base/Console.h>
+~include <Base/Reader.h>
+~include <Base/Sequencer.h>
+~include <Base/Tools.h>
+~include <Base/Writer.h>
 
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/AutoTransaction.h>
-#include <App/GeoFeatureGroupExtension.h>
-#include <App/Link.h>
+~include <App/Document.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/AutoTransaction.h>
+~include <App/GeoFeatureGroupExtension.h>
+~include <App/Link.h>
 
-#include "Tree.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Document.h"
-#include "ExpressionCompleter.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "MenuManager.h"
-#include "View3DInventor.h"
-#include "ViewProviderDocumentObject.h"
-#include "Widgets.h"
-#include "Workbench.h"
+~include "Tree.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "Document.h"
+~include "ExpressionCompleter.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "MenuManager.h"
+~include "View3DInventor.h"
+~include "ViewProviderDocumentObject.h"
+~include "Widgets.h"
+~include "Workbench.h"
 
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
-#define _TREE_PRINT(_level,_func,_msg) \
+~define _TREE_PRINT(_level,_func,_msg) \
     _FC_PRINT(FC_LOG_INSTANCE,_level,_func, '['<<getTreeName()<<"] " << _msg)
-#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,NotifyMessage,_msg)
-#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,NotifyWarning,_msg)
-#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,NotifyError,_msg)
-#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,NotifyLog,_msg)
-#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,NotifyLog,_msg)
+~define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,NotifyMessage,_msg)
+~define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,NotifyWarning,_msg)
+~define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,NotifyError,_msg)
+~define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,NotifyLog,_msg)
+~define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,NotifyLog,_msg)
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -93,19 +93,19 @@ TreeParams::TreeParams() {
     handle->Attach(this);
 
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    _##_name = handle->Get##_Type(#_name,_default);
+~undef FC_TREEPARAM_DEF
+~define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    _~~_name = handle->Get~~_Type(~_name,_default);
 
     FC_TREEPARAM_DEFS
 }
 
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-void TreeParams::set##_name(_type value) {\
-    if(_##_name != value) {\
-        handle->Set##_Type(#_name,value);\
+~undef FC_TREEPARAM_DEF
+~define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+void TreeParams::set~~_name(_type value) {\
+    if(_~~_name != value) {\
+        handle->Set~~_Type(~_name,value);\
     }\
 }
 
@@ -113,18 +113,18 @@ FC_TREEPARAM_DEFS
 
 void TreeParams::OnChange(Base::Subject<const char*>&, const char* sReason) {
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
-    if(strcmp(sReason,#_name)==0) {\
-        _##_name = handle->Get##_Type(#_name,_default);\
+~undef FC_TREEPARAM_DEF
+~define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    if(strcmp(sReason,~_name)==0) {\
+        _~~_name = handle->Get~~_Type(~_name,_default);\
         return;\
     }
 
-#undef FC_TREEPARAM_DEF2
-#define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
-    if(strcmp(sReason,#_name)==0) {\
-        _##_name = handle->Get##_Type(#_name,_default);\
-        on##_name##Changed();\
+~undef FC_TREEPARAM_DEF2
+~define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
+    if(strcmp(sReason,~_name)==0) {\
+        _~~_name = handle->Get~~_Type(~_name,_default);\
+        on~~_name~~Changed();\
         return;\
     }
 
@@ -155,38 +155,38 @@ TreeParams* TreeParams::Instance() {
 
 //////////////////////////////////////////////////////////////////////////////////////
 struct Stats {
-#define DEFINE_STATS \
+~define DEFINE_STATS \
     DEFINE_STAT(testStatus1) \
     DEFINE_STAT(testStatus2) \
     DEFINE_STAT(testStatus3) \
     DEFINE_STAT(getIcon) \
     DEFINE_STAT(setIcon) \
 
-#define DEFINE_STAT(_name) \
+~define DEFINE_STAT(_name) \
     FC_DURATION_DECLARE(_name);\
-    int _name##_count;
+    int _name~~_count;
 
     DEFINE_STATS
 
         void init() {
-#undef DEFINE_STAT
-#define DEFINE_STAT(_name) \
+~undef DEFINE_STAT
+~define DEFINE_STAT(_name) \
         FC_DURATION_INIT(_name);\
-        _name##_count = 0;
+        _name~~_count = 0;
 
         DEFINE_STATS
     }
 
     void print() {
-#undef DEFINE_STAT
-#define DEFINE_STAT(_name) FC_DURATION_MSG(_name, #_name " count: " << _name##_count);
+~undef DEFINE_STAT
+~define DEFINE_STAT(_name) FC_DURATION_MSG(_name, ~_name " count: " << _name~~_count);
         DEFINE_STATS
     }
 
-#undef DEFINE_STAT
-#define DEFINE_STAT(_name) \
-    void time_##_name(FC_TIME_POINT &t) {\
-        ++_name##_count;\
+~undef DEFINE_STAT
+~define DEFINE_STAT(_name) \
+    void time_~~_name(FC_TIME_POINT &t) {\
+        ++_name~~_count;\
         FC_DURATION_PLUS(_name,t);\
     }
 
@@ -219,22 +219,22 @@ struct TimingInfo {
     }
 };
 
-// #define DO_TIMING
-#ifdef DO_TIMING
-#define _Timing(_idx,_name) ++_Stats._name##_count; TimingInfo _tt##_idx(_Stats._name)
-#define Timing(_name) _Timing(0,_name)
-#define _TimingStop(_idx,_name) _tt##_idx.stop();
-#define TimingStop(_name) _TimingStop(0,_name);
-#define TimingInit() _Stats.init();
-#define TimingPrint() _Stats.print();
-#else
-#define _Timing(...) do{}while(0)
-#define Timing(...) do{}while(0)
-#define TimingInit() do{}while(0)
-#define TimingPrint() do{}while(0)
-#define _TimingStop(...) do{}while(0);
-#define TimingStop(...) do{}while(0);
-#endif
+// ~define DO_TIMING
+~ifdef DO_TIMING
+~define _Timing(_idx,_name) ++_Stats._name~~_count; TimingInfo _tt~~_idx(_Stats._name)
+~define Timing(_name) _Timing(0,_name)
+~define _TimingStop(_idx,_name) _tt~~_idx.stop();
+~define TimingStop(_name) _TimingStop(0,_name);
+~define TimingInit() _Stats.init();
+~define TimingPrint() _Stats.print();
+~else
+~define _Timing(...) do{}while(0)
+~define Timing(...) do{}while(0)
+~define TimingInit() do{}while(0)
+~define TimingPrint() do{}while(0)
+~define _TimingStop(...) do{}while(0);
+~define TimingStop(...) do{}while(0);
+~endif
 
 // ---------------------------------------------------------------------------
 
@@ -461,9 +461,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
         this, SLOT(onCreateGroup()));
 
     this->relabelObjectAction = new QAction(this);
-#ifndef Q_OS_MAC
+~ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
-#endif
+~endif
     connect(this->relabelObjectAction, SIGNAL(triggered()),
         this, SLOT(onRelabelObject()));
 
@@ -962,18 +962,18 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 void TreeWidget::hideEvent(QHideEvent* ev) {
     // No longer required. Visibility is now handled inside onUpdateStatus() by
     // UpdateDisabler.
-#if 0
+~if 0
     TREE_TRACE("detaching selection observer");
     this->detachSelection();
     selectTimer->stop();
-#endif
+~endif
     QTreeWidget::hideEvent(ev);
 }
 
 void TreeWidget::showEvent(QShowEvent* ev) {
     // No longer required. Visibility is now handled inside onUpdateStatus() by
     // UpdateDisabler.
-#if 0
+~if 0
     TREE_TRACE("attaching selection observer");
     this->attachSelection();
     int timeout = TreeParams::Instance()->SelectionTimeout();
@@ -981,7 +981,7 @@ void TreeWidget::showEvent(QShowEvent* ev) {
         timeout = 1;
     selectTimer->start(timeout);
     _updateStatus();
-#endif
+~endif
     QTreeWidget::showEvent(ev);
 }
 
@@ -1038,18 +1038,18 @@ void TreeWidget::onStartEditing()
             // - many objects open transactions when really changing some properties
             // - this leads to certain inconsistencies with the doubleClicked() method
             // So, only the view provider class should decide what to do
-#if 0
+~if 0
             // open a transaction before starting edit mode
             std::string cmd("Edit ");
             cmd += obj->Label.getValue();
             doc->openCommand(cmd.c_str());
             bool ok = doc->setEdit(objitem->object(), edit);
             if (!ok) doc->abortCommand();
-#else
+~else
             editingItem = objitem;
             if (!doc->setEdit(objitem->object(), edit))
                 editingItem = 0;
-#endif
+~endif
         }
     }
 }
@@ -1335,7 +1335,7 @@ Qt::DropActions TreeWidget::supportedDropActions() const
 
 bool TreeWidget::event(QEvent* e)
 {
-#if 0
+~if 0
     if (e->type() == QEvent::ShortcutOverride) {
         QKeyEvent* ke = static_cast<QKeyEvent*>(e);
         switch (ke->key()) {
@@ -1343,7 +1343,7 @@ bool TreeWidget::event(QEvent* e)
             ke->accept();
         }
     }
-#endif
+~endif
     return QTreeWidget::event(e);
 }
 
@@ -1370,11 +1370,11 @@ bool TreeWidget::eventFilter(QObject*, QEvent* ev) {
 
 void TreeWidget::keyPressEvent(QKeyEvent* event)
 {
-#if 0
+~if 0
     if (event && event->matches(QKeySequence::Delete)) {
         event->ignore();
     }
-#endif
+~endif
     if (event->matches(QKeySequence::Find)) {
         event->accept();
         onSearchObjects();
@@ -1521,7 +1521,7 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
 
 QMimeData* TreeWidget::mimeData(const QList<QTreeWidgetItem*> items) const
 {
-#if 0
+~if 0
     // all selected items must reference an object from the same document
     App::Document* doc = 0;
     for (QList<QTreeWidgetItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
@@ -1533,7 +1533,7 @@ QMimeData* TreeWidget::mimeData(const QList<QTreeWidgetItem*> items) const
         else if (doc != obj->getDocument())
             return 0;
     }
-#endif
+~endif
     return QTreeWidget::mimeData(items);
 }
 
@@ -1963,7 +1963,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
 
                     obj = doc->getObject(info.obj.c_str());
                     if (!obj || !obj->getNameInDocument()) {
-                        FC_WARN("Dropping object deleted: " << info.doc << '#' << info.obj);
+                        FC_WARN("Dropping object deleted: " << info.doc << '~' << info.obj);
                         continue;
                     }
                 }
@@ -3261,18 +3261,18 @@ const char* DocumentItem::getTreeName() const {
     return treeName;
 }
 
-#define FOREACH_ITEM(_item, _obj) \
+~define FOREACH_ITEM(_item, _obj) \
     auto _it = ObjectMap.end();\
     if(_obj.getObject() && _obj.getObject()->getNameInDocument())\
         _it = ObjectMap.find(_obj.getObject());\
     if(_it != ObjectMap.end()) {\
         for(auto _item : _it->second->items) {
 
-#define FOREACH_ITEM_ALL(_item) \
+~define FOREACH_ITEM_ALL(_item) \
     for(auto _v : ObjectMap) {\
         for(auto _item : _v.second->items) {
 
-#define END_FOREACH_ITEM }}
+~define END_FOREACH_ITEM }}
 
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
@@ -4758,7 +4758,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     }
     else { // invisible
         QStyleOptionViewItem opt;
-        // it can happen that a tree item is not attached to the tree widget (#0003025)
+        // it can happen that a tree item is not attached to the tree widget (~0003025)
         if (this->treeWidget())
             opt.initFrom(this->treeWidget());
         this->setForeground(0, opt.palette.color(QPalette::Disabled, QPalette::Text));
@@ -4779,17 +4779,17 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 const char* const feature_error_xpm[] = {
                     "9 9 3 1",
                     ". c None",
-                    "# c #ff0000",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "###aaa###",
-                    "###aaa###",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..." };
+                    "~ c ~ff0000",
+                    "a c ~ffffff",
+                    "...~~~...",
+                    ".~~aaa~~.",
+                    ".~~aaa~~.",
+                    "~~~aaa~~~",
+                    "~~~aaa~~~",
+                    "~~~~~~~~~",
+                    ".~~aaa~~.",
+                    ".~~aaa~~.",
+                    "...~~~..." };
                 pxError = QPixmap(feature_error_xpm);
             }
             px = pxError;
@@ -4801,17 +4801,17 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 const char* const feature_recompute_xpm[] = {
                     "9 9 3 1",
                     ". c None",
-                    "# c #0000ff",
-                    "a c #ffffff",
-                    "...###...",
-                    ".######aa",
-                    ".#####aa.",
-                    "#####aa##",
-                    "#aa#aa###",
-                    "#aaaa####",
-                    ".#aa####.",
-                    ".#######.",
-                    "...###..." };
+                    "~ c ~0000ff",
+                    "a c ~ffffff",
+                    "...~~~...",
+                    ".~~~~~~aa",
+                    ".~~~~~aa.",
+                    "~~~~~aa~~",
+                    "~aa~aa~~~",
+                    "~aaaa~~~~",
+                    ".~aa~~~~.",
+                    ".~~~~~~~.",
+                    "...~~~..." };
                 pxRecompute = QPixmap(feature_recompute_xpm);
             }
             px = pxRecompute;
@@ -4842,15 +4842,15 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 const char* const feature_hidden_xpm[] = {
                     "9 7 3 1",
                     ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "...###...",
-                    "..#aaa#..",
-                    ".#a###a#.",
-                    "#aa###aa#",
-                    ".#a###a#.",
-                    "..#aaa#..",
-                    "...###..." };
+                    "~ c ~000000",
+                    "a c ~ffffff",
+                    "...~~~...",
+                    "..~aaa~..",
+                    ".~a~~~a~.",
+                    "~aa~~~aa~",
+                    ".~a~~~a~.",
+                    "..~aaa~..",
+                    "...~~~..." };
                 pxHidden = QPixmap(feature_hidden_xpm);
             }
             pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
@@ -4863,15 +4863,15 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 const char* const feature_external_xpm[] = {
                     "7 7 3 1",
                     ". c None",
-                    "# c #000000",
-                    "a c #ffffff",
-                    "..###..",
-                    ".#aa##.",
-                    "..#aa##",
-                    "..##aa#",
-                    "..#aa##",
-                    ".#aa##.",
-                    "..###.." };
+                    "~ c ~000000",
+                    "a c ~ffffff",
+                    "..~~~..",
+                    ".~aa~~.",
+                    "..~aa~~",
+                    "..~~aa~",
+                    "..~aa~~",
+                    ".~aa~~.",
+                    "..~~~.." };
                 pxExternal = QPixmap(feature_external_xpm);
             }
             pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
@@ -5173,4 +5173,4 @@ TreeWidget* DocumentObjectItem::getTree() const {
     return static_cast<TreeWidget*>(treeWidget());
 }
 
-#include "moc_Tree.cpp"
+~include "moc_Tree.cpp"

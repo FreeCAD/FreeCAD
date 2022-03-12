@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "DlgCreateNewPreferencePackImp.h"
-#include "ui_DlgCreateNewPreferencePack.h"
+~include "DlgCreateNewPreferencePackImp.h"
+~include "ui_DlgCreateNewPreferencePack.h"
 
-#include <QPushButton>
-#include <QMessageBox>
+~include <QPushButton>
+~include <QMessageBox>
 
 using namespace Gui::Dialog;
 
@@ -165,4 +165,4 @@ void Gui::Dialog::DlgCreateNewPreferencePackImp::accept()
 }
 
 
-#include "moc_DlgCreateNewPreferencePackImp.cpp"
+~include "moc_DlgCreateNewPreferencePackImp.cpp"

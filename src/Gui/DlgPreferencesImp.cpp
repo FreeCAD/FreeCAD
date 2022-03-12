@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cstring>
-# include <algorithm>
-# include <QApplication>
-# include <QDebug>
-# include <QDesktopWidget>
-# include <QGenericReturnArgument>
-# include <QMessageBox>
-# include <QScreen>
-# include <QScrollArea>
-# include <QScrollBar>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cstring>
+~ include <algorithm>
+~ include <QApplication>
+~ include <QDebug>
+~ include <QDesktopWidget>
+~ include <QGenericReturnArgument>
+~ include <QMessageBox>
+~ include <QScreen>
+~ include <QScrollArea>
+~ include <QScrollBar>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include "DlgPreferencesImp.h"
-#include "ui_DlgPreferences.h"
-#include "PropertyPage.h"
-#include "WidgetFactory.h"
-#include "BitmapFactory.h"
-#include "MainWindow.h"
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include "DlgPreferencesImp.h"
+~include "ui_DlgPreferences.h"
+~include "PropertyPage.h"
+~include "WidgetFactory.h"
+~include "BitmapFactory.h"
+~include "MainWindow.h"
 
 using namespace Gui::Dialog;
 
@@ -283,14 +283,14 @@ void DlgPreferencesImp::restoreDefaults()
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetBool("SaveUserParameter", saveParameter);
 
-#if 0
+~if 0
         QList<PreferencePage*> pages = this->findChildren<PreferencePage*>();
         for (QList<PreferencePage*>::iterator it = pages.begin(); it != pages.end(); ++it) {
             (*it)->loadSettings();
         }
-#else
+~else
         reject();
-#endif
+~endif
     }
 }
 
@@ -480,4 +480,4 @@ void DlgPreferencesImp::reload()
     applyChanges();
 }
 
-#include "moc_DlgPreferencesImp.cpp"
+~include "moc_DlgPreferencesImp.cpp"

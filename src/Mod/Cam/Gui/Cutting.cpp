@@ -21,64 +21,64 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Cutting.h"
-#include <Mod/Cam/App/ChangeDyna.h> //Only for Testing
-#include <Mod/Cam/App/best_fit.h>
-#include <Mod/Cam/App/path_simulate.h>
-#include <Mod/Cam/App/SpringbackCorrection.h>
-#include <Mod/Cam/App/UniGridApprox.h>
-#include <Mod/Cam/App/Approx.h>
-#include <Mod/Cam/App/deviation.h>
-#include <QTimer>
-#include <QByteArray>
+~include "Cutting.h"
+~include <Mod/Cam/App/ChangeDyna.h> //Only for Testing
+~include <Mod/Cam/App/best_fit.h>
+~include <Mod/Cam/App/path_simulate.h>
+~include <Mod/Cam/App/SpringbackCorrection.h>
+~include <Mod/Cam/App/UniGridApprox.h>
+~include <Mod/Cam/App/Approx.h>
+~include <Mod/Cam/App/deviation.h>
+~include <QTimer>
+~include <QByteArray>
 
 
-#include <Base/Vector3D.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+~include <Base/Vector3D.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
 
-#include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Selection.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <App/Document.h>
-#include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <App/Document.h>
+~include <Gui/Document.h>
 
-#include <TopExp_Explorer.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <Mod/Cam/App/cutting_tools.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <TopExp_Explorer.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRep_Builder.hxx>
+~include <TopoDS_Compound.hxx>
+~include <Mod/Cam/App/cutting_tools.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
-#include <GCPnts_QuasiUniformDeflection.hxx>
-#include <GCPnts_QuasiUniformAbscissa.hxx>
+~include <GCPnts_QuasiUniformDeflection.hxx>
+~include <GCPnts_QuasiUniformAbscissa.hxx>
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Geom2d_Curve.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <Geom2d_Curve.hxx>
+~include <Geom2dAdaptor_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <TopoDS_Face.hxx>
+~include <TopoDS.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
 
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/SoPickedPoint.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
+~include <Inventor/SoPickedPoint.h>
 
-#include <QMessageBox>
-#include <QFileDialog>
+~include <QMessageBox>
+~include <QFileDialog>
 
 using namespace CamGui;
 
@@ -918,4 +918,4 @@ void Cutting::zLevelCallback(void * ud, SoEventCallback * n)
 
 
 
-#include "moc_Cutting.cpp"
+~include "moc_Cutting.cpp"

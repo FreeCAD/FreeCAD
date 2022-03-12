@@ -21,81 +21,81 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-# if defined (_POSIX_C_SOURCE)
-#   undef  _POSIX_C_SOURCE
-# endif // (re-)defined in pyconfig.h
-#include <cmath>
+~ if defined (_POSIX_C_SOURCE)
+~   undef  _POSIX_C_SOURCE
+~ endif // (re-)defined in pyconfig.h
+~include <cmath>
 
-#ifndef PI
-#define PI M_PI
-#endif
+~ifndef PI
+~define PI M_PI
+~endif
 
 //Basic Stuff
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Handle.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Builder3D.h>
-#include <App/Application.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Handle.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Builder3D.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
 
 //Part Stuff
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
 
 //Mesh Stuff
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/Builder.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Triangulation.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/Builder.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/MeshPy.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Core/Triangulation.h>
 
 //OCC Stuff
-#include <Poly_Triangulation.hxx>
-#include <BRepOffsetAPI_MakeOffsetShape.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepAlgoAPI_Section.hxx>
-#include <BRepBndLib.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepMesh.hxx>
-#include <Geom_OffsetSurface.hxx>
-#include <GeomAPI_PointsToBSplineSurface.hxx>
-#include <TColgp_HArray2OfPnt.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-#include <BRepGProp.hxx>
-#include <IntCurvesFace_ShapeIntersector.hxx>
-#include <GProp_PrincipalProps.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Handle_Geom_Plane.hxx>
-#include <Geom_Plane.hxx>
-#include <Geom2d_Curve.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Dir.hxx>
+~include <Poly_Triangulation.hxx>
+~include <BRepOffsetAPI_MakeOffsetShape.hxx>
+~include <BRepAlgoAPI_Cut.hxx>
+~include <BRepAlgoAPI_Section.hxx>
+~include <BRepBndLib.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepTools.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepMesh.hxx>
+~include <Geom_OffsetSurface.hxx>
+~include <GeomAPI_PointsToBSplineSurface.hxx>
+~include <TColgp_HArray2OfPnt.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TColStd_Array1OfInteger.hxx>
+~include <BRepGProp.hxx>
+~include <IntCurvesFace_ShapeIntersector.hxx>
+~include <GProp_PrincipalProps.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <BRepPrimAPI_MakeBox.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Handle_Geom_Plane.hxx>
+~include <Geom_Plane.hxx>
+~include <Geom2d_Curve.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Dir.hxx>
 
 //Own Stuff
-#include "Approx.h"
-#include "ConvertDyna.h"
-#include "cutting_tools.h"
-#include "best_fit.h"
-#include "SpringbackCorrection.h"
+~include "Approx.h"
+~include "ConvertDyna.h"
+~include "cutting_tools.h"
+~include "best_fit.h"
+~include "SpringbackCorrection.h"
 
 
 using namespace Part;
@@ -272,8 +272,8 @@ static PyObject * best_fit_coarse(PyObject *self, PyObject *args)
 }
 
 
-#include <GeomAdaptor_Curve.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <GCPnts_QuasiUniformDeflection.hxx>
 
 //static PyObject * makeToolPath(PyObject *self, PyObject *args)
 //{
@@ -3666,11 +3666,11 @@ static PyObject * best_fit_complete(PyObject *self, PyObject *args)
     Py_Return;
 }
 
-#include "WireExplorer.h"
-#include <GeomAPI_Interpolate.hxx>
-#include <TColgp_HArray1OfPnt.hxx>
-#include "BRepAdaptor_CompCurve2.h"
-#include "SpringbackCorrection.h"
+~include "WireExplorer.h"
+~include <GeomAPI_Interpolate.hxx>
+~include <TColgp_HArray1OfPnt.hxx>
+~include "BRepAdaptor_CompCurve2.h"
+~include "SpringbackCorrection.h"
 static PyObject * best_fit_test(PyObject *self, PyObject *args)
 {
 

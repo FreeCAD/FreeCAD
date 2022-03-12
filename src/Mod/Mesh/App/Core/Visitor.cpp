@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "MeshKernel.h"
-#include "Visitor.h"
-#include "Algorithm.h"
-#include "Approximation.h"
+~include "MeshKernel.h"
+~include "Visitor.h"
+~include "Algorithm.h"
+~include "Approximation.h"
 
 using namespace MeshCore;
 

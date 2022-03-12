@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <QApplication>
-#include <QPainter>
-#include <QDesktopWidget>
-#include <QMenu>
-#include <QMouseEvent>
+~include "PreCompiled.h"
+~include <QApplication>
+~include <QPainter>
+~include <QDesktopWidget>
+~include <QMenu>
+~include <QMouseEvent>
 
-#include "DlgExpressionInput.h"
-#include "ui_DlgExpressionInput.h"
-#include "ExpressionCompleter.h"
-#include "Tools.h"
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
-#include <App/DocumentObject.h>
+~include "DlgExpressionInput.h"
+~include "ui_DlgExpressionInput.h"
+~include "ExpressionCompleter.h"
+~include "Tools.h"
+~include <Base/Tools.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/ExpressionParser.h>
+~include <App/DocumentObject.h>
 
 using namespace App;
 using namespace Gui::Dialog;
@@ -76,16 +76,16 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
     // There are some platforms where setting no system background causes a black
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
-    // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
+    // set to false. Then a normal non-modal dialog will be shown instead (~0002440).
     bool noBackground = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
-#if defined(Q_OS_MAC)
+~if defined(Q_OS_MAC)
         setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
-#else
+~else
         setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
-#endif
+~endif
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
 
@@ -206,7 +206,7 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
 
 void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
+~if 0//defined(Q_OS_WIN)
     if (QWidget::mouseGrabber() == this) {
         QList<QWidget*> childs = this->findChildren<QWidget*>();
         for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
@@ -222,14 +222,14 @@ void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
             }
         }
     }
-#else
+~else
     Q_UNUSED(ev);
-#endif
+~endif
 }
 
 void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
+~if 0//defined(Q_OS_WIN)
     bool handled = false;
     if (QWidget::mouseGrabber() == this) {
         QList<QWidget*> childs = this->findChildren<QWidget*>();
@@ -250,9 +250,9 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 
     if (handled)
         return;
-#else
+~else
     Q_UNUSED(ev);
-#endif
+~endif
     // The 'FramelessWindowHint' is also set when the background is transparent.
     if (windowFlags() & Qt::FramelessWindowHint) {
         //we need to reject the dialog when clicked on the background. As the background is transparent
@@ -274,7 +274,7 @@ void DlgExpressionInput::showEvent(QShowEvent* ev)
 {
     QDialog::showEvent(ev);
 
-#if 0//defined(Q_OS_WIN)
+~if 0//defined(Q_OS_WIN)
     // This way we can fetch click events outside modal dialogs
     QWidget* widget = QApplication::activeModalWidget();
     if (widget) {
@@ -283,7 +283,7 @@ void DlgExpressionInput::showEvent(QShowEvent* ev)
             this->grabMouse();
         }
     }
-#endif
+~endif
 }
 
 bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
@@ -312,4 +312,4 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
 }
 
 
-#include "moc_DlgExpressionInput.cpp"
+~include "moc_DlgExpressionInput.cpp"

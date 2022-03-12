@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <functional>
+~include <functional>
 
-#include "DocumentObserver.h"
-#include "Application.h"
-#include "Document.h"
-#include "ViewProviderDocumentObject.h"
-#include <App/Document.h>
+~include "DocumentObserver.h"
+~include "Application.h"
+~include "Document.h"
+~include "ViewProviderDocumentObject.h"
+~include <App/Document.h>
 
 
 using namespace Gui;

@@ -21,36 +21,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#ifdef _PreComp_
-#   undef _PreComp_
-#endif
+~ifdef _PreComp_
+~   undef _PreComp_
+~endif
 
-#ifdef FC_OS_LINUX
-#   include <unistd.h>
-#endif
+~ifdef FC_OS_LINUX
+~   include <unistd.h>
+~endif
 
-#if HAVE_CONFIG_H
-#   include <config.h>
-#endif // HAVE_CONFIG_H
+~if HAVE_CONFIG_H
+~   include <config.h>
+~endif // HAVE_CONFIG_H
 
-#include <cstdio>
-#include <map>
-#include <stdexcept>
+~include <cstdio>
+~include <map>
+~include <stdexcept>
 
-#include <QApplication>
-#include <QLocale>
-#include <QMessageBox>
-#include <QTextCodec>
+~include <QApplication>
+~include <QLocale>
+~include <QMessageBox>
+~include <QTextCodec>
 
 // FreeCAD header
-#include <App/Application.h>
-#include <Base/ConsoleObserver.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Gui/Application.h>
+~include <App/Application.h>
+~include <Base/ConsoleObserver.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <Gui/Application.h>
 
 
 void PrintInitHelp(void);
@@ -58,17 +58,17 @@ void PrintInitHelp(void);
 const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2022\n"\
 "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
 "FreeCAD wouldn't be possible without FreeCAD community.\n"\
-"  #####                 ####  ###   ####  \n" \
-"  #                    #      # #   #   # \n" \
-"  #     ##  #### ####  #     #   #  #   # \n" \
-"  ####  # # #  # #  #  #     #####  #   # \n" \
-"  #     #   #### ####  #    #     # #   # \n" \
-"  #     #   #    #     #    #     # #   #  ##  ##  ##\n" \
-"  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n" ;
+"  ~~~~~                 ~~~~  ~~~   ~~~~  \n" \
+"  ~                    ~      ~ ~   ~   ~ \n" \
+"  ~     ~~  ~~~~ ~~~~  ~     ~   ~  ~   ~ \n" \
+"  ~~~~  ~ ~ ~  ~ ~  ~  ~     ~~~~~  ~   ~ \n" \
+"  ~     ~   ~~~~ ~~~~  ~    ~     ~ ~   ~ \n" \
+"  ~     ~   ~    ~     ~    ~     ~ ~   ~  ~~  ~~  ~~\n" \
+"  ~     ~   ~~~~ ~~~~   ~~~ ~     ~ ~~~~   ~~  ~~  ~~\n\n" ;
 
-#if defined(_MSC_VER)
+~if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
-#endif
+~endif
 
 class Redirection
 {
@@ -76,11 +76,11 @@ public:
     Redirection(FILE* f)
         : fi(Base::FileInfo::getTempFileName()), file(f)
     {
-#ifdef WIN32
+~ifdef WIN32
         FILE* ptr = _wfreopen(fi.toStdWString().c_str(),L"w",file);
-#else
+~else
         FILE* ptr = freopen(fi.filePath().c_str(),"w",file);
-#endif
+~endif
         if (!ptr) {
             std::cerr << "Failed to reopen file" << std::endl;
         }
@@ -96,7 +96,7 @@ private:
     FILE* file;
 };
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
+~if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
 QString myDecoderFunc(const QByteArray &localFileName)
 {
     QTextCodec* codec = QTextCodec::codecForName("UTF-8");
@@ -108,11 +108,11 @@ QByteArray myEncoderFunc(const QString &fileName)
     QTextCodec* codec = QTextCodec::codecForName("UTF-8");
     return codec->fromUnicode(fileName);
 }
-#endif
+~endif
 
 int main( int argc, char ** argv )
 {
-#if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
+~if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
     (void)QLocale::system();
@@ -120,15 +120,15 @@ int main( int argc, char ** argv )
     // See Gui::Application::runApplication()
     putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
-#elif defined(FC_OS_MACOSX)
+~elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
     putenv("PYTHONPATH=");
-#elif defined(__MINGW32__)
+~elif defined(__MINGW32__)
     const char* mingw_prefix = getenv("MINGW_PREFIX");
     const char* py_home = getenv("PYTHONHOME");
     if (!py_home && mingw_prefix)
         _putenv_s("PYTHONHOME", mingw_prefix);
-#else
+~else
     _putenv("PYTHONPATH=");
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
@@ -137,11 +137,11 @@ int main( int argc, char ** argv )
         _putenv_s("PYTHONHOME", fc_py_home);
     else
         _putenv("PYTHONHOME=");
-#endif
+~endif
 
-#if defined (FC_OS_WIN32)
+~if defined (FC_OS_WIN32)
     // we need to force Coin not to use Freetype in order to find installed fonts on Windows
-    // see https://forum.freecadweb.org/viewtopic.php?p=485142#p485016
+    // see https://forum.freecadweb.org/viewtopic.php?p=485142~p485016
     _putenv("COIN_FORCE_FREETYPE_OFF=1");
 
     int argc_ = argc;
@@ -158,12 +158,12 @@ int main( int argc, char ** argv )
         }
         argv_.push_back(0); // 0-terminated string
     }
-#endif
+~endif
 
-#if defined(_MSC_VER) && _MSC_VER <= 1800
+~if defined(_MSC_VER) && _MSC_VER <= 1800
     // See InterpreterSingleton::init
     Redirection out(stdout), err(stderr), inp(stdin);
-#endif
+~endif
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
@@ -179,8 +179,8 @@ int main( int argc, char ** argv )
     App::Application::Config()["StartWorkbench"] = "StartWorkbench";
     //App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment" ] = "Bottom|Left";
-    App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
-    App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
+    App::Application::Config()["SplashTextColor" ] = "~ffffff"; // white
+    App::Application::Config()["SplashInfoColor" ] = "~c8c8c8"; // light grey
 
     QGuiApplication::setDesktopFileName(QStringLiteral("org.freecadweb.FreeCAD.desktop"));
 
@@ -192,17 +192,17 @@ int main( int argc, char ** argv )
         App::Application::Config()["LoggingConsole"] = "1";
 
         // Inits the Application
-#if defined (FC_OS_WIN32)
+~if defined (FC_OS_WIN32)
         App::Application::init(argc_, argv_.data());
-#else
+~else
         App::Application::init(argc, argv);
-#endif
-#if defined(_MSC_VER)
+~endif
+~if defined(_MSC_VER)
         // create a dump file when the application crashes
         std::string dmpfile = App::Application::getUserAppDataDir();
         dmpfile += "crash.dmp";
         InitMiniDumpWriter(dmpfile);
-#endif
+~endif
         std::map<std::string, std::string>::iterator it = App::Application::Config().find("NavigationStyle");
         if (it != App::Application::Config().end()) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -321,9 +321,9 @@ int main( int argc, char ** argv )
     return 0;
 }
 
-#if defined(_MSC_VER)
-#include <windows.h>
-#include <dbghelp.h>
+~if defined(_MSC_VER)
+~include <windows.h>
+~include <dbghelp.h>
 
 typedef BOOL (__stdcall *tMDWD)(
   IN HANDLE hProcess,
@@ -340,7 +340,7 @@ static HMODULE s_hDbgHelpMod;
 static MINIDUMP_TYPE s_dumpTyp = MiniDumpNormal;
 static std::wstring s_szMiniDumpFileName;  // initialize with whatever appropriate...
 
-#include <Base/StackWalker.h>
+~include <Base/StackWalker.h>
 class MyStackWalker : public StackWalker
 {
     DWORD threadId;
@@ -360,7 +360,7 @@ public:
 
 static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx) 
 {
-#ifdef _M_IX86 
+~ifdef _M_IX86 
   if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)   
   { 
     // be sure that we have enough space... 
@@ -372,7 +372,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     __asm mov eax,offset MyStack[1024*128]; 
     __asm mov esp,eax; 
   } 
-#endif 
+~endif 
   MyStackWalker sw;
   sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
   Base::Console().Log("*** Unhandled Exception!\n");
@@ -441,4 +441,4 @@ void InitMiniDumpWriter(const std::string& filename)
   // See also: "SetUnhandledExceptionFilter" and VC8 (and later)
   // http://blog.kalmbachnet.de/?postid=75
 }
-#endif
+~endif

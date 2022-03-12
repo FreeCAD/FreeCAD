@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~ include <algorithm>
+~endif
 
-#include "ViewProviderExtension.h"
-#include "ViewProviderExtensionPy.h"
-#include "ViewProviderExtensionPython.h"
-#include "ViewProviderDocumentObject.h"
+~include "ViewProviderExtension.h"
+~include "ViewProviderExtensionPy.h"
+~include "ViewProviderExtensionPython.h"
+~include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 

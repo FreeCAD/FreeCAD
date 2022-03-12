@@ -25,11 +25,11 @@
 //  Author : Michael Sazonov (OCC)
 //  Module : SMESH
 //
-#include "SMESH_Group.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_GroupOnGeom.hxx"
-#include "SMESHDS_GroupOnFilter.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_GroupOnGeom.hxx"
+~include "SMESHDS_GroupOnFilter.hxx"
 
 //=============================================================================
 /*!

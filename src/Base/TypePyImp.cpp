@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Type.h"
-#include "BaseClassPy.h"
-#include "BindingManager.h"
-#include "TypePy.h"
-#include "TypePy.cpp"
+~include "Type.h"
+~include "BaseClassPy.h"
+~include "BindingManager.h"
+~include "TypePy.h"
+~include "TypePy.cpp"
 
 using namespace Base;
 

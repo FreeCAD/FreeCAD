@@ -21,37 +21,37 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Precision.hxx>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Precision.hxx>
+~ include <QMenu>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Base/Console.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MDIView.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Gui/ViewProviderOriginFeature.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/PartDesign/App/FeatureBase.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <App/Part.h>
+~include <Base/Console.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MDIView.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/ViewProviderOrigin.h>
+~include <Gui/ViewProviderOriginFeature.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/DatumCS.h>
+~include <Mod/PartDesign/App/FeatureSketchBased.h>
+~include <Mod/PartDesign/App/FeatureBase.h>
 
-#include "ViewProviderBody.h"
-#include "Utils.h"
-#include "ViewProvider.h"
-#include "ViewProviderDatum.h"
+~include "ViewProviderBody.h"
+~include "Utils.h"
+~include "ViewProvider.h"
+~include "ViewProviderDatum.h"
 
 
 using namespace PartDesignGui;
@@ -377,7 +377,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
             }
         }
 
-        // #0002559: Body becomes visible upon changing DisplayModeBody
+        // ~0002559: Body becomes visible upon changing DisplayModeBody
         Visibility.touch();
     }
     else

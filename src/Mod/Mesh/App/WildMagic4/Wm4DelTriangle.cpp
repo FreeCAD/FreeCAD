@@ -14,8 +14,8 @@
 //
 // Version: 4.0.1 (2006/07/19)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4DelTriangle.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4DelTriangle.h"
 
 namespace Wm4
 {

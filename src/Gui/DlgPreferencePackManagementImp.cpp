@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include "DlgPreferencePackManagementImp.h"
-#include "ui_DlgPreferencePackManagement.h"
+~include "DlgPreferencePackManagementImp.h"
+~include "ui_DlgPreferencePackManagement.h"
 
-#include <PreferencePackManager.h>
-#include <App/Application.h>
-#include "Application.h"
-#include "Command.h"
+~include <PreferencePackManager.h>
+~include <App/Application.h>
+~include "Application.h"
+~include "Command.h"
 
 using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
@@ -122,7 +122,7 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
         switch (twt) {
         break; case TreeWidgetType::BUILTIN:
             // The button is a "hide" button
-            if (Application::Instance->prefPackManager()->isVisible("##BUILT_IN##", item->text(0).toStdString()))
+            if (Application::Instance->prefPackManager()->isVisible("~~BUILT_IN~~", item->text(0).toStdString()))
                 button->setIcon(iconIsVisible);
             else
                 button->setIcon(iconIsInvisible);
@@ -190,7 +190,7 @@ void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
 
 void DlgPreferencePackManagementImp::hideBuiltInPack(const std::string& prefPackName)
 {
-    Application::Instance->prefPackManager()->toggleVisibility("##BUILT_IN##", prefPackName);
+    Application::Instance->prefPackManager()->toggleVisibility("~~BUILT_IN~~", prefPackName);
     showEvent(nullptr);
     packVisibilityChanged();
 }
@@ -220,4 +220,4 @@ DlgPreferencePackManagementImp::~DlgPreferencePackManagementImp()
 
 
 
-#include "moc_DlgPreferencePackManagementImp.cpp"
+~include "moc_DlgPreferencePackManagementImp.cpp"

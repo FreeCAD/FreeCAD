@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <map>
-# include <queue>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <map>
+~ include <queue>
+~endif
 
-#include "Degeneration.h"
-#include "Definitions.h"
-#include "Iterator.h"
-#include "Helpers.h"
-#include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Info.h"
-#include "Grid.h"
-#include "TopoAlgorithm.h"
-#include "Triangulation.h"
+~include "Degeneration.h"
+~include "Definitions.h"
+~include "Iterator.h"
+~include "Helpers.h"
+~include "MeshKernel.h"
+~include "Algorithm.h"
+~include "Info.h"
+~include "Grid.h"
+~include "TopoAlgorithm.h"
+~include "Triangulation.h"
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <Base/Sequencer.h>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <Base/Sequencer.h>
 
 using namespace MeshCore;
 
@@ -353,7 +353,7 @@ bool MeshEvalDuplicateFacets::Evaluate()
 
 std::vector<FacetIndex> MeshEvalDuplicateFacets::GetIndices() const
 {
-#if 1
+~if 1
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
     std::vector<FaceIterator> faces;
     faces.reserve(rFacets.size());
@@ -377,7 +377,7 @@ std::vector<FacetIndex> MeshEvalDuplicateFacets::GetIndices() const
     }
 
     return aInds;
-#else
+~else
   std::vector<FacetIndex> aInds;
   const MeshFacetArray& rFaces = _rclMesh.GetFacets();
   FacetIndex uIndex=0;
@@ -393,7 +393,7 @@ std::vector<FacetIndex> MeshEvalDuplicateFacets::GetIndices() const
   }
 
   return aInds;
-#endif
+~endif
 }
 
 bool MeshFixDuplicateFacets::Fixup()

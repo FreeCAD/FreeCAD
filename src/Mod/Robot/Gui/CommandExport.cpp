@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
+~include <App/Application.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/Document.h>
 
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
 
-#include "TrajectorySimulate.h"
+~include "TrajectorySimulate.h"
 
 using namespace std;
 
@@ -100,7 +100,7 @@ bool CmdRobotExportKukaCompact::isActive(void)
     return hasActiveDocument();
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 DEF_STD_CMD_A(CmdRobotExportKukaFull)
@@ -162,7 +162,7 @@ bool CmdRobotExportKukaFull::isActive(void)
     return hasActiveDocument();
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 

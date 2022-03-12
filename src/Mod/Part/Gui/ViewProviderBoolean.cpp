@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAlgoAPI_BooleanOperation.hxx>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_BooleanOperation.hxx>
+~ include <TopExp.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_ListOfShape.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~endif
 
-#include "ViewProviderBoolean.h"
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/Part/App/FeaturePartBoolean.h>
-#include <Mod/Part/App/FeaturePartFuse.h>
-#include <Mod/Part/App/FeaturePartCommon.h>
+~include "ViewProviderBoolean.h"
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/Part/App/FeaturePartBoolean.h>
+~include <Mod/Part/App/FeaturePartFuse.h>
+~include <Mod/Part/App/FeaturePartCommon.h>
 
 using namespace PartGui;
 

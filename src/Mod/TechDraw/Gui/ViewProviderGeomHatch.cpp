@@ -22,26 +22,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/Parameter.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
+~include <App/DocumentObject.h>
+~include <Base/Parameter.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/DrawGeomHatch.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/LineGroup.h>
 
-#include "TaskGeomHatch.h"
-#include "PreferencesGui.h"
-#include "ViewProviderDrawingView.h"
-#include "ViewProviderGeomHatch.h"
+~include "TaskGeomHatch.h"
+~include "PreferencesGui.h"
+~include "ViewProviderDrawingView.h"
+~include "ViewProviderGeomHatch.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

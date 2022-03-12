@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "edgesort.h"
-#include <TopExp_Explorer.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
-#include <BRep_Builder.hxx>
+~include "edgesort.h"
+~include <TopExp_Explorer.hxx>
+~include <TopAbs_ShapeEnum.hxx>
+~include <BRep_Tool.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Compound.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <GCPnts_QuasiUniformDeflection.hxx>
+~include <BRep_Builder.hxx>
 
 
 Edgesort::Edgesort(const TopoDS_Shape& aShape)
@@ -58,7 +58,7 @@ void Edgesort::Init()
     m_edgeIter = m_edges.begin();
 }
 
-//#include <BRepBuilder.hxx>
+//~include <BRepBuilder.hxx>
 TopoDS_Shape Edgesort::GetDesiredCutShape(int desiredIndex)
 {
     m_edges.clear();
@@ -308,7 +308,7 @@ void Edgesort::Perform(const TopoDS_Edge& edge)
     iter.first->second.push_back(edge);
 }
 
-#include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Curve.hxx>
 
 bool Edgesort::IsValidEdge(const TopoDS_Edge& edge)
 {

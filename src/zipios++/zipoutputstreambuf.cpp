@@ -1,14 +1,14 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <algorithm>
-#include <vector>
-#include <ctime>
-#include "meta-iostreams.h"
+~include <algorithm>
+~include <vector>
+~include <ctime>
+~include "meta-iostreams.h"
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "zipoutputstreambuf.h"
+~include "zipoutputstreambuf.h"
 
 namespace zipios {
 

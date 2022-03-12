@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QEvent>
-# include <QGridLayout>
-# include <QSizePolicy>
-# include <QPushButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QEvent>
+~ include <QGridLayout>
+~ include <QSizePolicy>
+~ include <QPushButton>
+~endif
 
-#include "DlgCustomizeImp.h"
-#include "MainWindow.h"
-#include "WidgetFactory.h"
+~include "DlgCustomizeImp.h"
+~include "MainWindow.h"
+~include "WidgetFactory.h"
 
 using namespace Gui::Dialog;
 
@@ -140,4 +140,4 @@ void DlgCustomizeImp::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-#include "moc_DlgCustomizeImp.cpp"
+~include "moc_DlgCustomizeImp.cpp"

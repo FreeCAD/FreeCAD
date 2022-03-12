@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
-#include "Algorithm.h"
-#include "Approximation.h"
-#include "Elements.h"
-#include "Iterator.h"
-#include "Grid.h"
-#include "Triangulation.h"
+~include "Algorithm.h"
+~include "Approximation.h"
+~include "Elements.h"
+~include "Iterator.h"
+~include "Grid.h"
+~include "Triangulation.h"
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
 
 using namespace MeshCore;
 using Base::BoundBox3f;
@@ -752,7 +752,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
             return false;
         }
 
-#if 1
+~if 1
         MeshGeomFacet triangle;
         triangle = cTria.GetTriangle(rPoints, facet);
 
@@ -779,7 +779,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
             for (MeshFacetArray::_TIterator it = rFaces.begin(); it != rFaces.end(); ++it)
                 it->FlipNormal();
         }
-#endif
+~endif
 
         return true;
     }

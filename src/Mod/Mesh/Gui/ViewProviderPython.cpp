@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "ViewProviderPython.h"
+~include "PreCompiled.h"
+~include "ViewProviderPython.h"
 
 namespace Gui {
 /// @cond DOXERR

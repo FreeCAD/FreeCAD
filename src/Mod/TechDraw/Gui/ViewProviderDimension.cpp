@@ -22,27 +22,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include <QColor>
-#include <Base/Parameter.h>
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/Control.h>
+~include <QColor>
+~include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Control.h>
 
-#include <Mod/TechDraw/App/LineGroup.h>
-#include <Mod/TechDraw/App/LandmarkDimension.h>
+~include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/LandmarkDimension.h>
 
-#include "PreferencesGui.h"
-#include "TaskDimension.h"
-#include "QGIViewDimension.h"
-#include "ViewProviderDimension.h"
+~include "PreferencesGui.h"
+~include "TaskDimension.h"
+~include "QGIViewDimension.h"
+~include "ViewProviderDimension.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

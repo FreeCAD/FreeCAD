@@ -14,8 +14,8 @@
 //
 // Version: 4.0.1 (2006/07/25)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4Vector2.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4Vector2.h"
 
 namespace Wm4 {
 

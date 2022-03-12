@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4Math.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4Math.h"
 
 namespace Wm4 {
 
@@ -51,7 +51,7 @@ template<> const double Math<double>::INV_LN_10 = 1.0/Math<double>::LN_10;
 
 //----------------------------------------------------------------------------
 //Does not compile with gcc 4.1.2
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+~if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 template <>
 float Math<float>::FastInvSqrt (float fValue)
 {
@@ -68,15 +68,15 @@ double Math<double>::FastInvSqrt (double dValue)
 {
     double dHalf = 0.5*dValue;
     Integer64 i  = *(Integer64*)&dValue;
-#if defined(WM4_USING_VC70) || defined(WM4_USING_VC6)
+~if defined(WM4_USING_VC70) || defined(WM4_USING_VC6)
     i = 0x5fe6ec85e7de30da - (i >> 1);
-#else
+~else
     i = 0x5fe6ec85e7de30daLL - (i >> 1);
-#endif
+~endif
     dValue = *(double*)&i;
     dValue = dValue*(1.5 - dHalf*dValue*dValue);
     return dValue;
 }
-#endif
+~endif
 //----------------------------------------------------------------------------
 }

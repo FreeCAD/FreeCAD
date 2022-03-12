@@ -22,18 +22,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~endif
 
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
+~include <Mod/Part/Gui/SoBrepEdgeSet.h>
+~include <Mod/Part/Gui/SoBrepFaceSet.h>
+~include <Mod/PartDesign/App/DatumPlane.h>
 
-#include "ViewProviderDatumPlane.h"
+~include "ViewProviderDatumPlane.h"
 
 using namespace PartDesignGui;
 

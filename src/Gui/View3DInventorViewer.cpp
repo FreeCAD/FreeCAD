@@ -21,114 +21,114 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <float.h>
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# include <GL/glext.h>
-# include <GL/glu.h>
-# endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <float.h>
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ include <GL/glext.h>
+~ include <GL/glu.h>
+~ endif
 
-# include <Inventor/SbBox.h>
-# include <Inventor/SoEventManager.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoHandleEventAction.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/events/SoEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoMotion3Event.h>
-# include <Inventor/manips/SoClipPlaneManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCallback.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSelection.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <QBitmap>
-# include <QEventLoop>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QTimer>
-# include <QVariantAnimation>
-# include <QWheelEvent>
-#endif
+~ include <Inventor/SbBox.h>
+~ include <Inventor/SoEventManager.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetMatrixAction.h>
+~ include <Inventor/actions/SoHandleEventAction.h>
+~ include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
+~ include <Inventor/elements/SoViewportRegionElement.h>
+~ include <Inventor/events/SoEvent.h>
+~ include <Inventor/events/SoKeyboardEvent.h>
+~ include <Inventor/events/SoMotion3Event.h>
+~ include <Inventor/manips/SoClipPlaneManip.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCallback.h>
+~ include <Inventor/nodes/SoCube.h>
+~ include <Inventor/nodes/SoDirectionalLight.h>
+~ include <Inventor/nodes/SoEventCallback.h>
+~ include <Inventor/nodes/SoLightModel.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoPerspectiveCamera.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoSelection.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <QBitmap>
+~ include <QEventLoop>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QMimeData>
+~ include <QTimer>
+~ include <QVariantAnimation>
+~ include <QWheelEvent>
+~endif
 
-# include <Inventor/elements/SoLightModelElement.h>
-# include <Inventor/elements/SoOverrideElement.h>
+~ include <Inventor/elements/SoLightModelElement.h>
+~ include <Inventor/elements/SoOverrideElement.h>
 
-#include <App/Document.h>
-#include <App/GeoFeatureGroupExtension.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Quarter/devices/InputDevice.h>
-#include <Quarter/eventhandlers/EventFilter.h>
+~include <App/Document.h>
+~include <App/GeoFeatureGroupExtension.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <Base/Sequencer.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <Quarter/devices/InputDevice.h>
+~include <Quarter/eventhandlers/EventFilter.h>
 
-#include "View3DInventorViewer.h"
-#include "Application.h"
-#include "CornerCrossLetters.h"
-#include "Document.h"
-#include "GLPainter.h"
-#include "MainWindow.h"
-#include "NaviCube.h"
-#include "NavigationStyle.h"
-#include "Selection.h"
-#include "SoAxisCrossKit.h"
-#include "SoFCBackgroundGradient.h"
-#include "SoFCBoundingBox.h"
-#include "SoFCDB.h"
-#include "SoFCInteractiveElement.h"
-#include "SoFCOffscreenRenderer.h"
-#include "SoFCSelection.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCVectorizeSVGAction.h"
-#include "SoFCVectorizeU3DAction.h"
-#include "SoTouchEvents.h"
-#include "SpaceballEvent.h"
-#include "View3DInventorRiftViewer.h"
-#include "View3DViewerPy.h"
-#include "ViewParams.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderLink.h"
+~include "View3DInventorViewer.h"
+~include "Application.h"
+~include "CornerCrossLetters.h"
+~include "Document.h"
+~include "GLPainter.h"
+~include "MainWindow.h"
+~include "NaviCube.h"
+~include "NavigationStyle.h"
+~include "Selection.h"
+~include "SoAxisCrossKit.h"
+~include "SoFCBackgroundGradient.h"
+~include "SoFCBoundingBox.h"
+~include "SoFCDB.h"
+~include "SoFCInteractiveElement.h"
+~include "SoFCOffscreenRenderer.h"
+~include "SoFCSelection.h"
+~include "SoFCSelectionAction.h"
+~include "SoFCUnifiedSelection.h"
+~include "SoFCVectorizeSVGAction.h"
+~include "SoFCVectorizeU3DAction.h"
+~include "SoTouchEvents.h"
+~include "SpaceballEvent.h"
+~include "View3DInventorRiftViewer.h"
+~include "View3DViewerPy.h"
+~include "ViewParams.h"
+~include "ViewProvider.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderLink.h"
 
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
-//#define FC_LOGGING_CB
+//~define FC_LOGGING_CB
 
 using namespace Gui;
 
 /*** zoom-style cursor ******/
 
-#define ZOOM_WIDTH 16
-#define ZOOM_HEIGHT 16
-#define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
-#define ZOOM_HOT_X 5
-#define ZOOM_HOT_Y 7
+~define ZOOM_WIDTH 16
+~define ZOOM_HEIGHT 16
+~define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
+~define ZOOM_HOT_X 5
+~define ZOOM_HOT_Y 7
 
 static unsigned char zoom_bitmap[ZOOM_BYTES] =
 {
@@ -147,11 +147,11 @@ static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
 
 /*** pan-style cursor *******/
 
-#define PAN_WIDTH 16
-#define PAN_HEIGHT 16
-#define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
-#define PAN_HOT_X 7
-#define PAN_HOT_Y 7
+~define PAN_WIDTH 16
+~define PAN_HEIGHT 16
+~define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
+~define PAN_HOT_X 7
+~define PAN_HOT_Y 7
 
 static unsigned char pan_bitmap[PAN_BYTES] =
 {
@@ -170,11 +170,11 @@ static unsigned char pan_mask_bitmap[PAN_BYTES] =
 
 /*** rotate-style cursor ****/
 
-#define ROTATE_WIDTH 16
-#define ROTATE_HEIGHT 16
-#define ROTATE_BYTES ((ROTATE_WIDTH + 7) / 8) * ROTATE_HEIGHT
-#define ROTATE_HOT_X 6
-#define ROTATE_HOT_Y 8
+~define ROTATE_WIDTH 16
+~define ROTATE_HEIGHT 16
+~define ROTATE_BYTES ((ROTATE_WIDTH + 7) / 8) * ROTATE_HEIGHT
+~define ROTATE_HOT_X 6
+~define ROTATE_HOT_Y 8
 
 static unsigned char rotate_bitmap[ROTATE_BYTES] = {
   0xf0, 0xef, 0x18, 0xb8, 0x0c, 0x90, 0xe4, 0x83,
@@ -202,7 +202,7 @@ public:
     ~ViewerEventFilter() {}
 
     bool eventFilter(QObject* obj, QEvent* event) {
-        // Bug #0000607: Some mice also support horizontal scrolling which however might
+        // Bug ~0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
@@ -385,7 +385,7 @@ void View3DInventorViewer::init()
     this->foregroundroot->addChild(bc);
     //this->foregroundroot->addChild(dragSep);
 
-#if 0
+~if 0
     // NOTE: For every mouse click event the SoSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
@@ -393,13 +393,13 @@ void View3DInventorViewer::init()
     selectionRoot->addSelectionCallback(View3DInventorViewer::selectCB, this);
     selectionRoot->addDeselectionCallback(View3DInventorViewer::deselectCB, this);
     selectionRoot->setPickFilterCallback(View3DInventorViewer::pickFilterCB, this);
-#else
+~else
     // NOTE: For every mouse click event the SoFCUnifiedSelection searches for the picked
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
-#endif
+~endif
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
 
@@ -422,11 +422,11 @@ void View3DInventorViewer::init()
     dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
 
     // This is a callback node that logs all action that traverse the Inventor tree.
-#if defined (FC_DEBUG) && defined(FC_LOGGING_CB)
+~if defined (FC_DEBUG) && defined(FC_LOGGING_CB)
     SoCallback* cb = new SoCallback;
     cb->setCallback(interactionLoggerCB, this);
     pcViewProviderRoot->addChild(cb);
-#endif
+~endif
 
     pcGroupOnTop = new SoSeparator;
     pcGroupOnTop->ref();
@@ -476,9 +476,9 @@ void View3DInventorViewer::init()
     // Important note:
     // When creating a new GL render action we have to copy over the cache context id
     // because otherwise we may get strange rendering behaviour. For more details see
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&start=120#p74398 and for
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&start=120~p74398 and for
     // the fix and some details what happens behind the scene have a look at this
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&p=74777#p74736
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&p=74777~p74736
     uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
@@ -601,28 +601,28 @@ void View3DInventorViewer::createStandardCursors(double dpr)
 {
     QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
     QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
     cursor.setDevicePixelRatio(dpr);
     mask.setDevicePixelRatio(dpr);
-#else
+~else
     Q_UNUSED(dpr)
-#endif
+~endif
     spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
 
     cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
     mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
     cursor.setDevicePixelRatio(dpr);
     mask.setDevicePixelRatio(dpr);
-#endif
+~endif
     zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
 
     cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
     cursor.setDevicePixelRatio(dpr);
     mask.setDevicePixelRatio(dpr);
-#endif
+~endif
     panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
 }
 
@@ -1337,7 +1337,7 @@ void View3DInventorViewer::setRenderCache(int mode)
         // transparency type.
         //
         // For more details see:
-        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
+        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10~p412537
         coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
 
         int setting = ViewParams::instance()->getRenderCache();
@@ -1438,10 +1438,10 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
 
     if (!base->getTypeId().isDerivedFrom(NavigationStyle::getClassTypeId())) {
         delete base;
-#if FC_DEBUG
+~if FC_DEBUG
         SoDebugError::postWarning("View3DInventorViewer::setNavigationType",
                                   "Navigation object must be of type NavigationStyle.");
-#endif // FC_DEBUG
+~endif // FC_DEBUG
         return;
     }
 
@@ -1568,7 +1568,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     SoSeparator* root = new SoSeparator;
     root->ref();
 
-#if (COIN_MAJOR_VERSION >= 4)
+~if (COIN_MAJOR_VERSION >= 4)
     // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
     // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
     // The trick is to add a callback node and override the viewport size with what we want.
@@ -1577,7 +1577,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         cbvp->setCallback(setViewportCB);
         root->addChild(cbvp);
     }
-#endif
+~endif
 
     SoCamera* camera = getSoRenderManager()->getCamera();
 
@@ -2275,7 +2275,7 @@ void View3DInventorViewer::renderGLImage()
     glEnable(GL_DEPTH_TEST);
 }
 
-// #define ENABLE_GL_DEPTH_RANGE
+// ~define ENABLE_GL_DEPTH_RANGE
 // The calls of glDepthRange inside renderScene() causes problems with transparent objects
 // so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
@@ -2298,10 +2298,10 @@ void View3DInventorViewer::renderScene(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-#if defined(ENABLE_GL_DEPTH_RANGE)
+~if defined(ENABLE_GL_DEPTH_RANGE)
     // using 90% of the z-buffer for the background and the main node
     glDepthRange(0.1,1.0);
-#endif
+~endif
 
     // Render our scenegraph with the image.
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
@@ -2337,10 +2337,10 @@ void View3DInventorViewer::renderScene(void)
         state->pop();
     }
 
-#if defined (ENABLE_GL_DEPTH_RANGE)
+~if defined (ENABLE_GL_DEPTH_RANGE)
     // using 10% of the z-buffer for the foreground node
     glDepthRange(0.0,0.1);
-#endif
+~endif
 
     // Render overlay front scenegraph.
     glra->apply(this->foregroundroot);
@@ -2349,20 +2349,20 @@ void View3DInventorViewer::renderScene(void)
         this->drawAxisCross();
     }
 
-#if defined (ENABLE_GL_DEPTH_RANGE)
+~if defined (ENABLE_GL_DEPTH_RANGE)
     // using the main portion of z-buffer again (for frontbuffer highlighting)
     glDepthRange(0.1,1.0);
-#endif
+~endif
 
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
 
-#if 0 // this breaks highlighting of edges
+~if 0 // this breaks highlighting of edges
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
-#endif
+~endif
 
     printDimension();
     navigation->redraw();
@@ -2382,10 +2382,10 @@ void View3DInventorViewer::renderScene(void)
     if (naviCubeEnabled)
         naviCube->drawNaviCube();
 
-#if 0 // this breaks highlighting of edges
+~if 0 // this breaks highlighting of edges
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
-#endif
+~endif
 }
 
 void View3DInventorViewer::setSeekMode(SbBool on)
@@ -2861,9 +2861,9 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     action.apply(this->getSoRenderManager()->getSceneGraph());
     SbBox3f box = action.getBoundingBox();
 
-#if (COIN_MAJOR_VERSION >= 3)
+~if (COIN_MAJOR_VERSION >= 3)
     float aspectRatio = vp.getViewportAspectRatio();
-#endif
+~endif
 
     if (box.isEmpty())
         return;
@@ -2883,11 +2883,11 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     if (cam->isOfType(SoOrthographicCamera::getClassTypeId())) {
         isOrthographic = true;
         height = static_cast<SoOrthographicCamera*>(cam)->height.getValue();
-#if (COIN_MAJOR_VERSION >= 3)
+~if (COIN_MAJOR_VERSION >= 3)
         if (aspectRatio < 1.0f)
             diff = sphere.getRadius() * 2 - height * aspectRatio;
         else
-#endif
+~endif
         diff = sphere.getRadius() * 2 - height;
         pos = (box.getCenter() - direction * sphere.getRadius());
     }
@@ -2917,16 +2917,16 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     }
 }
 
-#if BUILD_VR
+~if BUILD_VR
 extern View3DInventorRiftViewer* oculusStart(void);
 extern bool oculusUp   (void);
 extern void oculusStop (void);
 void oculusSetTestScene(View3DInventorRiftViewer *window);
-#endif
+~endif
 
 void View3DInventorViewer::viewVR(void)
 {
-#if BUILD_VR
+~if BUILD_VR
     if (oculusUp()) {
         oculusStop();
     }
@@ -2934,7 +2934,7 @@ void View3DInventorViewer::viewVR(void)
         View3DInventorRiftViewer* riftWin = oculusStart();
         riftWin->setSceneGraph(pcViewProviderRoot);
     }
-#endif
+~endif
 }
 
 void View3DInventorViewer::boxZoom(const SbBox2s& box)
@@ -3059,7 +3059,7 @@ void View3DInventorViewer::viewSelection()
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (cam && bbox.IsValid()) {
         SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
-#if (COIN_MAJOR_VERSION >= 4)
+~if (COIN_MAJOR_VERSION >= 4)
         float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         switch (cam->viewportMapping.getValue()) {
             case SoCamera::CROP_VIEWPORT_FILL_FRAME:
@@ -3071,7 +3071,7 @@ void View3DInventorViewer::viewSelection()
                 break;
         }
         cam->viewBoundingBox(box,aspectratio,1.0);
-#else
+~else
         SoTempPath path(2);
         path.ref();
         auto pcGroup = new SoGroup;
@@ -3091,7 +3091,7 @@ void View3DInventorViewer::viewSelection()
         cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
         path.unrefNoDelete();
         pcGroup->unref();
-#endif
+~endif
     }
 }
 
@@ -3262,12 +3262,12 @@ void View3DInventorViewer::drawAxisCross(void)
     SbVec2s view = this->getSoRenderManager()->getSize();
     const int pixelarea =
         int(float(this->axiscrossSize)/100.0f * std::min(view[0], view[1]));
-#if 0 // middle of canvas
+~if 0 // middle of canvas
     SbVec2s origin(view[0]/2 - pixelarea/2, view[1]/2 - pixelarea/2);
-#endif // middle of canvas
-#if 1 // lower right of canvas
+~endif // middle of canvas
+~if 1 // lower right of canvas
     SbVec2s origin(view[0] - pixelarea, 0);
-#endif // lower right of canvas
+~endif // lower right of canvas
     glViewport(origin[0], origin[1], pixelarea, pixelarea);
 
     // Set up the projection matrix.

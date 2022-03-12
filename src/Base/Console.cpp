@@ -21,21 +21,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# if defined(FC_OS_WIN32)
-#  include <windows.h>
-# elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
-#  include <unistd.h>
-# endif
-# include <cstring>
-#endif
+~ifndef _PreComp_
+~ if defined(FC_OS_WIN32)
+~  include <windows.h>
+~ elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+~  include <unistd.h>
+~ endif
+~ include <cstring>
+~endif
 
-#include "Console.h"
-#include "Exception.h"
-#include "PyObjectBase.h"
-#include <QCoreApplication>
+~include "Console.h"
+~include "Exception.h"
+~include "PyObjectBase.h"
+~include <QCoreApplication>
 
 
 using namespace Base;
@@ -115,11 +115,11 @@ ConsoleSingleton::ConsoleSingleton()
   : _bVerbose(true)
   , _bCanRefresh(true)
   , connectionMode(Direct)
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
   ,_defaultLogLevel(FC_LOGLEVEL_LOG)
-#else
+~else
   ,_defaultLogLevel(FC_LOGLEVEL_MSG)
-#endif
+~endif
 {
 }
 
@@ -248,7 +248,7 @@ void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
  */
 void ConsoleSingleton::Message( const char *pMsg, ... )
 {
-#define FC_CONSOLE_FMT(_type,_type2) \
+~define FC_CONSOLE_FMT(_type,_type2) \
     char format[BufferSize];\
     format[sizeof(format)-4] = '.';\
     format[sizeof(format)-3] = '.';\
@@ -261,9 +261,9 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
     format[sizeof(format)-5] = '.';\
     va_end(namelessVars);\
     if (connectionMode == Direct)\
-        Notify##_type(format);\
+        Notify~~_type(format);\
     else\
-        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_##_type2, format));
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_~~_type2, format));
 
     FC_CONSOLE_FMT(Message,Txt);
 }

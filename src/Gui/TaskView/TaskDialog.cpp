@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include "TaskDialog.h"
+~include "TaskDialog.h"
 
 using namespace Gui::TaskView;
 
@@ -114,4 +114,4 @@ void TaskDialog::helpRequested()
 
 
 
-#include "moc_TaskDialog.cpp"
+~include "moc_TaskDialog.cpp"

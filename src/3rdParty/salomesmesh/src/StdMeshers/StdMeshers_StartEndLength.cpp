@@ -24,20 +24,20 @@
 //  File   : StdMeshers_StartEndLength.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_StartEndLength.hxx"
+~include "StdMeshers_StartEndLength.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Mesh.hxx"
 
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <TopExp.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
+~include <BRep_Tool.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <TopExp.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
 
 using namespace std;
 

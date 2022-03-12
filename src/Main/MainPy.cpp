@@ -21,40 +21,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#ifdef _PreComp_
-# undef _PreComp_
-#endif
+~ifdef _PreComp_
+~ undef _PreComp_
+~endif
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-# include <unistd.h>
-#endif
+~if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+~ include <unistd.h>
+~endif
 
-#ifdef FC_OS_MACOSX
-# include <mach-o/dyld.h>
-# include <string>
-#endif
+~ifdef FC_OS_MACOSX
+~ include <mach-o/dyld.h>
+~ include <string>
+~endif
 
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif // HAVE_CONFIG_H
+~if HAVE_CONFIG_H
+~ include <config.h>
+~endif // HAVE_CONFIG_H
 
-#include <stdio.h>
-#include <sstream>
-#include <iostream>
+~include <stdio.h>
+~include <sstream>
+~include <iostream>
 
 
 // FreeCAD Base header
-#include <Base/ConsoleObserver.h>
-#include <Base/Exception.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
+~include <Base/ConsoleObserver.h>
+~include <Base/Exception.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Sequencer.h>
+~include <App/Application.h>
 
 
-#if defined(FC_OS_WIN32)
-# include <windows.h>
+~if defined(FC_OS_WIN32)
+~ include <windows.h>
 
 /** DllMain is called when DLL is loaded
  */
@@ -75,14 +75,14 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID /*lpRese
 
     return true;
 }
-#elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-# ifndef GNU_SOURCE
-#   define GNU_SOURCE
-# endif
-# include <dlfcn.h>
-#elif defined(FC_OS_CYGWIN)
-# include <windows.h>
-#endif
+~elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+~ ifndef GNU_SOURCE
+~   define GNU_SOURCE
+~ endif
+~ include <dlfcn.h>
+~elif defined(FC_OS_CYGWIN)
+~ include <windows.h>
+~endif
 
 PyMOD_INIT_FUNC(FreeCAD)
 {
@@ -95,18 +95,18 @@ PyMOD_INIT_FUNC(FreeCAD)
     char** argv;
     argv = (char**)malloc(sizeof(char*)* (argc+1));
 
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
     argv[0] = (char*)malloc(MAX_PATH);
     strncpy(argv[0],App::Application::Config()["AppHomePath"].c_str(),MAX_PATH);
     argv[0][MAX_PATH-1] = '\0'; // ensure null termination
-#elif defined(FC_OS_CYGWIN)
+~elif defined(FC_OS_CYGWIN)
     HMODULE hModule = GetModuleHandle("FreeCAD.dll");
     char szFileName [MAX_PATH];
     GetModuleFileNameA(hModule, szFileName, MAX_PATH-1);
     argv[0] = (char*)malloc(MAX_PATH);
     strncpy(argv[0],szFileName,MAX_PATH);
     argv[0][MAX_PATH-1] = '\0'; // ensure null termination
-#elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+~elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
     putenv("LANG=C");
     putenv("LC_ALL=C");
     // get whole path of the library
@@ -122,7 +122,7 @@ PyMOD_INIT_FUNC(FreeCAD)
     strncpy(argv[0], info.dli_fname,PATH_MAX);
     argv[0][PATH_MAX-1] = '\0'; // ensure null termination
     // this is a workaround to avoid a crash in libuuid.so
-#elif defined(FC_OS_MACOSX)
+~elif defined(FC_OS_MACOSX)
 
     // The MacOS approach uses the Python sys.path list to find the path
     // to FreeCAD.so - this should be OS-agnostic, except these two
@@ -182,9 +182,9 @@ PyMOD_INIT_FUNC(FreeCAD)
     }
 
     argv[0] = buf;
-#else
-# error "Implement: Retrieve the path of the module for your platform."
-#endif
+~else
+~ error "Implement: Retrieve the path of the module for your platform."
+~endif
     argv[argc] = 0;
 
     try {

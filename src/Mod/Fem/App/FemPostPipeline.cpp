@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <SMESH_Mesh.hxx>
-# include <vtkDataSetReader.h>
-# include <vtkGeometryFilter.h>
-# include <vtkStructuredGrid.h>
-# include <vtkUnstructuredGrid.h>
-# include <vtkImageData.h>
-# include <vtkRectilinearGrid.h>
-# include <vtkAppendFilter.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLPolyDataReader.h>
-# include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLRectilinearGridReader.h>
-# include <vtkXMLImageDataReader.h>
-#endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <SMESH_Mesh.hxx>
+~ include <vtkDataSetReader.h>
+~ include <vtkGeometryFilter.h>
+~ include <vtkStructuredGrid.h>
+~ include <vtkUnstructuredGrid.h>
+~ include <vtkImageData.h>
+~ include <vtkRectilinearGrid.h>
+~ include <vtkAppendFilter.h>
+~ include <vtkXMLUnstructuredGridReader.h>
+~ include <vtkXMLPolyDataReader.h>
+~ include <vtkXMLStructuredGridReader.h>
+~ include <vtkXMLRectilinearGridReader.h>
+~ include <vtkXMLImageDataReader.h>
+~endif
 
-#include "FemPostPipeline.h"
-#include "FemMesh.h"
-#include "FemMeshObject.h"
-#include "FemVTKTools.h"
+~include "FemPostPipeline.h"
+~include "FemMesh.h"
+~include "FemMeshObject.h"
+~include "FemVTKTools.h"
 
-#include <Base/Console.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <App/Document.h>
 
-#include <App/DocumentObjectPy.h>
-#include <Mod/Fem/App/FemPostPipelinePy.h>
+~include <App/DocumentObjectPy.h>
+~include <Mod/Fem/App/FemPostPipelinePy.h>
 
 
 using namespace Fem;

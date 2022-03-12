@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QSignalBlocker>
-#endif
+~ifndef _PreComp_
+~ include <QSignalBlocker>
+~endif
 
-#include <Base/UnitsApi.h>
-#include <App/Document.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureExtrude.h>
+~include <Base/UnitsApi.h>
+~include <App/Document.h>
+~include <Gui/Command.h>
+~include <Mod/PartDesign/App/FeatureExtrude.h>
 
-#include "ui_TaskPadPocketParameters.h"
-#include "TaskExtrudeParameters.h"
-#include "ReferenceSelection.h"
+~include "ui_TaskPadPocketParameters.h"
+~include "TaskExtrudeParameters.h"
+~include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -140,7 +140,7 @@ void TaskExtrudeParameters::setupDialog()
     ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(extrude, std::string("Direction.z")));
 
     ui->checkBoxMidplane->setChecked(midplane);
-    // According to bug #0000521 the reversed option
+    // According to bug ~0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
 
@@ -889,4 +889,4 @@ void TaskExtrudeParameters::translateModeList(int)
     // implement in sub-class
 }
 
-#include "moc_TaskExtrudeParameters.cpp"
+~include "moc_TaskExtrudeParameters.cpp"

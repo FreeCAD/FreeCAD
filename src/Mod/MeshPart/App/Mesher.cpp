@@ -20,64 +20,64 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <algorithm>
-#include "Mesher.h"
+~include "PreCompiled.h"
+~include <algorithm>
+~include "Mesher.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Part/App/TopoShape.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Part/App/TopoShape.h>
 
-#include <TopoDS_Shape.hxx>
-#include <BRepTools.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <Standard_Version.hxx>
+~include <TopoDS_Shape.hxx>
+~include <BRepTools.hxx>
+~include <BRepMesh_IncrementalMesh.hxx>
+~include <Standard_Version.hxx>
 
-#ifdef HAVE_SMESH
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Woverloaded-virtual"
-# pragma clang diagnostic ignored "-Wextra-semi"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wpedantic"
-#endif
+~ifdef HAVE_SMESH
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Woverloaded-virtual"
+~ pragma clang diagnostic ignored "-Wextra-semi"
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic push
+~ pragma GCC diagnostic ignored "-Wpedantic"
+~endif
 
-#include <SMESH_Gen.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
+~include <SMESH_Gen.hxx>
+~include <StdMeshers_MaxLength.hxx>
+~include <SMESH_Mesh.hxx>
+~include <SMESHDS_Mesh.hxx>
 
-#if SMESH_VERSION_MAJOR < 7
-#include <StdMeshers_TrianglePreference.hxx>
-#endif
+~if SMESH_VERSION_MAJOR < 7
+~include <StdMeshers_TrianglePreference.hxx>
+~endif
 
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Arithmetic1D.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
+~include <StdMeshers_LocalLength.hxx>
+~include <StdMeshers_NumberOfSegments.hxx>
+~include <StdMeshers_AutomaticLength.hxx>
+~include <StdMeshers_MEFISTO_2D.hxx>
+~include <StdMeshers_Deflection1D.hxx>
+~include <StdMeshers_Arithmetic1D.hxx>
+~include <StdMeshers_MaxElementArea.hxx>
+~include <StdMeshers_Regular_1D.hxx>
+~include <StdMeshers_QuadranglePreference.hxx>
+~include <StdMeshers_Quadrangle_2D.hxx>
 
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_NotConformAllowed.hxx>
-#if defined(HAVE_NETGEN)
-#include <NETGENPlugin_NETGEN_2D.hxx>
-#include <NETGENPlugin_Hypothesis_2D.hxx>
-#include <NETGENPlugin_SimpleHypothesis_2D.hxx>
-#endif // HAVE_NETGEN
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
-#endif // HAVE_SMESH
+~include <StdMeshers_LengthFromEdges.hxx>
+~include <StdMeshers_NotConformAllowed.hxx>
+~if defined(HAVE_NETGEN)
+~include <NETGENPlugin_NETGEN_2D.hxx>
+~include <NETGENPlugin_Hypothesis_2D.hxx>
+~include <NETGENPlugin_SimpleHypothesis_2D.hxx>
+~endif // HAVE_NETGEN
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic pop
+~endif
+~endif // HAVE_SMESH
 
 using namespace MeshPart;
 
@@ -315,7 +315,7 @@ Mesher::Mesher(const TopoDS_Shape& s)
   , relative(false)
   , regular(false)
   , segments(false)
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
   , fineness(5)
   , growthRate(0)
   , nbSegPerEdge(0)
@@ -323,7 +323,7 @@ Mesher::Mesher(const TopoDS_Shape& s)
   , secondOrder(false)
   , optimize(true)
   , allowquad(false)
-#endif
+~endif
 {
 }
 
@@ -352,32 +352,32 @@ Mesh::MeshObject* Mesher::createMesh() const
         return createStandard();
     }
 
-#ifndef HAVE_SMESH
+~ifndef HAVE_SMESH
     throw Base::RuntimeError("SMESH is not available on this platform");
-#else
+~else
     std::list<SMESH_Hypothesis*> hypoth;
 
     if (!Mesher::_mesh_gen)
         Mesher::_mesh_gen = new SMESH_Gen();
     SMESH_Gen* meshgen = Mesher::_mesh_gen;
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     SMESH_Mesh* mesh = meshgen->CreateMesh(true);
-#else
+~else
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
-#endif
+~endif
 
 
     int hyp=0;
 
     switch (method) {
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
     case Netgen: {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
         NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,meshgen);
-#else
+~else
         NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,0,meshgen);
-#endif
+~endif
 
         if (fineness >=0 && fineness < 5) {
             hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fineness(fineness));
@@ -402,101 +402,101 @@ Mesh::MeshObject* Mesher::createMesh() const
         hyp2d->SetSecondOrder(secondOrder); // apply bisecting to create four triangles out of one
         hypoth.push_back(hyp2d);
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
         NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,meshgen);
-#else
+~else
         NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,0,meshgen);
-#endif
+~endif
         hypoth.push_back(alg2d);
     } break;
-#endif
-#if defined (HAVE_MEFISTO)
+~endif
+~if defined (HAVE_MEFISTO)
     case Mefisto: {
         if (maxLength > 0) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, meshgen);
-#else
+~else
             StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);
-#endif
+~endif
             hyp1d->SetLength(maxLength);
             hypoth.push_back(hyp1d);
         }
         else if (localLength > 0) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,meshgen);
-#else
+~else
             StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,0,meshgen);
-#endif
+~endif
             hyp1d->SetLength(localLength);
             hypoth.push_back(hyp1d);
         }
         else if (maxArea > 0) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,meshgen);
-#else
+~else
             StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,0,meshgen);
-#endif
+~endif
             hyp2d->SetMaxArea(maxArea);
             hypoth.push_back(hyp2d);
         }
         else if (deflection > 0) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,meshgen);
-#else
+~else
             StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,0,meshgen);
-#endif
+~endif
             hyp1d->SetDeflection(deflection);
             hypoth.push_back(hyp1d);
         }
         else if (minLen > 0 && maxLen > 0) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,meshgen);
-#else
+~else
             StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,0,meshgen);
-#endif
+~endif
             hyp1d->SetLength(minLen, false);
             hyp1d->SetLength(maxLen, true);
             hypoth.push_back(hyp1d);
         }
         else {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,meshgen);
-#else
+~else
             StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,0,meshgen);
-#endif
+~endif
             hypoth.push_back(hyp1d);
         }
 
         {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,meshgen);
-#else
+~else
             StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,0,meshgen);
-#endif
+~endif
             hyp1d->SetNumberOfSegments(1);
             hypoth.push_back(hyp1d);
         }
 
         if (regular) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
             StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,meshgen);
-#else
+~else
             StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,0,meshgen);
-#endif
+~endif
             hypoth.push_back(hyp1d);
         }
-#if SMESH_VERSION_MAJOR < 7
+~if SMESH_VERSION_MAJOR < 7
         StdMeshers_TrianglePreference* hyp2d_1 = new StdMeshers_TrianglePreference(hyp++,0,meshgen);
         hypoth.push_back(hyp2d_1);
-#endif
-#if SMESH_VERSION_MAJOR >= 9
+~endif
+~if SMESH_VERSION_MAJOR >= 9
         StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,meshgen);
-#else
+~else
         StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,0,meshgen);
-#endif
+~endif
         hypoth.push_back(alg2d);
     } break;
-#endif
+~endif
     default:
         break;
     }
@@ -526,7 +526,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         delete *it;
 
     return meshdata;
-#endif // HAVE_SMESH
+~endif // HAVE_SMESH
 }
 
 Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const

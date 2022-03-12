@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QContextMenuEvent>
-# include <QMenu>
-# include <QRegExp>
-# include <QShortcut>
-# include <QString>
-# include <QImage>
-# include <QPixmap>
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <QContextMenuEvent>
+~ include <QMenu>
+~ include <QRegExp>
+~ include <QShortcut>
+~ include <QString>
+~ include <QImage>
+~ include <QPixmap>
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include "TaskSketcherElements.h"
-#include "ui_TaskSketcherElements.h"
-#include "EditDatumDialog.h"
-#include "ViewProviderSketch.h"
+~include "TaskSketcherElements.h"
+~include "ui_TaskSketcherElements.h"
+~include "EditDatumDialog.h"
+~include "ViewProviderSketch.h"
 
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
 
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/BitmapFactory.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/BitmapFactory.h>
 
-#include <Gui/Command.h>
+~include <Gui/Command.h>
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -65,14 +65,14 @@ using namespace Gui::TaskView;
 /// CMDSTR is the string registered in the commandManager
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
-#define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION) \
-QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) ); \
-    QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()), \
+~define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION) \
+QIcon icon_ ~~ FUNC( Gui::BitmapFactory().pixmap(ICONSTR) ); \
+    QAction* constr_ ~~ FUNC = menu.addAction(icon_ ~~ FUNC,tr(NAMESTR), this, SLOT(FUNC()), \
         QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel()))); \
-    if(ACTSONSELECTION) constr_ ## FUNC->setEnabled(!items.isEmpty()); else constr_ ## FUNC->setEnabled(true);
+    if(ACTSONSELECTION) constr_ ~~ FUNC->setEnabled(!items.isEmpty()); else constr_ ~~ FUNC->setEnabled(true);
 
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
-#define CONTEXT_MEMBER_DEF(CMDSTR,FUNC) \
+~define CONTEXT_MEMBER_DEF(CMDSTR,FUNC) \
 void ElementView::FUNC(){ \
    Gui::Application::Instance->commandManager().runCommandByName(CMDSTR);}
 
@@ -269,14 +269,14 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-#ifdef Q_OS_MAC
+~ifdef Q_OS_MAC
     QString cmdKey = QString::fromUtf8("\xe2\x8c\x98"); // U+2318
-#else
+~else
     // translate the text (it's offered by Qt's translation files)
     // but avoid being picked up by lupdate
     const char* ctrlKey = "Ctrl";
     QString cmdKey = QShortcut::tr(ctrlKey);
-#endif
+~endif
     QString zKey = QString::fromLatin1("Z");
     ui->Explanation->setText(tr("<html><head/><body><p>&quot;%1&quot;: multiple selection</p>"
                                 "<p>&quot;%2&quot;: switch to next valid type</p></body></html>")
@@ -754,43 +754,43 @@ void TaskSketcherElements::slotElementsChanged(void)
         (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.getIcon(construction, false) :
         none.getIcon(construction, false),
         type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
-                                                                (tr("Point") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Point") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
         type == Part::GeomLineSegment::getClassTypeId()     ? ( isNamingBoxChecked ?
-                                                                (tr("Line") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Line") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
         type == Part::GeomArcOfCircle::getClassTypeId()     ? ( isNamingBoxChecked ?
-                                                                (tr("Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Arc") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
         type == Part::GeomCircle::getClassTypeId()          ? ( isNamingBoxChecked ?
-                                                                (tr("Circle") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Circle") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
         type == Part::GeomEllipse::getClassTypeId()         ? ( isNamingBoxChecked ?
-                                                                (tr("Ellipse") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Ellipse") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Ellipse")))   :
         type == Part::GeomArcOfEllipse::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Elliptical Arc")))   :
         type == Part::GeomArcOfHyperbola::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Hyperbolic Arc")))   :
         type == Part::GeomArcOfParabola::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Parabolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("Parabolic Arc") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Parabolic Arc")))   :
         type == Part::GeomBSplineCurve::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("BSpline") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+                                                                (tr("BSpline") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
                                                                 (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("BSpline")))   :
         ( isNamingBoxChecked ?
-          (tr("Other") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
+          (tr("Other") + QString::fromLatin1("(Edge%1~ID%2)").arg(i).arg(i-1)) +
           (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
           (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
         i-1,
@@ -819,7 +819,7 @@ void TaskSketcherElements::slotElementsChanged(void)
 
         if(isNamingBoxChecked) {
             if(size_t(j-3) < linkobjs.size() && size_t(j-3) < linksubs.size()) {
-                linkname =  QString::fromLatin1("(ExternalEdge%1#ID%2, ").arg(j-2).arg(-j) +
+                linkname =  QString::fromLatin1("(ExternalEdge%1~ID%2, ").arg(j-2).arg(-j) +
                             QString::fromUtf8(linkobjs[j-3]->getNameInDocument()) +
                             QString::fromLatin1(".") +
                             QString::fromUtf8(linksubs[j-3].c_str()) +
@@ -1168,4 +1168,4 @@ QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) 
     return Normal;
 }
 
-#include "moc_TaskSketcherElements.cpp"
+~include "moc_TaskSketcherElements.cpp"

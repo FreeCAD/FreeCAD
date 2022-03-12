@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost/regex.hpp>
-#endif
+~ifndef _PreComp_
+~ include <boost/regex.hpp>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
 
 // KDL stuff - at the moment, not used
-//#include "Mod/Robot/App/kdl_cp/path_line.hpp"
-//#include "Mod/Robot/App/kdl_cp/path_circle.hpp"
-//#include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
-//#include "Mod/Robot/App/kdl_cp/utilities/error.h"
+//~include "Mod/Robot/App/kdl_cp/path_line.hpp"
+//~include "Mod/Robot/App/kdl_cp/path_circle.hpp"
+//~include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
+//~include "Mod/Robot/App/kdl_cp/utilities/error.h"
 
-#include "Path.h"
-#include <Mod/Path/App/PathSegmentWalker.h>
+~include "Path.h"
+~include <Mod/Path/App/PathSegmentWalker.h>
 
 using namespace Path;
 using namespace Base;
@@ -375,7 +375,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
 
     // TODO recalculate the KDL stuff. At the moment, this is unused.
 
-#if 0
+~if 0
     // delete the old and create a new one
     if(pcPath)
         delete (pcPath);
@@ -427,7 +427,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
     } catch (KDL::Error &e) {
         throw Base::RuntimeError(e.Description());
     }
-#endif
+~endif
 }
 
 // reimplemented from base class

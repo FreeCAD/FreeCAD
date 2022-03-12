@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Ax2.hxx>
-# include <gp_Pnt.hxx>
-# include <Standard_Version.hxx>
-# include <limits>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Ax2.hxx>
+~ include <gp_Pnt.hxx>
+~ include <Standard_Version.hxx>
+~ include <limits>
+~endif
 
-#include "HLRBRep/HLRBRep_PolyAlgoPy.h"
-#include "HLRBRep/HLRBRep_PolyAlgoPy.cpp"
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include "HLRBRep/HLRBRep_PolyAlgoPy.h"
+~include "HLRBRep/HLRBRep_PolyAlgoPy.cpp"
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/Tools.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <HLRAlgo_Projector.hxx>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <HLRAlgo_Projector.hxx>
 
 using namespace Part;
 
@@ -243,20 +243,20 @@ PyObject* HLRBRep_PolyAlgoPy::outLinedShape(PyObject *args)
 
 Py::Float HLRBRep_PolyAlgoPy::getAngle() const
 {
-#if OCC_VERSION_HEX <= 0x070400
+~if OCC_VERSION_HEX <= 0x070400
     return Py::Float(getHLRBRep_PolyAlgoPtr()->Angle());
-#else
+~else
     throw Py::RuntimeError("Function has been removed with OCC 7.5");
-#endif
+~endif
 }
 
 void  HLRBRep_PolyAlgoPy::setAngle(Py::Float arg)
 {
-#if OCC_VERSION_HEX <= 0x070400
+~if OCC_VERSION_HEX <= 0x070400
     getHLRBRep_PolyAlgoPtr()->Angle(static_cast<double>(arg));
-#else
+~else
     (void)arg;
-#endif
+~endif
 }
 
 Py::Float HLRBRep_PolyAlgoPy::getTolAngular() const

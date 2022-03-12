@@ -26,13 +26,13 @@
 //  Module : SMESH
 //  $Header: 
 //
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESHDS_Mesh.hxx"
 
-#include "utilities.h"
-#include "SMDS_SetIterator.hxx"
-#include <iostream>
-#include <cassert>
+~include "utilities.h"
+~include "SMDS_SetIterator.hxx"
+~include <iostream>
+~include <cassert>
 
 using namespace std;
 

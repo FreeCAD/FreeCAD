@@ -20,39 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QTimer>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QTimer>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/details/SoDetail.h>
+~ include <Inventor/events/SoKeyboardEvent.h>
+~ include <Inventor/events/SoLocation2Event.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoTransform.h>
+~endif
 
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Matrix.h>
 
-#include "ViewProvider.h"
-#include "ActionFunction.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "SoFCDB.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewParams.h"
-#include "ViewProviderExtension.h"
-#include "ViewProviderLink.h"
-#include "ViewProviderPy.h"
+~include "ViewProvider.h"
+~include "ActionFunction.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Document.h"
+~include "SoFCDB.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewParams.h"
+~include "ViewProviderExtension.h"
+~include "ViewProviderLink.h"
+~include "ViewProviderPy.h"
 
 
 FC_LOG_LEVEL_INIT("ViewProvider", true, true)
@@ -562,7 +562,7 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-#include <boost/graph/topological_sort.hpp>
+~include <boost/graph/topological_sort.hpp>
 
 namespace Gui {
 typedef boost::adjacency_list <
@@ -730,13 +730,13 @@ void ViewProvider::dragObject(App::DocumentObject* obj)
 bool ViewProvider::canDropObject(App::DocumentObject* obj) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-#if FC_DEBUG
+~if FC_DEBUG
     Base::Console().Log("Check extensions for drop\n");
-#endif
+~endif
     for (Gui::ViewProviderExtension* ext : vector){
-#if FC_DEBUG
+~if FC_DEBUG
         Base::Console().Log("Check extensions %s\n", ext->name().c_str());
-#endif
+~endif
         if (ext->extensionCanDropObject(obj))
             return true;
     }

@@ -25,8 +25,8 @@
 //  Author : Yves FRICAUD, OCC
 //  Module : SMESH
 //
-#include "SMESHDS_Script.hxx"
-#include <iostream>
+~include "SMESHDS_Script.hxx"
+~include <iostream>
 
 using namespace std;
 

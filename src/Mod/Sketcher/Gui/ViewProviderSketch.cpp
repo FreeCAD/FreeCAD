@@ -21,69 +21,69 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
 
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/SbBox3f.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/SbLine.h>
-# include <Inventor/SbTime.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/SbBox3f.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/events/SoKeyboardEvent.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/SbLine.h>
+~ include <Inventor/SbTime.h>
 
 /// Qt Include Files
-# include <QAction>
-# include <QApplication>
-# include <QColor>
-# include <QDesktopWidget>
-# include <QDialog>
-# include <QFont>
-# include <QKeyEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QPainter>
-# include <QTextStream>
+~ include <QAction>
+~ include <QApplication>
+~ include <QColor>
+~ include <QDesktopWidget>
+~ include <QDialog>
+~ include <QFont>
+~ include <QKeyEvent>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QPainter>
+~ include <QTextStream>
 
-# include <boost_bind_bind.hpp>
-#endif
+~ include <boost_bind_bind.hpp>
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/Vector3D.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/CommandT.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MenuManager.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/Vector3D.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/CommandT.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/MenuManager.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/Utilities.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/GeoList.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Sketcher/App/Sketch.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/SolverGeometryExtension.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/GeoList.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Sketcher/App/Sketch.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
-#include "EditModeCoinManager.h"
-#include "EditDatumDialog.h"
-#include "TaskDlgEditSketch.h"
-#include "TaskSketcherValidation.h"
-#include "Utils.h"
-#include "ViewProviderSketchGeometryExtension.h"
+~include "ViewProviderSketch.h"
+~include "DrawSketchHandler.h"
+~include "EditModeCoinManager.h"
+~include "EditDatumDialog.h"
+~include "TaskDlgEditSketch.h"
+~include "TaskSketcherValidation.h"
+~include "Utils.h"
+~include "ViewProviderSketchGeometryExtension.h"
 
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
@@ -434,7 +434,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 return true;
             }
             if (isInEditMode()) {
-                // #0001479: 'Escape' key dismissing dialog cancels Sketch editing
+                // ~0001479: 'Escape' key dismissing dialog cancels Sketch editing
                 // If we receive a button release event but not a press event before
                 // then ignore this one.
                 if (!pressed && !viewProviderParameters.buttonPress)
@@ -1244,7 +1244,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
-            // Here we must use the device-pixel-ratio to compute the correct y coordinate (#0003130)
+            // Here we must use the device-pixel-ratio to compute the correct y coordinate (~0003130)
             qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
             DoubleClick::newCursorPos = cursorPos;
             rubberband->setCoords(DoubleClick::prvCursorPos.getValue()[0],
@@ -1270,19 +1270,19 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     Constraint *Constr = constrlist[constNum];
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
     int extGeoCount = getSketchObject()->getExternalGeometryCount();
-#endif
+~endif
 
     // with memory allocation
     const std::vector<Part::Geometry *> geomlist = getSolvedSketch().extractGeometry(true, true);
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
            || Constr->First != GeoEnum::GeoUndef);
-#endif
+~endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
         Constr->Type == Radius || Constr->Type == Diameter || Constr-> Type == Weight) {
@@ -2852,25 +2852,25 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (dofs < 0 || hasConflicts) { // over-constrained sketch
         signalSetUp(QString::fromUtf8("conflicting_constraints"),
             tr("Over-constrained: "),
-            QString::fromUtf8("#conflicting"),
+            QString::fromUtf8("~conflicting"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) { // malformed constraints
         signalSetUp(QString::fromUtf8("malformed_constraints"),
             tr("Malformed constraints: "),
-            QString::fromUtf8("#malformed"),
+            QString::fromUtf8("~malformed"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastMalformedConstraints())));
     }
     else if (hasRedundancies) {
         signalSetUp(QString::fromUtf8("redundant_constraints"),
             tr("Redundant constraints:"),
-            QString::fromUtf8("#redundant"),
+            QString::fromUtf8("~redundant"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(QString::fromUtf8("partially_redundant_constraints"),
             tr("Partially redundant:"),
-            QString::fromUtf8("#partiallyredundant"),
+            QString::fromUtf8("~partiallyredundant"),
             QString::fromUtf8("(%1)").arg(intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
     else if (getSketchObject()->getLastSolverStatus() != 0) {
@@ -2881,7 +2881,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     } else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
             tr("Under constrained:"),
-            QString::fromUtf8("#dofs"),
+            QString::fromUtf8("~dofs"),
             QString::fromUtf8("%1 %2").arg(dofs).arg(tr("DoF")));
     }
     else {
@@ -2998,7 +2998,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
 
-    // Will the sketch be visible from the new position (#0000957)?
+    // Will the sketch be visible from the new position (~0000957)?
     //
     SoCamera* camera = viewer->getSoRenderManager()->getCamera();
     SbVec3f curdir; // current view direction
@@ -3257,17 +3257,17 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
         static const char * const sketcher_notfullyconstrained_xpm[]={
             "9 9 3 1",
             ". c None",
-            "# c #dbaf00",
-            "a c #ffcc00",
-            "##.....##",
-            "#a#...#a#",
-            "#aa#.#aa#",
-            ".#a#.#a#.",
-            ".#a#.#a#.",
-            ".#a#.#a#.",
-            "#aa#.#aa#",
-            "#a#...#a#",
-            "##.....##"};
+            "~ c ~dbaf00",
+            "a c ~ffcc00",
+            "~~.....~~",
+            "~a~...~a~",
+            "~aa~.~aa~",
+            ".~a~.~a~.",
+            ".~a~.~a~.",
+            ".~a~.~a~.",
+            "~aa~.~aa~",
+            "~a~...~a~",
+            "~~.....~~"};
         px = QPixmap( sketcher_notfullyconstrained_xpm );
 
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);

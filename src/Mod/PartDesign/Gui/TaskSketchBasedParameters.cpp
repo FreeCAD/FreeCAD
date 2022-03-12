@@ -22,27 +22,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QRegExp>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <QRegExp>
+~ include <QTextStream>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/CommandT.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/Part/App/DatumFeature.h>
+~include <Mod/PartDesign/App/FeatureSketchBased.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "TaskSketchBasedParameters.h"
-#include "ReferenceSelection.h"
+~include "TaskSketchBasedParameters.h"
+~include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -294,4 +294,4 @@ bool TaskDlgSketchBasedParameters::reject()
     return rv;
 }
 
-#include "moc_TaskSketchBasedParameters.cpp"
+~include "moc_TaskSketchBasedParameters.cpp"

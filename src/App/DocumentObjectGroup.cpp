@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DocumentObjectGroup.h"
-#include "DocumentObjectGroupPy.h"
-#include "FeaturePythonPyImp.h"
+~include "DocumentObjectGroup.h"
+~include "DocumentObjectGroupPy.h"
+~include "FeaturePythonPyImp.h"
 
 using namespace App;
 

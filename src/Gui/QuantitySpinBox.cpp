@@ -21,34 +21,34 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QDebug>
-# include <QFocusEvent>
-# include <QFontMetrics>
-# include <QLineEdit>
-# include <QStyle>
-# include <QStyleOptionSpinBox>
-# include <QToolTip>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QDebug>
+~ include <QFocusEvent>
+~ include <QFontMetrics>
+~ include <QLineEdit>
+~ include <QStyle>
+~ include <QStyleOptionSpinBox>
+~ include <QToolTip>
+~endif
 
-#include <sstream>
+~include <sstream>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
-#include <App/PropertyGeo.h>
-#include <Base/Exception.h>
-#include <Base/UnitsApi.h>
-#include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/ExpressionParser.h>
+~include <App/PropertyGeo.h>
+~include <Base/Exception.h>
+~include <Base/UnitsApi.h>
+~include <Base/Tools.h>
 
-#include "QuantitySpinBox.h"
-#include "QuantitySpinBox_p.h"
-#include "Command.h"
-#include "DlgExpressionInput.h"
-#include "Tools.h"
+~include "QuantitySpinBox.h"
+~include "QuantitySpinBox_p.h"
+~include "Command.h"
+~include "DlgExpressionInput.h"
+~include "Tools.h"
 
 
 using namespace Gui;
@@ -89,7 +89,7 @@ public:
         Q_Q(const QuantitySpinBox);
 
         // Do not accept empty strings because the parser will consider
-        // " unit" as "1 unit" which is not the desired behaviour (see #0004104)
+        // " unit" as "1 unit" which is not the desired behaviour (see ~0004104)
         if (input.isEmpty())
             return false;
 
@@ -256,7 +256,7 @@ public:
                     // However, if the user input is of the form "number / unit" it's accepted
                     // by the parser but because the units mismatch it's considered as invalid
                     // and the last valid input will be restored.
-                    // See #0004422: PartDesign value input does not accept trailing slash
+                    // See ~0004422: PartDesign value input does not accept trailing slash
                     // To work around this issue of the quantity parser it's checked if the
                     // inversed unit matches and if yes the input is also considered as not
                     // complete.
@@ -321,12 +321,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
                      this, SLOT(handlePendingEmit()));
 
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
+~ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
+~else
     // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
     lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
+~endif
 }
 
 QuantitySpinBox::~QuantitySpinBox()
@@ -352,15 +352,15 @@ QString QuantitySpinBox::boundToName() const
 /**
  * @brief Create an object identifier by name.
  *
- * An identifier is written as document#documentobject.property.subproperty1...subpropertyN
- * document# may be dropped, in this case the active document is used.
+ * An identifier is written as document~documentobject.property.subproperty1...subpropertyN
+ * document~ may be dropped, in this case the active document is used.
  */
 void QuantitySpinBox::setBoundToByName(const QString &name)
 {
     try {
         // get document
         App::Document *doc = App::GetApplication().getActiveDocument();
-        QStringList list = name.split(QLatin1Char('#'));
+        QStringList list = name.split(QLatin1Char('~'));
         if (list.size() > 1) {
             doc = App::GetApplication().getDocument(list.front().toLatin1());
             list.pop_front();
@@ -872,7 +872,7 @@ void QuantitySpinBox::closeEvent(QCloseEvent * event)
 
 bool QuantitySpinBox::event(QEvent * event)
 {
-    // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
+    // issue ~0004059: Tooltips for Gui::QuantitySpinBox not showing
     // Here we must not try to show the tooltip of the icon label
     // because it would override a custom tooltip set to this widget.
     //
@@ -881,7 +881,7 @@ bool QuantitySpinBox::event(QEvent * event)
     // property editor and the corresponding item has set a tooltip.
     // Instead of showing the item's tooltip it will again show the
     // tooltip of the icon label.
-#if 0
+~if 0
     if (event->type() == QEvent::ToolTip) {
         if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
             QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
@@ -891,7 +891,7 @@ bool QuantitySpinBox::event(QEvent * event)
             return true;
         }
     }
-#endif
+~endif
 
     return QAbstractSpinBox::event(event);
 }
@@ -997,5 +997,5 @@ void QuantitySpinBox::fixup(QString &input) const
 }
 
 
-#include "moc_QuantitySpinBox.cpp"
-#include "moc_QuantitySpinBox_p.cpp"
+~include "moc_QuantitySpinBox.cpp"
+~include "moc_QuantitySpinBox_p.cpp"

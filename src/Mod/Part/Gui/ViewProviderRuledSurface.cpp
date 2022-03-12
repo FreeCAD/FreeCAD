@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderRuledSurface.h"
-#include <Mod/Part/App/PartFeatures.h>
+~include "ViewProviderRuledSurface.h"
+~include <Mod/Part/App/PartFeatures.h>
 
-#include <Gui/Application.h>
-#include <Base/Parameter.h>
+~include <Gui/Application.h>
+~include <Base/Parameter.h>
 
 
 using namespace PartGui;

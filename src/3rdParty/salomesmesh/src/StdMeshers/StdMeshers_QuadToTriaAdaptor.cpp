@@ -22,30 +22,30 @@
 // Created   : Wen May 07 16:37:07 2008
 // Author    : Sergey KUUL (skl)
 
-#include "StdMeshers_QuadToTriaAdaptor.hxx"
+~include "StdMeshers_QuadToTriaAdaptor.hxx"
 
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_GroupBase.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_GroupBase.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
 
-#include <IntAna_IntConicQuad.hxx>
-#include <IntAna_Quadric.hxx>
-#include <TColgp_HArray1OfPnt.hxx>
-#include <TColgp_HArray1OfVec.hxx>
-#include <TColgp_HSequenceOfPnt.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
+~include <IntAna_IntConicQuad.hxx>
+~include <IntAna_Quadric.hxx>
+~include <TColgp_HArray1OfPnt.hxx>
+~include <TColgp_HArray1OfVec.hxx>
+~include <TColgp_HSequenceOfPnt.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <string>
-#include <numeric>
-#include <limits>
+~include <string>
+~include <numeric>
+~include <limits>
 
 using namespace std;
 

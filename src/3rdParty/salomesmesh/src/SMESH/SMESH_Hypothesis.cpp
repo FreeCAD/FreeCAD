@@ -25,10 +25,10 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_subMesh.hxx"
-#include "utilities.h"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_subMesh.hxx"
+~include "utilities.h"
 
 using namespace std;
 

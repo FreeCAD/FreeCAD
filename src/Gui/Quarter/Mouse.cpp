@@ -37,23 +37,23 @@
   QuarterWidget.
 */
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4267)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4267)
+~endif
 
-#include <QEvent>
-#include <QMouseEvent>
-#include <QWheelEvent>
+~include <QEvent>
+~include <QMouseEvent>
+~include <QWheelEvent>
 
-#include <Gui/SoMouseWheelEvent.h>
-#include <Inventor/SbVec2s.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/events/SoEvents.h>
+~include <Gui/SoMouseWheelEvent.h>
+~include <Inventor/SbVec2s.h>
+~include <Inventor/errors/SoDebugError.h>
+~include <Inventor/events/SoEvents.h>
 
-#include "QuarterWidget.h"
-#include "devices/Mouse.h"
+~include "QuarterWidget.h"
+~include "devices/Mouse.h"
 
 
 namespace SIM { namespace Coin3D { namespace Quarter {
@@ -90,8 +90,8 @@ public:
 
 using namespace SIM::Coin3D::Quarter;
 
-#define PRIVATE(obj) obj->pimpl
-#define PUBLIC(obj) obj->publ
+~define PRIVATE(obj) obj->pimpl
+~define PUBLIC(obj) obj->publ
 
 Mouse::Mouse()
 {
@@ -160,12 +160,12 @@ const SoEvent *
 MouseP::mouseWheelEvent(QWheelEvent * event)
 {
   PUBLIC(this)->setModifiers(this->wheel, event);
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
   QPoint pnt = event->position().toPoint();
   SbVec2s pos(pnt.x(), PUBLIC(this)->windowsize[1] - pnt.y() - 1);
-#else
+~else
   SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
-#endif
+~endif
   // the following corrects for high-dpi displays (e.g. mac retina)
   pos *= publ->quarter->devicePixelRatio();
   this->location2->setPosition(pos); //I don't know why location2 is assigned here, I assumed it important  --DeepSOIC
@@ -216,5 +216,5 @@ MouseP::mouseButtonEvent(QMouseEvent * event)
   return this->mousebutton;
 }
 
-#undef PRIVATE
-#undef PUBLIC
+~undef PRIVATE
+~undef PUBLIC

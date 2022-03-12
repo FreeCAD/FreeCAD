@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "RobotObject.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+~include "RobotObject.h"
+~include <App/DocumentObjectPy.h>
+~include <Base/Placement.h>
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
 
 using namespace Robot;
 using namespace App;

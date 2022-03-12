@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QCoreApplication>
-# include <QDir>
-# include <QFileInfo>
-# include <QLibraryInfo>
-# include <QMessageBox>
-# include <QProcess>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <QCoreApplication>
+~ include <QDir>
+~ include <QFileInfo>
+~ include <QLibraryInfo>
+~ include <QMessageBox>
+~ include <QProcess>
+~ include <QTextStream>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include "Assistant.h"
+~include <App/Application.h>
+~include <Base/Console.h>
+~include "Assistant.h"
 
 using namespace Gui;
 
@@ -67,12 +67,12 @@ void Assistant::showDocumentation(const QString &page)
 
 bool Assistant::startAssistant()
 {
-#if QT_VERSION < 0x040400
+~if QT_VERSION < 0x040400
     QMessageBox::critical(0, QObject::tr("Help"),
     QObject::tr("Unable to load documentation.\n"
     "In order to load it Qt 4.4 or higher is required."));
     return false;
-#endif
+~endif
 
     if (!proc) {
         proc = new QProcess();
@@ -83,15 +83,15 @@ bool Assistant::startAssistant()
     }
 
     if (proc->state() != QProcess::Running) {
-#ifdef Q_OS_WIN
+~ifdef Q_OS_WIN
         QString app;
         app = QDir::toNativeSeparators(QString::fromStdString
             (App::Application::getHomePath()) + QLatin1String("bin/"));
-#elif defined(Q_OS_MAC)
+~elif defined(Q_OS_MAC)
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
-#else
+~else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-#endif
+~endif
         app += QLatin1String("assistant");
 
         // get the name of the executable and the doc path
@@ -187,4 +187,4 @@ void Assistant::readyReadStandardError()
     Base::Console().Log("Help view: %s\n", data.constData());
 }
 
-#include "moc_Assistant.cpp"
+~include "moc_Assistant.cpp"

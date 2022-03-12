@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QFile>
-# include <QGraphicsScene>
-# include <QGraphicsSvgItem>
-# include <QGraphicsView>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QPrinter>
-# include <QPrintDialog>
-# include <QPrintPreviewDialog>
-# include <QProcess>
-# include <QSvgRenderer>
-# include <QScrollBar>
-# include <QThread>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QFile>
+~ include <QGraphicsScene>
+~ include <QGraphicsSvgItem>
+~ include <QGraphicsView>
+~ include <QMessageBox>
+~ include <QMouseEvent>
+~ include <QPrinter>
+~ include <QPrintDialog>
+~ include <QPrintPreviewDialog>
+~ include <QProcess>
+~ include <QSvgRenderer>
+~ include <QScrollBar>
+~ include <QThread>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
-#include "GraphvizView.h"
-#include "GraphicsViewZoom.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
+~include "GraphvizView.h"
+~include "GraphicsViewZoom.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
 
 
 using namespace Gui;
@@ -289,19 +289,19 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     args << QLatin1String("-Tsvg");
     flatArgs << QLatin1String("-c2 -l2");
 
-#ifdef FC_OS_LINUX
+~ifdef FC_OS_LINUX
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
-#else
+~else
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
-#endif
+~endif
     bool pathChanged = false;
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     QString dot = QString::fromLatin1("\"%1/dot\"").arg(path);
     QString unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
+~else
     QString dot = QString::fromLatin1("%1/dot").arg(path);
     QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
+~endif
     dotProc->setEnvironment(QProcess::systemEnvironment());
     flatProc->setEnvironment(QProcess::systemEnvironment());
     do {
@@ -330,13 +330,13 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
                 return;
             }
             pathChanged = true;
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
             dot = QString::fromLatin1("\"%1/dot\"").arg(path);
             unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
+~else
             dot = QString::fromLatin1("%1/dot").arg(path);
             unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
+~endif
         }
         else {
             if (pathChanged)
@@ -392,8 +392,8 @@ void GraphvizView::disconnectSignals()
     redoConnection.disconnect();
 }
 
-#include <QObject>
-#include <QGraphicsView>
+~include <QObject>
+~include <QGraphicsView>
 
 QByteArray GraphvizView::exportGraph(const QString& format)
 {
@@ -403,19 +403,19 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     args << QString::fromLatin1("-T%1").arg(format);
     flatArgs << QLatin1String("-c2 -l2");
 
-#ifdef FC_OS_LINUX
+~ifdef FC_OS_LINUX
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
-#else
+~else
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
-#endif
+~endif
 
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
     QString unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
-#else
+~else
     QString exe = QString::fromLatin1("%1/dot").arg(path);
     QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
-#endif
+~endif
 
     dotProc.setEnvironment(QProcess::systemEnvironment());
     dotProc.start(exe, args);
@@ -568,5 +568,5 @@ void GraphvizView::printPreview()
     dlg.exec();
 }
 
-#include "moc_GraphvizView.cpp"
-#include "moc_GraphvizView-internal.cpp"
+~include "moc_GraphvizView.cpp"
+~include "moc_GraphvizView-internal.cpp"

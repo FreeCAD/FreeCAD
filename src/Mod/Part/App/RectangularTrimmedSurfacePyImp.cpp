@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_RectangularTrimmedSurface.hxx>
-# include <Geom_Curve.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_RectangularTrimmedSurface.hxx>
+~ include <Geom_Curve.hxx>
+~endif
 
-#include "Mod/Part/App/Geometry.h"
-#include "OCCError.h"
+~include "Mod/Part/App/Geometry.h"
+~include "OCCError.h"
 
 // inclusion of the generated files (generated out of RectangularTrimmedSurfacePy.xml)
-#include "RectangularTrimmedSurfacePy.h"
-#include "RectangularTrimmedSurfacePy.cpp"
-#include "GeometryCurvePy.h"
+~include "RectangularTrimmedSurfacePy.h"
+~include "RectangularTrimmedSurfacePy.cpp"
+~include "GeometryCurvePy.h"
 
 using namespace Part;
 

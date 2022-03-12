@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom2d_BezierCurve.hxx>
-# include <gp_Pnt2d.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom2d_BezierCurve.hxx>
+~ include <gp_Pnt2d.hxx>
+~ include <TColStd_Array1OfReal.hxx>
+~ include <TColgp_Array1OfPnt2d.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
-#include <Mod/Part/App/Geom2d/BezierCurve2dPy.cpp>
+~include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/Geometry2d.h>
+~include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
+~include <Mod/Part/App/Geom2d/BezierCurve2dPy.cpp>
 
 using namespace Part;
 

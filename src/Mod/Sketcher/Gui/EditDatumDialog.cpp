@@ -19,31 +19,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
 /// Qt Include Files
-# include <QApplication>
-# include <QDialog>
-# include <QMessageBox>
-# include <Inventor/sensors/SoSensor.h>
-#endif
+~ include <QApplication>
+~ include <QDialog>
+~ include <QMessageBox>
+~ include <Inventor/sensors/SoSensor.h>
+~endif
 
-#include <Base/Tools.h>
-#include <Gui/Application.h>
-#include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Base/Tools.h>
+~include <Gui/Application.h>
+~include <Gui/CommandT.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
 
-#include "ViewProviderSketch.h"
-#include "ui_InsertDatum.h"
-#include "EditDatumDialog.h"
-#include "Utils.h"
+~include "ViewProviderSketch.h"
+~include "ui_InsertDatum.h"
+~include "EditDatumDialog.h"
+~include "Utils.h"
 
 
 using namespace SketcherGui;
@@ -199,10 +199,10 @@ void EditDatumDialog::accepted()
             // THIS IS A WORK-AROUND NOT TO DELAY 0.19 RELEASE
             //
             // depsAreTouched is not returning true in this case:
-            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061#p478477
+            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061~p478477
             //
             // It appears related to a drastic change in how dependencies are calculated, see:
-            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061#p481061
+            //  https://forum.freecadweb.org/viewtopic.php?f=3&t=55633&p=481061~p481061
             //
             // This is NOT the solution, as there is no point in systematically executing the ExpressionEngine
             // on every dimensional constraint change. Just a quick fix to avoid clearly unwanted behaviour in
@@ -256,4 +256,4 @@ void EditDatumDialog::formEditorOpened(bool state)
     }
 }
 
-#include "moc_EditDatumDialog.cpp"
+~include "moc_EditDatumDialog.cpp"

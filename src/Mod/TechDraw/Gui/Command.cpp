@@ -20,85 +20,85 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QRegExp>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QCoreApplication>
+~ include <QDir>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QMessageBox>
+~ include <QRegExp>
+~endif
 
-#include <QStringBuilder>
+~include <QStringBuilder>
 
-#include <QGraphicsView>
-#include <QPainter>
-#include <QSvgRenderer>
-#include <QSvgGenerator>
+~include <QGraphicsView>
+~include <QPainter>
+~include <QSvgRenderer>
+~include <QSvgGenerator>
 
-#include <vector>
+~include <vector>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/GeoFeature.h>
-#include <App/Link.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Tools.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/FileDialog.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/DocumentObject.h>
+~include <App/FeaturePython.h>
+~include <App/GeoFeature.h>
+~include <App/Link.h>
+~include <App/PropertyGeo.h>
+~include <App/PropertyLinks.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Tools.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/FileDialog.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/Part2DObject.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include <Mod/TechDraw/App/DrawViewDraft.h>
-#include <Mod/TechDraw/App/DrawViewMulti.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawViewArch.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/Gui/QGVPage.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include <Mod/TechDraw/App/DrawViewClip.h>
+~include <Mod/TechDraw/App/DrawViewSymbol.h>
+~include <Mod/TechDraw/App/DrawViewDraft.h>
+~include <Mod/TechDraw/App/DrawViewMulti.h>
+~include <Mod/TechDraw/App/DrawViewDetail.h>
+~include <Mod/TechDraw/App/DrawViewArch.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/Gui/QGVPage.h>
 
-#include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
-#include "PreferencesGui.h"
-#include "QGIViewPart.h"
-#include "Rez.h"
-#include "TaskProjGroup.h"
-#include "TaskSectionView.h"
-#include "TaskActiveView.h"
-#include "TaskDetail.h"
-#include "TaskProjection.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
+~include "DrawGuiUtil.h"
+~include "MDIViewPage.h"
+~include "PreferencesGui.h"
+~include "QGIViewPart.h"
+~include "Rez.h"
+~include "TaskProjGroup.h"
+~include "TaskSectionView.h"
+~include "TaskActiveView.h"
+~include "TaskDetail.h"
+~include "TaskProjection.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderViewPart.h"
 
 
 class Vertex;

@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <Geom_TrimmedCurve.hxx>
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Geom_TrimmedCurve.hxx>
+~ include <memory>
+~endif
 
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
-#include <Base/Tools.h>
-#include <Base/QuantityPy.h>
-#include <App/Document.h>
-#include <App/OriginFeature.h>
-#include <CXX/Objects.hxx>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Part/App/LinePy.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Part/App/DatumFeature.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/AxisPy.h>
+~include <Base/Tools.h>
+~include <Base/QuantityPy.h>
+~include <App/Document.h>
+~include <App/OriginFeature.h>
+~include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
-#include "SketchObjectPy.h"
-#include "SketchObjectPy.cpp"
+~include "SketchObjectPy.h"
+~include "SketchObjectPy.cpp"
 // other python types
-#include "ConstraintPy.h"
-#include "GeometryFacade.h"
-#include "GeometryFacadePy.h"
+~include "ConstraintPy.h"
+~include "GeometryFacade.h"
+~include "GeometryFacadePy.h"
 
 using namespace Sketcher;
 

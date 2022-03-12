@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "MeshTexture.h"
+~include "MeshTexture.h"
 
 using namespace Mesh;
 

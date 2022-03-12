@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4ETManifoldMesh.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4ETManifoldMesh.h"
 using namespace Wm4;
 
 //----------------------------------------------------------------------------

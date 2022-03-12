@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QElapsedTimer>
-# include <QMessageBox>
-# include <QPushButton>
-# include <QThread>
-# include <QTime>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QElapsedTimer>
+~ include <QMessageBox>
+~ include <QPushButton>
+~ include <QThread>
+~ include <QTime>
+~endif
 
-#include "ProgressDialog.h"
-#include "MainWindow.h"
+~include "ProgressDialog.h"
+~include "MainWindow.h"
 
 
 using namespace Gui;
@@ -301,10 +301,10 @@ bool SequencerDialog::isBlocking() const
 ProgressDialog::ProgressDialog (SequencerDialog* s, QWidget * parent)
     : QProgressDialog(parent, Qt::FramelessWindowHint), sequencer(s)
 {
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     m_taskbarButton = nullptr;
     m_taskbarButton = nullptr;
-#endif
+~endif
     connect(this, SIGNAL(canceled()), this, SLOT(onCancel()));
 }
 
@@ -342,48 +342,48 @@ void ProgressDialog::hideEvent(QHideEvent* ev)
 void ProgressDialog::resetEx()
 {
     QProgressDialog::reset();
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->reset();
-#endif
+~endif
 }
 
 void ProgressDialog::setRangeEx(int minimum, int maximum)
 {
     QProgressDialog::setRange(minimum, maximum);
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->setRange(minimum, maximum);
-#endif
+~endif
 }
 
 void ProgressDialog::setValueEx(int value)
 {
     QProgressDialog::setValue(value);
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->setValue(value);
-#endif
+~endif
 }
 
 void ProgressDialog::aboutToShow()
 {
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->show();
-#endif
+~endif
 }
 
 void ProgressDialog::aboutToHide()
 {
     hide();
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
     setupTaskBarProgress();
     m_taskbarProgress->hide();
-#endif
+~endif
 }
 
-#ifdef QT_WINEXTRAS_LIB
+~ifdef QT_WINEXTRAS_LIB
 void ProgressDialog::setupTaskBarProgress()
 {
     if (!m_taskbarButton || !m_taskbarProgress)
@@ -395,6 +395,6 @@ void ProgressDialog::setupTaskBarProgress()
         m_taskbarProgress = m_taskbarButton->progress();
     }
 }
-#endif
+~endif
 
-#include "moc_ProgressDialog.cpp"
+~include "moc_ProgressDialog.cpp"

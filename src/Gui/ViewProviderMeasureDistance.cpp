@@ -20,39 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QApplication>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QApplication>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/events/SoKeyboardEvent.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFontStyle.h>
+~ include <Inventor/nodes/SoIndexedLineSet.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~endif
 
-#include <Inventor/MarkerBitmaps.h>
+~include <Inventor/MarkerBitmaps.h>
 
-#include <App/Document.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
-#include <Base/Quantity.h>
+~include <App/Document.h>
+~include <App/MeasureDistance.h>
+~include <Base/Console.h>
+~include <Base/Quantity.h>
 
-#include "ViewProviderMeasureDistance.h"
-#include "Application.h"
-#include <Command.h>
-#include "Document.h"
-#include "View3DInventorViewer.h"
-#include "ViewParams.h"
+~include "ViewProviderMeasureDistance.h"
+~include "Application.h"
+~include <Command.h>
+~include "Document.h"
+~include "View3DInventorViewer.h"
+~include "ViewParams.h"
 
 
 using namespace Gui;

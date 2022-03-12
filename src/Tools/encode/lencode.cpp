@@ -2,10 +2,10 @@
    (c) 2006 Werner Mayer LGPL
 */
 
-#include <qtextcodec.h>
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qdom.h>
+~include <qtextcodec.h>
+~include <qfile.h>
+~include <qtextstream.h>
+~include <qdom.h>
 
 void encodeFile(QTextCodec *codec, const char *fileName);
 

@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QButtonGroup>
-# include <QDialogButtonBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QButtonGroup>
+~ include <QDialogButtonBox>
+~endif
 
-#include "DlgSmoothing.h"
-#include "ui_DlgSmoothing.h"
-#include "Selection.h"
+~include "DlgSmoothing.h"
+~include "ui_DlgSmoothing.h"
+~include "Selection.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Smoothing.h>
 
 using namespace MeshGui;
 
@@ -150,11 +150,11 @@ TaskSmoothing::TaskSmoothing()
     selection = new Selection();
     selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
-#if !defined (QSINT_ACTIONPANEL)
+~if !defined (QSINT_ACTIONPANEL)
     Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
-#else
+~else
     Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
-#endif
+~endif
     tasksel->groupLayout()->addWidget(selection);
     tasksel->hide();
     Content.push_back(tasksel);
@@ -231,4 +231,4 @@ bool TaskSmoothing::accept()
     return true;
 }
 
-#include "moc_DlgSmoothing.cpp"
+~include "moc_DlgSmoothing.cpp"

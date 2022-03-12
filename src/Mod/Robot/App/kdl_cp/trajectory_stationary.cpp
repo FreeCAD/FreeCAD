@@ -14,7 +14,7 @@
  ****************************************************************************/
 
 
-#include "trajectory_stationary.hpp"
+~include "trajectory_stationary.hpp"
 
 namespace KDL {
 

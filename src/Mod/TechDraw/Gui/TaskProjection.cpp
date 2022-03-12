@@ -22,29 +22,29 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QCheckBox>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QCheckBox>
+~ include <QMessageBox>
+~endif
 
 
-#include <Standard_math.hxx>
+~include <Standard_math.hxx>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include "TaskProjection.h"
-#include "ui_TaskProjection.h"
+~include "TaskProjection.h"
+~include "ui_TaskProjection.h"
 
 using namespace TechDrawGui;
 
@@ -168,4 +168,4 @@ bool TaskDlgProjection::reject()
     return true;
 }
 
-#include "moc_TaskProjection.cpp"
+~include "moc_TaskProjection.cpp"

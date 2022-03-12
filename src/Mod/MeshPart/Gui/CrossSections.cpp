@@ -21,47 +21,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <Standard_math.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <cfloat>
-# include <QFuture>
-# include <QFutureWatcher>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QtConcurrentMap>
-# include <boost_bind_bind.hpp>
-# include <Python.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Standard_math.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <cfloat>
+~ include <QFuture>
+~ include <QFutureWatcher>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QtConcurrentMap>
+~ include <boost_bind_bind.hpp>
+~ include <Python.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFaceSet.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include "ui_CrossSections.h"
-#include "CrossSections.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <App/Document.h>
-#include <Base/UnitsApi.h>
+~include "ui_CrossSections.h"
+~include "CrossSections.h"
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/Tools.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <App/Document.h>
+~include <Base/UnitsApi.h>
 
 using namespace MeshPartGui;
 namespace bp = boost::placeholders;
@@ -265,7 +265,7 @@ void CrossSections::apply()
     bool connectEdges = ui->checkBoxConnect->isChecked();
     double eps = ui->spinEpsilon->value();
 
-#if 1 // multi-threaded sections
+~if 1 // multi-threaded sections
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
 
@@ -299,7 +299,7 @@ void CrossSections::apply()
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
-#else
+~else
     try {
         Gui::Command::runCommand(Gui::Command::App, "import Mesh, Part\n");
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
@@ -345,7 +345,7 @@ void CrossSections::apply()
     catch (const Base::Exception& e) {
         QMessageBox::critical(this, tr("Failure"), QString::fromLatin1(e.what()));
     }
-#endif
+~endif
 }
 
 void CrossSections::on_xyPlane_clicked()
@@ -610,4 +610,4 @@ void TaskCrossSections::clicked(int id)
     }
 }
 
-#include "moc_CrossSections.cpp"
+~include "moc_CrossSections.cpp"

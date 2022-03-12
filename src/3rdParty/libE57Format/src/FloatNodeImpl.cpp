@@ -25,8 +25,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "FloatNodeImpl.h"
-#include "CheckedFile.h"
+~include "FloatNodeImpl.h"
+~include "CheckedFile.h"
 
 namespace e57
 {
@@ -209,7 +209,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void FloatNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen
@@ -238,5 +238,5 @@ namespace e57
       os.precision( oldPrecision );
       os.flags( oldFlags );
    }
-#endif
+~endif
 }

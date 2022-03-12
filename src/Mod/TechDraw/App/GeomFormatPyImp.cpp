@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-# include <boost/uuid/uuid_io.hpp>
-#endif
+~ include <boost/uuid/uuid_io.hpp>
+~endif
 
-#include "Cosmetic.h"
-#include "GeomFormatPy.h"
-#include "GeomFormatPy.cpp"
+~include "Cosmetic.h"
+~include "GeomFormatPy.h"
+~include "GeomFormatPy.cpp"
 
 using namespace TechDraw;
 

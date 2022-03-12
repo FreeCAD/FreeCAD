@@ -23,11 +23,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgPrefsTechDrawHLRImp.h"
-#include "ui_DlgPrefsTechDrawHLR.h"
-#include <Gui/PrefWidgets.h>
+~include "DlgPrefsTechDrawHLRImp.h"
+~include "ui_DlgPrefsTechDrawHLR.h"
+~include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
@@ -86,4 +86,4 @@ void DlgPrefsTechDrawHLRImp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawHLRImp.cpp>
+~include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawHLRImp.cpp>

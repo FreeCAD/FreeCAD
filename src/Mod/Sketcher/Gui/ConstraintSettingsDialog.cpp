@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
-#endif
+~ifndef _PreComp_
+~ include <QPixmap>
+~ include <QDialog>
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/PrefWidgets.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <Gui/PrefWidgets.h>
 
-#include "ui_ConstraintSettingsDialog.h"
-#include "ConstraintSettingsDialog.h"
+~include "ui_ConstraintSettingsDialog.h"
+~include "ConstraintSettingsDialog.h"
 
 using namespace SketcherGui;
 
@@ -133,4 +133,4 @@ ConstraintSettingsDialog::~ConstraintSettingsDialog()
 {
 }
 
-#include "moc_ConstraintSettingsDialog.cpp"
+~include "moc_ConstraintSettingsDialog.cpp"

@@ -40,8 +40,8 @@
  ****************************************************************************/
 
 
-#include "path_circle.hpp"
-#include "utilities/error.h"
+~include "path_circle.hpp"
+~include "utilities/error.h"
 
 namespace KDL {
 

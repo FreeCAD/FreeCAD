@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
-#include <Base/Vector3D.h>
-#include <Base/Tools2D.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/FileInfo.h>
+~include <Base/Vector3D.h>
+~include <Base/Tools2D.h>
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include "Geometry.h"
+~include "Geometry.h"
 
-#include <iostream>
-#include <iterator>
+~include <iostream>
+~include <iterator>
 
-#include "DrawParametricTemplate.h"
-#include <Mod/TechDraw/App/DrawParametricTemplatePy.h>
+~include "DrawParametricTemplate.h"
+~include <Mod/TechDraw/App/DrawParametricTemplatePy.h>
 
 using namespace TechDraw;
 using namespace std;

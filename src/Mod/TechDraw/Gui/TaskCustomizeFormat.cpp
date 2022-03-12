@@ -20,50 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cmath>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
+~ifndef _PreComp_
+~include <cmath>
+~include <BRepBndLib.hxx>
+~include <Bnd_Box.hxx>
 
-#endif // #ifndef _PreComp_
+~endif // ~ifndef _PreComp_
 
-#include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
 
-#include <QButtonGroup>
-#include <QStatusBar>
-#include <QGraphicsScene>
+~include <QButtonGroup>
+~include <QStatusBar>
+~include <QGraphicsScene>
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-# include <Mod/TechDraw/App/DrawViewDimension.h>
-# include <Mod/TechDraw/App/DrawViewBalloon.h>
-# include <Mod/TechDraw/Gui/ui_TaskCustomizeFormat.h>
+~ include <Mod/TechDraw/App/DrawViewDimension.h>
+~ include <Mod/TechDraw/App/DrawViewBalloon.h>
+~ include <Mod/TechDraw/Gui/ui_TaskCustomizeFormat.h>
 
-#include "DrawGuiStd.h"
-#include "PreferencesGui.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
-#include "Rez.h"
+~include "DrawGuiStd.h"
+~include "PreferencesGui.h"
+~include "QGVPage.h"
+~include "QGIView.h"
+~include "QGIPrimPath.h"
+~include "MDIViewPage.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderViewPart.h"
+~include "Rez.h"
 
-# include "TaskCustomizeFormat.h"
+~ include "TaskCustomizeFormat.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -280,4 +280,4 @@ bool TaskDlgCustomizeFormat::reject()
     return true;
 }
 
-#include <Mod/TechDraw/Gui/moc_TaskCustomizeFormat.cpp>
+~include <Mod/TechDraw/Gui/moc_TaskCustomizeFormat.cpp>

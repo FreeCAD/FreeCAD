@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderExtrusion.h"
-#include <Mod/Part/App/FeatureExtrusion.h>
+~include "ViewProviderExtrusion.h"
+~include <Mod/Part/App/FeatureExtrusion.h>
 
 
 using namespace PartGui;

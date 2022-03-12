@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Translate.h"
-#include <QCoreApplication>
-#include <QFileInfo>
+~include "Translate.h"
+~include <QCoreApplication>
+~include <QFileInfo>
 
 using namespace Base;
 

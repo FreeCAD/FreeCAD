@@ -22,21 +22,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~endif
 
-#include <atomic>
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <atomic>
+~include <Base/Console.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include "Transactions.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "Property.h"
+~include "Transactions.h"
+~include "Document.h"
+~include "DocumentObject.h"
+~include "Property.h"
 
 
 FC_LOG_LEVEL_INIT("App",true,true)
@@ -77,7 +77,7 @@ Transaction::~Transaction()
 
             if (!It->first->isAttachedToDocument()) {
                 if (It->first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
-                    // #0003323: Crash when clearing transaction list
+                    // ~0003323: Crash when clearing transaction list
                     // It can happen that when clearing the transaction list several objects
                     // are destroyed with dependencies which can lead to dangling pointers.
                     // When setting the 'Destroy' flag of an object the destructors of link
@@ -449,14 +449,14 @@ void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcO
     if (status == Del) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
 
-#ifndef USE_OLD_DAG
+~ifndef USE_OLD_DAG
         //Make sure the backlinks of all linked objects are updated. As the links of the removed
         //object are never set to [] they also do not remove the backlink. But as they are 
         //not in the document anymore we need to remove them anyway to ensure a correct graph
         auto list = obj->getOutList();
         for (auto link : list)
             link->_removeBackLink(obj);
-#endif
+~endif
 
         // simply filling in the saved object
         Doc._removeObject(obj);
@@ -469,12 +469,12 @@ void TransactionDocumentObject::applyNew(Document &Doc, TransactionalObject *pcO
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
 
-#ifndef USE_OLD_DAG
+~ifndef USE_OLD_DAG
         //make sure the backlinks of all linked objects are updated
         auto list = obj->getOutList();
         for (auto link : list)
             link->_addBackLink(obj);
-#endif
+~endif
     }
 }
 

@@ -24,30 +24,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
-#endif
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoMultipleCopy.h>
+~ include <Inventor/nodes/SoCylinder.h>
+~ include <Inventor/nodes/SoSphere.h>
+~ include <Inventor/nodes/SoText3.h>
+~ include <Inventor/nodes/SoFont.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoScale.h>
+~endif
 
-#include "Mod/Fem/App/FemConstraintTemperature.h"
-#include "TaskFemConstraintTemperature.h"
-#include "ViewProviderFemConstraintTemperature.h"
-#include <Base/Console.h>
-#include <Gui/Control.h>
+~include "Mod/Fem/App/FemConstraintTemperature.h"
+~include "TaskFemConstraintTemperature.h"
+~include "ViewProviderFemConstraintTemperature.h"
+~include <Base/Console.h>
+~include <Gui/Control.h>
 
 using namespace FemGui;
 
@@ -99,9 +99,9 @@ bool ViewProviderFemConstraintTemperature::setEdit(int ModNum)
     }
 }
 
-#define HEIGHT (1.5)
-#define RADIUS (0.3)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+~define HEIGHT (1.5)
+~define RADIUS (0.3)
+//~define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintTemperature::updateData(const App::Property* prop)
 {

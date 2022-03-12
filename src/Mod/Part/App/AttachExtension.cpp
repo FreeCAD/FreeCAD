@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "AttachExtension.h"
+~include "AttachExtension.h"
 
-#include <Base/Console.h>
-#include <App/Application.h>
+~include <Base/Console.h>
+~include <App/Application.h>
 
-#include <App/FeaturePythonPyImp.h>
-#include "AttachExtensionPy.h"
+~include <App/FeaturePythonPyImp.h>
+~include "AttachExtensionPy.h"
 
 
 using namespace Part;

@@ -24,14 +24,14 @@
 //  File   : SMESH_HypoFilter.cxx
 //  Module : SMESH
 //
-#include "SMESH_HypoFilter.hxx"
+~include "SMESH_HypoFilter.hxx"
 
-#include "SMESH_Gen.hxx"
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <TopExp_Explorer.hxx>
+~include <TopExp_Explorer.hxx>
 
 using namespace std;
 

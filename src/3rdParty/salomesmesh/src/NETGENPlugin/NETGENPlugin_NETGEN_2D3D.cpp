@@ -27,42 +27,42 @@
 // Project   : SALOME
 //=============================================================================
 //
-#include "NETGENPlugin_NETGEN_2D3D.hxx"
-#include "NETGENPlugin_Hypothesis.hxx"
-#include "NETGENPlugin_SimpleHypothesis_3D.hxx"
-#include "NETGENPlugin_Mesher.hxx"
+~include "NETGENPlugin_NETGEN_2D3D.hxx"
+~include "NETGENPlugin_Hypothesis.hxx"
+~include "NETGENPlugin_SimpleHypothesis_3D.hxx"
+~include "NETGENPlugin_Mesher.hxx"
 
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_ControlsDef.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <utilities.h>
+~include <SMESH_Gen.hxx>
+~include <SMESH_Mesh.hxx>
+~include <SMESH_ControlsDef.hxx>
+~include <SMESHDS_Mesh.hxx>
+~include <utilities.h>
 
-#include <list>
+~include <list>
 
 namespace nglib {
-#include <nglib.h>
+~include <nglib.h>
 }
 
 // DLL_HEADER is re-defined in netgen headers
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmacro-redefined"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmacro-redefined"
+~endif
 
-#ifdef NETGEN_PYTHON
-#undef NETGEN_PYTHON
-#endif
+~ifdef NETGEN_PYTHON
+~undef NETGEN_PYTHON
+~endif
 
-#ifndef WIN32
-#undef DLL_HEADER
-#endif
+~ifndef WIN32
+~undef DLL_HEADER
+~endif
 
-#include <meshing.hpp>
+~include <meshing.hpp>
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 using namespace std;
 

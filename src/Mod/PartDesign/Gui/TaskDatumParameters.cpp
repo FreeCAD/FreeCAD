@@ -22,28 +22,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <Standard_Failure.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <Standard_Failure.hxx>
+~endif
 
-#include <App/DocumentObject.h>
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/PartDesign/App/Body.h>
+~include <App/DocumentObject.h>
+~include <App/Origin.h>
+~include <App/Part.h>
+~include <Gui/MainWindow.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Selection.h>
+~include <Mod/Part/App/DatumFeature.h>
+~include <Mod/PartDesign/App/Body.h>
 
-#include <ui_DlgReference.h>
+~include <ui_DlgReference.h>
 
-#include "TaskDatumParameters.h"
-#include "ReferenceSelection.h"
-#include "TaskFeaturePick.h"
-#include "Utils.h"
+~include "TaskDatumParameters.h"
+~include "ReferenceSelection.h"
+~include "TaskFeaturePick.h"
+~include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -173,4 +173,4 @@ bool TaskDlgDatumParameters::accept() {
     return true;
 }
 
-#include "moc_TaskDatumParameters.cpp"
+~include "moc_TaskDatumParameters.cpp"

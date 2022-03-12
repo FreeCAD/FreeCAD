@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
-# include <gp_Dir.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Face.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <gp_Dir.hxx>
+~ include <Precision.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Face.hxx>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/Exception.h>
+~include <App/DocumentObject.h>
+~include <Base/Exception.h>
 
-#include "FeaturePocket.h"
+~include "FeaturePocket.h"
 
 using namespace PartDesign;
 
@@ -64,7 +64,7 @@ Pocket::Pocket()
     TaperAngle2.setConstraints(&floatAngle);
 
     // Remove the constraints and keep the type to allow to accept negative values
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410~p447636
     Length2.setConstraints(nullptr);
 }
 

@@ -24,18 +24,18 @@
 // Created   : Thu Feb 27 17:45:00 2014
 // Author    : eap
 
-#include "DriverMED_W_Field.h"
+~include "DriverMED_W_Field.h"
 
-#include "DriverMED.hxx"
-#include "DriverMED_W_SMESHDS_Mesh.h"
-#include "MED_Factory.hxx"
-#include "MED_Utilities.hxx"
-#include "MED_Wrapper.hxx"
-#include "SMDS_IteratorOnIterators.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_PolyhedralVolumeOfNodes.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_Mesh.hxx"
+~include "DriverMED.hxx"
+~include "DriverMED_W_SMESHDS_Mesh.h"
+~include "MED_Factory.hxx"
+~include "MED_Utilities.hxx"
+~include "MED_Wrapper.hxx"
+~include "SMDS_IteratorOnIterators.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_PolyhedralVolumeOfNodes.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_Mesh.hxx"
 
 //================================================================================
 /*!

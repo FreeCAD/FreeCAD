@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-# include <boost/bind/bind.hpp>
+~ifndef _PreComp_
+~ include <qobject.h>
+~ include <boost/bind/bind.hpp>
 
-#endif
+~endif
 
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/DlgCheckableMessageBox.h>
-#include <App/Part.h>
-#include "Workbench.h"
+~include <Gui/MenuManager.h>
+~include <Gui/ToolBarManager.h>
+~include <Gui/Control.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/DlgCheckableMessageBox.h>
+~include <App/Part.h>
+~include "Workbench.h"
 
 using namespace AssemblyGui;
 namespace bp = boost::placeholders;

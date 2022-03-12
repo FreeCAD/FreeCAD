@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Application.h>
-#include <Gui/Action.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ToolBoxManager.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
+~include <Gui/ToolBarManager.h>
+~include <Gui/DockWindowManager.h>
+~include <Gui/Application.h>
+~include <Gui/Action.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/ToolBoxManager.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
 using namespace WebGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Navigation");
-#endif
+~endif
 
 /// @namespace WebGui @class Workbench
 TYPESYSTEM_SOURCE(WebGui::Workbench, Gui::StdWorkbench)
@@ -214,7 +214,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //          << "Part_Revolve"
 //          << "Part_Fillet";
 //
-//#   ifdef WEB_SHOW_SKETCHER
+//~   ifdef WEB_SHOW_SKETCHER
 //    if (mgr.getCommandByName("Sketcher_NewSketch")) {
 //        Gui::MenuItem* sketch = new Gui::MenuItem(menuBar);
 //        sketch->setCommand("Ske&tch");
@@ -225,7 +225,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //            << "PartDesign_Fillet"
 //        ;
 //    }
-//#   endif
+//~   endif
 //
 //    // Drawing ****************************************************************************************************
 //
@@ -252,7 +252,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    ;
 //
 //    // Drafting ****************************************************************************************************
-//#   ifdef WEB_USE_DRAFTING
+//~   ifdef WEB_USE_DRAFTING
 //    if (mgr.getCommandByName("Draft_Line")) {
 //        Gui::MenuItem* Drafting = new Gui::MenuItem(menuBar);
 //
@@ -278,7 +278,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //            << "Draft_ApplyStyle"
 //        ;
 //    }
-//#   endif
+//~   endif
 //
 //    // xxx ****************************************************************************************************
 //

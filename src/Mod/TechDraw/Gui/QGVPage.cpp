@@ -20,109 +20,109 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QContextMenuEvent>
-# include <QFileInfo>
-# include <QFileDialog>
-# include <QGLWidget>
-# include <QGraphicsEffect>
-# include <QMouseEvent>
-# include <QPainter>
-# include <QPaintEvent>
-# include <QSvgGenerator>
-#include <QScrollBar>
-# include <QWheelEvent>
-#include <QTemporaryFile>
-#include <QDomDocument>
-#include <QTextStream>
-#include <QFile>
-#include <QLabel>
-#include <QTextCodec>
-#include <cmath>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QApplication>
+~ include <QContextMenuEvent>
+~ include <QFileInfo>
+~ include <QFileDialog>
+~ include <QGLWidget>
+~ include <QGraphicsEffect>
+~ include <QMouseEvent>
+~ include <QPainter>
+~ include <QPaintEvent>
+~ include <QSvgGenerator>
+~include <QScrollBar>
+~ include <QWheelEvent>
+~include <QTemporaryFile>
+~include <QDomDocument>
+~include <QTextStream>
+~include <QFile>
+~include <QLabel>
+~include <QTextCodec>
+~include <cmath>
+~endif
 
-#include <QXmlQuery>
-#include <QXmlResultItems>
+~include <QXmlQuery>
+~include <QXmlResultItems>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Stream.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Command.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawTemplate.h>
-#include <Mod/TechDraw/App/DrawSVGTemplate.h>
-#include <Mod/TechDraw/App/DrawParametricTemplate.h>
-#include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-//#include <Mod/TechDraw/App/LandmarkDimension.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include <Mod/TechDraw/App/DrawViewImage.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/QDomNodeModel.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawTemplate.h>
+~include <Mod/TechDraw/App/DrawSVGTemplate.h>
+~include <Mod/TechDraw/App/DrawParametricTemplate.h>
+~include <Mod/TechDraw/App/DrawViewCollection.h>
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+//~include <Mod/TechDraw/App/LandmarkDimension.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewAnnotation.h>
+~include <Mod/TechDraw/App/DrawViewSymbol.h>
+~include <Mod/TechDraw/App/DrawViewClip.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+~include <Mod/TechDraw/App/DrawViewImage.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/DrawTile.h>
+~include <Mod/TechDraw/App/DrawTileWeld.h>
+~include <Mod/TechDraw/App/QDomNodeModel.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "Rez.h"
-#include "PreferencesGui.h"
-#include "QGIDrawingTemplate.h"
-#include "QGITemplate.h"
-#include "QGISVGTemplate.h"
-#include "TemplateTextField.h"
-#include "QGIViewCollection.h"
-#include "QGIViewDimension.h"
-#include "QGIViewBalloon.h"
-#include "QGIProjGroup.h"
-#include "QGIViewPart.h"
-#include "QGIViewSection.h"
-#include "QGIViewAnnotation.h"
-#include "QGIViewSymbol.h"
-#include "QGIViewClip.h"
-#include "QGIViewSpreadsheet.h"
-#include "QGIViewImage.h"
-#include "QGIFace.h"
-#include "QGILeaderLine.h"
-#include "QGIRichAnno.h"
-#include "QGIWeldSymbol.h"
-#include "QGITile.h"
+~include "Rez.h"
+~include "PreferencesGui.h"
+~include "QGIDrawingTemplate.h"
+~include "QGITemplate.h"
+~include "QGISVGTemplate.h"
+~include "TemplateTextField.h"
+~include "QGIViewCollection.h"
+~include "QGIViewDimension.h"
+~include "QGIViewBalloon.h"
+~include "QGIProjGroup.h"
+~include "QGIViewPart.h"
+~include "QGIViewSection.h"
+~include "QGIViewAnnotation.h"
+~include "QGIViewSymbol.h"
+~include "QGIViewClip.h"
+~include "QGIViewSpreadsheet.h"
+~include "QGIViewImage.h"
+~include "QGIFace.h"
+~include "QGILeaderLine.h"
+~include "QGIRichAnno.h"
+~include "QGIWeldSymbol.h"
+~include "QGITile.h"
 
-#include "ZVALUE.h"
-#include "ViewProviderPage.h"
-#include "QGVPage.h"
-#include "MDIViewPage.h"
+~include "ZVALUE.h"
+~include "ViewProviderPage.h"
+~include "QGVPage.h"
+~include "MDIViewPage.h"
 
 // used SVG namespaces
-#define CC_NS_URI "http://creativecommons.org/ns#"
-#define DC_NS_URI "http://purl.org/dc/elements/1.1/"
-#define RDF_NS_URI "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-#define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
-#define SODIPODI_NS_URI "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+~define CC_NS_URI "http://creativecommons.org/ns~"
+~define DC_NS_URI "http://purl.org/dc/elements/1.1/"
+~define RDF_NS_URI "http://www.w3.org/1999/02/22-rdf-syntax-ns~"
+~define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
+~define SODIPODI_NS_URI "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -197,11 +197,11 @@ QGVPage::~QGVPage()
 void QGVPage::startBalloonPlacing(void)
 {
     balloonPlacing = true;
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     activateCursor(QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
-#else
+~else
     activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
-#endif
+~endif
 }
 
 void QGVPage::cancelBalloonPlacing(void)
@@ -780,9 +780,9 @@ void QGVPage::setRenderer(RendererType type)
     m_renderer = type;
 
     if (m_renderer == OpenGL) {
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
         setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-#endif
+~endif
     } else {
         setViewport(new QWidget);
     }
@@ -790,11 +790,11 @@ void QGVPage::setRenderer(RendererType type)
 
 void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 {
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     setRenderHint(QPainter::Antialiasing, highQualityAntialiasing);
-#else
+~else
     Q_UNUSED(highQualityAntialiasing);
-#endif
+~endif
 }
 
 void QGVPage::refreshViews(void)
@@ -977,13 +977,13 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
                                                QString::fromUtf8("stroke: none;"));
 
                     // Scale the template group correctly
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
                     templateGroup.setAttribute(QString::fromUtf8("transform"),
                         QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
-#else
+~else
                     templateGroup.setAttribute(QString::fromUtf8("transform"),
                         QString::fromLatin1("scale(%1, %2)").arg(Rez::guiX(1.0), 0, 'f').arg(Rez::guiX(1.0), 0, 'f'));
-#endif
+~endif
 
                     // Finally, transfer all template document child nodes under the template group
                     while (!templateDocElem.firstChild().isNull()) {
@@ -1275,7 +1275,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char *iconName, QPoint &hotspot) {
     double pixelRatio = getDevicePixelRatio();
 
     // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
-    // as FreeCAD Wiki suggests - see https://wiki.freecadweb.org/HiDPI_support#Custom_cursor_size
+    // as FreeCAD Wiki suggests - see https://wiki.freecadweb.org/HiDPI_support~Custom_cursor_size
     double cursorSize = 32.0*pixelRatio;
 
     QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));
@@ -1285,14 +1285,14 @@ QPixmap QGVPage::prepareCursorPixmap(const char *iconName, QPoint &hotspot) {
     // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
     floatHotspot *= 0.5;
 
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+~if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
     // On XCB platform, the pixmap device pixel ratio is not taken into account for cursor hot spot,
     // therefore we must take care of the transformation ourselves...
     // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         floatHotspot *= pixelRatio;
     }
-#endif
+~endif
 
     hotspot = floatHotspot.toPoint();
     return pixmap;
@@ -1351,4 +1351,4 @@ void QGVPage::makeGrid(int gridWidth, int gridHeight, double gridStep)
     m_gridPath = grid;
 }
 
-#include <Mod/TechDraw/Gui/moc_QGVPage.cpp>
+~include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

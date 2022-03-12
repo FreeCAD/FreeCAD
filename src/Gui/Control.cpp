@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QDebug>
-# include <QDockWidget>
-# include <QPointer>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QApplication>
+~ include <QDebug>
+~ include <QDockWidget>
+~ include <QPointer>
+~endif
 
-#include <App/AutoTransaction.h>
-#include <Gui/ComboView.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/MainWindow.h>
+~include <App/AutoTransaction.h>
+~include <Gui/ComboView.h>
+~include <Gui/DockWindowManager.h>
+~include <Gui/MainWindow.h>
 
-#include "Control.h"
-#include "TaskView/TaskView.h"
+~include "Control.h"
+~include "TaskView/TaskView.h"
 
 
 using namespace Gui;
@@ -272,5 +272,5 @@ void ControlSingleton::destruct (void)
 // -------------------------------------------
 
 
-#include "moc_Control.cpp"
+~include "moc_Control.cpp"
 

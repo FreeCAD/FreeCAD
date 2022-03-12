@@ -20,15 +20,15 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "DocumentObjectPy.h"
-#include "LinkBaseExtensionPy.h"
-#include "LinkBaseExtensionPy.cpp"
+~include "DocumentObjectPy.h"
+~include "LinkBaseExtensionPy.h"
+~include "LinkBaseExtensionPy.cpp"
 
 using namespace App;
 

@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/SbTesselator.h>
-# include <QAbstractItemModel>
-# include <QAbstractItemView>
-# include <QItemSelection>
-# include <QItemSelectionModel>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/SbTesselator.h>
+~ include <QAbstractItemModel>
+~ include <QAbstractItemView>
+~ include <QItemSelection>
+~ include <QItemSelectionModel>
+~endif
 
-#include <App/DocumentObject.h>
+~include <App/DocumentObject.h>
 
-#include "Utilities.h"
+~include "Utilities.h"
 
 
 using namespace Gui;

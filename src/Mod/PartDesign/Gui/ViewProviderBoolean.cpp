@@ -22,20 +22,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QMessageBox>
+~endif
 
-#include "ViewProviderBoolean.h"
-#include "TaskBooleanParameters.h"
-#include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
+~include "ViewProviderBoolean.h"
+~include "TaskBooleanParameters.h"
+~include <Mod/PartDesign/App/FeatureBoolean.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
 
 
 using namespace PartDesignGui;

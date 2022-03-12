@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <GeomPlate_MakeApprox.hxx>
-# include <GeomPlate_Surface.hxx>
-# include <GeomPlate_BuildPlateSurface.hxx>
-# include <GeomPlate_PointConstraint.hxx>
-# include <GeomPlate_CurveConstraint.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <GeomPlate_MakeApprox.hxx>
+~ include <GeomPlate_Surface.hxx>
+~ include <GeomPlate_BuildPlateSurface.hxx>
+~ include <GeomPlate_PointConstraint.hxx>
+~ include <GeomPlate_CurveConstraint.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/Vector3D.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/Vector3D.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "PlateSurfacePy.h"
-#include "PlateSurfacePy.cpp"
-#include "BSplineSurfacePy.h"
+~include "OCCError.h"
+~include "Geometry.h"
+~include "PlateSurfacePy.h"
+~include "PlateSurfacePy.cpp"
+~include "BSplineSurfacePy.h"
 
 using namespace Part;
 

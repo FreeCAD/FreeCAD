@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <sstream>
+~include <sstream>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/SelectionObjectPy.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/SelectionObjectPy.h>
 
-#include "SelectionObject.h"
-#include "Selection.h"
-#include "Application.h"
-#include "Command.h"
+~include "SelectionObject.h"
+~include "Selection.h"
+~include "Application.h"
+~include "Command.h"
 
 
 using namespace Gui;

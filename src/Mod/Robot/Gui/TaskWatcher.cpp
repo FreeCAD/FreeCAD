@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#  include <QPixmap>
-#endif
+~ifndef _PreComp_
+~  include <QPixmap>
+~endif
 
 
 
-#include "TaskWatcher.h"
-#include <Gui/SelectionObject.h>
+~include "TaskWatcher.h"
+~include <Gui/SelectionObject.h>
 
 
 using namespace RobotGui;
@@ -72,4 +72,4 @@ bool TaskWatcherRobot::shouldShow()
 
 
 
-#include "moc_TaskWatcher.cpp"
+~include "moc_TaskWatcher.cpp"

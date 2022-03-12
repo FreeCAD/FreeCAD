@@ -21,16 +21,16 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <Precision.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepGProp.hxx>
+~ include <GProp_GProps.hxx>
+~ include <Precision.hxx>
+~endif
 
-#include "FeatureMultiTransform.h"
-#include "FeatureAddSub.h"
-#include "FeatureScaled.h"
+~include "FeatureMultiTransform.h"
+~include "FeatureAddSub.h"
+~include "FeatureScaled.h"
 
 
 using namespace PartDesign;

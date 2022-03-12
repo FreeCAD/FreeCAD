@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
-# include <QDateTime>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QPushButton>
+~ include <QDateTime>
+~endif
 
-#include "DlgRevertToBackupConfigImp.h"
-#include "ui_DlgRevertToBackupConfig.h"
+~include "DlgRevertToBackupConfigImp.h"
+~include "ui_DlgRevertToBackupConfig.h"
 
-#include <Gui/Application.h>
-#include <Gui/PreferencePackManager.h>
+~include <Gui/Application.h>
+~include <Gui/PreferencePackManager.h>
 
-#include <boost/filesystem.hpp>
+~include <boost/filesystem.hpp>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -114,4 +114,4 @@ void DlgRevertToBackupConfigImp::accept()
     QDialog::accept();
 }
 
-#include "moc_DlgRevertToBackupConfigImp.cpp"
+~include "moc_DlgRevertToBackupConfigImp.cpp"

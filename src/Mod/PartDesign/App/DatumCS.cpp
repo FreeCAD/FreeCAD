@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <gp_Pln.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <gp_Pln.hxx>
+~endif
 
-#include <Mod/Part/App/PartPyCXX.h>
-#include <Mod/Part/App/OCCError.h>
-#include "DatumCS.h"
+~include <Mod/Part/App/PartPyCXX.h>
+~include <Mod/Part/App/OCCError.h>
+~include "DatumCS.h"
 
 using namespace PartDesign;
 using namespace Attacher;

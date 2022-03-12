@@ -19,9 +19,9 @@
 // File   : MED_GaussDef.hxx
 // Author : Edward AGAPOV (eap)
 //
-#include "MED_GaussDef.hxx"
-#include "MED_Utilities.hxx"
-#include "MED_GaussUtils.hxx"
+~include "MED_GaussDef.hxx"
+~include "MED_Utilities.hxx"
+~include "MED_GaussUtils.hxx"
 
 namespace MED
 {

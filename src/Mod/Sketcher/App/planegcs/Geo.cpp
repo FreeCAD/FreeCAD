@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#define DEBUG_DERIVS 0
-#if DEBUG_DERIVS
-#endif
+~define DEBUG_DERIVS 0
+~if DEBUG_DERIVS
+~endif
 
-#include "Geo.h"
+~include "Geo.h"
 
-#include <cassert>
+~include <cassert>
 
 namespace GCS{
 
@@ -257,7 +257,7 @@ DeriVector2 Ellipse::CalculateNormal(const Point &p, const double* derivparam) c
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
     //numeric derivatives for testing
-    #if 0 //make sure to enable DEBUG_DERIVS when enabling
+    ~if 0 //make sure to enable DEBUG_DERIVS when enabling
         if(derivparam) {
             double const eps = 0.00001;
             double oldparam = *derivparam;
@@ -275,7 +275,7 @@ DeriVector2 Ellipse::CalculateNormal(const Point &p, const double* derivparam) c
             assert(ret.dy <= std::max(numretl.y,numretr.y) );
             assert(ret.dy >= std::min(numretl.y,numretr.y) );
         }
-    #endif
+    ~endif
 
         return ret;
 }
@@ -617,7 +617,7 @@ DeriVector2 BSpline::CalculateNormal(const Point &p, const double* derivparam) c
     // but a normal vector, where the vector should point to the left when one walks along the curve from
     // start to end.
     //
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=26312#p209486
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=26312~p209486
 
     if (mult[0] > degree && mult[mult.size()-1] > degree) {
     // if endpoints through end poles

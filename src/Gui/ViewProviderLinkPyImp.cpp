@@ -20,17 +20,17 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <Base/PlacementPy.h>
+~include <Base/PlacementPy.h>
 
 // inclusion of the generated files (generated out of ViewProviderLinkPy.xml)
-#include "ViewProviderLinkPy.h"
-#include "ViewProviderLinkPy.cpp"
+~include "ViewProviderLinkPy.h"
+~include "ViewProviderLinkPy.cpp"
 
 
 using namespace Gui;

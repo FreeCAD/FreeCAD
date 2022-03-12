@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QString>
-# include <QSlider>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QString>
+~ include <QSlider>
 
-# include <Standard_math.hxx>
+~ include <Standard_math.hxx>
 
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoEventCallback.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
 
-# include <SMESH_Mesh.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
-#endif
+~ include <SMESH_Mesh.hxx>
+~ include <SMESHDS_Mesh.hxx>
+~ include <SMDSAbs_ElementType.hxx>
+~endif
 
-#include "ui_TaskCreateNodeSet.h"
-#include "TaskCreateNodeSet.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
+~include "ui_TaskCreateNodeSet.h"
+~include "TaskCreateNodeSet.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Utilities.h>
 
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include "ViewProviderFemMesh.h"
-#include "FemSelectionGate.h"
+~include <Mod/Fem/App/FemMeshObject.h>
+~include <Mod/Fem/App/FemSetNodesObject.h>
+~include "ViewProviderFemMesh.h"
+~include "FemSelectionGate.h"
 
 
 using namespace FemGui;
@@ -223,4 +223,4 @@ TaskCreateNodeSet::~TaskCreateNodeSet()
 }
 
 
-#include "moc_TaskCreateNodeSet.cpp"
+~include "moc_TaskCreateNodeSet.cpp"

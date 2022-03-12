@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <QDir>
-#include <QFileInfo>
+~include <QDir>
+~include <QFileInfo>
 
-#include <Base/Console.h>
-#include <Base/VectorPy.h>
-#include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/VectorPy.h>
+~include <Base/FileInfo.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
 
-#include <Gui/Command.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Command.h>
+~include <Gui/WaitCursor.h>
 
-#include "ViewProviderPath.h"
-#include "DlgProcessorChooser.h"
-#include "ui_DlgProcessorChooser.h"
+~include "ViewProviderPath.h"
+~include "DlgProcessorChooser.h"
+~include "ui_DlgProcessorChooser.h"
 
 namespace PathGui {
 class Module : public Py::ExtensionModule<Module>

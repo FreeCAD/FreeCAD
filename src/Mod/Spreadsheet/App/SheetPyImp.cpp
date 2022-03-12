@@ -21,18 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <boost/tokenizer.hpp>
-#include <Base/Exception.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/PropertyStandard.h>
-#include "Utils.h"
-#include <App/Range.h>
+~include <boost/tokenizer.hpp>
+~include <Base/Exception.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
+~include <App/PropertyStandard.h>
+~include "Utils.h"
+~include <App/Range.h>
 
 // inclusion of the generated files (generated out of SheetPy.xml)
-#include "SheetPy.h"
-#include "SheetPy.cpp"
+~include "SheetPy.h"
+~include "SheetPy.cpp"
 
 using namespace Spreadsheet;
 using namespace App;

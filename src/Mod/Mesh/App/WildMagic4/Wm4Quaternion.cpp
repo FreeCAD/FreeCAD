@@ -6,8 +6,8 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4Quaternion.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4Quaternion.h"
 
 namespace Wm4
 {

@@ -25,9 +25,9 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_VertexPosition.hxx"
+~include "SMDS_VertexPosition.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 
@@ -43,6 +43,6 @@ SMDS_VertexPosition:: SMDS_VertexPosition()
 
 SMDS_TypeOfPosition SMDS_VertexPosition::GetTypeOfPosition() const
 {
-  //MESSAGE("################################################# GetTypeOfPosition");
+  //MESSAGE("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ GetTypeOfPosition");
         return SMDS_TOP_VERTEX;
 }

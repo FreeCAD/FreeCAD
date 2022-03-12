@@ -25,10 +25,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "BlobNodeImpl.h"
-#include "CheckedFile.h"
-#include "ImageFileImpl.h"
-#include "SectionHeaders.h"
+~include "BlobNodeImpl.h"
+~include "CheckedFile.h"
+~include "ImageFileImpl.h"
+~include "SectionHeaders.h"
 
 namespace e57
 {
@@ -56,9 +56,9 @@ namespace e57
       /// Prepare BlobSectionHeader
       BlobSectionHeader header;
       header.sectionLogicalLength = binarySectionLogicalLength_;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       header.dump(); //???
-#endif
+~endif
 
       /// Write header at beginning of section
       imf->file_->seek( binarySectionLogicalStart_ );
@@ -201,7 +201,7 @@ namespace e57
          << blobLogicalLength_ << "\"/>\n";
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void BlobNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen
@@ -221,6 +221,6 @@ namespace e57
       //    if (i < blobLogicalLength_)
       //        os << space(indent) << "more data unprinted..." << std::endl;
    }
-#endif
+~endif
 
 }

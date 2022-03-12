@@ -26,20 +26,20 @@
 //  Module : SALOME
 //  $Header$
 //
-#include <iostream>
-#include "Utils_SALOME_Exception.hxx"
-#include "utilities.h"
+~include <iostream>
+~include "Utils_SALOME_Exception.hxx"
+~include "utilities.h"
 
-#ifndef WIN32
+~ifndef WIN32
 extern "C"
 {
-#endif
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#ifndef WIN32
+~endif
+~include <math.h>
+~include <stdio.h>
+~include <string.h>
+~ifndef WIN32
 }
-#endif
+~endif
 
 
 const char* duplicate( const char *const str ) ;

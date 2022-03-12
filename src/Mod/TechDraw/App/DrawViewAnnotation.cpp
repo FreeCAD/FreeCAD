@@ -22,22 +22,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <iomanip>
+~include <iomanip>
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
 
-#include "Preferences.h"
-#include "DrawViewAnnotation.h"
+~include "Preferences.h"
+~include "DrawViewAnnotation.h"
 
 using namespace TechDraw;
 using namespace std;

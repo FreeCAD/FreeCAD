@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_math.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
 
-# include <QString>
-# include <QSlider>
-#endif
+~ include <QString>
+~ include <QSlider>
+~endif
 
 
-#include "ui_TaskDriver.h"
-#include "TaskDriver.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
+~include "ui_TaskDriver.h"
+~include "TaskDriver.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Utilities.h>
 
 
 
@@ -94,4 +94,4 @@ TaskDriver::~TaskDriver()
 }
 
 
-#include "moc_TaskDriver.cpp"
+~include "moc_TaskDriver.cpp"

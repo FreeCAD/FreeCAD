@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepPrim_Cylinder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
-# include <BRepPrimAPI_MakeCylinder.hxx>
-# include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrimAPI_MakeTorus.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepPrim_Cylinder.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepBuilderAPI_GTransform.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_Transform.hxx>
+~ include <BRepPrimAPI_MakeBox.hxx>
+~ include <BRepPrimAPI_MakeCone.hxx>
+~ include <BRepPrimAPI_MakeCylinder.hxx>
+~ include <BRepPrimAPI_MakeSphere.hxx>
+~ include <BRepPrimAPI_MakeTorus.hxx>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <App/FeaturePythonPyImp.h>
+~include <App/DocumentObject.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <App/FeaturePythonPyImp.h>
 
-#include "FeaturePrimitive.h"
-#include "FeaturePy.h"
+~include "FeaturePrimitive.h"
+~include "FeaturePy.h"
 
 using namespace PartDesign;
 
@@ -154,17 +154,17 @@ void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const 
 }
 
 // suppress warning about tp_print for Py3.8
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmissing-field-initializers"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmissing-field-initializers"
+~endif
 
 PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 PyObject* FeaturePrimitive::getPyObject()
 {
@@ -430,7 +430,7 @@ App::DocumentObjectExecReturn* Ellipsoid::execute(void)
                                         Base::toRadians<double>(Angle3.getValue()));
         Standard_Real scaleX = 1.0;
         Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
-        // issue #1798: A third radius has been introduced. To be backward
+        // issue ~1798: A third radius has been introduced. To be backward
         // compatible if Radius3 is 0.0 (default) it's handled to be the same
         // as Radius2
         Standard_Real scaleY = 1.0;
@@ -504,21 +504,21 @@ App::DocumentObjectExecReturn* Torus::execute(void)
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
         // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
-#if 0
+~if 0
         BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
                                       Radius2.getValue(),
                                       Base::toRadians<double>(Angle1.getValue()),
                                       Base::toRadians<double>(Angle2.getValue()),
                                       Base::toRadians<double>(Angle3.getValue()));
         return FeaturePrimitive::execute(mkTorus.Solid());
-#else
+~else
         Part::TopoShape shape;
         return FeaturePrimitive::execute(shape.makeTorus(Radius1.getValue(),
                                                          Radius2.getValue(),
                                                          Angle1.getValue(),
                                                          Angle2.getValue(),
                                                          Angle3.getValue()));
-#endif
+~endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

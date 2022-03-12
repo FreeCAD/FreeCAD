@@ -25,17 +25,17 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <algorithm>
-#include <cstring>
+~include <algorithm>
+~include <cstring>
 
-#include "CompressedVectorNodeImpl.h"
-#include "Encoder.h"
-#include "FloatNodeImpl.h"
-#include "ImageFileImpl.h"
-#include "IntegerNodeImpl.h"
-#include "Packet.h"
-#include "ScaledIntegerNodeImpl.h"
-#include "SourceDestBufferImpl.h"
+~include "CompressedVectorNodeImpl.h"
+~include "Encoder.h"
+~include "FloatNodeImpl.h"
+~include "ImageFileImpl.h"
+~include "IntegerNodeImpl.h"
+~include "Packet.h"
+~include "ScaledIntegerNodeImpl.h"
+~include "SourceDestBufferImpl.h"
 
 using namespace e57;
 
@@ -56,10 +56,10 @@ std::shared_ptr<Encoder> Encoder::EncoderFactory( unsigned bytestreamNumber,
    ustring path = sbuf.pathName();
    NodeImplSharedPtr encodeNode = prototype->get( path );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "Node to encode:" << std::endl; //???
    encodeNode->dump( 2 );
-#endif
+~endif
    switch ( encodeNode->type() )
    {
       case E57_INTEGER:
@@ -192,12 +192,12 @@ Encoder::Encoder( unsigned bytestreamNumber ) : bytestreamNumber_( bytestreamNum
 {
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void Encoder::dump( int indent, std::ostream &os ) const
 {
    os << space( indent ) << "bytestreamNumber:       " << bytestreamNumber_ << std::endl;
 }
-#endif
+~endif
 
 ///================
 
@@ -226,9 +226,9 @@ size_t BitpackEncoder::outputAvailable() const
 
 void BitpackEncoder::outputRead( char *dest, const size_t byteCount )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "BitpackEncoder::outputRead() called, dest=" << dest << " byteCount=" << byteCount << std::endl; //???
-#endif
+~endif
 
    /// Check we have enough bytes in queue
    if ( byteCount > outputAvailable() )
@@ -240,7 +240,7 @@ void BitpackEncoder::outputRead( char *dest, const size_t byteCount )
    /// Copy output bytes to caller
    memcpy( dest, &outBuffer_[outBufferFirst_], byteCount );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    {
       unsigned i;
       for ( i = 0; i < byteCount && i < 20; i++ )
@@ -255,7 +255,7 @@ void BitpackEncoder::outputRead( char *dest, const size_t byteCount )
          std::cout << "  " << byteCount - 1 << " bytes unprinted..." << std::endl;
       }
    }
-#endif
+~endif
 
    /// Advance head pointer.
    outBufferFirst_ += byteCount;
@@ -345,7 +345,7 @@ void BitpackEncoder::outBufferShiftDown()
    outBufferEnd_ = newEnd;
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void BitpackEncoder::dump( int indent, std::ostream &os ) const
 {
    Encoder::dump( indent, os );
@@ -368,7 +368,7 @@ void BitpackEncoder::dump( int indent, std::ostream &os ) const
       os << space( indent + 4 ) << outBuffer_.size() - i << " more unprinted..." << std::endl;
    }
 }
-#endif
+~endif
 
 //================
 
@@ -382,9 +382,9 @@ BitpackFloatEncoder::BitpackFloatEncoder( unsigned bytestreamNumber, SourceDestB
 
 uint64_t BitpackFloatEncoder::processRecords( size_t recordCount )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "  BitpackFloatEncoder::processRecords() called, recordCount=" << recordCount << std::endl; //???
-#endif
+~endif
 
    /// Before we add any more, try to shift current contents of outBuffer_ down
    /// to beginning of buffer. This leaves outBufferEnd_ at a natural boundary.
@@ -392,7 +392,7 @@ uint64_t BitpackFloatEncoder::processRecords( size_t recordCount )
 
    size_t typeSize = ( precision_ == E57_SINGLE ) ? sizeof( float ) : sizeof( double );
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    /// Verify that outBufferEnd_ is multiple of typeSize (so transfers of floats
    /// are aligned naturally in memory).
    if ( outBufferEnd_ % typeSize )
@@ -400,7 +400,7 @@ uint64_t BitpackFloatEncoder::processRecords( size_t recordCount )
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL,
                             "outBufferEnd=" + toString( outBufferEnd_ ) + " typeSize=" + toString( typeSize ) );
    }
-#endif
+~endif
 
    /// Figure out how many records will fit in output.
    size_t maxOutputRecords = ( outBuffer_.size() - outBufferEnd_ ) / typeSize;
@@ -420,9 +420,9 @@ uint64_t BitpackFloatEncoder::processRecords( size_t recordCount )
       for ( unsigned i = 0; i < recordCount; i++ )
       {
          outp[i] = sourceBuffer_->getNextFloat();
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "encoding float: " << outp[i] << std::endl;
-#endif
+~endif
       }
    }
    else
@@ -434,9 +434,9 @@ uint64_t BitpackFloatEncoder::processRecords( size_t recordCount )
       for ( unsigned i = 0; i < recordCount; i++ )
       {
          outp[i] = sourceBuffer_->getNextDouble();
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "encoding double: " << outp[i] << std::endl;
-#endif
+~endif
       }
    }
 
@@ -460,7 +460,7 @@ float BitpackFloatEncoder::bitsPerRecord()
    return ( ( precision_ == E57_SINGLE ) ? 32.0F : 64.0F );
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void BitpackFloatEncoder::dump( int indent, std::ostream &os ) const
 {
    BitpackEncoder::dump( indent, os );
@@ -473,7 +473,7 @@ void BitpackFloatEncoder::dump( int indent, std::ostream &os ) const
       os << space( indent ) << "precision:                E57_DOUBLE" << std::endl;
    }
 }
-#endif
+~endif
 
 //================
 
@@ -486,9 +486,9 @@ BitpackStringEncoder::BitpackStringEncoder( unsigned bytestreamNumber, SourceDes
 
 uint64_t BitpackStringEncoder::processRecords( size_t recordCount )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "  BitpackStringEncoder::processRecords() called, recordCount=" << recordCount << std::endl; //???
-#endif
+~endif
 
    /// Before we add any more, try to shift current contents of outBuffer_ down
    /// to beginning of buffer.
@@ -511,7 +511,7 @@ uint64_t BitpackStringEncoder::processRecords( size_t recordCount )
          size_t len = currentString_.length();
          if ( len <= 127 )
          {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
             std::cout << "encoding short string: (len=" << len
                       << ") "
                          ""
@@ -519,7 +519,7 @@ uint64_t BitpackStringEncoder::processRecords( size_t recordCount )
                       << ""
                          ""
                       << std::endl;
-#endif
+~endif
             /// We can use the short length prefix: b0=0, b7-b1=len
             auto lengthPrefix = static_cast<uint8_t>( len << 1 );
             *outp++ = lengthPrefix;
@@ -527,14 +527,14 @@ uint64_t BitpackStringEncoder::processRecords( size_t recordCount )
          }
          else
          {
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
             /// Double check have space
             if ( bytesFree < 8 )
             {
                throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "bytesFree=" + toString( bytesFree ) );
             }
-#endif
-#ifdef E57_MAX_VERBOSE
+~endif
+~ifdef E57_MAX_VERBOSE
             std::cout << "encoding long string: (len=" << len
                       << ") "
                          ""
@@ -542,7 +542,7 @@ uint64_t BitpackStringEncoder::processRecords( size_t recordCount )
                       << ""
                          ""
                       << std::endl;
-#endif
+~endif
             /// We use the long length prefix: b0=1, b63-b1=len, and store in
             /// little endian order Shift the length and set the least
             /// significant bit, b0=1.
@@ -588,9 +588,9 @@ uint64_t BitpackStringEncoder::processRecords( size_t recordCount )
          isStringActive_ = true;
          prefixComplete_ = false;
          currentCharPosition_ = 0;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "getting next string, length=" << currentString_.length() << std::endl;
-#endif
+~endif
       }
    }
 
@@ -621,7 +621,7 @@ float BitpackStringEncoder::bitsPerRecord()
    return 100 * 8.0f;
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void BitpackStringEncoder::dump( int indent, std::ostream &os ) const
 {
    BitpackEncoder::dump( indent, os );
@@ -631,7 +631,7 @@ void BitpackStringEncoder::dump( int indent, std::ostream &os ) const
    os << space( indent ) << "currentString:          " << currentString_ << std::endl;
    os << space( indent ) << "currentCharPosition:    " << currentCharPosition_ << std::endl;
 }
-#endif
+~endif
 
 //================================================================
 
@@ -660,23 +660,23 @@ BitpackIntegerEncoder<RegisterT>::BitpackIntegerEncoder( bool isScaledInteger, u
 template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::processRecords( size_t recordCount )
 {
    //??? what are state guarantees if get an exception during transfer?
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "BitpackIntegerEncoder::processRecords() called, sizeof(RegisterT)=" << sizeof( RegisterT )
              << " recordCount=" << recordCount << std::endl;
    dump( 4 );
-#endif
-#ifdef E57_MAX_DEBUG
+~endif
+~ifdef E57_MAX_DEBUG
    /// Double check that register will hold at least one input records worth of
    /// bits
    if ( 8 * sizeof( RegisterT ) < bitsPerRecord_ )
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "bitsPerRecord=" + toString( bitsPerRecord_ ) );
-#endif
+~endif
 
    /// Before we add any more, try to shift current contents of outBuffer_ down
    /// to beginning of buffer. This leaves outBufferEnd_ at a natural boundary.
    outBufferShiftDown();
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    /// Verify that outBufferEnd_ is multiple of sizeof(RegisterT) (so transfers
    /// of RegisterT are aligned naturally in memory).
    if ( outBufferEnd_ % sizeof( RegisterT ) )
@@ -684,7 +684,7 @@ template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::process
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "outBufferEnd=" + toString( outBufferEnd_ ) );
    }
    size_t transferMax = ( outBuffer_.size() - outBufferEnd_ ) / sizeof( RegisterT );
-#endif
+~endif
 
    /// Precalculate exact maximum number of records that will fit in output
    /// before overflow.
@@ -696,10 +696,10 @@ template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::process
    /// Number of transfers is the smaller of what was requested and what will
    /// fit.
    recordCount = std::min( recordCount, maxOutputRecords );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "  outputWordCapacity=" << outputWordCapacity << " maxOutputRecords=" << maxOutputRecords
              << " recordCount=" << recordCount << std::endl;
-#endif
+~endif
 
    /// Form the starting address for next available location in outBuffer
    auto outp = reinterpret_cast<RegisterT *>( &outBuffer_[outBufferEnd_] );
@@ -731,40 +731,40 @@ template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::process
 
       auto uValue = static_cast<uint64_t>( rawValue - minimum_ );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "encoding integer rawValue=" << binaryString( rawValue ) << " = " << hexString( rawValue )
                 << std::endl;
       std::cout << "                 uValue  =" << binaryString( uValue ) << " = " << hexString( uValue ) << std::endl;
-#endif
-#ifdef E57_DEBUG
+~endif
+~ifdef E57_DEBUG
       /// Double check that no bits outside of the mask are set
       if ( uValue & ~static_cast<uint64_t>( sourceBitMask_ ) )
       {
          throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "uValue=" + toString( uValue ) );
       }
-#endif
+~endif
       /// Mask off upper bits (just in case)
       uValue &= static_cast<uint64_t>( sourceBitMask_ );
 
       /// See if uValue bits will fit in register
       unsigned newRegisterBitsUsed = registerBitsUsed_ + bitsPerRecord_;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "  registerBitsUsed=" << registerBitsUsed_ << "  newRegisterBitsUsed=" << newRegisterBitsUsed
                 << std::endl;
-#endif
+~endif
       if ( newRegisterBitsUsed > 8 * sizeof( RegisterT ) )
       {
          /// Have more than one registers worth, fill register, transfer, then
          /// fill some more
          register_ |= static_cast<RegisterT>( uValue ) << registerBitsUsed_;
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
          /// Before transfer, double check address within bounds
          if ( outTransferred >= transferMax )
          {
             throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "outTransferred=" + toString( outTransferred ) + " transferMax" +
                                                          toString( transferMax ) );
          }
-#endif
+~endif
          outp[outTransferred] = register_;
 
          outTransferred++;
@@ -776,14 +776,14 @@ template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::process
       {
          /// Input will exactly fill register, insert value, then transfer
          register_ |= static_cast<RegisterT>( uValue ) << registerBitsUsed_;
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
          /// Before transfer, double check address within bounds
          if ( outTransferred >= transferMax )
          {
             throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "outTransferred=" + toString( outTransferred ) + " transferMax" +
                                                          toString( transferMax ) );
          }
-#endif
+~endif
          outp[outTransferred] = register_;
 
          outTransferred++;
@@ -798,22 +798,22 @@ template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::process
          register_ |= static_cast<RegisterT>( uValue ) << registerBitsUsed_;
          registerBitsUsed_ = newRegisterBitsUsed;
       }
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "  After " << outTransferred << " transfers and " << i + 1 << " records, encoder:" << std::endl;
       dump( 4 );
-#endif
+~endif
    }
 
    /// Update tail of output buffer
    outBufferEnd_ += outTransferred * sizeof( RegisterT );
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    /// Double check end is ok
    if ( outBufferEnd_ > outBuffer_.size() )
    {
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "outBufferEnd=" + toString( outBufferEnd_ ) +
                                                    " outBuffersize=" + toString( outBuffer_.size() ) );
    }
-#endif
+~endif
 
    /// Update counts of records processed
    currentRecordIndex_ += recordCount;
@@ -823,12 +823,12 @@ template <typename RegisterT> uint64_t BitpackIntegerEncoder<RegisterT>::process
 
 template <typename RegisterT> bool BitpackIntegerEncoder<RegisterT>::registerFlushToOutput()
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "BitpackIntegerEncoder::registerFlushToOutput() called, "
                 "sizeof(RegisterT)="
              << sizeof( RegisterT ) << std::endl;
    dump( 4 );
-#endif
+~endif
    /// If have any used bits in register, transfer to output, padded in MSBits
    /// with zeros to RegisterT boundary
    if ( registerBitsUsed_ > 0 )
@@ -854,7 +854,7 @@ template <typename RegisterT> float BitpackIntegerEncoder<RegisterT>::bitsPerRec
    return ( static_cast<float>( bitsPerRecord_ ) );
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 template <typename RegisterT> void BitpackIntegerEncoder<RegisterT>::dump( int indent, std::ostream &os ) const
 {
    BitpackEncoder::dump( indent, os );
@@ -870,7 +870,7 @@ template <typename RegisterT> void BitpackIntegerEncoder<RegisterT>::dump( int i
       << std::endl;
    os << space( indent ) << "registerBitsUsed: " << registerBitsUsed_ << std::endl;
 }
-#endif
+~endif
 
 //================================================================
 
@@ -881,10 +881,10 @@ ConstantIntegerEncoder::ConstantIntegerEncoder( unsigned bytestreamNumber, Sourc
 
 uint64_t ConstantIntegerEncoder::processRecords( size_t recordCount )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "ConstantIntegerEncoder::processRecords() called, recordCount=" << recordCount << std::endl;
    dump( 4 );
-#endif
+~endif
 
    /// Check that all source values are == minimum_
    for ( unsigned i = 0; i < recordCount; i++ )
@@ -965,7 +965,7 @@ void ConstantIntegerEncoder::outputSetMaxSize( unsigned /*byteCount*/ )
    /// Ignore, since don't produce any output
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void ConstantIntegerEncoder::dump( int indent, std::ostream &os ) const
 {
    Encoder::dump( indent, os );
@@ -974,4 +974,4 @@ void ConstantIntegerEncoder::dump( int indent, std::ostream &os ) const
    os << space( indent ) << "sourceBuffer:" << std::endl;
    sourceBuffer_->dump( indent + 4, os );
 }
-#endif
+~endif

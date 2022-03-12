@@ -25,10 +25,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <cmath>
+~include <cmath>
 
-#include "ImageFileImpl.h"
-#include "SourceDestBufferImpl.h"
+~include "ImageFileImpl.h"
+~include "SourceDestBufferImpl.h"
 
 using namespace e57;
 
@@ -253,14 +253,14 @@ template <typename T> void SourceDestBufferImpl::_setNextReal( T inValue )
          }
          else
          {
-#ifdef _MSC_VER
+~ifdef _MSC_VER
             // MSVC is not smart enough to realize 'inValue' cannot be a double here, so disable warning
-#pragma warning( disable : 4244 )
+~pragma warning( disable : 4244 )
             *reinterpret_cast<float *>( p ) = inValue;
-#pragma warning( default : 4244 )
-#else
+~pragma warning( default : 4244 )
+~else
             *reinterpret_cast<float *>( p ) = inValue;
-#endif
+~endif
          }
          break;
       case E57_REAL64:
@@ -988,7 +988,7 @@ void SourceDestBufferImpl::checkCompatible( const std::shared_ptr<SourceDestBuff
    }
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void SourceDestBufferImpl::dump( int indent, std::ostream &os )
 {
    /// don't checkImageFileOpen
@@ -1042,4 +1042,4 @@ void SourceDestBufferImpl::dump( int indent, std::ostream &os )
    os << space( indent ) << "stride:               " << stride_ << std::endl;
    os << space( indent ) << "nextIndex:            " << nextIndex_ << std::endl;
 }
-#endif
+~endif

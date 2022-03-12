@@ -20,53 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Parab.hxx>
-# include <gp_Hypr.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_Curve.hxx>
-# include <Geom2dAPI_InterCurveCurve.hxx>
-# include <Geom2dAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI.hxx>
-# include <GeomAdaptor.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepIntCurveSurface_Inter.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <GProp_GProps.hxx>
-# include <GProp_PGProps.hxx>
-# include <GProp_PrincipalProps.hxx>
-# include <BRepGProp.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <TopoDS.hxx>
+~ include <BRep_Tool.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Pnt.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Elips.hxx>
+~ include <gp_Parab.hxx>
+~ include <gp_Hypr.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom2d_Curve.hxx>
+~ include <Geom2dAPI_InterCurveCurve.hxx>
+~ include <Geom2dAPI_ProjectPointOnCurve.hxx>
+~ include <GeomAPI.hxx>
+~ include <GeomAdaptor.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <BRepIntCurveSurface_Inter.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <ShapeExtend_Explorer.hxx>
+~ include <GProp_GProps.hxx>
+~ include <GProp_PGProps.hxx>
+~ include <GProp_PrincipalProps.hxx>
+~ include <BRepGProp.hxx>
+~ include <GeomLib_IsPlanarSurface.hxx>
+~ include <BRepLProp_SLProps.hxx>
+~ include <GeomAPI_ProjectPointOnCurve.hxx>
+~endif
 
-#include "Attacher.h"
-#include "AttachExtension.h"
-#include "Tools.h"
-#include <Base/Console.h>
-#include <App/OriginFeature.h>
-#include <App/Application.h>
-#include <App/Document.h>
+~include "Attacher.h"
+~include "AttachExtension.h"
+~include "Tools.h"
+~include <Base/Console.h>
+~include <App/OriginFeature.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
 using namespace Part;
 using namespace Attacher;
@@ -494,9 +494,9 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
         case GeomAbs_BezierCurve:
         case GeomAbs_BSplineCurve:
         case GeomAbs_OtherCurve:
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
         case GeomAbs_OffsetCurve:
-#endif
+~endif
             return rtCurve;
         }
     }break;
@@ -1595,7 +1595,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     //DeepSOIC: this hardcore math can probably be replaced with a couple of
     //clever OCC calls... See forum thread "Sketch mapping enhancement" for a
     //picture on how this math was derived.
-    //http://forum.freecadweb.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
+    //http://forum.freecadweb.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40~p87584
     axA.Normalize();
     axB.Normalize();
     edA.Normalize();
@@ -2101,7 +2101,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placem
 
 gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
 {
-    // #0003921: Crash when opening document with datum point intersecting line and plane
+    // ~0003921: Crash when opening document with datum point intersecting line and plane
     //
     // BRepExtrema_DistanceSS is used inside BRepExtrema_DistShapeShape and can cause
     // a crash if the input shape is an unlimited face.

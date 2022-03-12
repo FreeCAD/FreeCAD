@@ -22,20 +22,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QLineEdit>
-# include <QPainter>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QLineEdit>
+~ include <QPainter>
+~endif
 
-#include <Base/Console.h>
-#include "SpreadsheetDelegate.h"
-#include "LineEdit.h"
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <Gui/ExpressionCompleter.h>
-#include "DlgBindSheet.h"
+~include <Base/Console.h>
+~include "SpreadsheetDelegate.h"
+~include "LineEdit.h"
+~include <Base/Console.h>
+~include <App/DocumentObject.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
+~include <Gui/ExpressionCompleter.h>
+~include "DlgBindSheet.h"
 
 FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
@@ -134,5 +134,5 @@ void SpreadsheetDelegate::paint(QPainter *painter,
     drawBorder(painter, option, sheet->getCopyOrCutBorder(addr,false), Qt::red, Qt::DashLine);
 }
 
-#include "moc_SpreadsheetDelegate.cpp"
+~include "moc_SpreadsheetDelegate.cpp"
 

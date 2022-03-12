@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <boost_bind_bind.hpp>
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <boost_bind_bind.hpp>
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include "ViewProviderAnalysis.h"
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-#include <Gui/ActionFunction.h>
+~include "ViewProviderAnalysis.h"
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Control.h>
+~include <Gui/ActionFunction.h>
 
-#include <Mod/Fem/App/FemAnalysis.h>
-#include <Mod/Fem/App/FemSolverObject.h>
-#include <Mod/Fem/App/FemResultObject.h>
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemSetObject.h>
-#include <Mod/Fem/App/FemConstraint.h>
-#include <App/MaterialObject.h>
-#include <App/TextDocument.h>
+~include <Mod/Fem/App/FemAnalysis.h>
+~include <Mod/Fem/App/FemSolverObject.h>
+~include <Mod/Fem/App/FemResultObject.h>
+~include <Mod/Fem/App/FemMeshObject.h>
+~include <Mod/Fem/App/FemSetObject.h>
+~include <Mod/Fem/App/FemConstraint.h>
+~include <App/MaterialObject.h>
+~include <App/TextDocument.h>
 
-#include "TaskDlgAnalysis.h"
+~include "TaskDlgAnalysis.h"
 
-#ifdef FC_USE_VTK
-    #include <Mod/Fem/App/FemPostObject.h>
-#endif
+~ifdef FC_USE_VTK
+    ~include <Mod/Fem/App/FemPostObject.h>
+~endif
 
 
 using namespace FemGui;
@@ -208,10 +208,10 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
         return true;
     else if (obj->getTypeId().isDerivedFrom(App::TextDocument::getClassTypeId()))
         return true;
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     else if (obj->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId()))
         return true;
-#endif
+~endif
     else
         return false;
 }

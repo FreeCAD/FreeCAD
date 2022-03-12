@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
 
 using namespace PointsGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Points tools");
     qApp->translate("Workbench", "&Points");
-#endif
+~endif
 
 /// @namespace PointsGui @class Workbench
 TYPESYSTEM_SOURCE(PointsGui::Workbench, Gui::StdWorkbench)

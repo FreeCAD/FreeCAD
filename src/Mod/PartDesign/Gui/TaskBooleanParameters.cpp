@@ -22,25 +22,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMessageBox>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureBoolean.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureBoolean.h>
 
-#include "ui_TaskBooleanParameters.h"
-#include "TaskBooleanParameters.h"
+~include "ui_TaskBooleanParameters.h"
+~include "TaskBooleanParameters.h"
 
 
 using namespace PartDesignGui;
@@ -80,10 +80,10 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetBodies->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onBodyDeleted()));
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -397,4 +397,4 @@ bool TaskDlgBooleanParameters::reject()
 
 
 
-#include "moc_TaskBooleanParameters.cpp"
+~include "moc_TaskBooleanParameters.cpp"

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "PropertyRowHeights.h"
+~include "PropertyRowHeights.h"
 
 // inclusion of the generated files (generated out of PropertyRowHeightsPy.xml)
-#include "PropertyRowHeightsPy.h"
-#include "PropertyRowHeightsPy.cpp"
+~include "PropertyRowHeightsPy.h"
+~include "PropertyRowHeightsPy.cpp"
 
 using namespace Spreadsheet;
 

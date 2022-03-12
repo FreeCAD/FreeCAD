@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ui_TaskTrajectory.h"
-#include "TaskTrajectory.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+~include "ui_TaskTrajectory.h"
+~include "TaskTrajectory.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
 
 
 using namespace RobotGui;
@@ -212,4 +212,4 @@ void TaskTrajectory::valueChanged ( double value )
 }
 
 
-#include "moc_TaskTrajectory.cpp"
+~include "moc_TaskTrajectory.cpp"

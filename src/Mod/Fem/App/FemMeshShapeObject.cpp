@@ -21,56 +21,56 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <SMESH_Version.h>
+~include "PreCompiled.h"
+~include <SMESH_Version.h>
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <SMESH_Gen.hxx>
-# include <SMESH_Mesh.hxx>
-# include <SMDS_VolumeTool.hxx>
-# include <StdMeshers_Arithmetic1D.hxx>
-# include <StdMeshers_AutomaticLength.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_UseExisting_1D2D.hxx>
-# include <StdMeshers_CompositeSegment_1D.hxx>
-# include <StdMeshers_Deflection1D.hxx>
-# include <StdMeshers_Hexa_3D.hxx>
-# include <StdMeshers_LayerDistribution.hxx>
-# include <StdMeshers_LengthFromEdges.hxx>
-# include <StdMeshers_MaxElementVolume.hxx>
-# include <StdMeshers_MEFISTO_2D.hxx>
-# include <StdMeshers_NumberOfLayers.hxx>
-# include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_Prism_3D.hxx>
-# include <StdMeshers_Projection_1D.hxx>
-# include <StdMeshers_Projection_2D.hxx>
-# include <StdMeshers_Projection_3D.hxx>
-# include <StdMeshers_QuadraticMesh.hxx>
-# include <StdMeshers_RadialPrism_3D.hxx>
-# include <StdMeshers_SegmentAroundVertex_0D.hxx>
-# include <StdMeshers_ProjectionSource1D.hxx>
-# include <StdMeshers_ProjectionSource2D.hxx>
-# include <StdMeshers_ProjectionSource3D.hxx>
-# include <StdMeshers_SegmentLengthAroundVertex.hxx>
-# include <StdMeshers_StartEndLength.hxx>
-# include <StdMeshers_CompositeHexa_3D.hxx>
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <SMESH_Gen.hxx>
+~ include <SMESH_Mesh.hxx>
+~ include <SMDS_VolumeTool.hxx>
+~ include <StdMeshers_Arithmetic1D.hxx>
+~ include <StdMeshers_AutomaticLength.hxx>
+~ include <StdMeshers_MaxLength.hxx>
+~ include <StdMeshers_LocalLength.hxx>
+~ include <StdMeshers_MaxElementArea.hxx>
+~ include <StdMeshers_NotConformAllowed.hxx>
+~ include <StdMeshers_QuadranglePreference.hxx>
+~ include <StdMeshers_Quadrangle_2D.hxx>
+~ include <StdMeshers_Regular_1D.hxx>
+~ include <StdMeshers_UseExisting_1D2D.hxx>
+~ include <StdMeshers_CompositeSegment_1D.hxx>
+~ include <StdMeshers_Deflection1D.hxx>
+~ include <StdMeshers_Hexa_3D.hxx>
+~ include <StdMeshers_LayerDistribution.hxx>
+~ include <StdMeshers_LengthFromEdges.hxx>
+~ include <StdMeshers_MaxElementVolume.hxx>
+~ include <StdMeshers_MEFISTO_2D.hxx>
+~ include <StdMeshers_NumberOfLayers.hxx>
+~ include <StdMeshers_NumberOfSegments.hxx>
+~ include <StdMeshers_Prism_3D.hxx>
+~ include <StdMeshers_Projection_1D.hxx>
+~ include <StdMeshers_Projection_2D.hxx>
+~ include <StdMeshers_Projection_3D.hxx>
+~ include <StdMeshers_QuadraticMesh.hxx>
+~ include <StdMeshers_RadialPrism_3D.hxx>
+~ include <StdMeshers_SegmentAroundVertex_0D.hxx>
+~ include <StdMeshers_ProjectionSource1D.hxx>
+~ include <StdMeshers_ProjectionSource2D.hxx>
+~ include <StdMeshers_ProjectionSource3D.hxx>
+~ include <StdMeshers_SegmentLengthAroundVertex.hxx>
+~ include <StdMeshers_StartEndLength.hxx>
+~ include <StdMeshers_CompositeHexa_3D.hxx>
 
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools.hxx>
-#endif
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepTools.hxx>
+~endif
 
-#include "FemMeshShapeObject.h"
-#include "FemMesh.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "FemMeshShapeObject.h"
+~include "FemMesh.h"
+~include <App/DocumentObjectPy.h>
+~include <Base/Placement.h>
+~include <Mod/Part/App/PartFeature.h>
 
 using namespace Fem;
 using namespace App;
@@ -93,20 +93,20 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
 
-#if 0
+~if 0
     TopoDS_Shape oshape = feat->Shape.getValue();
     BRepBuilderAPI_Copy copy(oshape);
     const TopoDS_Shape& shape = copy.Shape();
     BRepTools::Clean(shape); // remove triangulation
-#else
+~else
     TopoDS_Shape shape = feat->Shape.getValue();
-#endif
+~endif
 
     newMesh.getSMesh()->ShapeToMesh(shape);
     SMESH_Gen *myGen = newMesh.getGenerator();
 
     int hyp=0;
-#if 0
+~if 0
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     newMesh.addHypothesis(shape, len);
@@ -145,9 +145,9 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     // create mesh
     newMesh.compute();
-#endif
-#if 1  // Surface quad mesh
-#if SMESH_VERSION_MAJOR >= 9
+~endif
+~if 1  // Surface quad mesh
+~if SMESH_VERSION_MAJOR >= 9
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     newMesh.addHypothesis(shape, len);
@@ -176,7 +176,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,myGen));
     newMesh.addHypothesis(shape, q2d);
-#else
+~else
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     newMesh.addHypothesis(shape, len);
@@ -209,12 +209,12 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
     newMesh.addHypothesis(shape, q2d);
-#endif
+~endif
 
     // create mesh
     newMesh.compute();
-#endif
-#if 0 // NETGEN test
+~endif
+~if 0 // NETGEN test
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
 
     //NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
     //myNetGenMesher.SetParameters( tet);
 
     myNetGenMesher.Compute();
-#endif
+~endif
 
 
 

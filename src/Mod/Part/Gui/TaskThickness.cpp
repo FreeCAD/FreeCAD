@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTextStream>
+~endif
 
-#include "ui_TaskOffset.h"
-#include "TaskThickness.h"
+~include "ui_TaskOffset.h"
+~include "TaskThickness.h"
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/CommandT.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/ViewProvider.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Command.h>
-#include <Mod/Part/App/PartFeatures.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Command.h>
+~include <Mod/Part/App/PartFeatures.h>
 
 
 using namespace PartGui;
@@ -322,4 +322,4 @@ bool TaskThickness::reject()
     return widget->reject();
 }
 
-#include "moc_TaskThickness.cpp"
+~include "moc_TaskThickness.cpp"

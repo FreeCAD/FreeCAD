@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <fcntl.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <fcntl.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include "FeaturePartImportStep.h"
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include "FeaturePartImportStep.h"
 
 
 using namespace Part;

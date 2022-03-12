@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TaskChamferParameters.h"
-#include "ViewProviderChamfer.h"
+~include "TaskChamferParameters.h"
+~include "ViewProviderChamfer.h"
 
 using namespace PartDesignGui;
 

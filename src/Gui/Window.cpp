@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <qglobal.h>
-#include "Window.h"
+~include <qglobal.h>
+~include "Window.h"
 
-#include <App/Application.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <Base/Console.h>
 
 using namespace Gui;
 

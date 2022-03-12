@@ -15,23 +15,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QMenu>
-# include <QMouseEvent>
-# include <QSlider>
-# include <QStatusBar>
-# include <QToolBar>
-# include <cmath>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QApplication>
+~ include <QMenu>
+~ include <QMouseEvent>
+~ include <QSlider>
+~ include <QStatusBar>
+~ include <QToolBar>
+~ include <cmath>
+~endif
 
-#include "ImageView.h"
-#include "../App/ImageBase.h"
-#include "XpmImages.h"
-#include <Base/Parameter.h>
-#include <App/Application.h>
+~include "ImageView.h"
+~include "../App/ImageBase.h"
+~include "XpmImages.h"
+~include <Base/Parameter.h>
+~include <App/Application.h>
 
 using namespace ImageGui;
 
@@ -404,9 +404,9 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
 // Mouse move event
 void ImageView::mouseMoveEvent(QMouseEvent* cEvent)
 {
-#if QT_VERSION < 0x050900
+~if QT_VERSION < 0x050900
     QApplication::flush();
-#endif
+~endif
 
    // Mouse event coordinates are relative to top-left of image view (including toolbar!)
    // Get current cursor position relative to top-left of image box
@@ -472,21 +472,21 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
        QPoint pos = cEvent->position().toPoint();
        int box_x = pos.x() - offset.x();
        int box_y = pos.y() - offset.y();
-#else
+~else
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
-#endif
+~endif
 
        // Zoom around centrally displayed image point
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
        int numTicks = cEvent->angleDelta().y() / 120;
-#else
+~else
        int numTicks = cEvent->delta() / 120;
-#endif
+~endif
        if (_invertZoom)
            numTicks = -numTicks;
 
@@ -683,6 +683,6 @@ void ImageView::drawGraphics()
     */
 }
 
-#include "moc_ImageView.cpp"
+~include "moc_ImageView.cpp"
 
 

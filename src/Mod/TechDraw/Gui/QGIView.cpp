@@ -20,61 +20,61 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QGraphicsSceneMouseEvent>
-#include <QMenu>
-#include <QMessageBox>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QTextOption>
-#include <QTransform>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QAction>
+~include <QApplication>
+~include <QContextMenuEvent>
+~include <QGraphicsScene>
+~include <QGraphicsSceneHoverEvent>
+~include <QGraphicsSceneMouseEvent>
+~include <QMenu>
+~include <QMessageBox>
+~include <QMouseEvent>
+~include <QPainter>
+~include <QPainterPathStroker>
+~include <QStyleOptionGraphicsItem>
+~include <QTextOption>
+~include <QTransform>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Tools.h>
-#include <Gui/ViewProvider.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Tools.h>
+~include <Gui/ViewProvider.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGCustomLabel.h"
-#include "QGCustomBorder.h"
-#include "QGCustomText.h"
-#include "QGICaption.h"
-#include "QGCustomClip.h"
-#include "QGCustomImage.h"
-#include "QGIVertex.h"
-#include "QGIViewClip.h"
-#include "ViewProviderDrawingView.h"
-#include "ViewProviderPage.h"
-#include "MDIViewPage.h"
-#include "QGICMark.h"
-#include "QGTracker.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "DrawGuiUtil.h"
+~include "QGVPage.h"
+~include "QGCustomLabel.h"
+~include "QGCustomBorder.h"
+~include "QGCustomText.h"
+~include "QGICaption.h"
+~include "QGCustomClip.h"
+~include "QGCustomImage.h"
+~include "QGIVertex.h"
+~include "QGIViewClip.h"
+~include "ViewProviderDrawingView.h"
+~include "ViewProviderPage.h"
+~include "MDIViewPage.h"
+~include "QGICMark.h"
+~include "QGTracker.h"
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawViewClip.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "PreferencesGui.h"
-#include "QGIView.h"
+~include "PreferencesGui.h"
+~include "QGIView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -763,4 +763,4 @@ void QGIView::makeMark(QPointF v, QColor c)
     makeMark(v.x(),v.y(), c);
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIView.cpp>
+~include <Mod/TechDraw/Gui/moc_QGIView.cpp>

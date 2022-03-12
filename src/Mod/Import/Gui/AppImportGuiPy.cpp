@@ -21,119 +21,119 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#if defined(__MINGW32__)
-# define WNT // avoid conflict with GUID
-#endif
-#ifndef _PreComp_
-# include <Python.h>
-# include <iostream>
-# include <climits>
-# include <QString>
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wextra-semi"
-#endif
-# include <Standard_Version.hxx>
-# include <NCollection_Vector.hxx>
-# include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
-# include <STEPControl_Writer.hxx>
-# include <IGESCAFControl_Reader.hxx>
-# include <IGESCAFControl_Writer.hxx>
-# include <IGESControl_Controller.hxx>
-# include <IGESData_GlobalSection.hxx>
-# include <IGESData_IGESModel.hxx>
-# include <IGESToBRep_Actor.hxx>
-# include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
-# include <OSD_Exception.hxx>
-# include <TColStd_IndexedDataMapOfStringString.hxx>
-#if OCC_VERSION_HEX >= 0x070500
-# include <RWGltf_CafWriter.hxx>
-# include <Message_ProgressRange.hxx>
-#endif
-#if OCC_VERSION_HEX >= 0x060500
-# include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
-# endif
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
-#endif
+~include "PreCompiled.h"
+~if defined(__MINGW32__)
+~ define WNT // avoid conflict with GUID
+~endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <iostream>
+~ include <climits>
+~ include <QString>
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wextra-semi"
+~endif
+~ include <Standard_Version.hxx>
+~ include <NCollection_Vector.hxx>
+~ include <BRep_Builder.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <XCAFDoc_DocumentTool.hxx>
+~ include <XCAFDoc_ShapeTool.hxx>
+~ include <XCAFDoc_ColorTool.hxx>
+~ include <XCAFDoc_Location.hxx>
+~ include <TDF_Label.hxx>
+~ include <TDF_LabelSequence.hxx>
+~ include <TDF_ChildIterator.hxx>
+~ include <TDataStd_Name.hxx>
+~ include <Quantity_Color.hxx>
+~ include <STEPCAFControl_Reader.hxx>
+~ include <STEPCAFControl_Writer.hxx>
+~ include <STEPControl_Writer.hxx>
+~ include <IGESCAFControl_Reader.hxx>
+~ include <IGESCAFControl_Writer.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <IGESData_GlobalSection.hxx>
+~ include <IGESData_IGESModel.hxx>
+~ include <IGESToBRep_Actor.hxx>
+~ include <Interface_Static.hxx>
+~ include <Transfer_TransientProcess.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <XSControl_TransferReader.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_MapOfShape.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <APIHeaderSection_MakeHeader.hxx>
+~ include <OSD_Exception.hxx>
+~ include <TColStd_IndexedDataMapOfStringString.hxx>
+~if OCC_VERSION_HEX >= 0x070500
+~ include <RWGltf_CafWriter.hxx>
+~ include <Message_ProgressRange.hxx>
+~endif
+~if OCC_VERSION_HEX >= 0x060500
+~ include <TDataXtd_Shape.hxx>
+~ else
+~ include <TDataStd_Shape.hxx>
+~ endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Import/App/ImportOCAF2.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Command.h>
+~include <Mod/Part/Gui/ViewProvider.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/ProgressIndicator.h>
+~include <Mod/Part/App/ImportIges.h>
+~include <Mod/Part/App/ImportStep.h>
+~include <Mod/Part/App/encodeFilename.h>
+~include <Mod/Import/App/ImportOCAF2.h>
 
-#include <TDataStd.hxx>
-#include <TDataStd_Integer.hxx>
-#include <TDataStd_TreeNode.hxx>
-#include <TDF_ChildIDIterator.hxx>
-#include <TDF_AttributeIterator.hxx>
-#include <TDF_Data.hxx>
-#include <TDF_IDList.hxx>
-#include <TDF_ListIteratorOfIDList.hxx>
-#include <TDF_TagSource.hxx>
-#include <TDocStd_Owner.hxx>
-#include <TNaming_NamedShape.hxx>
-#include <TNaming_UsedShapes.hxx>
-#include <XCAFDoc.hxx>
-#include <XCAFDoc_Color.hxx>
-#include <XCAFDoc_LayerTool.hxx>
-#include <XCAFDoc_ShapeMapTool.hxx>
-#include <QApplication>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QPointer>
-#include <QStyle>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QTextStream>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+~include <TDataStd.hxx>
+~include <TDataStd_Integer.hxx>
+~include <TDataStd_TreeNode.hxx>
+~include <TDF_ChildIDIterator.hxx>
+~include <TDF_AttributeIterator.hxx>
+~include <TDF_Data.hxx>
+~include <TDF_IDList.hxx>
+~include <TDF_ListIteratorOfIDList.hxx>
+~include <TDF_TagSource.hxx>
+~include <TDocStd_Owner.hxx>
+~include <TNaming_NamedShape.hxx>
+~include <TNaming_UsedShapes.hxx>
+~include <XCAFDoc.hxx>
+~include <XCAFDoc_Color.hxx>
+~include <XCAFDoc_LayerTool.hxx>
+~include <XCAFDoc_ShapeMapTool.hxx>
+~include <QApplication>
+~include <QDialog>
+~include <QDialogButtonBox>
+~include <QPointer>
+~include <QStyle>
+~include <QTreeWidget>
+~include <QTreeWidgetItem>
+~include <QTextStream>
+~include <QHBoxLayout>
+~include <QVBoxLayout>
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/ViewProviderLink.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/ViewProviderLink.h>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
@@ -202,15 +202,15 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
         item->setText(0, text);
     }
 
-#if 0
+~if 0
     TDF_IDList localList = myList;
-#else
+~else
     TDF_IDList localList;
     TDF_AttributeIterator itr (label);
     for ( ; itr.More(); itr.Next()) {
         localList.Append(itr.Value()->ID());
     }
-#endif
+~endif
 
     for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
         Handle(TDF_Attribute) attr;
@@ -468,16 +468,16 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
-#endif
+~endif
                     aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
-#endif
+~endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -504,16 +504,16 @@ private:
                         throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot read IGES file");
                     }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
-#endif
+~endif
                     aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
-#endif
+~endif
                     // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
@@ -636,10 +636,10 @@ private:
                 ocaf.getPartColors(hierarchical_part,FreeLabels,part_id,Colors);
                 ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
-#if OCC_VERSION_HEX >= 0x070200
+~if OCC_VERSION_HEX >= 0x070200
             // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
+~endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
@@ -656,11 +656,11 @@ private:
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
-#if OCC_VERSION_HEX >= 0x060500
+~if OCC_VERSION_HEX >= 0x060500
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-#else
+~else
                 APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
-#endif
+~endif
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
@@ -692,11 +692,11 @@ private:
                 }
             }
             else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
-#if OCC_VERSION_HEX >= 0x070500
+~if OCC_VERSION_HEX >= 0x070500
                 TColStd_IndexedDataMapOfStringString aMetadata;
                 RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
                 aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
-                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
+                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md~coordinate-system-and-units
                 aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
                 aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
                 Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
@@ -704,9 +704,9 @@ private:
                     PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
                     throw Py::Exception();
                 }
-#else
+~else
                 throw Py::RuntimeError("gITF support requires OCCT 7.5.0 or later");
-#endif
+~endif
             }
 
             hApp->Close(hDoc);
@@ -744,16 +744,16 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                 }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                 Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.Reader().WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading STEP file...");
                 pi->Show();
-#endif
+~endif
                 aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                 pi->EndScope();
-#endif
+~endif
             }
             else if (file.hasExtension("igs") || file.hasExtension("iges")) {
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -770,16 +770,16 @@ private:
                     throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                 }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                 Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                 aReader.WS()->MapReader()->SetProgress(pi);
                 pi->NewScope(100, "Reading IGES file...");
                 pi->Show();
-#endif
+~endif
                 aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                 pi->EndScope();
-#endif
+~endif
                 // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                 Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                         ->SetModel(new IGESData_IGESModel);

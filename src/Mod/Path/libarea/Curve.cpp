@@ -2,11 +2,11 @@
 // Copyright 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
-#include "Curve.h"
-#include "Circle.h"
-#include "Arc.h"
-#include "Area.h"
-#include "kurve/geometry.h"
+~include "Curve.h"
+~include "Circle.h"
+~include "Arc.h"
+~include "Area.h"
+~include "kurve/geometry.h"
 
 const Point operator*(const double &d, const Point &p){ return p * d;}
 double Point::tolerance = 0.001;

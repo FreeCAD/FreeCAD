@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+~include "Workbench.h"
+~include <Gui/MenuManager.h>
+~include <Gui/ToolBarManager.h>
 
 using namespace ReverseEngineeringGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Reverse Engineering");
-#endif
+~endif
 
 /// @namespace ReverseEngineeringGui @class Workbench
 TYPESYSTEM_SOURCE(ReverseEngineeringGui::Workbench, Gui::StdWorkbench)

@@ -21,47 +21,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/nodes/SoDrawStyle.h>
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoIndexedPointSet.h>
+~ include <Inventor/nodes/SoIndexedLineSet.h>
+~ include <Inventor/nodes/SoIndexedFaceSet.h>
+~ include <Inventor/nodes/SoIndexedTriangleStripSet.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoNormal.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoPointSet.h>
+~ include <Inventor/nodes/SoPolygonOffset.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
 
-# include <vtkPointData.h>
-# include <vtkCellArray.h>
-# include <vtkCellData.h>
-# include <vtkLookupTable.h>
+~ include <vtkPointData.h>
+~ include <vtkCellArray.h>
+~ include <vtkCellData.h>
+~ include <vtkLookupTable.h>
 
-# include <QMessageBox>
-#endif
+~ include <QMessageBox>
+~endif
 
-#include "ViewProviderFemPostObject.h"
-#include "TaskPostBoxes.h"
-#include <Mod/Fem/App/FemPostObject.h>
-#include <Base/Console.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/SoFCColorBar.h>
+~include "ViewProviderFemPostObject.h"
+~include "TaskPostBoxes.h"
+~include <Mod/Fem/App/FemPostObject.h>
+~include <Base/Console.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/Control.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/SoFCColorBar.h>
 
 using namespace FemGui;
 
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
 typedef const vtkIdType* vtkIdTypePtr;
-#else
+~else
 typedef vtkIdType* vtkIdTypePtr;
-#endif
+~endif
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
@@ -555,7 +555,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 }
 
 bool ViewProviderFemPostObject::doubleClicked(void) {
-    // work around for a problem in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
+    // work around for a problem in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130~p125688
     // check if backlight is enabled
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);

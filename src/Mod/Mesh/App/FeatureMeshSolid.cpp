@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
 
-#include "FeatureMeshSolid.h"
-#include "Mesh.h"
+~include "FeatureMeshSolid.h"
+~include "Mesh.h"
 
 
 namespace Mesh {

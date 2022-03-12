@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 /*********ROUTINE.CPP*********/
-#include "PreCompiled.h"
-#include <cmath>
-#include "routine.h"
+~include "PreCompiled.h"
+~include <cmath>
+~include "routine.h"
 
 
 ///*********BINDINGS********/
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/bindings/traits/ublas_matrix.hpp>
-#include <boost/numeric/bindings/atlas/clapack.hpp>
+~include <boost/numeric/ublas/matrix.hpp>
+~include <boost/numeric/bindings/traits/ublas_matrix.hpp>
+~include <boost/numeric/bindings/atlas/clapack.hpp>
 
 using namespace boost::numeric::bindings;
 using namespace boost::numeric;

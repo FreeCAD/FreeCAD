@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Handle.h>
+~include <Base/Console.h>
+~include <Base/Handle.h>
 
-#include "Core/Evaluation.h"
-#include "MeshFeature.h"
+~include "Core/Evaluation.h"
+~include "MeshFeature.h"
 
 // inclusion of the generated files (generated out of MeshFeaturePy.xml)
-#include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/MeshFeaturePy.h>
-#include <Mod/Mesh/App/MeshFeaturePy.cpp>
+~include <Mod/Mesh/App/MeshPy.h>
+~include <Mod/Mesh/App/MeshFeaturePy.h>
+~include <Mod/Mesh/App/MeshFeaturePy.cpp>
 
 using namespace Mesh;
 

@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
 
-#include <Python.h>
+~include <Python.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include "PovTools.h"
-#include "LuxTools.h"
+~include <Base/Console.h>
+~include "PovTools.h"
+~include "LuxTools.h"
 // automatically generated.....
-#include "FreeCADpov.h"
+~include "FreeCADpov.h"
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <App/Application.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <App/Application.h>
 
 using namespace std;
 

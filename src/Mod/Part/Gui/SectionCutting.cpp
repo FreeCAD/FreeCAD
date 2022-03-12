@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <QDialog>
-# include <QDockWidget>
-# include <QDoubleSpinBox>
-# include <QSlider>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <QDialog>
+~ include <QDockWidget>
+~ include <QDoubleSpinBox>
+~ include <QSlider>
+~endif
 
-#include "SectionCutting.h"
-#include "ui_SectionCutting.h"
-#include <App/Document.h>
-#include <App/Link.h>
-#include <App/Part.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Part/App/FeatureCompound.h>
-#include <Mod/Part/App/FeaturePartBox.h>
-#include <Mod/Part/App/FeaturePartCommon.h>
-#include <Mod/Part/App/FeaturePartCut.h>
-#include <Mod/Part/App/FeaturePartFuse.h>
-#include <Mod/Part/App/PartFeatures.h>
+~include "SectionCutting.h"
+~include "ui_SectionCutting.h"
+~include <App/Document.h>
+~include <App/Link.h>
+~include <App/Part.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/DockWindowManager.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Part/App/FeatureCompound.h>
+~include <Mod/Part/App/FeaturePartBox.h>
+~include <Mod/Part/App/FeaturePartCommon.h>
+~include <Mod/Part/App/FeaturePartCut.h>
+~include <Mod/Part/App/FeaturePartFuse.h>
+~include <Mod/Part/App/PartFeatures.h>
 
 using namespace PartGui;
 
@@ -1492,4 +1492,4 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
     }
 }
 
-#include "moc_SectionCutting.cpp"
+~include "moc_SectionCutting.cpp"

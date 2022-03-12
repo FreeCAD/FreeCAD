@@ -25,57 +25,57 @@
  *  Project (www.freetype.org).  All rights reserved.                      *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifdef FCUseFreeType
+~ifdef FCUseFreeType
 
-#ifndef _PreComp_
-# include <iostream>
-# include <fstream>
-# include <string>
-# include <sstream>
-# include <cstdio>
-# include <cstdlib>
-# include <stdexcept>
-# include <vector>
+~ifndef _PreComp_
+~ include <iostream>
+~ include <fstream>
+~ include <string>
+~ include <sstream>
+~ include <cstdio>
+~ include <cstdlib>
+~ include <stdexcept>
+~ include <vector>
 
-# include <BRepLib.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Vec.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_BezierCurve.hxx>
-# include <gp_Trsf.hxx>
-# include <Precision.hxx>
-#include <ShapeConstruct_Curve.hxx>
-#include <Geom2d_BSplineCurve.hxx>
-#endif // _PreComp
+~ include <BRepLib.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepBuilderAPI_Transform.hxx>
+~ include <gp_Pnt.hxx>
+~ include <gp_Vec.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Wire.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TColgp_Array1OfPnt2d.hxx>
+~ include <GCE2d_MakeSegment.hxx>
+~ include <Geom2d_TrimmedCurve.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom2d_BezierCurve.hxx>
+~ include <gp_Trsf.hxx>
+~ include <Precision.hxx>
+~include <ShapeConstruct_Curve.hxx>
+~include <Geom2d_BSplineCurve.hxx>
+~endif // _PreComp
 
-#include <Base/Console.h>
-#include "TopoShape.h"
-#include "TopoShapePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeWirePy.h"
+~include <Base/Console.h>
+~include "TopoShape.h"
+~include "TopoShapePy.h"
+~include "TopoShapeEdgePy.h"
+~include "TopoShapeWirePy.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_OUTLINE_H
-#include FT_GLYPH_H
-#include FT_TYPES_H
+~include <ft2build.h>
+~include FT_FREETYPE_H
+~include FT_OUTLINE_H
+~include FT_GLYPH_H
+~include FT_TYPES_H
 
-#include "FT2FC.h"
+~include "FT2FC.h"
 
-#define CLOCKWISE 0
-#define ANTICLOCKWISE 1
+~define CLOCKWISE 0
+~define ANTICLOCKWISE 1
 using namespace Part;
 
 typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
@@ -127,13 +127,13 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     Base::FileInfo fi(FontSpec);
     if (!fi.isReadable()) {
         ErrorMsg << "Font file not found (Win): " << FontSpec;
         throw std::runtime_error(ErrorMsg.str());
     }
-#else
+~else
     // FT does not return an error if font file not found?
     std::ifstream is;
     is.open (FontSpec);
@@ -141,7 +141,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         ErrorMsg << "Font file not found: " << FontSpec;
         throw std::runtime_error(ErrorMsg.str());
     }
-#endif
+~endif
 
 
     error = FT_New_Face(FTLib,FontSpec,FaceIndex, &FTFont);
@@ -439,4 +439,4 @@ int calcClockDir(std::vector<Base::Vector3d> points)
     return result;
 }
 
-#endif //#ifdef FCUseFreeType
+~endif //~ifdef FCUseFreeType

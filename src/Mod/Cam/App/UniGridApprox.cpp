@@ -21,27 +21,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "UniGridApprox.h"
+~include "PreCompiled.h"
+~include "UniGridApprox.h"
 
-#include "best_fit.h"
+~include "best_fit.h"
 
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Base/Builder3D.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Base/Builder3D.h>
 
-#include <TColgp_Array2OfPnt.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Handle_Geom_BSplineSurface.hxx>
+~include <TColgp_Array2OfPnt.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TColStd_Array1OfInteger.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Handle_Geom_BSplineSurface.hxx>
 
 //
 ///*********BINDINGS********/
-#include <boost/numeric/bindings/traits/ublas_matrix.hpp>
-#include <boost/numeric/bindings/atlas/cblas.hpp>
-#include <boost/numeric/bindings/atlas/clapack.hpp>
+~include <boost/numeric/bindings/traits/ublas_matrix.hpp>
+~include <boost/numeric/bindings/atlas/cblas.hpp>
+~include <boost/numeric/bindings/atlas/clapack.hpp>
 //
 using namespace boost::numeric::bindings;
 

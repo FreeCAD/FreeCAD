@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include "InspectionFeature.h"
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include "InspectionFeature.h"
 
 
 namespace Inspection {

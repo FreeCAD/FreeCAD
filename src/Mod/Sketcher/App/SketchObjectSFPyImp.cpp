@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Sketcher/App/SketchObjectSF.h"
+~include "Mod/Sketcher/App/SketchObjectSF.h"
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
-#include "SketchObjectSFPy.h"
-#include "SketchObjectSFPy.cpp"
+~include "SketchObjectSFPy.h"
+~include "SketchObjectSFPy.cpp"
 
 using namespace Sketcher;
 

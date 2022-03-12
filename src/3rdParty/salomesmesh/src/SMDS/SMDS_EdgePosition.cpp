@@ -25,9 +25,9 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_EdgePosition.hxx"
+~include "SMDS_EdgePosition.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 
@@ -45,13 +45,13 @@ SMDS_EdgePosition::SMDS_EdgePosition(const double aUParam): myUParameter(aUParam
 */
 SMDS_TypeOfPosition SMDS_EdgePosition::GetTypeOfPosition() const
 {
-  //MESSAGE("###################################### SMDS_EdgePosition::GetTypeOfPosition");
+  //MESSAGE("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SMDS_EdgePosition::GetTypeOfPosition");
         return SMDS_TOP_EDGE;
 }
 
 void SMDS_EdgePosition::SetUParameter(double aUparam)
 {
-  //MESSAGE("############################### SMDS_EdgePosition::SetUParameter " << aUparam);
+  //MESSAGE("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SMDS_EdgePosition::SetUParameter " << aUparam);
         myUParameter = aUparam;
 }
 
@@ -62,6 +62,6 @@ void SMDS_EdgePosition::SetUParameter(double aUparam)
 
 double SMDS_EdgePosition::GetUParameter() const 
 {
-  //MESSAGE("########################## SMDS_EdgePosition::GetUParameter " << myUParameter);
+  //MESSAGE("~~~~~~~~~~~~~~~~~~~~~~~~~~ SMDS_EdgePosition::GetUParameter " << myUParameter);
         return myUParameter;
 }

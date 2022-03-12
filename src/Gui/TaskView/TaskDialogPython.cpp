@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QFile>
-# include <QPointer>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QFile>
+~ include <QPointer>
+~endif
 
-#include <Base/Interpreter.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/UiLoader.h>
-#include <Gui/PythonWrapper.h>
+~include <Base/Interpreter.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/UiLoader.h>
+~include <Gui/PythonWrapper.h>
 
-#include "TaskDialogPython.h"
-#include "TaskView.h"
+~include "TaskDialogPython.h"
+~include "TaskView.h"
 
 
 using namespace Gui;

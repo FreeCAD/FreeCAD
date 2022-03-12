@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <BRep_Builder.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Compound.hxx>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <BRep_Builder.hxx>
+~ include <Standard_Failure.hxx>
+~ include <TopoDS_Compound.hxx>
+~endif
 
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
 
-#include "FeatureProjection.h"
-#include "ProjectionAlgos.h"
+~include "FeatureProjection.h"
+~include "ProjectionAlgos.h"
 
 using namespace Drawing;
 

@@ -25,60 +25,60 @@
 // Created   : Fri Oct 27 10:24:28 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_ProjectionUtils.hxx"
+~include "StdMeshers_ProjectionUtils.hxx"
 
-#include "StdMeshers_ProjectionSource1D.hxx"
-#include "StdMeshers_ProjectionSource2D.hxx"
-#include "StdMeshers_ProjectionSource3D.hxx"
+~include "StdMeshers_ProjectionSource1D.hxx"
+~include "StdMeshers_ProjectionSource2D.hxx"
+~include "StdMeshers_ProjectionSource3D.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "SMESH_MeshAlgos.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "SMESH_MeshAlgos.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepTools.hxx>
-#include <BRepTools_WireExplorer.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_Box.hxx>
-#include <Geom2d_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <TopAbs.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_Array1OfShape.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeListOfShape.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <math_Gauss.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepTools.hxx>
+~include <BRepTools_WireExplorer.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_Box.hxx>
+~include <Geom2d_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <TopAbs.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_Array1OfShape.hxx>
+~include <TopTools_DataMapIteratorOfDataMapOfShapeListOfShape.hxx>
+~include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Shape.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Vec.hxx>
+~include <math_Gauss.hxx>
 
-#include <numeric>
-#include <limits>
+~include <numeric>
+~include <limits>
 
 using namespace std;
 
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
-#define CONT_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); continue; }
-#define SHOW_SHAPE(v,msg) \
+~define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
+~define CONT_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); continue; }
+~define SHOW_SHAPE(v,msg) \
 // { \
 //  if ( (v).IsNull() ) cout << msg << " NULL SHAPE" << endl; \
 // else if ((v).ShapeType() == TopAbs_VERTEX) {\
@@ -87,7 +87,7 @@ using namespace std;
 // else {\
 //   cout << msg << " "; TopAbs::Print((v).ShapeType(),cout) <<" "<<shapeIndex((v))<<endl;}\
 // }
-#define SHOW_LIST(msg,l) \
+~define SHOW_LIST(msg,l) \
 // { \
 //     cout << msg << " ";\
 //     list< TopoDS_Edge >::const_iterator e = l.begin();\
@@ -117,11 +117,11 @@ namespace {
 
   bool storeShapeForDebug(const TopoDS_Shape& shape)
   {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     const char* type[] ={"COMPOUND","COMPSOLID","SOLID","SHELL","FACE","WIRE","EDGE","VERTEX"};
     BRepTools::Write( shape, SMESH_Comment("/tmp/") << type[shape.ShapeType()] << "_"
                       << shape.TShape().operator->() << ".brep");
-#endif
+~endif
     return false;
   }
   
@@ -147,7 +147,7 @@ namespace {
     while ( eIt != eBackIt )
     {
       std::swap( *eIt, *eBackIt );
-      SHOW_LIST("# AFTER SWAP", edges)
+      SHOW_LIST("~ AFTER SWAP", edges)
         if ( (++eIt) != eBackIt )
           --eBackIt;
     }
@@ -1999,8 +1999,8 @@ FindMatchingNodesOnFaces( const TopoDS_Face&     face1,
   // nodes on vertices
   const SMDS_MeshNode* vNode1 = SMESH_Algo::VertexNode( V1, meshDS1 );
   const SMDS_MeshNode* vNode2 = SMESH_Algo::VertexNode( V2, meshDS2 );
-  if ( !vNode1 ) RETURN_BAD_RESULT("No node on vertex #" << meshDS1->ShapeToIndex( V1 ));
-  if ( !vNode2 ) RETURN_BAD_RESULT("No node on vertex #" << meshDS2->ShapeToIndex( V2 ));
+  if ( !vNode1 ) RETURN_BAD_RESULT("No node on vertex ~" << meshDS1->ShapeToIndex( V1 ));
+  if ( !vNode2 ) RETURN_BAD_RESULT("No node on vertex ~" << meshDS2->ShapeToIndex( V2 ));
 
   // nodes on edges linked with nodes on vertices
   const SMDS_MeshNode* nullNode = 0;
@@ -2050,8 +2050,8 @@ FindMatchingNodesOnFaces( const TopoDS_Face&     face1,
     // nodes on vertices
     eNode1[0] = SMESH_Algo::VertexNode( V1, meshDS1 );
     eNode2[0] = SMESH_Algo::VertexNode( V2, meshDS2 );
-    if ( !eNode1[0] ) RETURN_BAD_RESULT("No node on vertex #" << meshDS1->ShapeToIndex( V1 ));
-    if ( !eNode2[0] ) RETURN_BAD_RESULT("No node on vertex #" << meshDS2->ShapeToIndex( V2 ));
+    if ( !eNode1[0] ) RETURN_BAD_RESULT("No node on vertex ~" << meshDS1->ShapeToIndex( V1 ));
+    if ( !eNode2[0] ) RETURN_BAD_RESULT("No node on vertex ~" << meshDS2->ShapeToIndex( V2 ));
   }
 
   // 2. face sets
@@ -2214,8 +2214,8 @@ FindMatchingNodesOnFaces( const TopoDS_Face&     face1,
     V1 = TopoDS::Vertex( assocMap( V2, /*is2nd=*/true ));
     vNode1 = SMESH_Algo::VertexNode( V1, meshDS1 );
     vNode2 = SMESH_Algo::VertexNode( V2, meshDS2 );
-    if ( !vNode1 ) RETURN_BAD_RESULT("No node on vertex #" << meshDS1->ShapeToIndex( V1 ));
-    if ( !vNode2 ) RETURN_BAD_RESULT("No node on vertex #" << meshDS2->ShapeToIndex( V2 ));
+    if ( !vNode1 ) RETURN_BAD_RESULT("No node on vertex ~" << meshDS1->ShapeToIndex( V1 ));
+    if ( !vNode2 ) RETURN_BAD_RESULT("No node on vertex ~" << meshDS2->ShapeToIndex( V2 ));
     node1To2Map.insert( make_pair( vNode1, vNode2 ));
   }
 
@@ -2764,10 +2764,10 @@ namespace StdMeshers_ProjectionUtils
       const double D = M.Determinant();
       if ( D < 1e-3 * ( newSrcOrig - _srcOrig ).Modulus() )
       {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
         cerr << "TrsfFinder3D::Invert()"
              << "D " << M.Determinant() << " IsSingular " << M.IsSingular() << endl;
-#endif
+~endif
         return false;
       }
       gp_Mat Minv = M.Inverted();

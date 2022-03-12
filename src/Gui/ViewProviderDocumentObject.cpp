@@ -20,34 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-# include <Inventor/SoFullPath.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/misc/SoChildList.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMenu>
+~ include <Inventor/SoFullPath.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/details/SoDetail.h>
+~ include <Inventor/misc/SoChildList.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Base/Tools.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <Base/Tools.h>
 
-#include "ViewProviderDocumentObjectPy.h"
-#include "ActionFunction.h"
-#include "Application.h"
-#include "Command.h"
-#include "Document.h"
-#include "MDIView.h"
-#include "SoFCUnifiedSelection.h"
-#include "Tree.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderExtension.h"
-#include "TaskView/TaskAppearance.h"
+~include "ViewProviderDocumentObjectPy.h"
+~include "ActionFunction.h"
+~include "Application.h"
+~include "Command.h"
+~include "Document.h"
+~include "MDIView.h"
+~include "SoFCUnifiedSelection.h"
+~include "Tree.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderExtension.h"
+~include "TaskView/TaskAppearance.h"
 
 
 FC_LOG_LEVEL_INIT("Gui", true, true)

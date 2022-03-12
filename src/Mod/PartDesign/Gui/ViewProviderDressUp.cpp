@@ -22,22 +22,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QAction>
-# include <QMessageBox>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QAction>
+~ include <QMessageBox>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopExp.hxx>
+~endif
 
-#include <Gui/Application.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
-#include <Mod/PartDesign/App/FeatureDressUp.h>
+~include <Gui/Application.h>
+~include <Mod/Part/Gui/ReferenceHighlighter.h>
+~include <Mod/PartDesign/App/FeatureDressUp.h>
 
-#include "ViewProviderDressUp.h"
-#include "TaskDressUpParameters.h"
+~include "ViewProviderDressUp.h"
+~include "TaskDressUpParameters.h"
 
 using namespace PartDesignGui;
 

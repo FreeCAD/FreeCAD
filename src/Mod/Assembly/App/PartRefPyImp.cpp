@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Assembly/App/PartRef.h"
+~include "Mod/Assembly/App/PartRef.h"
 
 // inclusion of the generated files (generated out of PartRefPy.xml)
-#include "PartRefPy.h"
-#include "PartRefPy.cpp"
+~include "PartRefPy.h"
+~include "PartRefPy.cpp"
 
 using namespace Assembly;
 

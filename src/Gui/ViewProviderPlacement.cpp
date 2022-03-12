@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~endif
 
-#include <App/DocumentObject.h>
+~include <App/DocumentObject.h>
 
-#include "ViewProviderPlacement.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
+~include "ViewProviderPlacement.h"
+~include "SoFCSelection.h"
+~include "SoFCUnifiedSelection.h"
 
 
 using namespace Gui;

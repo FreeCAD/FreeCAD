@@ -14,11 +14,11 @@
 //
 // Version: 4.0.2 (2006/07/25)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4IntrTriangle3Triangle3.h"
-#include "Wm4Intersector1.h"
-#include "Wm4IntrTriangle2Triangle2.h"
-#include "Wm4Query2.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4IntrTriangle3Triangle3.h"
+~include "Wm4Intersector1.h"
+~include "Wm4IntrTriangle2Triangle2.h"
+~include "Wm4Query2.h"
 
 namespace Wm4
 {

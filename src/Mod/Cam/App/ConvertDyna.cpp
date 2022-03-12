@@ -24,9 +24,9 @@
 /******CONVERTDYNA.CPP******/
 
 /******MAIN INCLUDES******/
-#include "PreCompiled.h"
-#include "ConvertDyna.h"
-#include <cstdlib>
+~include "PreCompiled.h"
+~include "ConvertDyna.h"
+~include <cstdlib>
 
 ReadDyna::ReadDyna(MeshCore::MeshKernel &m, const char* &inputname)
 {

@@ -9,24 +9,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
  
-#include "FeaturePage.h"
-#include "FeatureView.h"
-#include "FeatureViewPart.h"
-#include "FeatureViewAnnotation.h"
-#include "FeatureViewSymbol.h"
-#include "FeatureProjection.h"
-#include "FeatureViewSpreadsheet.h"
-#include "FeatureClip.h"
-#include "PageGroup.h"
+~include "FeaturePage.h"
+~include "FeatureView.h"
+~include "FeatureViewPart.h"
+~include "FeatureViewAnnotation.h"
+~include "FeatureViewSymbol.h"
+~include "FeatureProjection.h"
+~include "FeatureViewSpreadsheet.h"
+~include "FeatureClip.h"
+~include "PageGroup.h"
 
 
 namespace Drawing {

@@ -22,27 +22,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoMultipleCopy.h>
 
-# include <QMessageBox>
-#endif
+~ include <QMessageBox>
+~endif
 
-#include "ViewProviderFemConstraintFixed.h"
-#include <Mod/Fem/App/FemConstraintFixed.h>
-#include "TaskFemConstraintFixed.h"
+~include "ViewProviderFemConstraintFixed.h"
+~include <Mod/Fem/App/FemConstraintFixed.h>
+~include "TaskFemConstraintFixed.h"
 
-#include "Gui/Control.h"
+~include "Gui/Control.h"
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 using namespace FemGui;
 
@@ -108,9 +108,9 @@ bool ViewProviderFemConstraintFixed::setEdit(int ModNum)
     }
 }
 
-#define WIDTH (2)
-#define HEIGHT (1)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+~define WIDTH (2)
+~define HEIGHT (1)
+//~define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
 {
@@ -119,7 +119,7 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
     float scaledwidth = WIDTH * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
     //OvG: always need access to cp for scaling
     SoMultipleCopy* cp = new SoMultipleCopy();
     if (pShapeSep->getNumChildren() == 0) {
@@ -128,7 +128,7 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
         cp->addChild((SoNode*)createFixed(scaledheight, scaledwidth)); //OvG: Scaling
         pShapeSep->addChild(cp);
     }
-#endif
+~endif
 
     if (strcmp(prop->getName(),"Points") == 0) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
@@ -137,36 +137,36 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
             return;
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
         cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());
         SbMatrix* matrices = cp->matrix.startEditing();
         int idx = 0;
-#else
+~else
         // Note: Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
-#endif
+~endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);
             SbRotation rot(SbVec3f(0,-1,0), dir);
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1,1,1));
             matrices[idx] = m;
             idx++;
-#else
+~else
             SoSeparator* sep = new SoSeparator();
             createPlacement(sep, base, rot);
             createFixed(sep, scaledheight, scaledwidth); //OvG: Scaling
             pShapeSep->addChild(sep);
-#endif
+~endif
             n++;
         }
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
         cp->matrix.finishEditing();
-#endif
+~endif
     }
 
     ViewProviderFemConstraint::updateData(prop);

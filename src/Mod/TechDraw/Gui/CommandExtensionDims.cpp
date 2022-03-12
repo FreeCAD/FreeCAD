@@ -20,37 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <string>
-# include <sstream>
-#endif  //#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMessageBox>
+~ include <string>
+~ include <sstream>
+~endif  //~ifndef _PreComp_
 
-# include <App/Document.h>
-# include <App/DocumentObject.h>
-# include <Base/Console.h>
-# include <Base/Type.h>
-# include <Gui/Action.h>
-# include <Gui/Application.h>
-# include <Gui/BitmapFactory.h>
-# include <Gui/Command.h>
-# include <Gui/Control.h>
-# include <Gui/MainWindow.h>
-# include <Gui/Selection.h>
-# include <Gui/SelectionObject.h>
+~ include <App/Document.h>
+~ include <App/DocumentObject.h>
+~ include <Base/Console.h>
+~ include <Base/Type.h>
+~ include <Gui/Action.h>
+~ include <Gui/Application.h>
+~ include <Gui/BitmapFactory.h>
+~ include <Gui/Command.h>
+~ include <Gui/Control.h>
+~ include <Gui/MainWindow.h>
+~ include <Gui/Selection.h>
+~ include <Gui/SelectionObject.h>
 
-# include <Mod/TechDraw/App/DrawViewBalloon.h>
-# include <Mod/TechDraw/App/DrawViewDimension.h>
-# include <Mod/TechDraw/App/DrawPage.h>
-# include <Mod/TechDraw/App/DrawViewPart.h>
-# include <Mod/TechDraw/App/DrawUtil.h>
-# include <Mod/TechDraw/App/Preferences.h>
+~ include <Mod/TechDraw/App/DrawViewBalloon.h>
+~ include <Mod/TechDraw/App/DrawViewDimension.h>
+~ include <Mod/TechDraw/App/DrawPage.h>
+~ include <Mod/TechDraw/App/DrawViewPart.h>
+~ include <Mod/TechDraw/App/DrawUtil.h>
+~ include <Mod/TechDraw/App/Preferences.h>
 
-#include "DrawGuiUtil.h"
-#include "TaskCustomizeFormat.h"
-#include "TaskSelectLineAttributes.h"
+~include "DrawGuiUtil.h"
+~include "TaskCustomizeFormat.h"
+~include "TaskSelectLineAttributes.h"
 
 
 using namespace TechDrawGui;

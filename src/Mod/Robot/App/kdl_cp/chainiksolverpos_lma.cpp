@@ -28,8 +28,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chainiksolverpos_lma.hpp"
-#include <iostream>
+~include "chainiksolverpos_lma.hpp"
+~include <iostream>
 
 namespace KDL {
 

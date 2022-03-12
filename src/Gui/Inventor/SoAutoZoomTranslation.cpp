@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/nodes/SoCamera.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/actions/SoGetMatrixAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/elements/SoModelMatrixElement.h>
+~ include <Inventor/elements/SoViewportRegionElement.h>
+~ include <Inventor/elements/SoViewVolumeElement.h>
+~ include <Inventor/nodes/SoCamera.h>
+~endif
 
-#include "SoAutoZoomTranslation.h"
+~include "SoAutoZoomTranslation.h"
 
 
 using namespace Gui;
@@ -44,7 +44,7 @@ void SoAutoZoomTranslation::initClass()
 {
     SO_NODE_INIT_CLASS(SoAutoZoomTranslation, SoTransformation, "AutoZoom");
 
-    // Enable elements for SoGetMatrixAction (#0002268)
+    // Enable elements for SoGetMatrixAction (~0002268)
     // SoCamera::initClass() enables the SoViewVolumeElement for
     // * SoGLRenderAction
     // * SoGetBoundingBoxAction

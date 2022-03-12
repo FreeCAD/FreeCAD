@@ -20,47 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
+~ifndef _PreComp_
 
-#endif // #ifndef _PreComp_
+~endif // ~ifndef _PreComp_
 
-#include <QApplication>
-#include <QStatusBar>
-#include <QGraphicsScene>
-#include <QTemporaryFile>
+~include <QApplication>
+~include <QStatusBar>
+~include <QGraphicsScene>
+~include <QTemporaryFile>
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include <App/Document.h>
+~include <App/Document.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewSymbol.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
+~include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
-#include "DrawGuiStd.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "Grabber3d.h"
-#include "Rez.h"
+~include "DrawGuiStd.h"
+~include "QGVPage.h"
+~include "QGIView.h"
+~include "Grabber3d.h"
+~include "Rez.h"
 
-#include "TaskActiveView.h"
+~include "TaskActiveView.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -254,4 +254,4 @@ bool TaskDlgActiveView::reject()
     return true;
 }
 
-#include <Mod/TechDraw/Gui/moc_TaskActiveView.cpp>
+~include <Mod/TechDraw/Gui/moc_TaskActiveView.cpp>

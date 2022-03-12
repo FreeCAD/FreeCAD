@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QApplication>
-#include <QGestureEvent>
-#include <QWidget>
+~include <QApplication>
+~include <QGestureEvent>
+~include <QWidget>
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
-#include "SoTouchEvents.h"
+~include "SoTouchEvents.h"
 
 
 SO_EVENT_SOURCE(SoGestureEvent);

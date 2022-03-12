@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#   include "io.h"
-#   include <windows.h>
-# endif
-# include <fcntl.h>
-# include <iostream>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~   include "io.h"
+~   include <windows.h>
+~ endif
+~ include <fcntl.h>
+~ include <iostream>
+~endif
 
-#include "GuiConsole.h"
+~include "GuiConsole.h"
 
 using namespace Gui;
 
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
 
 const unsigned int GUIConsole::s_nMaxLines = 1000;
 unsigned int       GUIConsole::s_nRefCount = 0;
@@ -104,7 +104,7 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 }
 
-#else /* FC_OS_LINUX */
+~else /* FC_OS_LINUX */
 
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
 GUIConsole::GUIConsole (void) {}
@@ -127,4 +127,4 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
     }
 }
 
-#endif /* FC_OS_LINUX */
+~endif /* FC_OS_LINUX */

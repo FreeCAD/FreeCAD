@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/assign.hpp>
-#include <boost_bind_bind.hpp>
-#include <boost/regex.hpp>
-#include <Base/Console.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Property.h>
-#include <Base/Interpreter.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/PyObjectBase.h>
-#include "PropertySheet.h"
-#include "Sheet.h"
-#include "Utils.h"
-#include <PropertySheetPy.h>
-#include <App/ExpressionVisitors.h>
-#include <App/ExpressionParser.h>
+~include <boost/range/adaptor/map.hpp>
+~include <boost/range/algorithm/copy.hpp>
+~include <boost/assign.hpp>
+~include <boost_bind_bind.hpp>
+~include <boost/regex.hpp>
+~include <Base/Console.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Property.h>
+~include <Base/Interpreter.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
+~include <Base/PyObjectBase.h>
+~include "PropertySheet.h"
+~include "Sheet.h"
+~include "Utils.h"
+~include <PropertySheetPy.h>
+~include <App/ExpressionVisitors.h>
+~include <App/ExpressionParser.h>
 
 FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
@@ -1306,9 +1306,9 @@ void PropertySheet::onRemoveDep(App::DocumentObject *obj) {
 
 void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 {
-#if 1
+~if 1
     (void)docObj;
-#else
+~else
     if (documentObjectName.find(docObj) == documentObjectName.end())
         return;
 
@@ -1324,7 +1324,7 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
         }
         ++i;
     }
-#endif
+~endif
 }
 
 void PropertySheet::onRelabeledDocument(const App::Document &doc)

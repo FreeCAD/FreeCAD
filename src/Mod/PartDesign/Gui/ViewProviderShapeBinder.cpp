@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMenu>
-# include <QMessageBox>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <TopExp.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <App/Document.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/ViewParams.h>
-#include <Mod/PartDesign/App/ShapeBinder.h>
+~include <boost/algorithm/string/predicate.hpp>
+~include <App/Document.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/ViewParams.h>
+~include <Mod/PartDesign/App/ShapeBinder.h>
 
-#include "ViewProviderShapeBinder.h"
-#include "TaskShapeBinder.h"
+~include "ViewProviderShapeBinder.h"
+~include "TaskShapeBinder.h"
 
 FC_LOG_LEVEL_INIT("ShapeBinder",true,true)
 

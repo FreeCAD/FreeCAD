@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/PartDesign/App/ShapeBinder.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/PartDesign/App/ShapeBinder.h>
 
-#include "ui_TaskShapeBinder.h"
-#include "TaskShapeBinder.h"
+~include "ui_TaskShapeBinder.h"
+~include "TaskShapeBinder.h"
 
 
 using namespace PartDesignGui;
@@ -342,4 +342,4 @@ bool TaskDlgShapeBinder::reject()
   return true;
 }
 
-#include "moc_TaskShapeBinder.cpp"
+~include "moc_TaskShapeBinder.cpp"

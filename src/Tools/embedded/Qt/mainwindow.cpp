@@ -1,24 +1,24 @@
 
-#include <Python.h>
-#include <string>
-#include <sstream>
-#include <QtGui>
-#include <QtWidgets>
-#if defined(Q_WS_X11)
-# include <QX11EmbedContainer>
-#endif
+~include <Python.h>
+~include <string>
+~include <sstream>
+~include <QtGui>
+~include <QtWidgets>
+~if defined(Q_WS_X11)
+~ include <QX11EmbedContainer>
+~endif
 
-#include "mainwindow.h"
+~include "mainwindow.h"
 
 MainWindow::MainWindow()
 {
     createActions();
     createMenus();
-#if defined(Q_WS_X11)
+~if defined(Q_WS_X11)
     setCentralWidget(new QX11EmbedContainer(this));
-#else
+~else
     setCentralWidget(new QWidget(this));
-#endif
+~endif
 }
 
 void MainWindow::createActions()
@@ -136,17 +136,17 @@ void MainWindow::embedWindow()
         << "FreeCADGui.activateWorkbench(\"BlankWorkbench\")\n"
         << "\n";
 
-#if defined(Q_WS_X11) || defined(Q_OS_WIN)
+~if defined(Q_WS_X11) || defined(Q_OS_WIN)
     WId hwnd = this->centralWidget()->winId();
     cmd << "FreeCADGui.embedToWindow(\"" << hwnd << "\")\n"
         << "\n";
-#endif
+~endif
 
     PyObject* result = PyRun_String(cmd.str().c_str(), Py_file_input, dict, dict);
     if (result) {
         Py_DECREF(result);
 
-#if !defined(Q_WS_X11)
+~if !defined(Q_WS_X11)
         // This is a workaround for the lack of a replacement of QX11EmbedWidget with Qt5
         QWidget* mw = nullptr;
         for (auto it : qApp->topLevelWidgets()) {
@@ -160,7 +160,7 @@ void MainWindow::embedWindow()
             centralWidget()->setLayout(vb);
             vb->addWidget(mw);
         }
-#endif
+~endif
 
         embedAct->setDisabled(true);
     }

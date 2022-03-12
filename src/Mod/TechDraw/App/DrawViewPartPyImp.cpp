@@ -20,46 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Circ.hxx>
-#include <Geom_Circle.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Circ.hxx>
+~include <Geom_Circle.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeVertex.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Vector3D.h>
+~include <Base/VectorPy.h>
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
+~include <Mod/Part/App/TopoShapeVertexPy.h>
 
-#include "DrawViewPart.h"
-#include "GeometryObject.h"
-#include "Geometry.h"
-#include "Cosmetic.h"
-#include "CosmeticExtension.h"
-#include "DrawUtil.h"
+~include "DrawViewPart.h"
+~include "GeometryObject.h"
+~include "Geometry.h"
+~include "Cosmetic.h"
+~include "CosmeticExtension.h"
+~include "DrawUtil.h"
 
 // inclusion of the generated files (generated out of DrawViewPartPy.xml)
-#include <Mod/TechDraw/App/CosmeticVertexPy.h>
-#include <Mod/TechDraw/App/CosmeticEdgePy.h>
-#include <Mod/TechDraw/App/CenterLinePy.h>
-#include <Mod/TechDraw/App/DrawViewPartPy.h>
-#include <Mod/TechDraw/App/DrawViewPartPy.cpp>
+~include <Mod/TechDraw/App/CosmeticVertexPy.h>
+~include <Mod/TechDraw/App/CosmeticEdgePy.h>
+~include <Mod/TechDraw/App/CenterLinePy.h>
+~include <Mod/TechDraw/App/DrawViewPartPy.h>
+~include <Mod/TechDraw/App/DrawViewPartPy.cpp>
 
 
 using namespace TechDraw;

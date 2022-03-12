@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QCoreApplication>
-# include <QEventLoop>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QCoreApplication>
+~ include <QEventLoop>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
 
-#include "PythonDebugger.h"
-#include "BitmapFactory.h"
-#include "EditorView.h"
-#include "MainWindow.h"
-#include "PythonEditor.h"
+~include "PythonDebugger.h"
+~include "BitmapFactory.h"
+~include "EditorView.h"
+~include "MainWindow.h"
+~include "PythonEditor.h"
 
 
 using namespace Gui;
@@ -422,12 +422,12 @@ void PythonDebugger::runFile(const QString& fn)
     try {
         RunningState state(d->running);
         QByteArray pxFileName = fn.toUtf8();
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         Base::FileInfo fi((const char*)pxFileName);
         FILE *fp = _wfopen(fi.toStdWString().c_str(),L"r");
-#else
+~else
         FILE *fp = fopen((const char*)pxFileName,"r");
-#endif
+~endif
         if (!fp) return;
 
         Base::PyGILStateLocker locker;
@@ -622,4 +622,4 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
     return 0;
 }
 
-#include "moc_PythonDebugger.cpp"
+~include "moc_PythonDebugger.cpp"

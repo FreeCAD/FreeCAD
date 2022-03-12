@@ -21,19 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#   include <windows.h>
-# endif
-# include <cstring>
-# include <Python.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~   include <windows.h>
+~ endif
+~ include <cstring>
+~ include <Python.h>
+~endif
 
-#include <frameobject.h>
+~include <frameobject.h>
 
-#include "ConsoleObserver.h"
+~include "ConsoleObserver.h"
 
 
 using namespace Base;
@@ -80,13 +80,13 @@ void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
 }
 
 ConsoleObserverStd::ConsoleObserverStd() :
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
     useColorStderr(true)
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     useColorStderr( isatty(STDERR_FILENO) )
-#   else
+~   else
     useColorStderr(false)
-#   endif
+~   endif
 {
     bLog = false;
 }
@@ -121,63 +121,63 @@ void ConsoleObserverStd::Message(const char *sMsg)
 void ConsoleObserverStd::Warning(const char *sWarn)
 {
     if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN| FOREGROUND_BLUE);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;33m");
-#   endif
+~   endif
     }
 
     fprintf(stderr, "%s", sWarn);
 
     if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
-#   endif
+~   endif
     }
 }
 
 void ConsoleObserverStd::Error  (const char *sErr)
 {
     if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED|FOREGROUND_INTENSITY );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;31m");
-#   endif
+~   endif
     }
 
     fprintf(stderr, "%s", sErr);
 
     if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
-#   endif
+~   endif
     }
 }
 
 void ConsoleObserverStd::Log    (const char *sErr)
 {
     if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED |FOREGROUND_GREEN);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[1;36m");
-#   endif
+~   endif
     }
 
     fprintf(stderr, "%s", sErr);
 
     if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
+~   if defined(FC_OS_WIN32)
         ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
         fprintf(stderr, "\033[0m");
-#   endif
+~   endif
     }
 }
 
@@ -270,11 +270,11 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         }
     }
     if (print_src && src && src[0]) {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         const char *_f = std::strrchr(src, '\\');
-#else
+~else
         const char *_f = std::strrchr(src, '/');
-#endif
+~endif
         str << (_f?_f+1:src)<<"("<<line<<"): ";
     }
     return str;

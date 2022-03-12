@@ -21,45 +21,45 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
 
-#include "Body.h"
-#include "DatumCS.h"
-#include "DatumLine.h"
-#include "DatumPlane.h"
-#include "DatumPoint.h"
-#include "FeatureBase.h"
-#include "FeatureBoolean.h"
-#include "FeatureChamfer.h"
-#include "FeatureDraft.h"
-#include "FeatureDressUp.h"
-#include "FeatureFillet.h"
-#include "FeatureGroove.h"
-#include "FeatureHelix.h"
-#include "FeatureHole.h"
-#include "FeatureLinearPattern.h"
-#include "FeatureLoft.h"
-#include "FeatureMirrored.h"
-#include "FeatureMultiTransform.h"
-#include "FeaturePad.h"
-#include "FeaturePipe.h"
-#include "FeaturePocket.h"
-#include "FeaturePolarPattern.h"
-#include "FeaturePrimitive.h"
-#include "FeatureRevolution.h"
-#include "FeatureScaled.h"
-#include "FeatureSketchBased.h"
-#include "FeatureSolid.h"
-#include "FeatureThickness.h"
-#include "FeatureTransformed.h"
-#include "ShapeBinder.h"
+~include "Body.h"
+~include "DatumCS.h"
+~include "DatumLine.h"
+~include "DatumPlane.h"
+~include "DatumPoint.h"
+~include "FeatureBase.h"
+~include "FeatureBoolean.h"
+~include "FeatureChamfer.h"
+~include "FeatureDraft.h"
+~include "FeatureDressUp.h"
+~include "FeatureFillet.h"
+~include "FeatureGroove.h"
+~include "FeatureHelix.h"
+~include "FeatureHole.h"
+~include "FeatureLinearPattern.h"
+~include "FeatureLoft.h"
+~include "FeatureMirrored.h"
+~include "FeatureMultiTransform.h"
+~include "FeaturePad.h"
+~include "FeaturePipe.h"
+~include "FeaturePocket.h"
+~include "FeaturePolarPattern.h"
+~include "FeaturePrimitive.h"
+~include "FeatureRevolution.h"
+~include "FeatureScaled.h"
+~include "FeatureSketchBased.h"
+~include "FeatureSolid.h"
+~include "FeatureThickness.h"
+~include "FeatureTransformed.h"
+~include "ShapeBinder.h"
 
 namespace PartDesign {
 extern PyObject* initModule();

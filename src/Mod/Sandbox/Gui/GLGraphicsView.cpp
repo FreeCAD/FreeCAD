@@ -21,54 +21,54 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <Inventor/SoEventManager.h>
-#include <Inventor/SoRenderManager.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
+~include <Inventor/SoEventManager.h>
+~include <Inventor/SoRenderManager.h>
+~include <Inventor/SbViewportRegion.h>
+~include <Inventor/actions/SoGLRenderAction.h>
+~include <Inventor/actions/SoSearchAction.h>
+~include <Inventor/events/SoLocation2Event.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/nodes/SoOrthographicCamera.h>
+~include <Inventor/nodes/SoDirectionalLight.h>
+~include <Inventor/scxml/ScXML.h>
+~include <Inventor/scxml/SoScXMLStateMachine.h>
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QColorDialog>
-#include <QFileDialog>
-#include <QLabel>
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QTimer>
-#include <QVBoxLayout>
-#include <QGLWidget>
-#include <QGraphicsView>
-#include <QPaintEngine>
-#include <QGraphicsItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsProxyWidget>
-#include <QUrl>
+~include <QApplication>
+~include <QCheckBox>
+~include <QColorDialog>
+~include <QFileDialog>
+~include <QLabel>
+~include <QPushButton>
+~include <QResizeEvent>
+~include <QTimer>
+~include <QVBoxLayout>
+~include <QGLWidget>
+~include <QGraphicsView>
+~include <QPaintEngine>
+~include <QGraphicsItem>
+~include <QGraphicsSceneMouseEvent>
+~include <QGraphicsProxyWidget>
+~include <QUrl>
 
-#include "GLGraphicsView.h"
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
+~include "GLGraphicsView.h"
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
 
-#include <Quarter/devices/Mouse.h>
-#include <Quarter/devices/Keyboard.h>
-#include <Quarter/devices/SpaceNavigatorDevice.h>
+~include <Quarter/devices/Mouse.h>
+~include <Quarter/devices/Keyboard.h>
+~include <Quarter/devices/SpaceNavigatorDevice.h>
 
 using namespace Gui;
 
-#ifndef GL_MULTISAMPLE
-#define GL_MULTISAMPLE  0x809D
-#endif
+~ifndef GL_MULTISAMPLE
+~define GL_MULTISAMPLE  0x809D
+~endif
 
 // http://doc.qt.digia.com/qq/qq26-openglcanvas.html
 
@@ -158,7 +158,7 @@ public:
     }
 };
 
-#define PRIVATE(obj) obj->pimpl
+~define PRIVATE(obj) obj->pimpl
 
 SceneEventFilter::SceneEventFilter(QObject * parent)
   : QObject(parent)
@@ -174,9 +174,9 @@ SceneEventFilter::SceneEventFilter(QObject * parent)
     PRIVATE(this)->devices += new SIM::Coin3D::Quarter::Mouse;
     PRIVATE(this)->devices += new SIM::Coin3D::Quarter::Keyboard;
 
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
     PRIVATE(this)->devices += new SpaceNavigatorDevice;
-#endif // HAVE_SPACENAV_LIB
+~endif // HAVE_SPACENAV_LIB
 
 }
 
@@ -315,7 +315,7 @@ SceneEventFilter::globalMousePosition(void) const
     return PRIVATE(this)->globalmousepos;
 }
 
-#undef PRIVATE
+~undef PRIVATE
 
 // ----------------------------------------------------------------------------
 
@@ -488,11 +488,11 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         QFile file(QString::fromLatin1(filenametmp));
         if (file.open(QIODevice::ReadOnly)) {
             QByteArray fileContents = file.readAll();
-#if COIN_MAJOR_VERSION >= 4
+~if COIN_MAJOR_VERSION >= 4
             stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
-#else
+~else
             stateMachine = ScXML::readBuffer(fileContents.constData());
-#endif
+~endif
             file.close();
         }
     }
@@ -514,7 +514,7 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         //qDebug() << "Unable to load" << url;
         return;
     }
-#if 0
+~if 0
     //If we have gotten this far, we have successfully loaded the
     //navigation file, so we set the property
     PRIVATE(this)->navigationModeFile = url;
@@ -526,16 +526,16 @@ GraphicsScene::setNavigationModeFile(const QUrl & url)
         //navigation systems? - BFG 20090117
         this->setStateCursor("interact", Qt::ArrowCursor);
         this->setStateCursor("idle", Qt::OpenHandCursor);
-#if QT_VERSION >= 0x040200
+~if QT_VERSION >= 0x040200
         this->setStateCursor("rotate", Qt::ClosedHandCursor);
-#endif
+~endif
         this->setStateCursor("pan", Qt::SizeAllCursor);
         this->setStateCursor("zoom", Qt::SizeVerCursor);
         this->setStateCursor("dolly", Qt::SizeVerCursor);
         this->setStateCursor("seek", Qt::CrossCursor);
         this->setStateCursor("spin", Qt::OpenHandCursor);
     }
-#endif
+~endif
 }
 
 SoNode* GraphicsScene::getSceneGraph() const
@@ -637,7 +637,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //glDepthRange(0.1,1.0); //
-#if 0
+~if 0
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -646,7 +646,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-#endif
+~endif
     //const float pos[] = { m_lightItem->x() - width() / 2, height() / 2 - m_lightItem->y(), 512, 0 };
     //glLightfv(GL_LIGHT0, GL_POSITION, pos);
     //glColor4f(m_modelColor.redF(), m_modelColor.greenF(), m_modelColor.blueF(), 1.0f);
@@ -662,7 +662,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     //glEnable(GL_MULTISAMPLE);
     //m_model->render(m_wireframeEnabled, m_normalsEnabled);
     //glDisable(GL_MULTISAMPLE);
-#if 0
+~if 0
     glPopMatrix();
 
     glMatrixMode(GL_PROJECTION);
@@ -682,11 +682,11 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-#endif
+~endif
 
     sorendermanager->render(true/*PRIVATE(this)->clearwindow*/,
                             false/*PRIVATE(this)->clearzbuffer*/);
-#if 0
+~if 0
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -700,7 +700,7 @@ void GraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glVertex3i(0, 0, 0);
         glVertex3i(400, 400, 0);
     glEnd();
-#endif
+~endif
 /**/
 
     painter->save();
@@ -816,7 +816,7 @@ GraphicsView3D::~GraphicsView3D()
 void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-#if 0
+~if 0
     if (strcmp(Reason,"HeadlightColor") == 0) {
         unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
         float transparency;
@@ -968,7 +968,7 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->turnDeltaDimensionsOff();
     }
     else
-#endif
+~endif
     if (strcmp(Reason, "BackgroundColor") == 0)
     {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
@@ -991,4 +991,4 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
 }
 
-#include "moc_GLGraphicsView.cpp"
+~include "moc_GLGraphicsView.cpp"

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#endif
+~ifndef _PreComp_
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include "ReferenceHighlighter.h"
+~include <boost/algorithm/string/predicate.hpp>
+~include "ReferenceHighlighter.h"
 
 
 using namespace PartGui;

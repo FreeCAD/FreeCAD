@@ -24,13 +24,13 @@
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 */
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <string>
-#endif
+~ifndef _PreComp_
+~ include <string>
+~endif
 
-#include "Base64.h"
+~include "Base64.h"
 
 
 static const std::string base64_chars = 

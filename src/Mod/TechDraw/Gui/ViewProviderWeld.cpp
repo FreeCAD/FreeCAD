@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTextStream>
+~endif
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
 
-#include "PreferencesGui.h"
-#include "TaskWeldingSymbol.h"
-#include "ViewProviderWeld.h"
+~include "PreferencesGui.h"
+~include "TaskWeldingSymbol.h"
+~include "ViewProviderWeld.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "SheetObserver.h"
-#include "PropertySheet.h"
+~include "PreCompiled.h"
+~include "SheetObserver.h"
+~include "PropertySheet.h"
 
 using namespace Spreadsheet;
 using namespace App;

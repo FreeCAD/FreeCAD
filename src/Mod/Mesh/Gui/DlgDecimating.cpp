@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "DlgDecimating.h"
-#include "ui_DlgDecimating.h"
+~include "PreCompiled.h"
+~include "DlgDecimating.h"
+~include "ui_DlgDecimating.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Mod/Mesh/App/MeshFeature.h>
 
 using namespace MeshGui;
 
@@ -166,4 +166,4 @@ bool TaskDecimating::accept()
     return true;
 }
 
-#include "moc_DlgDecimating.cpp"
+~include "moc_DlgDecimating.cpp"

@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QInputDialog>
-# include <QMessageBox>
-# include <TopExp_Explorer.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QInputDialog>
+~ include <QMessageBox>
+~ include <TopExp_Explorer.hxx>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Base/Console.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MDIView.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureBase.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <App/Part.h>
+~include <Base/Console.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/MDIView.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureBase.h>
+~include <Mod/PartDesign/App/FeatureSketchBased.h>
 
-#include "TaskFeaturePick.h"
-#include "Utils.h"
-#include "WorkflowManager.h"
+~include "TaskFeaturePick.h"
+~include "Utils.h"
+~include "WorkflowManager.h"
 
 
 //===========================================================================
@@ -237,7 +237,7 @@ void CmdPartDesignBody::activated(int iMsg)
             }
 
             // for sketches open the feature dialog to rebase it to a new plane
-            // as requested in issue #0002862
+            // as requested in issue ~0002862
             if (addtogroup) {
                 std::vector<App::DocumentObject*> planes;
                 std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
@@ -427,13 +427,13 @@ void CmdPartDesignMigrate::activated(int iMsg)
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
         if ( chainIt->empty () ) { // prevent crash in release in case of errors
             continue;
         }
-#else
+~else
         assert ( !chainIt->empty () );
-#endif
+~endif
         Part::Feature *base = chainIt->front()->getBaseObject ( /*silent =*/ true );
 
         // Find a suitable chain to work with

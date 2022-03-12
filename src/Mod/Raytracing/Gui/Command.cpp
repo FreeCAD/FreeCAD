@@ -21,53 +21,53 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Tool.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <Poly_Triangulation.hxx>
-# include <TopoDS_Face.hxx>
-# include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoNode.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <QApplication>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <sstream>
-# include <vector>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Tool.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <GeomLProp_SLProps.hxx>
+~ include <Poly_Triangulation.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <Inventor/SoInput.h>
+~ include <Inventor/nodes/SoNode.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoPerspectiveCamera.h>
+~ include <QApplication>
+~ include <QDir>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QMessageBox>
+~ include <sstream>
+~ include <vector>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Material.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/FileDialog.h>
-#include <Gui/View.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/FileDialog.h>
-#include <Gui/MainWindow.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Material.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include <Gui/FileDialog.h>
+~include <Gui/View.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/FileDialog.h>
+~include <Gui/MainWindow.h>
 
-#include <Mod/Raytracing/App/RayFeature.h>
-#include <Mod/Raytracing/App/RaySegment.h>
-#include <Mod/Raytracing/App/RayProject.h>
-#include <Mod/Raytracing/App/LuxProject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Raytracing/App/RayFeature.h>
+~include <Mod/Raytracing/App/RaySegment.h>
+~include <Mod/Raytracing/App/RayProject.h>
+~include <Mod/Raytracing/App/LuxProject.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include "FreeCADpov.h"
+~include "FreeCADpov.h"
 
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -653,18 +653,18 @@ void CmdRaytracingRender::activated(int)
         }
 
         QStringList filter;
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         filter << QString::fromLatin1("%1 (*.bmp *.png)").arg(QObject::tr("Rendered image"));
-#else
+~else
         filter << QString::fromLatin1("%1 (*.png)").arg(QObject::tr("Rendered image"));
-#endif
+~endif
         filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
         if (!fn.isEmpty()) {
             fn = QDir::toNativeSeparators(fn);
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
             fn.replace(QLatin1String("\\"), QLatin1String("\\\\"));
-#endif
+~endif
             QByteArray utf8Name = fn.toUtf8();
             QByteArray localBit = fn.toLocal8Bit();
             QByteArray imageFile = utf8Name;
@@ -706,10 +706,10 @@ void CmdRaytracingRender::activated(int)
             str << "\"+W" << width  << "\", "
                 << "\"+H" << height << "\", "
                 << "\"+O" << imageFile.data() << "\"";
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
             str << ", \"/EXIT\", \"/RENDER\"";
-#endif
+~endif
             str << ", TempFile])\n"
                 << "proc.communicate()";
 

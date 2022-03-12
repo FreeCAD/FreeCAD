@@ -27,11 +27,11 @@
 //  Author    : Nicolas Geimer & Aurelien Motteux (OCC)
 //  Module    : SMESH
 //
-#include "SMESH_OctreeNode.hxx"
+~include "SMESH_OctreeNode.hxx"
 
-#include "SMDS_SetIterator.hxx"
-#include "SMESH_TypeDefs.hxx"
-#include <gp_Pnt.hxx>
+~include "SMDS_SetIterator.hxx"
+~include "SMESH_TypeDefs.hxx"
+~include <gp_Pnt.hxx>
 
 using namespace std;
 

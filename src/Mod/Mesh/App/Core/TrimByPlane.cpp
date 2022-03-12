@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <algorithm>
+~include "PreCompiled.h"
+~include <algorithm>
 
-#include "TrimByPlane.h"
-#include "Grid.h"
-#include "Iterator.h"
+~include "TrimByPlane.h"
+~include "Grid.h"
+~include "Iterator.h"
 
 using namespace MeshCore;
 

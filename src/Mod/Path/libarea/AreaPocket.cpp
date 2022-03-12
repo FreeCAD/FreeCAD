@@ -4,10 +4,10 @@
 
 // implements CArea::MakeOnePocketCurve
 
-#include "Area.h"
+~include "Area.h"
 
-#include <map>
-#include <set>
+~include <map>
+~include <set>
 
 static const CAreaPocketParams* pocket_params = NULL;
 
@@ -424,7 +424,7 @@ void MarkOverlappingOffsetIslands(std::list<IslandAndOffset> &offset_islands)
 void CArea::MakeOnePocketCurve(std::list<CCurve> &curve_list, const CAreaPocketParams &params)const
 {
 	if(CArea::m_please_abort)return;
-#if 0  // simple offsets with feed or rapid joins
+~if 0  // simple offsets with feed or rapid joins
 	CArea area_for_feed_possible = *this;
 
 	area_for_feed_possible.Offset(-params.tool_radius - 0.01);
@@ -465,7 +465,7 @@ void CArea::MakeOnePocketCurve(std::list<CCurve> &curve_list, const CAreaPocketP
 			first = false;
 		}
 	}
-#else
+~else
 	pocket_params = &params;
 	if(m_curves.size() == 0)
 	{
@@ -531,6 +531,6 @@ void CArea::MakeOnePocketCurve(std::list<CCurve> &curve_list, const CAreaPocketP
 	}
 
 	CArea::m_processing_done += CArea::m_single_area_processing_length * 0.1;
-#endif
+~endif
 }
 

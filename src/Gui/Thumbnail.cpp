@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QBuffer>
-# include <QByteArray>
-# include <QDateTime>
-# include <QImage>
-# include <QThread>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QBuffer>
+~ include <QByteArray>
+~ include <QDateTime>
+~ include <QImage>
+~ include <QThread>
+~endif
 
-#include <App/Application.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <App/Application.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include "Thumbnail.h"
-#include "BitmapFactory.h"
-#include "View3DInventorViewer.h"
+~include "Thumbnail.h"
+~include "BitmapFactory.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;

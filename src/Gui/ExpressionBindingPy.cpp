@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObjectPy.h>
+~include <App/DocumentObjectPy.h>
 
-#include "ExpressionBindingPy.h"
-#include "InputField.h"
-#include "PythonWrapper.h"
-#include "QuantitySpinBox.h"
+~include "ExpressionBindingPy.h"
+~include "InputField.h"
+~include "PythonWrapper.h"
+~include "QuantitySpinBox.h"
 
 
 using namespace Gui;

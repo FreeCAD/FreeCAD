@@ -25,11 +25,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <climits>
+~include <climits>
 
-#include "CheckedFile.h"
-#include "ImageFileImpl.h"
-#include "StructureNodeImpl.h"
+~include "CheckedFile.h"
+~include "ImageFileImpl.h"
+~include "StructureNodeImpl.h"
 
 using namespace e57;
 
@@ -258,10 +258,10 @@ void StructureNodeImpl::set( const ustring &pathName, NodeImplSharedPtr ni, bool
    // types for VECTOR,
    // COMPRESSED_VECTOR
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "StructureNodeImpl::set(pathName=" << pathName << ", ni, autoPathCreate=" << autoPathCreate
              << std::endl;
-#endif
+~endif
 
    bool isRelative;
    std::vector<ustring> fields;
@@ -285,13 +285,13 @@ void StructureNodeImpl::set( const ustring &pathName, NodeImplSharedPtr ni, bool
 void StructureNodeImpl::set( const std::vector<ustring> &fields, unsigned level, NodeImplSharedPtr ni,
                              bool autoPathCreate )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "StructureNodeImpl::set: level=" << level << std::endl;
    for ( unsigned i = 0; i < fields.size(); i++ )
    {
       std::cout << "  field[" << i << "]: " << fields.at( i ) << std::endl;
    }
-#endif
+~endif
 
    checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
    //??? check if field is numeric string (e.g. "17"), verify number is same as
@@ -454,7 +454,7 @@ void StructureNodeImpl::writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, i
 }
 
 //??? use visitor?
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void StructureNodeImpl::dump( int indent, std::ostream &os ) const
 {
    /// don't checkImageFileOpen
@@ -467,4 +467,4 @@ void StructureNodeImpl::dump( int indent, std::ostream &os ) const
       children_.at( i )->dump( indent + 2, os );
    }
 }
-#endif
+~endif

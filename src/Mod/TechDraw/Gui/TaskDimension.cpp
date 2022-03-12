@@ -20,38 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cmath>
-#endif // #ifndef _PreComp_
+~ifndef _PreComp_
+~include <cmath>
+~endif // ~ifndef _PreComp_
 
-# include <QMessageBox>
+~ include <QMessageBox>
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/ViewProvider.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
 
-#include "QGIViewDimension.h"
-#include "ViewProviderDimension.h"
-#include "ui_TaskDimension.h"
-#include "TaskDimension.h"
+~include "QGIViewDimension.h"
+~include "ViewProviderDimension.h"
+~include "ui_TaskDimension.h"
+~include "TaskDimension.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -455,4 +455,4 @@ bool TaskDlgDimension::reject()
     return true;
 }
 
-#include "moc_TaskDimension.cpp"
+~include "moc_TaskDimension.cpp"

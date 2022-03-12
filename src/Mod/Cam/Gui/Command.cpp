@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Cutting.h"
+~include "Cutting.h"
 
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <QPointer>
+~include <Gui/Command.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <QPointer>
 
 
 

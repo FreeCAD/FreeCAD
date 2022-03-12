@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <Inventor/SbBox.h>
-# include <Inventor/SoOutput.h>
-# include <Inventor/SoPrimitiveVertex.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/bundles/SoTextureCoordinateBundle.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoLightModelElement.h>
-# include <Inventor/misc/SoState.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <Inventor/SbBox.h>
+~ include <Inventor/SoOutput.h>
+~ include <Inventor/SoPrimitiveVertex.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/bundles/SoTextureCoordinateBundle.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/elements/SoGLCacheContextElement.h>
+~ include <Inventor/elements/SoLazyElement.h>
+~ include <Inventor/elements/SoLightModelElement.h>
+~ include <Inventor/misc/SoState.h>
+~endif
 
-#include <Gui/SoFCInteractiveElement.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include "SoFCMeshNode.h"
+~include <Gui/SoFCInteractiveElement.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include "SoFCMeshNode.h"
 
 using namespace MeshGui;
 
@@ -277,11 +277,11 @@ void SoFCMeshNode::createRoughModel(bool simplest)
     point.touch();
     coordIndex.touch();
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     std::ofstream str( "bbox.stl", std::ios::out | std::ios::binary );
     MeshCore::MeshOutput aWriter(kernel);
     aWriter.SaveBinarySTL( str );
-#endif
+~endif
   }
 }
 

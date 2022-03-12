@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_OffsetCurve.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_OffsetCurve.hxx>
+~endif
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "OffsetCurvePy.h"
-#include "OffsetCurvePy.cpp"
+~include "OCCError.h"
+~include "Geometry.h"
+~include "OffsetCurvePy.h"
+~include "OffsetCurvePy.cpp"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/Vector3D.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/Vector3D.h>
 
 using namespace Part;
 

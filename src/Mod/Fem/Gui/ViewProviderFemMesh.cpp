@@ -21,54 +21,54 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
 
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/SoDB.h>
+~ include <Inventor/SoInput.h>
+~ include <Inventor/SbVec3f.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoLightModel.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoIndexedFaceSet.h>
+~ include <Inventor/nodes/SoIndexedLineSet.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoPointSet.h>
+~ include <Inventor/nodes/SoPolygonOffset.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/details/SoPointDetail.h>
 
-# include <QFile>
+~ include <QFile>
 
-# include <sstream>
+~ include <sstream>
 
-# include <SMESH_Mesh.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
-#endif
+~ include <SMESH_Mesh.hxx>
+~ include <SMESHDS_Mesh.hxx>
+~ include <SMDSAbs_ElementType.hxx>
+~endif
 
-#include "ViewProviderFemMesh.h"
-#include "ViewProviderFemMeshPy.h"
+~include "ViewProviderFemMesh.h"
+~include "ViewProviderFemMeshPy.h"
 
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemMesh.h>
-#include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <Base/TimeInfo.h>
-#include <Base/BoundBox.h>
+~include <Mod/Fem/App/FemMeshObject.h>
+~include <Mod/Fem/App/FemMesh.h>
+~include <App/Document.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Console.h>
+~include <Base/TimeInfo.h>
+~include <Base/BoundBox.h>
 
 
 
@@ -313,7 +313,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(pcPointsRoot, Private::dm_node);
 
     // For combined modes make sure to use a Separator instead of a Group
-    // because the group affects nodes that are rendered afterwards (#0003769)
+    // because the group affects nodes that are rendered afterwards (~0003769)
 
     // Faces + Wireframe (Elements)
     //SoPolygonOffset* offset = new SoPolygonOffset();
@@ -423,7 +423,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
             int idx = point_detail->getCoordinateIndex();
-            // first check if the index is part of the highlighted nodes (#0003618)
+            // first check if the index is part of the highlighted nodes (~0003618)
             if (idx < static_cast<int>(vHighlightedIdx.size())) {
                 int vertex = vHighlightedIdx[idx];
                 str << "Node" << vertex;
@@ -630,7 +630,7 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
     SbVec3f* verts = pcCoords->point.startEditing();
     for (long i=0;i < sz ;i++) {
         verts[i].getValue(x,y,z);
-        // undo old factor#
+        // undo old factor~
         Base::Vector3d oldDisp = DisplacementVector[i] * DisplacementFactor;
         x -= oldDisp.x;
         y -= oldDisp.y;
@@ -773,7 +773,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     else
         numTries = numTetr*4+numHexa*6+numPyrd*5+numPris*5;
     // It is not 100% sure that a prism in smesh is a pentahedron in any case, but it will be in most cases!
-    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=13583#p109707
+    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=13583~p109707
 
     // corner case only edges (Beams) in the mesh. This need some special cases in building up visual
     onlyEdges = false;

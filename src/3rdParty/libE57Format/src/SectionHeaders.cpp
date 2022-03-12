@@ -25,17 +25,17 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "SectionHeaders.h"
+~include "SectionHeaders.h"
 
 namespace e57
 {
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void BlobSectionHeader::dump( int indent, std::ostream &os )
    {
       os << space( indent ) << "sectionId:            " << sectionId << std::endl;
       os << space( indent ) << "sectionLogicalLength: " << sectionLogicalLength << std::endl;
    }
-#endif
+~endif
 
    CompressedVectorSectionHeader::CompressedVectorSectionHeader()
    {
@@ -85,7 +85,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void CompressedVectorSectionHeader::dump( int indent, std::ostream &os ) const
    {
       os << space( indent ) << "sectionId:            " << static_cast<unsigned>( sectionId ) << std::endl;
@@ -93,5 +93,5 @@ namespace e57
       os << space( indent ) << "dataPhysicalOffset:   " << dataPhysicalOffset << std::endl;
       os << space( indent ) << "indexPhysicalOffset:  " << indexPhysicalOffset << std::endl;
    }
-#endif
+~endif
 }

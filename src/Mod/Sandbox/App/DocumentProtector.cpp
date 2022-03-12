@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QCoreApplication>
-# include <QObject>
-# include <QEvent>
-# include <QMutex>
-# include <QMutexLocker>
-# include <QSemaphore>
-# include <QThread>
-# include <QWaitCondition>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QCoreApplication>
+~ include <QObject>
+~ include <QEvent>
+~ include <QMutex>
+~ include <QMutexLocker>
+~ include <QSemaphore>
+~ include <QThread>
+~ include <QWaitCondition>
+~endif
 
-#include "DocumentProtector.h"
+~include "DocumentProtector.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Exception.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Exception.h>
 
 using namespace Sandbox;
 

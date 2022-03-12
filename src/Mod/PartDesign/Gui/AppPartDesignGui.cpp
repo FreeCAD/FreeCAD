@@ -21,50 +21,50 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
 
-#include "Workbench.h"
-#include "ViewProviderPocket.h"
-#include "ViewProviderHole.h"
-#include "ViewProviderBody.h"
-#include "ViewProviderSketchBased.h"
-#include "ViewProviderPad.h"
-#include "ViewProviderChamfer.h"
-#include "ViewProviderFillet.h"
-#include "ViewProviderDraft.h"
-#include "ViewProviderDressUp.h"
-#include "ViewProviderRevolution.h"
-#include "ViewProviderGroove.h"
-#include "ViewProviderMirrored.h"
-#include "ViewProviderLinearPattern.h"
-#include "ViewProviderPolarPattern.h"
-#include "ViewProviderScaled.h"
-#include "ViewProviderMultiTransform.h"
-#include "ViewProviderTransformed.h"
-#include "ViewProviderDatumPoint.h"
-#include "ViewProviderDatumLine.h"
-#include "ViewProviderDatumPlane.h"
-#include "ViewProviderBoolean.h"
-#include "ViewProviderPrimitive.h"
-#include "ViewProviderDatumCS.h"
-#include "ViewProviderThickness.h"
-#include "ViewProviderPipe.h"
-#include "ViewProviderLoft.h"
-#include "ViewProviderHelix.h"
-#include "ViewProviderShapeBinder.h"
-#include "ViewProviderBase.h"
+~include "Workbench.h"
+~include "ViewProviderPocket.h"
+~include "ViewProviderHole.h"
+~include "ViewProviderBody.h"
+~include "ViewProviderSketchBased.h"
+~include "ViewProviderPad.h"
+~include "ViewProviderChamfer.h"
+~include "ViewProviderFillet.h"
+~include "ViewProviderDraft.h"
+~include "ViewProviderDressUp.h"
+~include "ViewProviderRevolution.h"
+~include "ViewProviderGroove.h"
+~include "ViewProviderMirrored.h"
+~include "ViewProviderLinearPattern.h"
+~include "ViewProviderPolarPattern.h"
+~include "ViewProviderScaled.h"
+~include "ViewProviderMultiTransform.h"
+~include "ViewProviderTransformed.h"
+~include "ViewProviderDatumPoint.h"
+~include "ViewProviderDatumLine.h"
+~include "ViewProviderDatumPlane.h"
+~include "ViewProviderBoolean.h"
+~include "ViewProviderPrimitive.h"
+~include "ViewProviderDatumCS.h"
+~include "ViewProviderThickness.h"
+~include "ViewProviderPipe.h"
+~include "ViewProviderLoft.h"
+~include "ViewProviderHelix.h"
+~include "ViewProviderShapeBinder.h"
+~include "ViewProviderBase.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);

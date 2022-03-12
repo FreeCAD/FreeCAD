@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <Base/Console.h>
-#include "DlgTemplateField.h"
+~include "PreCompiled.h"
+~include <Base/Console.h>
+~include "DlgTemplateField.h"
 
 using namespace TechDrawGui;
 
@@ -72,4 +72,4 @@ void DlgTemplateField::reject()
     QDialog::reject();
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgTemplateField.cpp>
+~include <Mod/TechDraw/Gui/moc_DlgTemplateField.cpp>

@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
-#include "Grid.h"
-#include "Iterator.h"
+~include "Grid.h"
+~include "Iterator.h"
 
-#include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Tools.h"
+~include "MeshKernel.h"
+~include "Algorithm.h"
+~include "Tools.h"
 
 using namespace MeshCore;
 

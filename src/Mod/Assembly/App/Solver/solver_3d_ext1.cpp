@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "Solver.h"
+~include "Solver.h"
 
-#ifdef DCM_EXTERNAL_CORE
-#include DCM_EXTERNAL_CORE_INCLUDE_01
+~ifdef DCM_EXTERNAL_CORE
+~include DCM_EXTERNAL_CORE_INCLUDE_01
 DCM_EXTERNAL_CORE_01( Solver )
-#endif
+~endif
 
-#ifdef DCM_EXTERNAL_3D
-#include DCM_EXTERNAL_3D_INCLUDE_01
+~ifdef DCM_EXTERNAL_3D
+~include DCM_EXTERNAL_3D_INCLUDE_01
 DCM_EXTERNAL_3D_01( Solver )
-#endif
+~endif

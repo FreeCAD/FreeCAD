@@ -17,14 +17,14 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "SMDS_VtkFace.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_VtkCellIterator.hxx"
+~include "SMDS_VtkFace.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_VtkCellIterator.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <vector>
+~include <vector>
 
 using namespace std;
 
@@ -87,21 +87,21 @@ void SMDS_VtkFace::initPoly(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* me
 
 void SMDS_VtkFace::initQuadPoly(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* mesh)
 {
-#ifndef VTK_NO_QUAD_POLY    
+~ifndef VTK_NO_QUAD_POLY    
   SMDS_MeshFace::init();
   vtkUnstructuredGrid* grid = mesh->getGrid();
   myMeshId = mesh->getMeshId();
   myVtkID = grid->InsertNextLinkedCell(VTK_QUADRATIC_POLYGON, nodeIds.size(), (vtkIdType*) &nodeIds[0]);
   mesh->setMyModified();
-#else
+~else
   throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");
-#endif
+~endif
 }
 
 bool SMDS_VtkFace::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
   if (nbNodes != cellPoints->GetNumberOfIds())
@@ -113,7 +113,7 @@ bool SMDS_VtkFace::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
     {
       cellPoints->SetId(i, nodes[i]->getVtkId());
     }
-#else
+~else
   vtkIdType npts = 0;
   vtkIdType* pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
@@ -126,7 +126,7 @@ bool SMDS_VtkFace::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
     {
       pts[i] = nodes[i]->getVtkId();
     }
-#endif
+~endif
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
   return true;
 }
@@ -153,11 +153,11 @@ int SMDS_VtkFace::NbEdges() const
   case VTK_BIQUADRATIC_QUAD:
     nbEdges = 4;
     break;
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
     nbEdges = grid->GetCell(myVtkID)->GetNumberOfPoints() / 2;
     break;
-#endif
+~endif
   case VTK_POLYGON:
   default:
     nbEdges = grid->GetCell(myVtkID)->GetNumberOfPoints();
@@ -219,9 +219,9 @@ bool SMDS_VtkFace::IsQuadratic() const
   {
     case VTK_QUADRATIC_TRIANGLE:
     case VTK_QUADRATIC_QUAD:
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
     case VTK_QUADRATIC_POLYGON:
-#endif
+~endif
     case VTK_BIQUADRATIC_QUAD:
     case VTK_BIQUADRATIC_TRIANGLE:
       return true;
@@ -236,9 +236,9 @@ bool SMDS_VtkFace::IsPoly() const
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
   vtkIdType aVtkType = grid->GetCellType(this->myVtkID);
   bool isPoly = aVtkType == VTK_POLYGON;
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   isPoly = isPoly || aVtkType == VTK_QUADRATIC_POLYGON;
-#endif
+~endif
   return isPoly;
 }
 
@@ -257,11 +257,11 @@ bool SMDS_VtkFace::IsMediumNode(const SMDS_MeshNode* node) const
   case VTK_BIQUADRATIC_QUAD:
     rankFirstMedium = 4; // medium nodes are of rank 4,5,6,7
     break;
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
     rankFirstMedium = grid->GetCell(myVtkID)->GetNumberOfPoints() / 2;
     break;
-#endif
+~endif
   default:
     //MESSAGE("wrong element type " << aVtkType);
     return false;
@@ -297,11 +297,11 @@ int SMDS_VtkFace::NbCornerNodes() const
   {
   case VTK_POLYGON:
     break;
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
     nbPoints /= 2;
     break;
-#endif
+~endif
   default:
     if ( nbPoints > 4 )
       nbPoints /= 2;
@@ -329,9 +329,9 @@ SMDSAbs_GeometryType SMDS_VtkFace::GetGeomType() const
   case VTK_QUADRATIC_QUAD:
   case VTK_BIQUADRATIC_QUAD: return SMDSGeom_QUADRANGLE;
  
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   case VTK_QUADRATIC_POLYGON:
-#endif
+~endif
   case VTK_POLYGON: return SMDSGeom_POLYGON;
   default:;
   }
@@ -372,18 +372,18 @@ SMDS_NodeIteratorPtr SMDS_VtkFace::interlacedNodesIterator() const
 void SMDS_VtkFace::ChangeApex(SMDS_MeshNode* node)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
   grid->RemoveReferenceToCell(cellPoints->GetId(0), myVtkID);
   cellPoints->SetId(0, node->getVtkId());
-#else
+~else
   vtkIdType npts = 0;
   vtkIdType* pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
   grid->RemoveReferenceToCell(pts[0], myVtkID);
   pts[0] = node->getVtkId();
-#endif
+~endif
   node->AddInverseElement(this),
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
 }

@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QDialog>
-# include <QDoubleSpinBox>
-# include <QVBoxLayout>
-# include <QMessageBox>
-# include <QPointer>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QDialog>
+~ include <QDoubleSpinBox>
+~ include <QVBoxLayout>
+~ include <QMessageBox>
+~ include <QPointer>
+~endif
 
-#include "SegmentationBestFit.h"
-#include "ui_SegmentationBestFit.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Mesh/App/Core/Approximation.h>
-#include <Mod/Mesh/App/Core/Segmentation.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
+~include "SegmentationBestFit.h"
+~include "ui_SegmentationBestFit.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectGroup.h>
+~include <Gui/Command.h>
+~include <Gui/SelectionObject.h>
+~include <Mod/Mesh/App/Core/Approximation.h>
+~include <Mod/Mesh/App/Core/Segmentation.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
 
 using namespace MeshGui;
 
@@ -84,9 +84,9 @@ public:
             Base::Vector3f axis = fit.GetInitialAxisFromNormals(pts.normals);
             fit.SetInitialValues(base, axis);
 
-#if defined(FC_DEBUG)
+~if defined(FC_DEBUG)
             Base::Console().Message("Initial axis: (%f, %f, %f)\n", axis.x, axis.y, axis.z);
-#endif
+~endif
         }
 
         if (fit.Fit() < FLOAT_MAX) {
@@ -102,7 +102,7 @@ public:
             values.push_back(axis.z);
             values.push_back(radius);
 
-#if defined(FC_DEBUG)
+~if defined(FC_DEBUG)
             // Only for testing purposes
             try {
                 float height = Base::Distance(base, top);
@@ -119,7 +119,7 @@ public:
             }
             catch (...) {
             }
-#endif
+~endif
         }
         return values;
     }
@@ -520,4 +520,4 @@ bool TaskSegmentationBestFit::accept()
     return true;
 }
 
-#include "moc_SegmentationBestFit.cpp"
+~include "moc_SegmentationBestFit.cpp"

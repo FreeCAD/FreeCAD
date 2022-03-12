@@ -21,39 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
 
-#include "Command.h"
-#include "CommandPy.h"
-#include "Path.h"
-#include "PathPy.h"
-#include "Tool.h"
-#include "Tooltable.h"
-#include "ToolPy.h"
-#include "TooltablePy.h"
-#include "PropertyPath.h"
-#include "FeaturePath.h"
-#include "PropertyTool.h"
-#include "PropertyTooltable.h"
-#include "FeaturePathCompound.h"
-#include "FeaturePathShape.h"
-#include "AreaPy.h"
-#include "FeatureArea.h"
-#include "Voronoi.h"
-#include "VoronoiCell.h"
-#include "VoronoiCellPy.h"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
-#include "VoronoiPy.h"
-#include "VoronoiVertex.h"
-#include "VoronoiVertexPy.h"
+~include "Command.h"
+~include "CommandPy.h"
+~include "Path.h"
+~include "PathPy.h"
+~include "Tool.h"
+~include "Tooltable.h"
+~include "ToolPy.h"
+~include "TooltablePy.h"
+~include "PropertyPath.h"
+~include "FeaturePath.h"
+~include "PropertyTool.h"
+~include "PropertyTooltable.h"
+~include "FeaturePathCompound.h"
+~include "FeaturePathShape.h"
+~include "AreaPy.h"
+~include "FeatureArea.h"
+~include "Voronoi.h"
+~include "VoronoiCell.h"
+~include "VoronoiCellPy.h"
+~include "VoronoiEdge.h"
+~include "VoronoiEdgePy.h"
+~include "VoronoiPy.h"
+~include "VoronoiVertex.h"
+~include "VoronoiVertexPy.h"
 
 namespace Path {
 extern PyObject* initModule();

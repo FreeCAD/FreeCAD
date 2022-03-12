@@ -1,14 +1,14 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
-#include <iterator>
-#include <string>
+~include "meta-iostreams.h"
+~include <iterator>
+~include <string>
 
-#include "zipios_common.h"
-#include "zipheadio.h"
+~include "zipios_common.h"
+~include "zipheadio.h"
 
-#include "outputstringstream.h"
+~include "outputstringstream.h"
 
 namespace zipios {
 

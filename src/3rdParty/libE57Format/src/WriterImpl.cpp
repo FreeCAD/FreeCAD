@@ -25,10 +25,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "WriterImpl.h"
+~include "WriterImpl.h"
 
-#include "Common.h"
-#include <cmath>
+~include "Common.h"
+~include <cmath>
 
 namespace e57
 {
@@ -67,12 +67,12 @@ namespace e57
 // Path name: "/creationDateTime
 // TODO currently no support for handling UTC <-> GPS time conversions
 // note that "creationDateTime" is optional in the standard
-#if 0
+~if 0
     StructureNode creationDateTime = StructureNode(imf_);
 	creationDateTime.set("dateTimeValue", FloatNode(imf_, GetGPSTime()));
 	creationDateTime.set("isAtomicClockReferenced", IntegerNode(imf_,0));
     root_.set("creationDateTime", creationDateTime);
-#endif
+~endif
 
       root_.set( "data3D", data3D_ );
       root_.set( "images2D", images2D_ );

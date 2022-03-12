@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QButtonGroup>
-# include <QCompleter>
-# include <QDir>
-# include <QGridLayout>
-# include <QGroupBox>
-# include <QLineEdit>
-# include <QPushButton>
-# include <QRadioButton>
-# include <QResizeEvent>
-# include <QStandardPaths>
-# include <QStyle>
-# include <QUrl>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QButtonGroup>
+~ include <QCompleter>
+~ include <QDir>
+~ include <QGridLayout>
+~ include <QGroupBox>
+~ include <QLineEdit>
+~ include <QPushButton>
+~ include <QRadioButton>
+~ include <QResizeEvent>
+~ include <QStandardPaths>
+~ include <QStyle>
+~ include <QUrl>
+~endif
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
+~include <Base/Parameter.h>
+~include <App/Application.h>
 
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "Tools.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "Tools.h"
 
 
 using namespace Gui;
 
 bool DialogOptions::dontUseNativeFileDialog()
 {
-#if defined(USE_QT_FILEDIALOG)
+~if defined(USE_QT_FILEDIALOG)
     bool notNativeDialog = true;
-#else
+~else
     bool notNativeDialog = false;
-#endif
+~endif
 
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
@@ -117,8 +117,8 @@ void FileDialog::accept()
             QString ext = this->defaultSuffix();
             QString file = files.front();
             QString suffix = QFileInfo(file).suffix();
-            // #0001928: do not add a suffix if a file with suffix is entered
-            // #0002209: make sure that the entered suffix is part of one of the filters
+            // ~0001928: do not add a suffix if a file with suffix is entered
+            // ~0002209: make sure that the entered suffix is part of one of the filters
             if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
                 file = QString::fromLatin1("%1.%2").arg(file, ext);
                 // That's the built-in line edit
@@ -504,7 +504,7 @@ void FileOptionsDialog::accept()
         else if (ext.toLower() != suf.toLower()) {
             fn = QString::fromLatin1("%1.%2").arg(fn, suf);
             selectFile(fn);
-            // That's the built-in line edit (fixes Debian bug #811200)
+            // That's the built-in line edit (fixes Debian bug ~811200)
             QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
             if (fileNameEdit)
                 fileNameEdit->setText(fn);
@@ -649,9 +649,9 @@ FileChooser::FileChooser ( QWidget * parent )
 
     button = new QPushButton(QLatin1String("..."), this);
 
-#if defined (Q_OS_MAC)
+~if defined (Q_OS_MAC)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
-#endif
+~endif
 
     layout->addWidget(button);
 
@@ -1024,5 +1024,5 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
 }
 
 
-#include "moc_FileDialog.cpp"
+~include "moc_FileDialog.cpp"
 

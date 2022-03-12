@@ -14,29 +14,29 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4System.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4System.h"
 using namespace Wm4;
 
 // support for Load
-#include <sys/stat.h>
+~include <sys/stat.h>
 
 // support for GetTime
-#if !defined(WIN32)
-#include <sys/time.h>
+~if !defined(WIN32)
+~include <sys/time.h>
 static timeval gs_kInitial;
 static bool gs_bInitializedTime = false;
-#else
-#include <sys/timeb.h>
+~else
+~include <sys/timeb.h>
 static long gs_lInitialSec = 0;
 static long gs_lInitialUSec = 0;
 static bool gs_bInitializedTime = false;
-#endif
+~endif
 
 // support for locating the application directory
-#ifdef __APPLE__
-#include <Carbon/Carbon.h>
-#endif
+~ifdef __APPLE__
+~include <Carbon/Carbon.h>
+~endif
 
 char System::ms_acPath[SYSTEM_MAX_PATH];
 char System::ms_acEnvVar[SYSTEM_MAX_ENVVAR];
@@ -86,9 +86,9 @@ void System::EndianCopy (int iSize, const void* pvSrc, void* pvDst)
 {
     size_t uiSize = (size_t)iSize;
     Memcpy(pvDst,uiSize,pvSrc,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(iSize,pvDst);
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 void System::EndianCopy (int iSize, int iQuantity, const void* pvSrc,
@@ -96,14 +96,14 @@ void System::EndianCopy (int iSize, int iQuantity, const void* pvSrc,
 {
     size_t uiSize = (size_t)(iSize*iQuantity);
     Memcpy(pvDst,uiSize,pvSrc,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(iSize,iQuantity,pvDst);
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 double System::GetTime ()
 {
-#if !defined(WIN32)
+~if !defined(WIN32)
     if (!gs_bInitializedTime)
     {
         gs_bInitializedTime = true;
@@ -117,7 +117,7 @@ double System::GetTime ()
     timersub(&kCurrent,&gs_kInitial,&kDelta);
 
     return 0.001*(double)(1000*kDelta.tv_sec + kDelta.tv_usec/1000);
-#else
+~else
     struct timeb kTB;
 
     if (!gs_bInitializedTime)
@@ -140,7 +140,7 @@ double System::GetTime ()
     }
 
     return 0.001*(double)(1000*lDeltaSec + lDeltaUSec/1000);
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 bool System::Load (const char* acFilename, char*& racBuffer, int& riSize)
@@ -266,9 +266,9 @@ int System::Read2le (const char* acBuffer, int iQuantity, void* pvData)
     int iNumBytes = 2*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(pvData,uiSize,acBuffer,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,pvData);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -278,9 +278,9 @@ int System::Read4le (const char* acBuffer, int iQuantity, void* pvData)
     int iNumBytes = 4*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(pvData,uiSize,acBuffer,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,pvData);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -290,9 +290,9 @@ int System::Read8le (const char* acBuffer, int iQuantity, void* pvData)
     int iNumBytes = 8*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(pvData,uiSize,acBuffer,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,pvData);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -302,9 +302,9 @@ int System::Write2le (char* acBuffer, int iQuantity, const void* pvData)
     int iNumBytes = 2*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(acBuffer,uiSize,pvData,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,acBuffer);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -314,9 +314,9 @@ int System::Write4le (char* acBuffer, int iQuantity, const void* pvData)
     int iNumBytes = 4*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(acBuffer,uiSize,pvData,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,acBuffer);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -326,9 +326,9 @@ int System::Write8le (char* acBuffer, int iQuantity, const void* pvData)
     int iNumBytes = 8*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(acBuffer,uiSize,pvData,uiSize);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,acBuffer);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -336,9 +336,9 @@ int System::Read2le (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
     size_t r = fread(pvData,2,iQuantity,pkFile); (void)r;
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,pvData);
-#endif
+~endif
     return 2*iQuantity;
 }
 //----------------------------------------------------------------------------
@@ -346,9 +346,9 @@ int System::Read4le (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
     size_t r = fread(pvData,4,iQuantity,pkFile); (void)r;
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,pvData);
-#endif
+~endif
     return 4*iQuantity;
 }
 //----------------------------------------------------------------------------
@@ -356,16 +356,16 @@ int System::Read8le (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
     size_t r = fread(pvData,8,iQuantity,pkFile); (void)r;
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,pvData);
-#endif
+~endif
     return 8*iQuantity;
 }
 //----------------------------------------------------------------------------
 int System::Write2le (FILE* pkFile, int iQuantity, const void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     const short* psData = (const short*)pvData;
     for (int i = 0; i < iQuantity; i++)
     {
@@ -373,16 +373,16 @@ int System::Write2le (FILE* pkFile, int iQuantity, const void* pvData)
         SwapBytes(2,&sTemp);
         fwrite(&sTemp,2,1,pkFile);
     }
-#else
+~else
     fwrite(pvData,2,iQuantity,pkFile);
-#endif
+~endif
     return 2*iQuantity;
 }
 //----------------------------------------------------------------------------
 int System::Write4le (FILE* pkFile, int iQuantity, const void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     const int* piData = (const int*)pvData;
     for (int i = 0; i < iQuantity; i++)
     {
@@ -390,16 +390,16 @@ int System::Write4le (FILE* pkFile, int iQuantity, const void* pvData)
         SwapBytes(4,&iTemp);
         fwrite(&iTemp,4,1,pkFile);
     }
-#else
+~else
     fwrite(pvData,4,iQuantity,pkFile);
-#endif
+~endif
     return 4*iQuantity;
 }
 //----------------------------------------------------------------------------
 int System::Write8le (FILE* pkFile, int iQuantity, const void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     const double* pdData = (const double*)pvData;
     for (int i = 0; i < iQuantity; i++)
     {
@@ -407,9 +407,9 @@ int System::Write8le (FILE* pkFile, int iQuantity, const void* pvData)
         SwapBytes(8,&dTemp);
         fwrite(&dTemp,8,1,pkFile);
     }
-#else
+~else
     fwrite(pvData,8,iQuantity,pkFile);
-#endif
+~endif
     return 8*iQuantity;
 }
 //----------------------------------------------------------------------------
@@ -419,9 +419,9 @@ int System::Read2be (const char* acBuffer, int iQuantity, void* pvData)
     int iNumBytes = 2*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(pvData,uiSize,acBuffer,uiSize);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,pvData);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -431,9 +431,9 @@ int System::Read4be (const char* acBuffer, int iQuantity, void* pvData)
     int iNumBytes = 4*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(pvData,uiSize,acBuffer,uiSize);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,pvData);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -443,9 +443,9 @@ int System::Read8be (const char* acBuffer, int iQuantity, void* pvData)
     int iNumBytes = 8*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(pvData,uiSize,acBuffer,uiSize);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,pvData);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -455,9 +455,9 @@ int System::Write2be (char* acBuffer, int iQuantity, const void* pvData)
     int iNumBytes = 2*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(acBuffer,uiSize,pvData,uiSize);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,acBuffer);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -467,9 +467,9 @@ int System::Write4be (char* acBuffer, int iQuantity, const void* pvData)
     int iNumBytes = 4*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(acBuffer,uiSize,pvData,uiSize);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,acBuffer);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -479,9 +479,9 @@ int System::Write8be (char* acBuffer, int iQuantity, const void* pvData)
     int iNumBytes = 8*iQuantity;
     size_t uiSize = (size_t)iNumBytes;
     Memcpy(acBuffer,uiSize,pvData,uiSize);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,acBuffer);
-#endif
+~endif
     return iNumBytes;
 }
 //----------------------------------------------------------------------------
@@ -489,9 +489,9 @@ int System::Read2be (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
     size_t r = fread(pvData,2,iQuantity,pkFile); (void)r;
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(2,iQuantity,pvData);
-#endif
+~endif
     return 2*iQuantity;
 }
 //----------------------------------------------------------------------------
@@ -499,9 +499,9 @@ int System::Read4be (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
     size_t r = fread(pvData,4,iQuantity,pkFile); (void)r;
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(4,iQuantity,pvData);
-#endif
+~endif
     return 4*iQuantity;
 }
 //----------------------------------------------------------------------------
@@ -509,16 +509,16 @@ int System::Read8be (FILE* pkFile, int iQuantity, void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
     size_t r = fread(pvData,8,iQuantity,pkFile); (void)r;
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     SwapBytes(8,iQuantity,pvData);
-#endif
+~endif
     return 8*iQuantity;
 }
 //----------------------------------------------------------------------------
 int System::Write2be (FILE* pkFile, int iQuantity, const void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     const short* psData = (const short*)pvData;
     for (int i = 0; i < iQuantity; i++)
     {
@@ -526,16 +526,16 @@ int System::Write2be (FILE* pkFile, int iQuantity, const void* pvData)
         SwapBytes(2,&sTemp);
         fwrite(&sTemp,2,1,pkFile);
     }
-#else
+~else
     fwrite(pvData,2,iQuantity,pkFile);
-#endif
+~endif
     return 2*iQuantity;
 }
 //----------------------------------------------------------------------------
 int System::Write4be (FILE* pkFile, int iQuantity, const void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     const int* piData = (const int*)pvData;
     for (int i = 0; i < iQuantity; i++)
     {
@@ -543,16 +543,16 @@ int System::Write4be (FILE* pkFile, int iQuantity, const void* pvData)
         SwapBytes(4,&iTemp);
         fwrite(&iTemp,4,1,pkFile);
     }
-#else
+~else
     fwrite(pvData,4,iQuantity,pkFile);
-#endif
+~endif
     return 4*iQuantity;
 }
 //----------------------------------------------------------------------------
 int System::Write8be (FILE* pkFile, int iQuantity, const void* pvData)
 {
     assert(pkFile && iQuantity > 0 && pvData);
-#ifndef WM4_BIG_ENDIAN
+~ifndef WM4_BIG_ENDIAN
     const double* pdData = (const double*)pvData;
     for (int i = 0; i < iQuantity; i++)
     {
@@ -560,16 +560,16 @@ int System::Write8be (FILE* pkFile, int iQuantity, const void* pvData)
         SwapBytes(8,&dTemp);
         fwrite(&dTemp,8,1,pkFile);
     }
-#else
+~else
     fwrite(pvData,8,iQuantity,pkFile);
-#endif
+~endif
     return 8*iQuantity;
 }
 //----------------------------------------------------------------------------
 const char* System::GetPath (const char* acDirectory, const char* acFilename)
 {
-    // #0000656: WildMagic4 doesn't build on 64-bit Mac OS
-#if defined(__APPLE__) && !defined(__aarch64__) && !defined(__x86_64__)
+    // ~0000656: WildMagic4 doesn't build on 64-bit Mac OS
+~if defined(__APPLE__) && !defined(__aarch64__) && !defined(__x86_64__)
     // An application-relative path is needed for the applications to be able
     // to find the input data sets.  Unfortunately, there is no exact way to
     // predict which directory the application is run from, since this depends
@@ -601,7 +601,7 @@ const char* System::GetPath (const char* acDirectory, const char* acFilename)
     eError = FSRefMakePath(&kAppRef,(UInt8*)ms_acPath,SYSTEM_MAX_PATH);
     eError = chdir(ms_acPath);
 
-#if 0
+~if 0
     // If you really must use Xcode version 1.x, then the path searching
     // code must be the following.
     OSStatus eError;
@@ -616,8 +616,8 @@ const char* System::GetPath (const char* acDirectory, const char* acFilename)
     eError = FSGetCatalogInfo(&kBuildRef,0,0,0,0,&kAppRef);
     eError = FSRefMakePath(&kAppRef,(UInt8*)ms_acPath,SYSTEM_MAX_PATH);
     eError = chdir(ms_acPath);
-#endif
-#endif
+~endif
+~endif
 
     size_t uiDLength = strlen(acDirectory);
     size_t uiFLength = strlen(acFilename);
@@ -767,26 +767,26 @@ const char* System::GetPath (const char* acFilename, int eMode)
 unsigned int System::MakeRGB (unsigned char ucR, unsigned char ucG,
     unsigned char ucB)
 {
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     return (0xFF | (ucB << 8) | (ucG << 16) | (ucR << 24));
-#else
+~else
     return (ucR | (ucG << 8) | (ucB << 16) | (0xFF << 24));
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 unsigned int System::MakeRGBA (unsigned char ucR, unsigned char ucG,
     unsigned char ucB, unsigned char ucA)
 {
-#ifdef WM4_BIG_ENDIAN
+~ifdef WM4_BIG_ENDIAN
     return (ucA | (ucB << 8) | (ucG << 16) | (ucR << 24));
-#else
+~else
     return (ucR | (ucG << 8) | (ucB << 16) | (ucA << 24));
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 FILE* System::Fopen (const char* acFilename, const char* acMode)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     FILE* pkFile;
     errno_t uiError = fopen_s(&pkFile,acFilename,acMode);
     if (uiError == 0)
@@ -797,9 +797,9 @@ FILE* System::Fopen (const char* acFilename, const char* acMode)
     {
         return 0;
     }
-#else
+~else
     return fopen(acFilename,acMode);
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 int System::Fprintf (FILE* pkFile, const char* acFormat, ...)
@@ -812,11 +812,11 @@ int System::Fprintf (FILE* pkFile, const char* acFormat, ...)
     va_list acArgs;
     va_start(acArgs,acFormat);
 
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     int iNumWritten = vfprintf_s(pkFile,acFormat,acArgs);
-#else
+~else
     int iNumWritten = vfprintf(pkFile,acFormat,acArgs);
-#endif
+~endif
 
     va_end(acArgs);
     return iNumWritten;
@@ -829,7 +829,7 @@ int System::Fclose (FILE* pkFile)
 //----------------------------------------------------------------------------
 const char* System::GetEnv (const char* acEnvVarName)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
    size_t uiRequiredSize;
    errno_t uiError = getenv_s(&uiRequiredSize,0,0,acEnvVarName);
    if (uiError > 0)
@@ -837,21 +837,21 @@ const char* System::GetEnv (const char* acEnvVarName)
        return 0;
    }
    getenv_s(&uiRequiredSize,ms_acEnvVar,SYSTEM_MAX_ENVVAR,acEnvVarName);
-#else
+~else
     char* acEnvVar = getenv(acEnvVarName);
     if (acEnvVar == nullptr)
     {
         return nullptr;
     }
     System::Strcpy(ms_acEnvVar,SYSTEM_MAX_ENVVAR,getenv(acEnvVarName));
-#endif
+~endif
     return ms_acEnvVar;
 }
 //----------------------------------------------------------------------------
 void* System::Memcpy (void* pvDst, size_t uiDstSize, const void* pvSrc,
     size_t uiSrcSize)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     errno_t uiError = memcpy_s(pvDst,uiDstSize,pvSrc,uiSrcSize);
     if (uiError == 0)
     {
@@ -861,7 +861,7 @@ void* System::Memcpy (void* pvDst, size_t uiDstSize, const void* pvSrc,
     {
         return 0;
     }
-#else
+~else
     if (!pvDst || uiDstSize == 0 || !pvSrc || uiSrcSize == 0)
     {
         // Be consistent with the behavior of memcpy_s.
@@ -877,7 +877,7 @@ void* System::Memcpy (void* pvDst, size_t uiDstSize, const void* pvSrc,
     }
     memcpy(pvDst,pvSrc,uiSrcSize);
     return pvDst;
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 int System::Sprintf (char* acDst, size_t uiDstSize, const char* acFormat, ...)
@@ -890,11 +890,11 @@ int System::Sprintf (char* acDst, size_t uiDstSize, const char* acFormat, ...)
     va_list acArgs;
     va_start(acArgs,acFormat);
 
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     int iNumWritten = vsprintf_s(acDst,uiDstSize,acFormat,acArgs);
-#else
+~else
     int iNumWritten = vsprintf(acDst,acFormat,acArgs);
-#endif
+~endif
 
     va_end(acArgs);
     return iNumWritten;
@@ -902,7 +902,7 @@ int System::Sprintf (char* acDst, size_t uiDstSize, const char* acFormat, ...)
 //----------------------------------------------------------------------------
 char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     errno_t uiError = strcpy_s(acDst,uiDstSize,acSrc);
     if (uiError == 0)
     {
@@ -912,7 +912,7 @@ char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
     {
         return 0;
     }
-#else
+~else
     if (!acDst || uiDstSize == 0 || !acSrc)
     {
         // Be consistent with the behavior of strcpy_s.
@@ -930,12 +930,12 @@ char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
     strncpy(acDst,acSrc,uiSrcLen);
     acDst[uiSrcLen] = 0;
     return acDst;
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     errno_t uiError = strcat_s(acDst,uiDstSize,acSrc);
     if (uiError == 0)
     {
@@ -945,7 +945,7 @@ char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
     {
         return 0;
     }
-#else
+~else
     if (!acDst || uiDstSize == 0 || !acSrc)
     {
         // Be consistent with the behavior of strcat_s.
@@ -965,13 +965,13 @@ char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
     strncat(acDst,acSrc,uiSrcLen);
     acDst[uiSumLen] = 0;
     return acDst;
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 char* System::Strncpy (char* acDst, size_t uiDstSize, const char* acSrc,
     size_t uiSrcSize)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     errno_t uiError = strncpy_s(acDst,uiDstSize,acSrc,uiSrcSize);
     if (uiError == 0)
     {
@@ -981,7 +981,7 @@ char* System::Strncpy (char* acDst, size_t uiDstSize, const char* acSrc,
     {
         return 0;
     }
-#else
+~else
     if (!acDst || uiDstSize == 0 || !acSrc || uiSrcSize == 0)
     {
         // Be consistent with the behavior of strncpy_s.
@@ -997,17 +997,17 @@ char* System::Strncpy (char* acDst, size_t uiDstSize, const char* acSrc,
     }
     strncpy(acDst,acSrc,uiSrcSize);
     return acDst;
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 char* System::Strtok (char* acToken, const char* acDelimiters,
     char*& racNextToken)
 {
-#ifdef WM4_USING_VC80
+~ifdef WM4_USING_VC80
     return strtok_s(acToken,acDelimiters,&racNextToken);
-#else
+~else
     (void)racNextToken;  // avoid warning in release build
     return strtok(acToken,acDelimiters);
-#endif
+~endif
 }
 //----------------------------------------------------------------------------

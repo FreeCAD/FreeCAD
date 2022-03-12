@@ -21,24 +21,24 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "deviation.h"
+~include "PreCompiled.h"
+~include "deviation.h"
 
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Builder.h>
-#include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Builder.h>
+~include <Mod/Mesh/App/Core/Grid.h>
 
-#include <BRepAdaptor_Surface.hxx>
-#include <Base/Builder3D.h>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_Surface.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <Poly_Triangulation.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <Base/Builder3D.h>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <Geom_Surface.hxx>
+~include <Poly_PolygonOnTriangulation.hxx>
+~include <Poly_Triangulation.hxx>
+~include <TColgp_Array1OfPnt2d.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
 
 
 Deviation::Deviation() 
@@ -203,8 +203,8 @@ bool Deviation::Compute()
 	return true;
 }
 
-#include <QFile>
-#include <QTextStream>
+~include <QFile>
+~include <QTextStream>
 void Deviation::WriteOutput(const QString &dateiname)
 {
 	QFile anOutputFile(dateiname);

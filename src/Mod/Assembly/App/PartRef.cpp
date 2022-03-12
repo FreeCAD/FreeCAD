@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
+~include <Base/Placement.h>
+~include <Base/Console.h>
 
-#include "PartRef.h"
-#include "Product.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <PartRefPy.h>
-#include <TopoDS.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAbs_CurveType.hxx>
+~include "PartRef.h"
+~include "Product.h"
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/BodyBase.h>
+~include <PartRefPy.h>
+~include <TopoDS.hxx>
+~include <GeomAbs_SurfaceType.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomAbs_CurveType.hxx>
 
 
 using namespace Assembly;

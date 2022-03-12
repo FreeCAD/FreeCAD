@@ -21,13 +21,13 @@
 ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include "FcLodHandler.h"
+~include "FcLodHandler.h"
 
 
 

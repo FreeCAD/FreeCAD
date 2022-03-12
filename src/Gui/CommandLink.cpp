@@ -20,29 +20,29 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QMessageBox>
+~endif
 
-#include <App/Application.h>
-#include <App/ComplexGeoData.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Link.h>
-#include <Base/Exception.h>
+~include <App/Application.h>
+~include <App/ComplexGeoData.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Link.h>
+~include <Base/Exception.h>
 
-#include "Action.h"
-#include "Application.h"
-#include "Command.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "Selection.h"
-#include "Tree.h"
-#include "ViewProviderDocumentObject.h"
-#include "WaitCursor.h"
+~include "Action.h"
+~include "Application.h"
+~include "Command.h"
+~include "Document.h"
+~include "MainWindow.h"
+~include "Selection.h"
+~include "Tree.h"
+~include "ViewProviderDocumentObject.h"
+~include "WaitCursor.h"
 
 
 FC_LOG_LEVEL_INIT("CommandLink", true, true)

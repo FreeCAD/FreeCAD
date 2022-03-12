@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Edge.h"
-#include "Mesh.h"
+~include "Edge.h"
+~include "Mesh.h"
 
 using namespace Mesh;
 

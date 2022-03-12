@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderSphereParametric.h"
+~include "ViewProviderSphereParametric.h"
 
 using namespace PartGui;
 

@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/MDIView.h>
-#include <Mod/Sketcher/Gui/Workbench.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/MDIView.h>
+~include <Mod/Sketcher/Gui/Workbench.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
-#include "Utils.h"
-#include "Workbench.h"
-#include "WorkflowManager.h"
+~include "Utils.h"
+~include "Workbench.h"
+~include "WorkflowManager.h"
 
 using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "&Sketch");
     //
     qApp->translate("Workbench", "&Part Design");
@@ -60,7 +60,7 @@ namespace bp = boost::placeholders;
     qApp->translate("Workbench", "Toggle 3D");
     qApp->translate("Workbench", "Part Design Helper");
     qApp->translate("Workbench", "Part Design Modeling");
-#endif
+~endif
 
 /// @namespace PartDesignGui @class Workbench
 TYPESYSTEM_SOURCE(PartDesignGui::Workbench, Gui::StdWorkbench)

@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ui_DlgLocationAngle.h"
-#include "ui_DlgLocationPos.h"
+~include "ui_DlgLocationAngle.h"
+~include "ui_DlgLocationPos.h"
 
-#include "TaskDlgRelocation.h"
-#include "BitmapFactory.h"
+~include "TaskDlgRelocation.h"
+~include "BitmapFactory.h"
 
 
 using namespace Gui;
@@ -146,4 +146,4 @@ void TaskDlgRelocation::helpRequested()
 }
 
 
-#include "moc_TaskDlgRelocation.cpp"
+~include "moc_TaskDlgRelocation.cpp"

@@ -21,57 +21,57 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cfloat>
-# include <BRepLib.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
-# include <BRepPrimAPI_MakeCylinder.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrim_Cylinder.hxx>
-# include <BRepPrim_Wedge.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
-# include <BRepProj_Projection.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
-# include <gp_GTrsf.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_ConicalSurface.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom2d_Line.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom2d_Line.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <Precision.hxx>
-# include <Standard_Real.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cfloat>
+~ include <BRepLib.hxx>
+~ include <BRepPrimAPI_MakeCone.hxx>
+~ include <BRepPrimAPI_MakeCylinder.hxx>
+~ include <BRepPrimAPI_MakePrism.hxx>
+~ include <BRepPrimAPI_MakeRevol.hxx>
+~ include <BRepPrimAPI_MakeSphere.hxx>
+~ include <BRepPrim_Cylinder.hxx>
+~ include <BRepPrim_Wedge.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~ include <BRepBuilderAPI_GTransform.hxx>
+~ include <BRepProj_Projection.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Elips.hxx>
+~ include <gp_GTrsf.hxx>
+~ include <GCE2d_MakeSegment.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom_ConicalSurface.hxx>
+~ include <Geom_CylindricalSurface.hxx>
+~ include <Geom2d_Line.hxx>
+~ include <Geom2d_TrimmedCurve.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom_CylindricalSurface.hxx>
+~ include <Geom2d_Line.hxx>
+~ include <Geom2d_TrimmedCurve.hxx>
+~ include <Precision.hxx>
+~ include <Standard_Real.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <Standard_Version.hxx>
+~endif
 
-#include "PrimitiveFeature.h"
-#include <Mod/Part/App/PartFeaturePy.h>
-#include <App/FeaturePythonPyImp.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
+~include "PrimitiveFeature.h"
+~include <Mod/Part/App/PartFeaturePy.h>
+~include <App/FeaturePythonPyImp.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
 
 
 namespace Part {
@@ -107,19 +107,19 @@ App::DocumentObjectExecReturn* Primitive::execute(void) {
 }
 
 // suppress warning about tp_print for Py3.8
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmissing-field-initializers"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmissing-field-initializers"
+~endif
 
 namespace Part {
     PYTHON_TYPE_DEF(PrimitivePy, PartFeaturePy)
     PYTHON_TYPE_IMP(PrimitivePy, PartFeaturePy)
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 PyObject* Primitive::getPyObject()
 {
@@ -142,7 +142,7 @@ void Primitive::handleChangedPropertyName(Base::XMLReader &reader, const char * 
 
 void Primitive::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
-    // For #0001652 the property types of many primitive features have changed
+    // For ~0001652 the property types of many primitive features have changed
     // from PropertyFloat or PropertyFloatConstraint to a more meaningful type.
     // In order to load older project files there must be checked in case the
     // types don't match if both inherit from PropertyFloat because all derived
@@ -325,9 +325,9 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     gp_Dir dir(0.0,0.0,1.0);
     Handle(Geom_Plane) aPlane = new Geom_Plane(pnt, dir);
     BRepBuilderAPI_MakeFace mkFace(aPlane, 0.0, L, 0.0, W
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
-#endif
+~endif
     );
 
     const char *error=0;
@@ -346,11 +346,11 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     case BRepBuilderAPI_ParametersOutOfRange:
         error = "parameters out of range";
         break;
-#if OCC_VERSION_HEX < 0x060500
+~if OCC_VERSION_HEX < 0x060500
     case BRepBuilderAPI_SurfaceNotC2:
         error = "surface not C2";
         break;
-#endif
+~endif
     default:
         error = "unknown error";
         break;
@@ -468,7 +468,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
                                         Angle3.getValue()/180.0f*M_PI);
         Standard_Real scaleX = 1.0;
         Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
-        // issue #1798: A third radius has been introduced. To be backward
+        // issue ~1798: A third radius has been introduced. To be backward
         // compatible if Radius3 is 0.0 (default) it's handled to be the same
         // as Radius2
         Standard_Real scaleY = 1.0;

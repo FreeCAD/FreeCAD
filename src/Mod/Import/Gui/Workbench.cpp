@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
 
 using namespace ImportGui;
 

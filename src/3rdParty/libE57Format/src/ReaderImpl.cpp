@@ -25,7 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "ReaderImpl.h"
+~include "ReaderImpl.h"
 
 namespace e57
 {

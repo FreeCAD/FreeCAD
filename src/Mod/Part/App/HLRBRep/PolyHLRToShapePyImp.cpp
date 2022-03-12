@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "HLRBRep/PolyHLRToShapePy.h"
-#include "HLRBRep/PolyHLRToShapePy.cpp"
-#include "HLRBRep/HLRBRep_PolyAlgoPy.h"
-#include <Mod/Part/App/TopoShapePy.h>
+~include "HLRBRep/PolyHLRToShapePy.h"
+~include "HLRBRep/PolyHLRToShapePy.cpp"
+~include "HLRBRep/HLRBRep_PolyAlgoPy.h"
+~include <Mod/Part/App/TopoShapePy.h>
 
 using namespace Part;
 

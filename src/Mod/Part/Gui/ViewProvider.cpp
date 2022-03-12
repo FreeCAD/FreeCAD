@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Gui/Command.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Gui/Command.h>
 
-#include "ViewProvider.h"
+~include "ViewProvider.h"
 
 
 using namespace PartGui;

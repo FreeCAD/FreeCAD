@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
-#include "SolverGeometryExtension.h"
+~include "SolverGeometryExtension.h"
 
 using namespace Sketcher;
 
@@ -56,11 +56,11 @@ std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy(void) con
 
     copyAttributes(cpy.get());
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
+~if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
-#else
+~else
     return cpy;
-#endif
+~endif
 }
 
 PyObject * SolverGeometryExtension::getPyObject(void)

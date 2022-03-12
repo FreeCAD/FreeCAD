@@ -25,11 +25,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "ImageFileImpl.h"
-#include "CheckedFile.h"
-#include "E57Version.h"
-#include "E57XmlParser.h"
-#include "StructureNodeImpl.h"
+~include "ImageFileImpl.h"
+~include "CheckedFile.h"
+~include "E57Version.h"
+~include "E57XmlParser.h"
+~include "StructureNodeImpl.h"
 
 namespace e57
 {
@@ -54,12 +54,12 @@ namespace e57
       uint64_t pageSize = 0;
       //  char        e57LibraryVersion[8];   //Not in V1.0 Standard
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
    };
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void E57FileHeader::dump( int indent, std::ostream &os ) const
    {
       os << space( indent ) << "fileSignature:      ";
@@ -72,7 +72,7 @@ namespace e57
       os << space( indent ) << "xmlLogicalLength:   " << xmlLogicalLength << std::endl;
       os << space( indent ) << "pageSize:           " << pageSize << std::endl;
    }
-#endif
+~endif
 
    ImageFileImpl::ImageFileImpl( ReadChecksumPolicy policy ) :
       isWriter_( false ), writerCount_( 0 ), readerCount_( 0 ),
@@ -87,9 +87,9 @@ namespace e57
    {
       /// Second phase of construction, now we have a well-formed ImageFile object.
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "ImageFileImpl() called, fileName=" << fileName << " mode=" << mode << std::endl;
-#endif
+~endif
       unusedLogicalStart_ = sizeof( E57FileHeader );
       fileName_ = fileName;
 
@@ -185,9 +185,9 @@ namespace e57
    {
       /// Second phase of construction, now we have a well-formed ImageFile object.
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "ImageFileImpl() called, fileName=<StreamBuffer> mode=r" << std::endl;
-#endif
+~endif
       unusedLogicalStart_ = sizeof( E57FileHeader );
       fileName_ = "<StreamBuffer>";
 
@@ -252,14 +252,14 @@ namespace e57
    void ImageFileImpl::decrWriterCount()
    {
       writerCount_--;
-#ifdef E57_MAX_DEBUG
+~ifdef E57_MAX_DEBUG
       if ( writerCount_ < 0 )
       {
          throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "fileName=" + fileName_ +
                                                       " writerCount=" + toString( writerCount_ ) +
                                                       " readerCount=" + toString( readerCount_ ) );
       }
-#endif
+~endif
    }
 
    void ImageFileImpl::incrReaderCount()
@@ -270,14 +270,14 @@ namespace e57
    void ImageFileImpl::decrReaderCount()
    {
       readerCount_--;
-#ifdef E57_MAX_DEBUG
+~ifdef E57_MAX_DEBUG
       if ( readerCount_ < 0 )
       {
          throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "fileName=" + fileName_ +
                                                       " writerCount=" + toString( writerCount_ ) +
                                                       " readerCount=" + toString( readerCount_ ) );
       }
-#endif
+~endif
    }
 
    std::shared_ptr<StructureNodeImpl> ImageFileImpl::root()
@@ -302,11 +302,11 @@ namespace e57
          file_->seek( xmlLogicalOffset_, CheckedFile::Logical );
          uint64_t xmlPhysicalOffset = file_->position( CheckedFile::Physical );
          *file_ << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-#ifdef E57_OXYGEN_SUPPORT /*//???                                                             \
+~ifdef E57_OXYGEN_SUPPORT /*//???                                                             \
                           //???        *file_ << "<?oxygen                                  \
                           // RNGSchema=\"file:/C:/kevin/astm/DataFormat/xif/las_v0_05.rnc\" \
                           // type=\"compact\"?>\n";*/
-#endif
+~endif
 
          //??? need to add name space attributes to e57Root
          root_->writeXml( shared_from_this(), *file_, 0, "e57Root" );
@@ -331,9 +331,9 @@ namespace e57
          header.xmlPhysicalOffset = xmlPhysicalOffset;
          header.xmlLogicalLength = xmlLogicalLength_;
          header.pageSize = CheckedFile::physicalPageSize;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          header.dump();
-#endif
+~endif
 
          /// Write header at beginning of file
          file_->seek( 0 );
@@ -548,10 +548,10 @@ namespace e57
 
    bool ImageFileImpl::isElementNameLegal( const ustring &elementName, bool allowNumber )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout << "isElementNameLegal elementName=""" << elementName << """" <<
       // std::endl;
-#endif
+~endif
       try
       {
          checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
@@ -570,9 +570,9 @@ namespace e57
 
    bool ImageFileImpl::isPathNameLegal( const ustring &pathName )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout << "isPathNameLegal elementName=""" << pathName << """" << std::endl;
-#endif
+~endif
       try
       {
          checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
@@ -705,14 +705,14 @@ namespace e57
 
    void ImageFileImpl::pathNameParse( const ustring &pathName, bool &isRelative, StringList &fields )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "pathNameParse pathname="
                    ""
                 << pathName
                 << ""
                    ""
                 << std::endl;
-#endif
+~endif
       /// no checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__)
 
       /// Clear previous contents of fields vector
@@ -771,7 +771,7 @@ namespace e57
          throw E57_EXCEPTION2( E57_ERROR_BAD_PATH_NAME, "pathName=" + pathName );
       }
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "pathNameParse returning: isRelative=" << isRelative << " fields.size()=" << fields.size()
                 << " fields=";
       for ( size_t i = 0; i < fields.size(); i++ )
@@ -779,7 +779,7 @@ namespace e57
          std::cout << fields[i] << ",";
       }
       std::cout << std::endl;
-#endif
+~endif
    }
 
    ustring ImageFileImpl::pathNameUnparse( bool isRelative, const std::vector<ustring> &fields )
@@ -813,9 +813,9 @@ namespace e57
       /// Fetch the file header
       file->read( reinterpret_cast<char *>( &header ), sizeof( header ) );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       header.dump();
-#endif
+~endif
 
       /// Check signature
       if ( strncmp( header.fileSignature, "ASTM-E57", 8 ) != 0 )
@@ -869,7 +869,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void ImageFileImpl::dump( int indent, std::ostream &os ) const
    {
       /// no checkImageFileOpen(__FILE__, __LINE__, __FUNCTION__)
@@ -885,7 +885,7 @@ namespace e57
       os << space( indent ) << "root:      " << std::endl;
       root_->dump( indent + 2, os );
    }
-#endif
+~endif
 
    unsigned ImageFileImpl::bitsNeeded( int64_t minimum, int64_t maximum )
    {

@@ -20,101 +20,101 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-// Suppress warning due to use of #import an macOS inside Aspect_RenderingContext.hxx
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
-#endif
+// Suppress warning due to use of ~import an macOS inside Aspect_RenderingContext.hxx
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
+~endif
 
-#include <Standard_Stream.hxx>
+~include <Standard_Stream.hxx>
 
-#include <GEOMUtils.hxx>
+~include <GEOMUtils.hxx>
 
-#include <Basics_OCCTVersion.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include <OpUtil.hxx>
-#include <Utils_ExceptHandlers.hxx>
+~include <OpUtil.hxx>
+~include <Utils_ExceptHandlers.hxx>
 
 // OCCT Includes
-#include <BRepMesh_IncrementalMesh.hxx>
+~include <BRepMesh_IncrementalMesh.hxx>
 
-#include <BRepExtrema_DistShapeShape.hxx>
+~include <BRepExtrema_DistShapeShape.hxx>
 
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepGProp.hxx>
-#include <BRepTools.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepGProp.hxx>
+~include <BRepTools.hxx>
 
-#include <BRepClass3d_SolidClassifier.hxx>
+~include <BRepClass3d_SolidClassifier.hxx>
 
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_Sewing.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBuilderAPI_Sewing.hxx>
 
-#include <BRepCheck_Analyzer.hxx>
+~include <BRepCheck_Analyzer.hxx>
 
-#include <Bnd_Box.hxx>
+~include <Bnd_Box.hxx>
 
-#include <BOPTools_AlgoTools.hxx>
+~include <BOPTools_AlgoTools.hxx>
 
-#include <TopAbs.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_Array1OfShape.hxx>
+~include <TopAbs.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_Array1OfShape.hxx>
 
-#include <Geom_Circle.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_Plane.hxx>
-#include <Geom_SphericalSurface.hxx>
-#include <Geom_ToroidalSurface.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_Surface.hxx>
+~include <Geom_Plane.hxx>
+~include <Geom_SphericalSurface.hxx>
+~include <Geom_ToroidalSurface.hxx>
+~include <Geom_RectangularTrimmedSurface.hxx>
 
-#include <GeomLProp_CLProps.hxx>
-#include <GeomLProp_SLProps.hxx>
+~include <GeomLProp_CLProps.hxx>
+~include <GeomLProp_SLProps.hxx>
 
-#include <GProp_GProps.hxx>
-#include <GProp_PrincipalProps.hxx>
+~include <GProp_GProps.hxx>
+~include <GProp_PrincipalProps.hxx>
 
-#include <TColStd_Array1OfReal.hxx>
+~include <TColStd_Array1OfReal.hxx>
 
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Lin.hxx>
 
-#include <ShapeAnalysis.hxx>
-#include <ShapeFix_Shape.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
+~include <ShapeAnalysis.hxx>
+~include <ShapeFix_Shape.hxx>
+~include <ShapeFix_ShapeTolerance.hxx>
 
-#include <ProjLib.hxx>
-#include <ElSLib.hxx>
+~include <ProjLib.hxx>
+~include <ElSLib.hxx>
 
-#include <vector>
-#include <sstream>
-#include <algorithm>
+~include <vector>
+~include <sstream>
+~include <algorithm>
 
-#include <Standard_Failure.hxx>
-#include <Standard_NullObject.hxx>
-#include <Standard_ErrorHandler.hxx> // CAREFUL ! position of this file is critic : see Lucien PIGNOLONI / OCC
+~include <Standard_Failure.hxx>
+~include <Standard_NullObject.hxx>
+~include <Standard_ErrorHandler.hxx> // CAREFUL ! position of this file is critic : see Lucien PIGNOLONI / OCC
 
-#define MAX2(X, Y)    (Abs(X) > Abs(Y) ? Abs(X) : Abs(Y))
-#define MAX3(X, Y, Z) (MAX2(MAX2(X,Y), Z))
+~define MAX2(X, Y)    (Abs(X) > Abs(Y) ? Abs(X) : Abs(Y))
+~define MAX3(X, Y, Z) (MAX2(MAX2(X,Y), Z))
 
-#define STD_SORT_ALGO 1
+~define STD_SORT_ALGO 1
 
 // When the following macro is defined, ShapeFix_ShapeTolerance function is used to set max tolerance of curve
 // in GEOMUtils::FixShapeCurves function; otherwise less restrictive BRep_Builder::UpdateEdge/UpdateVertex
 // approach is used
 // VSR (29/12/2014): macro disabled
-//#define USE_LIMIT_TOLERANCE
+//~define USE_LIMIT_TOLERANCE
 
 namespace
 {
@@ -494,7 +494,7 @@ bool GEOMUtils::CompareShapes::operator() (const TopoDS_Shape& theShape1,
 void GEOMUtils::SortShapes (TopTools_ListOfShape& SL,
                             const Standard_Boolean isOldSorting)
 {
-#ifdef STD_SORT_ALGO
+~ifdef STD_SORT_ALGO
   std::vector<TopoDS_Shape> aShapesVec;
   aShapesVec.reserve(SL.Extent());
 
@@ -512,7 +512,7 @@ void GEOMUtils::SortShapes (TopTools_ListOfShape& SL,
   for (; anIter != aShapesVec.end(); ++anIter) {
     SL.Append(*anIter);
   }
-#else
+~else
   // old implementation
   Standard_Integer MaxShapes = SL.Extent();
   TopTools_Array1OfShape  aShapes (1,MaxShapes);
@@ -622,7 +622,7 @@ void GEOMUtils::SortShapes (TopTools_ListOfShape& SL,
 
   for (Index=1; Index <= MaxShapes; Index++)
     SL.Append( aShapes( OrderInd(Index) ));
-#endif
+~endif
 }
 
 //=======================================================================
@@ -1143,11 +1143,11 @@ bool GEOMUtils::FixShapeCurves( TopoDS_Shape& shape )
     for (; aExpE.More(); aExpE.Next()) {
       const TopoDS_Edge& aE = *(TopoDS_Edge*)&aExpE.Current();
       try {
-#if OCC_VERSION_HEX >= 0x060800
+~if OCC_VERSION_HEX >= 0x060800
         if (!BOPTools_AlgoTools::ComputeTolerance(aF, aE, aDMax, aT)) {
           continue;
         }
-#endif
+~endif
       }
       catch(...) {
         continue;
@@ -1167,20 +1167,20 @@ bool GEOMUtils::FixShapeCurves( TopoDS_Shape& shape )
     }
   }
   NCollection_DataMap<TopoDS_Edge, Standard_Real, TopTools_ShapeMapHasher>::Iterator aDMETolIt(aDMETol);
-#ifdef USE_LIMIT_TOLERANCE
+~ifdef USE_LIMIT_TOLERANCE
   ShapeFix_ShapeTolerance sat;
-#else
+~else
   BRep_Builder b;
-#endif
+~endif
   for (; aDMETolIt.More(); aDMETolIt.Next()) {
-#ifdef USE_LIMIT_TOLERANCE
+~ifdef USE_LIMIT_TOLERANCE
     sat.LimitTolerance(aDMETolIt.Key(), aDMETolIt.Value()*1.001);
-#else
+~else
     TopoDS_Iterator itv(aDMETolIt.Key());
     for (; itv.More(); itv.Next())
       b.UpdateVertex(TopoDS::Vertex(itv.Value()), aDMETolIt.Value()*1.001);
     b.UpdateEdge(aDMETolIt.Key(), aDMETolIt.Value()*1.001);
-#endif
+~endif
   }
   return CheckShape( shape );
 }

@@ -20,26 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QObject>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/elements/SoCacheElement.h>
-# include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-#endif
+~ifndef _PreComp_
+~ include <QObject>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/elements/SoCacheElement.h>
+~ include <Inventor/elements/SoLazyElement.h>
+~ include <Inventor/elements/SoModelMatrixElement.h>
+~ include <Inventor/elements/SoProjectionMatrixElement.h>
+~ include <Inventor/elements/SoViewingMatrixElement.h>
+~ include <Inventor/elements/SoViewportRegionElement.h>
+~endif
 
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
+~ifdef FC_OS_MACOSX
+~include <OpenGL/gl.h>
+~else
+~include <GL/gl.h>
+~endif
 
-#include "SoDrawingGrid.h"
+~include "SoDrawingGrid.h"
 
 
 using namespace Gui::Inventor;

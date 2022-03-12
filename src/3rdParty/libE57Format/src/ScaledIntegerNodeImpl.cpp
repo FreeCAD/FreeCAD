@@ -25,10 +25,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <cmath>
+~include <cmath>
 
-#include "CheckedFile.h"
-#include "ScaledIntegerNodeImpl.h"
+~include "CheckedFile.h"
+~include "ScaledIntegerNodeImpl.h"
 
 namespace e57
 {
@@ -223,7 +223,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void ScaledIntegerNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen
@@ -236,5 +236,5 @@ namespace e57
       os << space( indent ) << "scale:       " << scale_ << std::endl;
       os << space( indent ) << "offset:      " << offset_ << std::endl;
    }
-#endif
+~endif
 }

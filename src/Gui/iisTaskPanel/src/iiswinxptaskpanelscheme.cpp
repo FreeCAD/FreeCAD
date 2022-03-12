@@ -5,7 +5,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iiswinxptaskpanelscheme.h"
+~include "iiswinxptaskpanelscheme.h"
 
 iisWinXPTaskPanelScheme* iisWinXPTaskPanelScheme::myDefaultXPScheme = nullptr;
 

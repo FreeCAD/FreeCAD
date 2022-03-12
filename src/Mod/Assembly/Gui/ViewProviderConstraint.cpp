@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "ViewProviderConstraint.h"
-//#include "TaskAssemblyConstraints.h"
-//#include "TaskDlgAssemblyConstraints.h"
-#include "Mod/Assembly/App/Constraint.h"
-#include "Mod/Assembly/App/PartRef.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <Gui/Control.h>
-#include <BRep_Builder.hxx>
-#include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoSwitch.h>
+~include "PreCompiled.h"
+~include "ViewProviderConstraint.h"
+//~include "TaskAssemblyConstraints.h"
+//~include "TaskDlgAssemblyConstraints.h"
+~include "Mod/Assembly/App/Constraint.h"
+~include "Mod/Assembly/App/PartRef.h"
+~include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <Gui/Control.h>
+~include <BRep_Builder.hxx>
+~include <Inventor/nodes/SoPolygonOffset.h>
+~include <Inventor/nodes/SoGroup.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/nodes/SoShapeHints.h>
+~include <Inventor/nodes/SoTransform.h>
+~include <Inventor/nodes/SoSwitch.h>
 
 using namespace AssemblyGui;
 

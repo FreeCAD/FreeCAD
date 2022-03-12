@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/PartDesign/App/Body.h"
-#include "Mod/PartDesign/App/Feature.h"
+~include "Mod/PartDesign/App/Body.h"
+~include "Mod/PartDesign/App/Feature.h"
 
 // inclusion of the generated files (generated out of ItemPy.xml)
-#include "BodyPy.h"
-#include "BodyPy.cpp"
+~include "BodyPy.h"
+~include "BodyPy.cpp"
 
 using namespace PartDesign;
 

@@ -23,18 +23,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <App/Application.h>
-#include <Gui/Application.h>
+~include <App/Application.h>
+~include <Gui/Application.h>
 
-#include "ui_DlgActiveBody.h"
-#include "DlgActiveBody.h"
-#include "ReferenceSelection.h"
-#include "Utils.h"
+~include "ui_DlgActiveBody.h"
+~include "DlgActiveBody.h"
+~include "ReferenceSelection.h"
+~include "Utils.h"
 
 Q_DECLARE_METATYPE(App::DocumentObject*)
 
@@ -109,4 +109,4 @@ void DlgActiveBody::accept()
     QDialog::accept();
 }
 
-#include "moc_DlgActiveBody.cpp"
+~include "moc_DlgActiveBody.cpp"

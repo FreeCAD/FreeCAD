@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Assembly/App/Item.h"
+~include "Mod/Assembly/App/Item.h"
 
 // inclusion of the generated files (generated out of ItemPy.xml)
-#include "ItemPy.h"
-#include "ItemPy.cpp"
+~include "ItemPy.h"
+~include "ItemPy.cpp"
 
 using namespace Assembly;
 

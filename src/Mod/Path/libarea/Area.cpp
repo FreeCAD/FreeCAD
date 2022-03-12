@@ -3,10 +3,10 @@
 // Copyright 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
-#include "Area.h"
-#include "AreaOrderer.h"
+~include "Area.h"
+~include "AreaOrderer.h"
 
-#include <map>
+~include <map>
 
 double CArea::m_accuracy = 0.01;
 double CArea::m_units = 1.0;
@@ -24,13 +24,13 @@ bool CArea::m_set_processing_length_in_split = false;
 double CArea::m_after_MakeOffsets_length = 0.0;
 //static const double PI = 3.1415926535897932;
 
-#define _CAREA_PARAM_DEFINE(_class,_type,_name) \
-    _type CArea::get_##_name() {return _class::_name;}\
-    void CArea::set_##_name(_type _name) {_class::_name = _name;}
+~define _CAREA_PARAM_DEFINE(_class,_type,_name) \
+    _type CArea::get_~~_name() {return _class::_name;}\
+    void CArea::set_~~_name(_type _name) {_class::_name = _name;}
 
-#define CAREA_PARAM_DEFINE(_type,_name) \
-    _type CArea::get_##_name() {return m_##_name;}\
-    void CArea::set_##_name(_type _name) {m_##_name = _name;}
+~define CAREA_PARAM_DEFINE(_type,_name) \
+    _type CArea::get_~~_name() {return m_~~_name;}\
+    void CArea::set_~~_name(_type _name) {m_~~_name = _name;}
 
 _CAREA_PARAM_DEFINE(Point,double,tolerance)
 CAREA_PARAM_DEFINE(bool,fit_arcs)

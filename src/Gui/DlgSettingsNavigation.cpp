@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QDoubleSpinBox>
-# include <QRegExp>
-# include <QGridLayout>
-# include <QMessageBox>
-# include <memory>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QDoubleSpinBox>
+~ include <QRegExp>
+~ include <QGridLayout>
+~ include <QMessageBox>
+~ include <memory>
+~endif
 
-#include "DlgSettingsNavigation.h"
-#include "ui_DlgSettingsNavigation.h"
-#include "MainWindow.h"
-#include "NavigationStyle.h"
-#include "PrefWidgets.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ui_MouseButtons.h"
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
+~include "DlgSettingsNavigation.h"
+~include "ui_DlgSettingsNavigation.h"
+~include "MainWindow.h"
+~include "NavigationStyle.h"
+~include "PrefWidgets.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ui_MouseButtons.h"
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Tools.h>
 
 using namespace Gui::Dialog;
 
@@ -347,5 +347,5 @@ void CameraDialog::on_currentView_clicked()
     }
 }
 
-#include "moc_DlgSettingsNavigation.cpp"
+~include "moc_DlgSettingsNavigation.cpp"
 

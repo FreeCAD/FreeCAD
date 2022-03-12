@@ -40,7 +40,7 @@
  ****************************************************************************/
 
 
-#include "path_point.hpp"
+~include "path_point.hpp"
 
 namespace KDL {
 

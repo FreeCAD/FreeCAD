@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "DlgPartBoxImp.h"
-#include "ui_DlgPartBox.h"
+~include "DlgPartBoxImp.h"
+~include "ui_DlgPartBox.h"
 
 using namespace PartGui;
 
@@ -50,4 +50,4 @@ DlgPartBoxImp::~DlgPartBoxImp()
     // no need to delete child widgets, Qt does it all for us
 }
 
-#include "moc_DlgPartBoxImp.cpp"
+~include "moc_DlgPartBoxImp.cpp"

@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QString>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-#endif
+~ifndef _PreComp_
+~ include <QString>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~endif
 
-#include <Inventor/SoFullPath.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/misc/SoState.h>
+~include <Inventor/SoFullPath.h>
+~include <Inventor/SoPickedPoint.h>
+~include <Inventor/actions/SoGLRenderAction.h>
+~include <Inventor/actions/SoHandleEventAction.h>
+~include <Inventor/elements/SoLazyElement.h>
+~include <Inventor/elements/SoOverrideElement.h>
+~include <Inventor/elements/SoWindowElement.h>
+~include <Inventor/events/SoKeyboardEvent.h>
+~include <Inventor/events/SoLocation2Event.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
+~include <Inventor/misc/SoState.h>
 
-#include "SoFCSelection.h"
-#include "MainWindow.h"
-#include "SoFCInteractiveElement.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCUnifiedSelection.h"
-#include "ViewParams.h"
+~include "SoFCSelection.h"
+~include "MainWindow.h"
+~include "SoFCInteractiveElement.h"
+~include "SoFCSelectionAction.h"
+~include "SoFCUnifiedSelection.h"
+~include "ViewParams.h"
 
 // For 64-bit system the method using the front buffer doesn't work at all for lines.
 // Thus, use the method which forces a redraw every time. This is a bit slower but at
@@ -55,9 +55,9 @@
 // handling selection contextn. SoFCSelection is not really used that much
 // anyway.
 //
-// #if defined(_OCC64) // is set by configure or cmake
-# define NO_FRONTBUFFER
-// #endif
+// ~if defined(_OCC64) // is set by configure or cmake
+~ define NO_FRONTBUFFER
+// ~endif
 
 using namespace Gui;
 
@@ -366,7 +366,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     static char buf[513];
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     const SoEvent * event = action->getEvent();
-#ifdef NO_FRONTBUFFER
+~ifdef NO_FRONTBUFFER
     // mouse move events for preselection
     if (event->isOfType(SoLocation2Event::getClassTypeId())) {
         // NOTE: If preselection is off then we do not check for a picked point because otherwise this search may slow
@@ -499,7 +499,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     }
 
     inherited::handleEvent(action);
-#else
+~else
     // If we don't need to pick for locate highlighting,
     // then just behave as separator and return.
     // NOTE: we still have to pick for ON even though we don't have
@@ -660,7 +660,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     // Let the base class traverse the children.
     if (action->getGrabber() != this)
         inherited::handleEvent(action);
-#endif
+~endif
 }
 
 // doc from parent
@@ -681,14 +681,14 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
         ctx->highlightIndex = this->highlighted?0:-1;
     }
 
-#ifdef NO_FRONTBUFFER
+~ifdef NO_FRONTBUFFER
     // check if preselection is active
     if(this->setOverride(action,ctx)) {
         inherited::GLRenderBelowPath(action);
         state->pop();
     } else
         inherited::GLRenderBelowPath(action);
-#else
+~else
     // Set up state for locate highlighting (if necessary)
     GLint oldDepthFunc;
     SbBool drawHighlighted = preRender(action, oldDepthFunc);
@@ -703,7 +703,7 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
     // Clean up state if needed
     if (drawHighlighted)
         action->getState()->pop();
-#endif
+~endif
 }
 
 void SoFCSelection::GLRender(SoGLRenderAction * action)
@@ -722,14 +722,14 @@ void SoFCSelection::GLRender(SoGLRenderAction * action)
         ctx->highlightIndex = this->highlighted?0:-1;
     }
 
-#ifdef NO_FRONTBUFFER
+~ifdef NO_FRONTBUFFER
     // check if preselection is active
     if(this->setOverride(action,ctx)) {
         inherited::GLRender(action);
         state->pop();
     } else
         inherited::GLRender(action);
-#else
+~else
     // Set up state for locate highlighting (if necessary)
     GLint oldDepthFunc;
     SbBool drawHighlighted = preRender(action, oldDepthFunc);
@@ -744,7 +744,7 @@ void SoFCSelection::GLRender(SoGLRenderAction * action)
     // Clean up state if needed
     if (drawHighlighted)
         action->getState()->pop();
-#endif
+~endif
 }
 
 // doc from parent
@@ -763,7 +763,7 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
             ctx->selectionIndex.clear();
         ctx->highlightIndex = this->highlighted?0:-1;
     }
-#ifdef NO_FRONTBUFFER
+~ifdef NO_FRONTBUFFER
     // check if preselection is active
     SoState * state = action->getState();
     if(this->setOverride(action,ctx)) {
@@ -771,7 +771,7 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
         state->pop();
     } else
         inherited::GLRenderInPath(action);
-#else
+~else
     // Set up state for locate highlighting (if necessary)
     GLint oldDepthFunc;
     SbBool drawHighlighted = preRender(action, oldDepthFunc);
@@ -786,7 +786,7 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
     // Clean up state if needed
     if (drawHighlighted)
         action->getState()->pop();
-#endif
+~endif
 }
 
 SbBool
@@ -852,8 +852,8 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
     Q_UNUSED(doHighlight);
     //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
 
-#ifdef NO_FRONTBUFFER
-#else
+~ifdef NO_FRONTBUFFER
+~else
     // If we are about to highlight, and there is something else highlighted,
     // that something else needs to unhighlight.
     if (doHighlight && currenthighlight != NULL &&
@@ -915,10 +915,10 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
         return;
 
     window->makeCurrent();
-#ifndef WIN32
+~ifndef WIN32
     // set the current window
     //glXMakeCurrent(display, window, context);
-#endif
+~endif
     // render into the front buffer (save the current buffering type)
     GLint whichBuffer;
     glGetIntegerv(GL_DRAW_BUFFER, &whichBuffer);
@@ -935,7 +935,7 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
     glFlush();
 
     pathToRender->unref();
-#endif
+~endif
 }
 
 SbBool
@@ -1003,7 +1003,7 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 void
 SoFCSelection::turnoffcurrent(SoAction * action)
 {
-#ifdef NO_FRONTBUFFER
+~ifdef NO_FRONTBUFFER
     if (SoFCSelection::currenthighlight &&
         SoFCSelection::currenthighlight->getLength()) {
         SoNode * tail = SoFCSelection::currenthighlight->getTail();
@@ -1017,7 +1017,7 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         SoFCSelection::currenthighlight->unref();
         SoFCSelection::currenthighlight = NULL;
     }
-#else
+~else
     if (currenthighlight == NULL)
         return;
 
@@ -1035,7 +1035,7 @@ SoFCSelection::turnoffcurrent(SoAction * action)
         currenthighlight->unref();
         currenthighlight = NULL;
     }
-#endif
+~endif
 }
 
 SbBool
@@ -1081,4 +1081,4 @@ void SoFCSelection::applySettings ()
     }
 }
 
-//#undef THIS
+//~undef THIS

@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QContextMenuEvent>
-# include <QMenu>
-# include <QPixmapCache>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QContextMenuEvent>
+~ include <QMenu>
+~ include <QPixmapCache>
+~endif
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
-#include <App/PropertyUnits.h>
-#include <Base/Exception.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <App/ExpressionParser.h>
+~include <App/PropertyUnits.h>
+~include <Base/Exception.h>
+~include <Base/Quantity.h>
+~include <Base/Tools.h>
 
-#include "InputField.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "QuantitySpinBox_p.h"
+~include "InputField.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "QuantitySpinBox_p.h"
 
 
 using namespace Gui;
@@ -764,4 +764,4 @@ QValidator::State InputValidator::validate(QString& input, int& pos) const
 }
 
 
-#include "moc_InputField.cpp"
+~include "moc_InputField.cpp"

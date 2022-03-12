@@ -21,51 +21,51 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <QApplication>
-# include <QMessageBox>
-# include <QAction>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <QApplication>
+~ include <QMessageBox>
+~ include <QAction>
 
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoEventCallback.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
 
-# include <SMESH_Mesh.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
-#endif
+~ include <SMESH_Mesh.hxx>
+~ include <SMESHDS_Mesh.hxx>
+~ include <SMDSAbs_ElementType.hxx>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Document.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
-#include <Gui/Action.h>
-#include <Gui/BitmapFactory.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/Document.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Utilities.h>
+~include <Gui/Action.h>
+~include <Gui/BitmapFactory.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemConstraint.h>
-#include <Mod/Fem/App/FemAnalysis.h>
-#include "ActiveAnalysisObserver.h"
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Fem/App/FemMeshObject.h>
+~include <Mod/Fem/App/FemSetNodesObject.h>
+~include <Mod/Fem/App/FemConstraint.h>
+~include <Mod/Fem/App/FemAnalysis.h>
+~include "ActiveAnalysisObserver.h"
 
-#ifdef FC_USE_VTK
-#include <Mod/Fem/App/FemPostPipeline.h>
-#endif
+~ifdef FC_USE_VTK
+~include <Mod/Fem/App/FemPostPipeline.h>
+~endif
 
 using namespace std;
 
@@ -126,11 +126,11 @@ CmdFemAddPart::CmdFemAddPart()
 
 void CmdFemAddPart::activated(int)
 {
-#ifndef FCWithNetgen
+~ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
     return;
-#endif
+~endif
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -191,11 +191,11 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
 
 void CmdFemCreateAnalysis::activated(int)
 {
-#ifndef FCWithNetgen
+~ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
     return;
-#endif
+~endif
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -255,11 +255,11 @@ CmdFemCreateSolver::CmdFemCreateSolver()
 
 void CmdFemCreateSolver::activated(int)
 {
-#ifndef FCWithNetgen
+~ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
     return;
-#endif
+~endif
 
     Fem::FemAnalysis        *Analysis;
 
@@ -1138,7 +1138,7 @@ bool CmdFemCreateNodesSet::isActive(void)
 //================================================================================================
 // commands vtk post processing
 
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
 
 //================================================================================================
 // helper vtk post processing
@@ -1704,7 +1704,7 @@ bool CmdFemPostPipelineFromResult::isActive(void)
     return hasActiveDocument();
 }
 
-#endif
+~endif
 
 
 //================================================================================================
@@ -1740,7 +1740,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
 
     // vtk post processing
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostCutFilter);
     rcCmdMgr.addCommand(new CmdFemPostDataAlongLineFilter);
@@ -1751,5 +1751,5 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
     rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
-#endif
+~endif
 }

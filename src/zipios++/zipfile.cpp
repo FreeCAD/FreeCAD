@@ -1,17 +1,17 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include "fcoll.h"
-#include "zipfile.h"
-#include "zipinputstream.h"
-#include "zipios_defs.h"
+~include "fcoll.h"
+~include "zipfile.h"
+~include "zipinputstream.h"
+~include "zipios_defs.h"
 
-#include "backbuffer.h"
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
-#include <Base/FileInfo.h>
-#endif
+~include "backbuffer.h"
+~if defined(_WIN32) && defined(ZIPIOS_UTF8)
+~include <Base/FileInfo.h>
+~endif
 
 namespace zipios {
 
@@ -36,12 +36,12 @@ ZipFile::ZipFile( const string &name , int s_off, int e_off
 
   _filename = name ;
   
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
+~if defined(_WIN32) && defined(ZIPIOS_UTF8)
   std::wstring wsname = Base::FileInfo(name).toStdWString();
   ifstream _zipfile( wsname.c_str(), ios::in | ios::binary ) ;
-#else
+~else
   ifstream _zipfile( name.c_str(), ios::in | ios::binary ) ;
-#endif
+~endif
   init( _zipfile ) ;
 }
 
@@ -182,11 +182,11 @@ bool ZipFile::confirmLocalHeaders( istream &_zipfile ) {
 
 void ZipFile::setError ( string error_str ) {
   _valid = false ;
-#ifdef _USE_EXCEPTIONS
+~ifdef _USE_EXCEPTIONS
     throw  error_str ; // define exception class instead.
-#else
+~else
     cerr << error_str << endl ; // define operator<< for exception class if such a class replaces string
-#endif
+~endif
 }
 
 

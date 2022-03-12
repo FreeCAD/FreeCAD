@@ -22,31 +22,31 @@
 
 // -------------------------------------------------------------------------- 
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include "directory.h"
+~include "directory.h"
 
-#if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
-#  define BOOST_UNIX 1
-#elif defined(_WINDOWS) || defined(__MINGW32__) || defined (_MSC_VER)
-#  define BOOST_WINNT 1
-#endif 
+~if defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
+~  define BOOST_UNIX 1
+~elif defined(_WINDOWS) || defined(__MINGW32__) || defined (_MSC_VER)
+~  define BOOST_WINNT 1
+~endif 
 
 // -------------------------------------------------------------------------- 
 // The POSIX version uses the functions opendir(), readdir(), and closdir()
 // to find directory entries. In addition, stat() is used to find out
 // about specific file attributes.
 
-#if defined(BOOST_UNIX)
+~if defined(BOOST_UNIX)
 
-#ifndef __USE_BSD
-#define __USE_BSD
-#endif 
-#include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <grp.h>
+~ifndef __USE_BSD
+~define __USE_BSD
+~endif 
+~include <sys/stat.h>
+~include <dirent.h>
+~include <unistd.h>
+~include <pwd.h>
+~include <grp.h>
 
 struct boost::filesystem::dir_it::representation
 {
@@ -219,10 +219,10 @@ namespace boost
 	}
 }
 
-#elif defined(BOOST_WINNT)
+~elif defined(BOOST_WINNT)
 
-#include "io.h"
-#include "direct.h"
+~include "io.h"
+~include "direct.h"
 
 struct boost::filesystem::dir_it::representation
 {
@@ -275,7 +275,7 @@ struct boost::filesystem::dir_it::representation
 		return m_data;
 	}
 
-#if 0
+~if 0
 	void set_mode(mode_t m, bool nv)
 	{
 		if (((get_stat().st_mode & m) == 0) == nv)
@@ -283,7 +283,7 @@ struct boost::filesystem::dir_it::representation
 	}
 	void change_owner(uid_t uid) { chown((m_directory + m_current).c_str(), uid, get_stat().st_gid); }
 	void change_group(gid_t gid) { chown((m_directory + m_current).c_str(), get_stat().st_uid, gid); }
-#endif
+~endif
 
 private:
 	struct _finddata_t m_data;
@@ -296,7 +296,7 @@ namespace boost
 {
 	namespace filesystem
 	{
-#if defined(__MINGW32__)
+~if defined(__MINGW32__)
 		template <> size_t get<size>(dir_it const &it)
 		{
 			return it.rep->get_data().size;
@@ -331,7 +331,7 @@ namespace boost
 			std::string ext(name.substr(name.find_last_of('.')));
 			return ext == ".exe" || ext == ".bat";
 		}
-#else
+~else
 		get<size>::operator size::value_type() const
 		{
 			return m_it.rep->get_data().size;
@@ -366,10 +366,10 @@ namespace boost
 			std::string ext(name.substr(name.find_last_of('.')));
 			return ext == ".exe" || ext == ".bat";
 		}
-#endif // __MINGW32__
+~endif // __MINGW32__
 	}
 }
-#endif
+~endif
 
 // -------------------------------------------------------------------------- 
 

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include "PropertyItem.h"
-#include "PropertyModel.h"
-#include "PropertyView.h"
+~include "PropertyItem.h"
+~include "PropertyModel.h"
+~include "PropertyView.h"
 
 
 using namespace Gui;
@@ -492,7 +492,7 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
         QModelIndex topLeft = this->index(0, column, parent);
         QModelIndex bottomRight = this->index(numChild, column, parent);
         dataChanged(topLeft, bottomRight);
-#if 0 // It seems we don't have to inform grand children
+~if 0 // It seems we don't have to inform grand children
         for (int row=0; row<numChild; row++) {
             PropertyItem* child = item->child(row);
             QModelIndex data = this->index(row, column, parent);
@@ -500,7 +500,7 @@ void PropertyModel::updateChildren(PropertyItem* item, int column, const QModelI
                 updateChildren(child, column, data);
             }
         }
-#endif
+~endif
     }
 }
 
@@ -520,4 +520,4 @@ bool PropertyModel::removeRows(int row, int count, const QModelIndex& parent)
     return true;
 }
 
-#include "moc_PropertyModel.cpp"
+~include "moc_PropertyModel.cpp"

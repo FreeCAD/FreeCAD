@@ -10,58 +10,58 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/WidgetFactory.h>
-#include <Gui/Language/Translator.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/WidgetFactory.h>
+~include <Gui/Language/Translator.h>
 
-#include "AttacherTexts.h"
-#include "PropertyEnumAttacherItem.h"
-#include "SoBrepEdgeSet.h"
-#include "SoBrepFaceSet.h"
-#include "SoBrepPointSet.h"
-#include "SoFCShapeObject.h"
-#include "TaskDimension.h"
-#include "DlgSettings3DViewPartImp.h"
-#include "DlgSettingsGeneral.h"
-#include "DlgSettingsObjectColor.h"
-#include "ViewProvider.h"
-#include "ViewProvider2DObject.h"
-#include "ViewProviderAttachExtension.h"
-#include "ViewProviderBoolean.h"
-#include "ViewProviderBox.h"
-#include "ViewProviderCircleParametric.h"
-#include "ViewProviderCompound.h"
-#include "ViewProviderConeParametric.h"
-#include "ViewProviderCurveNet.h"
-#include "ViewProviderCylinderParametric.h"
-#include "ViewProviderEllipseParametric.h"
-#include "ViewProviderExt.h"
-#include "ViewProviderExtrusion.h"
-#include "ViewProviderHelixParametric.h"
-#include "ViewProviderPrimitive.h"
-#include "ViewProviderPython.h"
-#include "ViewProviderImport.h"
-#include "ViewProviderLineParametric.h"
-#include "ViewProviderMirror.h"
-#include "ViewProviderPlaneParametric.h"
-#include "ViewProviderPointParametric.h"
-#include "ViewProviderPrism.h"
-#include "ViewProviderRegularPolygon.h"
-#include "ViewProviderRuledSurface.h"
-#include "ViewProviderSphereParametric.h"
-#include "ViewProviderSpline.h"
-#include "ViewProviderTorusParametric.h"
-#include "Workbench.h"
+~include "AttacherTexts.h"
+~include "PropertyEnumAttacherItem.h"
+~include "SoBrepEdgeSet.h"
+~include "SoBrepFaceSet.h"
+~include "SoBrepPointSet.h"
+~include "SoFCShapeObject.h"
+~include "TaskDimension.h"
+~include "DlgSettings3DViewPartImp.h"
+~include "DlgSettingsGeneral.h"
+~include "DlgSettingsObjectColor.h"
+~include "ViewProvider.h"
+~include "ViewProvider2DObject.h"
+~include "ViewProviderAttachExtension.h"
+~include "ViewProviderBoolean.h"
+~include "ViewProviderBox.h"
+~include "ViewProviderCircleParametric.h"
+~include "ViewProviderCompound.h"
+~include "ViewProviderConeParametric.h"
+~include "ViewProviderCurveNet.h"
+~include "ViewProviderCylinderParametric.h"
+~include "ViewProviderEllipseParametric.h"
+~include "ViewProviderExt.h"
+~include "ViewProviderExtrusion.h"
+~include "ViewProviderHelixParametric.h"
+~include "ViewProviderPrimitive.h"
+~include "ViewProviderPython.h"
+~include "ViewProviderImport.h"
+~include "ViewProviderLineParametric.h"
+~include "ViewProviderMirror.h"
+~include "ViewProviderPlaneParametric.h"
+~include "ViewProviderPointParametric.h"
+~include "ViewProviderPrism.h"
+~include "ViewProviderRegularPolygon.h"
+~include "ViewProviderRuledSurface.h"
+~include "ViewProviderSphereParametric.h"
+~include "ViewProviderSpline.h"
+~include "ViewProviderTorusParametric.h"
+~include "Workbench.h"
 
 
 // use a different name to CreateCommand()

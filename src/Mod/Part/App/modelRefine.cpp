@@ -21,59 +21,59 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <iterator>
-# include <Geom_Surface.hxx>
-# include <Geom_RectangularTrimmedSurface.hxx>
-# include <GeomAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <gp_Ax3.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Cylinder.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepLib_MakeWire.hxx>
-# include <BRepLib_FuseEdges.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <Geom_Conic.hxx>
-# include <ShapeBuild_ReShape.hxx>
-# include <ShapeFix_Face.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
-# include <BRep_Builder.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_Edge.hxx>
-# include <ShapeAnalysis_Curve.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <TColgp_SequenceOfPnt.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <Standard_Version.hxx>
-#endif // _PreComp_
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <iterator>
+~ include <Geom_Surface.hxx>
+~ include <Geom_RectangularTrimmedSurface.hxx>
+~ include <GeomAdaptor_Surface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom_CylindricalSurface.hxx>
+~ include <gp_Ax3.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Cylinder.hxx>
+~ include <TColgp_Array2OfPnt.hxx>
+~ include <TColStd_Array1OfReal.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopoDS.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepLib_MakeWire.hxx>
+~ include <BRepLib_FuseEdges.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_Sewing.hxx>
+~ include <Geom_Conic.hxx>
+~ include <ShapeBuild_ReShape.hxx>
+~ include <ShapeFix_Face.hxx>
+~ include <TopTools_ListOfShape.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~ include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+~ include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
+~ include <BRep_Builder.hxx>
+~ include <Bnd_Box.hxx>
+~ include <BRepBndLib.hxx>
+~ include <ShapeAnalysis_Edge.hxx>
+~ include <ShapeAnalysis_Curve.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <TColgp_SequenceOfPnt.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <BRepGProp.hxx>
+~ include <GProp_GProps.hxx>
+~ include <Standard_Version.hxx>
+~endif // _PreComp_
 
-#include <Base/Tools.h>
+~include <Base/Tools.h>
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
 
-#include "modelRefine.h"
+~include "modelRefine.h"
 
 
 using namespace ModelRefine;
@@ -790,7 +790,7 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x7fffff
+~if OCC_VERSION_HEX <= 0x7fffff
 void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &map)
 {
   TopTools_IndexedMapOfShape edges;
@@ -810,7 +810,7 @@ void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &ma
       map.Add(currentEdge);
   }
 }
-#endif
+~endif
 
 FaceTypedBSpline::FaceTypedBSpline() : FaceTypedBase(GeomAbs_BSplineSurface)
 {
@@ -1132,11 +1132,11 @@ bool FaceUniter::process()
 
         BRepLib_FuseEdges edgeFuse(workShell);
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x7fffff
+~if OCC_VERSION_HEX <= 0x7fffff
         TopTools_IndexedMapOfShape map;
         collectConicEdges(workShell, map);
         edgeFuse.AvoidEdges(map);
-#endif
+~endif
         TopTools_DataMapOfShapeShape affectedFaces;
         edgeFuse.Faces(affectedFaces);
         TopTools_DataMapIteratorOfDataMapOfShapeShape mapIt;
@@ -1228,7 +1228,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         }
         myShape = mkSolid.Solid();
 
-#if OCC_VERSION_HEX <= 0x060700
+~if OCC_VERSION_HEX <= 0x060700
         // With occ 6.7 and older it can happen that a solid is flipped.
         // In this case it must be reversed
         GProp_GProps props;
@@ -1236,7 +1236,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         if (props.Mass() < 0) {
             myShape.Reverse();
         }
-#endif
+~endif
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);

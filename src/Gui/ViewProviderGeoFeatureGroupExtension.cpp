@@ -22,15 +22,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObject.h>
-#include <App/GeoFeatureGroupExtension.h>
+~include <App/DocumentObject.h>
+~include <App/GeoFeatureGroupExtension.h>
 
-#include "ViewProviderGeoFeatureGroupExtension.h"
-#include "ViewProviderDocumentObject.h"
-#include "Application.h"
-#include "SoFCUnifiedSelection.h"
+~include "ViewProviderGeoFeatureGroupExtension.h"
+~include "ViewProviderDocumentObject.h"
+~include "Application.h"
+~include "SoFCUnifiedSelection.h"
 
 
 using namespace Gui;

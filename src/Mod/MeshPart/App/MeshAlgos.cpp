@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# ifdef FC_OS_LINUX
-#	  include <unistd.h>
-# endif
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ ifdef FC_OS_LINUX
+~	  include <unistd.h>
+~ endif
+~endif
 
 
-#include "MeshAlgos.h"
+~include "MeshAlgos.h"
 
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Evaluation.h>
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/Builder3D.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/Builder3D.h>
 
 using namespace MeshPart;
 using namespace MeshCore;
@@ -143,7 +143,7 @@ void MeshAlgos::offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zma
 
 void MeshAlgos::coarsen(MeshCore::MeshKernel* /*Mesh*/, float /*f*/)
 {
-#ifdef FC_USE_GTS
+~ifdef FC_USE_GTS
   GtsSurface * surface;
 
   // create a GTS surface
@@ -162,7 +162,7 @@ void MeshAlgos::coarsen(MeshCore::MeshKernel* /*Mesh*/, float /*f*/)
 
   // get the standard mesh
   fillMeshFromGTSSurface(Mesh,surface);
-#endif
+~endif
 }
 
 
@@ -171,7 +171,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
                                          MeshCore::MeshKernel* /*pResult*/,
                                          int /*Type*/)
 {
-#ifdef FC_USE_GTS
+~ifdef FC_USE_GTS
   GtsSurface * s1, * s2, * s3;
   GtsSurfaceInter * si;
   GNode * tree1, * tree2;
@@ -307,12 +307,12 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
 //  gts_bb_tree_destroy (tree1, true);
 //  gts_bb_tree_destroy (tree2, true);
 
-#endif
+~endif
   return pMesh1;
 }
 
 
-#ifdef FC_USE_GTS
+~ifdef FC_USE_GTS
 
 
 /// helper function - construct a Edge out of two Vertexes if not already there
@@ -406,19 +406,19 @@ void MeshAlgos::fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* 
 
 }
 
-#endif
+~endif
 
-#include <TopExp_Explorer.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Plane.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAPI_IntCS.hxx>
-#include <GeomLProp_CLProps.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopExp.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Plane.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomAPI_IntCS.hxx>
+~include <GeomLProp_CLProps.hxx>
 
 void MeshAlgos::cutByShape(const TopoDS_Shape &aShape,const MeshCore::MeshKernel* pMesh,MeshCore::MeshKernel* pToolMesh)
 {

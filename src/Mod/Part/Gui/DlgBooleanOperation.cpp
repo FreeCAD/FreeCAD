@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTreeWidget>
-# include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <boost_bind_bind.hpp>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTreeWidget>
+~ include <TopoDS_Shape.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include "DlgBooleanOperation.h"
-#include "ui_DlgBooleanOperation.h"
-#include "../App/PartFeature.h"
-#include <Base/Exception.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include "DlgBooleanOperation.h"
+~include "ui_DlgBooleanOperation.h"
+~include "../App/PartFeature.h"
+~include <Base/Exception.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectGroup.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -514,4 +514,4 @@ void TaskBooleanOperation::clicked(int id)
     }
 }
 
-#include "moc_DlgBooleanOperation.cpp"
+~include "moc_DlgBooleanOperation.cpp"

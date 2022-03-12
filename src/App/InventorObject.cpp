@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "InventorObject.h"
-#include "DocumentObjectPy.h"
+~include "InventorObject.h"
+~include "DocumentObjectPy.h"
 
 
 using namespace App;

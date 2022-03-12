@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QString>
-# include <QSlider>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QString>
+~ include <QSlider>
 
-# include <Standard_math.hxx>
-#endif
+~ include <Standard_math.hxx>
+~endif
 
-#include "ui_TaskAnalysisInfo.h"
-#include "TaskAnalysisInfo.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
+~include "ui_TaskAnalysisInfo.h"
+~include "TaskAnalysisInfo.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
 
 
 
@@ -83,4 +83,4 @@ TaskAnalysisInfo::~TaskAnalysisInfo()
 }
 
 
-#include "moc_TaskAnalysisInfo.cpp"
+~include "moc_TaskAnalysisInfo.cpp"

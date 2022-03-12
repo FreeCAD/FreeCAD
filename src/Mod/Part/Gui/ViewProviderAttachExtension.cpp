@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif //_MSC_VER
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ ifdef _MSC_VER
+~  define _USE_MATH_DEFINES
+~  include <cmath>
+~ endif //_MSC_VER
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include "ViewProviderAttachExtension.h"
-#include "TaskAttacher.h"
-#include <Mod/Part/App/AttachExtension.h>
+~include "ViewProviderAttachExtension.h"
+~include "TaskAttacher.h"
+~include <Mod/Part/App/AttachExtension.h>
 
-#include <Gui/ActionFunction.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Control.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Control.h>
 
 using namespace PartGui;
 
@@ -66,18 +66,18 @@ QIcon ViewProviderAttachExtension::extensionMergeColorfullOverlayIcons (const QI
                 static const char * const feature_detached_xpm[]={
                     "9 10 3 1",
                     ". c None",
-                    "# c #cc00cc",
-                    "a c #ffffff",
-                    "...###...",
-                    ".##aaa##.",
-                    "##aaaaa##",
-                    "##aaaaa##",
-                    "#########",
-                    "#########",
-                    "#########",
-                    ".##aaa##.",
-                    ".##aaa##.",
-                    "...###..."};
+                    "~ c ~cc00cc",
+                    "a c ~ffffff",
+                    "...~~~...",
+                    ".~~aaa~~.",
+                    "~~aaaaa~~",
+                    "~~aaaaa~~",
+                    "~~~~~~~~~",
+                    "~~~~~~~~~",
+                    "~~~~~~~~~",
+                    ".~~aaa~~.",
+                    ".~~aaa~~.",
+                    "...~~~..."};
 
                     px = QPixmap(feature_detached_xpm);
 

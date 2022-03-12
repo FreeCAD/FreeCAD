@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "FeatureSolid.h"
+~include "FeatureSolid.h"
 
 
 namespace PartDesign {

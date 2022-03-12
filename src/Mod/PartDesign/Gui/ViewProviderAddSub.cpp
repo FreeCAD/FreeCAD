@@ -21,31 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <Standard_Version.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoNormal.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Bnd_Box.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepMesh_IncrementalMesh.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~endif
 
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
-#include <Mod/PartDesign/App/FeatureAddSub.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Mod/Part/App/Tools.h>
+~include <Mod/Part/Gui/SoBrepFaceSet.h>
+~include <Mod/PartDesign/App/FeatureAddSub.h>
 
-#include "ViewProviderAddSub.h"
+~include "ViewProviderAddSub.h"
 
 
 using namespace PartDesignGui;
@@ -121,12 +121,12 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
         // create or use the mesh on the data structure
-#if OCC_VERSION_HEX >= 0x060600
+~if OCC_VERSION_HEX >= 0x060600
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
-#else
+~else
         BRepMesh_IncrementalMesh(cShape, deflection);
-#endif
+~endif
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;

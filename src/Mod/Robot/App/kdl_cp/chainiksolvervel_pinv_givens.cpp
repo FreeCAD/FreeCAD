@@ -19,8 +19,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include "chainiksolvervel_pinv_givens.hpp"
-#include "utilities/svd_eigen_Macie.hpp"
+~include "chainiksolvervel_pinv_givens.hpp"
+~include "utilities/svd_eigen_Macie.hpp"
 
 namespace KDL
 {
@@ -67,7 +67,7 @@ namespace KDL
                     jac_eigen(i,j)=jac(i,j);
         }
         int ret = svd_eigen_Macie(jac_eigen,U,S,V,B,tempi,1e-15,toggle);
-        //std::cout<<"# sweeps: "<<ret<<std::endl;
+        //std::cout<<"~ sweeps: "<<ret<<std::endl;
 
         if(transpose)
             UY.noalias() = V.transpose() * v_in_eigen;

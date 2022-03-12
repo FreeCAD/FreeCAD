@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <locale>
-# include <iostream>
-# include <QElapsedTimer>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <locale>
+~ include <iostream>
+~ include <QElapsedTimer>
+~endif
 
-#include "PyExport.h"
-#include "Interpreter.h"
-#include "Tools.h"
+~include "PyExport.h"
+~include "Interpreter.h"
+~include "Tools.h"
 
 namespace Base {
 struct string_comp

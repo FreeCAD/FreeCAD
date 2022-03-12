@@ -21,39 +21,39 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <Poly_Triangulation.hxx>
-# include <Standard_Version.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoTransparencyType.h>
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <Bnd_Box.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepMesh_IncrementalMesh.hxx>
+~ include <Poly_Triangulation.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoIndexedFaceSet.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMultipleCopy.h>
+~ include <Inventor/nodes/SoNormal.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoTransparencyType.h>
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Mod/Part/App/Tools.h>
+~include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
-#include "ViewProviderTransformed.h"
-#include "TaskTransformedParameters.h"
+~include "ViewProviderTransformed.h"
+~include "TaskTransformedParameters.h"
 
 using namespace PartDesignGui;
 
@@ -214,12 +214,12 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 
         // create or use the mesh on the data structure
         // Note: This DOES have an effect on shape
-#if OCC_VERSION_HEX >= 0x060600
+~if OCC_VERSION_HEX >= 0x060600
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(shape, deflection, Standard_False, AngDeflectionRads, Standard_True);
-#else
+~else
         BRepMesh_IncrementalMesh(shape, deflection);
-#endif
+~endif
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;

@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
-# include <QApplication>
-# include <QRegExp>
-# include <QEvent>
-# include <QCloseEvent>
-# include <QMdiSubWindow>
-# include <QPrinter>
-# include <QPrinterInfo>
-#endif
+~ifndef _PreComp_
+~ include <boost_signals2.hpp>
+~ include <boost_bind_bind.hpp>
+~ include <QApplication>
+~ include <QRegExp>
+~ include <QEvent>
+~ include <QCloseEvent>
+~ include <QMdiSubWindow>
+~ include <QPrinter>
+~ include <QPrinterInfo>
+~endif
 
-#include <Base/Interpreter.h>
-#include <App/Document.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
 
-#include "MDIView.h"
-#include "MDIViewPy.h"
-#include "Application.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "ViewProviderDocumentObject.h"
+~include "MDIView.h"
+~include "MDIViewPy.h"
+~include "Application.h"
+~include "Document.h"
+~include "MainWindow.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;
@@ -104,7 +104,7 @@ void MDIView::deleteSelf()
     // When using QMdiArea make sure to remove the QMdiSubWindow
     // this view is associated with.
     //
-    // #0001023: Crash when quitting after using Windows > Tile
+    // ~0001023: Crash when quitting after using Windows > Tile
     // Use deleteLater() instead of delete operator.
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
@@ -329,10 +329,10 @@ void MDIView::changeEvent(QEvent *e)
     }
 }
 
-#if defined(Q_WS_X11)
-// To fix bug #0000345 move function declaration to here
+~if defined(Q_WS_X11)
+// To fix bug ~0000345 move function declaration to here
 extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
-#endif
+~endif
 
 void MDIView::setCurrentViewMode(ViewMode mode)
 {
@@ -370,10 +370,10 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     else
                         showNormal();
 
-#if defined(Q_WS_X11)
+~if defined(Q_WS_X11)
                     //extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
                     qt_x11_wait_for_window_manager(this);
-#endif
+~endif
                     activateWindow();
                 }
                 else if (this->currentMode == FullScreen) {
@@ -407,4 +407,4 @@ void MDIView::setCurrentViewMode(ViewMode mode)
     }
 }
 
-#include "moc_MDIView.cpp"
+~include "moc_MDIView.cpp"

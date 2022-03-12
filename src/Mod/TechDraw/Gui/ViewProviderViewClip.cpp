@@ -22,16 +22,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~endif
 
-#include <App/DocumentObject.h>
-#include "ViewProviderViewClip.h"
+~include <App/DocumentObject.h>
+~include "ViewProviderViewClip.h"
 
 using namespace TechDrawGui;
 

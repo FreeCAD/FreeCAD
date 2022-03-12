@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderPlaneParametric.h"
-#include <Mod/Part/App/FeatureFace.h>
-#include <Mod/Part/App/Part2DObject.h>
+~include "ViewProviderPlaneParametric.h"
+~include <Mod/Part/App/FeatureFace.h>
+~include <Mod/Part/App/Part2DObject.h>
 
 using namespace PartGui;
 

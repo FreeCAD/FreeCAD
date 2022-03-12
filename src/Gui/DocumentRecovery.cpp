@@ -24,42 +24,42 @@
 // write a property to file only when it has been modified
 // implement xml meta file
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QCloseEvent>
-# include <QDateTime>
-# include <QDebug>
-# include <QDir>
-# include <QDomDocument>
-# include <QFileInfo>
-# include <QHeaderView>
-# include <QList>
-# include <QMap>
-# include <QMenu>
-# include <QMessageBox>
-# include <QSet>
-# include <QTextStream>
-# include <QTreeWidgetItem>
-# include <QVector>
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QCloseEvent>
+~ include <QDateTime>
+~ include <QDebug>
+~ include <QDir>
+~ include <QDomDocument>
+~ include <QFileInfo>
+~ include <QHeaderView>
+~ include <QList>
+~ include <QMap>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QSet>
+~ include <QTextStream>
+~ include <QTreeWidgetItem>
+~ include <QVector>
+~ include <sstream>
+~endif
 
-#include <boost/interprocess/sync/file_lock.hpp>
+~include <boost/interprocess/sync/file_lock.hpp>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/DlgCheckableMessageBox.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Exception.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/DlgCheckableMessageBox.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
 
-#include "DocumentRecovery.h"
-#include "ui_DocumentRecovery.h"
-#include "WaitCursor.h"
+~include "DocumentRecovery.h"
+~include "ui_DocumentRecovery.h"
+~include "WaitCursor.h"
 
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
@@ -76,7 +76,7 @@ std::string DocumentRecovery::doctools =
 "import xml.sax.xmlreader\n"
 "import zipfile\n"
 "\n"
-"# SAX handler to parse the Document.xml\n"
+"~ SAX handler to parse the Document.xml\n"
 "class DocumentHandler(xml.sax.handler.ContentHandler):\n"
 "	def __init__(self, dirname):\n"
 "		self.files = []\n"
@@ -121,7 +121,7 @@ std::string DocumentRecovery::doctools =
 "	compress=zipfile.ZipFile(outpath,\'w\',zipfile.ZIP_DEFLATED)\n"
 "	for i in files:\n"
 "		dirs=os.path.split(i)\n"
-"		#print i, dirs[-1]\n"
+"		~print i, dirs[-1]\n"
 "		compress.write(i,dirs[-1],zipfile.ZIP_DEFLATED)\n"
 "	compress.close()\n"
 "\n"
@@ -227,7 +227,7 @@ QString DocumentRecovery::createProjectFile(const QString& documentXml)
 void DocumentRecovery::closeEvent(QCloseEvent* e)
 {
     // Do not disable the X button in the title bar
-    // #0004281: Close Document Recovery
+    // ~0004281: Close Document Recovery
     e->accept();
 }
 
@@ -655,11 +655,11 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
         if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
             QString fn = it->absoluteFilePath();
 
-#if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
+~if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
             boost::interprocess::file_lock flock(fn.toUtf8());
-#else
+~else
             boost::interprocess::file_lock flock(fn.toStdWString().c_str());
-#endif
+~endif
             if (flock.try_lock()) {
                 // OK, this file is a leftover from a previous crash
                 QString crashed_pid = bn.mid(exeName.length()+1);
@@ -707,17 +707,17 @@ void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
 void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
 {
     if (!ignoreFiles.isEmpty() && !files.isEmpty()) {
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
         auto set1 = QSet<QString>(files.begin(), files.end());
         auto set2 = QSet<QString>(ignoreFiles.begin(), ignoreFiles.end());
         set1.subtract(set2);
         files = QList<QString>(set1.begin(), set1.end());
-#else
+~else
         QSet<QString> set1 = files.toSet();
         QSet<QString> set2 = ignoreFiles.toSet();
         set1.subtract(set2);
         files = set1.toList();
-#endif
+~endif
     }
 }
 
@@ -740,4 +740,4 @@ void DocumentRecoveryCleaner::setIgnoreDirectories(const QFileInfoList& list)
     ignoreDirs = list;
 }
 
-#include "moc_DocumentRecovery.cpp"
+~include "moc_DocumentRecovery.cpp"

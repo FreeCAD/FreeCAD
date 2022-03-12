@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <QByteArray>
-# include <QContextMenuEvent>
-# include <QHeaderView>
-# include <QInputDialog>
-# include <QMessageBox>
-# include <QMenu>
-# include <QTreeWidget>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QByteArray>
+~ include <QContextMenuEvent>
+~ include <QHeaderView>
+~ include <QInputDialog>
+~ include <QMessageBox>
+~ include <QMenu>
+~ include <QTreeWidget>
+~endif
 
-#include "ui_DlgParameter.h"
-#include "DlgParameterImp.h"
-#include "DlgParameterFind.h"
-#include "DlgInputDialogImp.h"
-#include "BitmapFactory.h"
-#include "FileDialog.h"
-#include "SpinBox.h"
+~include "ui_DlgParameter.h"
+~include "DlgParameterImp.h"
+~include "DlgParameterFind.h"
+~include "DlgInputDialogImp.h"
+~include "BitmapFactory.h"
+~include "FileDialog.h"
+~include "SpinBox.h"
 
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
+~include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <App/Application.h>
 
 
 
@@ -88,10 +88,10 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     policy.setHorizontalStretch(3);
     paramValue->setSizePolicy(policy);
 
-#if 0 // This is needed for Qt's lupdate
+~if 0 // This is needed for Qt's lupdate
     qApp->translate( "Gui::Dialog::DlgParameterImp", "System parameter" );
     qApp->translate( "Gui::Dialog::DlgParameterImp", "User parameter" );
-#endif
+~endif
 
     ParameterManager* sys = App::GetApplication().GetParameterSet("System parameter");
     const std::map<std::string,ParameterManager *>& rcList = App::GetApplication().GetParameterSetList();
@@ -384,11 +384,11 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
     hGrp = hGrp->GetGroup("ParameterEditor");
     QString path = QString::fromUtf8(hGrp->GetASCII("LastParameterGroup").c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     QStringList paths = path.split(QLatin1String("."), Qt::SkipEmptyParts);
-#else
+~else
     QStringList paths = path.split(QLatin1String("."), QString::SkipEmptyParts);
-#endif
+~endif
 
     QTreeWidgetItem* parent = 0;
     for (int index=0; index < paramGroup->topLevelItemCount() && !paths.empty(); index++) {
@@ -1264,4 +1264,4 @@ void ParameterBool::appendToGroup()
     _hcGrp->SetBool(text(0).toLatin1(), val);
 }
 
-#include "moc_DlgParameterImp.cpp"
+~include "moc_DlgParameterImp.cpp"

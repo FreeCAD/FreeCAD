@@ -26,7 +26,7 @@
 // Created   : Fri Oct 20 11:37:07 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_SegmentAroundVertex_0D.hxx"
+~include "StdMeshers_SegmentAroundVertex_0D.hxx"
 
 //=======================================================================
 //function : StdMeshers_SegmentAroundVertex_0D

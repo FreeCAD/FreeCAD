@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include "TaskDlgEdge2Trac.h"
+~include "TaskDlgEdge2Trac.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Gui/TaskView/TaskSelectLinkProperty.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
 
 
 using namespace RobotGui;
@@ -125,4 +125,4 @@ void TaskDlgEdge2Trac::helpRequested()
 }
 
 
-#include "moc_TaskDlgEdge2Trac.cpp"
+~include "moc_TaskDlgEdge2Trac.cpp"

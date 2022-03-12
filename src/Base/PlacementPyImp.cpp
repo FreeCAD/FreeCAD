@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "GeometryPyCXX.h"
+~include "GeometryPyCXX.h"
 
 // inclusion of the generated files (generated out of PlacementPy.xml)
-#include "PlacementPy.h"
-#include "PlacementPy.cpp"
-#include "Matrix.h"
-#include "MatrixPy.h"
-#include "RotationPy.h"
-#include "VectorPy.h"
-#include "Tools.h"
+~include "PlacementPy.h"
+~include "PlacementPy.cpp"
+~include "Matrix.h"
+~include "MatrixPy.h"
+~include "RotationPy.h"
+~include "VectorPy.h"
+~include "Tools.h"
 
 using namespace Base;
 

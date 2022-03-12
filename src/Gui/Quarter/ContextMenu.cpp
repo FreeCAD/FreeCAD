@@ -31,10 +31,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QMenu>
+~include <QMenu>
 
-#include "ContextMenu.h"
-#include "QuarterWidget.h"
+~include "ContextMenu.h"
+~include "QuarterWidget.h"
 
 
 using namespace SIM::Coin3D::Quarter;

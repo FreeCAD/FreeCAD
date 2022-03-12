@@ -21,64 +21,64 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <fcntl.h>
-# include <BRep_Builder.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <STEPControl_Writer.hxx>
-# include <STEPControl_Reader.hxx>
-# include <StepData_StepModel.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <sstream>
-# include <Standard_Version.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <STEPConstruct_Styles.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <STEPConstruct.hxx>
-# include <StepVisual_StyledItem.hxx>
-# include <StepShape_ShapeRepresentation.hxx>
-# include <StepVisual_PresentationStyleByContext.hxx>
-# include <StepVisual_StyleContextSelect.hxx>
-# include <StepVisual_PresentationStyleByContext.hxx>
-# include <Interface_EntityIterator.hxx>
-# include <StepRepr_RepresentedDefinition.hxx>
-# include <StepShape_ShapeDefinitionRepresentation.hxx>
-# include <StepRepr_CharacterizedDefinition.hxx>
-# include <StepRepr_ProductDefinitionShape.hxx>
-# include <StepRepr_AssemblyComponentUsage.hxx>
-# include <StepRepr_AssemblyComponentUsage.hxx>
-# include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
-# include <Quantity_Color.hxx>
-# include <TCollection_ExtendedString.hxx>
-# include <StepBasic_Product.hxx>
-# include <StepBasic_Product.hxx>
-# include <StepBasic_ProductDefinition.hxx>
-# include <StepBasic_ProductDefinition.hxx>
-# include <StepBasic_ProductDefinitionFormation.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <fcntl.h>
+~ include <BRep_Builder.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <STEPControl_Writer.hxx>
+~ include <STEPControl_Reader.hxx>
+~ include <StepData_StepModel.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Shell.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <sstream>
+~ include <Standard_Version.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <XSControl_TransferReader.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <XSControl_TransferReader.hxx>
+~ include <Transfer_TransientProcess.hxx>
+~ include <STEPConstruct_Styles.hxx>
+~ include <TColStd_HSequenceOfTransient.hxx>
+~ include <STEPConstruct.hxx>
+~ include <StepVisual_StyledItem.hxx>
+~ include <StepShape_ShapeRepresentation.hxx>
+~ include <StepVisual_PresentationStyleByContext.hxx>
+~ include <StepVisual_StyleContextSelect.hxx>
+~ include <StepVisual_PresentationStyleByContext.hxx>
+~ include <Interface_EntityIterator.hxx>
+~ include <StepRepr_RepresentedDefinition.hxx>
+~ include <StepShape_ShapeDefinitionRepresentation.hxx>
+~ include <StepRepr_CharacterizedDefinition.hxx>
+~ include <StepRepr_ProductDefinitionShape.hxx>
+~ include <StepRepr_AssemblyComponentUsage.hxx>
+~ include <StepRepr_AssemblyComponentUsage.hxx>
+~ include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
+~ include <Quantity_Color.hxx>
+~ include <TCollection_ExtendedString.hxx>
+~ include <StepBasic_Product.hxx>
+~ include <StepBasic_Product.hxx>
+~ include <StepBasic_ProductDefinition.hxx>
+~ include <StepBasic_ProductDefinition.hxx>
+~ include <StepBasic_ProductDefinitionFormation.hxx>
+~endif
 
-# include <StepElement_AnalysisItemWithinRepresentation.hxx>
-# include <StepVisual_AnnotationCurveOccurrence.hxx>
+~ include <StepElement_AnalysisItemWithinRepresentation.hxx>
+~ include <StepVisual_AnnotationCurveOccurrence.hxx>
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
-#include "ImportStep.h"
-#include "PartFeature.h"
-#include "ProgressIndicator.h"
-#include "encodeFilename.h"
+~include "ImportStep.h"
+~include "PartFeature.h"
+~include "ProgressIndicator.h"
+~include "encodeFilename.h"
 
 using namespace Part;
 
@@ -111,12 +111,12 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::FileException("Cannot open STEP file");
     }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
     aReader.WS()->MapReader()->SetProgress(pi);
     pi->NewScope(100, "Reading STEP file...");
     pi->Show();
-#endif
+~endif
 
     // Root transfers
     Standard_Integer nbr = aReader.NbRootsForTransfer();
@@ -125,9 +125,9 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         Base::Console().Log("STEP: Transferring Root %d\n",n);
         aReader.TransferRoot(n);
     }
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
     pi->EndScope();
-#endif
+~endif
 
     // Collecting resulting entities
     Standard_Integer nbs = aReader.NbShapes();
@@ -243,7 +243,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     return 0;
 }
 
-#if OCC_VERSION_HEX < 0x070000
+~if OCC_VERSION_HEX < 0x070000
 static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
                           Handle(StepShape_ShapeRepresentation)& aSR)
 {
@@ -262,20 +262,20 @@ static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
             break;
     }
 }
-#endif
+~endif
 
 bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col)
 {
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
     (void)WS;
     (void)hash_col;
     return Standard_False;
-#else
+~else
     STEPConstruct_Styles Styles (WS);
     if (!Styles.LoadStyles()) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         std::cout << "Warning: no styles are found in the model" << std::endl;
-#endif
+~endif
         return Standard_False;
     }
     // searching for invisible items in the model
@@ -294,9 +294,9 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
             if (style != aHSeqOfInvisStyle->Value(si))
                 continue;
             // found that current style is invisible.
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             std::cout << "Warning: item No " << i << "(" << style->Item()->DynamicType()->Name() << ") is invisible" << std::endl;
-#endif
+~endif
             IsVisible = Standard_False;
             break;
         }
@@ -365,9 +365,9 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
             continue; // skip styled item which refer to SHUO
 
         if ( S.IsNull() ) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             std::cout << "Warning: item No " << i << "(" << style->Item()->DynamicType()->Name() << ") is not mapped to shape" << std::endl;
-#endif
+~endif
             continue;
         }
 
@@ -395,15 +395,15 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
     }
 
     return Standard_True;
-#endif
+~endif
 }
 
 bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
 {
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
     (void)WS;
     return Standard_False;
-#else
+~else
     // get starting data
     Handle(Interface_InterfaceModel) Model = WS->Model();
     Handle(XSControl_TransferReader) TR = WS->TransferReader();
@@ -460,5 +460,5 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
     }
 
     return Standard_True;
-#endif
+~endif
 }

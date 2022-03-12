@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <iomanip>
-# include <ios>
-#endif
-#include <Inventor/SbBasic.h>
-#include <Inventor/SbBSPTree.h>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <iomanip>
+~ include <ios>
+~endif
+~include <Inventor/SbBasic.h>
+~include <Inventor/SbBSPTree.h>
 
-#include <qglobal.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include "SoFCVectorizeSVGAction.h"
+~include <qglobal.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include "SoFCVectorizeSVGAction.h"
 
 using namespace Gui;
 
@@ -149,11 +149,11 @@ SoSVGVectorOutput::~SoSVGVectorOutput()
 SbBool SoSVGVectorOutput::openFile (const char *filename)
 {
     Base::FileInfo fi(filename);
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     this->file.open(fi.toStdWString().c_str(), std::ios::out | std::ios::binary);
-#else
+~else
     this->file.open(fi.filePath().c_str(), std::ios::out | std::ios::binary);
-#endif
+~endif
 
     return this->file.is_open();
 }
@@ -234,7 +234,7 @@ void SoFCVectorizeSVGActionP::printTriangle(const SoVectorizeTriangle * item) co
   </defs>
 */
 /* Example: color per vertex
-#Inventor V2.1 ascii
+~Inventor V2.1 ascii
 Separator {
 
   Coordinate3 {
@@ -285,10 +285,10 @@ Separator {
 	"/>
 </filter>
 </defs>
-<g filter="url(#Matrix1)">
-	<use xlink:href="#triangle1" fill="url(#blue)"/>
-	<use xlink:href="#triangle1" fill="url(#yellow)" filter="url(#colorAdd)"/>
-	<use xlink:href="#triangle1" fill="url(#red)" filter="url(#colorAdd)"/>
+<g filter="url(~Matrix1)">
+	<use xlink:href="~triangle1" fill="url(~blue)"/>
+	<use xlink:href="~triangle1" fill="url(~yellow)" filter="url(~colorAdd)"/>
+	<use xlink:href="~triangle1" fill="url(~red)" filter="url(~colorAdd)"/>
 </g>
 </svg>
 */
@@ -302,9 +302,9 @@ void SoFCVectorizeSVGActionP::printTriangle(const SbVec3f * v, const SbColor * c
         << v[2][0] << "," << v[2][1] << " L "
         << v[1][0] << "," << v[1][1] << " "
         << v[0][0] << "," << v[0][1] << " z\"" << std::endl
-        << "    style=\"fill:#"
+        << "    style=\"fill:~"
         << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8)
-        << "; stroke:#"
+        << "; stroke:~"
         << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8)
         << ";" << std::endl
         << "    stroke-width:" << publ->getLineWidth() << ";" << std::endl
@@ -350,7 +350,7 @@ void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
     str << "<line "
         << "x1=\"" << v[0][0] << "\" y1=\"" << v[0][1] << "\" "
         << "x2=\"" << v[1][0] << "\" y2=\"" << v[1][1] << "\" "
-        << "stroke=\"#"
+        << "stroke=\"~"
         << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8) << "\""
         << " stroke-linecap=\"square\" "
         << " stroke-width=\"" << publ->getLineWidth() << "\" />\n";
@@ -458,7 +458,7 @@ void SoFCVectorizeSVGAction::printBackground(void) const
         << x[1] << "," << y[1] << " L "
         << x[0] << "," << y[1] << " L "
         << x[0] << "," << y[0] << " z \"" << std::endl;
-    str << "   style=\"fill:#"
+    str << "   style=\"fill:~"
         << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8)
         << ";fill-opacity:1;fill-rule:evenodd;stroke:none;"
            "stroke-width:" << getLineWidth() << ";stroke-linecap:butt;stroke-linejoin:"

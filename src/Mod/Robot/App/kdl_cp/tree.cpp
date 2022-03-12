@@ -19,8 +19,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include "tree.hpp"
-#include <sstream>
+~include "tree.hpp"
+~include <sstream>
 
 namespace KDL {
 using namespace std;
@@ -61,11 +61,11 @@ bool Tree::addSegment(const Segment& segment, const std::string& hook_name) {
     //insert new element
     unsigned int q_nr = segment.getJoint().getType() != Joint::None ? nrOfJoints : 0;
 
-#ifdef KDL_USE_NEW_TREE_INTERFACE
+~ifdef KDL_USE_NEW_TREE_INTERFACE
     retval = segments.insert(make_pair(segment.getName(), TreeElementType( new TreeElement(segment, parent, q_nr))));
-#else //#ifdef KDL_USE_NEW_TREE_INTERFACE
+~else //~ifdef KDL_USE_NEW_TREE_INTERFACE
     retval = segments.insert(make_pair(segment.getName(), TreeElementType(segment, parent, q_nr)));
-#endif //#ifdef KDL_USE_NEW_TREE_INTERFACE
+~endif //~ifdef KDL_USE_NEW_TREE_INTERFACE
 
     //check if insertion succeeded
     if (!retval.second)

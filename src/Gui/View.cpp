@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "View.h"
-#include "Application.h"
-#include "Document.h"
+~include "View.h"
+~include "Application.h"
+~include "Document.h"
 
 using namespace Gui;
 

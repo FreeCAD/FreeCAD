@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QString>
-# include <QSlider>
-#endif
+~ifndef _PreComp_
+~ include <QString>
+~ include <QSlider>
+~endif
 
 
-#include "ui_TaskObjectName.h"
-#include "TaskObjectName.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+~include "ui_TaskObjectName.h"
+~include "TaskObjectName.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
 
 
 using namespace FemGui;
@@ -83,4 +83,4 @@ TaskObjectName::~TaskObjectName()
 }
 
 
-#include "moc_TaskObjectName.cpp"
+~include "moc_TaskObjectName.cpp"

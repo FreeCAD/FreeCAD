@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <QMdiArea>
-# include <QMdiSubWindow>
-# include <QUrl>
-# include <QIcon>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <QMdiArea>
+~ include <QMdiSubWindow>
+~ include <QUrl>
+~ include <QIcon>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/WorkbenchManager.h>
-#include <Gui/Language/Translator.h>
-#include "BrowserView.h"
-#include "Workbench.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/WorkbenchManager.h>
+~include <Gui/Language/Translator.h>
+~include "BrowserView.h"
+~include "Workbench.h"
 
 
 

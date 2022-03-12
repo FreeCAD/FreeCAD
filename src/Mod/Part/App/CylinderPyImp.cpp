@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GC_MakeCylindricalSurface.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Cylinder.hxx>
-# include <gp_Lin.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_CylindricalSurface.hxx>
+~ include <Geom_Circle.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_TrimmedCurve.hxx>
+~ include <GC_MakeCylindricalSurface.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Cylinder.hxx>
+~ include <gp_Lin.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "CirclePy.h"
-#include "EllipsePy.h"
-#include "LinePy.h"
-#include "CylinderPy.h"
-#include "CylinderPy.cpp"
+~include "OCCError.h"
+~include "Geometry.h"
+~include "CirclePy.h"
+~include "EllipsePy.h"
+~include "LinePy.h"
+~include "CylinderPy.h"
+~include "CylinderPy.cpp"
 
 using namespace Part;
 

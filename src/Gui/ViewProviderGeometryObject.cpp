@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFont.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoDirectionalLight.h>
+~endif
 
-#include <Inventor/nodes/SoResetTransform.h>
+~include <Inventor/nodes/SoResetTransform.h>
 
-#include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
+~include <App/GeoFeature.h>
+~include <App/PropertyGeo.h>
 
-#include "ViewProviderGeometryObject.h"
-#include "Application.h"
-#include "Document.h"
-#include "SoFCBoundingBox.h"
-#include "SoFCSelection.h"
-#include "View3DInventorViewer.h"
+~include "ViewProviderGeometryObject.h"
+~include "Application.h"
+~include "Document.h"
+~include "SoFCBoundingBox.h"
+~include "SoFCSelection.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;

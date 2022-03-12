@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#define INITGUID
-#include "Common.h"
-#include "ClassFactory.h"
+~define INITGUID
+~include "Common.h"
+~include "ClassFactory.h"
 
 STDAPI CThumbnailProvider_CreateInstance(REFIID riid, void** ppvObject);
 

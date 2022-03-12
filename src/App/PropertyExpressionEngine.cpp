@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Writer.h>
-#include <CXX/Objects.hxx>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
+~include <Base/Writer.h>
+~include <CXX/Objects.hxx>
 
-#include "PropertyExpressionEngine.h"
-#include "ExpressionVisitors.h"
+~include "PropertyExpressionEngine.h"
+~include "ExpressionVisitors.h"
 
 
 FC_LOG_LEVEL_INIT("App",true);
@@ -647,9 +647,9 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
     std::vector<App::ObjectIdentifier> evaluationOrder = computeEvaluationOrder(option);
     std::vector<ObjectIdentifier>::const_iterator it = evaluationOrder.begin();
 
-#ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
+~ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
     std::clog << "Computing expressions for " << getName() << std::endl;
-#endif
+~endif
 
     /* Evaluate the expressions, and update properties */
     for (;it != evaluationOrder.end();++it) {
@@ -947,11 +947,11 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
-#ifdef BOOST_NO_CXX11_SMART_PTR
+~ifdef BOOST_NO_CXX11_SMART_PTR
         std::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap).release());
-#else
+~else
         std::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap));
-#endif
+~endif
         if(!expr && !engine) 
             continue;
         if(!engine) {
@@ -975,11 +975,11 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
-#ifdef BOOST_NO_CXX11_SMART_PTR
+~ifdef BOOST_NO_CXX11_SMART_PTR
         std::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel).release());
-#else
+~else
         std::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel));
-#endif
+~endif
         if(!expr && !engine) 
             continue;
         if(!engine) {
@@ -1005,13 +1005,13 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
-#ifdef BOOST_NO_CXX11_SMART_PTR
+~ifdef BOOST_NO_CXX11_SMART_PTR
         std::shared_ptr<Expression> expr(
                 it->second.expression->replaceObject(parent,oldObj,newObj).release());
-#else
+~else
         std::shared_ptr<Expression> expr(
                 it->second.expression->replaceObject(parent,oldObj,newObj));
-#endif
+~endif
         if(!expr && !engine) 
             continue;
         if(!engine) {
@@ -1045,13 +1045,13 @@ void PropertyExpressionEngine::setExpressions(
         std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs)
 {
     AtomicPropertyChange signaller(*this);
-#ifdef BOOST_NO_CXX11_SMART_PTR
+~ifdef BOOST_NO_CXX11_SMART_PTR
     for(auto &v : exprs)
         setValue(v.first,std::shared_ptr<Expression>(v.second.release()));
-#else
+~else
     for(auto &v : exprs)
         setValue(v.first,std::move(v.second));
-#endif
+~endif
 }
 
 void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)

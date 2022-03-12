@@ -1,10 +1,10 @@
-#define KDTREE_SIZE_T unsigned int
-#include <kdtree++/kdtree.hpp>
+~define KDTREE_SIZE_T unsigned int
+~include <kdtree++/kdtree.hpp>
 
-#include <vector>
-#include <limits>
-#include <iostream>
-#include <functional>
+~include <vector>
+~include <limits>
+~include <iostream>
+~include <functional>
 
 using namespace std;
 

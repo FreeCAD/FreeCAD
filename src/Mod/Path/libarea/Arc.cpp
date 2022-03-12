@@ -3,8 +3,8 @@
 // Copyright 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
-#include "Arc.h"
-#include "Curve.h"
+~include "Arc.h"
+~include "Curve.h"
 
 void CArc::SetDirWithPoint(const Point& p)
 {

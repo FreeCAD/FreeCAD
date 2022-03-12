@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QPainter>
+~include <QStyleOptionGraphicsItem>
+~endif
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include <QRectF>
-#include "QGCustomSvg.h"
+~include <QRectF>
+~include "QGCustomSvg.h"
 
 using namespace TechDrawGui;
 

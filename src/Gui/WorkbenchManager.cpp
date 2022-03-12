@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include "WorkbenchManager.h"
-#include "Workbench.h"
-#include "DockWindowManager.h"
-#include "MenuManager.h"
-#include "ToolBarManager.h"
+~include "WorkbenchManager.h"
+~include "Workbench.h"
+~include "DockWindowManager.h"
+~include "MenuManager.h"
+~include "ToolBarManager.h"
 
 using namespace Gui;
 

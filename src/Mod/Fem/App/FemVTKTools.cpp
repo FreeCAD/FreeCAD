@@ -22,73 +22,73 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <cstdlib>
-# include <memory>
-# include <cmath>
-# include <map>
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <cstdlib>
+~ include <memory>
+~ include <cmath>
+~ include <map>
 
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <gp_Pnt.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
+~ include <Bnd_Box.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <gp_Pnt.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopoDS_Shape.hxx>
 
-# include <SMESH_Gen.hxx>
-# include <SMESH_Mesh.hxx>
-# include <SMDS_VolumeTool.hxx>
-# include <SMESHDS_Mesh.hxx>
+~ include <SMESH_Gen.hxx>
+~ include <SMESH_Mesh.hxx>
+~ include <SMDS_VolumeTool.hxx>
+~ include <SMESHDS_Mesh.hxx>
 
-# include <vtkDataSetReader.h>
-# include <vtkDataSetWriter.h>
-# include <vtkStructuredGrid.h>
-# include <vtkImageData.h>
-# include <vtkRectilinearGrid.h>
-# include <vtkUnstructuredGrid.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLUnstructuredGridWriter.h>
-# include <vtkPointData.h>
-# include <vtkCellData.h>
-# include <vtkCellArray.h>
-# include <vtkDataArray.h>
-# include <vtkDoubleArray.h>
-# include <vtkIdList.h>
-# include <vtkCellTypes.h>
-# include <vtkTriangle.h>
-# include <vtkQuad.h>
-# include <vtkQuadraticTriangle.h>
-# include <vtkQuadraticQuad.h>
-# include <vtkTetra.h>
-# include <vtkPyramid.h>
-# include <vtkWedge.h>
-# include <vtkHexahedron.h>
-# include <vtkQuadraticTetra.h>
-# include <vtkQuadraticPyramid.h>
-# include <vtkQuadraticWedge.h>
-# include <vtkQuadraticHexahedron.h>
-#endif
+~ include <vtkDataSetReader.h>
+~ include <vtkDataSetWriter.h>
+~ include <vtkStructuredGrid.h>
+~ include <vtkImageData.h>
+~ include <vtkRectilinearGrid.h>
+~ include <vtkUnstructuredGrid.h>
+~ include <vtkXMLUnstructuredGridReader.h>
+~ include <vtkXMLUnstructuredGridWriter.h>
+~ include <vtkPointData.h>
+~ include <vtkCellData.h>
+~ include <vtkCellArray.h>
+~ include <vtkDataArray.h>
+~ include <vtkDoubleArray.h>
+~ include <vtkIdList.h>
+~ include <vtkCellTypes.h>
+~ include <vtkTriangle.h>
+~ include <vtkQuad.h>
+~ include <vtkQuadraticTriangle.h>
+~ include <vtkQuadraticQuad.h>
+~ include <vtkTetra.h>
+~ include <vtkPyramid.h>
+~ include <vtkWedge.h>
+~ include <vtkHexahedron.h>
+~ include <vtkQuadraticTetra.h>
+~ include <vtkQuadraticPyramid.h>
+~ include <vtkQuadraticWedge.h>
+~ include <vtkQuadraticHexahedron.h>
+~endif
 
-#include <Base/FileInfo.h>
-#include <Base/TimeInfo.h>
-#include <Base/Console.h>
-#include <Base/Type.h>
-#include <Base/Parameter.h>
+~include <Base/FileInfo.h>
+~include <Base/TimeInfo.h>
+~include <Base/Console.h>
+~include <Base/Type.h>
+~include <Base/Parameter.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include "FemVTKTools.h"
-#include "FemMeshProperty.h"
-#include "FemAnalysis.h"
+~include "FemVTKTools.h"
+~include "FemMeshProperty.h"
+~include "FemAnalysis.h"
 
 namespace Fem
 {
@@ -678,8 +678,8 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     std::map<std::string, std::string> resFCVecProp;
     resFCVecProp["DisplacementVectors"] = "Displacement";
     // the following three are filled only if there is a reinforced mat object
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70~p296317
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006~p412800
     resFCVecProp["PS1Vector"] = "Major Principal Stress";
     resFCVecProp["PS2Vector"] = "Intermediate Principal Stress";
     resFCVecProp["PS3Vector"] = "Minor Principal Stress";
@@ -687,7 +687,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     return resFCVecProp;
 }
 
-// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further information regarding names etc...
+// see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30~p277434 for further information regarding names etc...
 // some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
 // TODO some filter to only export the needed values to VTK file but have all in FreeCAD VTK pipline
 std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
@@ -710,13 +710,13 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
     // the following three are filled in all cases
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70~p296317
     // it might be these can be generated in paraview from stress tensor values as
     // THE MAJOR PRINCIPAL STRESS MAGNITUDE, THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE, THE MINOR PRINCIPAL STRESS MAGNITUDE
     // but I do not know how (Bernd), for some help see paraview tutorial on FreeCAD wiki
     // thus TODO they might not be exported to external file format (first I need to know how to generate them in paraview)
     // but there are needed anyway because the pipline in FreeCAD needs the principal stress values
-    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006~p412800
     resFCScalProp["PrincipalMax"] = "Major Principal Stress";
     resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";
     resFCScalProp["PrincipalMin"] = "Minor Principal Stress";

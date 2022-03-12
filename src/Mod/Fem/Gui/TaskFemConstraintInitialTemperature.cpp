@@ -23,36 +23,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
 
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTextStream>
 
-# include <sstream>
-#endif
+~ include <sstream>
+~endif
 
-#include "Mod/Fem/App/FemConstraintInitialTemperature.h"
-#include "TaskFemConstraintInitialTemperature.h"
-#include "ui_TaskFemConstraintInitialTemperature.h"
-#include <App/Application.h>
-#include <Gui/Command.h>
+~include "Mod/Fem/App/FemConstraintInitialTemperature.h"
+~include "TaskFemConstraintInitialTemperature.h"
+~include "ui_TaskFemConstraintInitialTemperature.h"
+~include <App/Application.h>
+~include <Gui/Command.h>
 
 
 
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
 
 
 using namespace FemGui;
@@ -164,4 +164,4 @@ bool TaskDlgFemConstraintInitialTemperature::reject()
     return true;
 }
 
-#include "moc_TaskFemConstraintInitialTemperature.cpp"
+~include "moc_TaskFemConstraintInitialTemperature.cpp"

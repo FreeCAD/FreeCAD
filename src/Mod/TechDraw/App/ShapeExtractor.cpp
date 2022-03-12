@@ -20,42 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepTools.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
+~include <BRepAlgoAPI_Fuse.hxx>
+~include <BRepTools.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/GroupExtension.h>
-#include <App/Part.h>
-#include <App/Link.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/GroupExtension.h>
+~include <App/Part.h>
+~include <App/Link.h>
 
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/Placement.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/Placement.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/Part/App/FeaturePartCircle.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PrimitiveFeature.h>
+~include <Mod/Part/App/FeaturePartCircle.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/PropertyTopoShape.h>
 
-#include "ShapeExtractor.h"
-#include "DrawUtil.h"
+~include "ShapeExtractor.h"
+~include "DrawUtil.h"
 
 using namespace TechDraw;
 

@@ -21,33 +21,33 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Origin.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Origin.h>
 
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureLinearPattern.h>
-#include <Mod/PartDesign/App/FeatureMirrored.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/PartDesign/App/FeaturePolarPattern.h>
-#include <Mod/PartDesign/App/FeatureScaled.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureLinearPattern.h>
+~include <Mod/PartDesign/App/FeatureMirrored.h>
+~include <Mod/PartDesign/App/FeatureMultiTransform.h>
+~include <Mod/PartDesign/App/FeaturePolarPattern.h>
+~include <Mod/PartDesign/App/FeatureScaled.h>
 
-#include "ui_TaskMultiTransformParameters.h"
-#include "TaskMultiTransformParameters.h"
-#include "TaskMirroredParameters.h"
-#include "TaskLinearPatternParameters.h"
-#include "TaskPolarPatternParameters.h"
-#include "TaskScaledParameters.h"
-#include "Utils.h"
+~include "ui_TaskMultiTransformParameters.h"
+~include "TaskMultiTransformParameters.h"
+~include "TaskMirroredParameters.h"
+~include "TaskLinearPatternParameters.h"
+~include "TaskPolarPatternParameters.h"
+~include "TaskScaledParameters.h"
+~include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -72,10 +72,10 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -589,4 +589,4 @@ bool TaskDlgMultiTransformParameters::accept()
 //    return TaskDlgTransformedParameters::reject();
 //}
 
-#include "moc_TaskMultiTransformParameters.cpp"
+~include "moc_TaskMultiTransformParameters.cpp"

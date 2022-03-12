@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <stack>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <stack>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
 
-#include "MergeDocuments.h"
+~include "MergeDocuments.h"
 
 
 using namespace Gui;
@@ -67,7 +67,7 @@ public:
 protected:
     // See App::MergeDocument::XMLMergeReader for comments, with one additional
     // benefits, we can save repetitive coding here.
-#if 0
+~if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
                       const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
@@ -112,7 +112,7 @@ protected:
         if (LocalName == "Property")
             propertyStack.pop();
     }
-#endif
+~endif
 
 private:
     std::map<std::string, std::string>& nameMap;

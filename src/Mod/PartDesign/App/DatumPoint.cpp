@@ -22,13 +22,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <Standard_Version.hxx>
+~endif
 
-#include "DatumPoint.h"
+~include "DatumPoint.h"
 
 using namespace PartDesign;
 using namespace Attacher;
@@ -50,7 +50,7 @@ Point::~Point()
 void Point::onChanged(const App::Property* prop)
 {
     if(prop == &(this->Shape)){
-        //fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
+        //fix for ~0002758 Datum point moves to (0,0,0) when reopening the file.
         //bypass Part::Feature's onChanged, which may alter Placement property to match shape's placement.
         //This is to prevent loss of correct Placement when restoring Shape from file.
         App::GeoFeature::onChanged(prop);
@@ -61,7 +61,7 @@ void Point::onChanged(const App::Property* prop)
 
 void Point::onDocumentRestored()
 {
-    //fix for #0002758 Datum point moves to (0,0,0) when reopening the file.
+    //fix for ~0002758 Datum point moves to (0,0,0) when reopening the file.
     //recreate shape, as the restored one has old Placement burned into it.
     this->makeShape();
     Superclass::onDocumentRestored();

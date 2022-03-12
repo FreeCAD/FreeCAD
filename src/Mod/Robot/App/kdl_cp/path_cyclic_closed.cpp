@@ -40,8 +40,8 @@
  ****************************************************************************/
 
 
-#include "path_cyclic_closed.hpp"
-#include "utilities/error.h"
+~include "path_cyclic_closed.hpp"
+~include "utilities/error.h"
 
 namespace KDL {
 

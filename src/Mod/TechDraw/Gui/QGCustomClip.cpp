@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <assert.h>
+~include <QGraphicsScene>
+~include <QGraphicsSceneHoverEvent>
+~include <QMouseEvent>
+~include <QPainter>
+~include <QStyleOptionGraphicsItem>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include "ZVALUE.h"
-#include "QGICMark.h"
-#include "QGCustomClip.h"
+~include "ZVALUE.h"
+~include "QGICMark.h"
+~include "QGCustomClip.h"
 
 using namespace TechDrawGui;
 

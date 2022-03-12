@@ -21,37 +21,37 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <memory>
-#endif
+~ifndef _PreComp_
+~ include <memory>
+~endif
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
 
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/path_line.hpp"
-#include "kdl_cp/path_roundedcomposite.hpp"
-#include "kdl_cp/trajectory_composite.hpp"
-#include "kdl_cp/rotational_interpolation_sa.hpp"
-#include "kdl_cp/velocityprofile_trap.hpp"
-#include "kdl_cp/trajectory_segment.hpp"
-#include "kdl_cp/path_roundedcomposite.hpp"
-#include "kdl_cp/utilities/error.h"
+~include "kdl_cp/chain.hpp"
+~include "kdl_cp/path_line.hpp"
+~include "kdl_cp/path_roundedcomposite.hpp"
+~include "kdl_cp/trajectory_composite.hpp"
+~include "kdl_cp/rotational_interpolation_sa.hpp"
+~include "kdl_cp/velocityprofile_trap.hpp"
+~include "kdl_cp/trajectory_segment.hpp"
+~include "kdl_cp/path_roundedcomposite.hpp"
+~include "kdl_cp/utilities/error.h"
 
-#include "Trajectory.h"
-#include "RobotAlgos.h"
+~include "Trajectory.h"
+~include "RobotAlgos.h"
 
-#ifndef M_PI
-    #define M_PI 3.14159265358979323846
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
+~ifndef M_PI
+    ~define M_PI 3.14159265358979323846
+    ~define M_PI    3.14159265358979323846 /* pi */
+~endif
 
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
+~ifndef M_PI_2
+    ~define M_PI_2  1.57079632679489661923 /* pi/2 */
+~endif
 
 using namespace Robot;
 using namespace Base;

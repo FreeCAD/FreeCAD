@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QRegExp>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QRegExp>
+~endif
 
-#include "PovrayHighlighter.h"
+~include "PovrayHighlighter.h"
 
 using namespace RaytracingGui;
 
@@ -94,8 +94,8 @@ void PovrayHighlighter::highlightBlock(const QString &text)
                 start = i;
                 state = InsideCStyleComment;
             }
-            else if (text.mid(i,1) == QLatin1String("#")) {
-                QRegExp rx(QLatin1String("#\\s*(\\w*)"));
+            else if (text.mid(i,1) == QLatin1String("~")) {
+                QRegExp rx(QLatin1String("~\\s*(\\w*)"));
                 int pos = text.indexOf(rx, i);
                 if (pos != -1) {
                     if (d->keywords.contains(rx.cap(1)) != 0)

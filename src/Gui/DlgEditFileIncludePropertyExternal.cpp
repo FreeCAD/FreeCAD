@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include "Application.h"
-#include "MainWindow.h"
-#include "DlgEditFileIncludePropertyExternal.h"
-#include "FileDialog.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "DlgEditFileIncludePropertyExternal.h"
+~include "FileDialog.h"
 
 
 using namespace Gui::Dialog;
@@ -82,4 +82,4 @@ int DlgEditFileIncludePropertyExternal::Do(void)
     return ret;
 }
 
-#include "moc_DlgEditFileIncludePropertyExternal.cpp"
+~include "moc_DlgEditFileIncludePropertyExternal.cpp"

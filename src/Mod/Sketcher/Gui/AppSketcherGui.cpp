@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Language/Translator.h>
-#include <Gui/WidgetFactory.h>
-#include "Workbench.h"
-#include "ViewProviderSketch.h"
-#include "ViewProviderPython.h"
-#include "SoDatumLabel.h"
-#include "SoZoomTranslation.h"
-#include "SketcherSettings.h"
-#include "PropertyConstraintListItem.h"
-#include "ViewProviderSketchGeometryExtension.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Language/Translator.h>
+~include <Gui/WidgetFactory.h>
+~include "Workbench.h"
+~include "ViewProviderSketch.h"
+~include "ViewProviderPython.h"
+~include "SoDatumLabel.h"
+~include "SoZoomTranslation.h"
+~include "SketcherSettings.h"
+~include "PropertyConstraintListItem.h"
+~include "ViewProviderSketchGeometryExtension.h"
 
 
 // create the commands

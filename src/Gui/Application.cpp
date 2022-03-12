@@ -21,100 +21,100 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include "InventorAll.h"
-# include <QCloseEvent>
-# include <QDir>
-# include <QFileInfo>
-# include <QLocale>
-# include <QMessageBox>
-# include <QMessageLogContext>
-# include <QStatusBar>
-# include <QStyle>
-# include <QTextStream>
-# include <QTimer>
-# include <QWindow>
-#endif
+~ifndef _PreComp_
+~ include "InventorAll.h"
+~ include <QCloseEvent>
+~ include <QDir>
+~ include <QFileInfo>
+~ include <QLocale>
+~ include <QMessageBox>
+~ include <QMessageLogContext>
+~ include <QStatusBar>
+~ include <QStyle>
+~ include <QTextStream>
+~ include <QTimer>
+~ include <QWindow>
+~endif
 
-#include <boost/interprocess/sync/file_lock.hpp>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
+~include <boost/interprocess/sync/file_lock.hpp>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
 
-#include <Language/Translator.h>
-#include <Quarter/Quarter.h>
+~include <Language/Translator.h>
+~include <Quarter/Quarter.h>
 
-#include "Application.h"
-#include "AutoSaver.h"
-#include "AxisOriginPy.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "CommandPy.h"
-#include "Control.h"
-#include "DlgSettingsCacheDirectory.h"
-#include "DocumentPy.h"
-#include "DocumentRecovery.h"
-#include "EditorView.h"
-#include "ExpressionBindingPy.h"
-#include "FileDialog.h"
-#include "GuiApplication.h"
-#include "GuiInitScript.h"
-#include "LinkViewPy.h"
-#include "MainWindow.h"
-#include "Macro.h"
-#include "PreferencePackManager.h"
-#include "PythonConsolePy.h"
-#include "PythonDebugger.h"
-#include "MainWindowPy.h"
-#include "MDIViewPy.h"
-#include "SoFCDB.h"
-#include "Selection.h"
-#include "SplitView3DInventor.h"
-#include "TaskView/TaskView.h"
-#include "TaskView/TaskDialogPython.h"
-#include "TransactionObject.h"
-#include "TextDocumentEditorView.h"
-#include "UiLoader.h"
-#include "View3DPy.h"
-#include "View3DViewerPy.h"
-#include "View3DInventor.h"
-#include "ViewProviderAnnotation.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectGroup.h"
-#include "ViewProviderDragger.h"
-#include "ViewProviderExtension.h"
-#include "ViewProviderExtern.h"
-#include "ViewProviderFeature.h"
-#include "ViewProviderGeoFeatureGroup.h"
-#include "ViewProviderGeometryObject.h"
-#include "ViewProviderGroupExtension.h"
-#include "ViewProviderInventorObject.h"
-#include "ViewProviderLine.h"
-#include "ViewProviderLink.h"
-#include "ViewProviderLinkPy.h"
-#include "ViewProviderMaterialObject.h"
-#include "ViewProviderMeasureDistance.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
-#include "ViewProviderOriginGroup.h"
-#include "ViewProviderPlacement.h"
-#include "ViewProviderPlane.h"
-#include "ViewProviderPart.h"
-#include "ViewProviderPythonFeature.h"
-#include "ViewProviderTextDocument.h"
-#include "ViewProviderVRMLObject.h"
-#include "WaitCursor.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "WidgetFactory.h"
+~include "Application.h"
+~include "AutoSaver.h"
+~include "AxisOriginPy.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "CommandPy.h"
+~include "Control.h"
+~include "DlgSettingsCacheDirectory.h"
+~include "DocumentPy.h"
+~include "DocumentRecovery.h"
+~include "EditorView.h"
+~include "ExpressionBindingPy.h"
+~include "FileDialog.h"
+~include "GuiApplication.h"
+~include "GuiInitScript.h"
+~include "LinkViewPy.h"
+~include "MainWindow.h"
+~include "Macro.h"
+~include "PreferencePackManager.h"
+~include "PythonConsolePy.h"
+~include "PythonDebugger.h"
+~include "MainWindowPy.h"
+~include "MDIViewPy.h"
+~include "SoFCDB.h"
+~include "Selection.h"
+~include "SplitView3DInventor.h"
+~include "TaskView/TaskView.h"
+~include "TaskView/TaskDialogPython.h"
+~include "TransactionObject.h"
+~include "TextDocumentEditorView.h"
+~include "UiLoader.h"
+~include "View3DPy.h"
+~include "View3DViewerPy.h"
+~include "View3DInventor.h"
+~include "ViewProviderAnnotation.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObjectGroup.h"
+~include "ViewProviderDragger.h"
+~include "ViewProviderExtension.h"
+~include "ViewProviderExtern.h"
+~include "ViewProviderFeature.h"
+~include "ViewProviderGeoFeatureGroup.h"
+~include "ViewProviderGeometryObject.h"
+~include "ViewProviderGroupExtension.h"
+~include "ViewProviderInventorObject.h"
+~include "ViewProviderLine.h"
+~include "ViewProviderLink.h"
+~include "ViewProviderLinkPy.h"
+~include "ViewProviderMaterialObject.h"
+~include "ViewProviderMeasureDistance.h"
+~include "ViewProviderOrigin.h"
+~include "ViewProviderOriginFeature.h"
+~include "ViewProviderOriginGroup.h"
+~include "ViewProviderPlacement.h"
+~include "ViewProviderPlane.h"
+~include "ViewProviderPart.h"
+~include "ViewProviderPythonFeature.h"
+~include "ViewProviderTextDocument.h"
+~include "ViewProviderVRMLObject.h"
+~include "WaitCursor.h"
+~include "Workbench.h"
+~include "WorkbenchManager.h"
+~include "WidgetFactory.h"
 
 
 using namespace Gui;
@@ -350,7 +350,7 @@ Application::Application(bool GUIenabled)
 
         // Check for the symbols for group separator and decimal point. They must be different otherwise
         // Qt doesn't work properly.
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
         if (QLocale().groupSeparator() == QLocale().decimalPoint()) {
             QMessageBox::critical(0, QLatin1String("Invalid system settings"),
                 QLatin1String("Your system uses the same symbol for decimal point and group separator.\n\n"
@@ -358,15 +358,15 @@ Application::Application(bool GUIenabled)
                               "Go to the system configuration panel of the OS and fix this issue, please."));
             throw Base::RuntimeError("Invalid system settings");
         }
-#endif
-#if 0 // QuantitySpinBox and InputField try to handle the group separator now
+~endif
+~if 0 // QuantitySpinBox and InputField try to handle the group separator now
         // http://forum.freecadweb.org/viewtopic.php?f=10&t=6910
         // A workaround is to disable the group separator for double-to-string conversion, i.e.
         // setting the flag 'OmitGroupSeparator'.
         QLocale loc;
         loc.setNumberOptions(QLocale::OmitGroupSeparator);
         QLocale::setDefault(loc);
-#endif
+~endif
 
         // setting up Python binding
         Base::PyGILStateLocker lock;
@@ -496,21 +496,21 @@ Application::~Application()
     WidgetFactorySupplier::destruct();
     BitmapFactoryInst::destruct();
 
-#if 0
+~if 0
     // we must run the garbage collector before shutting down the SoDB
     // subsystem because we may reference some class objects of them in Python
     Base::Interpreter().cleanupSWIG("SoBase *");
     // finish also Inventor subsystem
     SoFCDB::finish();
 
-#if (COIN_MAJOR_VERSION >= 2) && (COIN_MINOR_VERSION >= 4)
+~if (COIN_MAJOR_VERSION >= 2) && (COIN_MINOR_VERSION >= 4)
     SoDB::finish();
-#elif (COIN_MAJOR_VERSION >= 3)
+~elif (COIN_MAJOR_VERSION >= 3)
     SoDB::finish();
-#else
+~else
     SoDB::cleanup();
-#endif
-#endif
+~endif
+~endif
     {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcWorkbenchDictionary);
@@ -737,7 +737,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             parameterGroup->SetBool("RecentIncludesExported", addToRecent); // Make sure it gets added to the parameter list
             if (addToRecent) {
                 // search for a module that is able to open the exported file because otherwise
-                // it doesn't need to be added to the recent files list (#0002047)
+                // it doesn't need to be added to the recent files list (~0002047)
                 std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
                 if (!importMap.empty())
                     getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
@@ -778,10 +778,10 @@ void Application::createStandardOperations()
 
 void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
     assert(it==d->documents.end());
-#endif
+~endif
     Gui::Document* pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;
 
@@ -833,9 +833,9 @@ void Application::slotDeleteDocument(const App::Document& Doc)
 void Application::slotRelabelDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     assert(doc!=d->documents.end());
-#endif
+~endif
 
     signalRelabelDocument(*doc->second);
     doc->second->onRelabel();
@@ -844,9 +844,9 @@ void Application::slotRelabelDocument(const App::Document& Doc)
 void Application::slotRenameDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     assert(doc!=d->documents.end());
-#endif
+~endif
 
     signalRenameDocument(*doc->second);
 }
@@ -854,9 +854,9 @@ void Application::slotRenameDocument(const App::Document& Doc)
 void Application::slotShowHidden(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     assert(doc!=d->documents.end());
-#endif
+~endif
 
     signalShowHidden(*doc->second);
 }
@@ -1127,7 +1127,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         return;
     }
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
@@ -1136,7 +1136,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     else {
         Base::Console().Log("No active document\n");
     }
-#endif
+~endif
 
     // notify all views attached to the application (not views belong to a special document)
     for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
@@ -1203,11 +1203,11 @@ void Application::onUpdate(void)
 /// Gets called if a view gets activated, this manages the whole activation scheme
 void Application::viewActivated(MDIView* pcView)
 {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     // May be useful for error detection
     Base::Console().Log("Active view is %s (at %p)\n",
                  (const char*)pcView->windowTitle().toUtf8(),pcView);
-#endif
+~endif
 
     signalActivateView(pcView);
 
@@ -1581,21 +1581,21 @@ QStringList Application::workbenches(void) const
     QStringList hidden, extra;
     if (ht != config.end()) {
         QString items = QString::fromLatin1(ht->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
         hidden = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-#else
+~else
         hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
-#endif
+~endif
         if (hidden.isEmpty())
             hidden.push_back(QLatin1String(""));
     }
     if (et != config.end()) {
         QString items = QString::fromLatin1(et->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
         extra = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-#else
+~else
         extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
-#endif
+~endif
         if (extra.isEmpty())
             extra.push_back(QLatin1String(""));
     }
@@ -1690,7 +1690,7 @@ _qt_msg_handler_old old_qtmsg_handler = 0;
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     switch (type)
     {
     case QtInfoMsg:
@@ -1707,18 +1707,18 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
         Base::Console().Error("%s\n", msg.toUtf8().constData());
         abort();                    // deliberately core dump
     }
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
         (*old_qtmsg_handler)(type, context, msg);
-#endif
-#else
+~endif
+~else
     // do not stress user with Qt internals but write to log file if enabled
     Q_UNUSED(type);
     Base::Console().Log("%s\n", msg.toUtf8().constData());
-#endif
+~endif
 }
 
-#ifdef FC_DEBUG // redirect Coin messages to FreeCAD
+~ifdef FC_DEBUG // redirect Coin messages to FreeCAD
 void messageHandlerCoin(const SoError * error, void * /*userdata*/)
 {
     if (error && error->getTypeId() == SoDebugError::getClassTypeId()) {
@@ -1736,10 +1736,10 @@ void messageHandlerCoin(const SoError * error, void * /*userdata*/)
             Base::Console().Error("%s\n", msg);
             break;
         }
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
         (*old_qtmsg_handler)(QtDebugMsg, QMessageLogContext(), QString::fromLatin1(msg));
-#endif
+~endif
     }
     else if (error) {
         const char* msg = error->getDebugString().getString();
@@ -1747,9 +1747,9 @@ void messageHandlerCoin(const SoError * error, void * /*userdata*/)
     }
 }
 
-#endif
+~endif
 
-// To fix bug #0000345 move Q_INIT_RESOURCE() outside initApplication()
+// To fix bug ~0000345 move Q_INIT_RESOURCE() outside initApplication()
 static void init_resources()
 {
     // init resources
@@ -1869,25 +1869,25 @@ void Application::runApplication(void)
 
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+~if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-#endif
+~endif
 
     // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
     ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         SetProcessDPIAware(); // call before the main event loop
-#endif
+~endif
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     }
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-#endif
+~endif
     }
 
     //Enable support for highres images (added in Qt 5.1, but off by default)
@@ -1900,7 +1900,7 @@ void Application::runApplication(void)
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
 
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    ~if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
         // By default (on platforms that support it, see docs for
         // Qt::AA_CompressHighFrequencyEvents) QT applies compression
         // for high frequency events (mouse move, touch, window resizes)
@@ -1912,7 +1912,7 @@ void Application::runApplication(void)
         // leading to unacceptable slowdowns using a tablet pen. Enable
         // compression for tablet events here to solve that.
         QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
-    #endif
+    ~endif
 
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
@@ -1923,13 +1923,13 @@ void Application::runApplication(void)
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
-#ifdef Q_OS_UNIX
+~ifdef Q_OS_UNIX
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
-    // and issue #0002891
-    // http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
+    // and issue ~0002891
+    // http://doc.qt.io/qt-5/qcoreapplication.html~locale-settings
     setlocale(LC_NUMERIC, "C");
-#endif
+~endif
 
     // check if a single or multiple instances can run
     it = cfg.find("SingleInstance");
@@ -1966,9 +1966,9 @@ void Application::runApplication(void)
     else {
         mainApp.setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
     }
-#ifndef Q_OS_MACX
+~ifndef Q_OS_MACX
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
-#endif
+~endif
     QString plugin;
     plugin = QString::fromStdString(App::Application::getHomePath());
     plugin += QLatin1String("/plugins");
@@ -1992,10 +1992,10 @@ void Application::runApplication(void)
     ActionStyleEvent::EventType = QEvent::registerEventType(QEvent::User + 1);
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
-#if !defined(Q_OS_LINUX)
+~if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
+~else
     // Option to opt-out from using a Linux desktop icon theme.
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=35624
     bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
@@ -2005,7 +2005,7 @@ void Application::runApplication(void)
         QIcon::setThemeSearchPaths(searchPaths);
         QIcon::setThemeName(QLatin1String("FreeCAD-default"));
     }
-#endif
+~endif
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
@@ -2019,14 +2019,14 @@ void Application::runApplication(void)
         QIcon::setThemeName(QString::fromLatin1(name.c_str()));
     }
 
-#if defined(FC_OS_LINUX)
-    // See #0001588
+~if defined(FC_OS_LINUX)
+    // See ~0001588
     QString path = FileDialog::restoreLocation();
     FileDialog::setWorkingDirectory(QDir::currentPath());
     FileDialog::saveLocation(path);
-#else
+~else
     FileDialog::setWorkingDirectory(FileDialog::restoreLocation());
-#endif
+~endif
 
     Application app(true);
     MainWindow mw;
@@ -2210,9 +2210,9 @@ void Application::runApplication(void)
     //initialize spaceball.
     mainApp.initSpaceball(&mw);
 
-#ifdef FC_DEBUG // redirect Coin messages to FreeCAD
+~ifdef FC_DEBUG // redirect Coin messages to FreeCAD
     SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
-#endif
+~endif
 
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately
@@ -2252,11 +2252,11 @@ void Application::runApplication(void)
         Base::ofstream lock(fi);
 
         // In case the file_lock cannot be created start FreeCAD without IPC support.
-#if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
+~if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
         std::string filename = s.str();
-#else
+~else
         std::wstring filename = fi.toStdWString();
-#endif
+~endif
         std::unique_ptr<boost::interprocess::file_lock> flock;
         try {
             flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
@@ -2322,7 +2322,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     //
     // The .qss file must define it with:
     // QLabel[haslink="true"] {
-    //     color: #rrggbb;
+    //     color: ~rrggbb;
     // }
     //
     // See https://stackoverflow.com/questions/5497799/how-do-i-customise-the-appearance-of-links-in-qlabels-using-style-sheets
@@ -2402,7 +2402,7 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
     // At startup time unpolish() mustn't be executed because otherwise the QSint widget
     // appear incorrect due to an outdated cache.
-    // See https://doc.qt.io/qt-5/qstyle.html#unpolish-1
+    // See https://doc.qt.io/qt-5/qstyle.html~unpolish-1
     // See https://forum.freecadweb.org/viewtopic.php?f=17&t=50783
     if (d->startingUp == false) {
         if (mdi->style())

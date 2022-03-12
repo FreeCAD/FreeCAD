@@ -3,22 +3,22 @@
 // This program is released under the BSD license. See the file COPYING for details.
 
 
-#ifdef _MSC_VER
-    #define strdup _strdup
-#endif
+~ifdef _MSC_VER
+    ~define strdup _strdup
+~endif
 
-#include "Area.h"
-#include "Point.h"
-#include "AreaDxf.h"
-#include "kurve/geometry.h"
-#include "Adaptive.hpp"
+~include "Area.h"
+~include "Point.h"
+~include "AreaDxf.h"
+~include "kurve/geometry.h"
+~include "Adaptive.hpp"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/functional.h>
-#include <pybind11/operators.h>
+~include <pybind11/pybind11.h>
+~include <pybind11/stl.h>
+~include <pybind11/functional.h>
+~include <pybind11/operators.h>
 
-#include <vector>
+~include <vector>
 
 
 
@@ -44,13 +44,13 @@ py::tuple transformed_point(const geoff_geometry::Matrix &matrix, double x, doub
 static void print_curve(const CCurve& c)
 {
     std::size_t nvertices = c.m_vertices.size();
-#if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
+~if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
     printf("number of vertices = %d\n", nvertices);
-#elif defined(_WIN32)
+~elif defined(_WIN32)
     printf("number of vertices = %Iu\n", nvertices);
-#else
+~else
     printf("number of vertices = %lu\n", nvertices);
-#endif
+~endif
     int i = 0;
     for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
     {

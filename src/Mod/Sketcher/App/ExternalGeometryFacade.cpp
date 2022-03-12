@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-#endif
+~endif
 
-#include "ExternalGeometryFacade.h"
+~include "ExternalGeometryFacade.h"
 
-#include <Base/Console.h> // Only for Debug - To be removed
-#include <Base/Exception.h>
-#include <boost/uuid/uuid_io.hpp>
+~include <Base/Console.h> // Only for Debug - To be removed
+~include <Base/Exception.h>
+~include <boost/uuid/uuid_io.hpp>
 
-#include "ExternalGeometryFacadePy.h"
+~include "ExternalGeometryFacadePy.h"
 
 using namespace Sketcher;
 

@@ -23,12 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Gui/Application.h"
-#include "DlgSettingsFemExportAbaqusImp.h"
-#include "ui_DlgSettingsFemExportAbaqus.h"
-#include <Gui/PrefWidgets.h>
+~include "Gui/Application.h"
+~include "DlgSettingsFemExportAbaqusImp.h"
+~include "ui_DlgSettingsFemExportAbaqus.h"
+~include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
@@ -83,4 +83,4 @@ void DlgSettingsFemExportAbaqusImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsFemExportAbaqusImp.cpp"
+~include "moc_DlgSettingsFemExportAbaqusImp.cpp"

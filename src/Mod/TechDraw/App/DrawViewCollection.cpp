@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
-#include "DrawPage.h"
-#include "DrawViewCollection.h"
+~include "DrawPage.h"
+~include "DrawViewCollection.h"
 
 using namespace TechDraw;
 

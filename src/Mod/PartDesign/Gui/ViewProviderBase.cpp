@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureBase.h>
+~include <App/Document.h>
+~include <Gui/Command.h>
+~include <Mod/PartDesign/App/FeatureBase.h>
 
-#include "ViewProviderBase.h"
+~include "ViewProviderBase.h"
 
 
 using namespace PartDesignGui;

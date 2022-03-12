@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <Base/Console.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/ViewProviderOrigin.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeaturePrimitive.h>
 
-#include "TaskPrimitiveParameters.h"
-#include "ui_TaskPrimitiveParameters.h"
+~include "TaskPrimitiveParameters.h"
+~include "ui_TaskPrimitiveParameters.h"
 
 
 using namespace PartDesignGui;
@@ -924,4 +924,4 @@ QDialogButtonBox::StandardButtons TaskPrimitiveParameters::getStandardButtons(vo
 }
 
 
-#include "moc_TaskPrimitiveParameters.cpp"
+~include "moc_TaskPrimitiveParameters.cpp"

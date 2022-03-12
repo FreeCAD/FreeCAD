@@ -22,18 +22,18 @@
 //  File   : MED_Wrapper.cxx
 //  Author : Alexey PETROV
 //
-#include "MED_Wrapper.hxx"
-#include "MED_Utilities.hxx"
+~include "MED_Wrapper.hxx"
+~include "MED_Utilities.hxx"
  
-#include <boost/version.hpp>
+~include <boost/version.hpp>
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
 static int MYVALUEDEBUG = 0;
-#else
+~else
 // static int MYDEBUG = 0;
 // static int MYVALUEDEBUG = 0;
-#endif
+~endif
 
 namespace MED
 {
@@ -41,11 +41,11 @@ namespace MED
   ::TLockProxy(TWrapper* theWrapper):
     myWrapper(theWrapper)
   {
-#if BOOST_VERSION >= 103500
+~if BOOST_VERSION >= 103500
     myWrapper->myMutex.lock();
-#else
+~else
     boost::detail::thread::lock_ops<TWrapper::TMutex>::lock(myWrapper->myMutex);
-#endif
+~endif
     INITMSG(MYDEBUG,"TLockProxy() - this -"<<this<<"; myWrapper = "<<myWrapper<<std::endl);
   }
   
@@ -53,11 +53,11 @@ namespace MED
   ::~TLockProxy()
   {
     INITMSG(MYDEBUG,"~TLockProxy() - this -"<<this<<"; myWrapper = "<<myWrapper<<std::endl);
-#if BOOST_VERSION >= 103500
+~if BOOST_VERSION >= 103500
     myWrapper->myMutex.unlock();
-#else
+~else
     boost::detail::thread::lock_ops<TWrapper::TMutex>::unlock(myWrapper->myMutex);
-#endif
+~endif
   }
   
   TWrapper*
@@ -100,7 +100,7 @@ namespace MED
     PFamilyInfo anInfo = CrFamilyInfo(theMeshInfo,aNbGroup,aNbAttr);
     GetFamilyInfo(theId,*anInfo,theErr);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     std::string aName = anInfo->GetName();
     INITMSG(MYDEBUG,"GetPFamilyInfo - aFamilyName = '"<<aName<<
             "'; andId = "<<anInfo->GetId()<<
@@ -110,7 +110,7 @@ namespace MED
       aName = anInfo->GetGroupName(iGroup);
       INITMSG(MYDEBUG,"aGroupName = '"<<aName<<"'\n");
     }
-#endif
+~endif
     
     return anInfo;
   }
@@ -130,7 +130,7 @@ namespace MED
     PNodeInfo anInfo = CrNodeInfo(theMeshInfo,aNbElems);
     GetNodeInfo(*anInfo,theErr);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     TInt aDim = theMeshInfo->myDim;
     TInt aNbElem = anInfo->GetNbElem();
     INITMSG(MYDEBUG,"GetPNodeInfo: ");
@@ -160,7 +160,7 @@ namespace MED
       }
     }
     ADDMSG(MYDEBUG, std::endl);
-#endif
+~endif
     
     return anInfo;
   }
@@ -181,7 +181,7 @@ namespace MED
     PPolygoneInfo anInfo = CrPolygoneInfo(theMeshInfo,theEntity,theGeom,aNbElem,aConnSize,theConnMode);
     GetPolygoneInfo(anInfo);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     INITMSG(MYDEBUG,"GetPPolygoneInfo"<<
             " - theGeom = "<<theGeom<<
             "; aNbElem = "<<aNbElem<<": ");
@@ -194,7 +194,7 @@ namespace MED
       ADDMSG(MYDEBUG," ");
     }
     ADDMSG(MYDEBUG, std::endl);
-#endif
+~endif
 
     return anInfo;
   }
@@ -215,7 +215,7 @@ namespace MED
     PPolyedreInfo anInfo = CrPolyedreInfo(theMeshInfo,theEntity,theGeom,aNbElem,aNbFaces,aConnSize,theConnMode);
     GetPolyedreInfo(anInfo);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     INITMSG(MYDEBUG,"GetPPolyedreInfo"<<
             " - theGeom = "<<theGeom<<
             "; aNbElem = "<<aNbElem<<": ");
@@ -235,7 +235,7 @@ namespace MED
       ADDMSG(MYDEBUG,"} ");
     }
     ADDMSG(MYDEBUG, std::endl);
-#endif
+~endif
 
     return anInfo;
   }
@@ -346,7 +346,7 @@ namespace MED
     PCellInfo anInfo = CrCellInfo(theMeshInfo,theEntity,theGeom,aNbElem,theConnMode);
     GetCellInfo(anInfo,theErr);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     TInt aConnDim = anInfo->GetConnDim();
     INITMSG(MYDEBUG,"GetPCellInfo - theEntity = "<<theEntity<<"; theGeom = "<<theGeom<<"; aConnDim: "<<aConnDim<<"\n");
     BEGMSG(MYDEBUG,"GetPCellInfo - aNbElem: "<<aNbElem<<": ");
@@ -373,7 +373,7 @@ namespace MED
       ADDMSG(MYVALUEDEBUG, std::endl);
     }
     ADDMSG(MYDEBUG, std::endl);
-#endif
+~endif
     
     return anInfo;
   }
@@ -403,14 +403,14 @@ namespace MED
     PFieldInfo anInfo = CrFieldInfo(theMeshInfo,aNbComp);
     GetFieldInfo(theId,*anInfo,theErr);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     INITMSG(MYDEBUG,
             "GetPFieldInfo "<<
             "- aName = '"<<anInfo->GetName()<<"'"<<
             "; aType = "<<anInfo->GetType()<<
             "; aNbComp = "<<aNbComp<<
             std::endl);
-#endif
+~endif
     
     return anInfo;
   }
@@ -428,7 +428,7 @@ namespace MED
     PTimeStampInfo anInfo = CrTimeStampInfo(theFieldInfo,theEntity,theGeom2Size);
     GetTimeStampInfo(theId,*anInfo,theErr);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     INITMSG(MYDEBUG,"GetPTimeStampInfo - anEntity = "<<anInfo->GetEntity()<<"\n");
     TGeom2NbGauss& aGeom2NbGauss = anInfo->myGeom2NbGauss;
     TGeom2NbGauss::const_iterator anIter = aGeom2NbGauss.begin();
@@ -436,7 +436,7 @@ namespace MED
       const EGeometrieElement& aGeom = anIter->first;
       INITMSG(MYDEBUG,"aGeom = "<<aGeom<<" - "<<aGeom2NbGauss[aGeom]<<";\n");
     }
-#endif
+~endif
 
     return anInfo;
   }
@@ -529,12 +529,12 @@ namespace MED
                       theMKey2Profile, 
                       theKey2Gauss,
                       theErr);
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     if(aFieldInfo->GetType() == eFLOAT64)
       Print<TFloatTimeStampValue>(anInfo);
     else
       Print<TIntTimeStampValue>(anInfo);
-#endif
+~endif
     return anInfo;
   }
 
@@ -664,7 +664,7 @@ namespace MED
     GetGrilleInfo(anInfo);
     anInfo->SetGrilleType(type);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     INITMSG(MYDEBUG,"GetPGrilleInfo: ");
     {
       TInt aNbElem = anInfo->GetNbNodes();
@@ -690,7 +690,7 @@ namespace MED
       ADDMSG(MYVALUEDEBUG, std::endl);
       
     }
-#endif
+~endif
     
     return anInfo;
   }

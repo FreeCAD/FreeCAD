@@ -21,7 +21,7 @@
 //
 
 // ------------------------------------------------------------------
-#include "SMESH_TryCatch.hxx"
+~include "SMESH_TryCatch.hxx"
 
 void SMESH::throwSalomeEx(const char* txt)
 {
@@ -33,9 +33,9 @@ void SMESH::doNothing(const char* txt)
   MESSAGE( txt << " " << __FILE__ << ": " << __LINE__ );
 }
 // ------------------------------------------------------------------
-#include "SMESH_ComputeError.hxx"
+~include "SMESH_ComputeError.hxx"
 
-#define _case2char(err) case err: return #err;
+~define _case2char(err) case err: return ~err;
 
 // Return SMESH_ComputeError::myName as text, to be used to dump errors in terminal
 std::string SMESH_ComputeError::CommonName() const

@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "UNV_Utilities.hxx"
+~include "UNV_Utilities.hxx"
 
 using namespace std;
 

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <algorithm>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <algorithm>
+~endif
 
-#include "Segmentation.h"
-#include "Algorithm.h"
-#include "Approximation.h"
+~include "Segmentation.h"
+~include "Algorithm.h"
+~include "Approximation.h"
 
 using namespace MeshCore;
 

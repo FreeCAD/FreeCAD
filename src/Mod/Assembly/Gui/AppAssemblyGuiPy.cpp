@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Console.h>
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Tree.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Tree.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/Assembly/App/ItemPy.h>
+~include <Mod/Assembly/App/ItemPy.h>
 
 // pointer to the active assembly object
 Assembly::Item*                  ActiveAsmObject =0;

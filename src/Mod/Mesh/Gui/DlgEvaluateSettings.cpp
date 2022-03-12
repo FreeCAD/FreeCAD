@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "DlgEvaluateSettings.h"
-#include "ui_DlgEvaluateSettings.h"
+~include "DlgEvaluateSettings.h"
+~include "ui_DlgEvaluateSettings.h"
 
 using namespace MeshGui;
 
@@ -73,5 +73,5 @@ bool DlgEvaluateSettings::isDegeneratedFacetsChecked() const
     return ui->checkDegenerated->isChecked();
 }
 
-#include "moc_DlgEvaluateSettings.cpp"
+~include "moc_DlgEvaluateSettings.cpp"
 

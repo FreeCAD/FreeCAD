@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include "InventorAll.h"
-# include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include "InventorAll.h"
+~ include <QApplication>
+~endif
 
-#include "NavigationStyle.h"
-#include "View3DInventorViewer.h"
+~include "NavigationStyle.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;

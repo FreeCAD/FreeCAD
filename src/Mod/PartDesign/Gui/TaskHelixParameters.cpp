@@ -22,27 +22,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureHelix.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Origin.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/ViewProviderOrigin.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureHelix.h>
 
-#include "ReferenceSelection.h"
-#include "ui_TaskHelixParameters.h"
-#include "TaskHelixParameters.h"
+~include "ReferenceSelection.h"
+~include "ui_TaskHelixParameters.h"
+~include "TaskHelixParameters.h"
 
 using namespace PartDesignGui;
 using PartDesign::HelixMode;
@@ -673,4 +673,4 @@ TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
 }
 
 
-#include "moc_TaskHelixParameters.cpp"
+~include "moc_TaskHelixParameters.cpp"

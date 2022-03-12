@@ -14,8 +14,8 @@
 //
 // Version: 4.0.1 (2006/07/23)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4ImplicitSurface.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4ImplicitSurface.h"
 
 namespace Wm4
 {

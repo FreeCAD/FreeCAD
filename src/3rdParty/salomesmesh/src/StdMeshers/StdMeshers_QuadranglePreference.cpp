@@ -24,8 +24,8 @@
 //  File   : StdMeshers_QuadranglePreference.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_QuadranglePreference.hxx"
-#include "utilities.h"
+~include "StdMeshers_QuadranglePreference.hxx"
+~include "utilities.h"
 
 using namespace std;
 

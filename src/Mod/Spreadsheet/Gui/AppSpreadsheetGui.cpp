@@ -22,33 +22,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <QIcon>
-# include <QImage>
-# include <QFileInfo>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <QIcon>
+~ include <QImage>
+~ include <QFileInfo>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/WidgetFactory.h>
-#include <Gui/Language/Translator.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include "DlgSettingsImp.h"
-#include "Workbench.h"
-#include "ViewProviderSpreadsheet.h"
-#include "SpreadsheetView.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/WidgetFactory.h>
+~include <Gui/Language/Translator.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
+~include "DlgSettingsImp.h"
+~include "Workbench.h"
+~include "ViewProviderSpreadsheet.h"
+~include "SpreadsheetView.h"
 
 // use a different name to CreateCommand()
 void CreateSpreadsheetCommands(void);

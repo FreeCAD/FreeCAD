@@ -20,53 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
-#include <QBitmap>
-#include <QFile>
-#include <QFileInfo>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QAction>
+~include <QApplication>
+~include <QContextMenuEvent>
+~include <QGraphicsScene>
+~include <QMouseEvent>
+~include <QPainterPathStroker>
+~include <QPainter>
+~include <QPainterPath>
+~include <QStyleOptionGraphicsItem>
+~include <QBitmap>
+~include <QFile>
+~include <QFileInfo>
+~endif
 
-#include <QFile>
-#include <QTextStream>
-#include <QRectF>
-#include <QPointF>
+~include <QFile>
+~include <QTextStream>
+~include <QRectF>
+~include <QPointF>
 
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QTransform>
+~include <QGraphicsScene>
+~include <QGraphicsView>
+~include <QTransform>
 
-#include <cmath>
+~include <cmath>
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
 //debug
-#include "QGICMark.h"
-#include "ZVALUE.h"
+~include "QGICMark.h"
+~include "ZVALUE.h"
 //
-#include "Rez.h"
-#include "DrawGuiUtil.h"
-#include <QByteArrayMatcher>
-#include "QGCustomSvg.h"
-#include "QGCustomImage.h"
-#include "QGCustomRect.h"
-#include "QGIViewPart.h"
-#include "QGIPrimPath.h"
-#include "QGIFace.h"
+~include "Rez.h"
+~include "DrawGuiUtil.h"
+~include <QByteArrayMatcher>
+~include "QGCustomSvg.h"
+~include "QGCustomImage.h"
+~include "QGCustomRect.h"
+~include "QGIViewPart.h"
+~include "QGIPrimPath.h"
+~include "QGIFace.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

@@ -21,44 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <algorithm>
-# include <stdexcept>
-# include <SMESH_Gen.hxx>
-# include <SMESH_Group.hxx>
-# include <SMESH_Mesh.hxx>
-# include <SMESHDS_Group.hxx>
-# include <SMDSAbs_ElementType.hxx>
-# include <SMDS_MeshElement.hxx>
-# include <SMDS_VolumeTool.hxx>
-# include <SMESHDS_Mesh.hxx>
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <algorithm>
+~ include <stdexcept>
+~ include <SMESH_Gen.hxx>
+~ include <SMESH_Group.hxx>
+~ include <SMESH_Mesh.hxx>
+~ include <SMESHDS_Group.hxx>
+~ include <SMDSAbs_ElementType.hxx>
+~ include <SMDS_MeshElement.hxx>
+~ include <SMDS_VolumeTool.hxx>
+~ include <SMESHDS_Mesh.hxx>
 
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-#endif
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS.hxx>
+~endif
 
-#include <Base/VectorPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/QuantityPy.h>
+~include <Base/VectorPy.h>
+~include <Base/MatrixPy.h>
+~include <Base/PlacementPy.h>
+~include <Base/QuantityPy.h>
 
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeSolidPy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
-#include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/TopoShapeSolidPy.h>
+~include <Mod/Part/App/TopoShapeFacePy.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
+~include <Mod/Part/App/TopoShapeVertexPy.h>
+~include <Mod/Part/App/TopoShape.h>
 
-#include "Mod/Fem/App/FemMesh.h"
+~include "Mod/Fem/App/FemMesh.h"
 
 // inclusion of the generated files (generated out of FemMeshPy.xml)
-#include "FemMeshPy.h"
-#include "FemMeshPy.cpp"
-#include "HypothesisPy.h"
+~include "FemMeshPy.h"
+~include "FemMeshPy.cpp"
+~include "HypothesisPy.h"
 
 using namespace Fem;
 

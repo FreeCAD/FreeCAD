@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
 
-#include "GeometryExtension.h"
-#include "GeometryExtensionPy.h"
+~include "GeometryExtension.h"
+~include "GeometryExtensionPy.h"
 
 using namespace Part;
 

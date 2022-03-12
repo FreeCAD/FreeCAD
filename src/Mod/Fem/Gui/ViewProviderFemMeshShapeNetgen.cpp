@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <QAction>
-# include <QCoreApplication>
-# include <QMenu>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <QAction>
+~ include <QCoreApplication>
+~ include <QMenu>
+~ include <QMessageBox>
+~endif
 
-#include "ViewProviderFemMeshShapeNetgen.h"
-#include "TaskDlgMeshShapeNetgen.h"
+~include "ViewProviderFemMeshShapeNetgen.h"
+~include "TaskDlgMeshShapeNetgen.h"
 
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
 
 
 using namespace FemGui;
@@ -68,16 +68,16 @@ bool ViewProviderFemMeshShapeNetgen::setEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
-#ifdef FCWithNetgen
+~ifdef FCWithNetgen
         Gui::Control().showDialog(new TaskDlgMeshShapeNetgen(this));
         return true;
-#else
+~else
         QMessageBox::critical(Gui::getMainWindow(),
             QCoreApplication::translate("FemGui::ViewProviderFemMeshShapeNetgen", "Meshing failure"),
             QCoreApplication::translate("FemGui::ViewProviderFemMeshShapeNetgen", "The FEM module is built without NETGEN support. Meshing will not work!!!")
         );
         return false;
-#endif
+~endif
     }
     else {
         return ViewProviderDocumentObject::setEdit(ModNum);

@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <vtkFieldData.h>
-# include <vtkPointData.h>
-#endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <vtkFieldData.h>
+~ include <vtkPointData.h>
+~endif
 
-#include "FemPostFilter.h"
-#include "FemPostPipeline.h"
-#include <Base/Console.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
+~include "FemPostFilter.h"
+~include "FemPostPipeline.h"
+~include <Base/Console.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
 
 
 using namespace Fem;
@@ -214,10 +214,10 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
     // needs vtk > 6.1
-#if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
+~if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
-#endif
+~endif
 
     clip.filterSource   = m_probe;
     clip.filterTarget   = m_probe;
@@ -329,10 +329,10 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter(void) : FemPostFilter() {
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
     // needs vtk > 6.1
-#if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
+~if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
-#endif
+~endif
 
     clip.filterSource   = m_probe;
     clip.filterTarget   = m_probe;

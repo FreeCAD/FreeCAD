@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <iomanip>
-# include <iostream>
-# include <map>
-# include <set>
-#endif
+~ifndef _PreComp_
+~ include <iomanip>
+~ include <iostream>
+~ include <map>
+~ include <set>
+~endif
 
-#include "Info.h"
-#include "Algorithm.h"
-#include "Iterator.h"
+~include "Info.h"
+~include "Algorithm.h"
+~include "Iterator.h"
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
 using namespace MeshCore;
 

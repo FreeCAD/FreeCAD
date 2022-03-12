@@ -25,36 +25,36 @@
 // Author    : Edward AGAPOV (eap)
 // Module    : SMESH
 //
-#include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_FaceSide.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Block.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Block.hxx"
 
-#include <Adaptor2d_Curve2d.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom_Line.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
+~include <Adaptor2d_Curve2d.hxx>
+~include <BRepAdaptor_CompCurve.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <Geom2dAdaptor_Curve.hxx>
+~include <Geom_Line.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
 
-#include <map>
-#include <limits>
+~include <map>
+~include <limits>
 
-#include "utilities.h"
+~include "utilities.h"
 
 //================================================================================
 /*!
@@ -1047,7 +1047,7 @@ void StdMeshers_FaceSide::reverseProxySubmesh( const TopoDS_Edge& E )
 
 void StdMeshers_FaceSide::dump(const char* msg) const
 {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   if (msg) MESSAGE ( std::endl << msg );
   MESSAGE_BEGIN ("NB EDGES: "<< myEdge.size() );
   MESSAGE_ADD ( "nbPoints: "<<myNbPonits<<" vecSize: " << myPoints.size()<<" "<<myFalsePoints.size() );
@@ -1075,7 +1075,7 @@ void StdMeshers_FaceSide::dump(const char* msg) const
     MESSAGE_ADD ( "\tF: "<<myFirst[i]<< " L: "<< myLast[i] );
     MESSAGE_END ( "\tnormPar: "<<myNormPar[i]<<endl );
   }
-#endif
+~endif
 }
 
 //================================================================================

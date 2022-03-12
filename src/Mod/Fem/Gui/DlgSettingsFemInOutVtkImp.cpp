@@ -23,12 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Gui/Application.h"
-#include "DlgSettingsFemInOutVtkImp.h"
-#include "ui_DlgSettingsFemInOutVtk.h"
-#include <Gui/PrefWidgets.h>
+~include "Gui/Application.h"
+~include "DlgSettingsFemInOutVtkImp.h"
+~include "ui_DlgSettingsFemInOutVtk.h"
+~include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
@@ -82,4 +82,4 @@ void DlgSettingsFemInOutVtkImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsFemInOutVtkImp.cpp"
+~include "moc_DlgSettingsFemInOutVtkImp.cpp"

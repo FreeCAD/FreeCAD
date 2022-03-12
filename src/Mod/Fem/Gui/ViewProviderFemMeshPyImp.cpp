@@ -1,26 +1,26 @@
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <SMESH_Mesh.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
-#endif
+~ifndef _PreComp_
+~ include <SMESH_Mesh.hxx>
+~ include <SMESHDS_Mesh.hxx>
+~ include <SMDSAbs_ElementType.hxx>
+~endif
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <App/DocumentObjectPy.h>
+~include <App/DocumentObjectPy.h>
 
-#include <Mod/Fem/Gui/ViewProviderFemMesh.h>
-#include <Mod/Fem/App/FemResultObject.h>
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemMesh.h>
+~include <Mod/Fem/Gui/ViewProviderFemMesh.h>
+~include <Mod/Fem/App/FemResultObject.h>
+~include <Mod/Fem/App/FemMeshObject.h>
+~include <Mod/Fem/App/FemMesh.h>
 
 
 // inclusion of the generated files (generated out of ViewProviderFemMeshPy.xml)
-#include "ViewProviderFemMeshPy.h"
-#include "ViewProviderFemMeshPy.cpp"
+~include "ViewProviderFemMeshPy.h"
+~include "ViewProviderFemMeshPy.cpp"
 
 using namespace FemGui;
 

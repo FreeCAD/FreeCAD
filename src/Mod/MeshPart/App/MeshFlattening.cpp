@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "MeshFlattening.h"
-#include "MeshFlatteningLscmRelax.h"
-#include <Poly_Triangulation.hxx>
-#include <BRep_Tool.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopLoc_Location.hxx>
-#include <Standard_Version.hxx>
+~include "PreCompiled.h"
+~include "MeshFlattening.h"
+~include "MeshFlatteningLscmRelax.h"
+~include <Poly_Triangulation.hxx>
+~include <BRep_Tool.hxx>
+~include <Geom_Surface.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <TColgp_Array1OfPnt2d.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TopLoc_Location.hxx>
+~include <Standard_Version.hxx>
 
-#include <set>
-#include <map>
-#include <vector>
-#include <exception>
+~include <set>
+~include <map>
+~include <vector>
+~include <exception>
 
 
 std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris)
@@ -196,15 +196,15 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     // extract xyz poles, knots, weights, degree
     const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
-#if OCC_VERSION_HEX < 0x070000
+~if OCC_VERSION_HEX < 0x070000
     TColStd_Array1OfReal _uknots(1, _bspline->NbUPoles() + _bspline->UDegree() + 1);
     TColStd_Array1OfReal _vknots(1, _bspline->NbVPoles() + _bspline->VDegree() + 1);
     _bspline->UKnotSequence(_uknots);
     _bspline->VKnotSequence(_vknots);
-#else
+~else
     const TColStd_Array1OfReal &_uknots = _bspline->UKnotSequence();
     const TColStd_Array1OfReal &_vknots = _bspline->VKnotSequence();
-#endif
+~endif
 
     Eigen::VectorXd weights;
     weights.resize(_bspline->NbUPoles() * _bspline->NbVPoles());

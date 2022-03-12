@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cassert>
-#endif
+~ifndef _PreComp_
+~include <cassert>
+~endif
 
-#include "Exception.h"
-#include "Reader.h"
-#include "Writer.h"
+~include "Exception.h"
+~include "Reader.h"
+~include "Writer.h"
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Persistence.h"
+~include "Persistence.h"
 
 
 using namespace Base;
@@ -90,11 +90,11 @@ std::string Persistence::encodeAttribute(const std::string& str)
         else if (*it == '>')
             tmp += "&gt;";
         else if (*it == '\r')
-            tmp += "&#13;";
+            tmp += "&~13;";
         else if (*it == '\n')
-            tmp += "&#10;";
+            tmp += "&~10;";
         else if (*it == '\t')
-            tmp += "&#9;";
+            tmp += "&~9;";
         else
             tmp += *it;
     }

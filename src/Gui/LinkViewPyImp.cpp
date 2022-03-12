@@ -20,16 +20,16 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/BoundBoxPy.h>
-#include <Base/MatrixPy.h>
-#include <App/DocumentObjectPy.h>
-#include <App/MaterialPy.h>
+~include <Base/BoundBoxPy.h>
+~include <Base/MatrixPy.h>
+~include <App/DocumentObjectPy.h>
+~include <App/MaterialPy.h>
 
-#include "LinkViewPy.h"
-#include "LinkViewPy.cpp"
-#include "ViewProviderDocumentObjectPy.h"
+~include "LinkViewPy.h"
+~include "LinkViewPy.cpp"
+~include "ViewProviderDocumentObjectPy.h"
 
 
 using namespace Gui;

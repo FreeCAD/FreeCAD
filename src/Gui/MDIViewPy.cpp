@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-#include <Base/Exception.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Exception.h>
 
-#include "MDIViewPy.h"
-#include "MDIView.h"
+~include "MDIViewPy.h"
+~include "MDIView.h"
 
 
 using namespace Gui;

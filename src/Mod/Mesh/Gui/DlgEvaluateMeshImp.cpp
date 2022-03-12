@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QDockWidget>
-# include <QMessageBox>
-# include <QScrollArea>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QDockWidget>
+~ include <QMessageBox>
+~ include <QScrollArea>
+~endif
 
-#include "DlgEvaluateMeshImp.h"
-#include "ui_DlgEvaluateMesh.h"
-#include "DlgEvaluateSettings.h"
+~include "DlgEvaluateMeshImp.h"
+~include "ui_DlgEvaluateMesh.h"
+~include "DlgEvaluateSettings.h"
 
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/MainWindow.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Base/Interpreter.h>
+~include <Base/Sequencer.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/DockWindowManager.h>
+~include <Gui/MainWindow.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Degeneration.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/FeatureMeshDefects.h>
-#include "ViewProviderDefects.h"
+~include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Core/Degeneration.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/FeatureMeshDefects.h>
+~include "ViewProviderDefects.h"
 
 using namespace MeshCore;
 using namespace Mesh;
@@ -442,7 +442,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalOrientation eval(rMesh);
         std::vector<MeshCore::FacetIndex> inds = eval.GetIndices();
-#if 0
+~if 0
         if (inds.empty() && !eval.Evaluate()) {
             d->ui.checkOrientationButton->setText(tr("Flipped normals found"));
             MeshEvalFoldOversOnSurface f_eval(rMesh);
@@ -455,7 +455,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
             }
         }
         else
-#endif
+~endif
         if (inds.empty()) {
             d->ui.checkOrientationButton->setText( tr("No flipped normals") );
             d->ui.checkOrientationButton->setChecked(false);
@@ -961,12 +961,12 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
 {
     if (d->meshFeature) {
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
-#if 0
+~if 0
         const char* objName = d->meshFeature->getNameInDocument();
-#endif
+~endif
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix self-intersections"));
-#if 0
+~if 0
         try {
             Gui::Application::Instance->runCommand(
                 true, "App.getDocument(\"%s\").getObject(\"%s\").fixSelfIntersections()"
@@ -975,11 +975,11 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Self-intersections"), QString::fromLatin1(e.what()));
         }
-#else
+~else
         Mesh::MeshObject* mesh = d->meshFeature->Mesh.startEditing();
         mesh->removeSelfIntersections(d->self_intersections);
         d->meshFeature->Mesh.finishEditing();
-#endif
+~endif
 
         doc->commitCommand();
         doc->getDocument()->recompute();
@@ -1236,9 +1236,9 @@ void DlgEvaluateMeshImp::on_buttonBox_clicked(QAbstractButton* button)
 
 /* TRANSLATOR MeshGui::DockEvaluateMeshImp */
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("QDockWidget", "Evaluate & Repair Mesh");
-#endif
+~endif
 
 DockEvaluateMeshImp* DockEvaluateMeshImp::_instance=nullptr;
 
@@ -1321,5 +1321,5 @@ QSize DockEvaluateMeshImp::sizeHint () const
     return QSize(371, 579);
 }
 
-#include "moc_DlgEvaluateMeshImp.cpp"
+~include "moc_DlgEvaluateMeshImp.cpp"
 

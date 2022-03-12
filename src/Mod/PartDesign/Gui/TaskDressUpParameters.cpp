@@ -22,29 +22,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QKeyEvent>
-# include <QListWidgetItem>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QApplication>
+~ include <QKeyEvent>
+~ include <QListWidgetItem>
+~ include <QTimer>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/Tools.h>
-#include <Gui/WaitCursor.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureDressUp.h>
-#include <Mod/PartDesign/Gui/ReferenceSelection.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/Tools.h>
+~include <Gui/WaitCursor.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureDressUp.h>
+~include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
-#include "TaskDressUpParameters.h"
+~include "TaskDressUpParameters.h"
 
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
@@ -275,10 +275,10 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
 
     addAllEdgesAction = new QAction(tr("Add all edges"), this);
     addAllEdgesAction->setShortcut(QKeySequence(QString::fromLatin1("Ctrl+Shift+A")));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     addAllEdgesAction->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     parentList->addAction(addAllEdgesAction);
     addAllEdgesAction->setEnabled(false);
     addAllEdgesAction->setStatusTip(tr("Adds all edges to the list box (active only when in add selection mode)."));
@@ -292,10 +292,10 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList, QWidget*
 
     deleteAction = new QAction(tr("Remove"), this);
     deleteAction->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     parentList->addAction(deleteAction);
     // if there is only one item, it cannot be deleted
     if (parentList->count() == 1) {
@@ -442,4 +442,4 @@ bool TaskDlgDressUpParameters::reject()
     return TaskDlgFeatureParameters::reject();
 }
 
-#include "moc_TaskDressUpParameters.cpp"
+~include "moc_TaskDressUpParameters.cpp"

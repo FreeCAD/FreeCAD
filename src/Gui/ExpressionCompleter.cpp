@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QAbstractItemView>
-#include <QContextMenuEvent>
-#include <QLineEdit>
-#include <QMenu>
-#include <QTextBlock>
-#endif
+~ifndef _PreComp_
+~include <QAbstractItemView>
+~include <QContextMenuEvent>
+~include <QLineEdit>
+~include <QMenu>
+~include <QTextBlock>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
-#include <App/ObjectIdentifier.h>
-#include <Base/Tools.h>
-#include <CXX/Extensions.hxx>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/ExpressionParser.h>
+~include <App/ObjectIdentifier.h>
+~include <Base/Tools.h>
+~include <CXX/Extensions.hxx>
 
-#include "ExpressionCompleter.h"
+~include "ExpressionCompleter.h"
 
 
 FC_LOG_LEVEL_INIT("Completer", true, true)
@@ -213,7 +213,7 @@ public:
                     else
                         res = QString::fromLatin1(doc->getName());
                     if(sep)
-                        res += QLatin1Char('#');
+                        res += QLatin1Char('~');
                 }
                 v->setValue(res);
             }
@@ -424,7 +424,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             FC_TRACE("split path " << path << " error: " << e.what());
             if(!retry) {
                 char last = path[path.size()-1];
-                if(last!='#' && last!='.' && path.find('#')!=std::string::npos) {
+                if(last!='~' && last!='.' && path.find('~')!=std::string::npos) {
                     path += "._self";
                     ++retry;
                     continue;
@@ -432,7 +432,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             }else if(retry==1) {
                 path.resize(path.size()-6);
                 char last = path[path.size()-1];
-                if(last!='.' && last!='<' && path.find("#<<")!=std::string::npos) {
+                if(last!='.' && last!='<' && path.find("~<<")!=std::string::npos) {
                     path += ">>._self";
                     ++retry;
                     trim = ">>";
@@ -474,9 +474,9 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     // in the middle of a token, and we shall include that token.
     for(auto it=tokens.begin();it!=tokens.end();++it) {
         if(get<1>(*it) >= pos) {
-            // Include the immediately followed '.' or '#', because we'll be
+            // Include the immediately followed '.' or '~', because we'll be
             // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='#')
+            if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='~')
                 it = it-1;
             tokens.resize(it-tokens.begin()+1);
             prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
@@ -519,7 +519,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         i = static_cast<ssize_t>(tokens.size()) - 1;
         for(;i>=0;--i) {
             int token = get<0>(tokens[i]);
-            if (token != '.' && token != '#' &&
+            if (token != '.' && token != '~' &&
                 token != ExpressionParser::IDENTIFIER &&
                 token != ExpressionParser::STRING &&
                 token != ExpressionParser::UNIT)
@@ -787,4 +787,4 @@ bool ExpressionParameter::isExactMatch() const
     return handle->GetBool("CompleterMatchExact", false);
 }
 
-#include "moc_ExpressionCompleter.cpp"
+~include "moc_ExpressionCompleter.cpp"

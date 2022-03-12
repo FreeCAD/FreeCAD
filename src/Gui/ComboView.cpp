@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QEvent>
-# include <QSplitter>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QEvent>
+~ include <QSplitter>
+~endif
 
-#include "ComboView.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "PropertyView.h"
-#include "Tree.h"
-#include "TaskView/TaskView.h"
+~include "ComboView.h"
+~include "BitmapFactory.h"
+~include "Document.h"
+~include "PropertyView.h"
+~include "Tree.h"
+~include "TaskView/TaskView.h"
 
 
 using namespace Gui;
@@ -152,4 +152,4 @@ void ComboView::onCurrentTabChanged(int index)
         oldTabIndex = index;
 }
 
-#include "moc_ComboView.cpp"
+~include "moc_ComboView.cpp"

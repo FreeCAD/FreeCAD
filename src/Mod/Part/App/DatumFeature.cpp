@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "OCCError.h"
-#include "PartPyCXX.h"
-#include "DatumFeature.h"
+~include "OCCError.h"
+~include "PartPyCXX.h"
+~include "DatumFeature.h"
 
 
 using namespace Part;

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include "Extension.h"
-#include "ExtensionContainer.h"
+~include "Extension.h"
+~include "ExtensionContainer.h"
 
 
 using namespace App;
@@ -339,11 +339,11 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
         catch (const char* e) {
             Base::Console().Error("%s\n", e);
         }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
         catch (...) {
             Base::Console().Error("ExtensionContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
         }
-#endif
+~endif
         writer.decInd(); // indentation for the actual extension
         writer.Stream() << writer.ind() << "</Extension>" << std::endl;
         writer.decInd(); // indentation for 'Extension name'
@@ -406,11 +406,11 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
         catch (const char* e) {
             Base::Console().Error("%s\n", e);
         }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
         catch (...) {
             Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
         }
-#endif
+~endif
 
         reader.readEndElement("Extension");
     }

@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <GC_MakeCircle.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Circ.hxx>
+~ include <Geom_Circle.hxx>
+~ include <GC_MakeCircle.hxx>
+~endif
 
-#include "OCCError.h"
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/CirclePy.cpp>
+~include "OCCError.h"
+~include <Mod/Part/App/CirclePy.h>
+~include <Mod/Part/App/CirclePy.cpp>
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
 
 using namespace Part;
 

@@ -21,48 +21,48 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMenu>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMenu>
+~ include <QMessageBox>
+~endif
 
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/lists/SoPickedPointList.h> 
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/events/SoButtonEvent.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/actions/SoSearchAction.h>
+~include <Inventor/actions/SoRayPickAction.h>
+~include <Inventor/SoPickedPoint.h>
+~include <Inventor/lists/SoPickedPointList.h> 
+~include <Inventor/details/SoFaceDetail.h>
+~include <Inventor/events/SoButtonEvent.h>
+~include <Inventor/events/SoKeyboardEvent.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
+~include <Inventor/nodes/SoCoordinate3.h>
+~include <Inventor/nodes/SoDrawStyle.h>
+~include <Inventor/nodes/SoIndexedFaceSet.h>
+~include <Inventor/nodes/SoPointSet.h>
+~include <Inventor/nodes/SoMaterial.h>
+~include <Inventor/nodes/SoShapeHints.h>
+~include <Inventor/nodes/SoOrthographicCamera.h>
+~include <Inventor/nodes/SoMaterialBinding.h>
+~include <Inventor/nodes/SoNormal.h>
+~include <Inventor/errors/SoDebugError.h>
+~include <Inventor/actions/SoSearchAction.h>
 
-#include <Base/Exception.h>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Flag.h>
-#include <Gui/MainWindow.h>
-#include <Gui/SoFCColorBar.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Widgets.h>
-#include <Mod/Points/App/Properties.h>
-#include <Mod/Inspection/App/InspectionFeature.h>
+~include <Base/Exception.h>
+~include <App/PropertyLinks.h>
+~include <App/GeoFeature.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Flag.h>
+~include <Gui/MainWindow.h>
+~include <Gui/SoFCColorBar.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Widgets.h>
+~include <Mod/Points/App/Properties.h>
+~include <Mod/Inspection/App/InspectionFeature.h>
 
-#include "ViewProviderInspection.h"
+~include "ViewProviderInspection.h"
 
 
 using namespace InspectionGui;
@@ -651,58 +651,58 @@ QIcon ViewProviderInspectionGroup::getIcon() const
 {
     static const char * const ScanViewOpen[]={
         "16 16 10 1",
-        "c c #000000",
+        "c c ~000000",
         ". c None",
-        "h c #808000",
-        "# c #808080",
-        "a c #ffff00",
-        "r c #ff0000",
-        "o c #ffff00",
-        "g c #00ff00",
-        "t c #00ffff",
-        "b c #0000ff",
+        "h c ~808000",
+        "~ c ~808080",
+        "a c ~ffff00",
+        "r c ~ff0000",
+        "o c ~ffff00",
+        "g c ~00ff00",
+        "t c ~00ffff",
+        "b c ~0000ff",
         "................",
-        "...#####........",
-        "..#hhhhh#.......",
-        ".#hhhhhhh######.",
-        ".#hhhhhhhhhhhh#c",
-        ".#hhhhhhhhhhhh#c",
-        ".#hhhhhhhhhhhh#c",
-        "#############h#c",
-        "#aaaaaaaaaa##h#c",
-        "#aarroggtbbac##c",
-        ".#arroggtbbaac#c",
-        ".#aarroggtbbac#c",
-        "..#aaaaaaaaaa#cc",
-        "..#############c",
+        "...~~~~~........",
+        "..~hhhhh~.......",
+        ".~hhhhhhh~~~~~~.",
+        ".~hhhhhhhhhhhh~c",
+        ".~hhhhhhhhhhhh~c",
+        ".~hhhhhhhhhhhh~c",
+        "~~~~~~~~~~~~~h~c",
+        "~aaaaaaaaaa~~h~c",
+        "~aarroggtbbac~~c",
+        ".~arroggtbbaac~c",
+        ".~aarroggtbbac~c",
+        "..~aaaaaaaaaa~cc",
+        "..~~~~~~~~~~~~~c",
         "...ccccccccccccc",
         "................"};
 
     static const char * const ScanViewClosed[] = {
         "16 16 9 1",
-        "c c #000000",
+        "c c ~000000",
         ". c None",
-        "# c #808080",
-        "a c #ffff00",
-        "r c #ff0000",
-        "o c #ffff00",
-        "g c #00ff00",
-        "t c #00ffff",
-        "b c #0000ff",
+        "~ c ~808080",
+        "a c ~ffff00",
+        "r c ~ff0000",
+        "o c ~ffff00",
+        "g c ~00ff00",
+        "t c ~00ffff",
+        "b c ~0000ff",
         "................",
-        "...#####........",
-        "..#aaaaa#.......",
-        ".#aaaaaaa######.",
-        ".#aaaaaaaaaaaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aarroggtbbaa#c",
-        ".#aaaaaaaaaaaa#c",
-        ".##############c",
+        "...~~~~~........",
+        "..~aaaaa~.......",
+        ".~aaaaaaa~~~~~~.",
+        ".~aaaaaaaaaaaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aarroggtbbaa~c",
+        ".~aaaaaaaaaaaa~c",
+        ".~~~~~~~~~~~~~~c",
         "..cccccccccccccc",
         "................"};
 

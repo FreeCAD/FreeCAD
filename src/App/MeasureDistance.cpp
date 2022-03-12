@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "MeasureDistance.h"
+~include "MeasureDistance.h"
 
 using namespace App;
 

@@ -44,29 +44,29 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QPainter>
-#include <QPushButton>
-#include <QColorDialog>
-#include <QtCore/QMap>
-#include <QLayout>
-#include <QStyle>
-#include <QLabel>
-#include <QToolTip>
-#include <QtGui/QPixmap>
-#include <QtGui/QFocusEvent>
-#include <QtGui/QPaintEvent>
-#include <QGridLayout>
-#include <QtGui/QHideEvent>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QShowEvent>
-#include <QtGui/QMouseEvent>
-#include <math.h>
+~include <QApplication>
+~include <QDesktopWidget>
+~include <QPainter>
+~include <QPushButton>
+~include <QColorDialog>
+~include <QtCore/QMap>
+~include <QLayout>
+~include <QStyle>
+~include <QLabel>
+~include <QToolTip>
+~include <QtGui/QPixmap>
+~include <QtGui/QFocusEvent>
+~include <QtGui/QPaintEvent>
+~include <QGridLayout>
+~include <QtGui/QHideEvent>
+~include <QtGui/QKeyEvent>
+~include <QtGui/QShowEvent>
+~include <QtGui/QMouseEvent>
+~include <math.h>
 
-#include <QScreen>
-#include <Gui/FileDialog.h>
-#include "qtcolorpicker.h"
+~include <QScreen>
+~include <Gui/FileDialog.h>
+~include "qtcolorpicker.h"
 
 /*! \class QtColorPicker
 
@@ -1160,5 +1160,5 @@ void ColorPickerButton::paintEvent(QPaintEvent *e)
 
 }
 
-#include "moc_qtcolorpicker.cpp"
-#include <moc_qtcolorpicker-internal.cpp>
+~include "moc_qtcolorpicker.cpp"
+~include <moc_qtcolorpicker-internal.cpp>

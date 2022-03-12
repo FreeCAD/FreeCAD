@@ -22,26 +22,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
 
-# include <QMessageBox>
-#endif
+~ include <QMessageBox>
+~endif
 
-#include "ViewProviderFemConstraintBearing.h"
-#include <Mod/Fem/App/FemConstraintBearing.h>
-#include "TaskFemConstraintBearing.h"
-#include "Gui/Control.h"
-#include "Gui/MainWindow.h"
+~include "ViewProviderFemConstraintBearing.h"
+~include <Mod/Fem/App/FemConstraintBearing.h>
+~include "TaskFemConstraintBearing.h"
+~include "Gui/Control.h"
+~include "Gui/MainWindow.h"
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 using namespace FemGui;
 

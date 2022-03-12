@@ -25,8 +25,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "StringNodeImpl.h"
-#include "CheckedFile.h"
+~include "StringNodeImpl.h"
+~include "CheckedFile.h"
 
 namespace e57
 {
@@ -133,7 +133,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void StringNodeImpl::dump( int indent, std::ostream &os ) const
    {
       os << space( indent ) << "type:        String"
@@ -141,5 +141,5 @@ namespace e57
       NodeImpl::dump( indent, os );
       os << space( indent ) << "value:       '" << value_ << "'" << std::endl;
    }
-#endif
+~endif
 }

@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QSplitter>
-#include <QPushButton>
-#include <QHeaderView>
-#include <QPrintDialog>
-#include <QPrinter>
-#include <QPainter>
-#include <QTableView>
-#include <QComboBox>
-#endif
+~ifndef _PreComp_
+~include <QHBoxLayout>
+~include <QVBoxLayout>
+~include <QLabel>
+~include <QSplitter>
+~include <QPushButton>
+~include <QHeaderView>
+~include <QPrintDialog>
+~include <QPrinter>
+~include <QPainter>
+~include <QTableView>
+~include <QComboBox>
+~endif
 
-#include "Base/Console.h"
-#include "Application.h"
-#include "GuiApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
-#include "Command.h"
-#include "BitmapFactory.h"
-#include "DlgCustomizeSpaceball.h"
+~include "Base/Console.h"
+~include "Application.h"
+~include "GuiApplicationNativeEventAware.h"
+~include "SpaceballEvent.h"
+~include "Command.h"
+~include "BitmapFactory.h"
+~include "DlgCustomizeSpaceball.h"
 
 typedef std::vector<Base::Reference<ParameterGrp> > GroupVector;
 
@@ -913,4 +913,4 @@ QStringList DlgCustomizeSpaceball::getModels()
     return modelList;
 }
 
-#include "moc_DlgCustomizeSpaceball.cpp"
+~include "moc_DlgCustomizeSpaceball.cpp"

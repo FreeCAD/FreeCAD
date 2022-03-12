@@ -20,26 +20,26 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SoFullPath.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoIndexedLineSet.h>
+~ include <Inventor/nodes/SoIndexedPointSet.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/SoFullPath.h>
+~endif
 
-#include "Inventor/SoAutoZoomTranslation.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
-#include "AxisOrigin.h"
+~include "Inventor/SoAutoZoomTranslation.h"
+~include "SoFCSelection.h"
+~include "SoFCUnifiedSelection.h"
+~include "AxisOrigin.h"
 
 using namespace Gui;
 
@@ -103,7 +103,7 @@ SoGroup *AxisOrigin::getNode() {
     node->addChild(pMat);
     node->addChild(pCoords);
 
-#define CREATE_AXIS(_type,_key,_count,_offset,_mat) do{\
+~define CREATE_AXIS(_type,_key,_count,_offset,_mat) do{\
         const char *label=_key;\
         if(labels.size()){\
             auto iter = labels.find(_key);\
@@ -118,7 +118,7 @@ SoGroup *AxisOrigin::getNode() {
         pAxis->subElementName = label;\
         nodeMap[label].reset(pAxis);\
         node->addChild(pAxis);\
-        auto _type  = new SoIndexed##_type##Set;\
+        auto _type  = new SoIndexed~~_type~~Set;\
         pAxis->addChild(_type);\
         _type->coordIndex.setNum(_count);\
         _type->coordIndex.setValues(0,_count,lines+_offset);\

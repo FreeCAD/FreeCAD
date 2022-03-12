@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Axis.h"
+~include "Axis.h"
 
 using namespace Base;
 

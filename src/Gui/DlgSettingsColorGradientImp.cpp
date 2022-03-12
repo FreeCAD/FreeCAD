@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QLocale>
-# include <QMessageBox>
-# include <QDoubleValidator>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QLocale>
+~ include <QMessageBox>
+~ include <QDoubleValidator>
+~endif
 
-#ifndef _PreComp_
-#include <cmath>
-#endif
+~ifndef _PreComp_
+~include <cmath>
+~endif
 
-#include "DlgSettingsColorGradientImp.h"
-#include "ui_DlgSettingsColorGradient.h"
-#include "SpinBox.h"
+~include "DlgSettingsColorGradientImp.h"
+~include "ui_DlgSettingsColorGradient.h"
+~include "SpinBox.h"
 
 using namespace Gui::Dialog;
 
@@ -169,5 +169,5 @@ void DlgSettingsColorGradientImp::accept()
     }
 }
 
-#include "moc_DlgSettingsColorGradientImp.cpp"
+~include "moc_DlgSettingsColorGradientImp.cpp"
 

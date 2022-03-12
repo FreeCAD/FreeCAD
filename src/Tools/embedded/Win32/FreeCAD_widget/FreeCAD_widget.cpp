@@ -1,14 +1,14 @@
 // FreeCAD_widget.cpp : Defines the entry point for the application.
 //
 
-#include "stdafx.h"
-#include <Commdlg.h>
-#include <Shlobj.h>
-#include "FreeCAD_widget.h"
-#include <string>
-#include <sstream>
+~include "stdafx.h"
+~include <Commdlg.h>
+~include <Shlobj.h>
+~include "FreeCAD_widget.h"
+~include <string>
+~include <sstream>
 
-#define MAX_LOADSTRING 100
+~define MAX_LOADSTRING 100
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
@@ -206,7 +206,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	return (INT_PTR)FALSE;
 }
 
-#include <Python.h>
+~include <Python.h>
 
 // See also https://www.freecadweb.org/wiki/Embedding_FreeCAD
 

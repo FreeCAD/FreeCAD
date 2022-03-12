@@ -21,13 +21,13 @@
 ** $QT_END_LICENSE$
 */
 
-#include "mtextedit.h"
-#include <QTextDocument>
-#include <QTextCursor>
-#include <QImage>
-#include <QByteArray>
-#include <QBuffer>
-#include <stdlib.h>
+~include "mtextedit.h"
+~include <QTextDocument>
+~include <QTextCursor>
+~include <QImage>
+~include <QByteArray>
+~include <QBuffer>
+~include <stdlib.h>
 
 
 MTextEdit::MTextEdit(QWidget *parent) : QTextEdit(parent) {
@@ -97,5 +97,5 @@ void MTextEdit::dropImage(const QImage& image, const QString& format) {
     cursor.insertImage    ( imageFormat );
 }
 
-#include <Mod/TechDraw/Gui/moc_mtextedit.cpp>
+~include <Mod/TechDraw/Gui/moc_mtextedit.cpp>
 

@@ -25,10 +25,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <cstring>
+~include <cstring>
 
-#include "CheckedFile.h"
-#include "Packet.h"
+~include "CheckedFile.h"
+~include "Packet.h"
 
 using namespace e57;
 
@@ -52,9 +52,9 @@ struct IndexPacket
 
    void verify( unsigned bufferLength = 0, uint64_t totalRecordCount = 0, uint64_t fileSize = 0 ) const;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
 };
 
 struct EmptyPacketHeader
@@ -66,9 +66,9 @@ struct EmptyPacketHeader
 
    void verify( unsigned bufferLength = 0 ) const; //???use
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void dump( int indent = 0, std::ostream &os = std::cout ) const;
-#endif
+~endif
 };
 
 //=============================================================================
@@ -84,9 +84,9 @@ PacketReadCache::PacketReadCache( CheckedFile *cFile, unsigned packetCount ) : c
 
 std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset, char *&pkt )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "PacketReadCache::lock() called, packetLogicalOffset=" << packetLogicalOffset << std::endl;
-#endif
+~endif
 
    /// Only allow one locked packet at a time.
    if ( lockCount_ > 0 )
@@ -108,9 +108,9 @@ std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset,
       if ( packetLogicalOffset == entry.logicalOffset_ )
       {
          /// Found a match, so don't have to read anything
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "  Found matching cache entry, index=" << i << std::endl;
-#endif
+~endif
          /// Mark entry with current useCount (keeps track of age of entry).
          entry.lastUsed_ = ++useCount_;
 
@@ -143,9 +143,9 @@ std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset,
          oldestUsed = entry.lastUsed_;
       }
    }
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "  Oldest entry=" << oldestEntry << " lastUsed=" << oldestUsed << std::endl;
-#endif
+~endif
 
    readPacket( oldestEntry, packetLogicalOffset );
 
@@ -165,9 +165,9 @@ void PacketReadCache::unlock( unsigned cacheIndex )
 {
    (void)cacheIndex;
    //??? why lockedEntry not used?
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "PacketReadCache::unlock() called, cacheIndex=" << cacheIndex << std::endl;
-#endif
+~endif
 
    if ( lockCount_ != 1 )
    {
@@ -179,10 +179,10 @@ void PacketReadCache::unlock( unsigned cacheIndex )
 
 void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOffset )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "PacketReadCache::readPacket() called, oldestEntry=" << oldestEntry
              << " packetLogicalOffset=" << packetLogicalOffset << std::endl;
-#endif
+~endif
 
    /// Read header of packet first to get length.  Use EmptyPacketHeader since
    /// it has the fields common to all packets.
@@ -215,10 +215,10 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
          auto dpkt = reinterpret_cast<DataPacket *>( entry.buffer_ );
 
          dpkt->verify( packetLength );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "  data packet:" << std::endl;
          dpkt->dump( 4 ); //???
-#endif
+~endif
       }
       break;
       case INDEX_PACKET:
@@ -226,10 +226,10 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
          auto ipkt = reinterpret_cast<IndexPacket *>( entry.buffer_ );
 
          ipkt->verify( packetLength );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "  index packet:" << std::endl;
          ipkt->dump( 4 ); //???
-#endif
+~endif
       }
       break;
       case EMPTY_PACKET:
@@ -237,10 +237,10 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
          auto hp = reinterpret_cast<EmptyPacketHeader *>( entry.buffer_ );
 
          hp->verify( packetLength );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "  empty packet:" << std::endl;
          hp->dump( 4 ); //???
-#endif
+~endif
       }
       break;
       default:
@@ -254,7 +254,7 @@ void PacketReadCache::readPacket( unsigned oldestEntry, uint64_t packetLogicalOf
    entry.lastUsed_ = ++useCount_;
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void PacketReadCache::dump( int indent, std::ostream &os )
 {
    os << space( indent ) << "lockCount: " << lockCount_ << std::endl;
@@ -297,23 +297,23 @@ void PacketReadCache::dump( int indent, std::ostream &os )
       }
    }
 }
-#endif
+~endif
 
 //=============================================================================
 // PacketLock
 
 PacketLock::PacketLock( PacketReadCache *cache, unsigned cacheIndex ) : cache_( cache ), cacheIndex_( cacheIndex )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "PacketLock() called" << std::endl;
-#endif
+~endif
 }
 
 PacketLock::~PacketLock()
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "~PacketLock() called" << std::endl;
-#endif
+~endif
    try
    {
       /// Note cache must live longer than lock, this is reasonable assumption.
@@ -387,7 +387,7 @@ void DataPacketHeader::verify( unsigned bufferLength ) const
    }
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void DataPacketHeader::dump( int indent, std::ostream &os ) const
 {
    os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType ) << std::endl;
@@ -395,7 +395,7 @@ void DataPacketHeader::dump( int indent, std::ostream &os ) const
    os << space( indent ) << "packetLogicalLengthMinus1: " << packetLogicalLengthMinus1 << std::endl;
    os << space( indent ) << "bytestreamCount:           " << bytestreamCount << std::endl;
 }
-#endif
+~endif
 
 //=============================================================================
 // DataPacket
@@ -411,7 +411,7 @@ void DataPacket::verify( unsigned bufferLength ) const
 {
    //??? do all packets need versions?  how extend without breaking older
    // checking?  need to check
-   // file version#?
+   // file version~?
 
    /// Verify header is good
    auto hp = reinterpret_cast<const DataPacketHeader *>( this );
@@ -430,9 +430,9 @@ void DataPacket::verify( unsigned bufferLength ) const
    /// Calc size of packet needed
    const unsigned packetLength = header.packetLogicalLengthMinus1 + 1;
    const unsigned needed = sizeof( DataPacketHeader ) + 2 * header.bytestreamCount + totalStreamByteCount;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "needed=" << needed << " actual=" << packetLength << std::endl; //???
-#endif
+~endif
 
    /// If needed is not with 3 bytes of actual packet size, have an error
    if ( needed > packetLength || needed + 3 < packetLength )
@@ -453,9 +453,9 @@ void DataPacket::verify( unsigned bufferLength ) const
 
 char *DataPacket::getBytestream( unsigned bytestreamNumber, unsigned &byteCount )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "getBytestream called, bytestreamNumber=" << bytestreamNumber << std::endl;
-#endif
+~endif
 
    /// Verify that packet is correct type
    if ( header.packetType != DATA_PACKET )
@@ -505,7 +505,7 @@ unsigned DataPacket::getBytestreamBufferLength( unsigned bytestreamNumber )
    return ( byteCount );
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void DataPacket::dump( int indent, std::ostream &os ) const
 {
    if ( header.packetType != DATA_PACKET )
@@ -537,7 +537,7 @@ void DataPacket::dump( int indent, std::ostream &os ) const
       }
    }
 }
-#endif
+~endif
 
 //=============================================================================
 // IndexPacket
@@ -547,7 +547,7 @@ void IndexPacket::verify( unsigned bufferLength, uint64_t totalRecordCount, uint
    (void)totalRecordCount; (void)fileSize;
    //??? do all packets need versions?  how extend without breaking older
    // checking?  need to check
-   // file version#?
+   // file version~?
 
    /// Verify that packet is correct type
    if ( packetType != INDEX_PACKET )
@@ -622,7 +622,7 @@ void IndexPacket::verify( unsigned bufferLength, uint64_t totalRecordCount, uint
                             "packetLength=" + toString( packetLength ) + " neededLength=" + toString( neededLength ) );
    }
 
-#ifdef E57_MAX_DEBUG
+~ifdef E57_MAX_DEBUG
    /// Verify padding at end is zero.
    const char *p = reinterpret_cast<const char *>( this );
    for ( unsigned i = neededLength; i < packetLength; i++ )
@@ -668,10 +668,10 @@ void IndexPacket::verify( unsigned bufferLength, uint64_t totalRecordCount, uint
                                   " currentChunkPhysicalOffset=" + toString( entries[i].chunkPhysicalOffset ) );
       }
    }
-#endif
+~endif
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void IndexPacket::dump( int indent, std::ostream &os ) const
 {
    os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType ) << std::endl;
@@ -691,7 +691,7 @@ void IndexPacket::dump( int indent, std::ostream &os ) const
       os << space( indent ) << entryCount - i << "more entries unprinted..." << std::endl;
    }
 }
-#endif
+~endif
 
 //=============================================================================
 // EmptyPacketHeader
@@ -725,10 +725,10 @@ void EmptyPacketHeader::verify( unsigned bufferLength ) const
    }
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void EmptyPacketHeader::dump( int indent, std::ostream &os ) const
 {
    os << space( indent ) << "packetType:                " << static_cast<unsigned>( packetType ) << std::endl;
    os << space( indent ) << "packetLogicalLengthMinus1: " << packetLogicalLengthMinus1 << std::endl;
 }
-#endif
+~endif

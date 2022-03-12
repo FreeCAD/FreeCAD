@@ -21,45 +21,45 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <gp_Ax1.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
-#include <GC_MakeArcOfCircle.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <Python.h>
-#include <QMessageBox>
-#include <QSignalMapper>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <gp_Ax1.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pnt.hxx>
+~include <GC_MakeArcOfCircle.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <Python.h>
+~include <QMessageBox>
+~include <QSignalMapper>
+~include <Inventor/SoPickedPoint.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
+~endif
 
-#include <CXX/WrapPython.h>
-#include <Base/Interpreter.h>
-#include <Base/Rotation.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Part.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
-#include <Mod/Part/App/FeaturePartBox.h>
-#include <Mod/Part/App/FeaturePartCircle.h>
-#include <Mod/Part/App/Tools.h>
+~include <CXX/WrapPython.h>
+~include <Base/Interpreter.h>
+~include <Base/Rotation.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Part.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Mod/Part/App/PrimitiveFeature.h>
+~include <Mod/Part/App/FeaturePartBox.h>
+~include <Mod/Part/App/FeaturePartCircle.h>
+~include <Mod/Part/App/Tools.h>
 
-#include "DlgPrimitives.h"
-#include "ui_DlgPrimitives.h"
-#include "ui_Location.h"
+~include "DlgPrimitives.h"
+~include "ui_DlgPrimitives.h"
+~include "ui_Location.h"
 
 using namespace PartGui;
 
@@ -76,7 +76,7 @@ namespace PartGui {
                 .arg(activeObjectName)
                 .arg(objectName);
         }
-        return QString::fromLatin1("# Object %1 created at document root").arg(objectName);
+        return QString::fromLatin1("~ Object %1 created at document root").arg(objectName);
     }
 
 const char* gce_ErrorStatusText(gce_ErrorType et)
@@ -2110,4 +2110,4 @@ bool TaskPrimitivesEdit::reject()
     return true;
 }
 
-#include "moc_DlgPrimitives.cpp"
+~include "moc_DlgPrimitives.cpp"

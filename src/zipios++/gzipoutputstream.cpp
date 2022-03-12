@@ -1,10 +1,10 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include "gzipoutputstreambuf.h"
-#include "gzipoutputstream.h"
+~include "gzipoutputstreambuf.h"
+~include "gzipoutputstream.h"
 
 using std::ostream;
 

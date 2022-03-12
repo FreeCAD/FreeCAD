@@ -21,60 +21,60 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
+~ifndef _PreComp_
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoFontStyle.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoIndexedLineSet.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
 
-# include <sstream>
+~ include <sstream>
 
-# include <QApplication>
-# include <QMessageBox>
-#endif
+~ include <QApplication>
+~ include <QMessageBox>
+~endif
 
-#include "ui_TaskPostDisplay.h"
-#include "ui_TaskPostClip.h"
-#include "ui_TaskPostDataAlongLine.h"
-#include "ui_TaskPostDataAtPoint.h"
-#include "ui_TaskPostScalarClip.h"
-#include "ui_TaskPostWarpVector.h"
-#include "ui_TaskPostCut.h"
-#include "TaskPostBoxes.h"
-#include "ViewProviderFemPostObject.h"
-#include "ViewProviderFemPostFunction.h"
-#include "ViewProviderFemPostFilter.h"
+~include "ui_TaskPostDisplay.h"
+~include "ui_TaskPostClip.h"
+~include "ui_TaskPostDataAlongLine.h"
+~include "ui_TaskPostDataAtPoint.h"
+~include "ui_TaskPostScalarClip.h"
+~include "ui_TaskPostWarpVector.h"
+~include "ui_TaskPostCut.h"
+~include "TaskPostBoxes.h"
+~include "ViewProviderFemPostObject.h"
+~include "ViewProviderFemPostFunction.h"
+~include "ViewProviderFemPostFilter.h"
 
-#include <Mod/Fem/App/FemPostObject.h>
-#include <Mod/Fem/App/FemPostFilter.h>
-#include <Mod/Fem/App/FemPostPipeline.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Action.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Mod/Fem/App/FemPostObject.h>
+~include <Mod/Fem/App/FemPostFilter.h>
+~include <Mod/Fem/App/FemPostPipeline.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Action.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Base/Console.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Inventor/MarkerBitmaps.h>
+~include <Base/Console.h>
 
-#include <App/Document.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
-#include <Base/Quantity.h>
+~include <App/Document.h>
+~include <App/PropertyGeo.h>
+~include <App/PropertyStandard.h>
+~include <Base/Quantity.h>
 
 using namespace FemGui;
 using namespace Gui;
@@ -597,8 +597,8 @@ void TaskPostDataAlongLine::applyPythonCode() {
 static const char * cursor_triangle[] = {
 "32 32 3 1",
 "       c None",
-".      c #FFFFFF",
-"+      c #FF0000",
+".      c ~FFFFFF",
+"+      c ~FF0000",
 "      .                         ",
 "      .                         ",
 "      .                         ",
@@ -800,8 +800,8 @@ void TaskPostDataAtPoint::applyPythonCode() {
 static const char * cursor_star[] = {
 "32 32 3 1",
 "       c None",
-".      c #FFFFFF",
-"+      c #FF0000",
+".      c ~FFFFFF",
+"+      c ~FF0000",
 "      .                         ",
 "      .                         ",
 "      .                         ",
@@ -1280,4 +1280,4 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
     recompute();
 }
 
-#include "moc_TaskPostBoxes.cpp"
+~include "moc_TaskPostBoxes.cpp"

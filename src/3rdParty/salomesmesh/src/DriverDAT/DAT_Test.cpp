@@ -19,8 +19,8 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "DriverDAT_R_SMDS_Mesh.h"
-#include "DriverDAT_W_SMDS_Mesh.h"
+~include "DriverDAT_R_SMDS_Mesh.h"
+~include "DriverDAT_W_SMDS_Mesh.h"
 
 int main(int argc, char** argv)
 {

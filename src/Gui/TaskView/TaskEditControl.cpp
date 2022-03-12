@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QDialogButtonBox>
-#include <QHBoxLayout>
+~include <QDialogButtonBox>
+~include <QHBoxLayout>
 
-#include "TaskEditControl.h"
+~include "TaskEditControl.h"
 
 
 using namespace Gui::TaskView;
@@ -50,4 +50,4 @@ QDialogButtonBox* TaskEditControl::standardButtons() const
     return buttonBox;
 }
 
-#include "moc_TaskEditControl.cpp"
+~include "moc_TaskEditControl.cpp"

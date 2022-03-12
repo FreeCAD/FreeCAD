@@ -6,7 +6,7 @@
 // This program is released under the BSD license. See the file COPYING for details.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-#include "geometry.h"
+~include "geometry.h"
 using namespace geoff_geometry;
 
 namespace geoff_geometry {
@@ -128,13 +128,13 @@ namespace geoff_geometry {
 		}		// end of main pre-offsetting loop
 
 
-#ifdef _DEBUG
+~ifdef _DEBUG
 //testDraw->AddKurve("", &kOffset, 0, GREEN);
 //		outXML oxml(L"c:\\temp\\eliminateLoops.xml");
 //		oxml.startElement(L"eliminateLoops");
 //		oxml.Write(kOffset, L"kOffset");
 //		oxml.endElement();
-#endif
+~endif
 		// eliminate loops
 		if(method == NO_ELIMINATION) {
 			ret = 0;

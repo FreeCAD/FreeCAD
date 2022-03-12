@@ -21,39 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <cstdlib>
-# include <iterator>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <cstdlib>
+~ include <iterator>
+~endif
 
-#include "Approximation.h"
-#include "Elements.h"
-#include "Utilities.h"
-#include "CylinderFit.h"
-#include "SphereFit.h"
+~include "Approximation.h"
+~include "Elements.h"
+~include "Utilities.h"
+~include "CylinderFit.h"
+~include "SphereFit.h"
 
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprPlaneFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Plane3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprCylinderFit3.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4ApprPlaneFit3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Plane3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4ApprCylinderFit3.h>
 
-//#define FC_USE_EIGEN
-#include <Eigen/QR>
-#include <Eigen/Eigen>
-#include <unsupported/Eigen/NonLinearOptimization>
-#ifdef FC_USE_EIGEN
-#include <Eigen/Eigenvalues>
-#endif
+//~define FC_USE_EIGEN
+~include <Eigen/QR>
+~include <Eigen/Eigen>
+~include <unsupported/Eigen/NonLinearOptimization>
+~ifdef FC_USE_EIGEN
+~include <Eigen/Eigenvalues>
+~endif
 
 using namespace MeshCore;
 
@@ -176,7 +176,7 @@ float PlaneFit::Fit()
     syz = syz - my*mz/(double(nSize));
     szz = szz - mz*mz/(double(nSize));
 
-#if defined(FC_USE_EIGEN)
+~if defined(FC_USE_EIGEN)
     Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
     covMat(0,0) = sxx;
     covMat(1,1) = syy;
@@ -196,7 +196,7 @@ float PlaneFit::Fit()
     _vBase.Set(mx/(float)nSize, my/(float)nSize, mz/(float)nSize);
 
     float sigma = w.dot(covMat * w);
-#else
+~else
     // Covariance matrix
     Wm4::Matrix3<double> akMat(sxx,sxy,sxz,sxy,syy,syz,sxz,syz,szz);
     Wm4::Matrix3<double> rkRot, rkDiag;
@@ -245,7 +245,7 @@ float PlaneFit::Fit()
     _vDirW.Set(float(W.X()), float(W.Y()), float(W.Z()));
     _vBase.Set(float(mx/nSize), float(my/nSize), float(mz/nSize));
     float sigma = float(W.Dot(akMat * W));
-#endif
+~endif
 
     // In case sigma is nan
     if (boost::math::isnan(sigma))
@@ -1051,7 +1051,7 @@ CylinderFit::~CylinderFit()
 
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
-#if 0
+~if 0
     int nc = 0;
     double x = 0.0;
     double y = 0.0;
@@ -1082,7 +1082,7 @@ Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Ve
     planeFit.AddPoints(n);
     planeFit.Fit();
     return planeFit.GetNormal();
-#endif
+~endif
 
     // Like a plane fit where the base is at (0,0,0)
     double sxx,sxy,sxz,syy,syz,szz;
@@ -1122,7 +1122,7 @@ float CylinderFit::Fit()
         return FLOAT_MAX;
     _bIsFitted = true;
 
-#if 1
+~if 1
     // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
@@ -1134,16 +1134,16 @@ float CylinderFit::Fit()
         Base::Vector3d base = cylFit.GetBase();
         Base::Vector3d dir = cylFit.GetAxis();
 
-#if defined(FC_DEBUG)
+~if defined(FC_DEBUG)
         Base::Console().Log("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             base.x, base.y, base.z, dir.x, dir.y, dir.z, cylFit.GetRadius(), cylFit.GetStdDeviation(), cylFit.GetNumIterations());
-#endif
+~endif
         _vBase = Base::convertTo<Base::Vector3f>(base);
         _vAxis = Base::convertTo<Base::Vector3f>(dir);
         _fRadius = (float)cylFit.GetRadius();
         _fLastResult = result;
     }
-#else
+~else
     int m = static_cast<int>(_vPoints.size());
     int n = 7;
 
@@ -1191,7 +1191,7 @@ float CylinderFit::Fit()
     _fRadius = x(6);
 
     _fLastResult = lm.gnorm;
-#endif
+~endif
 
     return _fLastResult;
 }
@@ -1355,10 +1355,10 @@ float SphereFit::Fit()
     // TODO
     _fLastResult = 0;
 
-#if defined(_DEBUG)
+~if defined(_DEBUG)
     Base::Console().Message("   WildMagic Sphere Fit:  Center: (%0.4f, %0.4f, %0.4f),  Radius: %0.4f,  Std Dev: %0.4f\n",
         _vCenter.x, _vCenter.y, _vCenter.z, _fRadius, GetStdDeviation());
-#endif
+~endif
 
     MeshCoreFit::SphereFit sphereFit;
     sphereFit.AddPoints(_vPoints);
@@ -1366,10 +1366,10 @@ float SphereFit::Fit()
     float result = sphereFit.Fit();
     if (result < FLOAT_MAX) {
         Base::Vector3d center = sphereFit.GetCenter();
-#if defined(_DEBUG)
+~if defined(_DEBUG)
         Base::Console().Message("MeshCoreFit::Sphere Fit:  Center: (%0.4f, %0.4f, %0.4f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             center.x, center.y, center.z, sphereFit.GetRadius(), sphereFit.GetStdDeviation(), sphereFit.GetNumIterations());
-#endif
+~endif
         _vCenter = Base::convertTo<Base::Vector3f>(center);
         _fRadius = (float)sphereFit.GetRadius();
         _fLastResult = result;

@@ -20,53 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <iostream>
-# include <string>
-# include <sstream>
-# include <cstdlib>
-# include <exception>
-#endif  //#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <iostream>
+~ include <string>
+~ include <sstream>
+~ include <cstdlib>
+~ include <exception>
+~endif  //~ifndef _PreComp_
 
-#include <QGraphicsView>
+~include <QGraphicsView>
 
-#include <Base/Tools.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Base/Tools.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-# include <Mod/Part/App/PartFeature.h>
+~ include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/Gui/QGVPage.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawGeomHatch.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/Gui/QGVPage.h>
 
-#include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
-#include "TaskGeomHatch.h"
-#include "TaskHatch.h"
-//#include "TaskLeaderLine.h"
-//#include "TaskRichAnno.h"
-#include "ViewProviderGeomHatch.h"
-#include "ViewProviderHatch.h"
-#include "ViewProviderPage.h"
+~include "DrawGuiUtil.h"
+~include "MDIViewPage.h"
+~include "TaskGeomHatch.h"
+~include "TaskHatch.h"
+//~include "TaskLeaderLine.h"
+//~include "TaskRichAnno.h"
+~include "ViewProviderGeomHatch.h"
+~include "ViewProviderHatch.h"
+~include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 using namespace std;
@@ -159,7 +159,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Hatch");
     std::stringstream featLabel;
     featLabel << FeatName << "F" << 
-                    TechDraw::DrawUtil::getIndexFromName(subNames.at(0)); //use 1st face# for label
+                    TechDraw::DrawUtil::getIndexFromName(subNames.at(0)); //use 1st face~ for label
 
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());

@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include "ui_TaskSketcherMessages.h"
-#include "TaskSketcherMessages.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
+~include "ui_TaskSketcherMessages.h"
+~include "TaskSketcherMessages.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
 
 
 
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ViewProviderSketch.h"
+~include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -117,19 +117,19 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
 
 void TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked(const QString &str)
 {
-    if( str == QString::fromLatin1("#conflicting"))
+    if( str == QString::fromLatin1("~conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
     else
-    if( str == QString::fromLatin1("#redundant"))
+    if( str == QString::fromLatin1("~redundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
     else
-    if( str == QString::fromLatin1("#dofs"))
+    if( str == QString::fromLatin1("~dofs"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
     else
-    if( str == QString::fromLatin1("#malformed"))
+    if( str == QString::fromLatin1("~malformed"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectMalformedConstraints");
     else
-    if( str == QString::fromLatin1("#partiallyredundant"))
+    if( str == QString::fromLatin1("~partiallyredundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectPartiallyRedundantConstraints");
 
 }
@@ -158,4 +158,4 @@ void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)
     Gui::Command::updateActive();
 }
 
-#include "moc_TaskSketcherMessages.cpp"
+~include "moc_TaskSketcherMessages.cpp"

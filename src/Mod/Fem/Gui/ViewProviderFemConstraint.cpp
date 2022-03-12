@@ -22,41 +22,41 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
 
-# include <QAction>
-# include <QApplication>
-# include <QDockWidget>
-# include <QMenu>
-# include <QStackedWidget>
+~ include <QAction>
+~ include <QApplication>
+~ include <QDockWidget>
+~ include <QMenu>
+~ include <QStackedWidget>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoCone.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoComplexity.h>
-#endif
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoFontStyle.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoCylinder.h>
+~ include <Inventor/nodes/SoCone.h>
+~ include <Inventor/nodes/SoCube.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoComplexity.h>
+~endif
 
-#include "ViewProviderFemConstraint.h"
-#include "TaskFemConstraint.h"
+~include "ViewProviderFemConstraint.h"
+~include "TaskFemConstraint.h"
 
-#include "Gui/Control.h"
-#include "Gui/MainWindow.h"
-#include "Gui/Command.h"
-#include "Gui/Application.h"
-#include "Gui/Document.h"
+~include "Gui/Control.h"
+~include "Gui/MainWindow.h"
+~include "Gui/Command.h"
+~include "Gui/Application.h"
+~include "Gui/Document.h"
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 using namespace FemGui;
 
@@ -265,7 +265,7 @@ void getLocalCoordinateSystem(const SbVec3f& z, SbVec3f& y, SbVec3f& x)
     x = y.cross(z);
 }
 */
-#define PLACEMENT_CHILDREN 2
+~define PLACEMENT_CHILDREN 2
 
 void ViewProviderFemConstraint::createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r)
 {
@@ -285,7 +285,7 @@ void ViewProviderFemConstraint::updatePlacement(const SoSeparator* sep, const in
     rot->rotation.setValue(r);
 }
 
-#define CONE_CHILDREN 2
+~define CONE_CHILDREN 2
 
 void ViewProviderFemConstraint::createCone(SoSeparator* sep, const double height, const double radius)
 {
@@ -317,7 +317,7 @@ void ViewProviderFemConstraint::updateCone(const SoNode* node, const int idx, co
     cone->bottomRadius.setValue(radius);
 }
 
-#define CYLINDER_CHILDREN 1
+~define CYLINDER_CHILDREN 1
 
 void ViewProviderFemConstraint::createCylinder(SoSeparator* sep, const double height, const double radius)
 {
@@ -343,7 +343,7 @@ void ViewProviderFemConstraint::updateCylinder(const SoNode* node, const int idx
     cyl->radius.setValue(radius);
 }
 
-#define CUBE_CHILDREN 1
+~define CUBE_CHILDREN 1
 
 void ViewProviderFemConstraint::createCube(SoSeparator* sep, const double width, const double length, const double height)
 {
@@ -370,7 +370,7 @@ void ViewProviderFemConstraint::updateCube(const SoNode* node, const int idx, co
     cube->height.setValue(height);
 }
 
-#define ARROW_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
+~define ARROW_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
 
 void ViewProviderFemConstraint::createArrow(SoSeparator* sep, const double length, const double radius)
 {
@@ -394,7 +394,7 @@ void ViewProviderFemConstraint::updateArrow(const SoNode* node, const int idx, c
     updateCylinder(sep, idx+CONE_CHILDREN+PLACEMENT_CHILDREN, length-radius, radius/5);
 }
 
-#define SPRING_CHILDREN (CUBE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
+~define SPRING_CHILDREN (CUBE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
 
 void ViewProviderFemConstraint::createSpring(SoSeparator* sep, const double length, const double width)
 {
@@ -418,7 +418,7 @@ void ViewProviderFemConstraint::updateSpring(const SoNode* node, const int idx, 
     updateCylinder(sep, idx+CUBE_CHILDREN+PLACEMENT_CHILDREN, length/2, width/4);
 }
 
-#define FIXED_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CUBE_CHILDREN)
+~define FIXED_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CUBE_CHILDREN)
 
 void ViewProviderFemConstraint::createFixed(SoSeparator* sep, const double height, const double width, const bool gap)
 {

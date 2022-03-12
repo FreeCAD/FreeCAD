@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DrawSVGTemplate.h"
+~include "DrawSVGTemplate.h"
 
 // inclusion of the generated files (generated out of DrawSVGTemplatePy.xml)
-#include <Mod/TechDraw/App/DrawSVGTemplatePy.h>
-#include <Mod/TechDraw/App/DrawSVGTemplatePy.cpp>
+~include <Mod/TechDraw/App/DrawSVGTemplatePy.h>
+~include <Mod/TechDraw/App/DrawSVGTemplatePy.cpp>
 
 using namespace TechDraw;
 

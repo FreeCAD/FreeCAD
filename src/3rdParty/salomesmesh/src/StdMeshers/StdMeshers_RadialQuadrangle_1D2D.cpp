@@ -21,43 +21,43 @@
 // File      : StdMeshers_RadialQuadrangle_1D2D.cxx
 // Module    : SMESH
 
-#include "StdMeshers_RadialQuadrangle_1D2D.hxx"
+~include "StdMeshers_RadialQuadrangle_1D2D.hxx"
 
-#include "StdMeshers_NumberOfLayers.hxx"
-#include "StdMeshers_LayerDistribution.hxx"
-#include "StdMeshers_Regular_1D.hxx"
-#include "StdMeshers_NumberOfSegments.hxx"
+~include "StdMeshers_NumberOfLayers.hxx"
+~include "StdMeshers_LayerDistribution.hxx"
+~include "StdMeshers_Regular_1D.hxx"
+~include "StdMeshers_NumberOfSegments.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <TColgp_SequenceOfPnt.hxx>
-#include <TColgp_SequenceOfPnt2d.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopoDS.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_Line.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <TColgp_SequenceOfPnt.hxx>
+~include <TColgp_SequenceOfPnt2d.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopoDS.hxx>
 
 
 using namespace std;
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
-#define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
+~define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
+~define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
 
 
 //=======================================================================

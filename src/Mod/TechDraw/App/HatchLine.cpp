@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <sstream>
-#include <iomanip>
-#include <QFile>
-#include <QFileInfo>
-#include <stdexcept>
-#include <cmath>
-#endif
+~ifndef _PreComp_
+~include <sstream>
+~include <iomanip>
+~include <QFile>
+~include <QFileInfo>
+~include <stdexcept>
+~include <cmath>
+~endif
 
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopExp.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopExp.hxx>
 
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
+~include <Base/Console.h>
+~include <Base/Vector3D.h>
 
-#include "Geometry.h"
+~include "Geometry.h"
 
-#include "DrawUtil.h"
-#include "HatchLine.h"
+~include "DrawUtil.h"
+~include "HatchLine.h"
 
 using namespace TechDraw;
 
@@ -192,7 +192,7 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &of
         offset = 0.0;
     } else {
         //find a point where pattern repeats within g
-        double patsStartOrg = lenStartOrg/patternLength;                   //# pattern repeats from lineOrigin to start
+        double patsStartOrg = lenStartOrg/patternLength;                   //~ pattern repeats from lineOrigin to start
         double patsEndOrg = lenEndOrg/patternLength;
         if (lenStartOrg < lenEndOrg) {                                  //origin is before start
             double c = ceil(patsStartOrg);

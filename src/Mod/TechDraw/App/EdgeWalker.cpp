@@ -26,31 +26,31 @@
 //**************************************************************************
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <ShapeAnalysis.hxx>
-#include <BRep_Tool.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRepBndLib.hxx>
+~include <Bnd_Box.hxx>
+~include <ShapeAnalysis.hxx>
+~include <BRep_Tool.hxx>
+~include <ShapeFix_ShapeTolerance.hxx>
+~include <ShapeExtend_WireData.hxx>
+~include <ShapeFix_Wire.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <GProp_GProps.hxx>
+~include <BRepGProp.hxx>
 
-#endif
-#include <sstream>
-#include <cmath>
+~endif
+~include <sstream>
+~include <cmath>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
-#include "DrawUtil.h"
-#include "EdgeWalker.h"
+~include "DrawUtil.h"
+~include "EdgeWalker.h"
 
 using namespace TechDraw;
 using namespace boost;
@@ -100,7 +100,7 @@ void edgeVisitor::setGraph(TechDraw::graph& g)
 
 //some shapes are being passed in where edges that should be connected are in fact
 //separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
-#define EWTOLERANCE 0.00001    //arbitrary number that seems to give good results for drawing
+~define EWTOLERANCE 0.00001    //arbitrary number that seems to give good results for drawing
 
 
 EdgeWalker::EdgeWalker()
@@ -183,13 +183,13 @@ bool EdgeWalker::perform()
     kura_edges_t::iterator ki, ki_end;
     graph_traits<TechDraw::graph>::edge_descriptor e1;
 
-#if 0 // Function declared in block and lacking of implementation
+~if 0 // Function declared in block and lacking of implementation
     // Get the index associated with edge
     graph_traits<TechDraw::graph>::edges_size_type
         get(boost::edge_index_t,
             const TechDraw::graph& m_g,
             graph_traits<TechDraw::graph>::edge_descriptor edge);
-#endif
+~endif
 
     bool isPlanar = boyer_myrvold_planarity_test(boyer_myrvold_params::graph = m_g,
                                  boyer_myrvold_params::embedding = &embedding[0],            // this is "an" embedding but not one for finding

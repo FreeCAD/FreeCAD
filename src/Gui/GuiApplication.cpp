@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QAbstractSpinBox>
-# include <QByteArray>
-# include <QComboBox>
-# include <QDataStream>
-# include <QFileInfo>
-# include <QFileOpenEvent>
-# include <QKeyEvent>
-# include <QSessionManager>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QAbstractSpinBox>
+~ include <QByteArray>
+~ include <QComboBox>
+~ include <QDataStream>
+~ include <QFileInfo>
+~ include <QFileOpenEvent>
+~ include <QKeyEvent>
+~ include <QSessionManager>
+~ include <QTimer>
+~endif
 
-#include <QLocalServer>
-#include <QLocalSocket>
+~include <QLocalServer>
+~include <QLocalSocket>
 
-#if defined(Q_OS_UNIX)
-# include <sys/types.h>
-# include <time.h>
-# include <unistd.h>
-#endif
+~if defined(Q_OS_UNIX)
+~ include <sys/types.h>
+~ include <time.h>
+~ include <unistd.h>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
-#include "GuiApplication.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "SpaceballEvent.h"
+~include "GuiApplication.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "SpaceballEvent.h"
 
 
 using namespace Gui;
@@ -252,11 +252,11 @@ bool GUISingleApplication::sendMessage(const QByteArray &message, int timeout)
         if (connected || i > 0)
             break;
         int ms = 250;
-#if defined(Q_OS_WIN)
+~if defined(Q_OS_WIN)
         Sleep(DWORD(ms));
-#else
+~else
         usleep(ms*1000);
-#endif
+~endif
     }
     if (!connected)
         return false;
@@ -345,4 +345,4 @@ bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
 }
 
 
-#include "moc_GuiApplication.cpp"
+~include "moc_GuiApplication.cpp"

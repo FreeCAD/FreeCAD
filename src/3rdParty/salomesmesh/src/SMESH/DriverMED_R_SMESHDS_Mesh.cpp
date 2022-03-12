@@ -24,31 +24,31 @@
 //  File   : DriverMED_R_SMESHDS_Mesh.cxx
 //  Module : SMESH
 
-#include "DriverMED_R_SMESHDS_Mesh.h"
+~include "DriverMED_R_SMESHDS_Mesh.h"
 
-#include "DriverMED_Family.h"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Comment.hxx"
+~include "DriverMED_Family.h"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Comment.hxx"
 
-#include "MED_CoordUtils.hxx"
-#include "MED_Factory.hxx"
-#include "MED_Utilities.hxx"
+~include "MED_CoordUtils.hxx"
+~include "MED_Factory.hxx"
+~include "MED_Utilities.hxx"
 
-#include <NCollection_Map.hxx>
+~include <NCollection_Map.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
-//#include <stdlib.h>
+//~include <stdlib.h>
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 1;
-//#define _DEXCEPT_
-#else
+//~define _DEXCEPT_
+~else
 static int MYDEBUG = 0;
-#endif
+~endif
 
-#define _EDF_NODE_IDS_
+~define _EDF_NODE_IDS_
 
 using namespace MED;
 using namespace std;
@@ -105,9 +105,9 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
 
   Status aResult = DRS_FAIL;
   bool isDescConn = false; // Mantis issue 0020483
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
   try {
-#endif
+~endif
     myFamilies.clear();
     if(MYDEBUG) MESSAGE("Perform - myFile : "<<myFile);
     PWrapper aMed = CrWrapper(myFile,false); // We are using the internal MED file version checker instead of an external reader
@@ -254,7 +254,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
 
             // get supporting nodes
             TNodeIds aNodeIds;
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
             if(anIsNodeNum) {
               aNodeIds.resize( aNbBalls );
               for(TInt iBall = 0; iBall < aNbBalls && anIsNodeNum; iBall++)
@@ -263,7 +263,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                 anIsNodeNum = myMesh->FindNode( aNodeIds[iBall] ) ? eVRAI : eFAUX;
               }
             }
-#endif
+~endif
             if ( !anIsNodeNum )
               aNodeIds.swap( *(aBallInfo->myConn ));
 
@@ -308,7 +308,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
           } // MED_BALL
 
           switch(aGeom) {
-          // case ePOINT1: ## PAL16410
+          // case ePOINT1: ~~ PAL16410
           //     break;
           case ePOLYGONE:
           case ePOLYGON2:
@@ -335,23 +335,23 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
               MED::TCConnSlice aConnSlice = aPolygoneInfo->GetConnSlice(iElem);
               TInt aNbConn = aPolygoneInfo->GetNbConn(iElem);
               aNodeIds.resize( aNbConn );
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
               if(anIsNodeNum)
                 for(TInt iConn = 0; iConn < aNbConn; iConn++)
                   aNodeIds[iConn] = aNodeInfo->GetElemNum(aConnSlice[iConn] - 1);
               else
                 for(TInt iConn = 0; iConn < aNbConn; iConn++)
                   aNodeIds[iConn] = aConnSlice[iConn];
-#else
+~else
               for(TInt iConn = 0; iConn < aNbConn; iConn++)
                 aNodeIds[iConn] = aConnSlice[iConn];
-#endif
+~endif
               bool isRenum = false;
               SMDS_MeshElement* anElement = NULL;
               TInt aFamNum = aPolygoneInfo->GetFamNum(iElem);
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               try {
-#endif
+~endif
                 if ( anIsElemNum ) {
                   TInt anElemId = aPolygoneInfo->GetElemNum( iElem );
                   anElement = (myMesh->*addPolyWithID)( aNodeIds, anElemId );
@@ -363,13 +363,13 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                   anElement = (myMesh->*addPolygon)( aNodes );
                   isRenum = anIsElemNum;
                 }
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               } catch(const std::exception& exc) {
                 aResult = addMessage( exc.what(), /*isFatal=*/true );
               } catch (...) {
                 aResult = addMessage( "Unknown exception", /*isFatal=*/true );
               }
-#endif
+~endif
               if ( !anElement ) {
                 aResult = DRS_WARN_SKIP_ELEM;
               }
@@ -406,7 +406,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                 MED::TCConnSlice aConnSlice = aConnSliceArr[iFace];
                 TInt aNbConn = aConnSlice.size();
                 aQuantities[iFace] = aNbConn;
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
                 if(anIsNodeNum)
                   for(TInt iConn = 0; iConn < aNbConn; iConn++)
                   {
@@ -418,21 +418,21 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                   {
                     aNodeIds[iNode++] = aConnSlice[iConn];
                   }
-#else
+~else
                 for(TInt iConn = 0; iConn < aNbConn; iConn++)
                 {
                   aNodeIds[iNode++] = aConnSlice[iConn];
                 }
-#endif          
+~endif          
               }
 
               bool isRenum = false;
               SMDS_MeshElement* anElement = NULL;
               TInt aFamNum = aPolyedreInfo->GetFamNum(iElem);
                 
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               try{
-#endif
+~endif
                 if(anIsElemNum){
                   TInt anElemId = aPolyedreInfo->GetElemNum(iElem);
                   anElement = myMesh->AddPolyhedralVolumeWithID(aNodeIds,aQuantities,anElemId);
@@ -444,13 +444,13 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                   anElement = myMesh->AddPolyhedralVolume(aNodes,aQuantities);
                   isRenum = anIsElemNum;
                 }
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               }catch(const std::exception& exc){
                 aResult = DRS_FAIL;
               }catch(...){
                 aResult = DRS_FAIL;
               }
-#endif          
+~endif          
               if(!anElement){
                 aResult = DRS_WARN_SKIP_ELEM;
               }else{
@@ -504,22 +504,22 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
             {
               bool anIsValidConnect = false;
               TCConnSlice aConnSlice = aCellInfo->GetConnSlice(iElem);
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               try{
-#endif
-#ifdef _EDF_NODE_IDS_
+~endif
+~ifdef _EDF_NODE_IDS_
                 if(anIsNodeNum)
                   for(int iNode = 0; iNode < aNbNodes; iNode++)
                     aNodeIds[iNode] = aNodeInfo->GetElemNum(aConnSlice[iNode] - 1);
                 else
                   for(int iNode = 0; iNode < aNbNodes; iNode++)
                     aNodeIds[iNode] = aConnSlice[iNode];
-#else
+~else
                 for(int iNode = 0; iNode < aNbNodes; iNode++)
                   aNodeIds[iNode] = aConnSlice[iNode];
-#endif
+~endif
                 anIsValidConnect = true;
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               }catch(const std::exception& exc){
                 INFOS("Following exception was caught:\n\t"<<exc.what());
                 aResult = addMessage( exc.what(), /*isFatal=*/true );
@@ -527,17 +527,17 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                 INFOS("Unknown exception was caught !!!");
                 aResult = addMessage( "Unknown exception", /*isFatal=*/true );
               }
-#endif          
+~endif          
               if(!anIsValidConnect)
                 continue;
 
               bool isRenum = false;
               const SMDS_MeshElement* anElement = NULL;
               TInt aFamNum = aCellInfo->GetFamNum(iElem);
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               try{
-#endif
-                //MESSAGE("Try to create element # " << iElem << " with id = "
+~endif
+                //MESSAGE("Try to create element ~ " << iElem << " with id = "
                 //        << aCellInfo->GetElemNum(iElem));
                 switch(aGeom) {
                 case ePOINT1:
@@ -955,7 +955,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
 
                 } // switch(aGeom)
 
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
               } catch(const std::exception& exc) {
                 INFOS("The following exception was caught:\n\t"<<exc.what());
                 aResult = addMessage( exc.what(), /*isFatal=*/true );
@@ -963,7 +963,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
                 INFOS("Unknown exception was caught !!!");
                 aResult = addMessage( "Unknown exception", /*isFatal=*/true );
               }
-#endif
+~endif
               if (!anElement) {
                 aResult = DRS_WARN_SKIP_ELEM;
               }
@@ -988,7 +988,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
       if (aDescendingEntitiesMap.Extent()) isDescConn = true; // Mantis issue 0020483
 
     } // for(int iMesh = 0; iMesh < aNbMeshes; iMesh++)
-#ifndef _DEXCEPT_
+~ifndef _DEXCEPT_
   }
   catch(const std::exception& exc)
   {
@@ -1000,7 +1000,7 @@ Driver_Mesh::Status DriverMED_R_SMESHDS_Mesh::Perform()
     INFOS("Unknown exception was caught !!!");
     aResult = addMessage( "Unknown exception", /*isFatal=*/true );
   }
-#endif
+~endif
   if (myMesh)
     myMesh->compactMesh();
 

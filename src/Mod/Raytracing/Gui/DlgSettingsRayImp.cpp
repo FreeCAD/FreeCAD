@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include "DlgSettingsRayImp.h"
-#include "ui_DlgSettingsRay.h"
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+~include "DlgSettingsRayImp.h"
+~include "ui_DlgSettingsRay.h"
+~include <Gui/PrefWidgets.h>
+~include <Base/Console.h>
 
 using namespace RaytracingGui;
 
@@ -98,4 +98,4 @@ void DlgSettingsRayImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsRayImp.cpp"
+~include "moc_DlgSettingsRayImp.cpp"

@@ -20,38 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QMessageBox>
-#include <QTextStream>
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-#endif
+~ifndef _PreComp_
+~include <QMessageBox>
+~include <QTextStream>
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Parameter.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Parameter.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewMulti.h>
-#include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/DrawGeomHatch.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include <Mod/TechDraw/App/DrawViewDetail.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawViewMulti.h>
+~include <Mod/TechDraw/App/LineGroup.h>
 
-#include "PreferencesGui.h"
-#include "QGIView.h"
-#include "TaskDetail.h"
-#include "ViewProviderViewPart.h"
+~include "PreferencesGui.h"
+~include "QGIView.h"
+~include "TaskDetail.h"
+~include "ViewProviderViewPart.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -255,12 +255,12 @@ bool ViewProviderViewPart::setEdit(int ModNum)
                                           dvd->getNameInDocument());
 
 //Gui.ActiveDocument.resetEdit()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')            
+//>>> ~ Gui.Selection.addSelection('aaStart121','Detail')
+//>>> ~ Gui.Selection.clearSelection()
+//>>> ~ Gui.Selection.addSelection('aaStart121','Detail')
+//>>> ~ Gui.Selection.addSelection('aaStart121','Detail')
+//>>> ~ Gui.Selection.clearSelection()
+//>>> ~ Gui.Selection.addSelection('aaStart121','Detail')            
             return true;
         }
     } else {

@@ -20,19 +20,19 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QDialog>
-# include <QListIterator>
-#endif
+~ifndef _PreComp_
+~ include <QDialog>
+~ include <QListIterator>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
 
-#include "ui_FeaturePickDialog.h"
-#include "FeaturePickDialog.h"
+~include "ui_FeaturePickDialog.h"
+~include "FeaturePickDialog.h"
 
 using namespace PartDesignGui;
 
@@ -170,4 +170,4 @@ void FeaturePickDialog::accept()
 
     QDialog::accept();
 }
-#include "moc_FeaturePickDialog.cpp"
+~include "moc_FeaturePickDialog.cpp"

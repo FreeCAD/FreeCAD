@@ -17,7 +17,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "SMDS_MeshEdge.hxx"
+~include "SMDS_MeshEdge.hxx"
 
 SMDSAbs_ElementType SMDS_MeshEdge::GetType() const
 {

@@ -25,9 +25,9 @@
 //  Author : Yves FRICAUD, OCC
 //  Module : SMESH
 //
-#include "SMESHDS_Command.hxx"
+~include "SMESHDS_Command.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

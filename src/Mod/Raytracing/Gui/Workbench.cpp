@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
 
 using namespace RaytracingGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "&Raytracing");
-#endif
+~endif
 
 /// @namespace RaytracingGui @class Workbench
 TYPESYSTEM_SOURCE(RaytracingGui::Workbench, Gui::StdWorkbench)

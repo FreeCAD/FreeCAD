@@ -1,16 +1,16 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <cassert>
+~include <cassert>
 
-#include "meta-iostreams.h"
-#include <string>
+~include "meta-iostreams.h"
+~include <string>
 
-#include "zipios_common.h"
-#include "basicentry.h"
-#include "zipios_defs.h"
+~include "zipios_common.h"
+~include "basicentry.h"
+~include "zipios_defs.h"
 
-#include "outputstringstream.h"
+~include "outputstringstream.h"
 
 namespace zipios {
 

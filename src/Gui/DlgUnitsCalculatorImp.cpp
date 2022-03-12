@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QClipboard>
-# include <QLocale>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QLocale>
+~endif
 
-#include "DlgUnitsCalculatorImp.h"
-#include "ui_DlgUnitsCalculator.h"
-#include <Base/UnitsApi.h>
+~include "DlgUnitsCalculatorImp.h"
+~include "ui_DlgUnitsCalculator.h"
+~include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
 
@@ -221,4 +221,4 @@ void DlgUnitsCalculator::on_spinBoxDecimals_valueChanged(int value)
     ui->quantitySpinBox->setDecimals(value);
 }
 
-#include "moc_DlgUnitsCalculatorImp.cpp"
+~include "moc_DlgUnitsCalculatorImp.cpp"

@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_CompSolid.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <Standard_Failure.hxx>
+~ include <TopoDS_CompSolid.hxx>
+~endif
 
-#include "OCCError.h"
-#include "TopoShape.h"
+~include "OCCError.h"
+~include "TopoShape.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompSolidPy.xml)
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapeCompSolidPy.cpp"
+~include "TopoShapeSolidPy.h"
+~include "TopoShapeCompSolidPy.h"
+~include "TopoShapeCompSolidPy.cpp"
 
 using namespace Part;
 

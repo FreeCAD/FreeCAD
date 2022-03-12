@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_SurfaceOfRevolution.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_SurfaceOfRevolution.hxx>
+~endif
 
-#include "Geometry.h"
-#include "SurfaceOfRevolutionPy.h"
-#include "SurfaceOfRevolutionPy.cpp"
+~include "Geometry.h"
+~include "SurfaceOfRevolutionPy.h"
+~include "SurfaceOfRevolutionPy.cpp"
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include "OCCError.h"
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include "OCCError.h"
 
 using namespace Part;
 

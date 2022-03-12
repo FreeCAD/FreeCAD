@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 
-#if BUILD_VR
+~if BUILD_VR
 
-#include <App/Application.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <Base/Console.h>
 
-#include "View3DInventorRiftViewer.h"
+~include "View3DInventorRiftViewer.h"
 
 
 using namespace Gui;
@@ -144,7 +144,7 @@ void oculusSetTestScene(View3DInventorRiftViewer *window)
 	assert(window);
     // An example scene.
     static const char * inlineSceneGraph[] = {
-        "#Inventor V2.1 ascii\n",
+        "~Inventor V2.1 ascii\n",
         "\n",
         "Separator {\n",
         " Rotation { rotation 1 0 0 0.3 }\n",
@@ -205,7 +205,7 @@ View3DInventorRiftViewer* oculusStart(void)
     //QApplication app(argc, argv);
     //qAddPostRoutine(cleanup);
 
-    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503
+    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503~p108503
     // Init libovr.
     if (!ovr_Initialize()) {
         qDebug() << "Could not initialize Oculus SDK.";
@@ -224,4 +224,4 @@ View3DInventorRiftViewer* oculusStart(void)
 
 
 
-#endif //BUILD_VR
+~endif //BUILD_VR

@@ -19,4 +19,4 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "DriverDAT_W_SMESHDS_Mesh.h"
+~include "DriverDAT_W_SMESHDS_Mesh.h"

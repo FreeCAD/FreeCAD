@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Vector3D.h>
 
-#include "DrawWeldSymbol.h"
+~include "DrawWeldSymbol.h"
 
 // inclusion of the generated files (generated out of DrawWeldSymbolPy.xml)
-#include <Base/VectorPy.h>
-#include <Mod/TechDraw/App/DrawWeldSymbolPy.h>
-#include <Mod/TechDraw/App/DrawWeldSymbolPy.cpp>
+~include <Base/VectorPy.h>
+~include <Mod/TechDraw/App/DrawWeldSymbolPy.h>
+~include <Mod/TechDraw/App/DrawWeldSymbolPy.cpp>
 
 using namespace TechDraw;
 

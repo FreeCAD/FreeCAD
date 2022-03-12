@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepPrimAPI_MakePrism.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepPrimAPI_MakePrism.hxx>
+~endif
 
-#include "PrismExtension.h"
-#include <Base/Tools.h>
+~include "PrismExtension.h"
+~include <Base/Tools.h>
 
 
 using namespace Part;

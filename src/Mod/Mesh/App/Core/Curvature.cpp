@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
+~include <QFuture>
+~include <QFutureWatcher>
+~include <QtConcurrentMap>
+~include <boost_bind_bind.hpp>
 
-//#define OPTIMIZE_CURVATURE
-#ifdef OPTIMIZE_CURVATURE
-#include <Eigen/Eigenvalues>
-#else
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
-#endif
+//~define OPTIMIZE_CURVATURE
+~ifdef OPTIMIZE_CURVATURE
+~include <Eigen/Eigenvalues>
+~else
+~include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+~endif
 
-#include "Curvature.h"
-#include "Algorithm.h"
-#include "Approximation.h"
-#include "MeshKernel.h"
-#include "Iterator.h"
-#include "Tools.h"
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
+~include "Curvature.h"
+~include "Algorithm.h"
+~include "Approximation.h"
+~include "MeshKernel.h"
+~include "Iterator.h"
+~include "Tools.h"
+~include <Base/Sequencer.h>
+~include <Base/Tools.h>
 
 using namespace MeshCore;
 namespace bp = boost::placeholders;
@@ -90,7 +90,7 @@ void MeshCurvature::ComputePerFace(bool parallel)
     }
 }
 
-#ifdef OPTIMIZE_CURVATURE
+~ifdef OPTIMIZE_CURVATURE
 namespace MeshCore {
 void GenerateComplementBasis (Eigen::Vector3f& rkU, Eigen::Vector3f& rkV,
                               const Eigen::Vector3f& rkW)
@@ -288,7 +288,7 @@ void MeshCurvature::ComputePerVertex()
         myCurvature.push_back(ci);
     }
 }
-#else
+~else
 void MeshCurvature::ComputePerVertex()
 {
     myCurvature.clear();
@@ -335,7 +335,7 @@ void MeshCurvature::ComputePerVertex()
         myCurvature.push_back(ci);
     }
 }
-#endif // OPTIMIZE_CURVATURE
+~endif // OPTIMIZE_CURVATURE
 
 // --------------------------------------------------------
 

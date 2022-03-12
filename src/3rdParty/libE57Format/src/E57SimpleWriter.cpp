@@ -25,8 +25,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "E57SimpleWriter.h"
-#include "WriterImpl.h"
+~include "E57SimpleWriter.h"
+~include "WriterImpl.h"
 
 namespace e57
 {

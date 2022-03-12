@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "TaskDlgAssemblyConstraints.h"
-#include <Gui/Command.h>
-#include <App/Application.h>
+~include "TaskDlgAssemblyConstraints.h"
+~include <Gui/Command.h>
+~include <App/Application.h>
 
 using namespace AssemblyGui;
 
@@ -86,4 +86,4 @@ void TaskDlgAssemblyConstraints::helpRequested()
 }
 
 
-#include "moc_TaskDlgAssemblyConstraints.cpp"
+~include "moc_TaskDlgAssemblyConstraints.cpp"

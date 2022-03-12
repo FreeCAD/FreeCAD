@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <string>
-#include <map>
-#include <algorithm>
+~include <stdio.h>
+~include <stdlib.h>
+~include <vector>
+~include <string>
+~include <map>
+~include <algorithm>
 
 int genUtf8(int c, unsigned char * b)
 {
@@ -41,7 +41,7 @@ static String escape(unsigned char c)
     case '?':
     case '{':
     case '}':
-    case '#':
+    case '~':
     case '^':
     case '|':
     case ':':

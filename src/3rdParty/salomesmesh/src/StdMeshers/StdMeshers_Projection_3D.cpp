@@ -26,33 +26,33 @@
 // Created   : Fri Oct 20 11:37:07 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_Projection_3D.hxx"
-#include "StdMeshers_ProjectionSource3D.hxx"
+~include "StdMeshers_Projection_3D.hxx"
+~include "StdMeshers_ProjectionSource3D.hxx"
 
-#include "StdMeshers_ProjectionUtils.hxx"
+~include "StdMeshers_ProjectionUtils.hxx"
 
-#include "SMDS_PolyhedralVolumeOfNodes.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESHDS_Hypothesis.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_Pattern.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
+~include "SMDS_PolyhedralVolumeOfNodes.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESHDS_Hypothesis.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_Pattern.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
-#define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
-#define SHOWYXZ(msg, xyz) // {\
+~define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
+~define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
+~define SHOWYXZ(msg, xyz) // {\
 // gp_Pnt p (xyz); \
 // cout << msg << " ("<< p.X() << "; " <<p.Y() << "; " <<p.Z() << ") " <<endl;\
 // }
@@ -310,7 +310,7 @@ bool StdMeshers_Projection_3D::Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& aS
     TAssocTool::TNodeNodeMap faceMatchingNodes;
     if ( ! TAssocTool::FindMatchingNodesOnFaces( srcFace, srcMesh, tgtFace, tgtMesh, 
                                                  shape2ShapeMap, faceMatchingNodes ))
-      return error(COMPERR_BAD_INPUT_MESH,SMESH_Comment("Mesh on faces #")
+      return error(COMPERR_BAD_INPUT_MESH,SMESH_Comment("Mesh on faces ~")
                    << srcMeshDS->ShapeToIndex( srcFace ) << " and "
                    << tgtMeshDS->ShapeToIndex( tgtFace ) << " seems different" );
 

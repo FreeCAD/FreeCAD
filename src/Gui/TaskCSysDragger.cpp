@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <limits>
-#include <QApplication>
-#include <QGridLayout>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <assert.h>
+~include <limits>
+~include <QApplication>
+~include <QGridLayout>
+~endif
 
-#include <App/Document.h>
-#include "Document.h" // must be before TaskCSysDragger.h
-#include "TaskCSysDragger.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "QuantitySpinBox.h"
-#include "SoFCCSysDragger.h"
-#include "ViewProviderDragger.h"
-#include "TaskView/TaskView.h"
+~include <App/Document.h>
+~include "Document.h" // must be before TaskCSysDragger.h
+~include "TaskCSysDragger.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "QuantitySpinBox.h"
+~include "SoFCCSysDragger.h"
+~include "ViewProviderDragger.h"
+~include "TaskView/TaskView.h"
 
 
 using namespace Gui;
@@ -147,4 +147,4 @@ bool TaskCSysDragger::accept()
   return Gui::TaskView::TaskDialog::accept();
 }
 
-#include "moc_TaskCSysDragger.cpp"
+~include "moc_TaskCSysDragger.cpp"

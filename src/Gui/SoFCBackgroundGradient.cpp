@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "SoFCBackgroundGradient.h"
+~include "SoFCBackgroundGradient.h"
 
 using namespace Gui;
 

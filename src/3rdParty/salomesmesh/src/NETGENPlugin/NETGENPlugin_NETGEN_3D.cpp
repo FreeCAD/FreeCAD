@@ -28,82 +28,82 @@
 // Project   : SALOME
 //=============================================================================
 //
-#include "NETGENPlugin_NETGEN_3D.hxx"
+~include "NETGENPlugin_NETGEN_3D.hxx"
 
-#include "NETGENPlugin_Hypothesis.hxx"
+~include "NETGENPlugin_Hypothesis.hxx"
 
-#include <SMDS_MeshElement.hxx>
-#include <SMDS_MeshNode.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMESH_Comment.hxx>
-#include <SMESH_ControlsDef.hxx>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_MeshEditor.hxx>
-#include <SMESH_MesherHelper.hxx>
-#include <SMESH_subMesh.hxx>
-#include <StdMeshers_MaxElementVolume.hxx>
-#include <StdMeshers_QuadToTriaAdaptor.hxx>
-#include <StdMeshers_ViscousLayers.hxx>
+~include <SMDS_MeshElement.hxx>
+~include <SMDS_MeshNode.hxx>
+~include <SMESHDS_Mesh.hxx>
+~include <SMESH_Comment.hxx>
+~include <SMESH_ControlsDef.hxx>
+~include <SMESH_Gen.hxx>
+~include <SMESH_Mesh.hxx>
+~include <SMESH_MeshEditor.hxx>
+~include <SMESH_MesherHelper.hxx>
+~include <SMESH_subMesh.hxx>
+~include <StdMeshers_MaxElementVolume.hxx>
+~include <StdMeshers_QuadToTriaAdaptor.hxx>
+~include <StdMeshers_ViscousLayers.hxx>
 
-#include <BRepGProp.hxx>
-#include <BRep_Tool.hxx>
-#include <GProp_GProps.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopoDS.hxx>
+~include <BRepGProp.hxx>
+~include <BRep_Tool.hxx>
+~include <GProp_GProps.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopoDS.hxx>
 
-#include <Standard_Failure.hxx>
-#include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
+~include <Standard_ErrorHandler.hxx>
 
-#include <utilities.h>
+~include <utilities.h>
 
-#include <list>
-#include <vector>
-#include <map>
+~include <list>
+~include <vector>
+~include <map>
 
 /*
   Netgen include files
 */
 
-#ifndef OCCGEOMETRY
-#define OCCGEOMETRY
-#endif
+~ifndef OCCGEOMETRY
+~define OCCGEOMETRY
+~endif
 
 // DLL_HEADER is re-defined in netgen headers
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmacro-redefined"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmacro-redefined"
+~endif
 
-#ifdef NETGEN_PYTHON
-#undef NETGEN_PYTHON
-#endif
+~ifdef NETGEN_PYTHON
+~undef NETGEN_PYTHON
+~endif
 
-#ifndef WIN32
-#undef DLL_HEADER
-#endif
+~ifndef WIN32
+~undef DLL_HEADER
+~endif
 
-#include <occgeom.hpp>
+~include <occgeom.hpp>
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 namespace nglib {
-#include <nglib.h>
+~include <nglib.h>
 }
 namespace netgen {
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
-#else
+~else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
-#endif
+~endif
   DLL_HEADER extern MeshingParameters mparam;
   DLL_HEADER extern volatile multithreadt multithread;
 }
@@ -232,11 +232,11 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
   int Netgen_triangle[3];
 
   NETGENPlugin_NetgenLibWrapper ngLib;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh;
-#else
+~else
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh.get();
-#endif
+~endif
 
   // vector of nodes in which node index == netgen ID
   vector< const SMDS_MeshNode* > nodeVec;
@@ -456,17 +456,17 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   netgen::Mesh* ngMesh = (netgen::Mesh*)Netgen_mesh;
   int Netgen_NbOfNodes = Ng_GetNP(Netgen_mesh);
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
   char *optstr = 0;
-#endif
+~endif
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
   int startWith = netgen::MESHCONST_MESHVOLUME;
   int endWith   = netgen::MESHCONST_OPTVOLUME;
-#else
+~else
   netgen::mparam.perfstepsstart = netgen::MESHCONST_MESHVOLUME;
   netgen::mparam.perfstepsend = netgen::MESHCONST_OPTVOLUME;
-#endif
+~endif
   int err = 1;
 
   NETGENPlugin_Mesher aMesher( &aMesh, helper.GetSubShape(), /*isVolume=*/true );
@@ -476,11 +476,11 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   {
     aMesher.SetParameters( _hypParameters );
     if ( !_hypParameters->GetOptimize() )
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
       endWith = netgen::MESHCONST_MESHVOLUME;
-#else
+~else
       netgen::mparam.perfstepsend = netgen::MESHCONST_MESHVOLUME;
-#endif
+~endif
   }
   else if ( _hypMaxElementVolume )
   {
@@ -507,20 +507,20 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   try
   {
     OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
     std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
     err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, netgen::mparam);
-#else
+~else
     err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, netgen::mparam, startWith, endWith);
-#endif
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~endif
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
     ngMesh->CalcLocalH(netgen::mparam.grading);
     err = netgen::OCCGenerateMesh(occgeo, ngMesh, netgen::mparam, startWith, endWith);
-#else
+~else
     ngMesh->CalcLocalH();
     err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
-#endif
+~endif
     if(netgen::multithread.terminate)
       return false;
     if ( err )
@@ -639,11 +639,11 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
   int Netgen_tetrahedron[4];
 
   NETGENPlugin_NetgenLibWrapper ngLib;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh;
-#else
+~else
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh.get();
-#endif
+~endif
 
   SMESH_ProxyMesh::Ptr proxyMesh( new SMESH_ProxyMesh( aMesh ));
   if ( aMesh.NbQuadrangles() > 0 )

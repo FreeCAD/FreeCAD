@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Exception.h>
-#include <Base/Unit.h>
+~include <Base/Exception.h>
+~include <Base/Unit.h>
 
-#include "FeatureTest.h"
-#include "Material.h"
+~include "FeatureTest.h"
+~include "Material.h"
 
-#ifdef _MSC_VER
-#pragma warning( disable : 4700 )
-#pragma warning( disable : 4723 )
-#endif
+~ifdef _MSC_VER
+~pragma warning( disable : 4700 )
+~pragma warning( disable : 4723 )
+~endif
 
 using namespace App;
 
@@ -129,25 +129,25 @@ DocumentObjectExecReturn *FeatureTest::execute(void)
 doc=App.newDocument()
 obj=doc.addObject("App::FeatureTest")
 
-obj.ExceptionType=0 # good
+obj.ExceptionType=0 ~ good
 doc.recompute()
 
-obj.ExceptionType=1 # unknown exception
+obj.ExceptionType=1 ~ unknown exception
 doc.recompute()
 
-obj.ExceptionType=2 # Runtime error
+obj.ExceptionType=2 ~ Runtime error
 doc.recompute()
 
-obj.ExceptionType=3 # segfault
+obj.ExceptionType=3 ~ segfault
 doc.recompute()
 
-obj.ExceptionType=4 # segfault
+obj.ExceptionType=4 ~ segfault
 doc.recompute()
 
-obj.ExceptionType=5 # int division by zero
+obj.ExceptionType=5 ~ int division by zero
 doc.recompute()
 
-obj.ExceptionType=6 # float division by zero
+obj.ExceptionType=6 ~ float division by zero
 doc.recompute()
      */
     int *i=0,j;
@@ -162,15 +162,15 @@ doc.recompute()
         case 0: break;
         case 1: throw std::runtime_error("Test Exception");
         case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
-#if 0 // only allow these error types on purpose
+~if 0 // only allow these error types on purpose
         case 3: *i=0;printf("%i",*i);break;                 // seg-fault
         case 4: t = nullptr; break;                         // seg-fault
         case 5: j=0; printf("%i",1/j); break;               // int division by zero
         case 6: f=0.0; printf("%f",1/f); break;             // float division by zero
         case 7: s = malloc(3600000000ul); free(s); break;   // out-of-memory
-#else
+~else
         default: (void)i; (void)j; (void)f; (void)s; (void)t; break;
-#endif
+~endif
     }
 
     ExecCount.setValue(ExecCount.getValue() + 1);

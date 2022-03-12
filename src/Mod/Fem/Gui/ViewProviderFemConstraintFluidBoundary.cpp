@@ -22,26 +22,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoMultipleCopy.h>
 
-# include <QMessageBox>
-#endif
+~ include <QMessageBox>
+~endif
 
-#include "ViewProviderFemConstraintFluidBoundary.h"
-#include <Mod/Fem/App/FemConstraintFluidBoundary.h>
-#include "TaskFemConstraintFluidBoundary.h"
-#include "Gui/Control.h"
+~include "ViewProviderFemConstraintFluidBoundary.h"
+~include <Mod/Fem/App/FemConstraintFluidBoundary.h>
+~include "TaskFemConstraintFluidBoundary.h"
+~include "Gui/Control.h"
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 using namespace FemGui;
 
@@ -108,11 +108,11 @@ bool ViewProviderFemConstraintFluidBoundary::setEdit(int ModNum)
 }
 
 //Rendering: Combination of ConstraintFixed and ConstraintForce
-#define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH/3.0f)
-#define WIDTH (2)
-#define HEIGHT (1)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+~define ARROWLENGTH (4)
+~define ARROWHEADRADIUS (ARROWLENGTH/3.0f)
+~define WIDTH (2)
+~define HEIGHT (1)
+//~define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* prop)
 {
@@ -150,7 +150,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
     }
 
     if (boundaryType == "inlet" || boundaryType == "outlet"){
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
         //OvG: need access to cp for scaling
         SoMultipleCopy* cp = new SoMultipleCopy();
         if (pShapeSep->getNumChildren() == 0) {
@@ -159,20 +159,20 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             cp->addChild((SoNode*)createArrow(scaledlength , scaledheadradius)); //OvG: Scaling
             pShapeSep->addChild(cp);
         }
-#endif
+~endif
 
         if (strcmp(prop->getName(),"Points") == 0) {
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
             cp->matrix.setNum(points.size());
             SbMatrix* matrices = cp->matrix.startEditing();
             int idx = 0;
-#else
+~else
             // Redraw all arrows
             Gui::coinRemoveAllChildren(pShapeSep);
-#endif
+~endif
             // This should always point outside of the solid
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
 
@@ -188,21 +188,21 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
                 SbVec3f base(p->x, p->y, p->z);
                 if (forceDirection.GetAngle(normal) < M_PI_2) // Move arrow so it doesn't disappear inside the solid
                     base = base + dir * scaledlength; //OvG: Scaling
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
                 SbMatrix m;
                 m.setTransform(base, rot, SbVec3f(1,1,1));
                 matrices[idx] = m;
                 idx++;
-#else
+~else
                 SoSeparator* sep = new SoSeparator();
                 createPlacement(sep, base, rot);
                 createArrow(sep, scaledlength, scaledheadradius); //OvG: Scaling
                 pShapeSep->addChild(sep);
-#endif
+~endif
             }
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             cp->matrix.finishEditing();
-#endif
+~endif
         }
         else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
             // Re-orient all arrows
@@ -219,36 +219,36 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
 
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
             cp->matrix.setNum(points.size());
             SbMatrix* matrices = cp->matrix.startEditing();
-#endif
+~endif
             int idx = 0;
 
             for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
                 SbVec3f base(p->x, p->y, p->z);
                 if (forceDirection.GetAngle(normal) < M_PI_2)
                     base = base + dir * scaledlength; //OvG: Scaling
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
                 SbMatrix m;
                 m.setTransform(base, rot, SbVec3f(1,1,1));
                 matrices[idx] = m;
-#else
+~else
                 SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(idx));
                 updatePlacement(sep, 0, base, rot);
                 updateArrow(sep, 2, scaledlength, scaledheadradius); //OvG: Scaling
-#endif
+~endif
                 idx++;
             }
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             cp->matrix.finishEditing();
-#endif
+~endif
         }
     }
     else{// not inlet or outlet boundary type
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
         //OvG: always need access to cp for scaling
         SoMultipleCopy* cp = new SoMultipleCopy();
         if (pShapeSep->getNumChildren() == 0) {
@@ -257,7 +257,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             cp->addChild((SoNode*)createFixed(scaledheight, scaledwidth)); //OvG: Scaling
             pShapeSep->addChild(cp);
         }
-#endif
+~endif
 
         if (strcmp(prop->getName(),"Points") == 0) {
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
@@ -266,36 +266,36 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
                 return;
             std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
             cp->matrix.setNum(points.size());
             SbMatrix* matrices = cp->matrix.startEditing();
             int idx = 0;
-#else
+~else
             // Note: Points and Normals are always updated together
             Gui::coinRemoveAllChildren(pShapeSep);
-#endif
+~endif
 
             for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
                 SbVec3f base(p->x, p->y, p->z);
                 SbVec3f dir(n->x, n->y, n->z);
                 SbRotation rot(SbVec3f(0,-1,0), dir);
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
                 SbMatrix m;
                 m.setTransform(base, rot, SbVec3f(1,1,1));
                 matrices[idx] = m;
                 idx++;
-#else
+~else
                 SoSeparator* sep = new SoSeparator();
                 createPlacement(sep, base, rot);
                 createFixed(sep, scaledheight, scaledwidth); //OvG: Scaling
                 pShapeSep->addChild(sep);
-#endif
+~endif
                 n++;
             }
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             cp->matrix.finishEditing();
-#endif
+~endif
         }
     }
 

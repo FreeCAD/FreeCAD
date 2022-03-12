@@ -41,19 +41,19 @@
 
 // Changes: Use Webkit engine instead of SVG renderer
 
-#include "qsvgiohandler.h"
+~include "qsvgiohandler.h"
 
-#ifndef QT_NO_SVGRENDERER
+~ifndef QT_NO_SVGRENDERER
 
-#include "qwebview.h"
-#include "qxmlstream.h"
-#include "qwebframe.h"
-#include "qimage.h"
-#include "qpixmap.h"
-#include "qpainter.h"
-#include "qvariant.h"
-#include "qbuffer.h"
-#include "qdebug.h"
+~include "qwebview.h"
+~include "qxmlstream.h"
+~include "qwebframe.h"
+~include "qimage.h"
+~include "qpixmap.h"
+~include "qpainter.h"
+~include "qvariant.h"
+~include "qbuffer.h"
+~include "qdebug.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -90,10 +90,10 @@ bool QSvgIOHandlerPrivate::load(QIODevice *device)
     if (q->format().isEmpty())
         q->canRead();
 
-    // # The SVG renderer doesn't handle trailing, unrelated data, so we must
+    // ~ The SVG renderer doesn't handle trailing, unrelated data, so we must
     // assume that all available data in the device is to be read.
     bool res = false;
-#if 0
+~if 0
     QBuffer *buf = qobject_cast<QBuffer *>(device);
     if (buf) {
         const QByteArray &ba = buf->data();
@@ -110,7 +110,7 @@ bool QSvgIOHandlerPrivate::load(QIODevice *device)
         defaultSize = QSize(r.viewBox().width(), r.viewBox().height());
         loaded = true;
     }
-#else
+~else
     webView.setContent(device->readAll(), QString::fromLatin1("image/svg+xml"));
     QString node = QString::fromLatin1("document.rootElement.nodeName");
     QString root = webView.page()->mainFrame()->evaluateJavaScript(node).toString();
@@ -125,7 +125,7 @@ bool QSvgIOHandlerPrivate::load(QIODevice *device)
         loaded = true;
         res = true;
     }
-#endif
+~endif
 
     return loaded;
 }
@@ -202,9 +202,9 @@ bool QSvgIOHandler::read(QImage *image)
         if (!finalSize.isEmpty()) {
             image->fill(d->backColor.rgba());
             QPainter p(image);
-#if 0
+~if 0
             d->r.render(&p, bounds);
-#else
+~else
             //qreal xs = size.isValid() ? size.width() / ww : 1.0;
             //qreal ys = size.isValid() ? size.height() / hh : 1.0;
             //p.scale(xs, ys);
@@ -215,7 +215,7 @@ bool QSvgIOHandler::read(QImage *image)
             p.setRenderHint(QPainter::SmoothPixmapTransform);
             p.setOpacity(0); // important to keep transparent background
             d->webView.page()->mainFrame()->render(&p);
-#endif
+~endif
             p.end();
         }
         d->readDone = true;
@@ -302,4 +302,4 @@ bool QSvgIOHandler::canRead(QIODevice *device)
 
 QT_END_NAMESPACE
 
-#endif // QT_NO_SVGRENDERER
+~endif // QT_NO_SVGRENDERER

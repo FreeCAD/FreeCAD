@@ -20,64 +20,64 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#if defined(__MINGW32__)
-# define WNT // avoid conflict with GUID
-#endif
-#ifndef _PreComp_
-# include <gp_Trsf.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <XCAFDoc_GraphNode.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_Tool.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_ColorRGBA.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <Interface_Static.hxx>
-# include <TDF_AttributeSequence.hxx>
-# include <TopTools_MapOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~if defined(__MINGW32__)
+~ define WNT // avoid conflict with GUID
+~endif
+~ifndef _PreComp_
+~ include <gp_Trsf.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <Standard_Failure.hxx>
+~ include <Standard_Version.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <XCAFDoc_DocumentTool.hxx>
+~ include <XCAFDoc_ShapeTool.hxx>
+~ include <XCAFDoc_ColorTool.hxx>
+~ include <XCAFDoc_Location.hxx>
+~ include <XCAFDoc_GraphNode.hxx>
+~ include <TDF_Label.hxx>
+~ include <TDF_Tool.hxx>
+~ include <TDF_LabelSequence.hxx>
+~ include <TDF_ChildIterator.hxx>
+~ include <TDataStd_Name.hxx>
+~ include <Quantity_ColorRGBA.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <Interface_Static.hxx>
+~ include <TDF_AttributeSequence.hxx>
+~ include <TopTools_MapOfShape.hxx>
+~endif
 
-#include <XCAFDoc_ShapeMapTool.hxx>
+~include <XCAFDoc_ShapeMapTool.hxx>
 
-#include <boost/format.hpp>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Part.h>
-#include <App/Link.h>
-#include <App/GroupExtension.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FeatureCompound.h>
-#include "ImportOCAF2.h"
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
+~include <boost/format.hpp>
+~include <boost/regex.hpp>
+~include <boost/algorithm/string.hpp>
+~include <Base/Parameter.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <App/Part.h>
+~include <App/Link.h>
+~include <App/GroupExtension.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/FeatureCompound.h>
+~include "ImportOCAF2.h"
+~include <Mod/Part/App/ProgressIndicator.h>
+~include <Mod/Part/App/ImportIges.h>
+~include <Mod/Part/App/ImportStep.h>
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectGroup.h>
 
-#if OCC_VERSION_HEX >= 0x070500
+~if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
-#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
-#else
-#   define OCC_COLOR_SPACE Quantity_TOC_RGB
-#endif
+~   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+~else
+~   define OCC_COLOR_SPACE Quantity_TOC_RGB
+~endif
 
 FC_LOG_LEVEL_INIT("Import",true,true)
 
@@ -103,7 +103,7 @@ static inline Quantity_ColorRGBA convertColor(const App::Color &c)
 static inline std::ostream& operator<<(std::ostream& os, const Quantity_ColorRGBA &c) {
     App::Color color = convertColor(c);
     auto toHex = [](float v) {return boost::format("%02X") % static_cast<int>(v*255);};
-    return os << "#" << toHex(color.r) << toHex(color.g) << toHex(color.b) << toHex(color.a);
+    return os << "~" << toHex(color.r) << toHex(color.g) << toHex(color.b) << toHex(color.a);
 }
 
 static std::string labelName(TDF_Label label) {
@@ -310,7 +310,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
     // shared instances, or multiple hierarchies, those information are lost
     // when saved to STEP, everything become flat and duplicated. So the code
     // below is not necessary.
-#if 0
+~if 0
     auto baseShape = shape.Located(TopLoc_Location());
     auto it = myShapes.find(baseShape);
     if(it!=myShapes.end()) {
@@ -320,7 +320,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
         setPlacement(&link->Placement,shape);
         return link;
     }
-#endif
+~endif
     std::vector<App::DocumentObject*> objs;
 
     if(shape.ShapeType() == TopAbs_COMPOUND) {
@@ -1143,10 +1143,10 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*> &objs, const c
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
 
-#if OCC_VERSION_HEX >= 0x070200
+~if OCC_VERSION_HEX >= 0x070200
     // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
     aShapeTool->UpdateAssemblies();
-#endif
+~endif
 }
 
 TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj, 

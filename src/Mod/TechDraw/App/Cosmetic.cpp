@@ -20,55 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <cmath>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Circ.hxx>
-#include <Geom_Circle.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <Precision.hxx>
-#endif  // #ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <cmath>
+~include <gp_Pnt.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Circ.hxx>
+~include <Geom_Circle.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <BRepBndLib.hxx>
+~include <Bnd_Box.hxx>
+~include <Precision.hxx>
+~endif  // ~ifndef _PreComp_
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Vector3D.h>
-#include <Base/Writer.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Matrix.h>
+~include <Base/Parameter.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
+~include <Base/Vector3D.h>
+~include <Base/Writer.h>
 
-#include <App/Application.h>
-#include <App/Material.h>
+~include <App/Application.h>
+~include <App/Material.h>
 
-#include <Mod/TechDraw/App/GeomFormatPy.h>
-#include <Mod/TechDraw/App/CenterLinePy.h>
-#include <Mod/TechDraw/App/CosmeticEdgePy.h>
-#include <Mod/TechDraw/App/CosmeticVertexPy.h>
+~include <Mod/TechDraw/App/GeomFormatPy.h>
+~include <Mod/TechDraw/App/CenterLinePy.h>
+~include <Mod/TechDraw/App/CosmeticEdgePy.h>
+~include <Mod/TechDraw/App/CosmeticVertexPy.h>
 
-#include "DrawUtil.h"
-#include "Preferences.h"
-#include "LineGroup.h"
-#include "GeometryObject.h"
-#include "Geometry.h"
-#include "DrawViewPart.h"
+~include "DrawUtil.h"
+~include "Preferences.h"
+~include "LineGroup.h"
+~include "GeometryObject.h"
+~include "Geometry.h"
+~include "DrawViewPart.h"
 
-#include "Cosmetic.h"
+~include "Cosmetic.h"
 
 using namespace TechDraw;
 using namespace std;
 
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
+~define GEOMETRYEDGE 0
+~define COSMETICEDGE 1
+~define CENTERLINE   2
 
 LineFormat::LineFormat()
 {
@@ -1023,7 +1023,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     // However, we don't know which point should be l1p1 to get a geometrically correct result, see
     // https://wiki.freecadweb.org/File:TD-CenterLineFlip.png for an illustration of the problem.
     // Thus we test this by a circulation test, see this post for a brief explanation:
-    // https://forum.freecadweb.org/viewtopic.php?p=505733#p505615
+    // https://forum.freecadweb.org/viewtopic.php?p=505733~p505615
     if (DrawUtil::circulation(l1p1, l1p2, l2p1) != DrawUtil::circulation(l1p2, l2p2, l2p1)) {
         Base::Vector3d temp; // reverse line 1
         temp = l1p1;

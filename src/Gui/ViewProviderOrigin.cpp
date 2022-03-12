@@ -21,23 +21,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoGroup.h>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include "Base/Console.h"
-#include <Base/Vector3D.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include "Base/Console.h"
+~include <Base/Vector3D.h>
 
-#include "ViewProviderOrigin.h"
-#include "Application.h"
-#include "Command.h"
-#include "Document.h"
-#include "ViewProviderLine.h"
-#include "ViewProviderPlane.h"
+~include "ViewProviderOrigin.h"
+~include "Application.h"
+~include "Command.h"
+~include "Document.h"
+~include "ViewProviderLine.h"
+~include "ViewProviderPlane.h"
 
 
 using namespace Gui;

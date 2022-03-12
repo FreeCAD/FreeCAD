@@ -16,9 +16,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <iostream>
-#include <QApplication>
-#include "imageconv.h"
+~include <iostream>
+~include <QApplication>
+~include "imageconv.h"
 
 using namespace std;
 

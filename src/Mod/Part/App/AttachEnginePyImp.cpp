@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_Failure.hxx>
+~endif
 
-#include "Mod/Part/App/Attacher.h"
-#include <Base/PlacementPy.h>
-#include <App/DocumentObjectPy.h>
-#include "AttachExtensionPy.h"
-#include "TopoShapePy.h"
+~include "Mod/Part/App/Attacher.h"
+~include <Base/PlacementPy.h>
+~include <App/DocumentObjectPy.h>
+~include "AttachExtensionPy.h"
+~include "TopoShapePy.h"
 
-#include "OCCError.h"
+~include "OCCError.h"
 
 // inclusion of the generated files (generated out of AttachableObjectPy.xml)
-#include "AttachEnginePy.h"
-#include "AttachEnginePy.cpp"
+~include "AttachEnginePy.h"
+~include "AttachEnginePy.cpp"
 
 using namespace Attacher;
 
@@ -104,7 +104,7 @@ Py::String AttachEnginePy::getAttacherType(void) const
   * code (re-throws the exception converted to Py::Exception). It is a helper
   * to avoid repeating the same error handling code over and over again.
   */
-#define ATTACHERPY_STDCATCH_ATTR \
+~define ATTACHERPY_STDCATCH_ATTR \
     catch (Standard_Failure& e) {\
         throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());\
     } catch (Base::Exception &e) {\
@@ -244,7 +244,7 @@ Py::List AttachEnginePy::getImplementedModes(void) const
   * (returns NULL if an exception is caught). It is a helper to avoid repeating
   * the same error handling code over and over again.
   */
-#define ATTACHERPY_STDCATCH_METH \
+~define ATTACHERPY_STDCATCH_METH \
     catch (Standard_Failure& e) {\
         PyErr_SetString(Part::PartExceptionOCCError, e.GetMessageString());\
         return NULL;\

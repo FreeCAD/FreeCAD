@@ -22,11 +22,11 @@
 
 //  SMESH SMDS : implementation of Salome mesh data structure
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_IteratorOfElements.hxx"
 
 bool SMDS_IteratorOfElements::subMore()
 {

@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopExp_Explorer.hxx>
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <TopExp_Explorer.hxx>
+~ include <QMessageBox>
+~endif
 
-#include "Tessellation.h"
-#include "ui_Tessellation.h"
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Mod/Mesh/Gui/ViewProvider.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include "Tessellation.h"
+~include "ui_Tessellation.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Part/App/BodyBase.h>
+~include <Mod/Mesh/Gui/ViewProvider.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
 using namespace MeshPartGui;
 
@@ -81,12 +81,12 @@ Tessellation::Tessellation(QWidget* parent)
     ui->comboFineness->setCurrentIndex(2);
     on_comboFineness_currentIndexChanged(2);
 
-#if !defined (HAVE_MEFISTO)
+~if !defined (HAVE_MEFISTO)
     ui->stackedWidget->setTabEnabled(Mefisto, false);
-#endif
-#if !defined (HAVE_NETGEN)
+~endif
+~if !defined (HAVE_NETGEN)
     ui->stackedWidget->setTabEnabled(Netgen, false);
-#endif
+~endif
 
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh, Part, PartGui");
     try {
@@ -636,4 +636,4 @@ bool TaskTessellation::reject()
     return true;
 }
 
-#include "moc_Tessellation.cpp"
+~include "moc_Tessellation.cpp"

@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif //_MSC_VER
-#endif
+~ifndef _PreComp_
+~ ifdef _MSC_VER
+~  define _USE_MATH_DEFINES
+~  include <cmath>
+~ endif //_MSC_VER
+~endif
 
-#include <Mod/TechDraw/App/CosmeticExtension.h>
-#include "ViewProviderCosmeticExtension.h"
+~include <Mod/TechDraw/App/CosmeticExtension.h>
+~include "ViewProviderCosmeticExtension.h"
 
 using namespace TechDrawGui;
 

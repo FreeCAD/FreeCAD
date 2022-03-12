@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <QButtonGroup>
-# include <QMessageBox>
-# include <QTextStream>
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <QButtonGroup>
+~ include <QMessageBox>
+~ include <QTextStream>
+~ include <sstream>
+~endif
 
-#include "ViewProviderExt.h"
-#include "ui_TaskShapeBuilder.h"
-#include "TaskShapeBuilder.h"
+~include "ViewProviderExt.h"
+~include "ui_TaskShapeBuilder.h"
+~include "TaskShapeBuilder.h"
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;
@@ -608,4 +608,4 @@ bool TaskShapeBuilder::reject()
     return widget->reject();
 }
 
-#include "moc_TaskShapeBuilder.cpp"
+~include "moc_TaskShapeBuilder.cpp"

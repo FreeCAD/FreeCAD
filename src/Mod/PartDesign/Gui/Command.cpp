@@ -21,53 +21,53 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <QMessageBox>
-# include <TopExp_Explorer.hxx>
-# include <TopLoc_Location.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRep_Tool.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <GeomLib_IsPlanarSurface.hxx>
+~ include <QMessageBox>
+~ include <TopExp_Explorer.hxx>
+~ include <TopLoc_Location.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Face.hxx>
+~endif
 
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Base/Tools.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/CommandT.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureGroove.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/PartDesign/App/FeatureRevolution.h>
-#include <Mod/PartDesign/App/FeatureTransformed.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/FeatureDressUp.h>
-#include <Mod/PartDesign/App/ShapeBinder.h>
+~include <App/Origin.h>
+~include <App/Part.h>
+~include <Base/Tools.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/CommandT.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureGroove.h>
+~include <Mod/PartDesign/App/FeatureMultiTransform.h>
+~include <Mod/PartDesign/App/FeatureRevolution.h>
+~include <Mod/PartDesign/App/FeatureTransformed.h>
+~include <Mod/PartDesign/App/DatumLine.h>
+~include <Mod/PartDesign/App/DatumPlane.h>
+~include <Mod/PartDesign/App/DatumPoint.h>
+~include <Mod/PartDesign/App/FeatureDressUp.h>
+~include <Mod/PartDesign/App/ShapeBinder.h>
 
-#include "DlgActiveBody.h"
-#include "ReferenceSelection.h"
-#include "TaskFeaturePick.h"
-#include "Utils.h"
-#include "WorkflowManager.h"
-#include "ViewProvider.h"
-#include "ViewProviderBody.h"
+~include "DlgActiveBody.h"
+~include "ReferenceSelection.h"
+~include "TaskFeaturePick.h"
+~include "Utils.h"
+~include "WorkflowManager.h"
+~include "ViewProvider.h"
+~include "ViewProviderBody.h"
 
 
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
-#include "ui_DlgReference.h"
+~include "ui_DlgReference.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -435,9 +435,9 @@ void CmdPartDesignClone::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
             (Part::Feature::getClassTypeId());
     if (objs.size() == 1) {
-        // As suggested in https://forum.freecadweb.org/viewtopic.php?f=3&t=25265&p=198547#p207336
+        // As suggested in https://forum.freecadweb.org/viewtopic.php?f=3&t=25265&p=198547~p207336
         // put the clone into its own new body.
-        // This also fixes bug #3447 because the clone is a PD feature and thus
+        // This also fixes bug ~3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
         auto obj = objs[0];
@@ -865,7 +865,7 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     if (!obj)
         obj = pcActiveBody;
 
-    // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
+    // Do this before calling setEdit to avoid to override the 'Shape preview' mode (~0003621)
     if (obj) {
         cmd->copyVisual(Feat, "ShapeColor", obj);
         cmd->copyVisual(Feat, "LineColor", obj);
@@ -874,7 +874,7 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
         cmd->copyVisual(Feat, "DisplayMode", obj);
     }
 
-    // #0001721: use '0' as edit value to avoid switching off selection in
+    // ~0001721: use '0' as edit value to avoid switching off selection in
     // ViewProviderGeometryObject::setEditViewer
     PartDesignGui::setEdit(Feat,pcActiveBody);
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
@@ -983,7 +983,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
 
-        // Related to #0002760: when an operation can't be performed due to a broken
+        // Related to ~0002760: when an operation can't be performed due to a broken
         // profile then make sure that it is recomputed when cancelling the operation
         // otherwise it might be impossible to see that it's broken.
         if (feature->isTouched())
@@ -2557,12 +2557,12 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         // and causes to pop up the migration dialog later when adding new features
         // to the body.
         // Additionally it creates the error message: "Links go out of the allowed scope"
-        // #0003509
-#if 0
+        // ~0003509
+~if 0
         // Remove the Transformed feature from the Body
         if (pcActiveBody)
             FCMD_OBJ_CMD(pcActiveBody,"removeObject("<<getObjectCmd(trFeat)<<")");
-#endif
+~endif
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform",pcActiveBody);

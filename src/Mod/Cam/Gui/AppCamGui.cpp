@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/WidgetFactory.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/WidgetFactory.h>
 
-#include "Workbench.h"
+~include "Workbench.h"
 
 // use a different name to CreateCommand()
 void CreateCamCommands(void);

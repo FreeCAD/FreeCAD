@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-#include <stdexcept>
-#endif
+~ifndef _PreComp_
+~include <fstream>
+~include <sstream>
+~include <iomanip>
+~include <stdexcept>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include "Preferences.h"
-#include "LineGroup.h"
+~include "Preferences.h"
+~include "LineGroup.h"
 
 using namespace TechDraw;
 

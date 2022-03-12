@@ -20,68 +20,68 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRep_Builder.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <Precision.hxx>
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPaintDevice>
-#include <QSvgGenerator>
-#include <QRegExp>
-#include <QTextDocument>
-#include <QTextDocumentFragment>
-#include <QTextFrame>
-#include <QTextBlock>
-#include <QTextCursor>
-#include <QDialog>
+~include <QGraphicsScene>
+~include <QGraphicsSceneMouseEvent>
+~include <QGraphicsItem>
+~include <QPainter>
+~include <QPainterPath>
+~include <QPaintDevice>
+~include <QSvgGenerator>
+~include <QRegExp>
+~include <QTextDocument>
+~include <QTextDocumentFragment>
+~include <QTextFrame>
+~include <QTextBlock>
+~include <QTextCursor>
+~include <QDialog>
 
 
-# include <math.h>
-#endif
+~ include <math.h>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-//#include <Mod/TechDraw/App/Preferences.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
+//~include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "QGIArrow.h"
-#include "ViewProviderRichAnno.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGIPrimPath.h"
-#include "QGEPath.h"
-#include "QGMText.h"
-#include "QGIView.h"
-#include "QGCustomText.h"
-#include "QGCustomRect.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "PreferencesGui.h"
+~include "QGIArrow.h"
+~include "ViewProviderRichAnno.h"
+~include "MDIViewPage.h"
+~include "DrawGuiUtil.h"
+~include "QGVPage.h"
+~include "QGIPrimPath.h"
+~include "QGEPath.h"
+~include "QGMText.h"
+~include "QGIView.h"
+~include "QGCustomText.h"
+~include "QGCustomRect.h"
 
-#include "QGIRichAnno.h"
-#include "mrichtextedit.h"
+~include "QGIRichAnno.h"
+~include "mrichtextedit.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -394,4 +394,4 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>
+~include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>

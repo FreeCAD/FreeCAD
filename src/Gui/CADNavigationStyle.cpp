@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include "InventorAll.h"
-# include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include "InventorAll.h"
+~ include <QApplication>
+~endif
 
-#include "NavigationStyle.h"
-#include "View3DInventorViewer.h"
+~include "NavigationStyle.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;
@@ -66,16 +66,16 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
 
 SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 {
-#if 0
+~if 0
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
-#else
-    // Switch off viewing mode (Bug #0000911)
+~else
+    // Switch off viewing mode (Bug ~0000911)
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
         this->setViewing(false); // by default disable viewing mode to render the scene
-#endif
+~endif
 
     const SoType type(ev->getTypeId());
 

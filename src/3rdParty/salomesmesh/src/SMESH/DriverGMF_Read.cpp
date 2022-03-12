@@ -23,22 +23,22 @@
 // Created   : Mon Sep 17 17:03:02 2012
 // Author    : Edward AGAPOV (eap)
 
-#include "DriverGMF_Read.hxx"
-#include "DriverGMF.hxx"
+~include "DriverGMF_Read.hxx"
+~include "DriverGMF.hxx"
 
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_TypeDefs.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_TypeDefs.hxx"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
 extern "C"
 {
-#include "libmesh5.h"
+~include "libmesh5.h"
 }
 
-#include <stdarg.h>
+~include <stdarg.h>
 
 // --------------------------------------------------------------------------------
 DriverGMF_Read::DriverGMF_Read():

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <cassert>
-#include "DualQuaternion.h"
+~include <cassert>
+~include "DualQuaternion.h"
 
 
 Base::DualQuat Base::operator+(Base::DualQuat a, Base::DualQuat b)

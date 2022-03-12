@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cstdlib>
-#endif
+~ifndef _PreComp_
+~ include <cstdlib>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include "ComplexGeoData.h"
-#include <Base/BoundBox.h>
-#include <Base/Placement.h>
-#include <Base/Rotation.h>
+~include "ComplexGeoData.h"
+~include <Base/BoundBox.h>
+~include <Base/Placement.h>
+~include <Base/Rotation.h>
 
 
 using namespace Data;

@@ -20,41 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/fields/SoSFImage.h>
-# include <Inventor/nodes/SoNode.h>
-# include <QBuffer>
-# include <QDateTime>
-# include <QFile>
-# include <QImage>
-# include <QImageWriter>
-# include <QPainter>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/elements/SoGLCacheContextElement.h>
+~ include <Inventor/fields/SoSFImage.h>
+~ include <Inventor/nodes/SoNode.h>
+~ include <QBuffer>
+~ include <QDateTime>
+~ include <QFile>
+~ include <QImage>
+~ include <QImageWriter>
+~ include <QPainter>
+~endif
 
-#if !defined(FC_OS_MACOSX)
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#endif
+~if !defined(FC_OS_MACOSX)
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ include <GL/glext.h>
+~endif
 
 //gcc
-# include <iomanip>
-# include <ios>
-# include <sstream>
+~ include <iomanip>
+~ include <ios>
+~ include <sstream>
 
-#include <Base/FileInfo.h>
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <App/Application.h>
+~include <Base/FileInfo.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <App/Application.h>
 
-#include "SoFCOffscreenRenderer.h"
-#include "BitmapFactory.h"
+~include "SoFCOffscreenRenderer.h"
+~include "BitmapFactory.h"
 
-#include <QOffscreenSurface>
-#include <QOpenGLContext>
+~include <QOffscreenSurface>
+~include <QOpenGLContext>
 
 using namespace Gui;
 using namespace std;
@@ -197,11 +197,11 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         }
         else if (file.hasExtension("EPS") || file.hasExtension("PS")) {
             // Any format which is supported by Coin only
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
-#else
+~else
             FILE* fd = fopen(filename, "w");
-#endif
+~endif
             bool ok = writeToPostScript(fd);
             fclose(fd);
             if (!ok)
@@ -209,11 +209,11 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         }
         else if (file.hasExtension("RGB") || file.hasExtension("SGI")) {
             // Any format which is supported by Coin only
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
-#else
+~else
             FILE* fd = fopen(filename, "w");
-#endif
+~endif
             bool ok = writeToRGB(fd);
             fclose(fd);
             if (!ok)
@@ -229,17 +229,17 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
     // get all supported formats by Coin3D
     int num = getNumWriteFiletypes();
     for (int i=0; i < num; i++) {
-#if   (COIN_MAJOR_VERSION < 2) // Coin3D <= 1.x
+~if   (COIN_MAJOR_VERSION < 2) // Coin3D <= 1.x
         SbList<SbName> extlist;
-#elif (COIN_MAJOR_VERSION < 3) // Coin3D <= 2.x
-# if  (COIN_MINOR_VERSION < 3) // Coin3D <= 2.2.x
+~elif (COIN_MAJOR_VERSION < 3) // Coin3D <= 2.x
+~ if  (COIN_MINOR_VERSION < 3) // Coin3D <= 2.2.x
         SbList<SbName> extlist;
-# else                         // Coin3D >= 2.3.x
+~ else                         // Coin3D >= 2.3.x
         SbPList extlist;
-# endif
-#else                          // Coin3D >= 3.x
+~ endif
+~else                          // Coin3D >= 3.x
         SbPList extlist;
-#endif
+~endif
 
         SbString fullname, description;
         getWriteFiletypeInfo(i, extlist, fullname, description);
@@ -390,8 +390,8 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
 
 // ---------------------------------------------------------------
 
-#define PRIVATE(p) p
-#define PUBLIC(p) p
+~define PRIVATE(p) p
+~define PUBLIC(p) p
 
 void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
                                  SoGLRenderAction * glrenderaction)
@@ -752,5 +752,5 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
     return formats;
 }
 
-#undef PRIVATE
-#undef PUBLIC
+~undef PRIVATE
+~undef PUBLIC

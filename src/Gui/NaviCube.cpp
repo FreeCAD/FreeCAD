@@ -21,39 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <float.h>
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/events/SoEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-#include <QApplication>
-#include <QCursor>
-#include <QImage>
-#include <QMenu>
-#include <QOpenGLTexture>
-#include <QPainterPath>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <float.h>
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/events/SoEvent.h>
+~ include <Inventor/events/SoLocation2Event.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~include <QApplication>
+~include <QCursor>
+~include <QImage>
+~include <QMenu>
+~include <QOpenGLTexture>
+~include <QPainterPath>
+~endif
 
-#include <Base/Tools.h>
-#include <Eigen/Dense>
+~include <Base/Tools.h>
+~include <Eigen/Dense>
 
-#include "NaviCube.h"
-#include "Application.h"
-#include "Command.h"
-#include "MainWindow.h"
+~include "NaviCube.h"
+~include "Application.h"
+~include "Command.h"
+~include "MainWindow.h"
 
-#include "View3DInventorViewer.h"
-#include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "View3DInventor.h"
 
 
 using namespace Eigen;
@@ -1446,9 +1446,9 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		case TEX_BOTTOM_LEFT_FRONT:
 			viewRot = setView(rot - 90, 90 + tilt);
 			// we have 3 possible end states:
-			// - z-axis is not rotated larger than 120 ° from (0, 1, 0) -> we are already there
-			// - y-axis is not rotated larger than 120 ° from (0, 1, 0)
-			// - x-axis is not rotated larger than 120 ° from (0, 1, 0)
+			// - z-axis is not rotated larger than 120 ï¿½ from (0, 1, 0) -> we are already there
+			// - y-axis is not rotated larger than 120 ï¿½ from (0, 1, 0)
+			// - x-axis is not rotated larger than 120 ï¿½ from (0, 1, 0)
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
 					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));

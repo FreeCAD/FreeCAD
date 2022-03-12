@@ -34,12 +34,12 @@
   Adjust how QuarterWidget reacts to alt key events
  */
 
-#include <QCoreApplication>
-#include <QFocusEvent>
-#include <QKeyEvent>
+~include <QCoreApplication>
+~include <QFocusEvent>
+~include <QKeyEvent>
 
-#include "InteractionMode.h"
-#include "QuarterWidget.h"
+~include "InteractionMode.h"
+~include "QuarterWidget.h"
 
 
 using namespace SIM::Coin3D::Quarter;

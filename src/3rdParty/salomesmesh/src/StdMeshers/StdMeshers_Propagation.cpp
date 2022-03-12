@@ -24,23 +24,23 @@
 //  File   : StdMeshers_Propagation.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Propagation.hxx"
+~include "StdMeshers_Propagation.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include "SMDS_SetIterator.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <BRepTools_WireExplorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
+~include <BRepTools_WireExplorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
 
-#define DBGMSG(txt) \
+~define DBGMSG(txt) \
   //  cout << txt << endl;
 
 using namespace std;
@@ -354,7 +354,7 @@ namespace {
           if ( anOppE.IsNull() )
             continue;
           if ( nbSide != 4 ) {
-            DBGMSG( nbSide << " sides in wire #" << mesh->GetMeshDS()->ShapeToIndex( itA.Value() ) << " - SKIP" );
+            DBGMSG( nbSide << " sides in wire ~" << mesh->GetMeshDS()->ShapeToIndex( itA.Value() ) << " - SKIP" );
             continue;
           }
         }

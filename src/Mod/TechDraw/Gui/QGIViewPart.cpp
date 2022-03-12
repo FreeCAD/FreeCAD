@@ -20,77 +20,77 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <cmath>
-#include <qmath.h>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QTextOption>
-#include <QBitmap>
-#include <QImage>
-#include <QString>
-#include <QSvgRenderer>
-#endif // #ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <cmath>
+~include <qmath.h>
+~include <QAction>
+~include <QApplication>
+~include <QContextMenuEvent>
+~include <QGraphicsScene>
+~include <QMenu>
+~include <QMouseEvent>
+~include <QGraphicsSceneHoverEvent>
+~include <QPainterPathStroker>
+~include <QPainter>
+~include <QPainterPath>
+~include <QTextOption>
+~include <QBitmap>
+~include <QImage>
+~include <QString>
+~include <QSvgRenderer>
+~endif // ~ifndef _PreComp_
 
-#include <chrono>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Vector3D.h>
-#include <Gui/ViewProvider.h>
+~include <chrono>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Vector3D.h>
+~include <Gui/ViewProvider.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
-//#include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawGeomHatch.h>
+~include <Mod/TechDraw/App/DrawViewDetail.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/Cosmetic.h>
+//~include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "QGIFace.h"
-#include "QGIEdge.h"
-#include "QGIVertex.h"
-#include "QGICMark.h"
-#include "QGISectionLine.h"
-#include "QGICenterLine.h"
-#include "QGIHighlight.h"
-#include "QGCustomBorder.h"
-#include "QGCustomLabel.h"
-#include "QGCustomRect.h"
-#include "QGIMatting.h"
-#include "QGIViewPart.h"
-#include "ViewProviderGeomHatch.h"
-#include "ViewProviderHatch.h"
-#include "ViewProviderViewPart.h"
-#include "MDIViewPage.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "PreferencesGui.h"
+~include "QGIFace.h"
+~include "QGIEdge.h"
+~include "QGIVertex.h"
+~include "QGICMark.h"
+~include "QGISectionLine.h"
+~include "QGICenterLine.h"
+~include "QGIHighlight.h"
+~include "QGCustomBorder.h"
+~include "QGCustomLabel.h"
+~include "QGCustomRect.h"
+~include "QGIMatting.h"
+~include "QGIViewPart.h"
+~include "ViewProviderGeomHatch.h"
+~include "ViewProviderHatch.h"
+~include "ViewProviderViewPart.h"
+~include "MDIViewPage.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace std;
 
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE   2
+~define GEOMETRYEDGE 0
+~define COSMETICEDGE 1
+~define CENTERLINE   2
 
 
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
@@ -465,7 +465,7 @@ void QGIViewPart::drawViewPart()
     removePrimitives();                      //clean the slate
     removeDecorations();
 
-#if MOD_TECHDRAW_HANDLE_FACES
+~if MOD_TECHDRAW_HANDLE_FACES
     if (viewPart->handleFaces()) {
         // Draw Faces
         std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
@@ -531,7 +531,7 @@ void QGIViewPart::drawViewPart()
             newFace->draw();
         }
     }
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+~endif //~if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Edges
     QColor edgeColor = PreferencesGui::normalQColor();

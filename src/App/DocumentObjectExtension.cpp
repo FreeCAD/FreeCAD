@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DocumentObjectExtension.h"
-#include "DocumentObjectExtensionPy.h"
-#include "DocumentObject.h"
-#include "ExtensionContainer.h"
+~include "DocumentObjectExtension.h"
+~include "DocumentObjectExtensionPy.h"
+~include "DocumentObject.h"
+~include "ExtensionContainer.h"
 
 using namespace App;
 

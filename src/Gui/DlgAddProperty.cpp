@@ -20,20 +20,20 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include "ui_DlgAddProperty.h"
+~include "ui_DlgAddProperty.h"
 
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include "MainWindow.h"
-#include <ViewProviderDocumentObject.h>
-#include "DlgAddProperty.h"
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include "MainWindow.h"
+~include <ViewProviderDocumentObject.h>
+~include "DlgAddProperty.h"
 
 
 using namespace Gui;
@@ -149,4 +149,4 @@ void DlgAddProperty::accept()
     QDialog::accept();
 }
 
-#include "moc_DlgAddProperty.cpp"
+~include "moc_DlgAddProperty.cpp"

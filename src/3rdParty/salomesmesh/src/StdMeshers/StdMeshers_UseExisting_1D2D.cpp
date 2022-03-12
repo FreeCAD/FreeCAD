@@ -23,10 +23,10 @@
 // Created   : Fri Oct 20 11:37:07 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_UseExisting_1D2D.hxx"
+~include "StdMeshers_UseExisting_1D2D.hxx"
 
-#include "SMESH_Mesh.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_subMesh.hxx"
 
 //=======================================================================
 //function : StdMeshers_UseExisting_1D

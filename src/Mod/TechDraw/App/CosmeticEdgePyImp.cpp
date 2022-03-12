@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-# include <boost/uuid/uuid_io.hpp>
-#endif
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <gp_Circ.hxx>
-#include <Geom_Circle.hxx>
+~ include <boost/uuid/uuid_io.hpp>
+~endif
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <gp_Circ.hxx>
+~include <Geom_Circle.hxx>
 
 
-#include <App/Material.h>
+~include <App/Material.h>
 
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/Console.h>
+~include <Base/Vector3D.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include "DrawUtil.h"
-#include "Geometry.h"
-#include "Cosmetic.h"
-#include "CosmeticEdgePy.h"
-#include "CosmeticEdgePy.cpp"
+~include "DrawUtil.h"
+~include "Geometry.h"
+~include "Cosmetic.h"
+~include "CosmeticEdgePy.h"
+~include "CosmeticEdgePy.cpp"
 
 using namespace TechDraw;
 

@@ -66,14 +66,14 @@
   following code:
 
   \code
-  #include <QtGui/QApplication>
+  ~include <QtGui/QApplication>
 
-  #include <Inventor/nodes/SoBaseColor.h>
-  #include <Inventor/nodes/SoCone.h>
-  #include <Inventor/nodes/SoSeparator.h>
+  ~include <Inventor/nodes/SoBaseColor.h>
+  ~include <Inventor/nodes/SoCone.h>
+  ~include <Inventor/nodes/SoSeparator.h>
 
-  #include <Quarter/Quarter.h>
-  #include <Quarter/QuarterWidget.h>
+  ~include <Quarter/Quarter.h>
+  ~include <Quarter/QuarterWidget.h>
 
   using namespace SIM::Coin3D::Quarter;
 
@@ -140,14 +140,14 @@
 //  \subpage examiner
 //*/
 
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInteraction.h>
-#include <Inventor/nodekits/SoNodeKit.h>
+~include <Inventor/SoDB.h>
+~include <Inventor/SoInteraction.h>
+~include <Inventor/nodekits/SoNodeKit.h>
 
-#include "SensorManager.h"
+~include "SensorManager.h"
 
-#include "Quarter.h"
-#include "QuarterP.h"
+~include "Quarter.h"
+~include "QuarterP.h"
 
 
 using namespace SIM::Coin3D::Quarter;

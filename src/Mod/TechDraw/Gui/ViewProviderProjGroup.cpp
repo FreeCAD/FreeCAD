@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-# include <QMenu>
-# include <QMessageBox>
-# include <QTextStream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QTextStream>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+~include <App/DocumentObject.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawViewDetail.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
 
-#include "TaskProjGroup.h"
-#include "ViewProviderProjGroup.h"
+~include "TaskProjGroup.h"
+~include "ViewProviderProjGroup.h"
 
 using namespace TechDrawGui;
 

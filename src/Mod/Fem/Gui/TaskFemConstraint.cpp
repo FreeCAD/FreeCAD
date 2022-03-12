@@ -22,46 +22,46 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-# include <QAction>
-# include <QKeyEvent>
-# include <QListWidget>
-# include <QRegExp>
-# include <QTextStream>
-# include <QMessageBox>
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QListWidget>
+~ include <QRegExp>
+~ include <QTextStream>
+~ include <QMessageBox>
 
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Ax1.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <Geom_Line.hxx>
+~ include <gp_Lin.hxx>
 
-# include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
-#endif
+~ include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
+~endif
 
-#include "ui_TaskFemConstraint.h"
-#include "TaskFemConstraint.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/Fem/App/FemConstraint.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "ui_TaskFemConstraint.h"
+~include "TaskFemConstraint.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Mod/Fem/App/FemConstraint.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 
 using namespace FemGui;
@@ -217,10 +217,10 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 
     deleteAction = new QAction(tr("Delete"), this);
     deleteAction->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -301,4 +301,4 @@ bool TaskDlgFemConstraint::reject()
 }
 
 
-#include "moc_TaskFemConstraint.cpp"
+~include "moc_TaskFemConstraint.cpp"

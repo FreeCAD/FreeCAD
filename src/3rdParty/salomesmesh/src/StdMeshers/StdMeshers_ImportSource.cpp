@@ -24,21 +24,21 @@
 //  File   : StdMeshers_ImportSource1D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_ImportSource.hxx"
+~include "StdMeshers_ImportSource.hxx"
 
-#include "SMESHDS_GroupOnGeom.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
+~include "SMESHDS_GroupOnGeom.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <Standard_ErrorHandler.hxx>
+~include <Standard_ErrorHandler.hxx>
 
-#include <boost/shared_ptr.hpp>
+~include <boost/shared_ptr.hpp>
 
 using namespace std;
 

@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoGroup.h>
+~endif
 
-#include "ViewProviderConstraintGroup.h"
-#include <Gui/Command.h>
-#include <Gui/Document.h>
+~include "ViewProviderConstraintGroup.h"
+~include <Gui/Command.h>
+~include <Gui/Document.h>
 
-#include <Mod/Assembly/App/ConstraintGroup.h>
+~include <Mod/Assembly/App/ConstraintGroup.h>
 
 using namespace AssemblyGui;
 

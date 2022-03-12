@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/Reader.h>
+~include <Base/MatrixPy.h>
+~include <Base/PlacementPy.h>
+~include <Base/Reader.h>
 
-#include <Base/Quantity.h>
-#include <Base/QuantityPy.h>
-#include <Base/Rotation.h>
-#include <Base/RotationPy.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/Writer.h>
+~include <Base/Quantity.h>
+~include <Base/QuantityPy.h>
+~include <Base/Rotation.h>
+~include <Base/RotationPy.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <Base/VectorPy.h>
+~include <Base/Writer.h>
 
-#include "PropertyGeo.h"
-#include "Placement.h"
-#include "ObjectIdentifier.h"
+~include "PropertyGeo.h"
+~include "Placement.h"
+~include "ObjectIdentifier.h"
 
 
 using namespace App;

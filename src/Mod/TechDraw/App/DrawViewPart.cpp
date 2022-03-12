@@ -23,95 +23,95 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-#include <Bnd_Box.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
-#include <BRepLib.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <Geom_Curve.hxx>
-#include <GeomLib_Tool.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <GProp_GProps.hxx>
-#include <gp_XYZ.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <BRepAlgo_NormalProjection.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAlgoAPI_Fuse.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRep_Builder.hxx>
+~include <BRepExtrema_DistShapeShape.hxx>
+~include <BRepGProp.hxx>
+~include <BRepLib.hxx>
+~include <BRepLProp_CLProps.hxx>
+~include <BRepLProp_CurveTool.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepTools.hxx>
+~include <GeomAPI_ProjectPointOnCurve.hxx>
+~include <Geom_Curve.hxx>
+~include <GeomLib_Tool.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Pnt.hxx>
+~include <GProp_GProps.hxx>
+~include <gp_XYZ.hxx>
+~include <HLRAlgo_Projector.hxx>
+~include <HLRBRep_Algo.hxx>
+~include <HLRBRep_HLRToShape.hxx>
+~include <HLRBRep_ShapeBounds.hxx>
+~include <ShapeExtend_WireData.hxx>
+~include <ShapeFix_ShapeTolerance.hxx>
+~include <ShapeFix_Wire.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopExp.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
+~include <BRepAlgo_NormalProjection.hxx>
 
-#include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
 
-#endif
+~endif
 
-#include <limits>
-#include <algorithm>
-#include <cmath>
+~include <limits>
+~include <algorithm>
+~include <cmath>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/GroupExtension.h>
-#include <App/Part.h>
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/GroupExtension.h>
+~include <App/Part.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/PropertyTopoShape.h>
 
-#include "Preferences.h"
-#include "Cosmetic.h"
-#include "DrawGeomHatch.h"
-#include "DrawHatch.h"
-#include "DrawPage.h"
-#include "DrawProjectSplit.h"
-#include "DrawUtil.h"
-#include "DrawViewBalloon.h"
-#include "DrawViewDetail.h"
-#include "DrawViewDimension.h"
-#include "LandmarkDimension.h"
-#include "DrawViewPart.h"
-#include "DrawViewSection.h"
-#include "EdgeWalker.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "LineGroup.h"
-#include "ShapeExtractor.h"
+~include "Preferences.h"
+~include "Cosmetic.h"
+~include "DrawGeomHatch.h"
+~include "DrawHatch.h"
+~include "DrawPage.h"
+~include "DrawProjectSplit.h"
+~include "DrawUtil.h"
+~include "DrawViewBalloon.h"
+~include "DrawViewDetail.h"
+~include "DrawViewDimension.h"
+~include "LandmarkDimension.h"
+~include "DrawViewPart.h"
+~include "DrawViewSection.h"
+~include "EdgeWalker.h"
+~include "Geometry.h"
+~include "GeometryObject.h"
+~include "LineGroup.h"
+~include "ShapeExtractor.h"
 
-#include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
+~include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
 using namespace TechDraw;
 using namespace std;
@@ -302,7 +302,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
     }
 
-//#endif //#if MOD_TECHDRAW_HANDLE_FACES
+//~endif //~if MOD_TECHDRAW_HANDLE_FACES
     return DrawView::execute();
 }
 
@@ -362,7 +362,7 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
         return;
     }
 
-#if MOD_TECHDRAW_HANDLE_FACES
+~if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
@@ -371,7 +371,7 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
             Base::Console().Log("LOG - DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
         }
     }
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+~endif //~if MOD_TECHDRAW_HANDLE_FACES
 //    std::vector<TechDraw::Vertex*> verts = getVertexGeometry();
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();

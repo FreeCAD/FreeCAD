@@ -5,19 +5,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "taskheader_p.h"
-#include "actionpanelscheme.h"
-#include "actionlabel.h"
+~include "taskheader_p.h"
+~include "actionpanelscheme.h"
+~include "actionlabel.h"
 
-#include <QtCore/QVariant>
-#include <QtCore/QEvent>
-#include <QtCore/QTimer>
+~include <QtCore/QVariant>
+~include <QtCore/QEvent>
+~include <QtCore/QTimer>
 
-#include <QHBoxLayout>
-#include <QPainter>
-#include <QMouseEvent>
-#include <QApplication>
-#include <QStyle>
+~include <QHBoxLayout>
+~include <QPainter>
+~include <QMouseEvent>
+~include <QApplication>
+~include <QStyle>
 
 
 namespace QSint
@@ -198,7 +198,7 @@ void TaskHeader::fold()
     Q_EMIT activated();
     // Toggling the 'm_fold' member here may lead to inconsistencies with its ActionGroup.
     // Thus, the method setFold() was added and called from ActionGroup when required.
-#if 0
+~if 0
     m_fold = !m_fold;
     changeIcons();
     if (myButton) {
@@ -209,7 +209,7 @@ void TaskHeader::fold()
         myButton->update();
       }
     }
-#endif
+~endif
   }
 }
 

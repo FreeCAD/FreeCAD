@@ -20,17 +20,17 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <CXX/Objects.hxx>
-#include <Mod/Part/App/TopoShapePy.h>
-#include "FeatureArea.h"
+~include <CXX/Objects.hxx>
+~include <Mod/Part/App/TopoShapePy.h>
+~include "FeatureArea.h"
 
 // inclusion of the generated files (generated out of FeatureAreaPy.xml)
-#include "FeatureAreaPy.h"
-#include "FeatureAreaPy.cpp"
+~include "FeatureAreaPy.h"
+~include "FeatureAreaPy.cpp"
 
-#include "AreaPy.h"
+~include "AreaPy.h"
 
 using namespace Path;
 
@@ -59,7 +59,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
 
     FeatureArea *feature = getFeatureAreaPtr();
 
-#define AREA_SET(_param) \
+~define AREA_SET(_param) \
     PARAM_FNAME(_param) = \
         PARAM_TYPED(PARAM_PY_CAST_,_param)(feature->PARAM_FNAME(_param).getValue());
     //populate the CONF variables with values in properties
@@ -71,7 +71,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
         return 0;
 
-#define AREA_GET(_param) \
+~define AREA_GET(_param) \
     feature->PARAM_FNAME(_param).setValue(\
         PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param)));
     //populate properties with the CONF variables

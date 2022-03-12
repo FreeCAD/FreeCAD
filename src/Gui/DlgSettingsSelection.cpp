@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "DlgSettingsSelection.h"
-#include "ui_DlgSettingsSelection.h"
-#include <App/Application.h>
+~include "DlgSettingsSelection.h"
+~include "ui_DlgSettingsSelection.h"
+~include <App/Application.h>
 
 using namespace Gui::Dialog;
 
@@ -75,5 +75,5 @@ void DlgSettingsSelection::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsSelection.cpp"
+~include "moc_DlgSettingsSelection.cpp"
 

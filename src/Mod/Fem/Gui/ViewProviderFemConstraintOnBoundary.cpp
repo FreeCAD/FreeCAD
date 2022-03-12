@@ -22,21 +22,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-#endif
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
+~endif
 
-#include "Mod/Fem/App/FemConstraint.h"
-#include "TaskFemConstraintOnBoundary.h"
-#include "ViewProviderFemConstraintOnBoundary.h"
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
+~include "Mod/Fem/App/FemConstraint.h"
+~include "TaskFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintOnBoundary.h"
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Mod/Part/Gui/ViewProvider.h>
+~include <Mod/Part/Gui/ReferenceHighlighter.h>
 
 using namespace FemGui;
 

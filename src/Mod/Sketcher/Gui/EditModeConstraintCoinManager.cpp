@@ -21,82 +21,82 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoGroup.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
 
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFont.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoFont.h>
 
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/details/SoDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
 
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoInfo.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoImage.h>
+~ include <Inventor/nodes/SoInfo.h>
 
-# include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/actions/SoRayPickAction.h>
 
-# include <Inventor/SbVec3f.h>
-# include <Inventor/SbImage.h>
+~ include <Inventor/SbVec3f.h>
+~ include <Inventor/SbImage.h>
 
-# include <memory>
-#endif  // #ifndef _PreComp_
+~ include <memory>
+~endif  // ~ifndef _PreComp_
 
-#include <Gui/Inventor/SmSwitchboard.h>
+~include <Gui/Inventor/SmSwitchboard.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Sketcher/App/SolverGeometryExtension.h>
-#include <Mod/Sketcher/App/GeoEnum.h>
-#include <Mod/Sketcher/App/Constraint.h>
-#include <Mod/Sketcher/App/GeoList.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Sketcher/App/SolverGeometryExtension.h>
+~include <Mod/Sketcher/App/GeoEnum.h>
+~include <Mod/Sketcher/App/Constraint.h>
+~include <Mod/Sketcher/App/GeoList.h>
 
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Utilities.h>
-#include <Base/Converter.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Tools2D.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Utilities.h>
+~include <Base/Converter.h>
+~include <Base/Tools.h>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include <App/ObjectIdentifier.h>
+~include <App/ObjectIdentifier.h>
 
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Tools.h>
+~include <Gui/SoFCBoundingBox.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Inventor/MarkerBitmaps.h>
+~include <Gui/Tools.h>
 
-#include <qpainter.h>
+~include <qpainter.h>
 
-#include "SoZoomTranslation.h"
-#include "SoDatumLabel.h"
+~include "SoZoomTranslation.h"
+~include "SoDatumLabel.h"
 
-#include "EditModeInformationOverlayCoinConverter.h"
+~include "EditModeInformationOverlayCoinConverter.h"
 
-#include "EditModeGeometryCoinConverter.h"
+~include "EditModeGeometryCoinConverter.h"
 
-#include "EditModeCoinManager.h"
+~include "EditModeCoinManager.h"
 
-#include "ViewProviderSketch.h"
+~include "ViewProviderSketch.h"
 
-#include "ViewProviderSketchCoinAttorney.h"
+~include "ViewProviderSketchCoinAttorney.h"
 
-#include "EditModeConstraintCoinManager.h"
+~include "EditModeConstraintCoinManager.h"
 
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -145,7 +145,7 @@ void EditModeConstraintCoinManager::processConstraints(const GeoListFacade & geo
     const auto &constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
     // After an undo/redo it can happen that we have an empty geometry list but a non-empty constraint list
-    // In this case just ignore the constraints. (See bug #0000421)
+    // In this case just ignore the constraints. (See bug ~0000421)
     if (geolistfacade.geomlist.size() <= 2 && !constrlist.empty()) {
         rebuildConstraintNodes(geolistfacade);
         return;
@@ -191,7 +191,7 @@ Restart:
         if ((*it)->Type != vConstrType[i]) {
             // clearing the type vector will force a rebuild of the visual nodes
             vConstrType.clear();
-            //TODO: The 'goto' here is unsafe as it can happen that we cause an endless loop (see bug #0001956).
+            //TODO: The 'goto' here is unsafe as it can happen that we cause an endless loop (see bug ~0001956).
             goto Restart;
         }
         try{//because calculateNormalAtPoint, used in there, can throw
@@ -1478,7 +1478,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
                 anno->addChild(text);
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+                // ~define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(anno);
                 vConstrType.push_back((*it)->Type);
@@ -1492,19 +1492,19 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
             case Vertical:
             case Block:
             {
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+                // ~define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
                 sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
                 sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+                // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                 sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
                 sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+                // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
@@ -1518,19 +1518,19 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
             case Perpendicular:
             case Equal:
             {
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+                // ~define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
                 sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
                 sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+                // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                 sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
                 sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+                // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
@@ -1541,13 +1541,13 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
             case Tangent:
             case SnellsLaw:
             {
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+                // ~define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
                 sep->addChild(new SoZoomTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
                 sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
 
                 if ((*it)->Type == Tangent) {
@@ -1558,11 +1558,11 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
                     }
                     else if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                              geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+                        // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                         sep->addChild(new SoZoomTranslation());
-                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                        // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
                         sep->addChild(new SoImage());
-                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+                        // ~define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                         sep->addChild(new SoInfo());
                     }
                 }
@@ -1578,13 +1578,13 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade &
                 arrows->textColor = drawingParameters.ConstrDimColor;
                 arrows->lineWidth = 2 * drawingParameters.pixelScalingFactor;
 
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+                // ~define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(arrows);
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
                 sep->addChild(new SoTranslation());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
                 sep->addChild(new SoImage());
-                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                // ~define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
 
                 vConstrType.push_back((*it)->Type);
@@ -1797,12 +1797,12 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         for (ConstrIconBBVec::iterator b = combinedConstrBoxes[constrIdsStr].begin();
                             b != combinedConstrBoxes[constrIdsStr].end(); ++b) {
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
                             // Useful code to debug coordinates and bounding boxes that does not need to be compiled in for
                             // any debug operations.
 
                             /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
-#endif
+~endif
 
                             if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
@@ -1833,15 +1833,15 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
 SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage *iconPtr) const
 {
-#if (COIN_MAJOR_VERSION >= 3)
+~if (COIN_MAJOR_VERSION >= 3)
     SbVec3s iconSize = iconPtr->image.getValue().getSize();
-#else
+~else
     SbVec2s size;
     int nc;
     const unsigned char * bytes = iconPtr->image.getValue(size, nc);
     SbImage img (bytes, size, nc);
     SbVec3s iconSize = img.getSize();
-#endif
+~endif
     if (iconPtr->width.getValue() != -1)
         iconSize[0] = iconPtr->width.getValue();
     if (iconPtr->height.getValue() != -1)

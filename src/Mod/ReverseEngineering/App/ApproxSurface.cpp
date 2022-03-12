@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <math_Gauss.hxx>
-#include <math_Householder.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Precision.hxx>
+~include "PreCompiled.h"
+~include <math_Gauss.hxx>
+~include <math_Householder.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Precision.hxx>
 
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
+~include <QFuture>
+~include <QFutureWatcher>
+~include <QtConcurrentMap>
+~include <boost_bind_bind.hpp>
 
-#include <Mod/Mesh/App/Core/Approximation.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
-#include <Base/Tools.h>
+~include <Mod/Mesh/App/Core/Approximation.h>
+~include <Base/Sequencer.h>
+~include <Base/Tools2D.h>
+~include <Base/Tools.h>
 
-#include "ApproxSurface.h"
+~include "ApproxSurface.h"
 
 using namespace Reen;
 namespace bp = boost::placeholders;
@@ -1077,9 +1077,9 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
 
     // The product of its transform and itself results in the quadratic
     // system matrix (slowly)
-#if 0
+~if 0
     math_Matrix MTM = M.TMultiply(M);
-#elif 0
+~elif 0
     math_Matrix MTM(0, ulDim-1, 0, ulDim-1);
     for (unsigned m=0; m<ulDim; m++) {
         math_Vector Mm = M.Col(m);
@@ -1087,7 +1087,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
             MTM(m,n) = MTM(n,m) = Mm * M.Col(n);
         }
     }
-#else // multi-threaded
+~else // multi-threaded
     std::vector<int> columns(ulDim);
     std::generate(columns.begin(), columns.end(), Base::iotaGen<int>(0));
     ScalarProduct scalar(M);
@@ -1105,7 +1105,7 @@ bool BSplineParameterCorrection::SolveWithSmoothing(double fWeight)
             MTM(rowIndex, colIndex) = *jt;
         rowIndex++;
     }
-#endif
+~endif
 
     // Determine the right side
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {

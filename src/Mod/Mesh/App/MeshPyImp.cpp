@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
-#include <Base/Handle.h>
-#include <Base/Builder3D.h>
-#include <Base/Converter.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/MatrixPy.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
+~include <Base/VectorPy.h>
+~include <Base/Handle.h>
+~include <Base/Builder3D.h>
+~include <Base/Converter.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/MatrixPy.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
 
-#include "Mesh.h"
-#include "MeshPy.h"
-#include "MeshPointPy.h"
-#include "FacetPy.h"
-#include "MeshPy.cpp"
-#include "MeshProperties.h"
-#include "Core/Algorithm.h"
-#include "Core/Triangulation.h"
-#include "Core/Iterator.h"
-#include "Core/Degeneration.h"
-#include "Core/Elements.h"
-#include "Core/Grid.h"
-#include "Core/MeshKernel.h"
-#include "Core/Segmentation.h"
-#include "Core/Smoothing.h"
-#include "Core/Curvature.h"
+~include "Mesh.h"
+~include "MeshPy.h"
+~include "MeshPointPy.h"
+~include "FacetPy.h"
+~include "MeshPy.cpp"
+~include "MeshProperties.h"
+~include "Core/Algorithm.h"
+~include "Core/Triangulation.h"
+~include "Core/Iterator.h"
+~include "Core/Degeneration.h"
+~include "Core/Elements.h"
+~include "Core/Grid.h"
+~include "Core/MeshKernel.h"
+~include "Core/Segmentation.h"
+~include "Core/Smoothing.h"
+~include "Core/Curvature.h"
 
-#include <boost/algorithm/string.hpp>
+~include <boost/algorithm/string.hpp>
 
 using namespace Mesh;
 
@@ -1850,14 +1850,14 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
         Base::Vector3f res;
         MeshCore::MeshAlgorithm alg(getMeshObjectPtr()->getKernel());
 
-#if 0 // for testing only
+~if 0 // for testing only
         MeshCore::MeshFacetGrid grid(getMeshObjectPtr()->getKernel(),10);
         // With grids we might search in the opposite direction, too
         if (alg.NearestFacetOnRay(pnt,  dir, grid, res, index) ||
             alg.NearestFacetOnRay(pnt, -dir, grid, res, index)) {
-#else
+~else
         if (alg.NearestFacetOnRay(pnt, dir, static_cast<float>(maxAngle), res, index)) {
-#endif
+~endif
             Py::Tuple tuple(3);
             tuple.setItem(0, Py::Float(res.x));
             tuple.setItem(1, Py::Float(res.y));
@@ -1865,7 +1865,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
             dict.setItem(Py::Long((int)index), tuple);
         }
 
-#if 0 // for testing only
+~if 0 // for testing only
         char szBuf[200];
         std::ofstream str("grid_test.iv");
         Base::InventorBuilder builder(str);
@@ -1882,7 +1882,7 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
         builder.addSingleArrow(pnt-20.0f*dir, pnt+10.0f*dir);
         builder.close();
         str.close();
-#endif
+~endif
 
         return Py::new_reference_to(dict);
     }

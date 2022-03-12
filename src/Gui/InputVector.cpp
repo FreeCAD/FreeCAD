@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QComboBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QComboBox>
+~endif
 
-#include <Base/UnitsApi.h>
+~include <Base/UnitsApi.h>
 
-#include "InputVector.h"
-#include "ui_InputVector.h"
-#include "QuantitySpinBox.h"
+~include "InputVector.h"
+~include "ui_InputVector.h"
+~include "QuantitySpinBox.h"
 
 
 using namespace Gui;
@@ -290,4 +290,4 @@ void LocationDialogUiImp::directionActivated(int index)
     ui->directionActivated(this,index);
 }
 
-#include "moc_InputVector.cpp"
+~include "moc_InputVector.cpp"

@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QEvent>
-#endif
+~ifndef _PreComp_
+~ include <QEvent>
+~endif
 
-#include "TaskSketcherCreateCommands.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
+~include "TaskSketcherCreateCommands.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
 
 using namespace Gui::TaskView;
 
@@ -88,4 +88,4 @@ void TaskSketcherCreateCommands::OnChange(Gui::SelectionSingleton::SubjectType &
 
 
 
-#include "moc_TaskSketcherCreateCommands.cpp"
+~include "moc_TaskSketcherCreateCommands.cpp"

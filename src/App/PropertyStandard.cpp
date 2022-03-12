@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/math/special_functions/round.hpp>
+~include <boost/algorithm/string/predicate.hpp>
+~include <boost/math/special_functions/round.hpp>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Quantity.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Quantity.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
 
-#include "PropertyStandard.h"
-#include "Application.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "MaterialPy.h"
-#include "ObjectIdentifier.h"
+~include "PropertyStandard.h"
+~include "Application.h"
+~include "Document.h"
+~include "DocumentObject.h"
+~include "MaterialPy.h"
+~include "ObjectIdentifier.h"
 
 
 using namespace App;
@@ -191,13 +191,13 @@ void PropertyPath::setValue(const boost::filesystem::path &Path)
 void PropertyPath::setValue(const char * Path)
 {
     aboutToSetValue();
-#if (BOOST_FILESYSTEM_VERSION == 2)
+~if (BOOST_FILESYSTEM_VERSION == 2)
     _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
-#else
+~else
     _cValue = boost::filesystem::path(Path);
-#endif
+~endif
     hasSetValue();
 }
 
@@ -208,11 +208,11 @@ const boost::filesystem::path &PropertyPath::getValue(void) const
 
 PyObject *PropertyPath::getPyObject()
 {
-#if (BOOST_FILESYSTEM_VERSION == 2)
+~if (BOOST_FILESYSTEM_VERSION == 2)
     std::string str = _cValue.native_file_string();
-#else
+~else
     std::string str = _cValue.string();
-#endif
+~endif
 
     // Returns a new reference, don't increment it!
     PyObject *p = PyUnicode_DecodeUTF8(str.c_str(),str.size(),nullptr);
@@ -313,7 +313,7 @@ void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
 {
     // _enum.setEnums() will preserve old value possible, so no need to do it
     // here
-#if 0
+~if 0
     if (_enum.isValid()) {
         const std::string &index = getValueAsString();
         _enum.setEnums(Enums);
@@ -321,9 +321,9 @@ void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
     } else {
         _enum.setEnums(Enums);
     }
-#else
+~else
     setEnumVector(Enums);
-#endif
+~endif
 }
 
 void PropertyEnumeration::setValue(const char *value)
@@ -2775,7 +2775,7 @@ PyObject *PropertyPersistentObject::getPyObject(void){
 
 void PropertyPersistentObject::Save(Base::Writer &writer) const{
     inherited::Save(writer);
-#define ELEMENT_PERSISTENT_OBJ "PersistentObject"
+~define ELEMENT_PERSISTENT_OBJ "PersistentObject"
     writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
     if(_pObject) {
         writer.incInd();

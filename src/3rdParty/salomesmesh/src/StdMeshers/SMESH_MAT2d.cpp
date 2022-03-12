@@ -23,34 +23,34 @@
 // Created   : Thu May 28 17:49:53 2015
 // Author    : Edward AGAPOV (eap)
 
-#include "SMESH_MAT2d.hxx"
+~include "SMESH_MAT2d.hxx"
 
-#include <list>
+~include <list>
 
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-//#include <GCPnts_AbscissaPoint.hxx>
-#include <GCPnts_TangentialDeflection.hxx>
-// #include <GCPnts_UniformAbscissa.hxx>
-// #include <GCPnts_UniformDeflection.hxx>
-#include <Geom2d_Curve.hxx>
-//#include <GeomAdaptor_Curve.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
+~include <BRepAdaptor_CompCurve.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeVertex.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B2d.hxx>
+//~include <GCPnts_AbscissaPoint.hxx>
+~include <GCPnts_TangentialDeflection.hxx>
+// ~include <GCPnts_UniformAbscissa.hxx>
+// ~include <GCPnts_UniformDeflection.hxx>
+~include <Geom2d_Curve.hxx>
+//~include <GeomAdaptor_Curve.hxx>
+~include <Geom2dAdaptor_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <TopExp.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
 
-#ifdef _DEBUG_
-#define _MYDEBUG_
-#include "SMESH_File.hxx"
-#include "SMESH_Comment.hxx"
-#endif
+~ifdef _DEBUG_
+~define _MYDEBUG_
+~include "SMESH_File.hxx"
+~include "SMESH_Comment.hxx"
+~endif
 
 using namespace std;
 using boost::polygon::x;
@@ -155,7 +155,7 @@ namespace
   // }
 
   // -------------------------------------------------------------------------------------
-#ifdef _MYDEBUG_
+~ifdef _MYDEBUG_
   // writes segments into a txt file readable by voronoi_visualizer
   void inSegmentsToFile( vector< InSegment>& inSegments)
   {
@@ -217,11 +217,11 @@ namespace
       } while (edge != cell->incident_edge());
     }
   }
-#else
+~else
   inline void inSegmentsToFile( vector< InSegment>& inSegments) {}
   inline void dumpEdge( const TVDEdge* edge ) {}
   inline void dumpCell( const TVDCell* cell ) {}
-#endif
+~endif
 }
 // -------------------------------------------------------------------------------------
 
@@ -418,7 +418,7 @@ namespace
 
   void bndSegsToMesh( const vector< vector< BndSeg > >& bndSegsPerEdge )
   {
-#ifdef _MYDEBUG_
+~ifdef _MYDEBUG_
     if ( !getenv("bndSegsToMesh")) return;
     map< const TVDVertex *, int > v2Node;
     map< const TVDVertex *, int >::iterator v2n;
@@ -440,10 +440,10 @@ namespace
       for ( size_t i = 0; i < bndSegs.size(); ++i )
       {
         if ( !bndSegs[i]._edge )
-          text << "# E=" << iE << " i=" << i << " NULL edge\n";
+          text << "~ E=" << iE << " i=" << i << " NULL edge\n";
         else if ( !bndSegs[i]._edge->vertex0() ||
                   !bndSegs[i]._edge->vertex1() )
-          text << "# E=" << iE << " i=" << i << " INFINITE edge\n";
+          text << "~ E=" << iE << " i=" << i << " INFINITE edge\n";
         else if ( addedEdges.insert( bndSegs[i]._edge ).second &&
                   addedEdges.insert( bndSegs[i]._edge->twin() ).second )
         {
@@ -468,7 +468,7 @@ namespace
     text << "\n";
     file.write( text.c_str(), text.size() );
     cout << "execfile( '" << fileName << "')" << endl;
-#endif
+~endif
   }
 
   //================================================================================

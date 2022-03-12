@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QEvent>
-# include <QGridLayout>
-# include <QToolBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QEvent>
+~ include <QGridLayout>
+~ include <QToolBox>
+~endif
 
-#include "ToolBox.h"
+~include "ToolBox.h"
 
 using namespace Gui::DockWnd;
 
@@ -237,4 +237,4 @@ void ToolBox::changeEvent(QEvent *e)
   }
 }
 
-#include "moc_ToolBox.cpp"
+~include "moc_ToolBox.cpp"

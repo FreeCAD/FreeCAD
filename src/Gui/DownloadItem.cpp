@@ -20,34 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <cstdio>
-#include <iostream>
+~include "PreCompiled.h"
+~include <cstdio>
+~include <iostream>
 
-#include <QAuthenticator>
-#include <QContextMenuEvent>
-#include <QDebug>
-#include <QDesktopServices>
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QKeyEvent>
-#include <QMenu>
-#include <QMetaObject>
-#include <QNetworkDiskCache>
-#include <QNetworkRequest>
-#include <QNetworkProxy>
-#include <QSettings>
-#include <QStandardPaths>
+~include <QAuthenticator>
+~include <QContextMenuEvent>
+~include <QDebug>
+~include <QDesktopServices>
+~include <QFileDialog>
+~include <QFileInfo>
+~include <QKeyEvent>
+~include <QMenu>
+~include <QMetaObject>
+~include <QNetworkDiskCache>
+~include <QNetworkRequest>
+~include <QNetworkProxy>
+~include <QSettings>
+~include <QStandardPaths>
 
-#include "DownloadItem.h"
-#include "Application.h"
-#include "Document.h"
-#include "DownloadManager.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "ui_DlgAuthorization.h"
-#include "Tools.h"
-#include <App/Document.h>
+~include "DownloadItem.h"
+~include "Application.h"
+~include "Document.h"
+~include "DownloadManager.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "ui_DlgAuthorization.h"
+~include "Tools.h"
+~include <App/Document.h>
 
 
 using namespace Gui::Dialog;
@@ -109,8 +109,8 @@ void SqueezeLabel::paintEvent(QPaintEvent *event)
 
 // ----------------------------------------------------------------------------
 
-#define AUTOSAVE_IN  1000 * 3  // seconds
-#define MAXWAIT      1000 * 15 // seconds
+~define AUTOSAVE_IN  1000 * 3  // seconds
+~define MAXWAIT      1000 * 15 // seconds
 
 AutoSaver::AutoSaver(QObject *parent) : QObject(parent)
 {
@@ -607,4 +607,4 @@ void DownloadItem::finished()
     /*emit*/ statusChanged();
 }
 
-#include "moc_DownloadItem.cpp"
+~include "moc_DownloadItem.cpp"

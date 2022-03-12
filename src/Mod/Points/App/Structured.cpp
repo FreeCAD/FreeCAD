@@ -22,17 +22,17 @@
 
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-#include <vector>
+~ifndef _PreComp_
+~endif
+~include <vector>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
 
-#include "Structured.h"
+~include "Structured.h"
 
 using namespace Points;
 

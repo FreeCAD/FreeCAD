@@ -23,14 +23,14 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_LinearEdge.hxx"
-#include "SMDS_IteratorOfElements.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "utilities.h"
+~include "SMDS_LinearEdge.hxx"
+~include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "utilities.h"
 
 using namespace std;
 

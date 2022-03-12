@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "GeometryDefaultExtension.h"
+~include "GeometryDefaultExtension.h"
 
-#include "GeometryDoubleExtensionPy.h"
-#include "GeometryDoubleExtensionPy.cpp"
+~include "GeometryDoubleExtensionPy.h"
+~include "GeometryDoubleExtensionPy.cpp"
 
 using namespace Part;
 

@@ -3,22 +3,22 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-#include <sys/types.h>
-#include <string.h>
-#include <strstream>
-#include <vector>
-#include <JtTk/JtkCADImporter.h>
-#include <JtTk/JtkCADExporter.h>
-#include <JtTk/JtkTraverser.h>
-#include <JtTk/JtkEntityFactory.h>
-#include <JtTk/JtkAttrib.h>
-#include <JtTk/JtkStandard.h>
+~include <sys/types.h>
+~include <string.h>
+~include <strstream>
+~include <vector>
+~include <JtTk/JtkCADImporter.h>
+~include <JtTk/JtkCADExporter.h>
+~include <JtTk/JtkTraverser.h>
+~include <JtTk/JtkEntityFactory.h>
+~include <JtTk/JtkAttrib.h>
+~include <JtTk/JtkStandard.h>
 
 using std::string;
 using std::vector;
 using std::strstream;
 
-#include "JtReader.h"
+~include "JtReader.h"
 
 int my_level = 0;
 bool want_details = false;
@@ -29,7 +29,7 @@ vector<SimpleMeshFacet> result;
 vector<SimpleMeshFacet>::const_iterator resultIt;
 
 
-#define indent(i) {for(int l=0; l < i; l++) InfoOut << "   ";}
+~define indent(i) {for(int l=0; l < i; l++) InfoOut << "   ";}
 
 void printXform(JtkTransform *partXform, int level)
 {
@@ -53,11 +53,11 @@ void printXform(JtkTransform *partXform, int level)
       indent(level+1);
       InfoOut << elements[12] << ", " << elements[13] << ", "
            << elements[14] << ", " << elements[15] << "\n";
-#ifdef _DEBUG
+~ifdef _DEBUG
       JtkEntityFactory::deleteMemory( elements );
-#else
+~else
       delete [] elements;
-#endif
+~endif
    }
 }
 
@@ -78,11 +78,11 @@ void printMaterial(JtkMaterial *partMaterial, int level)
       indent(level+1);
       InfoOut << "ambient = ( " << ambient[0] << ", " << ambient[1] << ", "
                              << ambient[2] << ", " << ambient[3] << " )\n";
-#ifdef _DEBUG
+~ifdef _DEBUG
       JtkEntityFactory::deleteMemory( ambient );
-#else
+~else
       delete [] ambient;
-#endif
+~endif
    }
 
    partMaterial->getDiffuseColor(diffuse);
@@ -91,11 +91,11 @@ void printMaterial(JtkMaterial *partMaterial, int level)
       indent(level+1);
       InfoOut << "diffuse = ( " << diffuse[0] << ", " << diffuse[1] << ", "
                              << diffuse[2] << ", " << diffuse[3] << " )\n";
-#ifdef _DEBUG
+~ifdef _DEBUG
       JtkEntityFactory::deleteMemory( diffuse );
-#else
+~else
       delete [] diffuse;
-#endif
+~endif
    }
 
    partMaterial->getSpecularColor(specular);
@@ -104,11 +104,11 @@ void printMaterial(JtkMaterial *partMaterial, int level)
       indent(level+1);
       InfoOut << "specular = ( " << specular[0] << ", " << specular[1] << ", "
                               << specular[2] << ", " << specular[3] << " )\n";
-#ifdef _DEBUG
+~ifdef _DEBUG
       JtkEntityFactory::deleteMemory( specular );
-#else
+~else
       delete [] specular;
-#endif
+~endif
    }
 
    partMaterial->getEmissionColor(emission);
@@ -117,11 +117,11 @@ void printMaterial(JtkMaterial *partMaterial, int level)
       indent(level+1);
       InfoOut << "emission = ( " << emission[0] << ", " << emission[1] << ", "
                               << emission[2] << ", " << emission[3] << " )\n";
-#ifdef _DEBUG
+~ifdef _DEBUG
       JtkEntityFactory::deleteMemory( emission );
-#else
+~else
       delete [] emission;
-#endif
+~endif
    }
 
    partMaterial->getShininess(shininess);
@@ -152,7 +152,7 @@ void printShape(JtkShape *partShape, int level)
    for(int set=0; set < partShape->numOfSets(); set++)
    {
       indent(level+1);
-      InfoOut << "geom set #" << set << ":\n";
+      InfoOut << "geom set ~" << set << ":\n";
 
       float *vertex= NULL,
             *normal= NULL,
@@ -178,11 +178,11 @@ void printShape(JtkShape *partShape, int level)
 
          InfoOut << " )\n";
 
-#ifdef _DEBUG
+~ifdef _DEBUG
          JtkEntityFactory::deleteMemory( vertex );
-#else
+~else
          delete [] vertex;
-#endif
+~endif
       }
 
       if( normal && (normCount > 0) )
@@ -197,11 +197,11 @@ void printShape(JtkShape *partShape, int level)
 
          InfoOut << " )\n";
 
-#ifdef _DEBUG
+~ifdef _DEBUG
          JtkEntityFactory::deleteMemory( normal );
-#else
+~else
          delete [] normal;
-#endif
+~endif
       }
 
       if( color && (colorCount > 0) )
@@ -216,11 +216,11 @@ void printShape(JtkShape *partShape, int level)
 
          InfoOut << " )\n";
 
-#ifdef _DEBUG
+~ifdef _DEBUG
          JtkEntityFactory::deleteMemory( color );
-#else
+~else
          delete [] color;
-#endif
+~endif
       }
 
       if( texture && (textCount > 0) )
@@ -235,11 +235,11 @@ void printShape(JtkShape *partShape, int level)
 
          InfoOut << " )\n";
 
-#ifdef _DEBUG
+~ifdef _DEBUG
          JtkEntityFactory::deleteMemory( texture );
-#else
+~else
          delete [] texture;
-#endif
+~endif
       }
    }
 }
@@ -368,14 +368,14 @@ int myPreactionCB_PrintName(JtkHierarchy *CurrNode, int level, JtkClientData*)
             for(int lod=0; lod < partNumShapeLODs; lod++)
             {
                indent(level+1);
-               InfoOut << "LOD#" << lod << ":\n";
+               InfoOut << "LOD~" << lod << ":\n";
 
                int   partNumShapes= -1;
                partNumShapes= ((JtkPart*) CurrNode)->numPolyShapes(lod);
                for(int shNum=0; shNum < partNumShapes; shNum++)
                {
                   indent(level+2);
-                  InfoOut << "Shape#" << shNum << ":\n";
+                  InfoOut << "Shape~" << shNum << ":\n";
 
                   JtkShape *partShape= NULL;
                   ((JtkPart*) CurrNode)->getPolyShape(partShape, lod, shNum);
@@ -503,17 +503,17 @@ void insertShapeFaces(JtkShape *partShape)
         }
 
       }
-#ifdef _DEBUG
+~ifdef _DEBUG
         if (vertex) JtkEntityFactory::deleteMemory( vertex );
         if (vertex) JtkEntityFactory::deleteMemory( normal );
         if (color)  JtkEntityFactory::deleteMemory( color );
         if (texture) JtkEntityFactory::deleteMemory( texture );
-#else
+~else
         if (vertex) delete [] vertex;
         if (vertex) delete [] normal;
         if (color)  delete [] color;
         if (texture)delete [] texture;
-#endif
+~endif
      
    }
 
@@ -542,7 +542,7 @@ int myPreactionCB_CollectFacets(JtkHierarchy *CurrNode, int level, JtkClientData
             for(int lod=0; lod < partNumShapeLODs; lod++)
             {
                indent(level+1);
-               InfoOut << "LOD#" << lod << ":\n";
+               InfoOut << "LOD~" << lod << ":\n";
 
                if(iLod!=lod && iLod!=-1)
                  continue;
@@ -552,7 +552,7 @@ int myPreactionCB_CollectFacets(JtkHierarchy *CurrNode, int level, JtkClientData
                for(int shNum=0; shNum < partNumShapes; shNum++)
                {
                   indent(level+2);
-                  InfoOut << "Shape#" << shNum << ":\n";
+                  InfoOut << "Shape~" << shNum << ":\n";
 
                   JtkShape *partShape= NULL;
                   ((JtkPart*) CurrNode)->getPolyShape(partShape, lod, shNum);

@@ -22,28 +22,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include "ui_TaskFemConstraintBearing.h"
-#include "TaskFemConstraintPulley.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/Fem/App/FemConstraintPulley.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "ui_TaskFemConstraintBearing.h"
+~include "TaskFemConstraintPulley.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/PropertyGeo.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Mod/Fem/App/FemConstraintPulley.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
 using namespace FemGui;
 using namespace Gui;
@@ -220,4 +220,4 @@ bool TaskDlgFemConstraintPulley::accept()
     return TaskDlgFemConstraintGear::accept();
 }
 
-#include "moc_TaskFemConstraintPulley.cpp"
+~include "moc_TaskFemConstraintPulley.cpp"

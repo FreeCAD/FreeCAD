@@ -14,12 +14,12 @@
 //
 // Version: 4.0.5 (2006/10/23)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4TriangulateEC.h"
-#include "Wm4Query2Filtered.h"
-#include "Wm4Query2Int64.h"
-#include "Wm4Query2TInteger.h"
-#include "Wm4Query2TRational.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4TriangulateEC.h"
+~include "Wm4Query2Filtered.h"
+~include "Wm4Query2Int64.h"
+~include "Wm4Query2TInteger.h"
+~include "Wm4Query2TRational.h"
 
 namespace Wm4
 {

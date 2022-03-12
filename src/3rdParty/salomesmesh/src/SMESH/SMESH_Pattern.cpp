@@ -24,67 +24,67 @@
 // Created   : Mon Aug  2 10:30:00 2004
 // Author    : Edward AGAPOV (eap)
 
-#include "SMESH_Pattern.hxx"
+~include "SMESH_Pattern.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshFace.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshFace.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepTools.hxx>
-#include <BRepTools_WireExplorer.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_Box.hxx>
-#include <Bnd_Box2d.hxx>
-#include <ElSLib.hxx>
-#include <Extrema_ExtPC.hxx>
-#include <Extrema_GenExtPS.hxx>
-#include <Extrema_POnSurf.hxx>
-#include <Geom2d_Curve.hxx>
-#include <GeomAdaptor_Surface.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <Precision.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Lin2d.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_XY.hxx>
-#include <gp_XYZ.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepTools.hxx>
+~include <BRepTools_WireExplorer.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_Box.hxx>
+~include <Bnd_Box2d.hxx>
+~include <ElSLib.hxx>
+~include <Extrema_ExtPC.hxx>
+~include <Extrema_GenExtPS.hxx>
+~include <Extrema_POnSurf.hxx>
+~include <Geom2d_Curve.hxx>
+~include <GeomAdaptor_Surface.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <Precision.hxx>
+~include <TopAbs_ShapeEnum.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Lin2d.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Trsf.hxx>
+~include <gp_XY.hxx>
+~include <gp_XYZ.hxx>
 
-#include <Basics_OCCTVersion.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include <Basics_Utils.hxx>
-#include "utilities.h"
+~include <Basics_Utils.hxx>
+~include "utilities.h"
 
 using namespace std;
 
 typedef map< const SMDS_MeshElement*, int > TNodePointIDMap;
 
-#define smdsNode( elem ) static_cast<const SMDS_MeshNode*>( elem )
+~define smdsNode( elem ) static_cast<const SMDS_MeshNode*>( elem )
 
 namespace
 {
@@ -1488,7 +1488,7 @@ static bool checkQuads (const TIsoNode* node,
 //purpose  : compute UV as nodes of iso-poly-lines consisting of
 //           segments keeping relative size as in the pattern
 //=======================================================================
-//#define DEB_COMPUVBYELASTICISOLINES
+//~define DEB_COMPUVBYELASTICISOLINES
 bool SMESH_Pattern::
   compUVByElasticIsolines(const list< list< TPoint* > >& theBndPoints,
                           const list< TPoint* >&         thePntToCompute)
@@ -2027,7 +2027,7 @@ bool SMESH_Pattern::
   // Move nodes
 
   static int maxNbIter = 100;
-#ifdef DEB_COMPUVBYELASTICISOLINES
+~ifdef DEB_COMPUVBYELASTICISOLINES
 //   maxNbIter++;
   bool useNbMoveNode = 0;
   static int maxNbNodeMove = 100;
@@ -2035,21 +2035,21 @@ bool SMESH_Pattern::
   int nbNodeMove = 0;
   if ( !useNbMoveNode )
     maxNbIter = ( maxNbIter < 0 ) ? 100 : -1;
-#endif
+~endif
   double maxMove;
   int nbIter = 0;
   do {
     if ( !needIteration) break;
-#ifdef DEB_COMPUVBYELASTICISOLINES
+~ifdef DEB_COMPUVBYELASTICISOLINES
     if ( nbIter >= maxNbIter ) break;
-#endif
+~endif
     maxMove = 0.0;
     list < TIsoNode* >::iterator nIt = internNodes.begin();
     for ( ; nIt != internNodes.end(); nIt++  ) {
-#ifdef DEB_COMPUVBYELASTICISOLINES
+~ifdef DEB_COMPUVBYELASTICISOLINES
       if (useNbMoveNode )
         cout << nbNodeMove <<" =================================================="<<endl;
-#endif
+~endif
       TIsoNode * node = *nIt;
       // make lines
       //gp_Lin2d line[2];
@@ -2099,22 +2099,22 @@ bool SMESH_Pattern::
         maxMove = Max( maxMove, ( newUV - node->myUV ).SquareModulus());
         node->myUV = newUV;
       } // intersection found
-#ifdef DEB_COMPUVBYELASTICISOLINES
+~ifdef DEB_COMPUVBYELASTICISOLINES
       if (useNbMoveNode && ++nbNodeMove >= maxNbNodeMove ) break;
-#endif
+~endif
     } // loop on internal nodes
-#ifdef DEB_COMPUVBYELASTICISOLINES
+~ifdef DEB_COMPUVBYELASTICISOLINES
     if (useNbMoveNode && nbNodeMove >= maxNbNodeMove ) break;
-#endif
+~endif
   } while ( maxMove > 1e-8 && nbIter++ < maxNbIter );
 
   MESSAGE( "compUVByElasticIsolines(): Nb iterations " << nbIter << " dist: " << sqrt( maxMove ));
 
   if ( nbIter >= maxNbIter && sqrt(maxMove) > minUvSize * 0.05 ) {
     MESSAGE( "compUVByElasticIsolines() failed: "<<sqrt(maxMove)<<">"<<minUvSize * 0.05);
-#ifndef DEB_COMPUVBYELASTICISOLINES
+~ifndef DEB_COMPUVBYELASTICISOLINES
     return false;
-#endif
+~endif
   }
 
   // Set computed UV to points
@@ -2144,7 +2144,7 @@ bool SMESH_Pattern::
 //           eventual UV got from edge p-curves
 //=======================================================================
 
-//#define DBG_SETFIRSTEDGE
+//~define DBG_SETFIRSTEDGE
 double SMESH_Pattern::setFirstEdge (list< TopoDS_Edge > & theWire, int theFirstEdgeID)
 {
   int iE, nbEdges = theWire.size();
@@ -2185,10 +2185,10 @@ double SMESH_Pattern::setFirstEdge (list< TopoDS_Edge > & theWire, int theFirstE
   double minPar[2], maxPar[2], eMinPar[2], eMaxPar[2];
   bndBox.Get( minPar[0], minPar[1], maxPar[0], maxPar[1] );
   eBndBox.Get( eMinPar[0], eMinPar[1], eMaxPar[0], eMaxPar[1] );
-#ifdef DBG_SETFIRSTEDGE
+~ifdef DBG_SETFIRSTEDGE
   MESSAGE ( "EDGES: X: " << eMinPar[0] << " - " << eMaxPar[0] << " Y: "
          << eMinPar[1] << " - " << eMaxPar[1] );
-#endif
+~endif
   for ( int iC = 1, i = 0; i < 2; iC++, i++ ) // loop on 2 coordinates
   {
     double dMin = eMinPar[i] - minPar[i];
@@ -2212,9 +2212,9 @@ double SMESH_Pattern::setFirstEdge (list< TopoDS_Edge > & theWire, int theFirstE
   double minDist = DBL_MAX;
   for ( iE = 0 ; iE < nbEdges; iE++ )
   {
-#ifdef DBG_SETFIRSTEDGE
+~ifdef DBG_SETFIRSTEDGE
     MESSAGE ( " VARIANT " << iE );
-#endif
+~endif
     // evaluate the distance between UV computed by the 2 methods:
     // by isos intersection ( myXYZ ) and by edge p-curves ( myUV )
     double dist = 0;
@@ -2226,15 +2226,15 @@ double SMESH_Pattern::setFirstEdge (list< TopoDS_Edge > & theWire, int theFirstE
       for ( pIt = ++ePoints.begin(); pIt != ePoints.end(); pIt++ ) {
         TPoint* p = (*pIt);
         dist += ( p->myUV - gp_XY( p->myXYZ.X(), p->myXYZ.Y() )).SquareModulus();
-#ifdef DBG_SETFIRSTEDGE
+~ifdef DBG_SETFIRSTEDGE
         MESSAGE ( " ISO : ( " << p->myXYZ.X() << ", "<< p->myXYZ.Y() << " ) PCURVE : ( " <<
                   p->myUV.X() << ", " << p->myUV.Y() << ") " );
-#endif
+~endif
       }
     }
-#ifdef DBG_SETFIRSTEDGE
+~ifdef DBG_SETFIRSTEDGE
     MESSAGE ( "dist -- " << dist );
-#endif
+~endif
     if ( dist < minDist ) {
       minDist = dist;
       eBest = theWire.front();
@@ -4888,11 +4888,11 @@ list< SMESH_Pattern::TPoint* > & SMESH_Pattern::getShapePoints(const int theShap
 
 void SMESH_Pattern::DumpPoints() const
 {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   vector< TPoint >::const_iterator pVecIt = myPoints.begin();
   for ( int i = 0; pVecIt != myPoints.end(); pVecIt++, i++ )
     MESSAGE_ADD ( std::endl << i << ": " << *pVecIt );
-#endif
+~endif
 }
 
 //=======================================================================
@@ -4902,14 +4902,14 @@ void SMESH_Pattern::DumpPoints() const
 
 SMESH_Pattern::TPoint::TPoint()
 {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   myInitXYZ.SetCoord(0,0,0);
   myInitUV.SetCoord(0.,0.);
   myInitU = 0;
   myXYZ.SetCoord(0,0,0);
   myUV.SetCoord(0.,0.);
   myU = 0;
-#endif
+~endif
 }
 
 //=======================================================================

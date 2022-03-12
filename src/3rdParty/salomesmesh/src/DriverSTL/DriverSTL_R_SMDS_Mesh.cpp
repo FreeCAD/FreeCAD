@@ -20,18 +20,18 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "DriverSTL_R_SMDS_Mesh.h"
+~include "DriverSTL_R_SMDS_Mesh.h"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
-#include <gp_Pnt.hxx>
-#include <NCollection_DataMap.hxx>
-#include <Standard_NoMoreObject.hxx>
+~include <gp_Pnt.hxx>
+~include <NCollection_DataMap.hxx>
+~include <Standard_NoMoreObject.hxx>
 
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_File.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_File.hxx"
 
 namespace
 {

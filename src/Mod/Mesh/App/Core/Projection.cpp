@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <map>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <map>
+~endif
 
-#include "Projection.h"
-#include "MeshKernel.h"
-#include "Iterator.h"
-#include "Algorithm.h"
-#include "Grid.h"
+~include "Projection.h"
+~include "MeshKernel.h"
+~include "Iterator.h"
+~include "Algorithm.h"
+~include "Grid.h"
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
 
 
 using namespace MeshCore;

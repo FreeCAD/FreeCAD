@@ -22,19 +22,19 @@
 // Author    : Edward AGAPOV (eap)
 //
 
-#include "SMESH_File.hxx"
+~include "SMESH_File.hxx"
 
-#include <fcntl.h>
-#include <sys/stat.h>
+~include <fcntl.h>
+~include <sys/stat.h>
 
-#ifdef WIN32
-#include <io.h>
-#else
-#include <unistd.h>
-#include <sys/mman.h>
-#endif
+~ifdef WIN32
+~include <io.h>
+~else
+~include <unistd.h>
+~include <sys/mman.h>
+~endif
 
-#include <boost/filesystem.hpp>
+~include <boost/filesystem.hpp>
 
 namespace boofs = boost::filesystem;
 
@@ -46,11 +46,11 @@ namespace boofs = boost::filesystem;
 
 SMESH_File::SMESH_File(const std::string& name, bool open)
   :_name(name), _size(-1), 
-#ifdef WIN32
+~ifdef WIN32
    _file(INVALID_HANDLE_VALUE),
-#else
+~else
    _file(-1),
-#endif
+~endif
    _map(0), _pos(0), _end(0)
 {
   if ( open ) this->open();
@@ -78,23 +78,23 @@ bool SMESH_File::open()
   int length = size();
   if ( !_map && length > 0 )
   {
-#ifdef WIN32
+~ifdef WIN32
     _file = CreateFileA(_name.data(), GENERIC_READ, FILE_SHARE_READ,
                         NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     bool ok = ( _file != INVALID_HANDLE_VALUE );
-#else
+~else
     _file = ::open(_name.data(), O_RDONLY );
     bool ok = ( _file >= 0 );
-#endif
+~endif
     if ( ok )
     {
-#ifdef WIN32
+~ifdef WIN32
       _mapObj = CreateFileMapping(_file, NULL, PAGE_READONLY, 0, (DWORD)length, NULL);
       _map = (void*) MapViewOfFile( _mapObj, FILE_MAP_READ, 0, 0, 0 );
-#else
+~else
       _map = ::mmap(0,length,PROT_READ,MAP_PRIVATE,_file,0);
       if ( _map == MAP_FAILED ) _map = NULL;
-#endif
+~endif
       if ( _map != NULL )
       {
         _size = length;
@@ -103,12 +103,12 @@ bool SMESH_File::open()
       }
       else
       {
-#ifdef WIN32
+~ifdef WIN32
         CloseHandle(_mapObj);
         CloseHandle(_file);
-#else
+~else
         ::close(_file);
-#endif
+~endif
       }
     }
     else if ( _error.empty() )
@@ -129,14 +129,14 @@ void SMESH_File::close()
 {
   if ( _map != NULL )
   {
-#ifdef WIN32
+~ifdef WIN32
     UnmapViewOfFile(_map);
     CloseHandle(_mapObj);
     CloseHandle(_file);
-#else
+~else
     ::munmap(_map, _size);
     ::close(_file);
-#endif
+~endif
     _map = NULL;
     _pos = _end = 0;
     _size = -1;
@@ -144,17 +144,17 @@ void SMESH_File::close()
   //else if ( _file >= 0 )
   else if ( _file != 0 )
   {
-#ifdef WIN32
+~ifdef WIN32
     if(_file != INVALID_HANDLE_VALUE) {
       CloseHandle(_file);
       _file = INVALID_HANDLE_VALUE;
     }
-#else
+~else
     if(_file != -1) {
       ::close(_file);
       _file = -1;
     }
-#endif
+~endif
   }
 }
 
@@ -291,7 +291,7 @@ bool SMESH_File::getInts(std::vector<int>& ints)
 
 bool SMESH_File::openForWriting()
 {
-#ifdef WIN32
+~ifdef WIN32
 
   _file = CreateFileA(_name.c_str(),          // name of the write
                       GENERIC_WRITE,          // open for writing
@@ -302,14 +302,14 @@ bool SMESH_File::openForWriting()
                       NULL);                  // no attr. template
   return ( _file != INVALID_HANDLE_VALUE );
 
-#else
+~else
 
   _file = ::open( _name.c_str(),
                   O_WRONLY | O_CREAT,
                   S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ); // rw-r--r--
   return _file >= 0;
 
-#endif
+~endif
 }
 
 //================================================================================
@@ -320,7 +320,7 @@ bool SMESH_File::openForWriting()
 
 bool SMESH_File::writeRaw(const void* data, size_t size)
 {
-#ifdef WIN32
+~ifdef WIN32
 
   DWORD nbWritten = 0;
   BOOL err = WriteFile( _file, data, size, & nbWritten, NULL);
@@ -328,10 +328,10 @@ bool SMESH_File::writeRaw(const void* data, size_t size)
   return (( err == FALSE ) &&
           ( nbWritten == (DWORD) size ));
 
-#else
+~else
 
   ssize_t nbWritten = ::write( _file, data, size );
   return ( nbWritten == (ssize_t) size );
 
-#endif
+~endif
 }

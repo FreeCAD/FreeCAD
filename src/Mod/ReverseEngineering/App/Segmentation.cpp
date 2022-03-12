@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Segmentation.h"
-#include <Mod/Points/App/Points.h>
-#include <Base/Exception.h>
+~include "Segmentation.h"
+~include <Mod/Points/App/Points.h>
+~include <Base/Exception.h>
 
-#if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/extract_indices.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/features/normal_3d.h>
-#endif
+~if defined(HAVE_PCL_FILTERS)
+~include <pcl/filters/extract_indices.h>
+~include <pcl/filters/passthrough.h>
+~include <pcl/features/normal_3d.h>
+~endif
 
-#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-#include <pcl/sample_consensus/method_types.h>
-#include <pcl/sample_consensus/model_types.h>
-#endif
+~if defined(HAVE_PCL_SAMPLE_CONSENSUS)
+~include <pcl/sample_consensus/method_types.h>
+~include <pcl/sample_consensus/model_types.h>
+~endif
 
-#if defined(HAVE_PCL_SEGMENTATION)
-#include <pcl/ModelCoefficients.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/segmentation/sac_segmentation.h>
-#endif
+~if defined(HAVE_PCL_SEGMENTATION)
+~include <pcl/ModelCoefficients.h>
+~include <pcl/io/pcd_io.h>
+~include <pcl/point_types.h>
+~include <pcl/segmentation/sac_segmentation.h>
+~endif
 
 using namespace std;
 using namespace Reen;
 
-#if defined(HAVE_PCL_FILTERS)
+~if defined(HAVE_PCL_FILTERS)
 using pcl::PointXYZ;
 using pcl::PointNormal;
 using pcl::PointCloud;
-#endif
+~endif
 
-#if defined(HAVE_PCL_SEGMENTATION)
+~if defined(HAVE_PCL_SEGMENTATION)
 Segmentation::Segmentation(const Points::PointKernel& pts, std::list<std::vector<int> >& clusters)
   : myPoints(pts)
   , myClusters(clusters)
@@ -155,11 +155,11 @@ void Segmentation::perform(int ksearch)
     extract.filter (*cloud_cylinder);
 }
 
-#endif // HAVE_PCL_SEGMENTATION
+~endif // HAVE_PCL_SEGMENTATION
 
 // ----------------------------------------------------------------------------
 
-#if defined (HAVE_PCL_FILTERS)
+~if defined (HAVE_PCL_FILTERS)
 NormalEstimation::NormalEstimation(const Points::PointKernel& pts)
   : myPoints(pts)
   , kSearch(0)
@@ -179,7 +179,7 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     cloud->width = int (cloud->points.size ());
     cloud->height = 1;
 
-#if 0
+~if 0
     // Build a passthrough filter to remove spurious NaNs
     pcl::PointCloud<PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<PointXYZ>);
     pcl::PassThrough<PointXYZ> pass;
@@ -187,7 +187,7 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     pass.setFilterFieldName ("z");
     pass.setFilterLimits (0, 1.5);
     pass.filter (*cloud_filtered);
-#endif
+~endif
 
     // Estimate point normals
     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
@@ -208,4 +208,4 @@ void NormalEstimation::perform(std::vector<Base::Vector3d>& normals)
     }
 }
 
-#endif // HAVE_PCL_FILTERS
+~endif // HAVE_PCL_FILTERS

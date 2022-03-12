@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QTextStream>
-#include <QFile>
-#include <QTimer>
-#include <QNetworkCookie>
-#endif
+~ifndef _PreComp_
+~include <QTextStream>
+~include <QFile>
+~include <QTimer>
+~include <QNetworkCookie>
+~endif
 
-#include "CookieJar.h"
+~include "CookieJar.h"
 
-#include <Base/FileInfo.h>
-#include <App/Application.h>
+~include <Base/FileInfo.h>
+~include <App/Application.h>
 
 using namespace WebGui;
 
@@ -129,4 +129,4 @@ void FcCookieJar::reset()
     scheduleSaveToDisk();
 }
 
-#include "moc_CookieJar.cpp"
+~include "moc_CookieJar.cpp"

@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
+~include <App/Application.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Command.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/Document.h>
+~include <Gui/Control.h>
 
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
 
-#include "TrajectorySimulate.h"
-#include "TaskDlgSimulate.h"
+~include "TrajectorySimulate.h"
+~include "TaskDlgSimulate.h"
 
 
 using namespace std;
@@ -95,7 +95,7 @@ bool CmdRobotSetHomePos::isActive(void)
 }
 
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DEF_STD_CMD_A(CmdRobotRestoreHomePos)
 
 CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
@@ -149,7 +149,7 @@ bool CmdRobotRestoreHomePos::isActive(void)
 }
 
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DEF_STD_CMD_A(CmdRobotConstraintAxle)
 
 CmdRobotConstraintAxle::CmdRobotConstraintAxle()
@@ -189,7 +189,7 @@ bool CmdRobotConstraintAxle::isActive(void)
 }
 
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotSimulate)
 
@@ -208,7 +208,7 @@ CmdRobotSimulate::CmdRobotSimulate()
 
 void CmdRobotSimulate::activated(int)
 {
-#if 1
+~if 1
     const char * SelFilter =
         "SELECT Robot::RobotObject  \n"
         "SELECT Robot::TrajectoryObject  ";
@@ -236,7 +236,7 @@ void CmdRobotSimulate::activated(int)
     Gui::TaskView::TaskDialog* dlg = new TaskDlgSimulate(pcRobotObject,pcTrajectoryObject);
     Gui::Control().showDialog(dlg);
 
-#else
+~else
 
 
    const char * SelFilter =
@@ -257,7 +257,7 @@ void CmdRobotSimulate::activated(int)
 
     RobotGui::TrajectorySimulate dlg(pcRobotObject,pcTrajectoryObject,Gui::getMainWindow());
     dlg.exec();
-#endif
+~endif
 }
 
 bool CmdRobotSimulate::isActive(void)
@@ -267,7 +267,7 @@ bool CmdRobotSimulate::isActive(void)
 
 
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 

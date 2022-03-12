@@ -26,32 +26,32 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_NumberOfSegments.hxx"
+~include "StdMeshers_NumberOfSegments.hxx"
 
-#include "StdMeshers_Distribution.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_Comment.hxx"
+~include "StdMeshers_Distribution.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_Comment.hxx"
 
-#include <ExprIntrp_GenExp.hxx>
-#include <Expr_Array1OfNamedUnknown.hxx>
-#include <Expr_NamedUnknown.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TCollection_AsciiString.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+~include <ExprIntrp_GenExp.hxx>
+~include <Expr_Array1OfNamedUnknown.hxx>
+~include <Expr_NamedUnknown.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TCollection_AsciiString.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
 
-#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060100
-#define NO_CAS_CATCH
-#endif
+~if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060100
+~define NO_CAS_CATCH
+~endif
 
-#include <Standard_Failure.hxx>
+~include <Standard_Failure.hxx>
 
-#ifdef NO_CAS_CATCH
-#include <Standard_ErrorHandler.hxx>
-#endif
+~ifdef NO_CAS_CATCH
+~include <Standard_ErrorHandler.hxx>
+~endif
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
 using namespace StdMeshers;
 using namespace std;
@@ -228,9 +228,9 @@ void StdMeshers_NumberOfSegments::SetTableFunction(const vector<double>& table)
     if( _convMode==0 )
     {
       try {
-#ifdef NO_CAS_CATCH
+~ifdef NO_CAS_CATCH
         OCC_CATCH_SIGNALS;
-#endif
+~endif
         val = pow( 10.0, val );
       } catch(Standard_Failure&) {
         throw SALOME_Exception( LOCALIZED( "invalid value"));
@@ -322,9 +322,9 @@ bool process( const TCollection_AsciiString& str, int convMode,
   bool parsed_ok = true;
   Handle( ExprIntrp_GenExp ) myExpr;
   try {
-#ifdef NO_CAS_CATCH
+~ifdef NO_CAS_CATCH
     OCC_CATCH_SIGNALS;
-#endif
+~endif
     myExpr = ExprIntrp_GenExp::Create();
     myExpr->Process( str.ToCString() );
   } catch(Standard_Failure&) {

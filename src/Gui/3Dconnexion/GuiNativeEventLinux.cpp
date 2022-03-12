@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#include "GuiNativeEventLinux.h"
+~include "GuiNativeEventLinux.h"
 
-#include "GuiApplicationNativeEventAware.h"
-#include <Base/Console.h>
-#include <QMainWindow>
+~include "GuiApplicationNativeEventAware.h"
+~include <Base/Console.h>
+~include <QMainWindow>
 
-#include <QSocketNotifier>
+~include <QSocketNotifier>
 
-#include <spnav.h>
+~include <spnav.h>
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : GuiAbstractNativeEvent(app)
@@ -85,4 +85,4 @@ void Gui::GuiNativeEvent::pollSpacenav()
 	}
 }
 
-#include "3Dconnexion/moc_GuiNativeEventLinux.cpp"
+~include "3Dconnexion/moc_GuiNativeEventLinux.cpp"

@@ -5,7 +5,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iistaskpanelscheme.h"
+~include "iistaskpanelscheme.h"
 
 iisTaskPanelScheme* iisTaskPanelScheme::myDefaultScheme = nullptr;
 

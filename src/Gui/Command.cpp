@@ -21,48 +21,48 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/SbSphere.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <sstream>
-# include <QApplication>
-# include <QByteArray>
-# include <QDir>
-# include <QKeySequence>
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/SbSphere.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <sstream>
+~ include <QApplication>
+~ include <QByteArray>
+~ include <QDir>
+~ include <QKeySequence>
+~ include <QMessageBox>
+~endif
 
-#include <boost/algorithm/string/replace.hpp>
+~include <boost/algorithm/string/replace.hpp>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/AutoTransaction.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/AutoTransaction.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
 
-#include "Command.h"
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Control.h"
-#include "DlgUndoRedo.h"
-#include "Document.h"
-#include "frameobject.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "Python.h"
-#include "Selection.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderLink.h"
-#include "WaitCursor.h"
-#include "WhatsThis.h"
-#include "WorkbenchManager.h"
-#include "Workbench.h"
+~include "Command.h"
+~include "Action.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Control.h"
+~include "DlgUndoRedo.h"
+~include "Document.h"
+~include "frameobject.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "Python.h"
+~include "Selection.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderLink.h"
+~include "WaitCursor.h"
+~include "WhatsThis.h"
+~include "WorkbenchManager.h"
+~include "Workbench.h"
 
 
 FC_LOG_LEVEL_INIT("Command", true, true)
@@ -374,9 +374,9 @@ void Command::invoke(int i, TriggerSource trigger)
     }
 
     // Do not query _pcAction since it isn't created necessarily
-#ifdef FC_LOGUSERACTION
+~ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
-#endif
+~endif
 
     _invoke(i, bCanLog && !_busy);
 }
@@ -408,7 +408,7 @@ void Command::_invoke(int id, bool disablelog)
                 Gui::SelectionLogDisabler seldisabler;
                 auto lines = manager->getLines();
                 std::ostringstream ss;
-                ss << "### Begin command " << sName;
+                ss << "~~~ Begin command " << sName;
                 // Add a pending line to mark the start of a command
                 PendingLine pending(MacroManager::Cmt, ss.str().c_str());
                 ss.str("");
@@ -429,7 +429,7 @@ void Command::_invoke(int id, bool disablelog)
                 else {
                     // In case the command has any output to the console, lets
                     // mark the end of the command here
-                    ss << "### End command " << sName;
+                    ss << "~~~ End command " << sName;
                     manager->addLine(MacroManager::Cmt, ss.str().c_str());
                 }
             }
@@ -465,11 +465,11 @@ void Command::_invoke(int id, bool disablelog)
     catch (const char* e) {
         Base::Console().Error("%s\n", e);
     }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
     catch (...) {
         Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
-#endif
+~endif
 }
 
 void Command::testActive(void)
@@ -631,19 +631,19 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     va_list ap;
     va_start(ap, sCmd);
     QString s;
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     const QString cmd = s.vsprintf(sCmd, ap);
-#else
+~else
     const QString cmd = s.vasprintf(sCmd, ap);
-#endif
+~endif
     va_end(ap);
 
     // 'vsprintf' expects a utf-8 string for '%s'
     QByteArray format = cmd.toUtf8();
 
-#ifdef FC_LOGUSERACTION
+~ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdC: %s\n", format.constData());
-#endif
+~endif
 
     _runCommand(file,line,eType,format.constData());
 }
@@ -663,12 +663,12 @@ void Command::printCaller(const char *file, int line) {
     if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     std::ostringstream str;
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     const char *_f = std::strstr(file, "\\src\\");
-#else
+~else
     const char *_f = std::strstr(file, "/src/");
-#endif
-    str << "## " << (_f?_f+5:file)<<'('<<line<<')';
+~endif
+    str << "~~ " << (_f?_f+5:file)<<'('<<line<<')';
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Cmt,str.str().c_str());
 }
 
@@ -849,7 +849,7 @@ const char * Command::beginCmdHelp(void)
             "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\">\n"
             "<title>FreeCAD Main Index</title>\n"
             "</head>\n"
-            "<body bgcolor=\"#ffffff\">\n\n";
+            "<body bgcolor=\"~ffffff\">\n\n";
 }
 
 /// returns the end of a online help page
@@ -975,9 +975,9 @@ Action * Command::createAction(void)
 {
     Action *pcAction;
     pcAction = new Action(this,getMainWindow());
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     printConflictingAccelerators();
-#endif
+~endif
     pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
@@ -1145,9 +1145,9 @@ Action * MacroCommand::createAction(void)
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     printConflictingAccelerators();
-#endif
+~endif
     pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
@@ -1350,9 +1350,9 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     printConflictingAccelerators();
-#endif
+~endif
     pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
@@ -1505,11 +1505,11 @@ void PythonGroupCommand::activated(int iMsg)
         // It is better to let ActionGroup::onActivated() to handle icon and
         // text change. The net effect is that the GUI won't change by user
         // inovking command through runCommandByName()
-#if 0
+~if 0
         // Since the default icon is reset when enabling/disabling the command we have
         // to explicitly set the icon of the used command.
         pcAction->setIcon(a[iMsg]->icon());
-#endif
+~endif
     }
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
@@ -1804,11 +1804,11 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
 {
     if (_sCommands.find(Name) == _sCommands.end()) {
         // Print in release mode only a log message instead of an error message to avoid to annoy the user
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
-#else
+~else
         Base::Console().Warning("Unknown command '%s'\n",Name);
-#endif
+~endif
         return false;
     }
     else {

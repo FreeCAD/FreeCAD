@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <memory>
-# include <string_view>
-# include <mutex>
-#endif
+~ifndef _PreComp_
+~ include <memory>
+~ include <string_view>
+~ include <mutex>
+~endif
 
-#include <boost/filesystem.hpp>
-#include <QDir>
+~include <boost/filesystem.hpp>
+~include <QDir>
 
-#include "PreferencePackManager.h"
-#include "App/Metadata.h"
-#include "Base/Parameter.h"
-#include "Base/Interpreter.h"
-#include "Base/Console.h"
-#include "DockWindowManager.h"
-#include "ToolBarManager.h"
+~include "PreferencePackManager.h"
+~include "App/Metadata.h"
+~include "Base/Parameter.h"
+~include "Base/Interpreter.h"
+~include "Base/Console.h"
+~include "DockWindowManager.h"
+~include "ToolBarManager.h"
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include <ctime> // For generating a timestamped filename
+~include <ctime> // For generating a timestamped filename
 
 
 using namespace Gui;
@@ -172,9 +172,9 @@ void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path& mo
             auto content = metadata.content();
             auto basename = mod.leaf().string();
             if (mod == modDirectory)
-                basename = "##USER_SAVED##";
+                basename = "~~USER_SAVED~~";
             else if (mod == resourcePath)
-                basename = "##BUILT_IN##";
+                basename = "~~BUILT_IN~~";
             for (const auto& item : content) {
                 if (item.first == "preferencepack") {
                     if (isVisible(basename, item.second.name())) {

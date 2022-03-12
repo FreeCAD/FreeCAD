@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QBuffer>
-# include <QByteArray>
-# include <QIODevice>
-# include <cstring>
-#ifdef __GNUC__
-# include <cstdint>
-#endif
-#endif
+~ifndef _PreComp_
+~ include <QBuffer>
+~ include <QByteArray>
+~ include <QIODevice>
+~ include <cstring>
+~ifdef __GNUC__
+~ include <cstdint>
+~endif
+~endif
 
-#include "Stream.h"
-#include "Swap.h"
-#include <CXX/Objects.hxx>
+~include "Stream.h"
+~include "Swap.h"
+~include <CXX/Objects.hxx>
 
 
 using namespace Base;
@@ -440,9 +440,9 @@ IODeviceIStreambuf::~IODeviceIStreambuf()
 std::streambuf::int_type
 IODeviceIStreambuf::underflow()
 {
-#ifndef _MSC_VER
+~ifndef _MSC_VER
 using std::memcpy;
-#endif
+~endif
 
     // is read position before end of buffer?
     if (gptr() < egptr()) {
@@ -520,7 +520,7 @@ IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos,
 
 // ---------------------------------------------------------
 
-#define PYSTREAM_BUFFERED
+~define PYSTREAM_BUFFERED
 
 // http://www.mr-edd.co.uk/blog/beginners_guide_streambuf
 // http://www.icce.rug.nl/documents/cplusplus/cplusplus24.html
@@ -533,10 +533,10 @@ PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back
     Py_INCREF(inp);
     char *end = &buffer.front() + buffer.size();
     setg(end, end, end);
-#ifdef PYSTREAM_BUFFERED
+~ifdef PYSTREAM_BUFFERED
     char *base = &buffer.front();
     setp(base, base + buffer.size());
-#endif
+~endif
 }
 
 PyStreambuf::~PyStreambuf()
@@ -598,7 +598,7 @@ PyStreambuf::int_type PyStreambuf::underflow()
 PyStreambuf::int_type
 PyStreambuf::overflow(PyStreambuf::int_type ch)
 {
-#ifdef PYSTREAM_BUFFERED
+~ifdef PYSTREAM_BUFFERED
     sync();
     if (ch != traits_type::eof()) {
         *pptr() = static_cast<char>(ch);
@@ -607,7 +607,7 @@ PyStreambuf::overflow(PyStreambuf::int_type ch)
     }
 
     return traits_type::eof();
-#else
+~else
     if (ch != EOF) {
         char z = ch;
         if (!writeStr(&z, 1))
@@ -615,19 +615,19 @@ PyStreambuf::overflow(PyStreambuf::int_type ch)
     }
 
     return ch;
-#endif
+~endif
 }
 
 int PyStreambuf::sync()
 {
-#ifdef PYSTREAM_BUFFERED
+~ifdef PYSTREAM_BUFFERED
     if (pptr() > pbase()) {
         flushBuffer();
     }
     return 0;
-#else
+~else
     return std::streambuf::sync();
-#endif
+~endif
 }
 
 bool PyStreambuf::flushBuffer()
@@ -684,13 +684,13 @@ bool PyStreambuf::writeStr(const char* str, std::streamsize num)
 
 std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
 {
-#ifdef PYSTREAM_BUFFERED
+~ifdef PYSTREAM_BUFFERED
     return std::streambuf::xsputn(s, num);
-#else
+~else
     if (!writeStr(s, num))
         return 0;
     return num;
-#endif
+~endif
 }
 
 PyStreambuf::pos_type

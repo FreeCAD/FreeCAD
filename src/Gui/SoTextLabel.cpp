@@ -20,50 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <cfloat>
-# include <QFontMetrics>
-# include <QPainter>
-# include <QPen>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/misc/SoState.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <cfloat>
+~ include <QFontMetrics>
+~ include <QPainter>
+~ include <QPen>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/elements/SoLazyElement.h>
+~ include <Inventor/misc/SoState.h>
+~endif
 
-#include <Inventor/C/basic.h>
-#include <Inventor/draggers/SoTranslate2Dragger.h>
-#include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
+~include <Inventor/C/basic.h>
+~include <Inventor/draggers/SoTranslate2Dragger.h>
+~include <Inventor/elements/SoCullElement.h>
+~include <Inventor/elements/SoFontNameElement.h>
+~include <Inventor/elements/SoGLTextureEnabledElement.h>
+~include <Inventor/elements/SoModelMatrixElement.h>
+~include <Inventor/elements/SoProjectionMatrixElement.h>
+~include <Inventor/elements/SoViewingMatrixElement.h>
+~include <Inventor/elements/SoViewportRegionElement.h>
+~include <Inventor/elements/SoViewVolumeElement.h>
 
-#if COIN_MAJOR_VERSION > 3
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#else
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#endif
+~if COIN_MAJOR_VERSION > 3
+~include <Inventor/elements/SoMultiTextureEnabledElement.h>
+~else
+~include <Inventor/elements/SoGLTexture3EnabledElement.h>
+~endif
 
-#include <QtOpenGL.h>
+~include <QtOpenGL.h>
 
-#include "SoTextLabel.h"
-#include "BitmapFactory.h"
-#include "SoFCInteractiveElement.h"
-#include "Tools.h"
+~include "SoTextLabel.h"
+~include "BitmapFactory.h"
+~include "SoFCInteractiveElement.h"
+~include "Tools.h"
 
 
 using namespace Gui;
@@ -72,7 +72,7 @@ using namespace Gui;
 \code
 
 s="""
-  #Inventor V2.1 ascii
+  ~Inventor V2.1 ascii
 
   Annotation {
     Translation { translation 4 0 0 }
@@ -153,7 +153,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
         nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
 
-#if 1
+~if 1
         // Unfortunately, the size of the label is stored in the pimpl class of
         // SoText2 which cannot be accessed directly. However, there is a trick
         // to get the required information: set model, viewing and projection
@@ -202,7 +202,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         if (lines > 1) {
             nilpoint[1] -= (float(lines-1)/(float)lines*height);
         }
-#else
+~else
         // Unfortunately, the required size (in pixels) is stored in a non-accessible way
         // in the subclass SoText2. Thus, we try to get a satisfactory solution with Qt
         // methods.
@@ -235,7 +235,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         if (lines > 1) {
             nilpoint[1] -= ((lines-1)*fontsize*0.75f+space);
         }
-#endif
+~endif
 
         SbVec3f toppoint = nilpoint;
         toppoint[0] += width;
@@ -255,11 +255,11 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
 
         // disable textures for all units
         SoGLTextureEnabledElement::set(state, this, false);
-#if COIN_MAJOR_VERSION > 3
+~if COIN_MAJOR_VERSION > 3
         SoMultiTextureEnabledElement::set(state, this, false);
-#else
+~else
         SoGLTexture3EnabledElement::set(state, this, false);
-#endif
+~endif
 
         glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
         glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
@@ -376,11 +376,11 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     QStringList list;
     for (int i=0; i<this->string.getNum(); i++)
         list << QLatin1String(this->string[i].getString());
-#if 0 // Old OpenGL API
+~if 0 // Old OpenGL API
     window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
-#else
+~else
     //FIXME: renderText
-#endif
+~endif
 
     // Leave 2D screen mode
     glPopAttrib();
@@ -495,7 +495,7 @@ void SoFrameLabel::drawImage()
 void SoFrameLabel::GLRender(SoGLRenderAction *action)
 {
     inherited::GLRender(action);
-#if 0
+~if 0
     QtGLWidget* window;
     SoState * state = action->getState();
     state->push();
@@ -564,7 +564,7 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
     glMatrixMode(GL_MODELVIEW);
 
     state->pop();
-#endif
+~endif
 }
 
 // ------------------------------------------------------

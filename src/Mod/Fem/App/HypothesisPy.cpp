@@ -20,52 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include "HypothesisPy.h"
+~include "PreCompiled.h"
+~include "HypothesisPy.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-# include <StdMeshers_Arithmetic1D.hxx>
-# include <StdMeshers_AutomaticLength.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_UseExisting_1D2D.hxx>
-# include <StdMeshers_CompositeSegment_1D.hxx>
-# include <StdMeshers_Deflection1D.hxx>
-# include <StdMeshers_Hexa_3D.hxx>
-# include <StdMeshers_LayerDistribution.hxx>
-# include <StdMeshers_LengthFromEdges.hxx>
-# include <StdMeshers_MaxElementVolume.hxx>
-# include <StdMeshers_MEFISTO_2D.hxx>
-# include <StdMeshers_NumberOfLayers.hxx>
-# include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_Prism_3D.hxx>
-# include <StdMeshers_Projection_1D.hxx>
-# include <StdMeshers_Projection_2D.hxx>
-# include <StdMeshers_Projection_3D.hxx>
-# include <StdMeshers_QuadraticMesh.hxx>
-# include <StdMeshers_RadialPrism_3D.hxx>
-# include <StdMeshers_SegmentAroundVertex_0D.hxx>
-# include <StdMeshers_ProjectionSource1D.hxx>
-# include <StdMeshers_ProjectionSource2D.hxx>
-# include <StdMeshers_ProjectionSource3D.hxx>
-# include <StdMeshers_SegmentLengthAroundVertex.hxx>
-# include <StdMeshers_StartEndLength.hxx>
-# include <StdMeshers_CompositeHexa_3D.hxx>
-# if SMESH_VERSION_MAJOR < 7
-#  include <StdMeshers_TrianglePreference.hxx>
-# endif
-#endif
+~ include <StdMeshers_Arithmetic1D.hxx>
+~ include <StdMeshers_AutomaticLength.hxx>
+~ include <StdMeshers_MaxLength.hxx>
+~ include <StdMeshers_LocalLength.hxx>
+~ include <StdMeshers_MaxElementArea.hxx>
+~ include <StdMeshers_NotConformAllowed.hxx>
+~ include <StdMeshers_QuadranglePreference.hxx>
+~ include <StdMeshers_Quadrangle_2D.hxx>
+~ include <StdMeshers_Regular_1D.hxx>
+~ include <StdMeshers_UseExisting_1D2D.hxx>
+~ include <StdMeshers_CompositeSegment_1D.hxx>
+~ include <StdMeshers_Deflection1D.hxx>
+~ include <StdMeshers_Hexa_3D.hxx>
+~ include <StdMeshers_LayerDistribution.hxx>
+~ include <StdMeshers_LengthFromEdges.hxx>
+~ include <StdMeshers_MaxElementVolume.hxx>
+~ include <StdMeshers_MEFISTO_2D.hxx>
+~ include <StdMeshers_NumberOfLayers.hxx>
+~ include <StdMeshers_NumberOfSegments.hxx>
+~ include <StdMeshers_Prism_3D.hxx>
+~ include <StdMeshers_Projection_1D.hxx>
+~ include <StdMeshers_Projection_2D.hxx>
+~ include <StdMeshers_Projection_3D.hxx>
+~ include <StdMeshers_QuadraticMesh.hxx>
+~ include <StdMeshers_RadialPrism_3D.hxx>
+~ include <StdMeshers_SegmentAroundVertex_0D.hxx>
+~ include <StdMeshers_ProjectionSource1D.hxx>
+~ include <StdMeshers_ProjectionSource2D.hxx>
+~ include <StdMeshers_ProjectionSource3D.hxx>
+~ include <StdMeshers_SegmentLengthAroundVertex.hxx>
+~ include <StdMeshers_StartEndLength.hxx>
+~ include <StdMeshers_CompositeHexa_3D.hxx>
+~ if SMESH_VERSION_MAJOR < 7
+~  include <StdMeshers_TrianglePreference.hxx>
+~ endif
+~endif
 
-#include "FemMeshPy.h"
-#include <Base/Interpreter.h>
-#include <Mod/Part/App/TopoShapePy.h>
+~include "FemMeshPy.h"
+~include <Base/Interpreter.h>
+~include <Mod/Part/App/TopoShapePy.h>
 
 
 using namespace Fem;
@@ -93,13 +93,13 @@ void SMESH_HypothesisPy<T>::init_type(PyObject* module)
 
     SMESH_HypothesisPy::add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
     SMESH_HypothesisPy::add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
-#if SMESH_VERSION_MAJOR < 7
+~if SMESH_VERSION_MAJOR < 7
     SMESH_HypothesisPy::add_varargs_method("setParameters", &SMESH_HypothesisPy<T>::setParameters, "setParameters(String)");
     SMESH_HypothesisPy::add_varargs_method("getParameters", &SMESH_HypothesisPy<T>::getParameters, "String getParameters()");
     SMESH_HypothesisPy::add_varargs_method("setLastParameters", &SMESH_HypothesisPy<T>::setLastParameters, "setLastParameters(String)");
     SMESH_HypothesisPy::add_varargs_method("getLastParameters", &SMESH_HypothesisPy<T>::getLastParameters, "String getLastParameters()");
     SMESH_HypothesisPy::add_varargs_method("clearParameters", &SMESH_HypothesisPy<T>::clearParameters, "clearParameters()");
-#endif
+~endif
     SMESH_HypothesisPy::add_varargs_method("isAuxiliary", &SMESH_HypothesisPy<T>::isAuxiliary, "Bool isAuxiliary()");
     SMESH_HypothesisPy::add_varargs_method("setParametersByMesh", &SMESH_HypothesisPy<T>::setParametersByMesh, "setParametersByMesh(Mesh,Shape)");
     Base::Interpreter().addType(SMESH_HypothesisPy<T>::behaviors().type_object(),
@@ -149,7 +149,7 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
 }
 
 
-#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
+~if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
@@ -192,7 +192,7 @@ Py::Object SMESH_HypothesisPy<T>::clearParameters(const Py::Tuple& args)
     hypothesis<SMESH_Hypothesis>()->ClearParameters();
     return Py::None();
 }
-#endif // --------------------------------------------------------------------
+~endif // --------------------------------------------------------------------
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParametersByMesh(const Py::Tuple& args)
@@ -223,11 +223,11 @@ PyObject *SMESH_HypothesisPy<T>::PyMake(struct _typeobject * /*type*/, PyObject 
     if (!PyArg_ParseTuple(args, "iO!",&hypId,&(FemMeshPy::Type),&obj))
         return 0;
     FemMesh* mesh = static_cast<FemMeshPy*>(obj)->getFemMeshPtr();
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     return new T(hypId, mesh->getGenerator());
-#else
+~else
     return new T(hypId, 1, mesh->getGenerator());
-#endif
+~endif
 }
 
 // ---------------------------------------------------------------------------
@@ -242,17 +242,17 @@ void StdMeshers_Arithmetic1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Arithmetic1DPy::StdMeshers_Arithmetic1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Arithmetic1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Arithmetic1DPy::StdMeshers_Arithmetic1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Arithmetic1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Arithmetic1DPy::~StdMeshers_Arithmetic1DPy()
 {
@@ -287,17 +287,17 @@ void StdMeshers_AutomaticLengthPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, SMESH_Gen* /*gen*/)
   : SMESH_HypothesisPyBase(0)
 {
 }
-#else
+~else
 StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, int /*studyId*/, SMESH_Gen* /*gen*/)
   : SMESH_HypothesisPyBase(0)
 {
 }
-#endif
+~endif
 
 StdMeshers_AutomaticLengthPy::~StdMeshers_AutomaticLengthPy()
 {
@@ -356,17 +356,17 @@ void StdMeshers_NotConformAllowedPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_NotConformAllowedPy::StdMeshers_NotConformAllowedPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_NotConformAllowed(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_NotConformAllowedPy::StdMeshers_NotConformAllowedPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_NotConformAllowed(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_NotConformAllowedPy::~StdMeshers_NotConformAllowedPy()
 {
@@ -389,17 +389,17 @@ void StdMeshers_MaxLengthPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_MaxLengthPy::StdMeshers_MaxLengthPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MaxLength(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_MaxLengthPy::StdMeshers_MaxLengthPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MaxLength(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_MaxLengthPy::~StdMeshers_MaxLengthPy()
 {
@@ -465,17 +465,17 @@ void StdMeshers_LocalLengthPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_LocalLengthPy::StdMeshers_LocalLengthPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_LocalLength(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_LocalLengthPy::StdMeshers_LocalLengthPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_LocalLength(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_LocalLengthPy::~StdMeshers_LocalLengthPy()
 {
@@ -519,17 +519,17 @@ void StdMeshers_MaxElementAreaPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_MaxElementAreaPy::StdMeshers_MaxElementAreaPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MaxElementArea(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_MaxElementAreaPy::StdMeshers_MaxElementAreaPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MaxElementArea(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_MaxElementAreaPy::~StdMeshers_MaxElementAreaPy()
 {
@@ -557,17 +557,17 @@ void StdMeshers_QuadranglePreferencePy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_QuadranglePreferencePy::StdMeshers_QuadranglePreferencePy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_QuadranglePreference(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_QuadranglePreferencePy::StdMeshers_QuadranglePreferencePy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_QuadranglePreference(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_QuadranglePreferencePy::~StdMeshers_QuadranglePreferencePy()
 {
@@ -582,17 +582,17 @@ void StdMeshers_Quadrangle_2DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Quadrangle_2DPy::StdMeshers_Quadrangle_2DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Quadrangle_2D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Quadrangle_2DPy::StdMeshers_Quadrangle_2DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Quadrangle_2D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Quadrangle_2DPy::~StdMeshers_Quadrangle_2DPy()
 {
@@ -607,17 +607,17 @@ void StdMeshers_Regular_1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Regular_1DPy::StdMeshers_Regular_1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Regular_1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Regular_1DPy::StdMeshers_Regular_1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Regular_1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Regular_1DPy::~StdMeshers_Regular_1DPy()
 {
@@ -632,17 +632,17 @@ void StdMeshers_UseExisting_1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_UseExisting_1DPy::StdMeshers_UseExisting_1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_UseExisting_1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_UseExisting_1DPy::StdMeshers_UseExisting_1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_UseExisting_1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_UseExisting_1DPy::~StdMeshers_UseExisting_1DPy()
 {
@@ -657,17 +657,17 @@ void StdMeshers_UseExisting_2DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_UseExisting_2DPy::StdMeshers_UseExisting_2DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_UseExisting_2D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_UseExisting_2DPy::StdMeshers_UseExisting_2DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_UseExisting_2D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_UseExisting_2DPy::~StdMeshers_UseExisting_2DPy()
 {
@@ -682,17 +682,17 @@ void StdMeshers_CompositeSegment_1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_CompositeSegment_1DPy::StdMeshers_CompositeSegment_1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_CompositeSegment_1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_CompositeSegment_1DPy::StdMeshers_CompositeSegment_1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_CompositeSegment_1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_CompositeSegment_1DPy::~StdMeshers_CompositeSegment_1DPy()
 {
@@ -709,17 +709,17 @@ void StdMeshers_Deflection1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Deflection1DPy::StdMeshers_Deflection1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Deflection1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Deflection1DPy::StdMeshers_Deflection1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Deflection1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Deflection1DPy::~StdMeshers_Deflection1DPy()
 {
@@ -741,17 +741,17 @@ void StdMeshers_Hexa_3DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Hexa_3DPy::StdMeshers_Hexa_3DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Hexa_3D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Hexa_3DPy::StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Hexa_3D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy()
 {
@@ -759,7 +759,7 @@ StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy()
 
 // ---------------------------------------------------------------------------
 
-#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
+~if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
 void StdMeshers_TrianglePreferencePy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_TrianglePreference");
@@ -775,7 +775,7 @@ StdMeshers_TrianglePreferencePy::StdMeshers_TrianglePreferencePy(int hypId, int 
 StdMeshers_TrianglePreferencePy::~StdMeshers_TrianglePreferencePy()
 {
 }
-#endif // --------------------------------------------------------------------
+~endif // --------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 
@@ -788,17 +788,17 @@ void StdMeshers_StartEndLengthPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_StartEndLengthPy::StdMeshers_StartEndLengthPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_StartEndLength(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_StartEndLengthPy::StdMeshers_StartEndLengthPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_StartEndLength(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_StartEndLengthPy::~StdMeshers_StartEndLengthPy()
 {
@@ -826,17 +826,17 @@ void StdMeshers_SegmentLengthAroundVertexPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_SegmentLengthAroundVertexPy::StdMeshers_SegmentLengthAroundVertexPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_SegmentLengthAroundVertex(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_SegmentLengthAroundVertexPy::StdMeshers_SegmentLengthAroundVertexPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_SegmentLengthAroundVertex(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_SegmentLengthAroundVertexPy::~StdMeshers_SegmentLengthAroundVertexPy()
 {
@@ -864,17 +864,17 @@ void StdMeshers_SegmentAroundVertex_0DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_SegmentAroundVertex_0DPy::StdMeshers_SegmentAroundVertex_0DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_SegmentAroundVertex_0D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_SegmentAroundVertex_0DPy::StdMeshers_SegmentAroundVertex_0DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_SegmentAroundVertex_0D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_SegmentAroundVertex_0DPy::~StdMeshers_SegmentAroundVertex_0DPy()
 {
@@ -889,17 +889,17 @@ void StdMeshers_RadialPrism_3DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_RadialPrism_3DPy::StdMeshers_RadialPrism_3DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_RadialPrism_3D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_RadialPrism_3DPy::StdMeshers_RadialPrism_3DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_RadialPrism_3D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_RadialPrism_3DPy::~StdMeshers_RadialPrism_3DPy()
 {
@@ -914,17 +914,17 @@ void StdMeshers_QuadraticMeshPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_QuadraticMeshPy::StdMeshers_QuadraticMeshPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_QuadraticMesh(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_QuadraticMeshPy::StdMeshers_QuadraticMeshPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_QuadraticMesh(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_QuadraticMeshPy::~StdMeshers_QuadraticMeshPy()
 {
@@ -939,17 +939,17 @@ void StdMeshers_ProjectionSource3DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_ProjectionSource3DPy::StdMeshers_ProjectionSource3DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_ProjectionSource3D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_ProjectionSource3DPy::StdMeshers_ProjectionSource3DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_ProjectionSource3D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_ProjectionSource3DPy::~StdMeshers_ProjectionSource3DPy()
 {
@@ -964,17 +964,17 @@ void StdMeshers_ProjectionSource2DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_ProjectionSource2DPy::StdMeshers_ProjectionSource2DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_ProjectionSource2D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_ProjectionSource2DPy::StdMeshers_ProjectionSource2DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_ProjectionSource2D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_ProjectionSource2DPy::~StdMeshers_ProjectionSource2DPy()
 {
@@ -989,17 +989,17 @@ void StdMeshers_ProjectionSource1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_ProjectionSource1DPy::StdMeshers_ProjectionSource1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_ProjectionSource1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_ProjectionSource1DPy::StdMeshers_ProjectionSource1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_ProjectionSource1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_ProjectionSource1DPy::~StdMeshers_ProjectionSource1DPy()
 {
@@ -1014,17 +1014,17 @@ void StdMeshers_Projection_3DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Projection_3DPy::StdMeshers_Projection_3DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Projection_3D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Projection_3DPy::StdMeshers_Projection_3DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Projection_3D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Projection_3DPy::~StdMeshers_Projection_3DPy()
 {
@@ -1039,17 +1039,17 @@ void StdMeshers_Projection_2DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Projection_2DPy::StdMeshers_Projection_2DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Projection_2D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Projection_2DPy::StdMeshers_Projection_2DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Projection_2D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Projection_2DPy::~StdMeshers_Projection_2DPy()
 {
@@ -1064,17 +1064,17 @@ void StdMeshers_Projection_1DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Projection_1DPy::StdMeshers_Projection_1DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Projection_1D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Projection_1DPy::StdMeshers_Projection_1DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Projection_1D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Projection_1DPy::~StdMeshers_Projection_1DPy()
 {
@@ -1089,17 +1089,17 @@ void StdMeshers_Prism_3DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_Prism_3DPy::StdMeshers_Prism_3DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Prism_3D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_Prism_3DPy::StdMeshers_Prism_3DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_Prism_3D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_Prism_3DPy::~StdMeshers_Prism_3DPy()
 {
@@ -1116,17 +1116,17 @@ void StdMeshers_NumberOfSegmentsPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_NumberOfSegmentsPy::StdMeshers_NumberOfSegmentsPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_NumberOfSegments(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_NumberOfSegmentsPy::StdMeshers_NumberOfSegmentsPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_NumberOfSegments(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_NumberOfSegmentsPy::~StdMeshers_NumberOfSegmentsPy()
 {
@@ -1156,17 +1156,17 @@ void StdMeshers_NumberOfLayersPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_NumberOfLayersPy::StdMeshers_NumberOfLayersPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_NumberOfLayers(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_NumberOfLayersPy::StdMeshers_NumberOfLayersPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_NumberOfLayers(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_NumberOfLayersPy::~StdMeshers_NumberOfLayersPy()
 {
@@ -1194,17 +1194,17 @@ void StdMeshers_MEFISTO_2DPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_MEFISTO_2DPy::StdMeshers_MEFISTO_2DPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MEFISTO_2D(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_MEFISTO_2DPy::StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MEFISTO_2D(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy()
 {
@@ -1221,17 +1221,17 @@ void StdMeshers_MaxElementVolumePy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_MaxElementVolumePy::StdMeshers_MaxElementVolumePy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MaxElementVolume(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_MaxElementVolumePy::StdMeshers_MaxElementVolumePy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_MaxElementVolume(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_MaxElementVolumePy::~StdMeshers_MaxElementVolumePy()
 {
@@ -1261,17 +1261,17 @@ void StdMeshers_LengthFromEdgesPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_LengthFromEdgesPy::StdMeshers_LengthFromEdgesPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_LengthFromEdges(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_LengthFromEdgesPy::StdMeshers_LengthFromEdgesPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_LengthFromEdges(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_LengthFromEdgesPy::~StdMeshers_LengthFromEdgesPy()
 {
@@ -1305,17 +1305,17 @@ void StdMeshers_LayerDistributionPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
 StdMeshers_LayerDistributionPy::StdMeshers_LayerDistributionPy(int hypId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_LayerDistribution(hypId, gen))
 {
 }
-#else
+~else
 StdMeshers_LayerDistributionPy::StdMeshers_LayerDistributionPy(int hypId, int studyId, SMESH_Gen* gen)
   : SMESH_HypothesisPyBase(new StdMeshers_LayerDistribution(hypId, studyId, gen))
 {
 }
-#endif
+~endif
 
 StdMeshers_LayerDistributionPy::~StdMeshers_LayerDistributionPy()
 {

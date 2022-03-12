@@ -19,18 +19,18 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "MED_Algorithm.hxx"
-#include "MED_Wrapper.hxx"
+~include "MED_Algorithm.hxx"
+~include "MED_Wrapper.hxx"
 
-#include "MED_Utilities.hxx"
+~include "MED_Utilities.hxx"
  
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
 static int MYVALUEDEBUG = 0;
-#else
+~else
 // static int MYDEBUG = 0;
 // static int MYVALUEDEBUG = 0;
-#endif
+~endif
 
 namespace MED
 {
@@ -101,7 +101,7 @@ namespace MED
       } 
     }
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     if(MYDEBUG){
       TGroupInfo::const_iterator anIter = aGroup.begin();
       for(; anIter != aGroup.end(); anIter++){
@@ -116,7 +116,7 @@ namespace MED
       }
       ADDMSG(MYDEBUG,"\n");
     }
-#endif
+~endif
 
     return aGroup;
   }
@@ -265,14 +265,14 @@ namespace MED
       TGaussInfo::TKey aKey = boost::get<0>(aPreInfo);
       aKey2Gauss[aKey] = anInfo;
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
       const EGeometrieElement& aGeom = boost::get<0>(aKey);
       const std::string& aName = boost::get<1>(aKey);
       INITMSG(MYDEBUG,
               "- aGeom = "<<aGeom<<
               "; aName = '"<<aName<<"'"<<
               std::endl);
-#endif
+~endif
 
     }
     return aKey2Gauss;
@@ -313,7 +313,7 @@ namespace MED
       const std::string& aName = boost::get<0>(aPreInfo);
       aKey2Profile[aName] = anInfo;
       
-#ifdef _DEBUG_
+~ifdef _DEBUG_
       INITMSG(MYDEBUG,
               "- aName = '"<<aName<<"'"<<
               " : "<<
@@ -323,7 +323,7 @@ namespace MED
         ADDMSG(MYVALUEDEBUG,anInfo->GetElemNum(iElem)<<", ");
       }
       ADDMSG(MYVALUEDEBUG, std::endl);
-#endif
+~endif
       
     }
     return TMKey2Profile(theMode,aKey2Profile);

@@ -18,36 +18,36 @@
  *
  */
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Inventor/SbLine.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/events/SoEvents.h>
-#include <Inventor/nodes/SoLocateHighlight.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
+~include <Base/Console.h>
+~include <Inventor/SbLine.h>
+~include <Inventor/SbPlane.h>
+~include <Inventor/SoEventManager.h>
+~include <Inventor/SoPickedPoint.h>
+~include <Inventor/actions/SoHandleEventAction.h>
+~include <Inventor/actions/SoRayPickAction.h>
+~include <Inventor/actions/SoSearchAction.h>
+~include <Inventor/events/SoEvents.h>
+~include <Inventor/nodes/SoLocateHighlight.h>
+~include <Inventor/nodes/SoOrthographicCamera.h>
+~include <Inventor/nodes/SoPerspectiveCamera.h>
+~include <Inventor/nodes/SoSeparator.h>
 
-#if !defined(FC_OS_MACOSX)
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#endif
+~if !defined(FC_OS_MACOSX)
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ include <GL/glext.h>
+~endif
 
-#include "SoQTQuarterAdaptor.h"
+~include "SoQTQuarterAdaptor.h"
 
 
 static unsigned char fps2dfont[][12] = {
     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
     {  0,  0, 12, 12,  0,  8, 12, 12, 12, 12, 12,  0 }, // !
     {  0,  0,  0,  0,  0,  0,  0,  0,  0, 20, 20, 20 }, // \"
-    {  0,  0, 18, 18, 18, 63, 18, 18, 63, 18, 18,  0 }, // #
+    {  0,  0, 18, 18, 18, 63, 18, 18, 63, 18, 18,  0 }, // ~
     {  0,  8, 28, 42, 10, 10, 12, 24, 40, 42, 28,  8 }, // $
     {  0,  0,  6, 73, 41, 22,  8, 52, 74, 73, 48,  0 }, // %
     {  0, 12, 18, 18, 12, 25, 37, 34, 34, 29,  0,  0 }, // &
@@ -586,13 +586,13 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition()
         // detail in So@Gui@Viewer::saveHomePosition().
         getSoRenderManager()->getCamera()->copyFieldValues(m_storedcamera);
     }
-    // handle common case #1
+    // handle common case ~1
     else if(t == SoOrthographicCamera::getClassTypeId() &&
             s == SoPerspectiveCamera::getClassTypeId()) {
         convertPerspective2Ortho((SoPerspectiveCamera*)m_storedcamera,
                                  (SoOrthographicCamera*)getSoRenderManager()->getCamera());
     }
-    // handle common case #2
+    // handle common case ~2
     else if(t == SoPerspectiveCamera::getClassTypeId() &&
             s == SoOrthographicCamera::getClassTypeId()) {
         convertOrtho2Perspective((SoOrthographicCamera*)m_storedcamera,
@@ -744,7 +744,7 @@ SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
 
     // draw time is the actual time spent on rendering
     double drawtime = timeofday - starttime;
-#define FPS_FACTOR 0.7
+~define FPS_FACTOR 0.7
     this->drawtime = (drawtime*FPS_FACTOR) + this->drawtime*(1.0-FPS_FACTOR);
 
     // frame time is the time spent since the last frame. There could an

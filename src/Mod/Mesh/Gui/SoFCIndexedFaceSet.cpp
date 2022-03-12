@@ -21,54 +21,54 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef FC_OS_WIN32
-# ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
-# endif
-#endif
+~ifndef FC_OS_WIN32
+~ ifndef GL_GLEXT_PROTOTYPES
+~ define GL_GLEXT_PROTOTYPES 1
+~ endif
+~endif
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <climits>
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
-# include <OpenGL/glext.h>
-# else
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-# endif
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/elements/SoCoordinateElement.h>
-# include <Inventor/elements/SoGLCoordinateElement.h>
-# include <Inventor/elements/SoGLLazyElement.h>
-# include <Inventor/elements/SoMaterialBindingElement.h>
-# include <Inventor/elements/SoNormalBindingElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/errors/SoDebugError.h>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <climits>
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ include <OpenGL/glu.h>
+~ include <OpenGL/glext.h>
+~ else
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ include <GL/glext.h>
+~ endif
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/elements/SoCoordinateElement.h>
+~ include <Inventor/elements/SoGLCoordinateElement.h>
+~ include <Inventor/elements/SoGLLazyElement.h>
+~ include <Inventor/elements/SoMaterialBindingElement.h>
+~ include <Inventor/elements/SoNormalBindingElement.h>
+~ include <Inventor/elements/SoProjectionMatrixElement.h>
+~ include <Inventor/elements/SoViewingMatrixElement.h>
+~ include <Inventor/errors/SoDebugError.h>
+~endif
 
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoContextHandler.h>
+~include <Inventor/C/glue/gl.h>
+~include <Inventor/misc/SoContextHandler.h>
 
-#include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/GLBuffer.h>
-#include "SoFCIndexedFaceSet.h"
+~include <Gui/SoFCInteractiveElement.h>
+~include <Gui/SoFCSelectionAction.h>
+~include <Gui/GLBuffer.h>
+~include "SoFCIndexedFaceSet.h"
 
-#define RENDER_GL_VAO
-//#define RENDER_GLARRAYS
+~define RENDER_GL_VAO
+//~define RENDER_GLARRAYS
 
 
 
 using namespace MeshGui;
 
-#if defined RENDER_GL_VAO
+~if defined RENDER_GL_VAO
 
 class MeshRenderer::Private {
 public:
@@ -204,7 +204,7 @@ bool MeshRenderer::Private::needUpdate(SoGLRenderAction *action)
     return !vertices.isCreated(action->getCacheContext()) ||
            !indices.isCreated(action->getCacheContext());
 }
-#elif defined RENDER_GLARRAYS
+~elif defined RENDER_GLARRAYS
 class MeshRenderer::Private {
 public:
     std::vector<int32_t> index_array;
@@ -255,7 +255,7 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction*,
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 {
-#if 0 // use Inventor's coordIndex saves memory but the rendering is very slow then
+~if 0 // use Inventor's coordIndex saves memory but the rendering is very slow then
     const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
     PFNGLPRIMITIVERESTARTINDEXPROC glPrimitiveRestartIndex = (PFNGLPRIMITIVERESTARTINDEXPROC)
         cc_glglue_getprocaddress(glue, "glPrimitiveRestartIndex");
@@ -266,7 +266,7 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
     glEnableClientState(GL_VERTEX_ARRAY);
 
     // https://www.opengl.org/discussion_boards/archive/index.php/t-180767.html
-    // https://www.khronos.org/opengl/wiki/Vertex_Rendering#Primitive_Restart
+    // https://www.khronos.org/opengl/wiki/Vertex_Rendering~Primitive_Restart
     glPrimitiveRestartIndex(0xffffffff);
     glEnable(GL_PRIMITIVE_RESTART);
     //glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
@@ -278,7 +278,7 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
     //glDisable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-#else // Needs more memory but makes it very fast
+~else // Needs more memory but makes it very fast
     (void)action;
     int cnt = index_array.size();
 
@@ -293,7 +293,7 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-#endif
+~endif
 }
 
 void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *)
@@ -312,7 +312,7 @@ void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *)
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
 }
-#else
+~else
 class MeshRenderer::Private {
 public:
     const SbColor * pcolors;
@@ -346,7 +346,7 @@ public:
         return false;
     }
 };
-#endif
+~endif
 
 MeshRenderer::MeshRenderer()
   : p(new Private)
@@ -439,12 +439,12 @@ bool MeshRenderer::matchMaterial(SoState* state) const
 
 bool MeshRenderer::shouldRenderDirectly(bool direct)
 {
-#ifdef RENDER_GL_VAO
+~ifdef RENDER_GL_VAO
     Q_UNUSED(direct);
     return false;
-#else
+~else
     return direct;
-#endif
+~endif
 }
 
 // ----------------------------------------------------------------------------
@@ -516,7 +516,7 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
-#if defined(RENDER_GL_VAO)
+~if defined(RENDER_GL_VAO)
     SoState * state = action->getState();
 
     // get the VBO status of the viewer
@@ -550,9 +550,9 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
     else {
         drawFaces(action);
     }
-#else
+~else
     drawFaces(action);
-#endif
+~endif
 }
 
 void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
@@ -562,7 +562,7 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
 
     unsigned int num = this->coordIndex.getNum()/4;
     if (mode == false || num <= this->renderTriangleLimit) {
-#ifdef RENDER_GLARRAYS
+~ifdef RENDER_GLARRAYS
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
 
@@ -579,16 +579,16 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
         else {
             inherited::GLRender(action);
         }
-#else
+~else
         inherited::GLRender(action);
-#endif
+~endif
     }
     else {
-#if 0 && defined (RENDER_GLARRAYS)
+~if 0 && defined (RENDER_GLARRAYS)
         SoMaterialBundle mb(action);
         mb.sendFirst();
         render.renderCoordsGLArray(action);
-#else
+~else
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
         int32_t binding = (int32_t)(matbind);
@@ -624,7 +624,7 @@ void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
 
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-#endif
+~endif
     }
 }
 
@@ -979,7 +979,7 @@ void SoFCIndexedFaceSet::startSelection(SoAction * action)
     //glGetDoublev(GL_PROJECTION_MATRIX ,mp);
     glPushMatrix();
     glLoadIdentity();
-    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1#post1259884
+    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1~post1259884
     //gluPickMatrix(x, y, w, h, viewport);
     if (w > 0 && h > 0) {
         glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w, (viewport[3] - 2 * (y - viewport[1])) / h, 0);

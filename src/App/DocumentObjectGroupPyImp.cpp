@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DocumentObjectGroup.h"
+~include "DocumentObjectGroup.h"
 
 // inclusion of the generated files (generated out of DocumentObjectGroupPy.xml)
-#include "DocumentObjectGroupPy.h"
-#include "DocumentObjectGroupPy.cpp"
+~include "DocumentObjectGroupPy.h"
+~include "DocumentObjectGroupPy.cpp"
 
 using namespace App;
 

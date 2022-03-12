@@ -21,39 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <Standard_Failure.hxx>
-#include <Precision.hxx>
-#include <cmath>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Standard_Failure.hxx>
+~include <Precision.hxx>
+~include <cmath>
+~endif
 
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/UnitsApi.h>
 
-#include "DrawPage.h"
-#include "DrawViewCollection.h"
-#include "DrawViewClip.h"
-#include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
-#include "DrawLeaderLine.h"
-#include "Preferences.h"
-#include "DrawUtil.h"
-#include "Geometry.h"
-#include "Cosmetic.h"
+~include "DrawPage.h"
+~include "DrawViewCollection.h"
+~include "DrawViewClip.h"
+~include "DrawProjGroup.h"
+~include "DrawProjGroupItem.h"
+~include "DrawLeaderLine.h"
+~include "Preferences.h"
+~include "DrawUtil.h"
+~include "Geometry.h"
+~include "Cosmetic.h"
 
-#include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
+~include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
-#include "DrawView.h"
+~include "DrawView.h"
 
 using namespace TechDraw;
 

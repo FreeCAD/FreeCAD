@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Interpreter.h>
+~include <Base/Interpreter.h>
 
-#include "Application.h"
-#include "Document.h"
-#include "DocumentObserverPython.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
+~include "Application.h"
+~include "Document.h"
+~include "DocumentObserverPython.h"
+~include "ViewProvider.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;
@@ -58,19 +58,19 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj)
 {
-#define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = Application::Instance->signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1));\
+~define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" ~_name1, py~~_name1.py);\
+        if (!py~~_name1.py.isNone())\
+            py~~_name1.slot = Application::Instance->signal~~_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot~~_name1, this, bp::_1));\
     }\
     while(0);
 
-#define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = Application::Instance->signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2));\
+~define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" ~_name1, py~~_name1.py);\
+        if (!py~~_name1.py.isNone())\
+            py~~_name1.slot = Application::Instance->signal~~_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot~~_name1, this, bp::_1, bp::_2));\
     }\
     while(0);
 

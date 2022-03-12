@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <sstream>
-#include <QDir>
-#include <QMessageBox>
+~include "PreCompiled.h"
+~include <sstream>
+~include <QDir>
+~include <QMessageBox>
 
-#include <App/Document.h>
-#include <App/PropertyStandard.h>
+~include <App/Document.h>
+~include <App/PropertyStandard.h>
 
-#include "DlgProjectUtility.h"
-#include "Application.h"
-#include "Command.h"
-#include "ui_DlgProjectUtility.h"
+~include "DlgProjectUtility.h"
+~include "Application.h"
+~include "Command.h"
+~include "ui_DlgProjectUtility.h"
 
 
 using namespace Gui::Dialog;
@@ -45,7 +45,7 @@ std::string DlgProjectUtility::doctools =
 "import xml.sax.xmlreader\n"
 "import zipfile\n"
 "\n"
-"# SAX handler to parse the Document.xml\n"
+"~ SAX handler to parse the Document.xml\n"
 "class DocumentHandler(xml.sax.handler.ContentHandler):\n"
 "	def __init__(self, dirname):\n"
 "		self.files = []\n"
@@ -88,7 +88,7 @@ std::string DlgProjectUtility::doctools =
 "	compress=zipfile.ZipFile(outpath,\'w\',zipfile.ZIP_DEFLATED)\n"
 "	for i in files:\n"
 "		dirs=os.path.split(i)\n"
-"		#print i, dirs[-1]\n"
+"		~print i, dirs[-1]\n"
 "		compress.write(i,dirs[-1],zipfile.ZIP_DEFLATED)\n"
 "	compress.close()\n"
 "\n"
@@ -170,4 +170,4 @@ void DlgProjectUtility::on_createButton_clicked()
         Application::Instance->open((const char*)dest.toUtf8(),"FreeCAD");
 }
 
-#include "moc_DlgProjectUtility.cpp"
+~include "moc_DlgProjectUtility.cpp"

@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include "ViewProviderRobotObject.h"
-#include "ViewProviderTrajectory.h"
-#include "ViewProviderEdge2TracObject.h"
-#include "ViewProviderTrajectoryDressUp.h"
-#include "ViewProviderTrajectoryCompound.h"
-#include "Workbench.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
+~include "ViewProviderRobotObject.h"
+~include "ViewProviderTrajectory.h"
+~include "ViewProviderEdge2TracObject.h"
+~include "ViewProviderTrajectoryDressUp.h"
+~include "ViewProviderTrajectoryCompound.h"
+~include "Workbench.h"
 
 // use a different name to CreateCommand()
 void CreateRobotCommands(void);

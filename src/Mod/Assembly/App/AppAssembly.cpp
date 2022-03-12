@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-//# include <ode/ode.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+//~ include <ode/ode.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
 
-#include "Item.h"
-#include "Product.h"
-#include "ProductRef.h"
+~include "Item.h"
+~include "Product.h"
+~include "ProductRef.h"
 
-#include "Constraint.h"
-#include "ConstraintGroup.h"
+~include "Constraint.h"
+~include "ConstraintGroup.h"
 
 
 extern struct PyMethodDef Assembly_methods[];

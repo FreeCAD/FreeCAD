@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <Mod/Mesh/App/MeshFeature.h>
-#include "PropertyEditorMesh.h"
+~include <Mod/Mesh/App/MeshFeature.h>
+~include "PropertyEditorMesh.h"
 
 using namespace MeshGui;
 using MeshCore::MeshKernel;
@@ -147,4 +147,4 @@ int PropertyMeshKernelItem::countFaces() const
     return ctF;
 }
 
-#include "moc_PropertyEditorMesh.cpp"
+~include "moc_PropertyEditorMesh.cpp"

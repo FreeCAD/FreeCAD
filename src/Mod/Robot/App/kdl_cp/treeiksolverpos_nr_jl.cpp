@@ -21,7 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include "treeiksolverpos_nr_jl.hpp"
+~include "treeiksolverpos_nr_jl.hpp"
 
 namespace KDL {
     TreeIkSolverPos_NR_JL::TreeIkSolverPos_NR_JL(const Tree& _tree,

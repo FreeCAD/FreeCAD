@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <App/Application.h>
-#include <Gui/FileDialog.h>
+~include <App/Application.h>
+~include <Gui/FileDialog.h>
 
-#include "DrawGuiStd.h"
-#include "Rez.h"
+~include "DrawGuiStd.h"
+~include "Rez.h"
 
-#include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
+~include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
 
-#include "SymbolChooser.h"
+~include "SymbolChooser.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -141,4 +141,4 @@ void SymbolChooser::loadSymbolNames(QString pathToSymbols)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_SymbolChooser.cpp>
+~include <Mod/TechDraw/Gui/moc_SymbolChooser.cpp>

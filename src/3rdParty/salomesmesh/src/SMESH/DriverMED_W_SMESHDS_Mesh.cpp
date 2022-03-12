@@ -25,27 +25,27 @@
 //  Module : SMESH
 //
 
-#include "DriverMED_W_SMESHDS_Mesh.h"
+~include "DriverMED_W_SMESHDS_Mesh.h"
 
-#include "DriverMED_Family.h"
-#include "MED_Factory.hxx"
-#include "MED_Utilities.hxx"
-#include "SMDS_IteratorOnIterators.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_PolyhedralVolumeOfNodes.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_Mesh.hxx"
+~include "DriverMED_Family.h"
+~include "MED_Factory.hxx"
+~include "MED_Utilities.hxx"
+~include "SMDS_IteratorOnIterators.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_PolyhedralVolumeOfNodes.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_Mesh.hxx"
 
-#include <BRep_Tool.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+~include <BRep_Tool.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
 
-#include <utilities.h>
+~include <utilities.h>
 
 
-#define _EDF_NODE_IDS_
-//#define _ELEMENTS_BY_DIM_
+~define _EDF_NODE_IDS_
+//~define _ELEMENTS_BY_DIM_
 
 using namespace std;
 using namespace MED;
@@ -488,10 +488,10 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
 
     // Storing SMDS nodes to the MED file for the MED mesh
     //----------------------------------------------------
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
     typedef map<TInt,TInt> TNodeIdMap;
     TNodeIdMap aNodeIdMap;
-#endif
+~endif
     const EModeSwitch   theMode        = eFULL_INTERLACE;
     const ERepere       theSystem      = eCART;
     const EBooleen      theIsElemNum   = eVRAI;
@@ -516,9 +516,9 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
       // node number
       int aNodeID = aCoordHelperPtr->GetID();
       aNodeInfo->SetElemNum( iNode, aNodeID );
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
       aNodeIdMap.insert( aNodeIdMap.end(), make_pair( aNodeID, iNode+1 ));
-#endif
+~endif
       // family number
       const SMDS_MeshNode* aNode = aCoordHelperPtr->GetNode();
       int famNum = getFamilyId( anElemFamMap, aNode, myNodesDefaultFamilyId );
@@ -569,23 +569,23 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
     list< TElemTypeData > aTElemTypeDatas;
 
     EEntiteMaillage anEntity = eMAILLE;
-#ifdef _ELEMENTS_BY_DIM_
+~ifdef _ELEMENTS_BY_DIM_
     anEntity = eNOEUD_ELEMENT;
-#endif
+~endif
     aTElemTypeDatas.push_back(TElemTypeData(anEntity,
                                             ePOINT1,
                                             nbElemInfo.Nb0DElements() + nodesOf0D.size(),
                                             SMDSAbs_0DElement));
-#ifdef _ELEMENTS_BY_DIM_
+~ifdef _ELEMENTS_BY_DIM_
     anEntity = eSTRUCT_ELEMENT;
-#endif
+~endif
     aTElemTypeDatas.push_back( TElemTypeData(anEntity,
                                              eBALL,
                                              nbElemInfo.NbBalls(),
                                              SMDSAbs_Ball));
-#ifdef _ELEMENTS_BY_DIM_
+~ifdef _ELEMENTS_BY_DIM_
     anEntity = eARETE;
-#endif
+~endif
     aTElemTypeDatas.push_back( TElemTypeData(anEntity,
                                              eSEG2,
                                              nbElemInfo.NbEdges( ORDER_LINEAR ),
@@ -594,9 +594,9 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
                                              eSEG3,
                                              nbElemInfo.NbEdges( ORDER_QUADRATIC ),
                                              SMDSAbs_Edge));
-#ifdef _ELEMENTS_BY_DIM_
+~ifdef _ELEMENTS_BY_DIM_
     anEntity = eFACE;
-#endif
+~endif
     aTElemTypeDatas.push_back( TElemTypeData(anEntity,
                                              eTRIA3,
                                              nbElemInfo.NbTriangles( ORDER_LINEAR ),
@@ -643,9 +643,9 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
                                                nbElemInfo.NbPolygons( ORDER_QUADRATIC ),
                                                SMDSAbs_Face));
     }
-#ifdef _ELEMENTS_BY_DIM_
+~ifdef _ELEMENTS_BY_DIM_
     anEntity = eMAILLE;
-#endif
+~endif
     aTElemTypeDatas.push_back( TElemTypeData(anEntity,
                                              eTETRA4,
                                              nbElemInfo.NbTetras( ORDER_LINEAR ),
@@ -732,11 +732,11 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
         if ( aElemTypeData->_geomType == ePOLYGONE )
           elemIterator = myMesh->elementEntityIterator( SMDSEntity_Polygon );
         else {
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
           elemIterator = myMesh->elementEntityIterator( SMDSEntity_Quad_Polygon );
-#else        
+~else        
           throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
-#endif
+~endif
         }
         if ( nbPolygonNodes == 0 ) {
           // Count nb of nodes
@@ -770,11 +770,11 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
             TConnSlice aTConnSlice = aPolygoneInfo->GetConnSlice( iElem );
             for(TInt iNode = 0; iNode < aNbNodes; iNode++) {
               const SMDS_MeshElement* aNode = anElem->GetNode( iNode );
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
               aTConnSlice[ iNode ] = aNodeIdMap[aNode->GetID()];
-#else
+~else
               aTConnSlice[ iNode ] = aNode->GetID();
-#endif
+~endif
             }
             // element number
             aPolygoneInfo->SetElemNum( iElem, anElem->GetID() );
@@ -846,11 +846,11 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
             SMDS_ElemIteratorPtr nodeIt = anElem->nodesIterator();
             while ( nodeIt->more() ) {
               const SMDS_MeshElement* aNode = nodeIt->next();
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
               conn[ iNode ] = aNodeIdMap[aNode->GetID()];
-#else
+~else
               conn[ iNode ] = aNode->GetID();
-#endif
+~endif
               ++iNode;
             }
             // element number
@@ -887,11 +887,11 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
           const SMDS_MeshElement* anElem = elemIterator->next();
           // connectivity
           const SMDS_MeshElement* aNode = anElem->GetNode( 0 );
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
           (*aBallInfo->myConn)[ iElem ] = aNodeIdMap[aNode->GetID()];
-#else
+~else
           (*aBallInfo->myConn)[ iElem ] = aNode->GetID();
-#endif
+~endif
           // element number
           aBallInfo->SetElemNum( iElem, anElem->GetID() );
 
@@ -943,11 +943,11 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
           TConnSlice aTConnSlice = aCellInfo->GetConnSlice( iElem );
           for (TInt iNode = 0; iNode < aNbNodes; iNode++) {
             const SMDS_MeshElement* aNode = anElem->GetNode( iNode );
-#ifdef _EDF_NODE_IDS_
+~ifdef _EDF_NODE_IDS_
             aTConnSlice[ iNode ] = aNodeIdMap[aNode->GetID()];
-#else
+~else
             aTConnSlice[ iNode ] = aNode->GetID();
-#endif
+~endif
           }
           // element number
           aCellInfo->SetElemNum( iElem, anElem->GetID() );

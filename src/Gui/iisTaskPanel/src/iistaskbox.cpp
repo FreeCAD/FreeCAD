@@ -5,10 +5,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iistaskbox.h"
-#include "iistaskheader.h"
-#include "iistaskgroup.h"
-#include "iistaskpanelscheme.h"
+~include "iistaskbox.h"
+~include "iistaskheader.h"
+~include "iistaskgroup.h"
+~include "iistaskpanelscheme.h"
 
 
 iisTaskBox::iisTaskBox(const QString &title, bool expandable, QWidget *parent)

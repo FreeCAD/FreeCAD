@@ -21,20 +21,20 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <gp_Lin.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Precision.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepPrimAPI_MakeRevol.hxx>
+~ include <gp_Lin.hxx>
+~ include <TopoDS.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <Precision.hxx>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
 
-#include "FeatureGroove.h"
+~include "FeatureGroove.h"
 
 
 using namespace PartDesign;

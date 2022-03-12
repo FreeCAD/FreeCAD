@@ -2,8 +2,8 @@
 // Copyright (c) 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
-#include "AreaDxf.h"
-#include "Area.h"
+~include "AreaDxf.h"
+~include "Area.h"
 
 AreaDxfRead::AreaDxfRead(CArea* area, const char* filepath):CDxfRead(filepath), m_area(area){}
 

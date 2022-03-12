@@ -30,9 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QMutexLocker>
+~include <QMutexLocker>
 
-#include "SignalThread.h"
+~include "SignalThread.h"
 
 using namespace SIM::Coin3D::Quarter;
 

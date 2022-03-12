@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <limits>
-# include <Inventor/fields/SoMFString.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTransform.h>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <limits>
+~ include <Inventor/fields/SoMFString.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoIndexedFaceSet.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoTransform.h>
+~endif
 
-#include "ViewProvider.h"
-#include "SoFCColorLegend.h"
+~include "ViewProvider.h"
+~include "SoFCColorLegend.h"
 
 
 using namespace Gui;

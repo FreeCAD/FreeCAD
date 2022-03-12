@@ -24,40 +24,40 @@
 //  File   : StdMeshers_Penta_3D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Penta_3D.hxx"
+~include "StdMeshers_Penta_3D.hxx"
 
-#include "utilities.h"
-#include "Utils_ExceptHandlers.hxx"
+~include "utilities.h"
+~include "Utils_ExceptHandlers.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_VolumeOfNodes.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_VolumeOfNodes.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
 
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_SequenceOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
+~include <BRep_Tool.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_SequenceOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Pnt.hxx>
 
-#include <stdio.h>
-#include <algorithm>
+~include <stdio.h>
+~include <algorithm>
 
 using namespace std;
 
@@ -278,7 +278,7 @@ void StdMeshers_Penta_3D::MakeNodes()
     if ( !ok ) {
       myErrorStatus->myName = COMPERR_BAD_INPUT_MESH;
       myErrorStatus->myComment = SMESH_Comment() <<
-        "Can't find regular quadrangle mesh on a side face #" <<
+        "Can't find regular quadrangle mesh on a side face ~" <<
         pMesh->GetMeshDS()->ShapeToIndex( myBlock.Shape( wallFaceID[ i ]));
       return;
     }
@@ -1225,7 +1225,7 @@ void StdMeshers_Penta_3D::MakeBlock()
   if (iNbE!= NB_WALL_FACES ){
     MESSAGE("StdMeshers_Penta_3D::MakeBlock() ");
     myErrorStatus->myName=7; // too few edges are in base face aFTr
-    myErrorStatus->myComment=SMESH_Comment("Not a quadrilateral face #")
+    myErrorStatus->myComment=SMESH_Comment("Not a quadrilateral face ~")
       <<pMesh->GetMeshDS()->ShapeToIndex( aFTr )<<": "<<iNbE<<" edges" ;
     return;
   }
@@ -1242,7 +1242,7 @@ void StdMeshers_Penta_3D::MakeBlock()
   if (iNbEV!=3){
     MESSAGE("StdMeshers_Penta_3D::MakeBlock() ");
     myErrorStatus->myName=7; // too few edges meet in base vertex 
-    myErrorStatus->myComment=SMESH_Comment("3 edges must share vertex #")
+    myErrorStatus->myComment=SMESH_Comment("3 edges must share vertex ~")
       <<pMesh->GetMeshDS()->ShapeToIndex( aV000 )<<" but there are "<<iNbEV<<" edges";
     return;
   }
@@ -1269,7 +1269,7 @@ void StdMeshers_Penta_3D::MakeBlock()
   if (!bFound) {
     MESSAGE("StdMeshers_Penta_3D::MakeBlock() ");
     myErrorStatus->myName=8; // can not find reper V001
-    myErrorStatus->myComment=SMESH_Comment("Can't find opposite vertex for vertex #")
+    myErrorStatus->myComment=SMESH_Comment("Can't find opposite vertex for vertex ~")
       <<pMesh->GetMeshDS()->ShapeToIndex( aV000 );
     return;
   }

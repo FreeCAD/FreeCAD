@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QCoreApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QCoreApplication>
+~endif
 
-#include "DlgUndoRedo.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "MDIView.h"
+~include "DlgUndoRedo.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "MDIView.h"
 
 using namespace Gui::Dialog;
 
@@ -129,4 +129,4 @@ void RedoDialog::onSelected()
     }
 }
 
-#include "moc_DlgUndoRedo.cpp"
+~include "moc_DlgUndoRedo.cpp"

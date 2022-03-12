@@ -23,43 +23,43 @@
 // Created   : Wed Jun  3 17:33:45 2015
 // Author    : Edward AGAPOV (eap)
 
-#include "StdMeshers_QuadFromMedialAxis_1D2D.hxx"
+~include "StdMeshers_QuadFromMedialAxis_1D2D.hxx"
 
-#include "SMESH_Block.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_MAT2d.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshEditor.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_LayerDistribution.hxx"
-#include "StdMeshers_NumberOfLayers.hxx"
-#include "StdMeshers_Regular_1D.hxx"
-#include "StdMeshers_ViscousLayers2D.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_MAT2d.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshEditor.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_LayerDistribution.hxx"
+~include "StdMeshers_NumberOfLayers.hxx"
+~include "StdMeshers_Regular_1D.hxx"
+~include "StdMeshers_ViscousLayers2D.hxx"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepTools.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAPI_Interpolate.hxx>
-#include <Geom_Surface.hxx>
-#include <Precision.hxx>
-#include <TColgp_HArray1OfPnt.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepTools.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomAPI_Interpolate.hxx>
+~include <Geom_Surface.hxx>
+~include <Precision.hxx>
+~include <TColgp_HArray1OfPnt.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Pnt.hxx>
 
-#include <list>
-#include <vector>
+~include <list>
+~include <vector>
 
 //================================================================================
 /*!

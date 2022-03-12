@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <TColgp_Array1OfPnt.hxx>
-# include <Geom_BSplineSurface.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <TColgp_Array1OfPnt.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Converter.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/Console.h>
+~include <Base/Converter.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Mod/Part/App/BSplineSurfacePy.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Points/App/PointsPy.h>
+~include <Mod/Part/App/BSplineSurfacePy.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshPy.h>
+~include <Mod/Points/App/PointsPy.h>
 
-#include "ApproxSurface.h"
-#include "BSplineFitting.h"
-#include "SurfaceTriangulation.h"
-#include "RegionGrowing.h"
-#include "Segmentation.h"
-#include "SampleConsensus.h"
-#if defined(HAVE_PCL_FILTERS)
-#include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/point_types.h>
-#endif
+~include "ApproxSurface.h"
+~include "BSplineFitting.h"
+~include "SurfaceTriangulation.h"
+~include "RegionGrowing.h"
+~include "Segmentation.h"
+~include "SampleConsensus.h"
+~if defined(HAVE_PCL_FILTERS)
+~include <pcl/filters/passthrough.h>
+~include <pcl/filters/voxel_grid.h>
+~include <pcl/point_types.h>
+~endif
 
 /*
 Dependency of pcl components:
@@ -85,7 +85,7 @@ public:
             "Weight=0.1,Grad=1.0,Bend=0.0,\n"
             "Iterations=5,Correction=True,PatchFactor=1.0)"
         );
-#if defined(HAVE_PCL_SURFACE)
+~if defined(HAVE_PCL_SURFACE)
         add_keyword_method("triangulate",&Module::triangulate,
             "triangulate(PointKernel,searchRadius[,mu=2.5])."
         );
@@ -104,13 +104,13 @@ public:
         add_keyword_method("marchingCubesHoppe",&Module::marchingCubesHoppe,
             "marchingCubesHoppe(PointKernel)."
         );
-#endif
-#if defined(HAVE_PCL_OPENNURBS)
+~endif
+~if defined(HAVE_PCL_OPENNURBS)
         add_keyword_method("fitBSpline",&Module::fitBSpline,
             "fitBSpline(PointKernel)."
         );
-#endif
-#if defined(HAVE_PCL_FILTERS)
+~endif
+~if defined(HAVE_PCL_FILTERS)
         add_keyword_method("filterVoxelGrid",&Module::filterVoxelGrid,
             "filterVoxelGrid(dim)."
         );
@@ -132,20 +132,20 @@ public:
             "f.ViewObject.Proxy=0\n"
             "f.ViewObject.DisplayMode=1\n"
         );
-#endif
-#if defined(HAVE_PCL_SEGMENTATION)
+~endif
+~if defined(HAVE_PCL_SEGMENTATION)
         add_keyword_method("regionGrowingSegmentation",&Module::regionGrowingSegmentation,
             "regionGrowingSegmentation()."
         );
         add_keyword_method("featureSegmentation",&Module::featureSegmentation,
             "featureSegmentation()."
         );
-#endif
-#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
+~endif
+~if defined(HAVE_PCL_SAMPLE_CONSENSUS)
         add_keyword_method("sampleConsensus",&Module::sampleConsensus,
             "sampleConsensus()."
         );
-#endif
+~endif
         initialize("This module is the ReverseEngineering module."); // register with Python
     }
 
@@ -278,7 +278,7 @@ private:
             throw Py::RuntimeError("Unknown C++ exception");
         }
     }
-#if defined(HAVE_PCL_SURFACE)
+~if defined(HAVE_PCL_SURFACE)
     /*
 import ReverseEngineering as Reen
 import Points
@@ -545,8 +545,8 @@ Mesh.show(m)
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
-#endif
-#if defined(HAVE_PCL_OPENNURBS)
+~endif
+~if defined(HAVE_PCL_OPENNURBS)
     Py::Object fitBSpline(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
@@ -585,8 +585,8 @@ Mesh.show(m)
 
         throw Py::RuntimeError("Computation of B-spline surface failed");
     }
-#endif
-#if defined(HAVE_PCL_FILTERS)
+~endif
+~if defined(HAVE_PCL_FILTERS)
     Py::Object filterVoxelGrid(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
@@ -629,8 +629,8 @@ Mesh.show(m)
 
         return Py::asObject(new Points::PointsPy(points_sample));
     }
-#endif
-#if defined(HAVE_PCL_FILTERS)
+~endif
+~if defined(HAVE_PCL_FILTERS)
     Py::Object normalEstimation(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
@@ -658,8 +658,8 @@ Mesh.show(m)
 
         return list;
     }
-#endif
-#if defined(HAVE_PCL_SEGMENTATION)
+~endif
+~if defined(HAVE_PCL_SEGMENTATION)
     Py::Object regionGrowingSegmentation(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
@@ -728,8 +728,8 @@ Mesh.show(m)
 
         return lists;
     }
-#endif
-#if defined(HAVE_PCL_SAMPLE_CONSENSUS)
+~endif
+~if defined(HAVE_PCL_SAMPLE_CONSENSUS)
     /*
 import ReverseEngineering as reen
 import Points
@@ -751,11 +751,11 @@ np = Points.Points()
 np.addPoints([data[i] for i in indices])
 Points.show(np)
 
-# sort in descending order
+~ sort in descending order
 indices = list(indices)
 indices.sort(reverse=True)
 
-# remove points of segment
+~ remove points of segment
 for i in indices:
     del data[i]
     del n[i]
@@ -819,7 +819,7 @@ Points.show(np)
 
         return dict;
     }
-#endif
+~endif
 };
 
 PyObject* initModule()

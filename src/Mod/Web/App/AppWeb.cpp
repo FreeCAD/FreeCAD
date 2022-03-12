@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <climits>
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <climits>
+~ include <sstream>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-#include "Server.h"
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
+~include "Server.h"
 
 // See http://docs.python.org/2/library/socketserver.html
 /*

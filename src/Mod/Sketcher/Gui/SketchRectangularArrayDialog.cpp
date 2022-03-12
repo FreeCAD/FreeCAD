@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
-#endif
+~ifndef _PreComp_
+~ include <QPixmap>
+~ include <QDialog>
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include "ui_SketchRectangularArrayDialog.h"
-#include "SketchRectangularArrayDialog.h"
+~include "ui_SketchRectangularArrayDialog.h"
+~include "SketchRectangularArrayDialog.h"
 
 using namespace SketcherGui;
 
@@ -77,4 +77,4 @@ void SketchRectangularArrayDialog::updateValues(void)
     Clone = ui->CloneCheckBox->isChecked();    
 }
 
-#include "moc_SketchRectangularArrayDialog.cpp"
+~include "moc_SketchRectangularArrayDialog.cpp"

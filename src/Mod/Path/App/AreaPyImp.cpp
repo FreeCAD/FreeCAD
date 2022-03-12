@@ -20,17 +20,17 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Base/VectorPy.h>
+~include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Base/VectorPy.h>
 
-#include "Area.h"
+~include "Area.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
-#include "AreaPy.h"
-#include "AreaPy.cpp"
+~include "AreaPy.h"
+~include "AreaPy.cpp"
 
 
 static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
@@ -55,7 +55,7 @@ static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
 
     AreaStaticParams params = Area::getDefaultParams();
 
-#define AREA_SET(_param) \
+~define AREA_SET(_param) \
     PARAM_FNAME(_param) = \
         PARAM_TYPED(PARAM_PY_CAST_,_param)(params.PARAM_FNAME(_param));
     //populate the CONF variables with params
@@ -67,7 +67,7 @@ static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_STATIC_CONF)))
         return 0;
 
-#define AREA_GET(_param) \
+~define AREA_GET(_param) \
     params.PARAM_FNAME(_param) = \
         PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param));
     //populate 'params' with the CONF variables
@@ -85,7 +85,7 @@ static PyObject* areaGetParams(PyObject *, PyObject *args) {
     const AreaStaticParams &params = Area::getDefaultParams();
 
     PyObject *dict = PyDict_New();
-#define AREA_SRC(_param) params.PARAM_FNAME(_param)
+~define AREA_SRC(_param) params.PARAM_FNAME(_param)
     PARAM_PY_DICT_SET_VALUE(dict,NAME,AREA_SRC,AREA_PARAMS_STATIC_CONF)
     return dict;
 }
@@ -226,7 +226,7 @@ PyObject* AreaPy::setPlane(PyObject *args) {
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj))
         return 0;
 
-#define GET_TOPOSHAPE(_p) static_cast<Part::TopoShapePy*>(_p)->getTopoShapePtr()->getShape()
+~define GET_TOPOSHAPE(_p) static_cast<Part::TopoShapePy*>(_p)->getTopoShapePtr()->getShape()
     getAreaPtr()->setPlane(GET_TOPOSHAPE(pcObj));
     Py_INCREF(this);
     return this;

@@ -20,30 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QClipboard>
-# include <QDockWidget>
-# include <QKeyEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QTextCursor>
-# include <QTextDocumentFragment>
-# include <QTextStream>
-# include <QUrl>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QDockWidget>
+~ include <QKeyEvent>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QMimeData>
+~ include <QTextCursor>
+~ include <QTextDocumentFragment>
+~ include <QTextStream>
+~ include <QUrl>
+~endif
 
-#include <Base/Interpreter.h>
+~include <Base/Interpreter.h>
 
-#include "PythonConsole.h"
-#include "PythonConsolePy.h"
-#include "Application.h"
-#include "CallTips.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "Tools.h"
+~include "PythonConsole.h"
+~include "PythonConsolePy.h"
+~include "Application.h"
+~include "CallTips.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "Tools.h"
 
 
 using namespace Gui;
@@ -134,11 +134,11 @@ InteractiveInterpreter::InteractiveInterpreter()
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
     d->interpreter = PyEval_CallObject(func,args);
-#else
+~else
     d->interpreter = PyObject_CallObject(func,args);
-#endif
+~endif
     Py_DECREF(args);
     Py_DECREF(func);
     Py_DECREF(module);
@@ -184,11 +184,11 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
     PyObject* eval = PyEval_CallObject(func,args);  // must decref later
-#else
+~else
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
-#endif
+~endif
 
     Py_DECREF(args);
     Py_DECREF(func);
@@ -220,11 +220,11 @@ int InteractiveInterpreter::compileCommand(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
     PyObject* eval = PyEval_CallObject(func,args);  // must decref later
-#else
+~else
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
-#endif
+~endif
 
     Py_DECREF(args);
     Py_DECREF(func);
@@ -501,11 +501,11 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         setFont(font);
         QFontMetrics metric(font);
         int width = QtTools::horizontalAdvance(metric, QLatin1String("0000"));
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(width);
-#else
+~else
         setTabStopDistance(width);
-#endif
+~endif
     }
     else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
@@ -596,8 +596,8 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               // disable current input string - i.e. put it to history but don't execute it.
               if (!inputStrg.isEmpty())
               {
-                  d->history.append( QLatin1String("# ") + inputStrg );  //< put commented string to history ...
-                  inputLineBegin.insertText( QString::fromLatin1("# ") ); //< and comment it on console
+                  d->history.append( QLatin1String("~ ") + inputStrg );  //< put commented string to history ...
+                  inputLineBegin.insertText( QString::fromLatin1("~ ") ); //< and comment it on console
                   setTextCursor( inputLineBegin );
                   printPrompt(d->interpreter->hasPendingInput()          //< print adequate prompt
                       ? PythonConsole::Incomplete
@@ -874,7 +874,7 @@ bool PythonConsole::isComment(const QString& source) const
         QChar ch = source.at(i++);
         if (ch.isSpace())
             continue;
-        else if (ch == QLatin1Char('#'))
+        else if (ch == QLatin1Char('~'))
             return true;
         else
             return false;
@@ -1151,16 +1151,16 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
     if (text.isNull())
         return;
 
-#if defined (Q_OS_LINUX)
+~if defined (Q_OS_LINUX)
     // Need to convert CRLF to LF
     text.replace(QLatin1String("\r\n"), QLatin1String("\n"));
-#elif defined(Q_OS_WIN32)
+~elif defined(Q_OS_WIN32)
     // Need to convert CRLF to LF
     text.replace(QLatin1String("\r\n"), QLatin1String("\n"));
-#elif defined(Q_OS_MAC)
+~elif defined(Q_OS_MAC)
     //need to convert CR to LF
     text.replace(QLatin1Char('\r'), QLatin1Char('\n'));
-#endif
+~endif
 
     // separate the lines and get the last one
     QStringList lines = text.split(QLatin1Char('\n'));
@@ -1604,4 +1604,4 @@ void ConsoleHistory::doScratch( void )
 
 // -----------------------------------------------------
 
-#include "moc_PythonConsole.cpp"
+~include "moc_PythonConsole.cpp"

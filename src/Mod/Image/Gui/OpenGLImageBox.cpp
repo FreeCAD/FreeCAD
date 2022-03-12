@@ -16,47 +16,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <QDebug>
-# include <QOpenGLDebugMessage>
-# include <QOpenGLContext>
-# include <QOpenGLFunctions>
-# include <QSurfaceFormat>
-# include <QMessageBox>
-# include <QPainter>
-# include <QPainterPath>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cmath>
+~ include <QDebug>
+~ include <QOpenGLDebugMessage>
+~ include <QOpenGLContext>
+~ include <QOpenGLFunctions>
+~ include <QSurfaceFormat>
+~ include <QMessageBox>
+~ include <QPainter>
+~ include <QPainterPath>
+~endif
 
-#if defined(__MINGW32__)
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#elif defined (FC_OS_MACOSX)
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
-# include <GLKit/GLKMatrix4.h>
-#elif defined (FC_OS_WIN32)
-# include <Windows.h>
-# include <GL/gl.h>
-# include <GL/glu.h>
-# if defined(_MSC_VER) && _MSC_VER >= 1910
-# include <GL/glext.h>
-# endif
-#else
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#endif
+~if defined(__MINGW32__)
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ include <GL/glext.h>
+~elif defined (FC_OS_MACOSX)
+~ include <OpenGL/gl.h>
+~ include <OpenGL/glu.h>
+~ include <GLKit/GLKMatrix4.h>
+~elif defined (FC_OS_WIN32)
+~ include <Windows.h>
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ if defined(_MSC_VER) && _MSC_VER >= 1910
+~ include <GL/glext.h>
+~ endif
+~else
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ include <GL/glext.h>
+~endif
 
-#include "OpenGLImageBox.h"
+~include "OpenGLImageBox.h"
 
 using namespace ImageGui;
 
-#if defined(Q_CC_MSVC)
-#pragma warning(disable:4305) // init: truncation from const double to float
-#endif
+~if defined(Q_CC_MSVC)
+~pragma warning(disable:4305) // init: truncation from const double to float
+~endif
 
 bool GLImageBox::haveMesa = false;
 
@@ -68,7 +68,7 @@ Notes:
   but as soon as a 3d view based on QGLWidget is opened the content becomes black and
   from then on will never render normally again.
 + This problem is caused by QuarterWidget::paintEvent!!!
-+ https://groups.google.com/forum/?_escaped_fragment_=topic/coin3d-discuss/2SVG6ZxOWy4#!topic/coin3d-discuss/2SVG6ZxOWy4
++ https://groups.google.com/forum/?_escaped_fragment_=topic/coin3d-discuss/2SVG6ZxOWy4~!topic/coin3d-discuss/2SVG6ZxOWy4
 
 + Using a QSurfaceFormat to switch on double buffering doesn't seem to have any effect
     QSurfaceFormat format;
@@ -104,11 +104,11 @@ GLImageBox::GLImageBox(QWidget * parent, Qt::WindowFlags f)
     _pColorMap = 0;
     _numMapEntries = 0;
 
-#if defined(_DEBUG) && 0
+~if defined(_DEBUG) && 0
     QSurfaceFormat format;
     format.setOption(QSurfaceFormat::DebugContext);
     this->setFormat(format);
-#endif
+~endif
 }
 
 
@@ -138,7 +138,7 @@ void GLImageBox::initializeGL()
         haveMesa = (ver.find("Mesa") != std::string::npos);
     }
 
-#if defined(_DEBUG) && 0
+~if defined(_DEBUG) && 0
     QOpenGLContext *context = QOpenGLContext::currentContext();
     if (context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
         QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
@@ -147,7 +147,7 @@ void GLImageBox::initializeGL()
         if (logger->initialize())
             logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
     }
-#endif
+~endif
 }
 
 
@@ -157,12 +157,12 @@ void GLImageBox::resizeGL( int w, int h )
     glViewport( 0, 0, (GLint)w, (GLint)h );
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-#if defined (FC_OS_MACOSX)
+~if defined (FC_OS_MACOSX)
     GLKMatrix4 orthoMat = GLKMatrix4MakeOrtho(0, width() - 1, height() - 1, 0, -1, 1);
     glLoadMatrixf(orthoMat.m);
-#else
+~else
     gluOrtho2D(0, width() - 1, height() - 1, 0);
-#endif
+~endif
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -353,7 +353,7 @@ void GLImageBox::getPixFormat(GLenum &pixFormat, GLenum &pixType)
             pixFormat = GL_RGB;
             pixType = GL_UNSIGNED_BYTE;
             break;
-#ifndef FC_OS_CYGWIN
+~ifndef FC_OS_CYGWIN
         case IB_CF_BGR24:
             pixFormat = GL_BGR_EXT;
             pixType = GL_UNSIGNED_BYTE;
@@ -366,7 +366,7 @@ void GLImageBox::getPixFormat(GLenum &pixFormat, GLenum &pixType)
             pixFormat = GL_BGR_EXT;
             pixType = GL_UNSIGNED_SHORT;
             break;
-#endif
+~endif
         case IB_CF_RGBA32:
             pixFormat = GL_RGBA;
             pixType = GL_UNSIGNED_BYTE;
@@ -375,7 +375,7 @@ void GLImageBox::getPixFormat(GLenum &pixFormat, GLenum &pixType)
             pixFormat = GL_RGBA;
             pixType = GL_UNSIGNED_SHORT;
             break;
-#ifndef FC_OS_CYGWIN
+~ifndef FC_OS_CYGWIN
         case IB_CF_BGRA32:
             pixFormat = GL_BGRA_EXT;
             pixType = GL_UNSIGNED_BYTE;
@@ -384,7 +384,7 @@ void GLImageBox::getPixFormat(GLenum &pixFormat, GLenum &pixType)
             pixFormat = GL_BGRA_EXT;
             pixType = GL_UNSIGNED_SHORT;
             break;
-#endif
+~endif
         default:
             // Should never happen
             pixFormat = GL_LUMINANCE;
@@ -866,7 +866,7 @@ unsigned int GLImageBox::pixValToMapIndex(double PixVal)
     }
 }
 
-// https://learnopengl.com/?_escaped_fragment_=In-Practice/Text-Rendering#!In-Practice/Text-Rendering
+// https://learnopengl.com/?_escaped_fragment_=In-Practice/Text-Rendering~!In-Practice/Text-Rendering
 void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
 {
     if (str.isEmpty() || !isValid())
@@ -875,7 +875,7 @@ void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
     //glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
     //glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-#if 0
+~if 0
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -896,7 +896,7 @@ void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
     painter.setPen(col);
     painter.drawText(x, y, str);
     painter.end();
-#else
+~else
     GLfloat color[4];
     glGetFloatv(GL_CURRENT_COLOR, &color[0]);
     QColor col;
@@ -917,9 +917,9 @@ void GLImageBox::renderText(int x, int y, const QString& str, const QFont& fnt)
     painter.setPen(Qt::NoPen);
     painter.drawPath(textPath);
     painter.end();
-#endif
+~endif
     //glPopAttrib();
     //glPopClientAttrib();
 }
 
-#include "moc_OpenGLImageBox.cpp"
+~include "moc_OpenGLImageBox.cpp"

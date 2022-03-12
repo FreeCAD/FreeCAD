@@ -20,36 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCConfig.h>
-#include "SpaceballEvent.h"
+~include <FCConfig.h>
+~include "SpaceballEvent.h"
 
-#include <QMainWindow>
+~include <QMainWindow>
 
-#include "GuiNativeEventLinuxX11.h"
+~include "GuiNativeEventLinuxX11.h"
 
-#include "GuiApplicationNativeEventAware.h"
-#include <Base/Console.h>
+~include "GuiApplicationNativeEventAware.h"
+~include <Base/Console.h>
 
-#include <QX11Info>
-#include <spnav.h>
+~include <QX11Info>
+~include <spnav.h>
 
-#if QT_VERSION >= 0x050000
-  #include "GuiRawInputEventFilter.h"
-  #undef Bool
-  #undef CursorShape
-  #undef Expose
-  #undef KeyPress
-  #undef KeyRelease
-  #undef FocusIn
-  #undef FocusOut
-  #undef FontChange
-  #undef None
-  #undef Status
-  #undef Unsorted
-  #undef False
-  #undef True
-  #undef Complex
-#endif // #if QT_VERSION >= 0x050000
+~if QT_VERSION >= 0x050000
+  ~include "GuiRawInputEventFilter.h"
+  ~undef Bool
+  ~undef CursorShape
+  ~undef Expose
+  ~undef KeyPress
+  ~undef KeyRelease
+  ~undef FocusIn
+  ~undef FocusOut
+  ~undef FontChange
+  ~undef None
+  ~undef Status
+  ~undef Unsorted
+  ~undef False
+  ~undef True
+  ~undef Complex
+~endif // ~if QT_VERSION >= 0x050000
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : GuiAbstractNativeEvent(app)
@@ -66,25 +66,25 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
 
 void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
-#if QT_VERSION >= 0x050200
+~if QT_VERSION >= 0x050200
     if (!QX11Info::isPlatformX11()) {
         Base::Console().Log("Application is not running on X11\n");
         return;
     }
-#endif
+~endif
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon on X11. Please ignore if you don't have a spacemouse.\n");
     } else {
         Base::Console().Log("Connected to spacenav daemon on X11\n");
         mainApp->setSpaceballPresent(true);
 
-#if QT_VERSION >= 0x050000
+~if QT_VERSION >= 0x050000
         mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(&xcbEventFilter));
-#endif // #if QT_VERSION >= 0x050000
+~endif // ~if QT_VERSION >= 0x050000
     }
 }
 
-#if QT_VERSION >= 0x050000
+~if QT_VERSION >= 0x050000
 
 bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
 {
@@ -151,7 +151,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
     } // end switch (navEvent.type) {
 }
 
-#else  // if QT_VERSION >= 0x050000
+~else  // if QT_VERSION >= 0x050000
 
 bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
 {
@@ -262,6 +262,6 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
     Base::Console().Log("Unknown spaceball event\n");
     return true;
 }
-#endif  // if/else QT_VERSION >= 0x050000
+~endif  // if/else QT_VERSION >= 0x050000
 
-#include "3Dconnexion/moc_GuiNativeEventLinuxX11.cpp"
+~include "3Dconnexion/moc_GuiNativeEventLinuxX11.cpp"

@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "MaterialObject.h"
+~include "MaterialObject.h"
 
 
 using namespace App;

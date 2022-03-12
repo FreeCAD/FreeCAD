@@ -21,32 +21,32 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QCoreApplication>
-#endif
+~ifndef _PreComp_
+~ include <QCoreApplication>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Application.h>
-#include <Gui/Action.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ToolBoxManager.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MDIView.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
+~include <Gui/ToolBarManager.h>
+~include <Gui/DockWindowManager.h>
+~include <Gui/Application.h>
+~include <Gui/Action.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/ToolBoxManager.h>
+~include <Gui/MainWindow.h>
+~include <Gui/MDIView.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
 
-#include <Mod/Start/App/StartConfiguration.h>
+~include <Mod/Start/App/StartConfiguration.h>
 
 using namespace StartGui;
 
@@ -93,19 +93,19 @@ void StartGui::Workbench::loadStartPage()
             << "class WebPage(object):\n"
             << "    def __init__(self):\n"
             << "        self.browser=WebGui.openBrowserWindow(u\"" << escapedstr.c_str() << "\")\n"
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
             << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n"
-#else
+~else
             << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n"
-#endif
+~endif
             << "    def onChange(self, par, reason):\n"
             << "        try:\n"
             << "            if reason == 'RecentFiles':\n"
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
             << "                self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
-#else
+~else
             << "                self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
-#endif
+~endif
             << "        except RuntimeError as e:\n"
             << "            pass\n"
             << "class WebView(object):\n"

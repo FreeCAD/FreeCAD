@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Mod/Measure/App/Measurement.h"
-#include <Mod/Part/App/Geometry.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
-#include <App/Application.h>
-#include <App/Document.h>
+~include "Mod/Measure/App/Measurement.h"
+~include <Mod/Part/App/Geometry.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/AxisPy.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
-#include "MeasurementPy.h"
-#include "MeasurementPy.cpp"
+~include "MeasurementPy.h"
+~include "MeasurementPy.cpp"
 
 using namespace Measure;
 

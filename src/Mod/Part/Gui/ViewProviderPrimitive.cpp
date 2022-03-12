@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <App/Document.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <App/Document.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PrimitiveFeature.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PrimitiveFeature.h>
 
-#include "ViewProviderPrimitive.h"
-#include "DlgPrimitives.h"
+~include "ViewProviderPrimitive.h"
+~include "DlgPrimitives.h"
 
 
 using namespace PartGui;

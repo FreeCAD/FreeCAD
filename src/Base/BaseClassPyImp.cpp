@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of BaseClassPy.xml)
-#include "BaseClassPy.h"
-#include "BaseClassPy.cpp"
+~include "BaseClassPy.h"
+~include "BaseClassPy.cpp"
 
 using namespace Base;
 

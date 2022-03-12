@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <math.h>
-#include <Inventor/nodes/SoGroup.h>
-#include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~include <math.h>
+~include <Inventor/nodes/SoGroup.h>
+~include <QMessageBox>
+~endif
 
-#include "ViewProviderProductRef.h"
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Application.h>
+~include "ViewProviderProductRef.h"
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Application.h>
 
-#include <Mod/Assembly/App/Product.h>
-#include <Mod/Assembly/App/ProductRef.h>
+~include <Mod/Assembly/App/Product.h>
+~include <Mod/Assembly/App/ProductRef.h>
 
 using namespace AssemblyGui;
 

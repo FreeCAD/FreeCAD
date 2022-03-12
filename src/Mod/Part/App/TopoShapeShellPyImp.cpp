@@ -21,34 +21,34 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Ax1.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepGProp.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <GProp_GProps.hxx>
-# include <GProp_PrincipalProps.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shell.hxx>
-# include <ShapeUpgrade_ShellSewing.hxx>
-# include <ShapeAnalysis_Shell.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Ax1.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepCheck_Analyzer.hxx>
+~ include <BRepGProp.hxx>
+~ include <BRepPrimAPI_MakeHalfSpace.hxx>
+~ include <GProp_GProps.hxx>
+~ include <GProp_PrincipalProps.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Shell.hxx>
+~ include <ShapeUpgrade_ShellSewing.hxx>
+~ include <ShapeAnalysis_Shell.hxx>
+~ include <BRepPrimAPI_MakeHalfSpace.hxx>
+~endif
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include "OCCError.h"
-#include "Tools.h"
-#include "TopoShape.h"
-#include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeShellPy.cpp"
-#include "TopoShapeSolidPy.h"
+~include "OCCError.h"
+~include "Tools.h"
+~include "TopoShape.h"
+~include "TopoShapeCompoundPy.h"
+~include "TopoShapeCompSolidPy.h"
+~include "TopoShapeFacePy.h"
+~include "TopoShapeShellPy.h"
+~include "TopoShapeShellPy.cpp"
+~include "TopoShapeSolidPy.h"
 
 using namespace Part;
 
@@ -167,11 +167,11 @@ PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
         return NULL;
     ShapeAnalysis_Shell as;
     as.LoadShells(getTopoShapePtr()->getShape());
-#if OCC_VERSION_HEX < 0x060500
+~if OCC_VERSION_HEX < 0x060500
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True);
-#else
+~else
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
-#endif
+~endif
     TopoDS_Compound comp = as.FreeEdges();
     return new TopoShapeCompoundPy(new TopoShape(comp));
 }
@@ -182,11 +182,11 @@ PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
         return NULL;
     ShapeAnalysis_Shell as;
     as.LoadShells(getTopoShapePtr()->getShape());
-#if OCC_VERSION_HEX < 0x060500
+~if OCC_VERSION_HEX < 0x060500
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True);
-#else
+~else
     as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
-#endif
+~endif
     TopoDS_Compound comp = as.BadEdges();
     return new TopoShapeCompoundPy(new TopoShape(comp));
 }

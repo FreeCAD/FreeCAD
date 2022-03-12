@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMessageBox>
+~endif
 
-#include <App/Document.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
+~include <App/Document.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeaturePrimitive.h>
 
-#include "DlgActiveBody.h"
-#include "Utils.h"
-#include "WorkflowManager.h"
+~include "DlgActiveBody.h"
+~include "Utils.h"
+~include "WorkflowManager.h"
 
 using namespace std;
 

@@ -22,9 +22,9 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#include "StdMeshers_NumberOfLayers2D.hxx"
+~include "StdMeshers_NumberOfLayers2D.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 
 //=============================================================================

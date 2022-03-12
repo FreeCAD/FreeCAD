@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderMirrored.h"
-#include "TaskMirroredParameters.h"
+~include "ViewProviderMirrored.h"
+~include "TaskMirroredParameters.h"
 
 using namespace PartDesignGui;
 

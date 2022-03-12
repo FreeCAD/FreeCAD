@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
 
 using namespace MeshPartGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "MeshPart");
-#endif
+~endif
 
 /// @namespace MeshPartGui @class Workbench
 TYPESYSTEM_SOURCE(MeshPartGui::Workbench, Gui::StdWorkbench)

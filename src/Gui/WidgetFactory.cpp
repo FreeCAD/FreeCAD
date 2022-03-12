@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QVBoxLayout>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QVBoxLayout>
+~endif
 
-#ifdef FC_OS_WIN32
-#undef max
-#undef min
-#ifdef _MSC_VER
-#pragma warning( disable : 4099 )
-#pragma warning( disable : 4522 )
-#endif
-#endif
+~ifdef FC_OS_WIN32
+~undef max
+~undef min
+~ifdef _MSC_VER
+~pragma warning( disable : 4099 )
+~pragma warning( disable : 4522 )
+~endif
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
 
-#include "WidgetFactory.h"
-#include "PrefWidgets.h"
-#include "PythonWrapper.h"
-#include "UiLoader.h"
+~include "WidgetFactory.h"
+~include "PrefWidgets.h"
+~include "PythonWrapper.h"
+~include "UiLoader.h"
 
 
 using namespace Gui;
@@ -76,26 +76,26 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 
     // this widget class is not registered
     if (!w) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Warning("\"%s\" is not registered\n", sName);
-#else
+~else
         Base::Console().Log("\"%s\" is not registered\n", sName);
-#endif
+~endif
         return nullptr;
     }
 
     try {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         const char* cName = dynamic_cast<QWidget*>(w)->metaObject()->className();
         Base::Console().Log("Widget of type '%s' created.\n", cName);
-#endif
+~endif
     }
     catch (...) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Error("%s does not inherit from \"QWidget\"\n", sName);
-#else
+~else
         Base::Console().Log("%s does not inherit from \"QWidget\"\n", sName);
-#endif
+~endif
         delete w;
         return nullptr;
     }
@@ -118,23 +118,23 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 
     // this widget class is not registered
     if (!w) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Warning("Cannot create an instance of \"%s\"\n", sName);
-#else
+~else
         Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
-#endif
+~endif
         return nullptr;
     }
 
     if (qobject_cast<Gui::Dialog::PreferencePage*>(w)) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Log("Preference page of type '%s' created.\n", w->metaObject()->className());
-#endif
+~endif
     }
     else {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
-#endif
+~endif
         delete w;
         return nullptr;
     }
@@ -171,9 +171,9 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
         }
     }
     catch (...) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Base::Console().Error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
-#endif
+~endif
         delete w;
         return nullptr;
     }
@@ -673,13 +673,13 @@ Py::Object PyResource::show(const Py::Tuple&)
         // small trick to get focus
         myDlg->showMinimized();
 
-#ifdef Q_WS_X11
+~ifdef Q_WS_X11
         // On X11 this may not work. For further information see QWidget::showMaximized
         //
         // workaround for X11
         myDlg->hide();
         myDlg->show();
-#endif
+~endif
 
         myDlg->showNormal();
         myDlg->exec();
@@ -744,13 +744,13 @@ void SignalConnect::onExecute()
 
     /* Time to call the callback */
     arglist = Py_BuildValue("(O)", myResource);
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
     result = PyEval_CallObject(myCallback, arglist);
-#else
+~else
     result = PyObject_CallObject(myCallback, arglist);
-#endif
+~endif
     Py_XDECREF(result);
     Py_DECREF(arglist);
 }
 
-#include "moc_WidgetFactory.cpp"
+~include "moc_WidgetFactory.cpp"

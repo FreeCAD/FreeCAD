@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "VectorListEditor.h"
-#include "ui_VectorListEditor.h"
-#include "QuantitySpinBox.h"
+~include "VectorListEditor.h"
+~include "ui_VectorListEditor.h"
+~include "QuantitySpinBox.h"
 
 
 using namespace Gui;
@@ -333,4 +333,4 @@ void VectorListEditor::removeRow()
     }
 }
 
-#include "moc_VectorListEditor.cpp"
+~include "moc_VectorListEditor.cpp"

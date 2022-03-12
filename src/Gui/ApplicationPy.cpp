@@ -20,52 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QDir>
-# include <QPrinter>
-# include <QFileInfo>
-# include <Inventor/SoInput.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <xercesc/util/TranscodingException.hpp>
-# include <xercesc/util/XMLString.hpp>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QDir>
+~ include <QPrinter>
+~ include <QFileInfo>
+~ include <Inventor/SoInput.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <xercesc/util/TranscodingException.hpp>
+~ include <xercesc/util/XMLString.hpp>
+~endif
 
-#include <boost/regex.hpp>
+~include <boost/regex.hpp>
 
-#include <App/DocumentObjectPy.h>
-#include <App/DocumentPy.h>
-#include <App/PropertyFile.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
-#include <CXX/Objects.hxx>
+~include <App/DocumentObjectPy.h>
+~include <App/DocumentPy.h>
+~include <App/PropertyFile.h>
+~include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <CXX/Objects.hxx>
 
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "DlgPreferencesImp.h"
-#include "Document.h"
-#include "DocumentObserverPython.h"
-#include "DownloadManager.h"
-#include "EditorView.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "MainWindowPy.h"
-#include "PythonEditor.h"
-#include "PythonWrapper.h"
-#include "SoFCDB.h"
-#include "SplitView3DInventor.h"
-#include "View3DInventor.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
-#include "WidgetFactory.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "Inventor/MarkerBitmaps.h"
-#include "Language/Translator.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "DlgPreferencesImp.h"
+~include "Document.h"
+~include "DocumentObserverPython.h"
+~include "DownloadManager.h"
+~include "EditorView.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "MainWindowPy.h"
+~include "PythonEditor.h"
+~include "PythonWrapper.h"
+~include "SoFCDB.h"
+~include "SplitView3DInventor.h"
+~include "View3DInventor.h"
+~include "ViewProvider.h"
+~include "WaitCursor.h"
+~include "WidgetFactory.h"
+~include "Workbench.h"
+~include "WorkbenchManager.h"
+~include "Inventor/MarkerBitmaps.h"
+~include "Language/Translator.h"
 
 
 using namespace Gui;
@@ -628,7 +628,7 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
             if (!Application::Instance->activeDocument())
                 App::GetApplication().newDocument();
 
-            // Add this to the search path in order to read inline files (#0002029)
+            // Add this to the search path in order to read inline files (~0002029)
             QByteArray path = fi.absolutePath().toUtf8();
             SoInput::addDirectoryFirst(path.constData());
 
@@ -703,7 +703,7 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
             if (!doc)
                 doc = App::GetApplication().newDocument(DocName);
 
-            // Add this to the search path in order to read inline files (#0002029)
+            // Add this to the search path in order to read inline files (~0002029)
             QByteArray path = fi.absolutePath().toUtf8();
             SoInput::addDirectoryFirst(path.constData());
 

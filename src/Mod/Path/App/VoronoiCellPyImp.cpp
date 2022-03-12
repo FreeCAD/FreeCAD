@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Base/Vector3D.h"
-#include "Base/VectorPy.h"
+~include "Base/Vector3D.h"
+~include "Base/VectorPy.h"
 
-#include "Voronoi.h"
-#include "VoronoiCell.h"
-#include "VoronoiCellPy.h"
-#include "VoronoiCellPy.cpp"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
+~include "Voronoi.h"
+~include "VoronoiCell.h"
+~include "VoronoiCellPy.h"
+~include "VoronoiCellPy.cpp"
+~include "VoronoiEdge.h"
+~include "VoronoiEdgePy.h"
 
 
 using namespace Path;

@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "PyObjectBase.h"
-#include "Console.h"
-#include "Interpreter.h"
+~include "PyObjectBase.h"
+~include "Console.h"
+~include "Interpreter.h"
 
 
-#define ATTR_TRACKING
+~define ATTR_TRACKING
 
 using namespace Base;
 
@@ -53,9 +53,9 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 {
     Py_TYPE(this) = T;
     _Py_NewReference(this);
-#ifdef FC_LOGPYOBJECTS
+~ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO+: %s (%p)\n",T->tp_name, this);
-#endif
+~endif
     StatusBits.set(Valid); // valid, the second bit is NOT set, i.e. it's mutable
     StatusBits.set(Notify);
 }
@@ -64,9 +64,9 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 PyObjectBase::~PyObjectBase()
 {
     PyGILStateLocker lock;
-#ifdef FC_LOGPYOBJECTS
+~ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
-#endif
+~endif
     if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this)
         Py_DECREF(baseProxy);
     Py_XDECREF(attrDict);
@@ -85,10 +85,10 @@ PyObjectBase::~PyObjectBase()
  * 0 and define tp_base as 0.
  */
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wdeprecated-declarations"
+~endif
 
 static void
 PyBaseProxy_dealloc(PyObject* self)
@@ -105,11 +105,11 @@ static PyTypeObject PyBaseProxyType = {
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/
     PyBaseProxy_dealloc,                                    /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
+~if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
-#else
+~else
     nullptr,                                                /*tp_print*/
-#endif
+~endif
     nullptr,                                                /*tp_getattr*/
     nullptr,                                                /*tp_setattr*/
     nullptr,                                                /*tp_compare*/
@@ -152,13 +152,13 @@ static PyTypeObject PyBaseProxyType = {
     nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
+~if PY_VERSION_HEX >= 0x03090000
     ,0                                                      /*tp_vectorcall */
-#elif PY_VERSION_HEX >= 0x03080000
+~elif PY_VERSION_HEX >= 0x03080000
     ,0                                                      /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
     ,0                                                      /*tp_print */
-#endif
+~endif
 };
 
 PyTypeObject PyObjectBase::Type = {
@@ -168,11 +168,11 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_itemsize*/
     /* --- methods ---------------------------------------------- */
     PyDestructor,                                           /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
+~if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
-#else
+~else
     nullptr,                                                /*tp_print*/
-#endif
+~endif
     nullptr,                                                /*tp_getattr*/
     nullptr,                                                /*tp_setattr*/
     nullptr,                                                /*tp_compare*/
@@ -217,18 +217,18 @@ PyTypeObject PyObjectBase::Type = {
     nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03090000
+~if PY_VERSION_HEX >= 0x03090000
     ,0                                                      /*tp_vectorcall */
-#elif PY_VERSION_HEX >= 0x03080000
+~elif PY_VERSION_HEX >= 0x03080000
     ,0                                                      /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
     ,0                                                      /*tp_print */
-#endif
+~endif
 };
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 PyObject* createWeakRef(PyObjectBase* ptr)
 {
@@ -275,7 +275,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
 
     // For the __class__ attribute get it directly as with
     // ExtensionContainerPy::getCustomAttributes we may get
-    // the wrong type object (#0003311)
+    // the wrong type object (~0003311)
     if (streq(attr, "__class__")) {
         PyObject* res = PyObject_GenericGetAttr(obj, attro);
         if (res)
@@ -289,8 +289,8 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         return nullptr;
     }
 
-#ifdef ATTR_TRACKING
-    // If an attribute references this as parent then reset it (bug #0002902)
+~ifdef ATTR_TRACKING
+    // If an attribute references this as parent then reset it (bug ~0002902)
     PyObject* cur = pyObj->getTrackedAttribute(attr);
     if (cur) {
         if (PyObject_TypeCheck(cur, &(PyObjectBase::Type))) {
@@ -299,10 +299,10 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
             pyObj->untrackAttribute(attr);
         }
     }
-#endif
+~endif
 
     PyObject* value = pyObj->_getattr(attr);
-#ifdef ATTR_TRACKING
+~ifdef ATTR_TRACKING
     if (value && PyObject_TypeCheck(value, &(PyObjectBase::Type))) {
         if (!static_cast<PyObjectBase*>(value)->isConst() &&
             !static_cast<PyObjectBase*>(value)->isNotTracking()) {
@@ -311,7 +311,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         }
     }
     else
-#endif
+~endif
     if (value && PyCFunction_Check(value)) {
         // ExtensionContainerPy::initialization() transfers the methods of an
         // extension object by creating PyCFunction objects.
@@ -348,7 +348,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
         return -1;
     }
 
-#ifdef ATTR_TRACKING
+~ifdef ATTR_TRACKING
     // If an attribute references this as parent then reset it
     // before setting the new attribute
     PyObject* cur = static_cast<PyObjectBase*>(obj)->getTrackedAttribute(attr);
@@ -359,14 +359,14 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
             static_cast<PyObjectBase*>(obj)->untrackAttribute(attr);
         }
     }
-#endif
+~endif
 
     int ret = static_cast<PyObjectBase*>(obj)->_setattr(attr, value);
-#ifdef ATTR_TRACKING
+~ifdef ATTR_TRACKING
     if (ret == 0) {
         static_cast<PyObjectBase*>(obj)->startNotify();
     }
-#endif
+~endif
     return ret;
 }
 
@@ -439,9 +439,9 @@ PyObject *PyObjectBase::_repr()
 {
     std::stringstream a;
     a << "<base object at " << _pcTwinPointer << ">";
-# ifdef FCDebug
+~ ifdef FCDebug
     Console().Log("PyObjectBase::_repr() not overwritten representation!");
-# endif
+~ endif
     return Py_BuildValue("s", a.str().c_str());
 }
 

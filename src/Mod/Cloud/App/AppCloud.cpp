@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-#if defined(FC_OS_WIN32)
-#include <Windows.h>
-#include <stdint.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
+~if defined(FC_OS_WIN32)
+~include <Windows.h>
+~include <stdint.h>
+~endif
 
-#include <openssl/hmac.h>
-#include <openssl/pem.h>
-#include <openssl/md5.h>
-#include <openssl/sha.h>
+~include <openssl/hmac.h>
+~include <openssl/pem.h>
+~include <openssl/md5.h>
+~include <openssl/sha.h>
 
-#include <curl/curl.h>
+~include <curl/curl.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentPy.h>
-#include <App/DocumentObserverPython.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentPy.h>
+~include <App/DocumentObserverPython.h>
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include "AppCloud.h"
+~include "AppCloud.h"
 
 using namespace App;
 using namespace std;
@@ -270,10 +270,10 @@ void Cloud::CloudWriter::createBucket()
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
-#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+~ifdef ALLOW_SELF_SIGNED_CERTIFICATE
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-#endif
+~endif
 
         if ( curl )
         {
@@ -322,10 +322,10 @@ void Cloud::CloudWriter::createBucket()
         }
 }
 //
-//#if defined(FC_OS_WIN32)
+//~if defined(FC_OS_WIN32)
 //
-//#include <chrono>
-//#undef timezone
+//~include <chrono>
+//~undef timezone
 //
 //
 //int gettimeofday( time_t* tp, struct timezone* tzp) {
@@ -337,7 +337,7 @@ void Cloud::CloudWriter::createBucket()
 //  
 //  return 0;
 //}
-//#endif
+//~endif
 
 struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size, char *parameters, std::string Region)
 {
@@ -350,18 +350,18 @@ struct Cloud::AmzDatav4 *Cloud::ComputeDigestAmzS3v4(char *operation, const char
 
         strcpy(returnData->ContentType, data_type);
 
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
         _putenv("TZ=GMT");
         time_t rawtime;
 
         time(&rawtime);
         tm = localtime(&rawtime);
-#else
+~else
         struct timeval tv;
         setenv("TZ","GMT",1);
         gettimeofday(&tv, NULL);
         tm = localtime(&tv.tv_sec);
-#endif
+~endif
         strftime(returnData->dateFormattedD,256,"%Y%m%d", tm);
         strftime(returnData->dateFormattedS,256,"%Y%m%dT%H%M%SZ", tm);
         returnData->MD5=NULL;
@@ -498,18 +498,18 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
         // environment variable and a call to localtime as to convert output of gettimeofday
         returnData = new Cloud::AmzData;
         strcpy(returnData->ContentType, data_type);
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
         _putenv("TZ=GMT");
         time_t rawtime;
 
         time(&rawtime);
         tm = localtime(&rawtime);
-#else
+~else
         struct timeval tv;
         setenv("TZ","GMT",1);
         gettimeofday(&tv, NULL);
         tm = localtime(&tv.tv_sec);
-#endif
+~endif
         strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
         returnData->MD5=NULL;
         if ( strcmp(operation,"PUT") == 0 )
@@ -679,10 +679,10 @@ Cloud::CloudWriter::CloudWriter(const char* URL, const char* TokenAuth, const ch
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
-#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+~ifdef ALLOW_SELF_SIGNED_CERTIFICATE
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-#endif
+~endif
         if ( curl )
         {
                 // Let's build our own header
@@ -882,10 +882,10 @@ Cloud::CloudReader::CloudReader(const char* URL, const char* TokenAuth, const ch
         {
                 std::string s;
                 curl = curl_easy_init();
-#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+~ifdef ALLOW_SELF_SIGNED_CERTIFICATE
                 curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
                 curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-#endif
+~endif
                 if ( curl )
                 {
                         // Let's build our own header
@@ -990,10 +990,10 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
-#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+~ifdef ALLOW_SELF_SIGNED_CERTIFICATE
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-#endif
+~endif
         if ( curl )
         {
                 struct curl_slist *chunk = NULL;
@@ -1118,10 +1118,10 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
-#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
+~ifdef ALLOW_SELF_SIGNED_CERTIFICATE
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
-#endif
+~endif
         if ( curl )
         {
                 struct curl_slist *chunk = NULL;

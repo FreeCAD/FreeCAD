@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObjectGroup.h>
+~include <App/DocumentObjectGroup.h>
 
-#include "ViewProviderDocumentObjectGroup.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
+~include "ViewProviderDocumentObjectGroup.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Document.h"
 
 
 using namespace Gui;
@@ -41,9 +41,9 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewP
  */
 ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 {
-#if 0
+~if 0
     setDefaultMode(SO_SWITCH_ALL);
-#endif
+~endif
     ViewProviderGroupExtension::initExtension(this);
 
     sPixmap = "folder";

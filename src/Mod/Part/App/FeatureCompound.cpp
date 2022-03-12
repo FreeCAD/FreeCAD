@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopExp.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <Standard_Failure.hxx>
+~endif
 
 
-#include "FeatureCompound.h"
+~include "FeatureCompound.h"
 
 
 using namespace Part;
@@ -93,7 +93,7 @@ App::DocumentObjectExecReturn *Compound::execute(void)
 
         this->Shape.setValue(comp);
 
-        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
+        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (~0001889)
         PropertyShapeHistory prop;
         prop.setValues(history);
         prop.setContainer(this);

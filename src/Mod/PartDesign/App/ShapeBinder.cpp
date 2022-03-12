@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~endif
 
-#include <unordered_map>
-#include <unordered_set>
-#include <boost/algorithm/string/predicate.hpp>
+~include <unordered_map>
+~include <unordered_set>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/GroupExtension.h>
-#include <App/Link.h>
-#include <App/OriginFeature.h>
-#include <Mod/Part/App/TopoShape.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/GroupExtension.h>
+~include <App/Link.h>
+~include <App/OriginFeature.h>
+~include <Mod/Part/App/TopoShape.h>
 
-#include "ShapeBinder.h"
+~include "ShapeBinder.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
 
 using namespace PartDesign;
 namespace bp = boost::placeholders;

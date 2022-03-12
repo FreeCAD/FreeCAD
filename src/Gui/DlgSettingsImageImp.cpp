@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgSettingsImageImp.h"
-#include "ui_DlgSettingsImage.h"
-#include "SpinBox.h"
+~include "DlgSettingsImageImp.h"
+~include "ui_DlgSettingsImage.h"
+~include "SpinBox.h"
 
 using namespace Gui::Dialog;
 using namespace std;
@@ -251,4 +251,4 @@ void DlgSettingsImageImp::on_comboMethod_activated(int index)
     }
 }
 
-#include "moc_DlgSettingsImageImp.cpp"
+~include "moc_DlgSettingsImageImp.cpp"

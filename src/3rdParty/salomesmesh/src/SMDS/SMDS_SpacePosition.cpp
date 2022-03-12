@@ -26,7 +26,7 @@
 //  Module : SMESH
 //
 
-#include "SMDS_SpacePosition.hxx"
+~include "SMDS_SpacePosition.hxx"
 
 SMDS_SpacePosition* SMDS_SpacePosition::_originPosition = new SMDS_SpacePosition();
 

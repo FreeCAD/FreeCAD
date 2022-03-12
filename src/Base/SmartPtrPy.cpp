@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "SmartPtrPy.h"
-#include <CXX/Objects.hxx>
+~include "SmartPtrPy.h"
+~include <CXX/Objects.hxx>
 
 
 namespace Py {

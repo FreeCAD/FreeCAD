@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Trsf.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Trsf.hxx>
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
 
-#include "GeometryObject.h"
-#include "DrawUtil.h"
-#include "DrawPage.h"
-#include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
+~include "GeometryObject.h"
+~include "DrawUtil.h"
+~include "DrawPage.h"
+~include "DrawProjGroup.h"
+~include "DrawProjGroupItem.h"
 
-#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>  // generated from DrawProjGroupItemPy.xml
+~include <Mod/TechDraw/App/DrawProjGroupItemPy.h>  // generated from DrawProjGroupItemPy.xml
 
 
 using namespace TechDraw;

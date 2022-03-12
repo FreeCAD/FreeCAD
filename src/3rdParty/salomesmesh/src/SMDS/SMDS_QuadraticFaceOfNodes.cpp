@@ -25,14 +25,14 @@
 // Created:   16.01.06 17:12:58
 // Author:    Sergey KUUL
 //
-#include "SMDS_QuadraticFaceOfNodes.hxx"
+~include "SMDS_QuadraticFaceOfNodes.hxx"
 
-#include "SMDS_SetIterator.hxx"
-#include "SMDS_IteratorOfElements.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_Mesh.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_Mesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

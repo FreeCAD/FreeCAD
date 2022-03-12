@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
 
-#include "ui_TaskSelectLinkProperty.h"
-#include "TaskSelectLinkProperty.h"
+~include "ui_TaskSelectLinkProperty.h"
+~include "TaskSelectLinkProperty.h"
 
 
 using namespace Gui::TaskView;
@@ -239,4 +239,4 @@ void TaskSelectLinkProperty::on_Help_clicked(bool)
 }
 
 
-#include "moc_TaskSelectLinkProperty.cpp"
+~include "moc_TaskSelectLinkProperty.cpp"

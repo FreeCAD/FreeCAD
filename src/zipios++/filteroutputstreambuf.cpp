@@ -1,7 +1,7 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "filteroutputstreambuf.h"
+~include "filteroutputstreambuf.h"
 
 namespace zipios {
 

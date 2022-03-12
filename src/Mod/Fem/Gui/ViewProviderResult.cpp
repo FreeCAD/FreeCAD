@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderResult.h"
-#include "Gui/Command.h"
+~include "ViewProviderResult.h"
+~include "Gui/Command.h"
 
 using namespace FemGui;
 

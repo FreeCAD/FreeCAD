@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Inventor/elements/SoOverrideElement.h>
-#include "SoFCInteractiveElement.h"
+~include <Inventor/elements/SoOverrideElement.h>
+~include "SoFCInteractiveElement.h"
 
 using namespace Gui;
 

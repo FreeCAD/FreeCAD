@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "MeshFlatteningNurbs.h"
-#include <iostream>
-#include "math.h"
+~include "PreCompiled.h"
+~include "MeshFlatteningNurbs.h"
+~include <iostream>
+~include "math.h"
 
 
 namespace nurbs{

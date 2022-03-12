@@ -22,47 +22,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTextStream>
 
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
-#endif
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Ax1.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <Geom_Line.hxx>
+~ include <gp_Lin.hxx>
+~endif
 
-#include "ui_TaskFemConstraintForce.h"
-#include "TaskFemConstraintForce.h"
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/OriginFeature.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Command.h>
-#include <Mod/Fem/App/FemConstraintForce.h>
-#include <Mod/Fem/App/FemTools.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "ui_TaskFemConstraintForce.h"
+~include "TaskFemConstraintForce.h"
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/OriginFeature.h>
+~include <App/PropertyGeo.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/Command.h>
+~include <Mod/Fem/App/FemConstraintForce.h>
+~include <Mod/Fem/App/FemTools.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -495,4 +495,4 @@ bool TaskDlgFemConstraintForce::reject()
     return true;
 }
 
-#include "moc_TaskFemConstraintForce.cpp"
+~include "moc_TaskFemConstraintForce.cpp"

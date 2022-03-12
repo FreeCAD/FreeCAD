@@ -22,7 +22,7 @@
 
 //Based on the svd of the KDL-0.2 library by Erwin Aertbelien
 
-#include "svd_HH.hpp"
+~include "svd_HH.hpp"
 
 namespace KDL
 {

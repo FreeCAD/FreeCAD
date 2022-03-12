@@ -20,38 +20,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <iomanip>
-#include <sstream>
+~include <iomanip>
+~include <sstream>
 
-#include <QMainWindow>
-#include <FCConfig.h>
-#include "Application.h"
-#include "GuiApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
+~include <QMainWindow>
+~include <FCConfig.h>
+~include "Application.h"
+~include "GuiApplicationNativeEventAware.h"
+~include "SpaceballEvent.h"
 
 
-#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#if defined(Q_OS_LINUX)
-  #if defined(SPNAV_USE_X11)
-    #include "3Dconnexion/GuiNativeEventLinuxX11.h"
-  #else
-    #include "3Dconnexion/GuiNativeEventLinux.h"
-  #endif
-#elif defined(Q_OS_WIN)
-  #include "3Dconnexion/GuiNativeEventWin32.h"
-#elif defined(Q_OS_MACX)
-  #include "3Dconnexion/GuiNativeEventMac.h"
-#endif // Platform switch
-#endif // Spacemice
+~if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+~if defined(Q_OS_LINUX)
+  ~if defined(SPNAV_USE_X11)
+    ~include "3Dconnexion/GuiNativeEventLinuxX11.h"
+  ~else
+    ~include "3Dconnexion/GuiNativeEventLinux.h"
+  ~endif
+~elif defined(Q_OS_WIN)
+  ~include "3Dconnexion/GuiNativeEventWin32.h"
+~elif defined(Q_OS_MACX)
+  ~include "3Dconnexion/GuiNativeEventMac.h"
+~endif // Platform switch
+~endif // Spacemice
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
         QApplication (argc, argv), spaceballPresent(false)
 {
-#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+~if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     nativeEvent = new Gui::GuiNativeEvent(this);
-#endif
+~endif
 }
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
@@ -60,11 +60,11 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
-#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+~if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     nativeEvent->initSpaceball(window);
-#else
+~else
     Q_UNUSED(window);
-#endif
+~endif
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
 }
@@ -304,4 +304,4 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     }
 }
 
-#include "moc_GuiApplicationNativeEventAware.cpp"
+~include "moc_GuiApplicationNativeEventAware.cpp"

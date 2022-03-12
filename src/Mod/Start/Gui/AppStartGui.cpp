@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/WorkbenchManager.h>
-#include <Gui/Language/Translator.h>
-#include "Workbench.h"
-#include <Gui/WidgetFactory.h>
-#include "DlgStartPreferencesImp.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/WorkbenchManager.h>
+~include <Gui/Language/Translator.h>
+~include "Workbench.h"
+~include <Gui/WidgetFactory.h>
+~include "DlgStartPreferencesImp.h"
 
-#include <Mod/Start/App/StartConfiguration.h>
+~include <Mod/Start/App/StartConfiguration.h>
 
 
 // use a different name to CreateCommand()

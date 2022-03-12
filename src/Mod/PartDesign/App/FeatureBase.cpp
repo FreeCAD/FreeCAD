@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_Failure.hxx>
+~endif
 
-#include <App/FeaturePythonPyImp.h>
-#include "Body.h"
-#include "FeatureBase.h"
-#include "FeaturePy.h"
+~include <App/FeaturePythonPyImp.h>
+~include "Body.h"
+~include "FeatureBase.h"
+~include "FeaturePy.h"
 
 namespace PartDesign {
 

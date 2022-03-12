@@ -26,11 +26,11 @@
 // Standard C++ Library".
 // ============================================================================
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "gzstream.h"
-#include <cassert>
-#include <cstring>  // for memcpy
+~include "gzstream.h"
+~include <cassert>
+~include <cstring>  // for memcpy
 
 
 namespace Base {

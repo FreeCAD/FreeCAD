@@ -20,33 +20,33 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Bnd_Box.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepBuilderAPI_Transform.hxx>
+~ include <Precision.hxx>
+~ include <TopExp_Explorer.hxx>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <Mod/Part/App/modelRefine.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Reader.h>
+~include <Mod/Part/App/modelRefine.h>
 
-#include "FeatureTransformed.h"
-#include "Body.h"
-#include "FeatureAddSub.h"
-#include "FeatureMirrored.h"
-#include "FeatureLinearPattern.h"
-#include "FeaturePolarPattern.h"
-#include "FeatureSketchBased.h"
+~include "FeatureTransformed.h"
+~include "Body.h"
+~include "FeatureAddSub.h"
+~include "FeatureMirrored.h"
+~include "FeatureLinearPattern.h"
+~include "FeaturePolarPattern.h"
+~include "FeatureSketchBased.h"
 
 
 using namespace PartDesign;
@@ -282,12 +282,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         TopoDS_Shape toolShape;
 
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         if (overlapping || overlapMode == "Overlap mode")
             Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
         else
             Base::Console().Message("Transformed: Non-Overlapping feature mode (compound of tool shapes)\n");
-#endif
+~endif
 
         if (overlapping || overlapMode == "Overlap mode")
             toolShape = TopoShape(shape).fuse(shapes, Precision::Confusion());

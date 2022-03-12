@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
 
-#include "DrawPage.h"
-#include "DrawView.h"
-#include "DrawViewAnnotation.h"
+~include "DrawPage.h"
+~include "DrawView.h"
+~include "DrawViewAnnotation.h"
 
 // inclusion of the generated files
-#include <Mod/TechDraw/App/DrawViewPy.h>
-#include <Mod/TechDraw/App/DrawViewAnnotationPy.h>
-#include <Mod/TechDraw/App/DrawViewAnnotationPy.cpp>
+~include <Mod/TechDraw/App/DrawViewPy.h>
+~include <Mod/TechDraw/App/DrawViewAnnotationPy.h>
+~include <Mod/TechDraw/App/DrawViewAnnotationPy.cpp>
 
 using namespace TechDraw;
 

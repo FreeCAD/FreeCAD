@@ -5,11 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "taskgroup_p.h"
+~include "taskgroup_p.h"
 
-#include <QVariant>
-#include <QKeyEvent>
-#include <QApplication>
+~include <QVariant>
+~include <QKeyEvent>
+~include <QApplication>
 
 
 namespace QSint

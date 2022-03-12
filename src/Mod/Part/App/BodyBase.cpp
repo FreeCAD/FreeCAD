@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Mod/Part/App/BodyBasePy.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Placement.h>
+~include <Mod/Part/App/BodyBasePy.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Placement.h>
 
-#include "BodyBase.h"
+~include "BodyBase.h"
 
 
 namespace Part {
@@ -108,7 +108,7 @@ void BodyBase::handleChangedPropertyName(Base::XMLReader &reader,
                                          const char * TypeName,
                                          const char *PropName)
 {
-    // The App::PropertyLinkList property was Model in the past (#0002642)
+    // The App::PropertyLinkList property was Model in the past (~0002642)
     Base::Type type = Base::Type::fromName(TypeName);
     if (Group.getClassTypeId() == type && strcmp(PropName, "Model") == 0) {
         Group.Restore(reader);

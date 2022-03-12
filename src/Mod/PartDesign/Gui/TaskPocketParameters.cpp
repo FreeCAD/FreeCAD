@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Precision.hxx>
-#endif
+~ifndef _PreComp_
+~ include <Precision.hxx>
+~endif
 
-#include <Mod/PartDesign/App/FeaturePocket.h>
-#include "ui_TaskPadPocketParameters.h"
-#include "TaskPocketParameters.h"
+~include <Mod/PartDesign/App/FeaturePocket.h>
+~include "ui_TaskPadPocketParameters.h"
+~include "TaskPocketParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -146,4 +146,4 @@ TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket *PocketView)
     Content.push_back ( new TaskPocketParameters(PocketView ) );
 }
 
-#include "moc_TaskPocketParameters.cpp"
+~include "moc_TaskPocketParameters.cpp"

@@ -20,40 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <boost/regex.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/assign.hpp>
-#include <boost/graph/topological_sort.hpp>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DynamicProperty.h>
-#include <App/FeaturePythonPyImp.h>
-#include <App/ExpressionParser.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Placement.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include "Sheet.h"
-#include "SheetObserver.h"
-#include "Utils.h"
-#include "SheetPy.h"
-#include <ostream>
-#include <fstream>
-#include <string>
-#include <iomanip>
-#include <boost/regex.hpp>
-#include <deque>
+~include <boost/regex.hpp>
+~include <boost/tokenizer.hpp>
+~include <boost/range/adaptor/map.hpp>
+~include <boost/range/algorithm/copy.hpp>
+~include <boost/assign.hpp>
+~include <boost/graph/topological_sort.hpp>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DynamicProperty.h>
+~include <App/FeaturePythonPyImp.h>
+~include <App/ExpressionParser.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Placement.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
+~include <Base/Tools.h>
+~include <Base/Console.h>
+~include "Sheet.h"
+~include "SheetObserver.h"
+~include "Utils.h"
+~include "SheetPy.h"
+~include <ostream>
+~include <fstream>
+~include <string>
+~include <iomanip>
+~include <boost/regex.hpp>
+~include <deque>
 
 FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
@@ -1497,9 +1497,9 @@ void Sheet::observeDocument(Document * document)
 {
     // observer is no longer required as PropertySheet is now derived from
     // PropertyLinkBase and will handle all the link related behavior
-#if 1
+~if 1
     (void)document;
-#else
+~else
     ObserverMap::const_iterator it = observers.find(document->getName());
 
     if (it != observers.end()) {
@@ -1512,7 +1512,7 @@ void Sheet::observeDocument(Document * document)
 
         observers[document->getName()] = observer;
     }
-#endif
+~endif
 }
 
 void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)

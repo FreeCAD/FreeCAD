@@ -21,23 +21,23 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeatureScaled.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/FeatureScaled.h>
 
-#include "ui_TaskScaledParameters.h"
-#include "TaskScaledParameters.h"
-#include "TaskMultiTransformParameters.h"
+~include "ui_TaskScaledParameters.h"
+~include "TaskScaledParameters.h"
+~include "TaskMultiTransformParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -91,10 +91,10 @@ void TaskScaledParameters::setupUI()
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -277,4 +277,4 @@ bool TaskDlgScaledParameters::accept()
     return TaskDlgTransformedParameters::accept();
 }
 
-#include "moc_TaskScaledParameters.cpp"
+~include "moc_TaskScaledParameters.cpp"

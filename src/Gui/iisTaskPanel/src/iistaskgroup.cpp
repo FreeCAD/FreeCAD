@@ -5,9 +5,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iistaskgroup.h"
-#include "iistaskpanelscheme.h"
-#include "iisiconlabel.h"
+~include "iistaskgroup.h"
+~include "iistaskpanelscheme.h"
+~include "iisiconlabel.h"
 
 iisTaskGroup::iisTaskGroup(QWidget *parent, bool hasHeader)
 	: QFrame(parent),

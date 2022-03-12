@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QSplitter>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-#endif
+~ifndef _PreComp_
+~ include <QSplitter>
+~ include <Inventor/nodes/SoDirectionalLight.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoPerspectiveCamera.h>
+~endif
 
-#include <Base/Interpreter.h>
+~include <Base/Interpreter.h>
 
-#include "SplitView3DInventor.h"
-#include "Application.h"
-#include "Document.h"
-#include "NavigationStyle.h"
-#include "SoFCSelectionAction.h"
-#include "View3DInventorViewer.h"
-#include "View3DPy.h"
+~include "SplitView3DInventor.h"
+~include "Application.h"
+~include "Document.h"
+~include "NavigationStyle.h"
+~include "SoFCSelectionAction.h"
+~include "View3DInventorViewer.h"
+~include "View3DPy.h"
 
 
 using namespace Gui;
@@ -829,4 +829,4 @@ SplitView3DInventor::~SplitView3DInventor()
 {
 }
 
-#include "moc_SplitView3DInventor.cpp"
+~include "moc_SplitView3DInventor.cpp"

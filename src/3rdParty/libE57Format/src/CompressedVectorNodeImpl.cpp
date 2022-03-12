@@ -25,12 +25,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "CompressedVectorNodeImpl.h"
-#include "CheckedFile.h"
-#include "CompressedVectorReaderImpl.h"
-#include "CompressedVectorWriterImpl.h"
-#include "ImageFileImpl.h"
-#include "VectorNodeImpl.h"
+~include "CompressedVectorNodeImpl.h"
+~include "CheckedFile.h"
+~include "CompressedVectorReaderImpl.h"
+~include "CompressedVectorWriterImpl.h"
+~include "ImageFileImpl.h"
+~include "VectorNodeImpl.h"
 
 namespace e57
 {
@@ -228,7 +228,7 @@ namespace e57
       cf << space( indent ) << "</" << fieldName << ">\n";
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void CompressedVectorNodeImpl::dump( int indent, std::ostream &os ) const
    {
       os << space( indent ) << "type:        CompressedVector"
@@ -255,7 +255,7 @@ namespace e57
       os << space( indent ) << "recordCount:                " << recordCount_ << std::endl;
       os << space( indent ) << "binarySectionLogicalStart:  " << binarySectionLogicalStart_ << std::endl;
    }
-#endif
+~endif
 
    std::shared_ptr<CompressedVectorWriterImpl> CompressedVectorNodeImpl::writer( std::vector<SourceDestBuffer> sbufs )
    {
@@ -342,17 +342,17 @@ namespace e57
 
       /// Get pointer to me (really shared_ptr<CompressedVectorNodeImpl>)
       NodeImplSharedPtr ni( shared_from_this() );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout << "constructing CAReader, ni:" << std::endl;
       // ni->dump(4);
-#endif
+~endif
 
       /// Downcast pointer to right type
       std::shared_ptr<CompressedVectorNodeImpl> cai( std::static_pointer_cast<CompressedVectorNodeImpl>( ni ) );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout<<"constructing CAReader, cai:"<<endl;
       // cai->dump(4);
-#endif
+~endif
       /// Return a shared_ptr to new object
       std::shared_ptr<CompressedVectorReaderImpl> cvri( new CompressedVectorReaderImpl( cai, dbufs ) );
       return ( cvri );

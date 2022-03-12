@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMenu>
+~endif
 
-#include <Mod/PartDesign/App/FeatureHelix.h>
-#include <Gui/BitmapFactory.h>
+~include <Mod/PartDesign/App/FeatureHelix.h>
+~include <Gui/BitmapFactory.h>
 
-#include <Gui/Application.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Gui/Application.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "TaskHelixParameters.h"
-#include "ViewProviderHelix.h"
+~include "TaskHelixParameters.h"
+~include "ViewProviderHelix.h"
 
 using namespace PartDesignGui;
 

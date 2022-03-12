@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif //_MSC_VER
-#endif // _PreComp_
+~ifndef _PreComp_
+~ ifdef _MSC_VER
+~  define _USE_MATH_DEFINES
+~  include <cmath>
+~ endif //_MSC_VER
+~endif // _PreComp_
 
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include "PropertyEnumAttacherItem.h"
+~include "PropertyEnumAttacherItem.h"
 
 using namespace PartGui;
 
@@ -98,4 +98,4 @@ void PropertyEnumAttacherItem::openTask()
     Gui::Control().showDialog(task);
 }
 
-#include "moc_PropertyEnumAttacherItem.cpp"
+~include "moc_PropertyEnumAttacherItem.cpp"

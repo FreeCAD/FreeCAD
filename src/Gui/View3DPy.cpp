@@ -20,44 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-# include <QColor>
-# include <QDir>
-# include <QFileInfo>
-# include <QImage>
-#endif
+~ifndef __InventorAll__
+~ include "InventorAll.h"
+~ include <QColor>
+~ include <QDir>
+~ include <QFileInfo>
+~ include <QImage>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-#include <App/GeoFeature.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Interpreter.h>
-#include <Base/PlacementPy.h>
-#include <Base/RotationPy.h>
-#include <Base/VectorPy.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
+~include <App/GeoFeature.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Interpreter.h>
+~include <Base/PlacementPy.h>
+~include <Base/RotationPy.h>
+~include <Base/VectorPy.h>
 
-#include "View3DPy.h"
+~include "View3DPy.h"
 
-#include "Document.h"
-#include "NavigationStyle.h"
-#include "PythonWrapper.h"
-#include "SoFCDB.h"
-#include "SoFCOffscreenRenderer.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCVectorizeSVGAction.h"
-#include "SoFCVectorizeU3DAction.h"
-#include "SoMouseWheelEvent.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderExtern.h"
+~include "Document.h"
+~include "NavigationStyle.h"
+~include "PythonWrapper.h"
+~include "SoFCDB.h"
+~include "SoFCOffscreenRenderer.h"
+~include "SoFCSelectionAction.h"
+~include "SoFCVectorizeSVGAction.h"
+~include "SoFCVectorizeU3DAction.h"
+~include "SoMouseWheelEvent.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderExtern.h"
 
 
 using namespace Gui;
@@ -413,7 +413,7 @@ vz=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,10)).
 (vy-vo).Length
 (vz-vo).Length
 
-# Projection
+~ Projection
 vo.z=0
 vx.z=0
 vy.z=0
@@ -425,7 +425,7 @@ vz.z=0
  \endcode
 
  See also:
- http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_6_2_ger_web.html#1
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_6_2_ger_web.html~1
  http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/code_v2/Axonometric/qt/Axonometric.cpp
  https://de.wikipedia.org/wiki/Arkussinus_und_Arkuskosinus
 */
@@ -466,7 +466,7 @@ SbRotation Camera::rotation(Camera::Orientation view)
         //from math import sqrt, degrees, asin
         //p1=App.Rotation(App.Vector(1,0,0),90)
         //p2=App.Rotation(App.Vector(0,0,1),45)
-        //#p3=App.Rotation(App.Vector(1,1,0),45)
+        //~p3=App.Rotation(App.Vector(1,1,0),45)
         //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
         //p4=p3.multiply(p2).multiply(p1)
         return SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f);

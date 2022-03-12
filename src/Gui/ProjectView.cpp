@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QFileSystemModel>
+~include <QFileSystemModel>
 
-#include "ProjectView.h"
+~include "ProjectView.h"
 
 
 using namespace Gui;
@@ -42,4 +42,4 @@ ProjectWidget::~ProjectWidget()
 {
 }
 
-#include "moc_ProjectView.cpp"
+~include "moc_ProjectView.cpp"

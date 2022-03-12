@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoAsciiText.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoAsciiText.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFont.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoScale.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include <App/Document.h>
-#include <App/OriginFeature.h>
+~include <App/Document.h>
+~include <App/OriginFeature.h>
 
-#include "ViewProviderOriginFeature.h"
-#include "SoFCSelection.h"
-#include "ViewProviderOrigin.h"
+~include "ViewProviderOriginFeature.h"
+~include "SoFCSelection.h"
+~include "ViewProviderOrigin.h"
 
 
 using namespace Gui;

@@ -5,8 +5,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include "styles.h"
+~include <QtGui/QApplication>
+~include "styles.h"
 
 int main(int argc, char *argv[])
 {

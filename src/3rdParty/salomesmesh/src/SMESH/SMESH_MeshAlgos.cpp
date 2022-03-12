@@ -26,28 +26,28 @@
 // This file holds some low level algorithms extracted from SMESH_MeshEditor
 // to make them accessible from Controls package
 
-#include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MeshAlgos.hxx"
 
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_LinearEdge.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_PolygonalFaceOfNodes.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESH_OctreeNode.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_LinearEdge.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_PolygonalFaceOfNodes.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESH_OctreeNode.hxx"
 
-#include <GC_MakeSegment.hxx>
-#include <GeomAPI_ExtremaCurveCurve.hxx>
-#include <Geom_Line.hxx>
-#include <gp_Cone.hxx>
-#include <gp_Cylinder.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Sphere.hxx>
-#include <IntAna_IntConicQuad.hxx>
-#include <IntAna_Quadric.hxx>
+~include <GC_MakeSegment.hxx>
+~include <GeomAPI_ExtremaCurveCurve.hxx>
+~include <Geom_Line.hxx>
+~include <gp_Cone.hxx>
+~include <gp_Cylinder.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Sphere.hxx>
+~include <IntAna_IntConicQuad.hxx>
+~include <IntAna_Quadric.hxx>
 
-#include <limits>
-#include <numeric>
+~include <limits>
+~include <numeric>
 
 using namespace std;
 

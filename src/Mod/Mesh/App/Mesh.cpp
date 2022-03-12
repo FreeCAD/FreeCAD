@@ -21,43 +21,43 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <sstream>
+~endif
 
-#include <CXX/Objects.hxx>
-#include <Base/Builder3D.h>
-#include <Base/Console.h>
-#include <Base/Converter.h>
-#include <Base/Exception.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <Base/ViewProj.h>
+~include <CXX/Objects.hxx>
+~include <Base/Builder3D.h>
+~include <Base/Console.h>
+~include <Base/Converter.h>
+~include <Base/Exception.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Interpreter.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <Base/ViewProj.h>
 
-#include "Core/Builder.h"
-#include "Core/MeshKernel.h"
-#include "Core/Grid.h"
-#include "Core/Iterator.h"
-#include "Core/Info.h"
-#include "Core/TopoAlgorithm.h"
-#include "Core/Evaluation.h"
-#include "Core/Degeneration.h"
-#include "Core/Segmentation.h"
-#include "Core/SetOperations.h"
-#include "Core/Triangulation.h"
-#include "Core/Trim.h"
-#include "Core/TrimByPlane.h"
-#include "Core/Visitor.h"
-#include "Core/Decimation.h"
+~include "Core/Builder.h"
+~include "Core/MeshKernel.h"
+~include "Core/Grid.h"
+~include "Core/Iterator.h"
+~include "Core/Info.h"
+~include "Core/TopoAlgorithm.h"
+~include "Core/Evaluation.h"
+~include "Core/Degeneration.h"
+~include "Core/Segmentation.h"
+~include "Core/SetOperations.h"
+~include "Core/Triangulation.h"
+~include "Core/Trim.h"
+~include "Core/TrimByPlane.h"
+~include "Core/Visitor.h"
+~include "Core/Decimation.h"
 
-#include "Mesh.h"
-#include "MeshPy.h"
+~include "Mesh.h"
+~include "MeshPy.h"
 
 using namespace Mesh;
 
@@ -525,8 +525,8 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         }
     }
 
-#if 0
-#ifndef FC_DEBUG
+~if 0
+~ifndef FC_DEBUG
     try {
         MeshCore::MeshEvalNeighbourhood nb(_kernel);
         if (!nb.Evaluate()) {
@@ -544,8 +544,8 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         // ignore memory exceptions and continue
         Base::Console().Log("Check for defects in mesh data structure failed\n");
     }
-#endif
-#endif
+~endif
+~endif
 }
 
 void MeshObject::save(std::ostream& out) const
@@ -558,7 +558,7 @@ void MeshObject::load(std::istream& in)
     _kernel.Read(in);
     this->_segments.clear();
 
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
     try {
         MeshCore::MeshEvalNeighbourhood nb(_kernel);
         if (!nb.Evaluate()) {
@@ -576,7 +576,7 @@ void MeshObject::load(std::istream& in)
         // ignore memory exceptions and continue
         Base::Console().Log("Check for defects in mesh data structure failed\n");
     }
-#endif
+~endif
 }
 
 void MeshObject::addFacet(const MeshCore::MeshGeomFacet& facet)

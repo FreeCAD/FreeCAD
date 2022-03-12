@@ -25,9 +25,9 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#include "StdMeshers_LayerDistribution.hxx"
+~include "StdMeshers_LayerDistribution.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

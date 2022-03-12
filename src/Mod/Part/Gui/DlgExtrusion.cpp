@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-# include <BRepAdaptor_Curve.hxx>
-# include <BRep_Tool.hxx>
-# include <Precision.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <QKeyEvent>
-# include <QMessageBox>
-#endif
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRep_Tool.hxx>
+~ include <Precision.hxx>
+~ include <ShapeExtend_Explorer.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Utilities.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Interpreter.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Utilities.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include "ui_DlgExtrusion.h"
-#include "DlgExtrusion.h"
+~include "ui_DlgExtrusion.h"
+~include "DlgExtrusion.h"
 
 
 FC_LOG_LEVEL_INIT("Part",true,true)
@@ -753,4 +753,4 @@ void TaskExtrusion::clicked(int id)
     }
 }
 
-#include "moc_DlgExtrusion.cpp"
+~include "moc_DlgExtrusion.cpp"

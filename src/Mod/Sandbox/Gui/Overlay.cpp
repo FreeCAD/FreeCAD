@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QImage>
-# include <QMouseEvent>
-# include <QPainter>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoImage.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QImage>
+~ include <QMouseEvent>
+~ include <QPainter>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoImage.h>
+~endif
 
-#include <QtOpenGL.h>
+~include <QtOpenGL.h>
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/GLPainter.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/GLPainter.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
 
-#include "Overlay.h"
+~include "Overlay.h"
 
 using namespace SandboxGui;
 
@@ -63,20 +63,20 @@ public:
             p.drawText(200,200,QString::fromLatin1("Render to QImage"));
         }
 
-#if !defined(HAVE_QT5_OPENGL)
+~if !defined(HAVE_QT5_OPENGL)
         img = QtGLWidget::convertToGLFormat(img);
-#endif
+~endif
         fbo = new QtGLFramebufferObject(v->getGLWidget()->size());
         fbo->bind();
         //glClear(GL_COLOR_BUFFER_BIT);
         fbo->release();
         {
-#if !defined(HAVE_QT5_OPENGL)
+~if !defined(HAVE_QT5_OPENGL)
             QPainter p(fbo);
             p.setPen(Qt::white);
             p.drawText(200,200,QString::fromLatin1("Render to QtGLFramebufferObject"));
             p.end();
-#endif
+~endif
             //img = fbo->toImage();
             //img = QtGLWidget::convertToGLFormat(img);
         }
@@ -93,9 +93,9 @@ public:
 
         view->getSoRenderManager()->scheduleRedraw();
     }
- #ifndef GL_MULTISAMPLE
- #define GL_MULTISAMPLE  0x809D
- #endif
+ ~ifndef GL_MULTISAMPLE
+ ~define GL_MULTISAMPLE  0x809D
+ ~endif
     void paintGL()
     {
     const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
@@ -208,7 +208,7 @@ void initializeGL()
 
 void resizeGL(int width, int height)
 {
-#if 0
+~if 0
     fbObject->bind();
 
     glDisable(GL_TEXTURE_2D);
@@ -229,7 +229,7 @@ void resizeGL(int width, int height)
     drawTeapots();
 
     fbObject->release();
-#else
+~else
     (void)width;
     (void)height;
     fbObject->bind();
@@ -243,7 +243,7 @@ void resizeGL(int width, int height)
     SoGLRenderAction gl(SbViewportRegion(fbObject->size().width(),fbObject->size().height()));
     gl.apply(view->getSoRenderManager()->getSceneGraph());
     fbObject->release();
-#endif
+~endif
 }
 
 void paintGL()
@@ -405,7 +405,7 @@ void paintGL()
 
 void paintSelection()
 {
-#if 0
+~if 0
     SoAnnotation* hudRoot = new SoAnnotation;
     hudRoot->ref();
 
@@ -440,14 +440,14 @@ void paintSelection()
     QObject::connect(&pln, SIGNAL(emitSelection()), &loop, SLOT(quit()));
     loop.exec();
     static_cast<SoGroup*>(viewer->getSceneGraph())->removeChild(hudRoot);
-#endif
+~endif
 }
 
 // ---------------------------------------
-#include <Gui/NavigationStyle.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#if 0
+~include <Gui/NavigationStyle.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~if 0
 void MeshSelection::prepareFreehandSelection(bool add)
 {
     // a rubberband to select a rectangle area of the meshes
@@ -469,7 +469,7 @@ void MeshSelection::prepareFreehandSelection(bool add)
         this->addToSelection = add;
     }
 }
-#endif
+~endif
 DrawingPlane::DrawingPlane()
 {
     //image.fill(qRgba(255, 255, 255, 0));
@@ -559,7 +559,7 @@ void DrawingPlane::draw ()
     }
 }
 
-#include <Inventor/events/SoMouseButtonEvent.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
 int DrawingPlane::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPoint& pos)
 {
     const int button = e->getButton();
@@ -626,7 +626,7 @@ void DrawingPlane::drawLineTo(const QPoint &endPoint)
 {
     Q_UNUSED(endPoint);
     return;
-#if !defined(HAVE_QT5_OPENGL)
+~if !defined(HAVE_QT5_OPENGL)
     QPainter painter(fbo);
   //QPainter painter(_pcView3D->getGLWidget());
     painter.setPen(QPen(myPenColor, myPenWidth, Qt::SolidLine, Qt::RoundCap,
@@ -637,7 +637,7 @@ void DrawingPlane::drawLineTo(const QPoint &endPoint)
 
     //_pcView3D->scheduleRedraw();
     lastPoint = endPoint;
-#endif
+~endif
 }
     //Gui::Document* doc = Gui::Application::Instance->activeDocument();
     //Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventor*>(doc->getActiveView())->getViewer();

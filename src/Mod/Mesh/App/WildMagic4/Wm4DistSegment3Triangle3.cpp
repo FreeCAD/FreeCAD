@@ -14,10 +14,10 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4DistSegment3Triangle3.h"
-#include "Wm4DistLine3Triangle3.h"
-#include "Wm4DistVector3Triangle3.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4DistSegment3Triangle3.h"
+~include "Wm4DistLine3Triangle3.h"
+~include "Wm4DistVector3Triangle3.h"
 
 namespace Wm4
 {

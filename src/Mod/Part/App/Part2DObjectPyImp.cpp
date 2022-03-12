@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Part/App/Part2DObject.h"
-#include "OCCError.h"
+~include "Mod/Part/App/Part2DObject.h"
+~include "OCCError.h"
 
 // inclusion of the generated files (generated out of Part2DObjectPy.xml)
-#include "Part2DObjectPy.h"
-#include "Part2DObjectPy.cpp"
+~include "Part2DObjectPy.h"
+~include "Part2DObjectPy.cpp"
 
 using namespace Part;
 

@@ -20,72 +20,72 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QPointer>
-# include <QStatusBar>
-# include <QTimer>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QPointer>
+~ include <QStatusBar>
+~ include <QTimer>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoPointSet.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~endif
 
-#include "CurveOnMesh.h"
-#include <Base/Converter.h>
-#include <App/Document.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Projection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/Gui/ViewProvider.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "CurveOnMesh.h"
+~include <Base/Converter.h>
+~include <App/Document.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Utilities.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Projection.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/Gui/ViewProvider.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#ifndef HAVE_ACOSH
-#define HAVE_ACOSH
-#endif
-#ifndef HAVE_ASINH
-#define HAVE_ASINH
-#endif
-#ifndef HAVE_ATANH
-#define HAVE_ATANH
-#endif
+~ifndef HAVE_ACOSH
+~define HAVE_ACOSH
+~endif
+~ifndef HAVE_ASINH
+~define HAVE_ASINH
+~endif
+~ifndef HAVE_ATANH
+~define HAVE_ATANH
+~endif
 
-#include <gp_Pnt.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Standard_Failure.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
+~include <gp_Pnt.hxx>
+~include <TColgp_Array1OfPnt.hxx>
+~include <GeomAPI_PointsToBSpline.hxx>
+~include <Geom_BSplineCurve.hxx>
+~include <Standard_Failure.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepMesh_IncrementalMesh.hxx>
+~include <Poly_Polygon3D.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Wire.hxx>
 
 /* XPM */
 static const char *cursor_curveonmesh[]={
 "32 32 3 1",
 "+ c white",
-"# c red",
+"~ c red",
 ". c None",
 "......+.........................",
 "......+.........................",
@@ -95,25 +95,25 @@ static const char *cursor_curveonmesh[]={
 "................................",
 "+++++...+++++...................",
 "................................",
-"......+...............###.......",
-"......+...............#.#.......",
-"......+...............###.......",
-"......+..............#..#.......",
-"......+.............#....#......",
-"....................#.+..#......",
-"..................+#+..+..#...+.",
-"................++#.....+.#..+..",
-"......+........+..#......++#+...",
-".......+......+..#.........#....",
-"........++..++..#..........###..",
-"..........++....#..........#.#..",
-"......#........#...........###..",
-".......#......#.................",
-"........#.....#.................",
-".........#...#..................",
-"..........###...................",
-"..........#.#...................",
-"..........###...................",
+"......+...............~~~.......",
+"......+...............~.~.......",
+"......+...............~~~.......",
+"......+..............~..~.......",
+"......+.............~....~......",
+"....................~.+..~......",
+"..................+~+..+..~...+.",
+"................++~.....+.~..+..",
+"......+........+..~......++~+...",
+".......+......+..~.........~....",
+"........++..++..~..........~~~..",
+"..........++....~..........~.~..",
+"......~........~...........~~~..",
+".......~......~.................",
+"........~.....~.................",
+".........~...~..................",
+"..........~~~...................",
+"..........~.~...................",
+"..........~~~...................",
 "................................",
 "................................",
 "................................",
@@ -671,4 +671,4 @@ void CurveOnMeshHandler::recomputeDocument()
     }
 }
 
-#include "moc_CurveOnMesh.cpp"
+~include "moc_CurveOnMesh.cpp"

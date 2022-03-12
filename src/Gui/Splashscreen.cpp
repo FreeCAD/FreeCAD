@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cstdlib>
-# include <QApplication>
-# include <QClipboard>
-# include <QDesktopWidget>
-# include <QDesktopServices>
-# include <QDialogButtonBox>
-# include <QLocale>
-# include <QMutex>
-# include <QTextBrowser>
-# include <QProcess>
-# include <QProcessEnvironment>
-# include <QScreen>
-# include <QSysInfo>
-# include <QTextStream>
-# include <QWaitCondition>
-# include <Inventor/C/basic.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cstdlib>
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QDesktopWidget>
+~ include <QDesktopServices>
+~ include <QDialogButtonBox>
+~ include <QLocale>
+~ include <QMutex>
+~ include <QTextBrowser>
+~ include <QProcess>
+~ include <QProcessEnvironment>
+~ include <QScreen>
+~ include <QSysInfo>
+~ include <QTextStream>
+~ include <QWaitCondition>
+~ include <Inventor/C/basic.h>
+~endif
 
-#include <LibraryVersions.h>
-#include <zlib.h>
-#include <boost/version.hpp>
-#include <boost/filesystem.hpp>
+~include <LibraryVersions.h>
+~include <zlib.h>
+~include <boost/version.hpp>
+~include <boost/filesystem.hpp>
 
-#include "Splashscreen.h"
-#include "ui_AboutApplication.h"
-#include <Base/Console.h>
-#include <CXX/WrapPython.h>
-#include <App/Application.h>
-#include <App/Metadata.h>
-#include <Gui/MainWindow.h>
+~include "Splashscreen.h"
+~include "ui_AboutApplication.h"
+~include <Base/Console.h>
+~include <CXX/WrapPython.h>
+~include <App/Application.h>
+~include <App/Metadata.h>
+~include <Gui/MainWindow.h>
 
 
 using namespace Gui;
@@ -112,14 +112,14 @@ public:
     }
     void SendLog(const std::string& msg, Base::LogStyle level) override
     {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         Log(msg.c_str());
         Q_UNUSED(level)
-#else
+~else
         if (level == Base::LogStyle::Log) {
             Log(msg.c_str());
         }
-#endif
+~endif
     }
     void Log (const char * s)
     {
@@ -189,11 +189,11 @@ AboutDialogFactory::~AboutDialogFactory()
 
 QDialog *AboutDialogFactory::create(QWidget *parent) const
 {
-#ifdef _USE_3DCONNEXION_SDK
+~ifdef _USE_3DCONNEXION_SDK
     return new AboutDialog(true, parent);
-#else
+~else
     return new AboutDialog(false, parent);
-#endif
+~endif
 }
 
 const AboutDialogFactory *AboutDialogFactory::defaultFactory()
@@ -282,9 +282,9 @@ void AboutDialog::setupLabels()
 {
     //fonts are rendered smaller on Mac so point size can't be the same for all platforms
     int fontSize = 8;
-#ifdef Q_OS_MAC
+~ifdef Q_OS_MAC
     fontSize = 11;
-#endif
+~endif
     //avoid overriding user set style sheet
     if (qApp->styleSheet().isEmpty()) {
         setStyleSheet(QString::fromLatin1("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}").arg(fontSize));
@@ -311,7 +311,7 @@ void AboutDialog::setupLabels()
     ui->labelAuthor->setUrl(mturl);
 
     if (qApp->styleSheet().isEmpty()) {
-        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;font-family: MS Shell Dlg 2;}"));
+        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: ~0000FF;text-decoration: underline;font-weight: 600;font-family: MS Shell Dlg 2;}"));
     }
 
     QString version = ui->labelBuildVersion->text();
@@ -470,14 +470,14 @@ QString AboutDialog::getAdditionalLicenseInformation() const
     // Please set title in <h2> tags, license text in <p> tags
     // and add an <hr/> tag at the end to nicely separate license blocks
     QString info;
-#ifdef _USE_3DCONNEXION_SDK
+~ifdef _USE_3DCONNEXION_SDK
     info += QString::fromUtf8(
         "<h2>3D Mouse Support</h2>"
         "<p>Development tools and related technology provided under license from 3Dconnexion.<br/>"
-        "Copyright &#169; 1992&ndash;2012 3Dconnexion. All rights reserved.</p>"
+        "Copyright &~169; 1992&ndash;2012 3Dconnexion. All rights reserved.</p>"
         "<hr/>"
     );
-#endif
+~endif
     return info;
 }
 
@@ -499,128 +499,128 @@ void AboutDialog::showLibraryInformation()
 
     // Boost
     li.name = QLatin1String("Boost");
-    li.href = baseurl + QLatin1String("#_TocBoost");
+    li.href = baseurl + QLatin1String("~_TocBoost");
     li.url = QLatin1String("http://www.boost.org");
     li.version = QLatin1String(BOOST_LIB_VERSION);
     libInfo << li;
 
     // Coin3D
     li.name = QLatin1String("Coin3D");
-    li.href = baseurl + QLatin1String("#_TocCoin3D");
+    li.href = baseurl + QLatin1String("~_TocCoin3D");
     li.url = QLatin1String("https://coin3d.github.io");
     li.version = QLatin1String(COIN_VERSION);
     libInfo << li;
 
     // Eigen3
     li.name = QLatin1String("Eigen3");
-    li.href = baseurl + QLatin1String("#_TocEigen3");
+    li.href = baseurl + QLatin1String("~_TocEigen3");
     li.url = QLatin1String("http://eigen.tuxfamily.org");
     li.version = QString::fromLatin1(FC_EIGEN3_VERSION);
     libInfo << li;
 
     // FreeType
     li.name = QLatin1String("FreeType");
-    li.href = baseurl + QLatin1String("#_TocFreeType");
+    li.href = baseurl + QLatin1String("~_TocFreeType");
     li.url = QLatin1String("http://freetype.org");
     li.version = QString::fromLatin1(FC_FREETYPE_VERSION);
     libInfo << li;
 
     // KDL
     li.name = QLatin1String("KDL");
-    li.href = baseurl + QLatin1String("#_TocKDL");
+    li.href = baseurl + QLatin1String("~_TocKDL");
     li.url = QLatin1String("http://www.orocos.org/kdl");
     li.version.clear();
     libInfo << li;
 
     // libarea
     li.name = QLatin1String("libarea");
-    li.href = baseurl + QLatin1String("#_TocLibArea");
+    li.href = baseurl + QLatin1String("~_TocLibArea");
     li.url = QLatin1String("https://github.com/danielfalck/libarea");
     li.version.clear();
     libInfo << li;
 
     // OCCT
-#if defined(HAVE_OCC_VERSION)
+~if defined(HAVE_OCC_VERSION)
     li.name = QLatin1String("Open CASCADE Technology");
-    li.href = baseurl + QLatin1String("#_TocOCCT");
+    li.href = baseurl + QLatin1String("~_TocOCCT");
     li.url = QLatin1String("http://www.opencascade.com");
     li.version = QLatin1String(OCC_VERSION_STRING_EXT);
     libInfo << li;
-#endif
+~endif
 
     // pcl
     li.name = QLatin1String("Point Cloud Library");
-    li.href = baseurl + QLatin1String("#_TocPcl");
+    li.href = baseurl + QLatin1String("~_TocPcl");
     li.url = QLatin1String("http://www.pointclouds.org");
     li.version = QString::fromLatin1(FC_PCL_VERSION);
     libInfo << li;
 
     // PyCXX
     li.name = QLatin1String("PyCXX");
-    li.href = baseurl + QLatin1String("#_TocPyCXX");
+    li.href = baseurl + QLatin1String("~_TocPyCXX");
     li.url = QLatin1String("http://cxx.sourceforge.net");
     li.version = QString::fromLatin1(FC_PYCXX_VERSION);
     libInfo << li;
 
     // Python
     li.name = QLatin1String("Python");
-    li.href = baseurl + QLatin1String("#_TocPython");
+    li.href = baseurl + QLatin1String("~_TocPython");
     li.url = QLatin1String("http://www.python.org");
     li.version = QLatin1String(PY_VERSION);
     libInfo << li;
 
     // PySide
     li.name = QLatin1String("PySide");
-    li.href = baseurl + QLatin1String("#_TocPySide");
+    li.href = baseurl + QLatin1String("~_TocPySide");
     li.url = QLatin1String("http://www.pyside.org");
     li.version = QString::fromLatin1(FC_PYSIDE_VERSION);
     libInfo << li;
 
     // Qt
     li.name = QLatin1String("Qt");
-    li.href = baseurl + QLatin1String("#_TocQt");
+    li.href = baseurl + QLatin1String("~_TocQt");
     li.url = QLatin1String("http://www.qt.io");
     li.version = QLatin1String(QT_VERSION_STR);
     libInfo << li;
 
     // Salome SMESH
     li.name = QLatin1String("Salome SMESH");
-    li.href = baseurl + QLatin1String("#_TocSalomeSMESH");
+    li.href = baseurl + QLatin1String("~_TocSalomeSMESH");
     li.url = QLatin1String("http://salome-platform.org");
     li.version.clear();
     libInfo << li;
 
     // Shiboken
     li.name = QLatin1String("Shiboken");
-    li.href = baseurl + QLatin1String("#_TocPySide");
+    li.href = baseurl + QLatin1String("~_TocPySide");
     li.url = QLatin1String("http://www.pyside.org");
     li.version = QString::fromLatin1(FC_SHIBOKEN_VERSION);
     libInfo << li;
 
     // vtk
     li.name = QLatin1String("vtk");
-    li.href = baseurl + QLatin1String("#_TocVtk");
+    li.href = baseurl + QLatin1String("~_TocVtk");
     li.url = QLatin1String("https://www.vtk.org");
     li.version = QString::fromLatin1(FC_VTK_VERSION);
     libInfo << li;
 
     // Xerces-C
     li.name = QLatin1String("Xerces-C");
-    li.href = baseurl + QLatin1String("#_TocXercesC");
+    li.href = baseurl + QLatin1String("~_TocXercesC");
     li.url = QLatin1String("https://xerces.apache.org/xerces-c");
     li.version = QString::fromLatin1(FC_XERCESC_VERSION);
     libInfo << li;
 
     // Zipios++
     li.name = QLatin1String("Zipios++");
-    li.href = baseurl + QLatin1String("#_TocZipios");
+    li.href = baseurl + QLatin1String("~_TocZipios");
     li.url = QLatin1String("http://zipios.sourceforge.net");
     li.version.clear();
     libInfo << li;
 
     // zlib
     li.name = QLatin1String("zlib");
-    li.href = baseurl + QLatin1String("#_TocZlib");
+    li.href = baseurl + QLatin1String("~_TocZlib");
     li.url = QLatin1String("http://zlib.net");
     li.version = QLatin1String(ZLIB_VERSION);
     libInfo << li;
@@ -708,15 +708,15 @@ void AboutDialog::on_copyButton_clicked()
         str << " AppImage";
     str << '\n';
 
-#if defined(_DEBUG) || defined(DEBUG)
+~if defined(_DEBUG) || defined(DEBUG)
     str << "Build type: Debug\n";
-#elif defined(NDEBUG)
+~elif defined(NDEBUG)
     str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
+~elif defined(CMAKE_BUILD_TYPE)
     str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
+~else
     str << "Build type: Unknown\n";
-#endif
+~endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
         str << "Branch: " << QString::fromUtf8(it->second.c_str()) << '\n';
@@ -727,16 +727,16 @@ void AboutDialog::on_copyButton_clicked()
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
     str << "Coin " << COIN_VERSION << ", ";
-#if defined(HAVE_OCC_VERSION)
+~if defined(HAVE_OCC_VERSION)
     str << "OCC "
         << OCC_VERSION_MAJOR << "."
         << OCC_VERSION_MINOR << "."
         << OCC_VERSION_MAINTENANCE
-#ifdef OCC_VERSION_DEVELOPMENT
+~ifdef OCC_VERSION_DEVELOPMENT
         << "." OCC_VERSION_DEVELOPMENT
-#endif
+~endif
         << '\n';
-#endif
+~endif
     QLocale loc;
     str << "Locale: " << loc.languageToString(loc.language()) << "/"
         << loc.countryToString(loc.country())
@@ -796,4 +796,4 @@ void LicenseView::setSource(const QUrl& url)
     browser->setSource(url);
 }
 
-#include "moc_Splashscreen.cpp"
+~include "moc_Splashscreen.cpp"

@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
-#endif
+~ifndef _PreComp_
+~ include <QPixmap>
+~ include <QDialog>
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include "ui_ImageOrientationDialog.h"
-#include "ImageOrientationDialog.h"
+~include "ui_ImageOrientationDialog.h"
+~include "ImageOrientationDialog.h"
 
 using namespace ImageGui;
 
@@ -121,4 +121,4 @@ void ImageOrientationDialog::onPreview()
         ui->previewLabel->size()));
 }
 
-#include "moc_ImageOrientationDialog.cpp"
+~include "moc_ImageOrientationDialog.cpp"

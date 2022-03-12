@@ -22,23 +22,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <string>
-#endif
+~ifndef _PreComp_
+~include <string>
+~endif
 
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include <Base/Placement.h>
+~include <App/Document.h>
+~include <Base/Exception.h>
+~include <Base/Placement.h>
 
-#include "Origin.h"
-#include "OriginFeature.h"
+~include "Origin.h"
+~include "OriginFeature.h"
 
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
 
 using namespace App;
 

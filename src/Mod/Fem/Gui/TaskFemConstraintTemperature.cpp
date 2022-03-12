@@ -23,38 +23,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
 
-# include <sstream>
-# include <QAction>
-# include <QMessageBox>
-# include <QKeyEvent>
-# include <QRegExp>
-# include <QTextStream>
-#endif
+~ include <sstream>
+~ include <QAction>
+~ include <QMessageBox>
+~ include <QKeyEvent>
+~ include <QRegExp>
+~ include <QTextStream>
+~endif
 
-#include "Mod/Fem/App/FemConstraintTemperature.h"
-#include "TaskFemConstraintTemperature.h"
-#include "ui_TaskFemConstraintTemperature.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "Mod/Fem/App/FemConstraintTemperature.h"
+~include "TaskFemConstraintTemperature.h"
+~include "ui_TaskFemConstraintTemperature.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Tools.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -378,4 +378,4 @@ bool TaskDlgFemConstraintTemperature::reject()
     return true;
 }
 
-#include "moc_TaskFemConstraintTemperature.cpp"
+~include "moc_TaskFemConstraintTemperature.cpp"

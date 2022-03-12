@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
- //# include <BRep_Tool.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <gp_Ax2.hxx>
-# include <Law_Function.hxx>
-//# include <Law_Linear.hxx>
-//# include <Law_S.hxx>
-# include <Precision.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-//# include <TopTools_IndexedMapOfShape.hxx>
-//# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+ //~ include <BRep_Tool.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepBuilderAPI_Sewing.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepClass3d_SolidClassifier.hxx>
+~ include <BRepOffsetAPI_MakePipeShell.hxx>
+~ include <gp_Ax2.hxx>
+~ include <Law_Function.hxx>
+//~ include <Law_Linear.hxx>
+//~ include <Law_S.hxx>
+~ include <Precision.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Wire.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+//~ include <TopTools_IndexedMapOfShape.hxx>
+//~ include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
+~include <App/DocumentObject.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "FeaturePipe.h"
+~include "FeaturePipe.h"
 
 
 using namespace PartDesign;

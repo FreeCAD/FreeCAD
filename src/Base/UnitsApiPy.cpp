@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <memory>
-#endif
+~ifndef _PreComp_
+~ include <memory>
+~endif
 
-#include <CXX/Objects.hxx>
+~include <CXX/Objects.hxx>
 
-#include "UnitsApi.h"
-#include "Quantity.h"
-#include "QuantityPy.h"
+~include "UnitsApi.h"
+~include "Quantity.h"
+~include "QuantityPy.h"
 
 
 

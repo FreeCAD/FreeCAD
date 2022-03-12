@@ -22,65 +22,65 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <math.h> //OvG: Required for log10
-# include <TopoDS.hxx>
-# include <BRepGProp_Face.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Cylinder.hxx>
-# include <gp_Ax3.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <Adaptor3d_IsoCurve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepGProp.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <BRepClass_FaceClassifier.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepGProp_Face.hxx>
-# include <ShapeAnalysis.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomAPI_IntCS.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <Precision.hxx>
-# include <Standard_Version.hxx>
-# if OCC_VERSION_HEX < 0x070600
-# include <Adaptor3d_HSurface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
-# endif
-#endif
+~ifndef _PreComp_
+~ include <math.h> //OvG: Required for log10
+~ include <TopoDS.hxx>
+~ include <BRepGProp_Face.hxx>
+~ include <gp_Vec.hxx>
+~ include <gp_Pnt.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Cylinder.hxx>
+~ include <gp_Ax3.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <GCPnts_AbscissaPoint.hxx>
+~ include <Adaptor3d_IsoCurve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <GProp_GProps.hxx>
+~ include <BRepGProp.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <BRepClass_FaceClassifier.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepGProp_Face.hxx>
+~ include <ShapeAnalysis.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <GeomAPI_IntCS.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom_Line.hxx>
+~ include <Precision.hxx>
+~ include <Standard_Version.hxx>
+~ if OCC_VERSION_HEX < 0x070600
+~ include <Adaptor3d_HSurface.hxx>
+~ include <BRepAdaptor_HSurface.hxx>
+~ endif
+~endif
 
-#include "FemConstraint.h"
-#include "FemTools.h"
+~include "FemConstraint.h"
+~include "FemTools.h"
 
-#include <App/DocumentObjectPy.h>
-#include <App/FeaturePythonPyImp.h>
-#include <App/OriginFeature.h>
+~include <App/DocumentObjectPy.h>
+~include <App/FeaturePythonPyImp.h>
+~include <App/OriginFeature.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
 
 using namespace Fem;
 
 // maybe in the c++ standard later, older compiler don't have round()
-#if _MSC_VER <= 1700
+~if _MSC_VER <= 1700
 double round(double r) {
     return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
 }
-#endif
+~endif
 
-#if OCC_VERSION_HEX >= 0x070600
+~if OCC_VERSION_HEX >= 0x070600
 using Adaptor3d_HSurface = Adaptor3d_Surface;
 using BRepAdaptor_HSurface = BRepAdaptor_Surface;
-#endif
+~endif
 
 PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
@@ -124,7 +124,7 @@ int Constraint::calcDrawScaleFactor() const
 {
     return 1;
 }
-#define CONSTRAINTSTEPLIMIT 50
+~define CONSTRAINTSTEPLIMIT 50
 
 void Constraint::onChanged(const App::Property* prop)
 {
@@ -232,7 +232,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps; //OvG: Place upper limit on number of steps
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
-                // Parameter values must be in the range [fp, lp] (#0003683)
+                // Parameter values must be in the range [fp, lp] (~0003683)
                 gp_Pnt p = curve.Value(fp + i * step);
                 points.emplace_back(p.X(), p.Y(), p.Z());
                 normals.push_back(NormalDirection.getValue());

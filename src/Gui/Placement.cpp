@@ -20,30 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QClipboard>
-#include <QDockWidget>
-#include <QMessageBox>
-#include <QMetaObject>
-#include <QSignalMapper>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QClipboard>
+~include <QDockWidget>
+~include <QMessageBox>
+~include <QMetaObject>
+~include <QSignalMapper>
+~endif
 
-#include <App/ComplexGeoData.h>
-#include <App/Document.h>
-#include <App/GeoFeature.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Window.h>
+~include <App/ComplexGeoData.h>
+~include <App/Document.h>
+~include <App/GeoFeature.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/DockWindowManager.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Window.h>
 
-#include "Placement.h"
-#include "ui_Placement.h"
+~include "Placement.h"
+~include "ui_Placement.h"
 
 
 using namespace Gui::Dialog;
@@ -568,7 +568,7 @@ void Placement::reject()
     // but its content is not fully updated.
     // In order to override again the placement the signalMapper is blocked
     // See related forum thread:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44341#p378659
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44341~p378659
     QSignalBlocker block(signalMapper);
     QDialog::reject();
 }
@@ -909,4 +909,4 @@ void TaskPlacement::clicked(int id)
     }
 }
 
-#include "moc_Placement.cpp"
+~include "moc_Placement.cpp"

@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QDir>
+~ include <QFile>
+~ include <QFileInfo>
+~endif
 
-#include "Macro.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "DlgMacroRecordImp.h"
-#include "ui_DlgMacroRecord.h"
-#include "FileDialog.h"
+~include "Macro.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "DlgMacroRecordImp.h"
+~include "ui_DlgMacroRecord.h"
+~include "FileDialog.h"
 
 
 using namespace Gui::Dialog;
@@ -165,5 +165,5 @@ void DlgMacroRecordImp::on_lineEditMacroPath_textChanged (const QString & newDir
 }
 
 
-#include "moc_DlgMacroRecordImp.cpp"
+~include "moc_DlgMacroRecordImp.cpp"
 

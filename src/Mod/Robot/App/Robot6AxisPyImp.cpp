@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Robot/App/Robot6Axis.h"
-#include <Base/PlacementPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/Exception.h>
-#include <sstream>
+~include "Mod/Robot/App/Robot6Axis.h"
+~include <Base/PlacementPy.h>
+~include <Base/MatrixPy.h>
+~include <Base/Exception.h>
+~include <sstream>
 
 // inclusion of the generated files (generated out of Robot6AxisPy.xml)
-#include "Robot6AxisPy.h"
-#include "Robot6AxisPy.cpp"
+~include "Robot6AxisPy.h"
+~include "Robot6AxisPy.cpp"
 
 using namespace Robot;
 

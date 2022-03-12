@@ -1,25 +1,25 @@
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QApplication>
-#include <QMainWindow>
-#include <QMessageBox>
-#include <QVector>
+~include <QApplication>
+~include <QMainWindow>
+~include <QMessageBox>
+~include <QVector>
 
-#include <Base/Factory.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
+~include <Base/Factory.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
 
 
 PyMODINIT_FUNC FreeCAD_init()
 {
     static QVector<char *> argv;
-#if defined(_DEBUG)
+~if defined(_DEBUG)
     argv << "FreeCADApp_d.dll" << 0;
-#else
+~else
     argv << "FreeCADApp.dll" << 0;
-#endif
+~endif
 
     App::Application::Config()["RunMode"] = "Gui";
     App::Application::Config()["Console"] = "0";

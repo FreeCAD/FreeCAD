@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QFile>
+~include <QFile>
 
-#include "Branding.h"
+~include "Branding.h"
 
 
 using namespace App;

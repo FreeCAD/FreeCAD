@@ -24,7 +24,7 @@
 //  File      : SMESH_Quadtree.cxx
 //  Module    : SMESH
 //
-#include "SMESH_Quadtree.hxx"
+~include "SMESH_Quadtree.hxx"
 
 //===========================================================================
 /*!

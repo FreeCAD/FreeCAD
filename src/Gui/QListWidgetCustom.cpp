@@ -21,14 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QDragMoveEvent>
-# include <QListWidget>
-# include <QString>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QDragMoveEvent>
+~ include <QListWidget>
+~ include <QString>
+~endif
 
-#include "QListWidgetCustom.h"
+~include "QListWidgetCustom.h"
 
 
 QListWidgetCustom::QListWidgetCustom(QWidget * parent)
@@ -64,4 +64,4 @@ void QListWidgetCustom::dragMoveEvent(QDragMoveEvent *e)
     }
 }
 
-#include "moc_QListWidgetCustom.cpp"
+~include "moc_QListWidgetCustom.cpp"

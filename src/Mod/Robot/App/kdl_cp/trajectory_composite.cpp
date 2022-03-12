@@ -13,8 +13,8 @@
  *		$Name:  $
  ****************************************************************************/
 
-#include "trajectory_composite.hpp"
-#include "path_composite.hpp"
+~include "trajectory_composite.hpp"
+~include "path_composite.hpp"
 
 namespace KDL {
 
@@ -31,7 +31,7 @@ namespace KDL {
     }
 
     Frame Trajectory_Composite::Pos(double time) const {
-        // not optimal, could be done in log(#elem)
+        // not optimal, could be done in log(~elem)
         // or one could buffer the last segment and start looking from there.
         unsigned int i;
         double previoustime;
@@ -52,7 +52,7 @@ namespace KDL {
 
 
     Twist Trajectory_Composite::Vel(double time) const {
-        // not optimal, could be done in log(#elem)
+        // not optimal, could be done in log(~elem)
         unsigned int i;
         Trajectory* traj;
         double previoustime;
@@ -71,7 +71,7 @@ namespace KDL {
     }
 
     Twist Trajectory_Composite::Acc(double time) const {
-        // not optimal, could be done in log(#elem)
+        // not optimal, could be done in log(~elem)
     	unsigned int i;
         Trajectory* traj;
         double previoustime;

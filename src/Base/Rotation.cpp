@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <boost/algorithm/string/predicate.hpp>
-#include "Base/Exception.h"
+~include <boost/algorithm/string/predicate.hpp>
+~include "Base/Exception.h"
 
-#include "Rotation.h"
-#include "Matrix.h"
+~include "Rotation.h"
+~include "Matrix.h"
 
 
 using namespace Base;

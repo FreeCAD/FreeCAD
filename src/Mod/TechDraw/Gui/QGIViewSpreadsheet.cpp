@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include "QGIViewSpreadsheet.h"
+~include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+~include "QGIViewSpreadsheet.h"
 
 using namespace TechDrawGui;
 

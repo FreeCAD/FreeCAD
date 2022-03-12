@@ -21,90 +21,90 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cstdlib>
-# include <QAction>
-# include <QMenu>
-# include <QTimer>
-# include <Inventor/SbBox2s.h>
-# include <Inventor/SbLine.h>
-# include <Inventor/SbPlane.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCallback.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoNormalBinding.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-#endif
+~ifndef _PreComp_
+~ include <cstdlib>
+~ include <QAction>
+~ include <QMenu>
+~ include <QTimer>
+~ include <Inventor/SbBox2s.h>
+~ include <Inventor/SbLine.h>
+~ include <Inventor/SbPlane.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoToVRML2Action.h>
+~ include <Inventor/VRMLnodes/SoVRMLGroup.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCallback.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoLightModel.h>
+~ include <Inventor/nodes/SoIndexedFaceSet.h>
+~ include <Inventor/nodes/SoIndexedLineSet.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoNormalBinding.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoPerspectiveCamera.h>
+~ include <Inventor/nodes/SoPolygonOffset.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTransform.h>
+~endif
 
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QtConcurrentMap>
-#include <boost_bind_bind.hpp>
+~include <QFuture>
+~include <QFutureWatcher>
+~include <QtConcurrentMap>
+~include <boost_bind_bind.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <Base/ViewProj.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <Base/ViewProj.h>
 
-#include <App/Document.h>
-#include <App/PropertyLinks.h>
+~include <App/Document.h>
+~include <App/PropertyLinks.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Flag.h>
-#include <Gui/SoFCOffscreenRenderer.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/SoFCDB.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/Utilities.h>
-#include <Gui/Window.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/ActionFunction.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Flag.h>
+~include <Gui/SoFCOffscreenRenderer.h>
+~include <Gui/SoFCSelection.h>
+~include <Gui/SoFCSelectionAction.h>
+~include <Gui/SoFCDB.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/Utilities.h>
+~include <Gui/Window.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/ActionFunction.h>
 
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/Triangulation.h>
-#include <Mod/Mesh/App/Core/Trim.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Visitor.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
-#include <zipios++/gzipoutputstream.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
+~include <Mod/Mesh/App/Core/Triangulation.h>
+~include <Mod/Mesh/App/Core/Trim.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Visitor.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
+~include <zipios++/gzipoutputstream.h>
 
-#include "ViewProvider.h"
-#include "SoFCIndexedFaceSet.h"
-#include "SoFCMeshObject.h"
+~include "ViewProvider.h"
+~include "SoFCIndexedFaceSet.h"
+~include "SoFCMeshObject.h"
 
 
 using namespace MeshGui;
@@ -195,32 +195,32 @@ QIcon ViewProviderExport::getIcon() const
     const char * Mesh_Feature_xpm[] = {
         "22 22 6 1",
         ". c None",
-        "# c #000000",
-        "c c #ffff00",
-        "a c #808080",
-        "b c #c0c0c0",
-        "f c #008000",
-        ".............##.......",
-        ".............###......",
-        ".............#f##.....",
-        ".#....####...#ff##....",
-        ".##.##....#..#fff##...",
-        ".###.........#ffff##..",
-        ".####........#fffff##.",
-        ".#####.......#ffffff##",
-        ".............#########",
-        ".####.................",
-        "#abab##########.......",
-        "#babababababab#.......",
-        "#ababababababa#.......",
-        "#babab################",
-        "#abab##cccccccccccc##.",
-        "#bab##cccccccccccc##..",
-        "#ab##cccccccccccc##...",
-        "#b##cccccccccccc##....",
-        "###cccccccccccc##.....",
-        "##cccccccccccc##......",
-        "###############.......",
+        "~ c ~000000",
+        "c c ~ffff00",
+        "a c ~808080",
+        "b c ~c0c0c0",
+        "f c ~008000",
+        ".............~~.......",
+        ".............~~~......",
+        ".............~f~~.....",
+        ".~....~~~~...~ff~~....",
+        ".~~.~~....~..~fff~~...",
+        ".~~~.........~ffff~~..",
+        ".~~~~........~fffff~~.",
+        ".~~~~~.......~ffffff~~",
+        ".............~~~~~~~~~",
+        ".~~~~.................",
+        "~abab~~~~~~~~~~.......",
+        "~babababababab~.......",
+        "~ababababababa~.......",
+        "~babab~~~~~~~~~~~~~~~~",
+        "~abab~~cccccccccccc~~.",
+        "~bab~~cccccccccccc~~..",
+        "~ab~~cccccccccccc~~...",
+        "~b~~cccccccccccc~~....",
+        "~~~cccccccccccc~~.....",
+        "~~cccccccccccc~~......",
+        "~~~~~~~~~~~~~~~.......",
         "......................"};
     QPixmap px(Mesh_Feature_xpm);
     return px;
@@ -503,35 +503,35 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 
 QIcon ViewProviderMesh::getIcon() const
 {
-#if 1
+~if 1
     static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
-#else
+~else
     static const char * const Mesh_Feature_xpm[] = {
         "16 16 4 1",
         ".	c None",
-        "#	c #000000",
-        "s	c #BEC2FC",
-        "g	c #00FF00",
-        ".......##.......",
-        "....#######.....",
-        "..##ggg#ggg#....",
-        "##ggggg#gggg##..",
-        "#g#ggg#gggggg##.",
-        "#gg#gg#gggg###s.",
-        "#gg#gg#gg##gg#s.",
-        "#ggg#####ggg#ss.",
-        "#gggg##gggg#ss..",
-        ".#g##g#gggg#s...",
-        ".##ggg#ggg#ss...",
-        ".##gggg#g#ss....",
-        "..s#####g#s.....",
-        "....sss##ss.....",
+        "~	c ~000000",
+        "s	c ~BEC2FC",
+        "g	c ~00FF00",
+        ".......~~.......",
+        "....~~~~~~~.....",
+        "..~~ggg~ggg~....",
+        "~~ggggg~gggg~~..",
+        "~g~ggg~gggggg~~.",
+        "~gg~gg~gggg~~~s.",
+        "~gg~gg~gg~~gg~s.",
+        "~ggg~~~~~ggg~ss.",
+        "~gggg~~gggg~ss..",
+        ".~g~~g~gggg~s...",
+        ".~~ggg~ggg~ss...",
+        ".~~gggg~g~ss....",
+        "..s~~~~~g~s.....",
+        "....sss~~ss.....",
         "........ss......",
         "................"};
     QPixmap px(Mesh_Feature_xpm);
     return px;
-#endif
+~endif
 }
 
 App::PropertyColorList* ViewProviderMesh::getColorProperty() const
@@ -1367,7 +1367,7 @@ private:
 std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewportRegion& vp,
                                                               SoCamera* camera) const
 {
-#if 0
+~if 0
     Q_UNUSED(vp)
 
     SbVec3f pos = camera->position.getValue();
@@ -1400,7 +1400,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     }
 
     return faces;
-#else
+~else
     const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
     const Mesh::MeshObject& mesh = meshProp.getValue();
     uint32_t count = (uint32_t)mesh.countFacets();
@@ -1409,11 +1409,11 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     root->ref();
     root->addChild(camera);
 
-#if 0
+~if 0
     SoCallback* cb = new SoCallback;
     cb->setCallback(renderGLCallback, const_cast<ViewProviderMesh*>(this));
     root->addChild(cb);
-#else
+~else
     SoLightModel* lm = new SoLightModel();
     lm->model = SoLightModel::BASE_COLOR;
     root->addChild(lm);
@@ -1436,20 +1436,20 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     //root->addChild(hints);
     root->addChild(mat);
     root->addChild(bind);
-#endif
+~endif
     root->addChild(this->getCoordNode());
     root->addChild(this->getShapeNode());
 
     // Coin3d's off-screen renderer doesn't work out-of-the-box any more on most recent Linux systems.
     // So, use FreeCAD's offscreen renderer now.
-#if 0
+~if 0
     Gui::SoFCOffscreenRenderer& renderer = Gui::SoFCOffscreenRenderer::instance();
     renderer.setViewportRegion(vp);
     renderer.setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
-#else
+~else
     Gui::SoQtOffscreenRenderer renderer(vp);
     renderer.setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f));
-#endif
+~endif
 
     QImage img;
     renderer.render(root);
@@ -1475,7 +1475,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
 
     return faces;
-#endif
+~endif
 }
 
 void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked, 

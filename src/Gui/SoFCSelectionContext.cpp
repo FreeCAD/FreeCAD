@@ -19,13 +19,13 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
-#include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include "SoFCUnifiedSelection.h"
-#include "Selection.h"
+~include "PreCompiled.h"
+~include <boost/algorithm/string/predicate.hpp>
+~include <Inventor/misc/SoState.h>
+~include <Inventor/elements/SoGLCacheContextElement.h>
+~include <Inventor/elements/SoCacheElement.h>
+~include "SoFCUnifiedSelection.h"
+~include "Selection.h"
 
 using namespace Gui;
 

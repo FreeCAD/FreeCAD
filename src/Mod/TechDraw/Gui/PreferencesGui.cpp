@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <string>
-#include <QString>
-#include <QFont>
-#include <QColor>
-#include <QPen>
-#endif
+~ifndef _PreComp_
+~include <string>
+~include <QString>
+~include <QFont>
+~include <QColor>
+~include <QPen>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Vector3D.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Vector3D.h>
 
-#include "Rez.h"
-#include "PreferencesGui.h"
+~include "Rez.h"
+~include "PreferencesGui.h"
 
 //getters for parameters used in multiple places.
 //ensure this is in sync with preference page user interfaces
@@ -120,7 +120,7 @@ App::Color PreferencesGui::dimColor()
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Dimensions");
     App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x000000FF));  //#000000 black
+    result.setPackedValue(hGrp->GetUnsigned("Color", 0x000000FF));  //~000000 black
     return result;
 }
 
@@ -136,7 +136,7 @@ App::Color PreferencesGui::leaderColor()
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/LeaderLine");
     App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("Color", 0x000000FF));  //#000000 black
+    result.setPackedValue(hGrp->GetUnsigned("Color", 0x000000FF));  //~000000 black
     return result;
 }
 
@@ -192,7 +192,7 @@ int PreferencesGui::mattingStyle()
     return style;
 }
 
-//lightgray 	#D3D3D3 
+//lightgray 	~D3D3D3 
 
 QString PreferencesGui::weldingDirectory()
 {
@@ -218,7 +218,7 @@ App::Color PreferencesGui::gridColor()
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Colors");
     App::Color result;
-    result.setPackedValue(hGrp->GetUnsigned("gridColor", 0x000000FF));  //#000000 black
+    result.setPackedValue(hGrp->GetUnsigned("gridColor", 0x000000FF));  //~000000 black
     return result;
 }
 

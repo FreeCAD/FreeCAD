@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoGroup.h>
+~endif
 
-#include "ViewProvider.h"
-#include <Item.h>
-#include <Gui/Command.h>
-//#include <Gui/Document.h>
+~include "ViewProvider.h"
+~include <Item.h>
+~include <Gui/Command.h>
+//~include <Gui/Document.h>
 
 
 using namespace AssemblyGui;

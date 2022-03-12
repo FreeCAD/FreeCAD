@@ -17,8 +17,8 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "chrono.hxx"
-#include "utilities.h"
+~include "chrono.hxx"
+~include "utilities.h"
 
 using namespace std;
 

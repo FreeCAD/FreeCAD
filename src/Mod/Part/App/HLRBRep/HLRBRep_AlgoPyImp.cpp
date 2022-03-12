@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Ax2.hxx>
-# include <gp_Pnt.hxx>
-# include <limits>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Ax2.hxx>
+~ include <gp_Pnt.hxx>
+~ include <limits>
+~endif
 
-#include "HLRBRep/HLRBRep_AlgoPy.h"
-#include "HLRBRep/HLRBRep_AlgoPy.cpp"
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include "HLRBRep/HLRBRep_AlgoPy.h"
+~include "HLRBRep/HLRBRep_AlgoPy.cpp"
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/Tools.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <HLRAlgo_Projector.hxx>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <HLRAlgo_Projector.hxx>
 
 using namespace Part;
 

@@ -22,35 +22,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QFile>
-# include <QFileInfo>
-# include <QImage>
-# include <QString>
-# include <QMdiSubWindow>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QImage>
+~ include <QString>
+~ include <QMdiSubWindow>
+~ include <QMenu>
+~endif
 
-#include "ViewProviderSpreadsheet.h"
-#include "SpreadsheetView.h"
-#include "ViewProviderSpreadsheetPy.h"
+~include "ViewProviderSpreadsheet.h"
+~include "SpreadsheetView.h"
+~include "ViewProviderSpreadsheetPy.h"
 
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <sstream>
+~include <Mod/Spreadsheet/App/Sheet.h>
+~include <App/Range.h>
+~include <App/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/View3DInventor.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Console.h>
+~include <sstream>
 
 using namespace Base;
 using namespace Gui;
@@ -91,8 +91,8 @@ QIcon ViewProviderSheet::getIcon() const
     static const char * const Points_Feature_xpm[] = {
         "16 16 3 1",
         "       c None",
-        ".      c #000000",
-        "+      c #FFFFFF",
+        ".      c ~000000",
+        "+      c ~FFFFFF",
         "                ",
         "                ",
         "................",

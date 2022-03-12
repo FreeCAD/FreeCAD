@@ -20,17 +20,17 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
-#include <QMessageBox>
-#include "DlgBindSheet.h"
-#include <Base/Tools.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
-#include <Gui/CommandT.h>
-#include "ui_DlgBindSheet.h"
+~include "PreCompiled.h"
+~include <boost/algorithm/string/predicate.hpp>
+~include <QMessageBox>
+~include "DlgBindSheet.h"
+~include <Base/Tools.h>
+~include <App/Range.h>
+~include <App/Document.h>
+~include <App/Application.h>
+~include <App/ExpressionParser.h>
+~include <Gui/CommandT.h>
+~include "ui_DlgBindSheet.h"
 
 using namespace App;
 using namespace Spreadsheet;
@@ -133,7 +133,7 @@ void DlgBindSheet::accept()
         const char *ref = ui->comboBox->itemData(ui->comboBox->currentIndex()).toByteArray().constData();
         auto obj = sheet;
         if(ref[0]) {
-            const char *sep = strchr(ref,'#');
+            const char *sep = strchr(ref,'~');
             if(sep) {
                 std::string docname(ref,sep);
                 auto doc = GetApplication().getDocument(docname.c_str());
@@ -199,4 +199,4 @@ void DlgBindSheet::onDiscard() {
     }
 }
 
-#include "moc_DlgBindSheet.cpp"
+~include "moc_DlgBindSheet.cpp"

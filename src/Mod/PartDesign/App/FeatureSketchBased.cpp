@@ -21,46 +21,46 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepGProp.hxx>
-# include <BRepGProp_Face.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepProj_Projection.hxx>
-# include <Extrema_ExtCC.hxx>
-# include <Extrema_POnCurv.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Pln.hxx>
-# include <GProp_GProps.hxx>
-# include <ShapeAnalysis.hxx>
-# include <Standard_Version.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Bnd_Box.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <BRepGProp.hxx>
+~ include <BRepGProp_Face.hxx>
+~ include <BRepLProp_SLProps.hxx>
+~ include <BRepProj_Projection.hxx>
+~ include <Extrema_ExtCC.hxx>
+~ include <Extrema_POnCurv.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Pln.hxx>
+~ include <GProp_GProps.hxx>
+~ include <ShapeAnalysis.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <TopoDS_Wire.hxx>
+~ include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~endif
 
-#include <App/Document.h>
-#include <App/OriginFeature.h>
-#include <Base/Reader.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
+~include <App/Document.h>
+~include <App/OriginFeature.h>
+~include <Base/Reader.h>
+~include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "FeatureSketchBased.h"
-#include "DatumLine.h"
-#include "DatumPlane.h"
+~include "FeatureSketchBased.h"
+~include "DatumLine.h"
+~include "DatumPlane.h"
 
 
 using namespace PartDesign;
@@ -474,7 +474,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
         // It must also be checked that all projected inner wires of the upToFace
         // lie outside the sketch shape. If this is not the case then the sketch
-        // shape is not completely covered by the upToFace. See #0003141
+        // shape is not completely covered by the upToFace. See ~0003141
         if (!remove_limits) {
             TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(upToFace);
             for (Ex.Init(upToFace, TopAbs_WIRE); Ex.More(); Ex.Next()) {
@@ -495,9 +495,9 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface()
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
                 , Precision::Confusion()
-#endif
+~endif
             );
             if (!mkFace.IsDone())
                 throw Base::ValueError("SketchBased: Up To Face: Failed to create unlimited face");
@@ -575,7 +575,7 @@ bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Fac
 
 bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face)
 {
-#if 1
+~if 1
     BRepBuilderAPI_MakeEdge mkEdge(line);
     TopoDS_Wire wire = ShapeAnalysis::OuterWire(face);
     BRepExtrema_DistShapeShape distss(wire, mkEdge.Shape(), Precision::Confusion());
@@ -663,7 +663,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     }
 
     return false;
-#else
+~else
     // This is not as easy as it looks, because a distance of zero might be OK if
     // the axis touches the sketchshape in a linear edge or a vertex
     // Note: This algorithm doesn't catch cases where the sketchshape touches the
@@ -688,11 +688,11 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
             for (int i = 1; i <= intersector.NbExt(); i++) {
 
 
-#if OCC_VERSION_HEX >= 0x060500
+~if OCC_VERSION_HEX >= 0x060500
                 if (intersector.SquareDistance(i) < Precision::Confusion()) {
-#else
+~else
                 if (intersector.Value(i) < Precision::Confusion()) {
-#endif
+~endif
                     if (intersector.IsParallel()) {
                         // A line that is coincident with the axis produces three intersections
                         // 1 with the line itself and 2 with the adjacent edges
@@ -721,7 +721,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     }
 
     return false;
-#endif
+~endif
 }
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)

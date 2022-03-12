@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cstdlib>
-# include <set>
-#endif
+~ifndef _PreComp_
+~ include <cstdlib>
+~ include <set>
+~endif
 
-#include "Tools2D.h"
-#include "Vector3D.h"
+~include "Tools2D.h"
+~include "Vector3D.h"
 
 using namespace Base;
 

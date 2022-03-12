@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include "ViewProvider.h"
-#include "Workbench.h"
+~include "ViewProvider.h"
+~include "Workbench.h"
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include <Mod/Points/App/PropertyPointKernel.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
+~include <Mod/Points/App/PropertyPointKernel.h>
 
 // use a different name to CreateCommand()
 void CreatePointsCommands();

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include "TaskDlgEditSketch.h"
-#include "ViewProviderSketch.h"
-#include <Gui/Command.h>
+~include "TaskDlgEditSketch.h"
+~include "ViewProviderSketch.h"
+~include <Gui/Command.h>
 
 using namespace SketcherGui;
 
@@ -118,4 +118,4 @@ bool TaskDlgEditSketch::reject()
 }
 
 
-#include "moc_TaskDlgEditSketch.cpp"
+~include "moc_TaskDlgEditSketch.cpp"

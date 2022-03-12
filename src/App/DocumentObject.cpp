@@ -22,27 +22,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <stack>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <stack>
+~endif
 
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-#include <Base/Matrix.h>
-#include <Base/Tools.h>
-#include <Base/Writer.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Console.h>
+~include <Base/Matrix.h>
+~include <Base/Tools.h>
+~include <Base/Writer.h>
 
-#include "Application.h"
-#include "ComplexGeoData.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "DocumentObjectExtension.h"
-#include "DocumentObjectGroup.h"
-#include "GeoFeatureGroupExtension.h"
-#include "ObjectIdentifier.h"
-#include "PropertyExpressionEngine.h"
-#include "PropertyLinks.h"
+~include "Application.h"
+~include "ComplexGeoData.h"
+~include "Document.h"
+~include "DocumentObject.h"
+~include "DocumentObjectExtension.h"
+~include "DocumentObjectGroup.h"
+~include "GeoFeatureGroupExtension.h"
+~include "ObjectIdentifier.h"
+~include "PropertyExpressionEngine.h"
+~include "PropertyLinks.h"
 
 
 FC_LOG_LEVEL_INIT("App",true,true)
@@ -100,7 +100,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this)) {
-#if 1
+~if 1
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
@@ -133,9 +133,9 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
             scopenames.pop_back();
         }
         Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. Instead, the linked object(s) reside within '%s'.\n", getTypeId().getName(), objnames.c_str(), getNameInDocument(), scopenames.c_str());
-#else
+~else
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
-#endif
+~endif
     }
 
     // set/unset the execution bit
@@ -263,7 +263,7 @@ std::string DocumentObject::getFullName() const {
     if(!getDocument() || !pcNameInDocument)
         return "?";
     std::string name(getDocument()->getName());
-    name += '#';
+    name += '~';
     name += *pcNameInDocument;
     return name;
 }
@@ -367,7 +367,7 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
     return ret;
 }
 
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
 std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 {
     if (_pDoc)
@@ -376,17 +376,17 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
         return std::vector<App::DocumentObject*>();
 }
 
-#else // ifndef USE_OLD_DAG
+~else // ifndef USE_OLD_DAG
 
 const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
 {
     return _inList;
 }
 
-#endif // if USE_OLD_DAG
+~endif // if USE_OLD_DAG
 
 
-#if 0
+~if 0
 
 void _getInListRecursive(std::set<DocumentObject*>& objSet,
                          const DocumentObject* obj,
@@ -421,7 +421,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     return array;
 }
 
-#else
+~else
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -437,7 +437,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     return res;
 }
 
-#endif
+~endif
 
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
@@ -445,7 +445,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet, 
         bool recursive, std::vector<App::DocumentObject*> *inList) const
 {
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
     std::map<DocumentObject*,std::set<App::DocumentObject*> > outLists;
 
     // Old DAG does not have pre-built InList, and must calculate The InList by
@@ -478,7 +478,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
             }
         }
     }
-#else // USE_OLD_DAG
+~else // USE_OLD_DAG
 
     if(!recursive) {
         inSet.insert(_inList.begin(),_inList.end());
@@ -501,7 +501,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
         }
     }
 
-#endif
+~endif
 }
 
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const {
@@ -545,7 +545,7 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) cons
 bool _isInInListRecursive(const DocumentObject* act,
                           const DocumentObject* checkObj, int depth)
 {
-#ifndef  USE_OLD_DAG
+~ifndef  USE_OLD_DAG
     for (auto obj : act->getInList()) {
         if (obj == checkObj)
             return true;
@@ -557,43 +557,43 @@ bool _isInInListRecursive(const DocumentObject* act,
         if (_isInInListRecursive(obj, checkObj, depth - 1))
             return true;
     }
-#else
+~else
     (void)act;
     (void)checkObj;
     (void)depth;
-#endif
+~endif
 
     return false;
 }
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
-#if 0
+~if 0
     int maxDepth = getDocument()->countObjects() + 2;
     return _isInInListRecursive(this, linkTo, maxDepth);
-#else
+~else
     return this==linkTo || getInListEx(true).count(linkTo);
-#endif
+~endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
 {
-#ifndef  USE_OLD_DAG
+~ifndef  USE_OLD_DAG
     if (std::find(_inList.begin(), _inList.end(), linkTo) != _inList.end())
         return true;
     else
         return false;
-#else
+~else
     (void)linkTo;
     return false;
-#endif
+~endif
 }
 
 // helper for isInOutListRecursive()
 bool _isInOutListRecursive(const DocumentObject* act,
                            const DocumentObject* checkObj, int depth)
 {
-#ifndef  USE_OLD_DAG
+~ifndef  USE_OLD_DAG
     for (auto obj : act->getOutList()) {
         if (obj == checkObj)
             return true;
@@ -605,11 +605,11 @@ bool _isInOutListRecursive(const DocumentObject* act,
         if (_isInOutListRecursive(obj, checkObj, depth - 1))
             return true;
     }
-#else
+~else
     (void)act;
     (void)checkObj;
     (void)depth;
-#endif
+~endif
 
     return false;
 }
@@ -640,7 +640,7 @@ bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
 
 bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
 {
-#if 0
+~if 0
     Document* doc = this->getDocument();
     if (!doc)
         throw Base::RuntimeError("DocumentObject::testIfLinkIsDAG: object is not in any document.");
@@ -650,14 +650,14 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *>
         return false;
     else
         return true;
-#else
+~else
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for(auto obj : linksTo)
         if(inLists.count(obj))
             return false;
     return true;
-#endif
+~endif
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const
@@ -1028,28 +1028,28 @@ void DocumentObject::unsetupObject()
 
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
-#ifndef USE_OLD_DAG
+~ifndef USE_OLD_DAG
     //do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
     //single one.
     auto it = std::find(_inList.begin(), _inList.end(), rmvObj);
     if(it != _inList.end())
         _inList.erase(it);
-#else
+~else
     (void)rmvObj;
-#endif
+~endif
 }
 
 void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
-#ifndef USE_OLD_DAG
+~ifndef USE_OLD_DAG
     //we need to add all links, even if they are available multiple times. The reason for this is the
     //removal: If a link loses this object it removes the backlink. If we would have added it only once
     //this removal would clear the object from the inlist, even though there may be other link properties 
     //from this object that link to us.
     _inList.push_back(newObj);
-#else
+~else
     (void)newObj;
-#endif //USE_OLD_DAG    
+~endif //USE_OLD_DAG    
 }
 
 int DocumentObject::setElementVisible(const char *element, bool visible) {

@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Part.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Part.h>
 
-#include "ViewProviderPart.h"
-#include "ActionFunction.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "MDIView.h"
+~include "ViewProviderPart.h"
+~include "ActionFunction.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "MDIView.h"
 
 
 using namespace Gui;

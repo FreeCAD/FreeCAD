@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Dir.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <BRepFeat_MakePrism.hxx>
+~ include <BRepPrimAPI_MakePrism.hxx>
+~ include <gp_Dir.hxx>
+~ include <Precision.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Shape.hxx>
+~endif
 
-#include <App/Document.h>
-#include <Base/Tools.h>
-#include <Mod/Part/App/ExtrusionHelper.h>
+~include <App/Document.h>
+~include <Base/Tools.h>
+~include <Mod/Part/App/ExtrusionHelper.h>
 
-#include "FeatureExtrude.h"
+~include "FeatureExtrude.h"
 
 using namespace PartDesign;
 
@@ -177,7 +177,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
 
         // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
         // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
-        // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785#p560785
+        // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785~p560785
         // It is better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
         BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), 0, 1); // finite prism

@@ -21,16 +21,16 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include "chainiksolverpos_nr_jl.hpp"
+~include "chainiksolverpos_nr_jl.hpp"
 
 // FreeCAD change
-#ifndef M_PI
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
+~ifndef M_PI
+    ~define M_PI    3.14159265358979323846 /* pi */
+~endif
 
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
+~ifndef M_PI_2
+    ~define M_PI_2  1.57079632679489661923 /* pi/2 */
+~endif
 
 namespace KDL
 {

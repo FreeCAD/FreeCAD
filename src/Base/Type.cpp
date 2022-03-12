@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Type.h"
-#include "Exception.h"
-#include "Interpreter.h"
-#include "Console.h"
+~include "Type.h"
+~include "Exception.h"
+~include "Interpreter.h"
+~include "Console.h"
 
 
 using namespace Base;
@@ -112,9 +112,9 @@ void Type::importModule(const char* TypeName)
     set<string>::const_iterator pos = loadModuleSet.find(Mod);
     if (pos == loadModuleSet.end()) {
       Interpreter().loadModule(Mod.c_str());
-#ifdef FC_LOGLOADMODULE
+~ifdef FC_LOGLOADMODULE
       Console().Log("Act: Module %s loaded through class %s \n",Mod.c_str(),TypeName);
-#endif
+~endif
       loadModuleSet.insert(Mod);
     }
   }

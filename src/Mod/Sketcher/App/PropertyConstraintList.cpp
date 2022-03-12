@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
+~ifndef _PreComp_
+~   include <assert.h>
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Tools.h>
-#include <Base/QuantityPy.h>
-#include <App/ObjectIdentifier.h>
-#include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Tools.h>
+~include <Base/QuantityPy.h>
+~include <App/ObjectIdentifier.h>
+~include <App/DocumentObject.h>
+~include <App/ExpressionParser.h>
 
-#include "PropertyConstraintList.h"
-#include "ConstraintPy.h"
+~include "PropertyConstraintList.h"
+~include "ConstraintPy.h"
 
 using namespace App;
 using namespace Base;

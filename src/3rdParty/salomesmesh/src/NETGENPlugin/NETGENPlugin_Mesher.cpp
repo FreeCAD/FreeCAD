@@ -27,121 +27,121 @@
 // Project   : SALOME
 //=============================================================================
 
-#include "NETGENPlugin_Mesher.hxx"
-#include "NETGENPlugin_Hypothesis_2D.hxx"
-#include "NETGENPlugin_SimpleHypothesis_3D.hxx"
+~include "NETGENPlugin_Mesher.hxx"
+~include "NETGENPlugin_Hypothesis_2D.hxx"
+~include "NETGENPlugin_SimpleHypothesis_3D.hxx"
 
-#include <SMDS_FaceOfNodes.hxx>
-#include <SMDS_MeshElement.hxx>
-#include <SMDS_MeshNode.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMESH_Block.hxx>
-#include <SMESH_Comment.hxx>
-#include <SMESH_ComputeError.hxx>
-#include <SMESH_File.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_Gen.hxx>
-#include <SMESH_MesherHelper.hxx>
-#include <SMESH_subMesh.hxx>
-#include <StdMeshers_QuadToTriaAdaptor.hxx>
-#include <StdMeshers_ViscousLayers2D.hxx>
+~include <SMDS_FaceOfNodes.hxx>
+~include <SMDS_MeshElement.hxx>
+~include <SMDS_MeshNode.hxx>
+~include <SMESHDS_Mesh.hxx>
+~include <SMESH_Block.hxx>
+~include <SMESH_Comment.hxx>
+~include <SMESH_ComputeError.hxx>
+~include <SMESH_File.hxx>
+~include <SMESH_Mesh.hxx>
+~include <SMESH_Gen.hxx>
+~include <SMESH_MesherHelper.hxx>
+~include <SMESH_subMesh.hxx>
+~include <StdMeshers_QuadToTriaAdaptor.hxx>
+~include <StdMeshers_ViscousLayers2D.hxx>
 
-// #include <SALOMEDS_Tool.hxx>
+// ~include <SALOMEDS_Tool.hxx>
 
-#include <utilities.h>
+~include <utilities.h>
 
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B3d.hxx>
-#include <NCollection_Map.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_ProgramError.hxx>
-#include <Standard_Version.hxx>
-#include <TColStd_MapOfInteger.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeInteger.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_DataMapOfShapeInteger.hxx>
-#include <TopTools_DataMapOfShapeShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B3d.hxx>
+~include <NCollection_Map.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_ProgramError.hxx>
+~include <Standard_Version.hxx>
+~include <TColStd_MapOfInteger.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_DataMapIteratorOfDataMapOfShapeInteger.hxx>
+~include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+~include <TopTools_DataMapOfShapeInteger.hxx>
+~include <TopTools_DataMapOfShapeShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4067)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4067)
+~endif
 
 namespace nglib {
-#include <nglib.h>
+~include <nglib.h>
 }
-#ifndef OCCGEOMETRY
-#define OCCGEOMETRY
-#endif
+~ifndef OCCGEOMETRY
+~define OCCGEOMETRY
+~endif
 
 // DLL_HEADER is re-defined in netgen headers
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmacro-redefined"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmacro-redefined"
+~endif
 
-#ifdef NETGEN_PYTHON
-#undef NETGEN_PYTHON
-#endif
+~ifdef NETGEN_PYTHON
+~undef NETGEN_PYTHON
+~endif
 
-#ifndef WIN32
-#undef DLL_HEADER
-#endif
+~ifndef WIN32
+~undef DLL_HEADER
+~endif
 
-#include <occgeom.hpp>
-#include <meshing.hpp>
-//#include <ngexception.hpp>
+~include <occgeom.hpp>
+~include <meshing.hpp>
+//~include <ngexception.hpp>
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 namespace netgen {
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
     typedef Refinement OCCRefinementSurfaces;
     DLL_HEADER extern int OCCGenerateMesh(OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
-#else
+~else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
-#endif
+~endif
   //extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
   DLL_HEADER extern MeshingParameters mparam;
   DLL_HEADER extern volatile multithreadt multithread;
   DLL_HEADER extern bool merge_solids;
 }
 
-#include <vector>
-#include <limits>
+~include <vector>
+~include <limits>
 
-#ifdef WIN32
-#include <process.h>
-#endif
+~ifdef WIN32
+~include <process.h>
+~endif
 using namespace nglib;
 using namespace std;
 
-#ifdef _DEBUG_
-#define nodeVec_ACCESS(index) ((SMDS_MeshNode*) nodeVec.at((index)))
-#else
-#define nodeVec_ACCESS(index) ((SMDS_MeshNode*) nodeVec[index])
-#endif
+~ifdef _DEBUG_
+~define nodeVec_ACCESS(index) ((SMDS_MeshNode*) nodeVec.at((index)))
+~else
+~define nodeVec_ACCESS(index) ((SMDS_MeshNode*) nodeVec[index])
+~endif
 
-#define NGPOINT_COORDS(p) p(0),p(1),p(2)
+~define NGPOINT_COORDS(p) p(0),p(1),p(2)
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 // dump elements added to ng mesh
-//#define DUMP_SEGMENTS
-//#define DUMP_TRIANGLES
-//#define DUMP_TRIANGLES_SCRIPT "/tmp/trias.py" //!< debug AddIntVerticesInSolids()
-#endif
+//~define DUMP_SEGMENTS
+//~define DUMP_TRIANGLES
+//~define DUMP_TRIANGLES_SCRIPT "/tmp/trias.py" //!< debug AddIntVerticesInSolids()
+~endif
 
 TopTools_IndexedMapOfShape ShapesWithLocalSize;
 std::map<int,double> VertexId2LocalSize;
@@ -189,9 +189,9 @@ NETGENPlugin_Mesher::~NETGENPlugin_Mesher()
   if ( _ptrToMe )
     *_ptrToMe = NULL;
   _ptrToMe = 0;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   _ngMesh = NULL;
-#endif
+~endif
 }
 
 //================================================================================
@@ -396,9 +396,9 @@ namespace
 
     if ( node_id->second == newNgId)
     {
-#if defined(DUMP_SEGMENTS) || defined(DUMP_TRIANGLES)
+~if defined(DUMP_SEGMENTS) || defined(DUMP_TRIANGLES)
       cout << "Ng " << newNgId << " - " << node;
-#endif
+~endif
       netgen::MeshPoint p( netgen::Point<3> (node->X(), node->Y(), node->Z()) );
       ngMesh.AddPoint( p );
     }
@@ -701,13 +701,13 @@ double NETGENPlugin_Mesher::GetDefaultMinSize(const TopoDS_Shape& geom,
       BRep_Tool::Triangulation ( TopoDS::Face( fExp.Current() ), loc);
     if ( triangulation.IsNull() ) continue;
     const double fTol = BRep_Tool::Tolerance( TopoDS::Face( fExp.Current() ));
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
     const TColgp_Array1OfPnt&   points = triangulation->Nodes();
-#else
+~else
     auto points = [&triangulation](Standard_Integer index) {
         return triangulation->Node(index);
     };
-#endif
+~endif
     const Poly_Array1OfTriangle& trias = triangulation->Triangles();
     for ( int iT = trias.Lower(); iT <= trias.Upper(); ++iT )
     {
@@ -905,7 +905,7 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
           SMESH_TNodeXYZ np1( p1.node ), np2( p2.node );
           RestrictLocalSize( ngMesh, 0.5*(np1+np2), (np1-np2).Modulus() );
 
-#ifdef DUMP_SEGMENTS
+~ifdef DUMP_SEGMENTS
           cout << "Segment: " << seg.edgenr << " on SMESH face " << helper.GetMeshDS()->ShapeToIndex( face ) << std::endl
                << "\tface index: " << seg.si << std::endl
                << "\tp1: " << seg[0] << std::endl
@@ -916,7 +916,7 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
                << "\tp1 param: " << seg.epgeominfo[ 1 ].dist << std::endl
                << "\tp1 uv: " << seg.epgeominfo[ 1 ].u <<", "<< seg.epgeominfo[ 1 ].v << std::endl;
             //<< "\tp1 edge: " << seg.epgeominfo[ 1 ].edgenr << std::endl;
-#endif
+~endif
           if ( isSeam )
           {
             if ( helper.GetPeriodicIndex() & 1 ) {
@@ -932,12 +932,12 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
             swap (seg.epgeominfo[0].dist, seg.epgeominfo[1].dist);
             seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
             ngMesh.AddSegment (seg);
-#ifdef DUMP_SEGMENTS
+~ifdef DUMP_SEGMENTS
             cout << "Segment: " << seg.edgenr << std::endl
                  << "\t is SEAM (reverse) of the previous. "
                  << " Other " << (helper.GetPeriodicIndex() & 1 ? "U" : "V")
                  << " = " << otherSeamParam << std::endl;
-#endif
+~endif
           }
           else if ( fOri == TopAbs_INTERNAL )
           {
@@ -945,9 +945,9 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
             swap( seg.epgeominfo[0], seg.epgeominfo[1] );
             seg.edgenr = ngMesh.GetNSeg() + 1; // segment id
             ngMesh.AddSegment (seg);
-#ifdef DUMP_SEGMENTS
+~ifdef DUMP_SEGMENTS
             cout << "Segment: " << seg.edgenr << std::endl << "\t is REVERSE of the previous" << std::endl;
-#endif
+~endif
           }
         }
       } // loop on geomEdge ancestors
@@ -1022,10 +1022,10 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
       tri.SetIndex ( faceNgID );
       SMESH_TNodeXYZ xyz[3];
 
-#ifdef DUMP_TRIANGLES
+~ifdef DUMP_TRIANGLES
       cout << "SMESH face " << helper.GetMeshDS()->ShapeToIndex( geomFace )
            << " internal="<<isInternalFace << std::endl;
-#endif
+~endif
       if ( proxyMesh )
         smDS = proxyMesh->GetSubMesh( geomFace );
 
@@ -1074,17 +1074,17 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
         RestrictLocalSize( ngMesh, gc, size, /*overrideMinH=*/false );
 
         ngMesh.AddSurfaceElement (tri);
-#ifdef DUMP_TRIANGLES
+~ifdef DUMP_TRIANGLES
         cout << tri << std::endl;
-#endif
+~endif
 
         if ( isInternalFace )
         {
           swap( tri[1], tri[2] );
           ngMesh.AddSurfaceElement (tri);
-#ifdef DUMP_TRIANGLES
+~ifdef DUMP_TRIANGLES
           cout << tri << std::endl;
-#endif
+~endif
         }
       }
 
@@ -1550,14 +1550,14 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
                                                  vector<const SMDS_MeshNode*>&  nodeVec,
                                                  NETGENPlugin_Internals&        internalShapes)
 {
-#ifdef DUMP_TRIANGLES_SCRIPT
+~ifdef DUMP_TRIANGLES_SCRIPT
   // create a python script making a mesh containing triangles added for internal vertices
   ofstream py(DUMP_TRIANGLES_SCRIPT);
   py << "import SMESH"<< std::endl
      << "from salome.smesh import smeshBuilder"<<std::endl
      << "smesh = smeshBuilder.New(salome.myStudy)"<<std::endl
      << "m = smesh.Mesh(name='triangles')" << std::endl;
-#endif
+~endif
   if ( nodeVec.size() < ngMesh.GetNP() )
     nodeVec.resize( ngMesh.GetNP(), 0 );
 
@@ -1753,12 +1753,12 @@ void NETGENPlugin_Mesher::AddIntVerticesInSolids(const netgen::OCCGeometry&     
       swap( tri[1], tri[2] );
       ngMesh.AddSurfaceElement (tri);
 
-#ifdef DUMP_TRIANGLES_SCRIPT
+~ifdef DUMP_TRIANGLES_SCRIPT
       py << "n1 = m.AddNode( "<< mpV(0)<<", "<< mpV(1)<<", "<< mpV(2)<<") "<< std::endl
          << "n2 = m.AddNode( "<< mp[0](0)<<", "<< mp[0](1)<<", "<< mp[0](2)<<") "<< std::endl
          << "n3 = m.AddNode( "<< mp[1](0)<<", "<< mp[1](1)<<", "<< mp[1](2)<<" )" << std::endl
          << "m.AddFace([n1,n2,n3])" << std::endl;
-#endif
+~endif
     } // loop on internal vertices of a solid
 
   } // loop on solids with internal vertices
@@ -1973,7 +1973,7 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
       }
     }
 
-#ifdef DUMP_SEGMENTS
+~ifdef DUMP_SEGMENTS
     cout << "BEGIN WIRE " << iW << std::endl;
     for ( int i = prevNbNGSeg+1; i <= ngMesh.GetNSeg(); ++i )
     {
@@ -1997,7 +1997,7 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
            << "\tp1 edge: " << seg.epgeominfo[ 1 ].edgenr << std::endl;
     }
     cout << "--END WIRE " << iW << std::endl;
-#endif
+~endif
 
   } // loop on WIREs of a FACE
 
@@ -2155,7 +2155,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
     }
     else if ( comment.empty() )
     {
-      comment << "Invalid netgen segment #" << i;
+      comment << "Invalid netgen segment ~" << i;
     }
   }
 
@@ -2197,7 +2197,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
     if ( nodes.size() != elem.GetNP() )
     {
       if ( comment.empty() )
-        comment << "Invalid netgen 2d element #" << i;
+        comment << "Invalid netgen 2d element ~" << i;
       continue; // bad node ids
     }
     SMDS_MeshFace* face = NULL;
@@ -2275,7 +2275,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
     if ( nodes.size() != elem.GetNP() )
     {
       if ( comment.empty() )
-        comment << "Invalid netgen 3d element #" << i;
+        comment << "Invalid netgen 3d element ~" << i;
       continue;
     }
     SMDS_MeshVolume* vol = NULL;
@@ -2489,9 +2489,9 @@ bool NETGENPlugin_Mesher::Compute()
   // -------------------------
   // Generate the mesh
   // -------------------------
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   _ngMesh = NULL;
-#endif
+~endif
   NETGENPlugin_ngMeshInfo initState; // it remembers size of ng mesh equal to size of Smesh
 
   SMESH_Comment comment;
@@ -2527,25 +2527,25 @@ bool NETGENPlugin_Mesher::Compute()
     occgeo.face_maxh = mparams.maxh;
 
     // Let netgen create _ngMesh and calculate element size on not meshed shapes
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
     char *optstr = 0;
-#endif
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~endif
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
     int startWith = netgen::MESHCONST_ANALYSE;
     int endWith   = netgen::MESHCONST_ANALYSE;
-#else
+~else
     mparams.perfstepsstart = mparams.perfstepsend = netgen::MESHCONST_ANALYSE;
-#endif
+~endif
     try
     {
       OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
-#else
+~else
       err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
-#endif
+~endif
       if(netgen::multithread.terminate)
         return false;
 
@@ -2558,11 +2558,11 @@ bool NETGENPlugin_Mesher::Compute()
     err = 0; //- MESHCONST_ANALYSE isn't so important step
     if ( !_ngMesh )
       return false;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
     ngLib.setMesh(( Ng_Mesh*) _ngMesh);
-#else
+~else
     ngLib.setMesh(( Ng_Mesh*) _ngMesh.get() );
-#endif
+~endif
 
 
     _ngMesh->ClearFaceDescriptors(); // we make descriptors our-self
@@ -2626,11 +2626,11 @@ bool NETGENPlugin_Mesher::Compute()
       intOccgeo.shape = occgeo.shape;
       intOccgeo.face_maxh.SetSize(intOccgeo.fmap.Extent());
       intOccgeo.face_maxh = netgen::mparam.maxh;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
       netgen::Mesh *tmpNgMesh = NULL;
-#else
+~else
       std::shared_ptr<netgen::Mesh> tmpNgMesh; // = std::make_shared<netgen::Mesh>();
-#endif
+~endif
       try
       {
         OCC_CATCH_SIGNALS;
@@ -2639,37 +2639,37 @@ bool NETGENPlugin_Mesher::Compute()
 
         // let netgen create a temporary mesh
 
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams, startWith, endWith);
-#else
+~else
         netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, startWith, endWith, optstr);
-#endif
+~endif
         if(netgen::multithread.terminate)
           return false;
 
         // copy LocalH from the main to temporary mesh
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
         initState.transferLocalH( _ngMesh, tmpNgMesh );
-#else
+~else
         initState.transferLocalH( _ngMesh.get(), tmpNgMesh.get() );
-#endif
+~endif
         // compute mesh on internal edges
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
         startWith = endWith = netgen::MESHCONST_MESHEDGES;
-#else
+~else
         mparams.perfstepsstart = mparams.perfstepsend = netgen::MESHCONST_MESHEDGES;
-#endif
+~endif
 
 
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, mparams, startWith, endWith);
-#else
+~else
         err = netgen::OCCGenerateMesh(intOccgeo, tmpNgMesh, startWith, endWith, optstr);
-#endif
+~endif
         comment << text(err);
       }
       catch (Standard_Failure& ex)
@@ -2677,22 +2677,22 @@ bool NETGENPlugin_Mesher::Compute()
         comment << text(ex);
         err = 1;
       }
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
       initState.restoreLocalH( tmpNgMesh );
-#else
+~else
       initState.restoreLocalH( tmpNgMesh.get() );
-#endif
+~endif
 
       // fill SMESH by netgen mesh
       vector< const SMDS_MeshNode* > tmpNodeVec;
       FillSMesh( intOccgeo, *tmpNgMesh, initState, *_mesh, tmpNodeVec, comment );
       err = ( err || !comment.empty() );
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
       nglib::Ng_DeleteMesh((nglib::Ng_Mesh*)tmpNgMesh);
-#else
+~else
       tmpNgMesh.reset();
-#endif
+~endif
     }
 
     // Fill _ngMesh with nodes and segments of computed submeshes
@@ -2701,30 +2701,30 @@ bool NETGENPlugin_Mesher::Compute()
       err = ! ( FillNgMesh(occgeo, *_ngMesh, nodeVec, meshedSM[ MeshDim_0D ]) &&
                 FillNgMesh(occgeo, *_ngMesh, nodeVec, meshedSM[ MeshDim_1D ], &quadHelper));
     }
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
     initState = NETGENPlugin_ngMeshInfo(_ngMesh);
-#else
+~else
     initState = NETGENPlugin_ngMeshInfo(_ngMesh.get());
-#endif
+~endif
 
     // Compute 1d mesh
     if (!err)
     {
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
       startWith = endWith = netgen::MESHCONST_MESHEDGES;
-#else
+~else
       mparams.perfstepsstart = mparams.perfstepsend = netgen::MESHCONST_MESHEDGES;
-#endif
+~endif
       try
       {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
-#else
+~else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
-#endif
+~endif
         if(netgen::multithread.terminate)
           return false;
 
@@ -2787,11 +2787,11 @@ bool NETGENPlugin_Mesher::Compute()
         FillSMesh( occgeo, *_ngMesh, initState, *_mesh, nodeVec, comment );
         // add segments to faces with internal vertices
         AddIntVerticesInFaces( occgeo, *_ngMesh, nodeVec, internals );
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
         initState = NETGENPlugin_ngMeshInfo(_ngMesh);
-#else
+~else
         initState = NETGENPlugin_ngMeshInfo(_ngMesh.get());
-#endif
+~endif
       }
 
       // Build viscous layers
@@ -2799,11 +2799,11 @@ bool NETGENPlugin_Mesher::Compute()
       {
         if ( !internals.hasInternalVertexInFace() ) {
           FillSMesh( occgeo, *_ngMesh, initState, *_mesh, nodeVec, comment );
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
           initState = NETGENPlugin_ngMeshInfo(_ngMesh);
-#else
+~else
           initState = NETGENPlugin_ngMeshInfo(_ngMesh.get());
-#endif
+~endif
         }
         SMESH_ProxyMesh::Ptr viscousMesh;
         SMESH_MesherHelper   helper( *_mesh );
@@ -2829,31 +2829,31 @@ bool NETGENPlugin_Mesher::Compute()
 
           if ( !error ) error = SMESH_ComputeError::New();
         }
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
         initState = NETGENPlugin_ngMeshInfo(_ngMesh);
-#else
+~else
         initState = NETGENPlugin_ngMeshInfo(_ngMesh.get());
-#endif
+~endif
       }
 
       // Let netgen compute 2D mesh
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
       startWith = netgen::MESHCONST_MESHSURFACE;
       endWith = _optimize ? netgen::MESHCONST_OPTSURFACE : netgen::MESHCONST_MESHSURFACE;
-#else
+~else
       mparams.perfstepsstart = netgen::MESHCONST_MESHSURFACE;
       mparams.perfstepsend = _optimize ? netgen::MESHCONST_OPTSURFACE : netgen::MESHCONST_MESHSURFACE;
-#endif
+~endif
       try
       {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
-#else
+~else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
-#endif
+~endif
         if(netgen::multithread.terminate)
           return false;
         comment << text (err);
@@ -2908,11 +2908,11 @@ bool NETGENPlugin_Mesher::Compute()
       // fill _ngMesh with faces of sub-meshes
       err = ! ( FillNgMesh(occgeo, *_ngMesh, nodeVec, meshedSM[ MeshDim_2D ], &quadHelper));
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
       initState = NETGENPlugin_ngMeshInfo(_ngMesh);
-#else
+~else
       initState = NETGENPlugin_ngMeshInfo(_ngMesh.get());
-#endif
+~endif
       //toPython( _ngMesh, "/tmp/ngPython.py");
     }
     if (!err && _isVolume)
@@ -2933,11 +2933,11 @@ bool NETGENPlugin_Mesher::Compute()
         _ngMesh->SetGlobalH (mparams.maxh);
         mparams.grading = 0.4;
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
         _ngMesh->CalcLocalH();
-#else
+~else
         _ngMesh->CalcLocalH(mparams.grading);
-#endif
+~endif
       }
       // Care of vertices internal in solids and internal faces (issue 0020676)
       if ( internals.hasInternalVertexInSolid() || internals.hasInternalFaces() )
@@ -2949,28 +2949,28 @@ bool NETGENPlugin_Mesher::Compute()
         AddIntVerticesInSolids( occgeo, *_ngMesh, nodeVec, internals );
         // duplicate mesh faces on internal faces
         FixIntFaces( occgeo, *_ngMesh, internals );
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
         initState = NETGENPlugin_ngMeshInfo(_ngMesh);
-#else
+~else
         initState = NETGENPlugin_ngMeshInfo(_ngMesh.get());
-#endif
+~endif
       }
       // Let netgen compute 3D mesh
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
       startWith = endWith = netgen::MESHCONST_MESHVOLUME;
-#else
+~else
       mparams.perfstepsstart = mparams.perfstepsend = netgen::MESHCONST_MESHVOLUME;
-#endif
+~endif
       try
       {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
-#else
+~else
         err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
-#endif
+~endif
         if(netgen::multithread.terminate)
           return false;
 
@@ -2994,21 +2994,21 @@ bool NETGENPlugin_Mesher::Compute()
       // Let netgen optimize 3D mesh
       if ( !err && _optimize )
       {
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
         startWith = endWith = netgen::MESHCONST_OPTVOLUME;
-#else
+~else
         mparams.perfstepsstart = mparams.perfstepsend = netgen::MESHCONST_OPTVOLUME;
-#endif
+~endif
         try
         {
           OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, mparams, startWith, endWith);
-#else
+~else
           err = netgen::OCCGenerateMesh(occgeo, _ngMesh, startWith, endWith, optstr);
-#endif
+~endif
           if(netgen::multithread.terminate)
             return false;
 
@@ -3216,37 +3216,37 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
 
   // let netgen create _ngMesh and calculate element size on not meshed shapes
   NETGENPlugin_NetgenLibWrapper ngLib;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   netgen::Mesh *ngMesh = NULL;
-#else
+~else
   std::shared_ptr<netgen::Mesh> ngMesh; // = std::make_shared<netgen::Mesh>();
-#endif
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
+~endif
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
   char *optstr = 0;
-#endif
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~endif
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
   int startWith = netgen::MESHCONST_ANALYSE;
   int endWith   = netgen::MESHCONST_MESHEDGES;
-#else
+~else
   mparams.perfstepsstart = netgen::MESHCONST_ANALYSE;
   mparams.perfstepsend = netgen::MESHCONST_MESHEDGES;
-#endif
+~endif
 
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, mparams);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, mparams, startWith, endWith);
-#else
+~else
   int err = netgen::OCCGenerateMesh(occgeo, ngMesh, startWith, endWith, optstr);
-#endif
+~endif
 
   if(netgen::multithread.terminate)
     return false;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   ngLib.setMesh(( Ng_Mesh*) ngMesh);
-#else
+~else
   ngLib.setMesh(( Ng_Mesh*) ngMesh.get());
-#endif
+~endif
   if (err) {
     if ( SMESH_subMesh* sm = _mesh->GetSubMeshContaining( _shape ))
       sm->GetComputeError().reset( new SMESH_ComputeError( COMPERR_ALGO_FAILED ));
@@ -3519,13 +3519,13 @@ double NETGENPlugin_Mesher::GetProgress(const SMESH_Algo* holder,
 void NETGENPlugin_Mesher::RemoveTmpFiles()
 {
   bool rm =  SMESH_File("test.out").remove() ;
-#ifndef WIN32
+~ifndef WIN32
   if (rm && netgen::testout)
   {
     delete netgen::testout;
     netgen::testout = 0;
   }
-#endif
+~endif
   SMESH_File("problemfaces").remove();
   SMESH_File("occmesh.rep").remove();
 }
@@ -3594,10 +3594,10 @@ NETGENPlugin_Mesher::ReadErrors(const vector<const SMDS_MeshNode* >& nodeVec)
     }
   }
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   size_t nbBadElems = err->myBadElements.size();
   nbBadElems = 0;
-#endif
+~endif
 
   return err;
 }
@@ -3629,7 +3629,7 @@ void NETGENPlugin_Mesher::toPython( const netgen::Mesh* ngMesh,
     outfile << "mesh.AddNode( ";
     outfile << (*ngMesh)[pi](0) << ", ";
     outfile << (*ngMesh)[pi](1) << ", ";
-    outfile << (*ngMesh)[pi](2) << ") ## "<< pi << std::endl;
+    outfile << (*ngMesh)[pi](2) << ") ~~ "<< pi << std::endl;
   }
 
   int nbDom = ngMesh->GetNDomains();
@@ -3643,7 +3643,7 @@ void NETGENPlugin_Mesher::toPython( const netgen::Mesh* ngMesh,
     Element2d sel = (*ngMesh)[sei];
     for (int j = 0; j < sel.GetNP(); j++)
       outfile << sel[j] << ( j+1 < sel.GetNP() ? ", " : " ])");
-    if ( sel.IsDeleted() ) outfile << " ## IsDeleted ";
+    if ( sel.IsDeleted() ) outfile << " ~~ IsDeleted ";
     outfile << std::endl;
 
     if ((*ngMesh)[sei].GetIndex())
@@ -3707,11 +3707,11 @@ void NETGENPlugin_ngMeshInfo::transferLocalH( netgen::Mesh* fromMesh,
 {
   if ( !fromMesh->LocalHFunctionGenerated() ) return;
   if ( !toMesh->LocalHFunctionGenerated() )
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
     toMesh->CalcLocalH();
-#else
+~else
     toMesh->CalcLocalH(netgen::mparam.grading);
-#endif
+~endif
 
   const size_t size = sizeof( netgen::LocalH );
   _copyOfLocalH = new char[ size ];
@@ -4098,17 +4098,17 @@ NETGENPlugin_NetgenLibWrapper::NETGENPlugin_NetgenLibWrapper()
     netgen::mycout  = new ofstream ( _outputFileName.c_str() );
     netgen::myerr   = netgen::mycout;
     _coutBuffer     = std::cout.rdbuf();
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     cout << "NOTE: netgen output is redirected to file " << _outputFileName << std::endl;
-#else
+~else
     std::cout.rdbuf( netgen::mycout->rdbuf() );
-#endif
+~endif
   }
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   _ngMesh = Ng_NewMesh();
-#else
+~else
   _ngMesh = std::make_shared<Ng_Mesh>();
-#endif
+~endif
 }
 
 //================================================================================
@@ -4119,18 +4119,18 @@ NETGENPlugin_NetgenLibWrapper::NETGENPlugin_NetgenLibWrapper()
 
 NETGENPlugin_NetgenLibWrapper::~NETGENPlugin_NetgenLibWrapper()
 {
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   Ng_DeleteMesh( _ngMesh );
-#else
+~else
   _ngMesh.reset();
-#endif
+~endif
   Ng_Exit();
   NETGENPlugin_Mesher::RemoveTmpFiles();
   if ( _coutBuffer )
     std::cout.rdbuf( _coutBuffer );
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   if( _isComputeOk )
-#endif
+~endif
     removeOutputFile();
 }
 
@@ -4143,12 +4143,12 @@ NETGENPlugin_NetgenLibWrapper::~NETGENPlugin_NetgenLibWrapper()
 void NETGENPlugin_NetgenLibWrapper::setMesh( Ng_Mesh* mesh )
 {
   if ( _ngMesh )
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
     Ng_DeleteMesh( _ngMesh );
   _ngMesh = mesh;
-#else
+~else
     _ngMesh = std::make_shared<Ng_Mesh>(mesh);
-#endif
+~endif
 }
 
 //================================================================================
@@ -4164,11 +4164,11 @@ std::string NETGENPlugin_NetgenLibWrapper::getOutputFileName()
 
   TCollection_AsciiString aGenericName = (char*)aTmpDir.c_str();
   aGenericName += "NETGEN_";
-#ifndef WIN32
+~ifndef WIN32
   aGenericName += getpid();
-#else
+~else
   aGenericName += _getpid();
-#endif
+~endif
   aGenericName += "_";
   aGenericName += Abs((Standard_Integer)(long) aGenericName.ToCString());
   aGenericName += ".out";

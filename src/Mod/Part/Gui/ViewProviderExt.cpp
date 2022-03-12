@@ -21,73 +21,73 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <gp_Trsf.hxx>
-# include <Precision.hxx>
-# include <Poly_Array1OfTriangle.hxx>
-# include <Poly_Polygon3D.hxx>
-# include <Poly_PolygonOnTriangulation.hxx>
-# include <Poly_Triangulation.hxx>
-# include <Standard_Version.hxx>
-# include <TColgp_Array1OfDir.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+~ifndef _PreComp_
+~ include <Bnd_Box.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <BRepMesh_IncrementalMesh.hxx>
+~ include <gp_Trsf.hxx>
+~ include <Precision.hxx>
+~ include <Poly_Array1OfTriangle.hxx>
+~ include <Poly_Polygon3D.hxx>
+~ include <Poly_PolygonOnTriangulation.hxx>
+~ include <Poly_Triangulation.hxx>
+~ include <Standard_Version.hxx>
+~ include <TColgp_Array1OfDir.hxx>
+~ include <TColgp_Array1OfPnt.hxx>
+~ include <TColStd_Array1OfInteger.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopExp.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
 
-# include <QAction>
-# include <QMenu>
-# include <sstream>
+~ include <QAction>
+~ include <QMenu>
+~ include <sstream>
 
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/errors/SoDebugError.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/nodes/SoNormalBinding.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/nodes/SoShapeHints.h>
-#endif
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/errors/SoDebugError.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoNormal.h>
+~ include <Inventor/nodes/SoNormalBinding.h>
+~ include <Inventor/nodes/SoPolygonOffset.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/TimeInfo.h>
-#include <Base/Tools.h>
-#include <boost/algorithm/string/predicate.hpp>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Control.h>
-#include <Gui/Selection.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/ViewParams.h>
-#include <Mod/Part/App/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/TimeInfo.h>
+~include <Base/Tools.h>
+~include <boost/algorithm/string/predicate.hpp>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Control.h>
+~include <Gui/Selection.h>
+~include <Gui/SoFCSelectionAction.h>
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/ViewParams.h>
+~include <Mod/Part/App/Tools.h>
 
-#include "ViewProviderExt.h"
-#include "SoBrepEdgeSet.h"
-#include "SoBrepFaceSet.h"
-#include "SoBrepPointSet.h"
-#include "TaskFaceColors.h"
+~include "ViewProviderExt.h"
+~include "SoBrepEdgeSet.h"
+~include "SoBrepFaceSet.h"
+~include "SoBrepPointSet.h"
+~include "TaskFaceColors.h"
 
 
 FC_LOG_LEVEL_INIT("Part", true, true)
@@ -365,7 +365,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             // the document modified status
             Base::ObjectStatusLocker<App::Property::Status,App::Property> guard(
                     App::Property::NoModify, &DiffuseColor);
-            // The material has to be checked again (#0001736)
+            // The material has to be checked again (~0001736)
             onChanged(&DiffuseColor);
         }
     }
@@ -384,7 +384,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     // call parent attach method
     ViewProviderGeometryObject::attach(pcFeat);
 
-    // Workaround for #0000433, i.e. use SoSeparator instead of SoGroup
+    // Workaround for ~0000433, i.e. use SoSeparator instead of SoGroup
     auto* pcNormalRoot = new SoSeparator();
     auto* pcFlatRoot = new SoSeparator();
     auto* pcWireframeRoot = new SoSeparator();
@@ -785,13 +785,13 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
         getObject()->touch(true);
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-#if 0
+~if 0
         int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
         if (numPoints != size) {
             SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
                                       "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, size);
         }
-#endif
+~endif
         pcPointBind->value = SoMaterialBinding::PER_VERTEX;
         pcPointMaterial->diffuseColor.setNum(size);
         SbColor* ca = pcPointMaterial->diffuseColor.startEditing();
@@ -949,12 +949,12 @@ void ViewProviderPartExt::updateVisual()
             deflection = Precision::Confusion();
 
         // create or use the mesh on the data structure
-#if OCC_VERSION_HEX >= 0x060600
+~if OCC_VERSION_HEX >= 0x060600
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
         BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
-#else
+~else
         BRepMesh_IncrementalMesh(cShape, deflection);
-#endif
+~endif
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;
@@ -1065,25 +1065,25 @@ void ViewProviderPartExt::updateVisual()
 
 
             // cycling through the poly mesh
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
-#else
+~else
             int numNodes =  mesh->NbNodes();
             TColgp_Array1OfDir Normals (1, numNodes);
-#endif
+~endif
             if (NormalsFromUV)
                 Part::Tools::getPointNormals(actFace, mesh, Normals);
             
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
                 Standard_Integer N1,N2,N3;
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
                 Triangles(g).Get(N1,N2,N3);
-#else
+~else
                 mesh->Triangle(g).Get(N1,N2,N3);
-#endif
+~endif
 
                 // change orientation of the triangle if the face is reversed
                 if ( orient != TopAbs_FORWARD ) {
@@ -1093,11 +1093,11 @@ void ViewProviderPartExt::updateVisual()
                 }
 
                 // get the 3 points of this triangle
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
-#else
+~else
                 gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
-#endif
+~endif
 
                 // get the 3 normals of this triangle
                 gp_Vec NV1, NV2, NV3;
@@ -1174,11 +1174,11 @@ void ViewProviderPartExt::updateVisual()
                         // rare cases where some points are only referenced by the polygon
                         // but not by any triangle. Thus, we must apply the coordinates to
                         // make sure that everything is properly set.
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
                         gp_Pnt p(Nodes(nodeIndex));
-#else
+~else
                         gp_Pnt p(mesh->Node(nodeIndex));
-#endif
+~endif
                         if (!identity)
                             p.Transform(myTransf);
                         verts[index].setValue((float)(p.X()),(float)(p.Y()),(float)(p.Z()));
@@ -1272,11 +1272,11 @@ void ViewProviderPartExt::updateVisual()
         FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
     }
 
-#   ifdef FC_DEBUG
+~   ifdef FC_DEBUG
         // printing some information
         Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
         Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
-#   endif
+~   endif
     VisualTouched = false;
 }
 void ViewProviderPartExt::forceUpdate(bool enable) {

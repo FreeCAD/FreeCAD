@@ -30,17 +30,17 @@
 
 //! @file E57Format.cpp
 
-#include "BlobNodeImpl.h"
-#include "CompressedVectorNodeImpl.h"
-#include "CompressedVectorReaderImpl.h"
-#include "CompressedVectorWriterImpl.h"
-#include "FloatNodeImpl.h"
-#include "ImageFileImpl.h"
-#include "IntegerNodeImpl.h"
-#include "ScaledIntegerNodeImpl.h"
-#include "SourceDestBufferImpl.h"
-#include "StringNodeImpl.h"
-#include "VectorNodeImpl.h"
+~include "BlobNodeImpl.h"
+~include "CompressedVectorNodeImpl.h"
+~include "CompressedVectorReaderImpl.h"
+~include "CompressedVectorWriterImpl.h"
+~include "FloatNodeImpl.h"
+~include "ImageFileImpl.h"
+~include "IntegerNodeImpl.h"
+~include "ScaledIntegerNodeImpl.h"
+~include "SourceDestBufferImpl.h"
+~include "StringNodeImpl.h"
+~include "VectorNodeImpl.h"
 
 using namespace e57;
 
@@ -1113,16 +1113,16 @@ version.
 @post    No visible object state is modified.
 @throw   No E57Exceptions
 */
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void Node::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void Node::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Test if two node handles refer to the same underlying node
@@ -1381,16 +1381,16 @@ void StructureNode::set( const ustring &pathName, const Node &n )
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void StructureNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void StructureNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a StructureNode handle to a generic Node handle.
@@ -1694,16 +1694,16 @@ void VectorNode::append( const Node &n )
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void VectorNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void VectorNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a VectorNode handle to a generic Node handle.
@@ -2151,16 +2151,16 @@ size_t SourceDestBuffer::stride() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void SourceDestBuffer::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void SourceDestBuffer::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 //=====================================================================================
 /*!
@@ -2421,16 +2421,16 @@ CompressedVectorNode CompressedVectorReader::compressedVectorNode() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void CompressedVectorReader::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void CompressedVectorReader::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 //=====================================================================================
 /*!
@@ -2685,16 +2685,16 @@ CompressedVectorNode CompressedVectorWriter::compressedVectorNode() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void CompressedVectorWriter::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void CompressedVectorWriter::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 //=====================================================================================
 /*!
@@ -2918,16 +2918,16 @@ VectorNode CompressedVectorNode::codecs() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void CompressedVectorNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void CompressedVectorNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a CompressedVectorNode handle to a generic Node handle.
@@ -3222,16 +3222,16 @@ int64_t IntegerNode::maximum() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void IntegerNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void IntegerNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a IntegerNode handle to a generic Node handle.
@@ -3572,16 +3572,16 @@ double ScaledIntegerNode::offset() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void ScaledIntegerNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void ScaledIntegerNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a ScaledIntegerNode handle to a generic Node handle.
@@ -3837,16 +3837,16 @@ double FloatNode::maximum() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void FloatNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void FloatNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a FloatNode handle to a generic Node handle.
@@ -4014,16 +4014,16 @@ ustring StringNode::value() const
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void StringNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void StringNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a StringNode handle to a generic Node handle.
@@ -4295,16 +4295,16 @@ void BlobNode::write( uint8_t *buf, int64_t start, size_t count )
 //! @brief   Diagnostic function to print internal state of object to output
 //! stream in an indented format.
 //! @copydetails Node::dump()
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void BlobNode::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void BlobNode::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Upcast a BlobNode handle to a generic Node handle.
@@ -4848,16 +4848,16 @@ void ImageFile::elementNameParse( const ustring &elementName, ustring &prefix, u
 in an indented format.
 @copydetails Node::dump()
 */
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void ImageFile::dump( int indent, std::ostream &os ) const
 {
    impl_->dump( indent, os );
 }
-#else
+~else
 void ImageFile::dump( int indent, std::ostream &os ) const
 {
 }
-#endif
+~endif
 
 /*!
 @brief   Test if two ImageFile handles refer to the same underlying ImageFile

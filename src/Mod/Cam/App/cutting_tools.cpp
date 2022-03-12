@@ -21,62 +21,62 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 //Mesh Stuff
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/MeshPy.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/Grid.h>
 
 
 //FreeCAD Stuff
-#include <Base/Builder3D.h>
+~include <Base/Builder3D.h>
 
 //OCC Stuff
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <IntCurvesFace_ShapeIntersector.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
-#include <GCPnts_QuasiUniformAbscissa.hxx>
-#include <Adaptor2d_Curve2d.hxx>
-#include <Adaptor3d_HSurface.hxx>
-#include <BRep_Tool.hxx>
-#include <TColgp_HArray1OfPnt.hxx>
-#include <TColStd_HArray1OfBoolean.hxx>
-#include <GeomAPI_Interpolate.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <BRepAlgo_Section.hxx>
-#include <BRep_Tool.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Geom2d_Curve.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_Plane.hxx>
-#include <Handle_Geom_Plane.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <Handle_TColStd_HArray1OfBoolean.hxx>
-#include <BSplCLib.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <IntCurvesFace_ShapeIntersector.hxx>
+~include <GCPnts_QuasiUniformDeflection.hxx>
+~include <GCPnts_QuasiUniformAbscissa.hxx>
+~include <Adaptor2d_Curve2d.hxx>
+~include <Adaptor3d_HSurface.hxx>
+~include <BRep_Tool.hxx>
+~include <TColgp_HArray1OfPnt.hxx>
+~include <TColStd_HArray1OfBoolean.hxx>
+~include <GeomAPI_Interpolate.hxx>
+~include <GeomAPI_PointsToBSpline.hxx>
+~include <BRepAlgo_Section.hxx>
+~include <BRep_Tool.hxx>
+~include <GProp_GProps.hxx>
+~include <BRepGProp.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <Geom2d_Curve.hxx>
+~include <Geom2dAdaptor_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <Geom_Plane.hxx>
+~include <Handle_Geom_Plane.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <Handle_TColStd_HArray1OfBoolean.hxx>
+~include <BSplCLib.hxx>
+~include <BRepBuilderAPI_NurbsConvert.hxx>
 
 //Own Stuff
-#include "cutting_tools.h"
-#include "best_fit.h"
-#include "edgesort.h"
-#include "WireExplorer.h"
-#include "BRepAdaptor_CompCurve2.h"
-//#include "MeshInterface.h"
+~include "cutting_tools.h"
+~include "best_fit.h"
+~include "edgesort.h"
+~include "WireExplorer.h"
+~include "BRepAdaptor_CompCurve2.h"
+//~include "MeshInterface.h"
 
 
 

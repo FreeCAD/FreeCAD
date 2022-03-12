@@ -24,87 +24,87 @@
 // Created   : Mon Apr 12 16:10:22 2004
 // Author    : Edward AGAPOV (eap)
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+~endif
 
-#include "SMESH_MeshEditor.hxx"
+~include "SMESH_MeshEditor.hxx"
 
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_SpacePosition.hxx"
-#include "SMDS_MeshGroup.hxx"
-#include "SMDS_LinearEdge.hxx"
-#include "SMDS_Downward.hxx"
-#include "SMDS_SetIterator.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_SpacePosition.hxx"
+~include "SMDS_MeshGroup.hxx"
+~include "SMDS_LinearEdge.hxx"
+~include "SMDS_Downward.hxx"
+~include "SMDS_SetIterator.hxx"
 
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_ControlsDef.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_OctreeNode.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_ControlsDef.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_OctreeNode.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <Basics_OCCTVersion.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include "utilities.h"
-#include "chrono.hxx"
+~include "utilities.h"
+~include "chrono.hxx"
 
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepClass3d_SolidClassifier.hxx>
-#include <BRep_Tool.hxx>
-#include <ElCLib.hxx>
-#include <Extrema_GenExtPS.hxx>
-#include <Extrema_POnCurv.hxx>
-#include <Extrema_POnSurf.hxx>
-#include <Geom2d_Curve.hxx>
-#include <GeomAdaptor_Surface.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <Precision.hxx>
-#include <TColStd_ListOfInteger.hxx>
-#include <TopAbs_State.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_SequenceOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Solid.hxx>
-#include <gp.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <gp_XY.hxx>
-#include <gp_XYZ.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepClass3d_SolidClassifier.hxx>
+~include <BRep_Tool.hxx>
+~include <ElCLib.hxx>
+~include <Extrema_GenExtPS.hxx>
+~include <Extrema_POnCurv.hxx>
+~include <Extrema_POnSurf.hxx>
+~include <Geom2d_Curve.hxx>
+~include <GeomAdaptor_Surface.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <Precision.hxx>
+~include <TColStd_ListOfInteger.hxx>
+~include <TopAbs_State.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_SequenceOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Solid.hxx>
+~include <gp.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Trsf.hxx>
+~include <gp_Vec.hxx>
+~include <gp_XY.hxx>
+~include <gp_XYZ.hxx>
 
-#include <cmath>
+~include <cmath>
 
-#include <map>
-#include <set>
-#include <numeric>
-#include <limits>
-#include <algorithm>
-#include <sstream>
+~include <map>
+~include <set>
+~include <numeric>
+~include <limits>
+~include <algorithm>
+~include <sstream>
 
-#include <boost/tuple/tuple.hpp>
+~include <boost/tuple/tuple.hpp>
 
-#include <Standard_Failure.hxx>
-#include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
+~include <Standard_ErrorHandler.hxx>
 
-#define cast2Node(elem) static_cast<const SMDS_MeshNode*>( elem )
+~define cast2Node(elem) static_cast<const SMDS_MeshNode*>( elem )
 
 using namespace std;
 using namespace SMESH::Controls;
@@ -2479,7 +2479,7 @@ void SMESH_MeshEditor::GetHexaFacetsToSplit( TIDSortedElemSet& theHexas,
                                              const gp_Ax1&     theFacetNormal,
                                              TFacetOfElem &    theFacets)
 {
-  #define THIS_METHOD "SMESH_MeshEditor::GetHexaFacetsToSplit(): "
+  ~define THIS_METHOD "SMESH_MeshEditor::GetHexaFacetsToSplit(): "
 
   // Find a hexa closest to the location of theFacetNormal
 
@@ -3475,7 +3475,7 @@ bool SMESH_MeshEditor::TriToQuad (TIDSortedElemSet &                   theElems,
 }
 
 
-/*#define DUMPSO(txt) \
+/*~define DUMPSO(txt) \
 //  cout << txt << endl;
 //=============================================================================
 //
@@ -3612,7 +3612,7 @@ bool SMESH_MeshEditor::SortHexaNodes (const SMDS_Mesh * theMesh,
         // there should not be more than 4 nodes in bottom plane
         if ( idInPln.size() > 1 )
         {
-          DUMPSO( "### idInPln.size() = " << idInPln.size());
+          DUMPSO( "~~~ idInPln.size() = " << idInPln.size());
           // idInPlane does not contain the first 3 nodes
           if ( manyInPlane || idInPln.size() == 5)
             return false; // all nodes in one plane
@@ -3621,7 +3621,7 @@ bool SMESH_MeshEditor::SortHexaNodes (const SMDS_Mesh * theMesh,
           // set the 1-st node to be not in plane
           for ( i = 3; i < 8; i++ ) {
             if ( idInPln.find( idNodes[ i ] ) == idInPln.end() ) {
-              DUMPSO( "### Reset 0-th node");
+              DUMPSO( "~~~ Reset 0-th node");
               swap( 0, i, idNodes, P );
               break;
             }
@@ -4598,7 +4598,7 @@ void SMESH_MeshEditor::sweepElement(const SMDS_MeshElement*               elem,
         std::swap( prevNod[0], prevNod[1] );
         std::swap( nextNod[0], nextNod[1] );
 
-        // See #0002784 for error message
+        // See ~0002784 for error message
         //std::swap( isSingleNode[0], isSingleNode[1] );
         bool temp = isSingleNode[0];
         isSingleNode[0] = isSingleNode[1];
@@ -4624,13 +4624,13 @@ void SMESH_MeshEditor::sweepElement(const SMDS_MeshElement*               elem,
     if      ( nbNodes == 3 ) baseType = SMDSEntity_Triangle;
     else if ( nbNodes == 4 ) baseType = SMDSEntity_Quadrangle;
   }
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   else if ( baseType == SMDSEntity_Quad_Polygon )
   {
     if      ( nbNodes == 6 ) baseType = SMDSEntity_Quad_Triangle;
     else if ( nbNodes == 8 ) baseType = SMDSEntity_Quad_Quadrangle;
   }
-#endif
+~endif
 
   // make new elements
   for (int iStep = 0; iStep < nbSteps; iStep++ )
@@ -5188,13 +5188,13 @@ void SMESH_MeshEditor::makeWalls (TNodeOfNodeListMap &     mapNewNodes,
               srcEdges.push_back(aMesh->FindEdge (commonNodes[0],commonNodes[1],commonNodes[2]));
             else
               srcEdges.push_back(aMesh->FindEdge (commonNodes[0],commonNodes[1]));
-#ifdef _DEBUG_
+~ifdef _DEBUG_
             if ( !srcEdges.back() )
             {
-              cout << "SMESH_MeshEditor::makeWalls(), no source edge found for a free face #"
-                   << iF << " of volume #" << vTool.ID() << endl;
+              cout << "SMESH_MeshEditor::makeWalls(), no source edge found for a free face ~"
+                   << iF << " of volume ~" << vTool.ID() << endl;
             }
-#endif
+~endif
           }
         }
         if ( freeInd.empty() )
@@ -7438,12 +7438,12 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
           elemType.Init( elem );
           const bool isQuad = elemType.myIsQuad;
           if ( isQuad ) {
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
             SMDS_MeshCell::applyInterlace // interlace medium and corner nodes
               ( SMDS_MeshCell::interlacedSmdsOrder( SMDSEntity_Quad_Polygon, nbNodes ), curNodes );
-#else
+~else
             throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
-#endif
+~endif
           }
 
           // a polygon can divide into several elements
@@ -7462,7 +7462,7 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
               inode += nbNewNodes;
               if ( isQuad ) // check if a result elem is a valid quadratic polygon
               {
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
                 bool isValid = ( nbNewNodes % 2 == 0 );
                 for ( int i = 0; i < nbNewNodes && isValid; ++i )
                   isValid = ( elem->IsMediumNode( face_nodes[i]) == bool( i % 2 ));
@@ -7471,9 +7471,9 @@ void SMESH_MeshEditor::MergeNodes (TListOfListOfNodes & theGroupsOfNodes)
                   SMDS_MeshCell::applyInterlaceRev
                     ( SMDS_MeshCell::interlacedSmdsOrder( SMDSEntity_Quad_Polygon,
                                                           nbNewNodes ), face_nodes );
-#else
+~else
                 throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");  
-#endif
+~endif
               }
               elemType.SetPoly(( nbNewNodes / ( elemType.myIsQuad + 1 ) > 4 ));
 
@@ -8131,7 +8131,7 @@ static const SMDS_MeshElement* findSegment(const SMDS_MeshNode* n1,
 //purpose  :
 //=======================================================================
 
-#define ControlFreeBorder SMESH::Controls::FreeEdges::IsFreeEdge
+~define ControlFreeBorder SMESH::Controls::FreeEdges::IsFreeEdge
 
 bool SMESH_MeshEditor::FindFreeBorder (const SMDS_MeshNode*             theFirstNode,
                                        const SMDS_MeshNode*             theSecondNode,
@@ -10447,9 +10447,9 @@ SMESH_MeshEditor::SewSideElements (TIDSortedElemSet&    theSide1,
  */
 //================================================================================
 
-#ifdef _DEBUG_
-//#define DEBUG_MATCHING_NODES
-#endif
+~ifdef _DEBUG_
+//~define DEBUG_MATCHING_NODES
+~endif
 
 SMESH_MeshEditor::Sew_Error
 SMESH_MeshEditor::FindMatchingNodes(set<const SMDS_MeshElement*>& theSide1,
@@ -10559,19 +10559,19 @@ SMESH_MeshEditor::FindMatchingNodes(set<const SMDS_MeshElement*>& theSide1,
         MESSAGE("Diff nb of face nodes");
         return SEW_TOPO_DIFF_SETS_OF_ELEMENTS;
       }
-#ifdef DEBUG_MATCHING_NODES
+~ifdef DEBUG_MATCHING_NODES
       MESSAGE ( " Link 1: " << link[0].first->GetID() <<" "<< link[0].second->GetID()
                 << " F 1: " << face[0] << "| Link 2: " << link[1].first->GetID() <<" "
                 << link[1].second->GetID() << " F 2: " << face[1] << " | Bind: " ) ;
-#endif
+~endif
       int nbN = nbNodes[0];
       {
         list<const SMDS_MeshNode*>::iterator n1 = notLinkNodes[0].begin();
         list<const SMDS_MeshNode*>::iterator n2 = notLinkNodes[1].begin();
         for ( int i = 0 ; i < nbN - 2; ++i ) {
-#ifdef DEBUG_MATCHING_NODES
+~ifdef DEBUG_MATCHING_NODES
           MESSAGE ( (*n1)->GetID() << " to " << (*n2)->GetID() );
-#endif
+~endif
           nReplaceMap.insert( make_pair( *(n1++), *(n2++) ));
         }
       }
@@ -10591,10 +10591,10 @@ SMESH_MeshEditor::FindMatchingNodes(set<const SMDS_MeshElement*>& theSide1,
         }
         else // new in set == encountered for the first time: add
         {
-#ifdef DEBUG_MATCHING_NODES
+~ifdef DEBUG_MATCHING_NODES
           MESSAGE ( "Add link 1: " << n1->GetID() << " " << n2->GetID() << " "
                     << " | link 2: " << nReplaceMap[n1]->GetID() << " " << nReplaceMap[n2]->GetID() << " " );
-#endif
+~endif
           linkList[0].push_back ( NLink( n1, n2 ));
           linkList[1].push_back ( NLink( nReplaceMap[n1], nReplaceMap[n2] ));
         }
@@ -11194,8 +11194,8 @@ double SMESH_MeshEditor::OrientedAngle(const gp_Pnt& p0, const gp_Pnt& p1, const
  * The nodes of the internal faces at the boundaries of the groups are doubled. Optionally, the internal faces are replaced by flat elements.
  * Triangles are transformed into prisms, and quadrangles into hexahedrons.
  * The flat elements are stored in groups of volumes. These groups are named according to the position of the group in the list:
- * the group j_n_p is the group of the flat elements that are built between the group #n and the group #p in the list.
- * If there is no shared faces between the group #n and the group #p in the list, the group j_n_p is not created.
+ * the group j_n_p is the group of the flat elements that are built between the group ~n and the group ~p in the list.
+ * If there is no shared faces between the group ~n and the group ~p in the list, the group j_n_p is not created.
  * All the flat elements are gathered into the group named "joints3D" (or "joints2D" in 2D situation).
  * The flat element of the multiple junctions between the simple junction are stored in a group named "jointsMultiples".
  * \param theElems - list of groups of volumes, where a group of volume is a set of
@@ -11244,7 +11244,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
   // Check if the domains do not share an element
   for (int idom = 0; idom < nbDomains-1; idom++)
     {
-//       MESSAGE("... Check of domain #" << idom);
+//       MESSAGE("... Check of domain ~" << idom);
       const TIDSortedElemSet& domain = theElems[idom];
       TIDSortedElemSet::const_iterator elemItr = domain.begin();
       for (; elemItr != domain.end(); ++elemItr)
@@ -11256,8 +11256,8 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
             const TIDSortedElemSet& domainbis = theElems[idombis];
             if ( domainbis.count(anElem) )
             {
-              MESSAGE(".... Domain #" << idom);
-              MESSAGE(".... Domain #" << idombis);
+              MESSAGE(".... Domain ~" << idom);
+              MESSAGE(".... Domain ~" << idombis);
               throw SALOME_Exception("The domains are not disjoint.");
               return false ;
             }
@@ -11273,7 +11273,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
       //     and corresponding volume of this domain, for each shared face.
       //     a volume has a face shared by 2 domains if it has a neighbor which is not in his domain.
 
-      MESSAGE("... Neighbors of domain #" << idom);
+      MESSAGE("... Neighbors of domain ~" << idom);
       const TIDSortedElemSet& domain = theElems[idom];
       TIDSortedElemSet::const_iterator elemItr = domain.begin();
       for (; elemItr != domain.end(); ++elemItr)
@@ -12874,6 +12874,6 @@ void SMESH_MeshEditor::copyPosition( const SMDS_MeshNode* from,
   }
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif

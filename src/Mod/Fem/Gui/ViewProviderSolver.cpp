@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
 
-#endif
+~endif
 
-#include "ViewProviderSolver.h"
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
+~include "ViewProviderSolver.h"
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Control.h>
 
-#include <Mod/Fem/App/FemAnalysis.h>
+~include <Mod/Fem/App/FemAnalysis.h>
 
-#include "TaskDlgAnalysis.h"
+~include "TaskDlgAnalysis.h"
 
 using namespace FemGui;
 

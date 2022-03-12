@@ -20,34 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <QLocale>
+~include <QLocale>
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include "Cell.h"
-#include "Utils.h"
-#include <boost/tokenizer.hpp>
-#include <Base/Reader.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Base/Writer.h>
-#include <Base/Console.h>
-#include <App/ExpressionParser.h>
-#include "Sheet.h"
-#include <iomanip>
-#include <cctype>
+~include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/replace.hpp>
+~include "Cell.h"
+~include "Utils.h"
+~include <boost/tokenizer.hpp>
+~include <Base/Reader.h>
+~include <Base/Quantity.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <Base/Writer.h>
+~include <Base/Console.h>
+~include <App/ExpressionParser.h>
+~include "Sheet.h"
+~include <iomanip>
+~include <cctype>
 
 FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
-#ifdef _MSC_VER
-#define __func__ __FUNCTION__
-#endif
+~ifdef _MSC_VER
+~define __func__ __FUNCTION__
+~endif
 
 using namespace App;
 using namespace Base;
@@ -938,7 +938,7 @@ std::string Cell::encodeAlignment(int alignment)
 }
 
 /**
-  * Encode \a color as a \#rrggbbaa string.
+  * Encode \a color as a \~rrggbbaa string.
   *
   * @param color Color to encode.
   *
@@ -950,7 +950,7 @@ std::string Cell::encodeColor(const App::Color & color)
 {
     std::stringstream tmp;
 
-    tmp << "#"
+    tmp << "~"
         << std::hex << std::setw(2) << std::setfill('0') << int(color.r * 255.0)
         << std::hex << std::setw(2) << std::setfill('0') << int(color.g * 255.0)
         << std::hex << std::setw(2) << std::setfill('0') << int(color.b * 255.0)
@@ -985,7 +985,7 @@ std::string Cell::encodeStyle(const std::set<std::string> & style)
 }
 
 /**
-  * Decode a string of the format \#rrggbb or \#rrggbbaa into a Color.
+  * Decode a string of the format \~rrggbb or \~rrggbbaa into a Color.
   *
   * @param color        The color to decode.
   * @param defaultColor A default color in case the decoding fails.
@@ -999,7 +999,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
     if (color.size() == 7 || color.size() == 9) {
         App::Color c;
 
-        if (color[0] != '#')
+        if (color[0] != '~')
             return defaultColor;
         unsigned int value = strtoul(color.c_str() + 1, 0, 16);
 

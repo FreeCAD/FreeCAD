@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~endif
 
-#include <Base/PyObjectBase.h>
+~include <Base/PyObjectBase.h>
 
-#include "Extension.h"
-#include "ExtensionContainer.h"
-#include "ExtensionPython.h"
-#include <ExtensionPy.h>
+~include "Extension.h"
+~include "ExtensionContainer.h"
+~include "ExtensionPython.h"
+~include <ExtensionPy.h>
 
 
 /* We do not use a standard property macro for type initiation. The reason is that we have the first

@@ -21,50 +21,50 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <qmessagebox.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <qmessagebox.h>
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
-#include <Base/ViewProj.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <Base/Tools2D.h>
+~include <Base/ViewProj.h>
 
-#include <App/Document.h>
-#include <App/PropertyLinks.h>
+~include <App/Document.h>
+~include <App/PropertyLinks.h>
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MouseModel.h>
-#include <Gui/Selection.h>
-#include <Gui/Window.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/SoFCSelection.h>
+~include <Gui/MainWindow.h>
+~include <Gui/MouseModel.h>
+~include <Gui/Selection.h>
+~include <Gui/Window.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/Visitor.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/Gui/SoFCMeshNode.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
+~include <Mod/Mesh/App/Core/Visitor.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/Gui/SoFCMeshNode.h>
 
-#include "ViewProvider.h"
-#include "ViewProviderMeshNode.h"
+~include "ViewProvider.h"
+~include "ViewProviderMeshNode.h"
 
 
 using namespace MeshGui;
@@ -206,23 +206,23 @@ QIcon ViewProviderMeshNode::getIcon() const
   const char * Mesh_Feature_xpm[] = {
     "16 16 4 1",
     ".	c None",
-    "#	c #000000",
-    "s	c #BEC2FC",
-    "g	c #00FF00",
-    ".......##.......",
-    "....#######.....",
-    "..##ggg#ggg#....",
-    "##ggggg#gggg##..",
-    "#g#ggg#gggggg##.",
-    "#gg#gg#gggg###s.",
-    "#gg#gg#gg##gg#s.",
-    "#ggg#####ggg#ss.",
-    "#gggg##gggg#ss..",
-    ".#g##g#gggg#s...",
-    ".##ggg#ggg#ss...",
-    ".##gggg#g#ss....",
-    "..s#####g#s.....",
-    "....sss##ss.....",
+    "~	c ~000000",
+    "s	c ~BEC2FC",
+    "g	c ~00FF00",
+    ".......~~.......",
+    "....~~~~~~~.....",
+    "..~~ggg~ggg~....",
+    "~~ggggg~gggg~~..",
+    "~g~ggg~gggggg~~.",
+    "~gg~gg~gggg~~~s.",
+    "~gg~gg~gg~~gg~s.",
+    "~ggg~~~~~ggg~ss.",
+    "~gggg~~gggg~ss..",
+    ".~g~~g~gggg~s...",
+    ".~~ggg~ggg~ss...",
+    ".~~gggg~g~ss....",
+    "..s~~~~~g~s.....",
+    "....sss~~ss.....",
     "........ss......",
     "................"};
   QPixmap px(Mesh_Feature_xpm);
@@ -325,7 +325,7 @@ bool ViewProviderMeshNode::handleEvent(const SoEvent * const ev,Gui::View3DInven
 
 void ViewProviderMeshNode::showOpenEdges(bool show)
 {
-#if 1
+~if 1
   if ( show ) {
     pcOpenEdge = new SoSeparator();
     pcOpenEdge->addChild(pcLineStyle);
@@ -343,7 +343,7 @@ void ViewProviderMeshNode::showOpenEdges(bool show)
     pcHighlight->removeChild(pcOpenEdge);
     pcOpenEdge = 0;
   }
-#else
+~else
   if ( show ) {
     pcOpenEdge = new SoSeparator();
     pcOpenEdge->addChild(pcLineStyle);
@@ -399,5 +399,5 @@ void ViewProviderMeshNode::showOpenEdges(bool show)
     pcHighlight->removeChild(pcOpenEdge);
     pcOpenEdge = 0;
   }
-#endif
+~endif
 }

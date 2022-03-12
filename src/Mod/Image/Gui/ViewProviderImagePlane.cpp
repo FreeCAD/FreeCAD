@@ -21,34 +21,34 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoTextureCoordinate2.h>
-# include <Inventor/nodes/SoTexture2.h>
-# include <QFile>
-# include <QFileInfo>
-# include <QImage>
-# include <QString>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/SbVec3f.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFaceSet.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoImage.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoTextureCoordinate2.h>
+~ include <Inventor/nodes/SoTexture2.h>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QImage>
+~ include <QString>
+~endif
 
-#include "ViewProviderImagePlane.h"
+~include "ViewProviderImagePlane.h"
 
-#include <Mod/Image/App/ImagePlane.h>
-#include <App/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <sstream>
+~include <Mod/Image/App/ImagePlane.h>
+~include <App/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Console.h>
+~include <sstream>
 
 using namespace Gui;
 using namespace ImageGui;

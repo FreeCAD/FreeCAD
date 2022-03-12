@@ -20,110 +20,110 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_MakeShell.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepFeat_SplitShape.hxx>
-# include <BRepOffsetAPI_Sewing.hxx>
-# include <BRepPrim_Wedge.hxx>
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
-# include <BRepPrimAPI_MakeCylinder.hxx>
-# include <BRepPrimAPI_MakeRevolution.hxx>
-# include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrimAPI_MakeTorus.hxx>
-# include <BRepFill.hxx>
-# include <BRepFill_Filling.hxx>
-# include <BRepFill_Generator.hxx>
-# include <BRepLib.hxx>
-# include <BSplCLib.hxx>
-# include <gp_Ax3.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Pnt.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomFill_AppSurf.hxx>
-# include <GeomFill_Line.hxx>
-# include <GeomFill_SectionGenerator.hxx>
-# include <Interface_Static.hxx>
-# include <NCollection_List.hxx>
-# include <Precision.hxx>
-# include <ShapeUpgrade_ShellSewing.hxx>
-# include <Standard_ConstructionError.hxx>
-# include <Standard_DomainError.hxx>
-# include <Standard_Version.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~ include <BRepBuilderAPI_MakeShell.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepCheck_Analyzer.hxx>
+~ include <BRepFeat_SplitShape.hxx>
+~ include <BRepOffsetAPI_Sewing.hxx>
+~ include <BRepPrim_Wedge.hxx>
+~ include <BRepPrimAPI_MakeBox.hxx>
+~ include <BRepPrimAPI_MakeCone.hxx>
+~ include <BRepPrimAPI_MakeCylinder.hxx>
+~ include <BRepPrimAPI_MakeRevolution.hxx>
+~ include <BRepPrimAPI_MakeSphere.hxx>
+~ include <BRepPrimAPI_MakeTorus.hxx>
+~ include <BRepFill.hxx>
+~ include <BRepFill_Filling.hxx>
+~ include <BRepFill_Generator.hxx>
+~ include <BRepLib.hxx>
+~ include <BSplCLib.hxx>
+~ include <gp_Ax3.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Pnt.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~ include <Geom_Circle.hxx>
+~ include <Geom_Plane.hxx>
+~ include <GeomFill_AppSurf.hxx>
+~ include <GeomFill_Line.hxx>
+~ include <GeomFill_SectionGenerator.hxx>
+~ include <Interface_Static.hxx>
+~ include <NCollection_List.hxx>
+~ include <Precision.hxx>
+~ include <ShapeUpgrade_ShellSewing.hxx>
+~ include <Standard_ConstructionError.hxx>
+~ include <Standard_DomainError.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Shell.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~endif
 
-#include <BRepFill_Generator.hxx>
+~include <BRepFill_Generator.hxx>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Interpreter.h>
-#include <Base/VectorPy.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Interpreter.h>
+~include <Base/VectorPy.h>
 
-#include "BSplineSurfacePy.h"
-#include "edgecluster.h"
-#include "FaceMaker.h"
-#include "FeaturePartBox.h"
-#include "FeaturePartCut.h"
-#include "FeaturePartImportStep.h"
-#include "FeaturePartImportIges.h"
-#include "FeaturePartImportBrep.h"
-#include "GeometryCurvePy.h"
-#include "GeometryPy.h"
-#include "ImportIges.h"
-#include "ImportStep.h"
-#include "modelRefine.h"
-#include "OCCError.h"
-#include "PartFeature.h"
-#include "PartPyCXX.h"
-#include "Tools.h"
-#include "TopoShape.h"
-#include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeVertexPy.h"
+~include "BSplineSurfacePy.h"
+~include "edgecluster.h"
+~include "FaceMaker.h"
+~include "FeaturePartBox.h"
+~include "FeaturePartCut.h"
+~include "FeaturePartImportStep.h"
+~include "FeaturePartImportIges.h"
+~include "FeaturePartImportBrep.h"
+~include "GeometryCurvePy.h"
+~include "GeometryPy.h"
+~include "ImportIges.h"
+~include "ImportStep.h"
+~include "modelRefine.h"
+~include "OCCError.h"
+~include "PartFeature.h"
+~include "PartPyCXX.h"
+~include "Tools.h"
+~include "TopoShape.h"
+~include "TopoShapeCompoundPy.h"
+~include "TopoShapeCompSolidPy.h"
+~include "TopoShapePy.h"
+~include "TopoShapeEdgePy.h"
+~include "TopoShapeFacePy.h"
+~include "TopoShapeShellPy.h"
+~include "TopoShapeSolidPy.h"
+~include "TopoShapeWirePy.h"
+~include "TopoShapeVertexPy.h"
 
-#ifdef FCUseFreeType
-#  include "FT2FC.h"
-#endif
+~ifdef FCUseFreeType
+~  include "FT2FC.h"
+~endif
 
 extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 
-#ifndef M_PI
-#define M_PI    3.14159265358979323846 /* pi */
-#endif
+~ifndef M_PI
+~define M_PI    3.14159265358979323846 /* pi */
+~endif
 
-#ifndef M_PI_2
-#define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
+~ifndef M_PI_2
+~define M_PI_2  1.57079632679489661923 /* pi/2 */
+~endif
 
 namespace Part {
 
@@ -638,21 +638,21 @@ private:
         if (file.hasExtension("stp") || file.hasExtension("step")) {
             // create new document and add Import feature
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-#if 1
+~if 1
             ImportStepParts(pcDoc,EncodedName.c_str());
-#else
+~else
             Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
             pcFeature->FileName.setValue(Name);
-#endif
+~endif
             pcDoc->recompute();
         }
-#if 1
+~if 1
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
-#endif
+~endif
         else {
             TopoShape shape;
             shape.read(EncodedName.c_str());
@@ -690,21 +690,21 @@ private:
         }
 
         if (file.hasExtension("stp") || file.hasExtension("step")) {
-#if 1
+~if 1
             ImportStepParts(pcDoc,EncodedName.c_str());
-#else
+~else
             // add Import feature
             Part::ImportStep *pcFeature = (Part::ImportStep *)pcDoc->addObject("Part::ImportStep",file.fileNamePure().c_str());
             pcFeature->FileName.setValue(Name);
-#endif
+~endif
             pcDoc->recompute();
         }
-#if 1
+~if 1
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             ImportIgesParts(pcDoc,EncodedName.c_str());
             pcDoc->recompute();
         }
-#endif
+~endif
         else {
             TopoShape shape;
             shape.read(EncodedName.c_str());
@@ -1067,9 +1067,9 @@ private:
             }
 
             BRepBuilderAPI_MakeFace Face(aPlane, 0.0, length, 0.0, width
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
               , Precision::Confusion()
-#endif
+~endif
             );
             return Py::asObject(new TopoShapeFacePy(new TopoShape((Face.Face()))));
         }
@@ -1706,7 +1706,7 @@ private:
     }
     Py::Object makeLoft(const Py::Tuple& args)
     {
-#if 0
+~if 0
         PyObject *pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj))
             throw Py::Exception;
@@ -1749,7 +1749,7 @@ private:
             anAlgo.SurfUKnots(), anAlgo.SurfVKnots(), anAlgo.SurfUMults(), anAlgo.SurfVMults(),
             anAlgo.UDegree(), anAlgo.VDegree());
         return new BSplineSurfacePy(new GeomBSplineSurface(aRes));
-#else
+~else
         PyObject *pcObj;
         PyObject *psolid=Py_False;
         PyObject *pruled=Py_False;
@@ -1780,7 +1780,7 @@ private:
         Standard_Boolean anIsClosed = PyObject_IsTrue(pclosed) ? Standard_True : Standard_False;
         TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled, anIsClosed, degMax);
         return Py::asObject(new TopoShapePy(new TopoShape(aResult)));
-#endif
+~endif
     }
     Py::Object makeSplitShape(const Py::Tuple& args)
     {
@@ -1858,7 +1858,7 @@ private:
     }
     Py::Object makeWireString(const Py::Tuple& args)
     {
-#ifdef FCUseFreeType
+~ifdef FCUseFreeType
         PyObject *intext;
         const char* dir;
         const char* fontfile;
@@ -1898,28 +1898,28 @@ private:
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
-#if PY_VERSION_HEX >= 0x03030000
+~if PY_VERSION_HEX >= 0x03030000
             pysize = PyUnicode_GetLength(p);
-#else
+~else
             pysize = PyUnicode_GetSize(p);
-#endif
-#if PY_VERSION_HEX < 0x03090000
+~endif
+~if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(p);
-#else
+~else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
-#endif
+~endif
         }
         else if (PyUnicode_Check(intext)) {
-#if PY_VERSION_HEX >= 0x03030000
+~if PY_VERSION_HEX >= 0x03030000
             pysize = PyUnicode_GetLength(intext);
-#else
+~else
             pysize = PyUnicode_GetSize(intext);
-#endif
-#if PY_VERSION_HEX < 0x03090000
+~endif
+~if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(intext);
-#else
+~else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
-#endif
+~endif
         }
         else {
             throw Py::TypeError("** makeWireString bad text parameter");
@@ -1927,7 +1927,7 @@ private:
 
         try {
             if (useFontSpec) {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
 //    Windows doesn't do Utf8 by default and FreeType doesn't do wchar. 
 //    this is a hacky work around.
 //    copy fontspec to Ascii temp name
@@ -1937,18 +1937,18 @@ private:
                 CharList = FT2FC(unichars,pysize,tempFile.c_str(),height,track);
 				Base::FileInfo fiTemp(tempFile);
 				fiTemp.deleteFile();
-#else
+~else
                 CharList = FT2FC(unichars,pysize,fontspec,height,track);
-#endif
+~endif
             }
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
             }
-#if PY_VERSION_HEX >= 0x03090000
+~if PY_VERSION_HEX >= 0x03090000
             if (unichars) {
                 PyMem_Free(unichars);
             }
-#endif
+~endif
         }
         catch (Standard_DomainError&) {                                      // Standard_DomainError is OCC error.
             throw Py::Exception(PartExceptionOCCDomainError, "makeWireString failed - Standard_DomainError");
@@ -1958,9 +1958,9 @@ private:
         }
 
         return Py::asObject(CharList);
-#else
+~else
         throw Py::RuntimeError("FreeCAD compiled without FreeType support! This method is disabled...");
-#endif
+~endif
     }
     Py::Object exportUnits(const Py::Tuple& args)
     {

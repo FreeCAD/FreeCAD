@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Selection.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Drawing/App/FeatureView.h>
-#include <Mod/Drawing/App/FeatureClip.h>
-#include "ViewProviderView.h"
+~include <Mod/Drawing/App/FeatureView.h>
+~include <Mod/Drawing/App/FeatureClip.h>
+~include "ViewProviderView.h"
 
 
 using namespace DrawingGui;

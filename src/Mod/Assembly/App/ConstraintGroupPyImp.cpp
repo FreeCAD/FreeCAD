@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Assembly/App/ConstraintGroup.h"
-#include "Mod/Assembly/App/ConstraintPy.h"
+~include "Mod/Assembly/App/ConstraintGroup.h"
+~include "Mod/Assembly/App/ConstraintPy.h"
 
 // inclusion of the generated files (generated out of ConstraintGroupPy.xml)
-#include "ConstraintGroupPy.h"
-#include "ConstraintGroupPy.cpp"
+~include "ConstraintGroupPy.h"
+~include "ConstraintGroupPy.cpp"
 
 using namespace Assembly;
 

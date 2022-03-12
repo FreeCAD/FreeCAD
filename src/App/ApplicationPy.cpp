@@ -22,19 +22,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
-#include <Base/Sequencer.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
+~include <Base/Sequencer.h>
 
-#include "Application.h"
-#include "DocumentPy.h"
-#include "DocumentObserverPython.h"
-#include "DocumentObjectPy.h"
+~include "Application.h"
+~include "DocumentPy.h"
+~include "DocumentObserverPython.h"
+~include "DocumentObjectPy.h"
 
 
 //using Base::GetConsole;
@@ -343,7 +343,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
 
     Py_Return;
 }
-#if 0
+~if 0
 PyObject* Application::sSaveDocumentAs(PyObject * /*self*/, PyObject *args)
 {
     char *pDoc, *pFileName;
@@ -361,7 +361,7 @@ PyObject* Application::sSaveDocumentAs(PyObject * /*self*/, PyObject *args)
 
     Py_Return;
 }
-#endif
+~endif
 PyObject* Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -798,13 +798,13 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
             l = PyLong_AsLong(pcObj);
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/LogLevels")->SetInt(tag,l);
         if(strcmp(tag,"Default") == 0) {
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
             if(l>=0) Base::Console().SetDefaultLogLevel(l);
-#endif
+~endif
         }else if(strcmp(tag,"DebugDefault") == 0) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             if(l>=0) Base::Console().SetDefaultLogLevel(l);
-#endif
+~endif
         }else
             *Base::Console().GetLogLevel(tag) = l;
         Py_INCREF(Py_None);
@@ -821,13 +821,13 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args)
     PY_TRY{
         int l = -1;
         if(strcmp(tag,"Default")==0) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag,-1);
-#endif
+~endif
         }else if(strcmp(tag,"DebugDefault")==0) {
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
             l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag,-1);
-#endif
+~endif
         }else{
             int *pl = Base::Console().GetLogLevel(tag,false);
             l = pl?*pl:-1;

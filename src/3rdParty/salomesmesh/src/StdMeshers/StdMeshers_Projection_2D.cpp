@@ -26,47 +26,47 @@
 // Created   : Fri Oct 20 11:37:07 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_Projection_2D.hxx"
+~include "StdMeshers_Projection_2D.hxx"
 
-#include "StdMeshers_ProjectionSource2D.hxx"
-#include "StdMeshers_ProjectionUtils.hxx"
-#include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_ProjectionSource2D.hxx"
+~include "StdMeshers_ProjectionUtils.hxx"
+~include "StdMeshers_FaceSide.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMESHDS_Hypothesis.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_Pattern.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMESHDS_Hypothesis.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_Pattern.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_Surface.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <GeomLib_IsPlanarSurface.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Solid.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_GTrsf.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B2d.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <GeomLib_IsPlanarSurface.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Solid.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_GTrsf.hxx>
 
 
 using namespace std;
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
+~define RETURN_BAD_RESULT(msg) { MESSAGE(")-: Error: " << msg); return false; }
 
 namespace TAssocTool = StdMeshers_ProjectionUtils;
 //typedef StdMeshers_ProjectionUtils TAssocTool;
@@ -1532,7 +1532,7 @@ bool StdMeshers_Projection_2D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
           return error( COMPERR_BAD_INPUT_MESH,
                         SMESH_Comment( "Existing mesh mismatches the projected 2D mesh on " )
                         << ( sm->GetSubShape().ShapeType() == TopAbs_EDGE ? "edge" : "vertex" )
-                        << " #" << sm->GetId() );
+                        << " ~" << sm->GetId() );
         }
       if ( isSeam && !mergeSeamToNew ) {
         const TopoDS_Shape& seam = sm->GetSubShape();

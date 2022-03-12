@@ -3,12 +3,12 @@
 // This program is released under the BSD license. See the file COPYING for details.
 //
 
-#include "geometry.h"
+~include "geometry.h"
 using namespace geoff_geometry;
 
-#ifdef PEPSPOST
-	#include "postoutput.h"
-#endif
+~ifdef PEPSPOST
+	~include "postoutput.h"
+~endif
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,14 +22,14 @@ namespace geoff_geometry {
 	}
 
 	SpanVertex::~SpanVertex() {
-#ifndef PEPSDLL 
+~ifndef PEPSDLL 
 		// don't know what peps did about this?
 		for(int i = 0; i < SPANSTORAGE; i++) {
 			if(index[i] != NULL) {
 				delete index[i];
 			}
 		}
-#endif
+~endif
 	}
 
 	const SpanVertex& SpanVertex::operator= (const SpanVertex& spv ){
@@ -46,12 +46,12 @@ namespace geoff_geometry {
 			type[i] = spv.type[i];
 			spanid[i] = spv.spanid[i];
 			index[i] = spv.index[i];
-#ifndef PEPSDLL
+~ifndef PEPSDLL
 			if(index[i] != NULL) {
 				SpanDataObject* obj = new SpanDataObject(index[i]);
 				index[i] = obj;
 			}
-#endif
+~endif
 		}
 		return *this;
 	}
@@ -72,7 +72,7 @@ namespace geoff_geometry {
 		spanid[offset] = ID;
 	}
 
-#if PEPSDLL
+~if PEPSDLL
 	void SpanVertex::Add(int offset, WireExtraData* Index )
 	{
 		index[offset] = Index;
@@ -81,7 +81,7 @@ namespace geoff_geometry {
 	{
 		return index[offset];
 	}
-#else
+~else
 	void SpanVertex::Add(int offset, const SpanDataObject* Index ) {
 		index[offset] = Index;
 	}
@@ -89,7 +89,7 @@ namespace geoff_geometry {
 	const SpanDataObject* SpanVertex::GetIndex(int offset) const{
 		return index[offset];
 	}
-#endif
+~endif
 
 	int SpanVertex::Get(int offset, Point& pe, Point& pc)
 	{
@@ -178,13 +178,13 @@ namespace geoff_geometry {
 		if(returnSpanProperties == false) this->SetProperties(true);
 		return geoff_geometry::Split(tolerance, angle, radius, dir);
 	}
-#if 0
+~if 0
 	int Span3d::Split(double tolerance) {
 		// returns the number of divisions required to keep in tolerance
 		if(returnSpanProperties == false) this->SetProperties(true);
 		return geoff_geometry::Split(tolerance, angle, radius, dir);
 	}
-#endif
+~endif
 	static int Split(double tolerance, double angle, double radius, int dir) {
 		if(dir == LINEAR) return 0;	// straight span
 		double cosa = 1 - tolerance / radius;
@@ -212,7 +212,7 @@ namespace geoff_geometry {
 		}
 	}
 
-#if 0
+~if 0
 	void Span3d::SplitMatrix(int num_vectors, Matrix* matrix) {
 		// returns the incremental matrix
 		matrix->Unit();
@@ -230,16 +230,16 @@ namespace geoff_geometry {
 			matrix->Translate(d * vs.getx(), d * vs.gety(), d * vs.getz());
 		}
 	}
-#endif
+~endif
 
 	void Span::minmax(Box& box, bool start) {
 		minmax(box.min, box.max, start);
 	}
-#if 0
+~if 0
 	void Span3d::minmax(Box3d& box, bool start) {
 		minmax(box.min, box.max, start);
 	}
-#endif
+~endif
 	void Span::minmax(Point& min, Point& max, bool start) {
 		// box a span (min/max)
 		if(start) {
@@ -276,7 +276,7 @@ namespace geoff_geometry {
 		}
 	}
 
-#if 0
+~if 0
 	void Span3d::minmax(Point3d& min, Point3d& max, bool start) {
 		// box a span (min/max)
 		if(start) {
@@ -312,7 +312,7 @@ namespace geoff_geometry {
 			}
 		}
 	}
-#endif
+~endif
 
 	int Span::Intof(const Span& sp, Point& pInt1, Point& pInt2, double t[4])const {
 		// Intof 2 spans
@@ -352,7 +352,7 @@ namespace geoff_geometry {
 		if(setprops == true) SetProperties(true);
 	}
 
-#if 0
+~if 0
 	void Span3d::Transform(const Matrix& m, bool setprops) {
 		p0 = p0.Transform(m);
 		p1 = p1.Transform(m);
@@ -364,7 +364,7 @@ namespace geoff_geometry {
 		}
 		if(setprops == true) SetProperties(true);
 	}
-#endif
+~endif
 
 	Point Span::Mid()const {
 		// midpoint of a span
@@ -459,7 +459,7 @@ namespace geoff_geometry {
 		return *this;
 	}
 
-#if 0
+~if 0
 
 	 Kurve::Kurve(Kurve& k) :Matrix(){
 *this = k;
@@ -493,7 +493,7 @@ return;
 		if(k.m_nVertices) m_started = true;
 		return *this;
 	}
-#endif
+~endif
 
 	const Kurve& Kurve::operator=(const Matrix &m)
 	{
@@ -574,9 +574,9 @@ return;
 	bool Kurve::Add(int span_type, const Point& p0, const Point& pc, bool AddNullSpans)
 	{
 		// add a span (cw = -1 (T)   acw = 1 (A) )
-#ifdef _DEBUG
+~ifdef _DEBUG
 		//if(this == NULL) FAILURE(L"Kurve::Add - No Kurve Object");
-#endif
+~endif
 
 		if(!m_started) {
 			Start(p0);
@@ -638,9 +638,9 @@ return;
 		}
 		for(int i = 1; i <= k->nSpans(); i++) {
 			k->Get(i, sp, false, this->m_unit);
-			#ifndef PEPSDLL
+			~ifndef PEPSDLL
 			const SpanDataObject* obj = k->GetIndex(i-1);
-			#endif
+			~endif
 			if(this->m_unit == false) sp.Transform(m);
 
 			if(i == 1) {
@@ -653,22 +653,22 @@ return;
 				}
 				if(AddFirstVertex) { 
 					Add(sp.p0, AddNullSpans);
-					#ifndef PEPSDLL
+					~ifndef PEPSDLL
 					if(obj != NULL) {
 						SpanDataObject* objnew = new SpanDataObject(obj);
 						AddIndex(nSpans() - 1, objnew);
 					}
-					#endif
+					~endif
 				}
 			}
 			
 			Add(sp.dir, sp.p1, sp.pc, AddNullSpans);
-			#ifndef PEPSDLL
+			~ifndef PEPSDLL
 				if(obj != NULL) {
 					SpanDataObject* objnew = new SpanDataObject(obj);
 					AddIndex(nSpans() - 1, objnew);
 			}
-			#endif
+			~endif
 		}
 	}
 
@@ -680,23 +680,23 @@ return;
 
 	void Kurve::Replace(int vertexnumber, int type, const Point& p0, const Point& pc, int ID) {
 		// replace a span
-#ifdef _DEBUG
+~ifdef _DEBUG
 		if(vertexnumber > m_nVertices) FAILURE(getMessage(L"Kurve::Replace - vertexNumber out of range"));
-#endif
+~endif
 		SpanVertex* p = (SpanVertex*) m_spans[vertexnumber / SPANSTORAGE];
 		p->Add(vertexnumber % SPANSTORAGE, type, p0, pc, ID);
 	}
 
-#ifdef PEPSDLL
+~ifdef PEPSDLL
 	void Kurve::ModifyIndex(int vertexnumber, WireExtraData* i) {
 		// replace an index
-#ifdef _DEBUG
+~ifdef _DEBUG
 		if(vertexnumber > m_nVertices) FAILURE(getMessage(L"Kurve::ModifyIndex - vertexNumber out of range"));
-#endif
+~endif
 		SpanVertex* p = (SpanVertex*) m_spans[vertexnumber / SPANSTORAGE];
 		p->Add(vertexnumber % SPANSTORAGE, i);
 	}
-#else
+~else
 	void Kurve::AddIndex(int vertexNumber, const SpanDataObject* data) {
 		if(vertexNumber > m_nVertices - 1) FAILURE(L"Kurve::AddIndex - vertexNumber out of range");
 		SpanVertex* p = (SpanVertex*) m_spans[vertexNumber / SPANSTORAGE];
@@ -710,7 +710,7 @@ return;
 	}
 
 
-#endif
+~endif
 	void Kurve::Get(std::vector<Span> *all, bool igNoreNullSpans)const {
 		/// put all spans to vector
 		for(int i = 1; i <= nSpans(); i++) {
@@ -780,7 +780,7 @@ return;
 		return sp.dir;
 	}
 
-#if 0
+~if 0
 	int Kurve::Get(int spannumber, Span3d& sp, bool returnSpanProperties, bool transform) const {
 		// returns span data and optional properties - the function returns as the span type
 		if(spannumber < 1 || spannumber > m_nVertices) FAILURE(getMessage(L"Kurve::Get - vertexNumber out of range"));
@@ -804,7 +804,7 @@ return;
 
 		return sp.dir;
 	}
-#endif
+~endif
 
 	void Kurve::Get(Point &ps,Point &pe) const
 	{
@@ -862,7 +862,7 @@ return;
 		}
 	}
 
-#if 0
+~if 0
 	void Span3d::SetProperties(bool returnProperties) {
 		if(returnSpanProperties = returnProperties) {
 			// return span properties
@@ -903,7 +903,7 @@ return;
 			minmax(box, true);
 		}
 	}
-#endif
+~endif
 
 
 	Point Mid(const Span& span) {
@@ -1317,7 +1317,7 @@ return;
 		Kurve kReduced;
 		kReduced = Matrix(*this);
 
-#if 0
+~if 0
 		for(int i = 1; i <= this->nSpans(); i++) {
 			Span sp;
 			this->Get(i, sp, true);
@@ -1330,7 +1330,7 @@ return;
 		}
 		return m_nVertices - kReduced.m_nVertices;
 
-#else 
+~else 
 		int dir1, dir2 = 0;
 		Point p0, p1, p2, pc0, pc1, pc2;
 		int vertex = 0;
@@ -1369,7 +1369,7 @@ return;
 
 		if(m_nVertices != kReduced.m_nVertices) *this = kReduced;
 		return m_nVertices - kReduced.m_nVertices;
-#endif
+~endif
 	}
 
 void Kurve::Part(int startVertex, int EndVertex, Kurve *part) {

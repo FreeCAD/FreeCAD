@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "SyntaxHighlighter.h"
+~include "SyntaxHighlighter.h"
 
 
 using namespace Gui;

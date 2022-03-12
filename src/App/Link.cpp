@@ -20,24 +20,24 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <Base/Tools.h>
+~include <boost/algorithm/string/predicate.hpp>
+~include <Base/Tools.h>
 
-#include "Application.h"
-#include "ComplexGeoData.h"
-#include "ComplexGeoDataPy.h"
-#include "Document.h"
-#include "GroupExtension.h"
-#include "Link.h"
-#include "LinkBaseExtensionPy.h"
+~include "Application.h"
+~include "ComplexGeoData.h"
+~include "ComplexGeoDataPy.h"
+~include "Document.h"
+~include "GroupExtension.h"
+~include "Link.h"
+~include "LinkBaseExtensionPy.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+~endif
 
 FC_LOG_LEVEL_INIT("App::Link", true,true)
 
@@ -1615,7 +1615,7 @@ void LinkBaseExtension::expandSubname(std::string &subname) const {
 }
 
 static bool isExcludedProperties(const char *name) {
-#define CHECK_EXCLUDE_PROP(_name) if(strcmp(name,#_name)==0) return true;
+~define CHECK_EXCLUDE_PROP(_name) if(strcmp(name,~_name)==0) return true;
     CHECK_EXCLUDE_PROP(Shape);
     CHECK_EXCLUDE_PROP(Proxy);
     CHECK_EXCLUDE_PROP(Placement);
@@ -1748,7 +1748,7 @@ template<> const char* App::LinkGroupPython::getViewProviderName(void) const {
 template class AppExport FeaturePythonT<App::LinkGroup>;
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 

@@ -20,58 +20,58 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QGraphicsScene>
-#include <QStatusBar>
-#endif // #ifndef _PreComp_
+~ifndef _PreComp_
+~include <QGraphicsScene>
+~include <QStatusBar>
+~endif // ~ifndef _PreComp_
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/Quantity.h>
-#include <Base/UnitsApi.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/Quantity.h>
+~include <Base/UnitsApi.h>
 
-#include <App/Document.h>
+~include <App/Document.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawViewDetail.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskDetail.h>
+~include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
-#include "DrawGuiStd.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "QGIGhostHighlight.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "Rez.h"
-#include "QGIViewPart.h"
+~include "DrawGuiStd.h"
+~include "QGVPage.h"
+~include "QGIView.h"
+~include "QGIPrimPath.h"
+~include "QGIGhostHighlight.h"
+~include "MDIViewPage.h"
+~include "ViewProviderPage.h"
+~include "Rez.h"
+~include "QGIViewPart.h"
 
-#include "TaskDetail.h"
+~include "TaskDetail.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace Gui;
 
-#define CREATEMODE 0
-#define EDITMODE   1
+~define CREATEMODE 0
+~define EDITMODE   1
 
 //creation constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
@@ -713,4 +713,4 @@ bool TaskDlgDetail::reject()
     return true;
 }
 
-#include <Mod/TechDraw/Gui/moc_TaskDetail.cpp>
+~include <Mod/TechDraw/Gui/moc_TaskDetail.cpp>

@@ -26,38 +26,38 @@
 //* Reference3D features and DVP Vertices are always accessed by tag.
 //* References2D is only used to store the parent DVP
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <HLRAlgo_Projector.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pnt2d.hxx>
+~include <HLRAlgo_Projector.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Pnt2d.hxx>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Quantity.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include <Mod/Measure/App/Measurement.h>
+~include <Mod/Measure/App/Measurement.h>
 
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "DrawViewPart.h"
-#include "DrawUtil.h"
-#include "LineGroup.h"
-#include "Cosmetic.h"
-#include "ShapeExtractor.h"
-#include "LandmarkDimension.h"
+~include "Geometry.h"
+~include "GeometryObject.h"
+~include "DrawViewPart.h"
+~include "DrawUtil.h"
+~include "LineGroup.h"
+~include "Cosmetic.h"
+~include "ShapeExtractor.h"
+~include "LandmarkDimension.h"
 
 
-//#include <Mod/TechDraw/App/LandmarkDimensionPy.h>  // generated from LandmarkDimensionPy.xml
+//~include <Mod/TechDraw/App/LandmarkDimensionPy.h>  // generated from LandmarkDimensionPy.xml
 
 using namespace TechDraw;
 

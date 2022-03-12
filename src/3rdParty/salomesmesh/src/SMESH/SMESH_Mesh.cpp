@@ -20,87 +20,87 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-// Suppress warning due to use of #import an macOS inside Aspect_RenderingContext.hxx
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
-#endif
+// Suppress warning due to use of ~import an macOS inside Aspect_RenderingContext.hxx
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
+~endif
 
 //  File   : SMESH_Mesh.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMDS_MeshVolume.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_Document.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_GroupOnGeom.hxx"
-#include "SMESHDS_Script.hxx"
-#include "SMESHDS_TSubMeshHolder.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMDS_MeshVolume.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_Document.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_GroupOnGeom.hxx"
+~include "SMESHDS_Script.hxx"
+~include "SMESHDS_TSubMeshHolder.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include "utilities.h"
-#include "SMESH_Exception.hxx"
-#include "DriverDAT_W_SMDS_Mesh.h"
-#include "DriverDAT_R_SMDS_Mesh.h"
-#include "DriverGMF_Read.hxx"
-#include "DriverGMF_Write.hxx"
-#include "DriverMED_R_SMESHDS_Mesh.h"
-#include "DriverMED_W_SMESHDS_Mesh.h"
-#include "DriverSTL_R_SMDS_Mesh.h"
-#include "DriverSTL_W_SMDS_Mesh.h"
-#include "DriverUNV_R_SMDS_Mesh.h"
-#include "DriverUNV_W_SMDS_Mesh.h"
-#ifdef WITH_CGNS
-#include "DriverCGNS_Read.hxx"
-#include "DriverCGNS_Write.hxx"
-#endif
+~include "utilities.h"
+~include "SMESH_Exception.hxx"
+~include "DriverDAT_W_SMDS_Mesh.h"
+~include "DriverDAT_R_SMDS_Mesh.h"
+~include "DriverGMF_Read.hxx"
+~include "DriverGMF_Write.hxx"
+~include "DriverMED_R_SMESHDS_Mesh.h"
+~include "DriverMED_W_SMESHDS_Mesh.h"
+~include "DriverSTL_R_SMDS_Mesh.h"
+~include "DriverSTL_W_SMDS_Mesh.h"
+~include "DriverUNV_R_SMDS_Mesh.h"
+~include "DriverUNV_W_SMDS_Mesh.h"
+~ifdef WITH_CGNS
+~include "DriverCGNS_Read.hxx"
+~include "DriverCGNS_Write.hxx"
+~endif
 
-#include <GEOMUtils.hxx>
+~include <GEOMUtils.hxx>
 
-//#undef _Precision_HeaderFile
-#include <BRepBndLib.hxx>
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <Bnd_Box.hxx>
-#include <TColStd_MapOfInteger.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS_Iterator.hxx>
+//~undef _Precision_HeaderFile
+~include <BRepBndLib.hxx>
+~include <BRepPrimAPI_MakeBox.hxx>
+~include <Bnd_Box.hxx>
+~include <TColStd_MapOfInteger.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS_Iterator.hxx>
 
-#include "SMESH_TryCatch.hxx" // include after OCCT headers!
+~include "SMESH_TryCatch.hxx" // include after OCCT headers!
 
-#include "Utils_ExceptHandlers.hxx"
+~include "Utils_ExceptHandlers.hxx"
 
-#ifndef WIN32
-#include <boost/thread/thread.hpp>
-#include <boost/bind/bind.hpp>
-#else 
-#include <boost/thread/thread.hpp>
-#include <boost/bind/bind.hpp>
-//#include <pthread.h>
-#endif
+~ifndef WIN32
+~include <boost/thread/thread.hpp>
+~include <boost/bind/bind.hpp>
+~else 
+~include <boost/thread/thread.hpp>
+~include <boost/bind/bind.hpp>
+//~include <pthread.h>
+~endif
 
 using namespace std;
 
 // maximum stored group name length in MED file
-#define MAX_MED_GROUP_NAME_LENGTH 80
+~define MAX_MED_GROUP_NAME_LENGTH 80
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
-#else
+~else
 static int MYDEBUG = 0;
-#endif
+~endif
 
-#define cSMESH_Hyp(h) static_cast<const SMESH_Hypothesis*>(h)
+~define cSMESH_Hyp(h) static_cast<const SMESH_Hypothesis*>(h)
 
 typedef SMESH_HypoFilter THypType;
 
@@ -161,13 +161,13 @@ SMESH_Mesh::SMESH_Mesh():
 
 namespace
 {
-#ifndef WIN32
+~ifndef WIN32
   void deleteMeshDS(SMESHDS_Mesh* meshDS)
   {
     //cout << "deleteMeshDS( " << meshDS << endl;
     delete meshDS;
   }
-#else
+~else
   static void* deleteMeshDS(void* meshDS)
   {
     //cout << "deleteMeshDS( " << meshDS << endl;
@@ -177,7 +177,7 @@ namespace
     }
     return 0;
   }
-#endif
+~endif
 }
 
 //=============================================================================
@@ -226,13 +226,13 @@ SMESH_Mesh::~SMESH_Mesh()
 
   if ( _myMeshDS ) {
     // delete _myMeshDS, in a thread in order not to block closing a study with large meshes
-#ifndef WIN32
+~ifndef WIN32
     boost::thread aThread(boost::bind( & deleteMeshDS, _myMeshDS ));
-#else
+~else
     boost::thread aThread(boost::bind( & deleteMeshDS, _myMeshDS ));
 //    pthread_t thread;
 //    int result=pthread_create(&thread, NULL, deleteMeshDS, (void*)_myMeshDS);
-#endif
+~endif
   }
 }
 
@@ -629,7 +629,7 @@ int SMESH_Mesh::CGNSToMesh(const char*  theFileName,
                            std::string& theMeshName)
 {
   int res = Driver_Mesh::DRS_FAIL;
-#ifdef WITH_CGNS
+~ifdef WITH_CGNS
 
   DriverCGNS_Read myReader;
   myReader.SetMesh(_myMeshDS);
@@ -641,7 +641,7 @@ int SMESH_Mesh::CGNSToMesh(const char*  theFileName,
   // create groups
   SynchronizeGroups();
 
-#endif
+~endif
   return res;
 }
 
@@ -1502,30 +1502,30 @@ void SMESH_Mesh::ExportSAUV(const char *file,
   std::string medfilename(file);
   medfilename += ".med";
   std::string cmd;
-#ifdef WIN32
+~ifdef WIN32
   cmd = "%PYTHONBIN% ";
-#else
+~else
   cmd = "python ";
-#endif
+~endif
   cmd += "-c \"";
   cmd += "from medutilities import my_remove ; my_remove(r'" + medfilename + "')";
   cmd += "\"";
   system(cmd.c_str());
   ExportMED(medfilename.c_str(), theMeshName, theAutoGroups, 1);
-#ifdef WIN32
+~ifdef WIN32
   cmd = "%PYTHONBIN% ";
-#else
+~else
   cmd = "python ";
-#endif
+~endif
   cmd += "-c \"";
   cmd += "from medutilities import convert ; convert(r'" + medfilename + "', 'MED', 'GIBI', 1, r'" + file + "')";
   cmd += "\"";
   system(cmd.c_str());
-#ifdef WIN32
+~ifdef WIN32
   cmd = "%PYTHONBIN% ";
-#else
+~else
   cmd = "python ";
-#endif
+~endif
   cmd += "-c \"";
   cmd += "from medutilities import my_remove ; my_remove(r'" + medfilename + "')";
   cmd += "\"";
@@ -1610,7 +1610,7 @@ void SMESH_Mesh::ExportCGNS(const char *        file,
                             const char *        meshName)
 {
   int res = Driver_Mesh::DRS_FAIL;
-#ifdef WITH_CGNS
+~ifdef WITH_CGNS
   DriverCGNS_Write myWriter;
   myWriter.SetFile( file );
   myWriter.SetMesh( const_cast<SMESHDS_Mesh*>( meshDS ));
@@ -1618,7 +1618,7 @@ void SMESH_Mesh::ExportCGNS(const char *        file,
   if ( meshName && meshName[0] )
     myWriter.SetMeshName( meshName );
   res = myWriter.Perform();
-#endif
+~endif
   if ( res != Driver_Mesh::DRS_OK )
     throw SALOME_Exception("Export failed");
 }
@@ -1675,9 +1675,9 @@ double SMESH_Mesh::GetComputeProgress() const
         rate = algo->GetProgress();
       }
       catch (...) {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
         cerr << "Exception in " << algo->GetName() << "::GetProgress()" << endl;
-#endif
+~endif
       }
       if ( 0. < rate && rate < 1.001 )
       {

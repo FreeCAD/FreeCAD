@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <QString>
-#include <QSlider>
-#include "ui_TaskTrajectoryDressUpParameter.h"
-#include "TaskTrajectoryDressUpParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Placement.h>
+~include <QString>
+~include <QSlider>
+~include "ui_TaskTrajectoryDressUpParameter.h"
+~include "TaskTrajectoryDressUpParameter.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
+~include <Gui/Placement.h>
 
 
 using namespace RobotGui;
@@ -119,4 +119,4 @@ void TaskTrajectoryDressUpParameter::viewPlacement(void)
     ui->lineEditPlacement->setText(val);
 }
 
-#include "moc_TaskTrajectoryDressUpParameter.cpp"
+~include "moc_TaskTrajectoryDressUpParameter.cpp"

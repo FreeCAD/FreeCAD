@@ -22,19 +22,19 @@
 
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-#include <vector>
+~ifndef _PreComp_
+~endif
+~include <vector>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
 
 
-#include "PointsFeature.h"
+~include "PointsFeature.h"
 
 using namespace Points;
 

@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "QuarterP.h"
-#include "ImageReader.h"
-#include "KeyboardP.h"
-#include "SensorManager.h"
+~include "QuarterP.h"
+~include "ImageReader.h"
+~include "KeyboardP.h"
+~include "SensorManager.h"
 
 
 using namespace SIM::Coin3D::Quarter;

@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Standard_math.hxx>
-#ifndef _PreComp_
-# include <Python.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
-#include <Gui/ViewProviderBuilder.h>
-#include <Mod/Part/App/PartFeature.h>
-#include "ViewProviderPython.h"
+~include <Standard_math.hxx>
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
+~include <Gui/ViewProviderBuilder.h>
+~include <Mod/Part/App/PartFeature.h>
+~include "ViewProviderPython.h"
 
 using namespace PartGui;
 

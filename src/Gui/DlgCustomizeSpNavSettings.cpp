@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgCustomizeSpNavSettings.h"
-#include "ui_DlgCustomizeSpNavSettings.h"
-#include "GuiApplicationNativeEventAware.h"
-#include "Application.h"
+~include "DlgCustomizeSpNavSettings.h"
+~include "ui_DlgCustomizeSpNavSettings.h"
+~include "GuiApplicationNativeEventAware.h"
+~include "Application.h"
 
 
 using namespace Gui::Dialog;
@@ -322,4 +322,4 @@ void DlgCustomizeSpNavSettings::onModifyMacroAction(const QByteArray &macroName)
     Q_UNUSED(macroName);
 }
 
-#include "moc_DlgCustomizeSpNavSettings.cpp"
+~include "moc_DlgCustomizeSpNavSettings.cpp"

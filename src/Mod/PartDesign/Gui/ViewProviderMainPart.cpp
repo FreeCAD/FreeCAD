@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderMainPart.h"
-#include <Mod/PartDesign/App/FeatureMainPart.h>
+~include "ViewProviderMainPart.h"
+~include <Mod/PartDesign/App/FeatureMainPart.h>
 
 using namespace PartDesignGui;
 

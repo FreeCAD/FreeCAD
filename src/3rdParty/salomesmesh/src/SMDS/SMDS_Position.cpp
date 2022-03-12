@@ -25,8 +25,8 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_Position.hxx"
-#include "utilities.h"
+~include "SMDS_Position.hxx"
+~include "utilities.h"
 
 //=======================================================================
 //function : SMDS_Position
@@ -35,7 +35,7 @@
 
 SMDS_Position::SMDS_Position()
 {
-  //MESSAGE("########################## SMDS_Position ");
+  //MESSAGE("~~~~~~~~~~~~~~~~~~~~~~~~~~ SMDS_Position ");
 }
 
 //=======================================================================

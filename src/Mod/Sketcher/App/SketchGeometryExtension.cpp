@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
 
-#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
+~include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
-#include "SketchGeometryExtension.h"
+~include "SketchGeometryExtension.h"
 
 using namespace Sketcher;
 
@@ -97,11 +97,11 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) con
 
     copyAttributes(cpy.get());
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
+~if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
-#else
+~else
     return cpy;
-#endif
+~endif
 }
 
 PyObject * SketchGeometryExtension::getPyObject(void)

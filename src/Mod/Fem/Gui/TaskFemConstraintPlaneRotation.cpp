@@ -23,46 +23,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTextStream>
 
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
-#endif
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Ax1.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <Geom_Line.hxx>
+~ include <gp_Lin.hxx>
+~endif
 
-#include "TaskFemConstraintPlaneRotation.h"
-#include "ui_TaskFemConstraintPlaneRotation.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/PropertyGeo.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Command.h>
-#include <Mod/Fem/App/FemConstraintPlaneRotation.h>
-#include <Mod/Fem/App/FemTools.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "TaskFemConstraintPlaneRotation.h"
+~include "ui_TaskFemConstraintPlaneRotation.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/PropertyGeo.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/Command.h>
+~include <Mod/Fem/App/FemConstraintPlaneRotation.h>
+~include <Mod/Fem/App/FemTools.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -310,4 +310,4 @@ bool TaskDlgFemConstraintPlaneRotation::reject()
     return true;
 }
 
-#include "moc_TaskFemConstraintPlaneRotation.cpp"
+~include "moc_TaskFemConstraintPlaneRotation.cpp"

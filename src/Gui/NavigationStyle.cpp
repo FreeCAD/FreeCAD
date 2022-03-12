@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include "InventorAll.h"
-# include <QAction>
-# include <QActionGroup>
-# include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QMenu>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include "InventorAll.h"
+~ include <QAction>
+~ include <QActionGroup>
+~ include <QApplication>
+~ include <QByteArray>
+~ include <QCursor>
+~ include <QMenu>
+~endif
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include "NavigationStyle.h"
-#include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
-#include "SoMouseWheelEvent.h"
-#include "View3DInventorViewer.h"
+~include "NavigationStyle.h"
+~include "Application.h"
+~include "MenuManager.h"
+~include "MouseSelection.h"
+~include "SoMouseWheelEvent.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;
@@ -165,8 +165,8 @@ const Base::Type& NavigationStyleEvent::style() const
     return t;
 }
 
-#define PRIVATE(ptr) (ptr->pimpl)
-#define PUBLIC(ptr) (ptr->pub)
+~define PRIVATE(ptr) (ptr->pimpl)
+~define PUBLIC(ptr) (ptr->pub)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass)
 
@@ -350,7 +350,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
                             cam->focalDistance.getValue() * direction;
     PRIVATE(this)->focal2 = pos;
 
-    // avoid to interfere with spinning (fixes #3101462)
+    // avoid to interfere with spinning (fixes ~3101462)
     if (this->isAnimating())
         this->stopAnimating();
 
@@ -420,7 +420,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
         }
     }
 
-    // avoid to interfere with spinning (fixes #3101462)
+    // avoid to interfere with spinning (fixes ~3101462)
     if (this->isAnimating())
         this->stopAnimating();
 
@@ -546,7 +546,7 @@ void NavigationStyle::viewAll()
     SbBox3f box = action.getBoundingBox();
     if (box.isEmpty()) return;
 
-#if 0
+~if 0
     // check whether the box is very wide or tall, if not do nothing
     float box_width, box_height, box_depth;
     box.getSize( box_width, box_height, box_depth );
@@ -554,7 +554,7 @@ void NavigationStyle::viewAll()
         box_height < 5.0f*box_width && box_height < 5.0f*box_depth &&
         box_depth < 5.0f*box_width && box_depth < 5.0f*box_height )
         return;
-#endif
+~endif
 
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam) return;
@@ -1653,7 +1653,7 @@ SbBool NavigationStyle::processKeyboardEvent(const SoKeyboardEvent * const event
 
 SbBool NavigationStyle::processClickEvent(const SoMouseButtonEvent * const event)
 {
-    // issue #0002433: avoid to swallow the UP event if down the
+    // issue ~0002433: avoid to swallow the UP event if down the
     // scene graph somewhere a dialog gets opened
     SbBool processed = false;
     const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;

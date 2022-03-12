@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of MaterialPy.xml)
-#include "MaterialPy.h"
-#include "MaterialPy.cpp"
+~include "MaterialPy.h"
+~include "MaterialPy.cpp"
 
 using namespace App;
 

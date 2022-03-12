@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~include <boost_bind_bind.hpp>
+~endif
 
-#include "ui_TaskSketcherGeneral.h"
-#include "TaskSketcherGeneral.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include "ui_TaskSketcherGeneral.h"
+~include "TaskSketcherGeneral.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include <QEvent>
+~include <QEvent>
 
-#include "ViewProviderSketch.h"
+~include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -338,4 +338,4 @@ void TaskSketcherGeneral::onRenderOrderChanged()
     sketchView->updateColor();
 }
 
-#include "moc_TaskSketcherGeneral.cpp"
+~include "moc_TaskSketcherGeneral.cpp"

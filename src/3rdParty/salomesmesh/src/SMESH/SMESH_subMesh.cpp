@@ -26,41 +26,41 @@
 //  Module : SMESH
 // vjemarie ISSUE getAlgo
 
-#include "SMESH_subMesh.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMDSAbs_ElementType.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Hypothesis.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMDSAbs_ElementType.hxx"
 
-#include <Basics_OCCTVersion.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include "utilities.h"
-#include "OpUtil.hxx"
-#include "Basics_Utils.hxx"
+~include "utilities.h"
+~include "OpUtil.hxx"
+~include "Basics_Utils.hxx"
 
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <gp_Pnt.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <gp_Pnt.hxx>
 
-#include <Standard_OutOfMemory.hxx>
-#include <Standard_ErrorHandler.hxx>
+~include <Standard_OutOfMemory.hxx>
+~include <Standard_ErrorHandler.hxx>
 
-#include <numeric>
+~include <numeric>
 
 using namespace std;
 
@@ -1937,7 +1937,7 @@ bool SMESH_subMesh::checkComputeError(SMESH_Algo*         theAlgo,
 
       // Show error
       SMESH_Comment text;
-      text << theAlgo->GetName() << " failed on sub-shape #" << _Id << " with error ";
+      text << theAlgo->GetName() << " failed on sub-shape ~" << _Id << " with error ";
       if (_computeError->IsCommon() )
         text << _computeError->CommonName();
       else

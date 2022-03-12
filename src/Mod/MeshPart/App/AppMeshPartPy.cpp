@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <TopoDS.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~ include <TopoDS.hxx>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
-#include <Base/Converter.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include "MeshAlgos.h"
-#include "Mesher.h"
+~include <Base/PyObjectBase.h>
+~include <Base/Console.h>
+~include <Base/Vector3D.h>
+~include <Base/Converter.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
+~include <Mod/Part/App/TopoShapeWirePy.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshPy.h>
+~include "MeshAlgos.h"
+~include "Mesher.h"
 
 namespace MeshPart {
 class Module : public Py::ExtensionModule<Module>
@@ -110,9 +110,9 @@ public:
             "\n"
             "Additionally, when FreeCAD is built with netgen, the following\n"
             "signatures are also available (they are "
-#ifndef HAVE_NETGEN
+~ifndef HAVE_NETGEN
             "NOT "
-#endif
+~endif
             "currently):\n"
             "\n"
             "    meshFromShape(Shape, Fineness, SecondOrder=0,\n"
@@ -581,7 +581,7 @@ private:
         if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iiidd", kwds_fineness,
                                         &(Part::TopoShapePy::Type), &shape, &fineness,
                                         &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setFineness(fineness);
@@ -590,9 +590,9 @@ private:
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
-#else
+~else
             throw Py::RuntimeError("SMESH was built without NETGEN support");
-#endif
+~endif
         }
 
         static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder",
@@ -603,7 +603,7 @@ private:
                                         &(Part::TopoShapePy::Type), &shape,
                                         &growthRate, &nbSegPerEdge, &nbSegPerRadius,
                                         &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setGrowthRate(growthRate);
@@ -614,20 +614,20 @@ private:
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
-#else
+~else
             throw Py::RuntimeError("SMESH was built without NETGEN support");
-#endif
+~endif
         }
 
         PyErr_Clear();
         if (PyArg_ParseTuple(args.ptr(), "O!", &(Part::TopoShapePy::Type), &shape)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
-#if defined (HAVE_NETGEN)
+~if defined (HAVE_NETGEN)
             mesher.setMethod(MeshPart::Mesher::Netgen);
-#else
+~else
             mesher.setMethod(MeshPart::Mesher::Mefisto);
             mesher.setRegular(true);
-#endif
+~endif
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 

@@ -24,37 +24,37 @@
 //  File   : StdMeshers_CompositeSegment_1D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_CompositeSegment_1D.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_AutomaticLength.hxx"
+~include "StdMeshers_CompositeSegment_1D.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_AutomaticLength.hxx"
 
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "SMESH_Comment.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRep_Builder.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <gp_Pnt.hxx>
+~include <BRepAdaptor_CompCurve.hxx>
+~include <BRep_Builder.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
+~include <gp_Pnt.hxx>
 
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_Failure.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
 
 typedef SMESH_Comment TComm;
 

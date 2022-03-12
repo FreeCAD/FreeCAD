@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_Failure.hxx>
+~endif
 
-#include <App/Application.h>
-#include <App/FeaturePythonPyImp.h>
-#include <Base/Parameter.h>
-#include <Mod/Part/App/modelRefine.h>
+~include <App/Application.h>
+~include <App/FeaturePythonPyImp.h>
+~include <Base/Parameter.h>
+~include <Mod/Part/App/modelRefine.h>
 
-#include "FeatureAddSub.h"
-#include "FeaturePy.h"
+~include "FeatureAddSub.h"
+~include "FeaturePy.h"
 
 
 using namespace PartDesign;

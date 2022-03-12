@@ -21,53 +21,53 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <QFontDatabase>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <QFontDatabase>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
 
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include <Gui/WidgetFactory.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
+~include <Gui/WidgetFactory.h>
 
-#include "Workbench.h"
-#include "MDIViewPage.h"
+~include "Workbench.h"
+~include "MDIViewPage.h"
 
-#include "DlgPrefsTechDrawGeneralImp.h"
-#include "DlgPrefsTechDrawScaleImp.h"
-#include "DlgPrefsTechDrawAnnotationImp.h"
-#include "DlgPrefsTechDrawDimensionsImp.h"
-#include "DlgPrefsTechDrawColorsImp.h"
-#include "DlgPrefsTechDrawAdvancedImp.h"
-#include "DlgPrefsTechDrawHLRImp.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderDrawingView.h"
-#include "ViewProviderDimension.h"
-#include "ViewProviderBalloon.h"
-#include "ViewProviderProjGroup.h"
-#include "ViewProviderProjGroupItem.h"
-#include "ViewProviderTemplate.h"
-#include "ViewProviderViewPart.h"
-#include "ViewProviderViewSection.h"
-#include "ViewProviderAnnotation.h"
-#include "ViewProviderSymbol.h"
-#include "ViewProviderViewClip.h"
-#include "ViewProviderHatch.h"
-#include "ViewProviderGeomHatch.h"
-#include "ViewProviderSpreadsheet.h"
-#include "ViewProviderImage.h"
-#include "ViewProviderRichAnno.h"
-#include "ViewProviderLeader.h"
-#include "ViewProviderTile.h"
-#include "ViewProviderWeld.h"
+~include "DlgPrefsTechDrawGeneralImp.h"
+~include "DlgPrefsTechDrawScaleImp.h"
+~include "DlgPrefsTechDrawAnnotationImp.h"
+~include "DlgPrefsTechDrawDimensionsImp.h"
+~include "DlgPrefsTechDrawColorsImp.h"
+~include "DlgPrefsTechDrawAdvancedImp.h"
+~include "DlgPrefsTechDrawHLRImp.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderDrawingView.h"
+~include "ViewProviderDimension.h"
+~include "ViewProviderBalloon.h"
+~include "ViewProviderProjGroup.h"
+~include "ViewProviderProjGroupItem.h"
+~include "ViewProviderTemplate.h"
+~include "ViewProviderViewPart.h"
+~include "ViewProviderViewSection.h"
+~include "ViewProviderAnnotation.h"
+~include "ViewProviderSymbol.h"
+~include "ViewProviderViewClip.h"
+~include "ViewProviderHatch.h"
+~include "ViewProviderGeomHatch.h"
+~include "ViewProviderSpreadsheet.h"
+~include "ViewProviderImage.h"
+~include "ViewProviderRichAnno.h"
+~include "ViewProviderLeader.h"
+~include "ViewProviderTile.h"
+~include "ViewProviderWeld.h"
 
-#include "ViewProviderCosmeticExtension.h"
+~include "ViewProviderCosmeticExtension.h"
 
 
 // use a different name to CreateCommand()

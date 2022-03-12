@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <Geom_Parabola.hxx>
-#endif
+~ifndef _PreComp_
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <Geom_Parabola.hxx>
+~endif
 
-#include "Mod/Part/App/Geometry.h"
-#include "Mod/Part/App/TopoShapeEdgePy.h"
+~include "Mod/Part/App/Geometry.h"
+~include "Mod/Part/App/TopoShapeEdgePy.h"
 
-#include "Voronoi.h"
-#include "VoronoiCell.h"
-#include "VoronoiCellPy.h"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
-#include "VoronoiEdgePy.cpp"
-#include "VoronoiVertex.h"
-#include "VoronoiVertexPy.h"
+~include "Voronoi.h"
+~include "VoronoiCell.h"
+~include "VoronoiCellPy.h"
+~include "VoronoiEdge.h"
+~include "VoronoiEdgePy.h"
+~include "VoronoiEdgePy.cpp"
+~include "VoronoiVertex.h"
+~include "VoronoiVertexPy.h"
 
 
 using namespace Path;

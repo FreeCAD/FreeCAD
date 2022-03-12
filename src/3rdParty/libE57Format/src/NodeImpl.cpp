@@ -25,10 +25,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "NodeImpl.h"
-#include "ImageFileImpl.h"
-#include "SourceDestBufferImpl.h"
-#include "VectorNodeImpl.h"
+~include "NodeImpl.h"
+~include "ImageFileImpl.h"
+~include "SourceDestBufferImpl.h"
+~include "VectorNodeImpl.h"
 
 using namespace e57;
 
@@ -241,9 +241,9 @@ NodeImplSharedPtr NodeImpl::get( const ustring &pathName )
    /// function. Only absolute pathNames make any sense here, because the
    /// terminal types can't have children, so relative pathNames are illegal.
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    _verifyPathNameAbsolute( pathName );
-#endif
+~endif
 
    NodeImplSharedPtr root = _verifyAndGetRoot();
 
@@ -258,9 +258,9 @@ void NodeImpl::set( const ustring &pathName, NodeImplSharedPtr ni, bool autoPath
    /// function. Only absolute pathNames make any sense here, because the
    /// terminal types can't have children, so relative pathNames are illegal.
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    _verifyPathNameAbsolute( pathName );
-#endif
+~endif
 
    NodeImplSharedPtr root = _verifyAndGetRoot();
 
@@ -380,7 +380,7 @@ bool NodeImpl::findTerminalPosition( const NodeImplSharedPtr &target, uint64_t &
    return ( false );
 }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
 void NodeImpl::dump( int indent, std::ostream &os ) const
 {
    /// don't checkImageFileOpen
@@ -409,7 +409,7 @@ bool NodeImpl::_verifyPathNameAbsolute( const ustring &inPathName )
 
    return isRelative;
 }
-#endif
+~endif
 
 NodeImplSharedPtr NodeImpl::_verifyAndGetRoot()
 {

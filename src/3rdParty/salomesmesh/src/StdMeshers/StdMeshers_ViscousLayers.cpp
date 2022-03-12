@@ -21,78 +21,78 @@
 // Created   : Wed Dec  1 15:15:34 2010
 // Author    : Edward AGAPOV (eap)
 
-#include "StdMeshers_ViscousLayers.hxx"
+~include "StdMeshers_ViscousLayers.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Hypothesis.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_ControlsDef.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "StdMeshers_FaceSide.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Hypothesis.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_ControlsDef.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "StdMeshers_FaceSide.hxx"
 
-#include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <Adaptor3d_HSurface.hxx>
-#endif
-#include <BRepAdaptor_Curve2d.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-#include <Bnd_B3d.hxx>
-#include <ElCLib.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <Geom2d_Circle.hxx>
-#include <Geom2d_Line.hxx>
-#include <Geom2d_TrimmedCurve.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <GeomLib.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <Precision.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_Failure.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Cone.hxx>
-#include <gp_Sphere.hxx>
-#include <gp_Vec.hxx>
-#include <gp_XY.hxx>
+~include <Standard_Version.hxx>
+~if OCC_VERSION_HEX < 0x070600
+~include <Adaptor3d_HSurface.hxx>
+~endif
+~include <BRepAdaptor_Curve2d.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepLProp_SLProps.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B2d.hxx>
+~include <Bnd_B3d.hxx>
+~include <ElCLib.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <Geom2d_Circle.hxx>
+~include <Geom2d_Line.hxx>
+~include <Geom2d_TrimmedCurve.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <GeomLib.hxx>
+~include <Geom_Circle.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Line.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <Precision.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Cone.hxx>
+~include <gp_Sphere.hxx>
+~include <gp_Vec.hxx>
+~include <gp_XY.hxx>
 
-#include <list>
-#include <string>
-#include <cmath>
-#include <limits>
+~include <list>
+~include <string>
+~include <cmath>
+~include <limits>
 
-#ifdef _DEBUG_
-//#define __myDEBUG
-//#define __NOT_INVALIDATE_BAD_SMOOTH
-#endif
+~ifdef _DEBUG_
+//~define __myDEBUG
+//~define __NOT_INVALIDATE_BAD_SMOOTH
+~endif
 
 using namespace std;
 
@@ -1343,13 +1343,13 @@ namespace VISCOUS_3D
     //case GeomAbs_SurfaceOfExtrusion:
     case GeomAbs_OffsetSurface:
     {
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
       Handle(Adaptor3d_HSurface) base = surface.BasisSurface();
       return getRovolutionAxis( base->Surface(), axis );
-#else
+~else
       Handle(Adaptor3d_Surface) base = surface.BasisSurface();
       return getRovolutionAxis( *base, axis );
-#endif
+~endif
     }
     default: return false;
     }
@@ -1360,7 +1360,7 @@ namespace VISCOUS_3D
   // DEBUG. Dump intermediate node positions into a python script
   // HOWTO use: run python commands written in a console to see
   //  construction steps of viscous layers
-#ifdef __myDEBUG
+~ifdef __myDEBUG
   ofstream* py;
   int       theNbPyFunc;
   struct PyDump {
@@ -1387,34 +1387,34 @@ namespace VISCOUS_3D
     }
     ~PyDump() { Finish(); cout << "NB FUNCTIONS: " << theNbPyFunc << endl; }
   };
-#define dumpFunction(f) { _dumpFunction(f, __LINE__);}
-#define dumpMove(n)     { _dumpMove(n, __LINE__);}
-#define dumpMoveComm(n,txt) { _dumpMove(n, __LINE__, txt);}
-#define dumpCmd(txt)    { _dumpCmd(txt, __LINE__);}
+~define dumpFunction(f) { _dumpFunction(f, __LINE__);}
+~define dumpMove(n)     { _dumpMove(n, __LINE__);}
+~define dumpMoveComm(n,txt) { _dumpMove(n, __LINE__, txt);}
+~define dumpCmd(txt)    { _dumpCmd(txt, __LINE__);}
   void _dumpFunction(const string& fun, int ln)
-  { if (py) *py<< "def "<<fun<<"(): # "<< ln <<endl; cout<<fun<<"()"<<endl; ++theNbPyFunc; }
+  { if (py) *py<< "def "<<fun<<"(): ~ "<< ln <<endl; cout<<fun<<"()"<<endl; ++theNbPyFunc; }
   void _dumpMove(const SMDS_MeshNode* n, int ln, const char* txt="")
   { if (py) *py<< "  mesh.MoveNode( "<<n->GetID()<< ", "<< n->X()
-               << ", "<<n->Y()<<", "<< n->Z()<< ")\t\t # "<< ln <<" "<< txt << endl; }
+               << ", "<<n->Y()<<", "<< n->Z()<< ")\t\t ~ "<< ln <<" "<< txt << endl; }
   void _dumpCmd(const string& txt, int ln)
-  { if (py) *py<< "  "<<txt<<" # "<< ln <<endl; }
+  { if (py) *py<< "  "<<txt<<" ~ "<< ln <<endl; }
   void dumpFunctionEnd()
   { if (py) *py<< "  return"<< endl; }
   void dumpChangeNodes( const SMDS_MeshElement* f )
   { if (py) { *py<< "  mesh.ChangeElemNodes( " << f->GetID()<<", [";
       for ( int i=1; i < f->NbNodes(); ++i ) *py << f->GetNode(i-1)->GetID()<<", ";
       *py << f->GetNode( f->NbNodes()-1 )->GetID() << " ])"<< endl; }}
-#define debugMsg( txt ) { cout << txt << " (line: " << __LINE__ << ")" << endl; }
-#else
+~define debugMsg( txt ) { cout << txt << " (line: " << __LINE__ << ")" << endl; }
+~else
   struct PyDump { PyDump(SMESH_Mesh&) {} void Finish() {} };
-#define dumpFunction(f) f
-#define dumpMove(n)
-#define dumpMoveComm(n,txt)
-#define dumpCmd(txt)
-#define dumpFunctionEnd()
-#define dumpChangeNodes(f) {}
-#define debugMsg( txt ) {}
-#endif
+~define dumpFunction(f) f
+~define dumpMove(n)
+~define dumpMoveComm(n,txt)
+~define dumpCmd(txt)
+~define dumpFunctionEnd()
+~define dumpChangeNodes(f) {}
+~define debugMsg( txt ) {}
+~endif
 }
 
 using namespace VISCOUS_3D;
@@ -1708,7 +1708,7 @@ bool _ViscousBuilder::findFacesWithLayers(const bool onlyWith)
           {
             if ( hyp )
               return error(SMESH_Comment("Several hypotheses define "
-                                         "Viscous Layers on the face #") << faceID );
+                                         "Viscous Layers on the face ~") << faceID );
             hyp = igFacesOfHyp->second;
           }
         if ( hyp )
@@ -2789,7 +2789,7 @@ bool _EdgesOnShape::GetNormal( const SMDS_MeshElement* face, gp_Vec& norm )
   else if ( !eos )
   {
     debugMsg( "_EdgesOnShape::Normal() failed for face "<<face->GetID()
-              << " on _shape #" << _shapeID );
+              << " on _shape ~" << _shapeID );
   }
   return ok;
 }
@@ -3549,7 +3549,7 @@ void _Simplex::SortSimplices(vector<_Simplex>& simplices)
 
 void _ViscousBuilder::makeGroupOfLE()
 {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   for ( size_t i = 0 ; i < _sdVec.size(); ++i )
   {
     if ( _sdVec[i]._n2eMap.empty() ) continue;
@@ -3601,7 +3601,7 @@ void _ViscousBuilder::makeGroupOfLE()
              << "'%s-%s' % (faceId1+1, faceId2))");
     dumpFunctionEnd();
   }
-#endif
+~endif
 }
 
 //================================================================================
@@ -3693,10 +3693,10 @@ bool _ViscousBuilder::inflate(_SolidData& data)
     {
       if ( nbSteps > 0 )
       {
-#ifdef __NOT_INVALIDATE_BAD_SMOOTH
+~ifdef __NOT_INVALIDATE_BAD_SMOOTH
         debugMsg("NOT INVALIDATED STEP!");
         return error("Smoothing failed", data._index);
-#endif
+~endif
         dumpFunction(SMESH_Comment("invalidate")<<data._index<<"_step"<<nbSteps); // debug
         for ( size_t iS = 0; iS < data._edgesOnShape.size(); ++iS )
         {
@@ -3857,7 +3857,7 @@ bool _ViscousBuilder::smoothAndCheck(_SolidData& data,
             {
               moved |= eos._edges[i]->SmoothOnEdge( surface, F, helper );
             }
-            dumpCmd( SMESH_Comment("# end step ")<<step);
+            dumpCmd( SMESH_Comment("~ end step ")<<step);
           }
           while ( moved && step++ < 5 );
         }
@@ -3918,7 +3918,7 @@ bool _ViscousBuilder::smoothAndCheck(_SolidData& data,
         }
         if ( badNb > 0 )
         {
-#ifdef __myDEBUG
+~ifdef __myDEBUG
           double vol = 0;
           for ( int i = 0; i < eos._edges.size(); ++i )
           {
@@ -3933,7 +3933,7 @@ bool _ViscousBuilder::smoothAndCheck(_SolidData& data,
                 return false;
               }
           }
-#endif
+~endif
           return false;
         }
       } // // smooth on FACE's
@@ -3993,7 +3993,7 @@ bool _ViscousBuilder::smoothAndCheck(_SolidData& data,
       }
     }
   }
-#ifdef __myDEBUG
+~ifdef __myDEBUG
   if ( closestFace )
   {
     SMDS_MeshElement::iterator nIt = closestFace->begin_nodes();
@@ -4002,7 +4002,7 @@ bool _ViscousBuilder::smoothAndCheck(_SolidData& data,
          << (*nIt++)->GetID()<<" "<< (*nIt++)->GetID()<<" "<< (*nIt++)->GetID()
          << ") distance = " << distToIntersection<< endl;
   }
-#endif
+~endif
 
   return true;
 }
@@ -5265,7 +5265,7 @@ bool _LayerEdge::FindIntersection( SMESH_ElementSearcher&   searcher,
 
   if ( segmentIntersected )
   {
-#ifdef __myDEBUG
+~ifdef __myDEBUG
     SMDS_MeshElement::iterator nIt = suspectFaces[iFace]->begin_nodes();
     gp_XYZ intP( lastSegment.Location().XYZ() + lastSegment.Direction().XYZ() * distance );
     cout << "nodes: tgt " << _nodes.back()->GetID() << " src " << _nodes[0]->GetID()
@@ -5273,7 +5273,7 @@ bool _LayerEdge::FindIntersection( SMESH_ElementSearcher&   searcher,
          << (*nIt++)->GetID()<<" "<< (*nIt++)->GetID()<<" "<< (*nIt++)->GetID()
          << ") at point (" << intP.X() << ", " << intP.Y() << ", " << intP.Z()
          << ") distance = " << distance - segLen<< endl;
-#endif
+~endif
   }
 
   distance -= segLen;
@@ -5581,7 +5581,7 @@ int _LayerEdge::Smooth(const int step, const bool isConcaveFace, const bool find
     if ( iFun > -1 )
     {
       //_smooFunction = _funs[ iFun ];
-      // cout << "# " << _funNames[ iFun ] << "\t N:" << _nodes.back()->GetID()
+      // cout << "~ " << _funNames[ iFun ] << "\t N:" << _nodes.back()->GetID()
       // << "\t nbBad: " << _simplices.size() - nbOkAfter
       // << " minVol: " << minVolAfter
       // << " " << newPos.X() << " " << newPos.Y() << " " << newPos.Z()
@@ -5774,14 +5774,14 @@ gp_XYZ _LayerEdge::smoothAngular()
     bisecLen = Sqrt( bisecLen );
     bisec /= bisecLen;
 
-#if 1
+~if 1
     //bisecLen = 1.;
     gp_XYZ pNew = ( points[i] + bisec.XYZ() * toNLen ) * bisecLen;
     sumSize += bisecLen;
-#else
+~else
     gp_XYZ pNew = ( points[i] + bisec.XYZ() * toNLen ) * ( edgeSize[i] + edgeSize[i+1] );
     sumSize += ( edgeSize[i] + edgeSize[i+1] );
-#endif
+~endif
     newPos += pNew;
   }
   newPos /= sumSize;
@@ -7237,11 +7237,11 @@ bool _LayerEdge::SetNewLength2d( Handle(Geom_Surface)& surface,
     pos->SetUParameter( newUV.X() );
     pos->SetVParameter( newUV.Y() );
 
-#ifdef __myDEBUG
+~ifdef __myDEBUG
     gp_Pnt p = surface->Value( newUV.X(), newUV.Y() );
     tgtNode->setXYZ( p.X(), p.Y(), p.Z() );
     dumpMove( tgtNode );
-#endif
+~endif
   }
   else // _sWOL is TopAbs_EDGE
   {
@@ -7263,12 +7263,12 @@ bool _LayerEdge::SetNewLength2d( Handle(Geom_Surface)& surface,
       newU = 0.1 * tgtPos->GetUParameter() + 0.9 * u2;
     }
     tgtPos->SetUParameter( newU );
-#ifdef __myDEBUG
+~ifdef __myDEBUG
     gp_XY newUV = helper.GetNodeUV( F, tgtNode, _nodes[0]);
     gp_Pnt p = surface->Value( newUV.X(), newUV.Y() );
     tgtNode->setXYZ( p.X(), p.Y(), p.Z() );
     dumpMove( tgtNode );
-#endif
+~endif
   }
   return true;
 }
@@ -7369,9 +7369,9 @@ bool _SmoothNode::Smooth(int&                  badNb,
   pos->SetUParameter( newPos.X() );
   pos->SetVParameter( newPos.Y() );
 
-#ifdef __myDEBUG
+~ifdef __myDEBUG
   set3D = true;
-#endif
+~endif
   if ( set3D )
   {
     gp_Pnt p = surface->Value( newPos.X(), newPos.Y() );

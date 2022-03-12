@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "ChangeDyna.h"
-#include <sstream>
-#include <vector>
-#include <fstream>
-#include <stdexcept>
+~include "PreCompiled.h"
+~include "ChangeDyna.h"
+~include <sstream>
+~include <vector>
+~include <fstream>
+~include <stdexcept>
 
 ChangeDyna::ChangeDyna()
 {

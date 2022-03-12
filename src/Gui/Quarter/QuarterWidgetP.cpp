@@ -30,30 +30,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4267)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4267)
+~endif
 
-#include <QApplication>
-#include <QCursor>
-#include <QMenu>
+~include <QApplication>
+~include <QCursor>
+~include <QMenu>
 
-#include <Inventor/SoEventManager.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoContextHandler.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
-#include <Inventor/C/glue/gl.h>
+~include <Inventor/SoEventManager.h>
+~include <Inventor/actions/SoSearchAction.h>
+~include <Inventor/elements/SoGLCacheContextElement.h>
+~include <Inventor/lists/SbList.h>
+~include <Inventor/misc/SoContextHandler.h>
+~include <Inventor/nodes/SoCamera.h>
+~include <Inventor/nodes/SoNode.h>
+~include <Inventor/scxml/SoScXMLStateMachine.h>
+~include <Inventor/C/glue/gl.h>
 
-#include "QuarterWidgetP.h"
-#include "ContextMenu.h"
-#include "NativeEvent.h"
-#include "QuarterP.h"
-#include "QuarterWidget.h"
-#include "eventhandlers/EventFilter.h"
+~include "QuarterWidgetP.h"
+~include "ContextMenu.h"
+~include "NativeEvent.h"
+~include "QuarterP.h"
+~include "QuarterWidget.h"
+~include "eventhandlers/EventFilter.h"
 
 
 using namespace SIM::Coin3D::Quarter;
@@ -90,9 +90,9 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QtGLWidget * sha
 
   // FIXME: Centralize this as only one custom event filter can be
   // added to an application. (20101019 handegar)
-#ifdef HAVE_SPACENAV_LIB // fixes #0001970
+~ifdef HAVE_SPACENAV_LIB // fixes ~0001970
   qApp->setEventFilter(QuarterWidgetP::nativeEventFilter);
-#endif
+~endif
 }
 
 QuarterWidgetP::~QuarterWidgetP()
@@ -242,7 +242,7 @@ QuarterWidgetP::statechangecb(void * userdata, ScXMLStateMachine * statemachine,
   }
 }
 
-#define ADD_ACTION(enum, text, group, parent, list)     \
+~define ADD_ACTION(enum, text, group, parent, list)     \
   do {                                                  \
     QAction * action = new QAction(text, parent);       \
     action->setCheckable(true);                         \
@@ -302,7 +302,7 @@ QuarterWidgetP::renderModeActions() const
   return this->rendermodeactions;
 }
 
-#undef ADD_ACTION
+~undef ADD_ACTION
 
 QMenu *
 QuarterWidgetP::contextMenu()
@@ -318,7 +318,7 @@ QuarterWidgetP::contextMenu()
 bool 
 QuarterWidgetP::nativeEventFilter(void * message, long * result)
 {
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
   XEvent * event = (XEvent *) message;
   if (event->type == ClientMessage) {
     // FIXME: I don't really like this, but the original XEvent will
@@ -334,10 +334,10 @@ QuarterWidgetP::nativeEventFilter(void * message, long * result)
     qApp->postEvent(QApplication::focusWidget(), ne);
     return true;
   }
-#else
+~else
   Q_UNUSED(message); 
   Q_UNUSED(result); 
-#endif // HAVE_SPACENAV_LIB
+~endif // HAVE_SPACENAV_LIB
 
   return false;
 }

@@ -24,33 +24,33 @@
 //  File   : StdMeshers_Import_1D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Import_1D.hxx"
-#include "StdMeshers_ImportSource.hxx"
+~include "StdMeshers_Import_1D.hxx"
+~include "StdMeshers_ImportSource.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Group.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Group.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
 
-#include "Utils_SALOME_Exception.hxx"
-#include "utilities.h"
+~include "Utils_SALOME_Exception.hxx"
+~include "utilities.h"
 
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
 
 using namespace std;
 

@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
 
 using namespace ImageGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Image");
-#endif
+~endif
 
 /// @namespace ImageGui @class Workbench
 TYPESYSTEM_SOURCE(ImageGui::Workbench, Gui::StdWorkbench)
@@ -53,9 +53,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Image");
     *part << "Image_Open" << "Image_CreateImagePlane";
-#if HAVE_OPENCV2
+~if HAVE_OPENCV2
     *part << "Image_CapturerTest";
-#endif
+~endif
     *part << "Image_Scaling";
     return root;
 }
@@ -66,8 +66,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* img = new Gui::ToolBarItem(root);
     img->setCommand("Image");
     *img << "Image_Open";
-#if HAVE_OPENCV2
+~if HAVE_OPENCV2
     *img << "Image_CapturerTest";
-#endif
+~endif
     return root;
 }

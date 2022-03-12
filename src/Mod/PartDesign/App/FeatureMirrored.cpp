@@ -21,21 +21,21 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAdaptor_Surface.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Pln.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Face.hxx>
+~endif
 
-#include <App/OriginFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/Part2DObject.h>
+~include <App/OriginFeature.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/Part2DObject.h>
 
-#include "FeatureMirrored.h"
-#include "DatumPlane.h"
+~include "FeatureMirrored.h"
+~include "DatumPlane.h"
 
 
 using namespace PartDesign;

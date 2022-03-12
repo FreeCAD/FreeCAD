@@ -37,17 +37,17 @@
   functionality to the QuarterWidget.
 */
 
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QFileInfo>
-#include <QMimeData>
-#include <QStringList>
-#include <QUrl>
-#include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoSeparator.h>
+~include <QDragEnterEvent>
+~include <QDropEvent>
+~include <QFileInfo>
+~include <QMimeData>
+~include <QStringList>
+~include <QUrl>
+~include <Inventor/SoInput.h>
+~include <Inventor/nodes/SoSeparator.h>
 
-#include "QuarterWidget.h"
-#include "eventhandlers/DragDropHandler.h"
+~include "QuarterWidget.h"
+~include "eventhandlers/DragDropHandler.h"
 
 
 namespace SIM { namespace Coin3D { namespace Quarter {
@@ -67,8 +67,8 @@ public:
 
 }}} // namespace
 
-#define PRIVATE(obj) obj->pimpl
-#define PUBLIC(obj) obj->master
+~define PRIVATE(obj) obj->pimpl
+~define PUBLIC(obj) obj->master
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -157,5 +157,5 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
   this->quarterwidget->viewport()->update();
 }
 
-#undef PRIVATE
-#undef PUBLIC
+~undef PRIVATE
+~undef PUBLIC

@@ -20,39 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCConfig.h>
+~include <FCConfig.h>
 
-#if HAVE_CONFIG_H
-#   include <config.h>
-#endif // HAVE_CONFIG_H
+~if HAVE_CONFIG_H
+~   include <config.h>
+~endif // HAVE_CONFIG_H
 
-#ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#endif
+~ifdef _MSC_VER
+~   pragma warning(disable : 4005)
+~endif
 
-#include <QApplication>
-#include <QIcon>
-#if defined(Q_OS_WIN)
-#include <windows.h>
-#elif defined(Q_WS_X11)
-#include <QX11EmbedWidget>
-#endif
-#include <thread>
+~include <QApplication>
+~include <QIcon>
+~if defined(Q_OS_WIN)
+~include <windows.h>
+~elif defined(Q_WS_X11)
+~include <QX11EmbedWidget>
+~endif
+~include <thread>
 
 // FreeCAD Base header
-#include <App/Application.h>
-#include <Base/Exception.h>
-#include <Base/Factory.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Gui/SoFCDB.h>
-#include <Gui/Quarter/Quarter.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInteraction.h>
-#include <Inventor/nodekits/SoNodeKit.h>
+~include <App/Application.h>
+~include <Base/Exception.h>
+~include <Base/Factory.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Gui/SoFCDB.h>
+~include <Gui/Quarter/Quarter.h>
+~include <Inventor/SoDB.h>
+~include <Inventor/SoInteraction.h>
+~include <Inventor/nodekits/SoNodeKit.h>
 
 
 static bool _isSetupWithoutGui = false;
@@ -76,7 +76,7 @@ public:
     }
 };
 
-#if defined(Q_OS_WIN)
+~if defined(Q_OS_WIN)
 HHOOK hhook;
 
 LRESULT CALLBACK
@@ -85,7 +85,7 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
         qApp->sendPostedEvents(0, -1); // special DeferredDelete
     return CallNextHookEx(hhook, nCode, wParam, lParam);
 }
-#endif
+~endif
 
 static PyObject *
 FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
@@ -121,21 +121,21 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
             // In order to get Jupiter notebook integration working we must create a direct instance
             // of QApplication. Not even a sub-class can be used because otherwise PySide2 wraps it
             // with a QtCore.QCoreApplication which will raise an exception in ipykernel
-#if defined(Q_OS_WIN)
+~if defined(Q_OS_WIN)
             static int argc = 0;
             static char **argv = {0};
             (void)new QApplication(argc, argv);
             // When QApplication is constructed
             hhook = SetWindowsHookEx(WH_GETMESSAGE,
                 FilterProc, 0, GetCurrentThreadId());
-#elif !defined(QT_NO_GLIB)
+~elif !defined(QT_NO_GLIB)
             static int argc = 0;
             static char **argv = {0};
             (void)new QApplication(argc, argv);
-#else
+~else
             PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
             return NULL;
-#endif
+~endif
         }
     }
     else if (!qobject_cast<QApplication*>(qApp)) {
@@ -229,7 +229,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
     std::string pointer_str = pointer;
     std::stringstream str(pointer_str);
 
-#if defined(Q_OS_WIN)
+~if defined(Q_OS_WIN)
     void* window = 0;
     str >> window;
     HWND winid = (HWND)window;
@@ -243,7 +243,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
 
     QEvent embeddingEvent(QEvent::EmbeddingControl);
     QApplication::sendEvent(widget, &embeddingEvent);
-#elif defined(Q_WS_X11)
+~elif defined(Q_WS_X11)
     WId winid;
     str >> winid;
 
@@ -251,10 +251,10 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
     widget->setParent(x11);
     x11->embedInto(winid);
     x11->show();
-#else
+~else
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented for this platform");
     return 0;
-#endif
+~endif
 
     Py_INCREF(Py_None);
     return Py_None;

@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
 
-#include "DrawPage.h"
-#include "DrawView.h"
-#include "DrawUtil.h"
+~include "DrawPage.h"
+~include "DrawView.h"
+~include "DrawUtil.h"
 
-#include <Mod/TechDraw/App/DrawLeaderLinePy.h>  // generated from DrawLeaderLinePy.xml
-#include "DrawLeaderLine.h"
-#include "ArrowPropEnum.h"
+~include <Mod/TechDraw/App/DrawLeaderLinePy.h>  // generated from DrawLeaderLinePy.xml
+~include "DrawLeaderLine.h"
+~include "ArrowPropEnum.h"
 
 using namespace TechDraw;
 

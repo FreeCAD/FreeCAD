@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAbstractSpinBox>
-# include <QActionEvent>
-# include <QApplication>
-# include <QCursor>
-# include <QLineEdit>
-# include <QPointer>
-# include <QPushButton>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <QAbstractSpinBox>
+~ include <QActionEvent>
+~ include <QApplication>
+~ include <QCursor>
+~ include <QLineEdit>
+~ include <QPointer>
+~ include <QPushButton>
+~ include <QTimer>
+~endif
 
-#include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
 
-#include "TaskView.h"
-#include "TaskDialog.h"
-#include "TaskEditControl.h"
+~include "TaskView.h"
+~include "TaskDialog.h"
+~include "TaskEditControl.h"
 
-#if defined (QSINT_ACTIONPANEL)
-#include <Gui/QSint/actionpanel/taskgroup_p.h>
-#include <Gui/QSint/actionpanel/taskheader_p.h>
-#include <Gui/QSint/actionpanel/freecadscheme.h>
-#endif
+~if defined (QSINT_ACTIONPANEL)
+~include <Gui/QSint/actionpanel/taskgroup_p.h>
+~include <Gui/QSint/actionpanel/taskheader_p.h>
+~include <Gui/QSint/actionpanel/freecadscheme.h>
+~endif
 
 
 using namespace Gui::TaskView;
@@ -73,7 +73,7 @@ TaskWidget::~TaskWidget()
 // TaskGroup
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if !defined (QSINT_ACTIONPANEL)
+~if !defined (QSINT_ACTIONPANEL)
 TaskGroup::TaskGroup(QWidget *parent)
     : iisTaskGroup(parent, false)
 {
@@ -135,7 +135,7 @@ void TaskGroup::actionEvent (QActionEvent* e)
         break;
     }
 }
-#else
+~else
 TaskGroup::TaskGroup(QWidget *parent)
     : QSint::ActionBox(parent)
 {
@@ -177,19 +177,19 @@ void TaskGroup::actionEvent (QActionEvent* e)
         break;
     }
 }
-#endif
+~endif
 //**************************************************************************
 //**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if !defined (QSINT_ACTIONPANEL)
+~if !defined (QSINT_ACTIONPANEL)
 TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
     : iisTaskBox(icon, title, expandable, parent), wasShown(false)
 {
     setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
 }
-#else
+~else
 TaskBox::TaskBox(QWidget *parent)
   : QSint::ActionGroup(parent), wasShown(false)
 {
@@ -228,7 +228,7 @@ QSize TaskBox::minimumSizeHint() const
     QSize s2 = QWidget::minimumSizeHint();
     return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
 }
-#endif
+~endif
 
 TaskBox::~TaskBox()
 {
@@ -292,20 +292,20 @@ void TaskBox::actionEvent (QActionEvent* e)
     switch (e->type()) {
     case QEvent::ActionAdded:
         {
-#if !defined (QSINT_ACTIONPANEL)
+~if !defined (QSINT_ACTIONPANEL)
             TaskIconLabel *label = new TaskIconLabel(
                 action->icon(), action->text(), this);
             this->addIconLabel(label);
             connect(label,SIGNAL(clicked()),action,SIGNAL(triggered()));
-#else
+~else
             QSint::ActionLabel *label = new QSint::ActionLabel(action, this);
             this->addActionLabel(label, true, false);
-#endif
+~endif
             break;
         }
     case QEvent::ActionChanged:
         {
-#if !defined (QSINT_ACTIONPANEL)
+~if !defined (QSINT_ACTIONPANEL)
             // update label when action changes
             QBoxLayout* bl = myGroup->groupLayout();
             int index = this->actions().indexOf(action);
@@ -313,7 +313,7 @@ void TaskBox::actionEvent (QActionEvent* e)
             QWidgetItem* item = static_cast<QWidgetItem*>(bl->itemAt(index));
             TaskIconLabel* label = static_cast<TaskIconLabel*>(item->widget());
             label->setTitle(action->text());
-#endif
+~endif
             break;
         }
     case QEvent::ActionRemoved:
@@ -331,7 +331,7 @@ void TaskBox::actionEvent (QActionEvent* e)
 // TaskPanel
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if defined (QSINT_ACTIONPANEL)
+~if defined (QSINT_ACTIONPANEL)
 TaskPanel::TaskPanel(QWidget *parent)
   : QSint::ActionPanel(parent)
 {
@@ -355,7 +355,7 @@ QSize TaskPanel::minimumSizeHint() const
     QSize s2 = QWidget::minimumSizeHint();
     return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
 }
-#endif
+~endif
 
 //**************************************************************************
 //**************************************************************************
@@ -368,10 +368,10 @@ TaskView::TaskView(QWidget *parent)
     //addWidget(new TaskEditControl(this));
     //addWidget(new TaskAppearance(this));
     //addStretch();
-#if !defined (QSINT_ACTIONPANEL)
+~if !defined (QSINT_ACTIONPANEL)
     taskPanel = new iisTaskPanel(this);
     taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
-#else
+~else
     taskPanel = new TaskPanel(this);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
@@ -379,7 +379,7 @@ TaskView::TaskView(QWidget *parent)
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
     taskPanel->setSizePolicy(sizePolicy);
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
+~endif
     this->setWidget(taskPanel);
     setWidgetResizable(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -412,7 +412,7 @@ TaskView::~TaskView()
 
 bool TaskView::event(QEvent* event)
 {
-    // Workaround for a limitation in Qt (#0003794)
+    // Workaround for a limitation in Qt (~0003794)
     // Line edits and spin boxes don't handle the key combination
     // Shift+Keypad button (if NumLock is activated)
     if (event->type() == QEvent::ShortcutOverride) {
@@ -454,15 +454,15 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 QPushButton *pb = list.at(i);
                 if (pb->isDefault() && pb->isVisible()) {
                     if (pb->isEnabled()) {
-#if defined(FC_OS_MACOSX)
-                        // #0001354: Crash on using Enter-Key for confirmation of chamfer or fillet entries
+~if defined(FC_OS_MACOSX)
+                        // ~0001354: Crash on using Enter-Key for confirmation of chamfer or fillet entries
                         QPoint pos = QCursor::pos();
                         QCursor::setPos(pb->parentWidget()->mapToGlobal(pb->pos()));
-#endif
+~endif
                         pb->click();
-#if defined(FC_OS_MACOSX)
+~if defined(FC_OS_MACOSX)
                         QCursor::setPos(pos);
-#endif
+~endif
                     }
                     return;
                 }
@@ -476,15 +476,15 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 QAbstractButton *pb = list.at(i);
                 if (box->buttonRole(pb) == QDialogButtonBox::RejectRole) {
                     if (pb->isEnabled()) {
-#if defined(FC_OS_MACOSX)
-                        // #0001354: Crash on using Enter-Key for confirmation of chamfer or fillet entries
+~if defined(FC_OS_MACOSX)
+                        // ~0001354: Crash on using Enter-Key for confirmation of chamfer or fillet entries
                         QPoint pos = QCursor::pos();
                         QCursor::setPos(pb->parentWidget()->mapToGlobal(pb->pos()));
-#endif
+~endif
                         pb->click();
-#if defined(FC_OS_MACOSX)
+~if defined(FC_OS_MACOSX)
                         QCursor::setPos(pos);
-#endif
+~endif
                     }
                     return;
                 }
@@ -604,9 +604,9 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
-#if defined (QSINT_ACTIONPANEL)
+~if defined (QSINT_ACTIONPANEL)
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
+~endif
 
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
@@ -726,8 +726,8 @@ void TaskView::addTaskWatcher(void)
         taskPanel->addStretch();
     updateWatcher();
 
-#if defined (QSINT_ACTIONPANEL)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+~if defined (QSINT_ACTIONPANEL)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
     // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
     //
@@ -738,10 +738,10 @@ void TaskView::addTaskWatcher(void)
         QEvent event(QEvent::StyleChange);
         QApplication::sendEvent(box, &event);
     }
-#endif
+~endif
 
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 void TaskView::removeTaskWatcher(void)
@@ -819,19 +819,19 @@ void TaskView::clicked (QAbstractButton * button)
 
 void TaskView::clearActionStyle()
 {
-#if defined (QSINT_ACTIONPANEL)
+~if defined (QSINT_ACTIONPANEL)
     static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 void TaskView::restoreActionStyle()
 {
-#if defined (QSINT_ACTIONPANEL)
+~if defined (QSINT_ACTIONPANEL)
     static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 
-#include "moc_TaskView.cpp"
+~include "moc_TaskView.cpp"

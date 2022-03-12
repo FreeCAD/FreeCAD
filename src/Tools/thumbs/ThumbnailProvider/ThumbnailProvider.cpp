@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#pragma warning(disable : 4995)
+~pragma warning(disable : 4995)
 
-#include "Common.h"
-#include "ThumbnailProvider.h"
+~include "Common.h"
+~include "ThumbnailProvider.h"
 
-#include <iostream>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipfile.h>
-#include <wincodec.h>
-#include <wincodecsdk.h>
-#pragma comment(lib, "WindowsCodecs.lib")
+~include <iostream>
+~include <zipios++/zipinputstream.h>
+~include <zipios++/zipfile.h>
+~include <wincodec.h>
+~include <wincodecsdk.h>
+~pragma comment(lib, "WindowsCodecs.lib")
 
 // The functions
 // * CreateStreamOnResource

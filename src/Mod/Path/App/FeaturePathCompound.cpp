@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "FeaturePathCompound.h"
-#include "Command.h"
-#include "Path.h"
-#include "FeaturePathCompoundPy.h"
-#include <App/FeaturePythonPyImp.h>
+~include "FeaturePathCompound.h"
+~include "Command.h"
+~include "Path.h"
+~include "FeaturePathCompoundPy.h"
+~include <App/FeaturePythonPyImp.h>
 
 using namespace Path;
 using namespace App;

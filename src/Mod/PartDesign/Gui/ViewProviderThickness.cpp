@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TaskThicknessParameters.h"
-#include "ViewProviderThickness.h"
+~include "TaskThicknessParameters.h"
+~include "ViewProviderThickness.h"
 
 using namespace PartDesignGui;
 

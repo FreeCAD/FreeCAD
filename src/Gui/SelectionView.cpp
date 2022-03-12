@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
- #include <QCheckBox>
-# include <QLabel>
-# include <QLineEdit>
-# include <QListWidget>
-# include <QListWidgetItem>
-# include <QMenu>
-# include <QTextStream>
-# include <QToolButton>
-# include <QVBoxLayout>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+ ~include <QCheckBox>
+~ include <QLabel>
+~ include <QLineEdit>
+~ include <QListWidget>
+~ include <QListWidgetItem>
+~ include <QMenu>
+~ include <QTextStream>
+~ include <QToolButton>
+~ include <QVBoxLayout>
+~endif
 
-#include <App/ComplexGeoData.h>
-#include <App/Document.h>
-#include <App/GeoFeature.h>
+~include <App/ComplexGeoData.h>
+~include <App/Document.h>
+~include <App/GeoFeature.h>
 
-#include "SelectionView.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Document.h"
+~include "SelectionView.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "Document.h"
 
 
 FC_LOG_LEVEL_INIT("Selection", true, true, true)
@@ -150,7 +150,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 
         // insert the selection as item
         str << Reason.pDocName;
-        str << "#";
+        str << "~";
         str << Reason.pObjectName;
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
@@ -175,7 +175,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
         }else{
             // build name
             str << Reason.pDocName;
-            str << "#";
+            str << "~";
             // remove all items
             for(auto item : selectionView->findItems(selObject,Qt::MatchStartsWith))
                 delete item;
@@ -184,7 +184,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
     else if (Reason.Type == SelectionChanges::RmvSelection) {
         // build name
         str << Reason.pDocName;
-        str << "#";
+        str << "~";
         str << Reason.pObjectName;
         if (Reason.pSubName[0] != 0) {
             str << ".";
@@ -210,7 +210,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 
             // build name
             str << it->DocName;
-            str << "#";
+            str << "~";
             str << it->FeatName;
             App::Document* doc = App::GetApplication().getDocument(it->DocName);
             App::DocumentObject* obj = doc->getObject(it->FeatName);
@@ -246,7 +246,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
                 QString selObject;
                 QTextStream str(&selObject);
                 str << sel.DocName;
-                str << "#";
+                str << "~";
                 str << sel.FeatName;
                 if (sel.SubName[0] != 0 ) {
                     str << ".";
@@ -292,7 +292,7 @@ void SelectionView::search(const QString& text)
                     list << QString::fromLatin1((*it)->getNameInDocument());
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
-                    str << "#";
+                    str << "~";
                     str << (*it)->getNameInDocument();
                     str << " (";
                     str << label;
@@ -363,7 +363,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if (!item) return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
-    char *objname = std::strchr(docname,'#');
+    char *objname = std::strchr(docname,'~');
     if(!objname) return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
@@ -401,7 +401,7 @@ void SelectionView::preselect(QListWidgetItem* item)
     if (!item) return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
-    char *objname = std::strchr(docname,'#');
+    char *objname = std::strchr(docname,'~');
     if(!objname) return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
@@ -636,4 +636,4 @@ void SelectionView::onEnablePickList() {
 
 /// @endcond
 
-#include "moc_SelectionView.cpp"
+~include "moc_SelectionView.cpp"

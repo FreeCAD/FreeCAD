@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Base/GeometryPyCXX.h"
-#include "Base/Vector3D.h"
-#include "Base/VectorPy.h"
+~include "Base/GeometryPyCXX.h"
+~include "Base/Vector3D.h"
+~include "Base/VectorPy.h"
 
-#include "Voronoi.h"
-#include "VoronoiCell.h"
-#include "VoronoiCellPy.h"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
-#include "VoronoiPy.h"
-#include "VoronoiPy.cpp"
-#include "VoronoiVertex.h"
-#include "VoronoiVertexPy.h"
+~include "Voronoi.h"
+~include "VoronoiCell.h"
+~include "VoronoiCellPy.h"
+~include "VoronoiEdge.h"
+~include "VoronoiEdgePy.h"
+~include "VoronoiPy.h"
+~include "VoronoiPy.cpp"
+~include "VoronoiVertex.h"
+~include "VoronoiVertexPy.h"
 
 
 using namespace Path;
@@ -170,22 +170,22 @@ Py::List VoronoiPy::getCells(void) const {
 typedef std::map<uintptr_t,bool> exterior_map_t;
 typedef std::map<int32_t, std::set<int32_t> > coordinate_map_t;
 
-#define VORONOI_USE_EXTERIOR_CACHE 1
+~define VORONOI_USE_EXTERIOR_CACHE 1
 
 static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, const Voronoi::diagram_type::vertex_type *v, bool &bail, exterior_map_t &cache) {
   bool rc = false;
   if (!bail && v->color() == 0) {
-#if VORONOI_USE_EXTERIOR_CACHE
+~if VORONOI_USE_EXTERIOR_CACHE
     auto it = cache.find(uintptr_t(v));
     if (it == cache.end()) {
-#endif
+~endif
       PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
       PyObject *arglist = Py_BuildValue("(O)", vx);
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
       PyObject *result = PyEval_CallObject(callback, arglist);
-#else
+~else
       PyObject *result = PyObject_CallObject(callback, arglist);
-#endif
+~endif
       Py_DECREF(arglist);
       Py_DECREF(vx);
       if (result == NULL) {
@@ -195,13 +195,13 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
         Py_DECREF(result);
         cache.insert(exterior_map_t::value_type(uintptr_t(v), rc));
       }
-#if VORONOI_USE_EXTERIOR_CACHE
+~if VORONOI_USE_EXTERIOR_CACHE
     } else {
       rc = it->second;
     }
-#else
+~else
     (void)cache;
-#endif
+~endif
   }
   return rc;
 }

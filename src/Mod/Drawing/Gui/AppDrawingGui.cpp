@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include "Workbench.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderView.h"
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
+~include "Workbench.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderView.h"
 
 // use a different name to CreateCommand()
 void CreateDrawingCommands(void);

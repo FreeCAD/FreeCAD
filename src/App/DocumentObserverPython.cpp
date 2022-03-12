@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <CXX/Objects.hxx>
-#include "Application.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "DocumentObserverPython.h"
-#include <Base/Interpreter.h>
+~include <CXX/Objects.hxx>
+~include "Application.h"
+~include "Document.h"
+~include "DocumentObject.h"
+~include "DocumentObserverPython.h"
+~include <Base/Interpreter.h>
 
 
 using namespace App;
@@ -58,28 +58,28 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj)
 {
-#define FC_PY_ELEMENT_ARG0(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this));\
+~define FC_PY_ELEMENT_ARG0(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" ~_name1, py~~_name1.py);\
+        if (!py~~_name1.py.isNone())\
+            py~~_name1.slot = App::GetApplication().signal~~_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot~~_name1, this));\
     }\
     while(0);
 
 
-#define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1));\
+~define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" ~_name1, py~~_name1.py);\
+        if (!py~~_name1.py.isNone())\
+            py~~_name1.slot = App::GetApplication().signal~~_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot~~_name1, this, bp::_1));\
     }\
     while(0);
 
-#define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2));\
+~define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" ~_name1, py~~_name1.py);\
+        if (!py~~_name1.py.isNone())\
+            py~~_name1.slot = App::GetApplication().signal~~_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot~~_name1, this, bp::_1, bp::_2));\
     }\
     while(0);
 

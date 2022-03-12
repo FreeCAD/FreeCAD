@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4244)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4244)
+~endif
 
-#include <iostream>
-#include <Eigen/QR>
+~include <iostream>
+~include <Eigen/QR>
 
 using namespace Eigen;
 

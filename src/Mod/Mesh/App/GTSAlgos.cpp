@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# ifdef FC_OS_LINUX
-#	  include <unistd.h>
-# endif
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ ifdef FC_OS_LINUX
+~	  include <unistd.h>
+~ endif
+~endif
 
 
-#include "GTSAlgos.h"
-#include "Mesh.h"
+~include "GTSAlgos.h"
+~include "Mesh.h"
 
-#include "Core/MeshIO.h"
-#include "Core/MeshKernel.h"
-#include "Core/Iterator.h"
-#include "Core/Algorithm.h"
-#include "Core/TopoAlgorithm.h"
-#include "Core/Evaluation.h"
+~include "Core/MeshIO.h"
+~include "Core/MeshKernel.h"
+~include "Core/Iterator.h"
+~include "Core/Algorithm.h"
+~include "Core/TopoAlgorithm.h"
+~include "Core/Evaluation.h"
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
 
 using namespace Mesh;
 using namespace MeshCore;

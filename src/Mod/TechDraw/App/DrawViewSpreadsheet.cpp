@@ -22,30 +22,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <iomanip>
+~include <iomanip>
 
-#include <boost/regex.hpp>
+~include <boost/regex.hpp>
 
-#include <App/Application.h>
-#include <App/Property.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Property.h>
+~include <App/PropertyStandard.h>
+~include <App/PropertyUnits.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
 
-#include "Preferences.h"
-#include "DrawViewSpreadsheet.h"
+~include "Preferences.h"
+~include "DrawViewSpreadsheet.h"
 
-#include <Mod/Spreadsheet/App/Cell.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
+~include <Mod/Spreadsheet/App/Cell.h>
+~include <Mod/Spreadsheet/App/Sheet.h>
 
 using namespace TechDraw;
 using namespace std;

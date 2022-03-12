@@ -20,45 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <QMenu>
-# include <QTimer>
-# include <Inventor/SbLine.h>
-# include <Inventor/SbPlane.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <QMenu>
+~ include <QTimer>
+~ include <Inventor/SbLine.h>
+~ include <Inventor/SbPlane.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/events/SoKeyboardEvent.h>
+~ include <Inventor/events/SoLocation2Event.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDirectionalLight.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFaceSet.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include "MeshEditor.h"
-#include "SoFCMeshObject.h"
-#include "SoPolygon.h"
-#include <App/Document.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Triangulation.h>
-#include <Gui/Application.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include "MeshEditor.h"
+~include "SoFCMeshObject.h"
+~include "SoPolygon.h"
+~include <App/Document.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/Triangulation.h>
+~include <Gui/Application.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
 using namespace MeshGui;
 namespace bp = boost::placeholders;
@@ -735,4 +735,4 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
     }
 }
 
-#include "moc_MeshEditor.cpp"
+~include "moc_MeshEditor.cpp"

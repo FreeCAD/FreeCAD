@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "GeometryMigrationExtension.h"
+~include "GeometryMigrationExtension.h"
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
 using namespace Part;
 
@@ -50,11 +50,11 @@ std::unique_ptr<Part::GeometryExtension> GeometryMigrationExtension::copy(void) 
 
     copyAttributes(cpy.get());
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
+~if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
-#else
+~else
     return cpy;
-#endif
+~endif
 }
 
 PyObject * GeometryMigrationExtension::getPyObject(void)

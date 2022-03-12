@@ -21,27 +21,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <QAction>
-#include <QMenu>
-#include <QMessageBox>
-#include <QTimer>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+~include "PreCompiled.h"
+~include <QAction>
+~include <QMenu>
+~include <QMessageBox>
+~include <QTimer>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
 
-#include <App/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
-#include <Base/Console.h>
-#include <Gui/Control.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <App/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include <Gui/SelectionObject.h>
+~include <Base/Console.h>
+~include <Gui/Control.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
-#include "TaskGeomFillSurface.h"
-#include "ui_TaskGeomFillSurface.h"
+~include "TaskGeomFillSurface.h"
+~include "ui_TaskGeomFillSurface.h"
 
 
 using namespace SurfaceGui;
@@ -619,4 +619,4 @@ bool TaskGeomFillSurface::reject()
 
 }
 
-#include "moc_TaskGeomFillSurface.cpp"
+~include "moc_TaskGeomFillSurface.cpp"

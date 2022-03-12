@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QProgressDialog>
-# include <QWindow>
-# ifdef FC_OS_WIN32
-#   include <windows.h>
-# endif
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMessageBox>
+~ include <QProgressDialog>
+~ include <QWindow>
+~ ifdef FC_OS_WIN32
+~   include <windows.h>
+~ endif
+~endif
 
-#include "WaitCursor.h"
+~include "WaitCursor.h"
 
 using namespace Gui;
 

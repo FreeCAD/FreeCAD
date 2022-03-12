@@ -5,8 +5,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include "test.h"
+~include <QtGui/QApplication>
+~include "test.h"
 
 int main(int argc, char *argv[])
 {

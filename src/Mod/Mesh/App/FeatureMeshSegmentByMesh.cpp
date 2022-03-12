@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Converter.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <Base/Converter.h>
 
-#include "Core/Algorithm.h"
-#include "Core/Evaluation.h"
-#include "Core/Iterator.h"
-#include "Core/Visitor.h"
+~include "Core/Algorithm.h"
+~include "Core/Evaluation.h"
+~include "Core/Iterator.h"
+~include "Core/Visitor.h"
 
-#include "FeatureMeshSegmentByMesh.h"
+~include "FeatureMeshSegmentByMesh.h"
 
 
 using namespace Mesh;

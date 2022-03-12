@@ -23,89 +23,89 @@
 //  Module : SMESH
 //
 
-// Suppress warning due to use of #import an macOS inside Aspect_RenderingContext.hxx
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
-#endif
+// Suppress warning due to use of ~import an macOS inside Aspect_RenderingContext.hxx
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
+~endif
 
-#include "StdMeshers_Cartesian_3D.hxx"
+~include "StdMeshers_Cartesian_3D.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "StdMeshers_CartesianParameters3D.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "StdMeshers_CartesianParameters3D.hxx"
 
-#include <utilities.h>
-#include <Utils_ExceptHandlers.hxx>
-#include <Basics_OCCTVersion.hxx>
+~include <utilities.h>
+~include <Utils_ExceptHandlers.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include <GEOMUtils.hxx>
+~include <GEOMUtils.hxx>
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepTools.hxx>
-#include <BRepTopAdaptor_FClass2d.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B3d.hxx>
-#include <Bnd_Box.hxx>
-#include <ElSLib.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <Geom2d_BSplineCurve.hxx>
-#include <Geom2d_BezierCurve.hxx>
-#include <Geom2d_TrimmedCurve.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <GeomLib.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BezierSurface.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <IntAna_IntConicQuad.hxx>
-#include <IntAna_IntLinTorus.hxx>
-#include <IntAna_Quadric.hxx>
-#include <IntCurveSurface_TransitionOnCurve.hxx>
-#include <IntCurvesFace_Intersector.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Precision.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_TShape.hxx>
-#include <gp_Cone.hxx>
-#include <gp_Cylinder.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Sphere.hxx>
-#include <gp_Torus.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepTools.hxx>
+~include <BRepTopAdaptor_FClass2d.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B3d.hxx>
+~include <Bnd_Box.hxx>
+~include <ElSLib.hxx>
+~include <GCPnts_UniformDeflection.hxx>
+~include <Geom2d_BSplineCurve.hxx>
+~include <Geom2d_BezierCurve.hxx>
+~include <Geom2d_TrimmedCurve.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <GeomLib.hxx>
+~include <Geom_BSplineCurve.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Geom_BezierCurve.hxx>
+~include <Geom_BezierSurface.hxx>
+~include <Geom_RectangularTrimmedSurface.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <IntAna_IntConicQuad.hxx>
+~include <IntAna_IntLinTorus.hxx>
+~include <IntAna_Quadric.hxx>
+~include <IntCurveSurface_TransitionOnCurve.hxx>
+~include <IntCurvesFace_Intersector.hxx>
+~include <Poly_Triangulation.hxx>
+~include <Precision.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_TShape.hxx>
+~include <gp_Cone.hxx>
+~include <gp_Cylinder.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Sphere.hxx>
+~include <gp_Torus.hxx>
 
-#include <limits>
+~include <limits>
 
-//#undef WITH_TBB
-#ifdef WITH_TBB
-#include <tbb/parallel_for.h>
-//#include <tbb/enumerable_thread_specific.h>
-#endif
+//~undef WITH_TBB
+~ifdef WITH_TBB
+~include <tbb/parallel_for.h>
+//~include <tbb/enumerable_thread_specific.h>
+~endif
 
 using namespace std;
 
-#ifdef _DEBUG_
-//#define _MY_DEBUG_
-#endif
+~ifdef _DEBUG_
+//~define _MY_DEBUG_
+~endif
 
 //=============================================================================
 /*!
@@ -355,9 +355,9 @@ namespace
       }
       return _surfaceInt;
     }
-#ifdef WITH_TBB
+~ifdef WITH_TBB
     bool IsThreadSafe(set< const Standard_Transient* >& noSafeTShapes) const;
-#endif
+~endif
   };
   // --------------------------------------------------------------------------
   /*!
@@ -663,7 +663,7 @@ namespace
     bool isOutParam(const double uvw[3]) const;
   };
 
-#ifdef WITH_TBB
+~ifdef WITH_TBB
   // --------------------------------------------------------------------------
   /*!
    * \brief Hexahedron computing volumes in one thread
@@ -693,7 +693,7 @@ namespace
         _faceVec[i].Intersect();
     }
   };
-#endif
+~endif
 
   //=============================================================================
   // Implementation of internal utils
@@ -1049,7 +1049,7 @@ namespace
           }
         }
 
-#ifdef _MY_DEBUG_
+~ifdef _MY_DEBUG_
     // check validity of transitions
     const char* trName[] = { "TANGENT", "IN", "OUT", "APEX" };
     for ( int iDir = 0; iDir < 3; ++iDir ) // loop on 3 line directions
@@ -1086,7 +1086,7 @@ namespace
         }
       }
     }
-#endif
+~endif
   }
 
   //=============================================================================
@@ -1359,7 +1359,7 @@ namespace
       addIntPoint(/*toClassify=*/false);
     }
   }
-#ifdef WITH_TBB
+~ifdef WITH_TBB
   //================================================================================
   /*
    * check if its face can be safely intersected in a thread
@@ -1424,7 +1424,7 @@ namespace
     }
     return isSafe;
   }
-#endif
+~endif
   //================================================================================
   /*!
    * \brief Creates topology of the hexahedron
@@ -1782,11 +1782,11 @@ namespace
           //( quad._eIntNodes.empty() || _nbCornerNodes + nbIntersections > 6 ))
         nbSplits = 0;
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
       for ( size_t iP = 0; iP < quad._eIntNodes.size(); ++iP )
         if ( quad._eIntNodes[ iP ]->IsUsedInFace( polygon ))
           quad._eIntNodes[ iP ]->_usedInFace = 0;
-#endif
+~endif
       int nbUsedEdgeNodes = 0;
       _Face* prevPolyg = 0; // polygon previously created from this quad
 
@@ -2401,21 +2401,21 @@ namespace
     }
 
     // add elements resulted from hexadron intersection
-#ifdef WITH_TBB
+~ifdef WITH_TBB
     tbb::parallel_for ( tbb::blocked_range<size_t>( 0, intHexa.size() ),
                         ParallelHexahedron( intHexa ),
                         tbb::simple_partitioner()); // ComputeElements() is called here
     for ( size_t i = 0; i < intHexa.size(); ++i )
       if ( Hexahedron * hex = intHexa[ i ] )
         nbAdded += hex->addElements( helper );
-#else
+~else
     for ( size_t i = 0; i < intHexa.size(); ++i )
       if ( Hexahedron * hex = intHexa[ i ] )
       {
         hex->ComputeElements();
         nbAdded += hex->addElements( helper );
       }
-#endif
+~endif
 
     for ( size_t i = 0; i < allHexa.size(); ++i )
       if ( allHexa[ i ] )
@@ -2702,10 +2702,10 @@ namespace
       {
         Hexahedron* h = hexes[ hexIndex[i] ];
         // check if ip is really inside the hex
-#ifdef _DEBUG_
+~ifdef _DEBUG_
         if ( h->isOutParam( ip._uvw ))
           throw SALOME_Exception("ip outside a hex");
-#endif
+~endif
         h->_eIntPoints.push_back( & ip );
         added = true;
       }
@@ -3388,12 +3388,12 @@ namespace
    */
   bool Hexahedron::debugDumpLink( Hexahedron::_Link* link )
   {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     gp_Pnt p1 = link->_nodes[0]->Point(), p2 = link->_nodes[1]->Point();
     cout << "BUG: not shared link. IKJ = ( "<< _i << " " << _j << " " << _k << " )" << endl
          << "n1 (" << p1.X() << ", "<< p1.Y() << ", "<< p1.Z() << " )" << endl
          << "n2 (" << p2.X() << ", "<< p2.Y() << ", "<< p2.Z() << " )" << endl;
-#endif
+~endif
     return false;
   }
   //================================================================================
@@ -3576,7 +3576,7 @@ bool StdMeshers_Cartesian_3D::Compute(SMESH_Mesh &         theMesh,
 
     if ( _computeCanceled ) return false;
 
-#ifdef WITH_TBB
+~ifdef WITH_TBB
     { // copy partner faces and curves of not thread-safe types
       set< const Standard_Transient* > tshapes;
       BRepBuilderAPI_Copy copier;
@@ -3593,10 +3593,10 @@ bool StdMeshers_Cartesian_3D::Compute(SMESH_Mesh &         theMesh,
     tbb::parallel_for ( tbb::blocked_range<size_t>( 0, facesItersectors.size() ),
                         ParallelIntersector( facesItersectors ),
                         tbb::simple_partitioner());
-#else
+~else
     for ( size_t i = 0; i < facesItersectors.size(); ++i )
       facesItersectors[i].Intersect();
-#endif
+~endif
 
     // put interesection points onto the GridLine's; this is done after intersection
     // to avoid contention of facesItersectors for writing into the same GridLine

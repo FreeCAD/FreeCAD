@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "Driver_Document.h"
+~include "Driver_Document.h"
 
 Driver_Document::Driver_Document():
   myDocument(NULL)

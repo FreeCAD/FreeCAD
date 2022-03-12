@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <Windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <cfloat>
-# include <algorithm>
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/bundles/SoTextureCoordinateBundle.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/errors/SoReadError.h>
-# include <Inventor/misc/SoState.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <Windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <cfloat>
+~ include <algorithm>
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/bundles/SoTextureCoordinateBundle.h>
+~ include <Inventor/elements/SoGLCacheContextElement.h>
+~ include <Inventor/errors/SoReadError.h>
+~ include <Inventor/misc/SoState.h>
+~endif
 
-# include <Inventor/elements/SoCoordinateElement.h>
-# include <cfloat>
+~ include <Inventor/elements/SoCoordinateElement.h>
+~ include <cfloat>
 
-#include "SoPolygon.h"
+~include "SoPolygon.h"
 
 using namespace MeshGui;
 

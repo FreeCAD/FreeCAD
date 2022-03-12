@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObject.h>
+~include <App/DocumentObject.h>
 
-#include "Part.h"
-#include "PartPy.h"
+~include "Part.h"
+~include "PartPy.h"
 
 
 using namespace App;

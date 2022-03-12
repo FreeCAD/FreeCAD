@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QActionGroup>
-# include <QDir>
-# include <QFile>
-# include <QLayout>
-# include <QTextStream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QActionGroup>
+~ include <QDir>
+~ include <QFile>
+~ include <QLayout>
+~ include <QTextStream>
+~endif
 
-#include <functional>
-#include <Base/Interpreter.h>
+~include <functional>
+~include <Base/Interpreter.h>
 
-#include "UiLoader.h"
-#include "PythonWrapper.h"
-#include "WidgetFactory.h"
+~include "UiLoader.h"
+~include "PythonWrapper.h"
+~include "WidgetFactory.h"
 
 
 using namespace Gui;
@@ -137,7 +137,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    pyside2uic.compileUi(f, o, indent=0)\n"
         << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
         << "    exec(pyc, frame)\n"
-        << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
+        << "    ~Fetch the base_class and form class based on their type in the xml from designer\n"
         << "    form_class = frame['Ui_%s'%form_class]\n"
         << "    base_class = eval('QtWidgets.%s'%widget_class)\n";
 
@@ -172,7 +172,7 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
 
     QString cmd;
     QTextStream str(&cmd);
-#if 0
+~if 0
     // https://github.com/lunaryorn/snippets/blob/master/qt4/designer/pyside_dynamic.py
     str << "from PySide import QtCore, QtGui, QtUiTools\n"
         << "import FreeCADGui"
@@ -197,14 +197,14 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
         << "loader = UiLoader(globals()[\"base_\"])\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
-#else
+~else
     str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
         << "import FreeCADGui"
         << "\n"
         << "loader = FreeCADGui.UiLoader()\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
-#endif
+~endif
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {
@@ -227,7 +227,7 @@ Py::Object PySideUicModule::createCustomWidget(const Py::Tuple& args)
 
 // ----------------------------------------------------
 
-#if !defined (HAVE_QT_UI_TOOLS)
+~if !defined (HAVE_QT_UI_TOOLS)
 namespace Gui {
 QUiLoader::QUiLoader(QObject* parent)
 {
@@ -507,7 +507,7 @@ QString QUiLoader::errorString() const
     }
 }
 }
-#endif
+~endif
 
 // ----------------------------------------------------
 
@@ -631,4 +631,4 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
                                                  std::placeholders::_3));
 }
 
-#include "moc_UiLoader.cpp"
+~include "moc_UiLoader.cpp"

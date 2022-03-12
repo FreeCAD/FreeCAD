@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/CommandT.h>
+~include <Gui/MainWindow.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/DlgEditFileIncludePropertyExternal.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ViewProviderSketch.h"
-#include "GeometryCreationMode.h"
-#include "Utils.h"
+~include "ViewProviderSketch.h"
+~include "GeometryCreationMode.h"
+~include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;

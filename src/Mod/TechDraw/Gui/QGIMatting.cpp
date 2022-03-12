@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <assert.h>
+~include <QPainter>
+~include <QPainterPath>
+~include <QStyleOptionGraphicsItem>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include <qmath.h>
-#include <QRectF>
-#include "PreferencesGui.h"
-#include "QGCustomRect.h"
-#include "ZVALUE.h"
-#include "QGIMatting.h"
+~include <qmath.h>
+~include <QRectF>
+~include "PreferencesGui.h"
+~include "QGCustomRect.h"
+~include "ZVALUE.h"
+~include "QGIMatting.h"
 
 using namespace TechDrawGui;
 

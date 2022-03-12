@@ -25,16 +25,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "frames.hpp"
+~include "frames.hpp"
 
-#define _USE_MATH_DEFINES  // For MSVC
-#include <math.h>
+~define _USE_MATH_DEFINES  // For MSVC
+~include <math.h>
 
 namespace KDL {
 
-#ifndef KDL_INLINE
-#include "frames.inl"
-#endif
+~ifndef KDL_INLINE
+~include "frames.inl"
+~endif
 
     void Frame::Make4x4(double * d)
     {
@@ -386,9 +386,9 @@ double Rotation::GetRotAngle(Vector& axis,double eps) const {
 }
 
 bool operator==(const Rotation& a,const Rotation& b) {
-#ifdef KDL_USE_EQUAL
+~ifdef KDL_USE_EQUAL
     return Equal(a,b,epsilon);
-#else
+~else
     return ( a.data[0]==b.data[0] &&
              a.data[1]==b.data[1] &&
              a.data[2]==b.data[2] &&
@@ -398,6 +398,6 @@ bool operator==(const Rotation& a,const Rotation& b) {
              a.data[6]==b.data[6] &&
              a.data[7]==b.data[7] &&
              a.data[8]==b.data[8]  );
-#endif
+~endif
 }
 }

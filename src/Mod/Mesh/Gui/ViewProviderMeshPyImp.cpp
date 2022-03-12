@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <Mod/Mesh/Gui/ViewProvider.h>
+~include <Mod/Mesh/Gui/ViewProvider.h>
 
 // inclusion of the generated files (generated out of ViewProviderMeshPy.xml)
-#include "ViewProviderMeshPy.h"
-#include "ViewProviderMeshPy.cpp"
+~include "ViewProviderMeshPy.h"
+~include "ViewProviderMeshPy.cpp"
 
 using namespace MeshGui;
 

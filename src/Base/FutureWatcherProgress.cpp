@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "FutureWatcherProgress.h"
+~include "FutureWatcherProgress.h"
 
 using namespace Base;
 
@@ -47,4 +47,4 @@ void FutureWatcherProgress::progressValueChanged(int v)
     }
 }
 
-#include "moc_FutureWatcherProgress.cpp"
+~include "moc_FutureWatcherProgress.cpp"

@@ -30,15 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/errors/SoDebugError.h>
+~include <Inventor/errors/SoDebugError.h>
 
-#include "KeyboardP.h"
-#include "devices/Keyboard.h"
+~include "KeyboardP.h"
+~include "devices/Keyboard.h"
 
 
 using namespace SIM::Coin3D::Quarter;
 
-#define PUBLIC(obj) obj->publ
+~define PUBLIC(obj) obj->publ
 
 KeyboardP::KeyboardP(Keyboard * publ)
 {
@@ -89,7 +89,7 @@ KeyboardP::keyEvent(QKeyEvent * qevent)
   this->keyboard->setPrintableCharacter(*printable);
   this->keyboard->setKey(sokey);
 
-#if QUARTER_DEBUG
+~if QUARTER_DEBUG
   if (KeyboardP::debugKeyEvents()) {
     SbString s;
     this->keyboard->enumToString(this->keyboard->getKey(), s);
@@ -100,7 +100,7 @@ KeyboardP::keyEvent(QKeyEvent * qevent)
                            PUBLIC(this)->mousepos[1],
                            printable);
   }
-#endif
+~endif
   return this->keyboard;
 }
 
@@ -236,14 +236,14 @@ KeyboardP::initKeyMap()
   keypadmap->insert(Qt::Key_Period,   SoKeyboardEvent::PAD_PERIOD);
 
 
-#if 0 // FIXME: don't know what to do with these (20070306 frodo)
+~if 0 // FIXME: don't know what to do with these (20070306 frodo)
   keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_SHIFT);
   keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_CONTROL);
   keyboardmap->insert(Qt::, SoKeyboardEvent::RIGHT_ALT);
   keyboardmap->insert(Qt::, SoKeyboardEvent::PRIOR);
   keyboardmap->insert(Qt::, SoKeyboardEvent::NEXT);
   keyboardmap->insert(Qt::, SoKeyboardEvent::SHIFT_LOCK);
-#endif
+~endif
 }
 
-#undef PUBLIC
+~undef PUBLIC

@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <CXX/Objects.hxx>
-#include <Base/Console.h>
-#include <Base/Converter.h>
-#include <Base/Exception.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/VectorPy.h>
+~include <CXX/Objects.hxx>
+~include <Base/Console.h>
+~include <Base/Converter.h>
+~include <Base/Exception.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/VectorPy.h>
 
-#include "Core/MeshKernel.h"
-#include "Core/MeshIO.h"
-#include "Core/Iterator.h"
+~include "Core/MeshKernel.h"
+~include "Core/MeshIO.h"
+~include "Core/Iterator.h"
 
-#include "MeshProperties.h"
-#include "Mesh.h"
-#include "MeshPy.h"
+~include "MeshProperties.h"
+~include "Mesh.h"
+~include "MeshPy.h"
 
 using namespace Mesh;
 

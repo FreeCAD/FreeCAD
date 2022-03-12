@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QVBoxLayout>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QVBoxLayout>
+~endif
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include "PropertyPage.h"
-#include "PrefWidgets.h"
-#include "UiLoader.h"
+~include "PropertyPage.h"
+~include "PrefWidgets.h"
+~include "UiLoader.h"
 
 
 using namespace Gui::Dialog;
@@ -256,4 +256,4 @@ void CustomizeActionPage::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-#include "moc_PropertyPage.cpp"
+~include "moc_PropertyPage.cpp"

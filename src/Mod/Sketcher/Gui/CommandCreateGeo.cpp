@@ -21,54 +21,54 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <QApplication>
-# include <QInputDialog>
-# include <QMessageBox>
-# include <QString>
-# include <stdlib.h>
-# include <qdebug.h>
-# include <GC_MakeEllipse.hxx>
-# include <boost/math/special_functions/fpclassify.hpp>
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/events/SoKeyboardEvent.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <QApplication>
+~ include <QInputDialog>
+~ include <QMessageBox>
+~ include <QString>
+~ include <stdlib.h>
+~ include <qdebug.h>
+~ include <GC_MakeEllipse.hxx>
+~ include <boost/math/special_functions/fpclassify.hpp>
+~ include <memory>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
 
-#include <App/OriginFeature.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Sketcher/App/Constraint.h>
+~include <App/OriginFeature.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Document.h>
+~include <Gui/CommandT.h>
+~include <Gui/MainWindow.h>
+~include <Gui/DlgEditFileIncludePropertyExternal.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Part/App/DatumFeature.h>
+~include <Mod/Part/App/BodyBase.h>
+~include <Mod/Part/App/Geometry2d.h>
+~include <Mod/Sketcher/App/Constraint.h>
 
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
-#include "Utils.h"
+~include "ViewProviderSketch.h"
+~include "DrawSketchHandler.h"
+~include "Utils.h"
 
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/SoFCUnifiedSelection.h>
 
-#include <Gui/ToolBarManager.h>
+~include <Gui/ToolBarManager.h>
 
-#include "GeometryCreationMode.h"
+~include "GeometryCreationMode.h"
 
-#include "SketcherRegularPolygonDialog.h"
+~include "SketcherRegularPolygonDialog.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -1568,7 +1568,7 @@ public:
                     // -360, -315, -270, -225, -180, -135, -90, -45,  0, 45,  90, 135, 180, 225, 270, 315, 360
                     //  N/A,    a, perp,    a,  par,    a,perp,   a,N/A,  a,perp,   a, par,   a,perp,   a, N/A
 
-                    // #3974: if in radians, the printf %f defaults to six decimals, which leads to loss of precision
+                    // ~3974: if in radians, the printf %f defaults to six decimals, which leads to loss of precision
                     double arcAngle = abs(round( (endAngle - startAngle) / (M_PI/4)) * 45); // in degrees
 
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%i,App.Units.Quantity('%f deg'))) ",

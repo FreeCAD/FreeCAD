@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DockWindow.h"
+~include "DockWindow.h"
 
 
 using namespace Gui;
@@ -36,4 +36,4 @@ DockWindow::~DockWindow()
 {
 }
 
-#include "moc_DockWindow.cpp"
+~include "moc_DockWindow.cpp"

@@ -2,10 +2,10 @@
 // Copyright (c) 2009, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
-#include "dxf.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
+~include "dxf.h"
+~include <fstream>
+~include <sstream>
+~include <iostream>
 
 using namespace std;
 static const double Pi = 3.14159265358979323846264338327950288419716939937511;
@@ -14,11 +14,11 @@ CDxfWrite::CDxfWrite(const char* filepath)
 {
     // start the file
     m_fail = false;
-#ifdef __WXMSW__
+~ifdef __WXMSW__
     m_ofs = new ofstream(filepath, ios::out);
-#else
+~else
     m_ofs = new ofstream(filepath, ios::out);
-#endif
+~endif
     if(!(*m_ofs)){
         m_fail = true;
         return;

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "DlgPointsReadImp.h"
-#include "ui_DlgPointsRead.h"
+~include "DlgPointsReadImp.h"
+~include "ui_DlgPointsRead.h"
 
 using namespace PointsGui;
 
@@ -49,4 +49,4 @@ DlgPointsReadImp::~DlgPointsReadImp()
 
 
 
-#include "moc_DlgPointsReadImp.cpp"
+~include "moc_DlgPointsReadImp.cpp"

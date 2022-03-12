@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepClass_FaceClassifier.hxx>
-# include <BRepLib_FindSurface.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <QtGlobal>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepClass_FaceClassifier.hxx>
+~ include <BRepLib_FindSurface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <Precision.hxx>
+~ include <Standard_Failure.hxx>
+~ include <TopoDS.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <QtGlobal>
+~endif
 
-#include "FaceMakerBullseye.h"
-#include "FaceMakerCheese.h"
-#include "TopoShape.h"
+~include "FaceMakerBullseye.h"
+~include "FaceMakerCheese.h"
+~include "TopoShape.h"
 
 
 using namespace Part;

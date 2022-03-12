@@ -25,7 +25,7 @@
 //  Module : SMESH
 //
 
-#include "StdMeshers_Reversible1D.hxx"
+~include "StdMeshers_Reversible1D.hxx"
 
 //=============================================================================
 /*!

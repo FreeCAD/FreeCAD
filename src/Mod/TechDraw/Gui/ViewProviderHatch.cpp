@@ -22,22 +22,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <Precision.hxx>
-#endif
+~ifndef _PreComp_
+~include <Precision.hxx>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
+~include <App/DocumentObject.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
 
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include "TaskHatch.h"
-#include "ViewProviderHatch.h"
+~include "TaskHatch.h"
+~include "ViewProviderHatch.h"
 
 using namespace TechDrawGui;
 

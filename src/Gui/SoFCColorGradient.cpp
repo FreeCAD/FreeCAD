@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <Inventor/fields/SoMFString.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoTransparencyType.h>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Inventor/fields/SoMFString.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoIndexedFaceSet.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/nodes/SoTransparencyType.h>
+~endif
 
-#include "SoFCColorGradient.h"
-#include "DlgSettingsColorGradientImp.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "ViewProvider.h"
+~include "SoFCColorGradient.h"
+~include "DlgSettingsColorGradientImp.h"
+~include "MainWindow.h"
+~include "MDIView.h"
+~include "ViewProvider.h"
 
 using namespace Gui;
 

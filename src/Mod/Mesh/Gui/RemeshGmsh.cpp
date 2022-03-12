@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
-# include <QTextCursor>
-# include <QElapsedTimer>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QPushButton>
+~ include <QTextCursor>
+~ include <QElapsedTimer>
+~endif
 
-#include "RemeshGmsh.h"
-#include "ui_RemeshGmsh.h"
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Widgets.h>
-#include <Gui/ReportView.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
+~include "RemeshGmsh.h"
+~include "ui_RemeshGmsh.h"
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Widgets.h>
+~include <Gui/ReportView.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
 
 using namespace MeshGui;
 
@@ -95,7 +95,7 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
     d->ui.outputWindow->setReadOnly(true);
 
     // 2D Meshing algorithms
-    // https://gmsh.info/doc/texinfo/gmsh.html#index-Mesh_002eAlgorithm
+    // https://gmsh.info/doc/texinfo/gmsh.html~index-Mesh_002eAlgorithm
     enum {
         MeshAdapt = 1,
         Automatic = 2,
@@ -414,4 +414,4 @@ void TaskRemeshGmsh::clicked(int id)
     }
 }
 
-#include "moc_RemeshGmsh.cpp"
+~include "moc_RemeshGmsh.cpp"

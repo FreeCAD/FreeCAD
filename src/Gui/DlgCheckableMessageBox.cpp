@@ -27,21 +27,21 @@
 **
 **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QHeaderView>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QHeaderView>
+~endif
 
-#include "DlgCheckableMessageBox.h"
-#include "ui_DlgCheckableMessageBox.h"
+~include "DlgCheckableMessageBox.h"
+~include "ui_DlgCheckableMessageBox.h"
 
-#include <QPushButton>
-#include <QtCore/QDebug>
+~include <QPushButton>
+~include <QtCore/QDebug>
 
-#include "MainWindow.h"
+~include "MainWindow.h"
 
-#include <App/Application.h>
-//#include <App/Parameter.h>
+~include <App/Application.h>
+//~include <App/Parameter.h>
 
 
 namespace Gui {
@@ -156,13 +156,13 @@ void DlgCheckableMessageBox::setText(const QString &t)
 
 QPixmap DlgCheckableMessageBox::iconPixmap() const
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     return m_d->ui.pixmapLabel->pixmap(Qt::ReturnByValue);
-#else
+~else
     if (const QPixmap *p = m_d->ui.pixmapLabel->pixmap())
         return QPixmap(*p);
     return QPixmap();
-#endif
+~endif
 }
 
 void DlgCheckableMessageBox::setIconPixmap(const QPixmap &p)
@@ -262,4 +262,4 @@ QMessageBox::StandardButton DlgCheckableMessageBox::dialogButtonBoxToMessageBoxB
 } // namespace Dialog
 } // namespace Gui
 
-#include "moc_DlgCheckableMessageBox.cpp"
+~include "moc_DlgCheckableMessageBox.cpp"

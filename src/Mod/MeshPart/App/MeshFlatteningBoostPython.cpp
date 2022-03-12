@@ -22,36 +22,36 @@
 
 
 
-#include "PreCompiled.h"
-#include <Base/Interpreter.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
+~include "PreCompiled.h"
+~include <Base/Interpreter.h>
+~include <Mod/Part/App/TopoShapeFacePy.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
-#include <boost/python.hpp>
-#include <boost/python/module.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/wrapper.hpp>
-#include <boost/python/call.hpp>
-#include <boost/python/copy_const_reference.hpp>
-#include <boost/python/return_value_policy.hpp>
+~include <Eigen/Core>
+~include <Eigen/Geometry>
+~include <Eigen/Sparse>
+~include <boost/python.hpp>
+~include <boost/python/module.hpp>
+~include <boost/python/class.hpp>
+~include <boost/python/wrapper.hpp>
+~include <boost/python/call.hpp>
+~include <boost/python/copy_const_reference.hpp>
+~include <boost/python/return_value_policy.hpp>
 
-#include <memory>
-#include <vector>
-#include <tuple>
-#include <map>
-#include <stdexcept>
+~include <memory>
+~include <vector>
+~include <tuple>
+~include <map>
+~include <stdexcept>
 
-#include "MeshFlattening.h"
-#include "MeshFlatteningLscmRelax.h"
-#include "MeshFlatteningNurbs.h"
+~include "MeshFlattening.h"
+~include "MeshFlatteningLscmRelax.h"
+~include "MeshFlatteningNurbs.h"
 
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <ShapeFix_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS.hxx>
+~include <ShapeFix_Edge.hxx>
 
 
 

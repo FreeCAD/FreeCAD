@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QDateTime>
-# if defined(FC_OS_LINUX) || defined(__MINGW32__)
-# include <sys/time.h>
-# endif
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QDateTime>
+~ if defined(FC_OS_LINUX) || defined(__MINGW32__)
+~ include <sys/time.h>
+~ endif
+~endif
 
-#include "TimeInfo.h"
+~include "TimeInfo.h"
 
 
 using namespace Base;
@@ -60,16 +60,16 @@ TimeInfo::~TimeInfo()
 
 void TimeInfo::setCurrent()
 {
-#if defined (FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
+~if defined (FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
     struct timeval t;
     gettimeofday(&t, NULL);
     timebuffer.time = t.tv_sec;
     timebuffer.millitm = t.tv_usec / 1000;
-#elif defined(FC_OS_WIN32)
+~elif defined(FC_OS_WIN32)
     _ftime(&timebuffer);
-#else
+~else
     ftime(&timebuffer); // deprecated
-#endif
+~endif
 }
 
 void TimeInfo::setTime_t (int64_t seconds)

@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#	include <cassert>
-#endif
+~ifndef _PreComp_
+~	include <cassert>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/DocumentObjectPy.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Tools.h>
-#include <Base/Interpreter.h>
-#include <Base/QuantityPy.h>
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <CXX/Objects.hxx>
+~include <App/DocumentObjectPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Tools.h>
+~include <Base/Interpreter.h>
+~include <Base/QuantityPy.h>
+~include <Base/Console.h>
+~include <Base/Reader.h>
+~include <CXX/Objects.hxx>
 
-#include "ObjectIdentifier.h"
-#include "Application.h"
-#include "Document.h"
-#include "ExpressionParser.h"
-#include "Link.h"
-#include "Property.h"
+~include "ObjectIdentifier.h"
+~include "Application.h"
+~include "Document.h"
+~include "ExpressionParser.h"
+~include "Link.h"
+~include "Property.h"
 
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
@@ -319,8 +319,8 @@ bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
 /**
  * @brief Create a string representation of this object identifier.
  *
- * An identifier is written as document#documentobject.property.subproperty1...subpropertyN
- * document# may be dropped; it is assumed to be within owner's document. If documentobject is dropped,
+ * An identifier is written as document~documentobject.property.subproperty1...subpropertyN
+ * document~ may be dropped; it is assumed to be within owner's document. If documentobject is dropped,
  * the property is assumed to be owned by the owner specified in the object identifiers constructor.
  *
  * @return A string
@@ -347,10 +347,10 @@ const std::string &ObjectIdentifier::toString() const
         s << '.';
     }else if (documentNameSet && documentName.getString().size()) {
         if(documentObjectNameSet && documentObjectName.getString().size())
-            s << documentName.toString() << "#"
+            s << documentName.toString() << "~"
               << documentObjectName.toString() << '.';
         else if(result.resolvedDocumentObjectName.getString().size())
-            s << documentName.toString() << "#"
+            s << documentName.toString() << "~"
               << result.resolvedDocumentObjectName.toString() << '.';
     } else if (documentObjectNameSet && documentObjectName.getString().size()) {
         s << documentObjectName.toString() << '.';
@@ -397,10 +397,10 @@ std::string ObjectIdentifier::toPersistentString() const {
         s << '.';
     } else if (documentNameSet && documentName.getString().size()) {
         if(documentObjectNameSet && documentObjectName.getString().size())
-            s << documentName.toString() << "#"
+            s << documentName.toString() << "~"
                 << documentObjectName.toString() << '.';
         else if(result.resolvedDocumentObjectName.getString().size())
-            s << documentName.toString() << "#"
+            s << documentName.toString() << "~"
                 << result.resolvedDocumentObjectName.toString() << '.';
     } else if (documentObjectNameSet && documentObjectName.getString().size()) {
         s << documentObjectName.toString() << '.';
@@ -853,7 +853,7 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
         if (strcmp((*j)->Label.getValue(), static_cast<const char*>(name)) == 0) {
             // Found object with matching label
             if (objectByLabel != 0)  {
-                FC_WARN("duplicate object label " << doc->getName() << '#' << name);
+                FC_WARN("duplicate object label " << doc->getName() << '~' << name);
                 return 0;
             }
             objectByLabel = *j;
@@ -1532,10 +1532,10 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
     // NOTE! We do not keep reference of the imported module, assuming once
     // imported they'll live (because of sys.modules) till the application
     // dies.
-#define GET_MODULE(_name) do {\
+~define GET_MODULE(_name) do {\
         static PyObject *pymod;\
         if(!pymod) {\
-           pymod = PyImport_ImportModule(#_name);\
+           pymod = PyImport_ImportModule(~_name);\
             if(!pymod)\
                 Base::PyException::ThrowException();\
             else\

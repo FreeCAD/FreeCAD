@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Section.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepGProp_Face.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <gp_Pln.hxx>
-# include <Precision.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepAlgoAPI_Common.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Section.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepGProp_Face.hxx>
+~ include <BRepPrimAPI_MakeHalfSpace.hxx>
+~ include <gp_Pln.hxx>
+~ include <Precision.hxx>
+~ include <ShapeFix_Wire.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Wire.hxx>
+~endif
 
-#include "CrossSection.h"
+~include "CrossSection.h"
 
 using namespace Part;
 
@@ -87,7 +87,7 @@ void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<
 
 void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
 {
-#if 0
+~if 0
     gp_Pln slicePlane(a,b,c,-d);
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face face = mkFace.Face();
@@ -99,12 +99,12 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
         TopExp::MapShapes(mkInt.Shape(), TopAbs_WIRE, mapOfWires);
         connectWires(mapOfWires, wires);
     }
-#else
+~else
     gp_Pln slicePlane(a,b,c,-d);
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face face = mkFace.Face();
 
-    // Make sure to choose a point that does not lie on the plane (fixes #0001228)
+    // Make sure to choose a point that does not lie on the plane (fixes ~0001228)
     gp_Vec tempVector(a,b,c);
     tempVector.Normalize();//just in case.
     tempVector *= (d+1.0);
@@ -133,7 +133,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             }
         }
     }
-#endif
+~endif
 }
 
 void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const

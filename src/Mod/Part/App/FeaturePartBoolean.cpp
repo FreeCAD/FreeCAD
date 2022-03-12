@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_BooleanOperation.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_BooleanOperation.hxx>
+~ include <BRepCheck_Analyzer.hxx>
+~ include <Standard_Failure.hxx>
+~ include <memory>
+~endif
 
-#include "FeaturePartBoolean.h"
-#include "modelRefine.h"
-#include <App/Application.h>
-#include <Base/Parameter.h>
+~include "FeaturePartBoolean.h"
+~include "modelRefine.h"
+~include <App/Application.h>
+~include <Base/Parameter.h>
 
 
 using namespace Part;
@@ -70,9 +70,9 @@ short Boolean::mustExecute() const
 App::DocumentObjectExecReturn *Boolean::execute(void)
 {
     try {
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
+~if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
-#endif
+~endif
         auto base = Base.getValue();
         auto tool = Tool.getValue();
 

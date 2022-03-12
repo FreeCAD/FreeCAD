@@ -21,46 +21,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <cmath>
-#include <QDialogButtonBox>
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsTextItem>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QString>
-#include <QTextOption>
-#include <QVBoxLayout>
-#include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <cmath>
+~include <QDialogButtonBox>
+~include <QGraphicsScene>
+~include <QMouseEvent>
+~include <QGraphicsSceneHoverEvent>
+~include <QGraphicsItem>
+~include <QStyleOptionGraphicsItem>
+~include <QGraphicsTextItem>
+~include <QPainterPathStroker>
+~include <QPainter>
+~include <QString>
+~include <QTextOption>
+~include <QVBoxLayout>
+~include <sstream>
+~endif
 
-#include <string>
-#include <regex>
+~include <string>
+~include <regex>
 
-#include <qmath.h>
-#include <QTextDocument>
-#include <QTextBlock>
-#include <QTextBlockFormat>
-#include <QTextFrame>
-#include <QSizeF>
+~include <qmath.h>
+~include <QTextDocument>
+~include <QTextBlock>
+~include <QTextBlockFormat>
+~include <QTextFrame>
+~include <QSizeF>
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
-#include <Gui/Widgets.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Tools.h>
+~include <Gui/Widgets.h>
 
 
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include "Rez.h"
-#include "QGIViewAnnotation.h"
-#include "QGCustomText.h"
+~include <Mod/TechDraw/App/DrawViewAnnotation.h>
+~include "Rez.h"
+~include "QGIViewAnnotation.h"
+~include "QGCustomText.h"
 
 using namespace TechDrawGui;
 

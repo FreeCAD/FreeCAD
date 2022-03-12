@@ -21,48 +21,48 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cmath>
-# include <QContextMenuEvent>
-# include <QMenu>
-# include <QRegExp>
-# include <QString>
-# include <QMessageBox>
-# include <QStyledItemDelegate>
-# include <QPainter>
-# include <QPixmapCache>
-# include <QStringListModel>
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <cmath>
+~ include <QContextMenuEvent>
+~ include <QMenu>
+~ include <QRegExp>
+~ include <QString>
+~ include <QMessageBox>
+~ include <QStyledItemDelegate>
+~ include <QPainter>
+~ include <QPixmapCache>
+~ include <QStringListModel>
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include "TaskSketcherConstraints.h"
-#include "ui_TaskSketcherConstraints.h"
-#include "EditDatumDialog.h"
-#include "ViewProviderSketch.h"
+~include "TaskSketcherConstraints.h"
+~include "ui_TaskSketcherConstraints.h"
+~include "EditDatumDialog.h"
+~include "ViewProviderSketch.h"
 
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/Gui/CommandConstraints.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/Gui/CommandConstraints.h>
 
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Expression.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Expression.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/CommandT.h>
+~include <Gui/MainWindow.h>
+~include <Gui/PrefWidgets.h>
 
-#include "Utils.h"
+~include "Utils.h"
 
-#include "ConstraintMultiFilterDialog.h"
-#include "ConstraintSettingsDialog.h"
+~include "ConstraintMultiFilterDialog.h"
+~include "ConstraintSettingsDialog.h"
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -73,13 +73,13 @@ using namespace Gui::TaskView;
 /// CMDSTR is the string registered in the commandManager
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
-#define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)                       \
-QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) );                    \
-    QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()),    \
+~define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)                       \
+QIcon icon_ ~~ FUNC( Gui::BitmapFactory().pixmap(ICONSTR) );                    \
+    QAction* constr_ ~~ FUNC = menu.addAction(icon_ ~~ FUNC,tr(NAMESTR), this, SLOT(FUNC()),    \
         QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));        \
-    if(ACTSONSELECTION) constr_ ## FUNC->setEnabled(!items.isEmpty()); else constr_ ## FUNC->setEnabled(true);
+    if(ACTSONSELECTION) constr_ ~~ FUNC->setEnabled(!items.isEmpty()); else constr_ ~~ FUNC->setEnabled(true);
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
-#define CONTEXT_MEMBER_DEF(CMDSTR,FUNC)                             \
+~define CONTEXT_MEMBER_DEF(CMDSTR,FUNC)                             \
 void ConstraintView::FUNC(){                               \
    Gui::Application::Instance->commandManager().runCommandByName(CMDSTR);}
 
@@ -511,9 +511,9 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
 
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
-#ifndef Q_OS_MAC // on Mac F2 doesn't seem to trigger an edit signal
+~ifndef Q_OS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
-#endif
+~endif
         );
     rename->setEnabled(item != 0);
 
@@ -1479,4 +1479,4 @@ bool TaskSketcherConstraints::isFilter(T filterValue) {
 
 
 
-#include "moc_TaskSketcherConstraints.cpp"
+~include "moc_TaskSketcherConstraints.cpp"

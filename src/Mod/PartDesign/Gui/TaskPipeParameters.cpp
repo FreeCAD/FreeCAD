@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QGenericReturnArgument>
-# include <QMessageBox>
-# include <QMetaObject>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QGenericReturnArgument>
+~ include <QMessageBox>
+~ include <QMetaObject>
+~endif
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/Origin.h>
-#include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Widgets.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <App/Origin.h>
+~include <Gui/CommandT.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Widgets.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeaturePipe.h>
 
-#include "ui_TaskPipeParameters.h"
-#include "ui_TaskPipeOrientation.h"
-#include "ui_TaskPipeScaling.h"
-#include <ui_DlgReference.h>
+~include "ui_TaskPipeParameters.h"
+~include "ui_TaskPipeOrientation.h"
+~include "ui_TaskPipeScaling.h"
+~include <ui_DlgReference.h>
 
-#include "TaskPipeParameters.h"
-#include "TaskFeaturePick.h"
-#include "TaskSketchBasedParameters.h"
-#include "Utils.h"
+~include "TaskPipeParameters.h"
+~include "TaskFeaturePick.h"
+~include "TaskSketchBasedParameters.h"
+~include "Utils.h"
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
@@ -84,10 +84,10 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QKeySequence::Delete);
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetReferences->addAction(remove);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -563,10 +563,10 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QKeySequence::Delete);
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetReferences->addAction(remove);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteItem()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -816,10 +816,10 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QKeySequence::Delete);
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
@@ -1122,4 +1122,4 @@ bool TaskDlgPipeParameters::accept()
 }
 
 
-#include "moc_TaskPipeParameters.cpp"
+~include "moc_TaskPipeParameters.cpp"

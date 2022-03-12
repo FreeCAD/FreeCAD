@@ -25,35 +25,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoMultipleCopy.h>
+~ include <Inventor/nodes/SoCylinder.h>
+~ include <Inventor/nodes/SoSphere.h>
+~ include <Inventor/nodes/SoCube.h>
+~ include <Inventor/nodes/SoText3.h>
+~ include <Inventor/nodes/SoFont.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoScale.h>
 
-# include <math.h>
-#endif
+~ include <math.h>
+~endif
 
-#include <Gui/Command.h>
+~include <Gui/Command.h>
 
-#include "Mod/Fem/App/FemConstraintTransform.h"
-#include "TaskFemConstraintTransform.h"
-#include "ViewProviderFemConstraintTransform.h"
-#include <Base/Console.h>
-#include <Gui/Control.h>
+~include "Mod/Fem/App/FemConstraintTransform.h"
+~include "TaskFemConstraintTransform.h"
+~include "ViewProviderFemConstraintTransform.h"
+~include <Base/Console.h>
+~include <Gui/Control.h>
 
 
 using namespace FemGui;
@@ -107,12 +107,12 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
     }
 }
 
-#define HEIGHTAXIS (20)
-#define RADIUSAXIS (0.8)
-#define ARROWLENGTH (3)
-#define ARROWHEADRADIUS (ARROWLENGTH/3)
-#define LENGTHDISC (0.25)
-#define RADIUSDISC (0.8)
+~define HEIGHTAXIS (20)
+~define RADIUSAXIS (0.8)
+~define ARROWLENGTH (3)
+~define ARROWHEADRADIUS (ARROWLENGTH/3)
+~define LENGTHDISC (0.25)
+~define RADIUSDISC (0.8)
 
 void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
 {

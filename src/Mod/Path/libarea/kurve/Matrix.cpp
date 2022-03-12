@@ -7,14 +7,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "geometry.h"
+~include "geometry.h"
 using namespace geoff_geometry;
 
-#ifdef PEPSDLL
-	#include "vdm.h"
-	#include "pepsdll.h"
-	#include "realds.h"
-#endif
+~ifdef PEPSDLL
+	~include "vdm.h"
+	~include "pepsdll.h"
+	~include "realds.h"
+~endif
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // matrix
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,14 +42,14 @@ namespace geoff_geometry {
 		return true;
 	}
 
-#if 0
+~if 0
 	const Matrix& Matrix::operator=( Matrix &m) {
 		for(int i = 0; i < 16; i++) e[i] = m.e[i];
 		m_unit = m.m_unit;
 		m_mirrored = m.m_mirrored;
 		return *this;
 	}
-#endif
+~endif
 	void	Matrix::Unit()
 	{
 		// homogeneous matrix - set as unit matrix
@@ -464,7 +464,7 @@ namespace geoff_geometry {
 		return a;
 	}
 
-#ifdef PEPSDLL
+~ifdef PEPSDLL
 	void Matrix::ToPeps(int id)
 	{
 		int set = PepsVdmMake(id, VDM_MATRIX_TYPE , VDM_LOCAL);
@@ -504,7 +504,7 @@ namespace geoff_geometry {
 		m_mirrored = IsMirrored();
 		//	}
 	}
-#endif
+~endif
 
 	Matrix UnitMatrix;					// a global unit matrix
 
@@ -558,7 +558,7 @@ namespace geoff_geometry {
 	}
 
 	 int Vector3d::setCartesianAxes(Vector3d& b, Vector3d& c) {
-#define a *this
+~define a *this
 	// computes a RH triad of Axes (Cartesian) starting from a (normalised)
 	// if a & b are perpendicular then c = a ^ b
 	// if a & c are perpendicular then b = c ^ a

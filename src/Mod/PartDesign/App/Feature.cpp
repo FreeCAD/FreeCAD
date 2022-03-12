@@ -21,26 +21,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Tool.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <Standard_Failure.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Tool.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Pnt.hxx>
+~ include <Standard_Failure.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~endif
 
-#include "App/DocumentObject.h"
-#include <App/FeaturePythonPyImp.h>
-#include "App/OriginFeature.h"
-#include <Base/Console.h>
+~include "App/DocumentObject.h"
+~include <App/FeaturePythonPyImp.h>
+~include "App/OriginFeature.h"
+~include <Base/Console.h>
 
-#include "Feature.h"
-#include "FeaturePy.h"
-#include "Body.h"
-#include "ShapeBinder.h"
+~include "Feature.h"
+~include "FeaturePy.h"
+~include "Body.h"
+~include "ShapeBinder.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 

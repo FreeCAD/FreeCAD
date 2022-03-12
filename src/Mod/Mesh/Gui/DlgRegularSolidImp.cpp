@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cfloat>
-# include <qcheckbox.h>
-# include <qcombobox.h>
-# include <qmessagebox.h>
-#endif
+~ifndef _PreComp_
+~ include <cfloat>
+~ include <qcheckbox.h>
+~ include <qcombobox.h>
+~ include <qmessagebox.h>
+~endif
 
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
-#include <Gui/WaitCursor.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
+~include <Base/UnitsApi.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/PrefWidgets.h>
+~include <Gui/WaitCursor.h>
 
-#include "DlgRegularSolidImp.h"
-#include "ui_DlgRegularSolid.h"
+~include "DlgRegularSolidImp.h"
+~include "ui_DlgRegularSolid.h"
 
 using namespace MeshGui;
 
@@ -223,4 +223,4 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
     }
 }
 
-#include "moc_DlgRegularSolidImp.cpp"
+~include "moc_DlgRegularSolidImp.cpp"

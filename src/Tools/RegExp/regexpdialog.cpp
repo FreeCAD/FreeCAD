@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "regexpdialog.h"
-#include "ui_regexpdialog.h"
+~include "regexpdialog.h"
+~include "ui_regexpdialog.h"
 
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qmessagebox.h>
-#include <qtextedit.h>
+~include <qcheckbox.h>
+~include <qlabel.h>
+~include <qlineedit.h>
+~include <qmessagebox.h>
+~include <qtextedit.h>
 
 RegExpDialog::RegExpDialog(QWidget* parent)
   : QDialog(parent), ui(new Ui_RegExpDialog())
@@ -112,7 +112,7 @@ void RegExpSyntaxHighlighter::highlightBlock (const QString & text)
         last=pos;
     }
 }
-#if 0
+~if 0
 int RegExpSyntaxHighlighter::highlightParagraph ( const QString & text, int /*endStateOfLastPara*/ )
 {
     // reset format
@@ -141,7 +141,7 @@ int RegExpSyntaxHighlighter::highlightParagraph ( const QString & text, int /*en
 
     return 0;
 }
-#endif
+~endif
 void RegExpSyntaxHighlighter::highlightMatchedText(const QRegExp& rx)
 {
     regexp = rx;

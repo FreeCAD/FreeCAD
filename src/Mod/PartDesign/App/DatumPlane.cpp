@@ -22,15 +22,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Pnt.hxx>
+~endif
 
-#include "DatumPlane.h"
+~include "DatumPlane.h"
 
 using namespace PartDesign;
 using namespace Attacher;
@@ -82,7 +82,7 @@ void Plane::Restore(Base::XMLReader& reader)
 {
     // set it to Manual to avoid to automatically adjust
     // Length because it will be read before ResizeMode
-    // See bug #0004540
+    // See bug ~0004540
     ResizeMode.setValue("Manual");
     Datum::Restore(reader);
 }

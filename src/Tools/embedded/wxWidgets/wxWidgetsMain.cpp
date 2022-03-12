@@ -7,24 +7,24 @@
  * License:   LGPL
  **************************************************************/
 
-#ifdef WX_PRECOMP
-#include "wx_pch.h"
-#endif
+~ifdef WX_PRECOMP
+~include "wx_pch.h"
+~endif
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
+~ifdef __BORLANDC__
+~pragma hdrstop
+~endif //__BORLANDC__
 
-#include "wxWidgetsMain.h"
-#undef _POSIX_C_SOURCE
-#undef _XOPEN_SOURCE
-#include <Python.h>
-#include <string>
-#include <sstream>
-#include <vector>
-#ifdef __WXGTK__
-#   include "wx/gtk/win_gtk.h"
-#endif
+~include "wxWidgetsMain.h"
+~undef _POSIX_C_SOURCE
+~undef _XOPEN_SOURCE
+~include <Python.h>
+~include <string>
+~include <sstream>
+~include <vector>
+~ifdef __WXGTK__
+~   include "wx/gtk/win_gtk.h"
+~endif
 
 //helper functions
 enum wxbuildinfoformat {
@@ -36,19 +36,19 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 
     if (format == long_f )
     {
-#if defined(__WXMSW__)
+~if defined(__WXMSW__)
         wxbuild << _T("-Windows");
-#elif defined(__WXMAC__)
+~elif defined(__WXMAC__)
         wxbuild << _T("-Mac");
-#elif defined(__UNIX__)
+~elif defined(__UNIX__)
         wxbuild << _T("-Linux");
-#endif
+~endif
 
-#if wxUSE_UNICODE
+~if wxUSE_UNICODE
         wxbuild << _T("-Unicode build");
-#else
+~else
         wxbuild << _T("-ANSI build");
-#endif // wxUSE_UNICODE
+~endif // wxUSE_UNICODE
     }
 
     return wxbuild;
@@ -75,7 +75,7 @@ wxWidgetsFrame::wxWidgetsFrame(wxFrame *frame, const wxString& title)
         PySys_SetArgv(argc, &(argv[0]));
     }
 
-#if wxUSE_MENUS
+~if wxUSE_MENUS
     // create a menu bar
     wxMenuBar* mbar = new wxMenuBar();
     wxMenu* fileMenu = new wxMenu(_T(""));
@@ -96,14 +96,14 @@ wxWidgetsFrame::wxWidgetsFrame(wxFrame *frame, const wxString& title)
     mbar->Append(helpMenu, _("&Help"));
 
     SetMenuBar(mbar);
-#endif // wxUSE_MENUS
+~endif // wxUSE_MENUS
 
-#if wxUSE_STATUSBAR
+~if wxUSE_STATUSBAR
     // create a status bar with some information about the used wxWidgets version
     CreateStatusBar(2);
     SetStatusText(_("Hello Code::Blocks user!"),0);
     SetStatusText(wxbuildinfo(short_f), 1);
-#endif // wxUSE_STATUSBAR
+~endif // wxUSE_STATUSBAR
 
 }
 
@@ -188,14 +188,14 @@ void wxWidgetsFrame::OnNewDocument(wxCommandEvent &event)
 void wxWidgetsFrame::OnEmbed(wxCommandEvent &event)
 {
     void* hwnd = 0;
-#if defined (_WIN32)
+~if defined (_WIN32)
     hwnd = this->GetHWND();
-#elif defined(__WXGTK__)
+~elif defined(__WXGTK__)
     //http://old.nabble.com/wxWindow-and-x11-td2853615.html
     //GdkWindow *window = GTK_PIZZA()->bin_window;
     //GDK_WINDOW_XWINDOW( window );
     //hwnd = window;
-#endif
+~endif
     PyObject* main = PyImport_AddModule("__main__");
     PyObject* dict = PyModule_GetDict(main);
     std::stringstream cmd;

@@ -21,76 +21,76 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-#include <Bnd_Box.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepPrimAPI_MakeCylinder.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepPrim_Cylinder.hxx>
-#include <BRepProj_Projection.hxx>
-#include <BRepTools.hxx>
-#include <Geom_Plane.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepAlgoAPI_Common.hxx>
+~include <BRepAlgoAPI_Cut.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBuilderAPI_MakeSolid.hxx>
+~include <BRepBuilderAPI_Transform.hxx>
+~include <BRep_Builder.hxx>
+~include <BRepPrimAPI_MakeCylinder.hxx>
+~include <BRepPrimAPI_MakePrism.hxx>
+~include <BRepPrim_Cylinder.hxx>
+~include <BRepProj_Projection.hxx>
+~include <BRepTools.hxx>
+~include <Geom_Plane.hxx>
+~include <gp_Ax1.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Pnt.hxx>
+~include <HLRAlgo_Projector.hxx>
+~include <HLRBRep_Algo.hxx>
+~include <HLRBRep_HLRToShape.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopExp.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Solid.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#endif
+~endif
 
-#include <chrono>
+~include <chrono>
 
-# include <QFile>
-# include <QFileInfo>
+~ include <QFile>
+~ include <QFileInfo>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Material.h>
-#include <Base/BoundBox.h>
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Material.h>
+~include <Base/BoundBox.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/TopoShape.h>
 
-#include "Preferences.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "Cosmetic.h"
-#include "EdgeWalker.h"
-#include "DrawProjectSplit.h"
-#include "DrawProjGroupItem.h"
-#include "DrawPage.h"
-#include "DrawUtil.h"
-#include "DrawViewDetail.h"
-#include "DrawViewSection.h"
+~include "Preferences.h"
+~include "Geometry.h"
+~include "GeometryObject.h"
+~include "Cosmetic.h"
+~include "EdgeWalker.h"
+~include "DrawProjectSplit.h"
+~include "DrawProjGroupItem.h"
+~include "DrawPage.h"
+~include "DrawUtil.h"
+~include "DrawViewDetail.h"
+~include "DrawViewSection.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -458,7 +458,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
                                     Radius.getValue() * scale);      //remove vertices beyond clipradius
 
-#if MOD_TECHDRAW_HANDLE_FACES
+~if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {
         try {
             extractFaces();
@@ -469,7 +469,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
         }
     }
 
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+~endif //~if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
         Base::Console().Message("LOG - DVD::execute - failed to create detail %s - %s **\n",getNameInDocument(),e1.GetMessageString());

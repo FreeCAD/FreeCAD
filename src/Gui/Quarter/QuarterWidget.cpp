@@ -48,49 +48,49 @@
   \endcode
 */
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4267)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4267)
+~endif
 
-#include <cassert>
+~include <cassert>
 
-#include <QAction>
-#include <QApplication>
-#include <QDebug>
-#include <QEvent>
-#include <QFile>
-#include <QGuiApplication>
-#include <QMetaObject>
-#include <QOpenGLDebugLogger>
-#include <QOpenGLDebugMessage>
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QWindow>
+~include <QAction>
+~include <QApplication>
+~include <QDebug>
+~include <QEvent>
+~include <QFile>
+~include <QGuiApplication>
+~include <QMetaObject>
+~include <QOpenGLDebugLogger>
+~include <QOpenGLDebugMessage>
+~include <QPaintEvent>
+~include <QResizeEvent>
+~include <QWindow>
 
-#if COIN_MAJOR_VERSION >= 4
-#include <Inventor/SbByteBuffer.h>
-#endif
+~if COIN_MAJOR_VERSION >= 4
+~include <Inventor/SbByteBuffer.h>
+~endif
 
-#include <Inventor/SbByteBuffer.h>
-#include <Inventor/SbColor.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/SoRenderManager.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/scxml/ScXML.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
+~include <Inventor/SbByteBuffer.h>
+~include <Inventor/SbColor.h>
+~include <Inventor/SbViewportRegion.h>
+~include <Inventor/SoDB.h>
+~include <Inventor/SoEventManager.h>
+~include <Inventor/SoRenderManager.h>
+~include <Inventor/nodes/SoCamera.h>
+~include <Inventor/nodes/SoDirectionalLight.h>
+~include <Inventor/nodes/SoNode.h>
+~include <Inventor/nodes/SoPerspectiveCamera.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/scxml/ScXML.h>
+~include <Inventor/scxml/SoScXMLStateMachine.h>
 
-#include "QuarterWidget.h"
-#include "InteractionMode.h"
-#include "QuarterP.h"
-#include "QuarterWidgetP.h"
-#include "eventhandlers/EventFilter.h"
-#include "eventhandlers/DragDropHandler.h"
+~include "QuarterWidget.h"
+~include "InteractionMode.h"
+~include "QuarterP.h"
+~include "QuarterWidgetP.h"
+~include "eventhandlers/EventFilter.h"
+~include "eventhandlers/DragDropHandler.h"
 
 
 using namespace SIM::Coin3D::Quarter;
@@ -129,11 +129,11 @@ using namespace SIM::Coin3D::Quarter;
     INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
   };
 
-#define PRIVATE(obj) obj->pimpl
+~define PRIVATE(obj) obj->pimpl
 
-#ifndef GL_MULTISAMPLE_BIT_EXT
-#define GL_MULTISAMPLE_BIT_EXT 0x20000000
-#endif
+~ifndef GL_MULTISAMPLE_BIT_EXT
+~define GL_MULTISAMPLE_BIT_EXT 0x20000000
+~endif
 
 //We need to avoid buffer swapping when initializing a QPainter on this widget
 class CustomGLWidget : public QOpenGLWidget {
@@ -152,9 +152,9 @@ public:
         //surfaceFormat.setMajorVersion(3);
         //surfaceFormat.setMinorVersion(2);
         //surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
-#if defined (_DEBUG) && 0
+~if defined (_DEBUG) && 0
         surfaceFormat.setOption(QSurfaceFormat::DebugContext);
-#endif
+~endif
         setFormat(surfaceFormat);
     }
     ~CustomGLWidget()
@@ -163,7 +163,7 @@ public:
     void initializeGL()
     {
         QOpenGLContext *context = QOpenGLContext::currentContext();
-#if defined (_DEBUG) && 0
+~if defined (_DEBUG) && 0
         if (context && context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
             QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
             connect(logger, &QOpenGLDebugLogger::messageLogged, this, &CustomGLWidget::handleLoggedMessage);
@@ -171,7 +171,7 @@ public:
             if (logger->initialize())
                 logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
         }
-#endif
+~endif
         if (context) {
             connect(context, &QOpenGLContext::aboutToBeDestroyed,
                 this, &CustomGLWidget::aboutToDestroyGLContext, Qt::DirectConnection);
@@ -927,7 +927,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     // Disable the old implementation of this method as it show
     // problems with panning and rotations when a widget item is
     // added to the scene.
-#if 0
+~if 0
     if (event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
         return QGraphicsView::viewportEvent(event);
     }
@@ -948,7 +948,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
      //if we return false the events get processed normally, this means they get passed to the quarter
      //event filters for processing in the scene graph. If we return true event processing stops here.
      return false;
-#else
+~else
     // If no item is selected still let the graphics scene handle it but
     // additionally handle it by this viewer. This is e.g. needed when
     // resizing a widget item because the cursor may already be outside
@@ -973,7 +973,7 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     }
 
     return QGraphicsView::viewportEvent(event);
-#endif
+~endif
 }
 
 /*!
@@ -1219,17 +1219,17 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     filename = url.path();
     //FIXME: This conditional needs to be implemented when the
     //CoinResources systems if working
-#if 0
-    //#if (COIN_MAJOR_VERSION==3) && (COIN_MINOR_VERSION==0)
-#endif
+~if 0
+    //~if (COIN_MAJOR_VERSION==3) && (COIN_MINOR_VERSION==0)
+~endif
     //Workaround for differences between url scheme, and Coin internal
     //scheme in Coin 3.0.
     if (filename[0]=='/') {
       filename.remove(0,1);
     }
-#if 0
-    //#endif
-#endif
+~if 0
+    //~endif
+~endif
     filename = url.scheme()+':'+filename;
   }
   else if (url.scheme()=="file")
@@ -1259,11 +1259,11 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     QFile file(filenametmp);
     if (file.open(QIODevice::ReadOnly)){
       QByteArray fileContents = file.readAll();
-#if COIN_MAJOR_VERSION >= 4
+~if COIN_MAJOR_VERSION >= 4
       stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
-#else
+~else
       stateMachine = ScXML::readBuffer(fileContents.constData());
-#endif
+~endif
       file.close();
     }
   }
@@ -1317,4 +1317,4 @@ QuarterWidget::navigationModeFile() const
   return PRIVATE(this)->navigationModeFile;
 }
 
-#undef PRIVATE
+~undef PRIVATE

@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#include <sstream>
+~include <sstream>
 
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <App/DocumentObject.h>
+~include <Base/Interpreter.h>
 
-#include "Selection.h"
-#include "SelectionFilter.h"
-#include "SelectionObject.h"
+~include "Selection.h"
+~include "SelectionFilter.h"
+~include "SelectionObject.h"
 
 
 using namespace Gui;
 
 // suppress annoying warnings from generated source files
-#ifdef _MSC_VER
-# pragma warning(disable : 4003)
-# pragma warning(disable : 4018)
-# pragma warning(disable : 4065)
-# pragma warning(disable : 4335) // disable MAC file format warning on VC
-#endif
+~ifdef _MSC_VER
+~ pragma warning(disable : 4003)
+~ pragma warning(disable : 4018)
+~ pragma warning(disable : 4065)
+~ pragma warning(disable : 4335) // disable MAC file format warning on VC
+~endif
 
 
 SelectionFilterGate::SelectionFilterGate(const char* filter)
@@ -352,10 +352,10 @@ void yyerror(char *errorinfo)
 
 
 // for VC9 (isatty and fileno not supported anymore)
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 int isatty (int i) {return _isatty(i);}
 int fileno(FILE *stream) {return _fileno(stream);}
-#endif
+~endif
 
 namespace SelectionParser {
 
@@ -385,29 +385,29 @@ public:
 };
 
 // show the parser the lexer method
-#define yylex SelectionFilterlex
+~define yylex SelectionFilterlex
 int SelectionFilterlex(void);
 
 // Parser, defined in SelectionFilter.y
-#include "SelectionFilter.tab.c"
+~include "SelectionFilter.tab.c"
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+~ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in SelectionFilter.l
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
-#include "lex.SelectionFilter.c"
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wsign-compare"
+~ pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic push
+~ pragma GCC diagnostic ignored "-Wsign-compare"
+~endif
+~include "lex.SelectionFilter.c"
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic pop
+~endif
+~endif // DOXYGEN_SHOULD_SKIP_THIS
 }
 
 bool SelectionFilter::parse(void)

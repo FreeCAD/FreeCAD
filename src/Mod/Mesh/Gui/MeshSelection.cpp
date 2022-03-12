@@ -20,46 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <climits>
-# include <Inventor/SbBox2s.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <QBitmap>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <climits>
+~ include <Inventor/SbBox2s.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/events/SoLocation2Event.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <QBitmap>
+~endif
 
-#include "MeshSelection.h"
-#include "ViewProvider.h"
+~include "MeshSelection.h"
+~include "ViewProvider.h"
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MouseSelection.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
-#include <Mod/Mesh/App/Core/Tools.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MouseSelection.h>
+~include <Gui/NavigationStyle.h>
+~include <Gui/Utilities.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/TopoAlgorithm.h>
+~include <Mod/Mesh/App/Core/Tools.h>
 
 using namespace MeshGui;
 
-#define CROSS_WIDTH 16
-#define CROSS_HEIGHT 16
-#define CROSS_HOT_X 7
-#define CROSS_HOT_Y 7
+~define CROSS_WIDTH 16
+~define CROSS_HEIGHT 16
+~define CROSS_HOT_X 7
+~define CROSS_HOT_Y 7
 
 unsigned char MeshSelection::cross_bitmap[] = {
   0xc0, 0x03, 0x40, 0x02, 0x40, 0x02, 0x40, 0x02,
@@ -212,17 +212,17 @@ void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
         auto setComponentCursor = [=]() {
             QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
             QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
             double dpr = viewer->devicePixelRatio();
             cursor.setDevicePixelRatio(dpr);
             mask.setDevicePixelRatio(dpr);
-#endif
+~endif
             QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
             viewer->setComponentCursor(custom);
         };
-#if (QT_VERSION >= 0x050000)
+~if (QT_VERSION >= 0x050000)
         QObject::connect(viewer, &Gui::View3DInventorViewer::devicePixelRatioChanged, setComponentCursor);
-#endif
+~endif
         setComponentCursor();
         this->addToSelection = add;
     }

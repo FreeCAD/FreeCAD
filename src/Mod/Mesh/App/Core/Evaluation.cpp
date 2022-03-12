@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <vector>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <vector>
+~endif
 
-#include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 
-#include "Evaluation.h"
-#include "Iterator.h"
-#include "Algorithm.h"
-#include "Approximation.h"
-#include "MeshIO.h"
-#include "Helpers.h"
-#include "Grid.h"
-#include "TopoAlgorithm.h"
-#include "Functional.h"
-#include <Base/Matrix.h>
+~include "Evaluation.h"
+~include "Iterator.h"
+~include "Algorithm.h"
+~include "Approximation.h"
+~include "MeshIO.h"
+~include "Helpers.h"
+~include "Grid.h"
+~include "TopoAlgorithm.h"
+~include "Functional.h"
+~include <Base/Matrix.h>
 
-#include <Base/Sequencer.h>
+~include <Base/Sequencer.h>
 
 using namespace MeshCore;
 
@@ -417,7 +417,7 @@ unsigned long MeshEvalTopology::CountManifolds() const
 
 bool MeshFixTopology::Fixup ()
 {
-#if 0
+~if 0
     MeshEvalTopology eval(_rclMesh);
     if (!eval.Evaluate()) {
         eval.GetFacetManifolds(deletedFaces);
@@ -428,7 +428,7 @@ bool MeshFixTopology::Fixup ()
 
         _rclMesh.DeleteFacets(deletedFaces);
     }
-#else
+~else
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     deletedFaces.reserve(3 * nonManifoldList.size()); // allocate some memory
     std::list<std::vector<FacetIndex> >::const_iterator it;
@@ -459,7 +459,7 @@ bool MeshFixTopology::Fixup ()
         _rclMesh.DeleteFacets(deletedFaces);
         _rclMesh.RebuildNeighbours();
     }
-#endif
+~endif
 
     return true;
 }

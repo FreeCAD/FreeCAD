@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
 
-#include "DrawUtil.h"
+~include "DrawUtil.h"
 
-#include <Mod/TechDraw/App/DrawRichAnnoPy.h>  // generated from DrawRichAnnoPy.xml
-#include "DrawRichAnno.h"
+~include <Mod/TechDraw/App/DrawRichAnnoPy.h>  // generated from DrawRichAnnoPy.xml
+~include "DrawRichAnno.h"
 
 using namespace TechDraw;
 

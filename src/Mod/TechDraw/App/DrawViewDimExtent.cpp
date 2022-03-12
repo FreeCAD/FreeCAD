@@ -20,39 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <cstring>
-# include <cstdlib>
-# include <exception>
-# include <QString>
-# include <QStringList>
-# include <QRegExp>
+~ifndef _PreComp_
+~ include <sstream>
+~ include <cstring>
+~ include <cstdlib>
+~ include <exception>
+~ include <QString>
+~ include <QStringList>
+~ include <QRegExp>
 
-#endif
+~endif
 
-#include <QLocale>
+~include <QLocale>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Quantity.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
 
-#include "Geometry.h"
-#include "DrawViewPart.h"
-#include "DrawViewDimExtent.h"
-#include "DrawDimHelper.h"
-#include "DrawUtil.h"
-#include "LineGroup.h"
+~include "Geometry.h"
+~include "DrawViewPart.h"
+~include "DrawViewDimExtent.h"
+~include "DrawDimHelper.h"
+~include "DrawUtil.h"
+~include "LineGroup.h"
 
-#include <Mod/TechDraw/App/DrawViewDimExtentPy.h>  // generated from DrawViewDimExtentPy.xml
+~include <Mod/TechDraw/App/DrawViewDimExtentPy.h>  // generated from DrawViewDimExtentPy.xml
 
 using namespace TechDraw;
 

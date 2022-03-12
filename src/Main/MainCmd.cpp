@@ -21,30 +21,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "../FCConfig.h"
+~include "../FCConfig.h"
 
-#ifdef _PreComp_
-# undef _PreComp_
-#endif
+~ifdef _PreComp_
+~ undef _PreComp_
+~endif
 
-#ifdef FC_OS_LINUX
-# include <unistd.h>
-#endif
+~ifdef FC_OS_LINUX
+~ include <unistd.h>
+~endif
 
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif // HAVE_CONFIG_H
+~if HAVE_CONFIG_H
+~ include <config.h>
+~endif // HAVE_CONFIG_H
 
-#include <stdio.h>
-#include <sstream>
+~include <stdio.h>
+~include <sstream>
 
 // FreeCAD Base header
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
 
 // FreeCAD doc header
-#include <App/Application.h>
+~include <App/Application.h>
 
 
 using Base::Console;
@@ -53,13 +53,13 @@ using App::Application;
 const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2022\n"\
                        "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
                        "FreeCAD wouldn't be possible without FreeCAD community.\n"\
-                       "  #####                 ####  ###   ####  \n" \
-                       "  #                    #      # #   #   # \n" \
-                       "  #     ##  #### ####  #     #   #  #   # \n" \
-                       "  ####  # # #  # #  #  #     #####  #   # \n" \
-                       "  #     #   #### ####  #    #     # #   # \n" \
-                       "  #     #   #    #     #    #     # #   #  ##  ##  ##\n" \
-                       "  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n" ;
+                       "  ~~~~~                 ~~~~  ~~~   ~~~~  \n" \
+                       "  ~                    ~      ~ ~   ~   ~ \n" \
+                       "  ~     ~~  ~~~~ ~~~~  ~     ~   ~  ~   ~ \n" \
+                       "  ~~~~  ~ ~ ~  ~ ~  ~  ~     ~~~~~  ~   ~ \n" \
+                       "  ~     ~   ~~~~ ~~~~  ~    ~     ~ ~   ~ \n" \
+                       "  ~     ~   ~    ~     ~    ~     ~ ~   ~  ~~  ~~  ~~\n" \
+                       "  ~     ~   ~~~~ ~~~~   ~~~ ~     ~ ~~~~   ~~  ~~  ~~\n\n" ;
 
 
 
@@ -69,12 +69,12 @@ int main( int argc, char ** argv )
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
 
-#if defined(__MINGW32__)
+~if defined(__MINGW32__)
     const char* mingw_prefix = getenv("MINGW_PREFIX");
     const char* py_home = getenv("PYTHONHOME");
     if (!py_home && mingw_prefix)
         _putenv_s("PYTHONHOME", mingw_prefix);
-#endif
+~endif
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";

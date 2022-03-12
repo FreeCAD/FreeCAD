@@ -25,30 +25,30 @@
 //  Author : Yves FRICAUD, OCC
 //  Module : SMESH
 //
-#include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_Mesh.hxx"
 
-#include "SMDS_Downward.hxx"
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_SpacePosition.hxx"
-#include "SMDS_VertexPosition.hxx"
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_GroupOnGeom.hxx"
-#include "SMESHDS_Script.hxx"
-#include "SMESHDS_TSubMeshHolder.hxx"
+~include "SMDS_Downward.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_SpacePosition.hxx"
+~include "SMDS_VertexPosition.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_GroupOnGeom.hxx"
+~include "SMESHDS_Script.hxx"
+~include "SMESHDS_TSubMeshHolder.hxx"
 
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_OutOfRange.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_OutOfRange.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopoDS_Shell.hxx>
+~include <TopoDS_Solid.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <Precision.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepPrimAPI_MakeBox.hxx>
+~ include <Precision.hxx>
+~endif
 
 
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include "FeaturePartBox.h"
+~include <Base/Console.h>
+~include <Base/Reader.h>
+~include "FeaturePartBox.h"
 
 
 using namespace Part;

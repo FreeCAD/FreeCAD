@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <string>
-# include <Inventor/SbClip.h>
-# include <Inventor/nodes/SoComplexity.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoTexture3.h>
-# include <Inventor/nodes/SoTextureCoordinate3.h>
-#endif
+~ifndef _PreComp_
+~ include <string>
+~ include <Inventor/SbClip.h>
+~ include <Inventor/nodes/SoComplexity.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoFaceSet.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoTexture3.h>
+~ include <Inventor/nodes/SoTextureCoordinate3.h>
+~endif
 
-#include <Inventor/SoDB.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/draggers/SoTransformerDragger.h>
-#include <Inventor/manips/SoPointLightManip.h>
-#include <Inventor/nodes/SoCube.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/sensors/SoTimerSensor.h>
+~include <Inventor/SoDB.h>
+~include <Inventor/SbPlane.h>
+~include <Inventor/actions/SoSearchAction.h>
+~include <Inventor/draggers/SoTransformerDragger.h>
+~include <Inventor/manips/SoPointLightManip.h>
+~include <Inventor/nodes/SoCube.h>
+~include <Inventor/nodes/SoSeparator.h>
+~include <Inventor/nodes/SoShapeHints.h>
+~include <Inventor/nodes/SoTexture2.h>
+~include <Inventor/sensors/SoTimerSensor.h>
 
-#include "View3DInventorExamples.h"
+~include "View3DInventorExamples.h"
 
 
 unsigned char * generateTexture(int w, int h, int d)
@@ -255,7 +255,7 @@ void Texture3D(SoSeparator * root)
 // *************************************************************************
 
 
-static const char scenegraph[] = "#Inventor V2.1 ascii\n"
+static const char scenegraph[] = "~Inventor V2.1 ascii\n"
 "Separator {\n"
 "   DEF RedLight   PointLight { location -10 -10 10  color 1 0 0 }\n"
 "   DEF GreenLight PointLight { location  -5 5 10  color 0 1 0 }\n"

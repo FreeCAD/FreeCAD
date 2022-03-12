@@ -24,9 +24,9 @@
 //  File   : SMESHDS_GroupOnGeom.cxx
 //  Module : SMESH
 //
-#include "SMESHDS_GroupOnGeom.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "utilities.h"
+~include "SMESHDS_GroupOnGeom.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "utilities.h"
 
 using namespace std;
 

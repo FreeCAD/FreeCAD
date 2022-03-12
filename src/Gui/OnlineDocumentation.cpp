@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QBuffer>
-# include <QImageWriter>
-# include <QMessageBox>
-# include <QTcpSocket>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QBuffer>
+~ include <QImageWriter>
+~ include <QMessageBox>
+~ include <QTcpSocket>
+~endif
 
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Exception.h>
 
-#include "OnlineDocumentation.h"
-#include "MainWindow.h"
+~include "OnlineDocumentation.h"
+~include "MainWindow.h"
 
 
 using namespace Gui;
@@ -126,26 +126,26 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "        if len(modpkgs) == 0: return None\n"
             "        modpkgs.sort()\n"
             "        contents = self.multicolumn(modpkgs, self.modpkglink)\n"
-            "        return self.bigsection(dir, '#ffffff', '#ee77aa', contents)\n"
+            "        return self.bigsection(dir, '~ffffff', '~ee77aa', contents)\n"
             "\n"
             "pydoc.html=FreeCADDoc()\n"
             "title='FreeCAD Python Modules Index'\n"
             "\n"
             "heading = pydoc.html.heading("
             "'<big><big><strong>Python: Index of Modules</strong></big></big>',"
-            "'#ffffff', '#7799ee')\n"
+            "'~ffffff', '~7799ee')\n"
             "def bltinlink(name):\n"
             "    return '<a href=\"%s.html\">%s</a>' % (name, name)\n"
             "names = list(filter(lambda x: x != '__main__',\n"
             "               sys.builtin_module_names))\n"
             "contents = pydoc.html.multicolumn(names, bltinlink)\n"
             "indices = ['<p>' + pydoc.html.bigsection(\n"
-            "    'Built-in Modules', '#ffffff', '#ee77aa', contents)]\n"
+            "    'Built-in Modules', '~ffffff', '~ee77aa', contents)]\n"
             "\n"
             "names = ['FreeCAD', 'FreeCADGui']\n"
             "contents = pydoc.html.multicolumn(names, bltinlink)\n"
             "indices.append('<p>' + pydoc.html.bigsection(\n"
-            "    'Built-in FreeCAD Modules', '#ffffff', '#ee77aa', contents))\n"
+            "    'Built-in FreeCAD Modules', '~ffffff', '~ee77aa', contents))\n"
             "\n"
             "seen = {}\n"
             "for dir in sys.path:\n"
@@ -154,7 +154,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "    if ret != None:\n"
             "        indices.append(ret)\n"
             "contents = heading + ' '.join(indices) + '''<p align=right>\n"
-            "<font color=\"#909090\" face=\"helvetica, arial\"><strong>\n"
+            "<font color=\"~909090\" face=\"helvetica, arial\"><strong>\n"
             "pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>'''\n"
             "htmldocument=pydoc.html.page(title,contents)\n";
 
@@ -219,13 +219,13 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "text/html\r\n"
         "\r\n"
         "<html><head><title>Error</title></head>"
-        "<body bgcolor=\"#f0f0f8\">"
+        "<body bgcolor=\"~f0f0f8\">"
         "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
-        "<tr bgcolor=\"#7799ee\">"
+        "<tr bgcolor=\"~7799ee\">"
         "<td valign=bottom>&nbsp;<br>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
+        "<font color=\"~ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
         "<td align=right valign=bottom>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
+        "<font color=\"~ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
         "<p><p>"
         "<h1>404 - File not found</h1>"
         "<div><p><strong>The requested URL was not found on this server."
@@ -250,13 +250,13 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
         "text/html\r\n"
         "\r\n"
         "<html><head><title>Error</title></head>"
-        "<body bgcolor=\"#f0f0f8\">"
+        "<body bgcolor=\"~f0f0f8\">"
         "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
-        "<tr bgcolor=\"#7799ee\">"
+        "<tr bgcolor=\"~7799ee\">"
         "<td valign=bottom>&nbsp;<br>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
+        "<font color=\"~ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
         "<td align=right valign=bottom>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
+        "<font color=\"~ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
         "<p><p>"
         "<h1>%1</h1>"
         "</body>"
@@ -398,11 +398,11 @@ void StdCmdPythonHelp::activated(int iMsg)
                 char szBuf[201];
                 snprintf(szBuf, 200, "http://localhost:%d", port);
                 PyObject* args = Py_BuildValue("(s)", szBuf);
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
                 PyObject* result = PyEval_CallObject(func,args);
-#else
+~else
                 PyObject* result = PyObject_CallObject(func,args);
-#endif
+~endif
                 if (result)
                     failed = false;
 
@@ -438,11 +438,11 @@ bool Gui::OpenURLInBrowser(const char * URL)
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
             PyObject* args = Py_BuildValue("(s)", URL);
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
             PyObject* result = PyEval_CallObject(func,args);
-#else
+~else
             PyObject* result = PyObject_CallObject(func,args);
-#endif
+~endif
             if (result)
                 failed = false;
 
@@ -464,5 +464,5 @@ bool Gui::OpenURLInBrowser(const char * URL)
 }
 
 
-#include "moc_OnlineDocumentation.cpp"
+~include "moc_OnlineDocumentation.cpp"
 

@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <fstream>
-# include <iostream>
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <fstream>
+~ include <iostream>
+~ include <sstream>
+~endif
 
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <boost/regex.hpp>
-#include <iterator>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <App/Application.h>
+~include <boost/regex.hpp>
+~include <iterator>
 
-#include "FeaturePage.h"
-#include "FeatureView.h"
-#include "FeatureClip.h"
+~include "FeaturePage.h"
+~include "FeatureView.h"
+~include "FeatureClip.h"
 
 using namespace Drawing;
 using namespace std;
@@ -105,7 +105,7 @@ void FeaturePage::onChanged(const App::Property* prop)
 
 void FeaturePage::onDocumentRestored()
 {
-    // Needs to be tmp. set because otherwise the custom text gets overridden (#0002064)
+    // Needs to be tmp. set because otherwise the custom text gets overridden (~0002064)
     this->StatusBits.set(App::Restore); // the 'Restore' flag
 
     Base::FileInfo templateInfo(Template.getValue());

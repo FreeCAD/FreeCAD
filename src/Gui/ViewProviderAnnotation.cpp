@@ -20,43 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QFont>
-# include <QFontMetrics>
-# include <QImage>
-# include <QPainter>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoAsciiText.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoRotationXYZ.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-#endif
-# include <Inventor/draggers/SoTranslate2Dragger.h>
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QFont>
+~ include <QFontMetrics>
+~ include <QImage>
+~ include <QPainter>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoAsciiText.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFont.h>
+~ include <Inventor/nodes/SoImage.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoPointSet.h>
+~ include <Inventor/nodes/SoRotationXYZ.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~endif
+~ include <Inventor/draggers/SoTranslate2Dragger.h>
 
-#include <App/Annotation.h>
-#include <App/Document.h>
-#include <App/PropertyStandard.h>
-#include <Base/Parameter.h>
+~include <App/Annotation.h>
+~include <App/Document.h>
+~include <App/PropertyStandard.h>
+~include <Base/Parameter.h>
 
-#include "ViewProviderAnnotation.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "SoFCSelection.h"
-#include "SoTextLabel.h"
-#include "Tools.h"
-#include "Window.h"
+~include "ViewProviderAnnotation.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Document.h"
+~include "SoFCSelection.h"
+~include "SoTextLabel.h"
+~include "Tools.h"
+~include "Window.h"
 
 
 using namespace Gui;
@@ -249,15 +249,15 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
             const char* cs = it->c_str();
             if (it->empty())
                 cs = " "; // empty lines make coin crash, we use a space instead
-#if (COIN_MAJOR_VERSION <= 3)
+~if (COIN_MAJOR_VERSION <= 3)
             QByteArray latin1str;
             latin1str = (QString::fromUtf8(cs)).toLatin1();
             pLabel->string.set1Value(index, SbString(latin1str.constData()));
             pLabel3d->string.set1Value(index, SbString(latin1str.constData()));
-#else
+~else
             pLabel->string.set1Value(index, SbString(cs));
             pLabel3d->string.set1Value(index, SbString(cs));
-#endif
+~endif
             index++;
         }
     }

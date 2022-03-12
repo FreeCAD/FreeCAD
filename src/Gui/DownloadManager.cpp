@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <cstdio>
-#include <iostream>
+~include "PreCompiled.h"
+~include <cstdio>
+~include <iostream>
 
-#include <QByteArray>
-#include <QDockWidget>
-#include <QFileInfo>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QMetaEnum>
-#include <QSettings>
-#include <QFileIconProvider>
-#include <QUrlQuery>
+~include <QByteArray>
+~include <QDockWidget>
+~include <QFileInfo>
+~include <QNetworkRequest>
+~include <QNetworkReply>
+~include <QMetaEnum>
+~include <QSettings>
+~include <QFileIconProvider>
+~include <QUrlQuery>
 
-#include "DownloadManager.h"
-#include "ui_DownloadManager.h"
-#include "DockWindowManager.h"
-#include "DownloadItem.h"
-#include "MainWindow.h"
+~include "DownloadManager.h"
+~include "ui_DownloadManager.h"
+~include "DockWindowManager.h"
+~include "DownloadItem.h"
+~include "MainWindow.h"
 
 
 using namespace Gui::Dialog;
@@ -340,4 +340,4 @@ bool DownloadModel::removeRows(int row, int count, const QModelIndex &parent)
     return true;
 }
 
-#include "moc_DownloadManager.cpp"
+~include "moc_DownloadManager.cpp"

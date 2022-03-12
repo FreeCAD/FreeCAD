@@ -21,135 +21,135 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Approx_Curve3d.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <Geom_CartesianPoint.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Curve.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_Parabola.hxx>
-# include <Geom_OffsetCurve.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Geom_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom_ConicalSurface.hxx>
-# include <Geom_SphericalSurface.hxx>
-# include <Geom_ToroidalSurface.hxx>
-# include <Geom_OffsetSurface.hxx>
-# include <GeomPlate_Surface.hxx>
-# include <Geom_RectangularTrimmedSurface.hxx>
-# include <Geom_SurfaceOfRevolution.hxx>
-# include <Geom_SurfaceOfLinearExtrusion.hxx>
-# include <GeomAPI_Interpolate.hxx>
-# include <GeomConvert.hxx>
-# include <GeomConvert_CompCurveToBSplineCurve.hxx>
-# include <GeomLProp_CLProps.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <gp.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Hypr.hxx>
-# include <gp_Parab.hxx>
-# include <gce_ErrorType.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Cylinder.hxx>
-# include <gp_Cone.hxx>
-# include <gp_Sphere.hxx>
-# include <gp_Torus.hxx>
-# include <Standard_Real.hxx>
-# include <Standard_Version.hxx>
-# include <Standard_ConstructionError.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TColgp_Array1OfVec.hxx>
-# include <TColgp_HArray1OfPnt.hxx>
-# include <TColStd_HArray1OfBoolean.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <gp.hxx>
-# include <gp_Lin.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GC_MakeArcOfCircle.hxx>
-# include <GC_MakeCircle.hxx>
-# include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeEllipse.hxx>
-# include <gce_MakeParab.hxx>
-# include <GC_MakeArcOfParabola.hxx>
-# include <GC_MakeHyperbola.hxx>
-# include <GC_MakeArcOfHyperbola.hxx>
-# include <GC_MakeLine.hxx>
-# include <GC_MakeSegment.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <Precision.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
-# include <ShapeConstruct_Curve.hxx>
-# include <LProp_NotDefined.hxx>
-# if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HCurve.hxx>
-# endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Approx_Curve3d.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <Geom_CartesianPoint.hxx>
+~ include <Geom_Circle.hxx>
+~ include <Geom_Curve.hxx>
+~ include <Geom_Ellipse.hxx>
+~ include <Geom_Hyperbola.hxx>
+~ include <Geom_Parabola.hxx>
+~ include <Geom_OffsetCurve.hxx>
+~ include <Geom_TrimmedCurve.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_BezierCurve.hxx>
+~ include <Geom_BezierSurface.hxx>
+~ include <Geom_BSplineCurve.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~ include <Geom_Surface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom_CylindricalSurface.hxx>
+~ include <Geom_ConicalSurface.hxx>
+~ include <Geom_SphericalSurface.hxx>
+~ include <Geom_ToroidalSurface.hxx>
+~ include <Geom_OffsetSurface.hxx>
+~ include <GeomPlate_Surface.hxx>
+~ include <Geom_RectangularTrimmedSurface.hxx>
+~ include <Geom_SurfaceOfRevolution.hxx>
+~ include <Geom_SurfaceOfLinearExtrusion.hxx>
+~ include <GeomAPI_Interpolate.hxx>
+~ include <GeomConvert.hxx>
+~ include <GeomConvert_CompCurveToBSplineCurve.hxx>
+~ include <GeomLProp_CLProps.hxx>
+~ include <GeomLProp_SLProps.hxx>
+~ include <gp.hxx>
+~ include <gp_Ax2.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Elips.hxx>
+~ include <gp_Hypr.hxx>
+~ include <gp_Parab.hxx>
+~ include <gce_ErrorType.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Pnt.hxx>
+~ include <gp_Cylinder.hxx>
+~ include <gp_Cone.hxx>
+~ include <gp_Sphere.hxx>
+~ include <gp_Torus.hxx>
+~ include <Standard_Real.hxx>
+~ include <Standard_Version.hxx>
+~ include <Standard_ConstructionError.hxx>
+~ include <TColgp_Array1OfPnt.hxx>
+~ include <TColgp_Array2OfPnt.hxx>
+~ include <TColgp_Array1OfVec.hxx>
+~ include <TColgp_HArray1OfPnt.hxx>
+~ include <TColStd_HArray1OfBoolean.hxx>
+~ include <TColStd_Array1OfReal.hxx>
+~ include <TColStd_Array1OfInteger.hxx>
+~ include <gp.hxx>
+~ include <gp_Lin.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_TrimmedCurve.hxx>
+~ include <GC_MakeArcOfCircle.hxx>
+~ include <GC_MakeCircle.hxx>
+~ include <GC_MakeArcOfEllipse.hxx>
+~ include <GC_MakeEllipse.hxx>
+~ include <gce_MakeParab.hxx>
+~ include <GC_MakeArcOfParabola.hxx>
+~ include <GC_MakeHyperbola.hxx>
+~ include <GC_MakeArcOfHyperbola.hxx>
+~ include <GC_MakeLine.hxx>
+~ include <GC_MakeSegment.hxx>
+~ include <GCPnts_AbscissaPoint.hxx>
+~ include <Precision.hxx>
+~ include <GeomAPI_ProjectPointOnCurve.hxx>
+~ include <GeomAPI_ExtremaCurveCurve.hxx>
+~ include <ShapeConstruct_Curve.hxx>
+~ include <LProp_NotDefined.hxx>
+~ if OCC_VERSION_HEX < 0x070600
+~ include <GeomAdaptor_HCurve.hxx>
+~ endif
 
-# include <ctime>
-# include <cmath>
-#endif //_PreComp_
+~ include <ctime>
+~ include <cmath>
+~endif //_PreComp_
 
-#include <Base/VectorPy.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/ArcPy.h>
-#include <Mod/Part/App/ArcOfCirclePy.h>
-#include <Mod/Part/App/ArcOfEllipsePy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/BezierCurvePy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/OffsetCurvePy.h>
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/BezierSurfacePy.h>
-#include <Mod/Part/App/BSplineSurfacePy.h>
-#include <Mod/Part/App/ConePy.h>
-#include <Mod/Part/App/CylinderPy.h>
-#include <Mod/Part/App/OffsetSurfacePy.h>
-#include <Mod/Part/App/PointPy.h>
-#include <Mod/Part/App/PlateSurfacePy.h>
-#include <Mod/Part/App/PlanePy.h>
-#include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
-#include <Mod/Part/App/SpherePy.h>
-#include <Mod/Part/App/SurfaceOfExtrusionPy.h>
-#include <Mod/Part/App/SurfaceOfRevolutionPy.h>
-#include <Mod/Part/App/ToroidPy.h>
+~include <Base/VectorPy.h>
+~include <Mod/Part/App/LinePy.h>
+~include <Mod/Part/App/LineSegmentPy.h>
+~include <Mod/Part/App/CirclePy.h>
+~include <Mod/Part/App/EllipsePy.h>
+~include <Mod/Part/App/ArcPy.h>
+~include <Mod/Part/App/ArcOfCirclePy.h>
+~include <Mod/Part/App/ArcOfEllipsePy.h>
+~include <Mod/Part/App/ArcOfParabolaPy.h>
+~include <Mod/Part/App/BezierCurvePy.h>
+~include <Mod/Part/App/BSplineCurvePy.h>
+~include <Mod/Part/App/HyperbolaPy.h>
+~include <Mod/Part/App/ArcOfHyperbolaPy.h>
+~include <Mod/Part/App/OffsetCurvePy.h>
+~include <Mod/Part/App/ParabolaPy.h>
+~include <Mod/Part/App/BezierSurfacePy.h>
+~include <Mod/Part/App/BSplineSurfacePy.h>
+~include <Mod/Part/App/ConePy.h>
+~include <Mod/Part/App/CylinderPy.h>
+~include <Mod/Part/App/OffsetSurfacePy.h>
+~include <Mod/Part/App/PointPy.h>
+~include <Mod/Part/App/PlateSurfacePy.h>
+~include <Mod/Part/App/PlanePy.h>
+~include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
+~include <Mod/Part/App/SpherePy.h>
+~include <Mod/Part/App/SurfaceOfExtrusionPy.h>
+~include <Mod/Part/App/SurfaceOfRevolutionPy.h>
+~include <Mod/Part/App/ToroidPy.h>
 
-#include <Base/Exception.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
 
-#include "GeometryMigrationExtension.h"
+~include "GeometryMigrationExtension.h"
 
-#include "Geometry.h"
-#include "Tools.h"
+~include "Geometry.h"
+~include "Tools.h"
 
-#if OCC_VERSION_HEX >= 0x070600
+~if OCC_VERSION_HEX >= 0x070600
 using GeomAdaptor_HCurve = GeomAdaptor_Curve;
-#endif
+~endif
 
 using namespace Part;
 
@@ -463,9 +463,9 @@ void Geometry::transform(const Base::Matrix4D& mat)
     trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
                 mat[1][0],mat[1][1],mat[1][2],mat[1][3],
                 mat[2][0],mat[2][1],mat[2][2],mat[2][3]
-#if OCC_VERSION_HEX < 0x060800
+~if OCC_VERSION_HEX < 0x060800
                 , 0.00001,0.00001
-#endif
+~endif
                 ); //precision was removed in OCCT CR0025194
     handle()->Transform(trf);
 }
@@ -1425,7 +1425,7 @@ void GeomBSplineCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p,
                                                  const std::vector<double>& c,
                                                  std::vector<gp_Vec>& t) const
 {
-    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
+    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline~Cardinal_Spline
     if (p.size() < 2)
         Standard_ConstructionError::Raise();
     if (p.size() != c.size())
@@ -1454,7 +1454,7 @@ void GeomBSplineCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p,
 void GeomBSplineCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p, double c,
                                                  std::vector<gp_Vec>& t) const
 {
-    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
+    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline~Cardinal_Spline
     if (p.size() < 2)
         Standard_ConstructionError::Raise();
 
@@ -2111,11 +2111,11 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
     Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     Handle(Geom_Conic) c = Handle(Geom_Conic)::DownCast( curve->BasisCurve() );
     assert(!c.IsNull());
-#if OCC_VERSION_HEX >= 0x060504
+~if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-#else
+~else
     if (newdir.Length() < Precision::Confusion())
-#endif
+~endif
         return;//zero vector was passed. Keep the old orientation.
 
     try {
@@ -2695,11 +2695,11 @@ Base::Vector3d GeomEllipse::getMajorAxisDir() const
  */
 void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
-#if OCC_VERSION_HEX >= 0x060504
+~if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-#else
+~else
     if (newdir.Length() < Precision::Confusion())
-#endif
+~endif
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = myCurve->Position();
@@ -2914,11 +2914,11 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
     Handle(Geom_Ellipse) c = Handle(Geom_Ellipse)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
-#if OCC_VERSION_HEX >= 0x060504
+~if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-#else
+~else
     if (newdir.Length() < Precision::Confusion())
-#endif
+~endif
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = c->Position();
@@ -3352,11 +3352,11 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
 {
     Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
-    #if OCC_VERSION_HEX >= 0x060504
+    ~if OCC_VERSION_HEX >= 0x060504
     if (newdir.Sqr() < Precision::SquareConfusion())
-    #else
+    ~else
     if (newdir.Length() < Precision::Confusion())
-    #endif
+    ~endif
         return;//zero vector was passed. Keep the old orientation.
 
     try {
@@ -4202,9 +4202,9 @@ TopoDS_Shape GeomSurface::toShape() const
     Standard_Real u1,u2,v1,v2;
     s->Bounds(u1,u2,v1,v2);
     BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
-#endif
+~endif
       );
     return mkBuilder.Shape();
 }
@@ -5374,13 +5374,13 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
             geoCurve.reset(new GeomBSplineCurve(adapt.BSpline()));
             break;
         }
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
     case GeomAbs_OffsetCurve:
         {
             geoCurve.reset(new GeomOffsetCurve(adapt.OffsetCurve()));
             break;
         }
-#endif
+~endif
     case GeomAbs_OtherCurve:
     default:
         break;

@@ -20,12 +20,12 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "UNV2420_Structure.hxx"
-#include "UNV_Utilities.hxx"
+~include "UNV2420_Structure.hxx"
+~include "UNV_Utilities.hxx"
 
-#include <fstream>
-#include <cstdio>
-#include <cmath>
+~include <fstream>
+~include <cstdio>
+~include <cmath>
 
 using namespace std;
 using namespace UNV;

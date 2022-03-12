@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Exception.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/WaitCursor.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Exception.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/WaitCursor.h>
 
-#include "DlgPartCylinderImp.h"
-#include "ShapeFromMesh.h"
+~include "DlgPartCylinderImp.h"
+~include "ShapeFromMesh.h"
 
 
 //===========================================================================
@@ -435,11 +435,11 @@ bool CmdPartDefeaturing::isActive(void)
 
 // {
 //     if (getActiveGuiDocument())
-// #if OCC_VERSION_HEX < 0x060900
+// ~if OCC_VERSION_HEX < 0x060900
 //         return false;
-// #else
+// ~else
 //         return true;
-// #endif
+// ~endif
 //     else
 //         return false;
 // }

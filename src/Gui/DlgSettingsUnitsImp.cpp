@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QRegExp>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QRegExp>
+~endif
 
-#include <limits>
+~include <limits>
 
-#include "ui_DlgSettingsUnits.h"
-#include "DlgSettingsUnitsImp.h"
-#include "NavigationStyle.h"
-#include "PrefWidgets.h"
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
+~include "ui_DlgSettingsUnits.h"
+~include "DlgSettingsUnitsImp.h"
+~include "NavigationStyle.h"
+~include "PrefWidgets.h"
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
 using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsUnitsImp */
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "Standard (mm/kg/s/degree)");
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "MKS (m/kg/s/degree)");
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "US customary (in/lb)");
@@ -54,7 +54,7 @@ using namespace Base;
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "Metric small parts & CNC(mm, mm/min)");
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "Imperial for Civil Eng (ft, ft/sec)");
     qApp->translate("Gui::Dialog::DlgSettingsUnits", "FEM (mm, N, sec)");
-#endif
+~endif
 
 /**
  *  Constructs a DlgSettingsUnitsImp which is a child of 'parent', with the
@@ -177,4 +177,4 @@ void DlgSettingsUnitsImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsUnitsImp.cpp"
+~include "moc_DlgSettingsUnitsImp.cpp"

@@ -24,41 +24,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTextStream>
 
-# include <sstream>
-#endif
+~ include <sstream>
+~endif
 
-#include "Mod/Fem/App/FemConstraintTransform.h"
-#include "TaskFemConstraintTransform.h"
-#include "ui_TaskFemConstraintTransform.h"
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Fem/App/FemTools.h>
+~include "Mod/Fem/App/FemConstraintTransform.h"
+~include "TaskFemConstraintTransform.h"
+~include "ui_TaskFemConstraintTransform.h"
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Fem/App/FemTools.h>
 
-#include <math.h>
+~include <math.h>
 
 using namespace FemGui;
 using namespace Gui;
@@ -542,4 +542,4 @@ bool TaskDlgFemConstraintTransform::reject()
     return true;
 }
 
-#include "moc_TaskFemConstraintTransform.cpp"
+~include "moc_TaskFemConstraintTransform.cpp"

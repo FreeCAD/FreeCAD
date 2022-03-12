@@ -56,16 +56,16 @@
  * This style wasn't tested with space during development (I don't have one).
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include "NavigationStyle.h"
-#include "SoTouchEvents.h"
-#include "View3DInventorViewer.h"
+~include "NavigationStyle.h"
+~include "SoTouchEvents.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;
@@ -121,7 +121,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
-    // Switch off viewing mode (Bug #0000911)
+    // Switch off viewing mode (Bug ~0000911)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
     //setViewing() is never used in this style, so the previous if is very unlikely to be hit.

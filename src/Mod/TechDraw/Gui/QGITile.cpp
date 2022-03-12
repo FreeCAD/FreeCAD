@@ -20,34 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
-#include <QFile>
-#include <QFileInfo>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QPainter>
+~include <QGraphicsItem>
+~include <QStyleOptionGraphicsItem>
+~include <QFile>
+~include <QFileInfo>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Tools.h>
 
-#include <Mod/TechDraw/App/DrawUtil.h>
-//#include <Mod/TechDraw/App/Preferences.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+//~include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawTile.h>
+~include <Mod/TechDraw/App/DrawTileWeld.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "PreferencesGui.h"
-#include "DrawGuiUtil.h"
-#include "QGIView.h"
-#include "QGIWeldSymbol.h"
-#include "QGITile.h"
+~include <qmath.h>
+~include "Rez.h"
+~include "PreferencesGui.h"
+~include "DrawGuiUtil.h"
+~include "QGIView.h"
+~include "QGIWeldSymbol.h"
+~include "QGITile.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

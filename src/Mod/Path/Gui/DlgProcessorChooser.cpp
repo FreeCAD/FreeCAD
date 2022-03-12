@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
-# include <QListIterator>
-#endif
+~ifndef _PreComp_
+~ include <QPixmap>
+~ include <QDialog>
+~ include <QListIterator>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
 
-#include <App/Document.h>
-#include <Base/Tools.h>
+~include <App/Document.h>
+~include <Base/Tools.h>
 
-#include "DlgProcessorChooser.h"
-#include "ui_DlgProcessorChooser.h"
+~include "DlgProcessorChooser.h"
+~include "ui_DlgProcessorChooser.h"
 
 using namespace PathGui;
 
@@ -82,4 +82,4 @@ void DlgProcessorChooser::accept()
     }
     QDialog::accept();
 }
-#include "moc_DlgProcessorChooser.cpp"
+~include "moc_DlgProcessorChooser.cpp"

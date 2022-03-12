@@ -25,8 +25,8 @@
 // Author:      Oksana TCHEBANOVA
 //              <ota@localhost.localdomain>
 //
-#include "Utils_ExceptHandlers.hxx"
-#include "Utils_SALOME_Exception.hxx"
+~include "Utils_ExceptHandlers.hxx"
+~include "Utils_SALOME_Exception.hxx"
 
 void SalomeException ()
 {

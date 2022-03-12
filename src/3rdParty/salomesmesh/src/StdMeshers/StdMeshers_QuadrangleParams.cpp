@@ -20,20 +20,20 @@
 //  Author : Sergey KUUL, OCC
 //  Module : SMESH
 
-#include "StdMeshers_QuadrangleParams.hxx"
+~include "StdMeshers_QuadrangleParams.hxx"
 
-#include "SMESH_Algo.hxx"
-#include "SMESH_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESH_Mesh.hxx"
 
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <TopExp.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
+~include <BRep_Tool.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <TopExp.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
 
 using namespace std;
 

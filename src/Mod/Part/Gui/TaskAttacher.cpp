@@ -22,42 +22,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <QRegExp>
-# include <QTextStream>
-# include <QMessageBox>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <QRegExp>
+~ include <QTextStream>
+~ include <QMessageBox>
+~ include <Precision.hxx>
+~ include <Standard_Failure.hxx>
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/DocumentObserver.h>
-#include <App/Origin.h>
-#include <App/OriginFeature.h>
-#include <App/Part.h>
-#include <App/ObjectIdentifier.h>
-#include <App/PropertyExpressionEngine.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/CommandT.h>
-#include <Mod/Part/Gui/TaskAttacher.h>
-#include <Mod/Part/Gui/AttacherTexts.h>
-#include <Mod/Part/App/AttachExtension.h>
-#include <Mod/Part/App/DatumFeature.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/DocumentObserver.h>
+~include <App/Origin.h>
+~include <App/OriginFeature.h>
+~include <App/Part.h>
+~include <App/ObjectIdentifier.h>
+~include <App/PropertyExpressionEngine.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/CommandT.h>
+~include <Mod/Part/Gui/TaskAttacher.h>
+~include <Mod/Part/Gui/AttacherTexts.h>
+~include <Mod/Part/App/AttachExtension.h>
+~include <Mod/Part/App/DatumFeature.h>
 
-#include "ui_TaskAttacher.h"
-#include "TaskAttacher.h"
+~include "ui_TaskAttacher.h"
+~include "TaskAttacher.h"
 
 using namespace PartGui;
 using namespace Gui;
@@ -1123,4 +1123,4 @@ bool TaskDlgAttacher::reject()
     return true;
 }
 
-#include "moc_TaskAttacher.cpp"
+~include "moc_TaskAttacher.cpp"

@@ -17,24 +17,24 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "SMDS_UnstructuredGrid.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshInfo.hxx"
-#include "SMDS_Downward.hxx"
-#include "SMDS_MeshVolume.hxx"
+~include "SMDS_UnstructuredGrid.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshInfo.hxx"
+~include "SMDS_Downward.hxx"
+~include "SMDS_MeshVolume.hxx"
 
-#include "utilities.h"
-#include "chrono.hxx"
+~include "utilities.h"
+~include "chrono.hxx"
 
-#include <vtkCellArray.h>
-#include <vtkCellData.h>
-#include <vtkCellLinks.h>
-#include <vtkDoubleArray.h>
-#include <vtkIdTypeArray.h>
-#include <vtkUnsignedCharArray.h>
+~include <vtkCellArray.h>
+~include <vtkCellData.h>
+~include <vtkCellLinks.h>
+~include <vtkDoubleArray.h>
+~include <vtkIdTypeArray.h>
+~include <vtkUnsignedCharArray.h>
 
-#include <list>
-#include <climits>
+~include <list>
+~include <climits>
 
 using namespace std;
 
@@ -109,7 +109,7 @@ vtkPoints* SMDS_UnstructuredGrid::GetPoints()
   return this->Points;
 }
 
-//#ifdef VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
 int SMDS_UnstructuredGrid::InsertNextLinkedCell(int type, int npts, vtkIdType *pts)
 {
   if (type != VTK_POLYHEDRON)
@@ -145,7 +145,7 @@ int SMDS_UnstructuredGrid::InsertNextLinkedCell(int type, int npts, vtkIdType *p
 
   return cellid;
 }
-//#endif
+//~endif
 
 void SMDS_UnstructuredGrid::setSMDS_mesh(SMDS_Mesh *mesh)
 {
@@ -332,11 +332,11 @@ void SMDS_UnstructuredGrid::copyBloc(vtkUnsignedCharArray *newTypes,
     {
       newTypes->SetValue(alreadyCopied, this->Types->GetValue(j));
       idCellsOldToNew[j] = alreadyCopied; // old vtkId --> new vtkId
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
       vtkIdType oldLoc = this->GetCellLocationsArray()->GetValue(j);
-#else
+~else
       vtkIdType oldLoc = this->Locations->GetValue(j);
-#endif
+~endif
       vtkIdType nbpts;
       vtkIdTypePtr oldPtsCell = 0;
       this->Connectivity->GetCell(oldLoc, nbpts, oldPtsCell);
@@ -956,7 +956,7 @@ void SMDS_UnstructuredGrid::GetNodeIds(std::set<int>& nodeSet, int downId, unsig
  */
 void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> localClonedNodeIds)
 {
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   this->GetCellPoints(vtkVolId, cellPoints.GetPointer());
   for (vtkIdType i = 0; i < cellPoints->GetNumberOfIds(); i++)
@@ -970,7 +970,7 @@ void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> loc
           //this->AddReferenceToCell(pts[i], vtkVolId);
         }
     }
-#else
+~else
   vtkIdType npts = 0;
   vtkIdType *pts; // will refer to the point id's of the face
   this->GetCellPoints(vtkVolId, npts, pts);
@@ -985,7 +985,7 @@ void SMDS_UnstructuredGrid::ModifyCellNodes(int vtkVolId, std::map<int, int> loc
           //this->AddReferenceToCell(pts[i], vtkVolId);
         }
     }
-#endif
+~endif
 }
 
 /*! reorder the nodes of a face
@@ -1015,20 +1015,20 @@ void SMDS_UnstructuredGrid::BuildLinks()
     this->Links->UnRegister(this);
     }
 
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   this->Links = SMDS_CellLinks::New();
   GetLinks()->Allocate(this->GetNumberOfPoints());
   GetLinks()->Register(this);
 //FIXME: vtk9
   GetLinks()->BuildLinks(this);
   GetLinks()->Delete();
-#else
+~else
   this->Links = SMDS_CellLinks::New();
   this->Links->Allocate(this->GetNumberOfPoints());
   this->Links->Register(this);
   this->Links->BuildLinks(this, this->Connectivity);
   this->Links->Delete();
-#endif
+~endif
 }
 
 /*! Create a volume (prism or hexahedron) by duplication of a face.

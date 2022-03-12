@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include "FeaturePartCurveNet.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include "FeaturePartCurveNet.h"
 
 
 using namespace Part;

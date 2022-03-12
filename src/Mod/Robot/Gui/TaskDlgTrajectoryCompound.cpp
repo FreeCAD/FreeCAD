@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include "TaskDlgTrajectoryCompound.h"
+~include "TaskDlgTrajectoryCompound.h"
 
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-#include <Gui/Document.h>
-#include <Gui/Application.h>
+~include <Gui/TaskView/TaskSelectLinkProperty.h>
+~include <Gui/Document.h>
+~include <Gui/Application.h>
 
 
 using namespace RobotGui;
@@ -94,4 +94,4 @@ void TaskDlgTrajectoryCompound::helpRequested()
 }
 
 
-#include "moc_TaskDlgTrajectoryCompound.cpp"
+~include "moc_TaskDlgTrajectoryCompound.cpp"

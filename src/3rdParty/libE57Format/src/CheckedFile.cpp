@@ -25,49 +25,49 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#if defined( _WIN32 )
-#if defined( _MSC_VER )
-#include <codecvt>
-#include <io.h>
-#elif defined( __GNUC__ )
-#define _LARGEFILE64_SOURCE
-#define __LARGE64_FILES
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#else
-#error "no supported compiler defined"
-#endif
-#elif defined( __linux__ )
-#define _LARGEFILE64_SOURCE
-#define __LARGE64_FILES
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#elif defined( __APPLE__ )
-#include <sys/types.h>
-#include <unistd.h>
-#else
-#error "no supported OS platform defined"
-#endif
+~if defined( _WIN32 )
+~if defined( _MSC_VER )
+~include <codecvt>
+~include <io.h>
+~elif defined( __GNUC__ )
+~define _LARGEFILE64_SOURCE
+~define __LARGE64_FILES
+~include <sys/stat.h>
+~include <sys/types.h>
+~include <unistd.h>
+~else
+~error "no supported compiler defined"
+~endif
+~elif defined( __linux__ )
+~define _LARGEFILE64_SOURCE
+~define __LARGE64_FILES
+~include <sys/stat.h>
+~include <sys/types.h>
+~include <unistd.h>
+~elif defined( __APPLE__ )
+~include <sys/types.h>
+~include <unistd.h>
+~else
+~error "no supported OS platform defined"
+~endif
 
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <fcntl.h>
+~include <cmath>
+~include <cstdio>
+~include <cstring>
+~include <fcntl.h>
 
-#include "CRC.h"
+~include "CRC.h"
 
-#include "CheckedFile.h"
+~include "CheckedFile.h"
 
-//#define E57_CHECK_FILE_DEBUG
-#ifdef E57_CHECK_FILE_DEBUG
-#include <cassert>
-#endif
+//~define E57_CHECK_FILE_DEBUG
+~ifdef E57_CHECK_FILE_DEBUG
+~include <cassert>
+~endif
 
-#ifndef O_BINARY
+~ifndef O_BINARY
 constexpr int O_BINARY = 0;
-#endif
+~endif
 
 using namespace e57;
 
@@ -180,7 +180,7 @@ CheckedFile::CheckedFile( const char *input, uint64_t size, ReadChecksumPolicy p
 
 int CheckedFile::open64( const ustring &fileName, int flags, int mode )
 {
-#if defined( _MSC_VER )
+~if defined( _MSC_VER )
    // Handle UTF-8 file names - Windows requires conversion to UTF-16
    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
    std::wstring widePath = converter.from_bytes( fileName );
@@ -193,7 +193,7 @@ int CheckedFile::open64( const ustring &fileName, int flags, int mode )
                                                       " flags=" + toString( flags ) + " mode=" + toString( mode ) );
    }
    return handle;
-#elif defined( __GNUC__ )
+~elif defined( __GNUC__ )
    int result = ::open( fileName_.c_str(), flags, mode );
    if ( result < 0 )
    {
@@ -201,9 +201,9 @@ int CheckedFile::open64( const ustring &fileName, int flags, int mode )
                                                       " flags=" + toString( flags ) + " mode=" + toString( mode ) );
    }
    return result;
-#else
-#error "no supported compiler defined"
-#endif
+~else
+~error "no supported compiler defined"
+~endif
 }
 
 CheckedFile::~CheckedFile()
@@ -283,10 +283,10 @@ void CheckedFile::read( char *buf, size_t nRead, size_t /*bufSize*/ )
 
 void CheckedFile::write( const char *buf, size_t nWrite )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    // cout << "write nWrite=" << nWrite << " position()="<< position() << std::endl;
    // //???
-#endif
+~endif
    if ( readOnly_ )
    {
       throw E57_EXCEPTION2( E57_ERROR_FILE_IS_READ_ONLY, "fileName=" + fileName_ );
@@ -314,18 +314,18 @@ void CheckedFile::write( const char *buf, size_t nWrite )
          readPhysicalPage( page_buffer, page );
       }
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout << "  page_buffer[0] read: '" << page_buffer[0] << "'" << std::endl;
       // cout << "copy " << n << "bytes to page=" << page << " pageOffset=" <<
       // pageOffset << " buf='"; //??? for (size_t i=0; i < n; i++) cout <<
       // buf[i]; cout << "'" << std::endl;
-#endif
+~endif
       memcpy( page_buffer + pageOffset, buf, n );
       writePhysicalPage( page_buffer, page );
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout << "  page_buffer[0] after write: '" << page_buffer[0] << "'" <<
       // std::endl; //???
-#endif
+~endif
       buf += n;
       nWrite -= n;
       pageOffset = 0;
@@ -376,9 +376,9 @@ CheckedFile &CheckedFile::operator<<( double d )
 
 template <class FTYPE> CheckedFile &CheckedFile::writeFloatingPoint( FTYPE value, int precision )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    std::cout << "CheckedFile::writeFloatingPoint, value=" << value << " precision=" << precision << std::endl;
-#endif
+~endif
 
    std::stringstream ss;
    ss << std::scientific << std::setprecision( precision ) << value;
@@ -390,9 +390,9 @@ template <class FTYPE> CheckedFile &CheckedFile::writeFloatingPoint( FTYPE value
    ustring s = ss.str();
    const size_t len = s.length();
 
-#ifdef E57_MAX_DEBUG
+~ifdef E57_MAX_DEBUG
    ustring old_s = s;
-#endif
+~endif
 
    /// Split into mantissa and exponent
    /// E.g. 1.23456000000000000e+005  ==> "1.23456000000000000" + "e+005"
@@ -428,7 +428,7 @@ template <class FTYPE> CheckedFile &CheckedFile::writeFloatingPoint( FTYPE value
 
    // Disable these checks because they compare floats using "!=" which is
    // invalid
-#if 0 // E57_MAX_DEBUG
+~if 0 // E57_MAX_DEBUG
    /// Double check same value
    FTYPE old_value = static_cast<FTYPE>(atof(old_s.c_str()));
    FTYPE new_value = static_cast<FTYPE>(atof(s.c_str()));
@@ -436,7 +436,7 @@ template <class FTYPE> CheckedFile &CheckedFile::writeFloatingPoint( FTYPE value
       throw E57_EXCEPTION2(E57_ERROR_INTERNAL, "fileName=" + fileName_ + " oldValue=" + toString(old_value) + " newValue=" + toString(new_value));
    if (new_value != value)
       throw E57_EXCEPTION2(E57_ERROR_INTERNAL, "fileName=" + fileName_ + " newValue=" + toString(new_value) + " value=" + toString(value));
-#endif
+~endif
 
    return ( *this << s );
 }
@@ -446,10 +446,10 @@ void CheckedFile::seek( uint64_t offset, OffsetMode omode )
    //??? check for seek beyond logicalLength_
    const auto pos = static_cast<int64_t>( omode == Physical ? offset : logicalToPhysical( offset ) );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    // cout << "seek offset=" << offset << " omode=" << omode << " pos=" << pos
    // << std::endl; //???
-#endif
+~endif
    lseek64( pos, SEEK_SET );
 }
 
@@ -468,26 +468,26 @@ uint64_t CheckedFile::lseek64( int64_t offset, int whence )
                                                        " whence=" + toString( whence ) );
    }
 
-#if defined( _WIN32 )
-#if defined( _MSC_VER ) || defined( __MINGW32__ ) //<rs 2010-06-16> mingw _is_ WIN32!
+~if defined( _WIN32 )
+~if defined( _MSC_VER ) || defined( __MINGW32__ ) //<rs 2010-06-16> mingw _is_ WIN32!
    __int64 result = _lseeki64( fd_, offset, whence );
-#elif defined( __GNUC__ ) //<rs 2010-06-16> this most likely will not get
+~elif defined( __GNUC__ ) //<rs 2010-06-16> this most likely will not get
                           // triggered (cygwin != WIN32)?
-#ifdef E57_MAX_DEBUG
+~ifdef E57_MAX_DEBUG
    if ( sizeof( off_t ) != sizeof( offset ) )
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "sizeof(off_t)=" + toString( sizeof( off_t ) ) );
-#endif
+~endif
    int64_t result = ::lseek( fd_, offset, whence );
-#else
-#error "no supported compiler defined"
-#endif
-#elif defined( __linux__ )
+~else
+~error "no supported compiler defined"
+~endif
+~elif defined( __linux__ )
    int64_t result = ::lseek64( fd_, offset, whence );
-#elif defined( __APPLE__ )
+~elif defined( __APPLE__ )
    int64_t result = ::lseek( fd_, offset, whence );
-#else
-#error "no supported OS platform defined"
-#endif
+~else
+~error "no supported OS platform defined"
+~endif
 
    if ( result < 0 )
    {
@@ -538,10 +538,10 @@ uint64_t CheckedFile::length( OffsetMode omode )
 
 void CheckedFile::extend( uint64_t newLength, OffsetMode omode )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    // cout << "extend newLength=" << newLength << " omode="<< omode << std::endl;
    // //???
-#endif
+~endif
    if ( readOnly_ )
    {
       throw E57_EXCEPTION2( E57_ERROR_FILE_IS_READ_ONLY, "fileName=" + fileName_ );
@@ -604,11 +604,11 @@ void CheckedFile::extend( uint64_t newLength, OffsetMode omode )
          readPhysicalPage( page_buffer, page );
       }
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       // cout << "extend " << n << "bytes on page=" << page << " pageOffset=" <<
       // pageOffset << std::endl;
       // //???
-#endif
+~endif
       memset( page_buffer + pageOffset, 0, n );
       writePhysicalPage( page_buffer, page );
 
@@ -637,13 +637,13 @@ void CheckedFile::close()
 {
    if ( fd_ >= 0 )
    {
-#if defined( _MSC_VER )
+~if defined( _MSC_VER )
       int result = ::_close( fd_ );
-#elif defined( __GNUC__ )
+~elif defined( __GNUC__ )
       int result = ::close( fd_ );
-#else
-#error "no supported compiler defined"
-#endif
+~else
+~error "no supported compiler defined"
+~endif
       if ( result < 0 )
       {
          throw E57_EXCEPTION2( E57_ERROR_CLOSE_FAILED, "fileName=" + fileName_ + " result=" + toString( result ) );
@@ -669,12 +669,12 @@ void CheckedFile::unlink()
    /// Try to remove the file, don't report a failure
    int result = std::remove( fileName_.c_str() ); //??? unicode support here
    (void)result;                                  // this maybe unused
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    if ( result < 0 )
    {
       std::cout << "std::remove() failed, result=" << result << std::endl;
    }
-#endif
+~endif
 }
 
 inline uint32_t swap_uint32( uint32_t val )
@@ -733,15 +733,15 @@ void CheckedFile::getCurrentPageAndOffset( uint64_t &page, size_t &pageOffset, O
 
 void CheckedFile::readPhysicalPage( char *page_buffer, uint64_t page )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    // cout << "readPhysicalPage, page:" << page << std::endl;
-#endif
+~endif
 
-#ifdef E57_CHECK_FILE_DEBUG
+~ifdef E57_CHECK_FILE_DEBUG
    const uint64_t physicalLength = length( Physical );
 
    assert( page * physicalPageSize < physicalLength );
-#endif
+~endif
 
    /// Seek to start of physical page
    seek( page * physicalPageSize, Physical );
@@ -752,13 +752,13 @@ void CheckedFile::readPhysicalPage( char *page_buffer, uint64_t page )
       return;
    }
 
-#if defined( _MSC_VER )
+~if defined( _MSC_VER )
    int result = ::_read( fd_, page_buffer, physicalPageSize );
-#elif defined( __GNUC__ )
+~elif defined( __GNUC__ )
    ssize_t result = ::read( fd_, page_buffer, physicalPageSize );
-#else
-#error "no supported compiler defined"
-#endif
+~else
+~error "no supported compiler defined"
+~endif
 
    if ( result < 0 || static_cast<size_t>( result ) != physicalPageSize )
    {
@@ -768,9 +768,9 @@ void CheckedFile::readPhysicalPage( char *page_buffer, uint64_t page )
 
 void CheckedFile::writePhysicalPage( char *page_buffer, uint64_t page )
 {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
    // cout << "writePhysicalPage, page:" << page << std::endl;
-#endif
+~endif
 
    /// Append checksum
    uint32_t check_sum = checksum( page_buffer, logicalPageSize );
@@ -779,13 +779,13 @@ void CheckedFile::writePhysicalPage( char *page_buffer, uint64_t page )
    /// Seek to start of physical page
    seek( page * physicalPageSize, Physical );
 
-#if defined( _MSC_VER )
+~if defined( _MSC_VER )
    int result = ::_write( fd_, page_buffer, physicalPageSize );
-#elif defined( __GNUC__ )
+~elif defined( __GNUC__ )
    ssize_t result = ::write( fd_, page_buffer, physicalPageSize );
-#else
-#error "no supported compiler defined"
-#endif
+~else
+~error "no supported compiler defined"
+~endif
 
    if ( result < 0 )
    {

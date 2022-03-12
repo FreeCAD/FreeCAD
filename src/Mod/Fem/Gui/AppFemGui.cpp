@@ -21,63 +21,63 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <Standard_math.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <Standard_math.hxx>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/WidgetFactory.h>
-#include <Gui/Language/Translator.h>
-#include "PropertyFemMeshItem.h"
-#include "DlgSettingsFemCcxImp.h"
-#include "DlgSettingsFemElmerImp.h"
-#include "DlgSettingsFemExportAbaqusImp.h"
-#include "DlgSettingsFemGeneralImp.h"
-#include "DlgSettingsFemGmshImp.h"
-#include "DlgSettingsFemInOutVtkImp.h"
-#include "DlgSettingsFemMaterialImp.h"
-#include "DlgSettingsFemMystranImp.h"
-#include "DlgSettingsFemZ88Imp.h"
-#include "ViewProviderFemMesh.h"
-#include "ViewProviderFemMeshShape.h"
-#include "ViewProviderFemMeshShapeNetgen.h"
-#include "ViewProviderAnalysis.h"
-#include "ViewProviderSolver.h"
-#include "ViewProviderSetNodes.h"
-#include "ViewProviderSetElements.h"
-#include "ViewProviderSetFaces.h"
-#include "ViewProviderSetGeometry.h"
-#include "ViewProviderFemConstraint.h"
-#include "ViewProviderFemConstraintOnBoundary.h"
-#include "ViewProviderFemConstraintBearing.h"
-#include "ViewProviderFemConstraintFixed.h"
-#include "ViewProviderFemConstraintForce.h"
-#include "ViewProviderFemConstraintFluidBoundary.h"
-#include "ViewProviderFemConstraintPressure.h"
-#include "ViewProviderFemConstraintSpring.h"
-#include "ViewProviderFemConstraintGear.h"
-#include "ViewProviderFemConstraintPulley.h"
-#include "ViewProviderFemConstraintDisplacement.h"
-#include "ViewProviderFemConstraintTemperature.h"
-#include "ViewProviderFemConstraintHeatflux.h"
-#include "ViewProviderFemConstraintInitialTemperature.h"
-#include "ViewProviderFemConstraintPlaneRotation.h"
-#include "ViewProviderFemConstraintContact.h"
-#include "ViewProviderFemConstraintTransform.h"
-#include "ViewProviderResult.h"
-#include "Workbench.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/WidgetFactory.h>
+~include <Gui/Language/Translator.h>
+~include "PropertyFemMeshItem.h"
+~include "DlgSettingsFemCcxImp.h"
+~include "DlgSettingsFemElmerImp.h"
+~include "DlgSettingsFemExportAbaqusImp.h"
+~include "DlgSettingsFemGeneralImp.h"
+~include "DlgSettingsFemGmshImp.h"
+~include "DlgSettingsFemInOutVtkImp.h"
+~include "DlgSettingsFemMaterialImp.h"
+~include "DlgSettingsFemMystranImp.h"
+~include "DlgSettingsFemZ88Imp.h"
+~include "ViewProviderFemMesh.h"
+~include "ViewProviderFemMeshShape.h"
+~include "ViewProviderFemMeshShapeNetgen.h"
+~include "ViewProviderAnalysis.h"
+~include "ViewProviderSolver.h"
+~include "ViewProviderSetNodes.h"
+~include "ViewProviderSetElements.h"
+~include "ViewProviderSetFaces.h"
+~include "ViewProviderSetGeometry.h"
+~include "ViewProviderFemConstraint.h"
+~include "ViewProviderFemConstraintOnBoundary.h"
+~include "ViewProviderFemConstraintBearing.h"
+~include "ViewProviderFemConstraintFixed.h"
+~include "ViewProviderFemConstraintForce.h"
+~include "ViewProviderFemConstraintFluidBoundary.h"
+~include "ViewProviderFemConstraintPressure.h"
+~include "ViewProviderFemConstraintSpring.h"
+~include "ViewProviderFemConstraintGear.h"
+~include "ViewProviderFemConstraintPulley.h"
+~include "ViewProviderFemConstraintDisplacement.h"
+~include "ViewProviderFemConstraintTemperature.h"
+~include "ViewProviderFemConstraintHeatflux.h"
+~include "ViewProviderFemConstraintInitialTemperature.h"
+~include "ViewProviderFemConstraintPlaneRotation.h"
+~include "ViewProviderFemConstraintContact.h"
+~include "ViewProviderFemConstraintTransform.h"
+~include "ViewProviderResult.h"
+~include "Workbench.h"
 
-#ifdef FC_USE_VTK
-#include "ViewProviderFemPostObject.h"
-#include "ViewProviderFemPostPipeline.h"
-#include "ViewProviderFemPostFunction.h"
-#include "ViewProviderFemPostFilter.h"
-#endif
+~ifdef FC_USE_VTK
+~include "ViewProviderFemPostObject.h"
+~include "ViewProviderFemPostPipeline.h"
+~include "ViewProviderFemPostFunction.h"
+~include "ViewProviderFemPostFilter.h"
+~endif
 
 
 // use a different name to CreateCommand()
@@ -153,7 +153,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderResultPython                            ::init();
 
 
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     FemGui::ViewProviderFemPostObject                           ::init();
     FemGui::ViewProviderFemPostPipeline                         ::init();
     FemGui::ViewProviderFemPostClip                             ::init();
@@ -167,7 +167,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemPostFunctionProvider                 ::init();
     FemGui::ViewProviderFemPostPlaneFunction                    ::init();
     FemGui::ViewProviderFemPostSphereFunction                   ::init();
-#endif
+~endif
 
 
     // register preferences pages on FEM, the order here will be the order of the tabs in pref widget

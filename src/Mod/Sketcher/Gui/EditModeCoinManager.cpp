@@ -21,82 +21,82 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFont.h>
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoGroup.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoFont.h>
 
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/details/SoPointDetail.h>
+~ include <Inventor/details/SoDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
 
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoInfo.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoImage.h>
+~ include <Inventor/nodes/SoInfo.h>
 
-# include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/actions/SoRayPickAction.h>
 
-# include <Inventor/SbVec3f.h>
-# include <Inventor/SbImage.h>
+~ include <Inventor/SbVec3f.h>
+~ include <Inventor/SbImage.h>
 
-# include <memory>
-#endif  // #ifndef _PreComp_
+~ include <memory>
+~endif  // ~ifndef _PreComp_
 
-#include <Gui/Inventor/SmSwitchboard.h>
+~include <Gui/Inventor/SmSwitchboard.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Sketcher/App/SolverGeometryExtension.h>
-#include <Mod/Sketcher/App/GeoEnum.h>
-#include <Mod/Sketcher/App/Constraint.h>
-#include <Mod/Sketcher/App/GeoList.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Sketcher/App/SolverGeometryExtension.h>
+~include <Mod/Sketcher/App/GeoEnum.h>
+~include <Mod/Sketcher/App/Constraint.h>
+~include <Mod/Sketcher/App/GeoList.h>
 
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Tree.h>
-#include <Gui/Utilities.h>
-#include <Base/Converter.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Tools2D.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Tree.h>
+~include <Gui/Utilities.h>
+~include <Base/Converter.h>
+~include <Base/Tools.h>
 
-#include <Base/Vector3D.h>
+~include <Base/Vector3D.h>
 
-#include <App/ObjectIdentifier.h>
+~include <App/ObjectIdentifier.h>
 
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Tools.h>
+~include <Gui/SoFCBoundingBox.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Inventor/MarkerBitmaps.h>
+~include <Gui/Tools.h>
 
-#include <qpainter.h>
+~include <qpainter.h>
 
-#include "SoZoomTranslation.h"
-#include "SoDatumLabel.h"
+~include "SoZoomTranslation.h"
+~include "SoDatumLabel.h"
 
-#include "EditModeInformationOverlayCoinConverter.h"
+~include "EditModeInformationOverlayCoinConverter.h"
 
-#include "EditModeGeometryCoinConverter.h"
+~include "EditModeGeometryCoinConverter.h"
 
-#include "ViewProviderSketch.h"
+~include "ViewProviderSketch.h"
 
-#include "ViewProviderSketchCoinAttorney.h"
+~include "ViewProviderSketchCoinAttorney.h"
 
-#include "EditModeGeometryCoinManager.h"
-#include "EditModeConstraintCoinManager.h"
+~include "EditModeGeometryCoinManager.h"
+~include "EditModeConstraintCoinManager.h"
 
-#include "EditModeCoinManager.h"
+~include "EditModeCoinManager.h"
 
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -276,8 +276,8 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(const s
     // For 2D rendered bitmap fonts (like for SoText2), this value is the height of a character in screen pixels. For 3D text, this value is the world-space coordinates height of a character in the current units setting (see documentation for SoUnits node).
     //
     // However, with hdpi monitors, the coin font labels do not respect the size passed in pixels:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610#p467610
-    // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40#p467471
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610~p467610
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40~p467471
     //
     // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for a "1" in a datum label as 34px,
     // and I see kilsore and Elyas screenshots showing 41px and 61px in higher resolution monitors for the same configuration, I think

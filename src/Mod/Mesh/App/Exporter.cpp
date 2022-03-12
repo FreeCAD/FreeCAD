@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <algorithm>
-    #include <vector>
-    #include <boost/algorithm/string/replace.hpp>
-#endif  //  #ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
+    ~include <algorithm>
+    ~include <vector>
+    ~include <boost/algorithm/string/replace.hpp>
+~endif  //  ~ifndef _PreComp_
 
-#include "Exporter.h"
-#include "MeshFeature.h"
+~include "Exporter.h"
+~include "MeshFeature.h"
 
-#include "Core/Iterator.h"
+~include "Core/Iterator.h"
 
-#include "Base/Console.h"
-#include "Base/Exception.h"
-#include "Base/FileInfo.h"
-#include <Base/Interpreter.h>
-#include "Base/Sequencer.h"
-#include "Base/Stream.h"
-#include "Base/Tools.h"
+~include "Base/Console.h"
+~include "Base/Exception.h"
+~include "Base/FileInfo.h"
+~include <Base/Interpreter.h>
+~include "Base/Sequencer.h"
+~include "Base/Stream.h"
+~include "Base/Tools.h"
 
-#include "App/Application.h"
-#include "App/ComplexGeoData.h"
-#include "App/ComplexGeoDataPy.h"
-#include "App/DocumentObject.h"
+~include "App/Application.h"
+~include "App/ComplexGeoData.h"
+~include "App/ComplexGeoDataPy.h"
+~include "App/DocumentObject.h"
 
-#include <zipios++/zipoutputstream.h>
+~include <zipios++/zipoutputstream.h>
 
 using namespace Mesh;
 using namespace MeshCore;

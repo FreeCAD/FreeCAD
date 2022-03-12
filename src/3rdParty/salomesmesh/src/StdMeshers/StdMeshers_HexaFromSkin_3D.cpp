@@ -21,36 +21,36 @@
 // Created   : Wed Jan 27 12:28:07 2010
 // Author    : Edward AGAPOV (eap)
 
-#include "StdMeshers_HexaFromSkin_3D.hxx"
+~include "StdMeshers_HexaFromSkin_3D.hxx"
 
-#include "SMDS_VolumeOfNodes.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
+~include "SMDS_VolumeOfNodes.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
 
-#include <gp_Ax2.hxx>
+~include <gp_Ax2.hxx>
 
-#include <limits>
+~include <limits>
 
 // Define error message and _MYDEBUG_ if needed
-#ifdef _DEBUG_
-#define BAD_MESH_ERR \
+~ifdef _DEBUG_
+~define BAD_MESH_ERR \
   error(SMESH_Comment("Can't detect block-wise structure of the input 2D mesh.\n" \
                       __FILE__ ":" )<<__LINE__)
-//#define _MYDEBUG_
-#else
-#define BAD_MESH_ERR \
+//~define _MYDEBUG_
+~else
+~define BAD_MESH_ERR \
   error(SMESH_Comment("Can't detect block-wise structure of the input 2D mesh"))
-#endif
+~endif
 
 
 // Debug output
-#ifdef _MYDEBUG_
-#define _DUMP_(msg) cout << msg << endl
-#else
-#define _DUMP_(msg)
-#endif
+~ifdef _MYDEBUG_
+~define _DUMP_(msg) cout << msg << endl
+~else
+~define _DUMP_(msg)
+~endif
 
 
 namespace
@@ -59,12 +59,12 @@ namespace
     {
       B_BOTTOM=0, B_RIGHT, B_TOP, B_LEFT, B_FRONT, B_BACK, NB_BLOCK_SIDES
     };
-#ifdef _MYDEBUG_
+~ifdef _MYDEBUG_
   const char* SBoxSides[] = //!< names of block sides -- needed for DEBUG only
     {
       "BOTTOM", "RIGHT", "TOP", "LEFT", "FRONT", "BACK", "UNDEFINED"
     };
-#endif
+~endif
   enum EQuadEdge //!< edges of quadrangle side
     {
       Q_BOTTOM = 0, Q_RIGHT, Q_TOP, Q_LEFT, NB_QUAD_SIDES
@@ -211,11 +211,11 @@ namespace
     int                          _nbBlocksExpected;
     int                          _nbBlocksFound;
 
-#ifdef _DEBUG_ // want to get SIGSEGV in case of invalid index
-#define _grid_access_(pobj, i) pobj->_grid[ ((i) < pobj->_grid.size()) ? i : int(1e100)]
-#else
-#define _grid_access_(pobj, i) pobj->_grid[ i ]
-#endif
+~ifdef _DEBUG_ // want to get SIGSEGV in case of invalid index
+~define _grid_access_(pobj, i) pobj->_grid[ ((i) < pobj->_grid.size()) ? i : int(1e100)]
+~else
+~define _grid_access_(pobj, i) pobj->_grid[ i ]
+~endif
     //!< Return node at XY
     const SMDS_MeshNode* getNode(int x, int y) const { return _grid_access_(this, _index( x,y ));}
     //!< Set node at XY
@@ -1146,7 +1146,7 @@ bool StdMeshers_HexaFromSkin_3D::Compute(SMESH_Mesh & aMesh, SMESH_MesherHelper*
           SMESH_Block::ShellPoint( params, pointOnShape, coords );
           column[ z ] = aHelper->AddNode( coords.X(), coords.Y(), coords.Z() );
 
-#ifdef DEB_GRID
+~ifdef DEB_GRID
           // debug
           //cout << "----------------------------------------------------------------------"<<endl;
           //for ( int id = SMESH_Block::ID_V000; id < SMESH_Block::ID_Shell; ++id)
@@ -1156,7 +1156,7 @@ bool StdMeshers_HexaFromSkin_3D::Compute(SMESH_Mesh & aMesh, SMESH_MesherHelper*
           //}
           //cout << "Params: ( "<< params.X()<<", "<<params.Y()<<", "<<params.Z()<<" )"<<endl;
           //cout << "coords: ( "<< coords.X()<<", "<<coords.Y()<<", "<<coords.Z()<<" )"<<endl;
-#endif
+~endif
         }
       }
     }

@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMutexLocker>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMutexLocker>
+~endif
 
-#include "DocumentThread.h"
-#include "DocumentProtector.h"
+~include "DocumentThread.h"
+~include "DocumentProtector.h"
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <Base/Writer.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Mod/Mesh/App/Mesh.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
+~include <Base/Writer.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Mod/Mesh/App/Mesh.h>
 
 using namespace Sandbox;
 
@@ -70,11 +70,11 @@ WorkerThread::~WorkerThread()
 
 void WorkerThread::run()
 {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     int max = 10000;
-#else
+~else
     int max = 100000000;
-#endif
+~endif
     Base::SequencerLauncher seq("Do something meaningful...", max);
     double val=0;
     for (int i=0; i<max; i++) {
@@ -104,7 +104,7 @@ void PythonThread::run()
     QMutexLocker mutex_lock(&mutex);
     Base::PyGILStateLocker locker;
     try {
-#if 0
+~if 0
         PyObject *module, *dict;
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
@@ -120,7 +120,7 @@ void PythonThread::run()
         PyObject *presult = PyRun_String(buf.c_str(), Py_file_input, dict_copy, dict_copy);
         Py_DECREF(dict_copy);
         msleep(10);
-#else
+~else
 
         Base::Interpreter().runString(
             "import Sandbox, Mesh, MeshGui\n"
@@ -129,7 +129,7 @@ void PythonThread::run()
             "dp.addObject(\"Mesh::Ellipsoid\",\"Mesh\")\n"
             "dp.recompute()\n");
         msleep(10);
-#endif
+~endif
     }
     catch (const Base::PyException& e) {
         Base::Console().Error(e.what());

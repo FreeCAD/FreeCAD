@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoMaterial.h>
+~endif
 
-#include <App/PropertyStandard.h>
+~include <App/PropertyStandard.h>
 
-#include "ViewProviderBuilder.h"
-#include "SoFCSelection.h"
-#include "Window.h"
+~include "ViewProviderBuilder.h"
+~include "SoFCSelection.h"
+~include "Window.h"
 
 
 using namespace Gui;

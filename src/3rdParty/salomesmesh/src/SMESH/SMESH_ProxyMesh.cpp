@@ -20,15 +20,15 @@
 // Created   : Thu Dec  2 12:32:53 2010
 // Author    : Edward AGAPOV (eap)
 
-#include "SMESH_ProxyMesh.hxx"
+~include "SMESH_ProxyMesh.hxx"
 
-#include "SMDS_IteratorOnIterators.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESH_MesherHelper.hxx"
+~include "SMDS_IteratorOnIterators.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESH_MesherHelper.hxx"
 
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
 
 //================================================================================
 /*!

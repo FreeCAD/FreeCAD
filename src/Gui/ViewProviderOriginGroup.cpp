@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderOriginGroup.h"
+~include "ViewProviderOriginGroup.h"
 
 
 using namespace Gui;

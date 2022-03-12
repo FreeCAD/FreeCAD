@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TransactionalObject.h"
-#include "Document.h"
+~include "TransactionalObject.h"
+~include "Document.h"
 
 
 using namespace App;

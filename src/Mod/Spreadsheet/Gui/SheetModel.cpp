@@ -20,26 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QtCore>
-# include <QApplication>
-# include <QLocale>
-# include <QMessageBox>
-# include <QTextDocument>
-#endif
+~ifndef _PreComp_
+~ include <QtCore>
+~ include <QApplication>
+~ include <QLocale>
+~ include <QMessageBox>
+~ include <QTextDocument>
+~endif
 
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include "SheetModel.h"
-#include <Mod/Spreadsheet/App/Utils.h>
-#include "../App/Sheet.h"
-#include <Gui/Command.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <boost_bind_bind.hpp>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include "SheetModel.h"
+~include <Mod/Spreadsheet/App/Utils.h>
+~include "../App/Sheet.h"
+~include <Gui/Command.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <boost_bind_bind.hpp>
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -54,10 +54,10 @@ SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
     rangeUpdatedConnection = sheet->rangeUpdated.connect(bind(&SheetModel::rangeUpdated, this, bp::_1));
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
-    aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
-    textFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
-    positiveFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
-    negativeFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
+    aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "~feff9e")));
+    textFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("TextColor", "~000000")));
+    positiveFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("PositiveNumberColor", "~000000")));
+    negativeFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("NegativeNumberColor", "~000000")));
 }
 
 SheetModel::~SheetModel()
@@ -89,8 +89,8 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     if (cell == 0)
         cell = emptyCell;
 
-//#define DEBUG_DEPS
-#ifdef DEBUG_DEPS
+//~define DEBUG_DEPS
+~ifdef DEBUG_DEPS
     if (role == Qt::ToolTipRole) {
         QString v;
 
@@ -113,13 +113,13 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         }
         return QVariant(v);
     }
-#else
+~else
     if (!cell->hasException() && role == Qt::ToolTipRole) {
         std::string alias;
         if (cell->getAlias(alias))
             return QVariant(Base::Tools::fromStdString(alias));
     }
-#endif
+~endif
 
     if (cell->hasException()) {
         switch (role) {
@@ -128,14 +128,14 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
         }
         case Qt::DisplayRole: {
-#ifdef DEBUG_DEPS
-            return QVariant::fromValue(QString::fromUtf8("#ERR: %1").arg(Tools::fromStdString(cell->getException())));
-#else
+~ifdef DEBUG_DEPS
+            return QVariant::fromValue(QString::fromUtf8("~ERR: %1").arg(Tools::fromStdString(cell->getException())));
+~else
             std::string str;
             if(cell->getStringContent(str))
                 return QVariant::fromValue(QString::fromUtf8(str.c_str()));
-            return QVariant::fromValue(QString::fromUtf8("#ERR"));
-#endif
+            return QVariant::fromValue(QString::fromUtf8("~ERR"));
+~endif
         }
         case Qt::ForegroundRole:
             return QVariant::fromValue(QColor(255.0, 0, 0));
@@ -228,7 +228,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                     if (str.size() > 0 && str[0] == '=')
                         // If this is a real computed value, indicate that a recompute is
                         // needed before we can display it
-                        return QVariant(QLatin1String("#PENDING"));
+                        return QVariant(QLatin1String("~PENDING"));
                     else
                         // If it's just a simple value, display the new value, but still
                         // format it as a pending value to indicate to the user that
@@ -305,7 +305,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             const Base::Unit & computedUnit = floatProp->getUnit();
             DisplayUnit displayUnit;
 
-            // Display locale specific decimal separator (#0003875,#0003876)
+            // Display locale specific decimal separator (~0003875,~0003876)
             if (cell->getDisplayUnit(displayUnit)) {
                 if (computedUnit.isEmpty() || computedUnit == displayUnit.unit) {
                     QString number = QLocale().toString(floatProp->getValue() / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
@@ -313,7 +313,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                     v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
                 }
                 else {
-                    v = QString::fromUtf8("#ERR: unit");
+                    v = QString::fromUtf8("~ERR: unit");
                 }
             }
             else {
@@ -373,7 +373,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             QString v;
             DisplayUnit displayUnit;
 
-            // Display locale specific decimal separator (#0003875,#0003876)
+            // Display locale specific decimal separator (~0003875,~0003876)
             if (cell->getDisplayUnit(displayUnit)) {
                 QString number = QLocale().toString(d / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
                 //QString number = QString::number(d / displayUnit.scaler);
@@ -420,13 +420,13 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 value = pyProp->getValue().as_string();
             } catch (Py::Exception &) {
                 Base::PyException e;
-                value = "#ERR: ";
+                value = "~ERR: ";
                 value += e.what();
             } catch (Base::Exception &e) {
-                value = "#ERR: ";
+                value = "~ERR: ";
                 value += e.what();
             } catch (...) {
-                value = "#ERR: unknown exception";
+                value = "~ERR: unknown exception";
             }
             return QVariant(QString::fromUtf8(value.c_str()));
         }
@@ -522,4 +522,4 @@ void SheetModel::rangeUpdated(const Range &range)
     dataChanged(i, j);
 }
 
-#include "moc_SheetModel.cpp"
+~include "moc_SheetModel.cpp"

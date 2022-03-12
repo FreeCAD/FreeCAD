@@ -20,59 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~endif
 
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-# include <GL/gl.h>
-#endif
+~ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~else
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~ include <GL/gl.h>
+~endif
 
-#include <Inventor/SoFullPath.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoNormalBinding.h>
-#include <Inventor/threads/SbStorage.h>
+~include <Inventor/SoFullPath.h>
+~include <Inventor/SoPickedPoint.h>
+~include <Inventor/actions/SoGLRenderAction.h>
+~include <Inventor/actions/SoHandleEventAction.h>
+~include <Inventor/elements/SoCacheElement.h>
+~include <Inventor/elements/SoCoordinateElement.h>
+~include <Inventor/elements/SoGLCacheContextElement.h>
+~include <Inventor/elements/SoLazyElement.h>
+~include <Inventor/elements/SoLineWidthElement.h>
+~include <Inventor/elements/SoMaterialBindingElement.h>
+~include <Inventor/elements/SoModelMatrixElement.h>
+~include <Inventor/elements/SoOverrideElement.h>
+~include <Inventor/elements/SoShapeStyleElement.h>
+~include <Inventor/elements/SoSwitchElement.h>
+~include <Inventor/events/SoLocation2Event.h>
+~include <Inventor/events/SoMouseButtonEvent.h>
+~include <Inventor/misc/SoState.h>
+~include <Inventor/nodes/SoMaterialBinding.h>
+~include <Inventor/nodes/SoNormalBinding.h>
+~include <Inventor/threads/SbStorage.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/ComplexGeoData.h>
-#include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/ComplexGeoData.h>
+~include <Base/Tools.h>
 
-#include "SoFCUnifiedSelection.h"
-#include "Application.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "Selection.h"
-#include "SoFCInteractiveElement.h"
-#include "SoFCSelectionAction.h"
-#include "ViewParams.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
+~include "SoFCUnifiedSelection.h"
+~include "Application.h"
+~include "Document.h"
+~include "MainWindow.h"
+~include "Selection.h"
+~include "SoFCInteractiveElement.h"
+~include "SoFCSelectionAction.h"
+~include "ViewParams.h"
+~include "ViewProvider.h"
+~include "ViewProviderDocumentObject.h"
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
@@ -638,7 +638,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         }
     }
 
-#if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
+~if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
 
     // If no next hierarchy is found, do another try on view provider hierarchies,
     // which is used by geo feature group.
@@ -662,7 +662,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             break;
         }
     }
-#endif
+~endif
 
     FC_TRACE("clearing selection");
     Gui::Selection().clearSelection();
@@ -970,7 +970,7 @@ void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
             SoNormalBinding* bind = static_cast<SoNormalBinding*>(node);
             vrmlAction->bindList.push_back(bind->value.getValue());
             // this normal binding causes some problems for the part view provider
-            // See also #0002222: Number of normals in exported VRML is wrong
+            // See also ~0002222: Number of normals in exported VRML is wrong
             if (bind->value.getValue() == static_cast<int>(SoNormalBinding::PER_VERTEX_INDEXED))
                 bind->value = SoNormalBinding::OVERALL;
         }
@@ -1439,7 +1439,7 @@ void SoFCSelectionRoot::moveActionStack(SoAction *from, SoAction *to, bool erase
         ActionStacks.erase(it);
 }
 
-#define BEGIN_ACTION \
+~define BEGIN_ACTION \
     auto &stack = ActionStacks[action];\
     if(ViewParams::instance()->getCoinCycleCheck() \
         && !stack.nodeSet.insert(this).second) \
@@ -1454,7 +1454,7 @@ void SoFCSelectionRoot::moveActionStack(SoAction *from, SoAction *to, bool erase
     stack.push_back(this);\
     auto size = stack.size();
 
-#define END_ACTION \
+~define END_ACTION \
     if(stack.size()!=size || stack.back()!=this)\
         FC_ERR("action stack fault");\
     else {\

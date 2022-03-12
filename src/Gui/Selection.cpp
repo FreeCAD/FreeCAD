@@ -21,35 +21,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-#include <App/GeoFeature.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
+~include <App/GeoFeature.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include "Selection.h"
-#include "SelectionObject.h"
-#include "Application.h"
-#include "Document.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "SelectionFilter.h"
-#include "Tree.h"
-#include "ViewProviderDocumentObject.h"
+~include "Selection.h"
+~include "SelectionObject.h"
+~include "Application.h"
+~include "Document.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "MDIView.h"
+~include "SelectionFilter.h"
+~include "Tree.h"
+~include "ViewProviderDocumentObject.h"
 
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
@@ -170,8 +170,8 @@ std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, int resolve)
     : SelectionObserver(true,resolve),inst(obj)
 {
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj.ptr(),#_name,py_##_name);
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) FC_PY_GetCallable(obj.ptr(),~_name,py_~~_name);
     FC_PY_SEL_OBSERVER
 }
 
@@ -771,7 +771,7 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
         // MovePreselect is likely going to slow down large scene rendering.
         // Disable it for now.
-#if 0
+~if 0
         if(hx!=x || hy!=y || hz!=z) {
             hx = x;
             hy = y;
@@ -780,7 +780,7 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
                     DocName,FeatName,SubName,std::string(),x,y,z);
             notify(Chng);
         }
-#endif
+~endif
         return -1;
     }
 
@@ -843,14 +843,14 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
     if(Chng.Type==SelectionChanges::SetPreselect) {
         CurrentPreselection = Chng;
-        FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
+        FC_TRACE("preselect "<<DocName<<'~'<<FeatName<<'.'<<SubName);
     }else
-        FC_TRACE("preselect signal "<<DocName<<'#'<<FeatName<<'.'<<SubName);
+        FC_TRACE("preselect signal "<<DocName<<'~'<<FeatName<<'.'<<SubName);
 
     notify(Chng);
 
     if(signal==1 && DocName.size()) {
-        FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
+        FC_TRACE("preselect "<<DocName<<'~'<<FeatName<<'.'<<SubName);
         Chng.Type = SelectionChanges::SetPreselect;
         CurrentPreselection = Chng;
         notify(std::move(Chng));
@@ -1099,7 +1099,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     SelectionChanges Chng(SelectionChanges::AddSelection,
             temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
 
-    FC_LOG("Add Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName
+    FC_LOG("Add Selection "<<Chng.pDocName<<'~'<<Chng.pObjectName<<'.'<<Chng.pSubName
             << " (" << x << ", " << y << ", " << z << ')');
 
     notify(std::move(Chng));
@@ -1260,7 +1260,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
         SelectionChanges Chng(SelectionChanges::AddSelection,
                 temp.DocName,temp.FeatName,temp.SubName,temp.TypeName);
 
-        FC_LOG("Add Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName);
+        FC_LOG("Add Selection "<<Chng.pDocName<<'~'<<Chng.pObjectName<<'.'<<Chng.pSubName);
 
         notify(std::move(Chng));
         update = true;
@@ -1295,7 +1295,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
             pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
 
-    FC_LOG("Update Selection "<<Chng.pDocName << '#' << Chng.pObjectName << '.' <<Chng.pSubName);
+    FC_LOG("Update Selection "<<Chng.pDocName << '~' << Chng.pObjectName << '.' <<Chng.pSubName);
 
     notify(std::move(Chng));
 
@@ -1386,10 +1386,10 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     // so that it's not safe to invoke the notifications inside the loop
     // as this can invalidate the iterators and thus leads to undefined
     // behaviour.
-    // So, the notification is done after the loop, see also #0003469
+    // So, the notification is done after the loop, see also ~0003469
     if(changes.size()) {
         for(auto &Chng : changes) {
-            FC_LOG("Rmv Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName);
+            FC_LOG("Rmv Selection "<<Chng.pDocName<<'~'<<Chng.pObjectName<<'.'<<Chng.pSubName);
             notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
@@ -1657,7 +1657,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             pSubName,sel.elementName,false,App::GeoFeature::Normal,0,&element);
     if(!sel.pResolvedObject) {
         if(!selList)
-            FC_ERR("Sub-object " << sel.DocName << '#' << sel.FeatName << '.' << sel.SubName << " not found");
+            FC_ERR("Sub-object " << sel.DocName << '~' << sel.FeatName << '.' << sel.SubName << " not found");
         return -1;
     }
     if(sel.pResolvedObject->testStatus(App::ObjectStatus::Remove))
@@ -1741,7 +1741,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
     }
     if(changes.size()) {
         for(auto &Chng : changes) {
-            FC_LOG("Rmv Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName);
+            FC_LOG("Rmv Selection "<<Chng.pDocName<<'~'<<Chng.pObjectName<<'.'<<Chng.pSubName);
             notify(std::move(Chng));
         }
         getMainWindow()->updateActions();

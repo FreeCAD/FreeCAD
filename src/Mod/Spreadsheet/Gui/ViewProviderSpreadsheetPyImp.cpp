@@ -1,10 +1,10 @@
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderSpreadsheetPy.h"
-#include "ViewProviderSpreadsheetPy.cpp"
-#include <CXX/Objects.hxx>
+~include "ViewProviderSpreadsheetPy.h"
+~include "ViewProviderSpreadsheetPy.cpp"
+~include <CXX/Objects.hxx>
 
-#include "SpreadsheetView.h"
+~include "SpreadsheetView.h"
 
 using namespace SpreadsheetGui;
 

@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DlgSettingsImportExportImp.h"
-#include "ui_DlgSettingsImportExport.h"
-#include <App/Application.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
+~include "DlgSettingsImportExportImp.h"
+~include "ui_DlgSettingsImportExport.h"
+~include <App/Application.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
 
 
 using namespace MeshGui;
@@ -89,5 +89,5 @@ void DlgSettingsImportExport::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsImportExportImp.cpp"
+~include "moc_DlgSettingsImportExportImp.cpp"
 

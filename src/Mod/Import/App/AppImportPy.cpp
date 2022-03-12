@@ -21,66 +21,66 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#if defined(__MINGW32__)
-# define WNT // avoid conflict with GUID
-#endif
-#ifndef _PreComp_
-# include <Python.h>
-# include <climits>
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wextra-semi"
-#endif
-# include <Standard_Version.hxx>
-# include <NCollection_Vector.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
-# include <STEPControl_Writer.hxx>
-# include <IGESCAFControl_Reader.hxx>
-# include <IGESCAFControl_Writer.hxx>
-# include <IGESControl_Controller.hxx>
-# include <IGESData_GlobalSection.hxx>
-# include <IGESData_IGESModel.hxx>
-# include <IGESToBRep_Actor.hxx>
-# include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
-# include <OSD_Exception.hxx>
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
-#endif
+~include "PreCompiled.h"
+~if defined(__MINGW32__)
+~ define WNT // avoid conflict with GUID
+~endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <climits>
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wextra-semi"
+~endif
+~ include <Standard_Version.hxx>
+~ include <NCollection_Vector.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <XCAFDoc_DocumentTool.hxx>
+~ include <XCAFDoc_ShapeTool.hxx>
+~ include <STEPCAFControl_Reader.hxx>
+~ include <STEPCAFControl_Writer.hxx>
+~ include <STEPControl_Writer.hxx>
+~ include <IGESCAFControl_Reader.hxx>
+~ include <IGESCAFControl_Writer.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <IGESData_GlobalSection.hxx>
+~ include <IGESData_IGESModel.hxx>
+~ include <IGESToBRep_Actor.hxx>
+~ include <Interface_Static.hxx>
+~ include <Transfer_TransientProcess.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <XSControl_TransferReader.hxx>
+~ include <APIHeaderSection_MakeHeader.hxx>
+~ include <OSD_Exception.hxx>
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include "ImportOCAF2.h"
-//#include "ImportOCAFAssembly.h"
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PartFeaturePy.h>
+~include "ImportOCAF2.h"
+//~include "ImportOCAFAssembly.h"
+~include <Base/PyObjectBase.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/ProgressIndicator.h>
+~include <Mod/Part/App/ImportIges.h>
+~include <Mod/Part/App/ImportStep.h>
+~include <Mod/Part/App/encodeFilename.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeaturePy.h>
 
-#include "ImpExpDxf.h"
+~include "ImpExpDxf.h"
 
 namespace Import {
 
@@ -175,16 +175,16 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
-#endif
+~endif
                     aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
-#endif
+~endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -211,16 +211,16 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                     }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
-#endif
+~endif
                     aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
-#endif
+~endif
                     // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
@@ -237,7 +237,7 @@ private:
                 throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
             }
 
-#if 1
+~if 1
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             if (merge != Py_None)
                 ocaf.setMerge(PyObject_IsTrue(merge));
@@ -248,14 +248,14 @@ private:
             if (mode >= 0)
                 ocaf.setMode(mode);
             ocaf.loadShapes();
-#elif 1
+~elif 1
             Import::ImportOCAFCmd ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.loadShapes();
-#else
+~else
             Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());
             xcaf.loadShapes();
             pcDoc->recompute();
-#endif
+~endif
             hApp->Close(hDoc);
 
             if (!ocaf.partColors.empty()) {
@@ -341,10 +341,10 @@ private:
                 std::vector <TDF_Label> FreeLabels;
                 std::vector <int> part_id;
                 ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
-#if OCC_VERSION_HEX >= 0x070200
+~if OCC_VERSION_HEX >= 0x070200
                 // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
-#endif
+~endif
             }
 
             Base::FileInfo file(Utf8Name.c_str());
@@ -356,11 +356,11 @@ private:
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header
-#if OCC_VERSION_HEX >= 0x060500
+~if OCC_VERSION_HEX >= 0x060500
                 APIHeaderSection_MakeHeader makeHeader(writer.ChangeWriter().Model());
-#else
+~else
                 APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
-#endif
+~endif
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 

@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Hypr.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <GC_MakeHyperbola.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Hypr.hxx>
+~ include <Geom_Hyperbola.hxx>
+~ include <GC_MakeHyperbola.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/HyperbolaPy.cpp>
+~include "OCCError.h"
+~include "Geometry.h"
+~include <Mod/Part/App/HyperbolaPy.h>
+~include <Mod/Part/App/HyperbolaPy.cpp>
 
 using namespace Part;
 

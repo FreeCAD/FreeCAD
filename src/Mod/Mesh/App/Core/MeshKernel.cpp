@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <stdexcept>
-# include <map>
-# include <queue>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <stdexcept>
+~ include <map>
+~ include <queue>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
-#include <Base/Swap.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
+~include <Base/Swap.h>
 
-#include "Algorithm.h"
-#include "Approximation.h"
-#include "Helpers.h"
-#include "MeshKernel.h"
-#include "Iterator.h"
-#include "Evaluation.h"
-#include "Builder.h"
-#include "Smoothing.h"
-#include "MeshIO.h"
+~include "Algorithm.h"
+~include "Approximation.h"
+~include "Helpers.h"
+~include "MeshKernel.h"
+~include "Iterator.h"
+~include "Evaluation.h"
+~include "Builder.h"
+~include "Smoothing.h"
+~include "MeshIO.h"
 
 using namespace MeshCore;
 
@@ -176,9 +176,9 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
                                     bool checkManifolds)
 {
     // Build map of edges of the referencing facets we want to append
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     unsigned long countPoints = CountPoints();
-#endif
+~endif
 
     // if the manifold check shouldn't be done then just add all faces
     if (!checkManifolds) {
@@ -202,9 +202,9 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
         // reset INVALID flag for all candidates
         pF->ResetFlag(MeshFacet::INVALID);
         for (int i=0; i<3; i++) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             assert( pF->_aulPoints[i] < countPoints );
-#endif
+~endif
             this->_aclPointArray[pF->_aulPoints[i]].SetFlag(MeshPoint::INVALID);
             PointIndex ulT0 = pF->_aulPoints[i];
             PointIndex ulT1 = pF->_aulPoints[(i+1)%3];

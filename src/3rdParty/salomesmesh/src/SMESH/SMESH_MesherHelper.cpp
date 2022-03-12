@@ -24,50 +24,50 @@
 // Created:   15.02.06 15:22:41
 // Author:    Sergey KUUL
 //
-#include "SMESH_MesherHelper.hxx"
+~include "SMESH_MesherHelper.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_FacePosition.hxx" 
-#include "SMDS_IteratorOnIterators.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_FacePosition.hxx" 
+~include "SMDS_IteratorOnIterators.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepTools.hxx>
-#include <BRep_Tool.hxx>
-#include <Geom2d_Curve.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
-#include <Geom_Surface.hxx>
-#include <ShapeAnalysis.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_MapIteratorOfMapOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Trsf.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepTools.hxx>
+~include <BRep_Tool.hxx>
+~include <Geom2d_Curve.hxx>
+~include <GeomAPI_ProjectPointOnCurve.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_RectangularTrimmedSurface.hxx>
+~include <Geom_Surface.hxx>
+~include <ShapeAnalysis.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_MapIteratorOfMapOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Trsf.hxx>
 
-#include <Standard_Failure.hxx>
-#include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
+~include <Standard_ErrorHandler.hxx>
 
-#include <utilities.h>
+~include <utilities.h>
 
-#include <limits>
+~include <limits>
 
 using namespace std;
 
-#define RETURN_BAD_RESULT(msg) { MESSAGE(msg); return false; }
+~define RETURN_BAD_RESULT(msg) { MESSAGE(msg); return false; }
 
 namespace {
 
@@ -3169,9 +3169,9 @@ double SMESH_MesherHelper::GetAngle( const TopoDS_Edge &   theE1,
       vecRef = du ^ dv;
       if ( ++nbLoops > 10 )
       {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
         cout << "SMESH_MesherHelper::GetAngle(): Captured in a sigularity" << endl;
-#endif
+~endif
         return angle;
       }
     }
@@ -3421,16 +3421,16 @@ TopoDS_Shape SMESH_MesherHelper::GetCommonAncestor(const TopoDS_Shape& shape1,
   return commonAnc;
 }
 
-//#include <Perf_Meter.hxx>
+//~include <Perf_Meter.hxx>
 
 //=======================================================================
 namespace { // Structures used by FixQuadraticElements()
 //=======================================================================
 
-#define __DMP__(txt) \
+~define __DMP__(txt) \
   // cout << txt
-#define MSG(txt) __DMP__(txt<<endl)
-#define MSGBEG(txt) __DMP__(txt)
+~define MSG(txt) __DMP__(txt<<endl)
+~define MSGBEG(txt) __DMP__(txt)
 
   //const double straightTol2 = 1e-33; // to detect straing links
   bool isStraightLink(double linkLen2, double middleNodeMove2)
@@ -3542,9 +3542,9 @@ namespace { // Structures used by FixQuadraticElements()
     mutable vector< const QLink* >  _sides;
     mutable bool                    _sideIsAdded[4]; // added in chain of links
     gp_Vec                          _normal;
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     mutable const SMDS_MeshElement* _face;
-#endif
+~endif
 
     QFace( const vector< const QLink*>& links, const SMDS_MeshElement* face=0 );
 
@@ -3658,9 +3658,9 @@ namespace { // Structures used by FixQuadraticElements()
     else
       _normal.SetCoord(1e-33,0,0);
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     _face = face;
-#endif
+~endif
   }
   //================================================================================
   /*!
@@ -3970,7 +3970,7 @@ namespace { // Structures used by FixQuadraticElements()
    * \brief Checks if the face is distorted due to bentLink
    */
   //================================================================================
-#if 0
+~if 0
   bool QFace::IsSpoiled(const QLink* bentLink ) const
   {
     // code is valid for convex faces only
@@ -3995,7 +3995,7 @@ namespace { // Structures used by FixQuadraticElements()
     return false;
     
   }
-#endif
+~endif
   //================================================================================
   /*!
    * \brief Find pairs of continues faces 
@@ -4740,12 +4740,12 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
     if ( !myMesh->HasShapeToMesh() ) return;
     SetSubShape( myMesh->GetShapeToMesh() );
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     int nbSolids = 0;
     TopTools_IndexedMapOfShape solids;
     TopExp::MapShapes(myShape,TopAbs_SOLID,solids);
     nbSolids = solids.Extent();
-#endif
+~endif
     TopTools_MapOfShape faces; // faces not in solid or in not meshed solid
     for ( TopExp_Explorer f(myShape,TopAbs_FACE,TopAbs_SOLID); f.More(); f.Next() ) {
       faces.Add( f.Current() ); // not in solid
@@ -4756,9 +4756,9 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
           faces.Add( f.Current() ); // in not meshed solid
       }
       else { // fix nodes in the solid and its faces
-#ifdef _DEBUG_
-        MSG("FIX SOLID " << nbSolids-- << " #" << GetMeshDS()->ShapeToIndex(s.Current()));
-#endif
+~ifdef _DEBUG_
+        MSG("FIX SOLID " << nbSolids-- << " ~" << GetMeshDS()->ShapeToIndex(s.Current()));
+~endif
         SMESH_MesherHelper h(*myMesh);
         h.SetSubShape( s.Current() );
         h.ToFixNodeParameters(true);
@@ -4766,11 +4766,11 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
       }
     }
     // fix nodes on geom faces
-#ifdef _DEBUG_
+~ifdef _DEBUG_
     int nbfaces = faces.Extent(); /*avoid "unused varianbles": */ nbfaces++, nbfaces--; 
-#endif
+~endif
     for ( TopTools_MapIteratorOfMapOfShape fIt( faces ); fIt.More(); fIt.Next() ) {
-      MSG("FIX FACE " << nbfaces-- << " #" << GetMeshDS()->ShapeToIndex(fIt.Key()));
+      MSG("FIX FACE " << nbfaces-- << " ~" << GetMeshDS()->ShapeToIndex(fIt.Key()));
       SMESH_MesherHelper h(*myMesh);
       h.SetSubShape( fIt.Key() );
       h.ToFixNodeParameters(true);
@@ -4863,13 +4863,13 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
 //         hasRectFaces = hasRectFaces ||
 //           ( volTool.GetVolumeType() == SMDS_VolumeTool::QUAD_HEXA ||
 //             volTool.GetVolumeType() == SMDS_VolumeTool::QUAD_PENTA );
-#ifdef _DEBUG_
+~ifdef _DEBUG_
         if ( nbN == 6 )
           pFace->_face = GetMeshDS()->FindFace(faceNodes[0],faceNodes[2],faceNodes[4]);
         else
           pFace->_face = GetMeshDS()->FindFace(faceNodes[0],faceNodes[2],
                                                faceNodes[4],faceNodes[6] );
-#endif
+~endif
       }
       // collect pyramid apexes for further correction
       if ( vol->NbCornerNodes() == 5 )
@@ -5097,7 +5097,7 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
               if ( SMDS_FacePosition* nPos =
                    dynamic_cast< SMDS_FacePosition* >((*link1)->_mediumNode->GetPosition()))
                 nPos->SetParameters( newUV.X(), newUV.Y() );
-#ifdef _DEBUG_
+~ifdef _DEBUG_
               if ( (XYZ((*link1)->node1()) - XYZ((*link1)->node2())).SquareModulus() <
                    move.SquareMagnitude())
               {
@@ -5109,7 +5109,7 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
                      "uvOld: "<<oldUV.X()<<", "<<oldUV.Y()<<" \t" <<
                      "newUV: "<<newUV.X()<<", "<<newUV.Y()<<" \t");
               }
-#endif
+~endif
               (*link1)->Move( move, /*sum=*/false, /*is2dFixed=*/true );
             }
             MSG( "Move " << (*link1)->_mediumNode->GetID() << " following "

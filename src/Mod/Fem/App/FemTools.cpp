@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Vec.hxx>
-# include <ElCLib.hxx>
-# include <ElSLib.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Precision.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Vec.hxx>
+~ include <ElCLib.hxx>
+~ include <ElSLib.hxx>
+~ include <Geom_BezierCurve.hxx>
+~ include <Geom_BezierSurface.hxx>
+~ include <Geom_BSplineCurve.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~ include <Precision.hxx>
+~ include <TColgp_Array2OfPnt.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Face.hxx>
+~endif
 
-#include "FemTools.h"
+~include "FemTools.h"
 
 Base::Vector3d Fem::Tools::getDirectionFromShape(const TopoDS_Shape& shape)
 {

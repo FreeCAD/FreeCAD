@@ -21,49 +21,49 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Section.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <gp_Pln.hxx>
-# include <cfloat>
-# include <QFuture>
-# include <QFutureWatcher>
-# include <QKeyEvent>
-# include <QtConcurrentMap>
-# include <boost_bind_bind.hpp>
-# include <Python.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepAlgoAPI_Section.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <gp_Pln.hxx>
+~ include <cfloat>
+~ include <QFuture>
+~ include <QFutureWatcher>
+~ include <QKeyEvent>
+~ include <QtConcurrentMap>
+~ include <boost_bind_bind.hpp>
+~ include <Python.h>
+~ include <Inventor/nodes/SoBaseColor.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoFaceSet.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include "ui_CrossSections.h"
-#include "CrossSections.h"
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/CrossSection.h>
-#include <App/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Base/Sequencer.h>
-#include <Base/UnitsApi.h>
+~include "ui_CrossSections.h"
+~include "CrossSections.h"
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/CrossSection.h>
+~include <App/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Base/Sequencer.h>
+~include <Base/UnitsApi.h>
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
-#undef CS_FUTURE // multi-threading causes some problems
+~undef CS_FUTURE // multi-threading causes some problems
 
 namespace PartGui {
 class ViewProviderCrossSections : public Gui::ViewProvider
@@ -215,7 +215,7 @@ void CrossSections::apply()
             break;
     }
 
-#ifdef CS_FUTURE
+~ifdef CS_FUTURE
     Standard::SetReentrant(Standard_True);
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         Part::CrossSection cs(a,b,c,static_cast<Part::Feature*>(*it)->Shape.getValue());
@@ -243,7 +243,7 @@ void CrossSections::apply()
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
-#else
+~else
     Base::SequencerLauncher seq("Cross-sections...", obj.size() * (d.size() +1));
     Gui::Command::runCommand(Gui::Command::App, "import Part\n");
     Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
@@ -276,7 +276,7 @@ void CrossSections::apply()
 
         seq.next();
     }
-#endif
+~endif
 }
 
 void CrossSections::on_xyPlane_clicked()
@@ -541,4 +541,4 @@ void TaskCrossSections::clicked(int id)
     }
 }
 
-#include "moc_CrossSections.cpp"
+~include "moc_CrossSections.cpp"

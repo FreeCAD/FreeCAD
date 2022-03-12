@@ -23,75 +23,75 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-//#include <BRepBuilderAPI_MakePolygon.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepAlgoAPI_Section.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepTools.hxx>
-#include <BRepCheck_Wire.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Dir.hxx>
-#include <Geom_Plane.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <ShapeAnalysis.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepBndLib.hxx>
+//~include <BRepBuilderAPI_MakePolygon.hxx>
+~include <BRepBuilderAPI_Transform.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <BRepAlgoAPI_Cut.hxx>
+~include <BRepPrimAPI_MakePrism.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepAlgoAPI_Section.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRep_Builder.hxx>
+~include <BRepTools.hxx>
+~include <BRepCheck_Wire.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Dir.hxx>
+~include <Geom_Plane.hxx>
+~include <HLRBRep_Algo.hxx>
+~include <HLRAlgo_Projector.hxx>
+~include <HLRBRep_HLRToShape.hxx>
+~include <ShapeAnalysis.hxx>
+~include <ShapeFix_Wire.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
 
-#endif
+~endif
 
-#include <chrono>
+~include <chrono>
 
-# include <QFile>
-# include <QFileInfo>
+~ include <QFile>
+~ include <QFileInfo>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Material.h>
-#include <Base/BoundBox.h>
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Material.h>
+~include <Base/BoundBox.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include "Preferences.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "Cosmetic.h"
-#include "HatchLine.h"
-#include "EdgeWalker.h"
-#include "DrawUtil.h"
-#include "DrawProjGroupItem.h"
-#include "DrawProjectSplit.h"
-#include "DrawGeomHatch.h"
-#include "DrawHatch.h"
-#include "DrawViewSection.h"
+~include "Preferences.h"
+~include "Geometry.h"
+~include "GeometryObject.h"
+~include "Cosmetic.h"
+~include "HatchLine.h"
+~include "EdgeWalker.h"
+~include "DrawUtil.h"
+~include "DrawProjGroupItem.h"
+~include "DrawProjectSplit.h"
+~include "DrawGeomHatch.h"
+~include "DrawHatch.h"
+~include "DrawViewSection.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -456,9 +456,9 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 
         geometryObject = buildGeometryObject(scaledShape,viewAxis);
 
-#if MOD_TECHDRAW_HANDLE_FACES
+~if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+~endif //~if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
         Base::Console().Warning("DVS::execute - failed to build base shape %s - %s **\n",

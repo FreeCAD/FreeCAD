@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <assert.h>
-# include <QFile>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <assert.h>
+~ include <QFile>
+~ include <QTextStream>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
 
-#include "Macro.h"
-#include "MainWindow.h"
-#include "PythonConsole.h"
-#include "PythonConsolePy.h"
-#include "PythonDebugger.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "PythonConsole.h"
+~include "PythonConsolePy.h"
+~include "PythonDebugger.h"
 
 
 using namespace Gui;
@@ -79,12 +79,12 @@ void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sR
 void MacroManager::open(MacroType eType, const char *sName)
 {
     // check
-#if _DEBUG
+~if _DEBUG
     assert(!this->openMacro);
     assert(eType == File);
-#else
+~else
     Q_UNUSED(eType);
-#endif
+~endif
 
     // Convert from Utf-8
     this->macroName = QString::fromUtf8(sName);
@@ -112,7 +112,7 @@ void MacroManager::commit(void)
         for (it = this->macroInProgress.begin(); it != this->macroInProgress.end(); ++it )
         {
             if ((*it).startsWith(QLatin1String("import ")) ||
-                (*it).startsWith(QLatin1String("#import ")))
+                (*it).startsWith(QLatin1String("~import ")))
             {
                 if (import.indexOf(*it) == -1)
                     import.push_back(*it);
@@ -124,12 +124,12 @@ void MacroManager::commit(void)
         }
 
         QString header;
-        header += QString::fromLatin1("# -*- coding: utf-8 -*-\n\n");
-        header += QString::fromLatin1("# Macro Begin: ");
+        header += QString::fromLatin1("~ -*- coding: utf-8 -*-\n\n");
+        header += QString::fromLatin1("~ Macro Begin: ");
         header += this->macroName;
         header += QString::fromLatin1(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
-        QString footer = QString::fromLatin1("# Macro End: ");
+        QString footer = QString::fromLatin1("~ Macro End: ");
         footer += this->macroName;
         footer += QString::fromLatin1(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
@@ -203,8 +203,8 @@ void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
     QStringList lines = QString::fromUtf8(sLine).split(QLatin1String("\n"));
     if (comment) {
         for (auto &line : lines) {
-            if(!line.startsWith(QLatin1String("#")))
-                line.prepend(QLatin1String("# "));
+            if(!line.startsWith(QLatin1String("~")))
+                line.prepend(QLatin1String("~ "));
         }
     }
 

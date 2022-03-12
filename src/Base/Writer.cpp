@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <limits>
-#include <locale>
+~include <limits>
+~include <locale>
 
-#include "Writer.h"
-#include "Base64.h"
-#include "Exception.h"
-#include "FileInfo.h"
-#include "Persistence.h"
-#include "Stream.h"
-#include "Tools.h"
+~include "Writer.h"
+~include "Base64.h"
+~include "Exception.h"
+~include "FileInfo.h"
+~include "Persistence.h"
+~include "Stream.h"
+~include "Tools.h"
 
 
 using namespace Base;
@@ -238,11 +238,11 @@ void Writer::decInd()
 ZipWriter::ZipWriter(const char* FileName)
   : ZipStream(FileName)
 {
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     ZipStream.imbue(std::locale::empty());
-#else
+~else
     ZipStream.imbue(std::locale::classic());
-#endif
+~endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
     ZipStream.setf(ios::fixed,ios::floatfield);
 }
@@ -250,11 +250,11 @@ ZipWriter::ZipWriter(const char* FileName)
 ZipWriter::ZipWriter(std::ostream& os)
   : ZipStream(os)
 {
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     ZipStream.imbue(std::locale::empty());
-#else
+~else
     ZipStream.imbue(std::locale::classic());
-#endif
+~endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
     ZipStream.setf(ios::fixed,ios::floatfield);
 }

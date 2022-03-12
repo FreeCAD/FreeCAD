@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "TaskDlgSimulate.h"
+~include "TaskDlgSimulate.h"
 
 using namespace RobotGui;
 
@@ -90,4 +90,4 @@ void TaskDlgSimulate::helpRequested()
 }
 
 
-#include "moc_TaskDlgSimulate.cpp"
+~include "moc_TaskDlgSimulate.cpp"

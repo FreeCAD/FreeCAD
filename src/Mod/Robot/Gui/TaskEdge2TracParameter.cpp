@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <QString>
-#include <QSlider>
-#include "ui_TaskEdge2TracParameter.h"
-#include "TaskEdge2TracParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+~include <QString>
+~include <QSlider>
+~include "ui_TaskEdge2TracParameter.h"
+~include "TaskEdge2TracParameter.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
 
 
 using namespace RobotGui;
@@ -140,4 +140,4 @@ TaskEdge2TracParameter::~TaskEdge2TracParameter()
 }
 
 
-#include "moc_TaskEdge2TracParameter.cpp"
+~include "moc_TaskEdge2TracParameter.cpp"

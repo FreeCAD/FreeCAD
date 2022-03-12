@@ -60,33 +60,33 @@
  *
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/SoFullPath.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/draggers/SoDragger.h>
-# include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/SoFullPath.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/draggers/SoDragger.h>
+~ include <QApplication>
+~endif
 
-#include <QTapAndHoldGesture>
+~include <QTapAndHoldGesture>
 
-#include <App/Application.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <Base/Interpreter.h>
+~include <Base/Console.h>
 
-#include "GestureNavigationStyle.h"
-#include "Application.h"
-#include "SoTouchEvents.h"
-#include "View3DInventorViewer.h"
+~include "GestureNavigationStyle.h"
+~include "Application.h"
+~include "SoTouchEvents.h"
+~include "View3DInventorViewer.h"
 
-#include <boost/statechart/custom_reaction.hpp>
-#include <boost/statechart/state_machine.hpp>
-#include <boost/statechart/state.hpp>
+~include <boost/statechart/custom_reaction.hpp>
+~include <boost/statechart/state_machine.hpp>
+~include <boost/statechart/state.hpp>
 
 
 namespace sc = boost::statechart;
-#define NS Gui::GestureNavigationStyle
+~define NS Gui::GestureNavigationStyle
 
 namespace Gui {
 
@@ -870,7 +870,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
     if (this->isSeekMode()) { return superclass::processSoEvent(ev); }
-    // Switch off viewing mode (Bug #0000911)
+    // Switch off viewing mode (Bug ~0000911)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
 
@@ -929,14 +929,14 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
         (this->shiftdown   ? NS::Event::SHIFTDOWN : 0) |
         (this->altdown     ? NS::Event::ALTDOWN : 0);
 
-#ifdef FC_OS_MACOSX
+~ifdef FC_OS_MACOSX
     // On Mac, Qt gesture events seem to be broken. At least that's what event
     // logs from @chrisb tell me. So, for until a developer on a mac gets here to
     // make gestures work, I disable them. --DeepSOIC
 
     if (smev.isGestureEvent())
         return superclass::processSoEvent(ev);
-#endif
+~endif
 
 
     if (! smev.flags->processed)
@@ -973,7 +973,7 @@ bool GestureNavigationStyle::isDraggerUnderCursor(SbVec2s pos)
 
 bool GestureNavigationStyle::is2DViewing() const
 {
-    // #FIXME: detect sketch editing, ! any editing
+    // ~FIXME: detect sketch editing, ! any editing
     return this->viewer->isEditing();
 }
 

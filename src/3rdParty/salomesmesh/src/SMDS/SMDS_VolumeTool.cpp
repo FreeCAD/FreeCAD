@@ -24,24 +24,24 @@
 // Created   : Tue Jul 13 12:22:13 2004
 // Author    : Edward AGAPOV (eap)
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_VolumeTool.hxx"
+~include "SMDS_VolumeTool.hxx"
 
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_VtkVolume.hxx"
-#include "SMDS_Mesh.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_VtkVolume.hxx"
+~include "SMDS_Mesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <map>
-#include <limits>
-#include <cmath>
-#include <numeric>
-#include <algorithm>
+~include <map>
+~include <limits>
+~include <cmath>
+~include <numeric>
+~include <algorithm>
 
 using namespace std;
 
@@ -545,7 +545,7 @@ bool SMDS_VolumeTool::Set (const SMDS_MeshElement* theVolume,
 //purpose  : Inverse volume
 //=======================================================================
 
-#define SWAP_NODES(nodes,i1,i2)           \
+~define SWAP_NODES(nodes,i1,i2)           \
 {                                         \
   const SMDS_MeshNode* tmp = nodes[ i1 ]; \
   nodes[ i1 ] = nodes[ i2 ];              \

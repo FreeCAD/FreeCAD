@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~endif
 
-#include "TaskPocketParameters.h"
-#include "ViewProviderPocket.h"
+~include "TaskPocketParameters.h"
+~include "ViewProviderPocket.h"
 
 
 using namespace PartDesignGui;

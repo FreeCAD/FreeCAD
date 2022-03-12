@@ -21,49 +21,49 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <Precision.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TopoDS_Compound.hxx>
-# include <Standard_Version.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <cmath>
-# include <iostream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <Precision.hxx>
+~ include <ShapeFix_Wire.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <cmath>
+~ include <iostream>
+~endif
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/TimeInfo.h>
-#include <Base/Console.h>
-#include <Base/VectorPy.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
+~include <Base/TimeInfo.h>
+~include <Base/Console.h>
+~include <Base/VectorPy.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/GeometryCurvePy.h>
-#include <Mod/Part/App/ArcOfCirclePy.h>
-#include <Mod/Part/App/ArcOfEllipsePy.h>
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Part/App/GeometryCurvePy.h>
+~include <Mod/Part/App/ArcOfCirclePy.h>
+~include <Mod/Part/App/ArcOfEllipsePy.h>
+~include <Mod/Part/App/CirclePy.h>
+~include <Mod/Part/App/EllipsePy.h>
+~include <Mod/Part/App/HyperbolaPy.h>
+~include <Mod/Part/App/ArcOfHyperbolaPy.h>
+~include <Mod/Part/App/ParabolaPy.h>
+~include <Mod/Part/App/ArcOfParabolaPy.h>
+~include <Mod/Part/App/LineSegmentPy.h>
+~include <Mod/Part/App/BSplineCurvePy.h>
 
-#include "Constraint.h"
+~include "Constraint.h"
 
-#include "GeometryFacade.h"
-#include "SolverGeometryExtension.h"
+~include "GeometryFacade.h"
+~include "SolverGeometryExtension.h"
 
-#include "Sketch.h"
+~include "Sketch.h"
 
-//#define DEBUG_BLOCK_CONSTRAINT
-#undef DEBUG_BLOCK_CONSTRAINT
+//~define DEBUG_BLOCK_CONSTRAINT
+~undef DEBUG_BLOCK_CONSTRAINT
 
 using namespace Sketcher;
 using namespace Base;
@@ -208,7 +208,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                                                                     onlyBlockedGeometry,
                                                                     blockedGeoIds);
 
-#ifdef DEBUG_BLOCK_CONSTRAINT
+~ifdef DEBUG_BLOCK_CONSTRAINT
     if(doesBlockAffectOtherConstraints)
         Base::Console().Log("\n  Block interferes with other constraints: Post-analysis required");
 
@@ -231,7 +231,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     if(i == 0)
         Base::Console().Log("\n  None");
     Base::Console().Log("\n");
-#endif //DEBUG_BLOCK_CONSTRAINT
+~endif //DEBUG_BLOCK_CONSTRAINT
 
     addGeometry(intGeoList,onlyBlockedGeometry);
     int extStart=Geoms.size();
@@ -282,7 +282,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         // 2. If something needs blocking, block-it
        fixParametersAndDiagnose(params_to_block);
 
-#ifdef DEBUG_BLOCK_CONSTRAINT
+~ifdef DEBUG_BLOCK_CONSTRAINT
         if(params_to_block.size() > 0) {
             std::vector < std::vector < double*>> groups;
             GCSsys.getDependentParamsGroups(groups);
@@ -297,7 +297,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                                     param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
             }
         }
-#endif //DEBUG_BLOCK_CONSTRAINT
+~endif //DEBUG_BLOCK_CONSTRAINT
     }
 
     // Now we set the Sketch status with the latest solver information
@@ -358,7 +358,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
 
     std::vector<group> prop_groups(groups.size());
 
-#ifdef DEBUG_BLOCK_CONSTRAINT
+~ifdef DEBUG_BLOCK_CONSTRAINT
     for(size_t i = 0; i < groups.size(); i++) {
         Base::Console().Log("\nDepParams: Group %d:",i);
         for(size_t j = 0; j < groups[i].size(); j++)
@@ -367,7 +367,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
                             param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
                             param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
     }
-#endif //DEBUG_BLOCK_CONSTRAINT
+~endif //DEBUG_BLOCK_CONSTRAINT
 
     for(size_t i = 0; i < groups.size(); i++) {
         for(size_t j = 0; j < groups[i].size(); j++) {
@@ -398,9 +398,9 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
             if( pos == params_to_block.end()) { // not found, so add
                 params_to_block.push_back(thisparam);
                 prop_groups[i].blocking_param_in_group = thisparam;
-#ifdef DEBUG_BLOCK_CONSTRAINT
+~ifdef DEBUG_BLOCK_CONSTRAINT
                 Base::Console().Log("\nTentatively blocking group %d, with param=%x", i, thisparam);
-#endif //DEBUG_BLOCK_CONSTRAINT
+~endif //DEBUG_BLOCK_CONSTRAINT
                 break;
             }
         }
@@ -1276,7 +1276,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     // accordingly, it is never the case for a periodic BSpline.
     // NOTE: For an external B-spline (i.e. fixed=true) we must not set the coincident constraints
     // as the points are not movable anyway.
-    // See #issue 0003176: Sketcher: always over-constrained when referencing external B-Spline
+    // See ~issue 0003176: Sketcher: always over-constrained when referencing external B-Spline
     if (!fixed && !bs.periodic) {
         if (bs.mult[0] > bs.degree)
             GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
@@ -2245,8 +2245,8 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
 {
     // accepts the following combinations:
     // 1) Line1, Line2/Circle2/Arc2
-    // 2) Circle1, Line2 (converted to case #1)
-    // 3) Arc1, Line2 (converted to case #1)
+    // 2) Circle1, Line2 (converted to case ~1)
+    // 3) Arc1, Line2 (converted to case ~1)
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
@@ -2282,9 +2282,9 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
 {
     // accepts the following combinations:
     // 1) Line1, Line2/Circle2/Arc2
-    // 2) Circle1, Line2 (converted to case #1)
+    // 2) Circle1, Line2 (converted to case ~1)
     //    Circle1, Circle2/Arc2
-    // 3) Arc1, Line2 (converted to case #1)
+    // 3) Arc1, Line2 (converted to case ~1)
     //    Arc1, Circle2/Arc2
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
@@ -3463,7 +3463,7 @@ bool Sketch::updateGeometry()
                 for(auto it3 = occtknots.begin() ; it3 != occtknots.end(); ++it3)
                     knots.push_back(*it3);
 
-                #if OCC_VERSION_HEX >= 0x060900
+                ~if OCC_VERSION_HEX >= 0x060900
                 int index = 0;
                 for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
                     if( *it5 != GeoEnum::GeoUndef) {
@@ -3485,7 +3485,7 @@ bool Sketch::updateGeometry()
                         }
                     }
                 }
-                #endif
+                ~endif
 
             }
         } catch (Base::Exception &e) {
@@ -4138,7 +4138,7 @@ TopoShape Sketch::toShape(void) const
     TopoShape result;
     std::vector<GeoDef>::const_iterator it=Geoms.begin();
 
-#if 0
+~if 0
 
     bool first = true;
     for (;it!=Geoms.end();++it) {
@@ -4153,7 +4153,7 @@ TopoShape Sketch::toShape(void) const
         }
     }
     return result;
-#else
+~else
     std::list<TopoDS_Edge> edge_list;
     std::list<TopoDS_Vertex> vertex_list;
     std::list<TopoDS_Wire> wires;
@@ -4233,7 +4233,7 @@ TopoShape Sketch::toShape(void) const
             builder.Add(comp, *wt);
         result.setShape(comp);
     }
-#endif
+~endif
 
     return result;
 }

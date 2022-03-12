@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObject.h>
+~include <App/DocumentObject.h>
 
-#include "ViewProviderFeature.h"
+~include "ViewProviderFeature.h"
 
 
 using namespace Gui;

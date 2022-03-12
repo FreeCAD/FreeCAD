@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Application.h"
-#include "Document.h"
-#include "TransactionObject.h"
-#include "ViewProviderDocumentObject.h"
+~include "Application.h"
+~include "Document.h"
+~include "TransactionObject.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;

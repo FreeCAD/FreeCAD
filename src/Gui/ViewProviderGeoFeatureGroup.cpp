@@ -21,9 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderGeoFeatureGroup.h"
+~include "ViewProviderGeoFeatureGroup.h"
 
 
 using namespace Gui;

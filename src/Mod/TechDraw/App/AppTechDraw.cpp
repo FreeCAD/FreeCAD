@@ -19,53 +19,53 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Interpreter.h>
 
-#include "DrawPage.h"
-#include "DrawSVGTemplate.h"
-#include "DrawParametricTemplate.h"
-#include "DrawView.h"
-#include "DrawViewCollection.h"
-#include "DrawViewPart.h"
-#include "DrawViewSection.h"
-#include "DrawViewAnnotation.h"
-#include "DrawViewDimension.h"
-#include "DrawViewDimExtent.h"
-#include "LandmarkDimension.h"
-#include "DrawProjGroupItem.h"
-#include "DrawProjGroup.h"
-#include "DrawViewSymbol.h"
-#include "DrawViewClip.h"
-#include "DrawHatch.h"
-#include "DrawGeomHatch.h"
-#include "DrawViewDraft.h"
-#include "DrawViewArch.h"
-#include "DrawViewSpreadsheet.h"
-#include "DrawViewMulti.h"
-#include "DrawViewImage.h"
-#include "DrawViewDetail.h"
-#include "DrawViewBalloon.h"
-#include "DrawLeaderLine.h"
-#include "DrawRichAnno.h"
-#include "DrawTile.h"
-#include "DrawTileWeld.h"
-#include "DrawWeldSymbol.h"
-#include "Cosmetic.h"
-#include "PropertyGeomFormatList.h"
-#include "PropertyCenterLineList.h"
-#include "PropertyCosmeticEdgeList.h"
-#include "PropertyCosmeticVertexList.h"
+~include "DrawPage.h"
+~include "DrawSVGTemplate.h"
+~include "DrawParametricTemplate.h"
+~include "DrawView.h"
+~include "DrawViewCollection.h"
+~include "DrawViewPart.h"
+~include "DrawViewSection.h"
+~include "DrawViewAnnotation.h"
+~include "DrawViewDimension.h"
+~include "DrawViewDimExtent.h"
+~include "LandmarkDimension.h"
+~include "DrawProjGroupItem.h"
+~include "DrawProjGroup.h"
+~include "DrawViewSymbol.h"
+~include "DrawViewClip.h"
+~include "DrawHatch.h"
+~include "DrawGeomHatch.h"
+~include "DrawViewDraft.h"
+~include "DrawViewArch.h"
+~include "DrawViewSpreadsheet.h"
+~include "DrawViewMulti.h"
+~include "DrawViewImage.h"
+~include "DrawViewDetail.h"
+~include "DrawViewBalloon.h"
+~include "DrawLeaderLine.h"
+~include "DrawRichAnno.h"
+~include "DrawTile.h"
+~include "DrawTileWeld.h"
+~include "DrawWeldSymbol.h"
+~include "Cosmetic.h"
+~include "PropertyGeomFormatList.h"
+~include "PropertyCenterLineList.h"
+~include "PropertyCosmeticEdgeList.h"
+~include "PropertyCosmeticVertexList.h"
 
-#include "CosmeticExtension.h"
+~include "CosmeticExtension.h"
 
-#include "FeatureProjection.h"
+~include "FeatureProjection.h"
 
 namespace TechDraw {
     extern PyObject* initModule();

@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QDir>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QDir>
+~endif
 
-#include "DlgOnlineHelpImp.h"
-#include "ui_DlgOnlineHelp.h"
-#include "PrefWidgets.h"
+~include "DlgOnlineHelpImp.h"
+~include "ui_DlgOnlineHelp.h"
+~include "PrefWidgets.h"
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
+~include <Base/Parameter.h>
+~include <App/Application.h>
 
 using namespace Gui::Dialog;
 
@@ -108,4 +108,4 @@ void DlgOnlineHelpImp::on_lineEditDownload_fileNameSelected( const QString& url 
     }
 }
 
-#include "moc_DlgOnlineHelpImp.cpp"
+~include "moc_DlgOnlineHelpImp.cpp"

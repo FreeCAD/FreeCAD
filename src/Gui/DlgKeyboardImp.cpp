@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QHeaderView>
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QHeaderView>
+~ include <QMessageBox>
+~endif
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
-#include "DlgKeyboardImp.h"
-#include "ui_DlgKeyboard.h"
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Widgets.h"
-#include "Window.h"
+~include "DlgKeyboardImp.h"
+~include "ui_DlgKeyboard.h"
+~include "Action.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "Widgets.h"
+~include "Window.h"
 
 using namespace Gui::Dialog;
 
@@ -344,7 +344,7 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
         std::vector<Command*> cmds = cCmdMgr.getAllCommands();
         for (std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it) {
             if ((*it)->getAction()) {
-                // A command may have several QAction's. So, check all of them if one of them matches (See bug #0002160)
+                // A command may have several QAction's. So, check all of them if one of them matches (See bug ~0002160)
                 QList<QAction*> acts = (*it)->getAction()->findChildren<QAction*>();
                 for (QList<QAction*>::iterator jt = acts.begin(); jt != acts.end(); ++jt) {
                     if ((*jt)->shortcut() == ks) {
@@ -493,4 +493,4 @@ void DlgCustomKeyboardImp::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-#include "moc_DlgKeyboardImp.cpp"
+~include "moc_DlgKeyboardImp.cpp"

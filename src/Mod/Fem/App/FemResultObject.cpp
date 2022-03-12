@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "FemResultObject.h"
-#include <App/FeaturePythonPyImp.h>
-#include <App/DocumentObjectPy.h>
+~include "FemResultObject.h"
+~include <App/FeaturePythonPyImp.h>
+~include <App/DocumentObjectPy.h>
 
 using namespace Fem;
 using namespace App;

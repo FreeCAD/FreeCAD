@@ -21,41 +21,41 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Dir.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom2d_Curve.hxx>
-# include <Geom2dAPI_InterCurveCurve.hxx>
-# include <Geom2dAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <IntRes2d_IntersectionSegment.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Pnt.hxx>
+~ include <gp_Dir.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Geom2d_Curve.hxx>
+~ include <Geom2dAPI_InterCurveCurve.hxx>
+~ include <Geom2dAPI_ProjectPointOnCurve.hxx>
+~ include <GeomAPI.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <IntRes2d_IntersectionSegment.hxx>
+~endif
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
 
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <App/Property.h>
-#include <App/PropertyLinks.h>
-#include "Part2DObject.h"
-#include "Geometry.h"
-#include "DatumFeature.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <App/Property.h>
+~include <App/PropertyLinks.h>
+~include "Part2DObject.h"
+~include "Geometry.h"
+~include "DatumFeature.h"
 
-#include <App/FeaturePythonPyImp.h>
-#include <Mod/Part/App/Part2DObjectPy.h>
+~include <App/FeaturePythonPyImp.h>
+~include <Mod/Part/App/Part2DObjectPy.h>
 
 using namespace Part;
 
@@ -147,7 +147,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     gp_Pnt2d p1,p2;
     Handle(Geom2d_Curve) secondaryCurve;
     for (int id=0; id < int(geomlist.size()); id++) {
-        // #0000624: Trim tool doesn't work with construction lines
+        // ~0000624: Trim tool doesn't work with construction lines
         if (id != geometryIndex/* && !geomlist[id]->Construction*/) {
             geom = (geomlist[id])->handle();
             curve3d = Handle(Geom_Curve)::DownCast(geom);
@@ -157,7 +157,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 
                 std::vector<gp_Pnt2d> points;
 
-                // #2463 Check for endpoints of secondarycurve on primary curve
+                // ~2463 Check for endpoints of secondarycurve on primary curve
                 // If the OCCT Intersector should detect endpoint tangency when trimming, then
                 // this is just a work-around until that bug is fixed.
                 // https://www.freecadweb.org/tracker/view.php?id=2463

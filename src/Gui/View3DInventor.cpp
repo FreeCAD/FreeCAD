@@ -20,55 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <string>
-# include <QAction>
-# include <QApplication>
-# include <QKeyEvent>
-# include <QEvent>
-# include <QDropEvent>
-# include <QDragEnterEvent>
-# include <QLayout>
-# include <QMdiSubWindow>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QPainter>
-# include <QPrinter>
-# include <QPrintDialog>
-# include <QPrintPreviewDialog>
-# include <QStackedWidget>
-# include <QTimer>
-# include <QUrl>
-# include <QWindow>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/fields/SoSFColor.h>
-# include <Inventor/fields/SoSFString.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~ifndef _PreComp_
+~ include <string>
+~ include <QAction>
+~ include <QApplication>
+~ include <QKeyEvent>
+~ include <QEvent>
+~ include <QDropEvent>
+~ include <QDragEnterEvent>
+~ include <QLayout>
+~ include <QMdiSubWindow>
+~ include <QMessageBox>
+~ include <QMimeData>
+~ include <QPainter>
+~ include <QPrinter>
+~ include <QPrintDialog>
+~ include <QPrintPreviewDialog>
+~ include <QStackedWidget>
+~ include <QTimer>
+~ include <QUrl>
+~ include <QWindow>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/fields/SoSFColor.h>
+~ include <Inventor/fields/SoSFString.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
+~include <Inventor/nodes/SoOrthographicCamera.h>
+~include <Inventor/nodes/SoPerspectiveCamera.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
 
-#include "View3DInventor.h"
-#include "Application.h"
-#include "Document.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "NavigationStyle.h"
-#include "SoFCDB.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCVectorizeSVGAction.h"
-#include "View3DInventorExamples.h"
-#include "View3DInventorViewer.h"
-#include "View3DPy.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
+~include "View3DInventor.h"
+~include "Application.h"
+~include "Document.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "NavigationStyle.h"
+~include "SoFCDB.h"
+~include "SoFCSelectionAction.h"
+~include "SoFCVectorizeSVGAction.h"
+~include "View3DInventorExamples.h"
+~include "View3DInventorViewer.h"
+~include "View3DPy.h"
+~include "ViewProvider.h"
+~include "WaitCursor.h"
 
 
 using namespace Gui;
@@ -445,9 +445,9 @@ void View3DInventor::onRename(Gui::Document *pDoc)
 
 void View3DInventor::onUpdate(void)
 {
-#ifdef FC_LOGUPDATECHAIN
+~ifdef FC_LOGUPDATECHAIN
     Base::Console().Log("Acti: Gui::View3DInventor::onUpdate()");
-#endif
+~endif
     update();
     _viewer->redraw();
 }
@@ -703,11 +703,11 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if(strcmp("ViewFit",pMsg) == 0)
         return true;
     else if(strcmp("ViewVR",pMsg) == 0)
-#ifdef BUILD_VR
+~ifdef BUILD_VR
         return true;
-#else
+~else
         return false;
-#endif
+~endif
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
     else if(strcmp("ViewBottom",pMsg) == 0)
@@ -1037,4 +1037,4 @@ void View3DInventor::customEvent(QEvent * e)
 }
 
 
-#include "moc_View3DInventor.cpp"
+~include "moc_View3DInventor.cpp"

@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <memory>
+~endif
 
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/FileInfo.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Property.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
+~include <App/Property.h>
 
-#include "Points.h"
-#include "PointsPy.h"
-#include "PointsAlgos.h"
-#include "Structured.h"
-#include "Properties.h"
+~include "Points.h"
+~include "PointsPy.h"
+~include "PointsAlgos.h"
+~include "Structured.h"
+~include "Properties.h"
 
 namespace Points {
 class Module : public Py::ExtensionModule<Module>

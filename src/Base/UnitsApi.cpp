@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#include <CXX/WrapPython.h>
-#include <memory>
-#include <QString>
-#include "Exception.h"
+~include <CXX/WrapPython.h>
+~include <memory>
+~include <QString>
+~include "Exception.h"
 
-#include "UnitsApi.h"
-#include "UnitsSchemaCentimeters.h"
-#include "UnitsSchemaInternal.h"
-#include "UnitsSchemaImperial1.h"
-#include "UnitsSchemaMKS.h"
-#include "UnitsSchemaMmMin.h"
-#include "UnitsSchemaFemMilliMeterNewton.h"
+~include "UnitsApi.h"
+~include "UnitsSchemaCentimeters.h"
+~include "UnitsSchemaInternal.h"
+~include "UnitsSchemaImperial1.h"
+~include "UnitsSchemaMKS.h"
+~include "UnitsSchemaMmMin.h"
+~include "UnitsSchemaFemMilliMeterNewton.h"
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E        2.71828182845904523536
-#endif
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
+~ifndef M_E
+~define M_E        2.71828182845904523536
+~endif
+~ifndef  DOUBLE_MAX
+~ define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+~endif
+~ifndef  DOUBLE_MIN
+~ define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+~endif
 
 using namespace Base;
 

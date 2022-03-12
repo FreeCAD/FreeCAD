@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/SbString.h>
-# include <cfloat>
-# include <QMessageBox>
-# include <Precision.hxx>
-# include <QApplication>
-# include <Standard_Version.hxx>
-# include <QInputDialog>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/SbString.h>
+~ include <cfloat>
+~ include <QMessageBox>
+~ include <Precision.hxx>
+~ include <QApplication>
+~ include <Standard_Version.hxx>
+~ include <QInputDialog>
+~endif
 
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
+~include <Base/Console.h>
+~include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/CommandT.h>
+~include <Gui/MainWindow.h>
+~include <Gui/DlgEditFileIncludePropertyExternal.h>
 
-#include <Gui/Action.h>
-#include <Gui/BitmapFactory.h>
+~include <Gui/Action.h>
+~include <Gui/BitmapFactory.h>
 
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
+~include "ViewProviderSketch.h"
+~include "DrawSketchHandler.h"
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "Utils.h"
+~include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -652,14 +652,14 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-#if OCC_VERSION_HEX < 0x060900
+~if OCC_VERSION_HEX < 0x060900
     QMessageBox::warning(Gui::getMainWindow(),
                          QObject::tr("Wrong OCE/OCC version"),
                          QObject::tr("This version of OCE/OCC "
                                      "does not support knot operation. "
                                      "You need 6.9.0 or higher"));
     return;
-#endif
+~endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -799,14 +799,14 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-#if OCC_VERSION_HEX < 0x060900
+~if OCC_VERSION_HEX < 0x060900
     QMessageBox::warning(Gui::getMainWindow(),
                          QObject::tr("Wrong OCE/OCC version"),
                          QObject::tr("This version of OCE/OCC "
                                      "does not support knot operation. "
                                      "You need 6.9.0 or higher"));
     return;
-#endif
+~endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -1174,14 +1174,14 @@ void CmdSketcherInsertKnot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-#if OCC_VERSION_HEX < 0x060900
+~if OCC_VERSION_HEX < 0x060900
     QMessageBox::warning(Gui::getMainWindow(),
                          QObject::tr("Wrong OCE/OCC version"),
                          QObject::tr("This version of OCE/OCC "
                                      "does not support knot operation. "
                                      "You need 6.9.0 or higher"));
     return;
-#endif
+~endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;

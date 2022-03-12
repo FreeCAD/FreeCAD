@@ -27,8 +27,8 @@
 // Project   : SALOME
 //=============================================================================
 //
-#include "NETGENPlugin_Hypothesis_2D.hxx"
-#include <utilities.h>
+~include "NETGENPlugin_Hypothesis_2D.hxx"
+~include <utilities.h>
 
 using namespace std;
 

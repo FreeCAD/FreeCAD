@@ -14,8 +14,8 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4IntrTriangle2Triangle2.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4IntrTriangle2Triangle2.h"
 
 namespace Wm4
 {

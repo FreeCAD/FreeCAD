@@ -21,10 +21,10 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderScaled.h"
-#include "TaskScaledParameters.h"
+~include "ViewProviderScaled.h"
+~include "TaskScaledParameters.h"
 
 using namespace PartDesignGui;
 

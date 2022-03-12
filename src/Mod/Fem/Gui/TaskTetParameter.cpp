@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QString>
-# include <QSlider>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QString>
+~ include <QSlider>
 
-# include <Standard_math.hxx>
-#endif
+~ include <Standard_math.hxx>
+~endif
 
-#include "ui_TaskTetParameter.h"
-#include "TaskTetParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
-#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
-#include <Mod/Fem/App/FemMesh.h>
+~include "ui_TaskTetParameter.h"
+~include "TaskTetParameter.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/Utilities.h>
+~include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
+~include <Mod/Fem/App/FemMesh.h>
 
 
 using namespace FemGui;
@@ -162,4 +162,4 @@ void TaskTetParameter::setInfo(void)
 
 
 
-#include "moc_TaskTetParameter.cpp"
+~include "moc_TaskTetParameter.cpp"

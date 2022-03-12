@@ -21,74 +21,74 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAbstractTextDocumentLayout>
-# include <QApplication>
-# include <QClipboard>
-# include <QDateTime>
-# include <QHBoxLayout>
-# include <QMessageBox>
-# include <QNetworkRequest>
-# include <QPainter>
-# include <QPrinter>
-# include <QPrintDialog>
-# include <QScrollBar>
-# include <QMouseEvent>
-# include <QStatusBar>
-# include <QTextBlock>
-# include <QTextCodec>
-# include <QTextStream>
-# include <QTimer>
-# include <QFileInfo>
-# include <QDesktopServices>
-# include <QMenu>
-# include <QDesktopWidget>
-# include <QSignalMapper>
-# include <QPointer>
-# include <QDir>
-# include <QLineEdit>
-#endif
+~ifndef _PreComp_
+~ include <QAbstractTextDocumentLayout>
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QDateTime>
+~ include <QHBoxLayout>
+~ include <QMessageBox>
+~ include <QNetworkRequest>
+~ include <QPainter>
+~ include <QPrinter>
+~ include <QPrintDialog>
+~ include <QScrollBar>
+~ include <QMouseEvent>
+~ include <QStatusBar>
+~ include <QTextBlock>
+~ include <QTextCodec>
+~ include <QTextStream>
+~ include <QTimer>
+~ include <QFileInfo>
+~ include <QDesktopServices>
+~ include <QMenu>
+~ include <QDesktopWidget>
+~ include <QSignalMapper>
+~ include <QPointer>
+~ include <QDir>
+~ include <QLineEdit>
+~endif
 
 
-#if defined(QTWEBENGINE)
-# include <QWebEnginePage>
-# include <QWebEngineView>
-# include <QWebEngineSettings>
-# include <QWebEngineProfile>
-# include <QWebEngineContextMenuData>
-# include <QWebEngineUrlRequestInterceptor>
-# include <QWebEngineUrlRequestInfo>
-#elif defined(QTWEBKIT)
-# include <QWebFrame>
-# include <QWebView>
-# include <QWebSettings>
-# include <QNetworkAccessManager>
+~if defined(QTWEBENGINE)
+~ include <QWebEnginePage>
+~ include <QWebEngineView>
+~ include <QWebEngineSettings>
+~ include <QWebEngineProfile>
+~ include <QWebEngineContextMenuData>
+~ include <QWebEngineUrlRequestInterceptor>
+~ include <QWebEngineUrlRequestInfo>
+~elif defined(QTWEBKIT)
+~ include <QWebFrame>
+~ include <QWebView>
+~ include <QWebSettings>
+~ include <QNetworkAccessManager>
 using QWebEngineView = QWebView;
 using QWebEnginePage = QWebPage;
-#endif
+~endif
 
-#include <QScreen>
+~include <QScreen>
 
-#include <QLatin1String>
-#include <QRegExp>
-#include "BrowserView.h"
-#include "CookieJar.h"
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MDIViewPy.h>
-#include <Gui/ProgressBar.h>
-#include <Gui/Command.h>
-#include <Gui/OnlineDocumentation.h>
-#include <Gui/DownloadManager.h>
-#include <Gui/TextDocumentEditorView.h>
+~include <QLatin1String>
+~include <QRegExp>
+~include "BrowserView.h"
+~include "CookieJar.h"
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/MDIViewPy.h>
+~include <Gui/ProgressBar.h>
+~include <Gui/Command.h>
+~include <Gui/OnlineDocumentation.h>
+~include <Gui/DownloadManager.h>
+~include <Gui/TextDocumentEditorView.h>
 
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <App/Document.h>
-#include <CXX/Extensions.hxx>
+~include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <App/Document.h>
+~include <CXX/Extensions.hxx>
 
 using namespace WebGui;
 using namespace Gui;
@@ -100,7 +100,7 @@ enum WebAction {
     ViewSource = 2 // QWebView doesn't have a ViewSource option
 };
 
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
 class WebEngineUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
 public:
@@ -130,7 +130,7 @@ public:
 private:
     BrowserView *m_parent;
 };
-#endif
+~endif
 
 // ---------------------------------------------------------------------------------------------
 UrlWidget::UrlWidget(BrowserView *view) :
@@ -317,18 +317,18 @@ Py::Object BrowserViewPy::url(const Py::Tuple& args)
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
 {
-#ifdef QTWEBKIT
+~ifdef QTWEBKIT
     // Increase html font size for high DPI displays
     QRect mainScreenSize = QApplication::primaryScreen()->geometry();
     if (mainScreenSize.width() > 1920){
         setTextSizeMultiplier (mainScreenSize.width()/1920.0);
     }
-#endif
+~endif
 }
 
 void WebView::mousePressEvent(QMouseEvent *event)
 {
-#ifdef QTWEBKIT
+~ifdef QTWEBKIT
     if (event->button() == Qt::MiddleButton) {
         QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
         if (!r.linkUrl().isEmpty()) {
@@ -336,7 +336,7 @@ void WebView::mousePressEvent(QMouseEvent *event)
             return;
         }
     }
-#endif
+~endif
     QWebEngineView::mousePressEvent(event);
 }
 
@@ -353,11 +353,11 @@ void WebView::wheelEvent(QWheelEvent *event)
 
 void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
     const QWebEngineContextMenuData r = page()->contextMenuData();
-#else
+~else
     QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
-#endif
+~endif
     if (!r.linkUrl().isEmpty()) {
         QMenu menu(this);
 
@@ -380,7 +380,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         menu.exec(mapToGlobal(event->pos()));
         return;
     }
-#if defined(QTWEBENGINE)
+~if defined(QTWEBENGINE)
     else { // for view source
         // QWebEngine caches standardContextMenu, guard so we only add signalmapper once
         static bool firstRun = true;
@@ -400,7 +400,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
             }
         }
     }
-#else
+~else
     else {
         QMenu *menu = page()->createStandardContextMenu();
         QAction *ac = menu->addAction(tr("View source"));
@@ -413,7 +413,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         connect (ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
         menu->exec(event->globalPos());
     }
-#endif
+~endif
     QWebEngineView::contextMenuEvent(event);
 }
 
@@ -452,10 +452,10 @@ BrowserView::BrowserView(QWidget* parent)
       WindowParameter( "Browser" ),
       isLoading(false)
 {
-#if defined(QTWEBENGINE)
+~if defined(QTWEBENGINE)
     // Otherwise cause crash on exit, probably due to double deletion
     setAttribute(Qt::WA_DeleteOnClose,false);
-#endif
+~endif
 
     view = new WebView(this);
     setCentralWidget(view);
@@ -463,7 +463,7 @@ BrowserView::BrowserView(QWidget* parent)
 
     urlWgt = new UrlWidget(this);
 
-#ifdef QTWEBKIT
+~ifdef QTWEBKIT
     textSizeMultiplier = 1.0;
 
     view->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
@@ -492,7 +492,7 @@ BrowserView::BrowserView(QWidget* parent)
     connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
             this, SLOT(onUnsupportedContent(QNetworkReply*)));
 
-#else // QTWEBENGINE
+~else // QTWEBENGINE
     // QWebEngine doesn't support direct access to network
     // nor rendering access
     QWebEngineProfile *profile = view->page()->profile();
@@ -502,11 +502,11 @@ BrowserView::BrowserView(QWidget* parent)
 
     interceptLinks = new WebEngineUrlRequestInterceptor(this);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
+~if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
     profile->setUrlRequestInterceptor(interceptLinks);
-#else
+~else
     profile->setRequestInterceptor(interceptLinks);
-#endif
+~endif
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
     view->settings()->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled,false);
@@ -517,7 +517,7 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(setWindowIcon(const QIcon &)));
     connect(view->page(), SIGNAL(linkHovered(const QString &)),
             this, SLOT(onLinkHovered(const QString &)));
-#endif
+~endif
     connect(view, SIGNAL(viewSource(const QUrl&)),
             this, SLOT(onViewSource(const QUrl&)));
     connect(view, SIGNAL(loadStarted()),
@@ -535,9 +535,9 @@ BrowserView::BrowserView(QWidget* parent)
 /** Destroys the object and frees any allocated resources */
 BrowserView::~BrowserView()
 {
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
     delete interceptLinks; // cleanup not handled implicitly
-#endif
+~endif
     delete view;
 }
 
@@ -559,11 +559,11 @@ void BrowserView::urlFilter(const QUrl & url)
 
     //QString fragment = url.	fragment();
 
-#ifdef QTWEBKIT
+~ifdef QTWEBKIT
     if (scheme==QString::fromLatin1("http") || scheme==QString::fromLatin1("https")) {
         load(url);
     }
-#endif
+~endif
     // Small trick to force opening a link in an external browser: use exthttp or exthttps
     // Write your URL as exthttp://www.example.com
     else if (scheme==QString::fromLatin1("exthttp")) {
@@ -621,7 +621,7 @@ bool BrowserView::chckHostAllowed(const QString& host)
     return host.isEmpty();
 }
 
-#ifdef QTWEBENGINE
+~ifdef QTWEBENGINE
 void BrowserView::onDownloadRequested(QWebEngineDownloadItem *request)
 {
     QUrl url = request->url();
@@ -659,7 +659,7 @@ void BrowserView::onViewSource(const QUrl &url)
         getMainWindow()->addWindow(textDocView);
     });
 }
-#else
+~else
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
     QUrl url = request.url();
@@ -706,7 +706,7 @@ void BrowserView::onViewSource(const QUrl &url)
     editorWidget->setPlainText(pageSource);
     getMainWindow()->addWindow(textDocView);
 }
-#endif
+~endif
 
 void BrowserView::load(const char* URL)
 {
@@ -734,9 +734,9 @@ void BrowserView::load(const QUrl & url)
         setWindowTitle(url.host());
     }
 
-#ifdef QTWEBKIT
+~ifdef QTWEBKIT
     setWindowIcon(QWebSettings::iconForUrl(url));
-#endif
+~endif
 }
 
 void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl)
@@ -745,9 +745,9 @@ void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl)
         stop();
 
     view->setHtml(HtmlCode, BaseUrl);
-#ifdef QTWEBKIT
+~ifdef QTWEBKIT
     setWindowIcon(QWebSettings::iconForUrl(BaseUrl));
-#endif
+~endif
 }
 
 void BrowserView::stop(void)
@@ -881,5 +881,5 @@ PyObject* BrowserView::getPyObject(void)
 
     return new BrowserViewPy(this);
 }
-#include "moc_BrowserView.cpp"
+~include "moc_BrowserView.cpp"
 

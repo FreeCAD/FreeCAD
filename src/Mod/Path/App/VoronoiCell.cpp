@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Voronoi.h"
-#include "VoronoiCell.h"
+~include "Voronoi.h"
+~include "VoronoiCell.h"
 
 using namespace Base;
 using namespace Path;

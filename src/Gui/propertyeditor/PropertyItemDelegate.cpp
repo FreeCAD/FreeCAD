@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QModelIndex>
-# include <QPainter>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QModelIndex>
+~ include <QPainter>
+~endif
 
-#include <Base/Tools.h>
+~include <Base/Tools.h>
 
-#include "PropertyItemDelegate.h"
-#include "MDIView.h"
-#include "PropertyEditor.h"
-#include "PropertyItem.h"
-#include "Tree.h"
+~include "PropertyItemDelegate.h"
+~include "MDIView.h"
+~include "PropertyEditor.h"
+~include "PropertyItem.h"
+~include "Tree.h"
 
 
 FC_LOG_LEVEL_INIT("PropertyView", true, true)
@@ -262,4 +262,4 @@ void PropertyItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
     model->setData(index, data, Qt::EditRole);
 }
 
-#include "moc_PropertyItemDelegate.cpp"
+~include "moc_PropertyItemDelegate.cpp"

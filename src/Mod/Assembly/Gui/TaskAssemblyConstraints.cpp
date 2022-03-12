@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QRegExp>
-# include <QString>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QString>
+~endif
 
 
-#include "TaskAssemblyConstraints.h"
+~include "TaskAssemblyConstraints.h"
 
-#include <Constraint.h>
+~include <Constraint.h>
 
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
+~include <Base/Tools.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/MainWindow.h>
+~include <Gui/BitmapFactory.h>
 
 using namespace AssemblyGui;
 using namespace Gui::TaskView;
@@ -630,4 +630,4 @@ bool TaskAssemblyConstraints::isCombination(std::shared_ptr<Geometry3D> g1, std:
 
 
 
-#include "moc_TaskAssemblyConstraints.cpp"
+~include "moc_TaskAssemblyConstraints.cpp"

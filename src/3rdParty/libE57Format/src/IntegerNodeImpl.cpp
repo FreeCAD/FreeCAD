@@ -25,8 +25,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "IntegerNodeImpl.h"
-#include "CheckedFile.h"
+~include "IntegerNodeImpl.h"
+~include "CheckedFile.h"
 
 namespace e57
 {
@@ -152,7 +152,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void IntegerNodeImpl::dump( int indent, std::ostream &os ) const
    {
       // don't checkImageFileOpen
@@ -163,5 +163,5 @@ namespace e57
       os << space( indent ) << "minimum:     " << minimum_ << std::endl;
       os << space( indent ) << "maximum:     " << maximum_ << std::endl;
    }
-#endif
+~endif
 }

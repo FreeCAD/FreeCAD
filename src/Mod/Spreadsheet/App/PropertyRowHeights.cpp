@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "PropertyRowHeights.h"
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <App/Range.h>
-#include "Utils.h"
-#include <PropertyRowHeightsPy.h>
+~include "PropertyRowHeights.h"
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <App/Range.h>
+~include "Utils.h"
+~include <PropertyRowHeightsPy.h>
 
 using namespace Spreadsheet;
 

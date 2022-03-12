@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <xercesc/sax2/XMLReaderFactory.hpp>
-#endif
+~ifndef _PreComp_
+~ include <xercesc/sax2/XMLReaderFactory.hpp>
+~endif
 
-#include <locale>
+~include <locale>
 
-#include "Reader.h"
-#include "Base64.h"
-#include "Console.h"
-#include "InputSource.h"
-#include "Persistence.h"
-#include "Sequencer.h"
-#include "Stream.h"
-#include "XMLTools.h"
+~include "Reader.h"
+~include "Base64.h"
+~include "Console.h"
+~include "InputSource.h"
+~include "Persistence.h"
+~include "Sequencer.h"
+~include "Stream.h"
+~include "XMLTools.h"
 
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipinputstream.h>
+~ifdef _MSC_VER
+~include <zipios++/zipios-config.h>
+~endif
+~include <zipios++/zipinputstream.h>
 
 
 XERCES_CPP_NAMESPACE_USE
@@ -58,11 +58,11 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
     CharacterCount(0), ReadType(None), _File(FileName), _valid(false),
     _verbose(true)
 {
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     str.imbue(std::locale::empty());
-#else
+~else
     str.imbue(std::locale::classic());
-#endif
+~endif
 
     // create the parser
     parser = XMLReaderFactory::createXMLReader();
@@ -94,11 +94,11 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
              << message << "\n";
         XMLString::release(&message);
     }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
     catch (...) {
         cerr << "Unexpected Exception \n";
     }
-#endif
+~endif
 }
 
 Base::XMLReader::~XMLReader()
@@ -190,40 +190,40 @@ bool Base::XMLReader::read()
         parser->parseNext(token);
     }
     catch (const XMLException& toCatch) {
-#if 0
+~if 0
         char* message = XMLString::transcode(toCatch.getMessage());
         cerr << "Exception message is: \n"
              << message << "\n";
         XMLString::release(&message);
         return false;
-#else
+~else
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLBaseException(what);
-#endif
+~endif
     }
     catch (const SAXParseException& toCatch) {
-#if 0
+~if 0
         char* message = XMLString::transcode(toCatch.getMessage());
         cerr << "Exception message is: \n"
              << message << "\n";
         XMLString::release(&message);
         return false;
-#else
+~else
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
         throw Base::XMLParseException(what);
-#endif
+~endif
     }
     catch (...) {
-#if 0
+~if 0
         cerr << "Unexpected Exception \n" ;
         return false;
-#else
+~else
         throw Base::XMLBaseException("Unexpected XML exception");
-#endif
+~endif
     }
 
     return true;
@@ -451,22 +451,22 @@ void Base::XMLReader::endCDATA ()
     ReadType = EndCDATA;
 }
 
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
 void Base::XMLReader::characters(const   XMLCh* const chars, const unsigned int length)
-#else
+~else
 void Base::XMLReader::characters(const   XMLCh* const chars, const XMLSize_t length)
-#endif
+~endif
 {
     Characters = StrX(chars).c_str();
     ReadType = Chars;
     CharacterCount += length;
 }
 
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
 void Base::XMLReader::ignorableWhitespace( const   XMLCh* const /*chars*/, const unsigned int /*length*/)
-#else
+~else
 void Base::XMLReader::ignorableWhitespace( const   XMLCh* const /*chars*/, const XMLSize_t /*length*/)
-#endif
+~endif
 {
     //fSpaceCount += length;
 }

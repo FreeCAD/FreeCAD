@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "OriginFeature.h"
-#include "Document.h"
-#include "Origin.h"
+~include "OriginFeature.h"
+~include "Document.h"
+~include "Origin.h"
 
 
 using namespace App;

@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <Gui/Control.h>
-#include <Gui/BitmapFactory.h>
+~include <Gui/Control.h>
+~include <Gui/BitmapFactory.h>
 
-#include <Mod/Path/App/FeaturePathCompound.h>
+~include <Mod/Path/App/FeaturePathCompound.h>
 
-#include "TaskDlgPathCompound.h"
+~include "TaskDlgPathCompound.h"
 
 
 using namespace Gui;

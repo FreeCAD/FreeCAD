@@ -26,8 +26,8 @@
 //  Module : SMESH
 //  $Header: 
 //
-#include "SMESHDS_Document.hxx"
-#include "utilities.h"
+~include "SMESHDS_Document.hxx"
+~include "utilities.h"
 
 using namespace std;
 

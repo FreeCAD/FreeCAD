@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <sstream>
-# include <QTreeWidgetItem>
-# include <QMessageBox>
-# include <QPushButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <sstream>
+~ include <QTreeWidgetItem>
+~ include <QMessageBox>
+~ include <QPushButton>
+~endif
 
-#include <QStyledItemDelegate>
+~include <QStyledItemDelegate>
 
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/GeoFeature.h>
-#include <App/DocumentObserver.h>
-#include <App/ObjectIdentifier.h>
-#include <App/PropertyPythonObject.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/GeoFeature.h>
+~include <App/DocumentObserver.h>
+~include <App/ObjectIdentifier.h>
+~include <App/PropertyPythonObject.h>
 
-#include "Document.h"
-#include "View3DInventor.h"
-#include "Tree.h"
-#include "Selection.h"
-#include "PropertyView.h"
-#include "BitmapFactory.h"
-#include "DlgPropertyLink.h"
-#include "Application.h"
-#include "ViewProviderDocumentObject.h"
-#include "MetaTypes.h"
-#include "ui_DlgPropertyLink.h"
+~include "Document.h"
+~include "View3DInventor.h"
+~include "Tree.h"
+~include "Selection.h"
+~include "PropertyView.h"
+~include "BitmapFactory.h"
+~include "DlgPropertyLink.h"
+~include "Application.h"
+~include "ViewProviderDocumentObject.h"
+~include "MetaTypes.h"
+~include "ui_DlgPropertyLink.h"
 
 using namespace Gui::Dialog;
 
@@ -299,11 +299,11 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         ui->treeWidget->setColumnCount(2);
 
         // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
+~if QT_VERSION >= 0x050000
         ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
+~else
         ui->treeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
+~endif
     }
 
     std::set<App::Document*> expandDocs;
@@ -1063,4 +1063,4 @@ void DlgPropertyLink::on_searchBox_textChanged(const QString& text)
     itemSearch(text,false);
 }
 
-#include "moc_DlgPropertyLink.cpp"
+~include "moc_DlgPropertyLink.cpp"

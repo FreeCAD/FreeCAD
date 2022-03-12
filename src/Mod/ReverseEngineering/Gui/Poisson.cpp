@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTextStream>
+~endif
 
-#include "ui_Poisson.h"
-#include "Poisson.h"
+~include "ui_Poisson.h"
+~include "Poisson.h"
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
 
 using namespace ReenGui;
@@ -146,4 +146,4 @@ bool TaskPoisson::accept()
     return widget->accept();
 }
 
-#include "moc_Poisson.cpp"
+~include "moc_Poisson.cpp"

@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPixmap>
-# include <QDialog>
-#endif
+~ifndef _PreComp_
+~ include <QPixmap>
+~ include <QDialog>
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include "ui_ConstraintMultiFilterDialog.h"
-#include "ConstraintMultiFilterDialog.h"
+~include "ui_ConstraintMultiFilterDialog.h"
+~include "ConstraintMultiFilterDialog.h"
 
 using namespace SketcherGui;
 
@@ -152,4 +152,4 @@ void ConstraintMultiFilterDialog::on_uncheckAllButton_clicked(bool)
     setCheckStateAll(Qt::Unchecked);
 }
 
-#include "moc_ConstraintMultiFilterDialog.cpp"
+~include "moc_ConstraintMultiFilterDialog.cpp"

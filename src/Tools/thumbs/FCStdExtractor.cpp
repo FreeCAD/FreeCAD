@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "stdafx.h"
-#include "resource.h"
-#include "ThumbFCStd_i.h"
-#include <initguid.h>
-#include "ThumbFCStd_i.c"
-#include "FCStdExtractor.h"
-#include <shlobj.h>
+~include "stdafx.h"
+~include "resource.h"
+~include "ThumbFCStd_i.h"
+~include <initguid.h>
+~include "ThumbFCStd_i.c"
+~include "FCStdExtractor.h"
+~include <shlobj.h>
 
-#include <iostream>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipfile.h>
-#include <wincodec.h>
-#include <wincodecsdk.h>
-#pragma comment(lib, "WindowsCodecs.lib")
+~include <iostream>
+~include <zipios++/zipinputstream.h>
+~include <zipios++/zipfile.h>
+~include <wincodec.h>
+~include <wincodecsdk.h>
+~pragma comment(lib, "WindowsCodecs.lib")
 
  // The functions
  // * CreateStreamOnResource

@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of PythonWorkbenchPy.xml)
-#include "PythonWorkbenchPy.h"
-#include "PythonWorkbenchPy.cpp"
+~include "PythonWorkbenchPy.h"
+~include "PythonWorkbenchPy.cpp"
 
 
 using namespace Gui;

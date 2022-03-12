@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QClipboard>
-# include <QMessageBox>
-# include <QPushButton>
-# include <QString>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QMessageBox>
+~ include <QPushButton>
+~ include <QString>
+~endif
 
-#include "TextDocumentEditorView.h"
-#include "Application.h"
-#include "Document.h"
-#include "MainWindow.h"
+~include "TextDocumentEditorView.h"
+~include "Application.h"
+~include "Document.h"
+~include "MainWindow.h"
 
 
 using namespace Gui;
@@ -294,4 +294,4 @@ QStringList TextDocumentEditorView::redoActions() const
     return redo;
 }
 
-#include "moc_TextDocumentEditorView.cpp"
+~include "moc_TextDocumentEditorView.cpp"

@@ -23,18 +23,18 @@
 // Module    : SMESH
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_Projection_1D2D.hxx"
+~include "StdMeshers_Projection_1D2D.hxx"
 
-#include "SMESH_Gen.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "SMESH_subMeshEventListener.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_ProjectionSource2D.hxx"
-#include "StdMeshers_ProjectionUtils.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "SMESH_subMeshEventListener.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_ProjectionSource2D.hxx"
+~include "StdMeshers_ProjectionUtils.hxx"
 
-#include <TopoDS.hxx>
-#include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
+~include <TopExp_Explorer.hxx>
 
 using namespace std;
 

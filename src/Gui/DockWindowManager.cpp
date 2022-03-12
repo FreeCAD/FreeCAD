@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QDockWidget>
-# include <QMap>
-# include <QPointer>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QDockWidget>
+~ include <QMap>
+~ include <QPointer>
+~endif
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include "DockWindowManager.h"
-#include "MainWindow.h"
+~include "DockWindowManager.h"
+~include "MainWindow.h"
 
 
 using namespace Gui;
@@ -369,7 +369,7 @@ void DockWindowManager::setup(DockWindowItems* items)
         }
     }
 
-#if 0 // FIXME: don't tabify always after switching the workbench
+~if 0 // FIXME: don't tabify always after switching the workbench
     // tabify dock widgets for which "tabbed" is true and which have the same position
     for (int i=0; i<4; i++) {
         const QList<QDockWidget*>& dws = areas[i];
@@ -379,9 +379,9 @@ void DockWindowManager::setup(DockWindowItems* items)
             }
         }
     }
-#endif
+~endif
 
-#if 0
+~if 0
     // hide all dock windows which we don't need for the moment
     for (QList<QDockWidget*>::Iterator it = docked.begin(); it != docked.end(); ++it) {
         QByteArray dockName = (*it)->toggleViewAction()->data().toByteArray();
@@ -389,7 +389,7 @@ void DockWindowManager::setup(DockWindowItems* items)
         (*it)->hide();
         (*it)->toggleViewAction()->setVisible(false);
     }
-#endif
+~endif
 }
 
 void DockWindowManager::saveState()
@@ -462,4 +462,4 @@ void DockWindowManager::onWidgetDestroyed(QObject* widget)
     }
 }
 
-#include "moc_DockWindowManager.cpp"
+~include "moc_DockWindowManager.cpp"

@@ -22,35 +22,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <QToolBar>
-#include "qtcolorpicker.h"
-#include "Mod/Spreadsheet/App/Sheet.h"
-#include <App/Range.h>
-#include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
+~include <Gui/Application.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Command.h>
+~include <QToolBar>
+~include "qtcolorpicker.h"
+~include "Mod/Spreadsheet/App/Sheet.h"
+~include <App/Range.h>
+~include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
 
 using namespace Base;
 using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Spreadsheet");
     qApp->translate("Workbench", "&Spreadsheet");
     qApp->translate("Workbench", "&Alignment");
     qApp->translate("Workbench", "&Styles");
-#endif
+~endif
 
 /// @namespace ImageGui @class Workbench
 TYPESYSTEM_SOURCE(SpreadsheetGui::Workbench, Gui::StdWorkbench)
@@ -250,4 +250,4 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     return root;
 }
 
-#include "moc_Workbench.cpp"
+~include "moc_Workbench.cpp"

@@ -30,16 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "SensorManager.h"
+~include "SensorManager.h"
 
-#include <QTimer>
+~include <QTimer>
 
-#include <Inventor/SbTime.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoRenderManager.h>
-#include <Inventor/C/threads/thread.h>
+~include <Inventor/SbTime.h>
+~include <Inventor/SoDB.h>
+~include <Inventor/SoRenderManager.h>
+~include <Inventor/C/threads/thread.h>
 
-#include "SignalThread.h"
+~include "SignalThread.h"
 
 
 using namespace SIM::Coin3D::Quarter;

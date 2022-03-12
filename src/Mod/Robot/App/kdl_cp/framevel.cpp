@@ -14,13 +14,13 @@
  ****************************************************************************/
 
 
-#include "framevel.hpp"
+~include "framevel.hpp"
 
 namespace KDL {
 
-#ifndef KDL_INLINE
-    #include "framevel.inl"
-#endif
+~ifndef KDL_INLINE
+    ~include "framevel.inl"
+~endif
 
 
 

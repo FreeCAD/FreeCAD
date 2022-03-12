@@ -26,51 +26,51 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_MEFISTO_2D.hxx"
+~include "StdMeshers_MEFISTO_2D.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_LengthFromEdges.hxx"
-#include "StdMeshers_MaxElementArea.hxx"
-#include "StdMeshers_ViscousLayers2D.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_LengthFromEdges.hxx"
+~include "StdMeshers_MaxElementArea.hxx"
+~include "StdMeshers_ViscousLayers2D.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include "Rn.h"
-#include "aptrte.h"
+~include "Rn.h"
+~include "aptrte.h"
 
-#include <BRepGProp.hxx>
-#include <BRepTools.hxx>
-#include <BRep_Tool.hxx>
-#include <GProp_GProps.hxx>
-#include <Geom2d_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <Precision.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopoDS_Wire.hxx>
-#include <gp_Pnt2d.hxx>
+~include <BRepGProp.hxx>
+~include <BRepTools.hxx>
+~include <BRep_Tool.hxx>
+~include <GProp_GProps.hxx>
+~include <Geom2d_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <Precision.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopoDS_Wire.hxx>
+~include <gp_Pnt2d.hxx>
 
 using namespace std;
 
-#ifdef _DEBUG_
-//#define DUMP_POINTS // to print coordinates of MEFISTO input
-#endif
+~ifdef _DEBUG_
+//~define DUMP_POINTS // to print coordinates of MEFISTO input
+~endif
 
 //=============================================================================
 /*!
@@ -417,7 +417,7 @@ static bool fixOverlappedLinkUV( R2& uv0, const R2& uv1, const R2& uv2 )
       uv0.y -= delta;
     else
       uv0.y += delta;
-// #ifdef _DEBUG_
+// ~ifdef _DEBUG_
 //     MESSAGE(" -> " << uv0.x << " " << uv0.y << " ");
 //     MESSAGE("v1( " << v1.X() << " " << v1.Y() << " ) " <<
 //       "v2( " << v2.X() << " " << v2.Y() << " ) ");
@@ -430,7 +430,7 @@ static bool fixOverlappedLinkUV( R2& uv0, const R2& uv1, const R2& uv2 )
 //     dot = v1*v2;
 //     double sin = sqrt(1 - dot * dot / (sqMod1 * sqMod2));
 //     MESSAGE("NEW SIN: " << sin);
-// #endif
+// ~endif
     return true;
   }
   return false;
@@ -669,12 +669,12 @@ bool StdMeshers_MEFISTO_2D::LoadPoints(TWireVector &                 wires,
     }
   }
 
-#ifdef DUMP_POINTS
+~ifdef DUMP_POINTS
   cout << "MEFISTO INPUT************" << endl;
   for ( int i =0; i < m; ++i )
     cout << i << ": \t" << uvslf[i].x << ", " << uvslf[i].y
          << " Node " << mefistoToDS[i]->GetID()<< endl;
-#endif
+~endif
 
   return true;
 }

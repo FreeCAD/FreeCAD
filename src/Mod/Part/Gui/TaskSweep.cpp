@@ -21,42 +21,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QTextStream>
-# include <QTimer>
-# include <QTreeWidget>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <Precision.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMessageBox>
+~ include <QTextStream>
+~ include <QTimer>
+~ include <QTreeWidget>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <Precision.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~endif
 
-#include "ui_TaskSweep.h"
-#include "TaskSweep.h"
+~include "ui_TaskSweep.h"
+~include "TaskSweep.h"
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;
@@ -483,4 +483,4 @@ bool TaskSweep::reject()
     return widget->reject();
 }
 
-#include "moc_TaskSweep.cpp"
+~include "moc_TaskSweep.cpp"

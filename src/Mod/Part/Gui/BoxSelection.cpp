@@ -21,46 +21,46 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <BRep_Tool.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <gp_Pnt.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <QFontMetrics>
-# include <QMessageBox>
-# include <QSet>
-# include <Python.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <BRep_Tool.hxx>
+~ include <BRepGProp.hxx>
+~ include <GProp_GProps.hxx>
+~ include <gp_Pnt.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <QFontMetrics>
+~ include <QMessageBox>
+~ include <QSet>
+~ include <Python.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include "BoxSelection.h"
-#include "ViewProviderExt.h"
+~include "BoxSelection.h"
+~include "ViewProviderExt.h"
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/Utilities.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;

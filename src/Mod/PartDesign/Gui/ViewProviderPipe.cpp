@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/PartDesign/App/FeaturePipe.h>
+~include <Mod/Part/Gui/ReferenceHighlighter.h>
 
-#include "ViewProviderPipe.h"
-#include "TaskPipeParameters.h"
+~include "ViewProviderPipe.h"
+~include "TaskPipeParameters.h"
 
 using namespace PartDesignGui;
 

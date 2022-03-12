@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include "Property.h"
-#include "PropertyContainer.h"
+~include "Property.h"
+~include "PropertyContainer.h"
 
 
 FC_LOG_LEVEL_INIT("App",true,true)
@@ -294,11 +294,11 @@ void PropertyContainer::Save (Base::Writer &writer) const
         catch (const char* e) {
             Base::Console().Error("%s\n", e);
         }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
         catch (...) {
             Base::Console().Error("PropertyContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
         }
-#endif
+~endif
         writer.decInd(); // indentation for the actual property
         writer.Stream() << writer.ind() << "</Property>" << endl;    
         writer.decInd(); // indentation for 'Property name'
@@ -389,11 +389,11 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         catch (const char* e) {
             Base::Console().Error("%s\n", e);
         }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
         catch (...) {
             Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
         }
-#endif
+~endif
         reader.readEndElement("Property");
     }
     reader.readEndElement("Properties");
@@ -407,9 +407,9 @@ void PropertyContainer::onPropertyStatusChanged(const Property &prop, unsigned l
 
 void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
 {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     if(!parentMerged) 
-#endif
+~endif
     {
         short offset = offsetBase.getOffsetTo(Prop);
         if(offset < 0)
@@ -421,11 +421,11 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
                 throw Base::RuntimeError("Cannot add static property");
             index.emplace(PropName, PropertyGroup, PropertyDocu, offset, Type);
         } else{
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             if(it->Offset != offset) {
                 FC_ERR("Duplicate property '" << PropName << "'");
             }
-#endif
+~endif
         } 
     }
 
@@ -603,7 +603,7 @@ void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
     \brief System to access object properties
 \section Introduction
 The property framework introduces the ability to access attributes (member variables) of a class by name without
-knowing the class type. It's like the reflection mechanism of Java or C#.
+knowing the class type. It's like the reflection mechanism of Java or C~.
 This ability is introduced by the App::PropertyContainer class and can be used by all derived classes.
 
 This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and

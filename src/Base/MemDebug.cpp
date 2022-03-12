@@ -37,23 +37,23 @@
  * The FreeCAD memory debugging is located in the Base::MemDebug class.
  */
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef _MSC_VER
-#  include <time.h>
-#  include <crtdbg.h>
-# endif
-#endif
+~ifndef _PreComp_
+~ ifdef _MSC_VER
+~  include <time.h>
+~  include <crtdbg.h>
+~ endif
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "MemDebug.h"
-#include <stdexcept>
+~include "MemDebug.h"
+~include <stdexcept>
 
 
 using namespace Base;
 
-#if defined(_MSC_VER)
+~if defined(_MSC_VER)
 
 
 /** Memory debugging class
@@ -87,13 +87,13 @@ protected:
 };
 
 // the one and only MemDebug instance.
-#ifdef MemDebugOn
+~ifdef MemDebugOn
 MemDebug cSingelton;
-#endif
+~endif
 
 
-#define  SET_CRT_DEBUG_FIELD(a)   _CrtSetDbgFlag((a) | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
-#define  CLEAR_CRT_DEBUG_FIELD(a) _CrtSetDbgFlag(~(a) & _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
+~define  SET_CRT_DEBUG_FIELD(a)   _CrtSetDbgFlag((a) | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
+~define  CLEAR_CRT_DEBUG_FIELD(a) _CrtSetDbgFlag(~(a) & _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
 
 FILE *MemDebug::logFile = NULL;
 
@@ -122,19 +122,19 @@ MemDebug::MemDebug()
    // Open a log file for the hook functions to use
    if ( logFile != NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():38: Don't call the constructor by your self!");
-#if (_MSC_VER >= 1400)
+~if (_MSC_VER >= 1400)
    fopen_s( &logFile, "MemLog.txt", "w" );
    if ( logFile == NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
    _strtime_s( timeStr, 15 );
    _strdate_s( dateStr, 15 );
-#elif (_MSC_VER >= 1200)
+~elif (_MSC_VER >= 1200)
    logFile = fopen( "MemLog.txt", "w" );
    if ( logFile == NULL )
      throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
    _strtime( timeStr );
    _strdate( dateStr );
-#endif
+~endif
    fprintf( logFile,
             "Memory Allocation Log File for FreeCAD, run at %s on %s.\n",
             timeStr, dateStr );
@@ -212,7 +212,7 @@ int __cdecl MemDebug::sAllocHook(
      return(7);
 
    fprintf( logFile,
-            "%s (#%7d) %12Iu byte (%s) in %s line %d",
+            "%s (~%7d) %12Iu byte (%s) in %s line %d",
             operation[nAllocType],lRequest, nSize, blockType[nBlockUse],szFileName, nLine);
    if ( pvData != NULL )
       fprintf( logFile, " at %p\n", pvData );
@@ -237,7 +237,7 @@ void __cdecl MemDebug::sDumpClientHook(
 {
    long requestNumber=0;
   _CrtIsMemoryBlock(pUserData,(unsigned int)nBytes,&requestNumber,NULL,NULL);
-  fprintf( logFile, "Leak   : (#%7d) %12Iu bytes (%p)  \n", requestNumber, nBytes, pUserData );
+  fprintf( logFile, "Leak   : (~%7d) %12Iu bytes (%p)  \n", requestNumber, nBytes, pUserData );
 
 }
 
@@ -283,4 +283,4 @@ bool MemCheck::isValidHeapPointer(const void* userData)
     return _CrtIsValidHeapPointer(userData) ? true : false;
 }
 
-#endif
+~endif

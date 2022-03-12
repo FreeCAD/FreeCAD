@@ -21,17 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~endif
 
-#include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/PartDesign/App/DatumLine.h>
+~include <Mod/Part/Gui/SoBrepEdgeSet.h>
+~include <Mod/PartDesign/App/DatumLine.h>
 
-#include "ViewProviderDatumLine.h"
+~include "ViewProviderDatumLine.h"
 
 using namespace PartDesignGui;
 

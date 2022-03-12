@@ -39,16 +39,16 @@
 **
 ****************************************************************************/
 
-#include <qimageiohandler.h>
-#include <qstringlist.h>
+~include <qimageiohandler.h>
+~include <qstringlist.h>
 
-#if !defined(QT_NO_IMAGEFORMATPLUGIN) && !defined(QT_NO_SVGRENDERER)
+~if !defined(QT_NO_IMAGEFORMATPLUGIN) && !defined(QT_NO_SVGRENDERER)
 
-#include "qsvgiohandler.h"
+~include "qsvgiohandler.h"
 
-#include <qiodevice.h>
-#include <qbytearray.h>
-#include <qdebug.h>
+~include <qiodevice.h>
+~include <qbytearray.h>
+~include <qdebug.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -91,4 +91,4 @@ Q_EXPORT_PLUGIN2(qsvg, QSvgPlugin)
 
 QT_END_NAMESPACE
 
-#endif // !QT_NO_IMAGEFORMATPLUGIN
+~endif // !QT_NO_IMAGEFORMATPLUGIN

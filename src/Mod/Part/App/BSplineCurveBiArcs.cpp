@@ -27,17 +27,17 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Ax2.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Circ.hxx>
-# include <GC_MakeArcOfCircle.hxx>
-# include <Geom_BSplineCurve.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Ax2.hxx>
+~ include <gp_Pln.hxx>
+~ include <gp_Circ.hxx>
+~ include <GC_MakeArcOfCircle.hxx>
+~ include <Geom_BSplineCurve.hxx>
+~endif
 
-#include "Geometry.h"
-#include "Tools.h"
+~include "Geometry.h"
+~include "Tools.h"
 
 using Part::GeomBSplineCurve;
 using Part::Geometry;

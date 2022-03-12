@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "freecadscheme.h"
-#include "macpanelscheme.h"
-#include "winxppanelscheme.h"
-#include "winvistapanelscheme.h"
-#include <QApplication>
-#include <QImage>
-#include <QPainter>
-#include <QPalette>
+~include "freecadscheme.h"
+~include "macpanelscheme.h"
+~include "winxppanelscheme.h"
+~include "winvistapanelscheme.h"
+~include <QApplication>
+~include <QImage>
+~include <QPainter>
+~include <QPalette>
 
 
 namespace QSint
@@ -42,27 +42,27 @@ const char* ActionPanelFreeCAD =
     "}"
 
     "QSint--ActionGroup QFrame[class='header'] {"
-        "border: 1px solid #ffffff;"
+        "border: 1px solid ~ffffff;"
         "border-top-left-radius: 4px;"
         "border-top-right-radius: 4px;"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #ffffff, stop: 1 #c6d3f7);"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 ~ffffff, stop: 1 ~c6d3f7);"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header'] {"
         "text-align: left;"
-        "color: #215dc6;"
+        "color: ~215dc6;"
         "background-color: transparent;"
         "border: 1px solid transparent;"
         "font-weight: bold;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: #428eff;"
+        "color: ~428eff;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: #d6dff7;"
-        "border: 1px solid #ffffff;"
+        "background-color: ~d6dff7;"
+        "border: 1px solid ~ffffff;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'][header='true'] {"
@@ -72,16 +72,16 @@ const char* ActionPanelFreeCAD =
     "QSint--ActionGroup QToolButton[class='action'] {"
         "background-color: transparent;"
         "border: 1px solid transparent;"
-        "color: #215dc6;"
+        "color: ~215dc6;"
         "text-align: left;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"
+        "color: ~999999;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #428eff;"
+        "color: ~428eff;"
         "text-decoration: underline;"
     "}"
 
@@ -90,8 +90,8 @@ const char* ActionPanelFreeCAD =
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
     ;
 
@@ -117,23 +117,23 @@ const char* MinimumActionPanelFreeCAD =
 
 FreeCADPanelScheme::FreeCADPanelScheme() : ActionPanelScheme()
 {
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
     ActionPanelScheme* panelStyle = WinXPPanelScheme2::defaultScheme();
 
     actionStyle = QString(ActionPanelFreeCAD);
-#elif defined(Q_OS_MAC)
+~elif defined(Q_OS_MAC)
     ActionPanelScheme* panelStyle = MacPanelScheme::defaultScheme();
 
     actionStyle = panelStyle->actionStyle;
-#elif defined(Q_OS_LINUX)
+~elif defined(Q_OS_LINUX)
     ActionPanelScheme* panelStyle = SystemPanelScheme::defaultScheme();
 
     actionStyle = panelStyle->actionStyle;
-#else
+~else
     ActionPanelScheme* panelStyle = ActionPanelScheme::defaultScheme();
 
     actionStyle = panelStyle->actionStyle;
-#endif
+~endif
 
     builtinScheme = actionStyle;
     minimumStyle = QString(MinimumActionPanelFreeCAD);
@@ -266,7 +266,7 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
     "}"
 
     "QSint--ActionGroup QFrame[class='header'] {"
-        "border: 1px solid #ffffff;"                                // todo
+        "border: 1px solid ~ffffff;"                                // todo
         "border-top-left-radius: 4px;"
         "border-top-right-radius: 4px;"
         "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 %3, stop: 1 %4);"
@@ -301,7 +301,7 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"                                           // todo
+        "color: ~999999;"                                           // todo
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
@@ -314,8 +314,8 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"                                // todo
-        "color: #006600;"                                           // todo
+        "background-color: ~ddeeff;"                                // todo
+        "color: ~006600;"                                           // todo
     "}"
   )
           .arg(panelBackground1.name(),

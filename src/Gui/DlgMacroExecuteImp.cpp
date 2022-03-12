@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QInputDialog>
-# include <QLabel>
-# include <QHeaderView>
-# include <QMessageBox>
-# include <QComboBox>
-# include <QSignalBlocker>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QInputDialog>
+~ include <QLabel>
+~ include <QHeaderView>
+~ include <QMessageBox>
+~ include <QComboBox>
+~ include <QSignalBlocker>
+~endif
 
-#include "DlgMacroExecuteImp.h"
-#include "ui_DlgMacroExecute.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "MainWindow.h"
-#include "FileDialog.h"
-#include "Macro.h"
-#include "Document.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
-#include "DlgCustomizeImp.h"
-#include "DlgToolbarsImp.h"
+~include "DlgMacroExecuteImp.h"
+~include "ui_DlgMacroExecute.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "MainWindow.h"
+~include "FileDialog.h"
+~include "Macro.h"
+~include "Document.h"
+~include "EditorView.h"
+~include "PythonEditor.h"
+~include "DlgCustomizeImp.h"
+~include "DlgToolbarsImp.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Interpreter.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -865,4 +865,4 @@ void DlgMacroExecuteImp::on_addonsButton_clicked()
     this->fillUpList();
 }
 
-#include "moc_DlgMacroExecuteImp.cpp"
+~include "moc_DlgMacroExecuteImp.cpp"

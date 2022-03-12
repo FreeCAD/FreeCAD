@@ -21,70 +21,70 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# endif
-# include <QApplication>
-# include <qaction.h>
-# include <qdir.h>
-# include <qfileinfo.h>
-# include <qinputdialog.h>
-# include <qmessagebox.h>
-# include <QPointer>
-# include <qstringlist.h>
-//# include <gts.h>
-# include <map>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ endif
+~ include <QApplication>
+~ include <qaction.h>
+~ include <qdir.h>
+~ include <qfileinfo.h>
+~ include <qinputdialog.h>
+~ include <qmessagebox.h>
+~ include <QPointer>
+~ include <qstringlist.h>
+//~ include <gts.h>
+~ include <map>
+~endif
 
-#ifndef __InventorAll__
-# include <Gui/InventorAll.h>
-#endif
+~ifndef __InventorAll__
+~ include <Gui/InventorAll.h>
+~endif
 
-#include <Mod/Mesh/App/Core/Smoothing.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/FeatureMeshCurvature.h>
+~include <Mod/Mesh/App/Core/Smoothing.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/FeatureMeshCurvature.h>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/MouseSelection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/WaitCursor.h>
-#include <CXX/Objects.hxx>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <App/Document.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/MouseSelection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/NavigationStyle.h>
+~include <Gui/WaitCursor.h>
+~include <CXX/Objects.hxx>
 
-#include "DlgEvaluateMeshImp.h"
-#include "DlgRegularSolidImp.h"
-#include "RemoveComponents.h"
-#include "RemeshGmsh.h"
-#include "DlgSmoothing.h"
-#include "DlgDecimating.h"
-#include "ViewProviderMeshFaceSet.h"
-#include "ViewProviderCurvature.h"
-#include "MeshEditor.h"
-#include "Segmentation.h"
-#include "SegmentationBestFit.h"
+~include "DlgEvaluateMeshImp.h"
+~include "DlgRegularSolidImp.h"
+~include "RemoveComponents.h"
+~include "RemeshGmsh.h"
+~include "DlgSmoothing.h"
+~include "DlgDecimating.h"
+~include "ViewProviderMeshFaceSet.h"
+~include "ViewProviderCurvature.h"
+~include "MeshEditor.h"
+~include "Segmentation.h"
+~include "SegmentationBestFit.h"
 
 using namespace Mesh;
 
 // deprecated
-#if 0
+~if 0
 DEF_STD_CMD_A(CmdMeshTransform)
 
 CmdMeshTransform::CmdMeshTransform()
@@ -214,7 +214,7 @@ bool CmdMeshToolMesh::isActive(void)
   // Check for the selected mesh feature (all Mesh types)
   return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
 }
-#endif
+~endif
 
 //--------------------------------------------------------------------------------------
 
@@ -785,7 +785,7 @@ bool CmdMeshPolySegm::isActive()
 }
 
 //--------------------------------------------------------------------------------------
-#if 0
+~if 0
 DEF_STD_CMD_A(CmdMeshPolySelect)
 
 CmdMeshPolySelect::CmdMeshPolySelect()
@@ -836,7 +836,7 @@ bool CmdMeshPolySelect::isActive(void)
 
     return false;
 }
-#endif
+~endif
 //--------------------------------------------------------------------------------------
 
 DEF_STD_CMD_A(CmdMeshAddFacet)
@@ -1408,7 +1408,7 @@ CmdMeshSmoothing::CmdMeshSmoothing()
 
 void CmdMeshSmoothing::activated(int)
 {
-#if 0
+~if 0
     MeshGui::SmoothingDialog dlg(Gui::getMainWindow());
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
@@ -1438,17 +1438,17 @@ void CmdMeshSmoothing::activated(int)
         }
         commitCommand();
     }
-#else
+~else
     Gui::Control().showDialog(new MeshGui::TaskSmoothing());
-#endif
+~endif
 }
 
 bool CmdMeshSmoothing::isActive()
 {
-#if 1
+~if 1
     if (Gui::Control().activeDialog())
         return false;
-#endif
+~endif
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
 }
@@ -1476,10 +1476,10 @@ void CmdMeshDecimating::activated(int)
 
 bool CmdMeshDecimating::isActive()
 {
-#if 1
+~if 1
     if (Gui::Control().activeDialog())
         return false;
-#endif
+~endif
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
 }

@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include <App/Part.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MDIView.h>
+~include <App/Part.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MDIView.h>
 
 
 //===========================================================================
@@ -48,7 +48,7 @@ QString getAutoGroupCommandStr()
             "addObject(App.ActiveDocument.ActiveObject)\n")
             .arg(activePartName);
     }
-    return QString::fromLatin1("# Object created at document root.");
+    return QString::fromLatin1("~ Object created at document root.");
 }
 }
 

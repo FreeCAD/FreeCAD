@@ -20,37 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <cmath>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QFile>
-#include <QFileInfo>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QTextOption>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <cmath>
+~include <QAction>
+~include <QApplication>
+~include <QContextMenuEvent>
+~include <QFile>
+~include <QFileInfo>
+~include <QGraphicsScene>
+~include <QMenu>
+~include <QMouseEvent>
+~include <QGraphicsSceneHoverEvent>
+~include <QPainterPathStroker>
+~include <QPainter>
+~include <QPainterPath>
+~include <QTextOption>
+~endif
 
-#include <qmath.h>
+~include <qmath.h>
 
-#include <Base/Console.h>
-#include <App/Material.h>
+~include <Base/Console.h>
+~include <App/Material.h>
 
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawGeomHatch.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
 
 
-#include "ZVALUE.h"
-#include "ViewProviderViewSection.h"
-#include "QGIFace.h"
-#include "QGIViewSection.h"
+~include "ZVALUE.h"
+~include "ViewProviderViewSection.h"
+~include "QGIFace.h"
+~include "QGIViewSection.h"
 
 using namespace TechDrawGui;
 

@@ -22,37 +22,37 @@
 
 
 
-#ifdef _MSC_VER
-    #define strdup _strdup
-#endif
+~ifdef _MSC_VER
+    ~define strdup _strdup
+~endif
 
-#include "PreCompiled.h"
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
+~include "PreCompiled.h"
+~include <Mod/Part/App/TopoShapeFacePy.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/operators.h>
-#include <pybind11/numpy.h>
-#include <pybind11/eigen.h>
+~include <Eigen/Core>
+~include <Eigen/Geometry>
+~include <Eigen/Sparse>
+~include <pybind11/pybind11.h>
+~include <pybind11/stl.h>
+~include <pybind11/operators.h>
+~include <pybind11/numpy.h>
+~include <pybind11/eigen.h>
 
-#include <memory>
-#include <vector>
-#include <tuple>
-#include <map>
-#include <stdexcept>
+~include <memory>
+~include <vector>
+~include <tuple>
+~include <map>
+~include <stdexcept>
 
-#include "MeshFlattening.h"
-#include "MeshFlatteningLscmRelax.h"
-#include "MeshFlatteningNurbs.h"
+~include "MeshFlattening.h"
+~include "MeshFlatteningLscmRelax.h"
+~include "MeshFlatteningNurbs.h"
 
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <ShapeFix_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS.hxx>
+~include <ShapeFix_Edge.hxx>
 
 
 

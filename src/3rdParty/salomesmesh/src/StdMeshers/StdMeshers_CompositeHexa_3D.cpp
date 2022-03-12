@@ -23,57 +23,57 @@
 // Created   : Tue Nov 25 11:04:59 2008
 // Author    : Edward AGAPOV (eap)
 
-#include "StdMeshers_CompositeHexa_3D.hxx"
+~include "StdMeshers_CompositeHexa_3D.hxx"
 
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_ComputeError.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_ComputeError.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <BRepAdaptor_Surface.hxx>
-#include <BRep_Tool.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_Failure.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_MapIteratorOfMapOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopTools_SequenceOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Vec.hxx>
-#include <gp_XYZ.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRep_Tool.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_MapIteratorOfMapOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopTools_SequenceOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Vec.hxx>
+~include <gp_XYZ.hxx>
 
-#include <list>
-#include <set>
-#include <vector>
+~include <list>
+~include <set>
+~include <vector>
 
 
-#ifdef _DEBUG_
-// #define DEB_FACES
-// #define DEB_GRID
-// #define DUMP_VERT(msg,V) \
+~ifdef _DEBUG_
+// ~define DEB_FACES
+// ~define DEB_GRID
+// ~define DUMP_VERT(msg,V) \
 //   { TopoDS_Vertex v = V; gp_Pnt p = BRep_Tool::Pnt(v);                  \
 //     cout << msg << "( "<< p.X()<<", "<<p.Y()<<", "<<p.Z()<<" )"<<endl;}
-#endif
+~endif
 
-#ifndef DUMP_VERT
-#define DUMP_VERT(msg,v)
-#endif
+~ifndef DUMP_VERT
+~define DUMP_VERT(msg,v)
+~endif
 
 //================================================================================
 // text for message about an internal error
-#define ERR_LI(txt) SMESH_Comment(txt) << ":" << __LINE__
+~define ERR_LI(txt) SMESH_Comment(txt) << ":" << __LINE__
 
 // order corresponds to right order of edges in CASCADE face
 enum EQuadSides{ Q_BOTTOM=0, Q_RIGHT, Q_TOP, Q_LEFT,   Q_CHILD, Q_PARENT };
@@ -690,7 +690,7 @@ bool StdMeshers_CompositeHexa_3D::Compute(SMESH_Mesh&         theMesh,
         SMESH_Block::ShellPoint( params, pointsOnShapes, coords );
         column[ z ] = helper.AddNode( coords.X(), coords.Y(), coords.Z() );
 
-#ifdef DEB_GRID
+~ifdef DEB_GRID
         // debug
         //cout << "----------------------------------------------------------------------"<<endl;
         //for ( int id = SMESH_Block::ID_V000; id < SMESH_Block::ID_Shell; ++id)
@@ -700,7 +700,7 @@ bool StdMeshers_CompositeHexa_3D::Compute(SMESH_Mesh&         theMesh,
         //}
         //cout << "Params: ( "<< params.X()<<", "<<params.Y()<<", "<<params.Z()<<" )"<<endl;
         //cout << "coords: ( "<< coords.X()<<", "<<coords.Y()<<", "<<coords.Z()<<" )"<<endl;
-#endif
+~endif
       }
     }
   }
@@ -879,12 +879,12 @@ bool _QuadFaceGrid::Init(const TopoDS_Face& f, SMESH_Mesh& mesh)
   if (mySides.size() != 4)
     return false;
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
   mySides.GetSide( Q_BOTTOM )->SetID( Q_BOTTOM );
   mySides.GetSide( Q_RIGHT  )->SetID( Q_RIGHT );
   mySides.GetSide( Q_TOP    )->SetID( Q_TOP );
   mySides.GetSide( Q_LEFT   )->SetID( Q_LEFT );
-#endif
+~endif
 
   return true;
 }
@@ -1053,10 +1053,10 @@ void _QuadFaceGrid::ReverseEdges(/*int e1, int e2*/)
 {
   myReverse = !myReverse;
 
-// #ifdef DEB_FACES
+// ~ifdef DEB_FACES
 //   if ( !myFace.IsNull() )
 //     TopAbs::Print(myFace.Orientation(), cout);
-// #endif
+// ~endif
 
   if ( myChildren.empty() )
   {
@@ -1492,7 +1492,7 @@ bool _QuadFaceGrid::GetNormal( const TopoDS_Vertex& v, gp_Vec& n ) const
 
 void _QuadFaceGrid::DumpGrid() const
 {
-#ifdef DEB_GRID
+~ifdef DEB_GRID
   const char* names[] = { "B_BOTTOM", "B_RIGHT", "B_TOP", "B_LEFT", "B_FRONT", "B_BACK" };
   cout << "****** Face " << names[ myID ] << endl;
 
@@ -1517,7 +1517,7 @@ void _QuadFaceGrid::DumpGrid() const
       child->DumpGrid();
     }
   }
-#endif
+~endif
 }
 
 //================================================================================
@@ -1528,7 +1528,7 @@ void _QuadFaceGrid::DumpGrid() const
 
 void _QuadFaceGrid::DumpVertices() const
 {
-#ifdef DEB_FACES
+~ifdef DEB_FACES
   cout << "****** Face ";
   const char* names[] = { "B_BOTTOM", "B_RIGHT", "B_TOP", "B_LEFT", "B_FRONT", "B_BACK" };
   if ( myID >= B_BOTTOM && myID < B_BACK )
@@ -1553,7 +1553,7 @@ void _QuadFaceGrid::DumpVertices() const
       child->DumpVertices();
     }
   }
-#endif
+~endif
 }
 
 //=======================================================================

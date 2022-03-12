@@ -20,36 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/math/special_functions/round.hpp>
-#include <boost/math/special_functions/trunc.hpp>
+~include <boost/algorithm/string/predicate.hpp>
+~include <boost/math/special_functions/round.hpp>
+~include <boost/math/special_functions/trunc.hpp>
 
-#include <sstream>
-#include <stack>
-#include <string>
+~include <sstream>
+~include <stack>
+~include <string>
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/ObjectIdentifier.h>
-#include <App/PropertyUnits.h>
-#include <Base/Interpreter.h>
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/QuantityPy.h>
-#include <Base/RotationPy.h>
-#include <Base/VectorPy.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <App/ObjectIdentifier.h>
+~include <App/PropertyUnits.h>
+~include <Base/Interpreter.h>
+~include <Base/MatrixPy.h>
+~include <Base/PlacementPy.h>
+~include <Base/QuantityPy.h>
+~include <Base/RotationPy.h>
+~include <Base/VectorPy.h>
 
-#include "ExpressionParser.h"
+~include "ExpressionParser.h"
 
 
 /** \defgroup Expression Expressions framework
@@ -62,61 +62,61 @@ using namespace App;
 
 FC_LOG_LEVEL_INIT("Expression", true, true)
 
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E        2.71828182845904523536
-#endif
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
+~ifndef M_PI
+~define M_PI       3.14159265358979323846
+~endif
+~ifndef M_E
+~define M_E        2.71828182845904523536
+~endif
+~ifndef  DOUBLE_MAX
+~ define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
+~endif
+~ifndef  DOUBLE_MIN
+~ define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
+~endif
 
-#if defined(_MSC_VER)
-#define strtoll _strtoi64
-#pragma warning(disable : 4003)
-#pragma warning(disable : 4065)
-#endif
+~if defined(_MSC_VER)
+~define strtoll _strtoi64
+~pragma warning(disable : 4003)
+~pragma warning(disable : 4065)
+~endif
 
-#define __EXPR_THROW(_e,_msg,_expr) do {\
+~define __EXPR_THROW(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg << (_expr);\
     throw _e(ss.str().c_str());\
 }while(0)
 
-#define _EXPR_THROW(_msg,_expr) __EXPR_THROW(ExpressionError,_msg,_expr)
+~define _EXPR_THROW(_msg,_expr) __EXPR_THROW(ExpressionError,_msg,_expr)
 
-#define __EXPR_SET_MSG(_e,_msg,_expr) do {\
+~define __EXPR_SET_MSG(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg << _e.what() << (_expr);\
     _e.setMessage(ss.str());\
 }while(0)
 
-#define _EXPR_RETHROW(_e,_msg,_expr) do {\
+~define _EXPR_RETHROW(_e,_msg,_expr) do {\
     __EXPR_SET_MSG(_e,_msg,_expr);\
     throw;\
 }while(0)
 
-#define _EXPR_PY_THROW(_msg,_expr) do {\
+~define _EXPR_PY_THROW(_msg,_expr) do {\
     Base::PyException _e;\
     __EXPR_SET_MSG(_e,_msg,_expr);\
     _e.raiseException();\
 }while(0)
 
-#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
+~define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
 
-#define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
+~define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
-#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
+~define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
 
-#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, (Expression*)0)
+~define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, (Expression*)0)
 
-#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
+~define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
 
-#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
+~define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {
@@ -143,41 +143,41 @@ void copy_vector(T &dst, const T& src) {
 // WARNING! The following define enables slightly faster any type comparison which
 // is not standard conforming, and may break in some rare cases (although not likely)
 //
-// #define USE_FAST_ANY
+// ~define USE_FAST_ANY
 
 static inline bool is_type(const App::any &value, const std::type_info& t) {
-#ifdef USE_FAST_ANY
+~ifdef USE_FAST_ANY
     return &value.type() == &t;
-#else
+~else
     return value.type() == t;
-#endif
+~endif
 }
 
 template<class T>
 static inline const T &cast(const App::any &value) {
-#ifdef USE_FAST_ANY
+~ifdef USE_FAST_ANY
     return *value.cast<T>();
-#else
+~else
     return App::any_cast<const T&>(value);
-#endif
+~endif
 }
 
 template<class T>
 static inline T &cast(App::any &value) {
-#ifdef USE_FAST_ANY
+~ifdef USE_FAST_ANY
     return *value.cast<T>();
-#else
+~else
     return App::any_cast<T&>(value);
-#endif
+~endif
 }
 
 template<class T>
 static inline T &&cast(App::any &&value) {
-#ifdef USE_FAST_ANY
+~ifdef USE_FAST_ANY
     return std::move(*value.cast<T>());
-#else
+~else
     return App::any_cast<T&&>(std::move(value));
-#endif
+~endif
 }
 
 std::string unquote(const std::string & input)
@@ -1303,7 +1303,7 @@ void NumberExpression::_toString(std::ostream &ss, bool,int) const
 {
     // Restore the old implementation because using digits10 + 2 causes
     // undesired side-effects:
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44057&p=375882#p375882
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44057&p=375882~p375882
     // See also:
     // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
     // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
@@ -1393,9 +1393,9 @@ static Py::Object calc(const Expression *expr, int op,
     }
 
     switch(op) {
-#define RICH_COMPARE(_op,_pyop) \
+~define RICH_COMPARE(_op,_pyop) \
     case OperatorExpression::_op: {\
-        int res = PyObject_RichCompareBool(l.ptr(),r.ptr(),Py_##_pyop);\
+        int res = PyObject_RichCompareBool(l.ptr(),r.ptr(),Py_~~_pyop);\
         if(res<0) EXPR_PY_THROW(expr);\
         return Py::Boolean(!!res);\
     }
@@ -1406,13 +1406,13 @@ static Py::Object calc(const Expression *expr, int op,
     RICH_COMPARE(EQ,EQ)
     RICH_COMPARE(NEQ,NE)
 
-#define _BINARY_OP(_pyop) \
-        res = inplace?PyNumber_InPlace##_pyop(l.ptr(),r.ptr()):\
-                       PyNumber_##_pyop(l.ptr(),r.ptr());\
+~define _BINARY_OP(_pyop) \
+        res = inplace?PyNumber_InPlace~~_pyop(l.ptr(),r.ptr()):\
+                       PyNumber_~~_pyop(l.ptr(),r.ptr());\
         if(!res) EXPR_PY_THROW(expr);\
         return Py::asObject(res);
 
-#define BINARY_OP(_op,_pyop) \
+~define BINARY_OP(_op,_pyop) \
     case OperatorExpression::_op: {\
         PyObject *res;\
         _BINARY_OP(_pyop);\
@@ -3182,33 +3182,33 @@ static int last_column;
 static int column;
 
 // show the parser the lexer method
-#define yylex ExpressionParserlex
+~define yylex ExpressionParserlex
 int ExpressionParserlex(void);
 
 // Parser, defined in ExpressionParser.y
-# define YYTOKENTYPE
-#include "ExpressionParser.tab.c"
+~ define YYTOKENTYPE
+~include "ExpressionParser.tab.c"
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+~ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in ExpressionParser.l
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
-#include "lex.ExpressionParser.c"
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-#ifdef _MSC_VER
-# define strdup _strdup
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wsign-compare"
+~ pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic push
+~ pragma GCC diagnostic ignored "-Wsign-compare"
+~endif
+~include "lex.ExpressionParser.c"
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic pop
+~endif
+~endif // DOXYGEN_SHOULD_SKIP_THIS
+~ifdef _MSC_VER
+~ define strdup _strdup
+~endif
 
 static void initParser(const App::DocumentObject *owner)
 {
@@ -3407,6 +3407,6 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
         return false;
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif

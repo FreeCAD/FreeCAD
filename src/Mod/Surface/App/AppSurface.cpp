@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include "FeatureFilling.h"
-#include "FeatureSewing.h"
-#include "FeatureCut.h"
-#include "FeatureGeomFillSurface.h"
-#include "FeatureExtend.h"
-#include "FeatureSections.h"
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include "FeatureFilling.h"
+~include "FeatureSewing.h"
+~include "FeatureCut.h"
+~include "FeatureGeomFillSurface.h"
+~include "FeatureExtend.h"
+~include "FeatureSections.h"
 
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
 
 
 namespace Surface {

@@ -21,31 +21,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <QAction>
-#include <QMenu>
-#include <QMessageBox>
-#include <QTimer>
-#include <GeomAbs_Shape.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+~include "PreCompiled.h"
+~include <QAction>
+~include <QMenu>
+~include <QMessageBox>
+~include <QTimer>
+~include <GeomAbs_Shape.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
 
-#include <App/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
-#include <Base/Console.h>
-#include <Gui/Control.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <App/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include <Gui/SelectionObject.h>
+~include <Base/Console.h>
+~include <Gui/Control.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
-#include "TaskFillingEdge.h"
-#include "ui_TaskFillingEdge.h"
-#include "TaskFilling.h"
+~include "TaskFillingEdge.h"
+~include "ui_TaskFillingEdge.h"
+~include "TaskFilling.h"
 
 
 using namespace SurfaceGui;
@@ -592,4 +592,4 @@ void FillingEdgePanel::modifyBoundary(bool on)
 }
 }
 
-#include "moc_TaskFillingEdge.cpp"
+~include "moc_TaskFillingEdge.cpp"

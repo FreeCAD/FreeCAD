@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Vector3D.h"
+~include "Vector3D.h"
 
 // inclusion of the generated files (generated out of VectorPy.xml)
-#include "GeometryPyCXX.h"
-#include "VectorPy.h"
-#include "MatrixPy.h"
-#include "RotationPy.h"
-#include "VectorPy.cpp"
+~include "GeometryPyCXX.h"
+~include "VectorPy.h"
+~include "MatrixPy.h"
+~include "RotationPy.h"
+~include "VectorPy.cpp"
 
 using namespace Base;
 

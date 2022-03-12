@@ -25,10 +25,10 @@
 //  Author : Julia DOROVSKIKH
 //  Module : SMESH
 //
-#include "DriverMED_Family.h"
-#include "MED_Factory.hxx"
+~include "DriverMED_Family.h"
+~include "MED_Factory.hxx"
 
-#include <sstream>      
+~include <sstream>      
 
 using namespace std;
 

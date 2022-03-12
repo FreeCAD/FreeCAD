@@ -20,58 +20,58 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <cstring>
-# include <cstdlib>
-#include <cmath>
-#include <float.h>
-#include <string>
-# include <exception>
+~ifndef _PreComp_
+~ include <sstream>
+~ include <cstring>
+~ include <cstdlib>
+~include <cmath>
+~include <float.h>
+~include <string>
+~ include <exception>
 
-#include <Precision.hxx>
-#include <Bnd_Box2d.hxx>
-#include <BndLib_Add2dCurve.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <Extrema_ExtCC2d.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom2d_Curve.hxx>
-#include <Geom2d_Line.hxx>
-#include <Geom2dAPI_ProjectPointOnCurve.hxx>
-#include <GeomAPI.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Pln.hxx>
-#include <TopoDS_Edge.hxx>
-#endif
+~include <Precision.hxx>
+~include <Bnd_Box2d.hxx>
+~include <BndLib_Add2dCurve.hxx>
+~include <Bnd_Box.hxx>
+~include <BRepBndLib.hxx>
+~include <Extrema_ExtCC2d.hxx>
+~include <Geom2dAdaptor_Curve.hxx>
+~include <Geom2d_Curve.hxx>
+~include <Geom2d_Line.hxx>
+~include <Geom2dAPI_ProjectPointOnCurve.hxx>
+~include <GeomAPI.hxx>
+~include <Geom_Curve.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Pln.hxx>
+~include <TopoDS_Edge.hxx>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
-#include <Base/Vector3D.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
+~include <Base/Vector3D.h>
 
-#include "Geometry.h"
-#include "DrawUtil.h"
-#include "Cosmetic.h"
-#include "DrawPage.h"
-#include "DrawViewPart.h"
-#include "DrawViewDimension.h"
-#include "DrawViewDimExtent.h"
+~include "Geometry.h"
+~include "DrawUtil.h"
+~include "Cosmetic.h"
+~include "DrawPage.h"
+~include "DrawViewPart.h"
+~include "DrawViewDimension.h"
+~include "DrawViewDimExtent.h"
 
-#include "DrawDimHelper.h"
+~include "DrawDimHelper.h"
 
-#define HORIZONTAL 0
-#define VERTICAL 1
-#define LENGTH 2
+~define HORIZONTAL 0
+~define VERTICAL 1
+~define LENGTH 2
 
 using namespace TechDraw;
 

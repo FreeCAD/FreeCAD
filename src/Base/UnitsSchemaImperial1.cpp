@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <sstream>
-#endif
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cmath>
+~ include <sstream>
+~endif
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#include <QString>
+~include <QString>
 
-#include "UnitsSchemaImperial1.h"
+~include "UnitsSchemaImperial1.h"
 
 
 using namespace Base;

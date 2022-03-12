@@ -25,8 +25,8 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_NotConformAllowed.hxx"
-#include "utilities.h"
+~include "StdMeshers_NotConformAllowed.hxx"
+~include "utilities.h"
 
 using namespace std;
 

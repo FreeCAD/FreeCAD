@@ -20,14 +20,14 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Interpreter.h>
+~include <Base/Interpreter.h>
 
-#include "AutoTransaction.h"
-#include "Application.h"
-#include "Document.h"
-#include "Transactions.h"
+~include "AutoTransaction.h"
+~include "Application.h"
+~include "Document.h"
+~include "Transactions.h"
 
 
 FC_LOG_LEVEL_INIT("App", true, true)
@@ -70,9 +70,9 @@ AutoTransaction::~AutoTransaction() {
     if(app._activeTransactionGuard<0)
         ++app._activeTransactionGuard;
     else if(!app._activeTransactionGuard) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         FC_ERR("Transaction guard error");
-#endif
+~endif
     } else if(--app._activeTransactionGuard == 0) {
         try {
             // We don't call close() here, because close() only closes

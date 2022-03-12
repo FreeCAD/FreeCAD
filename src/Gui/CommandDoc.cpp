@@ -21,50 +21,50 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/nodes/SoCamera.h>
-# include <QApplication>
-# include <QClipboard>
-# include <QDateTime>
-# include <QTextStream>
-# include <QTreeWidgetItem> 
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoCamera.h>
+~ include <QApplication>
+~ include <QClipboard>
+~ include <QDateTime>
+~ include <QTextStream>
+~ include <QTreeWidgetItem> 
+~endif
 
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/replace.hpp>
+~include <boost/regex.hpp>
+~include <boost/algorithm/string/replace.hpp>
 
-#include <App/AutoTransaction.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Expression.h>
-#include <App/GeoFeature.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
+~include <App/AutoTransaction.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Expression.h>
+~include <App/GeoFeature.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
 
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Control.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "Selection.h"
-#include "DlgObjectSelection.h"
-#include "DlgProjectInformationImp.h"
-#include "DlgProjectUtility.h"
-#include "GraphvizView.h"
-#include "ManualAlignment.h"
-#include "MergeDocuments.h"
-#include "NavigationStyle.h"
-#include "Placement.h"
-#include "Transform.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
+~include "Action.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "Control.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "Selection.h"
+~include "DlgObjectSelection.h"
+~include "DlgProjectInformationImp.h"
+~include "DlgProjectUtility.h"
+~include "GraphvizView.h"
+~include "ManualAlignment.h"
+~include "MergeDocuments.h"
+~include "NavigationStyle.h"
+~include "Placement.h"
+~include "Transform.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewProvider.h"
+~include "WaitCursor.h"
 
 FC_LOG_LEVEL_INIT("Command", false)
 
@@ -634,22 +634,22 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
+~if 0
   Gui::Document* pActiveDoc = getActiveGuiDocument();
   if ( pActiveDoc )
     pActiveDoc->save();
   else
-#endif
+~endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Save\")");
 }
 
 bool StdCmdSave::isActive(void)
 {
-#if 0
+~if 0
   if( getActiveGuiDocument() )
     return true;
   else
-#endif
+~endif
     return getGuiApplication()->sendHasMsgToActiveView("Save");
 }
 
@@ -674,22 +674,22 @@ StdCmdSaveAs::StdCmdSaveAs()
 void StdCmdSaveAs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
+~if 0
   Gui::Document* pActiveDoc = getActiveGuiDocument();
   if ( pActiveDoc )
     pActiveDoc->saveAs();
   else
-#endif
+~endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveAs\")");
 }
 
 bool StdCmdSaveAs::isActive(void)
 {
-#if 0
+~if 0
   if( getActiveGuiDocument() )
     return true;
   else
-#endif
+~endif
     return getGuiApplication()->sendHasMsgToActiveView("SaveAs");
 }
 
@@ -712,12 +712,12 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 void StdCmdSaveCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
+~if 0
   Gui::Document* pActiveDoc = getActiveGuiDocument();
   if ( pActiveDoc )
     pActiveDoc->saveCopy();
   else
-#endif
+~endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveCopy\")");
 }
 
@@ -1360,8 +1360,8 @@ void StdCmdDelete::activated(int iMsg)
 
             // The check below is not needed because we now only get selection
             // from the active document
-#if 0
-            //check for inactive objects in selection  Mantis #3477
+~if 0
+            //check for inactive objects in selection  Mantis ~3477
             std::set<QString> inactiveLabels;
             App::Application& app = App::GetApplication();
             App::Document* actDoc = app.getActiveDocument();
@@ -1373,7 +1373,7 @@ void StdCmdDelete::activated(int iMsg)
                     autoDeletion = false;
                 }
             }
-#endif
+~endif
 
             if (!autoDeletion) {
                 QString bodyMessage;
@@ -1385,7 +1385,7 @@ void StdCmdDelete::activated(int iMsg)
                     bodyMessageStream << '\n' << currentLabel;
                 if(more)
                     bodyMessageStream << "\n...";
-#if 0
+~if 0
                 //message for inactive items
                 if (!inactiveLabels.empty()) {
                     if (!affectedLabels.empty()) {
@@ -1397,7 +1397,7 @@ void StdCmdDelete::activated(int iMsg)
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
-#endif
+~endif
 
                 int ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
@@ -1590,7 +1590,7 @@ void StdCmdTransformManip::activated(int iMsg)
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
-    // #0000477: Proper interface for edit modes of view provider
+    // ~0000477: Proper interface for edit modes of view provider
     if (vp)
         getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
 }
@@ -1786,10 +1786,10 @@ protected:
                     auto p = dynamic_cast<App::PropertyExpressionContainer*>(prop);
                     if(!p) continue;
                     for(auto &v : p->getExpressions()) {
-                        ss << "##@@ " << v.first.toString() << ' '
+                        ss << "~~@@ " << v.first.toString() << ' '
                            << obj->getFullName() << '.' << p->getName()
                            << " (" << obj->Label.getValue() << ')' << std::endl;
-                        ss << "##@@";
+                        ss << "~~@@";
                         if(v.second->comment.size()) {
                             if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
@@ -1797,8 +1797,8 @@ protected:
                             {
                                 std::string comment = v.second->comment;
                                 boost::replace_all(comment,"&","&amp;");
-                                boost::replace_all(comment,"\n","&#10;");
-                                boost::replace_all(comment,"\r","&#13;");
+                                boost::replace_all(comment,"\n","&~10;");
+                                boost::replace_all(comment,"\r","&~13;");
                                 ss << '&' << comment;
                             }else
                                 ss << v.second->comment;
@@ -1820,7 +1820,7 @@ protected:
         const char *tstart = txt.c_str();
         const char *tend = tstart + txt.size();
 
-        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n##@@([^\n]*)\n");
+        static boost::regex rule("^~~@@ ([^ ]+) (\\w+)~(\\w+)\\.(\\w+) [^\n]+\n~~@@([^\n]*)\n");
         boost::cmatch m;
         if(!boost::regex_search(tstart,m,rule)) {
             FC_WARN("No expression header found");
@@ -1845,14 +1845,14 @@ protected:
 
             auto obj = doc->getObject(objName.c_str());
             if(!obj) {
-                FC_WARN("Cannot find object '" << docName << '#' << objName << "'");
+                FC_WARN("Cannot find object '" << docName << '~' << objName << "'");
                 continue;
             }
 
             auto prop = dynamic_cast<App::PropertyExpressionContainer*>(
                     obj->getPropertyByName(propName.c_str()));
             if(!prop) {
-                FC_WARN("Invalid property '" << docName << '#' << objName << '.' << propName << "'");
+                FC_WARN("Invalid property '" << docName << '~' << objName << '.' << propName << "'");
                 continue;
             }
 
@@ -1863,8 +1863,8 @@ protected:
                     if(comment[0] == '&') {
                         expr->comment = comment.c_str()+1;
                         boost::replace_all(expr->comment,"&amp;","&");
-                        boost::replace_all(expr->comment,"&#10;","\n");
-                        boost::replace_all(expr->comment,"&#13;","\r");
+                        boost::replace_all(expr->comment,"&~10;","\n");
+                        boost::replace_all(expr->comment,"&~13;","\r");
                     } else
                         expr->comment = comment;
                 }
@@ -1919,7 +1919,7 @@ protected:
         pcActionCopySel->setEnabled(Selection().hasSelection());
 
         pcActionPaste->setEnabled(
-                QApplication::clipboard()->text().startsWith(QLatin1String("##@@ ")));
+                QApplication::clipboard()->text().startsWith(QLatin1String("~~@@ ")));
         return true;
     }
 

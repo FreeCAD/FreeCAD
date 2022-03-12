@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Swap.h"
+~include "Swap.h"
 
 unsigned short Base::SwapOrder ()
 {

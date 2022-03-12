@@ -21,39 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QActionEvent>
-# include <QApplication>
-# include <QEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QScreen>
-# include <QTimer>
-# include <QToolBar>
-# include <QToolButton>
-#endif
+~ifndef _PreComp_
+~ include <QActionEvent>
+~ include <QApplication>
+~ include <QEvent>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QScreen>
+~ include <QTimer>
+~ include <QToolBar>
+~ include <QToolButton>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Document.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <App/Document.h>
 
-#include "Action.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "DlgUndoRedo.h"
-#include "DlgWorkbenchesImp.h"
-#include "Document.h"
-#include "EditorView.h"
-#include "FileDialog.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "PythonEditor.h"
-#include "WhatsThis.h"
-#include "Widgets.h"
-#include "Workbench.h"
+~include "Action.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "DlgUndoRedo.h"
+~include "DlgWorkbenchesImp.h"
+~include "Document.h"
+~include "EditorView.h"
+~include "FileDialog.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "PythonEditor.h"
+~include "WhatsThis.h"
+~include "Widgets.h"
+~include "Workbench.h"
 
 
 using namespace Gui;
@@ -358,7 +358,7 @@ void ActionGroup::onActivated (QAction* a)
 
     // Calling QToolButton::setIcon() etc. has no effect if it has QAction set.
     // We have to change the QAction icon instead
-#if 0
+~if 0
     QList<QWidget*> widgets = a->associatedWidgets();
     for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
         QMenu* menu = qobject_cast<QMenu*>(*it);
@@ -372,7 +372,7 @@ void ActionGroup::onActivated (QAction* a)
             }
         }
     }
-#endif
+~endif
     this->setIcon(a->icon());
     if (!this->_isMode) this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(index));
@@ -739,7 +739,7 @@ void RecentFilesAction::appendFile(const QString& filename)
     setFiles(files);
     save();
 
-    // update the XML structure and save the user parameter to disk (#0001989)
+    // update the XML structure and save the user parameter to disk (~0001989)
     bool saveParameter = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
     if (saveParameter) {
@@ -892,7 +892,7 @@ void RecentMacrosAction::appendFile(const QString& filename)
     setFiles(files);
     save();
 
-    // update the XML structure and save the user parameter to disk (#0001989)
+    // update the XML structure and save the user parameter to disk (~0001989)
     bool saveParameter = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
     if (saveParameter) {
@@ -1244,4 +1244,4 @@ void WindowAction::addTo ( QWidget * w )
     }
 }
 
-#include "moc_Action.cpp"
+~include "moc_Action.cpp"

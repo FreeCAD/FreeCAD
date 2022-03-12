@@ -21,16 +21,16 @@
 //  File   : SMDS_Mesh0DElement.cxx
 //  Module : SMESH
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_Mesh0DElement.hxx"
-#include "SMDS_IteratorOfElements.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_Mesh.hxx"
+~include "SMDS_Mesh0DElement.hxx"
+~include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_Mesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 
@@ -146,7 +146,7 @@ bool SMDS_Mesh0DElement::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbN
   if ( nbNodes == 1 )
   {
     vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
     vtkNew<vtkIdList> cellPoints;
     grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
     if (nbNodes != cellPoints->GetNumberOfIds())
@@ -156,7 +156,7 @@ bool SMDS_Mesh0DElement::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbN
     }
     myNode = nodes[0];
     cellPoints->SetId(0, myNode->getVtkId());
-#else
+~else
     vtkIdType npts = 0;
     vtkIdType* pts = 0;
     grid->GetCellPoints(myVtkID, npts, pts);
@@ -167,7 +167,7 @@ bool SMDS_Mesh0DElement::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbN
     }
     myNode = nodes[0];
     pts[0] = myNode->getVtkId();
-#endif
+~endif
 
     SMDS_Mesh::_meshList[myMeshId]->setMyModified();
     return true;

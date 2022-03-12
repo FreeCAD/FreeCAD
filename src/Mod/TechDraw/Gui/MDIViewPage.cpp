@@ -22,92 +22,92 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <QAction>
-    #include <QTimer>
-    #include <QApplication>
-    #include <QContextMenuEvent>
-    #include <QFileDialog>
-    #include <QGridLayout>
-    #include <QGroupBox>
-    #include <QListWidget>
-    #include <QMenu>
-    #include <QMessageBox>
-    #include <QPaintEngine>
-    #include <QPainter>
-    #include <QPrinter>
-    #include <QPrintDialog>
-    #include <QPrintPreviewDialog>
-    #include <boost_signals2.hpp>
-    #include <boost_bind_bind.hpp>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+    ~include <QAction>
+    ~include <QTimer>
+    ~include <QApplication>
+    ~include <QContextMenuEvent>
+    ~include <QFileDialog>
+    ~include <QGridLayout>
+    ~include <QGroupBox>
+    ~include <QListWidget>
+    ~include <QMenu>
+    ~include <QMessageBox>
+    ~include <QPaintEngine>
+    ~include <QPainter>
+    ~include <QPrinter>
+    ~include <QPrintDialog>
+    ~include <QPrintPreviewDialog>
+    ~include <boost_signals2.hpp>
+    ~include <boost_bind_bind.hpp>
 
-#endif  // #ifndef _PreComp_
+~endif  // ~ifndef _PreComp_
 
-#include <math.h>
+~include <math.h>
 
-#include "MDIViewPage.h"
+~include "MDIViewPage.h"
 
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <Base/gzstream.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <Base/gzstream.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Console.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/FileDialog.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Window.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/FileDialog.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Window.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
 
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawPagePy.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawTemplate.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include <Mod/TechDraw/App/DrawViewImage.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawPagePy.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawTemplate.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewAnnotation.h>
+~include <Mod/TechDraw/App/DrawViewClip.h>
+~include <Mod/TechDraw/App/DrawViewCollection.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+~include <Mod/TechDraw/App/DrawViewSymbol.h>
+~include <Mod/TechDraw/App/DrawViewImage.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/DrawTile.h>
+~include <Mod/TechDraw/App/DrawTileWeld.h>
 
-#include "Rez.h"
-#include "QGIDrawingTemplate.h"
-#include "QGIView.h"
-#include "QGIViewPart.h"
-#include "QGIViewDimension.h"
-#include "QGIViewBalloon.h"
-#include "QGIViewClip.h"
-#include "QGIVertex.h"
-#include "QGIEdge.h"
-#include "QGIFace.h"
-#include "ViewProviderPage.h"
-#include "QGVPage.h"
-#include "QGILeaderLine.h"
-#include "QGIRichAnno.h"
-#include "QGMText.h"
-#include "QGIWeldSymbol.h"
-#include "QGITile.h"
+~include "Rez.h"
+~include "QGIDrawingTemplate.h"
+~include "QGIView.h"
+~include "QGIViewPart.h"
+~include "QGIViewDimension.h"
+~include "QGIViewBalloon.h"
+~include "QGIViewClip.h"
+~include "QGIVertex.h"
+~include "QGIEdge.h"
+~include "QGIFace.h"
+~include "ViewProviderPage.h"
+~include "QGVPage.h"
+~include "QGILeaderLine.h"
+~include "QGIRichAnno.h"
+~include "QGMText.h"
+~include "QGIWeldSymbol.h"
+~include "QGITile.h"
 
 
 using namespace TechDrawGui;
@@ -794,12 +794,12 @@ void MDIViewPage::print(QPrinter* printer)
 
     QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
 
-#ifdef Q_OS_WIN32
+~ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
         targetRect = printer->pageLayout().paintRectPixels(printer->resolution());
-#endif
+~endif
 
     //bool block =
     static_cast<void> (blockSelection(true)); // avoid to be notified by itself
@@ -1356,7 +1356,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
     std::sort(sceneNames.begin(),sceneNames.end());
     sceneCount = sceneNames.size();
 
-    //different # of DrawView* vs QGIV*
+    //different ~ of DrawView* vs QGIV*
     if (sceneCount != treeCount) {
         return false;
     }
@@ -1484,4 +1484,4 @@ Py::Object MDIViewPagePy::cast_to_base(const Py::Tuple&)
     return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
 
-#include <Mod/TechDraw/Gui/moc_MDIViewPage.cpp>
+~include <Mod/TechDraw/Gui/moc_MDIViewPage.cpp>

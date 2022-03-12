@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/WaitCursor.h>
 
-#include <Mod/Assembly/App/Product.h>
+~include <Mod/Assembly/App/Product.h>
 
 
 using namespace std;

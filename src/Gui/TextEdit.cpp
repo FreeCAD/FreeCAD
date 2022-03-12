@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QKeyEvent>
-# include <QPainter>
-# include <QShortcut>
-# include <QTextCursor>
-#endif
+~ifndef _PreComp_
+~ include <QKeyEvent>
+~ include <QPainter>
+~ include <QShortcut>
+~ include <QTextCursor>
+~endif
 
-#include "TextEdit.h"
-#include "SyntaxHighlighter.h"
-#include "Tools.h"
+~include "TextEdit.h"
+~include "SyntaxHighlighter.h"
+~include "Tools.h"
 
 
 using namespace Gui;
@@ -440,11 +440,11 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
     Q_UNUSED(rCaller);
     ParameterGrp::handle hPrefGrp = getWindowParameter();
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
-#ifdef FC_OS_LINUX
+~ifdef FC_OS_LINUX
         int fontSize = hPrefGrp->GetInt("FontSize", 15);
-#else
+~else
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
-#endif
+~endif
         QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
 
         QFont font(fontFamily, fontSize);
@@ -469,11 +469,11 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         int tabWidth = hPrefGrp->GetInt("TabSize", 4);
         QFontMetrics metric(font());
         int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(tabWidth * fontSize);
-#else
+~else
         setTabStopDistance(tabWidth * fontSize);
-#endif
+~endif
     }
 
     // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
@@ -608,4 +608,4 @@ void CompletionList::completionItem(QListWidgetItem *item)
     textEdit->ensureCursorVisible();
 }
 
-#include "moc_TextEdit.cpp"
+~include "moc_TextEdit.cpp"

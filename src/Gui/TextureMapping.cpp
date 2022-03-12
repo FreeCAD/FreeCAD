@@ -20,26 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoTexture2.h>
-# include <QImage>
-# include <QImageReader>
-# include <QKeyEvent>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoGroup.h>
+~ include <Inventor/nodes/SoTexture2.h>
+~ include <QImage>
+~ include <QImageReader>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~endif
 
-#include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
+~include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 
-#include "TextureMapping.h"
-#include "ui_TextureMapping.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
+~include "TextureMapping.h"
+~include "ui_TextureMapping.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Document.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui::Dialog;
@@ -200,4 +200,4 @@ bool TaskTextureMapping::reject()
     return (dialog->result() == QDialog::Rejected);
 }
 
-#include "moc_TextureMapping.cpp"
+~include "moc_TextureMapping.cpp"

@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DrawHatch.h"
+~include "DrawHatch.h"
 
 // inclusion of the generated files (generated out of DrawHatchPy.xml)
-#include <Mod/TechDraw/App/DrawHatchPy.h>
-#include <Mod/TechDraw/App/DrawHatchPy.cpp>
+~include <Mod/TechDraw/App/DrawHatchPy.h>
+~include <Mod/TechDraw/App/DrawHatchPy.cpp>
 
 using namespace TechDraw;
 

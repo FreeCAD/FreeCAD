@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cstdlib>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cstdlib>
+~endif
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
-#include "ColorModel.h"
+~include "ColorModel.h"
 
 
 using namespace App;

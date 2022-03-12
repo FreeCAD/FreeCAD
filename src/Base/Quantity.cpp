@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# define _USE_MATH_DEFINES
-# endif // FC_OS_WIN32
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ define _USE_MATH_DEFINES
+~ endif // FC_OS_WIN32
+~endif
 
-#include "Quantity.h"
-#include "Exception.h"
-#include "UnitsApi.h"
-#include <boost/math/special_functions/fpclassify.hpp>
+~include "Quantity.h"
+~include "Exception.h"
+~include "UnitsApi.h"
+~include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -38,13 +38,13 @@
 */
 
 // suppress annoying warnings from generated source files
-#ifdef _MSC_VER
-# pragma warning(disable : 4003)
-# pragma warning(disable : 4018)
-# pragma warning(disable : 4065)
-# pragma warning( disable : 4273 )
-# pragma warning(disable : 4335) // disable MAC file format warning on VC
-#endif
+~ifdef _MSC_VER
+~ pragma warning(disable : 4003)
+~ pragma warning(disable : 4018)
+~ pragma warning(disable : 4065)
+~ pragma warning( disable : 4273 )
+~ pragma warning(disable : 4335) // disable MAC file format warning on VC
+~endif
 
 using namespace Base;
 
@@ -438,10 +438,10 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmissing-noreturn"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmissing-noreturn"
+~endif
 
 // error func
 void Quantity_yyerror(char *errorinfo)
@@ -449,44 +449,44 @@ void Quantity_yyerror(char *errorinfo)
     throw Base::ParserError(errorinfo);
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 
 // for VC9 (isatty and fileno not supported anymore)
-//#ifdef _MSC_VER
+//~ifdef _MSC_VER
 //int isatty (int i) {return _isatty(i);}
 //int fileno(FILE *stream) {return _fileno(stream);}
-//#endif
+//~endif
 
 namespace QuantityParser {
 
-#define YYINITDEPTH 20
+~define YYINITDEPTH 20
 // show parser the lexer method
-#define yylex QuantityLexer
+~define yylex QuantityLexer
 int QuantityLexer();
 
 // Parser, defined in QuantityParser.y
-#include "QuantityParser.c"
+~include "QuantityParser.c"
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+~ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in QuantityParser.l
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
-#include "QuantityLexer.c"
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wsign-compare"
+~ pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic push
+~ pragma GCC diagnostic ignored "-Wsign-compare"
+~endif
+~include "QuantityLexer.c"
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic pop
+~endif
+~endif // DOXYGEN_SHOULD_SKIP_THIS
 }
 
 Quantity Quantity::parse(const QString &string)

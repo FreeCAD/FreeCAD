@@ -25,4 +25,4 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_MeshObject.hxx"
+~include "SMDS_MeshObject.hxx"

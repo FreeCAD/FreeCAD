@@ -20,30 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QPainter>
+~include <QPainterPath>
+~include <QPainterPathStroker>
+~include <QStyleOptionGraphicsItem>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-//#include <Mod/TechDraw/App/Preferences.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
+//~include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "PreferencesGui.h"
-#include "QGIView.h"
-#include "QGISectionLine.h"
+~include <qmath.h>
+~include "Rez.h"
+~include "PreferencesGui.h"
+~include "QGIView.h"
+~include "QGISectionLine.h"
 
-#define ANSISTANDARD 0
-#define ISOSTANDARD 1
+~define ANSISTANDARD 0
+~define ISOSTANDARD 1
 
 using namespace TechDrawGui;
 using namespace TechDraw;

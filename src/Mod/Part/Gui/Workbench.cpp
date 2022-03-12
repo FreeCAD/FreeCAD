@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Workbench.h"
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+~include "Workbench.h"
+~include <Gui/MenuManager.h>
+~include <Gui/ToolBarManager.h>
 
 using namespace PartGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "&Part");
     qApp->translate("Workbench", "&Simple");
     qApp->translate("Workbench", "&Parametric");
@@ -40,7 +40,7 @@ using namespace PartGui;
     qApp->translate("Workbench", "Join");
     qApp->translate("Workbench", "Split");
     qApp->translate("Workbench", "Compound");
-#endif
+~endif
 
 /// @namespace PartGui @class Workbench
 TYPESYSTEM_SOURCE(PartGui::Workbench, Gui::StdWorkbench)
@@ -196,7 +196,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_CompOffset"
           << "Part_Thickness"
           << "Part_ProjectionOnSurface"
-          << "Part_ColorPerFace";  // See issues #0477 and #1954 in the tracker
+          << "Part_ColorPerFace";  // See issues ~0477 and ~1954 in the tracker
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");

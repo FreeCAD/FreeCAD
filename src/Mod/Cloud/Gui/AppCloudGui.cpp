@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
 
-#include "Workbench.h"
+~include "Workbench.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
 // use a different name to CreateCommand()
 void CreateCloudCommands(void);

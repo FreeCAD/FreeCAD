@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
+~ifndef _PreComp_
 
-#endif  // #ifndef _PreComp_
+~endif  // ~ifndef _PreComp_
 
-#include <assert.h>
+~include <assert.h>
 
-#include <Base/Vector3D.h>
-#include <Base/Exception.h>
+~include <Base/Vector3D.h>
+~include <Base/Exception.h>
 
-#include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
 
-#include <Mod/Sketcher/App/Constraint.h>
+~include <Mod/Sketcher/App/Constraint.h>
 
-#include "GeoList.h"
+~include "GeoList.h"
 
 using namespace Sketcher;
 
@@ -352,9 +352,9 @@ GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 
 // instantiate the types so that other translation units can access template constructors
 template class SketcherExport GeoListModel<Part::Geometry *>;
-#if !defined(__MINGW32__)
+~if !defined(__MINGW32__)
 template class SketcherExport GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
-#else
+~else
 // Remark: It looks like when implementing a method of GeoListModel for GeometryFacadeUniquePtr then under MinGW
 // the explicit template instantiation doesn't do anything. As workaround all other methods must be declared separately
 template SketcherExport const Part::Geometry* GeoListModel<GeometryFacadeUniquePtr>::getGeometryFromGeoId(int geoId) const;
@@ -364,7 +364,7 @@ template SketcherExport int GeoListModel<GeometryFacadeUniquePtr>::getVertexIdFr
 template SketcherExport GeoElementId GeoListModel<GeometryFacadeUniquePtr>::getGeoElementIdFromVertexId(int);
 template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(int geoId, Sketcher::PointPos pos) const;
 template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(const GeoElementId &) const;
-#endif
+~endif
 
 
 } // namespace Sketcher

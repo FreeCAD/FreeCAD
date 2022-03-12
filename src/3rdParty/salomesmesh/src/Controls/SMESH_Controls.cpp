@@ -20,61 +20,61 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
-# pragma clang diagnostic ignored "-Winconsistent-missing-override"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+~ pragma clang diagnostic ignored "-Winconsistent-missing-override"
+~endif
 
-#include "SMESH_ControlsDef.hxx"
+~include "SMESH_ControlsDef.hxx"
 
-#include "SMDS_BallElement.hxx"
-#include "SMDS_Iterator.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_QuadraticEdge.hxx"
-#include "SMDS_QuadraticFaceOfNodes.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESHDS_GroupBase.hxx"
-#include "SMESHDS_GroupOnFilter.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_OctreeNode.hxx"
+~include "SMDS_BallElement.hxx"
+~include "SMDS_Iterator.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_QuadraticEdge.hxx"
+~include "SMDS_QuadraticFaceOfNodes.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESHDS_GroupBase.hxx"
+~include "SMESHDS_GroupOnFilter.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_OctreeNode.hxx"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepClass_FaceClassifier.hxx>
-#include <BRep_Tool.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_Plane.hxx>
-#include <Geom_Surface.hxx>
-#include <Precision.hxx>
-#include <TColStd_MapIteratorOfMapOfInteger.hxx>
-#include <TColStd_MapOfInteger.hxx>
-#include <TColStd_SequenceOfAsciiString.hxx>
-#include <TColgp_Array1OfXYZ.hxx>
-#include <TopAbs.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Cylinder.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <gp_XYZ.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepClass_FaceClassifier.hxx>
+~include <BRep_Tool.hxx>
+~include <Geom_CylindricalSurface.hxx>
+~include <Geom_Plane.hxx>
+~include <Geom_Surface.hxx>
+~include <Precision.hxx>
+~include <TColStd_MapIteratorOfMapOfInteger.hxx>
+~include <TColStd_MapOfInteger.hxx>
+~include <TColStd_SequenceOfAsciiString.hxx>
+~include <TColgp_Array1OfXYZ.hxx>
+~include <TopAbs.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Cylinder.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Vec.hxx>
+~include <gp_XYZ.hxx>
 
-#include <vtkMeshQuality.h>
+~include <vtkMeshQuality.h>
 
-#include <set>
-#include <limits>
+~include <set>
+~include <limits>
 
 /*
                             AUXILIARY METHODS
@@ -1723,7 +1723,7 @@ double Length2D::GetValue( long theElementId )
           aVal = Min( aVal, getDistance( P( i ), P( i+1 )));
       }
       break;
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
     case SMDSEntity_Quad_Polygon:
       if ( len > 2 ) {
         aVal = getDistance( P(1), P( P.size() )) + getDistance( P(P.size()), P( P.size()-1 ));
@@ -1731,7 +1731,7 @@ double Length2D::GetValue( long theElementId )
           aVal = Min( aVal, getDistance( P( i ), P( i+1 )) + getDistance( P( i+1 ), P( i+2 )));
       }
       break;
-#endif
+~endif
     case SMDSEntity_Hexagonal_Prism:
       if (len == 12) { // hexagonal prism
         double L1 = getDistance(P( 1 ),P( 2 ));
@@ -3470,9 +3470,9 @@ bool LogicalOR::IsSatisfy( long theId )
                               FILTER
 */
 
-// #ifdef WITH_TBB
-// #include <tbb/parallel_for.h>
-// #include <tbb/enumerable_thread_specific.h>
+// ~ifdef WITH_TBB
+// ~include <tbb/parallel_for.h>
+// ~include <tbb/enumerable_thread_specific.h>
 
 // namespace Parallel
 // {
@@ -3493,7 +3493,7 @@ bool LogicalOR::IsSatisfy( long theId )
 //     }
 //   }
 // }
-// #endif
+// ~endif
 
 Filter::Filter()
 {}
@@ -4772,6 +4772,6 @@ bool TMeshModifTracer::IsMeshModified()
   return modified;
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif

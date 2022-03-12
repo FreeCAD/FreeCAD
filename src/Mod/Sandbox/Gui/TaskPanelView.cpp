@@ -21,44 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
-#include <boost/bind/bind.hpp>
-#include <QVariant>
-#include <QAction>
-#include <QApplication>
-#include <QButtonGroup>
-#include <QFrame>
-#include <QGridLayout>
-#include <QHeaderView>
-#include <QLabel>
-#include <QSpacerItem>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <QTabWidget>
+~include <boost/bind/bind.hpp>
+~include <QVariant>
+~include <QAction>
+~include <QApplication>
+~include <QButtonGroup>
+~include <QFrame>
+~include <QGridLayout>
+~include <QHeaderView>
+~include <QLabel>
+~include <QSpacerItem>
+~include <QVBoxLayout>
+~include <QWidget>
+~include <QTabWidget>
 
-#include <QButtonGroup>
-#include <QPushButton>
-#include <QCheckBox>
-#include <QRadioButton>
-#include <QMessageBox>
+~include <QButtonGroup>
+~include <QPushButton>
+~include <QCheckBox>
+~include <QRadioButton>
+~include <QMessageBox>
 
-#include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/BitmapFactory.h>
+~include <Gui/ActionFunction.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/BitmapFactory.h>
 
-#include "TaskPanelView.h"
+~include "TaskPanelView.h"
 
 
 using namespace SandboxGui;
 namespace bp = boost::placeholders;
 
 
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
 class Ui_TaskGroup
 {
 public:
@@ -357,16 +357,16 @@ public:
         label_2->setText(QApplication::translate("TestTaskBox", "ActionLabels"));
         ActionLabel1->setText(QApplication::translate("TestTaskBox", "Simple clickable action"));
         ActionLabel2->setText(QApplication::translate("TestTaskBox", "Simple clickable action with icon"));
-#ifndef QT_NO_TOOLTIP
+~ifndef QT_NO_TOOLTIP
         ActionLabel3->setToolTip(QApplication::translate("TestTaskBox", "Tooltip of the ActionLabel"));
-#endif // QT_NO_TOOLTIP
+~endif // QT_NO_TOOLTIP
         ActionLabel3->setText(QApplication::translate("TestTaskBox", "Simple clickable action with icon and tooltip"));
         Q_UNUSED(MainWindow);
     } // retranslateUi
 };
-#else
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
-#endif
+~else
+~include <Gui/iisTaskPanel/include/iisTaskPanel>
+~endif
 
 TaskPanelView::TaskPanelView(QWidget *parent)
   : QWidget(parent)
@@ -375,7 +375,7 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     QAction* action = new QAction(this);
     func->trigger(action, boost::bind(&TaskPanelView::executeAction, this));
 
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
 
     QGridLayout* customLayout = new QGridLayout(this);
     QTabWidget* tabWidget = new QTabWidget(this);
@@ -448,46 +448,46 @@ TaskPanelView::TaskPanelView(QWidget *parent)
 
     const char* ActionBoxNewStyle =
         "QSint--ActionBox {"
-            "background-color: #333333;"
-            "border: 1px solid #000000;"
+            "background-color: ~333333;"
+            "border: 1px solid ~000000;"
             "text-align: left;"
         "}"
 
         "QSint--ActionBox:hover {"
-            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #666666, stop: 1 #333333);"
-            "border: 1px solid #222222;"
+            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ~666666, stop: 1 ~333333);"
+            "border: 1px solid ~222222;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='header'] {"
             "text-align: center;"
             "font: 14px bold;"
-            "color: #999999;"
+            "color: ~999999;"
             "background-color: transparent;"
             "border: 1px solid transparent;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='header']:hover {"
-            "color: #aaaaaa;"
+            "color: ~aaaaaa;"
             "text-decoration: underline;"
-            "border: 1px dotted #aaaaaa;"
+            "border: 1px dotted ~aaaaaa;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='action'] {"
             "background-color: transparent;"
             "border: none;"
-            "color: #777777;"
+            "color: ~777777;"
             "text-align: left;"
             "font: 11px;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='action']:hover {"
-            "color: #888888;"
+            "color: ~888888;"
             "text-decoration: underline;"
         "}"
 
         "QSint--ActionBox QSint--ActionLabel[class='action']:on {"
-            "background-color: #ddeeff;"
-            "color: #006600;"
+            "background-color: ~ddeeff;"
+            "color: ~006600;"
         "}"
     ;
 
@@ -580,7 +580,7 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     connect(ui->rbAndroidScheme, SIGNAL(toggled(bool)), androidAction, SIGNAL(toggled(bool)));
     func->toggle(androidAction, boost::bind(&TaskPanelView::on_rbAndroidScheme_toggled, this, bp::_1));
     }
-#else
+~else
     setWindowTitle(QLatin1String("Task View"));
 
     QGridLayout* gridLayout = new QGridLayout(this);
@@ -670,7 +670,7 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     tb1->setScheme(iisWinXPTaskPanelScheme::defaultScheme());
     tb2->setScheme(iisWinXPTaskPanelScheme2::defaultScheme());
     tb3->setScheme(iisTaskPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 TaskPanelView::~TaskPanelView()
@@ -684,50 +684,50 @@ void TaskPanelView::executeAction()
 
 void TaskPanelView::on_rbDefaultScheme_toggled(bool b)
 {
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
     if (b)
         static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::ActionPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 void TaskPanelView::on_rbXPBlueScheme_toggled(bool b)
 {
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
     if (b)
         static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::WinXPPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 void TaskPanelView::on_rbXPBlue2Scheme_toggled(bool b)
 {
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
     if (b)
         static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::WinXPPanelScheme2::defaultScheme());
-#endif
+~endif
 }
 
 void TaskPanelView::on_rbVistaScheme_toggled(bool b)
 {
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
     if (b)
         static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::WinVistaPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 void TaskPanelView::on_rbMacScheme_toggled(bool b)
 {
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
     if (b)
         static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::MacPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
 void TaskPanelView::on_rbAndroidScheme_toggled(bool b)
 {
-#if defined(QSINT_ACTIONPANEL)
+~if defined(QSINT_ACTIONPANEL)
     if (b)
         static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::AndroidPanelScheme::defaultScheme());
-#endif
+~endif
 }
 
-//#include "moc_TaskPanelView.cpp"
+//~include "moc_TaskPanelView.cpp"

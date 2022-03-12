@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QUuid>
-#endif
+~ifndef _PreComp_
+~ include <QUuid>
+~endif
 
-#include <stdexcept>
+~include <stdexcept>
 
-#include "Uuid.h"
+~include "Uuid.h"
 
 
 using namespace Base;

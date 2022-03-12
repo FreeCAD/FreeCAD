@@ -20,18 +20,18 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <TopoDS_Compound.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <TopoDS_Compound.hxx>
+~endif
 
-#include "FeatureArea.h"
-#include "FeatureAreaPy.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "FeatureArea.h"
+~include "FeatureAreaPy.h"
+~include <App/DocumentObjectPy.h>
+~include <Base/Placement.h>
+~include <Mod/Part/App/PartFeature.h>
 
 FC_LOG_LEVEL_INIT("Path.Area",true,true)
 
@@ -89,7 +89,7 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
 
     AreaParams params;
 
-#define AREA_PROP_GET(_param) \
+~define AREA_PROP_GET(_param) \
     params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
     PARAM_FOREACH(AREA_PROP_GET,AREA_PARAMS_CONF)
 

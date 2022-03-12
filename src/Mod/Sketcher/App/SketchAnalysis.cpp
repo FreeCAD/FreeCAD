@@ -22,33 +22,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <algorithm>
-# include <cmath>
-#endif
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <BRep_Tool.hxx>
+~ include <gp_Pnt.hxx>
+~ include <Precision.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <algorithm>
+~ include <cmath>
+~endif
 
-#include <Base/Console.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <App/Document.h>
 
-#include <Mod/Sketcher/App/Constraint.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/Constraint.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/App/GeometryFacade.h>
+~include <Mod/Part/App/Geometry.h>
 
-#include "SketchAnalysis.h"
+~include "SketchAnalysis.h"
 
 using namespace Sketcher;
 

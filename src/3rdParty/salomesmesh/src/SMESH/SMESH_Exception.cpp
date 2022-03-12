@@ -19,21 +19,21 @@
 // 
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 
-#include <iostream>
-#include "SMESH_Exception.hxx"
-#include "SMESH_ExceptHandlers.hxx"
-#include "utilities.h"
+~include <iostream>
+~include "SMESH_Exception.hxx"
+~include "SMESH_ExceptHandlers.hxx"
+~include "utilities.h"
 
-#ifndef WNT
+~ifndef WNT
 extern "C"
 {
-#endif
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#ifndef WNT
+~endif
+~include <math.h>
+~include <stdio.h>
+~include <string.h>
+~ifndef WNT
 }
-#endif
+~endif
 
 
 const char* duplicate( const char *const str )

@@ -21,44 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoNormal.h>
-# include <Inventor/errors/SoDebugError.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-#endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoPointSet.h>
+~ include <Inventor/nodes/SoIndexedPointSet.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoMaterialBinding.h>
+~ include <Inventor/nodes/SoNormal.h>
+~ include <Inventor/errors/SoDebugError.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~endif
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <limits>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <limits>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui,...
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/Window.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <Base/Tools2D.h>
+~include <Base/Vector3D.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/SoFCSelection.h>
+~include <Gui/Window.h>
 
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Points/App/PointsFeature.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Points/App/PointsFeature.h>
 
-#include "ViewProvider.h"
-#include "../App/Properties.h"
+~include "ViewProvider.h"
+~include "../App/Properties.h"
 
 
 using namespace PointsGui;
@@ -179,10 +179,10 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
             if (type == App::PropertyColorList::getClassTypeId()) {
                 App::PropertyColorList* colors = static_cast<App::PropertyColorList*>(it->second);
                 if (numPoints != colors->getSize()) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, colors->getSize());
-#endif
+~endif
                     // fallback
                     setDisplayMaskMode("Point");
                 }
@@ -202,10 +202,10 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
             if (type == Points::PropertyGreyValueList::getClassTypeId()) {
                 Points::PropertyGreyValueList* greyValues = static_cast<Points::PropertyGreyValueList*>(it->second);
                 if (numPoints != greyValues->getSize()) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of grey values (%d).", numPoints, greyValues->getSize());
-#endif
+~endif
                     // Intensity mode is not possible then set the default () mode instead.
                     setDisplayMaskMode("Point");
                 }
@@ -225,10 +225,10 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
             if (type == Points::PropertyNormalList::getClassTypeId()) {
                 Points::PropertyNormalList* normals = static_cast<Points::PropertyNormalList*>(it->second);
                 if (numPoints != normals->getSize()) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of normals (%d).", numPoints, normals->getSize());
-#endif
+~endif
                     // fallback
                     setDisplayMaskMode("Point");
                 }
@@ -256,12 +256,12 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes() const
     // doesn't support it.
     // For the future a more flexible way is needed to add new display modes
     // at a later time
-#if 1
+~if 1
     StrList.push_back("Color");
     StrList.push_back("Shaded");
     StrList.push_back("Intensity");
 
-#else
+~else
     if (pcObject) {
         std::map<std::string,App::Property*> Map;
         pcObject->getPropertyMap(Map);
@@ -276,7 +276,7 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes() const
                 StrList.push_back("Color");
         }
     }
-#endif
+~endif
 
     return StrList;
 }
@@ -286,9 +286,9 @@ QIcon ViewProviderPoints::getIcon() const
     static const char * const Points_Feature_xpm[] = {
         "16 16 4 1",
         ".	c none",
-        "s	c #000000",
-        "b	c #FFFF00",
-        "r	c #FF0000",
+        "s	c ~000000",
+        "b	c ~FFFF00",
+        "r	c ~FF0000",
         "ss.....ss.....bb",
         "ss..ss.ss.....bb",
         "....ss..........",

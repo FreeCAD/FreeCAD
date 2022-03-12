@@ -20,32 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <QAction>
-#include <QMenu>
-#include <QMessageBox>
-#include <QTimer>
-#include <GeomAbs_Shape.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+~include "PreCompiled.h"
+~include <QAction>
+~include <QMenu>
+~include <QMessageBox>
+~include <QTimer>
+~include <GeomAbs_Shape.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
 
-#include <Base/Console.h>
-#include <App/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Control.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
+~include <Base/Console.h>
+~include <App/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Command.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/Control.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/Part/Gui/ViewProvider.h>
 
-#include "TaskFilling.h"
-#include "TaskFillingEdge.h"
-#include "TaskFillingVertex.h"
-#include "ui_TaskFilling.h"
+~include "TaskFilling.h"
+~include "TaskFillingEdge.h"
+~include "TaskFillingVertex.h"
+~include "ui_TaskFilling.h"
 
 
 using namespace SurfaceGui;
@@ -932,4 +932,4 @@ bool TaskFilling::reject()
 
 }
 
-#include "moc_TaskFilling.cpp"
+~include "moc_TaskFilling.cpp"

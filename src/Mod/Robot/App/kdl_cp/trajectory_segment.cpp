@@ -40,7 +40,7 @@
  ****************************************************************************/
 
 
-#include "trajectory_segment.hpp"
+~include "trajectory_segment.hpp"
 
 
 namespace KDL {

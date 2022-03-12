@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <QWhatsThis>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMessageBox>
+~ include <QWhatsThis>
+~endif
 
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
+~include <App/Document.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Sequencer.h>
 
-#include "Action.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "DlgCustomizeImp.h"
-#include "DlgParameterImp.h"
-#include "DlgPreferencesImp.h"
-#include "DlgUnitsCalculatorImp.h"
-#include "GuiConsole.h"
-#include "MainWindow.h"
-#include "OnlineDocumentation.h"
-#include "Selection.h"
-#include "Splashscreen.h"
-#include "WhatsThis.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
+~include "Action.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "DlgCustomizeImp.h"
+~include "DlgParameterImp.h"
+~include "DlgPreferencesImp.h"
+~include "DlgUnitsCalculatorImp.h"
+~include "GuiConsole.h"
+~include "MainWindow.h"
+~include "OnlineDocumentation.h"
+~include "Selection.h"
+~include "Splashscreen.h"
+~include "WhatsThis.h"
+~include "Workbench.h"
+~include "WorkbenchManager.h"
 
 
 using Base::Console;
@@ -432,13 +432,13 @@ void StdCmdCommandLine::activated(int iMsg)
           Base::Interpreter().runCommandLine("Console mode");
     }
 
-#ifdef Q_WS_X11
+~ifdef Q_WS_X11
     // On X11 this may not work. For further information see QWidget::showMaximized
     //
     // workaround for X11
     getMainWindow()->hide();
     getMainWindow()->show();
-#endif
+~endif
 
     // pop up the main window
     show ? getMainWindow()->showMaximized () : getMainWindow()->showNormal () ;

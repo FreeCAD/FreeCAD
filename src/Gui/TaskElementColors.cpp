@@ -20,30 +20,30 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <QColorDialog>
+~include <QColorDialog>
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/ComplexGeoData.h>
-#include <App/Document.h>
+~include <App/ComplexGeoData.h>
+~include <App/Document.h>
 
-#include "TaskElementColors.h"
-#include "ui_TaskElementColors.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Control.h"
-#include "Document.h"
-#include "FileDialog.h"
-#include "Selection.h"
-#include "SelectionObject.h"
-#include "ViewProviderLink.h"
+~include "TaskElementColors.h"
+~include "ui_TaskElementColors.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "Control.h"
+~include "Document.h"
+~include "FileDialog.h"
+~include "Selection.h"
+~include "SelectionObject.h"
+~include "ViewProviderLink.h"
 
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
@@ -537,4 +537,4 @@ bool TaskElementColors::reject()
     return widget->reject();
 }
 
-#include "moc_TaskElementColors.cpp"
+~include "moc_TaskElementColors.cpp"

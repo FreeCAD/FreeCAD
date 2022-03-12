@@ -1,11 +1,11 @@
-#define KDTREE_DEFINE_OSTREAM_OPERATORS
+~define KDTREE_DEFINE_OSTREAM_OPERATORS
 
-#include <kdtree++/kdtree.hpp>
+~include <kdtree++/kdtree.hpp>
 
-#include <iostream>
-#include <vector>
+~include <iostream>
+~include <vector>
 
-#include "py-kdtree.hpp"
+~include "py-kdtree.hpp"
 
 int main()
 {

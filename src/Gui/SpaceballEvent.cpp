@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "SpaceballEvent.h"
+~include "SpaceballEvent.h"
 
 
 using namespace Spaceball;

@@ -24,51 +24,51 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 
-#include "StdMeshers_Quadrangle_2D.hxx"
+~include "StdMeshers_Quadrangle_2D.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMESH_Block.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_QuadrangleParams.hxx"
-#include "StdMeshers_ViscousLayers2D.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMESH_Block.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_QuadrangleParams.hxx"
+~include "StdMeshers_ViscousLayers2D.hxx"
 
-#include <BRepBndLib.hxx>
-#include <BRepClass_FaceClassifier.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_Box.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_Surface.hxx>
-#include <NCollection_DefineArray2.hxx>
-#include <Precision.hxx>
-#include <Standard_Real.hxx>
-#include <TColStd_SequenceOfInteger.hxx>
-#include <TColStd_SequenceOfReal.hxx>
-#include <TColgp_SequenceOfXY.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapOfShapeReal.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepClass_FaceClassifier.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_Box.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <Geom_Surface.hxx>
+~include <NCollection_DefineArray2.hxx>
+~include <Precision.hxx>
+~include <Standard_Real.hxx>
+~include <TColStd_SequenceOfInteger.hxx>
+~include <TColStd_SequenceOfReal.hxx>
+~include <TColgp_SequenceOfXY.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_DataMapOfShapeReal.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
 
-#include "utilities.h"
-#include "Utils_ExceptHandlers.hxx"
+~include "utilities.h"
+~include "Utils_ExceptHandlers.hxx"
 
-#ifndef StdMeshers_Array2OfNode_HeaderFile
-#define StdMeshers_Array2OfNode_HeaderFile
+~ifndef StdMeshers_Array2OfNode_HeaderFile
+~define StdMeshers_Array2OfNode_HeaderFile
 typedef const SMDS_MeshNode* SMDS_MeshNodePtr;
 typedef NCollection_Array2<SMDS_MeshNodePtr> StdMeshers_Array2OfNode;
-#endif
+~endif
 
 using namespace std;
 
@@ -4925,7 +4925,7 @@ bool StdMeshers_Quadrangle_2D::addEnforcedNodes()
     if ( !isNodeEnforced )
     {
       if ( !myForcedPnts[ iFP ].vertex.IsNull() )
-        return error(TComm("Unable to move any node to vertex #")
+        return error(TComm("Unable to move any node to vertex ~")
                      <<myHelper->GetMeshDS()->ShapeToIndex( myForcedPnts[ iFP ].vertex ));
       else
         return error(TComm("Unable to move any node to point ( ")

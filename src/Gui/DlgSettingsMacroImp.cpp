@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "DlgSettingsMacroImp.h"
-#include "ui_DlgSettingsMacro.h"
-#include "Action.h"
-#include "Application.h"
-#include "MainWindow.h"
+~include "PreCompiled.h"
+~include "DlgSettingsMacroImp.h"
+~include "ui_DlgSettingsMacro.h"
+~include "Action.h"
+~include "Application.h"
+~include "MainWindow.h"
 
 using namespace Gui::Dialog;
 
@@ -116,4 +116,4 @@ void DlgSettingsMacroImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsMacroImp.cpp"
+~include "moc_DlgSettingsMacroImp.cpp"

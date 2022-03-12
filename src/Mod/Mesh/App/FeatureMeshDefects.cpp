@@ -22,16 +22,16 @@
 
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "FeatureMeshDefects.h"
-#include "Core/Degeneration.h"
-#include "Core/TopoAlgorithm.h"
-#include "Core/Triangulation.h"
-#include <Base/Tools.h>
+~include "FeatureMeshDefects.h"
+~include "Core/Degeneration.h"
+~include "Core/TopoAlgorithm.h"
+~include "Core/Triangulation.h"
+~include <Base/Tools.h>
 
 using namespace Mesh;
 

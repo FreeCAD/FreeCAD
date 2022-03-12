@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cstring>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-#endif
+~ifndef _PreComp_
+~ include <cstring>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Stream.h>
+~include <Base/Exception.h>
+~include <Base/Stream.h>
 
-#include "ViewProviderExtern.h"
-#include "SoFCSelection.h"
+~include "ViewProviderExtern.h"
+~include "SoFCSelection.h"
 
 
 using std::vector;

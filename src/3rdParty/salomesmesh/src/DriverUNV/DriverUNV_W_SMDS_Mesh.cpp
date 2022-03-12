@@ -20,26 +20,26 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include <algorithm>
+~include <algorithm>
 
-#include "DriverUNV_W_SMDS_Mesh.h"
+~include "DriverUNV_W_SMDS_Mesh.h"
 
-#include "SMDS_Mesh.hxx"
-#include "SMDS_QuadraticEdge.hxx"
-#include "SMDS_QuadraticFaceOfNodes.hxx"
-#include "SMDS_PolyhedralVolumeOfNodes.hxx"
-#include "SMESHDS_GroupBase.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_QuadraticEdge.hxx"
+~include "SMDS_QuadraticFaceOfNodes.hxx"
+~include "SMDS_PolyhedralVolumeOfNodes.hxx"
+~include "SMESHDS_GroupBase.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include "UNV164_Structure.hxx"
-#include "UNV2411_Structure.hxx"
-#include "UNV2412_Structure.hxx"
-#include "UNV2417_Structure.hxx"
-#include "UNV2420_Structure.hxx"
-#include "UNV_Utilities.hxx"
+~include "UNV164_Structure.hxx"
+~include "UNV2411_Structure.hxx"
+~include "UNV2412_Structure.hxx"
+~include "UNV2417_Structure.hxx"
+~include "UNV2420_Structure.hxx"
+~include "UNV_Utilities.hxx"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
 using namespace std;
 using namespace UNV;

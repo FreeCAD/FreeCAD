@@ -20,52 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cmath>
-#endif // #ifndef _PreComp_
+~ifndef _PreComp_
+~include <cmath>
+~endif // ~ifndef _PreComp_
 
-#include <QApplication>
-#include <QStatusBar>
-#include <QGraphicsScene>
-#include <QMessageBox>
+~include <QApplication>
+~include <QStatusBar>
+~include <QGraphicsScene>
+~include <QMessageBox>
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawViewSection.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "DrawGuiStd.h"
-#include "Rez.h"
-#include "MDIViewPage.h"
-#include "QGVPage.h"
-#include "QGIView.h"
+~include "DrawGuiStd.h"
+~include "Rez.h"
+~include "MDIViewPage.h"
+~include "QGVPage.h"
+~include "QGIView.h"
 
-//#include "ViewProviderPage.h"
-//#include "ViewProviderViewPart.h"
+//~include "ViewProviderPage.h"
+//~include "ViewProviderViewPart.h"
 
-#include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
+~include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
 
-#include "TaskSectionView.h"
+~include "TaskSectionView.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -641,4 +641,4 @@ bool TaskDlgSectionView::reject()
     return true;
 }
 
-#include <Mod/TechDraw/Gui/moc_TaskSectionView.cpp>
+~include <Mod/TechDraw/Gui/moc_TaskSectionView.cpp>

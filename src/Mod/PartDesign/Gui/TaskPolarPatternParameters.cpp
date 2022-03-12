@@ -21,39 +21,39 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QAction>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QAction>
+~ include <QTimer>
+~endif
 
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/OriginFeature.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/FeaturePolarPattern.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/Body.h>
+~include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <App/OriginFeature.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Gui/ViewProviderOrigin.h>
+~include <Mod/PartDesign/App/FeaturePolarPattern.h>
+~include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/PartDesign/App/DatumLine.h>
+~include <Mod/PartDesign/App/Body.h>
 
-#include "ReferenceSelection.h"
-#include "TaskMultiTransformParameters.h"
-#include "Utils.h"
+~include "ReferenceSelection.h"
+~include "TaskMultiTransformParameters.h"
+~include "Utils.h"
 
-#include "ui_TaskPolarPatternParameters.h"
-#include "TaskPolarPatternParameters.h"
+~include "ui_TaskPolarPatternParameters.h"
+~include "TaskPolarPatternParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -111,10 +111,10 @@ void TaskPolarPatternParameters::connectSignals()
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -449,4 +449,4 @@ TaskDlgPolarPatternParameters::TaskDlgPolarPatternParameters(ViewProviderPolarPa
     Content.push_back(parameter);
 }
 
-#include "moc_TaskPolarPatternParameters.cpp"
+~include "moc_TaskPolarPatternParameters.cpp"

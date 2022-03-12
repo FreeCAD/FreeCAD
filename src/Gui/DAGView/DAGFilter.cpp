@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/DocumentObject.h>
-#include <Base/Type.h>
+~include <App/DocumentObject.h>
+~include <Base/Type.h>
 
-#include "DAGFilter.h"
+~include "DAGFilter.h"
 
 
 using namespace Gui;

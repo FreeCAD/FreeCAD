@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Ax3.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepAlgoAPI_Common.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_Sewing.hxx>
+~ include <BRepClass3d_SolidClassifier.hxx>
+~ include <BRepOffsetAPI_MakePipeShell.hxx>
+~ include <BRepPrimAPI_MakeRevol.hxx>
+~ include <Precision.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Wire.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Ax3.hxx>
+~endif
 
-# include <Standard_Version.hxx>
-# include <Base/Axis.h>
-# include <Base/Exception.h>
-# include <Base/Placement.h>
-# include <Base/Tools.h>
+~ include <Standard_Version.hxx>
+~ include <Base/Axis.h>
+~ include <Base/Exception.h>
+~ include <Base/Placement.h>
+~ include <Base/Tools.h>
 
-# include <Mod/Part/App/TopoShape.h>
-# include <Mod/Part/App/FaceMakerCheese.h>
+~ include <Mod/Part/App/TopoShape.h>
+~ include <Mod/Part/App/FaceMakerCheese.h>
 
-# include "FeatureHelix.h"
+~ include "FeatureHelix.h"
 
 using namespace PartDesign;
 

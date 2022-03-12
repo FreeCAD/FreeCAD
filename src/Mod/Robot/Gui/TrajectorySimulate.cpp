@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <QTimer>
-#include "ui_TrajectorySimulate.h"
-#include "TrajectorySimulate.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+~include <QTimer>
+~include "ui_TrajectorySimulate.h"
+~include "TrajectorySimulate.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Selection.h>
 
-#include <Mod/Robot/App/Waypoint.h>
+~include <Mod/Robot/App/Waypoint.h>
 
 
 using namespace RobotGui;
@@ -184,4 +184,4 @@ void TrajectorySimulate::valueChanged ( double value )
 }
 
 
-#include "moc_TrajectorySimulate.cpp"
+~include "moc_TrajectorySimulate.cpp"

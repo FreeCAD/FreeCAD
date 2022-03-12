@@ -21,14 +21,14 @@
  ***************************************************************************/
 
  
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
 
 
-#include "SketchObjectSF.h"
-#include <Base/Console.h>
+~include "SketchObjectSF.h"
+~include <Base/Console.h>
 
 
 using namespace Sketcher;

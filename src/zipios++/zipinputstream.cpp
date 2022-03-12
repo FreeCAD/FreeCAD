@@ -1,13 +1,13 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include "zipinputstreambuf.h"
-#include "zipinputstream.h"
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
-#include <Base/FileInfo.h>
-#endif
+~include "zipinputstreambuf.h"
+~include "zipinputstream.h"
+~if defined(_WIN32) && defined(ZIPIOS_UTF8)
+~include <Base/FileInfo.h>
+~endif
 
 using std::istream;
 
@@ -27,12 +27,12 @@ ZipInputStream::ZipInputStream( const std::string &filename, std::streampos pos 
   : std::istream( nullptr ),
     ifs( nullptr )
 {
-#if defined(_WIN32) && defined(ZIPIOS_UTF8)
+~if defined(_WIN32) && defined(ZIPIOS_UTF8)
   std::wstring wsname = Base::FileInfo(filename).toStdWString();
   ifs = new std::ifstream( wsname.c_str(), std::ios::in |std:: ios::binary ) ;
-#else
+~else
   ifs = new std::ifstream( filename.c_str(), std::ios::in |std:: ios::binary ) ;
-#endif
+~endif
   izf = new ZipInputStreambuf( ifs->rdbuf(), pos ) ;
 //  this->rdbuf( izf ) ; is replaced by:
   this->init( izf ) ;

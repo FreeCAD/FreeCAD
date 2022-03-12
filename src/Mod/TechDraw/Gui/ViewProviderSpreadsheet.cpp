@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/DocumentObject.h>
-#include "ViewProviderSpreadsheet.h"
+~include <App/DocumentObject.h>
+~include "ViewProviderSpreadsheet.h"
 
 using namespace TechDrawGui;
 

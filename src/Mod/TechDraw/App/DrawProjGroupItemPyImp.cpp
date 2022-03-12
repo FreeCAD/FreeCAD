@@ -1,11 +1,11 @@
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DrawProjGroupItem.h"
+~include "DrawProjGroupItem.h"
 
 // inclusion of the generated files (generated out of DrawProjGroupItemPy.xml)
-#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
-#include <Mod/TechDraw/App/DrawProjGroupItemPy.cpp>
+~include <Mod/TechDraw/App/DrawProjGroupItemPy.h>
+~include <Mod/TechDraw/App/DrawProjGroupItemPy.cpp>
 
 using namespace TechDraw;
 

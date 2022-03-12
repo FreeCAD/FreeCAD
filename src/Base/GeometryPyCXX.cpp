@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "GeometryPyCXX.h"
-#include "VectorPy.h"
+~include "GeometryPyCXX.h"
+~include "VectorPy.h"
 
 
 int Py::Vector::Vector_TypeCheck(PyObject * obj)

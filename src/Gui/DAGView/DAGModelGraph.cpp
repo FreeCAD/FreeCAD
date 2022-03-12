@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "DAGModelGraph.h"
+~include "DAGModelGraph.h"
 
 
 using namespace Gui;

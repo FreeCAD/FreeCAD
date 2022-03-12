@@ -20,35 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/SbRotation.h>
-# include <Inventor/SoFullPath.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <QByteArray>
-# include <QDataStream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/SbRotation.h>
+~ include <Inventor/SoFullPath.h>
+~ include <Inventor/details/SoDetail.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <QByteArray>
+~ include <QDataStream>
+~endif
 
-#include <Base/BoundBoxPy.h>
+~include <Base/BoundBoxPy.h>
 
-#include "PythonWrapper.h"
-#include "SoFCDB.h"
+~include "PythonWrapper.h"
+~include "SoFCDB.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
-#include <Gui/ViewProviderPy.h>
-#include <Gui/ViewProviderPy.cpp>
-#include <Gui/View3DPy.h>
-#include <Gui/View3DInventor.h>
-#include <Base/Interpreter.h>
-#include <Base/Matrix.h>
-#include <Base/MatrixPy.h>
-#include <Base/Placement.h>
-#include <Base/PlacementPy.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
+~include <Gui/ViewProviderPy.h>
+~include <Gui/ViewProviderPy.cpp>
+~include <Gui/View3DPy.h>
+~include <Gui/View3DInventor.h>
+~include <Base/Interpreter.h>
+~include <Base/Matrix.h>
+~include <Base/MatrixPy.h>
+~include <Base/Placement.h>
+~include <Base/PlacementPy.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
 
 
 using namespace Gui;
@@ -613,19 +613,19 @@ Py::String ViewProviderPy::getIV(void) const
 
 Py::Object ViewProviderPy::getIcon(void) const
 {
-#if 0
+~if 0
     QByteArray ba;
     QDataStream str(&ba, QIODevice::WriteOnly);
     QIcon icon = getViewProviderPtr()->getIcon();
     str << icon;
     return Py::String(ba.constData(), ba.size());
-#else
+~else
     PythonWrapper wrap;
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
     QIcon icon = getViewProviderPtr()->getIcon();
     return wrap.fromQIcon(new QIcon(icon));
-#endif
+~endif
 }
 
 Py::Int ViewProviderPy::getDefaultMode(void) const

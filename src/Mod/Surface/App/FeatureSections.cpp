@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <GeomFill_NSections.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <Precision.hxx>
-#include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <GeomFill_NSections.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Face.hxx>
+~include <Precision.hxx>
+~include <Standard_Version.hxx>
+~endif
 
-#include "FeatureSections.h"
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+~include "FeatureSections.h"
+~include <Base/Tools.h>
+~include <Base/Exception.h>
 
 using namespace Surface;
 
@@ -93,9 +93,9 @@ App::DocumentObjectExecReturn *Sections::execute(void)
         return new App::DocumentObjectExecReturn("Failed to create surface from sections.");
 
     BRepBuilderAPI_MakeFace mkFace(aSurf
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
-#endif
+~endif
     );
 
     Shape.setValue(mkFace.Face());

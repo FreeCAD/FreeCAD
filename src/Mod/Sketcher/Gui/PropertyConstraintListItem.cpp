@@ -20,19 +20,19 @@
 *                                                                          *
 ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <memory>
-# include <QDebug>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <memory>
+~ include <QDebug>
+~ include <QTextStream>
+~endif
 
-#include <Base/Tools.h>
+~include <Base/Tools.h>
 
-#include <Gui/MetaTypes.h>
-#include "../App/PropertyConstraintList.h"
-#include "PropertyConstraintListItem.h"
+~include <Gui/MetaTypes.h>
+~include "../App/PropertyConstraintList.h"
+~include "PropertyConstraintListItem.h"
 
 
 using namespace SketcherGui;
@@ -379,4 +379,4 @@ QVariant PropertyConstraintListItem::editorData(QWidget *editor) const
     return QVariant(le->text());
 }
 
-#include "moc_PropertyConstraintListItem.cpp"
+~include "moc_PropertyConstraintListItem.cpp"

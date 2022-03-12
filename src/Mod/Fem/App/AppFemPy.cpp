@@ -21,56 +21,56 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-# include <memory>
-# include <cstdlib>
-# include <SMESH_Gen.hxx>
-# include <SMESH_Group.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDS_MeshNode.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_AutomaticLength.hxx>
-# include <StdMeshers_MEFISTO_2D.hxx>
-# include <StdMeshers_Deflection1D.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_LengthFromEdges.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
-# include <StdMeshers_Arithmetic1D.hxx>
-# include <Standard_Real.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <memory>
+~ include <cstdlib>
+~ include <SMESH_Gen.hxx>
+~ include <SMESH_Group.hxx>
+~ include <SMESHDS_Mesh.hxx>
+~ include <SMDS_MeshNode.hxx>
+~ include <StdMeshers_MaxLength.hxx>
+~ include <StdMeshers_LocalLength.hxx>
+~ include <StdMeshers_NumberOfSegments.hxx>
+~ include <StdMeshers_AutomaticLength.hxx>
+~ include <StdMeshers_MEFISTO_2D.hxx>
+~ include <StdMeshers_Deflection1D.hxx>
+~ include <StdMeshers_MaxElementArea.hxx>
+~ include <StdMeshers_Regular_1D.hxx>
+~ include <StdMeshers_QuadranglePreference.hxx>
+~ include <StdMeshers_Quadrangle_2D.hxx>
+~ include <StdMeshers_LengthFromEdges.hxx>
+~ include <StdMeshers_NotConformAllowed.hxx>
+~ include <StdMeshers_Arithmetic1D.hxx>
+~ include <Standard_Real.hxx>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/VectorPy.h>
-#include <Base/PlacementPy.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
-//#include <Mod/Mesh/App/Core/MeshKernel.h>
-//#include <Mod/Mesh/App/Core/Evaluation.h>
-//#include <Mod/Mesh/App/Core/Iterator.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <Base/VectorPy.h>
+~include <Base/PlacementPy.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
+//~include <Mod/Mesh/App/Core/MeshKernel.h>
+//~include <Mod/Mesh/App/Core/Evaluation.h>
+//~include <Mod/Mesh/App/Core/Iterator.h>
 
-#include "FemMesh.h"
-#include "FemMeshObject.h"
-#include "FemMeshPy.h"
-#ifdef FC_USE_VTK
-#include "FemPostPipeline.h"
-#include "FemVTKTools.h"
-#endif
+~include "FemMesh.h"
+~include "FemMeshObject.h"
+~include "FemMeshPy.h"
+~ifdef FC_USE_VTK
+~include "FemPostPipeline.h"
+~include "FemVTKTools.h"
+~endif
 
-#include <Base/Vector3D.h>
-#include <Mod/Part/App/OCCError.h>
+~include <Base/Vector3D.h>
+~include <Mod/Part/App/OCCError.h>
 
 namespace Fem {
 class Module : public Py::ExtensionModule<Module>
@@ -90,14 +90,14 @@ public:
         add_varargs_method("read",&Module::read,
             "Read a mesh from a file and returns a Mesh object."
         );
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
         add_varargs_method("readResult",&Module::readResult,
             "Read a CFD or Mechanical result (auto detect) from a file (file format detected from file suffix)"
         );
         add_varargs_method("writeResult",&Module::writeResult,
             "write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"
         );
-#endif
+~endif
         add_varargs_method("show",&Module::show,
             "show(shape,[string]) -- Add the mesh to the active document or create one if no document exists."
         );
@@ -183,7 +183,7 @@ private:
             pcFeature->purgeTouched();
         }
         catch (Base::Exception&) {
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
             if (FemPostPipeline::canRead(file)) {
 
                 FemPostPipeline *pcFeature = static_cast<FemPostPipeline *>
@@ -197,9 +197,9 @@ private:
             else {
                 throw;
             }
-#else
+~else
             throw;
-#endif
+~endif
         }
 
         return Py::None();
@@ -243,7 +243,7 @@ private:
         return Py::asObject(new FemMeshPy(mesh.release()));
     }
 
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     Py::Object readResult(const Py::Tuple& args)
     {
         char* fileName = NULL;
@@ -291,7 +291,7 @@ private:
 
         return Py::None();
     }
-#endif
+~endif
 
     Py::Object show(const Py::Tuple& args)
     {

@@ -24,9 +24,9 @@
 //  Author : Alain PERRONNET
 //  Date   : 13 novembre 2006
 
-#include "Rn.h"
-#include "aptrte.h"
-#include "utilities.h"
+~include "Rn.h"
+~include "aptrte.h"
+~include "utilities.h"
 
 using namespace std;
 
@@ -35,12 +35,12 @@ extern "C"
   R aretemaxface_;
   MEFISTO2D_EXPORT   
     R
-  #ifdef WIN32
-  #ifdef F2C_BUILD
-  #else
+  ~ifdef WIN32
+  ~ifdef F2C_BUILD
+  ~else
       __stdcall
-  #endif
-  #endif
+  ~endif
+  ~endif
       areteideale(R &_areteideale)
   {
         _areteideale = aretemaxface_;
@@ -55,12 +55,12 @@ extern "C"
 static double cpunew, cpuold=0;
 
 void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
 tempscpu_( double & tempsec )
 //Retourne le temps CPU utilise en secondes
 {  
@@ -70,12 +70,12 @@ tempscpu_( double & tempsec )
 
 
 void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
 deltacpu_( R & dtcpu )
 //Retourne le temps CPU utilise en secondes depuis le precedent appel
 {
@@ -755,12 +755,12 @@ void  aptrte( Z   nutysu, R      aretmx,
   }
 }
 void
-#ifdef WIN32
-#ifdef F2C_BUILD
-#else
+~ifdef WIN32
+~ifdef F2C_BUILD
+~else
               __stdcall
-#endif
-#endif
+~endif
+~endif
  qualitetrte( R3 *mnpxyd,
                    Z & mosoar, Z & mxsoar, Z *mnsoar,
                    Z & moartr, Z & mxartr, Z *mnartr,

@@ -26,22 +26,22 @@
 //  Module : SMESH
 //  $Header$
 //
-#include "StdMeshers_Distribution.hxx"
+~include "StdMeshers_Distribution.hxx"
 
-#include <math_GaussSingleIntegration.hxx>
-#include <utilities.h>
+~include <math_GaussSingleIntegration.hxx>
+~include <utilities.h>
 
-#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060100
-#define NO_CAS_CATCH
-#endif
+~if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060100
+~define NO_CAS_CATCH
+~endif
 
-#include <Standard_Failure.hxx>
-#include <Expr_NamedUnknown.hxx>
+~include <Standard_Failure.hxx>
+~include <Expr_NamedUnknown.hxx>
 
-#ifdef NO_CAS_CATCH
-#include <Standard_ErrorHandler.hxx>
-#endif
-#include <Expr_NamedUnknown.hxx>
+~ifdef NO_CAS_CATCH
+~include <Standard_ErrorHandler.hxx>
+~endif
+~include <Expr_NamedUnknown.hxx>
 using namespace std;
 
 namespace StdMeshers {
@@ -60,9 +60,9 @@ bool Function::value( const double, double& f ) const
   bool ok = true;
   if (myConv == 0) {
     try {
-#ifdef NO_CAS_CATCH
+~ifdef NO_CAS_CATCH
       OCC_CATCH_SIGNALS;
-#endif
+~endif
       f = pow( 10., f );
     } catch(Standard_Failure&) {
       f = 0.0;
@@ -191,9 +191,9 @@ FunctionExpr::FunctionExpr( const char* str, const int conv )
 {
   bool ok = true;
   try {
-#ifdef NO_CAS_CATCH
+~ifdef NO_CAS_CATCH
     OCC_CATCH_SIGNALS;
-#endif
+~endif
     myExpr = ExprIntrp_GenExp::Create();
     myExpr->Process( ( Standard_CString )str );
   } catch(Standard_Failure&) {
@@ -226,9 +226,9 @@ bool FunctionExpr::value( const double t, double& f ) const
   ( ( TColStd_Array1OfReal& )myValues ).ChangeValue( 1 ) = t;
   bool ok = true;
   try {
-#ifdef NO_CAS_CATCH
+~ifdef NO_CAS_CATCH
     OCC_CATCH_SIGNALS;
-#endif
+~endif
     f = myExpr->Expression()->Evaluate( myVars, myValues );
   } catch(Standard_Failure&) {
     f = 0.0;
@@ -243,9 +243,9 @@ double FunctionExpr::integral( const double a, const double b ) const
 {
   double res = 0.0;
   try {
-#ifdef NO_CAS_CATCH
+~ifdef NO_CAS_CATCH
     OCC_CATCH_SIGNALS;
-#endif
+~endif
     math_GaussSingleIntegration _int
       ( *static_cast<math_Function*>( const_cast<FunctionExpr*> (this) ), a, b, 20 );
     if( _int.IsDone() )

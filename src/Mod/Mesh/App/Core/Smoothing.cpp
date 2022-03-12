@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "Smoothing.h"
-#include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Elements.h"
-#include "Iterator.h"
-#include "Approximation.h"
+~include "Smoothing.h"
+~include "MeshKernel.h"
+~include "Algorithm.h"
+~include "Elements.h"
+~include "Iterator.h"
+~include "Approximation.h"
 
 
 using namespace MeshCore;

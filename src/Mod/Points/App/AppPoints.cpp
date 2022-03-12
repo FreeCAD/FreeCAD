@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
 
-#include "Points.h"
-#include "PointsPy.h"
-#include "Properties.h"
-#include "PropertyPointKernel.h"
-#include "Structured.h"
+~include "Points.h"
+~include "PointsPy.h"
+~include "Properties.h"
+~include "PropertyPointKernel.h"
+~include "Structured.h"
 
 namespace Points {
     extern PyObject* initModule();

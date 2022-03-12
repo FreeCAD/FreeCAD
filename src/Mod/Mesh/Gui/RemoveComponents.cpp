@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QPushButton>
-#endif
+~ifndef _PreComp_
+~ include <QPushButton>
+~endif
 
-#include "RemoveComponents.h"
-#include "ui_RemoveComponents.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
+~include "RemoveComponents.h"
+~include "ui_RemoveComponents.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
 
 using namespace MeshGui;
 
@@ -250,4 +250,4 @@ void TaskRemoveComponents::clicked(int id)
     }
 }
 
-#include "moc_RemoveComponents.cpp"
+~include "moc_RemoveComponents.cpp"

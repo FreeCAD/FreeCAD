@@ -14,27 +14,27 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
+~include "Wm4FoundationPCH.h"
 
-#ifdef WM4_MEMORY_MANAGER
+~ifdef WM4_MEMORY_MANAGER
 
-// Enable this #define if you want to trap mismatches of new/delete[] or
+// Enable this ~define if you want to trap mismatches of new/delete[] or
 // new[]/delete.  Xcode 2.3 has mismatches of this form in its STL.  For
 // example, Program::Load creates a std::ifstream called kIStr.  At the end
 // of that function call, kIStr.close() triggers an assert in the function
 // Memory::Deallocate because pkBlock->IsArray is 'false' but 'bIsArray' is
 // true.  This implies a mismatch of new/delete[].
-//#define WM4_ENABLE_NEW_DELETE_MISMATCH_ASSERT
+//~define WM4_ENABLE_NEW_DELETE_MISMATCH_ASSERT
 
-// Enable this #define the consistency checks in Memory::GenerateReport.
+// Enable this ~define the consistency checks in Memory::GenerateReport.
 // Xcode 2.3 triggers the last assert in this function.  It appears that
 // Xcode's standard libraries have lots of leaks.
-//#define WM4_ENABLE_CONSISTENCY_CHECK
+//~define WM4_ENABLE_CONSISTENCY_CHECK
 
-#include <cassert>
-#include <cstdlib>
-#include <fstream>
-#include "Wm4Memory.h"
+~include <cassert>
+~include <cstdlib>
+~include <fstream>
+~include "Wm4Memory.h"
 using namespace Wm4;
 
 size_t Memory::ms_uiNumNewCalls = 0;
@@ -143,10 +143,10 @@ void Memory::Deallocate (char* pcAddr, bool bIsArray)
     Block* pkBlock = (Block*)pcAddr;
     RemoveBlock(pkBlock);
 
-#ifdef WM4_ENABLE_NEW_DELETE_MISMATCH_ASSERT
+~ifdef WM4_ENABLE_NEW_DELETE_MISMATCH_ASSERT
     // Check for correct pairing of new/delete or new[]/delete[].
     assert(pkBlock->IsArray == bIsArray);
-#endif
+~endif
 
     // Keep track of number of allocated blocks and bytes.  If the number of
     // blocks is zero at this time, a delete has been called twice on the
@@ -245,11 +245,11 @@ void Memory::GenerateReport (const char* acFilename)
         pkBlock = pkBlock->Next;
     }
 
-#ifdef WM4_ENABLE_CONSISTENCY_CHECK
+~ifdef WM4_ENABLE_CONSISTENCY_CHECK
     // consistency check
     assert(uiNumKnownBlocks + uiNumUnknownBlocks == ms_uiNumBlocks);
     assert(uiNumKnownBytes + uiNumUnknownBytes == ms_uiNumBytes);
-#endif
+~endif
 
     kOStr << "Remaining number of known blocks = "
         << (unsigned int)uiNumKnownBlocks << std::endl;
@@ -284,10 +284,10 @@ void Memory::GenerateReport (const char* acFilename)
     }
     kOStr.close();
 
-#ifdef WM4_ENABLE_CONSISTENCY_CHECK
+~ifdef WM4_ENABLE_CONSISTENCY_CHECK
     // consistency check
     assert(uiIndex == ms_uiNumBlocks);
-#endif
+~endif
 }
 //----------------------------------------------------------------------------
 void* operator new (size_t uiSize)
@@ -331,4 +331,4 @@ void operator delete[] (void* pvAddr, char*, unsigned int)
 }
 //----------------------------------------------------------------------------
 
-#endif
+~endif

@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
-#include <Mod/PartDesign/App/FeatureLoft.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Mod/Part/Gui/ReferenceHighlighter.h>
+~include <Mod/PartDesign/App/FeatureLoft.h>
 
-#include "ViewProviderLoft.h"
-#include "TaskLoftParameters.h"
+~include "ViewProviderLoft.h"
+~include "TaskLoftParameters.h"
 
 using namespace PartDesignGui;
 

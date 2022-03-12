@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QCheckBox>
-# include <QClipboard>
-# include <QDateTime>
-# include <QHBoxLayout>
-# include <QVBoxLayout>
-# include <QLineEdit>
-# include <QMessageBox>
-# include <QPrinter>
-# include <QPrintDialog>
-# include <QPlainTextEdit>
-# include <QPrintPreviewDialog>
-# include <QSpacerItem>
-# include <QStyle>
-# include <QTextCodec>
-# include <QTextCursor>
-# include <QTextDocument>
-# include <QTextStream>
-# include <QTimer>
-# include <QToolButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QCheckBox>
+~ include <QClipboard>
+~ include <QDateTime>
+~ include <QHBoxLayout>
+~ include <QVBoxLayout>
+~ include <QLineEdit>
+~ include <QMessageBox>
+~ include <QPrinter>
+~ include <QPrintDialog>
+~ include <QPlainTextEdit>
+~ include <QPrintPreviewDialog>
+~ include <QSpacerItem>
+~ include <QStyle>
+~ include <QTextCodec>
+~ include <QTextCursor>
+~ include <QTextDocument>
+~ include <QTextStream>
+~ include <QTimer>
+~ include <QToolButton>
+~endif
 
-#include "EditorView.h"
-#include "Application.h"
-#include "FileDialog.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "PythonEditor.h"
+~include "EditorView.h"
+~include "Application.h"
+~include "FileDialog.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "PythonEditor.h"
 
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Parameter.h>
 
 
 using namespace Gui;
@@ -844,4 +844,4 @@ void SearchBar::changeEvent(QEvent* event)
     QWidget::changeEvent(event);
 }
 
-#include "moc_EditorView.cpp"
+~include "moc_EditorView.cpp"

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Voronoi.h"
-#include "VoronoiEdge.h"
+~include "Voronoi.h"
+~include "VoronoiEdge.h"
 
 
 using namespace Base;

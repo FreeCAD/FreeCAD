@@ -5,10 +5,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "actionlabel.h"
+~include "actionlabel.h"
 
-#include <QStyleOptionToolButton>
-#include <QApplication>
+~include <QStyleOptionToolButton>
+~include <QApplication>
 
 
 namespace QSint
@@ -19,17 +19,17 @@ const char* ActionLabelStyle =
     "QSint--ActionLabel[class='action'] {"
         "background-color: transparent;"
         "border: 1px solid transparent;"
-        "color: #0033ff;"
+        "color: ~0033ff;"
         "text-align: left;"
         "font: 11px;"
     "}"
 
     "QSint--ActionLabel[class='action']:!enabled {"
-        "color: #999999;"
+        "color: ~999999;"
     "}"
 
     "QSint--ActionLabel[class='action']:hover {"
-        "color: #0099ff;"
+        "color: ~0099ff;"
         "text-decoration: underline;"
     "}"
 
@@ -38,8 +38,8 @@ const char* ActionLabelStyle =
     "}"
 
     "QSint--ActionLabel[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
 ;
 

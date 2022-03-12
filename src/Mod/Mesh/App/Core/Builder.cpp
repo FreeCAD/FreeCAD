@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
-#include <Base/Sequencer.h>
-#include <Base/Exception.h>
+~include <Base/Sequencer.h>
+~include <Base/Exception.h>
 
-#include "Builder.h"
-#include "MeshKernel.h"
-#include "Functional.h"
-#include <QVector>
+~include "Builder.h"
+~include "MeshKernel.h"
+~include "Functional.h"
+~include <QVector>
 
 using namespace MeshCore;
 
@@ -225,11 +225,11 @@ void MeshBuilder::Finish (bool freeMemory)
 
     // free all memory of the internal structures
     // Note: this scope is needed to free memory immediately
-#if defined(_MSC_VER) && defined(_DEBUG)
+~if defined(_MSC_VER) && defined(_DEBUG)
     // Just do nothing here as it may take a long time when running the debugger
-#else
+~else
     { std::vector<MeshPointIterator>().swap(_pointsIterator); }
-#endif
+~endif
     _points.clear();
 
     SetNeighbourhood();

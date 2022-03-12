@@ -21,57 +21,57 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#if defined(__MINGW32__)
-# define WNT // avoid conflict with GUID
-#endif
-#ifndef _PreComp_
-# include <climits>
-# include <sstream>
-# include <Standard_Version.hxx>
-# include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
-# include <STEPControl_Writer.hxx>
-# include <IGESCAFControl_Reader.hxx>
-# include <IGESCAFControl_Writer.hxx>
-# include <IGESControl_Controller.hxx>
-# include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
-# include <OSD_Exception.hxx>
-#if OCC_VERSION_HEX >= 0x060500
-# include <TDataXtd_Shape.hxx>
-# else
-# include <TDataStd_Shape.hxx>
-# endif
-#endif
+~include "PreCompiled.h"
+~if defined(__MINGW32__)
+~ define WNT // avoid conflict with GUID
+~endif
+~ifndef _PreComp_
+~ include <climits>
+~ include <sstream>
+~ include <Standard_Version.hxx>
+~ include <BRep_Builder.hxx>
+~ include <TDocStd_Document.hxx>
+~ include <XCAFApp_Application.hxx>
+~ include <XCAFDoc_DocumentTool.hxx>
+~ include <XCAFDoc_ShapeTool.hxx>
+~ include <XCAFDoc_ColorTool.hxx>
+~ include <XCAFDoc_Location.hxx>
+~ include <TDF_Label.hxx>
+~ include <TDF_LabelSequence.hxx>
+~ include <TDF_ChildIterator.hxx>
+~ include <TDataStd_Name.hxx>
+~ include <Quantity_Color.hxx>
+~ include <STEPCAFControl_Reader.hxx>
+~ include <STEPCAFControl_Writer.hxx>
+~ include <STEPControl_Writer.hxx>
+~ include <IGESCAFControl_Reader.hxx>
+~ include <IGESCAFControl_Writer.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <Interface_Static.hxx>
+~ include <Transfer_TransientProcess.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_MapOfShape.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <APIHeaderSection_MakeHeader.hxx>
+~ include <OSD_Exception.hxx>
+~if OCC_VERSION_HEX >= 0x060500
+~ include <TDataXtd_Shape.hxx>
+~ else
+~ include <TDataStd_Shape.hxx>
+~ endif
+~endif
 
-#include "ImportOCAFAssembly.h"
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
+~include "ImportOCAFAssembly.h"
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/ProgressIndicator.h>
+~include <Mod/Part/App/ImportIges.h>
+~include <Mod/Part/App/ImportStep.h>
 
 
 using namespace Import;
@@ -179,7 +179,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
             part_loc = hLoc->Get();
     }
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     const char *s;
     if( !hLoc.IsNull() )
         s = hLoc->Get().IsIdentity()?"0":"1";
@@ -206,7 +206,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
 
     label.Dump(str);
     Base::Console().Message(str.str().c_str() );
-#endif
+~endif
 
     std::string asm_name = assembly;
     if (aShapeTool->IsAssembly(label)) {
@@ -280,7 +280,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape, const TopLoc_Lo
         std::vector<App::Color> colors;
         colors.push_back(color);
         applyColors(part, colors);
-#if 0//TODO
+~if 0//TODO
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
         if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
             color.r = aColor.Red();
@@ -288,7 +288,7 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape, const TopLoc_Lo
             color.b = aColor.Blue();
             static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.setValue(color);
         }
-#endif
+~endif
     }
 
     TopTools_IndexedMapOfShape faces;

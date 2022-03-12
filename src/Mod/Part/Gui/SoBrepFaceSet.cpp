@@ -20,74 +20,74 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef FC_OS_WIN32
-# ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
-# endif
-#endif
+~ifndef FC_OS_WIN32
+~ ifndef GL_GLEXT_PROTOTYPES
+~ define GL_GLEXT_PROTOTYPES 1
+~ endif
+~endif
 
-#ifndef _PreComp_
-# include <float.h>
-# include <algorithm>
-# include <map>
-# include <Python.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/SoPrimitiveVertex.h>
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/bundles/SoTextureCoordinateBundle.h>
-# include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoOverrideElement.h>
-# include <Inventor/elements/SoCoordinateElement.h>
-# include <Inventor/elements/SoGLCoordinateElement.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/elements/SoGLVBOElement.h>
-# include <Inventor/elements/SoLineWidthElement.h>
-# include <Inventor/elements/SoPointSizeElement.h>
-# include <Inventor/errors/SoDebugError.h>
-# include <Inventor/errors/SoReadError.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/misc/SoState.h>
-# include <Inventor/misc/SoContextHandler.h>
-# include <Inventor/elements/SoShapeStyleElement.h>
-# include <Inventor/elements/SoCacheElement.h>
-# include <Inventor/elements/SoTextureEnabledElement.h>
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-#  include <GL/gl.h>
-#  include <GL/glext.h>
-# else
-#  ifdef FC_OS_MACOSX
-#   include <OpenGL/gl.h>
-#   include <OpenGL/glext.h>
-#  else
-#   include <GL/gl.h>
-#   include <GL/glext.h>
-#  endif //FC_OS_MACOSX
-# endif //FC_OS_WIN32
+~ifndef _PreComp_
+~ include <float.h>
+~ include <algorithm>
+~ include <map>
+~ include <Python.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/SoPrimitiveVertex.h>
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/bundles/SoTextureCoordinateBundle.h>
+~ include <Inventor/elements/SoLazyElement.h>
+~ include <Inventor/elements/SoOverrideElement.h>
+~ include <Inventor/elements/SoCoordinateElement.h>
+~ include <Inventor/elements/SoGLCoordinateElement.h>
+~ include <Inventor/elements/SoGLCacheContextElement.h>
+~ include <Inventor/elements/SoGLVBOElement.h>
+~ include <Inventor/elements/SoLineWidthElement.h>
+~ include <Inventor/elements/SoPointSizeElement.h>
+~ include <Inventor/errors/SoDebugError.h>
+~ include <Inventor/errors/SoReadError.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/misc/SoState.h>
+~ include <Inventor/misc/SoContextHandler.h>
+~ include <Inventor/elements/SoShapeStyleElement.h>
+~ include <Inventor/elements/SoCacheElement.h>
+~ include <Inventor/elements/SoTextureEnabledElement.h>
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~  include <GL/gl.h>
+~  include <GL/glext.h>
+~ else
+~  ifdef FC_OS_MACOSX
+~   include <OpenGL/gl.h>
+~   include <OpenGL/glext.h>
+~  else
+~   include <GL/gl.h>
+~   include <GL/glext.h>
+~  endif //FC_OS_MACOSX
+~ endif //FC_OS_WIN32
 // Should come after glext.h to avoid warnings
-# include <Inventor/C/glue/gl.h>
-#endif
+~ include <Inventor/C/glue/gl.h>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include "SoBrepFaceSet.h"
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Gui/SoFCInteractiveElement.h>
+~include <boost/algorithm/string/predicate.hpp>
+~include "SoBrepFaceSet.h"
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/SoFCSelectionAction.h>
+~include <Gui/SoFCInteractiveElement.h>
 
 using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepFaceSet)
 
-#define PRIVATE(p) ((p)->pimpl)
+~define PRIVATE(p) ((p)->pimpl)
 
 class SoBrepFaceSet::VBO {
 public:
@@ -144,10 +144,10 @@ public:
 
         std::map<uint32_t, Buffer>::iterator it = self->vbomap.find(context);
         if (it != self->vbomap.end()) {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
             const cc_glglue * glue = cc_glglue_instance((int) context);
             PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-#endif
+~endif
             //cc_glglue_glDeleteBuffers(glue, buffer.size(), buffer.data());
             auto &buffer = it->second;
             glDeleteBuffersARB(2, buffer.myvbo);
@@ -351,7 +351,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
-#ifdef RENDER_GLARRAYS
+~ifdef RENDER_GLARRAYS
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
     SoState * state = action->getState();
@@ -397,7 +397,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if (!this->shouldGLRender(action))
             return;
 
-#ifdef RENDER_GLARRAYS
+~ifdef RENDER_GLARRAYS
         if (!doTextures && index_array.size() && hl_idx < 0 && num_selected <= 0) {
             if (mbind == 0) {
                 mb.sendFirst(); // only one material -> apply it!
@@ -409,7 +409,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
                 return;
             }
         }
-#endif
+~endif
 
         Binding nbind = this->findNormalBinding(state);
 
@@ -445,11 +445,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             this->readUnlockNormalCache();
     }
 
-    // Workaround for #0000433
-//#if !defined(FC_OS_WIN32)
+    // Workaround for ~0000433
+//~if !defined(FC_OS_WIN32)
     renderHighlight(action,ctx);
     renderSelection(action,ctx);
-//#endif
+//~endif
 }
 
 //****************************************************************************
@@ -465,13 +465,13 @@ void SoBrepFaceSet::renderSimpleArray()
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-#if 0
+~if 0
     glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
     glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
-#else
+~else
     glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
     glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
-#endif
+~endif
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -491,13 +491,13 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-#if 0
+~if 0
     glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
     const int32_t* ptr = index_array.data();
-#else
+~else
     glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
     const int32_t* ptr = &(index_array[0]);
-#endif
+~endif
 
     for (int part_id = 0; part_id < num_parts; part_id++) {
         int tris = partIndex[part_id];
@@ -512,7 +512,7 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
 }
-#else
+~else
 
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
@@ -685,7 +685,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderHighlight(action,ctx);
     }
 }
-#endif
+~endif
 
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2) {
     if(!ctx && !ctx2) return false;
@@ -941,7 +941,7 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
 }
 
   // this macro actually makes the code below more readable  :-)
-#define DO_VERTEX(idx) \
+~define DO_VERTEX(idx) \
   if (mbind == PER_VERTEX) {                  \
     pointDetail.setMaterialIndex(matnr);      \
     vertex.setMaterialIndex(matnr++);         \
@@ -975,9 +975,9 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
 void SoBrepFaceSet::generatePrimitives(SoAction * action)
 {
     //TODO
-#if 0
+~if 0
     inherited::generatePrimitives(action);
-#else
+~else
     //This is highly experimental!!!
 
     if (this->coordIndex.getNum() < 3) return;
@@ -1204,10 +1204,10 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     if (this->vertexProperty.getValue()) {
         state->pop();
     }
-#endif
+~endif
 }
 
-#undef DO_VERTEX
+~undef DO_VERTEX
 
 void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
@@ -1444,10 +1444,10 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     auto res = this->vbomap.insert(std::make_pair(contextId,VBO::Buffer()));
     VBO::Buffer &buf = res.first->second;
     if (res.second) {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-#endif
+~endif
         glGenBuffersARB(2, buf.myvbo);
         buf.vertex_array_size = 0;
         buf.index_array_size = 0;
@@ -1467,7 +1467,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     // TODO FINISHING THE COLOR SUPPORT !
 
     if (!buf.vboLoaded || buf.updateVbo) {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
 
         PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
@@ -1475,7 +1475,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
         PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
         PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
+~endif
         // We must manage buffer size increase let's clear everything and re-init to test the
         // clearing process
         glDeleteBuffersARB(2, buf.myvbo);
@@ -1693,10 +1693,10 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     }
 
     // This is the VBO rendering code
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
     PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
+~endif
 
     if (!buf.updateVbo) {
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
@@ -1998,4 +1998,4 @@ SoBrepFaceSet::findNormalBinding(SoState * const state) const
     return binding;
 }
 
-#undef PRIVATE
+~undef PRIVATE

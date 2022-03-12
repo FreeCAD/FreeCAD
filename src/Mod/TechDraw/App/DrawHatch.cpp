@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#include <Precision.hxx>
-#include <cmath>
+~ifndef _PreComp_
+~ include <sstream>
+~include <Precision.hxx>
+~include <cmath>
 
-#endif
+~endif
 
-#include <iomanip>
+~include <iomanip>
 
-# include <QFile>
-# include <QFileInfo>
+~ include <QFile>
+~ include <QFileInfo>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/UnitsApi.h>
 
-#include "DrawViewPart.h"
-#include "DrawUtil.h"
-#include "DrawHatch.h"
+~include "DrawViewPart.h"
+~include "DrawUtil.h"
+~include "DrawHatch.h"
 
-#include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
+~include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
 
 using namespace TechDraw;
 using namespace std;

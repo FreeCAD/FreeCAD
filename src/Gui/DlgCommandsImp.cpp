@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QHeaderView>
-# include <QTreeWidgetItemIterator>
-# include <algorithm>
-# include <vector>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QHeaderView>
+~ include <QTreeWidgetItemIterator>
+~ include <algorithm>
+~ include <vector>
+~endif
 
-#include "DlgCommandsImp.h"
-#include "ui_DlgCommands.h"
-#include "Application.h"
-#include "Command.h"
-#include "BitmapFactory.h"
-#include "Widgets.h"
+~include "DlgCommandsImp.h"
+~include "ui_DlgCommands.h"
+~include "Application.h"
+~include "Command.h"
+~include "BitmapFactory.h"
+~include "Widgets.h"
 
 using namespace Gui::Dialog;
 
@@ -273,4 +273,4 @@ void DlgCustomCommandsImp::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-#include "moc_DlgCommandsImp.cpp"
+~include "moc_DlgCommandsImp.cpp"

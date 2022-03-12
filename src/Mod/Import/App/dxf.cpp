@@ -3,24 +3,24 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 //required by windows for M_PI definition
-#define _USE_MATH_DEFINES
-#include <cmath>
+~define _USE_MATH_DEFINES
+~include <cmath>
 
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-#include <iostream>
+~include <iomanip>
+~include <fstream>
+~include <sstream>
+~include <iostream>
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Base/Vector3D.h>
-#include "dxf.h"
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/Stream.h>
+~include <Base/Vector3D.h>
+~include "dxf.h"
 
 using namespace std;
 
@@ -1069,9 +1069,9 @@ void CDxfWrite::putArrow(Base::Vector3d arrowPos, Base::Vector3d barb1Pos, Base:
 //***************************
 //writeLinearDim
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-#define ALIGNED 0
-#define HORIZONTAL 1
-#define VERTICAL 2
+~define ALIGNED 0
+~define HORIZONTAL 1
+~define VERTICAL 2
 void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDefPoint,
                          const double* extLine1, const double* extLine2,
                          const char* dimText, int type)
@@ -1775,7 +1775,7 @@ CDxfRead::~CDxfRead()
 
 double CDxfRead::mm( double value ) const
 {
-    //re #6461
+    //re ~6461
     //this if handles situation of malformed DXF file where
     //MEASUREMENT specifies English units, but
     //INSUNITS specifies millimeters or is not specified

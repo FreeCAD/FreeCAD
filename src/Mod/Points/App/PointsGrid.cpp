@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
 
 
-#include "PointsGrid.h"
+~include "PointsGrid.h"
 
 using namespace Points;
 

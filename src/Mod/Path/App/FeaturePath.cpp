@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "FeaturePath.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+~include "FeaturePath.h"
+~include <App/DocumentObjectPy.h>
+~include <Base/Placement.h>
 
 using namespace Path;
 

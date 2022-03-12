@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Exception.h"
-#include "Console.h"
-#include "PyObjectBase.h"
+~include "Exception.h"
+~include "Console.h"
+~include "PyObjectBase.h"
 
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
@@ -94,11 +94,11 @@ void Exception::ReportException () const
             msg = typeid(*this).name();
         else
             msg = _sErrMsg.c_str();
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         if (_function.size()) {
             _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
         } else
-#endif
+~endif
             _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
     }
@@ -309,11 +309,11 @@ void FileException::ReportException () const
             msg = typeid(*this).name();
         else
             msg = _sErrMsgAndFileName.c_str();
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         if (_function.size()) {
             _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
         } else
-#endif
+~endif
             _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
     }
@@ -386,11 +386,11 @@ MemoryException::MemoryException()
 }
 
 MemoryException::MemoryException(const MemoryException &inst)
-#if defined (__GNUC__)
+~if defined (__GNUC__)
   : std::bad_alloc(), Exception(inst)
-#else
+~else
   : Exception(inst)
-#endif
+~endif
 {
 }
 
@@ -400,13 +400,13 @@ MemoryException & MemoryException::operator=(const MemoryException &inst)
     return *this;
 }
 
-#if defined (__GNUC__)
+~if defined (__GNUC__)
 const char* MemoryException::what() const throw()
 {
     // call what() of Exception, not of std::bad_alloc
     return Exception::what();
 }
-#endif
+~endif
 
 // ---------------------------------------------------------
 
@@ -857,9 +857,9 @@ RestoreError::RestoreError(const std::string& sMessage)
 
 // ---------------------------------------------------------
 
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-#include <stdexcept>
-#include <iostream>
+~if defined(__GNUC__) && defined (FC_OS_LINUX)
+~include <stdexcept>
+~include <iostream>
 
 SignalException::SignalException()
 {
@@ -868,17 +868,17 @@ SignalException::SignalException()
     sigemptyset (&new_action.sa_mask);
     new_action.sa_flags = 0;
     ok = (sigaction (SIGSEGV, &new_action, &old_action) < 0);
-#ifdef _DEBUG
+~ifdef _DEBUG
     std::cout << "Set new signal handler" << std::endl;
-#endif
+~endif
 }
 
 SignalException::~SignalException()
 {
     sigaction (SIGSEGV, &old_action, nullptr);
-#ifdef _DEBUG
+~ifdef _DEBUG
     std::cout << "Restore old signal handler" << std::endl;
-#endif
+~endif
 }
 
 void SignalException::throw_signal(int signum)
@@ -886,5 +886,5 @@ void SignalException::throw_signal(int signum)
     std::cerr << "SIGSEGV signal raised: " << signum << std::endl;
     throw std::runtime_error ("throw_signal");
 }
-#endif
+~endif
 

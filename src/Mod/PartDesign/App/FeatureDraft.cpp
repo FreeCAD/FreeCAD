@@ -22,35 +22,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepOffsetAPI_DraftAngle.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepOffsetAPI_DraftAngle.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopExp.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Curve.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <GeomAPI_IntSS.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~endif
 
-#include <App/OriginFeature.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Mod/Part/App/TopoShape.h>
+~include <App/OriginFeature.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <Mod/Part/App/TopoShape.h>
 
-#include "FeatureDraft.h"
-#include "DatumLine.h"
-#include "DatumPlane.h"
+~include "FeatureDraft.h"
+~include "DatumLine.h"
+~include "DatumPlane.h"
 
 
 using namespace PartDesign;
@@ -292,7 +292,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                 if (!mkDraft.AddDone()) {
                     // Note: the function ProblematicShape returns the face on which the error occurred
                     // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10~p25341
                     //       The only solution is to discard mkDraft and start over without the current face
                     // mkDraft.Remove(face);
                     Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());

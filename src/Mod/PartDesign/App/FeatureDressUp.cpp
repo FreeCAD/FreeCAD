@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRep_Tool.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRep_Tool.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~endif
 
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include "FeatureDressUp.h"
+~include <App/Document.h>
+~include <Base/Exception.h>
+~include "FeatureDressUp.h"
 
 using namespace PartDesign;
 

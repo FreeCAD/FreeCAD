@@ -21,32 +21,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cmath>
-#endif // #ifndef _PreComp_
+~ifndef _PreComp_
+~include <cmath>
+~endif // ~ifndef _PreComp_
 
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
+~include <Base/Console.h>
+~include <Base/Vector3D.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "ViewProviderHatch.h"
-#include "TaskHatch.h"
-#include <Mod/TechDraw/Gui/ui_TaskHatch.h>
+~include "ViewProviderHatch.h"
+~include "TaskHatch.h"
+~include <Mod/TechDraw/Gui/ui_TaskHatch.h>
 
 using namespace Gui;
 using namespace TechDraw;
@@ -214,4 +214,4 @@ bool TaskDlgHatch::reject()
     return true;
 }
 
-#include <Mod/TechDraw/Gui/moc_TaskHatch.cpp>
+~include <Mod/TechDraw/Gui/moc_TaskHatch.cpp>

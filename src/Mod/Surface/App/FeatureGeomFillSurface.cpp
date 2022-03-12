@@ -21,40 +21,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BezierSurface.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <GeomConvert.hxx>
-#include <GeomFill.hxx>
-#include <GeomFill_BezierCurves.hxx>
-#include <GeomFill_BSplineCurves.hxx>
-#include <gp_Trsf.hxx>
-#include <ShapeConstruct_Curve.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <Standard_ConstructionError.hxx>
-#include <StdFail_NotDone.hxx>
-#include <TopExp_Explorer.hxx>
-#endif
+~ifndef _PreComp_
+~include <BRep_Tool.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRepBuilderAPI_NurbsConvert.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Wire.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <Geom_BezierCurve.hxx>
+~include <Geom_BezierSurface.hxx>
+~include <Geom_BSplineCurve.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <Geom_TrimmedCurve.hxx>
+~include <GeomConvert.hxx>
+~include <GeomFill.hxx>
+~include <GeomFill_BezierCurves.hxx>
+~include <GeomFill_BSplineCurves.hxx>
+~include <gp_Trsf.hxx>
+~include <ShapeConstruct_Curve.hxx>
+~include <ShapeFix_Wire.hxx>
+~include <ShapeExtend_WireData.hxx>
+~include <Standard_ConstructionError.hxx>
+~include <StdFail_NotDone.hxx>
+~include <TopExp_Explorer.hxx>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
 
-#include "FeatureGeomFillSurface.h"
+~include "FeatureGeomFillSurface.h"
 
 using namespace Surface;
 

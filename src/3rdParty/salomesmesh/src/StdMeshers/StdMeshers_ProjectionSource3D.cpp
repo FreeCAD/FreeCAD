@@ -25,12 +25,12 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#include "StdMeshers_ProjectionSource3D.hxx"
+~include "StdMeshers_ProjectionSource3D.hxx"
 
-#include "utilities.h"
-#include "SMESH_Gen.hxx"
+~include "utilities.h"
+~include "SMESH_Gen.hxx"
 
-#include <TopoDS.hxx>
+~include <TopoDS.hxx>
 
 using namespace std;
 

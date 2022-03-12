@@ -20,26 +20,26 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "MED_Factory.hxx"
-#include "MED_Utilities.hxx"
-#include "MED_V2_2_Wrapper.hxx"
+~include "MED_Factory.hxx"
+~include "MED_Utilities.hxx"
+~include "MED_V2_2_Wrapper.hxx"
 
-#include <stdio.h>
-#include <sstream>
+~include <stdio.h>
+~include <sstream>
 
-#include <med.h>
+~include <med.h>
 extern "C"
 {
-#ifndef WIN32
-  #include <unistd.h>
-#endif
+~ifndef WIN32
+  ~include <unistd.h>
+~endif
 }
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
-#else
+~else
 static int MYDEBUG = 0;
-#endif
+~endif
 
 namespace MED
 {
@@ -50,7 +50,7 @@ namespace MED
     INITMSG(MYDEBUG,"GetVersionId - theFileName = '"<<theFileName<<"'"<<std::endl);
     EVersion aVersion = eVUnknown;    
 
-#ifndef WIN32
+~ifndef WIN32
     if (access(theFileName.c_str(),F_OK))
       return aVersion;
     if(theDoPreCheckInSeparateProcess){
@@ -68,7 +68,7 @@ namespace MED
       if(aStatus != 0)
         return aVersion;
     }
-#endif
+~endif
     // check compatibility of hdf and med versions
     med_bool hdfok, medok;
     MEDfileCompatibility(theFileName.c_str(), &hdfok, &medok);

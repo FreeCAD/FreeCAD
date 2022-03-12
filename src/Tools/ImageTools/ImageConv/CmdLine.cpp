@@ -30,12 +30,12 @@
 ------------------------------------------------------*/
 
 // if you're using MFC, you'll need to un-comment this line
-// #include "stdafx.h"
+// ~include "stdafx.h"
 
-#include "CmdLine.h"
-#ifdef  Q_WS_WIN
-#	include "crtdbg.h"
-#endif
+~include "CmdLine.h"
+~ifdef  Q_WS_WIN
+~	include "crtdbg.h"
+~endif
 
 /*------------------------------------------------------
   int CCmdLine::SplitLine(int argc, char **argv)
@@ -142,11 +142,11 @@ bool CCmdLine::IsSwitch(const char *pParam)
    {
       // allow negative numbers as arguments.
       // ie., don't count them as switches
-#ifdef  Q_WS_WIN
+~ifdef  Q_WS_WIN
       return (!isdigit(pParam[1]));
-#else
+~else
       return true;
-#endif
+~endif
    }
    else
    {

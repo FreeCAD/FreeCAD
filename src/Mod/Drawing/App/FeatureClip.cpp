@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <boost/regex.hpp>
-#include <iostream>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <App/Application.h>
+~include <boost/regex.hpp>
+~include <iostream>
 
-#include "FeatureClip.h"
-#include "FeatureView.h"
+~include "FeatureClip.h"
+~include "FeatureView.h"
 
 using namespace Drawing;
 using namespace std;
@@ -88,7 +88,7 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     // show clip frame on the page if needed
 
     if (ShowFrame.getValue()) {
-        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\"" 
+        svg << "<rect fill=\"None\" stroke=\"~ff0000\" stroke-width=\"1px\"" 
             << " x=\"" << X.getValue() << "\""
             << " y=\"" << Y.getValue() << "\""
             << " width=\"" << Width.getValue() << "\""
@@ -96,7 +96,7 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     }
 
     // create clipped group
-    svg << "<g clip-path=\"url(#" << Label.getValue() << ")\">" << endl;
+    svg << "<g clip-path=\"url(~" << Label.getValue() << ")\">" << endl;
 
     // get through the children and collect all the views
     const std::vector<App::DocumentObject*> &Grp = Group.getValues();

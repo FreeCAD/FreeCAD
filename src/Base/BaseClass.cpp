@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~endif
 
-#include "BaseClass.h"
-#include "PyObjectBase.h"
+~include "BaseClass.h"
+~include "PyObjectBase.h"
 
 using namespace Base;
 
@@ -63,8 +63,8 @@ void BaseClass::init()
 {
     assert(BaseClass::classTypeId == Type::badType() && "don't init() twice!");
     /* Make sure superclass gets initialized before subclass. */
-    /*assert(strcmp(#_parentclass_), "inherited"));*/
-    /*Type parentType(Type::fromName(#_parentclass_));*/
+    /*assert(strcmp(~_parentclass_), "inherited"));*/
+    /*Type parentType(Type::fromName(~_parentclass_));*/
     /*assert(parentType != Type::badType() && "you forgot init() on parentclass!");*/
 
     /* Set up entry in the type system. */

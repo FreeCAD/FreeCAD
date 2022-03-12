@@ -1,14 +1,14 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include <zlib.h>
+~include <zlib.h>
 
-#include "fcollexceptions.h"
-#include "inflateinputstreambuf.h"
+~include "fcollexceptions.h"
+~include "inflateinputstreambuf.h"
 
-#include "outputstringstream.h"
+~include "outputstringstream.h"
 
 namespace zipios {
 
@@ -45,9 +45,9 @@ InflateInputStreambuf::~InflateInputStreambuf() {
   int err = inflateEnd( &_zs ) ;
   if( err != Z_OK ) {
     cerr << "~inflatebuf: inflateEnd failed" ;
-#ifdef HAVE_ZERROR
+~ifdef HAVE_ZERROR
     cerr << ": " << zError( err ) ;
-#endif
+~endif
     cerr << endl ;
   }
 }
@@ -92,15 +92,15 @@ int InflateInputStreambuf::underflow() {
   // some way to report it to the InflateInputStreambuf user.
   // Until I find out I'll just print a warning to stdout.
   if( err != Z_OK && err != Z_STREAM_END ) {
-#if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
+~if defined (HAVE_STD_IOSTREAM) && defined (USE_STD_IOSTREAM)
     // Throw an exception to make istream set badbit
     OutputStringStream msgs ;
     msgs << "InflateInputStreambuf: inflate failed" ;
-#ifdef HAVE_ZERROR
+~ifdef HAVE_ZERROR
     msgs << ": " << zError( err ) ;
-#endif
+~endif
     throw IOException( msgs.str() ) ;
-#endif
+~endif
     // If HAVE_STD_IOSTREAM not defined we just return eof
     // if no output is produced, and that happens anyway
   }

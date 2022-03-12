@@ -1,11 +1,11 @@
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Import/App/StepShape.h"
+~include "Mod/Import/App/StepShape.h"
 
 // inclusion of the generated files (generated out of StepShapePy.xml)
-#include "StepShapePy.h"
-#include "StepShapePy.cpp"
+~include "StepShapePy.h"
+~include "StepShapePy.cpp"
 
 using namespace Import;
 

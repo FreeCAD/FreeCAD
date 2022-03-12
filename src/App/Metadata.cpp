@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <memory>
-#endif
+~ifndef _PreComp_
+~ include <memory>
+~endif
 
-#include "Metadata.h"
+~include "Metadata.h"
 
-#include <xercesc/sax/HandlerBase.hpp>
-#include <xercesc/framework/LocalFileFormatTarget.hpp>
+~include <xercesc/sax/HandlerBase.hpp>
+~include <xercesc/framework/LocalFileFormatTarget.hpp>
 
-#include "App/Application.h"
-#include "App/Expression.h"
-#include "Base/XMLTools.h"
+~include "App/Application.h"
+~include "App/Expression.h"
+~include "Base/XMLTools.h"
 
 /*
 *** From GCC: ***
@@ -44,12 +44,12 @@ remove this soon. To use "major", include <sys/sysmacros.h>
 directly. If you did not intend to use a system-defined macro
 "major", you should undefine it after including <sys/types.h>.
 */
-#ifdef major
-#undef major
-#endif
-#ifdef minor
-#undef minor
-#endif
+~ifdef major
+~undef major
+~endif
+~ifdef minor
+~undef minor
+~endif
 
 using namespace App;
 namespace fs = boost::filesystem;

@@ -25,9 +25,9 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_FacePosition.hxx"
+~include "SMDS_FacePosition.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

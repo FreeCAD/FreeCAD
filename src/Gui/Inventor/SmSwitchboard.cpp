@@ -43,20 +43,20 @@
 // FIXME: implement proper searching / SearchAction handling  2002-02-07 larsa
 // FIXME: implement proper writing / WriteAction handling  2002-02-07 larsa
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoHandleEventAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/misc/SoChildList.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetMatrixAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoHandleEventAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/misc/SoChildList.h>
+~endif
 
-#include "SmSwitchboard.h"
+~include "SmSwitchboard.h"
 
 
 /*!

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
-#include "DocumentObjectExtensionPy.h"
-#include "DocumentObjectExtensionPy.cpp"
+~include "DocumentObjectExtensionPy.h"
+~include "DocumentObjectExtensionPy.cpp"
 
 using namespace App;
 

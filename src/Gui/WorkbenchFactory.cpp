@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "WorkbenchFactory.h"
-#include "Workbench.h"
+~include "WorkbenchFactory.h"
+~include "Workbench.h"
 
 using namespace Gui;
 

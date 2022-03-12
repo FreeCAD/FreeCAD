@@ -1,10 +1,10 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include "meta-iostreams.h"
+~include "meta-iostreams.h"
 
-#include "collcoll.h"
-#include "zipios_common.h"
+~include "collcoll.h"
+~include "zipios_common.h"
 
 namespace zipios {
 

@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTreeWidget>
-# include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <cfloat>
-# include <Python.h>
-# include <Inventor/system/inttypes.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTreeWidget>
+~ include <TopoDS_Shape.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <cfloat>
+~ include <Python.h>
+~ include <Inventor/system/inttypes.h>
+~endif
 
-#include "Mirroring.h"
-#include "ui_Mirroring.h"
-#include "../App/PartFeature.h"
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/Utilities.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include "Mirroring.h"
+~include "ui_Mirroring.h"
+~include "../App/PartFeature.h"
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/Utilities.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
 using namespace PartGui;
 
@@ -135,7 +135,7 @@ bool Mirroring::accept()
     activeDoc->openTransaction("Mirroring");
 
     QString shape, label;
-    QRegExp rx(QString::fromLatin1(" \\(Mirror #\\d+\\)$"));
+    QRegExp rx(QString::fromLatin1(" \\(Mirror ~\\d+\\)$"));
     QList<QTreeWidgetItem *> items = ui->shapes->selectedItems();
     float normx=0, normy=0, normz=0;
     int index = ui->comboBox->currentIndex();
@@ -153,11 +153,11 @@ bool Mirroring::accept()
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8((*it)->text(0).toUtf8());
         label = QString::fromStdString(escapedstr);
 
-        // if we already have the suffix " (Mirror #<number>)" remove it
+        // if we already have the suffix " (Mirror ~<number>)" remove it
         int pos = label.indexOf(rx);
         if (pos > -1)
             label = label.left(pos);
-        label.append(QString::fromLatin1(" (Mirror #%1)").arg(++count));
+        label.append(QString::fromLatin1(" (Mirror ~%1)").arg(++count));
 
         QString code = QString::fromLatin1(
             "__doc__=FreeCAD.getDocument(\"%1\")\n"
@@ -204,4 +204,4 @@ bool TaskMirroring::accept()
     return widget->accept();
 }
 
-#include "moc_Mirroring.cpp"
+~include "moc_Mirroring.cpp"

@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_ConicalSurface.hxx>
-# include <Geom_Circle.hxx>
-# include <GC_MakeConicalSurface.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Cone.hxx>
-# include <gp_Lin.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_ConicalSurface.hxx>
+~ include <Geom_Circle.hxx>
+~ include <GC_MakeConicalSurface.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Cone.hxx>
+~ include <gp_Lin.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_TrimmedCurve.hxx>
+~ include <Standard_Failure.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "LinePy.h"
-#include "CirclePy.h"
-#include "ConePy.h"
-#include "ConePy.cpp"
+~include "OCCError.h"
+~include "Geometry.h"
+~include "LinePy.h"
+~include "CirclePy.h"
+~include "ConePy.h"
+~include "ConePy.cpp"
 
 using namespace Part;
 

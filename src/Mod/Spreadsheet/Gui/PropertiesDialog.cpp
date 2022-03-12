@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "PropertiesDialog.h"
-#include <Base/Tools.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <App/ExpressionParser.h>
-#include <Gui/CommandT.h>
-#include "ui_PropertiesDialog.h"
+~include "PreCompiled.h"
+~include "PropertiesDialog.h"
+~include <Base/Tools.h>
+~include <App/Range.h>
+~include <App/Document.h>
+~include <App/ExpressionParser.h>
+~include <Gui/CommandT.h>
+~include "ui_PropertiesDialog.h"
 
 using namespace App;
 using namespace Spreadsheet;
@@ -285,4 +285,4 @@ void PropertiesDialog::selectAlias()
     ui->alias->setFocus();
 }
 
-#include "moc_PropertiesDialog.cpp"
+~include "moc_PropertiesDialog.cpp"

@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "Utils.h"
-#include <sstream>
-#include <stdlib.h>
-#include <boost/regex.hpp>
-#include <Base/Exception.h>
-#include "Sheet.h"
+~include "Utils.h"
+~include <sstream>
+~include <stdlib.h>
+~include <boost/regex.hpp>
+~include <Base/Exception.h>
+~include "Sheet.h"
 
 /**
   * Encode \a col as a string.

@@ -25,13 +25,13 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "CompressedVectorReaderImpl.h"
-#include "CheckedFile.h"
-#include "CompressedVectorNodeImpl.h"
-#include "ImageFileImpl.h"
-#include "Packet.h"
-#include "SectionHeaders.h"
-#include "SourceDestBufferImpl.h"
+~include "CompressedVectorReaderImpl.h"
+~include "CheckedFile.h"
+~include "CompressedVectorNodeImpl.h"
+~include "ImageFileImpl.h"
+~include "Packet.h"
+~include "SectionHeaders.h"
+~include "SourceDestBufferImpl.h"
 
 namespace e57
 {
@@ -40,9 +40,9 @@ namespace e57
       isOpen_( false ), // set to true when succeed below
       cVector_( cvi )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "CompressedVectorReaderImpl() called" << std::endl; //???
-#endif
+~endif
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
       /// Allow reading of a completed CompressedVector, whether file is being read
@@ -111,9 +111,9 @@ namespace e57
       imf->file_->seek( sectionLogicalStart, CheckedFile::Logical );
       imf->file_->read( reinterpret_cast<char *>( &sectionHeader ), sizeof( sectionHeader ) );
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       sectionHeader.verify( imf->file_->length( CheckedFile::Physical ) );
-#endif
+~endif
 
       /// Pre-calc end of section, so can tell when we are out of packets.
       sectionEndLogicalOffset_ = sectionLogicalStart + sectionHeader.sectionLogicalLength;
@@ -154,10 +154,10 @@ namespace e57
 
    CompressedVectorReaderImpl::~CompressedVectorReaderImpl()
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "~CompressedVectorReaderImpl() called" << std::endl; //???
                                                                         // dump(4);
-#endif
+~endif
 
       if ( isOpen_ )
       {
@@ -217,9 +217,9 @@ namespace e57
 
    unsigned CompressedVectorReaderImpl::read()
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "CompressedVectorReaderImpl::read() called" << std::endl; //???
-#endif
+~endif
       checkImageFileOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
       checkReaderOpen( __FILE__, __LINE__, static_cast<const char *>( __FUNCTION__ ) );
 
@@ -282,9 +282,9 @@ namespace e57
    uint64_t CompressedVectorReaderImpl::earliestPacketNeededForInput() const
    {
       uint64_t earliestPacketLogicalOffset = E57_UINT64_MAX;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       unsigned earliestChannel = 0;
-#endif
+~endif
 
       for ( unsigned i = 0; i < channels_.size(); i++ )
       {
@@ -298,13 +298,13 @@ namespace e57
             if ( chan->currentPacketLogicalOffset < earliestPacketLogicalOffset )
             {
                earliestPacketLogicalOffset = chan->currentPacketLogicalOffset;
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
                earliestChannel = i;
-#endif
+~endif
             }
          }
       }
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       if ( earliestPacketLogicalOffset == E57_UINT64_MAX )
       {
          std::cout << "earliestPacketNeededForInput returning none found" << std::endl;
@@ -314,7 +314,7 @@ namespace e57
          std::cout << "earliestPacketNeededForInput returning " << earliestPacketLogicalOffset << " for channel["
                    << earliestChannel << "]" << std::endl;
       }
-#endif
+~endif
       return earliestPacketLogicalOffset;
    }
 
@@ -385,7 +385,7 @@ namespace e57
          // Feed into decoder
          const size_t bytesProcessed = channel.decoder->inputProcess( uneatenStart, uneatenLength );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "  stream[" << channel.bytestreamNumber << "]: feeding decoder " << uneatenLength << " bytes"
                    << std::endl;
 
@@ -395,7 +395,7 @@ namespace e57
          }
 
          std::cout << "  stream[" << channel.bytestreamNumber << "]: bytesProcessed=" << bytesProcessed << std::endl;
-#endif
+~endif
 
          // Adjust counts of bytestream location
          channel.currentBytestreamBufferIndex += bytesProcessed;
@@ -404,10 +404,10 @@ namespace e57
          // packet
          if ( channel.isInputBlocked() )
          {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
             std::cout << "  stream[" << channel.bytestreamNumber << "] has exhausted its input in current packet"
                       << std::endl;
-#endif
+~endif
             anyChannelHasExhaustedPacket = true;
             nextPacketLogicalOffset = currentPacketLogicalOffset + dpkt->header.packetLogicalLengthMinus1 + 1;
          }
@@ -446,10 +446,10 @@ namespace e57
             // channel, will skip packet on next iter of loop
             channel.currentBytestreamBufferLength = dpkt->getBytestreamBufferLength( channel.bytestreamNumber );
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
             std::cout << "  set new stream buffer for channel[" << channel.bytestreamNumber
                       << "], length=" << channel.currentBytestreamBufferLength << std::endl;
-#endif
+~endif
             // ??? perform flush if new packet flag set?
          }
       }
@@ -457,9 +457,9 @@ namespace e57
       {
          // Reached end without finding data packet, mark exhausted channels as
          // finished
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
          std::cout << "  at end of data packets" << std::endl;
-#endif
+~endif
          if ( nextPacketLogicalOffset >= sectionEndLogicalOffset_ )
          {
             for ( DecodeChannel &channel : channels_ )
@@ -470,9 +470,9 @@ namespace e57
                   continue;
                }
 
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
                std::cout << "  Marking channel[" << channel.bytestreamNumber << "] as finished" << std::endl;
-#endif
+~endif
                channel.inputFinished = true;
             }
          }
@@ -481,10 +481,10 @@ namespace e57
 
    uint64_t CompressedVectorReaderImpl::findNextDataPacket( uint64_t nextPacketLogicalOffset )
    {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
       std::cout << "  searching for next data packet, nextPacketLogicalOffset=" << nextPacketLogicalOffset
                 << " sectionEndLogicalOffset=" << sectionEndLogicalOffset_ << std::endl;
-#endif
+~endif
 
       /// Starting at nextPacketLogicalOffset, search for next data packet until
       /// hit end of binary section.
@@ -499,9 +499,9 @@ namespace e57
 
          if ( dpkt->header.packetType == DATA_PACKET )
          {
-#ifdef E57_MAX_VERBOSE
+~ifdef E57_MAX_VERBOSE
             std::cout << "  Found next data packet at nextPacketLogicalOffset=" << nextPacketLogicalOffset << std::endl;
-#endif
+~endif
             return nextPacketLogicalOffset;
          }
 
@@ -575,7 +575,7 @@ namespace e57
       }
    }
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
    void CompressedVectorReaderImpl::dump( int indent, std::ostream &os )
    {
       os << space( indent ) << "isOpen:" << isOpen_ << std::endl;
@@ -602,6 +602,6 @@ namespace e57
       os << space( indent ) << "maxRecordCount:          " << maxRecordCount_ << std::endl;
       os << space( indent ) << "sectionEndLogicalOffset: " << sectionEndLogicalOffset_ << std::endl;
    }
-#endif
+~endif
 
 }

@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QContextMenuEvent>
-# include <QMenu>
-# include <QPainter>
-# include <QShortcut>
-# include <QTextCursor>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QContextMenuEvent>
+~ include <QMenu>
+~ include <QPainter>
+~ include <QShortcut>
+~ include <QTextCursor>
+~endif
 
-#include <Base/Parameter.h>
+~include <Base/Parameter.h>
 
-#include "PythonEditor.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Macro.h"
-#include "PythonDebugger.h"
+~include "PythonEditor.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Macro.h"
+~include "PythonDebugger.h"
 
 
 using namespace Gui;
@@ -176,7 +176,7 @@ void PythonEditor::onComment()
             if ( pos+1 > selEnd )
                 break; // end of selection reached
             cursor.setPosition(block.position());
-            cursor.insertText(QLatin1String("#"));
+            cursor.insertText(QLatin1String("~"));
                 selEnd++;
         }
     }
@@ -198,7 +198,7 @@ void PythonEditor::onUncomment()
         if ( pos >= selStart || pos+off >= selStart) {
             if ( pos+1 > selEnd )
                 break; // end of selection reached
-            if (block.text().startsWith(QLatin1String("#"))) {
+            if (block.text().startsWith(QLatin1String("~"))) {
                 cursor.setPosition(block.position());
                 cursor.deleteChar();
                 selEnd--;
@@ -266,7 +266,7 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
 
   const int Standard      = 0;     // Standard text
   const int Digit         = 1;     // Digits
-  const int Comment       = 2;     // Comment begins with #
+  const int Comment       = 2;     // Comment begins with ~
   const int Literal1      = 3;     // String literal beginning with "
   const int Literal2      = 4;     // Other string literal beginning with '
   const int Blockcomment1 = 5;     // Block comments beginning and ending with """
@@ -288,7 +288,7 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
       {
         switch ( ch.unicode() )
         {
-        case '#':
+        case '~':
           {
             // begin a comment
             setFormat( i, 1, this->colorByType(SyntaxHighlighter::Comment));
@@ -471,4 +471,4 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
   setCurrentBlockState(endStateOfLastPara);
 }
 
-#include "moc_PythonEditor.cpp"
+~include "moc_PythonEditor.cpp"

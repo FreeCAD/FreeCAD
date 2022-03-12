@@ -22,28 +22,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTextStream>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/LineGroup.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
-#include "PreferencesGui.h"
-#include "QGIView.h"
-#include "TaskLeaderLine.h"
-#include "ViewProviderLeader.h"
+~include "PreferencesGui.h"
+~include "QGIView.h"
+~include "TaskLeaderLine.h"
+~include "ViewProviderLeader.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

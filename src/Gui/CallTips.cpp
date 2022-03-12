@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QKeyEvent>
-# include <QLabel>
-# include <QPlainTextEdit>
-# include <QTextCursor>
-# include <QToolTip>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QKeyEvent>
+~ include <QLabel>
+~ include <QPlainTextEdit>
+~ include <QTextCursor>
+~ include <QToolTip>
+~endif
 
-#include <App/Property.h>
-#include <App/PropertyContainer.h>
-#include <App/PropertyContainerPy.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentPy.h>
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/DocumentPy.h>
+~include <App/Property.h>
+~include <App/PropertyContainer.h>
+~include <App/PropertyContainerPy.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentPy.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/DocumentPy.h>
 
-#include "CallTips.h"
+~include "CallTips.h"
 
 
 Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
@@ -214,7 +214,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         items.pop_front();
         if (!dict.hasKey(std::string(modname.toLatin1())))
             return tips; // unknown object
-#if 0
+~if 0
         // get the Python object we need
         Py::Object obj = dict.getItem(std::string(modname.toLatin1()));
         while (!items.isEmpty()) {
@@ -226,7 +226,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             else
                 return tips;
         }
-#else
+~else
         // Don't use hasattr & getattr because if a property is bound to a method this will be executed twice.
         PyObject* code = Py_CompileString(static_cast<const char*>(context.toLatin1()), "<CallTipsList>", Py_eval_input);
         if (!code) {
@@ -244,7 +244,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             return tips;
         }
         Py::Object obj(eval, true);
-#endif
+~endif
 
         // Checks whether the type is a subclass of PyObjectBase because to get the doc string
         // of a member we must get it by its type instead of its instance otherwise we get the
@@ -367,11 +367,11 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             //
             // FIXME: Add methods of extension to the current instance and not its type object
             // https://forum.freecadweb.org/viewtopic.php?f=22&t=18105
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447#p154447
-            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290#p155290
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447~p154447
+            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290~p155290
             //
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759#p286759
-            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30#p286772
+            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759~p286759
+            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30~p286772
             Py::Object attr = obj.getAttr(name);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
@@ -489,16 +489,16 @@ void CallTipsList::showTips(const QString& line)
     static const char * const forbidden_xpm[]={
             "8 8 3 1",
             ". c None",
-            "# c #ff0000",
-            "a c #ffffff",
-            "..####..",
-            ".######.",
-            "########",
-            "#aaaaaa#",
-            "#aaaaaa#",
-            "########",
-            ".######.",
-            "..####.."};
+            "~ c ~ff0000",
+            "a c ~ffffff",
+            "..~~~~..",
+            ".~~~~~~.",
+            "~~~~~~~~",
+            "~aaaaaa~",
+            "~aaaaaa~",
+            "~~~~~~~~",
+            ".~~~~~~.",
+            "..~~~~.."};
     static QPixmap forbidden_icon(forbidden_xpm);
     static QPixmap forbidden_type_module_icon = BitmapFactory().merge(type_module_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
     static QPixmap forbidden_type_class_icon = BitmapFactory().merge(type_class_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
@@ -778,4 +778,4 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     return stripped;
 }
 
-#include "moc_CallTips.cpp"
+~include "moc_CallTips.cpp"

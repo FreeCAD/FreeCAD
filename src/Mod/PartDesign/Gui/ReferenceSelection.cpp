@@ -20,36 +20,36 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <QDialog>
-#endif
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <QDialog>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/OriginFeature.h>
-#include <App/Part.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/PartDesign/App/Feature.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <App/OriginFeature.h>
+~include <App/Part.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/PartDesign/App/Feature.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/DatumLine.h>
+~include <Mod/PartDesign/App/DatumPlane.h>
+~include <Mod/PartDesign/App/DatumPoint.h>
 
-#include "ui_DlgReference.h"
-#include "ReferenceSelection.h"
-#include "TaskFeaturePick.h"
-#include "Utils.h"
+~include "ui_DlgReference.h"
+~include "ReferenceSelection.h"
+~include "TaskFeaturePick.h"
+~include "Utils.h"
 
 
 using namespace PartDesignGui;
@@ -77,14 +77,14 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
 
     // The flag was used to be set. So, this block will never be treated and really doesn't make sense anyway
-#if 0
+~if 0
     if (!type.testFlag(AllowSelection::OTHERBODY)) {
         if (support == NULL)
             return false;
         if (pObj != support)
             return false;
     }
-#endif
+~endif
     // Handle selection of geometry elements
     if (!sSubName || sSubName[0] == '\0')
         return type.testFlag(AllowSelection::WHOLE);

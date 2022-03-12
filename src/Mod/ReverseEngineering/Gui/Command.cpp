@@ -21,47 +21,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <BRep_Builder.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <TopoDS_Compound.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QMessageBox>
+~ include <BRep_Builder.hxx>
+~ include <BRepBuilderAPI_MakePolygon.hxx>
+~ include <TopoDS_Compound.hxx>
+~endif
 
-#include <sstream>
+~include <sstream>
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/Points/App/Structured.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Approximation.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/FaceMakerCheese.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Part/App/Tools.h>
+~include <Mod/Points/App/Structured.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Approximation.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Base/Builder3D.h>
-#include <Base/CoordinateSystem.h>
-#include <Base/Converter.h>
-#include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObjectGroup.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Base/Builder3D.h>
+~include <Base/CoordinateSystem.h>
+~include <Base/Converter.h>
+~include <Base/Tools.h>
 
-#include "../App/ApproxSurface.h"
-#include "FitBSplineSurface.h"
-#include "Poisson.h"
-#include "Segmentation.h"
-#include "SegmentationManual.h"
+~include "../App/ApproxSurface.h"
+~include "FitBSplineSurface.h"
+~include "Poisson.h"
+~include "Segmentation.h"
+~include "SegmentationManual.h"
 
 using namespace std;
 

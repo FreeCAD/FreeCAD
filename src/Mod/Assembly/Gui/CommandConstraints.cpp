@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#include <QInputDialog>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~include <QInputDialog>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
 
-#include <Mod/Assembly/App/Product.h>
-#include <Mod/Assembly/App/ProductRef.h>
-#include <Mod/Assembly/App/ConstraintGroup.h>
-//#include <Mod/Assembly/Gui/TaskDlgAssemblyConstraints.h>
+~include <Mod/Assembly/App/Product.h>
+~include <Mod/Assembly/App/ProductRef.h>
+~include <Mod/Assembly/App/ConstraintGroup.h>
+//~include <Mod/Assembly/Gui/TaskDlgAssemblyConstraints.h>
 
 
 using namespace std;

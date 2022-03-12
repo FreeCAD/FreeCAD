@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QCoreApplication>
-# include <QDate>
-# include <QDesktopServices>
-# include <QDir>
-# include <QLocale>
-# include <QMessageBox>
-# include <QSettings>
-# include <QUrl>
-# include <climits>
-# include <cmath>
-#endif
+~ifndef _PreComp_
+~ include <QCoreApplication>
+~ include <QDate>
+~ include <QDesktopServices>
+~ include <QDir>
+~ include <QLocale>
+~ include <QMessageBox>
+~ include <QSettings>
+~ include <QUrl>
+~ include <climits>
+~ include <cmath>
+~endif
 
-#include "DlgSettingsCacheDirectory.h"
-#include "ui_DlgSettingsCacheDirectory.h"
-#include "DocumentRecovery.h"
-#include "MainWindow.h"
-#include <App/Application.h>
-#include <App/Document.h>
+~include "DlgSettingsCacheDirectory.h"
+~include "ui_DlgSettingsCacheDirectory.h"
+~include "DocumentRecovery.h"
+~include "MainWindow.h"
+~include <App/Application.h>
+~include <App/Document.h>
 
 using namespace Gui::Dialog;
 
@@ -264,7 +264,7 @@ bool ApplicationCache::performAction(qint64 total)
 qint64 ApplicationCache::size() const
 {
     // QDirIterator lists some directories twice
-#if 0
+~if 0
     QDir cache = QString::fromStdString(App::Application::getUserCachePath());
     QDirIterator it(cache, QDirIterator::Subdirectories);
     qint64 total = 0;
@@ -274,10 +274,10 @@ qint64 ApplicationCache::size() const
     }
 
     return total;
-#else
+~else
     qint64 total = dirSize(QString::fromStdString(App::Application::getUserCachePath()));
     return total;
-#endif
+~endif
 }
 
 /*!
@@ -388,4 +388,4 @@ void ApplicationCacheSettings::setCheckPeriod(int period)
 }
 
 
-#include "moc_DlgSettingsCacheDirectory.cpp"
+~include "moc_DlgSettingsCacheDirectory.cpp"

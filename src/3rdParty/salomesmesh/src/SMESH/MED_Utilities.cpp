@@ -19,16 +19,16 @@
 //
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "MED_Utilities.hxx"
-#include "MED_Common.hxx"
+~include "MED_Utilities.hxx"
+~include "MED_Common.hxx"
 
 using namespace std;
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
-#else
+~else
 // static int MYDEBUG = 0;
-#endif
+~endif
 
 
 int MED::PrefixPrinter::myCounter = 0;

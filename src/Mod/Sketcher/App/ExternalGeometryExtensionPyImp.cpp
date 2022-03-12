@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-//#ifndef _PreComp_
-//# include <gp.hxx>
-//#endif
+//~ifndef _PreComp_
+//~ include <gp.hxx>
+//~endif
 
-#include <Mod/Part/App/Geometry.h>
-#include "SketchObject.h"
-#include "ExternalGeometryExtensionPy.h"
-#include "ExternalGeometryExtensionPy.cpp"
+~include <Mod/Part/App/Geometry.h>
+~include "SketchObject.h"
+~include "ExternalGeometryExtensionPy.h"
+~include "ExternalGeometryExtensionPy.cpp"
 
 using namespace Sketcher;
 

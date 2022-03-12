@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "GeometryPyCXX.h"
+~include "GeometryPyCXX.h"
 
 // inclusion of the generated files (generated out of AxisPy.xml)
-#include "AxisPy.h"
-#include "AxisPy.cpp"
+~include "AxisPy.h"
+~include "AxisPy.cpp"
 
-#include "VectorPy.h"
-#include "PlacementPy.h"
+~include "VectorPy.h"
+~include "PlacementPy.h"
 
 using namespace Base;
 

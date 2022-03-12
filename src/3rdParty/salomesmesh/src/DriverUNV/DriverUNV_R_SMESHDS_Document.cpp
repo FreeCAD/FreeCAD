@@ -19,4 +19,4 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "DriverUNV_R_SMESHDS_Document.h"
+~include "DriverUNV_R_SMESHDS_Document.h"

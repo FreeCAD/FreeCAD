@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/WidgetFactory.h>
-#include <Gui/Language/Translator.h>
-#include "ViewProviderPath.h"
-#include "DlgSettingsPathColor.h"
-#include "ViewProviderPathCompound.h"
-#include "ViewProviderPathShape.h"
-#include "ViewProviderArea.h"
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/WidgetFactory.h>
+~include <Gui/Language/Translator.h>
+~include "ViewProviderPath.h"
+~include "DlgSettingsPathColor.h"
+~include "ViewProviderPathCompound.h"
+~include "ViewProviderPathShape.h"
+~include "ViewProviderArea.h"
 
 // use a different name to CreateCommand()
 void CreatePathCommands(void);

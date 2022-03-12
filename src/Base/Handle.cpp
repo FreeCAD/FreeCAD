@@ -22,16 +22,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <iostream>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~ include <iostream>
+~endif
 
-#include <QAtomicInt>
+~include <QAtomicInt>
 
-#include "Handle.h"
+~include "Handle.h"
 
 
 using namespace Base;

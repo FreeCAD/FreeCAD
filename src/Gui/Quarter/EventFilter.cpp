@@ -34,14 +34,14 @@
 
 */
 
-#include <QEvent>
-#include <QMouseEvent>
+~include <QEvent>
+~include <QMouseEvent>
 
-#include "QuarterWidget.h"
-#include "devices/Keyboard.h"
-#include "devices/Mouse.h"
-#include "devices/SpaceNavigatorDevice.h"
-#include "eventhandlers/EventFilter.h"
+~include "QuarterWidget.h"
+~include "devices/Keyboard.h"
+~include "devices/Mouse.h"
+~include "devices/SpaceNavigatorDevice.h"
+~include "eventhandlers/EventFilter.h"
 
 
 namespace SIM { namespace Coin3D { namespace Quarter {
@@ -77,7 +77,7 @@ public:
   }
 };
 
-#define PRIVATE(obj) obj->pimpl
+~define PRIVATE(obj) obj->pimpl
 
 }}} // namespace
 
@@ -98,9 +98,9 @@ EventFilter::EventFilter(QObject * parent)
   PRIVATE(this)->devices += new Mouse(quarter);
   PRIVATE(this)->devices += new Keyboard(quarter);
 
-#ifdef HAVE_SPACENAV_LIB
+~ifdef HAVE_SPACENAV_LIB
   PRIVATE(this)->devices += new SpaceNavigatorDevice(quarter);
-#endif // HAVE_SPACENAV_LIB
+~endif // HAVE_SPACENAV_LIB
 
 }
 
@@ -176,4 +176,4 @@ EventFilter::globalMousePosition() const
   return PRIVATE(this)->globalmousepos;
 }
 
-#undef PRIVATE
+~undef PRIVATE

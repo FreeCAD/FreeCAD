@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QListWidget>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QListWidget>
+~ include <QMessageBox>
+~endif
 
-#include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeatureFillet.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/FeatureFillet.h>
 
-#include "ui_TaskFilletParameters.h"
-#include "TaskFilletParameters.h"
+~include "ui_TaskFilletParameters.h"
+~include "TaskFilletParameters.h"
 
 
 using namespace PartDesignGui;
@@ -309,4 +309,4 @@ bool TaskDlgFilletParameters::accept()
     return TaskDlgDressUpParameters::accept();
 }
 
-#include "moc_TaskFilletParameters.cpp"
+~include "moc_TaskFilletParameters.cpp"

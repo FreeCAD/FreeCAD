@@ -21,49 +21,49 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QBuffer>
-# include <QContextMenuEvent>
-# include <QFileInfo>
-# include <QFileDialog>
-# include <QGLWidget>
-# include <QGraphicsRectItem>
-# include <QGraphicsSvgItem>
-# include <QGridLayout>
-# include <QGroupBox>
-# include <QListWidget>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QPainter>
-# include <QPaintEvent>
-# include <QPrinter>
-# include <QPrintDialog>
-# include <QPrintPreviewDialog>
-# include <QPrintPreviewWidget>
-# include <QScrollArea>
-# include <QSlider>
-# include <QStatusBar>
-# include <QSvgRenderer>
-# include <QSvgWidget>
-# include <QWheelEvent>
-# include <cmath>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QApplication>
+~ include <QBuffer>
+~ include <QContextMenuEvent>
+~ include <QFileInfo>
+~ include <QFileDialog>
+~ include <QGLWidget>
+~ include <QGraphicsRectItem>
+~ include <QGraphicsSvgItem>
+~ include <QGridLayout>
+~ include <QGroupBox>
+~ include <QListWidget>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QMouseEvent>
+~ include <QPainter>
+~ include <QPaintEvent>
+~ include <QPrinter>
+~ include <QPrintDialog>
+~ include <QPrintPreviewDialog>
+~ include <QPrintPreviewWidget>
+~ include <QScrollArea>
+~ include <QSlider>
+~ include <QStatusBar>
+~ include <QSvgRenderer>
+~ include <QSvgWidget>
+~ include <QWheelEvent>
+~ include <cmath>
+~endif
 
-#include "DrawingView.h"
-#include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Base/gzstream.h>
-#include <Base/PyObjectBase.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/FileDialog.h>
-#include <Gui/WaitCursor.h>
+~include "DrawingView.h"
+~include <Base/Parameter.h>
+~include <Base/Stream.h>
+~include <Base/gzstream.h>
+~include <Base/PyObjectBase.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/FileDialog.h>
+~include <Gui/WaitCursor.h>
 
 using namespace DrawingGui;
 
@@ -136,7 +136,7 @@ void SvgView::openFile(const QFile &file)
     s->addItem(m_outlineItem);
 
     // use the actual bounding box of the SVG template to avoid any scaling effect
-    // when printing the drawing (#0000932)
+    // when printing the drawing (~0000932)
     s->setSceneRect(m_outlineItem->boundingRect());
 }
 
@@ -145,9 +145,9 @@ void SvgView::setRenderer(RendererType type)
     m_renderer = type;
 
     if (m_renderer == OpenGL) {
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
         setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-#endif
+~endif
     } else {
         setViewport(new QWidget);
     }
@@ -155,11 +155,11 @@ void SvgView::setRenderer(RendererType type)
 
 void SvgView::setHighQualityAntialiasing(bool highQualityAntialiasing)
 {
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     setRenderHint(QPainter::Antialiasing, highQualityAntialiasing);
-#else
+~else
     Q_UNUSED(highQualityAntialiasing);
-#endif
+~endif
 }
 
 void SvgView::setViewBackground(bool enable)
@@ -229,27 +229,27 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
     m_nativeAction = new QAction(tr("&Native"), this);
     m_nativeAction->setCheckable(true);
     m_nativeAction->setChecked(false);
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     m_glAction = new QAction(tr("&OpenGL"), this);
     m_glAction->setCheckable(true);
-#endif
+~endif
     m_imageAction = new QAction(tr("&Image"), this);
     m_imageAction->setCheckable(true);
 
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     m_highQualityAntialiasingAction = new QAction(tr("&High Quality Antialiasing"), this);
     m_highQualityAntialiasingAction->setEnabled(false);
     m_highQualityAntialiasingAction->setCheckable(true);
     m_highQualityAntialiasingAction->setChecked(false);
     connect(m_highQualityAntialiasingAction, SIGNAL(toggled(bool)),
             m_view, SLOT(setHighQualityAntialiasing(bool)));
-#endif
+~endif
 
     QActionGroup *rendererGroup = new QActionGroup(this);
     rendererGroup->addAction(m_nativeAction);
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     rendererGroup->addAction(m_glAction);
-#endif
+~endif
     rendererGroup->addAction(m_imageAction);
     connect(rendererGroup, SIGNAL(triggered(QAction *)),
             this, SLOT(setRenderer(QAction *)));
@@ -373,18 +373,18 @@ void DrawingView::contextMenuEvent(QContextMenuEvent *event)
 
 void DrawingView::setRenderer(QAction *action)
 {
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     m_highQualityAntialiasingAction->setEnabled(false);
-#endif
+~endif
 
     if (action == m_nativeAction)
         m_view->setRenderer(SvgView::Native);
-#ifndef QT_NO_OPENGL
+~ifndef QT_NO_OPENGL
     else if (action == m_glAction) {
         m_highQualityAntialiasingAction->setEnabled(true);
         m_view->setRenderer(SvgView::OpenGL);
     }
-#endif
+~endif
     else if (action == m_imageAction) {
         m_view->setRenderer(SvgView::Image);
     }
@@ -612,12 +612,12 @@ void DrawingView::print(QPrinter* printer)
         return;
     }
     QRect rect = printer->pageLayout().fullRectPixels(printer->resolution());
-#ifdef Q_OS_WIN32
+~ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
         rect = printer->pageLayout().paintRectPixels(printer->resolution());
-#endif
+~endif
     this->m_view->scene()->render(&p, rect);
     p.end();
 }
@@ -686,4 +686,4 @@ PyObject* DrawingView::getPyObject()
     return Gui::MDIView::getPyObject();
 }
 
-#include "moc_DrawingView.cpp"
+~include "moc_DrawingView.cpp"

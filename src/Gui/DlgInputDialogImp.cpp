@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QPushButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QPushButton>
+~endif
 
-#include "DlgInputDialogImp.h"
-#include "ui_DlgInputDialog.h"
-#include "SpinBox.h"
+~include "DlgInputDialogImp.h"
+~include "ui_DlgInputDialog.h"
+~include "SpinBox.h"
 
 
 using namespace Gui::Dialog;
@@ -152,4 +152,4 @@ QComboBox *DlgInputDialogImp::getComboBox() const
     return ui->comboBox;
 }
 
-#include "moc_DlgInputDialogImp.cpp"
+~include "moc_DlgInputDialogImp.cpp"

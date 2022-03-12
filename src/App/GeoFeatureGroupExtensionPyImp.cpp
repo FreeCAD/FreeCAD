@@ -22,11 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of GeoFeatureGroupExtensionPy.xml)
-#include "GeoFeatureGroupExtensionPy.h"
-#include "GeoFeatureGroupExtensionPy.cpp"
+~include "GeoFeatureGroupExtensionPy.h"
+~include "GeoFeatureGroupExtensionPy.cpp"
 
 using namespace App;
 

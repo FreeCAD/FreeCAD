@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawView.h>
 
 // inclusion of the generated files (generated out of DrawViewPy.xml)
-#include <Mod/TechDraw/App/DrawViewPy.h>
-#include <Mod/TechDraw/App/DrawViewPy.cpp>
+~include <Mod/TechDraw/App/DrawViewPy.h>
+~include <Mod/TechDraw/App/DrawViewPy.cpp>
 
 using namespace TechDraw;
 

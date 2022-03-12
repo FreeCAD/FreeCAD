@@ -22,53 +22,53 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QList>
-# include <QMenu>
-# include <QMessageBox>
-# include <QPointer>
-# include <QTextStream>
-# include <boost_bind_bind.hpp>
-# include <boost_signals2.hpp>
-# include <boost/signals2/connection.hpp>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QList>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QPointer>
+~ include <QTextStream>
+~ include <boost_bind_bind.hpp>
+~ include <boost_signals2.hpp>
+~ include <boost/signals2/connection.hpp>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
-#include "MDIViewPage.h"
-#include "PreferencesGui.h"
-#include "QGITemplate.h"
-#include "QGVPage.h"
-#include "ViewProviderTemplate.h"
-#include "ViewProviderPage.h"
+~include "MDIViewPage.h"
+~include "PreferencesGui.h"
+~include "QGITemplate.h"
+~include "QGVPage.h"
+~include "ViewProviderTemplate.h"
+~include "ViewProviderPage.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 namespace bp = boost::placeholders;
 
-#define _SHOWDRAWING 10
-#define _TOGGLEUPDATE 11
+~define _SHOWDRAWING 10
+~define _TOGGLEUPDATE 11
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
@@ -144,7 +144,7 @@ void ViewProviderPage::hide(void)
 void ViewProviderPage::removeMDIView(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
-        // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614~p182614
         //Gui::getMainWindow()->activatePreviousWindow();
         QList<QWidget*> wList= Gui::getMainWindow()->windows();
         bool found = wList.contains(m_mdiView);
@@ -407,7 +407,7 @@ void ViewProviderPage::finishRestoring()
 {
     m_docReady = true;
     //control drawing opening on restore based on Preference
-    //mantis #2967 ph2 - don't even show blank page
+    //mantis ~2967 ph2 - don't even show blank page
     if (Preferences::keepPagesUpToDate()) {
         static_cast<void>(showMDIViewPage());
     }

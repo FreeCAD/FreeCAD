@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderSetGeometry.h"
-//#include <Gui/Control.h>
+~include "ViewProviderSetGeometry.h"
+//~include <Gui/Control.h>
 
 using namespace FemGui;
 

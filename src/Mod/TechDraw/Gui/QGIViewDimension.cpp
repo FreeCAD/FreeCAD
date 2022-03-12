@@ -20,68 +20,68 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES            //re Windows & M_PI issues
-#endif
-#include <cmath>
+~ifdef FC_OS_WIN32
+~define _USE_MATH_DEFINES            //re Windows & M_PI issues
+~endif
+~include <cmath>
 
-#ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+~ifndef _PreComp_
+  ~include <BRep_Builder.hxx>
+  ~include <TopoDS_Compound.hxx>
+  ~ include <TopoDS_Shape.hxx>
+  ~ include <TopoDS_Edge.hxx>
+  ~ include <TopoDS.hxx>
+  ~ include <BRepAdaptor_Curve.hxx>
+  ~ include <Precision.hxx>
 
-  # include <QApplication>
-  # include <QDebug>
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
+  ~ include <QApplication>
+  ~ include <QDebug>
+  ~ include <QGraphicsScene>
+  ~ include <QGraphicsSceneMouseEvent>
+  ~ include <QPainter>
+  ~ include <QPainterPath>
+  ~ include <QPaintDevice>
+  ~ include <QSvgGenerator>
 
-#endif
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/DrawViewDimension.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "PreferencesGui.h"
 
-#include "QGCustomLabel.h"
-#include "QGCustomBorder.h"
-#include "QGCustomText.h"
-#include "QGICaption.h"
-#include "QGCustomImage.h"
+~include "QGCustomLabel.h"
+~include "QGCustomBorder.h"
+~include "QGCustomText.h"
+~include "QGICaption.h"
+~include "QGCustomImage.h"
 
-#include "QGIArrow.h"
-#include "QGIDimLines.h"
-#include "QGIViewDimension.h"
-#include "ViewProviderDimension.h"
-#include "DrawGuiUtil.h"
-#include "QGIVertex.h"
+~include "QGIArrow.h"
+~include "QGIDimLines.h"
+~include "QGIViewDimension.h"
+~include "ViewProviderDimension.h"
+~include "DrawGuiUtil.h"
+~include "QGIVertex.h"
 
-#define NORMAL 0
-#define PRE 1
-#define SEL 2
+~define NORMAL 0
+~define PRE 1
+~define SEL 2
 
 
 //TODO: hide the Qt coord system (+y down).  
@@ -2572,4 +2572,4 @@ void QGIViewDimension::makeMarkC(double x, double y, QColor c) const
 
 
 
-#include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
+~include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

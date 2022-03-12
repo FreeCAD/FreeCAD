@@ -21,35 +21,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Plane.hxx>
+~ include <Precision.hxx>
 
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QMessageBox>
+~ include <QRegExp>
+~ include <QTextStream>
 
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <sstream>
-#endif
+~ include <TopoDS.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pln.hxx>
+~ include <sstream>
+~endif
 
-#include "TaskFemConstraintOnBoundary.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
+~include "TaskFemConstraintOnBoundary.h"
+~include <App/Application.h>
+~include <Base/Tools.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
 
 
 using namespace FemGui;
@@ -131,4 +131,4 @@ void TaskFemConstraintOnBoundary::exitSelectionChangeMode()
     Gui::Selection().clearSelection();
 }
 
-#include "moc_TaskFemConstraintOnBoundary.cpp"
+~include "moc_TaskFemConstraintOnBoundary.cpp"

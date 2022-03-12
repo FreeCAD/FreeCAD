@@ -24,22 +24,22 @@
 // Based on DlgToolbars.cpp
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QDebug>
-# include <QInputDialog>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QDebug>
+~ include <QInputDialog>
+~endif
 
-#include "DlgWorkbenchesImp.h"
-#include "ui_DlgWorkbenches.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "MainWindow.h"
-#include "Widgets.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "QListWidgetCustom.h"
+~include "DlgWorkbenchesImp.h"
+~include "ui_DlgWorkbenches.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Command.h"
+~include "MainWindow.h"
+~include "Widgets.h"
+~include "Workbench.h"
+~include "WorkbenchManager.h"
+~include "QListWidgetCustom.h"
 
 using namespace Gui::Dialog;
 
@@ -212,11 +212,11 @@ QStringList DlgWorkbenchesImp::load_enabled_workbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     enabled_wbs = QString::fromStdString(hGrp->GetASCII("Enabled", all_workbenches.toStdString().c_str()).c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     enabled_wbs_list = enabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
+~else
     enabled_wbs_list = enabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
+~endif
 
     if (enabled_wbs_list.at(0) == all_workbenches) {
         enabled_wbs_list.removeFirst();
@@ -237,11 +237,11 @@ QStringList DlgWorkbenchesImp::load_disabled_workbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", ""));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
+~else
     disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
+~endif
 
     return disabled_wbs_list;
 }
@@ -274,5 +274,5 @@ void DlgWorkbenchesImp::save_workbenches()
     hGrp->SetASCII("Disabled", disabled_wbs.toLatin1());
 }
 
-#include "moc_DlgWorkbenchesImp.cpp"
+~include "moc_DlgWorkbenchesImp.cpp"
 

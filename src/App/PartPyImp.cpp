@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of PartPy.xml)
-#include "PartPy.h"
-#include "PartPy.cpp"
+~include "PartPy.h"
+~include "PartPy.cpp"
 
 using namespace App;
 

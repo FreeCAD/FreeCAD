@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Base/Placement.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <Base/Placement.h>
 
-#include "Body.h"
-#include "BodyPy.h"
-#include "FeatureBase.h"
-#include "FeatureSketchBased.h"
-#include "FeatureTransformed.h"
-#include "ShapeBinder.h"
+~include "Body.h"
+~include "BodyPy.h"
+~include "FeatureBase.h"
+~include "FeatureSketchBased.h"
+~include "FeatureTransformed.h"
+~include "ShapeBinder.h"
 
 using namespace PartDesign;
 
@@ -494,9 +494,9 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
-#if 1
+~if 1
     return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
-#else
+~else
     // The following code returns Body shape only if there is at least one
     // child visible in the body (when show through, not show tip). The
     // original intention is to sync visual to shape returned by
@@ -519,7 +519,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     if(pmat && transform)
         *pmat *= Placement.getValue().toMatrix();
     return const_cast<Body*>(this);
-#endif
+~endif
 }
 
 void Body::onDocumentRestored()

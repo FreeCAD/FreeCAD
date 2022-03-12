@@ -17,8 +17,8 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "SMDS_VtkCellIterator.hxx"
-#include "utilities.h"
+~include "SMDS_VtkCellIterator.hxx"
+~include "utilities.h"
 
 SMDS_VtkCellIterator::SMDS_VtkCellIterator(SMDS_Mesh* mesh, int vtkCellId, SMDSAbs_EntityType aType) :
   _mesh(mesh), _cellId(vtkCellId), _index(0), _type(aType)
@@ -132,9 +132,9 @@ SMDS_VtkCellIteratorToUNV::SMDS_VtkCellIteratorToUNV(SMDS_Mesh* mesh, int vtkCel
     break;
   }
   case SMDSEntity_Polygon:
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon:
-#endif
+~endif
   case SMDSEntity_Polyhedra:
   case SMDSEntity_Quad_Polyhedra:
   default:

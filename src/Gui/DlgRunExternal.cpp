@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QFileDialog>
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QFileDialog>
+~ include <QMessageBox>
+~endif
 
-#include "Application.h"
-#include "MainWindow.h"
-#include "DlgRunExternal.h"
-#include "FileDialog.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "DlgRunExternal.h"
+~include "FileDialog.h"
 
-#include "ui_DlgRunExternal.h"
+~include "ui_DlgRunExternal.h"
 
 
 using namespace Gui::Dialog;
@@ -130,5 +130,5 @@ void DlgRunExternal::on_chooseProgram_clicked()
     }
 }
 
-#include "moc_DlgRunExternal.cpp"
+~include "moc_DlgRunExternal.cpp"
 

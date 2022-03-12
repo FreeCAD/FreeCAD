@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Document.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
 
-#include "ui_TaskAppearance.h"
-#include "TaskAppearance.h"
+~include "ui_TaskAppearance.h"
+~include "TaskAppearance.h"
 
 
 using namespace Gui::TaskView;
@@ -306,4 +306,4 @@ std::vector<Gui::ViewProvider*> TaskAppearance::getSelection() const
 }
 
 
-#include "moc_TaskAppearance.cpp"
+~include "moc_TaskAppearance.cpp"

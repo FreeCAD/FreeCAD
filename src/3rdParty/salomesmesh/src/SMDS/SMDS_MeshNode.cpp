@@ -22,19 +22,19 @@
 
 //  SMESH SMDS : implementation of Salome mesh data structure
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_SpacePosition.hxx"
-#include "SMDS_IteratorOfElements.hxx"
-#include "SMDS_Mesh.hxx"
-#include <vtkUnstructuredGrid.h>
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_SpacePosition.hxx"
+~include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_Mesh.hxx"
+~include <vtkUnstructuredGrid.h>
 
-#include "utilities.h"
-#include "Utils_SALOME_Exception.hxx"
-#include <cassert>
+~include "utilities.h"
+~include "Utils_SALOME_Exception.hxx"
+~include <cassert>
 
 using namespace std;
 
@@ -263,7 +263,7 @@ int SMDS_MeshNode::NbNodes() const
 
 double* SMDS_MeshNode::getCoord() const
 {
-#if 0
+~if 0
   double coord[3];
   double *coord2;
   vtkUnstructuredGrid *grid;
@@ -289,9 +289,9 @@ double* SMDS_MeshNode::getCoord() const
      return coord2;
   }
   return 0;
-#else
+~else
   return SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetPoint(myVtkID);
-#endif
+~endif
 }
 
 double SMDS_MeshNode::X() const

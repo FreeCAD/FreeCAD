@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_BezierCurve.hxx>
-# include <gp_Pnt.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <math_Matrix.hxx>
-# include <math_Gauss.hxx>
-# include <BSplCLib.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_BezierCurve.hxx>
+~ include <gp_Pnt.hxx>
+~ include <TColStd_Array1OfReal.hxx>
+~ include <TColgp_Array1OfPnt.hxx>
+~ include <math_Matrix.hxx>
+~ include <math_Gauss.hxx>
+~ include <BSplCLib.hxx>
+~endif
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "BezierCurvePy.h"
-#include "BezierCurvePy.cpp"
+~include "OCCError.h"
+~include "Geometry.h"
+~include "BezierCurvePy.h"
+~include "BezierCurvePy.cpp"
 
 using namespace Part;
 

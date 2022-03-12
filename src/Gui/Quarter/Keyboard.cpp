@@ -37,21 +37,21 @@
   the QuarterWidget.
 */
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4267)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4267)
+~endif
 
-#include <QEvent>
-#include <QKeyEvent>
-#include <Inventor/events/SoEvent.h>
+~include <QEvent>
+~include <QKeyEvent>
+~include <Inventor/events/SoEvent.h>
 
-#include "KeyboardP.h"
-#include "devices/Keyboard.h"
+~include "KeyboardP.h"
+~include "devices/Keyboard.h"
 
 
 using namespace SIM::Coin3D::Quarter;
 
-#define PRIVATE(obj) obj->pimpl
+~define PRIVATE(obj) obj->pimpl
 
 Keyboard::Keyboard()
 {
@@ -83,4 +83,4 @@ Keyboard::translateEvent(QEvent * event)
   }
 }
 
-#undef PRIVATE
+~undef PRIVATE

@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#include <QString>
+~include <QString>
 
-#include "UnitsSchemaFemMilliMeterNewton.h"
+~include "UnitsSchemaFemMilliMeterNewton.h"
 
 
 using namespace Base;

@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QKeyEvent>
-#endif
+~ifndef _PreComp_
+~ include <QKeyEvent>
+~endif
 
-#include "ShortcutListener.h"
-#include "ViewProviderSketch.h"
+~include "ShortcutListener.h"
+~include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
 

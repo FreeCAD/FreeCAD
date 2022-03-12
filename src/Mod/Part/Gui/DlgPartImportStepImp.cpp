@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <qlineedit.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <qlineedit.h>
+~endif
 
-#include <Gui/FileDialog.h>
-#include <Gui/MainWindow.h>
-#include "DlgPartImportStepImp.h"
-#include "ui_DlgPartImportStep.h"
+~include <Gui/FileDialog.h>
+~include <Gui/MainWindow.h>
+~include "DlgPartImportStepImp.h"
+~include "ui_DlgPartImportStep.h"
 
 using namespace PartGui;
 
@@ -77,4 +77,4 @@ void DlgPartImportStepImp::onChooseFileName()
 }
 
 
-#include "moc_DlgPartImportStepImp.cpp"
+~include "moc_DlgPartImportStepImp.cpp"

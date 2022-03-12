@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "ViewProviderTrajectoryCompound.h"
-#include <Gui/Control.h>
-#include <Mod/Robot/Gui/TaskDlgTrajectoryCompound.h>
-#include <Mod/Robot/App/TrajectoryCompound.h>
+~include "ViewProviderTrajectoryCompound.h"
+~include <Gui/Control.h>
+~include <Mod/Robot/Gui/TaskDlgTrajectoryCompound.h>
+~include <Mod/Robot/App/TrajectoryCompound.h>
 
 using namespace Gui;
 using namespace RobotGui;

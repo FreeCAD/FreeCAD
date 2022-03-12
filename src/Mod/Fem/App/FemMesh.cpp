@@ -21,70 +21,70 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cstdlib>
-# include <memory>
-# include <Python.h>
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <gp_Pnt.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
-# include <ShapeAnalysis_ShapeTolerance.hxx>
+~ifndef _PreComp_
+~ include <cstdlib>
+~ include <memory>
+~ include <Python.h>
+~ include <Bnd_Box.hxx>
+~ include <BRep_Tool.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~ include <TopoDS_Vertex.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <gp_Pnt.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <ShapeAnalysis_ShapeTolerance.hxx>
 
-# include <boost/assign/list_of.hpp>
-# include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
+~ include <boost/assign/list_of.hpp>
+~ include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
 
-# include <SMESH_Gen.hxx>
-# include <SMESH_Mesh.hxx>
-# include <SMESH_MeshEditor.hxx>
-# include <SMESH_Group.hxx>
-# include <SMDS_MeshGroup.hxx>
-# include <SMESHDS_GroupBase.hxx>
-# include <SMESHDS_Group.hxx>
-# include <SMESHDS_Mesh.hxx>
-//# include <SMDS_PolyhedralVolumeOfNodes.hxx>
-# include <SMDS_VolumeTool.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_Deflection1D.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_StartEndLength.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_QuadraticMesh.hxx>
+~ include <SMESH_Gen.hxx>
+~ include <SMESH_Mesh.hxx>
+~ include <SMESH_MeshEditor.hxx>
+~ include <SMESH_Group.hxx>
+~ include <SMDS_MeshGroup.hxx>
+~ include <SMESHDS_GroupBase.hxx>
+~ include <SMESHDS_Group.hxx>
+~ include <SMESHDS_Mesh.hxx>
+//~ include <SMDS_PolyhedralVolumeOfNodes.hxx>
+~ include <SMDS_VolumeTool.hxx>
+~ include <StdMeshers_MaxLength.hxx>
+~ include <StdMeshers_LocalLength.hxx>
+~ include <StdMeshers_MaxElementArea.hxx>
+~ include <StdMeshers_NumberOfSegments.hxx>
+~ include <StdMeshers_Deflection1D.hxx>
+~ include <StdMeshers_Regular_1D.hxx>
+~ include <StdMeshers_StartEndLength.hxx>
+~ include <StdMeshers_QuadranglePreference.hxx>
+~ include <StdMeshers_Quadrangle_2D.hxx>
+~ include <StdMeshers_QuadraticMesh.hxx>
 
-#endif
+~endif
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/TimeInfo.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/TimeInfo.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
 
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Evaluation.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
 
-#include "FemMesh.h"
-#ifdef FC_USE_VTK
-#include "FemVTKTools.h"
-#endif
+~include "FemMesh.h"
+~ifdef FC_USE_VTK
+~include "FemVTKTools.h"
+~endif
 
-# include <FemMeshPy.h>
+~ include <FemMeshPy.h>
 
 
 
@@ -93,9 +93,9 @@ using namespace Fem;
 using namespace Base;
 using namespace boost;
 
-#if SMESH_VERSION_MAJOR < 9
+~if SMESH_VERSION_MAJOR < 9
 static int StatCount = 0;
-#endif
+~endif
 
 SMESH_Gen* FemMesh::_mesh_gen = 0;
 
@@ -105,20 +105,20 @@ FemMesh::FemMesh()
 {
     //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     // create a mesh always with new StudyId to avoid overlapping destruction
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
-#else
+~else
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
-#endif
+~endif
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
-#else
+~else
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
-#endif
+~endif
     copyMeshData(mesh);
 }
 
@@ -140,11 +140,11 @@ FemMesh::~FemMesh()
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
         myMesh = getGenerator()->CreateMesh(true);
-#else
+~else
         myMesh = getGenerator()->CreateMesh(0,true);
-#endif
+~endif
         copyMeshData(mesh);
     }
     return *this;
@@ -155,7 +155,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     _Mtrx = mesh._Mtrx;
 
     // See file SMESH_I/SMESH_Gen_i.cxx in the git repo of smesh at https://git.salome-platform.org
-#if 1
+~if 1
     // 1. Get source mesh
     SMESHDS_Mesh* srcMeshDS = mesh.myMesh->GetMeshDS();
 
@@ -190,17 +190,17 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             int ID = elem->GetID();
             switch (elem->GetEntityType()) {
             case SMDSEntity_Polyhedra:
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
                 editor.GetMeshDS()->
                     AddPolyhedralVolumeWithID(nodes,
                                               static_cast<const SMDS_MeshVolume*>(elem)->GetQuantities(),
                                               ID);
-#else
+~else
                 editor.GetMeshDS()->
                     AddPolyhedralVolumeWithID(nodes,
                                               static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
                                               ID);
-#endif
+~endif
                 break;
             case SMDSEntity_Ball:
             {
@@ -273,10 +273,10 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 
     newMeshDS->Modified();
 
-#else
+~else
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
-    // Some further information is still not copied: http://forum.freecadweb.org/viewtopic.php?f=18&t=18982#p148114
+    // Some further information is still not copied: http://forum.freecadweb.org/viewtopic.php?f=18&t=18982~p148114
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -502,7 +502,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             }
         }
     }
-#endif
+~endif
 }
 
 const SMESH_Mesh* FemMesh::getSMesh() const
@@ -533,7 +533,7 @@ void FemMesh::setStandardHypotheses()
 {
     if (!hypoth.empty())
         return;
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     int hyp=0;
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, getGenerator()));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
@@ -567,7 +567,7 @@ void FemMesh::setStandardHypotheses()
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,getGenerator()));
     hypoth.push_back(q2d);
-#else
+~else
     int hyp=0;
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
@@ -601,7 +601,7 @@ void FemMesh::setStandardHypotheses()
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,getGenerator()));
     hypoth.push_back(q2d);
-#endif
+~endif
 
     // Apply hypothesis
     for (int i=0; i<hyp;i++)
@@ -632,7 +632,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
     std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
-#if SMESH_VERSION_MAJOR >= 7
+~if SMESH_VERSION_MAJOR >= 7
     // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible to iterate volume faces
     // In SMESH9 this function has been removed
     //
@@ -682,7 +682,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
             }
         }
     }
-#else
+~else
     SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
     while (vol_iter->more()) {
         const SMDS_MeshVolume* vol = vol_iter->next();
@@ -707,7 +707,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
             }
         }
     }
-#endif
+~endif
 
     result.sort();
     return result;
@@ -879,7 +879,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
         nodes.push_back(aNode);
     }
 
-#pragma omp parallel for schedule(dynamic)
+~pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < nodes.size(); ++i) {
         const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
@@ -899,7 +899,7 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
                 continue;
 
             if (measure.Value() < limit)
-#pragma omp critical
+~pragma omp critical
             {
                 result.insert(aNode->GetID());
             }
@@ -913,7 +913,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     std::set<int> result;
 
     Bnd_Box box;
-    BRepBndLib::Add(face, box, Standard_False);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70#p221591
+    BRepBndLib::Add(face, box, Standard_False);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=70~p221591
     // limit where the mesh node belongs to the face:
     double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
@@ -928,7 +928,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
         nodes.push_back(aNode);
     }
 
-#pragma omp parallel for schedule(dynamic)
+~pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < nodes.size(); ++i) {
         const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
@@ -948,7 +948,7 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
                 continue;
 
             if (measure.Value() < limit)
-#pragma omp critical
+~pragma omp critical
             {
                 result.insert(aNode->GetID());
             }
@@ -978,7 +978,7 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
         nodes.push_back(aNode);
     }
 
-#pragma omp parallel for schedule(dynamic)
+~pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < nodes.size(); ++i) {
         const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
@@ -998,7 +998,7 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
                 continue;
 
             if (measure.Value() < limit)
-#pragma omp critical
+~pragma omp critical
             {
                 result.insert(aNode->GetID());
             }
@@ -1027,7 +1027,7 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
         nodes.push_back(aNode);
     }
 
-#pragma omp parallel for schedule(dynamic)
+~pragma omp parallel for schedule(dynamic)
     for (size_t i = 0; i < nodes.size(); ++i) {
         const SMDS_MeshNode* aNode = nodes[i];
         double xyz[3];
@@ -1036,7 +1036,7 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
         vec = Mtrx * vec;
 
         if (Base::DistanceP2(node, vec) <= limit)
-#pragma omp critical
+~pragma omp critical
         {
             result.insert(aNode->GetID());
         }
@@ -1791,7 +1791,7 @@ void FemMesh::readAbaqus(const std::string &FileName)
             FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
             FemMesh* fem = fempy->getFemMeshPtr();
             *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
-                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10~p274241
         }
         else {
             throw Base::FileException("Problems reading file");
@@ -1827,7 +1827,7 @@ void FemMesh::readZ88(const std::string &FileName)
             FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
             FemMesh* fem = fempy->getFemMeshPtr();
             *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
-                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10~p274241
         }
         else {
             throw Base::FileException("Problems reading file");
@@ -1868,23 +1868,23 @@ void FemMesh::read(const char *FileName)
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
     }
-#if SMESH_VERSION_MAJOR < 7
+~if SMESH_VERSION_MAJOR < 7
     else if (File.hasExtension("dat") ) {
         // read brep-file
         // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
-#endif
+~endif
     else if (File.hasExtension("bdf") ) {
         // read Nastran-file
         readNastran(File.filePath());
     }
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     else if (File.hasExtension("vtk") || File.hasExtension("vtu")) {
         // read *.vtk legacy format or *.vtu XML unstructure Mesh
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
-#endif
+~endif
     else if (File.hasExtension("z88") ) {
         // read Z88 mesh file
         readZ88(File.filePath());
@@ -1966,7 +1966,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
         //std::vector<int> c3d10 = boost::assign::list_of(0)(2)(1)(3)(6)(5)(4)(7)(9)(8);
 
         // since master 0.15
-        // added by werner (wmayer) March 2015, http://forum.freecadweb.org/viewtopic.php?f=18&t=10110&start=10#p81681
+        // added by werner (wmayer) March 2015, http://forum.freecadweb.org/viewtopic.php?f=18&t=10110&start=10~p81681
         // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
         // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
         // tetra4 FreeCAD --> C3D4 CalculiX
@@ -2129,7 +2129,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     // take also care of special characters in path https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
     Base::FileInfo fi(Filename);
     Base::ofstream anABAQUS_Output(fi);
-    anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
+    anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759~p176669
 
     // add some text and make sure one of the known elemParam values is used
     anABAQUS_Output << "** written by FreeCAD inp file writer for CalculiX,Abaqus meshes" << std::endl;
@@ -2147,7 +2147,7 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
     // This way we get sorted output.
-    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=12646&start=40#p103004
+    // See http://forum.freecadweb.org/viewtopic.php?f=18&t=12646&start=40~p103004
     for (VertexMap::iterator it = vertexMap.begin(); it != vertexMap.end(); ++it) {
         anABAQUS_Output << it->first << ", "
             << it->second.x << ", "
@@ -2347,13 +2347,13 @@ void FemMesh::write(const char *FileName) const
         // write ABAQUS Output
         writeABAQUS(File.filePath(), elemParam, groupParam);
     }
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
         Base::Console().Log("FEM mesh object will be exported to either vtk or vtu format.\n");
         // write unstructure mesh to VTK format *.vtk and *.vtu
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
     }
-#endif
+~endif
     else if (File.hasExtension("z88") ) {
         Base::Console().Log("FEM mesh object will be exported to z88 format.\n");
         // write z88 file
@@ -2685,11 +2685,11 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
     SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);
     if (!group)
         throw std::runtime_error("AddGroup: Failed to create new group.");
-#if SMESH_VERSION_MAJOR >= 9
+~if SMESH_VERSION_MAJOR >= 9
     return group->GetID();
-#else
+~else
     return aId;
-#endif
+~endif
 }
 
 void FemMesh::addGroupElements(int GroupId, const std::set<int>& ElementIds)

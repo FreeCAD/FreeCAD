@@ -21,59 +21,59 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+  ~include <BRep_Builder.hxx>
+  ~include <TopoDS_Compound.hxx>
+  ~ include <TopoDS_Shape.hxx>
+  ~ include <TopoDS_Edge.hxx>
+  ~ include <TopoDS.hxx>
+  ~ include <BRepAdaptor_Curve.hxx>
+  ~ include <Precision.hxx>
 
-  # include <QDebug>
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-  # include <QApplication>
+  ~ include <QDebug>
+  ~ include <QGraphicsScene>
+  ~ include <QGraphicsSceneMouseEvent>
+  ~ include <QPainter>
+  ~ include <QPainterPath>
+  ~ include <QPaintDevice>
+  ~ include <QSvgGenerator>
+  ~ include <QApplication>
 
-  # include <cmath>
-#endif
+  ~ include <cmath>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Gui/Command.h>
-#include <Gui/Tools.h>
-#include <string>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Gui/Command.h>
+~include <Gui/Tools.h>
+~include <string>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
-//#include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawViewBalloon.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/ArrowPropEnum.h>
+//~include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "QGIArrow.h"
-#include "QGIDimLines.h"
-#include "QGIViewBalloon.h"
-#include "ViewProviderBalloon.h"
-#include "DrawGuiUtil.h"
-#include "QGIViewPart.h"
-#include "ViewProviderViewPart.h"
-#include "QGIViewDimension.h"
-#include "QGVPage.h"
-#include "MDIViewPage.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "PreferencesGui.h"
+~include "QGIArrow.h"
+~include "QGIDimLines.h"
+~include "QGIViewBalloon.h"
+~include "ViewProviderBalloon.h"
+~include "DrawGuiUtil.h"
+~include "QGIViewPart.h"
+~include "ViewProviderViewPart.h"
+~include "QGIViewDimension.h"
+~include "QGVPage.h"
+~include "MDIViewPage.h"
 
 //TODO: hide the Qt coord system (+y down).
 
@@ -962,4 +962,4 @@ DrawView* QGIViewBalloon::getSourceView() const
     return balloonParent;
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>
+~include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>

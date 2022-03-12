@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <string>
-# include <fstream>
-#endif
+~ifndef _PreComp_
+~ include <cassert>
+~ include <string>
+~ include <fstream>
+~endif
 
-#include "Builder3D.h"
-#include "Console.h"
-#include "Exception.h"
-#include "Matrix.h"
-#include "Tools.h"
+~include "Builder3D.h"
+~include "Console.h"
+~include "Exception.h"
+~include "Matrix.h"
+~include "Tools.h"
 
 
 using namespace Base;
@@ -49,7 +49,7 @@ using namespace Base;
 Builder3D::Builder3D()
 :bStartEndOpen(false)
 {
-  result << "#Inventor V2.1 ascii " << std::endl << std::endl;
+  result << "~Inventor V2.1 ascii " << std::endl << std::endl;
   result << "Separator { ";
 }
 
@@ -173,9 +173,9 @@ void Builder3D::addText(const Base::Vector3f &vec,const char * text, float color
 void Builder3D::clear ()
 {
   // Under VC6 string::clear() doesn't exist, under gcc stringstream::str() returns a copy not a reference
-#if defined(_MSC_VER) && _MSC_VER >= 1400
+~if defined(_MSC_VER) && _MSC_VER >= 1400
   result.str().clear();
-#endif
+~endif
   result.clear();
 }
 
@@ -324,7 +324,7 @@ void Builder3D::saveToFile(const char* FileName)
   if(!file)
     throw FileException("Builder3D::saveToFile(): Can not open file...");
 
-  file << "#Inventor V2.1 ascii " << std::endl;
+  file << "~Inventor V2.1 ascii " << std::endl;
   file << result.str();
 }
 
@@ -334,7 +334,7 @@ InventorBuilder::InventorBuilder(std::ostream& output)
   : result(output)
   , indent(0)
 {
-    result << "#Inventor V2.1 ascii " << std::endl << std::endl;
+    result << "~Inventor V2.1 ascii " << std::endl << std::endl;
     beginSeparator();
 }
 

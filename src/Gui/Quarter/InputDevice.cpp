@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4267)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable : 4267)
+~endif
 
-#include <QInputEvent>
-#include <Inventor/events/SoEvents.h>
+~include <QInputEvent>
+~include <Inventor/events/SoEvents.h>
 
-#include "devices/InputDevice.h"
+~include "devices/InputDevice.h"
 
 
 using namespace SIM::Coin3D::Quarter;
@@ -116,4 +116,4 @@ InputDevice::setModifiers(SoEvent * soevent, const QInputEvent * qevent)
   Holds the size of the owning window
 */
 
-#undef PRIVATE
+~undef PRIVATE

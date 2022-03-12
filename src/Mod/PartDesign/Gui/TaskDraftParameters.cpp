@@ -22,26 +22,26 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QKeyEvent>
-# include <QListWidget>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QKeyEvent>
+~ include <QListWidget>
+~ include <QMessageBox>
+~endif
 
-#include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeatureDraft.h>
-#include <Mod/PartDesign/Gui/ReferenceSelection.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/FeatureDraft.h>
+~include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
-#include "ui_TaskDraftParameters.h"
-#include "TaskDraftParameters.h"
+~include "ui_TaskDraftParameters.h"
+~include "TaskDraftParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -416,4 +416,4 @@ bool TaskDlgDraftParameters::accept()
     return TaskDlgDressUpParameters::accept();
 }
 
-#include "moc_TaskDraftParameters.cpp"
+~include "moc_TaskDraftParameters.cpp"

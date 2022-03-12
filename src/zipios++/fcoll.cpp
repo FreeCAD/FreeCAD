@@ -1,11 +1,11 @@
 
-#include "zipios-config.h"
+~include "zipios-config.h"
 
-#include <algorithm>
-#include <string>
-#include <vector>
+~include <algorithm>
+~include <string>
+~include <vector>
 
-#include "fcoll.h"
+~include "fcoll.h"
 
 namespace zipios {
 

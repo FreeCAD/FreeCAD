@@ -22,10 +22,10 @@
 //  File   : MED_Structure.cxx
 //  Author : Eugeny NIKOLAEV
 //
-#include "MED_Structures.hxx"
-#include "MED_Utilities.hxx"
+~include "MED_Structures.hxx"
+~include "MED_Utilities.hxx"
 
-#include <cstring>
+~include <cstring>
 
 using namespace MED;
 

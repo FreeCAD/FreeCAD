@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "CoordinateSystem.h"
-#include "Exception.h"
-#include "Matrix.h"
+~include "CoordinateSystem.h"
+~include "Exception.h"
+~include "Matrix.h"
 
 
 using namespace Base;
@@ -106,7 +106,7 @@ void CoordinateSystem::setZDirection(const Vector3d& dir)
 
 Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
 {
-#if 0
+~if 0
     // align the Z axes
     Base::Rotation rotZ(getZDirection(), cs.getZDirection());
 
@@ -125,7 +125,7 @@ Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
     rot = rotX * rotZ;
 
     return Placement(mov, rot);
-#else
+~else
     const Base::Vector3d& a = axis.getBase();
     const Base::Vector3d& zdir = axis.getDirection();
     Base::Matrix4D At;
@@ -150,7 +150,7 @@ Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
     Placement PB(B);
     Placement C = PB * PAt;
     return C;
-#endif
+~endif
 }
 
 void CoordinateSystem::transformTo(Vector3d& p)

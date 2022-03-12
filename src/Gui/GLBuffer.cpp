@@ -21,31 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef FC_OS_WIN32
-# ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
-# endif
-#endif
+~ifndef FC_OS_WIN32
+~ ifndef GL_GLEXT_PROTOTYPES
+~ define GL_GLEXT_PROTOTYPES 1
+~ endif
+~endif
 
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
-# include <OpenGL/glext.h>
-#else
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
-#endif
+~ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ include <OpenGL/glu.h>
+~ include <OpenGL/glext.h>
+~else
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ include <GL/glext.h>
+~endif
 
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoContextHandler.h>
+~include <Inventor/elements/SoGLCacheContextElement.h>
+~include <Inventor/errors/SoDebugError.h>
+~include <Inventor/misc/SoContextHandler.h>
 
-#include <string>
+~include <string>
 
-#include "GLBuffer.h"
+~include "GLBuffer.h"
 
 using namespace Gui;
 

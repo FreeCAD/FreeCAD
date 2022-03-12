@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
 
-#include "DrawUtil.h"
+~include "DrawUtil.h"
 
-#include <Mod/TechDraw/App/DrawTilePy.h>  // generated from DrawTilePy.xml
-#include "DrawTile.h"
+~include <Mod/TechDraw/App/DrawTilePy.h>  // generated from DrawTilePy.xml
+~include "DrawTile.h"
 
 using namespace TechDraw;
 

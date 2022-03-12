@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <cmath>
-#include "Constraints.h"
-#include <algorithm>
+~include <cmath>
+~include "Constraints.h"
+~include <algorithm>
 
-#define DEBUG_DERIVS 0
-#if DEBUG_DERIVS
-#include <cassert>
-#endif
+~define DEBUG_DERIVS 0
+~if DEBUG_DERIVS
+~include <cassert>
+~endif
 
 namespace GCS
 {
@@ -1108,7 +1108,7 @@ double ConstraintEllipseTangentLine::grad(double *param)
     errorgrad(0, &deriv, param);
 
     //use numeric for testing
-    #if 0
+    ~if 0
         double const eps = 0.00001;
         double oldparam = *param;
         double v0 = this->error();
@@ -1122,7 +1122,7 @@ double ConstraintEllipseTangentLine::grad(double *param)
         double numretr = (vr-v0)/eps;
         assert(deriv <= std::max(numretl,numretr) );
         assert(deriv >= std::min(numretl,numretr) );
-    #endif
+    ~endif
 
 
     return deriv*scale;
@@ -1234,7 +1234,7 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
     errorgrad(0, &deriv, param);
 
     //use numeric for testing
-    #if 0
+    ~if 0
         double const eps = 0.00001;
         double oldparam = *param;
         double v0 = this->error();
@@ -1248,7 +1248,7 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
         double numretr = (vr-v0)/eps;
         assert(deriv <= std::max(numretl,numretr) );
         assert(deriv >= std::min(numretl,numretr) );
-    #endif
+    ~endif
 
     return deriv*scale;
 
@@ -1657,7 +1657,7 @@ double ConstraintPointOnHyperbola::error()
     double b = *rmin();
 
     // Full sage worksheet at:
-    // http://forum.freecadweb.org/viewtopic.php?f=10&t=8038&p=110447#p110447
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=8038&p=110447~p110447
     //
     // Err = |PF2| - |PF1| - 2*a
     // sage code:
@@ -1898,7 +1898,7 @@ double ConstraintAngleViaPoint::grad(double *param)
 
 
 //use numeric for testing
-#if 0
+~if 0
     double const eps = 0.00001;
     double oldparam = *param;
     double v0 = this->error();
@@ -1912,7 +1912,7 @@ double ConstraintAngleViaPoint::grad(double *param)
     double numretr = (vr-v0)/eps;
     assert(deriv <= std::max(numretl,numretr) );
     assert(deriv >= std::min(numretl,numretr) );
-#endif
+~endif
 
     return scale * deriv;
 }
@@ -2007,7 +2007,7 @@ double ConstraintSnell::grad(double *param)
 
 
 //use numeric for testing
-#if 0
+~if 0
     double const eps = 0.00001;
     double oldparam = *param;
     double v0 = this->error();
@@ -2021,7 +2021,7 @@ double ConstraintSnell::grad(double *param)
     double numretr = (vr-v0)/eps;
     assert(deriv <= std::max(numretl,numretr) );
     assert(deriv >= std::min(numretl,numretr) );
-#endif
+~endif
 
     return scale * deriv;
 }

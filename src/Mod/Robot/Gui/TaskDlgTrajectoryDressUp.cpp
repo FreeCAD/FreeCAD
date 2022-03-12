@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "TaskDlgTrajectoryDressUp.h"
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
+~include "TaskDlgTrajectoryDressUp.h"
+~include <Gui/TaskView/TaskSelectLinkProperty.h>
 
-#include <Gui/Document.h>
-#include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/Application.h>
 
 
 using namespace RobotGui;
@@ -99,4 +99,4 @@ void TaskDlgTrajectoryDressUp::helpRequested()
 }
 
 
-#include "moc_TaskDlgTrajectoryDressUp.cpp"
+~include "moc_TaskDlgTrajectoryDressUp.cpp"

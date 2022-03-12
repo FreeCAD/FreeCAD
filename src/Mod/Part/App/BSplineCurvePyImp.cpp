@@ -21,34 +21,34 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Geom_BSplineCurve.hxx>
-# include <GeomAPI_PointsToBSpline.hxx>
-# include <GeomAPI_Interpolate.hxx>
-# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-# include <Standard_PrimitiveTypes.hxx>
-# include <gp_Pnt.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TColgp_Array1OfVec.hxx>
-# include <TColgp_HArray1OfPnt.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <TColStd_HArray1OfReal.hxx>
-# include <TColStd_Array1OfReal.hxx>
-# include <TColStd_HArray1OfBoolean.hxx>
-# include <Precision.hxx>
-# include <cmath>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Geom_BSplineCurve.hxx>
+~ include <GeomAPI_PointsToBSpline.hxx>
+~ include <GeomAPI_Interpolate.hxx>
+~ include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+~ include <Standard_PrimitiveTypes.hxx>
+~ include <gp_Pnt.hxx>
+~ include <TColStd_Array1OfReal.hxx>
+~ include <TColgp_Array1OfPnt.hxx>
+~ include <TColgp_Array1OfVec.hxx>
+~ include <TColgp_HArray1OfPnt.hxx>
+~ include <TColStd_Array1OfInteger.hxx>
+~ include <TColStd_HArray1OfReal.hxx>
+~ include <TColStd_Array1OfReal.hxx>
+~ include <TColStd_HArray1OfBoolean.hxx>
+~ include <Precision.hxx>
+~ include <cmath>
+~endif
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include "BSplineCurvePy.h"
-#include "BSplineCurvePy.cpp"
-#include "BezierCurvePy.h"
+~include "OCCError.h"
+~include "Geometry.h"
+~include "BSplineCurvePy.h"
+~include "BSplineCurvePy.cpp"
+~include "BezierCurvePy.h"
 
 using namespace Part;
 

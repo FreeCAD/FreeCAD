@@ -30,37 +30,37 @@
 
 
 /*********MAIN INCLUDES***********/
-#include "PreCompiled.h"
-#include "Approx.h"
-#include <iostream>
-#include <algorithm>
-#include <Base/Exception.h>
+~include "PreCompiled.h"
+~include "Approx.h"
+~include <iostream>
+~include <algorithm>
+~include <Base/Exception.h>
 
 
-#include <TColgp_Array2OfPnt.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
+~include <TColgp_Array2OfPnt.hxx>
+~include <TColStd_Array1OfReal.hxx>
+~include <TColStd_Array1OfInteger.hxx>
+~include <GeomAPI_ProjectPointOnSurf.hxx>
+~include <Geom_BSplineSurface.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
 
 /*************BOOST***************/
 
 /********UBLAS********/
-#include <boost/numeric/ublas/matrix_sparse.hpp>
-#include <boost/numeric/ublas/blas.hpp>
-#include <boost/numeric/ublas/operation.hpp>
-#include <boost/numeric/ublas/io.hpp>
+~include <boost/numeric/ublas/matrix_sparse.hpp>
+~include <boost/numeric/ublas/blas.hpp>
+~include <boost/numeric/ublas/operation.hpp>
+~include <boost/numeric/ublas/io.hpp>
 
 /*********BINDINGS********/
-#include <boost/numeric/bindings/traits/ublas_matrix.hpp>
-#include <boost/numeric/bindings/traits/ublas_sparse.hpp>
-#include <boost/numeric/bindings/umfpack/umfpack.hpp>
-#include <boost/numeric/bindings/atlas/cblas.hpp>
-#include <boost/numeric/bindings/atlas/clapack.hpp>
+~include <boost/numeric/bindings/traits/ublas_matrix.hpp>
+~include <boost/numeric/bindings/traits/ublas_sparse.hpp>
+~include <boost/numeric/bindings/umfpack/umfpack.hpp>
+~include <boost/numeric/bindings/atlas/cblas.hpp>
+~include <boost/numeric/bindings/atlas/clapack.hpp>
 
 /*****ADDITIONAL FOR DEBUGGING*****/
-//#include <fstream>
+//~include <fstream>
 /*****NAMESPACE**/
 using namespace boost::numeric::bindings;
 

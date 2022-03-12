@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <gp_Trsf.hxx>
-# include <gp_Ax1.hxx>
-#endif
+~ifndef _PreComp_
+~ include <gp_Trsf.hxx>
+~ include <gp_Ax1.hxx>
+~endif
 
 
-//#include <strstream>
-//#include <Base/Console.h>
-//#include <Base/Writer.h>
-//#include <Base/Reader.h>
-//#include <Base/Exception.h>
-//#include <Base/FileInfo.h>
-//#include <Base/Stream.h>
-#include <Base/Placement.h>
-#include <Base/Rotation.h>
+//~include <strstream>
+//~include <Base/Console.h>
+//~include <Base/Writer.h>
+//~include <Base/Reader.h>
+//~include <Base/Exception.h>
+//~include <Base/FileInfo.h>
+//~include <Base/Stream.h>
+~include <Base/Placement.h>
+~include <Base/Rotation.h>
 
-#include "PartFeatureReference.h"
+~include "PartFeatureReference.h"
 
 using namespace Part;
 

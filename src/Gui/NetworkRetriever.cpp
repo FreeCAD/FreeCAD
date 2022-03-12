@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QDir>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QDir>
+~ include <QFileInfo>
+~ include <QMessageBox>
+~ include <QTimer>
+~endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <Base/Console.h>
 
-#include "NetworkRetriever.h"
-#include "Action.h"
-#include "BitmapFactory.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "ui_DlgAuthorization.h"
+~include "NetworkRetriever.h"
+~include "Action.h"
+~include "BitmapFactory.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "ui_DlgAuthorization.h"
 
 
 using namespace Gui;
@@ -319,7 +319,7 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
     // start URL
     wgetArguments << startUrl;
 
-#ifdef FC_OS_LINUX
+~ifdef FC_OS_LINUX
     // on Linux it seems that we have to change cwd
     QString cwd = QDir::currentPath ();
     if ( !d->dir.isEmpty() )
@@ -329,9 +329,9 @@ bool NetworkRetriever::startDownload( const QString& startUrl )
 
     wget->start(QString::fromLatin1("wget"), wgetArguments);
     QDir::setCurrent( cwd );
-#else
+~else
     wget->start(QString::fromLatin1("wget"), wgetArguments);
-#endif
+~endif
 
     return wget->state() == QProcess::Running;
 }
@@ -553,5 +553,5 @@ void StdCmdDownloadOnlineHelp::wgetFinished()
             this->className(), getMenuText()));
 }
 
-#include "moc_NetworkRetriever.cpp"
+~include "moc_NetworkRetriever.cpp"
 

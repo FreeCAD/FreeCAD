@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <climits>
-#include <zlib.h>
+~include "PreCompiled.h"
+~include <climits>
+~include <zlib.h>
 
-#include "DlgSettingsDocumentImp.h"
-#include "ui_DlgSettingsDocument.h"
-#include "PrefWidgets.h"
-#include "AutoSaver.h"
+~include "DlgSettingsDocumentImp.h"
+~include "ui_DlgSettingsDocument.h"
+~include "PrefWidgets.h"
+~include "AutoSaver.h"
 
 using namespace Gui::Dialog;
 
@@ -185,4 +185,4 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
     }
 }
 
-#include "moc_DlgSettingsDocumentImp.cpp"
+~include "moc_DlgSettingsDocumentImp.cpp"

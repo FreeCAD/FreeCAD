@@ -27,9 +27,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==============================*/
 
 
-#include "AreaOrderer.h"
-#include <memory>
-#include "Area.h"
+~include "AreaOrderer.h"
+~include <memory>
+~include "Area.h"
 
 using namespace std;
 

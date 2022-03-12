@@ -20,14 +20,14 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include <stdio.h>
+~include <stdio.h>
 
-#include "DriverDAT_R_SMDS_Mesh.h"
-#include "SMDS_Mesh.hxx"
+~include "DriverDAT_R_SMDS_Mesh.h"
+~include "SMDS_Mesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
 using namespace std;
 

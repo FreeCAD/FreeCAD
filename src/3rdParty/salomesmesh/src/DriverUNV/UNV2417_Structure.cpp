@@ -20,11 +20,11 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "UNV2417_Structure.hxx"
-#include "UNV_Utilities.hxx"
+~include "UNV2417_Structure.hxx"
+~include "UNV_Utilities.hxx"
 
-#include <fstream>      
-#include <iomanip>
+~include <fstream>      
+~include <iomanip>
 
 using namespace std;
 using namespace UNV;
@@ -32,7 +32,7 @@ using namespace UNV2417;
 
 static string _group_labels[] = {"2417", "2429", "2430", "2432",
                                  "2435", "2452", "2467", "2477"};
-#define NBGROUP 8
+~define NBGROUP 8
 
 static string _label_dataset = "2467";
 

@@ -40,8 +40,8 @@
  ****************************************************************************/
 
 
-//#include "error.h"
-#include "velocityprofile_trap.hpp"
+//~include "error.h"
+~include "velocityprofile_trap.hpp"
 
 namespace KDL {
 

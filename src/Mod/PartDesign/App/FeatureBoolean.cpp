@@ -21,21 +21,21 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_Common.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <Standard_Failure.hxx>
+~endif
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Base/Parameter.h>
-#include <Mod/Part/App/modelRefine.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Base/Parameter.h>
+~include <Mod/Part/App/modelRefine.h>
 
-#include "FeatureBoolean.h"
-#include "Body.h"
+~include "FeatureBoolean.h"
+~include "Body.h"
 
 
 using namespace PartDesign;

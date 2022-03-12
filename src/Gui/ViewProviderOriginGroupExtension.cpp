@@ -21,25 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-#endif
+~ifndef _PreComp_
+~include <Inventor/actions/SoGetBoundingBoxAction.h>
+~include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/OriginGroupExtension.h>
-#include <Base/Console.h>
+~include <App/Document.h>
+~include <App/Origin.h>
+~include <App/OriginGroupExtension.h>
+~include <Base/Console.h>
 
-#include "ViewProviderOriginGroupExtension.h"
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
+~include "ViewProviderOriginGroupExtension.h"
+~include "Application.h"
+~include "Document.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderOrigin.h"
+~include "ViewProviderOriginFeature.h"
 
 
 using namespace Gui;

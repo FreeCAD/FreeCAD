@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "DlgSettingsObjectColor.h"
-#include "ui_DlgSettingsObjectColor.h"
-#include <Gui/PrefWidgets.h>
+~include "DlgSettingsObjectColor.h"
+~include "ui_DlgSettingsObjectColor.h"
+~include <Gui/PrefWidgets.h>
 
 using namespace PartGui;
 
@@ -99,5 +99,5 @@ void DlgSettingsObjectColor::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsObjectColor.cpp"
+~include "moc_DlgSettingsObjectColor.cpp"
 

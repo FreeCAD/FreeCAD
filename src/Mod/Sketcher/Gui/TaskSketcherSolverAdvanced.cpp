@@ -21,41 +21,41 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QString>
-#endif
+~ifndef _PreComp_
+~ include <QString>
+~endif
 
-#include "ui_TaskSketcherSolverAdvanced.h"
-#include "TaskSketcherSolverAdvanced.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
+~include "ui_TaskSketcherSolverAdvanced.h"
+~include "TaskSketcherSolverAdvanced.h"
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
 
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ViewProviderSketch.h"
+~include "ViewProviderSketch.h"
 
-#define LM_EPS  1E-10
-#define LM_EPS1 1E-80
-#define LM_TAU  1E-3
-#define DL_TOLG 1E-80
-#define DL_TOLX 1E-80
-#define DL_TOLF 1E-10
-#define CONVERGENCE 1E-10
-#define MAX_ITER 100
-#define DEFAULT_SOLVER 2            // DL=2, LM=1, BFGS=0
-#define DEFAULT_RSOLVER 2           // DL=2, LM=1, BFGS=0
-#define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
-#define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
-#define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
-#define MAX_ITER_MULTIPLIER false
-#define DEFAULT_DOGLEG_GAUSS_STEP 0   // FullPivLU = 0, LeastNormFullPivLU = 1, LeastNormLdlt = 2
+~define LM_EPS  1E-10
+~define LM_EPS1 1E-80
+~define LM_TAU  1E-3
+~define DL_TOLG 1E-80
+~define DL_TOLX 1E-80
+~define DL_TOLF 1E-10
+~define CONVERGENCE 1E-10
+~define MAX_ITER 100
+~define DEFAULT_SOLVER 2            // DL=2, LM=1, BFGS=0
+~define DEFAULT_RSOLVER 2           // DL=2, LM=1, BFGS=0
+~define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
+~define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
+~define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
+~define MAX_ITER_MULTIPLIER false
+~define DEFAULT_DOGLEG_GAUSS_STEP 0   // FullPivLU = 0, LeastNormFullPivLU = 1, LeastNormLdlt = 2
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -579,4 +579,4 @@ void TaskSketcherSolverAdvanced::updateSketchObject(void)
     updateRedundantMethodParameters();
 }
 
-#include "moc_TaskSketcherSolverAdvanced.cpp"
+~include "moc_TaskSketcherSolverAdvanced.cpp"

@@ -5,10 +5,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iistaskpanel.h"
-#include "iistaskpanelscheme.h"
-#include "iistaskbox.h"
-#include "iistaskgroup.h"
+~include "iistaskpanel.h"
+~include "iistaskpanelscheme.h"
+~include "iistaskbox.h"
+~include "iistaskgroup.h"
 
 
 iisTaskPanel::iisTaskPanel(QWidget *parent) :

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Assembly/App/ProductRef.h"
+~include "Mod/Assembly/App/ProductRef.h"
 
 // inclusion of the generated files (generated out of ProductRefPy.xml)
-#include "ProductRefPy.h"
-#include "ProductRefPy.cpp"
+~include "ProductRefPy.h"
+~include "ProductRefPy.cpp"
 
 using namespace Assembly;
 

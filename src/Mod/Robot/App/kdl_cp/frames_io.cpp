@@ -26,15 +26,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "utilities/error.h"
-#include "utilities/error_stack.h"
-#include "frames.hpp"
-#include "frames_io.hpp"
+~include "utilities/error.h"
+~include "utilities/error_stack.h"
+~include "frames.hpp"
+~include "frames_io.hpp"
 
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-#include <iostream>
+~include <stdlib.h>
+~include <ctype.h>
+~include <string.h>
+~include <iostream>
 
 namespace KDL {
 
@@ -69,7 +69,7 @@ std::ostream& operator << (std::ostream& os,const Wrench& v) {
 
 
 std::ostream& operator << (std::ostream& os,const Rotation& R) {
-#ifdef KDL_ROTATION_PROPERTIES_RPY
+~ifdef KDL_ROTATION_PROPERTIES_RPY
     double r,p,y;
     R.GetRPY(r,p,y);
     os << "[RPY]"<<endl;
@@ -77,8 +77,8 @@ std::ostream& operator << (std::ostream& os,const Rotation& R) {
     os << std::setw(KDL_FRAME_WIDTH) << r << ",";
     os << std::setw(KDL_FRAME_WIDTH) << p << ",";
     os << std::setw(KDL_FRAME_WIDTH) << y << "]";
-#else
-# ifdef KDL_ROTATION_PROPERTIES_EULER
+~else
+~ ifdef KDL_ROTATION_PROPERTIES_EULER
     double z,y,x;
     R.GetEulerZYX(z,y,x);
     os << "[EULERZYX]"<<endl;
@@ -86,7 +86,7 @@ std::ostream& operator << (std::ostream& os,const Rotation& R) {
     os << std::setw(KDL_FRAME_WIDTH) << z << ",";
     os << std::setw(KDL_FRAME_WIDTH) << y << ",";
     os << std::setw(KDL_FRAME_WIDTH) << x << "]";
-# else
+~ else
     os << "[";
     for (int i=0;i<=2;i++) {
         os << std::setw(KDL_FRAME_WIDTH) << R(i,0) << "," <<
@@ -97,8 +97,8 @@ std::ostream& operator << (std::ostream& os,const Rotation& R) {
         else
             os << "]";
     }
-# endif
-#endif
+~ endif
+~endif
     return os;
 }
 

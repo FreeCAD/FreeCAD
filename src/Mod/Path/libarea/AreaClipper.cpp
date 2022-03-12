@@ -2,12 +2,12 @@
 
 // implements CArea methods using Angus Johnson's "Clipper"
 
-#include "Area.h"
-#include "clipper.hpp"
+~include "Area.h"
+~include "clipper.hpp"
 using namespace ClipperLib;
 
-#define TPolygon Path
-#define TPolyPolygon Paths
+~define TPolygon Path
+~define TPolyPolygon Paths
 
 bool CArea::HolesLinked(){ return false; }
 

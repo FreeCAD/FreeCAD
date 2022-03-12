@@ -22,14 +22,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#	include <list>
-#endif
+~ifndef _PreComp_
+~	include <list>
+~endif
 
-#include "Factory.h"
-#include "Console.h"
+~include "Factory.h"
+~include "Console.h"
 
 
 using namespace Base;
@@ -100,9 +100,9 @@ const char* ScriptFactorySingleton::ProduceScript (const char* sScriptName) cons
 
   if ( !script )
   {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     Console().Warning("\"%s\" is not registered\n", sScriptName);
-#endif
+~endif
     return ""; // no data
   }
 

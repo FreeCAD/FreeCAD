@@ -7,16 +7,16 @@
  * License:   LGPL
  **************************************************************/
 
-#ifdef WX_PRECOMP
-#include "wx_pch.h"
-#endif
+~ifdef WX_PRECOMP
+~include "wx_pch.h"
+~endif
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
+~ifdef __BORLANDC__
+~pragma hdrstop
+~endif //__BORLANDC__
 
-#include "wxWidgetsApp.h"
-#include "wxWidgetsMain.h"
+~include "wxWidgetsApp.h"
+~include "wxWidgetsMain.h"
 
 IMPLEMENT_APP(wxWidgetsApp);
 

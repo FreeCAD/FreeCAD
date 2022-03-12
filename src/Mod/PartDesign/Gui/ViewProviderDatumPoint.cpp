@@ -22,19 +22,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <Inventor/nodes/SoVertexProperty.h>
+~endif
 
-#include <App/Application.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Mod/PartDesign/App/DatumPoint.h>
+~include <App/Application.h>
+~include <Gui/Inventor/MarkerBitmaps.h>
+~include <Mod/PartDesign/App/DatumPoint.h>
 
-#include "ViewProviderDatumPoint.h"
+~include "ViewProviderDatumPoint.h"
 
 using namespace PartDesignGui;
 

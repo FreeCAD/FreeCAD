@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
-# include <TopoDS.hxx>
-# include <Precision.hxx>
-#endif
+~ include <TopoDS_Wire.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_Sewing.hxx>
+~ include <BRepClass3d_SolidClassifier.hxx>
+~ include <BRepOffsetAPI_ThruSections.hxx>
+~ include <TopoDS.hxx>
+~ include <Precision.hxx>
+~endif
 
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
+~include <App/Document.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "FeatureLoft.h"
+~include "FeatureLoft.h"
 
 
 using namespace PartDesign;

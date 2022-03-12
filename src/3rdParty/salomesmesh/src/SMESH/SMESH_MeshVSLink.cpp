@@ -25,26 +25,26 @@
 // Module    : SMESH
 
 //local headers
-#include <SMESH_MeshVSLink.hxx>
-#include <SMESHDS_Group.hxx>
+~include <SMESH_MeshVSLink.hxx>
+~include <SMESHDS_Group.hxx>
 
 //occ headers
-#include <TColgp_Array1OfXYZ.hxx>
-#include <MeshVS_HArray1OfSequenceOfInteger.hxx>
-#include <SMDS_VolumeTool.hxx>
+~include <TColgp_Array1OfXYZ.hxx>
+~include <MeshVS_HArray1OfSequenceOfInteger.hxx>
+~include <SMDS_VolumeTool.hxx>
 
 //BEGIN sortNodes CHANGE /*
-#include <gp_XYZ.hxx>
+~include <gp_XYZ.hxx>
 
-#include <TColgp_Array1OfXYZ.hxx>
-#include <TColgp_Array1OfVec.hxx>
-#include <TColStd_Array1OfReal.hxx>
+~include <TColgp_Array1OfXYZ.hxx>
+~include <TColgp_Array1OfVec.hxx>
+~include <TColStd_Array1OfReal.hxx>
 
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
 IMPLEMENT_STANDARD_RTTIEXT(SMESH_MeshVSLink,MeshVS_DataSource3D)
-#endif
+~endif
 
-#define MAX_SORT_NODE_COUNT 12
+~define MAX_SORT_NODE_COUNT 12
 
 typedef std::map<double, int> T_Double_NodeID_Map;
 

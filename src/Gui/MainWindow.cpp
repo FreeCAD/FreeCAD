@@ -21,87 +21,87 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QByteArray>
-# include <QCheckBox>
-# include <QClipboard>
-# include <QCloseEvent>
-# include <QContextMenuEvent>
-# include <QDesktopServices>
-# include <QDockWidget>
-# include <QFontMetrics>
-# include <QKeySequence>
-# include <QLabel>
-# include <QMdiSubWindow>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMimeData>
-# include <QPainter>
-# include <QScreen>
-# include <QSettings>
-# include <QSignalMapper>
-# include <QStatusBar>
-# include <QThread>
-# include <QTimer>
-# include <QToolBar>
-# include <QUrlQuery>
-# include <QWhatsThis>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QByteArray>
+~ include <QCheckBox>
+~ include <QClipboard>
+~ include <QCloseEvent>
+~ include <QContextMenuEvent>
+~ include <QDesktopServices>
+~ include <QDockWidget>
+~ include <QFontMetrics>
+~ include <QKeySequence>
+~ include <QLabel>
+~ include <QMdiSubWindow>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QMimeData>
+~ include <QPainter>
+~ include <QScreen>
+~ include <QSettings>
+~ include <QSignalMapper>
+~ include <QStatusBar>
+~ include <QThread>
+~ include <QTimer>
+~ include <QToolBar>
+~ include <QUrlQuery>
+~ include <QWhatsThis>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <Base/Stream.h>
-#include <DAGView/DAGView.h>
-#include <TaskView/TaskView.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectGroup.h>
+~include <Base/Parameter.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Interpreter.h>
+~include <Base/Stream.h>
+~include <DAGView/DAGView.h>
+~include <TaskView/TaskView.h>
 
-#include "MainWindow.h"
-#include "Action.h"
-#include "Assistant.h"
-#include "BitmapFactory.h"
-#include "ComboView.h"
-#include "Command.h"
-#include "DockWindowManager.h"
-#include "DownloadManager.h"
-#include "FileDialog.h"
-#include "MenuManager.h"
-#include "ProgressBar.h"
-#include "PropertyView.h"
-#include "PythonConsole.h"
-#include "ReportView.h"
-#include "SelectionView.h"
-#include "Splashscreen.h"
-#include "ToolBarManager.h"
-#include "ToolBoxManager.h"
-#include "Tree.h"
-#include "WaitCursor.h"
-#include "WorkbenchManager.h"
-#include "Workbench.h"
+~include "MainWindow.h"
+~include "Action.h"
+~include "Assistant.h"
+~include "BitmapFactory.h"
+~include "ComboView.h"
+~include "Command.h"
+~include "DockWindowManager.h"
+~include "DownloadManager.h"
+~include "FileDialog.h"
+~include "MenuManager.h"
+~include "ProgressBar.h"
+~include "PropertyView.h"
+~include "PythonConsole.h"
+~include "ReportView.h"
+~include "SelectionView.h"
+~include "Splashscreen.h"
+~include "ToolBarManager.h"
+~include "ToolBoxManager.h"
+~include "Tree.h"
+~include "WaitCursor.h"
+~include "WorkbenchManager.h"
+~include "Workbench.h"
 
 
-#include "MergeDocuments.h"
-#include "ViewProviderExtern.h"
+~include "MergeDocuments.h"
+~include "ViewProviderExtern.h"
 
-#include "SpaceballEvent.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "DlgObjectSelection.h"
-#include "Tools.h"
+~include "SpaceballEvent.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "DlgObjectSelection.h"
+~include "Tools.h"
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
-#if defined(Q_OS_WIN32)
-#define slots
-//#include <private/qmainwindowlayout_p.h>
-//#include <private/qwidgetresizehandler_p.h>
-#endif
+~if defined(Q_OS_WIN32)
+~define slots
+//~include <private/qmainwindowlayout_p.h>
+//~include <private/qwidgetresizehandler_p.h>
+~endif
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -198,7 +198,7 @@ private:
     QMenu* menu;
 };
 
-#if defined(Q_OS_WIN32)
+~if defined(Q_OS_WIN32)
 class MainWindowTabBar : public QTabBar
 {
 public:
@@ -241,7 +241,7 @@ protected:
         }
     }
 };
-#endif
+~endif
 
 } // namespace Gui
 
@@ -336,7 +336,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Show all dockable windows over the workbench facility
     //
-#if 0
+~if 0
     // Toolbox
     if (hiddenDockWindows.find("Std_ToolBox") == std::string::npos) {
         ToolBox* toolBox = new ToolBox(this);
@@ -344,7 +344,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         pDockMgr->registerDockWindow("Std_ToolBox", toolBox);
         ToolBoxManager::getInstance()->setToolBox( toolBox );
     }
-#endif
+~endif
 
     bool treeView = false, propertyView = false;
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
@@ -433,7 +433,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     //TODO: Add external object support for DAGView
-#if 1
+~if 1
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
@@ -457,9 +457,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
-#endif
+~endif
 
-#if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
+~if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
     // The MainWindowTabBar is used to show tabbed dock windows with icons
     //
     // add our own QTabBar-derived class to the main window layout
@@ -475,7 +475,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         connect(result, SIGNAL(currentChanged(int)), l, SLOT(tabChanged()));
         l->unusedTabBars << result;
     }
-#endif
+~endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
@@ -881,7 +881,7 @@ void MainWindow::addWindow(MDIView* view)
         child->setWindowIcon(view->windowIcon());
         QMenu* menu = child->systemMenu();
 
-        // See StdCmdCloseActiveWindow (#0002631)
+        // See StdCmdCloseActiveWindow (~0002631)
         QList<QAction*> acts = menu->actions();
         for (QList<QAction*>::iterator it = acts.begin(); it != acts.end(); ++it) {
             if ((*it)->shortcut() == QKeySequence(QKeySequence::Close)) {
@@ -1595,8 +1595,8 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
     // Here we must allow uri drafs and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls()) {
-#if 0
-#ifdef QT_NO_OPENSSL
+~if 0
+~ifdef QT_NO_OPENSSL
         QList<QUrl> urls = data->urls();
         for (QList<QUrl>::ConstIterator it = urls.begin(); it != urls.end(); ++it) {
             if (it->scheme().toLower() == QLatin1String("https")) {
@@ -1604,8 +1604,8 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
                 return;
             }
         }
-#endif
-#endif
+~endif
+~endif
         e->accept();
     }
     else {
@@ -1821,7 +1821,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
             dm->download(dm->redirectUrl(*it));
         }
-//#ifndef QT_NO_OPENSSL
+//~ifndef QT_NO_OPENSSL
         else if (it->scheme().toLower() == QLatin1String("https")) {
             QUrl url = *it;
             QUrlQuery urlq(url);
@@ -1833,7 +1833,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
             dm->download(dm->redirectUrl(url));
         }
-//#endif
+//~endif
         else if (it->scheme().toLower() == QLatin1String("ftp")) {
             Gui::Dialog::DownloadManager::getInstance()->download(*it);
         }
@@ -1881,7 +1881,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::clearStatus() {
     d->currentStatusType = 100;
-    statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+    statusBar()->setStyleSheet(QString::fromLatin1("~statusBar{}"));
 }
 
 void MainWindow::statusMessageChanged() {
@@ -1935,7 +1935,7 @@ void MainWindow::showStatus(int type, const QString& message)
         statusBar()->setStyleSheet(d->status->wrn);
         break;
     case MainWindow::Pane:
-        statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
+        statusBar()->setStyleSheet(QString::fromLatin1("~statusBar{}"));
         break;
     default:
         statusBar()->setStyleSheet(d->status->msg);
@@ -1964,7 +1964,7 @@ void MainWindow::customEvent(QEvent* e)
         QString msg = ce->message();
         switch(ce->type()) {
         case MainWindow::Log: {
-            if (msg.startsWith(QLatin1String("#Inventor V2.1 ascii "))) {
+            if (msg.startsWith(QLatin1String("~Inventor V2.1 ascii "))) {
                 Gui::Document *d = Application::Instance->activeDocument();
                 if (d) {
                     ViewProviderExtern *view = new ViewProviderExtern();
@@ -2005,9 +2005,9 @@ void MainWindow::customEvent(QEvent* e)
 StatusBarObserver::StatusBarObserver()
   : WindowParameter("OutputWindow")
 {
-    msg = QString::fromLatin1("#statusBar{color: #000000}"); // black
-    wrn = QString::fromLatin1("#statusBar{color: #ffaa00}"); // orange
-    err = QString::fromLatin1("#statusBar{color: #ff0000}"); // red
+    msg = QString::fromLatin1("~statusBar{color: ~000000}"); // black
+    wrn = QString::fromLatin1("~statusBar{color: ~ffaa00}"); // orange
+    err = QString::fromLatin1("~statusBar{color: ~ff0000}"); // red
     Base::Console().AttachObserver(this);
     getWindowParameter()->Attach(this);
     getWindowParameter()->NotifyAll();
@@ -2022,7 +2022,7 @@ StatusBarObserver::~StatusBarObserver()
 void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
     ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-    auto format = QString::fromLatin1("#statusBar{color: %1}");
+    auto format = QString::fromLatin1("~statusBar{color: %1}");
     if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );
         this->msg = format.arg(QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff).name());
@@ -2075,4 +2075,4 @@ ActionStyleEvent::Style ActionStyleEvent::getType() const
 }
 
 
-#include "moc_MainWindow.cpp"
+~include "moc_MainWindow.cpp"

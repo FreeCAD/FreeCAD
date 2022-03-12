@@ -20,60 +20,60 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QBoxLayout>
-# include <QCoreApplication>
-# include <QHeaderView>
-# include <QTextEdit>
-# include <QCheckBox>
-# include <QScrollBar>
-# include <QTextStream>
-# include <QThread>
-# include <QTreeWidget>
-# include <QPushButton>
-# include <Python.h>
-# include <Standard_Version.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepCheck_Result.hxx>
-# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools_ShapeSet.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QBoxLayout>
+~ include <QCoreApplication>
+~ include <QHeaderView>
+~ include <QTextEdit>
+~ include <QCheckBox>
+~ include <QScrollBar>
+~ include <QTextStream>
+~ include <QThread>
+~ include <QTreeWidget>
+~ include <QPushButton>
+~ include <Python.h>
+~ include <Standard_Version.hxx>
+~ include <BRepCheck_Analyzer.hxx>
+~ include <BRepCheck_Result.hxx>
+~ include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepTools_ShapeSet.hxx>
 
-# if OCC_VERSION_HEX >= 0x060600
-#  include <BOPAlgo_ArgumentAnalyzer.hxx>
-#  include <BOPAlgo_ListOfCheckResult.hxx>
-# endif
+~ if OCC_VERSION_HEX >= 0x060600
+~  include <BOPAlgo_ArgumentAnalyzer.hxx>
+~  include <BOPAlgo_ListOfCheckResult.hxx>
+~ endif
 
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <gp_Trsf.hxx>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoResetTransform.h>
-#endif //_PreComp_
+~ include <TopoDS.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <Bnd_Box.hxx>
+~ include <BRepBndLib.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <gp_Trsf.hxx>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoCube.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/nodes/SoResetTransform.h>
+~endif //_PreComp_
 
-#include "../App/PartFeature.h"
-#include "../App/TopoShapePy.h"
-#include <Base/Interpreter.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/MainWindow.h>
-#include "TaskCheckGeometry.h"
+~include "../App/PartFeature.h"
+~include "../App/TopoShapePy.h"
+~include <Base/Interpreter.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Selection.h>
+~include <Gui/Document.h>
+~include <Gui/Application.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/MainWindow.h>
+~include "TaskCheckGeometry.h"
 
 using namespace PartGui;
 
@@ -178,7 +178,7 @@ QVector<QString> buildBOPCheckResultVector()
   return results;
 }
 
-#if OCC_VERSION_HEX >= 0x060600
+~if OCC_VERSION_HEX >= 0x060600
 QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
@@ -187,7 +187,7 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
     index = 0;
   return strings.at(index);
 }
-#endif
+~endif
 
 ResultEntry::ResultEntry()
 {
@@ -423,18 +423,18 @@ void TaskCheckGeometryResults::goCheck()
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
-#if OCC_VERSION_HEX >= 0x060900
+~if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
-#endif
-#else
+~endif
+~else
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     Message_ProgressRange theRange(theProgress->Start());
     Message_ProgressScope theScope(theRange, TCollection_AsciiString("BOP check..."), selection.size());
     theScope.Show();
-#endif // 0x070500
+~endif // 0x070500
 
     for(const auto &sel :  selection) {
         selectedCount++;
@@ -484,20 +484,20 @@ void TaskCheckGeometryResults::goCheck()
             std::string label = "Checking ";
             label += sel.pObject->Label.getStrValue();
             label += "...";
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
             theProgress->EndScope();
             if (theProgress->UserBreak())
               break;
-#else
+~else
             Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
             theInnerScope.Show();
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
             theInnerScope.Close();
             if (theScope.UserBreak())
               break;
-#endif
+~endif
           }
         }
     }
@@ -626,13 +626,13 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
                                                const Handle(Message_ProgressIndicator)& theProgress)
-#else
+~else
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
                                                const Message_ProgressScope& theScope)
-#endif
+~endif
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -649,7 +649,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     bool curveOnSurfaceMode = group->GetBool("CurveOnSurfaceMode", true);
 
     //ArgumentAnalyser was moved at version 6.6. no back port for now.
-#if OCC_VERSION_HEX >= 0x060600
+~if OCC_VERSION_HEX >= 0x060600
   //Reference use: src/BOPTest/BOPTest_CheckCommands.cxx
 
   //I don't why we need to make a copy, but it doesn't work without it.
@@ -662,17 +662,17 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
-#if OCC_VERSION_HEX >= 0x060900
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX >= 0x060900
+~if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
-#elif OCC_VERSION_HEX < 0x070600
+~elif OCC_VERSION_HEX < 0x070600
   BOPCheck.SetProgressIndicator(theScope);
-#else
+~else
   Q_UNUSED(theScope)
-#endif // 0x070500
-#else
+~endif // 0x070500
+~else
   Q_UNUSED(theProgress);
-#endif
+~endif
 //   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
@@ -680,28 +680,28 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   BOPCheck.SelfInterMode() = selfInterMode;
   BOPCheck.SmallEdgeMode() = smallEdgeMode;
   BOPCheck.RebuildFaceMode() = rebuildFaceMode;
-#if OCC_VERSION_HEX >= 0x060700
+~if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = continuityMode;
-#endif
-#if OCC_VERSION_HEX >= 0x060900
+~endif
+~if OCC_VERSION_HEX >= 0x060900
   BOPCheck.SetParallelMode(!runSingleThreaded); //this doesn't help for speed right now(occt 6.9.1).
   BOPCheck.SetRunParallel(!runSingleThreaded); //performance boost, use all available cores
   BOPCheck.TangentMode() = tangentMode; //these 4 new tests add about 5% processing time.
   BOPCheck.MergeVertexMode() = mergeVertexMode;
   BOPCheck.MergeEdgeMode() = mergeEdgeMode;
   BOPCheck.CurveOnSurfaceMode() = curveOnSurfaceMode;
-#endif
+~endif
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
   Base::TimeInfo start_time;
-#endif
+~endif
 
   BOPCheck.Perform();
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
   std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
-#endif
+~endif
 
   if (!BOPCheck.HasFaulty())
       return 0;
@@ -723,13 +723,13 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   {
     const BOPAlgo_CheckResult &current = BOPResultsIt.Value();
 
-#if OCC_VERSION_HEX < 0x070000
+~if OCC_VERSION_HEX < 0x070000
     const BOPCol_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
     BOPCol_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#else
+~else
     const TopTools_ListOfShape &faultyShapes1 = current.GetFaultyShapes1();
     TopTools_ListIteratorOfListOfShape faultyShapes1It(faultyShapes1);
-#endif
+~endif
     for (;faultyShapes1It.More(); faultyShapes1It.Next())
     {
       const TopoDS_Shape &faultyShape = faultyShapes1It.Value();
@@ -768,9 +768,9 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
     }
   }
   return 1;
-#else
+~else
   return 0;
-#endif
+~endif
 }
 
 
@@ -911,7 +911,7 @@ void PartGui::goSetupResultTypedSelection(ResultEntry* entry, const TopoDS_Shape
 
 void PartGui::goSetupResultBoundingBox(ResultEntry *entry)
 {
-    //empty compound throws bounding box error. Mantis #0001426
+    //empty compound throws bounding box error. Mantis ~0001426
     try
     {
       Bnd_Box boundingBox;
@@ -1369,7 +1369,7 @@ BOPProgressIndicator::~BOPProgressIndicator ()
     myProgress->close();
 }
 
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
 Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 {
     if (theForce) {
@@ -1390,7 +1390,7 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 
     return Standard_True;
 }
-#else
+~else
 void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
                                  const Standard_Boolean isForce)
 {
@@ -1414,7 +1414,7 @@ void BOPProgressIndicator::Reset()
     myProgress->setRange(0, 0);
     myProgress->setValue(0);
 }
-#endif
+~endif
 
 Standard_Boolean BOPProgressIndicator::UserBreak()
 {
@@ -1444,4 +1444,4 @@ Standard_Boolean BOPProgressIndicator::UserBreak()
     return Standard_False;
 }
 
-#include "moc_TaskCheckGeometry.cpp"
+~include "moc_TaskCheckGeometry.cpp"

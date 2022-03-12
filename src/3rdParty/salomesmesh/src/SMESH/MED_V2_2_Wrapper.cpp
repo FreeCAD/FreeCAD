@@ -20,20 +20,20 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "MED_V2_2_Wrapper.hxx"
-#include "MED_Algorithm.hxx"
-#include "MED_Utilities.hxx"
+~include "MED_V2_2_Wrapper.hxx"
+~include "MED_Algorithm.hxx"
+~include "MED_Utilities.hxx"
 
-#include <med.h>
-#include <med_err.h>
+~include <med.h>
+~include <med_err.h>
 
-#ifdef _DEBUG_
+~ifdef _DEBUG_
 static int MYDEBUG = 0;
-// #else
+// ~else
 // static int MYDEBUG = 0;
-#endif
+~endif
 
-#define MED_VERSION_HEX    (MED_NUM_MAJEUR << 16 | MED_NUM_MINEUR << 8 | MED_NUM_RELEASE)
+~define MED_VERSION_HEX    (MED_NUM_MAJEUR << 16 | MED_NUM_MINEUR << 8 | MED_NUM_RELEASE)
 
 
 namespace MED
@@ -970,14 +970,14 @@ namespace MED
       TInt aNbElem = (TInt)theInfo.myElemNum->size();
 
       TErr aRet;
-#if MED_VERSION_HEX < 0x030007
+~if MED_VERSION_HEX < 0x030007
       aRet = -1;
-#else
+~else
       aRet = MEDmeshPolygon2Rd(myFile->Id(), &aMeshName,
                                MED_NO_DT, MED_NO_IT,
                                anEntity, aGeom,
                                aConnMode, &anIndex, &aConn);
-#endif
+~endif
 
       if(theErr) 
         *theErr = aRet;
@@ -1032,15 +1032,15 @@ namespace MED
       TValueHolder<EGeometrieElement, med_geometry_type> aGeom    (anInfo.myGeom);
       TValueHolder<EConnectivite, med_connectivity_mode> aConnMode(anInfo.myConnMode);
 
-#if MED_VERSION_HEX < 0x030007
+~if MED_VERSION_HEX < 0x030007
       TErr aRet = -1;
-#else
+~else
       TErr aRet = MEDmeshPolygon2Wr(myFile->Id(), &aMeshName,
                                     MED_NO_DT, MED_NO_IT, MED_UNDEF_DT,
                                     anEntity, aGeom,
                                     aConnMode, anInfo.myNbElem + 1,
                                     &anIndex, &aConn);
-#endif
+~endif
       if(theErr)
         *theErr = aRet;
       else if(aRet < 0)

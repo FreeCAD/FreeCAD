@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QEvent>
-# include <QGridLayout>
-# include <QTimer>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QEvent>
+~ include <QGridLayout>
+~ include <QTimer>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Parameter.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Parameter.h>
 
-#include "PropertyView.h"
-#include "Application.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "SelectionObject.h"
-#include "Tree.h"
-#include "ViewParams.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
-#include "propertyeditor/PropertyEditor.h"
+~include "PropertyView.h"
+~include "Application.h"
+~include "Document.h"
+~include "MainWindow.h"
+~include "SelectionObject.h"
+~include "Tree.h"
+~include "ViewParams.h"
+~include "ViewProvider.h"
+~include "ViewProviderDocumentObject.h"
+~include "propertyeditor/PropertyEditor.h"
 
 
 using namespace std;
@@ -560,4 +560,4 @@ PropertyDockView::~PropertyDockView()
 {
 }
 
-#include "moc_PropertyView.cpp"
+~include "moc_PropertyView.cpp"

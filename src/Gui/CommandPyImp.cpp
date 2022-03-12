@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Command.h"
-#include "Action.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "Selection.h"
-#include "Window.h"
-#include "PythonWrapper.h"
+~include "Command.h"
+~include "Action.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "Selection.h"
+~include "Window.h"
+~include "PythonWrapper.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
-#include "CommandPy.h"
-#include "CommandPy.cpp"
+~include "CommandPy.h"
+~include "CommandPy.cpp"
 
 
 // returns a string which represents the object e.g. when printed in python

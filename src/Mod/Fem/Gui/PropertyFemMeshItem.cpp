@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <SMESH_Mesh.hxx>
-#endif
+~ifndef _PreComp_
+~ include <SMESH_Mesh.hxx>
+~endif
 
-#include "PropertyFemMeshItem.h"
-#include <Mod/Fem/App/FemMeshProperty.h>
+~include "PropertyFemMeshItem.h"
+~include <Mod/Fem/App/FemMeshProperty.h>
 
 
 using namespace FemGui;
@@ -229,4 +229,4 @@ int PropertyFemMeshItem::countGroups() const
     return ctG;
 }
 
-#include "moc_PropertyFemMeshItem.cpp"
+~include "moc_PropertyFemMeshItem.cpp"

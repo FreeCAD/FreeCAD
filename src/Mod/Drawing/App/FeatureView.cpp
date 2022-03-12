@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <Standard_Failure.hxx>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Standard_Failure.hxx>
+~endif
 
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
 
-#include "FeatureView.h"
+~include "FeatureView.h"
 
 using namespace Drawing;
 

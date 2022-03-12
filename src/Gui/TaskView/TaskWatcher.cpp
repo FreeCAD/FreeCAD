@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QObject>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/TaskView/TaskView.h>
+~include <QObject>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/TaskView/TaskView.h>
 
-#include "TaskWatcher.h"
+~include "TaskWatcher.h"
 
 
 using namespace Gui::TaskView;
@@ -160,4 +160,4 @@ bool TaskWatcherCommandsEmptySelection::shouldShow()
 }
 
 
-#include "moc_TaskWatcher.cpp"
+~include "moc_TaskWatcher.cpp"

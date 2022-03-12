@@ -21,64 +21,64 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# define WIN32_LEAN_AND_MEAN
-# define NOMINMAX
-# include <windows.h>
-# endif
-# include <QApplication>
-# include <QCalendarWidget>
-# include <QColorDialog>
-# include <QCryptographicHash>
-# include <QObject>
-# include <QEventLoop>
-# include <QFontMetrics>
-# include <QFuture>
-# include <QFutureWatcher>
-# include <QtConcurrentMap>
-# include <QLabel>
-# include <QInputDialog>
-# include <QMessageBox>
-# include <QTimer>
-# include <QImage>
-# include <QImageReader>
-# include <QPainter>
-# include <QPainterPath>
-# include <QThread>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoCone.h>
-# include <cmath>
-# include <boost/thread/thread.hpp>
-# include <boost/thread/mutex.hpp>
-# include <boost/thread/condition_variable.hpp>
-# include <boost/thread/future.hpp>
-# include <boost/bind/bind.hpp>
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ define WIN32_LEAN_AND_MEAN
+~ define NOMINMAX
+~ include <windows.h>
+~ endif
+~ include <QApplication>
+~ include <QCalendarWidget>
+~ include <QColorDialog>
+~ include <QCryptographicHash>
+~ include <QObject>
+~ include <QEventLoop>
+~ include <QFontMetrics>
+~ include <QFuture>
+~ include <QFutureWatcher>
+~ include <QtConcurrentMap>
+~ include <QLabel>
+~ include <QInputDialog>
+~ include <QMessageBox>
+~ include <QTimer>
+~ include <QImage>
+~ include <QImageReader>
+~ include <QPainter>
+~ include <QPainterPath>
+~ include <QThread>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoImage.h>
+~ include <Inventor/nodes/SoCone.h>
+~ include <cmath>
+~ include <boost/thread/thread.hpp>
+~ include <boost/thread/mutex.hpp>
+~ include <boost/thread/condition_variable.hpp>
+~ include <boost/thread/future.hpp>
+~ include <boost/bind/bind.hpp>
+~ include <memory>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/WaitCursor.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/WaitCursor.h>
 
-#include <Mod/Sandbox/App/DocumentThread.h>
-#include <Mod/Sandbox/App/DocumentProtector.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Degeneration.h>
-#include "Workbench.h"
-#include "GLGraphicsView.h"
-#include "TaskPanelView.h"
+~include <Mod/Sandbox/App/DocumentThread.h>
+~include <Mod/Sandbox/App/DocumentProtector.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Degeneration.h>
+~include "Workbench.h"
+~include "GLGraphicsView.h"
+~include "TaskPanelView.h"
 
 namespace bp = boost::placeholders;
 
@@ -182,11 +182,11 @@ void CmdSandboxDocThreadWithSeq::activated(int)
     dt->setObjectName(QString::fromLatin1("MyMesh"));
     QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
     dt->start();
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     int max = 10000;
-#else
+~else
     int max = 100000000;
-#endif
+~endif
     Base::SequencerLauncher seq("Do something meaningful...", max);
     double val=0;
     for (int i=0; i<max; i++) {
@@ -221,11 +221,11 @@ void CmdSandboxDocThreadBusy::activated(int)
     dt->setObjectName(QString::fromLatin1("MyMesh"));
     QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
     dt->start();
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     int max = 10000;
-#else
+~else
     int max = 100000000;
-#endif
+~endif
     double val=0;
     for (int i=0; i<max; i++) {
         for (int j=0; j<max; j++) {
@@ -1017,41 +1017,41 @@ public:
     }
 };
 
-#ifdef Q_OS_WIN32
+~ifdef Q_OS_WIN32
 class GDIWidget : public QWidget
 {
 public:
     GDIWidget(QWidget* parent) : QWidget(parent)
     {
         setAttribute(Qt::WA_PaintOnScreen);
-#if QT_VERSION >= 0x050000
+~if QT_VERSION >= 0x050000
         setAttribute(Qt::WA_NativeWindow);
-#endif
+~endif
     }
     QPaintEngine *paintEngine() const {
         return 0;
     }
 protected:
     void paintEvent(QPaintEvent *event) {
-#if QT_VERSION < 0x050000
+~if QT_VERSION < 0x050000
         HDC hdc = getDC();
-#else
+~else
         HWND hWnd = (HWND)this->winId();
         HDC hdc = GetDC(hWnd);
-#endif
+~endif
         SelectObject(hdc, GetSysColorBrush(COLOR_WINDOW));
         Rectangle(hdc, 0, 0, width(), height());
         RECT rect = {0, 0, width(), height() };
         DrawTextA(hdc, "Hello World!", 12, &rect,
         DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-#if QT_VERSION < 0x050000
+~if QT_VERSION < 0x050000
         releaseDC(hdc);
-#else
+~else
         ReleaseDC(hWnd, hdc);
-#endif
+~endif
     }
 };
-#endif
+~endif
 
 CmdTestImageNode::CmdTestImageNode()
   : Command("Std_ImageNode")
@@ -1150,13 +1150,13 @@ CmdTestGDIWidget::CmdTestGDIWidget()
 
 void CmdTestGDIWidget::activated(int)
 {
-#ifdef Q_OS_WIN32
+~ifdef Q_OS_WIN32
     GDIWidget* gdi = new GDIWidget(Gui::getMainWindow());
     gdi->show();
     gdi->resize(200,200);
     gdi->move(400,400);
     gdi->setAttribute(Qt::WA_DeleteOnClose);
-#endif
+~endif
 }
 
 //===========================================================================
@@ -1176,7 +1176,7 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
 
 void CmdTestRedirectPaint::activated(int)
 {
-#if 1 //QT_VERSION >= 0x050000
+~if 1 //QT_VERSION >= 0x050000
     QCalendarWidget* cal = new QCalendarWidget();
     cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
     cal->show();
@@ -1187,7 +1187,7 @@ void CmdTestRedirectPaint::activated(int)
     label->setPixmap(img);
     label->show();
     label->setWindowTitle(QString::fromLatin1("QLabel"));
-#else
+~else
     QCalendarWidget* cal = new QCalendarWidget();
     QLabel* label = new QLabel();
     QPainter::setRedirected(cal,label);
@@ -1195,7 +1195,7 @@ void CmdTestRedirectPaint::activated(int)
     cal->show();
     label->show();
     label->setWindowTitle(QString::fromLatin1("QLabel"));
-#endif
+~endif
 }
 
 //===========================================================================

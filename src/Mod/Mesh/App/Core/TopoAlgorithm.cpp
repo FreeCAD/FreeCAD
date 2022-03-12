@@ -21,25 +21,25 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <utility>
-# include <queue>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <utility>
+~ include <queue>
+~endif
 
-#include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 
-#include "TopoAlgorithm.h"
-#include "Iterator.h"
-#include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Evaluation.h"
-#include "Triangulation.h"
-#include "Definitions.h"
-#include <Base/Console.h>
+~include "TopoAlgorithm.h"
+~include "Iterator.h"
+~include "MeshKernel.h"
+~include "Algorithm.h"
+~include "Evaluation.h"
+~include "Triangulation.h"
+~include "Definitions.h"
+~include <Base/Console.h>
 
 using namespace MeshCore;
 
@@ -1380,7 +1380,7 @@ void MeshTopoAlgorithm::SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned shor
   _rclMesh._aclFacetArray.push_back(cNew);
 }
 
-#if 0
+~if 0
   // create 3 new facets
   MeshGeomFacet clFacet;
 
@@ -1402,7 +1402,7 @@ void MeshTopoAlgorithm::SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned shor
   clFacet._aclPoints[2] = cP1;
   clFacet.CalcNormal();
   _aclNewFacets.push_back(clFacet);
-#endif
+~endif
 
 bool MeshTopoAlgorithm::RemoveDegeneratedFacet(FacetIndex index)
 {
@@ -1651,13 +1651,13 @@ void MeshTopoAlgorithm::FlipNormals ()
  * Ne ~ 3Nv, Nv >> G, Nv >> R
  * Nt ~ 2Nv, Nv >> G, Nv >> R
  *
- * Ne = #Edges
- * Nt = #Facets
- * Nv = #Vertices
- * Nb = #Boundary vertices
- * B  = #Boundaries
+ * Ne = ~Edges
+ * Nt = ~Facets
+ * Nv = ~Vertices
+ * Nb = ~Boundary vertices
+ * B  = ~Boundaries
  * G  = Genus (Number of holes)
- * R  = #components
+ * R  = ~components
  *
  * See also http://max-limper.de/publications/Euler/
  */

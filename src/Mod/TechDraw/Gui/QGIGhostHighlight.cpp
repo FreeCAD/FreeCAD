@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QPen>
-#include <QColor>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QPainter>
+~include <QPainterPathStroker>
+~include <QStyleOptionGraphicsItem>
+~include <QPen>
+~include <QColor>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include <Mod/TechDraw/App/DrawUtil.h>
-//#include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+//~include <Mod/TechDraw/App/Preferences.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "QGIView.h"
-#include "QGIGhostHighlight.h"
+~include <qmath.h>
+~include "Rez.h"
+~include "DrawGuiUtil.h"
+~include "PreferencesGui.h"
+~include "QGIView.h"
+~include "QGIGhostHighlight.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -114,4 +114,4 @@ void QGIGhostHighlight::setRadius(double r)
     setBounds(-r, r, r, -r);
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIGhostHighlight.cpp>
+~include <Mod/TechDraw/Gui/moc_QGIGhostHighlight.cpp>

@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMouseEvent>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMouseEvent>
+~endif
 
-#include "TreeView.h"
-#include "Application.h"
-#include "Document.h"
-#include "DocumentModel.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "ViewProvider.h"
+~include "TreeView.h"
+~include "Application.h"
+~include "Document.h"
+~include "DocumentModel.h"
+~include "MainWindow.h"
+~include "MDIView.h"
+~include "ViewProvider.h"
 
 using namespace Gui;
 
@@ -89,5 +89,5 @@ void TreeView::rowsInserted (const QModelIndex & parent, int start, int end)
     }
 }
 
-#include "moc_TreeView.cpp"
+~include "moc_TreeView.cpp"
 

@@ -25,21 +25,21 @@
 // Created   : Fri Oct 20 11:37:07 2006
 // Author    : Edward AGAPOV (eap)
 //
-#include "StdMeshers_PolygonPerFace_2D.hxx"
+~include "StdMeshers_PolygonPerFace_2D.hxx"
 
-#include "SMESH_Comment.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_subMesh.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_ViscousLayers2D.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_subMesh.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_ViscousLayers2D.hxx"
 
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Face.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS_Face.hxx>
 
-#include <vector>
-#include <TopoDS.hxx>
+~include <vector>
+~include <TopoDS.hxx>
 
 using namespace std;
 
@@ -148,14 +148,14 @@ bool StdMeshers_PolygonPerFace_2D::Evaluate(SMESH_Mesh&         theMesh,
   default:
     if ( nbLinSegs + nbQuadSegs < 3 )
       return error( COMPERR_BAD_INPUT_MESH, "Less that 3 nodes on the wire" );  
-#ifndef VTK_NO_QUAD_POLY
+~ifndef VTK_NO_QUAD_POLY
     aVec[ nbQuadSegs ? SMDSEntity_Quad_Polygon : SMDSEntity_Polygon ] = 1;
-#else
+~else
     if(nbQuadSegs)
         throw SALOME_Exception("Quadratic polygon not supported with VTK <6.2");
     
     aVec[ SMDSEntity_Polygon ] = 1;
-#endif
+~endif
   }
 
   SMESH_subMesh * sm = theMesh.GetSubMesh(theShape);

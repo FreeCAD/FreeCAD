@@ -22,16 +22,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
+~include <Base/Placement.h>
+~include <Base/Console.h>
 
-#include "ConstraintGroupPy.h"
-#include "ConstraintGroup.h"
-#include "Product.h"
+~include "ConstraintGroupPy.h"
+~include "ConstraintGroup.h"
+~include "Product.h"
 
 
 using namespace Assembly;

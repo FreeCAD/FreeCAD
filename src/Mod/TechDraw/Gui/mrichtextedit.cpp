@@ -25,37 +25,37 @@
  * includes changes by wandererfan@gmail.com
  * for FreeCAD project https://www.freecadweb.org/
  ********************************/
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QApplication>
-#include <QClipboard>
-#include <QMimeData>
-#include <QFontDatabase>
-#include <QInputDialog>
-#include <QColorDialog>
-#include <QTextList>
-#include <QtDebug>
-#include <QFileDialog>
-#include <QImageReader>
-#include <QSettings>
-#include <QBuffer>
-#include <QUrl>
-#include <QPlainTextEdit>
-#include <QMenu>
-#include <QDialog>
-#include <QBitmap>
+~include <QApplication>
+~include <QClipboard>
+~include <QMimeData>
+~include <QFontDatabase>
+~include <QInputDialog>
+~include <QColorDialog>
+~include <QTextList>
+~include <QtDebug>
+~include <QFileDialog>
+~include <QImageReader>
+~include <QSettings>
+~include <QBuffer>
+~include <QUrl>
+~include <QPlainTextEdit>
+~include <QMenu>
+~include <QDialog>
+~include <QBitmap>
 
-#include <iostream>
-#include <algorithm>
+~include <iostream>
+~include <algorithm>
 
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
-#include <Gui/FileDialog.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Tools.h>
+~include <Gui/FileDialog.h>
 
-#include <App/Application.h>
-#include "PreferencesGui.h"
-#include "mrichtextedit.h"
+~include <App/Application.h>
+~include "PreferencesGui.h"
+~include "mrichtextedit.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -63,11 +63,11 @@ using namespace TechDraw;
 MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
     setupUi(this);
     m_lastBlockList = 0;
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     f_textedit->setTabStopWidth(40);
-#else
+~else
     f_textedit->setTabStopDistance(40);
-#endif
+~endif
 //    setDefFontSize(getDefFontSizeNum());
     setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
     m_defFont = getDefFont().family();
@@ -140,9 +140,9 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     connect(f_textedit, SIGNAL(copyAvailable(bool)), f_cut, SLOT(setEnabled(bool)));
     connect(f_textedit, SIGNAL(copyAvailable(bool)), f_copy, SLOT(setEnabled(bool)));
 
-#ifndef QT_NO_CLIPBOARD
+~ifndef QT_NO_CLIPBOARD
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(slotClipboardDataChanged()));
-#endif
+~endif
 
     // link
 
@@ -635,10 +635,10 @@ void MRichTextEdit::slotCurrentCharFormatChanged(const QTextCharFormat &format) 
 }
 
 void MRichTextEdit::slotClipboardDataChanged() {
-#ifndef QT_NO_CLIPBOARD
+~ifndef QT_NO_CLIPBOARD
     if (const QMimeData *md = QApplication::clipboard()->mimeData())
         f_paste->setEnabled(md->hasText());
-#endif
+~endif
 }
 
 QString MRichTextEdit::toHtml() const {
@@ -846,5 +846,5 @@ void MRichTextEdit::addFontSize(QString fs)
     f_fontsize->addItems(newList);
 }
 
-#include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>
+~include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>
 

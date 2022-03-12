@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <iostream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cmath>
+~ include <iostream>
+~endif
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <QtConcurrentMap>
+~include <boost/math/special_functions/fpclassify.hpp>
+~include <QtConcurrentMap>
 
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Persistence.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
+~include <Base/Exception.h>
+~include <Base/Matrix.h>
+~include <Base/Persistence.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
 
-#include "Points.h"
-#include "PointsAlgos.h"
-#include "PointsPy.h"
+~include "Points.h"
+~include "PointsAlgos.h"
+~include "PointsPy.h"
 
-#ifdef _MSC_VER
-# include <ppl.h>
-#endif
+~ifdef _MSC_VER
+~ include <ppl.h>
+~endif
 
 using namespace Points;
 using namespace std;
@@ -85,25 +85,25 @@ Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
     std::vector<value_type>& kernel = getBasicPoints();
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     // Win32-only at the moment since ppl.h is a Microsoft library. Points is not using Qt so we cannot use QtConcurrent
     // We could also rewrite Points to leverage SIMD instructions
     // Other option: openMP. But with VC2013 results in high CPU usage even after computation (busy-waits for >100ms)
     Concurrency::parallel_for_each(kernel.begin(), kernel.end(), [rclMat](value_type& value) {
         value = rclMat * value;
     });
-#else
+~else
     QtConcurrent::blockingMap(kernel, [rclMat](value_type& value) {
         rclMat.multVec(value, value);
     });
-#endif
+~endif
 }
 
 Base::BoundBox3d PointKernel::getBoundBox()const
 {
     Base::BoundBox3d bnd;
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     // Thread-local bounding boxes
     Concurrency::combinable<Base::BoundBox3d> bbs;
     // Cannot use a const_point_iterator here as it is *not* a proper iterator (fails the for_each template)
@@ -115,10 +115,10 @@ Base::BoundBox3d PointKernel::getBoundBox()const
     bbs.combine_each([&bnd](const Base::BoundBox3d& lbb) {
         bnd.Add(lbb);
     });
-#else
+~else
     for (const_point_iterator it = begin(); it != end(); ++it)
         bnd.Add(*it);
-#endif
+~endif
     return bnd;
 }
 
@@ -227,7 +227,7 @@ void PointKernel::load(const char* file)
 
 void PointKernel::save(std::ostream& out) const
 {
-    out << "# ASCII" << std::endl;
+    out << "~ ASCII" << std::endl;
     for (std::vector<value_type>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
         out << it->x << " " << it->y << " " << it->z << std::endl;
     }

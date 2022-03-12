@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mod/Part/App/BodyBase.h"
+~include "Mod/Part/App/BodyBase.h"
 
 // inclusion of the generated files (generated out of ItemPy.xml)
-#include "BodyBasePy.h"
-#include "BodyBasePy.cpp"
+~include "BodyBasePy.h"
+~include "BodyBasePy.cpp"
 
 using namespace Part;
 

@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Vector3D.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Vector3D.h>
 
-#include "DrawRichAnno.h"
+~include "DrawRichAnno.h"
 
 // inclusion of the generated files (generated out of DrawRichAnnoPy.xml)
-#include <Base/VectorPy.h>
-#include <Mod/TechDraw/App/DrawRichAnnoPy.h>
-#include <Mod/TechDraw/App/DrawRichAnnoPy.cpp>
+~include <Base/VectorPy.h>
+~include <Mod/TechDraw/App/DrawRichAnnoPy.h>
+~include <Mod/TechDraw/App/DrawRichAnnoPy.cpp>
 
 using namespace TechDraw;
 

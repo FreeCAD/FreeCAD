@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Python.h>
-#include <QMessageBox>
-#include "ViewProvider.h"
-#include "DlgSettings3DViewPartImp.h"
-#include "ui_DlgSettings3DViewPart.h"
+~include <Python.h>
+~include <QMessageBox>
+~include "ViewProvider.h"
+~include "DlgSettings3DViewPartImp.h"
+~include "ui_DlgSettings3DViewPart.h"
 
-#include <Gui/PrefWidgets.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Console.h>
+~include <Gui/PrefWidgets.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Base/Console.h>
 
 using namespace PartGui;
 
@@ -107,4 +107,4 @@ void DlgSettings3DViewPart::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettings3DViewPartImp.cpp"
+~include "moc_DlgSettings3DViewPartImp.cpp"

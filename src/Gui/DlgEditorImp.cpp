@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QComboBox>
-# include <QFontDatabase>
-# include <QHeaderView>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QComboBox>
+~ include <QFontDatabase>
+~ include <QHeaderView>
+~endif
 
-#include "DlgEditorImp.h"
-#include "ui_DlgEditor.h"
-#include "PrefWidgets.h"
-#include "PythonEditor.h"
+~include "DlgEditorImp.h"
+~include "ui_DlgEditor.h"
+~include "PrefWidgets.h"
+~include "PythonEditor.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -61,11 +61,11 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     ui->setupUi(this);
     ui->EnableFolding->hide(); // Switch off until we have an editor with folding
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     ui->textEdit1->setTabStopWidth(40);
-#else
+~else
     ui->textEdit1->setTabStopDistance(40.0);
-#endif
+~endif
 
     d = new DlgSettingsEditorP();
     QColor col;
@@ -203,7 +203,7 @@ void DlgSettingsEditorImp::loadSettings()
     ui->radioSpaces->onRestore();
 
     ui->textEdit1->setPlainText(QString::fromLatin1(
-        "# Short Python sample\n"
+        "~ Short Python sample\n"
         "import sys\n"
         "\n"
         "def foo(begin, end):\n"
@@ -272,4 +272,4 @@ void DlgSettingsEditorImp::on_fontSize_valueChanged(const QString&)
     on_fontFamily_activated(ui->fontFamily->currentText());
 }
 
-#include "moc_DlgEditorImp.cpp"
+~include "moc_DlgEditorImp.cpp"

@@ -19,20 +19,20 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-#include "UNV2411_Structure.hxx"
-#include "UNV2412_Structure.hxx"
-#include "UNV_Utilities.hxx"
+~include "UNV2411_Structure.hxx"
+~include "UNV2412_Structure.hxx"
+~include "UNV_Utilities.hxx"
 
-#include "DriverUNV_R_SMDS_Mesh.h"
-#include "DriverUNV_W_SMDS_Mesh.h"
+~include "DriverUNV_R_SMDS_Mesh.h"
+~include "DriverUNV_W_SMDS_Mesh.h"
 
 using namespace std;
 
-#ifdef DEBUG
+~ifdef DEBUG
 static int MYDEBUG = 1;
-#else
+~else
 static int MYDEBUG = 0;
-#endif
+~endif
 
 
 void ReadMed(const char* theFileName){

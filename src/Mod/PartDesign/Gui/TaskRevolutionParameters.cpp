@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Mod/PartDesign/App/FeatureRevolution.h>
-#include <Mod/PartDesign/App/FeatureGroove.h>
-#include <Mod/PartDesign/App/Body.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Origin.h>
+~include <Base/Console.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/ViewProviderOrigin.h>
+~include <Mod/PartDesign/App/FeatureRevolution.h>
+~include <Mod/PartDesign/App/FeatureGroove.h>
+~include <Mod/PartDesign/App/Body.h>
 
-#include "ui_TaskRevolutionParameters.h"
-#include "TaskRevolutionParameters.h"
-#include "ReferenceSelection.h"
+~include "ui_TaskRevolutionParameters.h"
+~include "TaskRevolutionParameters.h"
+~include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -394,4 +394,4 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(PartDesignGui::ViewProv
 }
 
 
-#include "moc_TaskRevolutionParameters.cpp"
+~include "moc_TaskRevolutionParameters.cpp"

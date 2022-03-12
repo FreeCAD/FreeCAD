@@ -21,17 +21,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Mesh.h"
-#include "MeshPoint.h"
-#include "MeshPointPy.h"
-#include "MeshPointPy.cpp"
+~include "Mesh.h"
+~include "MeshPoint.h"
+~include "MeshPointPy.h"
+~include "MeshPointPy.cpp"
 
-#include <Base/VectorPy.h>
+~include <Base/VectorPy.h>
 
 using namespace Mesh;
 

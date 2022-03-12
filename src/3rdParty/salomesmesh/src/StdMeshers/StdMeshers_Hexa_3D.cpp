@@ -26,32 +26,32 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_Hexa_3D.hxx"
+~include "StdMeshers_Hexa_3D.hxx"
 
-#include "StdMeshers_CompositeHexa_3D.hxx"
-#include "StdMeshers_FaceSide.hxx"
-#include "StdMeshers_HexaFromSkin_3D.hxx"
-#include "StdMeshers_Penta_3D.hxx"
-#include "StdMeshers_Prism_3D.hxx"
-#include "StdMeshers_Quadrangle_2D.hxx"
-#include "StdMeshers_ViscousLayers.hxx"
+~include "StdMeshers_CompositeHexa_3D.hxx"
+~include "StdMeshers_FaceSide.hxx"
+~include "StdMeshers_HexaFromSkin_3D.hxx"
+~include "StdMeshers_Penta_3D.hxx"
+~include "StdMeshers_Prism_3D.hxx"
+~include "StdMeshers_Quadrangle_2D.hxx"
+~include "StdMeshers_ViscousLayers.hxx"
 
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshNode.hxx"
 
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_SequenceOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
-#include <TopoDS.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_SequenceOfShape.hxx>
+~include <TopTools_MapOfShape.hxx>
+~include <TopoDS.hxx>
 
-#include "utilities.h"
-#include "Utils_ExceptHandlers.hxx"
+~include "utilities.h"
+~include "Utils_ExceptHandlers.hxx"
 
 typedef SMESH_Comment TComm;
 

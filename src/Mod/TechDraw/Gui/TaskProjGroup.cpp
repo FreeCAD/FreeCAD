@@ -21,42 +21,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <cmath>
-#endif // #ifndef _PreComp_
+~ifndef _PreComp_
+~include <cmath>
+~endif // ~ifndef _PreComp_
 
-#include <QMessageBox>
+~include <QMessageBox>
 
-#include <Base/Console.h>
+~include <Base/Console.h>
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/WaitCursor.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/WaitCursor.h>
 
-#include <Inventor/SbVec3f.h>
+~include <Inventor/SbVec3f.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
+~include <Mod/TechDraw/App/DrawPage.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawView.h>
+~include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include "ViewProviderPage.h"
-#include "ViewProviderProjGroup.h"
-#include "ViewProviderProjGroupItem.h"
+~include "ViewProviderPage.h"
+~include "ViewProviderProjGroup.h"
+~include "ViewProviderProjGroupItem.h"
 
-#include "TaskProjGroup.h"
-#include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
+~include "TaskProjGroup.h"
+~include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
 using namespace Gui;
 using namespace TechDraw;
@@ -634,4 +634,4 @@ bool TaskDlgProjGroup::reject()
 }
 
 
-#include <Mod/TechDraw/Gui/moc_TaskProjGroup.cpp>
+~include <Mod/TechDraw/Gui/moc_TaskProjGroup.cpp>

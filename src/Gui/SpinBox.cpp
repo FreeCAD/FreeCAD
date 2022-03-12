@@ -20,27 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <climits>
-# include <QKeyEvent>
-# include <QLineEdit>
-# include <QStyle>
-# include <QStyleOptionSpinBox>
-# include <QStylePainter>
-#endif
+~ifndef _PreComp_
+~ include <climits>
+~ include <QKeyEvent>
+~ include <QLineEdit>
+~ include <QStyle>
+~ include <QStyleOptionSpinBox>
+~ include <QStylePainter>
+~endif
 
-#include <boost/math/special_functions/round.hpp>
+~include <boost/math/special_functions/round.hpp>
 
-#include <App/ExpressionParser.h>
-#include <App/PropertyUnits.h>
-#include <Base/Tools.h>
+~include <App/ExpressionParser.h>
+~include <App/PropertyUnits.h>
+~include <Base/Tools.h>
 
-#include "SpinBox.h"
-#include "Command.h"
-#include "DlgExpressionInput.h"
-#include "QuantitySpinBox_p.h"
+~include "SpinBox.h"
+~include "Command.h"
+~include "DlgExpressionInput.h"
+~include "QuantitySpinBox_p.h"
 
 
 using namespace Gui;
@@ -535,4 +535,4 @@ void DoubleSpinBox::paintEvent(QPaintEvent*)
     drawControl(opt);
 }
 
-#include "moc_SpinBox.cpp"
+~include "moc_SpinBox.cpp"

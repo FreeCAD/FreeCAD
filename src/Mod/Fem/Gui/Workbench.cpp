@@ -21,20 +21,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~endif
 
-#include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
+~include "Workbench.h"
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
 
 
 using namespace FemGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "FEM");
     qApp->translate("Workbench", "&FEM");
     //
@@ -71,7 +71,7 @@ using namespace FemGui;
     qApp->translate("Workbench", "&Filter functions");
     //
     qApp->translate("Workbench", "Utilities");
-#endif
+~endif
 
 /// @namespace FemGui @class Workbench
 TYPESYSTEM_SOURCE(FemGui::Workbench, Gui::StdWorkbench)
@@ -157,10 +157,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
      Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
      mesh->setCommand("Mesh");
-#ifdef FCWithNetgen
+~ifdef FCWithNetgen
      *mesh
         << "FEM_MeshNetgenFromShape";
-#endif
+~endif
      *mesh
         << "FEM_MeshGmshFromShape"
         << "Separator"
@@ -192,7 +192,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
      *results
         << "FEM_ResultsPurge"
         << "FEM_ResultShow";
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
      *results
         << "Separator"
         << "FEM_PostApplyChanges"
@@ -207,7 +207,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_PostFilterDataAtPoint"
         << "Separator"
         << "FEM_PostCreateFunctions";
-#endif
+~endif
 
      Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
      utils->setCommand("Utilities");
@@ -318,10 +318,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* mesh = new Gui::MenuItem;
     root->insertItem(item, mesh);
     mesh->setCommand("M&esh");
-#ifdef FCWithNetgen
+~ifdef FCWithNetgen
      *mesh
         << "FEM_MeshNetgenFromShape";
-#endif
+~endif
      *mesh
         << "FEM_MeshGmshFromShape"
         << "Separator"
@@ -358,7 +358,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *results
         << "FEM_ResultsPurge"
         << "FEM_ResultShow";
-#ifdef FC_USE_VTK
+~ifdef FC_USE_VTK
     *results
         << "Separator"
         << "FEM_PostApplyChanges"
@@ -373,7 +373,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_PostFilterDataAtPoint"
         << "Separator"
         << "FEM_PostCreateFunctions";
-#endif
+~endif
 
     Gui::MenuItem* utils = new Gui::MenuItem;
     root->insertItem(item, utils);

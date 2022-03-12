@@ -22,20 +22,20 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <sstream>
-#   include <boost/regex.hpp>
-#endif
+~ifndef _PreComp_
+~   include <sstream>
+~   include <boost/regex.hpp>
+~endif
 
-#include "Interpreter.h"
-#include "Console.h"
-#include "ExceptionFactory.h"
-#include "FileInfo.h"
-#include "PyObjectBase.h"
-#include "PyTools.h"
-#include "Stream.h"
+~include "Interpreter.h"
+~include "Console.h"
+~include "ExceptionFactory.h"
+~include "FileInfo.h"
+~include "PyObjectBase.h"
+~include "PyTools.h"
+~include "Stream.h"
 
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
@@ -61,7 +61,7 @@ PyException::PyException()
     std::string prefix = PP_last_error_type; /* exception name text */
 //  prefix += ": ";
     std::string error = PP_last_error_info;            /* exception data text */
-#if 0
+~if 0
     // The Python exceptions might be thrown from nested functions, so take
     // into account not to add the same prefix several times
     std::string::size_type pos = error.find(prefix);
@@ -69,7 +69,7 @@ PyException::PyException()
         _sErrMsg = prefix + error;
     else
         _sErrMsg = error;
-#endif
+~endif
     _sErrMsg = error;
     _errorType = prefix;
 
@@ -156,7 +156,7 @@ SystemExitException::SystemExitException()
     //
     // Invocation       |  _exitCode  |  _sErrMsg
     // ---------------- +  ---------  +  --------
-    // sys.exit(int#)   |   int#      |   "System Exit"
+    // sys.exit(int~)   |   int~      |   "System Exit"
     // sys.exit(string) |   1         |   string
     // sys.exit()       |   1         |   "System Exit"
 
@@ -191,7 +191,7 @@ SystemExitException::SystemExitException()
 
 // ---------------------------------------------------------
 
-// Fixes #0000831: python print causes File descriptor error on windows
+// Fixes ~0000831: python print causes File descriptor error on windows
 class PythonStdOutput : public Py::PythonExtension<PythonStdOutput>
 {
 public:
@@ -414,12 +414,12 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
 
 void InterpreterSingleton::runFile(const char*pxFileName, bool local)
 {
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     FileInfo fi(pxFileName);
     FILE *fp = _wfopen(fi.toStdWString().c_str(),L"r");
-#else
+~else
     FILE *fp = fopen(pxFileName,"r");
-#endif
+~endif
     if (fp) {
         PyGILStateLocker locker;
         //std::string encoding = PyUnicode_GetDefaultEncoding();
@@ -512,14 +512,14 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         // returns a valid value for GUI applications (i.e. subsystem = Windows) where it shouldn't.
         // This causes Python to fail during initialization.
         // A workaround is to use freopen on stdin, stdout and stderr. See the class Redirection inside main()
-        // https://bugs.python.org/issue17797#msg197474
+        // https://bugs.python.org/issue17797~msg197474
         //
         Py_Initialize();
         const char* virtualenv = getenv("VIRTUAL_ENV");
         if (virtualenv) {
             PyRun_SimpleString(
-                "# Check for virtualenv, and activate if present.\n"
-                "# See https://virtualenv.pypa.io/en/latest/userguide/#using-virtualenv-without-bin-python\n"
+                "~ Check for virtualenv, and activate if present.\n"
+                "~ See https://virtualenv.pypa.io/en/latest/userguide/~using-virtualenv-without-bin-python\n"
                 "import os\n"
                 "import sys\n"
                 "base_path = os.getenv(\"VIRTUAL_ENV\")\n"
@@ -529,9 +529,9 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
             );
         }
 
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
         PyEval_InitThreads();
-#endif
+~endif
 
         size_t size = argc;
         static std::vector<wchar_t *> _argv(size);
@@ -668,11 +668,11 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
         throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
 
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
     presult = PyEval_CallObject(pmeth, pargs);   /* run interpreter */
-#else
+~else
     presult = PyObject_CallObject(pmeth, pargs);   /* run interpreter */
-#endif
+~endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);
@@ -774,7 +774,7 @@ int getSWIGVersionFromModule(const std::string& module)
             // file can have the extension .py or .pyc
             filename = filename.substr(0, filename.rfind('.'));
             filename += ".py";
-            boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
+            boost::regex rx("^~ Version ([1-9])\\.([0-9])\\.([0-9]+)");
             boost::cmatch what;
 
             std::string line;
@@ -797,15 +797,15 @@ int getSWIGVersionFromModule(const std::string& module)
         }
     }
 
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     moduleMap[module] = 0;
-#endif
+~endif
     return 0;
 }
 
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
-#endif
+~endif
 
 PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own)
 {
@@ -813,14 +813,14 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
     PyObject* proxy=nullptr;
     PyGILStateLocker locker;
     (void)Module;
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
-#else
+~else
     (void)TypeName;
     (void)Pointer;
     (void)own;
     result = -1; // indicates error
-#endif
+~endif
 
     if (result == 0)
         return proxy;
@@ -829,24 +829,24 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
     throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-#endif
+~endif
 
 bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char* TypeName, PyObject* obj, void** ptr, int flags)
 {
     int result = 0;
     PyGILStateLocker locker;
     (void)Module;
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
-#else
+~else
     (void)TypeName;
     (void)obj;
     (void)ptr;
     (void)flags;
     result = -1; // indicates error
-#endif
+~endif
 
     if (result == 0)
         return true;
@@ -855,16 +855,16 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     throw Base::RuntimeError("No SWIG wrapped library loaded");
 }
 
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern void cleanupSWIG_T(const char* TypeName); }
-#endif
+~endif
 
 void InterpreterSingleton::cleanupSWIG(const char* TypeName)
 {
     PyGILStateLocker locker;
-#if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
+~if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     Swig_python::cleanupSWIG_T(TypeName);
-#else
+~else
     (void)TypeName;
-#endif
+~endif
 }

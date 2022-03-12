@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <vector>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoMarkerSet.h>
+~ include <vector>
+~endif
 
-#include "MarkerBitmaps.h"
+~include "MarkerBitmaps.h"
 
 using namespace Gui::Inventor;
 
@@ -53,7 +53,7 @@ def makeIcon(s):
   for i in lines[3:]:
     ba = ba.append(i)
 
-  ba=ba.replace("#","x")
+  ba=ba.replace("~","x")
   ba=ba.replace("."," ")
   print (ba.data())
 */

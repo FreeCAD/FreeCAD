@@ -21,39 +21,39 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <iostream>
-# include <iterator>
-#include <Precision.hxx>
-#include <cmath>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <iostream>
+~ include <iterator>
+~include <Precision.hxx>
+~include <cmath>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/UnitsApi.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <boost/regex.hpp>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <boost/regex.hpp>
 
-#include "DrawPage.h"
-#include "DrawView.h"
-#include "DrawProjGroup.h"
-#include "DrawViewClip.h"
-#include "DrawTemplate.h"
-#include "DrawViewCollection.h"
-#include "DrawViewPart.h"
-#include "DrawViewDimension.h"
-#include "DrawViewBalloon.h"
-#include "DrawLeaderLine.h"
-#include "Preferences.h"
+~include "DrawPage.h"
+~include "DrawView.h"
+~include "DrawProjGroup.h"
+~include "DrawViewClip.h"
+~include "DrawTemplate.h"
+~include "DrawViewCollection.h"
+~include "DrawViewPart.h"
+~include "DrawViewDimension.h"
+~include "DrawViewBalloon.h"
+~include "DrawLeaderLine.h"
+~include "Preferences.h"
 
-#include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
+~include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
 using namespace TechDraw;
 using namespace std;

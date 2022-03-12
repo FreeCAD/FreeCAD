@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
-#include <Base/Uuid.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
+~include <Base/Uuid.h>
 
-#include "PropertyFile.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "PropertyContainer.h"
+~include "PropertyFile.h"
+~include "Document.h"
+~include "DocumentObject.h"
+~include "PropertyContainer.h"
 
 
 using namespace App;

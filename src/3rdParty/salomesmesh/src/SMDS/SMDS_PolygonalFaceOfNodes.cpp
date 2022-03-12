@@ -22,17 +22,17 @@
 
 //  SMESH SMDS : implementation of Salome mesh data structure
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#include "SMDS_PolygonalFaceOfNodes.hxx"
+~include "SMDS_PolygonalFaceOfNodes.hxx"
 
-#include "SMDS_IteratorOfElements.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMDS_Mesh.hxx"
+~include "SMDS_IteratorOfElements.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMDS_Mesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

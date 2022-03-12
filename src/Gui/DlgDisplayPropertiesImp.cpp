@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <boost_bind_bind.hpp>
-# include <boost_signals2.hpp>
-# include <QDockWidget>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <boost_bind_bind.hpp>
+~ include <boost_signals2.hpp>
+~ include <QDockWidget>
+~endif
 
-#include "DlgDisplayPropertiesImp.h"
-#include "ui_DlgDisplayProperties.h"
-#include "DlgMaterialPropertiesImp.h"
-#include "DockWindowManager.h"
-#include "View3DInventorViewer.h"
-#include "View3DInventor.h"
-#include "Command.h"
-#include "Application.h"
-#include "Widgets.h"
-#include "Selection.h"
-#include "Document.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
-#include "SpinBox.h"
+~include "DlgDisplayPropertiesImp.h"
+~include "ui_DlgDisplayProperties.h"
+~include "DlgMaterialPropertiesImp.h"
+~include "DockWindowManager.h"
+~include "View3DInventorViewer.h"
+~include "View3DInventor.h"
+~include "Command.h"
+~include "Application.h"
+~include "Widgets.h"
+~include "Selection.h"
+~include "Document.h"
+~include "ViewProvider.h"
+~include "WaitCursor.h"
+~include "SpinBox.h"
 
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/Material.h>
+~include <Base/Console.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <App/Material.h>
 
 using namespace Gui::Dialog;
 using namespace std;
@@ -56,9 +56,9 @@ namespace bp = boost::placeholders;
 
 /* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("QDockWidget", "Display properties");
-#endif
+~endif
 
 class DlgDisplayPropertiesImp::Private
 {
@@ -667,5 +667,5 @@ bool TaskDisplayProperties::reject()
     return (widget->result() == QDialog::Rejected);
 }
 
-#include "moc_DlgDisplayPropertiesImp.cpp"
+~include "moc_DlgDisplayPropertiesImp.cpp"
 

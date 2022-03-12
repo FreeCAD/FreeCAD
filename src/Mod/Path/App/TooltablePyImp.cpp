@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "Base/Reader.h"
-#include "Mod/Path/App/Tool.h"
-#include "Mod/Path/App/Tooltable.h"
+~include "PreCompiled.h"
+~include "Base/Reader.h"
+~include "Mod/Path/App/Tool.h"
+~include "Mod/Path/App/Tooltable.h"
 
 // inclusion of the generated files (generated out of ToolPy.xml and TooltablePy.xml)
-#include "ToolPy.h"
-#include "TooltablePy.h"
-#include "TooltablePy.cpp"
+~include "ToolPy.h"
+~include "TooltablePy.h"
+~include "TooltablePy.cpp"
 
 using namespace Path;
 
-#define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
-#define PYINT_TYPE                PyLong_Type
-#define PYINT_FROMLONG(l)         PyLong_FromLong(l)
-#define PYINT_ASLONG(o)           PyLong_AsLong(o)
+~define PYSTRING_FROMSTRING(str)  PyUnicode_FromString(str)
+~define PYINT_TYPE                PyLong_Type
+~define PYINT_FROMLONG(l)         PyLong_FromLong(l)
+~define PYINT_ASLONG(o)           PyLong_AsLong(o)
 
 // returns a string which represents the object e.g. when printed in python
 std::string TooltablePy::representation(void) const

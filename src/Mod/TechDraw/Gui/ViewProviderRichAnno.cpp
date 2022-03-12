@@ -22,22 +22,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Control.h>
-#include <Gui/Selection.h>
+~include <App/DocumentObject.h>
+~include <Gui/Control.h>
+~include <Gui/Selection.h>
 
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/DrawRichAnno.h>
+~include <Mod/TechDraw/App/LineGroup.h>
 
-#include "PreferencesGui.h"
-#include "QGIView.h"
-#include "TaskRichAnno.h"
-#include "ViewProviderRichAnno.h"
+~include "PreferencesGui.h"
+~include "QGIView.h"
+~include "TaskRichAnno.h"
+~include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

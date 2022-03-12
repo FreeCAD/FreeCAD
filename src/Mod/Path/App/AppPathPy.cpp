@@ -21,44 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/VectorPy.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Application.h>
+~include <Base/Console.h>
+~include <Base/VectorPy.h>
+~include <Base/FileInfo.h>
+~include <Base/Interpreter.h>
+~include <App/Document.h>
+~include <App/DocumentObjectPy.h>
+~include <App/Application.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/PartPyCXX.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopExp_Explorer.hxx>
-#include <gp_Lin.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
+~include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/PartPyCXX.h>
+~include <TopoDS.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopExp_Explorer.hxx>
+~include <gp_Lin.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepAdaptor_Curve.hxx>
 
-#include "CommandPy.h"
-#include "PathPy.h"
-#include "Path.h"
-#include "FeaturePath.h"
-#include "FeaturePathCompound.h"
-#include "Area.h"
+~include "CommandPy.h"
+~include "PathPy.h"
+~include "Path.h"
+~include "FeaturePath.h"
+~include "FeaturePathCompound.h"
+~include "Area.h"
 
-#define PATH_CATCH catch (Standard_Failure &e)                      \
+~define PATH_CATCH catch (Standard_Failure &e)                      \
     {                                                               \
         std::string str;                                            \
         Standard_CString msg = e.GetMessageString();                \

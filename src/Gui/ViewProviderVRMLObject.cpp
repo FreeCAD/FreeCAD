@@ -20,36 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <Inventor/SoDB.h>
-# include <Inventor/SoFullPath.h>
-# include <Inventor/SoInput.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <QFile>
-# include <QFileInfo>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Inventor/SoDB.h>
+~ include <Inventor/SoFullPath.h>
+~ include <Inventor/SoInput.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <QFile>
+~ include <QFileInfo>
+~endif
 
-#include <Inventor/lists/SbStringList.h>
-#include <Inventor/VRMLnodes/SoVRMLAnchor.h>
-#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
-#include <Inventor/VRMLnodes/SoVRMLBackground.h>
-#include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
-#include <Inventor/VRMLnodes/SoVRMLInline.h>
-#include <Inventor/VRMLnodes/SoVRMLMovieTexture.h>
-#include <Inventor/VRMLnodes/SoVRMLScript.h>
+~include <Inventor/lists/SbStringList.h>
+~include <Inventor/VRMLnodes/SoVRMLAnchor.h>
+~include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+~include <Inventor/VRMLnodes/SoVRMLBackground.h>
+~include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+~include <Inventor/VRMLnodes/SoVRMLInline.h>
+~include <Inventor/VRMLnodes/SoVRMLMovieTexture.h>
+~include <Inventor/VRMLnodes/SoVRMLScript.h>
 
-#include <App/Document.h>
-#include <App/VRMLObject.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
+~include <App/Document.h>
+~include <App/VRMLObject.h>
+~include <Base/Console.h>
+~include <Base/FileInfo.h>
 
-#include "ViewProviderVRMLObject.h"
-#include "SoFCSelection.h"
+~include "ViewProviderVRMLObject.h"
+~include "SoFCSelection.h"
 
 
 using namespace Gui;

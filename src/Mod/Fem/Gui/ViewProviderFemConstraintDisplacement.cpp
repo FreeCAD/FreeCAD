@@ -24,23 +24,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Precision.hxx>
 
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-#endif
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoRotation.h>
+~ include <Inventor/nodes/SoMultipleCopy.h>
+~endif
 
-#include "Mod/Fem/App/FemConstraintDisplacement.h"
-#include "TaskFemConstraintDisplacement.h"
-#include "ViewProviderFemConstraintDisplacement.h"
-#include <Base/Console.h>
-#include <Gui/Control.h>
+~include "Mod/Fem/App/FemConstraintDisplacement.h"
+~include "TaskFemConstraintDisplacement.h"
+~include "ViewProviderFemConstraintDisplacement.h"
+~include <Base/Console.h>
+~include <Gui/Control.h>
 
 using namespace FemGui;
 
@@ -92,9 +92,9 @@ bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
     }
 }
 
-#define HEIGHT (4)
-#define WIDTH (0.3)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+~define HEIGHT (4)
+~define WIDTH (0.3)
+//~define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
 
 void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop)
 {
@@ -109,7 +109,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
     bool rotyFree = pcConstraint->rotyFree.getValue();
     bool rotzFree = pcConstraint->rotzFree.getValue();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
     //OvG: always need access to cp for scaling
     SoMultipleCopy* cpx = new SoMultipleCopy();
     SoMultipleCopy* cpy = new SoMultipleCopy();
@@ -144,7 +144,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         pShapeSep->addChild(cproty);
         pShapeSep->addChild(cprotz;
     }
-#endif
+~endif
 
     if (strcmp(prop->getName(),"Points") == 0) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
@@ -153,7 +153,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
             return;
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
         cpx = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cpx->matrix.setNum(points.size());
         SbMatrix* matricesx = cpx->matrix.startEditing();
@@ -184,10 +184,10 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         int idrotx = 0;
         int idroty = 0;
         int idrotz = 0;
-#else
+~else
         // Note: Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
-#endif
+~endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
@@ -197,7 +197,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
             SbRotation rotx(SbVec3f(0,-1,0), dirx); //OvG Tri-cones
             SbRotation roty(SbVec3f(0,-1,0), diry);
             SbRotation rotz(SbVec3f(0,-1,0), dirz);
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
             SbMatrix mx;
             SbMatrix my;
             SbMatrix mz;
@@ -246,7 +246,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
                 matricesrotz[idrotz] = mrotz;
                 idrotz++;
             }
-#else
+~else
             //OvG: Translation indication
             if(!xFree)
             {
@@ -292,17 +292,17 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
                 createRotation(sepz, scaledheight, scaledwidth); //OvG: Scaling
                 pShapeSep->addChild(sepz);
             }
-#endif
+~endif
             n++;
         }
-#ifdef USE_MULTIPLE_COPY
+~ifdef USE_MULTIPLE_COPY
         cpx->matrix.finishEditing();
         cpy->matrix.finishEditing();
         cpz->matrix.finishEditing();
         cprotx->matrix.finishEditing();
         cproty->matrix.finishEditing();
         cprotz->matrix.finishEditing();
-#endif
+~endif
     }
 
     // Gets called whenever a property of the attached object changes

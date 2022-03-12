@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "DlgSettingsPathColor.h"
-#include "ui_DlgSettingsPathColor.h"
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+~include "DlgSettingsPathColor.h"
+~include "ui_DlgSettingsPathColor.h"
+~include <Gui/PrefWidgets.h>
+~include <Base/Console.h>
 
 using namespace PathGui;
 
@@ -98,5 +98,5 @@ void DlgSettingsPathColor::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsPathColor.cpp"
+~include "moc_DlgSettingsPathColor.cpp"
 

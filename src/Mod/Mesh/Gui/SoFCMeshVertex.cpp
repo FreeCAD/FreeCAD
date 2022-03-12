@@ -21,28 +21,28 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# else
-# include <GL/gl.h>
-# endif
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/errors/SoReadError.h>
-# include <Inventor/misc/SoState.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ else
+~ include <GL/gl.h>
+~ endif
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/errors/SoReadError.h>
+~ include <Inventor/misc/SoState.h>
+~endif
 
-#include "SoFCMeshVertex.h"
+~include "SoFCMeshVertex.h"
 
 using namespace MeshGui;
 
@@ -69,7 +69,7 @@ void SoSFMeshPointArray::setValue(const MeshCore::MeshPointArray& p)
 SbBool SoSFMeshPointArray::readValue(SoInput *in)
 {
   // This macro is convenient for reading with error detection.
-#define READ_VAL(val) \
+~define READ_VAL(val) \
   if (!in->read(val)) { \
     SoReadError::post(in, "Premature end of file"); \
     return FALSE; \
@@ -139,7 +139,7 @@ SbBool SoSFMeshPointArray::readValue(SoInput *in)
     }
   }
 
-#undef READ_VAL
+~undef READ_VAL
 
   // We need to trigger the notification chain here, as this function
   // can be used on a node in a scene graph in any state -- not only

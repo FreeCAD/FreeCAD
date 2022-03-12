@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <memory>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <memory>
+~endif
 
-#include "DocumentProtectorPy.h"
-#include "DocumentProtector.h"
+~include "DocumentProtectorPy.h"
+~include "DocumentProtector.h"
 
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <App/DocumentPy.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <App/DocumentPy.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
 
 using namespace Sandbox;
 

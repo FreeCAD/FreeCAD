@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp.hxx>
-# include <gp_Lin2d.hxx>
-# include <Geom2d_Line.hxx>
-# include <Geom2d_TrimmedCurve.hxx>
-# include <GCE2d_MakeLine.hxx>
-# include <GCE2d_MakeSegment.hxx>
-# include <Precision.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp.hxx>
+~ include <gp_Lin2d.hxx>
+~ include <Geom2d_Line.hxx>
+~ include <Geom2d_TrimmedCurve.hxx>
+~ include <GCE2d_MakeLine.hxx>
+~ include <GCE2d_MakeSegment.hxx>
+~ include <Precision.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
+~include <Base/GeometryPyCXX.h>
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Part/App/Geom2d/Line2dPy.h>
-#include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
-#include <Mod/Part/App/Geom2d/Line2dSegmentPy.cpp>
+~include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/Geometry2d.h>
+~include <Mod/Part/App/Geom2d/Line2dPy.h>
+~include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
+~include <Mod/Part/App/Geom2d/Line2dSegmentPy.cpp>
 
 using namespace Part;
 

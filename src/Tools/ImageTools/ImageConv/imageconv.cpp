@@ -16,14 +16,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "imageconv.h"
-#include <QStringList>
-#include <QBuffer>
-#include <QTextStream>
-#include <QImage>
-#include <QImageWriter>
-#include <QImageReader>
-#include <iostream>
+~include "imageconv.h"
+~include <QStringList>
+~include <QBuffer>
+~include <QTextStream>
+~include <QImage>
+~include <QImageWriter>
+~include <QImageReader>
+~include <iostream>
 
 using namespace std;
 

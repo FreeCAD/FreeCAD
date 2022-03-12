@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "PropertyColumnWidths.h"
+~include "PropertyColumnWidths.h"
 
 // inclusion of the generated files (generated out of PropertyColumnWidthsPy.xml)
-#include "PropertyColumnWidthsPy.h"
-#include "PropertyColumnWidthsPy.cpp"
+~include "PropertyColumnWidthsPy.h"
+~include "PropertyColumnWidthsPy.cpp"
 
 using namespace Spreadsheet;
 

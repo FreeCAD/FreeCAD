@@ -23,25 +23,25 @@
 // Created   : Mon Sep 17 17:03:02 2012
 // Author    : Edward AGAPOV (eap)
 
-#include "DriverGMF_Write.hxx"
-#include "DriverGMF.hxx"
+~include "DriverGMF_Write.hxx"
+~include "DriverGMF.hxx"
 
-#include "SMESHDS_GroupBase.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Comment.hxx"
+~include "SMESHDS_GroupBase.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Comment.hxx"
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
 extern "C"
 {
-#include "libmesh5.h"
+~include "libmesh5.h"
 }
 
-#include <vector>
+~include <vector>
 
-#define BEGIN_ELEM_WRITE( SMDSEntity, GmfKwd, elem )                    \
+~define BEGIN_ELEM_WRITE( SMDSEntity, GmfKwd, elem )                    \
   elemIt = elementIterator( SMDSEntity );                               \
   if ( elemIt->more() )                                                 \
   {                                                                     \
@@ -51,7 +51,7 @@ extern "C"
   const SMDS_MeshElement* elem = elemIt->next();                        \
   GmfSetLin(meshID, GmfKwd,
 
-#define BEGIN_EXTRA_VERTICES_WRITE( SMDSGeom, LinType, GmfKwd, elem )   \
+~define BEGIN_EXTRA_VERTICES_WRITE( SMDSGeom, LinType, GmfKwd, elem )   \
   elemIt = elementIterator( SMDSGeom );                                 \
   if ( elemIt->more() )                                                 \
   {                                                                     \
@@ -66,16 +66,16 @@ extern "C"
   if ( elem->IsQuadratic() ) {                                          \
   GmfSetLin(meshID, GmfKwd, gmfID, elem->NbNodes() - elem->NbCornerNodes(),
 
-#define END_ELEM_WRITE( elem )                  \
+~define END_ELEM_WRITE( elem )                  \
   elem->getshapeId() );                         \
   }}
 
-#define END_ELEM_WRITE_ADD_TO_MAP( elem, e2id )            \
+~define END_ELEM_WRITE_ADD_TO_MAP( elem, e2id )            \
   elem->getshapeId() );                                    \
   e2id.insert( e2id.end(), std::make_pair( elem, gmfID )); \
   }}
 
-#define END_EXTRA_VERTICES_WRITE()           \
+~define END_EXTRA_VERTICES_WRITE()           \
   );                                         \
   }}}}
   

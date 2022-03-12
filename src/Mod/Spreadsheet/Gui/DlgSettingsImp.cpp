@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~endif
 
-#include "DlgSettingsImp.h"
-#include "ui_DlgSettings.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+~include "DlgSettingsImp.h"
+~include "ui_DlgSettings.h"
+~include <Gui/Application.h>
+~include <Gui/PrefWidgets.h>
+~include <Base/Console.h>
 
 using namespace SpreadsheetGui;
 
@@ -108,4 +108,4 @@ void DlgSettingsImp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsImp.cpp"
+~include "moc_DlgSettingsImp.cpp"

@@ -21,67 +21,67 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <QApplication>
-# include <QDialog>
-# include <QDomDocument>
-# include <QDomElement>
-# include <QFile>
-# include <QFileInfo>
-# include <QFont>
-# include <QFontMetrics>
-# include <QMessageBox>
-# include <QPainter>
-# include <QPointer>
-# include <QTextStream>
-# include <boost_bind_bind.hpp>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoPerspectiveCamera.h>
+~ include <QApplication>
+~ include <QDialog>
+~ include <QDomDocument>
+~ include <QDomElement>
+~ include <QFile>
+~ include <QFileInfo>
+~ include <QFont>
+~ include <QFontMetrics>
+~ include <QMessageBox>
+~ include <QPainter>
+~ include <QPointer>
+~ include <QTextStream>
+~ include <boost_bind_bind.hpp>
+~endif
 
-#include <App/ComplexGeoDataPy.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/GeoFeature.h>
-#include <App/GeoFeatureGroupExtension.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/ComplexGeoDataPy.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/GeoFeature.h>
+~include <App/GeoFeatureGroupExtension.h>
+~include <App/MeasureDistance.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include "Command.h"
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Control.h"
-#include "Clipping.h"
-#include "DemoMode.h"
-#include "DlgDisplayPropertiesImp.h"
-#include "DlgSettingsImageImp.h"
-#include "Document.h"
-#include "FileDialog.h"
-#include "Macro.h"
-#include "MainWindow.h"
-#include "NavigationStyle.h"
-#include "SceneInspector.h"
-#include "Selection.h"
-#include "SelectionObject.h"
-#include "SoAxisCrossKit.h"
-#include "SoFCOffscreenRenderer.h"
-#include "SoFCUnifiedSelection.h"
-#include "TextureMapping.h"
-#include "Tools.h"
-#include "Tree.h"
-#include "Utilities.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewParams.h"
-#include "ViewProviderMeasureDistance.h"
-#include "ViewProviderGeometryObject.h"
-#include "WaitCursor.h"
+~include "Command.h"
+~include "Action.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Control.h"
+~include "Clipping.h"
+~include "DemoMode.h"
+~include "DlgDisplayPropertiesImp.h"
+~include "DlgSettingsImageImp.h"
+~include "Document.h"
+~include "FileDialog.h"
+~include "Macro.h"
+~include "MainWindow.h"
+~include "NavigationStyle.h"
+~include "SceneInspector.h"
+~include "Selection.h"
+~include "SelectionObject.h"
+~include "SoAxisCrossKit.h"
+~include "SoFCOffscreenRenderer.h"
+~include "SoFCUnifiedSelection.h"
+~include "TextureMapping.h"
+~include "Tools.h"
+~include "Tree.h"
+~include "Utilities.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewParams.h"
+~include "ViewProviderMeasureDistance.h"
+~include "ViewProviderGeometryObject.h"
+~include "WaitCursor.h"
 
 using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;
@@ -394,7 +394,7 @@ void StdCmdFreezeViews::onSaveViews()
                 break;
             QString data = (*it)->toolTip();
 
-            // remove the first line because it's a comment like '#Inventor V2.1 ascii'
+            // remove the first line because it's a comment like '~Inventor V2.1 ascii'
             QString viewPos;
             if (!data.isEmpty()) {
                 QStringList lines = data.split(QString::fromLatin1("\n"));
@@ -559,16 +559,16 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
 Action * StdCmdToggleClipPlane::createAction(void)
 {
     Action *pcAction = (Action*)Command::createAction();
-#if 0
+~if 0
     pcAction->setCheckable(true);
-#endif
+~endif
     return pcAction;
 }
 
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
+~if 0
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         if (iMsg > 0 && !view->hasClippingPlane())
@@ -576,7 +576,7 @@ void StdCmdToggleClipPlane::activated(int iMsg)
         else if (iMsg == 0 && view->hasClippingPlane())
             view->toggleClippingPlane();
     }
-#else
+~else
     static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
     if (!clipping) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
@@ -584,12 +584,12 @@ void StdCmdToggleClipPlane::activated(int iMsg)
             clipping = Gui::Dialog::Clipping::makeDockWidget(view);
         }
     }
-#endif
+~endif
 }
 
 bool StdCmdToggleClipPlane::isActive(void)
 {
-#if 0
+~if 0
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         Action* action = qobject_cast<Action*>(_pcAction);
@@ -603,10 +603,10 @@ bool StdCmdToggleClipPlane::isActive(void)
             action->setChecked(false);
         return false;
     }
-#else
+~else
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     return view ? true : false;
-#endif
+~endif
 }
 
 //===========================================================================
@@ -1151,26 +1151,26 @@ StdCmdSetAppearance::StdCmdSetAppearance()
 void StdCmdSetAppearance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
+~if 0
     static QPointer<QDialog> dlg = 0;
     if (!dlg)
         dlg = new Gui::Dialog::DlgDisplayPropertiesImp(true, getMainWindow());
     dlg->setModal(false);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
-#else
+~else
     Gui::Control().showDialog(new Gui::Dialog::TaskDisplayProperties());
-#endif
+~endif
 }
 
 bool StdCmdSetAppearance::isActive(void)
 {
-#if 0
+~if 0
     return Gui::Selection().size() != 0;
-#else
+~else
     return (Gui::Control().activeDialog() == nullptr) &&
            (Gui::Selection().size() != 0);
-#endif
+~endif
 }
 
 //===========================================================================
@@ -1901,11 +1901,11 @@ void StdViewScreenShot::activated(int iMsg)
                 // Replace newline escape sequence through '\\n' string to build one big string,
                 // otherwise Python would interpret it as an invalid command.
                 // Python does the decoding for us.
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+~if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
                 QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts );
-#else
+~else
                 QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts );
-#endif
+~endif
                 comment = lines.join(QLatin1String("\\n"));
                 doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
                             fn.toUtf8().constData(),w,h,background,comment.toUtf8().constData());
@@ -2022,7 +2022,7 @@ void StdCmdToggleNavigation::activated(int iMsg)
 
 bool StdCmdToggleNavigation::isActive(void)
 {
-    //#0001087: Inventor Navigation continues with released Mouse Button
+    //~0001087: Inventor Navigation continues with released Mouse Button
     //This happens because 'Esc' is also used to close the task dialog.
     //Add also new method 'isRedirectToSceneGraphEnabled' to explicitly
     //check if this is allowed.
@@ -2038,7 +2038,7 @@ bool StdCmdToggleNavigation::isActive(void)
 
 
 
-#if 0 // old Axis command
+~if 0 // old Axis command
 // Command to show/hide axis cross
 class StdCmdAxisCross : public Gui::Command
 {
@@ -2126,7 +2126,7 @@ protected:
         }
     }
 };
-#else
+~else
 //===========================================================================
 // Std_ViewExample1
 //===========================================================================
@@ -2172,7 +2172,7 @@ bool StdCmdAxisCross::isActive(void)
 
 }
 
-#endif
+~endif
 
 //===========================================================================
 // Std_ViewExample1
@@ -2183,7 +2183,7 @@ StdCmdViewExample1::StdCmdViewExample1()
   : Command("Std_ViewExample1")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Inventor example #1");
+    sMenuText     = QT_TR_NOOP("Inventor example ~1");
     sToolTipText  = QT_TR_NOOP("Shows a 3D texture with manipulator");
     sWhatsThis    = "Std_ViewExample1";
     sStatusTip    = QT_TR_NOOP("Shows a 3D texture with manipulator");
@@ -2211,7 +2211,7 @@ StdCmdViewExample2::StdCmdViewExample2()
   : Command("Std_ViewExample2")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Inventor example #2");
+    sMenuText     = QT_TR_NOOP("Inventor example ~2");
     sToolTipText  = QT_TR_NOOP("Shows spheres and drag-lights");
     sWhatsThis    = "Std_ViewExample2";
     sStatusTip    = QT_TR_NOOP("Shows spheres and drag-lights");
@@ -2239,7 +2239,7 @@ StdCmdViewExample3::StdCmdViewExample3()
   : Command("Std_ViewExample3")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Inventor example #3");
+    sMenuText     = QT_TR_NOOP("Inventor example ~3");
     sToolTipText  = QT_TR_NOOP("Shows a animated texture");
     sWhatsThis    = "Std_ViewExample3";
     sStatusTip    = QT_TR_NOOP("Shows a animated texture");
@@ -2427,7 +2427,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     const char* ppReturn=0;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
 
-    // remove the #inventor line...
+    // remove the ~inventor line...
     Temp2 = ppReturn;
     pos = Temp2.find_first_of("\n");
     Temp2.erase(0,pos);
@@ -2612,8 +2612,8 @@ std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::currentSelec
 static const char * cursor_box_zoom[] = {
 "32 32 3 1",
 " 	c None",
-".	c #FFFFFF",
-"@	c #FF0000",
+".	c ~FFFFFF",
+"@	c ~FF0000",
 "      .                         ",
 "      .                         ",
 "      .                         ",
@@ -2683,9 +2683,9 @@ DEF_3DV_CMD(StdBoxSelection)
 static const char * cursor_box_select[] = {
 "32 32 4 1",
 " 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
-"@	c #000000",
+".	c ~FFFFFF",
+"+	c ~FF0000",
+"@	c ~000000",
 "      .                         ",
 "      .                         ",
 "      .                         ",
@@ -2921,7 +2921,7 @@ void StdBoxSelection::activated(int iMsg)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
-            // #0002931: Box select misbehaves with touchpad navigation style
+            // ~0002931: Box select misbehaves with touchpad navigation style
             // Notify the navigation style to cleanup internal states
             int mode = viewer->navigationStyle()->getViewingMode();
             if (mode != Gui::NavigationStyle::IDLE) {
@@ -2942,11 +2942,11 @@ void StdBoxSelection::activated(int iMsg)
 static char * cursor_box_element_select[] = {
 "32 32 6 1",
 " 	c None",
-".	c #FFFFFF",
-"+	c #00FF1B",
-"@	c #19A428",
-"#	c #FF0000",
-"$	c #000000",
+".	c ~FFFFFF",
+"+	c ~00FF1B",
+"@	c ~19A428",
+"~	c ~FF0000",
+"$	c ~000000",
 "      .                         ",
 "      .                         ",
 "      .                         ",
@@ -2957,27 +2957,27 @@ static char * cursor_box_element_select[] = {
 "       ++++++++++++             ",
 "      .+@@@@@@@@@@+             ",
 "      .+@@@@@@@@@@+             ",
-"      .+@@#@@@@###+  ###    ### ",
-"      .+@@#$$@@@@@+             ",
-"      .+@@#$.$$$@@+             ",
+"      .+@@~@@@@~~~+  ~~~    ~~~ ",
+"      .+@@~$$@@@@@+             ",
+"      .+@@~$.$$$@@+             ",
 "       +@@@@$...$$$             ",
 "       +@@@@$......$$           ",
-"       +@@@@$........$$$      # ",
-"       +@@@@@$..........$$    # ",
-"       +@@#@@$............$   # ",
-"       +++#+++$........$$$      ",
-"          #   $.......$         ",
+"       +@@@@$........$$$      ~ ",
+"       +@@@@@$..........$$    ~ ",
+"       +@@~@@$............$   ~ ",
+"       +++~+++$........$$$      ",
+"          ~   $.......$         ",
 "              $........$        ",
-"               $........$     # ",
-"               $...$.....$    # ",
-"          #    $..$ $.....$   # ",
-"          #     $.$  $.....$    ",
-"          #     $.$   $.....$   ",
+"               $........$     ~ ",
+"               $...$.....$    ~ ",
+"          ~    $..$ $.....$   ~ ",
+"          ~     $.$  $.....$    ",
+"          ~     $.$   $.....$   ",
 "                 $     $.....$  ",
 "                        $...$   ",
-"                         $.$  # ",
-"                          $   # ",
-"          ###    ###   ###    # ",
+"                         $.$  ~ ",
+"                          $   ~ ",
+"          ~~~    ~~~   ~~~    ~ ",
 "                                " };
 
 DEF_3DV_CMD(StdBoxElementSelection)
@@ -3002,7 +3002,7 @@ void StdBoxElementSelection::activated(int iMsg)
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
-            // #0002931: Box select misbehaves with touchpad navigation style
+            // ~0002931: Box select misbehaves with touchpad navigation style
             // Notify the navigation style to cleanup internal states
             int mode = viewer->navigationStyle()->getViewingMode();
             if (mode != Gui::NavigationStyle::IDLE) {
@@ -3165,8 +3165,8 @@ StdCmdMeasureDistance::StdCmdMeasureDistance()
 static const char * cursor_ruler[] = {
 "32 32 3 1",
 " 	c None",
-".	c #FFFFFF",
-"+	c #FF0000",
+".	c ~FFFFFF",
+"+	c ~FF0000",
 "      .                         ",
 "      .                         ",
 "      .                         ",
@@ -3443,13 +3443,13 @@ bool StdCmdSelForward::isActive(void)
 //=======================================================================
 // Std_TreeSingleDocument
 //===========================================================================
-#define TREEVIEW_DOC_CMD_DEF(_name,_v) \
-DEF_STD_CMD_AC(StdTree##_name) \
-void StdTree##_name::activated(int){ \
+~define TREEVIEW_DOC_CMD_DEF(_name,_v) \
+DEF_STD_CMD_AC(StdTree~~_name) \
+void StdTree~~_name::activated(int){ \
     TreeParams::Instance()->setDocumentMode(_v);\
     if(_pcAction) _pcAction->setChecked(true,true);\
 }\
-Action * StdTree##_name::createAction(void) {\
+Action * StdTree~~_name::createAction(void) {\
     Action *pcAction = Command::createAction();\
     pcAction->setCheckable(true);\
     pcAction->setIcon(QIcon());\
@@ -3457,7 +3457,7 @@ Action * StdTree##_name::createAction(void) {\
     isActive();\
     return pcAction;\
 }\
-bool StdTree##_name::isActive() {\
+bool StdTree~~_name::isActive() {\
     bool checked = TreeParams::Instance()->DocumentMode()==_v;\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
@@ -3515,14 +3515,14 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
 //===========================================================================
 // Std_TreeSyncView
 //===========================================================================
-#define TREEVIEW_CMD_DEF(_name) \
-DEF_STD_CMD_AC(StdTree##_name) \
-void StdTree##_name::activated(int){ \
+~define TREEVIEW_CMD_DEF(_name) \
+DEF_STD_CMD_AC(StdTree~~_name) \
+void StdTree~~_name::activated(int){ \
     auto checked = !TreeParams::Instance()->_name();\
-    TreeParams::Instance()->set##_name(checked);\
+    TreeParams::Instance()->set~~_name(checked);\
     if(_pcAction) _pcAction->setChecked(checked,true);\
 }\
-Action * StdTree##_name::createAction(void) {\
+Action * StdTree~~_name::createAction(void) {\
     Action *pcAction = Command::createAction();\
     pcAction->setCheckable(true);\
     pcAction->setIcon(QIcon());\
@@ -3530,7 +3530,7 @@ Action * StdTree##_name::createAction(void) {\
     isActive();\
     return pcAction;\
 }\
-bool StdTree##_name::isActive() {\
+bool StdTree~~_name::isActive() {\
     bool checked = TreeParams::Instance()->_name();\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\

@@ -20,29 +20,29 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QListWidget>
-#endif
+~ifndef _PreComp_
+~ include <QListWidget>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeatureAddSub.h>
-#include <Mod/PartDesign/App/FeatureTransformed.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Origin.h>
+~include <Base/Console.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Selection.h>
+~include <Gui/Command.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/FeatureAddSub.h>
+~include <Mod/PartDesign/App/FeatureTransformed.h>
 
-#include "TaskTransformedParameters.h"
-#include "TaskMultiTransformParameters.h"
-#include "ReferenceSelection.h"
+~include "TaskTransformedParameters.h"
+~include "TaskMultiTransformParameters.h"
+~include "ReferenceSelection.h"
 
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
@@ -479,7 +479,7 @@ bool TaskDlgTransformedParameters::reject()
 }
 
 
-#include "moc_TaskTransformedParameters.cpp"
+~include "moc_TaskTransformedParameters.cpp"
 
 
 ComboLinks::ComboLinks(QComboBox &combo)

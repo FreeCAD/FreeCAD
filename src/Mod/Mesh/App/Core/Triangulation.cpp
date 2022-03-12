@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <queue>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <queue>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include "Triangulation.h"
-#include "Approximation.h"
-#include "Algorithm.h"
-#include "MeshKernel.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include "Triangulation.h"
+~include "Approximation.h"
+~include "Algorithm.h"
+~include "MeshKernel.h"
 
-#include <Mod/Mesh/App/WildMagic4/Wm4Delaunay2.h>
+~include <Mod/Mesh/App/WildMagic4/Wm4Delaunay2.h>
 
 
 using namespace MeshCore;
@@ -775,7 +775,7 @@ bool ConstraintDelaunayTriangulator::Triangulate()
 
 // -------------------------------------------------------------
 
-#if 0
+~if 0
 Triangulator::Triangulator(const MeshKernel& k, bool flat) : _kernel(k)
 {
 }
@@ -807,4 +807,4 @@ void Triangulator::Discard()
 void Triangulator::Reset()
 {
 }
-#endif
+~endif

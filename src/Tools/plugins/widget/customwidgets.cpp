@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include <QtGui>
-#include <QApplication>
-#include <QColorDialog>
-#include <QCursor>
-#include <QFileDialog>
-#include <QHeaderView>
-#include <QMessageBox>
-#include <QStyleOptionButton>
-#include <QStylePainter>
-#include <QToolTip>
-#include <cfloat>
+~include <QtGui>
+~include <QApplication>
+~include <QColorDialog>
+~include <QCursor>
+~include <QFileDialog>
+~include <QHeaderView>
+~include <QMessageBox>
+~include <QStyleOptionButton>
+~include <QStylePainter>
+~include <QToolTip>
+~include <cfloat>
 
-#include "customwidgets.h"
+~include "customwidgets.h"
 
 using namespace Gui;
 
@@ -1168,7 +1168,7 @@ void QuantitySpinBox::closeEvent(QCloseEvent * event)
 
 bool QuantitySpinBox::event(QEvent * event)
 {
-    // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
+    // issue ~0004059: Tooltips for Gui::QuantitySpinBox not showing
     // Here we must not try to show the tooltip of the icon label
     // because it would override a custom tooltip set to this widget.
     //
@@ -1177,7 +1177,7 @@ bool QuantitySpinBox::event(QEvent * event)
     // property editor and the corresponding item has set a tooltip.
     // Instead of showing the item's tooltip it will again show the
     // tooltip of the icon label.
-#if 0
+~if 0
     if (event->type() == QEvent::ToolTip) {
         if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
             QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
@@ -1187,7 +1187,7 @@ bool QuantitySpinBox::event(QEvent * event)
             return true;
         }
     }
-#endif
+~endif
 
     return QAbstractSpinBox::event(event);
 }

@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include "Robot6AxisPy.h"
-#include "Robot6Axis.h"
-#include "Simulation.h"
-#include "TrajectoryPy.h"
-#include "Trajectory.h"
-#include "PropertyTrajectory.h"
-#include "WaypointPy.h"
-#include "Waypoint.h"
-#include "RobotObject.h"
-#include "TrajectoryObject.h"
-#include "Edge2TracObject.h"
-#include "TrajectoryCompound.h"
-#include "TrajectoryDressUpObject.h"
+~include "Robot6AxisPy.h"
+~include "Robot6Axis.h"
+~include "Simulation.h"
+~include "TrajectoryPy.h"
+~include "Trajectory.h"
+~include "PropertyTrajectory.h"
+~include "WaypointPy.h"
+~include "Waypoint.h"
+~include "RobotObject.h"
+~include "TrajectoryObject.h"
+~include "Edge2TracObject.h"
+~include "TrajectoryCompound.h"
+~include "TrajectoryDressUpObject.h"
 
 namespace Robot {
 class Module : public Py::ExtensionModule<Module>

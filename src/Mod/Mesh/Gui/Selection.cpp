@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "Selection.h"
-#include "ui_Selection.h"
+~include "Selection.h"
+~include "ui_Selection.h"
 
 using namespace MeshGui;
 
@@ -107,4 +107,4 @@ void Selection::on_screenTriangles_toggled(bool on)
     meshSel.setCheckOnlyPointToUserTriangles(on);
 }
 
-#include "moc_Selection.cpp"
+~include "moc_Selection.cpp"

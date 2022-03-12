@@ -20,25 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QCheckBox>
-# include <QLineEdit>
-# include <QMenu>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QCheckBox>
+~ include <QLineEdit>
+~ include <QMenu>
+~endif
 
-#include "TaskOrthoViews.h"
-#include "ui_TaskOrthoViews.h"
+~include "TaskOrthoViews.h"
+~include "ui_TaskOrthoViews.h"
 
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Drawing/App/FeaturePage.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Drawing/App/FeaturePage.h>
 
-#include <boost_bind_bind.hpp>
+~include <boost_bind_bind.hpp>
 
 
 using namespace Gui;
@@ -46,19 +46,19 @@ using namespace DrawingGui;
 using namespace std;
 namespace bp = boost::placeholders;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("QObject", "Make axonometric...");
     qApp->translate("QObject", "Edit axonometric settings...");
     qApp->translate("QObject", "Make orthographic");
-#endif
+~endif
 
 
-#if _MSC_VER <= 1700
+~if _MSC_VER <= 1700
 // maybe in the c++ standard later, older compiler don't have round()
 double round(double r) {
     return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
 }
-#endif  // _MSC_VER < 1500
+~endif  // _MSC_VER < 1500
 
 void pagesize(string & page_template, int dims[4], int block[4])
 {
@@ -241,7 +241,7 @@ void orthoview::set_projection(const gp_Ax2& cs)
 
     // but as the file gets saved the projection direction gets rounded.
     // this can lead to choosing a different normal x-direction when the file
-    // gets reloaded see issue #1909
+    // gets reloaded see issue ~1909
     // we anticipate the actual_cs after reloading by rounding the Z_dir now
     const double x = round(Z_dir.X() * 1e12) / 1e12;
     const double y = round(Z_dir.Y() * 1e12) / 1e12;
@@ -416,13 +416,13 @@ void OrthoViews::choose_page()                              // chooses which bit
         for (int j = min_r_y; j <= max_r_y; j++)
             if (index(i, j) != -1)                                    // is there a view in this position?
             {
-                a = i * block[0] * 0.5;                                 // reflect i and j so as +ve is in direction of title block ##
+                a = i * block[0] * 0.5;                                 // reflect i and j so as +ve is in direction of title block ~~
                 b = j * block[1] * 0.5;
                 view_x = ceil(a + 0.5) * width + ceil(a) * depth;       // extreme coords of view in direction of block, measured from far corner of (0, 0) view,
                 view_y = ceil(b + 0.5) * height + ceil(b) * depth;      //                      can be -ve if view is on opposite side of (0, 0) from title block
                 v_x_r = view_x / layout_width;                          // make relative
                 v_y_r = view_y / layout_height;
-                if (v_x_r > rel_space_x && v_y_r > rel_space_y)         // ## so that can use > in this condition regardless of position of block
+                if (v_x_r > rel_space_x && v_y_r > rel_space_y)         // ~~ so that can use > in this condition regardless of position of block
                     interferes = true;
             }
 
@@ -1364,4 +1364,4 @@ bool TaskDlgOrthoViews::reject()
 }
 
 
-#include "moc_TaskOrthoViews.cpp"
+~include "moc_TaskOrthoViews.cpp"

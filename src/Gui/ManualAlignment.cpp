@@ -21,44 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QLabel>
-# include <QMenu>
-# include <QMessageBox>
-# include <QPainter>
-# include <QSplitter>
-# include <QTimer>
-# include <QVBoxLayout>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/fields/SoSFImage.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QApplication>
+~ include <QLabel>
+~ include <QMenu>
+~ include <QMessageBox>
+~ include <QPainter>
+~ include <QSplitter>
+~ include <QTimer>
+~ include <QVBoxLayout>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/fields/SoSFImage.h>
+~ include <Inventor/nodes/SoImage.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoOrthographicCamera.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/sensors/SoNodeSensor.h>
+~endif
 
-#include <App/Document.h>
-#include <App/GeoFeature.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SplitView3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/WaitCursor.h>
+~include <App/Document.h>
+~include <App/GeoFeature.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SplitView3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/ViewProviderGeometryObject.h>
+~include <Gui/WaitCursor.h>
 
-#include "ManualAlignment.h"
-#include "BitmapFactory.h"
-#include "SoAxisCrossKit.h"
-#include "Tools.h"
+~include "ManualAlignment.h"
+~include "BitmapFactory.h"
+~include "SoAxisCrossKit.h"
+~include "Tools.h"
 
 
 using namespace Gui;
@@ -1350,5 +1350,5 @@ bool ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, co
     return false;
 }
 
-#include "moc_ManualAlignment.cpp"
+~include "moc_ManualAlignment.cpp"
 

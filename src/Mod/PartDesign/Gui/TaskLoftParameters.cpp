@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Mod/PartDesign/App/FeatureLoft.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/CommandT.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Mod/PartDesign/App/FeatureLoft.h>
 
-#include "ui_TaskLoftParameters.h"
-#include "TaskLoftParameters.h"
-#include "TaskSketchBasedParameters.h"
+~include "ui_TaskLoftParameters.h"
+~include "TaskLoftParameters.h"
+~include "TaskSketchBasedParameters.h"
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
@@ -71,10 +71,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
+~endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
@@ -398,4 +398,4 @@ bool TaskDlgLoftParameters::accept()
 //==== calls from the TaskView ===============================================================
 
 
-#include "moc_TaskLoftParameters.cpp"
+~include "moc_TaskLoftParameters.cpp"

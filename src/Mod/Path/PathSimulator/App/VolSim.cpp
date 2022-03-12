@@ -20,19 +20,19 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "PreCompiled.h"
-#include <Base/Console.h>
+~include "PreCompiled.h"
+~include <Base/Console.h>
 
-#include <BRepBndLib.hxx>
-#include <BRepCheck_Analyzer.hxx>
-#include <BRepClass3d_SolidClassifier.hxx>
-#include <gp_Pnt.hxx>
+~include <BRepBndLib.hxx>
+~include <BRepCheck_Analyzer.hxx>
+~include <BRepClass3d_SolidClassifier.hxx>
+~include <gp_Pnt.hxx>
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
-#include "VolSim.h"
+~include "VolSim.h"
 
 //************************************************************************************************************
 // stock

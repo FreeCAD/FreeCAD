@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMenu>
-# include <QMouseEvent>
-# include <Inventor/nodes/SoCamera.h>
-#endif
-#include <Inventor/SbVec2s.h>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QMouseEvent>
+~ include <Inventor/nodes/SoCamera.h>
+~endif
+~include <Inventor/SbVec2s.h>
 
-#include "Flag.h"
-#include "View3DInventorViewer.h"
+~include "Flag.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;
@@ -418,4 +418,4 @@ void GLFlagWindow::paintGL()
     }
 }
 
-#include "moc_Flag.cpp"
+~include "moc_Flag.cpp"

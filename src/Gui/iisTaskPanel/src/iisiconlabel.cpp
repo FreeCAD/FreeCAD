@@ -5,8 +5,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "iisiconlabel.h"
-#include "iistaskpanelscheme.h"
+~include "iisiconlabel.h"
+~include "iistaskpanelscheme.h"
 
 iisIconLabel::iisIconLabel(const QIcon &icon, const QString &title, QWidget *parent)
     : QWidget(parent),
@@ -74,11 +74,11 @@ QSize iisIconLabel::minimumSizeHint() const
     int w = 8 + px.width();
     if (!myText.isEmpty()) {
         QFontMetrics fm(myFont);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+~if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
         w += fm.horizontalAdvance(myText);
-#else
+~else
         w += fm.width(myText);
-#endif
+~endif
         h = qMax(h, 4+fm.height());
     }
 

@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QCursor>
-# include <QTimer>
-# include <Inventor/nodes/SoCamera.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QCursor>
+~ include <QTimer>
+~ include <Inventor/nodes/SoCamera.h>
+~endif
 
-#include <Base/Tools.h>
+~include <Base/Tools.h>
 
-#include "DemoMode.h"
-#include "ui_DemoMode.h"
-#include "Application.h"
-#include "Command.h"
-#include "Document.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
+~include "DemoMode.h"
+~include "ui_DemoMode.h"
+~include "Application.h"
+~include "Command.h"
+~include "Document.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui::Dialog;
@@ -272,4 +272,4 @@ void DemoMode::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-#include "moc_DemoMode.cpp"
+~include "moc_DemoMode.cpp"

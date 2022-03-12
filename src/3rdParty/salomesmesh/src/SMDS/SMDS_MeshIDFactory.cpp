@@ -25,9 +25,9 @@
 //  Author : Jean-Michel BOULCOURT
 //  Module : SMESH
 //
-#include "SMDS_MeshIDFactory.hxx"
-#include "SMDS_Mesh.hxx"
-#include "utilities.h"
+~include "SMDS_MeshIDFactory.hxx"
+~include "SMDS_Mesh.hxx"
+~include "utilities.h"
 
 using namespace std;
 

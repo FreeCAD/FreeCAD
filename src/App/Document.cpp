@@ -55,66 +55,66 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 @see App::DocumentObject
 */
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <bitset>
-# include <stack>
-# include <boost/filesystem.hpp>
-#endif
+~ifndef _PreComp_
+~ include <bitset>
+~ include <stack>
+~ include <boost/filesystem.hpp>
+~endif
 
-#include <boost/algorithm/string.hpp>
-#include <boost/graph/graphviz.hpp>
-#include <boost/graph/strong_components.hpp>
+~include <boost/algorithm/string.hpp>
+~include <boost/graph/graphviz.hpp>
+~include <boost/graph/strong_components.hpp>
 
-#ifdef USE_OLD_DAG
-#include <boost/graph/topological_sort.hpp>
-#include <boost/graph/depth_first_search.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/graph/visitors.hpp>
-#endif //USE_OLD_DAG
+~ifdef USE_OLD_DAG
+~include <boost/graph/topological_sort.hpp>
+~include <boost/graph/depth_first_search.hpp>
+~include <boost/graph/dijkstra_shortest_paths.hpp>
+~include <boost/graph/visitors.hpp>
+~endif //USE_OLD_DAG
 
-#include <boost/regex.hpp>
-#include <random>
-#include <unordered_map>
-#include <unordered_set>
+~include <boost/regex.hpp>
+~include <random>
+~include <unordered_map>
+~include <unordered_set>
 
-#include <QCryptographicHash>
-#include <QCoreApplication>
+~include <QCryptographicHash>
+~include <QCoreApplication>
 
-#include <App/DocumentPy.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/TimeInfo.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Tools.h>
-#include <Base/Uuid.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
+~include <App/DocumentPy.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/TimeInfo.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Tools.h>
+~include <Base/Uuid.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
 
-#include "Document.h"
-#include "Application.h"
-#include "AutoTransaction.h"
-#include "DocumentObserver.h"
-#include "DocumentObject.h"
-#include "ExpressionParser.h"
-#include "GeoFeature.h"
-#include "GeoFeatureGroupExtension.h"
-#include "Link.h"
-#include "MergeDocuments.h"
-#include "Origin.h"
-#include "OriginGroupExtension.h"
-#include "Transactions.h"
+~include "Document.h"
+~include "Application.h"
+~include "AutoTransaction.h"
+~include "DocumentObserver.h"
+~include "DocumentObject.h"
+~include "ExpressionParser.h"
+~include "GeoFeature.h"
+~include "GeoFeatureGroupExtension.h"
+~include "Link.h"
+~include "MergeDocuments.h"
+~include "Origin.h"
+~include "OriginGroupExtension.h"
+~include "Transactions.h"
 
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
+~ifdef _MSC_VER
+~include <zipios++/zipios-config.h>
+~endif
+~include <zipios++/zipfile.h>
+~include <zipios++/zipinputstream.h>
+~include <zipios++/zipoutputstream.h>
+~include <zipios++/meta-iostreams.h>
 
 
 FC_LOG_LEVEL_INIT("App", true, true, true)
@@ -127,9 +127,9 @@ using namespace std;
 using namespace boost;
 using namespace zipios;
 
-#if FC_DEBUG
-#  define FC_LOGFEATUREUPDATE
-#endif
+~if FC_DEBUG
+~  define FC_LOGFEATUREUPDATE
+~endif
 
 namespace fs = boost::filesystem;
 
@@ -178,11 +178,11 @@ struct DocumentP
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
     std::string programVersion;
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
     std::map<Vertex,DocumentObject*> vertexMap;
-#endif //USE_OLD_DAG
+~endif //USE_OLD_DAG
     std::multimap<const App::DocumentObject*,
         std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
 
@@ -343,7 +343,7 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         std::string getId(const DocumentObject * docObj) {
-            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument();
+            return std::string((docObj)->getDocument()->getName()) + "~" + docObj->getNameInDocument();
         }
 
         /**
@@ -357,7 +357,7 @@ void Document::exportGraphviz(std::ostream& out) const
             if (!docObj)
                 return std::string();
 
-            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
+            return std::string((docObj)->getDocument()->getName()) + "~" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
         }
 
         std::string getClusterName(const DocumentObject * docObj) const {
@@ -370,7 +370,7 @@ void Document::exportGraphviz(std::ostream& out) const
             if (name == label)
                 get_property(g, graph_graph_attribute)["label"] = name;
             else
-                get_property(g, graph_graph_attribute)["label"] = name + "&#92;n(" + label + ")";
+                get_property(g, graph_graph_attribute)["label"] = name + "&~92;n(" + label + ")";
         }
 
         /**
@@ -382,7 +382,7 @@ void Document::exportGraphviz(std::ostream& out) const
             assert(GraphList.find(obj) != GraphList.end());
             get_property(*GraphList[obj], graph_name) = getClusterName(obj);
 
-            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "~e0e0e0";
 
             get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
             setGraphLabel(*GraphList[obj], obj);
@@ -515,7 +515,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 if (name == label)
                     get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
                 else
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
+                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&~92;n(" + label + ")";
             }
             else {
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
@@ -579,7 +579,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
             //build random color string
             std::stringstream stream;
-            stream << "#" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
+            stream << "~" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
                    << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
                    << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed) << 80;
             std::string result(stream.str());
@@ -621,7 +621,7 @@ void Document::exportGraphviz(std::ostream& out) const
             if(CSSubgraphs) {
                 //first build up the coordinate system subgraphs
                 for (auto objectIt : d->objectArray) {
-                    // do not require an empty inlist (#0003465: Groups breaking dependency graph)
+                    // do not require an empty inlist (~0003465: Groups breaking dependency graph)
                     // App::Origin now has the GeoFeatureGroupExtension but it should not move its
                     // group symbol outside its parent
                     if (!objectIt->isDerivedFrom(Origin::getClassTypeId()) &&
@@ -668,8 +668,8 @@ void Document::exportGraphviz(std::ostream& out) const
 
                         if (item == GlobalVertexList.end())
                             add(*It2,
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue(),
+                                std::string((*It2)->getDocument()->getName()) + "~" + (*It2)->getNameInDocument(),
+                                std::string((*It2)->getDocument()->getName()) + "~" + (*It2)->Label.getValue(),
                                 CSSubgraphs);
                     }
                 }
@@ -803,11 +803,11 @@ void Document::exportGraphviz(std::ostream& out) const
             }
         }
 
-#if defined(__clang__)
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
+~if defined(__clang__)
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic push
+~ pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+~endif
 
         void markCycles() {
             bool changed = true;
@@ -874,10 +874,10 @@ void Document::exportGraphviz(std::ostream& out) const
                 edgeAttrMap[ei->second]["color"] = "red";
         }
 
-#if defined(__clang__)
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
+~if defined(__clang__)
+~elif defined (__GNUC__)
+~ pragma GCC diagnostic pop
+~endif
 
         void markOutOfScopeLinks() {
             const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
@@ -1534,9 +1534,9 @@ Document::Document(const char *name)
     d = new DocumentP;
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
-#ifdef FC_LOGUPDATECHAIN
+~ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n",this);
-#endif
+~endif
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
     std::string Author = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
@@ -1628,9 +1628,9 @@ Document::Document(const char *name)
 
 Document::~Document()
 {
-#ifdef FC_LOGUPDATECHAIN
+~ifdef FC_LOGUPDATECHAIN
     Console().Log("-App::Document: %s %p\n",getName(), this);
-#endif
+~endif
 
     try {
         clearUndos();
@@ -1638,9 +1638,9 @@ Document::~Document()
     catch (const boost::exception&) {
     }
 
-#ifdef FC_LOGUPDATECHAIN
+~ifdef FC_LOGUPDATECHAIN
     Console().Log("-Delete Features of %s \n",getName());
-#endif
+~endif
 
     d->objectArray.clear();
     for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
@@ -1859,12 +1859,12 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     writer.writeFiles();
 }
 
-#define FC_ATTR_DEPENDENCIES "Dependencies"
-#define FC_ELEMENT_OBJECT_DEPS "ObjectDeps"
-#define FC_ATTR_DEP_COUNT "Count"
-#define FC_ATTR_DEP_OBJ_NAME "Name"
-#define FC_ATTR_DEP_ALLOW_PARTIAL "AllowPartial"
-#define FC_ELEMENT_OBJECT_DEP "Dep"
+~define FC_ATTR_DEPENDENCIES "Dependencies"
+~define FC_ELEMENT_OBJECT_DEPS "ObjectDeps"
+~define FC_ATTR_DEP_COUNT "Count"
+~define FC_ATTR_DEP_OBJ_NAME "Name"
+~define FC_ATTR_DEP_ALLOW_PARTIAL "AllowPartial"
+~define FC_ELEMENT_OBJECT_DEP "Dep"
 
 void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                             Base::Writer &writer) const
@@ -2622,12 +2622,12 @@ bool Document::saveToFile(const char* filename) const
     }
     Base::FileInfo tmp(fn);
     // In case some folders in the path do not exist
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
     QString utf8Name = QString::fromUtf8(filename);
     auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
-#else
+~else
     auto parentPath = fs::absolute(fs::path(filename)).parent_path();
-#endif
+~endif
     fs::create_directories(parentPath);
 
     // open extra scope to close ZipWriter properly
@@ -3266,11 +3266,11 @@ std::vector<App::Document*> Document::getDependentDocuments(
 
 void Document::_rebuildDependencyList(const std::vector<App::DocumentObject*> &objs)
 {
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
     _buildDependencyList(objs.empty()?d->objectArray:objs,false,0,&d->DepList,&d->VertexObjectList);
-#else
+~else
     (void)objs;
-#endif
+~endif
 }
 
 /**
@@ -3297,7 +3297,7 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
             (*it)->renameObjectIdentifiers(extendedPaths);
 }
 
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force)
 {
     if (testStatus(Document::Recomputing)) {
@@ -3336,9 +3336,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     for (std::map<DocumentObject*,Vertex>::const_iterator It1= d->VertexObjectList.begin();It1 != d->VertexObjectList.end(); ++It1)
         d->vertexMap[It1->second] = It1->first;
 
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
     std::clog << "make ordering: " << std::endl;
-#endif
+~endif
 
     std::set<DocumentObject*> recomputeList;
 
@@ -3351,16 +3351,16 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         // the inefficient isIn()
         // if (!Cur || !isIn(Cur)) continue;
         if (!Cur || !Cur->getNameInDocument()) continue;
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
         std::clog << Cur->getNameInDocument() << " dep on:" ;
-#endif
+~endif
         bool NeedUpdate = false;
 
         // ask the object if it should be recomputed
         if (Cur->mustExecute() == 1 || Cur->ExpressionEngine.depsAreTouched()) {
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
             std::clog << "[touched]";
-#endif
+~endif
             NeedUpdate = true;
         }
         else {// if (Cur->mustExecute() == -1)
@@ -3369,36 +3369,36 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                 DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
 
                 if (!Test) continue;
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
                 std::clog << " " << Test->getNameInDocument();
-#endif
+~endif
                 if (Test->isTouched()) {
                     NeedUpdate = true;
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
                     std::clog << "[touched]";
-#endif
+~endif
                 }
             }
         }
         // if one touched recompute
         if (NeedUpdate) {
             Cur->touch();
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
             std::clog << " => Recompute feature";
-#endif
+~endif
             recomputeList.insert(Cur);
         }
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
         std::clog << std::endl;
-#endif
+~endif
     }
 
-#ifdef FC_LOGFEATUREUPDATE
+~ifdef FC_LOGFEATUREUPDATE
     std::clog << "Have to recompute the following document objects" << std::endl;
     for (std::set<DocumentObject*>::const_iterator it = recomputeList.begin(); it != recomputeList.end(); ++it) {
         std::clog << "  " << (*it)->getNameInDocument() << std::endl;
     }
-#endif
+~endif
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
@@ -3430,7 +3430,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     return objectCount;
 }
 
-#else //ifdef USE_OLD_DAG
+~else //ifdef USE_OLD_DAG
 
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options)
 {
@@ -3466,7 +3466,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
     signalBeforeRecompute(*this);
 
-#if 0
+~if 0
     //////////////////////////////////////////////////////////////////////////
     // FIXME Comment by Realthunder:
     // the topologicalSrot() below cannot handle partial recompute, haven't got
@@ -3484,9 +3484,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         topoSortedObjects = d->partialTopologicalSort(depObjs);
     }
     std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
-#else
+~else
     auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,DepSort|options);
-#endif
+~endif
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
 
@@ -3591,7 +3591,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     return objectCount;
 }
 
-#endif // USE_OLD_DAG
+~endif // USE_OLD_DAG
 
 /*!
   Does almost the same as topologicalSort() until no object with an input degree of zero
@@ -3705,7 +3705,7 @@ std::vector<App::DocumentObject*> DocumentP::partialTopologicalSort(
 std::vector<App::DocumentObject*> DocumentP::topologicalSort(const std::vector<App::DocumentObject*>& objects) const
 {
     // topological sort algorithm described here:
-    // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
+    // https://de.wikipedia.org/wiki/Topologische_Sortierung~Algorithmus_f.C3.BCr_das_Topologische_Sortieren
     vector < App::DocumentObject* > ret;
     ret.reserve(objects.size());
     map < App::DocumentObject*,int > countMap;
@@ -3801,13 +3801,13 @@ int Document::_recomputeFeature(DocumentObject* Feat)
         d->addRecomputeLog(e.what(),Feat);
         return 1;
     }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
     catch (...) {
         FC_ERR("Unknown exception in " << Feat->getFullName() << " thrown");
         d->addRecomputeLog("Unknown exception!",Feat);
         return 1;
     }
-#endif
+~endif
 
     if (returnCode == DocumentObject::StdReturn) {
         Feat->resetError();
@@ -4130,7 +4130,7 @@ void Document::removeObject(const char* sName)
 
     _checkTransaction(pos->second,0,__LINE__);
 
-#if 0
+~if 0
     if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
         // Preserve link group sub object global visibilities. Normally those
         // claimed object should be hidden in global coordinate space. However,
@@ -4149,7 +4149,7 @@ void Document::removeObject(const char* sName)
                 d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
         }
     }
-#endif
+~endif
 
     if (d->activeObject == pos->second)
         d->activeObject = 0;
@@ -4172,7 +4172,7 @@ void Document::removeObject(const char* sName)
         signalTransactionRemove(*pos->second, 0);
     }
 
-#ifdef USE_OLD_DAG
+~ifdef USE_OLD_DAG
     if (!d->vertexMap.empty()) {
         // recompute of document is running
         for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
@@ -4182,7 +4182,7 @@ void Document::removeObject(const char* sName)
             }
         }
     }
-#endif //USE_OLD_DAG
+~endif //USE_OLD_DAG
 
     // Before deleting we must nullify all dependent objects
     breakDependency(pos->second, true);

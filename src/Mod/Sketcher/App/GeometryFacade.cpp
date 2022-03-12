@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+~include "PreCompiled.h"
+~ifndef _PreComp_
 
-#endif
+~endif
 
-#include "GeometryFacade.h"
+~include "GeometryFacade.h"
 
-//#include <Base/Console.h> // Only for Debug, when/if necessary
-#include <Base/Exception.h>
-#include <boost/uuid/uuid_io.hpp>
+//~include <Base/Console.h> // Only for Debug, when/if necessary
+~include <Base/Exception.h>
+~include <boost/uuid/uuid_io.hpp>
 
-#include "GeometryFacadePy.h"
+~include "GeometryFacadePy.h"
 
 using namespace Sketcher;
 

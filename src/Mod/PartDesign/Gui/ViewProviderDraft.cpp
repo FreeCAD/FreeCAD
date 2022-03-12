@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TaskDraftParameters.h"
-#include "ViewProviderDraft.h"
+~include "TaskDraftParameters.h"
+~include "ViewProviderDraft.h"
 
 using namespace PartDesignGui;
 

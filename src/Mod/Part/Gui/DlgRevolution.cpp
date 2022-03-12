@@ -21,41 +21,41 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pnt.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRep_Tool.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <Python.h>
-# include <Inventor/system/inttypes.h>
-# include <Precision.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <gp_Dir.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Pnt.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRep_Tool.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <ShapeExtend_Explorer.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <Python.h>
+~ include <Inventor/system/inttypes.h>
+~ include <Precision.hxx>
+~endif
 
-#include "ui_DlgRevolution.h"
-#include "DlgRevolution.h"
-#include "../App/PartFeature.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Utilities.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/Part/App/FeatureRevolution.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
+~include "ui_DlgRevolution.h"
+~include "DlgRevolution.h"
+~include "../App/PartFeature.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Utilities.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Mod/Part/App/Tools.h>
+~include <Mod/Part/App/FeatureRevolution.h>
+~include <Base/Console.h>
+~include <Base/UnitsApi.h>
 
 
 
@@ -570,4 +570,4 @@ bool TaskRevolution::accept()
     return (widget->result() == QDialog::Accepted);
 }
 
-#include "moc_DlgRevolution.cpp"
+~include "moc_DlgRevolution.cpp"

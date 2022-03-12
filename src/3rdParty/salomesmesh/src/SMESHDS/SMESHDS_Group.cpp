@@ -25,8 +25,8 @@
 //  Module : SMESH
 //  $Header$
 //
-#include "SMESHDS_Group.hxx"
-#include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_Group.hxx"
+~include "SMESHDS_Mesh.hxx"
 
 using namespace std;
 

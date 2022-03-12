@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPrinter>
-#include <QSvgGenerator>
-#include <QStyleOptionGraphicsItem>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <assert.h>
+~include <QGraphicsScene>
+~include <QGraphicsSceneHoverEvent>
+~include <QMouseEvent>
+~include <QPaintDevice>
+~include <QPainter>
+~include <QPrinter>
+~include <QSvgGenerator>
+~include <QStyleOptionGraphicsItem>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include <qmath.h>
-#include <QRectF>
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "DrawGuiUtil.h"
-#include "QGICMark.h"
-#include "QGIView.h"
-#include "PreferencesGui.h"
-#include "QGCustomText.h"
+~include <qmath.h>
+~include <QRectF>
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "DrawGuiUtil.h"
+~include "QGICMark.h"
+~include "QGIView.h"
+~include "PreferencesGui.h"
+~include "QGCustomText.h"
 
 using namespace TechDrawGui;
 

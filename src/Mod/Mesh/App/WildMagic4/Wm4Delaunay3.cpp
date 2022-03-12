@@ -14,16 +14,16 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#include "Wm4FoundationPCH.h"
-#include "Wm4Delaunay3.h"
-#include "Wm4DelPolyhedronFace.h"
-#include "Wm4Mapper3.h"
-#include "Wm4ETManifoldMesh.h"
-#include "Wm4Delaunay2.h"
-#include "Wm4Query3Filtered.h"
-#include "Wm4Query3Int64.h"
-#include "Wm4Query3TInteger.h"
-#include "Wm4Query3TRational.h"
+~include "Wm4FoundationPCH.h"
+~include "Wm4Delaunay3.h"
+~include "Wm4DelPolyhedronFace.h"
+~include "Wm4Mapper3.h"
+~include "Wm4ETManifoldMesh.h"
+~include "Wm4Delaunay2.h"
+~include "Wm4Query3Filtered.h"
+~include "Wm4Query3Int64.h"
+~include "Wm4Query3TInteger.h"
+~include "Wm4Query3TRational.h"
 
 // Indexing for the vertices of the triangle opposite a vertex.  The triangle
 // opposite vertex j is

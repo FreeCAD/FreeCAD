@@ -21,52 +21,52 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_signals2.hpp>
-# include <boost_bind_bind.hpp>
-# include <BRep_Tool.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <gp_Pnt.hxx>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Python.h>
-# include <QFontMetrics>
-# include <QMessageBox>
-# include <QPointer>
-# include <QSet>
-# include <sstream>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-#endif
+~ifndef _PreComp_
+~ include <boost_signals2.hpp>
+~ include <boost_bind_bind.hpp>
+~ include <BRep_Tool.hxx>
+~ include <BRepGProp.hxx>
+~ include <GProp_GProps.hxx>
+~ include <gp_Pnt.hxx>
+~ include <Inventor/actions/SoRayPickAction.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/events/SoMouseButtonEvent.h>
+~ include <Inventor/nodes/SoCamera.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Python.h>
+~ include <QFontMetrics>
+~ include <QMessageBox>
+~ include <QPointer>
+~ include <QSet>
+~ include <sstream>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~endif
 
-#include "TaskFaceColors.h"
-#include "ui_TaskFaceColors.h"
+~include "TaskFaceColors.h"
+~include "ui_TaskFaceColors.h"
 
-#include "SoBrepFaceSet.h"
-#include "ViewProviderExt.h"
+~include "SoBrepFaceSet.h"
+~include "ViewProviderExt.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/Tools.h>
-#include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/Tools.h>
+~include <Gui/Utilities.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Mod/Part/App/PartFeature.h>
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -192,10 +192,10 @@ public:
                     Base::Vector3d pt2d;
                     pt2d = proj(Base::Vector3d(p.X(), p.Y(), p.Z()));
                     if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-#if 0
+~if 0
                         // TODO
                         if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer))
-#endif
+~endif
                         {
                             std::stringstream str;
                             str << "Face" << k;
@@ -491,4 +491,4 @@ bool TaskFaceColors::reject()
     return widget->reject();
 }
 
-#include "moc_TaskFaceColors.cpp"
+~include "moc_TaskFaceColors.cpp"

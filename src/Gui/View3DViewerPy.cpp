@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+~ifndef __InventorAll__
+~ include "InventorAll.h"
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/Interpreter.h>
-#include <Base/MatrixPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Interpreter.h>
+~include <Base/MatrixPy.h>
 
-#include "View3DViewerPy.h"
-#include "View3DInventorViewer.h"
+~include "View3DViewerPy.h"
+~include "View3DInventorViewer.h"
 
 
 using namespace Gui;

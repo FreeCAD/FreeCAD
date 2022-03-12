@@ -22,7 +22,7 @@
 
 //  SMESH SMDS : implementation of Salome mesh data structure
 //
-#include "SMDS_MeshFace.hxx"
+~include "SMDS_MeshFace.hxx"
 
 SMDSAbs_ElementType SMDS_MeshFace::GetType() const
 {

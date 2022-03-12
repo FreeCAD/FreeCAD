@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoGroup.h>
+~include <Inventor/nodes/SoAnnotation.h>
+~include <Inventor/nodes/SoSwitch.h>
+~include <Inventor/nodes/SoDrawStyle.h>
+~endif
 
-#include "ViewProviderPartRef.h"
-//#include <Gui/Command.h>
-//#include <Gui/Document.h>
-#include <Mod/Assembly/App/PartRef.h>
-#include <Base/Console.h>
+~include "ViewProviderPartRef.h"
+//~include <Gui/Command.h>
+//~include <Gui/Document.h>
+~include <Mod/Assembly/App/PartRef.h>
+~include <Base/Console.h>
 
 using namespace AssemblyGui;
 
-#ifdef ASSEMBLY_DEBUG_FACILITIES
+~ifdef ASSEMBLY_DEBUG_FACILITIES
 SbColor PointColor(1.0f,0.0f,0.0f);
 SbColor PseudoColor(0.0f,0.0f,1.0f);
 SbColor MidpointColor(0.0f,1.0f,1.0f);
 SbColor ZeroColor(1.0f,1.0f,0.0f);
-#endif
+~endif
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderPartRef,AssemblyGui::ViewProviderItem)
 
@@ -51,9 +51,9 @@ ViewProviderPartRef::ViewProviderPartRef()
 {
     sPixmap = "Assembly_Assembly_Part_Tree.svg";
 
-#ifdef ASSEMBLY_DEBUG_FACILITIES
+~ifdef ASSEMBLY_DEBUG_FACILITIES
     ADD_PROPERTY(ShowScalePoints,(false));
-#endif
+~endif
 }
 
 ViewProviderPartRef::~ViewProviderPartRef()
@@ -72,7 +72,7 @@ void ViewProviderPartRef::attach(App::DocumentObject* pcFeat)
     // putting all together with the switch
     addDisplayMaskMode(getChildRoot(), "Main");
 
-#ifdef ASSEMBLY_DEBUG_FACILITIES
+~ifdef ASSEMBLY_DEBUG_FACILITIES
 
     m_anno = new SoAnnotation;
     m_switch = new SoSwitch;
@@ -96,7 +96,7 @@ void ViewProviderPartRef::attach(App::DocumentObject* pcFeat)
     m_anno->addChild(m_points);
 
     pcRoot->addChild(m_switch);
-#endif
+~endif
 }
 
 void ViewProviderPartRef::setDisplayMode(const char* ModeName)
@@ -194,7 +194,7 @@ void ViewProviderPartRef::drop(const std::vector<const App::DocumentObject*> &ob
 
 
 
-#ifdef ASSEMBLY_DEBUG_FACILITIES
+~ifdef ASSEMBLY_DEBUG_FACILITIES
 
 void ViewProviderPartRef::onChanged(const App::Property* prop) {
 
@@ -286,4 +286,4 @@ void ViewProviderPartRef::onChanged(const App::Property* prop) {
 }
 
 
-#endif
+~endif

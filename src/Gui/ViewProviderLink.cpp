@@ -20,53 +20,53 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <atomic>
-# include <cctype>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/misc/SoChildList.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoSurroundScale.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-#include <QApplication>
-#include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <atomic>
+~ include <cctype>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/details/SoDetail.h>
+~ include <Inventor/draggers/SoCenterballDragger.h>
+~ include <Inventor/misc/SoChildList.h>
+~ include <Inventor/nodes/SoAnnotation.h>
+~ include <Inventor/nodes/SoCube.h>
+~ include <Inventor/nodes/SoDrawStyle.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoShapeHints.h>
+~ include <Inventor/nodes/SoSurroundScale.h>
+~ include <Inventor/nodes/SoSwitch.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/sensors/SoNodeSensor.h>
+~include <QApplication>
+~include <QMenu>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/ComplexGeoData.h>
-#include <App/Document.h>
-#include <Base/BoundBoxPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/Tools.h>
+~include <App/ComplexGeoData.h>
+~include <App/Document.h>
+~include <Base/BoundBoxPy.h>
+~include <Base/MatrixPy.h>
+~include <Base/PlacementPy.h>
+~include <Base/Tools.h>
 
-#include "ViewProviderLink.h"
-#include "ViewProviderLinkPy.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Control.h"
-#include "LinkViewPy.h"
-#include "Selection.h"
-#include "SoFCCSysDragger.h"
-#include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
-#include "TaskElementColors.h"
-#include "View3DInventor.h"
-#include "ViewParams.h"
-#include "ViewProviderGeometryObject.h"
+~include "ViewProviderLink.h"
+~include "ViewProviderLinkPy.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Control.h"
+~include "LinkViewPy.h"
+~include "Selection.h"
+~include "SoFCCSysDragger.h"
+~include "SoFCUnifiedSelection.h"
+~include "TaskCSysDragger.h"
+~include "TaskElementColors.h"
+~include "View3DInventor.h"
+~include "ViewParams.h"
+~include "ViewProviderGeometryObject.h"
 
 
 FC_LOG_LEVEL_INIT("App::Link", true, true)
@@ -87,15 +87,15 @@ static inline bool appendPathSafe(SoPath *path, SoNode *node) {
     return true;
 }
 
-#ifdef FC_DEBUG
-#define appendPath(_path,_node)  \
+~ifdef FC_DEBUG
+~define appendPath(_path,_node)  \
 do{\
     if(!appendPathSafe(_path,_node))\
         FC_ERR("LinkView: coin path error");\
 }while(0)
-#else
-#define appendPath(_path, _node) (_path)->append(_node)
-#endif
+~else
+~define appendPath(_path, _node) (_path)->append(_node)
+~endif
 
 ////////////////////////////////////////////////////////////////////////////
 class Gui::LinkInfo {
@@ -304,13 +304,13 @@ public:
     // However, gcc seems to behave the oppsite, hence the conditional
     // compilation  here.
     //
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     friend void ::intrusive_ptr_add_ref(LinkInfo *px);
     friend void ::intrusive_ptr_release(LinkInfo *px);
-#else
+~else
     friend inline void intrusive_ptr_add_ref(LinkInfo *px) { px->addref(); }
     friend inline void intrusive_ptr_release(LinkInfo *px) { px->release(); }
-#endif
+~endif
 
     bool isVisible() const {
         if(!isLinked())
@@ -508,7 +508,7 @@ public:
     }
 
     static const char *checkSubname(App::DocumentObject *obj, const char *subname) {
-#define CHECK_NAME(_name,_end) do{\
+~define CHECK_NAME(_name,_end) do{\
             if(!_name) return 0;\
             const char *_n = _name;\
             for(;*subname && *_n; ++subname,++_n)\
@@ -667,7 +667,7 @@ public:
     }
 };
 
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 void intrusive_ptr_add_ref(Gui::LinkInfo *px){
     px->addref();
 }
@@ -675,7 +675,7 @@ void intrusive_ptr_add_ref(Gui::LinkInfo *px){
 void intrusive_ptr_release(Gui::LinkInfo *px){
     px->release();
 }
-#endif
+~endif
 
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -719,14 +719,14 @@ void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
 }
 
 void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
-#if 0
+~if 0
     auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
     if(!owner || !linkInfo) return;
     if(prop != &owner->Visibility && prop != &owner->DisplayMode)
         linkInfo->update();
-#else
+~else
     (void)prop;
-#endif
+~endif
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
@@ -1032,14 +1032,14 @@ void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
 }
 
 void LinkView::setTransform(SoTransform *pcTransform, const Base::Matrix4D &mat) {
-#if 1
+~if 1
     double dMtrx[16];
     mat.getGLMatrix(dMtrx);
     pcTransform->setMatrix(SbMatrix(dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
                                     dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
                                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
-#else
+~else
     // extract scale factor from column vector length
     double sx = Base::Vector3d(mat[0][0],mat[1][0],mat[2][0]).Sqr();
     double sy = Base::Vector3d(mat[0][1],mat[1][1],mat[2][1]).Sqr();
@@ -1093,7 +1093,7 @@ void LinkView::setTransform(SoTransform *pcTransform, const Base::Matrix4D &mat)
     pcTransform->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
     pcTransform->translation.setValue(mat[0][3],mat[1][3],mat[2][3]);
     pcTransform->center.setValue(0.0f,0.0f,0.0f);
-#endif
+~endif
 }
 
 void LinkView::setSize(int _size) {
@@ -3070,7 +3070,7 @@ void ViewProviderLink::onBeforeChange(const App::Property *prop) {
 }
 
 static bool isExcludedProperties(const char *name) {
-#define CHECK_EXCLUDE_PROP(_name) if(strcmp(name,#_name)==0) return true;
+~define CHECK_EXCLUDE_PROP(_name) if(strcmp(name,~_name)==0) return true;
     CHECK_EXCLUDE_PROP(Proxy);
     return false;
 }

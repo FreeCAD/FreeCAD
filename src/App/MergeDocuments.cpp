@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <stack>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <stack>
+~endif
 
-#include <QCoreApplication>
-#include <App/Document.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+~include <QCoreApplication>
+~include <App/Document.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
 
-#include "MergeDocuments.h"
+~include "MergeDocuments.h"
 
 
 using namespace App;
@@ -69,7 +69,7 @@ protected:
     // introduction of full qualified SubName reference, the Sub value inside
     // LinkSub may require customized mapping. So we move the mapping logic to
     // various link property's Restore() function.
-#if 0
+~if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
                       const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
@@ -114,7 +114,7 @@ protected:
         if (LocalName == "Property")
             propertyStack.pop();
     }
-#endif
+~endif
 
 private:
     std::map<std::string, std::string>& nameMap;

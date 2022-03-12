@@ -20,58 +20,58 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+  ~include <BRep_Builder.hxx>
+  ~include <TopoDS_Compound.hxx>
+  ~ include <TopoDS_Shape.hxx>
+  ~ include <TopoDS_Edge.hxx>
+  ~ include <TopoDS.hxx>
+  ~ include <BRepAdaptor_Curve.hxx>
+  ~ include <Precision.hxx>
 
-  # include <QGraphicsScene>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
+  ~ include <QGraphicsScene>
+  ~ include <QPainter>
+  ~ include <QPainterPath>
+  ~ include <QPaintDevice>
+  ~ include <QSvgGenerator>
 
-  # include <math.h>
-#endif
+  ~ include <math.h>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Tools.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-//#include <Mod/TechDraw/App/Preferences.h>
+~include <Mod/TechDraw/App/DrawWeldSymbol.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawTile.h>
+~include <Mod/TechDraw/App/DrawTileWeld.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
+//~include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "ViewProviderWeld.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGIPrimPath.h"
-#include "QGITile.h"
-#include "QGILeaderLine.h"
-#include "QGIVertex.h"
-#include "QGCustomText.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "PreferencesGui.h"
+~include "ViewProviderWeld.h"
+~include "MDIViewPage.h"
+~include "DrawGuiUtil.h"
+~include "QGVPage.h"
+~include "QGIPrimPath.h"
+~include "QGITile.h"
+~include "QGILeaderLine.h"
+~include "QGIVertex.h"
+~include "QGCustomText.h"
 
-#include "QGIWeldSymbol.h"
+~include "QGIWeldSymbol.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -565,4 +565,4 @@ void QGIWeldSymbol::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QGIView::paint (painter, &myOption, widget);
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIWeldSymbol.cpp>
+~include <Mod/TechDraw/Gui/moc_QGIWeldSymbol.cpp>

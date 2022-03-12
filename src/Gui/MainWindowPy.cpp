@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <list>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <list>
+~endif
 
-#include <Base/TypePy.h>
+~include <Base/TypePy.h>
 
-#include "MainWindowPy.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "MDIViewPy.h"
-#include "PythonWrapper.h"
+~include "MainWindowPy.h"
+~include "MainWindow.h"
+~include "MDIView.h"
+~include "MDIViewPy.h"
+~include "PythonWrapper.h"
 
 
 using namespace Gui;

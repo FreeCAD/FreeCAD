@@ -24,8 +24,8 @@
 //  File   : StdMeshers_QuadraticMesh.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_QuadraticMesh.hxx"
-#include "utilities.h"
+~include "StdMeshers_QuadraticMesh.hxx"
+~include "utilities.h"
 
 using namespace std;
 

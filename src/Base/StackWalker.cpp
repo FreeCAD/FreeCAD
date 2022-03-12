@@ -23,30 +23,30 @@
  *                       (thanks to owillebo: http://www.codeproject.com/script/profile/whos_who.asp?id=536268)
  *  2005-08-05   v5    - Removed most Lint (http://www.gimpel.com/) errors... thanks to Okko Willeboordse!
  *  2008-08-04   v6    - Fixed Bug: Missing LEAK-end-tag
- *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=2502890#xx2502890xx
+ *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=2502890~xx2502890xx
  *                       Fixed Bug: Compiled with "WIN32_LEAN_AND_MEAN"
- *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=1824718#xx1824718xx
+ *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=1824718~xx1824718xx
  *                       Fixed Bug: Compiling with "/Wall"
- *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=2638243#xx2638243xx
+ *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=2638243~xx2638243xx
  *                       Fixed Bug: Now checking SymUseSymSrv
- *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=1388979#xx1388979xx
+ *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=1388979~xx1388979xx
  *                       Fixed Bug: Support for recursive function calls
- *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=1434538#xx1434538xx
+ *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=1434538~xx1434538xx
  *                       Fixed Bug: Missing FreeLibrary call in "GetModuleListTH32"
- *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=1326923#xx1326923xx
+ *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=1326923~xx1326923xx
  *                       Fixed Bug: SymDia is number 7, not 9!
  *  2008-09-11   v7      For some (undocumented) reason, dbhelp.h is needing a packing of 8!
  *                       Thanks to Teajay which reported the bug...
- *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=2718933#xx2718933xx
+ *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=2718933~xx2718933xx
  *  2008-11-27   v8      Debugging Tools for Windows are now stored in a different directory
  *                       Thanks to Luiz Salamon which reported this "bug"...
- *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=2822736#xx2822736xx
+ *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=2822736~xx2822736xx
  *  2009-04-10   v9      License slihtly corrected (<ORGANIZATION> replaced)
  *  2009-11-01   v10     Moved to http://stackwalker.codeplex.com/
  *  2009-11-02   v11     Now try to use IMAGEHLP_MODULE64_V3 if available
  *  2010-04-15   v12     Added support for VS2010 RTM
  *  2010-05-25   v13     Now using secure MyStrcCpy. Thanks to luke.simon:
- *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=3477467#xx3477467xx
+ *                       http://www.codeproject.com/KB/applications/leakfinder.aspx?msg=3477467~xx3477467xx
  *  2013-01-07   v14     Runtime Check Error VS2010 Debug Builds fixed:
  *                       http://stackwalker.codeplex.com/workitem/10511
  *
@@ -80,23 +80,23 @@
  *
  **********************************************************************/
 
-#include <PreCompiled.h>
+~include <PreCompiled.h>
 
-#include <Windows.h>
-#include <tchar.h>
-#include <stdio.h>
+~include <Windows.h>
+~include <tchar.h>
+~include <stdio.h>
 
-#pragma comment(lib, "version.lib")  // for "VerQueryValue"
-#pragma warning(disable:4826)
+~pragma comment(lib, "version.lib")  // for "VerQueryValue"
+~pragma warning(disable:4826)
 
-#include "StackWalker.h"
+~include "StackWalker.h"
 
 
 // If VC7 and later, then use the shipped 'dbghelp.h'-file
-#pragma pack(push,8)
-#if _MSC_VER >= 1300
-#include <DbgHelp.h>
-#else
+~pragma pack(push,8)
+~if _MSC_VER >= 1300
+~include <DbgHelp.h>
+~else
 // inline the important dbghelp.h-declarations...
 typedef enum {
     SymNone = 0,
@@ -200,45 +200,45 @@ DWORD64
     HANDLE    hThread,
     LPADDRESS64 lpaddr
     );
-#define SYMOPT_CASE_INSENSITIVE         0x00000001
-#define SYMOPT_UNDNAME                  0x00000002
-#define SYMOPT_DEFERRED_LOADS           0x00000004
-#define SYMOPT_NO_CPP                   0x00000008
-#define SYMOPT_LOAD_LINES               0x00000010
-#define SYMOPT_OMAP_FIND_NEAREST        0x00000020
-#define SYMOPT_LOAD_ANYTHING            0x00000040
-#define SYMOPT_IGNORE_CVREC             0x00000080
-#define SYMOPT_NO_UNQUALIFIED_LOADS     0x00000100
-#define SYMOPT_FAIL_CRITICAL_ERRORS     0x00000200
-#define SYMOPT_EXACT_SYMBOLS            0x00000400
-#define SYMOPT_ALLOW_ABSOLUTE_SYMBOLS   0x00000800
-#define SYMOPT_IGNORE_NT_SYMPATH        0x00001000
-#define SYMOPT_INCLUDE_32BIT_MODULES    0x00002000
-#define SYMOPT_PUBLICS_ONLY             0x00004000
-#define SYMOPT_NO_PUBLICS               0x00008000
-#define SYMOPT_AUTO_PUBLICS             0x00010000
-#define SYMOPT_NO_IMAGE_SEARCH          0x00020000
-#define SYMOPT_SECURE                   0x00040000
-#define SYMOPT_DEBUG                    0x80000000
-#define UNDNAME_COMPLETE                 (0x0000)  // Enable full undecoration
-#define UNDNAME_NAME_ONLY                (0x1000)  // Crack only the name for primary declaration;
-#endif  // _MSC_VER < 1300
-#pragma pack(pop)
+~define SYMOPT_CASE_INSENSITIVE         0x00000001
+~define SYMOPT_UNDNAME                  0x00000002
+~define SYMOPT_DEFERRED_LOADS           0x00000004
+~define SYMOPT_NO_CPP                   0x00000008
+~define SYMOPT_LOAD_LINES               0x00000010
+~define SYMOPT_OMAP_FIND_NEAREST        0x00000020
+~define SYMOPT_LOAD_ANYTHING            0x00000040
+~define SYMOPT_IGNORE_CVREC             0x00000080
+~define SYMOPT_NO_UNQUALIFIED_LOADS     0x00000100
+~define SYMOPT_FAIL_CRITICAL_ERRORS     0x00000200
+~define SYMOPT_EXACT_SYMBOLS            0x00000400
+~define SYMOPT_ALLOW_ABSOLUTE_SYMBOLS   0x00000800
+~define SYMOPT_IGNORE_NT_SYMPATH        0x00001000
+~define SYMOPT_INCLUDE_32BIT_MODULES    0x00002000
+~define SYMOPT_PUBLICS_ONLY             0x00004000
+~define SYMOPT_NO_PUBLICS               0x00008000
+~define SYMOPT_AUTO_PUBLICS             0x00010000
+~define SYMOPT_NO_IMAGE_SEARCH          0x00020000
+~define SYMOPT_SECURE                   0x00040000
+~define SYMOPT_DEBUG                    0x80000000
+~define UNDNAME_COMPLETE                 (0x0000)  // Enable full undecoration
+~define UNDNAME_NAME_ONLY                (0x1000)  // Crack only the name for primary declaration;
+~endif  // _MSC_VER < 1300
+~pragma pack(pop)
 
 // Some missing defines (for VC5/6):
-#ifndef INVALID_FILE_ATTRIBUTES
-#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
-#endif  
+~ifndef INVALID_FILE_ATTRIBUTES
+~define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+~endif  
 
 
 // secure-CRT_functions are only available starting with VC8
-#if _MSC_VER < 1400
-#define strcpy_s(dst, len, src) strcpy(dst, src)
-#define strncpy_s(dst, len, src, maxLen) strncpy(dst, len, src)
-#define strcat_s(dst, len, src) strcat(dst, src)
-#define _snprintf_s _snprintf
-#define _tcscat_s _tcscat
-#endif
+~if _MSC_VER < 1400
+~define strcpy_s(dst, len, src) strcpy(dst, src)
+~define strncpy_s(dst, len, src, maxLen) strncpy(dst, len, src)
+~define strcat_s(dst, len, src) strcat(dst, src)
+~define _snprintf_s _snprintf
+~define _tcscat_s _tcscat
+~endif
 
 static void MyStrCpy(char* szDest, size_t nMaxDestSize, const char* szSrc)
 {
@@ -255,7 +255,7 @@ static void MyStrCpy(char* szDest, size_t nMaxDestSize, const char* szSrc)
 }  // MyStrCpy
 
 // Normally it should be enough to use 'CONTEXT_FULL' (better would be 'CONTEXT_ALL')
-#define USED_CONTEXT_FLAGS CONTEXT_FULL
+~define USED_CONTEXT_FLAGS CONTEXT_FULL
 
 
 class StackWalkerInternal
@@ -308,7 +308,7 @@ public:
       {
         // ".local" file does not exist, so we can try to load the dbghelp.dll from the "Debugging Tools for Windows"
         // Ok, first try the new path according to the architecture:
-#ifdef _M_IX86
+~ifdef _M_IX86
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {
           _tcscat_s(szTemp, _T("\\Debugging Tools for Windows (x86)\\dbghelp.dll"));
@@ -318,7 +318,7 @@ public:
             m_hDbhHelp = LoadLibrary(szTemp);
           }
         }
-#elif _M_X64
+~elif _M_X64
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {
           _tcscat_s(szTemp, _T("\\Debugging Tools for Windows (x64)\\dbghelp.dll"));
@@ -328,7 +328,7 @@ public:
             m_hDbhHelp = LoadLibrary(szTemp);
           }
         }
-#elif _M_IA64
+~elif _M_IA64
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {
           _tcscat_s(szTemp, _T("\\Debugging Tools for Windows (ia64)\\dbghelp.dll"));
@@ -338,7 +338,7 @@ public:
             m_hDbhHelp = LoadLibrary(szTemp);
           }
         }
-#endif
+~endif
         // If still not found, try the old directories...
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {
@@ -349,7 +349,7 @@ public:
             m_hDbhHelp = LoadLibrary(szTemp);
           }
         }
-#if defined _M_X64 || defined _M_IA64
+~if defined _M_X64 || defined _M_IA64
         // Still not found? Then try to load the (old) 64-Bit version:
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {
@@ -359,7 +359,7 @@ public:
             m_hDbhHelp = LoadLibrary(szTemp);
           }
         }
-#endif
+~endif
       }
     }
     if (m_hDbhHelp == NULL)  // if not already loaded, try to load a default-one
@@ -425,7 +425,7 @@ public:
   HANDLE m_hProcess;
   LPSTR m_szSymPath;
 
-#pragma pack(push,8)
+~pragma pack(push,8)
 typedef struct IMAGEHLP_MODULE64_V3 {
     DWORD    SizeOfStruct;           // set to sizeof(IMAGEHLP_MODULE64)
     DWORD64  BaseOfImage;            // base load address of module
@@ -466,7 +466,7 @@ typedef struct IMAGEHLP_MODULE64_V2 {
     CHAR     ImageName[256];         // image name
     CHAR     LoadedImageName[256];   // symbol file name
 } IMAGEHLP_MODULE64_V2;
-#pragma pack(pop)
+~pragma pack(pop)
 
 
   // SymCleanup()
@@ -536,9 +536,9 @@ typedef struct IMAGEHLP_MODULE64_V2 {
 
 private:
   // **************************************** ToolHelp32 ************************
-  #define MAX_MODULE_NAME32 255
-  #define TH32CS_SNAPMODULE   0x00000008
-  #pragma pack( push, 8 )
+  ~define MAX_MODULE_NAME32 255
+  ~define TH32CS_SNAPMODULE   0x00000008
+  ~pragma pack( push, 8 )
   typedef struct tagMODULEENTRY32
   {
       DWORD   dwSize;
@@ -554,7 +554,7 @@ private:
   } MODULEENTRY32;
   typedef MODULEENTRY32 *  PMODULEENTRY32;
   typedef MODULEENTRY32 *  LPMODULEENTRY32;
-  #pragma pack( pop )
+  ~pragma pack( pop )
 
   BOOL GetModuleListTH32(HANDLE hProcess, DWORD pid)
   {
@@ -856,7 +856,7 @@ public:
   }
 };
 
-// #############################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 StackWalker::StackWalker(DWORD dwProcessId, HANDLE hProcess)
 {
   this->m_options = OptionsAll;
@@ -1065,7 +1065,7 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   STACKFRAME64 s; // in/out stackframe
   memset(&s, 0, sizeof(s));
   DWORD imageType;
-#ifdef _M_IX86
+~ifdef _M_IX86
   // normally, call ImageNtHeader() and use machine info from PE header
   imageType = IMAGE_FILE_MACHINE_I386;
   s.AddrPC.Offset = c.Eip;
@@ -1074,7 +1074,7 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   s.AddrFrame.Mode = AddrModeFlat;
   s.AddrStack.Offset = c.Esp;
   s.AddrStack.Mode = AddrModeFlat;
-#elif _M_X64
+~elif _M_X64
   imageType = IMAGE_FILE_MACHINE_AMD64;
   s.AddrPC.Offset = c.Rip;
   s.AddrPC.Mode = AddrModeFlat;
@@ -1082,7 +1082,7 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   s.AddrFrame.Mode = AddrModeFlat;
   s.AddrStack.Offset = c.Rsp;
   s.AddrStack.Mode = AddrModeFlat;
-#elif _M_IA64
+~elif _M_IA64
   imageType = IMAGE_FILE_MACHINE_IA64;
   s.AddrPC.Offset = c.StIIP;
   s.AddrPC.Mode = AddrModeFlat;
@@ -1092,9 +1092,9 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   s.AddrBStore.Mode = AddrModeFlat;
   s.AddrStack.Offset = c.IntSp;
   s.AddrStack.Mode = AddrModeFlat;
-#else
-#error "Platform not supported!"
-#endif
+~else
+~error "Platform not supported!"
+~endif
 
   pSym = (IMAGEHLP_SYMBOL64 *) malloc(sizeof(IMAGEHLP_SYMBOL64) + STACKWALK_MAX_NAMELEN);
   if (!pSym) goto cleanup;  // not enough memory...
@@ -1199,11 +1199,11 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
         case SymSym:
           csEntry.symTypeString = "SYM";
           break;
-#if API_VERSION_NUMBER >= 9
+~if API_VERSION_NUMBER >= 9
         case SymDia:
           csEntry.symTypeString = "DIA";
           break;
-#endif
+~endif
         case 8: //SymVirtual:
           csEntry.symTypeString = "Virtual";
           break;
@@ -1326,7 +1326,7 @@ void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUser
   _snprintf_s(buffer, STACKWALK_MAX_NAMELEN, "SymInit: Symbol-SearchPath: '%s', symOptions: %d, UserName: '%s'\n", szSearchPath, symOptions, szUserName);
   OnOutput(buffer);
   // Also display the OS-version
-#if _MSC_VER <= 1200
+~if _MSC_VER <= 1200
   OSVERSIONINFOA ver;
   ZeroMemory(&ver, sizeof(OSVERSIONINFOA));
   ver.dwOSVersionInfoSize = sizeof(ver);
@@ -1337,7 +1337,7 @@ void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUser
       ver.szCSDVersion);
     OnOutput(buffer);
   }
-#else
+~else
   OSVERSIONINFOEXA ver;
   ZeroMemory(&ver, sizeof(OSVERSIONINFOEXA));
   ver.dwOSVersionInfoSize = sizeof(ver);
@@ -1348,7 +1348,7 @@ void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUser
       ver.szCSDVersion, ver.wSuiteMask, ver.wProductType);
     OnOutput(buffer);
   }
-#endif
+~endif
 }
 
 void StackWalker::OnOutput(LPCSTR buffer)

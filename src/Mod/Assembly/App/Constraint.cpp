@@ -22,35 +22,35 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <math.h>
+~include <math.h>
 
-#include <Standard_Failure.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-#include <gp_Pln.hxx>
-#include <GeomAbs_CurveType.hxx>
-#include <BRep_Tool.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <gp_Pnt.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <TopoDS_Edge.hxx>
-#include <gp_Cylinder.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <TopoDS_Face.hxx>
+~include <Standard_Failure.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <GeomAbs_SurfaceType.hxx>
+~include <gp_Pln.hxx>
+~include <GeomAbs_CurveType.hxx>
+~include <BRep_Tool.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <gp_Pnt.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <TopoDS_Edge.hxx>
+~include <gp_Cylinder.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <TopoDS_Face.hxx>
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
+~include <Base/Placement.h>
+~include <Base/Console.h>
 
-#include "Constraint.h"
-#include "ConstraintPy.h"
-#include "Item.h"
-#include "Product.h"
+~include "Constraint.h"
+~include "ConstraintPy.h"
+~include "Item.h"
+~include "Product.h"
 
 
 using namespace Assembly;

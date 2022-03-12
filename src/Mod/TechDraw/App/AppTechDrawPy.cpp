@@ -22,66 +22,66 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <Python.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Compound.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <Python.h>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Wire.hxx>
+~include <TopoDS_Compound.hxx>
+~include <gp_Trsf.hxx>
+~include <gp_Vec.hxx>
+~include <BRep_Builder.hxx>
+~include <BRepBuilderAPI_Transform.hxx>
+~endif
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+~include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost/regex.hpp>
+~include <boost/regex.hpp>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Exception.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Vector3D.h>
+~include <Base/VectorPy.h>
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectPy.h>
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
-#include <Mod/Part/App/OCCError.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
+~include <Mod/Part/App/TopoShapeFacePy.h>
+~include <Mod/Part/App/TopoShapeWirePy.h>
+~include <Mod/Part/App/TopoShapeCompoundPy.h>
+~include <Mod/Part/App/OCCError.h>
 
-#include <Mod/Import/App/ImpExpDxf.h>
+~include <Mod/Import/App/ImpExpDxf.h>
 
-#include "DrawProjectSplit.h"
-#include "DrawViewPart.h"
-#include "DrawViewPartPy.h"
-#include "DrawViewAnnotation.h"
-#include "DrawViewDimension.h"
-#include "DrawPage.h"
-#include "DrawPagePy.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "EdgeWalker.h"
-#include "DrawUtil.h"
-#include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
-#include "DrawDimHelper.h"
-#include "HatchLine.h"
-#include "DrawGeomHatch.h"
+~include "DrawProjectSplit.h"
+~include "DrawViewPart.h"
+~include "DrawViewPartPy.h"
+~include "DrawViewAnnotation.h"
+~include "DrawViewDimension.h"
+~include "DrawPage.h"
+~include "DrawPagePy.h"
+~include "Geometry.h"
+~include "GeometryObject.h"
+~include "EdgeWalker.h"
+~include "DrawUtil.h"
+~include "DrawProjGroup.h"
+~include "DrawProjGroupItem.h"
+~include "DrawDimHelper.h"
+~include "HatchLine.h"
+~include "DrawGeomHatch.h"
 
-#include "TechDrawExport.h"
-#include "ProjectionAlgos.h"
+~include "TechDrawExport.h"
+~include "ProjectionAlgos.h"
 
 
 namespace TechDraw {
@@ -470,7 +470,7 @@ private:
             throw Py::TypeError("expected (DrawViewPart)");
         }
         Py::String svgReturn;
-        std::string grpHead1 = "<g fill=\"none\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-width=\"";
+        std::string grpHead1 = "<g fill=\"none\" stroke=\"~000000\" stroke-opacity=\"1\" stroke-width=\"";
         std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
         std::string grpTail  = "</g>\n";
         try {

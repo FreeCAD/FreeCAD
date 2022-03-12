@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-# include <QTreeWidget>
-# include <Precision.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QTextStream>
+~ include <QTreeWidget>
+~ include <Precision.hxx>
+~ include <ShapeAnalysis_FreeBounds.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~endif
 
-#include "ui_TaskLoft.h"
-#include "TaskLoft.h"
+~include "ui_TaskLoft.h"
+~include "TaskLoft.h"
 
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;
@@ -281,4 +281,4 @@ bool TaskLoft::reject()
     return widget->reject();
 }
 
-#include "moc_TaskLoft.cpp"
+~include "moc_TaskLoft.cpp"

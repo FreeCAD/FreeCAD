@@ -21,40 +21,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-  #include <sstream>
-  #include <QDomDocument>
-  #include <QFile>
-#endif
+~ifndef _PreComp_
+  ~include <sstream>
+  ~include <QDomDocument>
+  ~include <QFile>
+~endif
 
-#include <QXmlQuery>
-#include <QXmlResultItems>
-#include "QDomNodeModel.h"
+~include <QXmlQuery>
+~include <QXmlResultItems>
+~include "QDomNodeModel.h"
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
+~include <Base/Exception.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/FileInfo.h>
+~include <Base/PyObjectBase.h>
+~include <Base/Quantity.h>
+~include <Base/Tools.h>
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include <boost/regex.hpp>
-#include <boost/graph/graph_concepts.hpp>
-#include <iostream>
-#include <iterator>
+~include <boost/regex.hpp>
+~include <boost/graph/graph_concepts.hpp>
+~include <iostream>
+~include <iterator>
 
-#include <QDebug>
+~include <QDebug>
 
-#include "DrawUtil.h"
-#include "DrawPage.h"
-#include "DrawSVGTemplate.h"
+~include "DrawUtil.h"
+~include "DrawPage.h"
+~include "DrawSVGTemplate.h"
 
-#include <Mod/TechDraw/App/DrawSVGTemplatePy.h>
+~include <Mod/TechDraw/App/DrawSVGTemplatePy.h>
 
 using namespace TechDraw;
 using namespace std;
@@ -251,7 +251,7 @@ QString DrawSVGTemplate::processTemplate(QString fileSpec)
 
 	Orientation.setValue(isLandscape ? 1 : 0);
 
-	//all Qt holds on files should be released on exit #4085
+	//all Qt holds on files should be released on exit ~4085
 	return templateDocument.toString();
 }
 

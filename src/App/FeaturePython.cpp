@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <App/DocumentObjectPy.h>
-#include <Base/Interpreter.h>
-#include <Base/MatrixPy.h>
-#include <Base/Tools.h>
+~include <App/DocumentObjectPy.h>
+~include <Base/Interpreter.h>
+~include <Base/MatrixPy.h>
+~include <Base/Tools.h>
 
-#include "FeaturePython.h"
-#include "FeaturePythonPyImp.h"
+~include "FeaturePython.h"
+~include "FeaturePythonPyImp.h"
 
 
 using namespace App;
@@ -45,8 +45,8 @@ FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
 FeaturePythonImp::~FeaturePythonImp()
 {
     Base::PyGILStateLocker lock;
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) py_~~_name = Py::None();
 
     FC_PY_FEATURE_PYTHON
 }
@@ -55,13 +55,13 @@ void FeaturePythonImp::init(PyObject *pyobj) {
     Base::PyGILStateLocker lock;
     has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
 
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
+~undef FC_PY_ELEMENT
+~define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
 
     FC_PY_FEATURE_PYTHON
 }
 
-#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(false))
+~define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(false))
 
 /*!
  Calls the execute() method of the Python feature class. If the Python feature class doesn't have an execute()

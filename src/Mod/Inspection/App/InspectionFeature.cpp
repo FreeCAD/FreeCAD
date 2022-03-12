@@ -21,42 +21,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include <numeric>
-#include <gp_Pnt.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepClass3d_SolidClassifier.hxx>
-#include <BRepGProp_Face.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
+~include "PreCompiled.h"
+~include <numeric>
+~include <gp_Pnt.hxx>
+~include <BRepExtrema_DistShapeShape.hxx>
+~include <BRepBuilderAPI_MakeVertex.hxx>
+~include <BRepClass3d_SolidClassifier.hxx>
+~include <BRepGProp_Face.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Vertex.hxx>
 
-#include <QEventLoop>
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QtConcurrentMap>
+~include <QEventLoop>
+~include <QFuture>
+~include <QFutureWatcher>
+~include <QtConcurrentMap>
 
-#include <boost_bind_bind.hpp>
+~include <boost_bind_bind.hpp>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FutureWatcherProgress.h>
-#include <Base/Parameter.h>
-#include <Base/Sequencer.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Points/App/PointsFeature.h>
-#include <Mod/Points/App/PointsGrid.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FutureWatcherProgress.h>
+~include <Base/Parameter.h>
+~include <Base/Sequencer.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <App/Application.h>
+~include <Mod/Mesh/App/Mesh.h>
+~include <Mod/Mesh/App/MeshFeature.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/Grid.h>
+~include <Mod/Mesh/App/Core/Iterator.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Points/App/PointsFeature.h>
+~include <Mod/Points/App/PointsGrid.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include "InspectionFeature.h"
+~include "InspectionFeature.h"
 
 
 using namespace Inspection;
@@ -368,11 +368,11 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
         return FLT_MAX; // must be inside bbox
 
     std::set<unsigned long> indices;
-#if 0 // a point in a neighbour grid can be nearer
+~if 0 // a point in a neighbour grid can be nearer
     std::vector<unsigned long> elements;
     _pGrid->GetElements(point, elements);
     indices.insert(elements.begin(), elements.end());
-#else
+~else
     unsigned long ulX, ulY, ulZ;
     _pGrid->Position(point, ulX, ulY, ulZ);
     unsigned long ulLevel = 0;
@@ -380,7 +380,7 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel++, indices);
     if (indices.size() == 0 || ulLevel==1)
         _pGrid->GetHull(ulX, ulY, ulZ, ulLevel, indices);
-#endif
+~endif
 
     float fMinDist=FLT_MAX;
     bool positive = true;
@@ -786,8 +786,8 @@ App::DocumentObjectExecReturn* Feature::execute(void)
             inspectNominal.push_back(nominal);
     }
 
-#if 0
-#if 1 // test with some huge data sets
+~if 0
+~if 1 // test with some huge data sets
     std::vector<unsigned long> index(actual->countPoints());
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
@@ -807,7 +807,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 
     std::vector<float> vals;
     vals.insert(vals.end(), future.begin(), future.end());
-#else
+~else
     DistanceInspection insp(this->SearchRadius.getValue(), actual, inspectNominal);
     unsigned long count = actual->countPoints();
     std::stringstream str;
@@ -820,7 +820,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         vals[index] = fMinDist;
         seq.next();
     }
-#endif
+~endif
 
     Distances.setValues(vals);
 
@@ -840,7 +840,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 
     Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
-#else
+~else
     unsigned long count = actual->countPoints();
     std::vector<float> vals(count);
     std::function<DistanceInspectionRMS(int)> fMap = [&](unsigned int index)
@@ -904,7 +904,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), res.getRMS());
     Distances.setValues(vals);
-#endif
+~endif
 
     delete actual;
     for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)

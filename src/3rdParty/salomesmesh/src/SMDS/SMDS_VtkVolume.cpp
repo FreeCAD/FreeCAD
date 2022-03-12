@@ -17,14 +17,14 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "SMDS_VtkVolume.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_VtkCellIterator.hxx"
+~include "SMDS_VtkVolume.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_VtkCellIterator.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <vector>
+~include <vector>
 
 SMDS_VtkVolume::SMDS_VtkVolume()
 {
@@ -85,7 +85,7 @@ void SMDS_VtkVolume::init(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh* mesh
   //MESSAGE("SMDS_VtkVolume::init myVtkID " << myVtkID);
 }
 
-//#ifdef VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
 void SMDS_VtkVolume::initPoly(const std::vector<vtkIdType>& nodeIds,
                               const std::vector<int>&       nbNodesPerFace,
                               SMDS_Mesh*                    mesh)
@@ -128,12 +128,12 @@ void SMDS_VtkVolume::initPoly(const std::vector<vtkIdType>& nodeIds,
   myVtkID = grid->InsertNextLinkedCell(VTK_POLYHEDRON, nbFaces, &ptIds[0]);
   mesh->setMyModified();
 }
-//#endif
+//~endif
 
 bool SMDS_VtkVolume::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   vtkNew<vtkIdList> cellPoints;
   grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
   if (nbNodes != cellPoints->GetNumberOfIds())
@@ -145,7 +145,7 @@ bool SMDS_VtkVolume::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes
     {
       cellPoints->SetId(i, nodes[i]->getVtkId());
     }
-#else
+~else
   vtkIdType npts = 0;
   vtkIdType* pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
@@ -158,7 +158,7 @@ bool SMDS_VtkVolume::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes
     {
       pts[i] = nodes[i]->getVtkId();
     }
-#endif
+~endif
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
   return true;
 }
@@ -624,11 +624,11 @@ SMDSAbs_EntityType SMDS_VtkVolume::GetEntityType() const
     case VTK_HEXAGONAL_PRISM:
       aType = SMDSEntity_Hexagonal_Prism;
       break;
-//#ifdef VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
     case VTK_POLYHEDRON:
       aType = SMDSEntity_Polyhedra;
       break;
-//#endif
+//~endif
     default:
       aType = SMDSEntity_Polyhedra;
       break;
@@ -664,11 +664,11 @@ SMDSAbs_GeometryType SMDS_VtkVolume::GetGeomType() const
     case VTK_HEXAGONAL_PRISM:
       aType = SMDSGeom_HEXAGONAL_PRISM;
       break;
-//#ifdef VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
     case VTK_POLYHEDRON:
       aType = SMDSGeom_POLYHEDRA;
       break;
-//#endif
+//~endif
     default:
       aType = SMDSGeom_POLYHEDRA;
       break;

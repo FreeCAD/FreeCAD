@@ -20,52 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cassert>
-# include <gp_Pln.hxx>
-# include <gp_Lin.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Tool.hxx>
-# include <CSLib.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <Geom_Plane.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Point.hxx>
-# include <GeomAdaptor_Curve.hxx>
-# include <GeomLib.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <GeomPlate_BuildPlateSurface.hxx>
-# include <GeomPlate_CurveConstraint.hxx>
-# include <GeomPlate_MakeApprox.hxx>
-# include <GeomPlate_PlateG0Criterion.hxx>
-# include <GeomPlate_PointConstraint.hxx>
-# include <Poly_Connect.hxx>
-# include <Poly_Triangulation.hxx>
-# include <Precision.hxx>
-# include <Standard_Mutex.hxx>
-# include <Standard_TypeMismatch.hxx>
-# include <Standard_Version.hxx>
-# include <TColStd_ListOfTransient.hxx>
-# include <TColStd_ListIteratorOfListOfTransient.hxx>
-# include <TColgp_SequenceOfXY.hxx>
-# include <TColgp_SequenceOfXYZ.hxx>
-# include <TopoDS.hxx>
-# if OCC_VERSION_HEX < 0x070600
-# include <Adaptor3d_HCurveOnSurface.hxx>
-# include <GeomAdaptor_HCurve.hxx>
-# endif
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cassert>
+~ include <gp_Pln.hxx>
+~ include <gp_Lin.hxx>
+~ include <BRepAdaptor_Curve.hxx>
+~ include <BRepAdaptor_Surface.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepLProp_SLProps.hxx>
+~ include <BRepMesh_IncrementalMesh.hxx>
+~ include <BRep_Tool.hxx>
+~ include <CSLib.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~ include <Geom_Plane.hxx>
+~ include <GeomAPI_IntSS.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <Geom_Line.hxx>
+~ include <Geom_Point.hxx>
+~ include <GeomAdaptor_Curve.hxx>
+~ include <GeomLib.hxx>
+~ include <GeomLProp_SLProps.hxx>
+~ include <GeomPlate_BuildPlateSurface.hxx>
+~ include <GeomPlate_CurveConstraint.hxx>
+~ include <GeomPlate_MakeApprox.hxx>
+~ include <GeomPlate_PlateG0Criterion.hxx>
+~ include <GeomPlate_PointConstraint.hxx>
+~ include <Poly_Connect.hxx>
+~ include <Poly_Triangulation.hxx>
+~ include <Precision.hxx>
+~ include <Standard_Mutex.hxx>
+~ include <Standard_TypeMismatch.hxx>
+~ include <Standard_Version.hxx>
+~ include <TColStd_ListOfTransient.hxx>
+~ include <TColStd_ListIteratorOfListOfTransient.hxx>
+~ include <TColgp_SequenceOfXY.hxx>
+~ include <TColgp_SequenceOfXYZ.hxx>
+~ include <TopoDS.hxx>
+~ if OCC_VERSION_HEX < 0x070600
+~ include <Adaptor3d_HCurveOnSurface.hxx>
+~ include <GeomAdaptor_HCurve.hxx>
+~ endif
+~endif
 
-#include <Base/Vector3D.h>
-#include "Tools.h"
+~include <Base/Vector3D.h>
+~include "Tools.h"
 
 void Part::closestPointsOnLines(const gp_Lin& lin1, const gp_Lin& lin2, gp_Pnt& p1, gp_Pnt& p2)
 {
@@ -156,7 +156,7 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
                 assert (0);
                 Standard_ConstructionError::Raise ("Tools::makeSurface()");
             }
-#if OCC_VERSION_HEX >= 0x070600
+~if OCC_VERSION_HEX >= 0x070600
             else if (aCur->IsKind (STANDARD_TYPE (Adaptor3d_CurveOnSurface))) {
                 //G1 constraint
                 Handle(Adaptor3d_CurveOnSurface) aHCOS (Handle(Adaptor3d_CurveOnSurface)::DownCast (aCur));
@@ -169,7 +169,7 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
                 Handle (GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint (aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
                 aPlateBuilder.Add (aConst);
             }
-#else
+~else
             else if (aCur->IsKind (STANDARD_TYPE (Adaptor3d_HCurveOnSurface))) {
                 //G1 constraint
                 Handle(Adaptor3d_HCurveOnSurface) aHCOS (Handle(Adaptor3d_HCurveOnSurface)::DownCast (aCur));
@@ -182,7 +182,7 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
                 Handle (GeomPlate_CurveConstraint) aConst = new GeomPlate_CurveConstraint (aHC, 0 /*GeomAbs_G0*/, aNbPnts, aTol3d);
                 aPlateBuilder.Add (aConst);
             }
-#endif
+~endif
             else if (aCur->IsKind (STANDARD_TYPE (Geom_Point))) {
                 //Point constraint
                 Handle(Geom_Point) aGP (Handle(Geom_Point)::DownCast (aCur));
@@ -244,10 +244,10 @@ bool Part::Tools::getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>&
 
     Standard_Integer nbNodes = hTria->NbNodes();
     Standard_Integer nbTriangles = hTria->NbTriangles();
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
     const TColgp_Array1OfPnt& nodes = hTria->Nodes();
     const Poly_Array1OfTriangle& triangles = hTria->Triangles();
-#endif
+~endif
 
     points.reserve(nbNodes);
     facets.reserve(nbTriangles);
@@ -255,11 +255,11 @@ bool Part::Tools::getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>&
     // cycling through the poly mesh
     //
     for (int i = 1; i <= nbNodes; i++) {
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
         gp_Pnt p = nodes(i);
-#else
+~else
         gp_Pnt p = hTria->Node(i);
-#endif
+~endif
 
         // transform the vertices to the location of the face
         if (!identity) {
@@ -272,11 +272,11 @@ bool Part::Tools::getTriangulation(const TopoDS_Face& face, std::vector<gp_Pnt>&
     for (int i = 1; i <= nbTriangles; i++) {
         // Get the triangle
         Standard_Integer n1,n2,n3;
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
         triangles(i).Get(n1, n2, n3);
-#else
+~else
         hTria->Triangle(i).Get(n1, n2, n3);
-#endif
+~endif
         --n1; --n2; --n3;
 
         // change orientation of the triangles
@@ -314,17 +314,17 @@ bool Part::Tools::getPolygonOnTriangulation(const TopoDS_Edge& edge, const TopoD
     Standard_Integer nbNodes = hPoly->NbNodes();
     points.reserve(nbNodes);
     const TColStd_Array1OfInteger& indices = hPoly->Nodes();
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
     const TColgp_Array1OfPnt& Nodes = hTria->Nodes();
-#endif
+~endif
 
     // go through the index array
     for (Standard_Integer i = indices.Lower(); i <= indices.Upper(); i++) {
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
         gp_Pnt p = Nodes(indices(i));
-#else
+~else
         gp_Pnt p = hTria->Node(indices(i));
-#endif
+~endif
         if (!identity) {
             p.Transform(transf);
         }
@@ -428,7 +428,7 @@ void Part::Tools::getPointNormals(const std::vector<gp_Pnt>& points, const TopoD
 
 void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triangulation) aPolyTri, TColgp_Array1OfDir& theNormals)
 {
-#if OCC_VERSION_HEX < 0x070600
+~if OCC_VERSION_HEX < 0x070600
     const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
 
     if(aPolyTri->HasNormals())
@@ -509,7 +509,7 @@ void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triang
             }
         }
     }
-#else
+~else
     Standard_Integer numNodes = aPolyTri->NbNodes();
 
     if(aPolyTri->HasNormals())
@@ -574,7 +574,7 @@ void Part::Tools::getPointNormals(const TopoDS_Face& theFace, Handle(Poly_Triang
             }
         }
     }
-#endif
+~endif
 }
 
 void Part::Tools::getPointNormals(const TopoDS_Face& face, Handle(Poly_Triangulation) aPoly, std::vector<gp_Vec>& normals)
@@ -621,9 +621,9 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
 
     Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
     BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
       , Precision::Confusion()
-#endif
+~endif
     );
 
     TopoDS_Shape shape = mkBuilder.Shape();
@@ -661,7 +661,7 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
 }
 
 // helper function to use in getNormal, here we pass the local properties
-// of the surface given by the #LProp_SLProps objects
+// of the surface given by the ~LProp_SLProps objects
 template <typename T>
 void getNormalBySLProp(T prop, double u, double v, Standard_Real lastU, Standard_Real lastV,
                      const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done)

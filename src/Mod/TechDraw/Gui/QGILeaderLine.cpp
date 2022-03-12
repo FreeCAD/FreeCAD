@@ -20,54 +20,54 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRep_Builder.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <Precision.hxx>
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPaintDevice>
-#include <QSvgGenerator>
-#include <QVector2D>
-#include <math.h>
-#endif
+~include <QGraphicsScene>
+~include <QGraphicsSceneMouseEvent>
+~include <QPainter>
+~include <QPainterPath>
+~include <QPaintDevice>
+~include <QSvgGenerator>
+~include <QVector2D>
+~include <math.h>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Command.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/UnitsApi.h>
+~include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/LineGroup.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
+~include <Mod/TechDraw/App/DrawLeaderLine.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/Geometry.h>
+~include <Mod/TechDraw/App/LineGroup.h>
+~include <Mod/TechDraw/App/ArrowPropEnum.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "PreferencesGui.h"
-#include "QGIArrow.h"
-#include "ViewProviderLeader.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
-#include "QGIPrimPath.h"
-#include "QGEPath.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "PreferencesGui.h"
+~include "QGIArrow.h"
+~include "ViewProviderLeader.h"
+~include "MDIViewPage.h"
+~include "DrawGuiUtil.h"
+~include "QGVPage.h"
+~include "QGIPrimPath.h"
+~include "QGEPath.h"
 
-#include "QGILeaderLine.h"
+~include "QGILeaderLine.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -635,4 +635,4 @@ void QGILeaderLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QGIView::paint (painter, &myOption, widget);
 }
 
-#include <Mod/TechDraw/Gui/moc_QGILeaderLine.cpp>
+~include <Mod/TechDraw/Gui/moc_QGILeaderLine.cpp>

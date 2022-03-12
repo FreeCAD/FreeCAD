@@ -22,17 +22,17 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Placement.h>
-#include <Base/Uuid.h>
-#include <Base/Console.h>
+~include <Base/Placement.h>
+~include <Base/Uuid.h>
+~include <Base/Console.h>
 
-#include "Item.h"
-#include "ItemPy.h"
-#include <Standard_Failure.hxx>
+~include "Item.h"
+~include "ItemPy.h"
+~include <Standard_Failure.hxx>
 
 using namespace Assembly;
 

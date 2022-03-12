@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "FeaturePathCompound.h"
-#include <CXX/Objects.hxx>
+~include "FeaturePathCompound.h"
+~include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of FeaturePathCompoundPy.xml)
-#include "FeaturePathCompoundPy.h"
-#include "FeaturePathCompoundPy.cpp"
+~include "FeaturePathCompoundPy.h"
+~include "FeaturePathCompoundPy.cpp"
 
 using namespace Path;
 

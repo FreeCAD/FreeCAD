@@ -20,32 +20,32 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#include "DriverSTL_W_SMDS_Mesh.h"
+~include "DriverSTL_W_SMDS_Mesh.h"
 
-#ifdef WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#endif
+~ifdef WIN32
+~ifndef NOMINMAX
+~define NOMINMAX
+~endif
+~endif
 
-#include <Basics_Utils.hxx>
+~include <Basics_Utils.hxx>
 
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_IteratorOnIterators.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_PolygonalFaceOfNodes.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESH_File.hxx"
-#include "SMESH_TypeDefs.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_IteratorOnIterators.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_PolygonalFaceOfNodes.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESH_File.hxx"
+~include "SMESH_TypeDefs.hxx"
 
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_Failure.hxx>
-#include <gp_Ax2.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
+~include <gp_Ax2.hxx>
 
-#include <limits>
+~include <limits>
 
 
 // definition des constantes 

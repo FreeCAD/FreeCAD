@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <gp_Dir.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <Geom_Circle.hxx>
-# include <Standard_Version.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <gp_Dir.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepBuilderAPI_MakeEdge.hxx>
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeSolid.hxx>
+~ include <BRepBuilderAPI_MakeWire.hxx>
+~ include <BRepBuilderAPI_Sewing.hxx>
+~ include <BRepBuilderAPI_Transform.hxx>
+~ include <BRepClass3d_SolidClassifier.hxx>
+~ include <BRepOffsetAPI_MakePipeShell.hxx>
+~ include <BRepPrimAPI_MakeRevol.hxx>
+~ include <Geom_Circle.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Face.hxx>
+~ include <TopoDS_Wire.hxx>
+~ include <TopExp.hxx>
+~endif
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Base/Placement.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Base/Placement.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
+~include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "FeatureHole.h"
-#include "json.hpp"
+~include "FeatureHole.h"
+~include "json.hpp"
 
 namespace PartDesign {
 
@@ -305,15 +305,15 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
      },
     /* UNC */
     {
-        { "#1",         1.854,  0.397,     1.50 },
-        { "#2",         2.184,  0.454,     1.85 },
-        { "#3",         2.515,  0.529,     2.10 },
-        { "#4",         2.845,  0.635,     2.35 },
-        { "#5",         3.175,  0.635,     2.65 },
-        { "#6",         3.505,  0.794,     2.85 },
-        { "#8",         4.166,  0.794,     3.50 },
-        { "#10",        4.826,  1.058,     3.90 },
-        { "#12",        5.486,  1.058,     4.50 },
+        { "~1",         1.854,  0.397,     1.50 },
+        { "~2",         2.184,  0.454,     1.85 },
+        { "~3",         2.515,  0.529,     2.10 },
+        { "~4",         2.845,  0.635,     2.35 },
+        { "~5",         3.175,  0.635,     2.65 },
+        { "~6",         3.505,  0.794,     2.85 },
+        { "~8",         4.166,  0.794,     3.50 },
+        { "~10",        4.826,  1.058,     3.90 },
+        { "~12",        5.486,  1.058,     4.50 },
         { "1/4",        6.350,  1.270,     5.10 },
         { "5/16",       7.938,  1.411,     6.60 },
         { "3/8",        9.525,  1.588,     8.00 },
@@ -341,16 +341,16 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
     },
     /* UNF */
     {
-        { "#0",         1.524,  0.317,    1.20 },
-        { "#1",         1.854,  0.353,    1.55 },
-        { "#2",         2.184,  0.397,    1.85 },
-        { "#3",         2.515,  0.454,    2.10 },
-        { "#4",         2.845,  0.529,    2.40 },
-        { "#5",         3.175,  0.577,    2.70 },
-        { "#6",         3.505,  0.635,    2.95 },
-        { "#8",         4.166,  0.706,    3.50 },
-        { "#10",        4.826,  0.794,    4.10 },
-        { "#12",        5.486,  0.907,    4.70 },
+        { "~0",         1.524,  0.317,    1.20 },
+        { "~1",         1.854,  0.353,    1.55 },
+        { "~2",         2.184,  0.397,    1.85 },
+        { "~3",         2.515,  0.454,    2.10 },
+        { "~4",         2.845,  0.529,    2.40 },
+        { "~5",         3.175,  0.577,    2.70 },
+        { "~6",         3.505,  0.635,    2.95 },
+        { "~8",         4.166,  0.706,    3.50 },
+        { "~10",        4.826,  0.794,    4.10 },
+        { "~12",        5.486,  0.907,    4.70 },
         { "1/4",        6.350,  0.907,    5.50 },
         { "5/16",       7.938,  1.058,    6.90 },
         { "3/8",        9.525,  1.058,    8.50 },
@@ -368,7 +368,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
     }    ,
     /* UNEF */
     {
-        { "#12",        5.486,  0.794,    4.80 },
+        { "~12",        5.486,  0.794,    4.80 },
         { "1/4",        6.350,  0.794,    5.70 },
         { "5/16",       7.938,  0.794,    7.25 },
         { "3/8",        9.525,  0.794,    8.85 },
@@ -447,16 +447,16 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
     // as result the norm defines a minimal clearance which is the diameter of that drill bit.
     // we use here this minimal clearance as the theoretical exact hole diameter as this is also done in the ISO norm.
     // {screw class, close, normal, loose}
-        { "#0",     1.7,  1.9,  2.4 },
-        { "#1",     2.1,  2.3,  2.6 },
-        { "#2",     2.4,  2.6,  2.9 },
-        { "#3",     2.7,  2.9,  3.3 },
-        { "#4",     3.0,  3.3,  3.7 },
-        { "#5",     3.6,  4.0,  4.4 },
-        { "#6",     3.9,  4.3,  4.7 },
-        { "#8",     4.6,  5.0,  5.4 },
-        { "#10",    5.2,  5.6,  6.0 },
-        // "#12" not defined
+        { "~0",     1.7,  1.9,  2.4 },
+        { "~1",     2.1,  2.3,  2.6 },
+        { "~2",     2.4,  2.6,  2.9 },
+        { "~3",     2.7,  2.9,  3.3 },
+        { "~4",     3.0,  3.3,  3.7 },
+        { "~5",     3.6,  4.0,  4.4 },
+        { "~6",     3.9,  4.3,  4.7 },
+        { "~8",     4.6,  5.0,  5.4 },
+        { "~10",    5.2,  5.6,  6.0 },
+        // "~12" not defined
         { "1/4",    6.8,  7.1,  7.5 },
         { "5/16",   8.3,  8.7,  9.1 },
         { "3/8",    9.9, 10.3, 10.7 },
@@ -597,8 +597,8 @@ const double Hole::ThreadRunout[ThreadRunout_size][2] = {
 
 /* UTS coarse */
 const char* Hole::HoleCutType_UNC_Enums[]  = { "None", "Counterbore", "Countersink", NULL};
-const char* Hole::ThreadSize_UNC_Enums[]   = { "#1", "#2", "#3", "#4", "#5", "#6",
-                                               "#8",  "#10", "#12",
+const char* Hole::ThreadSize_UNC_Enums[]   = { "~1", "~2", "~3", "~4", "~5", "~6",
+                                               "~8",  "~10", "~12",
                                                "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
                                                "5/8", "3/4", "7/8", "1", "1 1/8", "1 1/4",
                                                "1 3/8", "1 1/2", "1 3/4", "2", "2 1/4",
@@ -608,8 +608,8 @@ const char* Hole::ThreadClass_UNC_Enums[]  = { "1B", "2B", "3B", NULL };
 
 /* UTS fine */
 const char* Hole::HoleCutType_UNF_Enums[]  = { "None", "Counterbore", "Countersink", NULL};
-const char* Hole::ThreadSize_UNF_Enums[]   = { "#0", "#1", "#2", "#3", "#4", "#5", "#6",
-                                               "#8", "#10", "#12",
+const char* Hole::ThreadSize_UNF_Enums[]   = { "~0", "~1", "~2", "~3", "~4", "~5", "~6",
+                                               "~8", "~10", "~12",
                                                "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
                                                "5/8", "3/4", "7/8", "1", "1 1/8", "1 1/4",
                                                "1 3/8", "1 1/2", NULL };
@@ -617,7 +617,7 @@ const char* Hole::ThreadClass_UNF_Enums[]  = { "1B", "2B", "3B", NULL };
 
 /* UTS extrafine */
 const char* Hole::HoleCutType_UNEF_Enums[] = { "None", "Counterbore", "Countersink", NULL};
-const char* Hole::ThreadSize_UNEF_Enums[]  = { "#12", "1/4", "5/16", "3/8", "7/16", "1/2",
+const char* Hole::ThreadSize_UNEF_Enums[]  = { "~12", "1/4", "5/16", "3/8", "7/16", "1/2",
                                                "9/16", "5/8", "11/16", "3/4", "13/16", "7/8",
                                                "15/16", "1", "1 1/16", "1 1/8", "1 1/4",
                                                "1 5/16", "1 3/8", "1 7/16", "1 1/2", "1 9/16",
@@ -1136,7 +1136,7 @@ void Hole::updateDiameterParam()
                         break;
                     }
                 }
-                // if nothing was found (if "#12" or "9/16"), we must calculate
+                // if nothing was found (if "~12" or "9/16"), we must calculate
                 // // we use the factors defined for "3/8" in the UTSHoleDiameters list
                 if (!found) {
                     diameter = diameter * 1.08;
@@ -1536,12 +1536,12 @@ static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, 
 
     double t1 = -vy2 * f * (x2 - x1) + vx2 * f * (y2 - y1);
 
-#ifdef _DEBUG
+~ifdef _DEBUG
     double t2 = -vy1 * f * (x2 - x1) + vx1 * f * (y2 - y1);
 
     assert((x1 + t1 * vx1) - (x2 + t2 * vx2) < 1e-6);
     assert((y1 + t1 * vy1) - (y2 + t2 * vy2) < 1e-6);
-#endif
+~endif
 
     x = x1 + t1 * vx1;
     y = y1 + t1 * vy1;
@@ -2001,7 +2001,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // construct the cross section going counter-clockwise
     // for graphical explanation of geometrical construction of p1-p6 see:
-    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
+    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284~p466570
     gp_Pnt p1 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + P / 8 * zDir);
     gp_Pnt p2 = toPnt((D / 2 + clearance / 2) * xDir + 7 * P / 16 * zDir);
     gp_Pnt p3 = toPnt((D / 2 + clearance / 2) * xDir + 9 * P / 16 * zDir);

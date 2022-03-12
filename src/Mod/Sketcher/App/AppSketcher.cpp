@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
 
-#include "SketchObjectSF.h"
-#include "SketchObject.h"
-#include "SketchGeometryExtension.h"
-#include "ExternalGeometryExtension.h"
-#include "SolverGeometryExtension.h"
-#include "GeometryFacade.h"
-#include "ExternalGeometryFacade.h"
-#include "Constraint.h"
-#include "Sketch.h"
-#include "ConstraintPy.h"
-#include "SketchPy.h"
-#include "SketchGeometryExtensionPy.h"
-#include "ExternalGeometryExtensionPy.h"
-#include "GeometryFacadePy.h"
-#include "ExternalGeometryFacadePy.h"
-#include "PropertyConstraintList.h"
+~include "SketchObjectSF.h"
+~include "SketchObject.h"
+~include "SketchGeometryExtension.h"
+~include "ExternalGeometryExtension.h"
+~include "SolverGeometryExtension.h"
+~include "GeometryFacade.h"
+~include "ExternalGeometryFacade.h"
+~include "Constraint.h"
+~include "Sketch.h"
+~include "ConstraintPy.h"
+~include "SketchPy.h"
+~include "SketchGeometryExtensionPy.h"
+~include "ExternalGeometryExtensionPy.h"
+~include "GeometryFacadePy.h"
+~include "ExternalGeometryFacadePy.h"
+~include "PropertyConstraintList.h"
 
 
 

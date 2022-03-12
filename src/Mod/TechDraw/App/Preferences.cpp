@@ -20,24 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <string>
-#include <QString>
-//#include <QFont>
-//#include <QColor>
-#endif
+~ifndef _PreComp_
+~include <string>
+~include <QString>
+//~include <QFont>
+//~include <QColor>
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Base/Vector3D.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Base/Vector3D.h>
 
-#include "Preferences.h"
+~include "Preferences.h"
 
 //getters for parameters used in multiple places.
 //ensure this is in sync with preference page user interfaces
@@ -83,7 +83,7 @@ App::Color Preferences::normalColor()
            GetGroup("BaseApp")->GetGroup("Preferences")->
            GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x000000FF));     //#000000 black
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x000000FF));     //~000000 black
     return fcColor;
 }
 
@@ -92,7 +92,7 @@ App::Color Preferences::selectColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);  //#00FF00 lime
+    unsigned int defColor = hGrp->GetUnsigned("SelectionColor", 0x00FF00FF);  //~00FF00 lime
 
     hGrp = App::GetApplication().GetUserParameter().
            GetGroup("BaseApp")->GetGroup("Preferences")->
@@ -107,7 +107,7 @@ App::Color Preferences::preselectColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("View");
-    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);  //#FFFF00 yellow
+    unsigned int defColor = hGrp->GetUnsigned("HighlightColor", 0xFFFF00FF);  //~FFFF00 yellow
 
     hGrp = App::GetApplication().GetUserParameter().
            GetGroup("BaseApp")->GetGroup("Preferences")->
@@ -123,7 +123,7 @@ App::Color Preferences::vertexColor()
            GetGroup("BaseApp")->GetGroup("Preferences")->
            GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x000000FF));     //#000000 black
+    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x000000FF));     //~000000 black
     return fcColor;
 }
 
@@ -137,7 +137,7 @@ double Preferences::vertexScale()
 
 
 
-//lightgray #D3D3D3 
+//lightgray ~D3D3D3 
 
 bool Preferences::keepPagesUpToDate()
 {

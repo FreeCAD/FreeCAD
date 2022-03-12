@@ -21,37 +21,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#include <QRectF>
-#include <cmath>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~include <QRectF>
+~include <cmath>
+~endif
 
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Ax2.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Vec.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Ax2.hxx>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Part.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Part.h>
 
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Parameter.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Matrix.h>
+~include <Base/Parameter.h>
 
-#include "DrawUtil.h"
-#include "Preferences.h"
-#include "DrawPage.h"
-#include "DrawProjGroupItem.h"
-#include "DrawProjGroup.h"
+~include "DrawUtil.h"
+~include "Preferences.h"
+~include "DrawPage.h"
+~include "DrawProjGroupItem.h"
+~include "DrawProjGroup.h"
 
-#include <Mod/TechDraw/App/DrawProjGroupPy.h>  // generated from DrawProjGroupPy.xml
+~include <Mod/TechDraw/App/DrawProjGroupPy.h>  // generated from DrawProjGroupPy.xml
 
 using namespace TechDraw;
 

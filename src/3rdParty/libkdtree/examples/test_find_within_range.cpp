@@ -1,10 +1,10 @@
 // Thanks to James Remillard
 //
-#include <cstdio>
-#include <kdtree++/kdtree.hpp>
-#include <vector>
-#include <map>
-#include <set>
+~include <cstdio>
+~include <kdtree++/kdtree.hpp>
+~include <vector>
+~include <map>
+~include <set>
 
 using namespace std;
 

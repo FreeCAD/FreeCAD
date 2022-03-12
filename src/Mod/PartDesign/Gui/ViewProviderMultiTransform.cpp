@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "ViewProviderMultiTransform.h"
-#include "TaskMultiTransformParameters.h"
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <App/Document.h>
-#include <Gui/Command.h>
+~include "ViewProviderMultiTransform.h"
+~include "TaskMultiTransformParameters.h"
+~include <Mod/PartDesign/App/FeatureMultiTransform.h>
+~include <App/Document.h>
+~include <Gui/Command.h>
 
 using namespace PartDesignGui;
 

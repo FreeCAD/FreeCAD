@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QImage>
-#include <Inventor/SbImage.h>
-#include <Inventor/errors/SoDebugError.h>
+~include <QImage>
+~include <Inventor/SbImage.h>
+~include <Inventor/errors/SoDebugError.h>
 
-#include "QtCoinCompatibility.h"
+~include "QtCoinCompatibility.h"
 
 
 using namespace SIM::Coin3D::Quarter;

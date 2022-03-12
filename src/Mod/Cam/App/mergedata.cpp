@@ -1,10 +1,10 @@
 
-#include "PreCompiled.h"
-#include "mergedata.h"
-#include <QFileDialog>
+~include "PreCompiled.h"
+~include "mergedata.h"
+~include <QFileDialog>
 
-#include <QTextStream>
-#include <QMessageBox>
+~include <QTextStream>
+~include <QMessageBox>
 
 
 

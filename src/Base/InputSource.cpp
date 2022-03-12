@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "InputSource.h"
-#include "XMLTools.h"
+~include "InputSource.h"
+~include "XMLTools.h"
 
 
 XERCES_CPP_NAMESPACE_USE
@@ -52,7 +52,7 @@ StdInputStream::~StdInputStream()
 // ---------------------------------------------------------------------------
 //  StdInputStream: Implementation of the input stream interface
 // ---------------------------------------------------------------------------
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
 unsigned int StdInputStream::curPos() const
 {
   return stream.tellg();
@@ -86,7 +86,7 @@ unsigned int StdInputStream::readBytes( XMLByte* const  toFill, const unsigned i
 
   return len;
 }
-#else
+~else
 XMLFilePos StdInputStream::curPos() const
 {
   return static_cast<XMLFilePos>(stream.tellg());
@@ -120,7 +120,7 @@ XMLSize_t StdInputStream::readBytes(XMLByte* const  toFill, const XMLSize_t maxT
 
   return static_cast<XMLSize_t>(len);
 }
-#endif
+~endif
 
 
 // ---------------------------------------------------------------------------

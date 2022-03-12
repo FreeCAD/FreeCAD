@@ -21,105 +21,105 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-# include <unistd.h>
-# include <pwd.h>
-# include <sys/types.h>
-# elif defined(__MINGW32__)
-# define WINVER 0x502 // needed for SetDllDirectory
-# include <Windows.h>
-# endif
-# include <boost/program_options.hpp>
-# include <boost/date_time/posix_time/posix_time.hpp>
-#endif
+~ifndef _PreComp_
+~ if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+~ include <unistd.h>
+~ include <pwd.h>
+~ include <sys/types.h>
+~ elif defined(__MINGW32__)
+~ define WINVER 0x502 // needed for SetDllDirectory
+~ include <Windows.h>
+~ endif
+~ include <boost/program_options.hpp>
+~ include <boost/date_time/posix_time/posix_time.hpp>
+~endif
 
-#ifdef FC_OS_WIN32
-# include <Shlobj.h>
-# include <codecvt>
-#endif
+~ifdef FC_OS_WIN32
+~ include <Shlobj.h>
+~ include <codecvt>
+~endif
 
-#if defined(FC_OS_BSD)
-#include <sys/param.h>
-#include <sys/sysctl.h>
-#endif
+~if defined(FC_OS_BSD)
+~include <sys/param.h>
+~include <sys/sysctl.h>
+~endif
 
-#include <QDir>
-#include <QFileInfo>
-#include <QProcessEnvironment>
-#include <QStandardPaths>
-#include <LibraryVersions.h>
+~include <QDir>
+~include <QFileInfo>
+~include <QProcessEnvironment>
+~include <QStandardPaths>
+~include <LibraryVersions.h>
 
-#include <App/MaterialPy.h>
-#include <App/MetadataPy.h>
+~include <App/MaterialPy.h>
+~include <App/MetadataPy.h>
 // FreeCAD Base header
-#include <Base/AxisPy.h>
-#include <Base/BaseClass.h>
-#include <Base/BoundBoxPy.h>
-#include <Base/ConsoleObserver.h>
-#include <Base/CoordinateSystemPy.h>
-#include <Base/Exception.h>
-#include <Base/ExceptionFactory.h>
-#include <Base/FileInfo.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Interpreter.h>
-#include <Base/MatrixPy.h>
-#include <Base/QuantityPy.h>
-#include <Base/Parameter.h>
-#include <Base/Persistence.h>
-#include <Base/PlacementPy.h>
-#include <Base/RotationPy.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <Base/Translate.h>
-#include <Base/Type.h>
-#include <Base/TypePy.h>
-#include <Base/UnitPy.h>
-#include <Base/UnitsApi.h>
-#include <Base/VectorPy.h>
+~include <Base/AxisPy.h>
+~include <Base/BaseClass.h>
+~include <Base/BoundBoxPy.h>
+~include <Base/ConsoleObserver.h>
+~include <Base/CoordinateSystemPy.h>
+~include <Base/Exception.h>
+~include <Base/ExceptionFactory.h>
+~include <Base/FileInfo.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Interpreter.h>
+~include <Base/MatrixPy.h>
+~include <Base/QuantityPy.h>
+~include <Base/Parameter.h>
+~include <Base/Persistence.h>
+~include <Base/PlacementPy.h>
+~include <Base/RotationPy.h>
+~include <Base/Sequencer.h>
+~include <Base/Tools.h>
+~include <Base/Translate.h>
+~include <Base/Type.h>
+~include <Base/TypePy.h>
+~include <Base/UnitPy.h>
+~include <Base/UnitsApi.h>
+~include <Base/VectorPy.h>
 
-#include "Annotation.h"
-#include "Application.h"
-#include "ComplexGeoData.h"
-#include "DocumentObjectFileIncluded.h"
-#include "DocumentObjectGroup.h"
-#include "DocumentObjectGroupPy.h"
-#include "DocumentObserver.h"
-#include "DocumentPy.h"
-#include "ExpressionParser.h"
-#include "FeatureTest.h"
-#include "FeaturePython.h"
-#include "GeoFeature.h"
-#include "GeoFeatureGroupExtension.h"
-#include "InventorObject.h"
-#include "Link.h"
-#include "LinkBaseExtensionPy.h"
-#include "MaterialObject.h"
-#include "MeasureDistance.h"
-#include "Origin.h"
-#include "OriginFeature.h"
-#include "OriginGroupExtension.h"
-#include "OriginGroupExtensionPy.h"
-#include "Part.h"
-#include "PartPy.h"
-#include "Placement.h"
-#include "Property.h"
-#include "PropertyContainer.h"
-#include "PropertyExpressionEngine.h"
-#include "PropertyFile.h"
-#include "PropertyLinks.h"
-#include "PropertyPythonObject.h"
-#include "TextDocument.h"
-#include "Transactions.h"
-#include "VRMLObject.h"
+~include "Annotation.h"
+~include "Application.h"
+~include "ComplexGeoData.h"
+~include "DocumentObjectFileIncluded.h"
+~include "DocumentObjectGroup.h"
+~include "DocumentObjectGroupPy.h"
+~include "DocumentObserver.h"
+~include "DocumentPy.h"
+~include "ExpressionParser.h"
+~include "FeatureTest.h"
+~include "FeaturePython.h"
+~include "GeoFeature.h"
+~include "GeoFeatureGroupExtension.h"
+~include "InventorObject.h"
+~include "Link.h"
+~include "LinkBaseExtensionPy.h"
+~include "MaterialObject.h"
+~include "MeasureDistance.h"
+~include "Origin.h"
+~include "OriginFeature.h"
+~include "OriginGroupExtension.h"
+~include "OriginGroupExtensionPy.h"
+~include "Part.h"
+~include "PartPy.h"
+~include "Placement.h"
+~include "Property.h"
+~include "PropertyContainer.h"
+~include "PropertyExpressionEngine.h"
+~include "PropertyFile.h"
+~include "PropertyLinks.h"
+~include "PropertyPythonObject.h"
+~include "TextDocument.h"
+~include "Transactions.h"
+~include "VRMLObject.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
 // src/Build/Version.h. Or create your own from src/Build/Version.h.in!
-#include <Build/Version.h>
-#include "Branding.h"
+~include <Build/Version.h>
+~include "Branding.h"
 
 
 using namespace App;
@@ -130,21 +130,21 @@ namespace sp = std::placeholders;
 
 
 // scriptings (scripts are built-in but can be overridden by command line option)
-#include <App/InitScript.h>
-#include <App/TestScript.h>
-#include <App/CMakeScript.h>
+~include <App/InitScript.h>
+~include <App/TestScript.h>
+~include <App/CMakeScript.h>
 
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-# pragma warning( disable : 4535 )
-# if !defined(_DEBUG) && defined(HAVE_SEH)
-# define FC_SE_TRANSLATOR
-# endif
+~ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+~ pragma warning( disable : 4535 )
+~ if !defined(_DEBUG) && defined(HAVE_SEH)
+~ define FC_SE_TRANSLATOR
+~ endif
 
-# include <new.h>
-# include <eh.h> // VC exception handling
-#else // Ansi C/C++ new handler
-# include <new>
-#endif
+~ include <new.h>
+~ include <eh.h> // VC exception handling
+~else // Ansi C/C++ new handler
+~ include <new>
+~endif
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -353,11 +353,11 @@ Application::~Application()
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
-#if 1
+~if 1
     (void)OldName;
     (void)NewName;
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
-#else
+~else
     std::map<std::string,Document*>::iterator pos;
     pos = DocMap.find(OldName);
 
@@ -371,7 +371,7 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     else {
         throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
     }
-#endif
+~endif
 }
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
@@ -1067,7 +1067,7 @@ std::string Application::getUserMacroDir()
 
 std::string Application::getResourceDir()
 {
-#ifdef RESOURCEDIR
+~ifdef RESOURCEDIR
     std::string path(RESOURCEDIR);
     path.append("/");
     QDir dir(QString::fromUtf8(RESOURCEDIR));
@@ -1075,14 +1075,14 @@ std::string Application::getResourceDir()
         return path;
     else
         return mConfig["AppHomePath"] + path;
-#else
+~else
     return mConfig["AppHomePath"];
-#endif
+~endif
 }
 
 std::string Application::getHelpDir()
 {
-#ifdef DOCDIR
+~ifdef DOCDIR
     std::string path(DOCDIR);
     path.append("/");
     QDir dir(QString::fromUtf8(DOCDIR));
@@ -1090,9 +1090,9 @@ std::string Application::getHelpDir()
         return path;
     else
         return mConfig["AppHomePath"] + path;
-#else
+~else
     return mConfig["DocPath"];
-#endif
+~endif
 }
 
 int Application::checkLinkDepth(int depth, bool no_throw) {
@@ -1249,11 +1249,11 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
         const std::vector<std::string>& types = it->types;
         for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
-#ifdef __GNUC__
+~ifdef __GNUC__
             if (strcasecmp(Type,jt->c_str()) == 0)
-#else
+~else
             if (_stricmp(Type,jt->c_str()) == 0)
-#endif
+~endif
                 modules.push_back(it->module);
         }
     }
@@ -1275,11 +1275,11 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
 {
     std::vector<std::string> types;
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-#ifdef __GNUC__
+~ifdef __GNUC__
         if (strcasecmp(Module,it->module.c_str()) == 0)
-#else
+~else
         if (_stricmp(Module,it->module.c_str()) == 0)
-#endif
+~endif
             types.insert(types.end(), it->types.begin(), it->types.end());
     }
 
@@ -1305,11 +1305,11 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
         const std::vector<std::string>& types = it->types;
         for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
-#ifdef __GNUC__
+~ifdef __GNUC__
             if (strcasecmp(Type,jt->c_str()) == 0)
-#else
+~else
             if (_stricmp(Type,jt->c_str()) == 0)
-#endif
+~endif
                 moduleFilter[it->filter] = it->module;
         }
     }
@@ -1372,11 +1372,11 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
         const std::vector<std::string>& types = it->types;
         for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
-#ifdef __GNUC__
+~ifdef __GNUC__
             if (strcasecmp(Type,jt->c_str()) == 0)
-#else
+~else
             if (_stricmp(Type,jt->c_str()) == 0)
-#endif
+~endif
                 modules.push_back(it->module);
         }
     }
@@ -1398,11 +1398,11 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
 {
     std::vector<std::string> types;
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-#ifdef __GNUC__
+~ifdef __GNUC__
         if (strcasecmp(Module,it->module.c_str()) == 0)
-#else
+~else
         if (_stricmp(Module,it->module.c_str()) == 0)
-#endif
+~endif
             types.insert(types.end(), it->types.begin(), it->types.end());
     }
 
@@ -1428,11 +1428,11 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
         const std::vector<std::string>& types = it->types;
         for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
-#ifdef __GNUC__
+~ifdef __GNUC__
             if (strcasecmp(Type,jt->c_str()) == 0)
-#else
+~else
             if (_stricmp(Type,jt->c_str()) == 0)
-#endif
+~endif
                 moduleFilter[it->filter] = it->module;
         }
     }
@@ -1606,10 +1606,10 @@ void Application::destruct(void)
     _pcSysParamMngr = 0;
     _pcUserParamMngr = 0;
 
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
     // Do this only in debug mode for memory leak checkers
     cleanupUnits();
-#endif
+~endif
 
     // not initialized or double destruct!
     assert(_pcSingleton);
@@ -1643,39 +1643,39 @@ void Application::destructObserver(void)
 /** freecadNewHandler()
  * prints an error message and throws an exception
  */
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+~ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 int __cdecl freecadNewHandler(size_t size )
 {
     // throw an exception
     throw Base::MemoryException();
     return 0;
 }
-#else // Ansi C/C++ new handler
+~else // Ansi C/C++ new handler
 static void freecadNewHandler ()
 {
     // throw an exception
     throw Base::MemoryException();
 }
-#endif
+~endif
 
-#if defined(FC_OS_LINUX)
-#include <execinfo.h>
-#include <dlfcn.h>
-#include <cxxabi.h>
+~if defined(FC_OS_LINUX)
+~include <execinfo.h>
+~include <dlfcn.h>
+~include <cxxabi.h>
 
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <sstream>
+~include <cstdio>
+~include <cstdlib>
+~include <string>
+~include <sstream>
 
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+~if HAVE_CONFIG_H
+~include <config.h>
+~endif // HAVE_CONFIG_H
 
 // This function produces a stack backtrace with demangled function & method names.
 void printBacktrace(size_t skip=0)
 {
-#if defined HAVE_BACKTRACE_SYMBOLS
+~if defined HAVE_BACKTRACE_SYMBOLS
     void *callstack[128];
     size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
     size_t nFrames = backtrace(callstack, nMaxFrames);
@@ -1694,11 +1694,11 @@ void printBacktrace(size_t skip=0)
         std::stringstream str;
         if (status == 0) {
             void* offset = (void*)((char*)callstack[i] - (char*)info.dli_saddr);
-            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << std::endl;
+            str << "~" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << std::endl;
             free(demangled);
         }
         else {
-            str << "#" << (i-skip) << "  " << symbols[i] << std::endl;
+            str << "~" << (i-skip) << "  " << symbols[i] << std::endl;
         }
 
         // cannot directly print to cerr when using --write-log
@@ -1706,43 +1706,43 @@ void printBacktrace(size_t skip=0)
     }
 
     free(symbols);
-#else //HAVE_BACKTRACE_SYMBOLS
+~else //HAVE_BACKTRACE_SYMBOLS
     (void)skip;
     std::cerr << "Cannot print the stacktrace because the C runtime library doesn't provide backtrace or backtrace_symbols\n";
-#endif
+~endif
 }
-#endif
+~endif
 
 void segmentation_fault_handler(int sig)
 {
-#if defined(FC_OS_LINUX)
+~if defined(FC_OS_LINUX)
     (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
-#if defined(FC_DEBUG)
+~if defined(FC_DEBUG)
     abort();
-#else
+~else
     exit(1);
-#endif
-#else
+~endif
+~else
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
-#if !defined(_DEBUG)
+~if !defined(_DEBUG)
             throw Base::AccessViolation("Illegal storage access! Please save your work under a new file name and restart the application!");
-#endif
+~endif
             break;
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
-#if !defined(_DEBUG)
+~if !defined(_DEBUG)
             throw Base::AbnormalProgramTermination("Break signal occurred");
-#endif
+~endif
             break;
         default:
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
-#endif // FC_OS_LINUX
+~endif // FC_OS_LINUX
 }
 
 void unhandled_exception_handler()
@@ -1754,14 +1754,14 @@ void unexpection_error_handler()
 {
     std::cerr << "Unexpected error occurred..." << std::endl;
     // try to throw an exception and give the user chance to save their work
-#if !defined(_DEBUG)
+~if !defined(_DEBUG)
     throw Base::AbnormalProgramTermination("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#else
+~else
     terminate();
-#endif
+~endif
 }
 
-#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
+~if defined(FC_SE_TRANSLATOR) // Microsoft compiler
 void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
 {
     Q_UNUSED(pExp)
@@ -1781,31 +1781,31 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
     // general C++ SEH exception for things we don't need to handle separately....
     throw Base::RuntimeError(str.str());
 }
-#endif
+~endif
 
 void Application::init(int argc, char ** argv)
 {
     try {
         // install our own new handler
-#ifdef _MSC_VER // Microsoft compiler
+~ifdef _MSC_VER // Microsoft compiler
         _set_new_handler ( freecadNewHandler ); // Setup new handler
         _set_new_mode( 1 ); // Re-route malloc failures to new handler !
-#else   // Ansi compiler
+~else   // Ansi compiler
         std::set_new_handler (freecadNewHandler); // ANSI new handler
-#endif
+~endif
         // if an unexpected crash occurs we can install a handler function to
         // write some additional information
-#if defined (_MSC_VER) // Microsoft compiler
+~if defined (_MSC_VER) // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(unhandled_exception_handler);
            ::set_unexpected(unexpection_error_handler);
-#elif defined(FC_OS_LINUX)
+~elif defined(FC_OS_LINUX)
         std::signal(SIGSEGV,segmentation_fault_handler);
-#endif
-#if defined(FC_SE_TRANSLATOR)
+~endif
+~if defined(FC_SE_TRANSLATOR)
         _set_se_translator(my_se_translator_filter);
-#endif
+~endif
         initTypes();
 
         initConfig(argc,argv);
@@ -2015,10 +2015,10 @@ void Application::initTypes()
 namespace {
 pair<string, string> customSyntax(const string& s)
 {
-#if defined(FC_OS_MACOSX)
+~if defined(FC_OS_MACOSX)
     if (s.find("-psn_") == 0)
         return make_pair(string("psn"), s.substr(5));
-#endif
+~endif
     if (s.find("-display") == 0)
         return make_pair(string("display"), string("null"));
     else if (s.find("-style") == 0)
@@ -2124,9 +2124,9 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("visual",     boost::program_options::value< string >(), "set the X-Window to color scheme")
     ("ncols",      boost::program_options::value< int    >(), "set the X-Window to color scheme")
     ("cmap",                                                  "set the X-Window to color scheme")
-#if defined(FC_OS_MACOSX)
+~if defined(FC_OS_MACOSX)
     ("psn",        boost::program_options::value< string >(), "process serial number")
-#endif
+~endif
     ;
 
     // Ignored options, will be safely ignored. Mostly used by underlying libs.
@@ -2355,12 +2355,12 @@ void Application::initConfig(int argc, char ** argv)
         App::Application::Config()["BuildRevision"      ] = FCRevision;
         App::Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         App::Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
-#if defined(FCRepositoryHash)
+~if defined(FCRepositoryHash)
         App::Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
-#endif
-#if defined(FCRepositoryBranch)
+~endif
+~if defined(FCRepositoryBranch)
         App::Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
-#endif
+~endif
     }
 
     _argc = argc;
@@ -2387,11 +2387,11 @@ void Application::initConfig(int argc, char ** argv)
     // extract home paths
     ExtractUserPath();
 
-#   ifdef FC_DEBUG
+~   ifdef FC_DEBUG
     mConfig["Debug"] = "1";
-#   else
+~   else
     mConfig["Debug"] = "0";
-#   endif
+~   endif
 
     // init python
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
@@ -2451,20 +2451,20 @@ void Application::initConfig(int argc, char ** argv)
     bool hasDefault = false;
     for (const auto &v : loglevels) {
         if (v.first == "Default") {
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
-#endif
+~endif
         }
         else if (v.first == "DebugDefault") {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
-#endif
+~endif
         }
         else {
             *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
@@ -2472,11 +2472,11 @@ void Application::initConfig(int argc, char ** argv)
     }
 
     if (!hasDefault) {
-#ifdef FC_DEBUG
+~ifdef FC_DEBUG
         loglevelParam->SetInt("DebugDefault", Base::Console().LogLevel(-1));
-#else
+~else
         loglevelParam->SetInt("Default", Base::Console().LogLevel(-1));
-#endif
+~endif
     }
 
     // Change application tmp. directory
@@ -2511,9 +2511,9 @@ void Application::initConfig(int argc, char ** argv)
     SaveEnv("PATH");
 
     // Save version numbers of the libraries
-#ifdef OCC_VERSION_STRING_EXT
+~ifdef OCC_VERSION_STRING_EXT
     mConfig["OCC_VERSION"] = OCC_VERSION_STRING_EXT;
-#endif
+~endif
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
     mConfig["QT_VERSION"] = QT_VERSION_STR;
@@ -2555,9 +2555,9 @@ void Application::initApplication(void)
     Base::QuantityFormat::setDefaultDenominator(denom);
 
 
-#if defined (_DEBUG)
+~if defined (_DEBUG)
     Console().Log("Application is built with debug information\n");
-#endif
+~endif
 
     // starting the init script
     Console().Log("Run App init script\n");
@@ -2812,14 +2812,14 @@ void Application::LoadParameters(void)
 }
 
 
-#if defined(_MSC_VER)
+~if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget~p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
 } }
-#endif
+~endif
 
 // A helper function to simplify the main part.
 template<class T>
@@ -2833,23 +2833,23 @@ namespace {
 
 boost::filesystem::path stringToPath(std::string str)
 {
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     boost::filesystem::path path(converter.from_bytes(str));
-#else
+~else
     boost::filesystem::path path(str);
-#endif
+~endif
     return path;
 }
 
 std::string pathToString(const boost::filesystem::path& p)
 {
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     return converter.to_bytes(p.wstring());
-#else
+~else
     return p.string();
-#endif
+~endif
 }
 
 /*!
@@ -2859,15 +2859,15 @@ std::string pathToString(const boost::filesystem::path& p)
 QString getUserHome()
 {
     QString path;
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
+~if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff
     struct passwd *pwd = getpwuid(getuid());
     if (!pwd)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     path = QString::fromUtf8(pwd->pw_dir);
-#else
+~else
     path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-#endif
+~endif
 
     return path;
 }
@@ -2877,23 +2877,23 @@ QString getUserHome()
  * Returns a directory location where persistent data shared across applications can be stored.
  * This method returns the old non-XDG-compliant root path where to store config files and application data.
  */
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
 QString getOldGenericDataLocation(QString home)
 {
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
         return QString::fromStdString(converter.to_bytes(szPath));
     }
-#elif defined(FC_OS_MACOSX)
+~elif defined(FC_OS_MACOSX)
     QFileInfo fi(home, QString::fromLatin1("Library/Preferences"));
     home = fi.absoluteFilePath();
-#endif
+~endif
 
     return home;
 }
-#endif
+~endif
 
 /*!
  * \brief getSubDirectories
@@ -2918,7 +2918,7 @@ void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<
 {
     // Actually the name of the directory where the parameters are stored should be the name of
     // the application due to branding reasons.
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+~if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
     // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
     // the path.
     if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
@@ -2928,9 +2928,9 @@ void getOldDataLocation(std::map<std::string,std::string>& mConfig, std::vector<
         appData.push_back(std::string(".") + mConfig["ExeName"]);
     }
 
-#elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
+~elif defined(FC_OS_MACOSX) || defined(FC_OS_WIN32)
     getSubDirectories(mConfig, appData);
-#endif
+~endif
 }
 
 /*!
@@ -3047,7 +3047,7 @@ std::tuple<QString, QString, QString, QString> getStandardPaths()
     QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 
     // Keep the old behaviour
-#if defined(FC_OS_WIN32)
+~if defined(FC_OS_WIN32)
     configHome = getOldGenericDataLocation(QString());
     dataHome = configHome;
 
@@ -3055,11 +3055,11 @@ std::tuple<QString, QString, QString, QString> getStandardPaths()
     // GetTempPathW will return a path in DOS format. This path will be
     // accepted by boost's file_lock class.
     // Since boost 1.76 there is now a version that accepts a wide string.
-#if (BOOST_VERSION < 107600)
+~if (BOOST_VERSION < 107600)
     tempPath = QString::fromStdString(Base::FileInfo::getTempPath());
     cacheHome = tempPath;
-#endif
-#endif
+~endif
+~endif
 
     return std::make_tuple(configHome, dataHome, cacheHome, tempPath);
 }
@@ -3138,10 +3138,10 @@ void Application::ExtractUserPath()
     mConfig["UserMacroPath"] = pathToString(macro) + PATHSEP;
 }
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/param.h>
+~if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+~include <stdio.h>
+~include <stdlib.h>
+~include <sys/param.h>
 
 std::string Application::FindHomePath(const char* sCall)
 {
@@ -3167,7 +3167,7 @@ std::string Application::FindHomePath(const char* sCall)
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.
         char resolved[PATH_MAX];
-#if defined(FC_OS_BSD)
+~if defined(FC_OS_BSD)
         int mib[4];
         mib[0] = CTL_KERN;
         mib[1] = KERN_PROC;
@@ -3176,9 +3176,9 @@ std::string Application::FindHomePath(const char* sCall)
         size_t cb = sizeof(resolved);
         sysctl(mib, 4, resolved, &cb, NULL, 0);
         int nchars = strlen(resolved);
-#else
+~else
         int nchars = readlink("/proc/self/exe", resolved, PATH_MAX);
-#endif
+~endif
         if (nchars < 0 || nchars >= PATH_MAX)
             throw Base::FileSystemError("Cannot determine the absolute path of the executable");
         resolved[nchars] = '\0'; // enforce null termination
@@ -3194,11 +3194,11 @@ std::string Application::FindHomePath(const char* sCall)
     return homePath;
 }
 
-#elif defined(FC_OS_MACOSX)
-#include <mach-o/dyld.h>
-#include <string>
-#include <stdlib.h>
-#include <sys/param.h>
+~elif defined(FC_OS_MACOSX)
+~include <mach-o/dyld.h>
+~include <string>
+~include <stdlib.h>
+~include <sys/param.h>
 
 std::string Application::FindHomePath(const char* call)
 {
@@ -3233,7 +3233,7 @@ std::string Application::FindHomePath(const char* call)
     return call;
 }
 
-#elif defined (FC_OS_WIN32)
+~elif defined (FC_OS_WIN32)
 std::string Application::FindHomePath(const char* sCall)
 {
     // We have several ways to start this application:
@@ -3264,21 +3264,21 @@ std::string Application::FindHomePath(const char* sCall)
             *it = '/';
     }
 
-    // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
+    // fixes ~0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
     std::wstring binPath = homePath;
     binPath += L"bin";
     SetDllDirectoryW(binPath.c_str());
 
     // https://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     QString str = QString::fromUtf16(reinterpret_cast<const ushort *>(homePath.c_str()));
-#else
+~else
     QString str = QString::fromStdWString(homePath);
-#endif
+~endif
     // convert to utf-8
     return str.toUtf8().data();
 }
 
-#else
-# error "std::string Application::FindHomePath(const char*) not implemented"
-#endif
+~else
+~ error "std::string Application::FindHomePath(const char*) not implemented"
+~endif

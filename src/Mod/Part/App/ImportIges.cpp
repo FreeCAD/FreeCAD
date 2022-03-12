@@ -21,43 +21,43 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <fcntl.h>
-# include <BRep_Builder.hxx>
-# include <Interface_Static.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <IGESControl_Controller.hxx>
-# include <IGESControl_Reader.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Shell.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Message_MsgFile.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <TColStd_HSequenceOfTransient.hxx>
-# include <IGESBasic_Group.hxx>
-# include <IGESSolid_ManifoldSolid.hxx>
-# include <IGESBasic_SingularSubfigure.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <Interface_EntityIterator.hxx>
-# include <Quantity_Color.hxx>
-# include <TCollection_ExtendedString.hxx>
-# include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <fcntl.h>
+~ include <BRep_Builder.hxx>
+~ include <Interface_Static.hxx>
+~ include <TopTools_HSequenceOfShape.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <IGESControl_Reader.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <TopoDS_Shell.hxx>
+~ include <TopoDS_Solid.hxx>
+~ include <TopoDS_Compound.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <Message_MsgFile.hxx>
+~ include <TColStd_HSequenceOfTransient.hxx>
+~ include <TColStd_HSequenceOfTransient.hxx>
+~ include <IGESBasic_Group.hxx>
+~ include <IGESSolid_ManifoldSolid.hxx>
+~ include <IGESBasic_SingularSubfigure.hxx>
+~ include <XSControl_WorkSession.hxx>
+~ include <XSControl_TransferReader.hxx>
+~ include <Transfer_TransientProcess.hxx>
+~ include <Interface_EntityIterator.hxx>
+~ include <Quantity_Color.hxx>
+~ include <TCollection_ExtendedString.hxx>
+~ include <Standard_Version.hxx>
+~endif
 
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
+~include <App/Application.h>
+~include <App/Document.h>
 
-#include "ImportIges.h"
-#include "PartFeature.h"
-#include "ProgressIndicator.h"
+~include "ImportIges.h"
+~include "PartFeature.h"
+~include "ProgressIndicator.h"
 
 using namespace Part;
 
@@ -85,22 +85,22 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         // check file conformity and output stats
         aReader.PrintCheckLoad(Standard_True,IFSelect_GeneralInfo);
 
-#if 1
+~if 1
         std::string aName = fi.fileNamePure();
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading IGES file...");
         pi->Show();
         aReader.WS()->MapReader()->SetProgress(pi);
-#endif
+~endif
 
         // make model
         aReader.ClearShapes();
         //Standard_Integer nbRootsForTransfer = aReader.NbRootsForTransfer();
         aReader.TransferRoots();
-#if OCC_VERSION_HEX < 0x070500
+~if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
-#endif
+~endif
 
         // put all other free-flying shapes into a single compound
         Standard_Boolean emptyComp = Standard_True;
@@ -130,7 +130,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
                 ("Part::Feature", name.c_str()));
             pcFeature->Shape.setValue(comp);
         }
-#else
+~else
         // put all other free-flying shapes into a single compound
         Standard_Boolean emptyComp = Standard_True;
         BRep_Builder builder;
@@ -148,10 +148,10 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
             // clear any old shape
             aReader.ClearShapes();
 
-#ifdef _DEBUG
+~ifdef _DEBUG
             std::string type = igesEntity->DynamicType()->Name();
             (void)type;
-#endif
+~endif
 
             // is it a group, singular sub-figure or solid?
             if (igesEntity->IsKind(STANDARD_TYPE(IGESBasic_Group)) ||
@@ -202,7 +202,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
                 ("Part::Feature", name.c_str()));
             pcFeature->Shape.setValue(comp);
         }
-#endif
+~endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());

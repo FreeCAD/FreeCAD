@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "PropertyContainer.h"
-#include "Property.h"
-#include "DocumentObject.h"
+~include "PropertyContainer.h"
+~include "Property.h"
+~include "DocumentObject.h"
 
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
+~include <boost/iostreams/device/array.hpp>
+~include <boost/iostreams/stream.hpp>
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
-#include "PropertyContainerPy.h"
-#include "PropertyContainerPy.cpp"
+~include "PropertyContainerPy.h"
+~include "PropertyContainerPy.cpp"
 
 FC_LOG_LEVEL_INIT("Property", true, 2)
 

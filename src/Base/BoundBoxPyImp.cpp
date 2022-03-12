@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of BoundBoxPy.xml)
-#include "MatrixPy.h"
-#include "VectorPy.h"
-#include "GeometryPyCXX.h"
-#include "BoundBoxPy.h"
-#include "BoundBoxPy.cpp"
+~include "MatrixPy.h"
+~include "VectorPy.h"
+~include "GeometryPyCXX.h"
+~include "BoundBoxPy.h"
+~include "BoundBoxPy.cpp"
 
 using namespace Base;
 

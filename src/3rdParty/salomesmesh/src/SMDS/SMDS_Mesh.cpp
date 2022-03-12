@@ -22,54 +22,54 @@
 
 //  SMESH SMDS : implementation of Salome mesh data structure
 //
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#endif
+~ifdef _MSC_VER
+~pragma warning(disable:4786)
+~endif
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Winconsistent-missing-override"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Winconsistent-missing-override"
+~endif
 
-#include "SMDS_FaceOfEdges.hxx"
-#include "SMDS_FaceOfNodes.hxx"
-#include "SMDS_Mesh.hxx"
-#include "SMDS_PolygonalFaceOfNodes.hxx"
-#include "SMDS_PolyhedralVolumeOfNodes.hxx"
-#include "SMDS_QuadraticEdge.hxx"
-#include "SMDS_QuadraticFaceOfNodes.hxx"
-#include "SMDS_QuadraticVolumeOfNodes.hxx"
-#include "SMDS_SetIterator.hxx"
-#include "SMDS_SpacePosition.hxx"
-#include "SMDS_UnstructuredGrid.hxx"
-#include "SMDS_VolumeOfFaces.hxx"
-#include "SMDS_VolumeOfNodes.hxx"
+~include "SMDS_FaceOfEdges.hxx"
+~include "SMDS_FaceOfNodes.hxx"
+~include "SMDS_Mesh.hxx"
+~include "SMDS_PolygonalFaceOfNodes.hxx"
+~include "SMDS_PolyhedralVolumeOfNodes.hxx"
+~include "SMDS_QuadraticEdge.hxx"
+~include "SMDS_QuadraticFaceOfNodes.hxx"
+~include "SMDS_QuadraticVolumeOfNodes.hxx"
+~include "SMDS_SetIterator.hxx"
+~include "SMDS_SpacePosition.hxx"
+~include "SMDS_UnstructuredGrid.hxx"
+~include "SMDS_VolumeOfFaces.hxx"
+~include "SMDS_VolumeOfNodes.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <vtkUnstructuredGrid.h>
-#include <vtkUnstructuredGridWriter.h>
-#include <vtkUnsignedCharArray.h>
-#include <vtkCell.h>
-#include <vtkCellLinks.h>
-#include <vtkIdList.h>
+~include <vtkUnstructuredGrid.h>
+~include <vtkUnstructuredGridWriter.h>
+~include <vtkUnsignedCharArray.h>
+~include <vtkCell.h>
+~include <vtkCellLinks.h>
+~include <vtkIdList.h>
 
-#include <algorithm>
-#include <map>
-#include <iostream>
-#include <fstream>
-#include <iterator>
+~include <algorithm>
+~include <map>
+~include <iostream>
+~include <fstream>
+~include <iterator>
 using namespace std;
 
-#ifndef WIN32
-#if !(defined(__MACH__) && defined(__APPLE__))
-#include <sys/sysinfo.h>
-#endif
-#include <sys/wait.h>
-#endif
+~ifndef WIN32
+~if !(defined(__MACH__) && defined(__APPLE__))
+~include <sys/sysinfo.h>
+~endif
+~include <sys/wait.h>
+~endif
 
 // number of added entities to check memory after
-#define CHECKMEMORY_INTERVAL 100000
+~define CHECKMEMORY_INTERVAL 100000
 
 vector<SMDS_Mesh*> SMDS_Mesh::_meshList = vector<SMDS_Mesh*>();
 int SMDS_Mesh::chunkSize = 1024;
@@ -85,11 +85,11 @@ int SMDS_Mesh::chunkSize = 1024;
 
 int SMDS_Mesh::CheckMemory(const bool doNotRaise)
 {
-#if 0
-#if (defined(__MACH__) && defined(__APPLE__))
+~if 0
+~if (defined(__MACH__) && defined(__APPLE__))
         return 1000;
-#else
-#ifndef WIN32
+~else
+~ifndef WIN32
   struct sysinfo si;
   int err = sysinfo( &si );
   if ( err )
@@ -128,13 +128,13 @@ int SMDS_Mesh::CheckMemory(const bool doNotRaise)
 
   MESSAGE ("SMDS_Mesh::CheckMemory() throws as free memory too low: " << freeMb <<" MB" );
   throw std::bad_alloc();
-#else
+~else
   return -1;
-#endif
-#endif
-#else
+~endif
+~endif
+~else
   return 1000;
-#endif
+~endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1498,7 +1498,7 @@ SMDS_Mesh::AddPolyhedralVolumeWithID (const vector<const SMDS_MeshNode*>& nodes,
   }
   else
   {
-    //#ifdef VTK_HAVE_POLYHEDRON
+    //~ifdef VTK_HAVE_POLYHEDRON
     //MESSAGE("AddPolyhedralVolumeWithID vtk " << ID);
     myNodeIds.resize( nodes.size() );
     for ( size_t i = 0; i < nodes.size(); ++i )
@@ -1513,25 +1513,25 @@ SMDS_Mesh::AddPolyhedralVolumeWithID (const vector<const SMDS_MeshNode*>& nodes,
       return 0;
     }
     volume = volvtk;
-    //#else
+    //~else
     //      MESSAGE("AddPolyhedralVolumeWithID smds " << ID);
     //      for ( int i = 0; i < nodes.size(); ++i )
     //      if ( !nodes[ i ] ) return 0;
     //      volume = new SMDS_PolyhedralVolumeOfNodes(nodes, quantities);
-    //#endif
+    //~endif
     adjustmyCellsCapacity(ID);
     myCells[ID] = volume;
     myInfo.myNbPolyhedrons++;
   }
 
-  //#ifndef VTK_HAVE_POLYHEDRON
+  //~ifndef VTK_HAVE_POLYHEDRON
   //  if (!registerElement(ID, volume))
   //    {
   //      registerElement(myElementIDFactory->GetFreeID(), volume);
   //      //RemoveElement(volume, false);
   //      //volume = NULL;
   //    }
-  //#endif
+  //~endif
   return volume;
 }
 
@@ -1597,11 +1597,11 @@ SMDS_MeshVolume* SMDS_Mesh::AddVolumeFromVtkIdsWithID(const std::vector<vtkIdTyp
     case VTK_QUADRATIC_HEXAHEDRON:
       myInfo.myNbQuadHexas++;
       break;
-//#ifdef VTK_HAVE_POLYHEDRON
+//~ifdef VTK_HAVE_POLYHEDRON
     case VTK_POLYHEDRON:
       myInfo.myNbPolyhedrons++;
       break;
-//#endif
+//~endif
     default:
       myInfo.myNbPolyhedrons++;
       break;
@@ -2110,7 +2110,7 @@ const SMDS_MeshEdge* SMDS_Mesh::FindEdge(int idnode1, int idnode2) const
   return FindEdge(node1,node2);
 }
 
-//#include "Profiler.h"
+//~include "Profiler.h"
 const SMDS_MeshEdge* SMDS_Mesh::FindEdge(const SMDS_MeshNode * node1,
                                          const SMDS_MeshNode * node2)
 {
@@ -2590,7 +2590,7 @@ void SMDS_Mesh::DebugStats() const
 
   MESSAGE("End Debug stats of mesh ");
 
-  //#ifdef DEB
+  //~ifdef DEB
 
   SMDS_NodeIteratorPtr itnode=nodesIterator();
   int sizeofnodes = 0;
@@ -2620,7 +2620,7 @@ void SMDS_Mesh::DebugStats() const
   MESSAGE("total size of node elements = " << sizeofnodes);;
   MESSAGE("total size of face elements = " << sizeoffaces);;
 
-  //#endif
+  //~endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4768,11 +4768,11 @@ void SMDS_Mesh::dumpGrid(string ficdump)
         ficcon << endl;
   }
   ficcon << "-------------------------------- connectivity " <<  nbPoints << endl;
-#ifdef VTK_CELL_ARRAY_V2
+~ifdef VTK_CELL_ARRAY_V2
   vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetCellLinks());
-#else
+~else
   vtkCellLinks *links = myGrid->GetCellLinks();
-#endif
+~endif
   for (int i=0; i<nbPoints; i++)
   {
         int ncells = links->GetNcells(i);
@@ -4861,6 +4861,6 @@ bool SMDS_Mesh::isCompacted()
   return true;
 }
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif

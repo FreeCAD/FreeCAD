@@ -26,7 +26,7 @@
 //  Author    : Nicolas Geimer & Aurélien Motteux(OCC)
 //  Module    : SMESH
 //
-#include "SMESH_Octree.hxx"
+~include "SMESH_Octree.hxx"
 
 //===========================================================================
 /*!

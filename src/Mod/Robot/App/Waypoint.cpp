@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
 
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/chainfksolver.hpp"
-#include "kdl_cp/chainfksolverpos_recursive.hpp"
-#include "kdl_cp/frames_io.hpp"
-#include "kdl_cp/chainiksolver.hpp"
-#include "kdl_cp/chainiksolvervel_pinv.hpp"
-#include "kdl_cp/chainjnttojacsolver.hpp"
-#include "kdl_cp/chainiksolverpos_nr.hpp"
+~include "kdl_cp/chain.hpp"
+~include "kdl_cp/chainfksolver.hpp"
+~include "kdl_cp/chainfksolverpos_recursive.hpp"
+~include "kdl_cp/frames_io.hpp"
+~include "kdl_cp/chainiksolver.hpp"
+~include "kdl_cp/chainiksolvervel_pinv.hpp"
+~include "kdl_cp/chainjnttojacsolver.hpp"
+~include "kdl_cp/chainiksolverpos_nr.hpp"
 
-#include "Waypoint.h"
+~include "Waypoint.h"
 
-#ifndef M_PI
-    #define M_PI 3.14159265358979323846
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
+~ifndef M_PI
+    ~define M_PI 3.14159265358979323846
+    ~define M_PI    3.14159265358979323846 /* pi */
+~endif
 
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
+~ifndef M_PI_2
+    ~define M_PI_2  1.57079632679489661923 /* pi/2 */
+~endif
 
 using namespace Robot;
 using namespace Base;

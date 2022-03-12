@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <cstdlib>
-# include <iterator> 
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <cstdlib>
+~ include <iterator> 
+~endif
 
-#include "SphereFit.h"
-#include <Base/Console.h>
+~include "SphereFit.h"
+~include <Base/Console.h>
 
 using namespace MeshCoreFit;
 

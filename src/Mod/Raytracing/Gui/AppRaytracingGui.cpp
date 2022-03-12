@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/WidgetFactory.h>
-#include <Gui/Language/Translator.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/WidgetFactory.h>
+~include <Gui/Language/Translator.h>
 
-#include "DlgSettingsRayImp.h"
-#include "ViewProvider.h"
-#include "Workbench.h"
+~include "DlgSettingsRayImp.h"
+~include "ViewProvider.h"
+~include "Workbench.h"
 
 
 using namespace RaytracingGui;

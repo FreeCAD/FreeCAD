@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Metadata.h"
+~include "Metadata.h"
 
 // inclusion of the generated files (generated out of MetadataPy.xml)
-#include "MetadataPy.h"
-#include "MetadataPy.cpp"
+~include "MetadataPy.h"
+~include "MetadataPy.cpp"
 
 using namespace Base;
 

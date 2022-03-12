@@ -21,52 +21,52 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QFileInfo>
-# include <QPointer>
-# include <QString>
-# include <Standard_math.hxx>
-# include <Standard_Version.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Shape.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QFileInfo>
+~ include <QPointer>
+~ include <QString>
+~ include <Standard_math.hxx>
+~ include <Standard_Version.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS_Shape.hxx>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Gui/Action.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/FileDialog.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/WaitCursor.h>
+~include <App/Document.h>
+~include <App/DocumentObjectGroup.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Tools.h>
+~include <Gui/Action.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Gui/FileDialog.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/WaitCursor.h>
 
-#include "BoxSelection.h"
-#include "CrossSections.h"
-#include "DlgBooleanOperation.h"
-#include "DlgExtrusion.h"
-#include "DlgFilletEdges.h"
-#include "DlgPrimitives.h"
-#include "DlgProjectionOnSurface.h"
-#include "DlgRevolution.h"
-#include "Mirroring.h"
-#include "SectionCutting.h"
-#include "TaskCheckGeometry.h"
-#include "TaskDimension.h"
-#include "TaskLoft.h"
-#include "TaskShapeBuilder.h"
-#include "TaskSweep.h"
-#include "ViewProvider.h"
+~include "BoxSelection.h"
+~include "CrossSections.h"
+~include "DlgBooleanOperation.h"
+~include "DlgExtrusion.h"
+~include "DlgFilletEdges.h"
+~include "DlgPrimitives.h"
+~include "DlgProjectionOnSurface.h"
+~include "DlgRevolution.h"
+~include "Mirroring.h"
+~include "SectionCutting.h"
+~include "TaskCheckGeometry.h"
+~include "TaskDimension.h"
+~include "TaskLoft.h"
+~include "TaskShapeBuilder.h"
+~include "TaskSweep.h"
+~include "ViewProvider.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -750,11 +750,11 @@ void CmdPartCompSplitFeatures::languageChange()
 bool CmdPartCompSplitFeatures::isActive(void)
 {
     if (getActiveGuiDocument())
-#if OCC_VERSION_HEX < 0x060900
+~if OCC_VERSION_HEX < 0x060900
         return false;
-#else
+~else
         return true;
-#endif
+~endif
     else
         return false;
 }
@@ -1912,62 +1912,62 @@ CmdShapeInfo::CmdShapeInfo()
 void CmdShapeInfo::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
+~if 0
     static const char * const part_pipette[]={
         "32 32 17 1",
-        "# c #000000",
-        "j c #080808",
-        "b c #101010",
-        "f c #1c1c1c",
-        "g c #4c4c4c",
-        "c c #777777",
-        "a c #848484",
-        "i c #9c9c9c",
-        "l c #b9b9b9",
-        "e c #cacaca",
-        "n c #d6d6d6",
-        "k c #dedede",
-        "d c #e7e7e7",
-        "m c #efefef",
-        "h c #f7f7f7",
-        "w c #ffffff",
+        "~ c ~000000",
+        "j c ~080808",
+        "b c ~101010",
+        "f c ~1c1c1c",
+        "g c ~4c4c4c",
+        "c c ~777777",
+        "a c ~848484",
+        "i c ~9c9c9c",
+        "l c ~b9b9b9",
+        "e c ~cacaca",
+        "n c ~d6d6d6",
+        "k c ~dedede",
+        "d c ~e7e7e7",
+        "m c ~efefef",
+        "h c ~f7f7f7",
+        "w c ~ffffff",
         ". c None",
         "................................",
-        ".....................#####......",
-        "...................#######......",
-        "...................#########....",
-        "..................##########....",
-        "..................##########....",
-        "..................##########....",
-        ".................###########....",
-        "...............#############....",
-        ".............###############....",
-        ".............#############......",
-        ".............#############......",
-        "...............ab######.........",
-        "..............cdef#####.........",
-        ".............ghdacf####.........",
-        "............#ehiacj####.........",
-        "............awiaaf####..........",
-        "...........iheacf##.............",
-        "..........#kdaag##..............",
-        ".........gedaacb#...............",
-        ".........lwiac##................",
-        ".......#amlaaf##................",
-        ".......cheaag#..................",
-        "......#ndaag##..................",
-        ".....#imaacb#...................",
-        ".....iwlacf#....................",
-        "....#nlaag##....................",
-        "....feaagj#.....................",
-        "....caag##......................",
-        "....ffbj##......................",
+        ".....................~~~~~......",
+        "...................~~~~~~~......",
+        "...................~~~~~~~~~....",
+        "..................~~~~~~~~~~....",
+        "..................~~~~~~~~~~....",
+        "..................~~~~~~~~~~....",
+        ".................~~~~~~~~~~~....",
+        "...............~~~~~~~~~~~~~....",
+        ".............~~~~~~~~~~~~~~~....",
+        ".............~~~~~~~~~~~~~......",
+        ".............~~~~~~~~~~~~~......",
+        "...............ab~~~~~~.........",
+        "..............cdef~~~~~.........",
+        ".............ghdacf~~~~.........",
+        "............~ehiacj~~~~.........",
+        "............awiaaf~~~~..........",
+        "...........iheacf~~.............",
+        "..........~kdaag~~..............",
+        ".........gedaacb~...............",
+        ".........lwiac~~................",
+        ".......~amlaaf~~................",
+        ".......cheaag~..................",
+        "......~ndaag~~..................",
+        ".....~imaacb~...................",
+        ".....iwlacf~....................",
+        "....~nlaag~~....................",
+        "....feaagj~.....................",
+        "....caag~~......................",
+        "....ffbj~~......................",
         "................................",
         "................................"};
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-#endif
+~endif
     //if (view) {
     //    Gui::View3DInventorViewer* viewer = view->getViewer();
     //    viewer->setEditing(true);
@@ -2483,9 +2483,9 @@ CmdPartSectionCut::CmdPartSectionCut()
 Gui::Action* CmdPartSectionCut::createAction(void)
 {
     Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
-#if 0
+~if 0
     pcAction->setCheckable(true);
-#endif
+~endif
     return pcAction;
 }
 

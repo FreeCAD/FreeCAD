@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QMessageBox>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureHole.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Gui/Application.h>
+~include <Gui/Control.h>
+~include <Gui/Command.h>
+~include <Mod/PartDesign/App/FeatureHole.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "ViewProviderHole.h"
-#include "TaskHoleParameters.h"
+~include "ViewProviderHole.h"
+~include "TaskHoleParameters.h"
 
 using namespace PartDesignGui;
 

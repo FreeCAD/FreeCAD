@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "DlgSettingsPythonConsole.h"
-#include "ui_DlgSettingsPythonConsole.h"
-#include <App/Application.h>
+~include "DlgSettingsPythonConsole.h"
+~include "ui_DlgSettingsPythonConsole.h"
+~include <App/Application.h>
 
 using namespace Gui::Dialog;
 
@@ -67,4 +67,4 @@ void DlgSettingsPythonConsole::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-#include "moc_DlgSettingsPythonConsole.cpp"
+~include "moc_DlgSettingsPythonConsole.cpp"

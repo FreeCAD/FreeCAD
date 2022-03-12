@@ -21,37 +21,37 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QInputDialog>
-# include <QMessageBox>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QInputDialog>
+~ include <QMessageBox>
+~endif
 
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
-#include <Gui/Placement.h>
-#include <Gui/Control.h>
+~include <App/Application.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Gui/FileDialog.h>
+~include <Gui/Selection.h>
+~include <Gui/Document.h>
+~include <Gui/Placement.h>
+~include <Gui/Control.h>
 
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
-#include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryDressUpObject.h>
-#include <Mod/Robot/App/TrajectoryCompound.h>
-#include "TaskDlgEdge2Trac.h"
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Robot/App/RobotObject.h>
+~include <Mod/Robot/App/TrajectoryObject.h>
+~include <Mod/Robot/App/Edge2TracObject.h>
+~include <Mod/Robot/App/TrajectoryDressUpObject.h>
+~include <Mod/Robot/App/TrajectoryCompound.h>
+~include "TaskDlgEdge2Trac.h"
 
-#include "TrajectorySimulate.h"
+~include "TrajectorySimulate.h"
 
 using namespace std;
 using namespace RobotGui;
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotCreateTrajectory)
 
@@ -84,7 +84,7 @@ bool CmdRobotCreateTrajectory::isActive(void)
     return hasActiveDocument();
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotInsertWaypoint)
 
@@ -141,7 +141,7 @@ bool CmdRobotInsertWaypoint::isActive(void)
     return hasActiveDocument();
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotInsertWaypointPreselect)
 
@@ -205,7 +205,7 @@ bool CmdRobotInsertWaypointPreselect::isActive(void)
     return hasActiveDocument();
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotSetDefaultOrientation)
 
@@ -243,7 +243,7 @@ bool CmdRobotSetDefaultOrientation::isActive(void)
     return true;
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotSetDefaultValues)
 
@@ -309,7 +309,7 @@ bool CmdRobotSetDefaultValues::isActive(void)
     return true;
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotEdge2Trac)
 
@@ -373,7 +373,7 @@ bool CmdRobotEdge2Trac::isActive(void)
     return true;
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotTrajectoryDressUp)
 
@@ -420,7 +420,7 @@ bool CmdRobotTrajectoryDressUp::isActive(void)
     return true;
 }
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DEF_STD_CMD_A(CmdRobotTrajectoryCompound)
 
@@ -462,7 +462,7 @@ bool CmdRobotTrajectoryCompound::isActive(void)
 
 
 
-// #####################################################################################################
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 

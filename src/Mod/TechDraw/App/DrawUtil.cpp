@@ -20,62 +20,62 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-# include <cstring>
-# include <cstdlib>
-#include <cmath>
-#include <string>
-# include <exception>
-# include <boost/regex.hpp>
-# include <QString>
-# include <QStringList>
-# include <QRegExp>
-#include <QChar>
-#include <QPointF>
+~ifndef _PreComp_
+~ include <sstream>
+~ include <cstring>
+~ include <cstdlib>
+~include <cmath>
+~include <string>
+~ include <exception>
+~ include <boost/regex.hpp>
+~ include <QString>
+~ include <QStringList>
+~ include <QRegExp>
+~include <QChar>
+~include <QPointF>
 
-#include <BRep_Tool.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <gp_Elips.hxx>
-#include <Precision.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GProp_GProps.hxx>
-#include <GeomLProp_SLProps.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <BRepGProp_Face.hxx>
-#include <BRepTools.hxx>
+~include <BRep_Tool.hxx>
+~include <gp_Ax3.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Vec.hxx>
+~include <gp_Elips.hxx>
+~include <Precision.hxx>
+~include <BRep_Builder.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepExtrema_DistShapeShape.hxx>
+~include <BRepGProp.hxx>
+~include <BRepLProp_CLProps.hxx>
+~include <BRepLProp_CurveTool.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <GProp_GProps.hxx>
+~include <GeomLProp_SLProps.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepLProp_SLProps.hxx>
+~include <BRepGProp_Face.hxx>
+~include <BRepTools.hxx>
 
-#endif
+~endif
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Vector3D.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
+~include <Base/Vector3D.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Part/App/TopoShape.h>
 
-#include "Preferences.h"
-#include "GeometryObject.h"
-#include "DrawUtil.h"
+~include "Preferences.h"
+~include "GeometryObject.h"
+~include "DrawUtil.h"
 
 using namespace TechDraw;
 
@@ -1238,7 +1238,7 @@ void DrawUtil::countFaces(const char* text, const TopoDS_Shape& s)
     Base::Console().Message("COUNT - %s has %d Faces\n",text,num);
 }
 
-//count # of unique Wires in shape.
+//count ~ of unique Wires in shape.
 void DrawUtil::countWires(const char* text, const TopoDS_Shape& s)
 {
     TopTools_IndexedMapOfShape mapOfWires;

@@ -21,38 +21,38 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoFont.h>
-# include <QPainter>
-# include <QGuiApplication>
-# include <cmath>
-#endif  // #ifndef _PreComp_
+~ifndef _PreComp_
+~ include <Standard_math.hxx>
+~ include <Inventor/nodes/SoTranslation.h>
+~ include <Inventor/nodes/SoText2.h>
+~ include <Inventor/nodes/SoFont.h>
+~ include <QPainter>
+~ include <QGuiApplication>
+~ include <cmath>
+~endif  // ~ifndef _PreComp_
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/Macro.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/View3DInventor.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/CommandT.h>
+~include <Gui/Document.h>
+~include <Gui/Macro.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventorViewer.h>
+~include <Gui/View3DInventor.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Sketcher/App/SketchObject.h>
 
-#include "DrawSketchHandler.h"
-#include "ViewProviderSketch.h"
-#include "CommandConstraints.h"
+~include "DrawSketchHandler.h"
+~include "ViewProviderSketch.h"
+~include "CommandConstraints.h"
 
 
 using namespace SketcherGui;
@@ -204,12 +204,12 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
     qreal hotX = x;
     qreal hotY = y;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+~if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         hotX *= pRatio;
         hotY *= pRatio;
     }
-#endif
+~endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
     QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);
@@ -238,12 +238,12 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
             p1.setDevicePixelRatio(pRatio);
             qreal hotX = x;
             qreal hotY = y;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+~if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
             if (qGuiApp->platformName() == QLatin1String("xcb")) {
                 hotX *= pRatio;
                 hotY *= pRatio;
             }
-#endif
+~endif
             cursor = QCursor(p1, hotX, hotY);
         } else {
             // already scaled

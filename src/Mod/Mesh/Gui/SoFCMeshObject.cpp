@@ -21,42 +21,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <climits>
-# ifdef FC_OS_WIN32
-# include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
-# else
-# include <GL/gl.h>
-# include <GL/glu.h>
-# endif
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/errors/SoReadError.h>
-# include <Inventor/misc/SoState.h>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <climits>
+~ ifdef FC_OS_WIN32
+~ include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~ include <OpenGL/gl.h>
+~ include <OpenGL/glu.h>
+~ else
+~ include <GL/gl.h>
+~ include <GL/glu.h>
+~ endif
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/errors/SoReadError.h>
+~ include <Inventor/misc/SoState.h>
+~endif
 
-#include "SoFCMeshObject.h"
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Gui/SoFCInteractiveElement.h>
-#include <Gui/SoFCSelectionAction.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/Grid.h>
+~include "SoFCMeshObject.h"
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Gui/SoFCInteractiveElement.h>
+~include <Gui/SoFCSelectionAction.h>
+~include <Mod/Mesh/App/Core/Algorithm.h>
+~include <Mod/Mesh/App/Core/MeshIO.h>
+~include <Mod/Mesh/App/Core/MeshKernel.h>
+~include <Mod/Mesh/App/Core/Elements.h>
+~include <Mod/Mesh/App/Core/Grid.h>
 
 using namespace MeshGui;
 
@@ -609,7 +609,7 @@ void SoFCMeshObjectShape::notify(SoNotList * node)
     updateGLArray = true;
 }
 
-#define RENDER_GLARRAYS
+~define RENDER_GLARRAYS
 
 /**
  * Either renders the complete mesh or only a subset of the points.
@@ -646,23 +646,23 @@ void SoFCMeshObjectShape::GLRender(SoGLRenderAction *action)
                 drawFaces(mesh, &mb, mbind, needNormals, ccw);
             }
             else {
-#ifdef RENDER_GLARRAYS
+~ifdef RENDER_GLARRAYS
                 if (updateGLArray) {
                     updateGLArray = false;
                     generateGLArrays(state);
                 }
                 renderFacesGLArray(action);
-#else
+~else
                 drawFaces(mesh, 0, mbind, needNormals, ccw);
-#endif
+~endif
             }
         }
         else {
-#if 0 && defined (RENDER_GLARRAYS)
+~if 0 && defined (RENDER_GLARRAYS)
             renderCoordsGLArray(action);
-#else
+~else
             drawPoints(mesh, needNormals, ccw);
-#endif
+~endif
         }
 
         // Disable caching for this node
@@ -881,7 +881,7 @@ void SoFCMeshObjectShape::generateGLArrays(SoState * state)
     const MeshCore::MeshPointArray& cP = kernel.GetPoints();
     const MeshCore::MeshFacetArray& cF = kernel.GetFacets();
 
-#if 0
+~if 0
     // Smooth shading
     face_vertices.resize(cP.size() * 6);
     face_indices.resize(3 * cF.size());
@@ -906,7 +906,7 @@ void SoFCMeshObjectShape::generateGLArrays(SoState * state)
             face_indices[indexed++] = idx;
         }
     }
-#else
+~else
     // Flat shading
     face_vertices.reserve(3 * cF.size() * 6); // duplicate each vertex
     face_indices.resize(3 * cF.size());
@@ -927,7 +927,7 @@ void SoFCMeshObjectShape::generateGLArrays(SoState * state)
             indexed++;
         }
     }
-#endif
+~endif
 
     this->index_array.swap(face_indices);
     this->vertex_array.swap(face_vertices);
@@ -1017,7 +1017,7 @@ void SoFCMeshObjectShape::startSelection(SoAction * action, const Mesh::MeshObje
     //glGetDoublev(GL_PROJECTION_MATRIX ,mp);
     glPushMatrix();
     glLoadIdentity();
-    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1#post1259884
+    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1~post1259884
     //gluPickMatrix(x, y, w, h, viewport);
     if (w > 0 && h > 0) {
         glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w, (viewport[3] - 2 * (y - viewport[1])) / h, 0);

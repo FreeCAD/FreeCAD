@@ -21,40 +21,40 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Python.h>
-# include <vtkPolyData.h>
-# include <vtkStructuredGrid.h>
-# include <vtkRectilinearGrid.h>
-# include <vtkUnstructuredGrid.h>
-# include <vtkUniformGrid.h>
-# include <vtkCompositeDataSet.h>
-# include <vtkMultiBlockDataSet.h>
-# include <vtkMultiPieceDataSet.h>
-# include <vtkXMLDataSetWriter.h>
-# include <vtkXMLPolyDataReader.h>
-# include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLUnstructuredGridReader.h>
-# include <vtkXMLRectilinearGridReader.h>
-# include <vtkXMLImageDataReader.h>
-#endif
+~ifndef _PreComp_
+~ include <Python.h>
+~ include <vtkPolyData.h>
+~ include <vtkStructuredGrid.h>
+~ include <vtkRectilinearGrid.h>
+~ include <vtkUnstructuredGrid.h>
+~ include <vtkUniformGrid.h>
+~ include <vtkCompositeDataSet.h>
+~ include <vtkMultiBlockDataSet.h>
+~ include <vtkMultiPieceDataSet.h>
+~ include <vtkXMLDataSetWriter.h>
+~ include <vtkXMLPolyDataReader.h>
+~ include <vtkXMLStructuredGridReader.h>
+~ include <vtkXMLUnstructuredGridReader.h>
+~ include <vtkXMLRectilinearGridReader.h>
+~ include <vtkXMLImageDataReader.h>
+~endif
 
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <CXX/Objects.hxx>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/Reader.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <CXX/Objects.hxx>
 
-#include "PropertyPostDataObject.h"
+~include "PropertyPostDataObject.h"
 
-#ifndef _PreComp_
+~ifndef _PreComp_
 
-#endif
+~endif
 
 using namespace Fem;
 

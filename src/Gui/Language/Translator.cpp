@@ -20,18 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <QApplication>
-# include <QDir>
-# include <QRegularExpression>
-# include <QStringList>
-# include <QTranslator>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <QApplication>
+~ include <QDir>
+~ include <QRegularExpression>
+~ include <QStringList>
+~ include <QTranslator>
+~endif
 
-#include <App/Application.h>
-#include "Translator.h"
+~include <App/Application.h>
+~include "Translator.h"
 
 
 using namespace Gui;
@@ -330,4 +330,4 @@ void Translator::removeTranslators()
     d->translators.clear();
 }
 
-#include "moc_Translator.cpp"
+~include "moc_Translator.cpp"

@@ -22,46 +22,46 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <cassert>
-#   include <memory>
-#   include <xercesc/dom/DOM.hpp>
-#   if (XERCES_VERSION_MAJOR == 2)
-#   include <xercesc/dom/DOMWriter.hpp>
-#   endif
-#   include <xercesc/framework/LocalFileFormatTarget.hpp>
-#   include <xercesc/framework/LocalFileInputSource.hpp>
-#   include <xercesc/framework/MemBufFormatTarget.hpp>
-#   include <xercesc/framework/MemBufInputSource.hpp>
-#   include <xercesc/parsers/XercesDOMParser.hpp>
-#   include <xercesc/sax/ErrorHandler.hpp>
-#   include <xercesc/sax/SAXParseException.hpp>
-#   include <sstream>
-#   include <string>
-#   include <utility>
-#endif
+~ifndef _PreComp_
+~   include <cassert>
+~   include <memory>
+~   include <xercesc/dom/DOM.hpp>
+~   if (XERCES_VERSION_MAJOR == 2)
+~   include <xercesc/dom/DOMWriter.hpp>
+~   endif
+~   include <xercesc/framework/LocalFileFormatTarget.hpp>
+~   include <xercesc/framework/LocalFileInputSource.hpp>
+~   include <xercesc/framework/MemBufFormatTarget.hpp>
+~   include <xercesc/framework/MemBufInputSource.hpp>
+~   include <xercesc/parsers/XercesDOMParser.hpp>
+~   include <xercesc/sax/ErrorHandler.hpp>
+~   include <xercesc/sax/SAXParseException.hpp>
+~   include <sstream>
+~   include <string>
+~   include <utility>
+~endif
 
-#ifdef FC_OS_LINUX
-#   include <unistd.h>
-#endif
+~ifdef FC_OS_LINUX
+~   include <unistd.h>
+~endif
 
-#include "Parameter.h"
-#include "Parameter.inl"
-#include "Console.h"
-#include "Exception.h"
+~include "Parameter.h"
+~include "Parameter.inl"
+~include "Console.h"
+~include "Exception.h"
 
 
-//#ifdef XERCES_HAS_CPP_NAMESPACE
+//~ifdef XERCES_HAS_CPP_NAMESPACE
 //  using namespace xercesc;
-//#endif
+//~endif
 
 XERCES_CPP_NAMESPACE_USE
 using namespace Base;
 
 
-#include "XMLTools.h"
+~include "XMLTools.h"
 
 //**************************************************************************
 //**************************************************************************
@@ -113,7 +113,7 @@ public:
 };
 
 
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
 class DOMPrintFilter : public DOMWriterFilter
 {
 public:
@@ -146,7 +146,7 @@ private:
     unsigned long fWhatToShow;
 
 };
-#else
+~else
 class DOMPrintFilter : public DOMLSSerializerFilter
 {
 public:
@@ -174,7 +174,7 @@ private:
 
    ShowType fWhatToShow;
 };
-#endif
+~endif
 class DOMPrintErrorHandler : public DOMErrorHandler
 {
 public:
@@ -868,12 +868,12 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
     // if this or any of its children is referenced by an observer
     // it cannot be deleted
-#if 1
+~if 1
     if (!it->second->ShouldRemove()) {
         it->second->Clear();
     }
     else {
-#endif
+~endif
         // check if Element in group
         DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
         // if not return
@@ -885,9 +885,9 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
         DOMNode* node = _pGroupNode->removeChild(pcElem);
         node->release();
-#if 1
+~if 1
     }
-#endif
+~endif
 
     // trigger observer
     Notify(Name);
@@ -1181,11 +1181,11 @@ void ParameterManager::Init()
             XMLPlatformUtils::Initialize();
         }
         catch (const XMLException& toCatch) {
-#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN)
+~if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN)
             std::ostringstream err;
-#else
+~else
             std::stringstream err;
-#endif
+~endif
             char *pMsg = XMLString::transcode(toCatch.getMessage());
             err << "Error during Xerces-c Initialization.\n"
                 << "  Exception message:"
@@ -1261,11 +1261,11 @@ int  ParameterManager::LoadDocument(const char* sFileName)
     Base::FileInfo file(sFileName);
 
     try {
-#if defined (FC_OS_WIN32)
+~if defined (FC_OS_WIN32)
         LocalFileInputSource inputSource(reinterpret_cast<const XMLCh*>(file.toStdWString().c_str()));
-#else
+~else
         LocalFileInputSource inputSource(XStr(file.filePath().c_str()).unicodeForm());
-#endif
+~endif
         return LoadDocument(inputSource);
     }
     catch (const Base::Exception& e) {
@@ -1358,11 +1358,11 @@ void  ParameterManager::SaveDocument(const char* sFileName) const
         // LocalFileFormatTarget prints the resultant XML stream
         // to a file once it receives any thing from the serializer.
         //
-#if defined (FC_OS_WIN32)
+~if defined (FC_OS_WIN32)
         XMLFormatTarget *myFormTarget = new LocalFileFormatTarget (reinterpret_cast<const XMLCh*>(file.toStdWString().c_str()));
-#else
+~else
         XMLFormatTarget *myFormTarget = new LocalFileFormatTarget (file.filePath().c_str());
-#endif
+~endif
         SaveDocument(myFormTarget);
         delete myFormTarget;
     }
@@ -1375,7 +1375,7 @@ void  ParameterManager::SaveDocument(const char* sFileName) const
 
 void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
 {
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
     DOMPrintFilter   *myFilter = 0;
 
     try {
@@ -1442,7 +1442,7 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         << std::endl
         << StrX(e.getMessage()) << std::endl;
     }
-#else
+~else
     try {
         std::unique_ptr<DOMPrintFilter>   myFilter;
         std::unique_ptr<DOMErrorHandler>  myErrorHandler;
@@ -1500,7 +1500,7 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         << std::endl
         << StrX(e.getMessage()) << std::endl;
     }
-#endif
+~endif
 }
 
 void  ParameterManager::CreateDocument()
@@ -1618,7 +1618,7 @@ void DOMTreeErrorReporter::resetErrors()
 //**************************************************************************
 // DOMPrintFilter
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
 DOMPrintFilter::DOMPrintFilter(unsigned long whatToShow)
         :fWhatToShow(whatToShow)
 {
@@ -1692,7 +1692,7 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
 
     return DOMNodeFilter::FILTER_ACCEPT;
 }
-#else
+~else
 DOMPrintFilter::DOMPrintFilter(ShowType whatToShow)
     : fWhatToShow(whatToShow)
 {
@@ -1742,7 +1742,7 @@ DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) con
 
     return DOMNodeFilter::FILTER_ACCEPT;
 }
-#endif
+~endif
 
 //**************************************************************************
 //**************************************************************************

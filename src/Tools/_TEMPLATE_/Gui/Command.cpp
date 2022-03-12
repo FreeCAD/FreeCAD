@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+~include <Base/Console.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

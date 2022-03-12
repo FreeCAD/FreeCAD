@@ -21,69 +21,69 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
+~ifndef _PreComp_
+~ include <sstream>
 
-#include <BRep_Tool.hxx>
-#include <BRepGProp.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <Geom_Curve.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GProp_GProps.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_XYZ.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+~include <BRep_Tool.hxx>
+~include <BRepGProp.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepBuilderAPI_MakeEdge.hxx>
+~include <BRepBuilderAPI_MakeWire.hxx>
+~include <BRepBuilderAPI_Copy.hxx>
+~include <BRepLProp_CurveTool.hxx>
+~include <BRepLProp_CLProps.hxx>
+~include <BRepExtrema_DistShapeShape.hxx>
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <BRepBndLib.hxx>
+~include <Bnd_Box.hxx>
+~include <Geom_Curve.hxx>
+~include <GeomAPI_ProjectPointOnCurve.hxx>
+~include <GProp_GProps.hxx>
+~include <gp_Ax2.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Dir.hxx>
+~include <gp_Pln.hxx>
+~include <gp_XYZ.hxx>
+~include <HLRBRep_Algo.hxx>
+~include <HLRAlgo_Projector.hxx>
+~include <HLRBRep_ShapeBounds.hxx>
+~include <HLRBRep_HLRToShape.hxx>
+~include <ShapeFix_ShapeTolerance.hxx>
+~include <ShapeExtend_WireData.hxx>
+~include <ShapeFix_Wire.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Shape.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
 
-#endif
+~endif
 
-#include <limits>
-#include <algorithm>
-#include <cmath>
-#include <GeomLib_Tool.hxx>
+~include <limits>
+~include <algorithm>
+~include <cmath>
+~include <GeomLib_Tool.hxx>
 
-#include <App/Application.h>
-#include <Base/BoundBox.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-#include <Mod/Part/App/PartFeature.h>
+~include <App/Application.h>
+~include <Base/BoundBox.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Parameter.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include "DrawUtil.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "DrawProjectSplit.h"
-#include "DrawHatch.h"
-#include "EdgeWalker.h"
+~include "DrawUtil.h"
+~include "Geometry.h"
+~include "GeometryObject.h"
+~include "DrawProjectSplit.h"
+~include "DrawHatch.h"
+~include "EdgeWalker.h"
 
 
-//#include <Mod/TechDraw/App/DrawProjectSplitPy.h>  // generated from DrawProjectSplitPy.xml
+//~include <Mod/TechDraw/App/DrawProjectSplitPy.h>  // generated from DrawProjectSplitPy.xml
 
 using namespace TechDraw;
 using namespace std;

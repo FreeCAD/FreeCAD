@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QAction>
-# include <QMap>
-# include <QPointer>
-#endif
+~ifndef _PreComp_
+~ include <QAction>
+~ include <QMap>
+~ include <QPointer>
+~endif
 
-#include "ActionFunction.h"
+~include "ActionFunction.h"
 
 
 using namespace Gui;
@@ -177,4 +177,4 @@ void TimerFunction::timeout()
         deleteLater();
 }
 
-#include "moc_ActionFunction.cpp"
+~include "moc_ActionFunction.cpp"

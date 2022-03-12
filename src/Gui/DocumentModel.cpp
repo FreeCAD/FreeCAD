@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QFont>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QFont>
+~endif
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/PropertyLinks.h>
 
-#include "DocumentModel.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "ViewProviderDocumentObject.h"
+~include "DocumentModel.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Document.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;

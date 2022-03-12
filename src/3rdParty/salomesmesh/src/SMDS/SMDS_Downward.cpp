@@ -21,14 +21,14 @@
 // Created: Jun 3, 2010
 // Author: prascle
 
-#include "SMDS_Downward.hxx"
-#include "SMDS_Mesh.hxx"
-#include "utilities.h"
+~include "SMDS_Downward.hxx"
+~include "SMDS_Mesh.hxx"
+~include "utilities.h"
 
-#include <vtkCellType.h>
-#include <vtkCellLinks.h>
+~include <vtkCellType.h>
+~include <vtkCellLinks.h>
 
-#include <map>
+~include <map>
 
 using namespace std;
 
@@ -1425,7 +1425,7 @@ void SMDS_DownPyramid::addDownCell(int cellId, int lowCellId, unsigned char aTyp
 /*! Create a list of faces described by a vtk Type and  an ordered set of Node Id's
  * The pyramid is defined by the five points (0-4) where (0,1,2,3) is the base of the pyramid which,
  * using the right hand rule, forms a quadrilateral whose normal points in the direction of the
- * pyramid apex at vertex #4.
+ * pyramid apex at vertex ~4.
  * @see vtkPyramid.h in Filtering.
  * @param cellId volumeId in vtkUnstructuredGrid
  * @param facesWithNodes vector of face descriptors to be filled

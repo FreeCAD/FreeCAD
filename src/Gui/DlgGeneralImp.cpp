@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QLocale>
-# include <QStyleFactory>
-# include <QTextStream>
-# include <QDesktopServices>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QLocale>
+~ include <QStyleFactory>
+~ include <QTextStream>
+~ include <QDesktopServices>
+~endif
 
-#include "DlgGeneralImp.h"
-#include "ui_DlgGeneral.h"
-#include "Action.h"
-#include "Application.h"
-#include "Command.h"
-#include "DockWindowManager.h"
-#include "MainWindow.h"
-#include "PrefWidgets.h"
-#include "Language/Translator.h"
-#include "Gui/PreferencePackManager.h"
-#include "DlgPreferencesImp.h"
+~include "DlgGeneralImp.h"
+~include "ui_DlgGeneral.h"
+~include "Action.h"
+~include "Application.h"
+~include "Command.h"
+~include "DockWindowManager.h"
+~include "MainWindow.h"
+~include "PrefWidgets.h"
+~include "Language/Translator.h"
+~include "Gui/PreferencePackManager.h"
+~include "DlgPreferencesImp.h"
 
-#include "DlgCreateNewPreferencePackImp.h"
-#include "DlgPreferencePackManagementImp.h"
-#include "DlgRevertToBackupConfigImp.h"
+~include "DlgCreateNewPreferencePackImp.h"
+~include "DlgPreferencePackManagementImp.h"
+~include "DlgRevertToBackupConfigImp.h"
 
 
 using namespace Gui::Dialog;
@@ -417,4 +417,4 @@ void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
 }
 
 
-#include "moc_DlgGeneralImp.cpp"
+~include "moc_DlgGeneralImp.cpp"

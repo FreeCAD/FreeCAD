@@ -21,91 +21,91 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-# include <BRepMesh_IncrementalMesh.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepFilletAPI_MakeFillet.hxx>
-# include <BRepFilletAPI_MakeChamfer.hxx>
-# include <BRepOffsetAPI_MakePipe.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepProj_Projection.hxx>
-# include <BRepTools.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-#if OCC_VERSION_HEX >= 0x060801
-# include <BRepExtrema_ShapeProximity.hxx>
-#endif
-# include <BRepExtrema_SupportType.hxx>
-# include <BRepBndLib.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Trsf.hxx>
-# include <gp_Pln.hxx>
-# include <Poly_Polygon3D.hxx>
-# include <Poly_Triangulation.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopLoc_Location.hxx>
-# include <TopExp.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <HLRAppli_ReflectLines.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepAlgo_NormalProjection.hxx>
-# include <ShapeAnalysis_ShapeTolerance.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
-# include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~ include <BRepMesh_IncrementalMesh.hxx>
+~ include <BRepBuilderAPI_Copy.hxx>
+~ include <BRepBuilderAPI_MakeVertex.hxx>
+~ include <BRepBuilderAPI_Sewing.hxx>
+~ include <BRepBuilderAPI_Transform.hxx>
+~ include <BRepClass3d_SolidClassifier.hxx>
+~ include <BRepFilletAPI_MakeFillet.hxx>
+~ include <BRepFilletAPI_MakeChamfer.hxx>
+~ include <BRepOffsetAPI_MakePipe.hxx>
+~ include <BRepOffsetAPI_MakePipeShell.hxx>
+~ include <BRepProj_Projection.hxx>
+~ include <BRepTools.hxx>
+~ include <BRepExtrema_DistShapeShape.hxx>
+~if OCC_VERSION_HEX >= 0x060801
+~ include <BRepExtrema_ShapeProximity.hxx>
+~endif
+~ include <BRepExtrema_SupportType.hxx>
+~ include <BRepBndLib.hxx>
+~ include <BRep_Tool.hxx>
+~ include <gp_Ax1.hxx>
+~ include <gp_Ax2.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Pnt.hxx>
+~ include <gp_Trsf.hxx>
+~ include <gp_Pln.hxx>
+~ include <Poly_Polygon3D.hxx>
+~ include <Poly_Triangulation.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Iterator.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <TopTools_ListOfShape.hxx>
+~ include <TopTools_ListIteratorOfListOfShape.hxx>
+~ include <TopLoc_Location.hxx>
+~ include <TopExp.hxx>
+~ include <Precision.hxx>
+~ include <Geom_Plane.hxx>
+~ include <HLRAppli_ReflectLines.hxx>
+~ include <BRepGProp.hxx>
+~ include <GProp_GProps.hxx>
+~ include <BRepAlgo_NormalProjection.hxx>
+~ include <ShapeAnalysis_ShapeTolerance.hxx>
+~ include <ShapeFix_ShapeTolerance.hxx>
+~ include <Standard_Version.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/Matrix.h>
-#include <Base/Rotation.h>
-#include <Base/MatrixPy.h>
-#include <Base/Stream.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-#include <App/PropertyStandard.h>
-#include <CXX/Extensions.hxx>
+~include <Base/GeometryPyCXX.h>
+~include <Base/Matrix.h>
+~include <Base/Rotation.h>
+~include <Base/MatrixPy.h>
+~include <Base/Stream.h>
+~include <Base/Vector3D.h>
+~include <Base/VectorPy.h>
+~include <App/PropertyStandard.h>
+~include <CXX/Extensions.hxx>
 
-#include "TopoShape.h"
-#include "PartPyCXX.h"
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapePy.cpp>
+~include "TopoShape.h"
+~include "PartPyCXX.h"
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/TopoShapePy.cpp>
 
-#include "OCCError.h"
-#include <Mod/Part/App/GeometryPy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
-#include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeVertexPy.h>
-#include <Mod/Part/App/TopoShapeSolidPy.h>
-#include <Mod/Part/App/TopoShapeShellPy.h>
-#include <Mod/Part/App/TopoShapeCompSolidPy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
-#include <Mod/Part/App/PlanePy.h>
+~include "OCCError.h"
+~include <Mod/Part/App/GeometryPy.h>
+~include <Mod/Part/App/TopoShapeFacePy.h>
+~include <Mod/Part/App/TopoShapeEdgePy.h>
+~include <Mod/Part/App/TopoShapeWirePy.h>
+~include <Mod/Part/App/TopoShapeVertexPy.h>
+~include <Mod/Part/App/TopoShapeSolidPy.h>
+~include <Mod/Part/App/TopoShapeShellPy.h>
+~include <Mod/Part/App/TopoShapeCompSolidPy.h>
+~include <Mod/Part/App/TopoShapeCompoundPy.h>
+~include <Mod/Part/App/PlanePy.h>
 
 using namespace Part;
 
-#ifndef M_PI
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
+~ifndef M_PI
+    ~define M_PI    3.14159265358979323846 /* pi */
+~endif
 
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
+~ifndef M_PI_2
+    ~define M_PI_2  1.57079632679489661923 /* pi/2 */
+~endif
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapePy::representation(void) const
@@ -179,14 +179,14 @@ PyObject* TopoShapePy::copy(PyObject *args)
     }
 
     if (!shape.IsNull()) {
-#if OCC_VERSION_HEX >= 0x070000
+~if OCC_VERSION_HEX >= 0x070000
         BRepBuilderAPI_Copy c(shape,
                               PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False,
                               PyObject_IsTrue(copyMesh) ? Standard_True : Standard_False);
-#else
+~else
         BRepBuilderAPI_Copy c(shape,
                               PyObject_IsTrue(copyGeom) ? Standard_True : Standard_False);
-#endif
+~endif
         static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(c.Shape());
     }
     return cpy;
@@ -1649,11 +1649,11 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-#if OCC_VERSION_HEX > 0x070300
+~if OCC_VERSION_HEX > 0x070300
                         mkChamfer.Add(radius, radius, TopoDS::Edge(edge), face);
-#else
+~else
                         mkChamfer.Add(radius, TopoDS::Edge(edge), face);
-#endif
+~endif
                     }
                 }
             }
@@ -2575,10 +2575,10 @@ PyObject* _getSupportIndex(const char* suppStr, TopoShape* ts, TopoDS_Shape supp
 
 PyObject* TopoShapePy::proximity(PyObject *args)
 {
-#if OCC_VERSION_HEX >= 0x060801
-#if OCC_VERSION_HEX >= 0x060901
+~if OCC_VERSION_HEX >= 0x060801
+~if OCC_VERSION_HEX >= 0x060901
     typedef BRepExtrema_MapOfIntegerPackedMapOfInteger BRepExtrema_OverlappedSubShapes;
-#endif
+~endif
     PyObject* ps2;
     Standard_Real tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
@@ -2663,11 +2663,11 @@ PyObject* TopoShapePy::proximity(PyObject *args)
     tuple.setItem(0, overlappssindex1);
     tuple.setItem(1, overlappssindex2);
     return Py::new_reference_to(tuple); //face indexes
-#else
+~else
     (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "proximity requires OCCT >= 6.8.1");
     return 0;
-#endif
+~endif
 }
 
 PyObject* TopoShapePy::distToShape(PyObject *args)
@@ -2818,7 +2818,7 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
         return 0;
 
     try {
-#if OCC_VERSION_HEX >= 0x070200
+~if OCC_VERSION_HEX >= 0x070200
         TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
         Bnd_Box bounds;
         BRepBndLib::AddOptimal(shape, bounds,
@@ -2838,9 +2838,9 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
 
         Py::BoundingBox pybox(box);
         return Py::new_reference_to(pybox);
-#else
+~else
         throw Py::RuntimeError("Need OCCT 7.2.0 or higher");
-#endif
+~endif
     }
     catch (const Standard_Failure& e) {
         throw Py::RuntimeError(e.GetMessageString());
@@ -2876,7 +2876,7 @@ PyObject* TopoShapePy::defeaturing(PyObject *args)
 
 // End of Methods, Start of Attributes
 
-#if 0 // see ComplexGeoDataPy::Matrix which does the same
+~if 0 // see ComplexGeoDataPy::Matrix which does the same
 Py::Object TopoShapePy::getLocation(void) const
 {
     const TopLoc_Location& loc = getTopoShapePtr()->getShape().Location();
@@ -2920,7 +2920,7 @@ void TopoShapePy::setLocation(Py::Object o)
         throw Py::TypeError(error);
     }
 }
-#endif
+~endif
 
 Py::String TopoShapePy::getShapeType(void) const
 {

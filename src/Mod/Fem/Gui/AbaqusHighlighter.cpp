@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QRegExp>
-# include <QTextCharFormat>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QRegExp>
+~ include <QTextCharFormat>
+~endif
 
-#include "AbaqusHighlighter.h"
+~include "AbaqusHighlighter.h"
 
 using namespace FemGui;
 

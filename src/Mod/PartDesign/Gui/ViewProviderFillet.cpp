@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "TaskFilletParameters.h"
-#include "ViewProviderFillet.h"
+~include "TaskFilletParameters.h"
+~include "ViewProviderFillet.h"
 
 using namespace PartDesignGui;
 

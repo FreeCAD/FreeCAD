@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include <iomanip>
+~include <iomanip>
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
 
-#include "FeatureViewAnnotation.h"
+~include "FeatureViewAnnotation.h"
 
 using namespace Drawing;
 using namespace std;
@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn *FeatureViewAnnotation::execute(void)
             << "<text id=\"" << Label.getValue() << "\"" << endl
             << " font-family=\"" << Font.getValue() << "\"" << endl
             << " font-size=\"" << Scale.getValue() << "\"" << endl
-            << " fill=\"#" << hr.str() << hg.str() << hb.str() << "\">" << endl;
+            << " fill=\"~" << hr.str() << hg.str() << hb.str() << "\">" << endl;
 
     int index=0;
     for (std::vector<std::string>::const_iterator it = Text.getValues().begin(); it != Text.getValues().end(); ++it) {

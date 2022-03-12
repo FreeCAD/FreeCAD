@@ -23,16 +23,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
+~include <Mod/TechDraw/App/DrawHatch.h>
+~include <Mod/TechDraw/App/DrawGeomHatch.h>
 
-#include "DlgPrefsTechDrawGeneralImp.h"
-#include "ui_DlgPrefsTechDrawGeneral.h"
-#include <Gui/PrefWidgets.h>
+~include "DlgPrefsTechDrawGeneralImp.h"
+~include "ui_DlgPrefsTechDrawGeneral.h"
+~include <Gui/PrefWidgets.h>
 
-#include "PreferencesGui.h"
+~include "PreferencesGui.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -136,4 +136,4 @@ void DlgPrefsTechDrawGeneralImp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawGeneralImp.cpp>
+~include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawGeneralImp.cpp>

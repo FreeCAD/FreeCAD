@@ -25,19 +25,19 @@
 //  Author : Edward AGAPOV, OCC
 //  Module : SMESH
 
-#include "StdMeshers_AutomaticLength.hxx"
+~include "StdMeshers_AutomaticLength.hxx"
 
-#include "SMESH_Mesh.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESH_Algo.hxx"
-#include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESH_Algo.hxx"
+~include "SMESHDS_SubMesh.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopExp.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
 
 using namespace std;
 
@@ -128,7 +128,7 @@ namespace {
     // S = S0 * ( 1 + 14/PI * atan( L / ( 5 * Lmin )))
     return S0 * ( 1. + a14divPI * atan( edgeLen / ( 5 * minLen )));
   }
-#if 0
+~if 0
   //const double a14divPI = 14. / M_PI;
   const double a2div7divPI = 2. / 7. / M_PI;
 
@@ -153,7 +153,7 @@ namespace {
     const double Lratio = edgeLen / minLen;
     return S0 * ( 1. + a2div7divPI * Lratio * atan( 5 * Lratio ));
   }
-#endif
+~endif
   //================================================================================
   /*!
    * \brief Compute segment length for all edges

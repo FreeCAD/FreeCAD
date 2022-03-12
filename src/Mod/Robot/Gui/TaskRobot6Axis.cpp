@@ -21,27 +21,27 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
+~include <Base/Console.h>
+~include <Base/UnitsApi.h>
 
-#include <QString>
-#include <qpalette.h>
-#include <QSlider>
-#include "ui_TaskRobot6Axis.h"
-#include "TaskRobot6Axis.h"
+~include <QString>
+~include <qpalette.h>
+~include <QSlider>
+~include "ui_TaskRobot6Axis.h"
+~include "TaskRobot6Axis.h"
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Placement.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/Placement.h>
 
 
 
@@ -255,4 +255,4 @@ void TaskRobot6Axis::setAxis(float A1,float A2,float A3,float A4,float A5,float 
 
 
 
-#include "moc_TaskRobot6Axis.cpp"
+~include "moc_TaskRobot6Axis.cpp"

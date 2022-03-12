@@ -21,42 +21,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QComboBox>
-# include <QFontDatabase>
-# include <QLocale>
-# include <QPalette>
-# include <QPixmap>
-# include <QTextStream>
-# include <QTimer>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QComboBox>
+~ include <QFontDatabase>
+~ include <QLocale>
+~ include <QPalette>
+~ include <QPixmap>
+~ include <QTextStream>
+~ include <QTimer>
+~endif
 
-#include "PropertyItem.h"
-#include "PropertyView.h"
+~include "PropertyItem.h"
+~include "PropertyView.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Expression.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyUnits.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/DlgPropertyLink.h>
-#include <Gui/FileDialog.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Placement.h>
-#include <Gui/QuantitySpinBox.h>
-#include <Gui/Selection.h>
-#include <Gui/SpinBox.h>
-#include <Gui/VectorListEditor.h>
-#include <Gui/ViewProviderDocumentObject.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/Expression.h>
+~include <App/PropertyGeo.h>
+~include <App/PropertyFile.h>
+~include <App/PropertyUnits.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Base/Tools.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/DlgPropertyLink.h>
+~include <Gui/FileDialog.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Placement.h>
+~include <Gui/QuantitySpinBox.h>
+~include <Gui/Selection.h>
+~include <Gui/SpinBox.h>
+~include <Gui/VectorListEditor.h>
+~include <Gui/ViewProviderDocumentObject.h>
 
 
 using namespace Gui::PropertyEditor;
@@ -1510,9 +1510,9 @@ PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
     layout->addWidget(lineEdit);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+~if defined (Q_OS_MAC)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
-#endif
+~endif
     layout->addWidget(button);
 
     connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClick()));
@@ -4188,9 +4188,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     layout->addWidget(label);
 
     editButton = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+~if defined (Q_OS_MAC)
     editButton->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
-#endif
+~endif
     editButton->setToolTip(tr("Change the linked object"));
     layout->addWidget(editButton);
 
@@ -4228,7 +4228,7 @@ void LinkLabel::updatePropertyLink()
                     "p, li { white-space: pre-wrap; }"
                     "</style></head><body>"
                     "<p>"
-                    "<a href=\"%1#%2.%3\"><span style=\" text-decoration: underline; color:%4;\">%5</span></a>"
+                    "<a href=\"%1~%2.%3\"><span style=\" text-decoration: underline; color:%4;\">%5</span></a>"
                     "</p></body></html>"
                     )
                 .arg(QLatin1String(sobj.getDocumentName().c_str()),
@@ -4395,5 +4395,5 @@ QByteArray PropertyItemEditorFactory::valuePropertyName (int /*type*/) const
     return "";
 }
 
-#include "moc_PropertyItem.cpp"
+~include "moc_PropertyItem.cpp"
 

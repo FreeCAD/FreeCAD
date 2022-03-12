@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QAction>
-# include <QApplication>
-# include <QMenu>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QAction>
+~ include <QApplication>
+~ include <QMenu>
+~endif
 
-#include <Base/Exception.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
+~include <Base/Exception.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/Document.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/Feature.h>
 
-#include "TaskFeatureParameters.h"
+~include "TaskFeatureParameters.h"
 
-#include "ViewProvider.h"
-#include "ViewProviderPy.h"
+~include "ViewProvider.h"
+~include "ViewProviderPy.h"
 
 using namespace PartDesignGui;
 
@@ -142,17 +142,17 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-#if 0
+~if 0
         PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-#endif
+~endif
         Gui::Control().closeDialog();
-#if 0
+~if 0
         if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         }
-#endif
+~endif
         oldTip = NULL;
     }
     else {
@@ -212,17 +212,17 @@ QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
         static const char * const feature_tip_xpm[]={
             "9 9 3 1",
             ". c None",
-            "# c #00cc00",
-            "a c #ffffff",
-            "...###...",
-            ".##aaa##.",
-            ".##aaa##.",
-            "###aaa###",
-            "##aaaaa##",
-            "##aaaaa##",
-            ".##aaa##.",
-            ".##aaa##.",
-            "...###..."};
+            "~ c ~00cc00",
+            "a c ~ffffff",
+            "...~~~...",
+            ".~~aaa~~.",
+            ".~~aaa~~.",
+            "~~~aaa~~~",
+            "~~aaaaa~~",
+            "~~aaaaa~~",
+            ".~~aaa~~.",
+            ".~~aaa~~.",
+            "...~~~..."};
         px = QPixmap(feature_tip_xpm);
 
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
@@ -260,7 +260,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
         // so as to do the clean up required (moving basefeature references, tip management) is from the
         // viewprovider, so we call it here.
         //
-        // fixes (#3084)
+        // fixes (~3084)
 
         FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }

@@ -21,13 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~endif
 
-#include "Geometry.h"
+~include "Geometry.h"
 
-#include "FeatureGeometrySet.h"
+~include "FeatureGeometrySet.h"
 
 
 using namespace Part;

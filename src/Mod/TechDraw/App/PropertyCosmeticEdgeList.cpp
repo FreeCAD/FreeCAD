@@ -21,23 +21,23 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <assert.h>
-#endif
+~ifndef _PreComp_
+~   include <assert.h>
+~endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Console.h>
 
-#include "Cosmetic.h"
-#include "CosmeticEdgePy.h"
+~include "Cosmetic.h"
+~include "CosmeticEdgePy.h"
 
-#include "PropertyCosmeticEdgeList.h"
+~include "PropertyCosmeticEdgeList.h"
 
 
 using namespace App;

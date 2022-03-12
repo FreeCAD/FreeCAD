@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QApplication>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QApplication>
+~endif
 
-#include "App/Document.h"
+~include "App/Document.h"
 
-#include "Command.h"
-#include "ActiveObjectList.h"
-#include "Application.h"
-#include "Document.h"
-#include "ViewProviderDocumentObject.h"
+~include "Command.h"
+~include "ActiveObjectList.h"
+~include "Application.h"
+~include "Document.h"
+~include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;

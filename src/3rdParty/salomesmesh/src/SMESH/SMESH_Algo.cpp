@@ -25,55 +25,55 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 
-#include "SMESH_Algo.hxx"
+~include "SMESH_Algo.hxx"
 
-#include "SMDS_EdgePosition.hxx"
-#include "SMDS_FacePosition.hxx"
-#include "SMDS_MeshElement.hxx"
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESHDS_Mesh.hxx"
-#include "SMESHDS_SubMesh.hxx"
-#include "SMESH_Comment.hxx"
-#include "SMESH_Gen.hxx"
-#include "SMESH_HypoFilter.hxx"
-#include "SMESH_Mesh.hxx"
-#include "SMESH_MeshAlgos.hxx"
-#include "SMESH_TypeDefs.hxx"
-#include "SMESH_subMesh.hxx"
+~include "SMDS_EdgePosition.hxx"
+~include "SMDS_FacePosition.hxx"
+~include "SMDS_MeshElement.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESHDS_Mesh.hxx"
+~include "SMESHDS_SubMesh.hxx"
+~include "SMESH_Comment.hxx"
+~include "SMESH_Gen.hxx"
+~include "SMESH_HypoFilter.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_MeshAlgos.hxx"
+~include "SMESH_TypeDefs.hxx"
+~include "SMESH_subMesh.hxx"
 
-#include <Basics_OCCTVersion.hxx>
+~include <Basics_OCCTVersion.hxx>
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepLProp.hxx>
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_Surface.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Vec.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepLProp.hxx>
+~include <BRep_Tool.hxx>
+~include <GCPnts_AbscissaPoint.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_Surface.hxx>
+~include <TopExp.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Vertex.hxx>
+~include <TopoDS_Wire.hxx>
+~include <gp_Pnt.hxx>
+~include <gp_Pnt2d.hxx>
+~include <gp_Vec.hxx>
 
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_Failure.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
 
-#include "utilities.h"
+~include "utilities.h"
 
-#include <algorithm>
-#include <limits>
-#include "SMESH_ProxyMesh.hxx"
-#include "SMESH_MesherHelper.hxx"
-#include <LDOMParser.hxx>
+~include <algorithm>
+~include <limits>
+~include "SMESH_ProxyMesh.hxx"
+~include "SMESH_MesherHelper.hxx"
+~include <LDOMParser.hxx>
 using namespace std;
 
 //================================================================================

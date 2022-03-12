@@ -25,8 +25,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "E57Exception.h"
-#include "E57Version.h"
+~include "E57Exception.h"
+~include "E57Version.h"
 
 namespace e57
 {
@@ -139,7 +139,7 @@ namespace e57
    {
       os << "**** Got an e57 exception: " << e57::Utilities::errorCodeToString( errorCode() ) << std::endl;
 
-#ifdef E57_DEBUG
+~ifdef E57_DEBUG
       os << "  Debug info: " << std::endl;
       os << "    context: " << context_ << std::endl;
       os << "    sourceFunctionName: " << sourceFunctionName_ << std::endl;
@@ -152,7 +152,7 @@ namespace e57
          << std::endl;
       if ( reportingFileName != nullptr )
          os << reportingFileName << "(" << reportingLineNumber << ") : error C0:  <--- reported on" << std::endl;
-#endif
+~endif
    }
 
    /*!
@@ -270,9 +270,9 @@ namespace e57
    {
       /// REVISION_ID should be passed from compiler command line
 
-#ifndef REVISION_ID
-#error "Need to specify REVISION_ID on command line"
-#endif
+~ifndef REVISION_ID
+~error "Need to specify REVISION_ID on command line"
+~endif
 
       astmMajor = E57_FORMAT_MAJOR;
       astmMinor = E57_FORMAT_MINOR;

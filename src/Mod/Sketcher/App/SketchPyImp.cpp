@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
+~include <Base/VectorPy.h>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/GeometryCurvePy.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <CXX/Objects.hxx>
+~include <Mod/Part/App/Geometry.h>
+~include <Mod/Part/App/GeometryCurvePy.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <CXX/Objects.hxx>
 
-#include "Sketch.h"
-#include "Constraint.h"
-#include "ConstraintPy.h"
+~include "Sketch.h"
+~include "Constraint.h"
+~include "ConstraintPy.h"
 
 // inclusion of the generated files (generated out of SketchPy.xml)
-#include "SketchPy.h"
-#include "SketchPy.cpp"
+~include "SketchPy.h"
+~include "SketchPy.cpp"
 
 using namespace Sketcher;
 using namespace Part;

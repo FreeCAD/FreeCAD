@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "MeshFlatteningLscmRelax.h"
-#include <Eigen/IterativeLinearSolvers>
-#include <Eigen/SparseCholesky>
-#include <Eigen/SVD>
-#include <iostream>
-#include <algorithm>
-#include <cmath>
+~include "PreCompiled.h"
+~include "MeshFlatteningLscmRelax.h"
+~include <Eigen/IterativeLinearSolvers>
+~include <Eigen/SparseCholesky>
+~include <Eigen/SVD>
+~include <iostream>
+~include <algorithm>
+~include <cmath>
 
-#include <set>
-#include <map>
-#include <vector>
-#include <tuple>
-#include <array>
+~include <set>
+~include <map>
+~include <vector>
+~include <tuple>
+~include <array>
 
-#ifndef M_PI
-#define M_PI    3.14159265358979323846f
-#endif
+~ifndef M_PI
+~define M_PI    3.14159265358979323846f
+~endif
 
 // TODO:
 // area constrained (scale the final unwrapped mesh to the original area)

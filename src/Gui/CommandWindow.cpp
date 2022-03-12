@@ -21,24 +21,24 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QCoreApplication>
-# include <QStatusBar>
-# include <QEvent>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QCoreApplication>
+~ include <QStatusBar>
+~ include <QEvent>
+~endif
 
-#include "Command.h"
-#include "Action.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "View.h"
-#include "Document.h"
-#include "DlgActivateWindowImp.h"
-#include "DockWindowManager.h"
+~include "Command.h"
+~include "Action.h"
+~include "Application.h"
+~include "MainWindow.h"
+~include "View.h"
+~include "Document.h"
+~include "DlgActivateWindowImp.h"
+~include "DockWindowManager.h"
 
-#include <Base/Exception.h>
-#include <App/Document.h>
+~include <Base/Exception.h>
+~include <App/Document.h>
 
 using namespace Gui;
 
@@ -141,7 +141,7 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     sStatusTip    = QT_TR_NOOP("Close active window");
     // In QMdiSubWindow the 'QKeySequence::Close' shortcut is set which will
     // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
-    // reset in MainWindow::addWindow() (#0002631)
+    // reset in MainWindow::addWindow() (~0002631)
     sAccel        = keySequenceToAccel(QKeySequence::Close);
     sPixmap       = "Std_CloseActiveWindow";
     eType         = NoTransaction;

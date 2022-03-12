@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <QCoreApplication>
-#include <QTcpSocket>
-#include <stdexcept>
-#include <memory>
+~include <QCoreApplication>
+~include <QTcpSocket>
+~include <stdexcept>
+~include <memory>
 
-#include "Server.h"
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
+~include "Server.h"
+~include <Base/Exception.h>
+~include <Base/Interpreter.h>
 
 using namespace Web;
 
@@ -232,4 +232,4 @@ std::string AppServer::runPython(const QByteArray& msg)
     return str;
 }
 
-#include "moc_Server.cpp"
+~include "moc_Server.cpp"

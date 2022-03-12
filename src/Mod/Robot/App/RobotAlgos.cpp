@@ -21,42 +21,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
+~ifndef _PreComp_
 
-#endif
+~endif
 
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/chainfksolver.hpp"
-#include "kdl_cp/chainfksolverpos_recursive.hpp"
-#include "kdl_cp/frames_io.hpp"
-#include "kdl_cp/chainiksolver.hpp"
-#include "kdl_cp/chainiksolvervel_pinv.hpp"
-#include "kdl_cp/chainjnttojacsolver.hpp"
-#include "kdl_cp/chainiksolverpos_nr.hpp"
+~include "kdl_cp/chain.hpp"
+~include "kdl_cp/chainfksolver.hpp"
+~include "kdl_cp/chainfksolverpos_recursive.hpp"
+~include "kdl_cp/frames_io.hpp"
+~include "kdl_cp/chainiksolver.hpp"
+~include "kdl_cp/chainiksolvervel_pinv.hpp"
+~include "kdl_cp/chainjnttojacsolver.hpp"
+~include "kdl_cp/chainiksolverpos_nr.hpp"
 
-#include <stdio.h>
-#include <iostream>
+~include <stdio.h>
+~include <iostream>
 
-#include <Base/Console.h>
-#include <Base/VectorPy.h>
+~include <Base/Console.h>
+~include <Base/VectorPy.h>
 
 
-#include "RobotAlgos.h"
+~include "RobotAlgos.h"
 
 using namespace Robot;
 using namespace std;
 using namespace KDL;
 
-#ifndef M_PI
-    #define M_PI 3.14159265358979323846
-    #define M_PI    3.14159265358979323846 /* pi */
-#endif
+~ifndef M_PI
+    ~define M_PI 3.14159265358979323846
+    ~define M_PI    3.14159265358979323846 /* pi */
+~endif
 
-#ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
-#endif
+~ifndef M_PI_2
+    ~define M_PI_2  1.57079632679489661923 /* pi/2 */
+~endif
 
 //===========================================================================
 // FeatureView

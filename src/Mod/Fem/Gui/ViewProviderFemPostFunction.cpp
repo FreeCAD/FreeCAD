@@ -21,53 +21,53 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSurroundScale.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoMatrixTransform.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/manips/SoTransformManip.h>
-# include <Inventor/manips/SoCenterballManip.h>
-# include <Inventor/manips/SoTransformerManip.h>
-# include <Inventor/manips/SoTransformBoxManip.h>
-# include <Inventor/manips/SoHandleBoxManip.h>
-# include <Inventor/manips/SoTabBoxManip.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/engines/SoDecomposeMatrix.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/draggers/SoTransformerDragger.h>
-# include <Inventor/draggers/SoTransformBoxDragger.h>
-# include <Inventor/draggers/SoHandleBoxDragger.h>
+~ifndef _PreComp_
+~ include <Inventor/nodes/SoCoordinate3.h>
+~ include <Inventor/nodes/SoMaterial.h>
+~ include <Inventor/nodes/SoSurroundScale.h>
+~ include <Inventor/nodes/SoLineSet.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~ include <Inventor/nodes/SoTransform.h>
+~ include <Inventor/nodes/SoMatrixTransform.h>
+~ include <Inventor/nodes/SoSphere.h>
+~ include <Inventor/manips/SoTransformManip.h>
+~ include <Inventor/manips/SoCenterballManip.h>
+~ include <Inventor/manips/SoTransformerManip.h>
+~ include <Inventor/manips/SoTransformBoxManip.h>
+~ include <Inventor/manips/SoHandleBoxManip.h>
+~ include <Inventor/manips/SoTabBoxManip.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/engines/SoDecomposeMatrix.h>
+~ include <Inventor/draggers/SoCenterballDragger.h>
+~ include <Inventor/draggers/SoTransformerDragger.h>
+~ include <Inventor/draggers/SoTransformBoxDragger.h>
+~ include <Inventor/draggers/SoHandleBoxDragger.h>
 
-# include <QMessageBox>
+~ include <QMessageBox>
 
-# include <boost_bind_bind.hpp>
+~ include <boost_bind_bind.hpp>
 
-# include <math.h>
-#endif
+~ include <math.h>
+~endif
 
-#include "ViewProviderFemPostFunction.h"
-#include "TaskPostBoxes.h"
-#include <Mod/Fem/App/FemPostFunction.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/SoNavigationDragger.h>
-#include <Gui/Macro.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
-#include <App/Document.h>
-#include <App/PropertyUnits.h>
+~include "ViewProviderFemPostFunction.h"
+~include "TaskPostBoxes.h"
+~include <Mod/Fem/App/FemPostFunction.h>
+~include <Base/Console.h>
+~include <Base/Interpreter.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/SoNavigationDragger.h>
+~include <Gui/Macro.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Gui/Control.h>
+~include <App/Document.h>
+~include <App/PropertyUnits.h>
 
-#include "ui_PlaneWidget.h"
-#include "ui_SphereWidget.h"
+~include "ui_PlaneWidget.h"
+~include "ui_SphereWidget.h"
 
 using namespace FemGui;
 namespace bp = boost::placeholders;
@@ -616,4 +616,4 @@ void SphereWidget::radiusChanged(double) {
     }
 }
 
-#include "moc_ViewProviderFemPostFunction.cpp"
+~include "moc_ViewProviderFemPostFunction.cpp"

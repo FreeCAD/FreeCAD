@@ -10,18 +10,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Python.h>
+~endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
-#include <Gui/Language/Translator.h>
-#include "ImageView.h"
-#include "Workbench.h"
-#include "ViewProviderImagePlane.h"
+~include <Base/Console.h>
+~include <Base/PyObjectBase.h>
+~include <Gui/Application.h>
+~include <Gui/Language/Translator.h>
+~include "ImageView.h"
+~include "Workbench.h"
+~include "ViewProviderImagePlane.h"
 
 // use a different name to CreateCommand()
 void CreateImageCommands();

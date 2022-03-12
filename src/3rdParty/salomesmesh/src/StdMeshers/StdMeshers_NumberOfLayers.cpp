@@ -25,11 +25,11 @@
 //  Author : Edward AGAPOV
 //  Module : SMESH
 //
-#include "StdMeshers_NumberOfLayers.hxx"
+~include "StdMeshers_NumberOfLayers.hxx"
 
 
-#include "SMESH_Mesh.hxx"
-#include "utilities.h"
+~include "SMESH_Mesh.hxx"
+~include "utilities.h"
 
 using namespace std;
 

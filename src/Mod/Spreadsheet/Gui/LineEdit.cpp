@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QEvent>
-# include <QKeyEvent>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QEvent>
+~ include <QKeyEvent>
+~endif
 
-#include <QCoreApplication>
+~include <QCoreApplication>
 
-#include "LineEdit.h"
+~include "LineEdit.h"
 
 using namespace SpreadsheetGui;
 
@@ -80,4 +80,4 @@ bool LineEdit::event(QEvent *event)
     return Gui::ExpressionLineEdit::event(event);
 }
 
-#include "moc_LineEdit.cpp"
+~include "moc_LineEdit.cpp"

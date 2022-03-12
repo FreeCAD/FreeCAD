@@ -22,36 +22,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#if 0
-#ifndef _PreComp_
-# include <assert.h>
-# include <sstream>
-# include <BRepTools.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepCheck_Result.hxx>
-# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
-# include <IGESControl_Controller.hxx>
-# include <IGESControl_Writer.hxx>
-# include <IGESControl_Reader.hxx>
-# include <STEPControl_Writer.hxx>
-# include <STEPControl_Reader.hxx>
-# include <StlAPI_Writer.hxx>
-# include <Interface_Static.hxx>
-# include <TopoDS_Iterator.hxx>
-#endif
+~include "PreCompiled.h"
+~if 0
+~ifndef _PreComp_
+~ include <assert.h>
+~ include <sstream>
+~ include <BRepTools.hxx>
+~ include <BRep_Builder.hxx>
+~ include <BRepCheck_Analyzer.hxx>
+~ include <BRepCheck_Result.hxx>
+~ include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+~ include <IGESControl_Controller.hxx>
+~ include <IGESControl_Writer.hxx>
+~ include <IGESControl_Reader.hxx>
+~ include <STEPControl_Writer.hxx>
+~ include <STEPControl_Reader.hxx>
+~ include <StlAPI_Writer.hxx>
+~ include <Interface_Static.hxx>
+~ include <TopoDS_Iterator.hxx>
+~endif
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
-#include <Base/Sequencer.h>
-#include "TopologyPy.h"
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Console.h>
+~include <Base/Sequencer.h>
+~include "TopologyPy.h"
 
-# include <BRepOffsetAPI_MakeOffsetShape.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-#include <BRepAlgoAPI_Section.hxx>
-# include <GeomAPI_IntSS.hxx>
+~ include <BRepOffsetAPI_MakeOffsetShape.hxx>
+~ include <BRepAlgoAPI_Cut.hxx>
+~include <BRepAlgoAPI_Section.hxx>
+~ include <GeomAPI_IntSS.hxx>
 
 using Base::Console;
 
@@ -395,18 +395,18 @@ PyObject *TopoShapePyOld::analyze(PyObject *args)
   Py_Return; 
 }
 
-#if 0 // need a define for version of OCC
-//#include <Message_ProgressIndicator.hxx>
-//#include <Message_ProgressScale.hxx>
-#include <MoniTool_ProgressIndicator.hxx>
-#include <MoniTool_ProgressScale.hxx>
-#include <Transfer_FinderProcess.hxx>
-#include <TCollection_HAsciiString.hxx>
-#include <Transfer_TransientProcess.hxx>
-#include <IGESData_IGESEntity.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <XSControl_WorkSession.hxx>
-#include <Interface_InterfaceModel.hxx>
+~if 0 // need a define for version of OCC
+//~include <Message_ProgressIndicator.hxx>
+//~include <Message_ProgressScale.hxx>
+~include <MoniTool_ProgressIndicator.hxx>
+~include <MoniTool_ProgressScale.hxx>
+~include <Transfer_FinderProcess.hxx>
+~include <TCollection_HAsciiString.hxx>
+~include <Transfer_TransientProcess.hxx>
+~include <IGESData_IGESEntity.hxx>
+~include <XSControl_TransferReader.hxx>
+~include <XSControl_WorkSession.hxx>
+~include <Interface_InterfaceModel.hxx>
 
 class ProgressIndicator : public MoniTool_ProgressIndicator
 //class ProgressIndicator : public Message_ProgressIndicator
@@ -443,7 +443,7 @@ public:
     return false;
   }
 };
-#endif
+~endif
 
 PyObject *TopoShapePyOld::importIGES(PyObject *args)
 {
@@ -468,7 +468,7 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
       return NULL;
     }
 
-#if 0
+~if 0
     // get all root shapes 
     Handle(TColStd_HSequenceOfTransient) aList=aReader.GiveList("xst-transferrable-roots");
     for (Standard_Integer j=1; j<=aList->Length(); j++) {
@@ -497,7 +497,7 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
     //int ct = aList->Length();
     //Reader.TransferList(aList);
     //ct = aReader.NbShapes();
-#endif
+~endif
 
     // one shape that contains all subshapes
     aReader.TransferRoots();
@@ -517,7 +517,7 @@ PyObject *TopoShapePyOld::exportIGES(PyObject *args)
 
   PY_TRY {
 
-#if 0
+~if 0
     // An OCC example
     IGESControl_Controller::Init();
 	  IGESControl_Writer writer( Interface_Static::CVal( "XSTEP.iges.unit" ),
@@ -525,13 +525,13 @@ PyObject *TopoShapePyOld::exportIGES(PyObject *args)
 		writer.AddShape ( _cTopoShape );
 	  writer.ComputeModel();
 	  writer.Write( (const Standard_CString)filename );
-#endif
+~endif
 
     // write iges file
     IGESControl_Controller::Init();
     IGESControl_Writer aWriter;
 
-#if 0
+~if 0
     Handle(Transfer_FinderProcess) proc = aWriter.TransferProcess();
     Handle(MoniTool_ProgressIndicator) prog = new ProgressIndicator();
     proc->SetProgress(prog);
@@ -539,12 +539,12 @@ PyObject *TopoShapePyOld::exportIGES(PyObject *args)
     Standard_CString byvalue = Interface_Static::CVal("write.iges.header.author");
     Interface_Static::SetCVal ("write.iges.header.author", "FreeCAD");
     //Interface_Static::SetCVal ("write.iges.header.company", "FreeCAD");
-#endif
+~endif
 
     aWriter.AddShape(_cTopoShape);
-#if 0
+~if 0
     aWriter.ComputeModel();
-#endif
+~endif
 
     if (aWriter.Write((const Standard_CString)filename) != IFSelect_RetDone) {
       PyErr_SetString(PartExceptionOCCError,"Writing IGES failed");
@@ -577,7 +577,7 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
       return NULL;
     }
 
-#if 0 // Some interesting stuff
+~if 0 // Some interesting stuff
     Handle(TColStd_HSequenceOfTransient) aList=aReader.GiveList("xst-transferrable-roots");
     for (Standard_Integer j=1; j<=aList->Length(); j++) {
       Handle(IGESData_IGESEntity) igesEntity=Handle(IGESData_IGESEntity)::DownCast(aList->Value(j));
@@ -594,12 +594,12 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
       }
       const char* type = igesEntity->DynamicType()->Name();
     }
-#endif
+~endif
 
     aReader.TransferRoots();
     _cTopoShape = aReader.OneShape();
 
-#if 0 // Some interesting stuff
+~if 0 // Some interesting stuff
 	  Handle(XSControl_WorkSession) ws = aReader.WS();
 	  //SetModel( reader.StepModel() );
 	  Handle(XSControl_TransferReader) tr = ws->TransferReader();
@@ -619,7 +619,7 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
 			  //map.Bind(tsh, ws->Model()->StringLabel(ent)->ShallowCopy() );
 		  }
 	  }
-#endif
+~endif
 
   } PY_CATCH;
 
@@ -710,4 +710,4 @@ PyObject *TopoShapePyOld::exportSTL(PyObject *args)
   Py_Return; 
 }
 
-#endif
+~endif

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_Section.hxx>
-# include <Standard_Version.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_Section.hxx>
+~ include <Standard_Version.hxx>
+~endif
 
-#include "FeaturePartSection.h"
+~include "FeaturePartSection.h"
 
-#include <Base/Exception.h>
+~include <Base/Exception.h>
 
 using namespace Part;
 
@@ -51,9 +51,9 @@ short Section::mustExecute() const
 BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a section operation:
-#if OCC_VERSION_HEX < 0x060900
+~if OCC_VERSION_HEX < 0x060900
     return new BRepAlgoAPI_Section(base, tool);
-#else
+~else
     bool approx = Approximation.getValue();
     std::unique_ptr<BRepAlgoAPI_Section> mkSection(new BRepAlgoAPI_Section());
     mkSection->Init1(base);
@@ -63,5 +63,5 @@ BRepAlgoAPI_BooleanOperation* Section::makeOperation(const TopoDS_Shape& base, c
     if (!mkSection->IsDone())
         throw Base::RuntimeError("Section failed");
     return mkSection.release();
-#endif
+~endif
 }

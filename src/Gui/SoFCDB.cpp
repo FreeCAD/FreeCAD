@@ -21,61 +21,61 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <Inventor/VRMLnodes/SoVRMLParent.h>
-# include <Inventor/SbString.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <QDir>
-# include <QProcess>
-# include <QTemporaryFile>
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Inventor/actions/SoToVRML2Action.h>
+~ include <Inventor/VRMLnodes/SoVRMLGroup.h>
+~ include <Inventor/VRMLnodes/SoVRMLParent.h>
+~ include <Inventor/SbString.h>
+~ include <Inventor/nodes/SoGroup.h>
+~ include <QDir>
+~ include <QProcess>
+~ include <QTemporaryFile>
+~ include <sstream>
+~endif
 
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
-#include <Inventor/VRMLnodes/SoVRMLNormal.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoMFNode.h>
+~include <Inventor/VRMLnodes/SoVRMLGeometry.h>
+~include <Inventor/VRMLnodes/SoVRMLNormal.h>
+~include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+~include <Inventor/VRMLnodes/SoVRMLShape.h>
+~include <Inventor/fields/SoSFNode.h>
+~include <Inventor/fields/SoMFNode.h>
 
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <zipios++/gzipoutputstream.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <Base/Tools.h>
+~include <zipios++/gzipoutputstream.h>
 
-#include "SoFCDB.h"
-#include "SoFCColorBar.h"
-#include "SoFCColorLegend.h"
-#include "SoFCColorGradient.h"
-#include "SoFCSelection.h"
-#include "SoFCBackgroundGradient.h"
-#include "SoFCBoundingBox.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCInteractiveElement.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCVectorizeSVGAction.h"
-#include "SoFCVectorizeU3DAction.h"
-#include "SoAxisCrossKit.h"
-#include "SoTextLabel.h"
-#include "SoNavigationDragger.h"
-#include "Inventor/SoDrawingGrid.h"
-#include "Inventor/SoAutoZoomTranslation.h"
-#include "Inventor/MarkerBitmaps.h"
-#include "Inventor/SmSwitchboard.h"
-#include "SoFCCSysDragger.h"
-#include "SoMouseWheelEvent.h"
+~include "SoFCDB.h"
+~include "SoFCColorBar.h"
+~include "SoFCColorLegend.h"
+~include "SoFCColorGradient.h"
+~include "SoFCSelection.h"
+~include "SoFCBackgroundGradient.h"
+~include "SoFCBoundingBox.h"
+~include "SoFCSelection.h"
+~include "SoFCUnifiedSelection.h"
+~include "SoFCSelectionAction.h"
+~include "SoFCInteractiveElement.h"
+~include "SoFCUnifiedSelection.h"
+~include "SoFCVectorizeSVGAction.h"
+~include "SoFCVectorizeU3DAction.h"
+~include "SoAxisCrossKit.h"
+~include "SoTextLabel.h"
+~include "SoNavigationDragger.h"
+~include "Inventor/SoDrawingGrid.h"
+~include "Inventor/SoAutoZoomTranslation.h"
+~include "Inventor/MarkerBitmaps.h"
+~include "Inventor/SmSwitchboard.h"
+~include "SoFCCSysDragger.h"
+~include "SoMouseWheelEvent.h"
 
-#include "propertyeditor/PropertyItem.h"
-#include "NavigationStyle.h"
-#include "GestureNavigationStyle.h"
-#include "Flag.h"
-#include "SelectionObject.h"
-#include "View3DPy.h"
+~include "propertyeditor/PropertyItem.h"
+~include "NavigationStyle.h"
+~include "GestureNavigationStyle.h"
+~include "Flag.h"
+~include "SelectionObject.h"
+~include "View3DPy.h"
 
 using namespace Gui;
 using namespace Gui::Inventor;
@@ -253,7 +253,7 @@ const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
     static_buffer_size = 1024;
     out.setBuffer(static_buffer, static_buffer_size, buffer_realloc);
     if (root && root->getTypeId().isDerivedFrom(SoVRMLParent::getClassTypeId()))
-        out.setHeaderString("#VRML V2.0 utf8");
+        out.setHeaderString("~VRML V2.0 utf8");
 
     SoWriteAction wa(&out);
     wa.apply(root);
@@ -407,7 +407,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, const char* filename, bool binary)
 
 bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& buffer)
 {
-#if 0
+~if 0
     writeToVRML(node, buffer);
     if (buffer.empty())
         return false;
@@ -459,7 +459,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     }
 
     return false;
-#else
+~else
     SoNode* noSwitches = replaceSwitchesInSceneGraph(node);
     noSwitches->ref();
     SoVRMLAction vrml2;
@@ -511,7 +511,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     noSwitches->unref();
 
     return true;
-#endif
+~endif
 }
 
 void Gui::SoFCDB::writeX3DFields(SoNode* node, std::map<SoNode*, std::string>& nodeMap,

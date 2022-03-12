@@ -23,12 +23,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Gui/Application.h"
-#include "DlgSettingsFemZ88Imp.h"
-#include "ui_DlgSettingsFemZ88.h"
-#include <Gui/PrefWidgets.h>
+~include "Gui/Application.h"
+~include "DlgSettingsFemZ88Imp.h"
+~include "ui_DlgSettingsFemZ88.h"
+~include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
@@ -69,4 +69,4 @@ void DlgSettingsFemZ88Imp::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsFemZ88Imp.cpp"
+~include "moc_DlgSettingsFemZ88Imp.cpp"

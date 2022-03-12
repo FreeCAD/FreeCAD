@@ -21,61 +21,61 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeShell.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Hypr.hxx>
-# include <gp_Parab.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Quaternion.hxx>
-# include <Geom_Geometry.hxx>
-# include <Geom_Surface.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomConvert_ApproxSurface.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <Precision.hxx>
-# include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
-# include <ShapeAnalysis_Surface.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <Geom_BSplineSurface.hxx>
-#endif
+~ifndef _PreComp_
+~ include <BRepBuilderAPI_MakeFace.hxx>
+~ include <BRepBuilderAPI_MakeShell.hxx>
+~ include <gp_Circ.hxx>
+~ include <gp_Dir.hxx>
+~ include <gp_Elips.hxx>
+~ include <gp_Hypr.hxx>
+~ include <gp_Parab.hxx>
+~ include <gp_Vec.hxx>
+~ include <gp_Lin.hxx>
+~ include <gp_Quaternion.hxx>
+~ include <Geom_Geometry.hxx>
+~ include <Geom_Surface.hxx>
+~ include <GeomAPI_ProjectPointOnSurf.hxx>
+~ include <GeomConvert_ApproxSurface.hxx>
+~ include <GeomLProp_SLProps.hxx>
+~ include <Precision.hxx>
+~ include <Standard_Failure.hxx>
+~ include <Standard_Version.hxx>
+~ include <ShapeAnalysis_Surface.hxx>
+~ include <GeomAPI_IntSS.hxx>
+~ include <GeomLib_IsPlanarSurface.hxx>
+~ include <Geom_BSplineSurface.hxx>
+~endif
 
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
+~include <Base/VectorPy.h>
 
-#include "OCCError.h"
-#include "Geometry.h"
-#include <Mod/Part/App/GeometrySurfacePy.h>
-#include <Mod/Part/App/GeometrySurfacePy.cpp>
-#include <Mod/Part/App/GeometryCurvePy.h>
-#include <Mod/Part/App/BSplineSurfacePy.h>
+~include "OCCError.h"
+~include "Geometry.h"
+~include <Mod/Part/App/GeometrySurfacePy.h>
+~include <Mod/Part/App/GeometrySurfacePy.cpp>
+~include <Mod/Part/App/GeometryCurvePy.h>
+~include <Mod/Part/App/BSplineSurfacePy.h>
 
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/BezierCurvePy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/ArcOfCirclePy.h>
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/ArcOfEllipsePy.h>
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/OffsetCurvePy.h>
+~include <Mod/Part/App/LinePy.h>
+~include <Mod/Part/App/LineSegmentPy.h>
+~include <Mod/Part/App/BezierCurvePy.h>
+~include <Mod/Part/App/BSplineCurvePy.h>
+~include <Mod/Part/App/CirclePy.h>
+~include <Mod/Part/App/ArcOfCirclePy.h>
+~include <Mod/Part/App/EllipsePy.h>
+~include <Mod/Part/App/ArcOfEllipsePy.h>
+~include <Mod/Part/App/HyperbolaPy.h>
+~include <Mod/Part/App/ArcOfHyperbolaPy.h>
+~include <Mod/Part/App/ParabolaPy.h>
+~include <Mod/Part/App/ArcOfParabolaPy.h>
+~include <Mod/Part/App/OffsetCurvePy.h>
 
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeShellPy.h>
+~include <Mod/Part/App/TopoShape.h>
+~include <Mod/Part/App/TopoShapePy.h>
+~include <Mod/Part/App/TopoShapeFacePy.h>
+~include <Mod/Part/App/TopoShapeShellPy.h>
 
 namespace Part {
 const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f, double l)
@@ -137,9 +137,9 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
             if (!PyArg_ParseTuple(args, "|dddd", &u1,&u2,&v1,&v2))
                 return 0;
             BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2
-#if OCC_VERSION_HEX >= 0x060502
+~if OCC_VERSION_HEX >= 0x060502
               , Precision::Confusion()
-#endif
+~endif
             );
             TopoDS_Shape sh = mkBuilder.Shape();
             return new TopoShapeFacePy(new TopoShape(sh));

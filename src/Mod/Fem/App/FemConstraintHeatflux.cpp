@@ -23,19 +23,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <Precision.hxx>
-#include <TopoDS.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#endif
+~ifndef _PreComp_
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <Precision.hxx>
+~include <TopoDS.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pln.hxx>
+~include <gp_Pnt.hxx>
+~endif
 
-#include "FemConstraintHeatflux.h"
+~include "FemConstraintHeatflux.h"
 
 using namespace Fem;
 

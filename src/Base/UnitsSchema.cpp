@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
+~include "PreCompiled.h"
+~ifdef __GNUC__
+~ include <unistd.h>
+~endif
 
-#include <QLocale>
-#include <QString>
+~include <QLocale>
+~include <QString>
 
-#include "UnitsSchema.h"
+~include "UnitsSchema.h"
 
 
 using namespace Base;

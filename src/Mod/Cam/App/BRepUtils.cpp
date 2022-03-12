@@ -1,15 +1,15 @@
-#include "BRepUtils.h"
+~include "BRepUtils.h"
 
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <TopoDS_Shape.hxx>
+~include <GProp_GProps.hxx>
+~include <BRepGProp.hxx>
+~include <TopExp.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS.hxx>
 
 
 

@@ -21,29 +21,29 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <iostream>
-# include <algorithm>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cmath>
+~ include <iostream>
+~ include <algorithm>
+~endif
 
-#include <Base/Converter.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Persistence.h>
-#include <Base/Stream.h>
-#include <Base/Writer.h>
-#include <Base/VectorPy.h>
+~include <Base/Converter.h>
+~include <Base/Exception.h>
+~include <Base/Matrix.h>
+~include <Base/Persistence.h>
+~include <Base/Stream.h>
+~include <Base/Writer.h>
+~include <Base/VectorPy.h>
 
-#include "Points.h"
-#include "Properties.h"
-#include "PointsPy.h"
+~include "Points.h"
+~include "Properties.h"
+~include "PointsPy.h"
 
-#include <QtConcurrentMap>
-#ifdef _MSC_VER
-# include <ppl.h>
-#endif
+~include <QtConcurrentMap>
+~ifdef _MSC_VER
+~ include <ppl.h>
+~endif
 
 using namespace Points;
 using namespace std;
@@ -393,15 +393,15 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the normal vectors
-#ifdef _MSC_VER
+~ifdef _MSC_VER
     Concurrency::parallel_for_each(_lValueList.begin(), _lValueList.end(), [rot](Base::Vector3f& value) {
         value = rot * value;
     });
-#else
+~else
     QtConcurrent::blockingMap(_lValueList, [rot](Base::Vector3f& value) {
         rot.multVec(value, value);
     });
-#endif
+~endif
 
     hasSetValue();
 }

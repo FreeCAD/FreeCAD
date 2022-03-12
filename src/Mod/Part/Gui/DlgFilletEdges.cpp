@@ -21,59 +21,59 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-# include <climits>
-# include <sstream>
-# include <BRep_Tool.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <QItemDelegate>
-# include <QLocale>
-# include <QHeaderView>
-# include <QMessageBox>
-# include <QVBoxLayout>
-# include <QItemSelection>
-# include <QItemSelectionModel>
-# include <QTimer>
-# include <boost_bind_bind.hpp>
-# include <Python.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoLineDetail.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <algorithm>
+~ include <climits>
+~ include <sstream>
+~ include <BRep_Tool.hxx>
+~ include <TopoDS.hxx>
+~ include <TopoDS_Edge.hxx>
+~ include <TopoDS_Shape.hxx>
+~ include <TopExp.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopTools_ListOfShape.hxx>
+~ include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~ include <TopTools_IndexedMapOfShape.hxx>
+~ include <QItemDelegate>
+~ include <QLocale>
+~ include <QHeaderView>
+~ include <QMessageBox>
+~ include <QVBoxLayout>
+~ include <QItemSelection>
+~ include <QItemSelectionModel>
+~ include <QTimer>
+~ include <boost_bind_bind.hpp>
+~ include <Python.h>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/details/SoLineDetail.h>
+~endif
 
-#include "DlgFilletEdges.h"
-#include "ui_DlgFilletEdges.h"
-#include "SoBrepFaceSet.h"
-#include "SoBrepEdgeSet.h"
-#include "SoBrepPointSet.h"
+~include "DlgFilletEdges.h"
+~include "ui_DlgFilletEdges.h"
+~include "SoBrepFaceSet.h"
+~include "SoBrepEdgeSet.h"
+~include "SoBrepPointSet.h"
 
 
-#include "../App/PartFeature.h"
-#include "../App/FeatureFillet.h"
-#include "../App/FeatureChamfer.h"
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/QuantitySpinBox.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Window.h>
+~include "../App/PartFeature.h"
+~include "../App/FeatureFillet.h"
+~include "../App/FeatureChamfer.h"
+~include <Base/UnitsApi.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Gui/Application.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/QuantitySpinBox.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/Selection.h>
+~include <Gui/SelectionFilter.h>
+~include <Gui/SelectionObject.h>
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/ViewProvider.h>
+~include <Gui/Window.h>
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -132,7 +132,7 @@ FilletRadiusModel::FilletRadiusModel(QObject * parent) : QStandardItemModel(pare
 
 void FilletRadiusModel::updateCheckStates()
 {
-    // See http://www.qtcentre.org/threads/18856-Checkboxes-in-Treeview-do-not-get-refreshed?s=b0fea2bfc66da1098413ae9f2a651a68&p=93201#post93201
+    // See http://www.qtcentre.org/threads/18856-Checkboxes-in-Treeview-do-not-get-refreshed?s=b0fea2bfc66da1098413ae9f2a651a68&p=93201~post93201
     /*emit*/ layoutChanged();
 }
 
@@ -608,13 +608,13 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         }
         model->blockSignals(block);
 
-        // #0002273
+        // ~0002273
         if (twoRadii) {
             ui->filletType->setCurrentIndex(1);
             on_filletType_activated(1);
         }
 
-        // #0001746
+        // ~0001746
         ui->filletStartRadius->blockSignals(true);
         ui->filletStartRadius->setValue(startRadius);
         ui->filletStartRadius->blockSignals(false);
@@ -635,7 +635,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
           *
         // If sub-objects are already selected then only add the un-selected parts.
         // This is impotant to avoid recursive calls of rmvSelection() which
-        // invalidates the internal iterator (#0002200).
+        // invalidates the internal iterator (~0002200).
         if (selIt != selObj.end()) {
             std::vector<std::string> selElements = selIt->getSubNames();
             std::sort(selElements.begin(), selElements.end());
@@ -1091,4 +1091,4 @@ bool TaskChamferEdges::reject()
     return true;
 }
 
-#include "moc_DlgFilletEdges.cpp"
+~include "moc_DlgFilletEdges.cpp"

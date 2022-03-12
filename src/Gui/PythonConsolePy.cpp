@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "PythonConsolePy.h"
-#include "PythonConsole.h"
+~include "PythonConsolePy.h"
+~include "PythonConsole.h"
 
 
 using namespace Gui;

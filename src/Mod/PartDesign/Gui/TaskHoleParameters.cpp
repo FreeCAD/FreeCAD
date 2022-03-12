@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Mod/PartDesign/App/FeatureHole.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/Document.h>
+~include <Gui/Selection.h>
+~include <Gui/ViewProvider.h>
+~include <Mod/PartDesign/App/FeatureHole.h>
 
-#include "ui_TaskHoleParameters.h"
-#include "TaskHoleParameters.h"
+~include "ui_TaskHoleParameters.h"
+~include "TaskHoleParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -43,13 +43,13 @@ namespace bp = boost::placeholders;
 
 // See Hole::HoleCutType_ISOmetric_Enums
 // and Hole::HoleCutType_ISOmetricfine_Enums
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("PartDesignGui::TaskHoleParameters", "Counterbore");
     qApp->translate("PartDesignGui::TaskHoleParameters", "Countersink");
     qApp->translate("PartDesignGui::TaskHoleParameters", "Cheesehead (deprecated)");
     qApp->translate("PartDesignGui::TaskHoleParameters", "Countersink socket screw (deprecated)");
     qApp->translate("PartDesignGui::TaskHoleParameters", "Cap screw (deprecated)");
-#endif
+~endif
 
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
     : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole parameters"))
@@ -1163,7 +1163,7 @@ TaskDlgHoleParameters::~TaskDlgHoleParameters()
 
 }
 
-#include "moc_TaskHoleParameters.cpp"
+~include "moc_TaskHoleParameters.cpp"
 
 TaskHoleParameters::Observer::Observer(TaskHoleParameters* _owner, PartDesign::Hole* _hole)
     : DocumentObserver(_hole->getDocument())

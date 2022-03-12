@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <sstream>
+~endif
 
-#include "Unit.h"
-#include "Exception.h"
-#include "Quantity.h"
+~include "Unit.h"
+~include "Exception.h"
+~include "Quantity.h"
 
 
 using namespace Base;
@@ -525,5 +525,5 @@ Unit Unit::SpecificHeat                (2,0,-2,0,-1);
 Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);
 Unit Unit::DynamicViscosity            (-1,1,-1);  // SI unit: kg/m/s
-Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity
-Unit Unit::VacuumPermittivity          (-3,-1,4,2); // SI unit: A²*s⁴/kg/m³ https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity
+Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity~Kinematic_viscosity
+Unit Unit::VacuumPermittivity          (-3,-1,4,2); // SI unit: A²*s⁴/kg/m³ https://en.wikipedia.org/wiki/Permittivity~Vacuum_permittivity

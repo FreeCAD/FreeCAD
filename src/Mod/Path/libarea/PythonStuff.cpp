@@ -2,47 +2,47 @@
 // Copyright 2011, Dan Heeks
 // This program is released under the BSD license. See the file COPYING for details.
 
-#include "PythonStuff.h"
+~include "PythonStuff.h"
 
-#include "Area.h"
-#include "Point.h"
-#include "AreaDxf.h"
-#include "kurve/geometry.h"
-#include "Adaptive.hpp"
+~include "Area.h"
+~include "Point.h"
+~include "AreaDxf.h"
+~include "kurve/geometry.h"
+~include "Adaptive.hpp"
 
-#if defined (_POSIX_C_SOURCE)
-#   undef    _POSIX_C_SOURCE
-#endif
+~if defined (_POSIX_C_SOURCE)
+~   undef    _POSIX_C_SOURCE
+~endif
 
-#if defined (_XOPEN_SOURCE)
-#   undef    _XOPEN_SOURCE
-#endif
+~if defined (_XOPEN_SOURCE)
+~   undef    _XOPEN_SOURCE
+~endif
 
-#if _DEBUG
-#undef _DEBUG
-#include <Python.h>
-#define _DEBUG
-#else
-#include <Python.h>
-#endif
+~if _DEBUG
+~undef _DEBUG
+~include <Python.h>
+~define _DEBUG
+~else
+~include <Python.h>
+~endif
 
-#if defined(__GNUG__) && !defined(__clang__)
-#pragma implementation
-#endif
+~if defined(__GNUG__) && !defined(__clang__)
+~pragma implementation
+~endif
 
-#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+~define BOOST_BIND_GLOBAL_PLACEHOLDERS
 
-//#include <boost/progress.hpp>
-//#include <boost/timer.hpp>
-#include <boost/foreach.hpp>
-#include <boost_python.hpp>
-#include <boost/python/module.hpp>
-#include <boost/python/class.hpp>
-#include <boost/python/wrapper.hpp>
-#include <boost/python/call.hpp>
+//~include <boost/progress.hpp>
+//~include <boost/timer.hpp>
+~include <boost/foreach.hpp>
+~include <boost_python.hpp>
+~include <boost/python/module.hpp>
+~include <boost/python/class.hpp>
+~include <boost/python/wrapper.hpp>
+~include <boost/python/call.hpp>
 
 
-#include "clipper.hpp"
+~include "clipper.hpp"
 using namespace ClipperLib;
 
 
@@ -75,13 +75,13 @@ boost::python::tuple transformed_point(const geoff_geometry::Matrix &matrix, dou
 static void print_curve(const CCurve& c)
 {
 	std::size_t nvertices = c.m_vertices.size();
-#if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
+~if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
 	printf("number of vertices = %d\n", nvertices);
-#elif defined(_WIN32)
+~elif defined(_WIN32)
 	printf("number of vertices = %Iu\n", nvertices);
-#else
+~else
 	printf("number of vertices = %lu\n", nvertices);
-#endif
+~endif
 	int i = 0;
 	for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
 	{

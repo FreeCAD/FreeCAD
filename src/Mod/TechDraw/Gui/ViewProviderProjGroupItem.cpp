@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
- #include <QMessageBox>
- #include <QTextStream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+ ~include <QMessageBox>
+ ~include <QTextStream>
+~endif
 
-#include <App/DocumentObject.h>
-#include <Gui/Control.h>
-#include <Gui/MainWindow.h>
+~include <App/DocumentObject.h>
+~include <Gui/Control.h>
+~include <Gui/MainWindow.h>
 
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+~include <Mod/TechDraw/App/DrawProjGroup.h>
+~include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
-#include "ViewProviderProjGroupItem.h"
+~include "ViewProviderProjGroupItem.h"
 
 using namespace TechDrawGui;
 

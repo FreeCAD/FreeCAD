@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <Precision.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <BRepBuilderAPI_MakeFace.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <Precision.hxx>
+~endif
 
-#include "FeatureCut.h"
-#include <BRepAlgoAPI_Cut.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+~include "FeatureCut.h"
+~include <BRepAlgoAPI_Cut.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopoDS_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <gp_Pnt.hxx>
+~include <Base/Tools.h>
+~include <Base/Exception.h>
 
 using namespace Surface;
 

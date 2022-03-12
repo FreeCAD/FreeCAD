@@ -26,9 +26,9 @@
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
 //
-#include "StdMeshers_LengthFromEdges.hxx"
+~include "StdMeshers_LengthFromEdges.hxx"
 
-#include "utilities.h"
+~include "utilities.h"
 
 using namespace std;
 

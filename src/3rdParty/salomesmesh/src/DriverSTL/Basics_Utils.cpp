@@ -22,15 +22,15 @@
 //  Module : SALOME
 //
 
-#include "Basics_Utils.hxx"
-#include <string.h>
-#include <stdlib.h>
+~include "Basics_Utils.hxx"
+~include <string.h>
+~include <stdlib.h>
 
-#ifndef WIN32
-#include <unistd.h>
-#include <sys/stat.h>
-#include <execinfo.h>
-#endif
+~ifndef WIN32
+~include <unistd.h>
+~include <sys/stat.h>
+~include <execinfo.h>
+~endif
 
 
 namespace Kernel_Utils
@@ -51,15 +51,15 @@ namespace Kernel_Utils
           case 0:
             break;
           default:
-#ifdef EINVAL
+~ifdef EINVAL
           case EINVAL:
-#endif
-#ifdef ENAMETOOLONG
+~endif
+~ifdef ENAMETOOLONG
           case ENAMETOOLONG:
-#endif
-#ifdef WIN32
+~endif
+~ifdef WIN32
           case WSAEFAULT:  
-#endif
+~endif
             delete [] s;
             continue;
           }
@@ -106,7 +106,7 @@ namespace Kernel_Utils
     return guid;
   }
 
-#ifndef WIN32
+~ifndef WIN32
   void print_traceback()
   {
     void *array[50];
@@ -124,9 +124,9 @@ namespace Kernel_Utils
 
     free (strings);
   }
-#else
-  #if (_MSC_VER >= 1400) // Visual Studio 2005
-  #include <sstream>
+~else
+  ~if (_MSC_VER >= 1400) // Visual Studio 2005
+  ~include <sstream>
   int setenv(const char *name, const char *value, int rewrite)
   {
     std::stringstream sstr;
@@ -135,7 +135,7 @@ namespace Kernel_Utils
       return _putenv(sstr.str().c_str());
     else return -1;
   }
-  #endif
-#endif
+  ~endif
+~endif
 
 }

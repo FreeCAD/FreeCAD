@@ -30,15 +30,15 @@
  *
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-# include <QGraphicsView>
-# include <QMouseEvent>
-# include <qmath.h>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QGraphicsView>
+~ include <QMouseEvent>
+~ include <qmath.h>
+~endif
 
-#include <GraphicsViewZoom.h>
+~include <GraphicsViewZoom.h>
 
 GraphicsViewZoom::GraphicsViewZoom(QGraphicsView* view)
   : QObject(view), _view(view), m_invert_zoom(false)
@@ -93,4 +93,4 @@ bool GraphicsViewZoom::eventFilter(QObject *object, QEvent *event) {
   return false;
 }
 
-#include "moc_GraphicsViewZoom.cpp"
+~include "moc_GraphicsViewZoom.cpp"

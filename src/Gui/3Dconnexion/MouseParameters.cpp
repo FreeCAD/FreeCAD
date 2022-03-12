@@ -5,8 +5,8 @@ Development tools and related technology provided under license from 3Dconnexion
 */
 
 
-#include "PreCompiled.h"
-#include "MouseParameters.h"
+~include "PreCompiled.h"
+~include "MouseParameters.h"
 
 MouseParameters::MouseParameters(): fNavigation(kObjectMode)
 	  , fPivot(kAutoPivot)

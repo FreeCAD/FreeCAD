@@ -24,51 +24,51 @@
 // Created   : Mon Aug  2 10:30:00 2004
 // Author    : Edward AGAPOV (eap)
 //
-#include "SMESH_Block.hxx"
+~include "SMESH_Block.hxx"
 
-#include "SMDS_MeshNode.hxx"
-#include "SMDS_MeshVolume.hxx"
-#include "SMDS_VolumeTool.hxx"
-#include "SMESH_MeshAlgos.hxx"
+~include "SMDS_MeshNode.hxx"
+~include "SMDS_MeshVolume.hxx"
+~include "SMDS_VolumeTool.hxx"
+~include "SMESH_MeshAlgos.hxx"
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Curve2d.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepTools.hxx>
-#include <BRepTools_WireExplorer.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
-#include <Bnd_Box.hxx>
-#include <Extrema_ExtPC.hxx>
-#include <Extrema_ExtPS.hxx>
-#include <Extrema_POnCurv.hxx>
-#include <Extrema_POnSurf.hxx>
-#include <Geom2d_Curve.hxx>
-#include <ShapeAnalysis.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopoDS_Wire.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <math_FunctionSetRoot.hxx>
-#include <math_Matrix.hxx>
-#include <math_Vector.hxx>
+~include <BRepAdaptor_Curve.hxx>
+~include <BRepAdaptor_Curve2d.hxx>
+~include <BRepAdaptor_Surface.hxx>
+~include <BRepTools.hxx>
+~include <BRepTools_WireExplorer.hxx>
+~include <BRep_Builder.hxx>
+~include <BRep_Tool.hxx>
+~include <Bnd_B2d.hxx>
+~include <Bnd_Box.hxx>
+~include <Extrema_ExtPC.hxx>
+~include <Extrema_ExtPS.hxx>
+~include <Extrema_POnCurv.hxx>
+~include <Extrema_POnSurf.hxx>
+~include <Geom2d_Curve.hxx>
+~include <ShapeAnalysis.hxx>
+~include <TopExp_Explorer.hxx>
+~include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+~include <TopTools_ListIteratorOfListOfShape.hxx>
+~include <TopTools_ListOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Compound.hxx>
+~include <TopoDS_Face.hxx>
+~include <TopoDS_Iterator.hxx>
+~include <TopoDS_Wire.hxx>
+~include <gp_Trsf.hxx>
+~include <gp_Vec.hxx>
+~include <math_FunctionSetRoot.hxx>
+~include <math_Matrix.hxx>
+~include <math_Vector.hxx>
 
-#include <utilities.h>
+~include <utilities.h>
 
-#include <list>
-#include <limits>
+~include <list>
+~include <limits>
 
 using namespace std;
 
-//#define DEBUG_PARAM_COMPUTE
+//~define DEBUG_PARAM_COMPUTE
 
 //================================================================================
 /*!
@@ -556,10 +556,10 @@ Standard_Boolean SMESH_Block::Values(const math_Vector& theXYZ,
     theDf( 1, DRV_3 ) = myValues[ DRV_3 ];
     return true;
   }
-#ifdef DEBUG_PARAM_COMPUTE
+~ifdef DEBUG_PARAM_COMPUTE
   MESSAGE ( "PARAM GUESS: " << params.X() << " "<< params.Y() << " "<< params.X() );
   myNbIterations++; // how many times call ShellPoint()
-#endif
+~endif
   ShellPoint( params, P );
 
   gp_Vec dP( myPoint, P );
@@ -599,9 +599,9 @@ Standard_Boolean SMESH_Block::Values(const math_Vector& theXYZ,
       // drv[ iP - 1 ] = dPi / 0.001;
     }
     for ( int iP = 0; iP < 3; iP++ ) {
-#if 1
+~if 1
       theDf( 1, iP + 1 ) = dP * drv[iP];
-#else
+~else
       // Distance from P to plane passing through myPoint and defined
       // by the 2 other derivative directions:
       // like IntAna_IntConicQuad::Perform (const gp_Lin& L, const gp_Pln& P)
@@ -616,12 +616,12 @@ Standard_Boolean SMESH_Block::Values(const math_Vector& theXYZ,
         double Dis = plnNorm * P - plnNorm * myPoint;
         theDf( 1, iP + 1 ) = Dis/Direc;
       }
-#endif
+~endif
     }
-#ifdef DEBUG_PARAM_COMPUTE
+~ifdef DEBUG_PARAM_COMPUTE
     MESSAGE ( "F = " << theFxyz(1) << " DRV: " << theDf(1,1) << " " << theDf(1,2) << " " << theDf(1,3) );
     myNbIterations +=3; // how many times call ShellPoint()
-#endif
+~endif
 
     // store better values
     myParam              = params;
@@ -674,12 +674,12 @@ bool SMESH_Block::computeParameters(const gp_Pnt& thePoint,
     mySquareFunc = !mySquareFunc;
     nbLoops++;
   }
-#ifdef DEBUG_PARAM_COMPUTE
+~ifdef DEBUG_PARAM_COMPUTE
   mySumDist += distance();
   MESSAGE ( " ------ SOLUTION: ( "<< myParam.X() <<" "<< myParam.Y() <<" "<< myParam.Z() <<" )"<<endl
          << " ------ DIST : " << distance() << "\t Tol=" << myTolerance << "\t Nb LOOPS=" << nbLoops << endl
          << " ------ NB IT: " << myNbIterations << ",  SUM DIST: " << mySumDist );
-#endif
+~endif
 
   theParams = myParam;
 
@@ -814,9 +814,9 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
       }
   }
 
-#ifdef DEBUG_PARAM_COMPUTE
-  MESSAGE ( " #### POINT " <<thePoint.X()<<" "<<thePoint.Y()<<" "<<thePoint.Z()<<" ####" );
-#endif
+~ifdef DEBUG_PARAM_COMPUTE
+  MESSAGE ( " ~~~~ POINT " <<thePoint.X()<<" "<<thePoint.Y()<<" "<<thePoint.Z()<<" ~~~~" );
+~endif
 
   if ( myTolerance < 0 ) myTolerance = 1e-6;
 
@@ -839,10 +839,10 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
       if ( ++nbGetWorst > 2 )
         return computeParameters( thePoint, theParams, solution, theShapeID );
     }
-#ifdef DEBUG_PARAM_COMPUTE
+~ifdef DEBUG_PARAM_COMPUTE
     MESSAGE ( "PARAMS: ( " << params.X() <<" "<< params.Y() <<" "<< params.Z() <<" )" );
     MESSAGE ( "DIST: " << sqrt( sqDist ) );
-#endif
+~endif
 
     if ( sqDist < sqDistance ) { // get better
       sqDistance = sqDist;
@@ -884,13 +884,13 @@ bool SMESH_Block::ComputeParameters(const gp_Pnt& thePoint,
 
     nbLoops++;
   }
-#ifdef DEBUG_PARAM_COMPUTE
+~ifdef DEBUG_PARAM_COMPUTE
   myNbIterations += nbLoops*4; // how many times ShellPoint called
   mySumDist += sqrt( sqDistance );
   MESSAGE ( " ------ SOLUTION: ( "<<solution.X()<<" "<<solution.Y()<<" "<<solution.Z()<<" )"<< std::endl
          << " ------ DIST : " << sqrt( sqDistance ) << "\t Tol=" << myTolerance << "\t Nb LOOPS=" << nbLoops << std::endl
          << " ------ NB IT: " << myNbIterations << ",  SUM DIST: " << mySumDist );
-#endif
+~endif
 
   if ( myFaceIndex > 0 )
     theParams.SetCoord( myFaceIndex, myFaceParam );
@@ -1002,10 +1002,10 @@ bool SMESH_Block::findUVByHalfDivision( const gp_Pnt&             thePoint,
   // find a range of parameters including the UV
 
   double xMin, xMax, yMin, yMax;
-  //#define _DEBUG_REFINE_
-#ifdef _DEBUG_REFINE_
+  //~define _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
   cout << "SMESH_Block::refineParametersOnFace(): dividing Starts at dist " << distance()<< endl;
-#endif
+~endif
   double dx = 0.1, xSol = theParams.Coord( tface.GetUInd() );
   double dy = 0.1, ySol = theParams.Coord( tface.GetVInd() );
   gp_XYZ xXYZ( 0,0,0 ); xXYZ.SetCoord( tface.GetUInd(), 1 );
@@ -1030,10 +1030,10 @@ bool SMESH_Block::findUVByHalfDivision( const gp_Pnt&             thePoint,
       ySol = 0.5 * (yMax + yMin) ;
       if ( xMin == 0. && yMin == 0. && xMax == 1. && yMax == 1. ) // avoid infinit loop
       {
-#ifdef _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
         cout << "SMESH_Block::refineParametersOnFace(): tface.IsUVInQuad() fails" << endl;
       cout << " nbGetUV = " << nbGetUV << endl;
-#endif
+~endif
         break;
       }
     }
@@ -1100,10 +1100,10 @@ bool SMESH_Block::findUVByHalfDivision( const gp_Pnt&             thePoint,
     }
     if ( !xDivided && !yDivided )
     {
-#ifdef _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
       cout << "SMESH_Block::refineParametersOnFace(): nothing divided" << endl;
       cout << " nbGetUV = " << nbGetUV << endl;
-#endif
+~endif
       break;
     }
 
@@ -1112,17 +1112,17 @@ bool SMESH_Block::findUVByHalfDivision( const gp_Pnt&             thePoint,
     sol.SetCoord( tface.GetVInd(), 0.5 * ( yMin + yMax ));
     if ( saveBetterSolution( sol, theParams, thePoint.SquareDistance( tface.Point( sol ))))
     {
-#ifdef _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
       cout << "SMESH_Block::refineParametersOnFace(): dividing suceeded" << endl;
       cout << " nbGetUV = " << nbGetUV << endl;
-#endif
+~endif
         return true;
     }
   }
-#ifdef _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
   cout << "SMESH_Block::refineParametersOnFace(): dividing Ends at dist " << distance()<< endl;
   cout << " nbGetUV = " << nbGetUV << endl;
-#endif
+~endif
 
   return false;
 }
@@ -1146,10 +1146,10 @@ bool SMESH_Block::findUVAround( const gp_Pnt&             thePoint,
                                 gp_XYZ&                   theParams,
                                 int                       nbGetWorstLimit )
 {
-#ifdef _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
   cout << "SMESH_Block::refineParametersOnFace(): walk around Starts at dist " << distance()<< endl;
   cout << " nbGetUV = " << (nbGetUV=0) << endl;
-#endif
+~endif
   const double paramTol = 0.001;
   const double dx = 0.01, dy = 0.01;
   double xMin = theParams.Coord( tface.GetUInd() ), xMax;
@@ -1282,10 +1282,10 @@ bool SMESH_Block::findUVAround( const gp_Pnt&             thePoint,
         xMax = 1;
     }
   }
-#ifdef _DEBUG_REFINE_
+~ifdef _DEBUG_REFINE_
   cout << "SMESH_Block::refineParametersOnFace(): walk around failed at dist " << distance()<< endl;
   //cout << " nbGetUV = " << nbGetUV << endl;
-#endif
+~endif
 
   return false;
 }
@@ -1376,7 +1376,7 @@ bool SMESH_Block::EdgeParameters(const int theEdgeID, const double theU, gp_XYZ&
 //purpose  : debug an id of a block sub-shape
 //=======================================================================
 
-#define CASEDUMP(id,strm) case id: strm << #id; break;
+~define CASEDUMP(id,strm) case id: strm << ~id; break;
 
 ostream& SMESH_Block::DumpShapeID (const int id, ostream& stream)
 {
@@ -1556,7 +1556,7 @@ int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
                           theEdges.begin(), ++theEdges.begin());
           TopExp::Vertices( theEdges.front(), vv[0], vv[1], true );
           if ( iE++ > theNbEdgesInWires.back() ) {
-#ifdef _DEBUG_
+~ifdef _DEBUG_
             gp_Pnt p = BRep_Tool::Pnt( theFirstVertex );
             MESSAGE ( " : Warning : vertex "<< theFirstVertex.TShape().operator->()
                    << " ( " << p.X() << " " << p.Y() << " " << p.Z() << " )" 
@@ -1572,7 +1572,7 @@ int SMESH_Block::GetOrderedEdges (const TopoDS_Face&   theFace,
               MESSAGE_ADD ( i << " " << v.TShape().operator->() << " "
                             << p.X() << " " << p.Y() << " " << p.Z() << " " << std::endl );
             }
-#endif
+~endif
             break; // break infinite loop
           }
         }
@@ -1600,7 +1600,7 @@ void SMESH_Block::init()
 //purpose  : prepare to work with theVolume
 //=======================================================================
 
-#define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
+~define gpXYZ(n) gp_XYZ(n->X(),n->Y(),n->Z())
 
 bool SMESH_Block::LoadMeshBlock(const SMDS_MeshVolume*        theVolume,
                                 const int                     theNode000Index,

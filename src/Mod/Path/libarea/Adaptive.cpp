@@ -20,12 +20,12 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "Adaptive.hpp"
-#include <iostream>
-#include <cmath>
-#include <cstring>
-#include <ctime>
-#include <algorithm>
+~include "Adaptive.hpp"
+~include <iostream>
+~include <cmath>
+~include <cstring>
+~include <ctime>
+~include <algorithm>
 
 namespace ClipperLib
 {
@@ -36,8 +36,8 @@ namespace AdaptivePath
 {
 using namespace ClipperLib;
 using namespace std;
-#define SAME_POINT_TOL_SQRD_SCALED 4.0
-#define UNUSED(expr) (void)(expr)
+~define SAME_POINT_TOL_SQRD_SCALED 4.0
+~define UNUSED(expr) (void)(expr)
 
 //*****************************************
 // Utils - inline
@@ -859,18 +859,18 @@ class PerfCounter
 	}
 	inline void Start()
 	{
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 		start_ticks = clock();
 		if (running)
 		{
 			cerr << "PerfCounter already running:" << name << endl;
 		}
 		running = true;
-#endif
+~endif
 	}
 	inline void Stop()
 	{
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 		if (!running)
 		{
 			cerr << "PerfCounter not running:" << name << endl;
@@ -879,7 +879,7 @@ class PerfCounter
 		start_ticks = clock();
 		count++;
 		running = false;
-#endif
+~endif
 	}
 	void DumpResults()
 	{
@@ -1507,9 +1507,9 @@ double Adaptive2d::CalcCutArea(Clipper &clip, const IntPoint &c1, const IntPoint
 			{
 				area = __DBL_MAX__;
 				Perf_CalcCutAreaCirc.Stop();
-				// #ifdef DEV_MODE
+				// ~ifdef DEV_MODE
 				// 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," << double(c2.Y)/scaleFactor  << ") conventional mode" << endl;
-				// #endif
+				// ~endif
 				return area;
 			}
 		}
@@ -1730,9 +1730,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 	clip.Execute(ClipType::ctDifference, crossing);
 	referenceCutArea = fabs(Area(crossing[0]));
 	optimalCutAreaPD = 2 * stepOverFactor * referenceCutArea / toolRadiusScaled;
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 	cout << "optimalCutAreaPD:" << optimalCutAreaPD << " scaleFactor:" << scaleFactor << " toolRadiusScaled:" << toolRadiusScaled << " helixRampRadiusScaled:" << helixRampRadiusScaled << endl;
-#endif
+~endif
 	//******************************
 	// Convert input paths to clipper
 	//******************************
@@ -2700,9 +2700,9 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 	bool prevDistTrend = false;
 
 	double perf_total_len = 0;
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 	clock_t start_clock = clock();
-#endif
+~endif
 	ClearedArea clearedBeforePass(toolRadiusScaled);
 	clearedBeforePass.SetClearedPaths(cleared.GetCleared());
 
@@ -2863,9 +2863,9 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			}
 			if (rotateStep >= 180)
 			{
-				#ifdef DEV_MODE
+				~ifdef DEV_MODE
 					cerr << "Warning: unexpected number of rotate iterations." << endl;
-				#endif
+				~endif
 				break;
 			}
 
@@ -2933,12 +2933,12 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			}
 			else
 			{
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 				// if(point_index==0) {
 				// 	engage_no_cut_count++;
-				// 	cout<<"Break:no cut #" << engage_no_cut_count << ", bad engage, pass:" << pass << " over_cut_count:" << over_cut_count << endl;
+				// 	cout<<"Break:no cut ~" << engage_no_cut_count << ", bad engage, pass:" << pass << " over_cut_count:" << over_cut_count << endl;
 				// }
-#endif
+~endif
 				//cout<<"Break: no cut @" << point_index << endl;
 				if(noCutDistance>stepOverScaled) break;
 				noCutDistance+=stepScaled;
@@ -3100,7 +3100,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		output.ReturnMotionType = IsClearPath(returnPath, cleared) ? MotionType::mtLinkClear : MotionType::mtLinkNotClear;
 
 		// dump performance results
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 		Perf_ProcessPolyNode.Stop();
 		Perf_ProcessPolyNode.DumpResults();
 		Perf_PointIterations.DumpResults();
@@ -3112,9 +3112,9 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		Perf_AppendToolPath.DumpResults();
 		Perf_IsAllowedToCutTrough.DumpResults();
 		Perf_IsClearPath.DumpResults();
-#endif
+~endif
 		CheckReportProgress(progressPaths, true);
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 		double duration = ((double) (clock() - start_clock)) / CLOCKS_PER_SEC;
 		cout << "PolyNode perf:" << perf_total_len / double(scaleFactor) / duration << " mm/sec"
 			<< " processed_points:" << total_points
@@ -3123,7 +3123,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			<< " iter_per_point:" << (double(total_iterations) / ((double(total_points) + 0.001)))
 			<< " total_exceeded:" << total_exceeded << " (" << 100 * double(total_exceeded) / double(total_points) << "%)"
 			<< endl;
-#endif
+~endif
 
 		// warn about invalid paths being detected
 		if(!allCutsAllowed) {

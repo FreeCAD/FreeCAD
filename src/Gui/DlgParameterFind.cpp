@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QPushButton>
+~endif
 
-#include "ui_DlgParameterFind.h"
-#include "DlgParameterFind.h"
-#include "DlgParameterImp.h"
+~include "ui_DlgParameterFind.h"
+~include "DlgParameterFind.h"
+~include "DlgParameterImp.h"
 
 
 using namespace Gui::Dialog;
@@ -284,4 +284,4 @@ void DlgParameterFind::reject()
     QDialog::reject();
 }
 
-#include "moc_DlgParameterFind.cpp"
+~include "moc_DlgParameterFind.cpp"

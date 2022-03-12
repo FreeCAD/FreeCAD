@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
-#endif
+~ifndef _PreComp_
+~ include <QMessageBox>
+~ include <QPushButton>
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
-#include "WorkflowManager.h"
+~include <App/Application.h>
+~include <App/Document.h>
+~include <Gui/Application.h>
+~include <Gui/Command.h>
+~include <Gui/MainWindow.h>
+~include <Mod/PartDesign/App/Body.h>
+~include <Mod/PartDesign/App/Feature.h>
+~include "WorkflowManager.h"
 
 
 using namespace PartDesignGui;

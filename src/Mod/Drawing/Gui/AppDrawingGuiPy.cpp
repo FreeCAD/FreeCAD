@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QFileInfo>
-# include <QIcon>
-# include <QImage>
-# include <sstream>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QFileInfo>
+~ include <QIcon>
+~ include <QImage>
+~ include <sstream>
+~endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+~include <CXX/Extensions.hxx>
+~include <CXX/Objects.hxx>
 
-#include "DrawingView.h"
-#include <Mod/Drawing/App/FeaturePage.h>
-#include <Mod/Drawing/App/FeatureViewPart.h>
-#include <Mod/Drawing/App/ProjectionAlgos.h>
-#include <Mod/Part/App/PartFeature.h>
+~include "DrawingView.h"
+~include <Mod/Drawing/App/FeaturePage.h>
+~include <Mod/Drawing/App/FeatureViewPart.h>
+~include <Mod/Drawing/App/ProjectionAlgos.h>
+~include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <App/Application.h>
-#include <App/DocumentObjectPy.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/FileInfo.h>
+~include <Base/Stream.h>
+~include <App/Application.h>
+~include <App/DocumentObjectPy.h>
+~include <Gui/MainWindow.h>
+~include <Gui/BitmapFactory.h>
 
 namespace DrawingGui {
 class Module : public Py::ExtensionModule<Module>

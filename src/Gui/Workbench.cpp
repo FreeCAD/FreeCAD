@@ -21,33 +21,33 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QDockWidget>
-# include <QStatusBar>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <QDockWidget>
+~ include <QStatusBar>
+~endif
 
-#include "Workbench.h"
-#include "WorkbenchPy.h"
-#include "Action.h"
-#include "Application.h"
-#include "Command.h"
-#include "Control.h"
-#include "DockWindowManager.h"
-#include "MainWindow.h"
-#include "MenuManager.h"
-#include "PythonWorkbenchPy.h"
-#include "Selection.h"
-#include "ToolBarManager.h"
-#include "ToolBoxManager.h"
-#include "Window.h"
+~include "Workbench.h"
+~include "WorkbenchPy.h"
+~include "Action.h"
+~include "Application.h"
+~include "Command.h"
+~include "Control.h"
+~include "DockWindowManager.h"
+~include "MainWindow.h"
+~include "MenuManager.h"
+~include "PythonWorkbenchPy.h"
+~include "Selection.h"
+~include "ToolBarManager.h"
+~include "ToolBoxManager.h"
+~include "Window.h"
 
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
-#include <Gui/ComboView.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskWatcher.h>
+~include <App/Application.h>
+~include <App/DocumentObject.h>
+~include <Base/Interpreter.h>
+~include <Gui/ComboView.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskWatcher.h>
 
 using namespace Gui;
 
@@ -189,15 +189,15 @@ using namespace Gui;
  * perform the macro during the next FreeCAD session.
  * Here follows a short example of how to create and embed a workbench in Python
  * \code
- * w=Workbench()                                              # creates a standard workbench (the same as StdWorkbench in C++)
- * w.MenuText = "My Workbench"                                # the text that will appear in the combo box
- * dir(w)                                                     # lists all available function of the object
- * FreeCADGui.addWorkbench(w)                                 # Creates an item for our workbench now
- *                                                            # Note: We must first add the workbench to run some initialization code
- *                                                            # Then we are ready to customize the workbench
- * list = ["Std_Test1", "Std_Test2", "Std_Test3"]             # creates a list of new functions
- * w.appendMenu("Test functions", list)                       # creates a new menu with these functions
- * w.appendToolbar("Test", list)                              # ... and also a new toolbar
+ * w=Workbench()                                              ~ creates a standard workbench (the same as StdWorkbench in C++)
+ * w.MenuText = "My Workbench"                                ~ the text that will appear in the combo box
+ * dir(w)                                                     ~ lists all available function of the object
+ * FreeCADGui.addWorkbench(w)                                 ~ Creates an item for our workbench now
+ *                                                            ~ Note: We must first add the workbench to run some initialization code
+ *                                                            ~ Then we are ready to customize the workbench
+ * list = ["Std_Test1", "Std_Test2", "Std_Test3"]             ~ creates a list of new functions
+ * w.appendMenu("Test functions", list)                       ~ creates a new menu with these functions
+ * w.appendToolbar("Test", list)                              ~ ... and also a new toolbar
  * \endcode
  */
 
@@ -513,7 +513,7 @@ std::list<std::string> Workbench::listCommandbars() const
 
 // --------------------------------------------------------------------
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("CommandGroup", "File");
     qApp->translate("CommandGroup", "Edit");
     qApp->translate("CommandGroup", "Help");
@@ -549,9 +549,9 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "Special Ops");
     // needed for Structure toolbar
     qApp->translate("Workbench", "Link actions");
-#endif
+~endif
 
-#if 0 // needed for the application menu on OSX
+~if 0 // needed for the application menu on OSX
     qApp->translate("MAC_APPLICATION_MENU", "Services");
     qApp->translate("MAC_APPLICATION_MENU", "Hide %1");
     qApp->translate("MAC_APPLICATION_MENU", "Hide Others");
@@ -559,7 +559,7 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("MAC_APPLICATION_MENU", "Preferences...");
     qApp->translate("MAC_APPLICATION_MENU", "Quit %1");
     qApp->translate("MAC_APPLICATION_MENU", "About %1");
-#endif
+~endif
 
 TYPESYSTEM_SOURCE(Gui::StdWorkbench, Gui::Workbench)
 
@@ -686,9 +686,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping"
-#ifdef BUILD_VR
+~ifdef BUILD_VR
           << "Std_ViewVR"
-#endif
+~endif
           << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
@@ -714,9 +714,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_DlgCustomize";
-#ifdef BUILD_ADDONMGR
+~ifdef BUILD_ADDONMGR
     *tool << "Std_AddonMgr";
-#endif
+~endif
 
     // Macro
     MenuItem* macro = new MenuItem( menuBar );

@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/Application.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Path/App/FeaturePathShape.h>
-#include "ViewProviderPathShape.h"
+~include <Gui/BitmapFactory.h>
+~include <Gui/Application.h>
+~include <Mod/Part/App/PartFeature.h>
+~include <Mod/Path/App/FeaturePathShape.h>
+~include "ViewProviderPathShape.h"
 
 using namespace Gui;
 using namespace PathGui;

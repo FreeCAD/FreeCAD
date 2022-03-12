@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_Failure.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <Standard_Failure.hxx>
+~endif
 
-#include "GeomPlate/BuildPlateSurfacePy.h"
-#include "GeomPlate/BuildPlateSurfacePy.cpp"
-#include "GeomPlate/CurveConstraintPy.h"
-#include "GeomPlate/PointConstraintPy.h"
-#include "GeometryCurvePy.h"
-#include "GeometrySurfacePy.h"
-#include "Geometry2d.h"
+~include "GeomPlate/BuildPlateSurfacePy.h"
+~include "GeomPlate/BuildPlateSurfacePy.cpp"
+~include "GeomPlate/CurveConstraintPy.h"
+~include "GeomPlate/PointConstraintPy.h"
+~include "GeometryCurvePy.h"
+~include "GeometrySurfacePy.h"
+~include "Geometry2d.h"
 
 using namespace Part;
 

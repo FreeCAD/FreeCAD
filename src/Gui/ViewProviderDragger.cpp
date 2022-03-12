@@ -20,29 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <string>
-# include <QAction>
-# include <QMenu>
-# include <Inventor/draggers/SoDragger.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoTransform.h>
-#endif
+~ifndef _PreComp_
+~ include <string>
+~ include <QAction>
+~ include <QMenu>
+~ include <Inventor/draggers/SoDragger.h>
+~ include <Inventor/nodes/SoPickStyle.h>
+~ include <Inventor/nodes/SoTransform.h>
+~endif
 
-#include <App/GeoFeature.h>
-#include <Base/Placement.h>
+~include <App/GeoFeature.h>
+~include <Base/Placement.h>
 
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Control.h"
-#include "Document.h"
-#include "SoFCCSysDragger.h"
-#include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderDragger.h"
+~include "Application.h"
+~include "BitmapFactory.h"
+~include "Control.h"
+~include "Document.h"
+~include "SoFCCSysDragger.h"
+~include "SoFCUnifiedSelection.h"
+~include "TaskCSysDragger.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderDragger.h"
 
 
 using namespace Gui;

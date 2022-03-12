@@ -20,26 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Parameter.h>
 
-#include "DrawUtil.h"
+~include "DrawUtil.h"
 
-#include <Mod/TechDraw/App/DrawWeldSymbolPy.h>  // generated from DrawWeldSymbolPy.xml
+~include <Mod/TechDraw/App/DrawWeldSymbolPy.h>  // generated from DrawWeldSymbolPy.xml
 
-#include "DrawLeaderLine.h"
-#include "DrawTile.h"
-#include "DrawTileWeld.h"
-#include "DrawWeldSymbol.h"
+~include "DrawLeaderLine.h"
+~include "DrawTile.h"
+~include "DrawTileWeld.h"
+~include "DrawWeldSymbol.h"
 
 using namespace TechDraw;
 

@@ -21,22 +21,22 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <gp_Lin.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRepAlgoAPI_Fuse.hxx>
+~ include <BRepPrimAPI_MakeRevol.hxx>
+~ include <gp_Lin.hxx>
+~ include <Precision.hxx>
+~ include <TopExp_Explorer.hxx>
+~ include <TopoDS.hxx>
+~endif
 
-#include <Base/Axis.h>
-#include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <Base/Tools.h>
+~include <Base/Axis.h>
+~include <Base/Exception.h>
+~include <Base/Placement.h>
+~include <Base/Tools.h>
 
-#include "FeatureRevolution.h"
+~include "FeatureRevolution.h"
 
 using namespace PartDesign;
 

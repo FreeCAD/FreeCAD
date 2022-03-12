@@ -5,7 +5,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "winvistapanelscheme.h"
+~include "winvistapanelscheme.h"
 
 
 namespace QSint
@@ -15,7 +15,7 @@ namespace QSint
 const char* ActionPanelWinVistaStyle =
 
     "QFrame[class='panel'] {"
-        "background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #416FA6, stop: 1 #6BB86E);"
+        "background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 ~416FA6, stop: 1 ~6BB86E);"
     "}"
 
     "QSint--ActionGroup QFrame[class='header'] {"
@@ -30,7 +30,7 @@ const char* ActionPanelWinVistaStyle =
 
     "QSint--ActionGroup QToolButton[class='header'] {"
         "text-align: left;"
-        "color: #ffffff;"
+        "color: ~ffffff;"
         "background-color: transparent;"
         "border: 1px solid transparent;"
         "font-size: 12px;"
@@ -38,22 +38,22 @@ const char* ActionPanelWinVistaStyle =
 
     "QSint--ActionGroup QFrame[class='content'] {"
         "background-color: transparent;"
-        "color: #ffffff;"
+        "color: ~ffffff;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action'] {"
         "background-color: transparent;"
         "border: 1px solid transparent;"
-        "color: #ffffff;"
+        "color: ~ffffff;"
         "text-align: left;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #666666;"
+        "color: ~666666;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #DAF2FC;"
+        "color: ~DAF2FC;"
         "text-decoration: underline;"
     "}"
 
@@ -62,8 +62,8 @@ const char* ActionPanelWinVistaStyle =
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
 ;
 

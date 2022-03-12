@@ -20,47 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cctype>
-# include <QApplication>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QTextStream>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-#endif
+~ifndef _PreComp_
+~ include <cctype>
+~ include <QApplication>
+~ include <QFileInfo>
+~ include <QMessageBox>
+~ include <QTextStream>
+~ include <Inventor/actions/SoSearchAction.h>
+~ include <Inventor/nodes/SoSeparator.h>
+~endif
 
-#include <App/AutoTransaction.h>
-#include <App/ComplexGeoData.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/Transactions.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Tools.h>
+~include <App/AutoTransaction.h>
+~include <App/ComplexGeoData.h>
+~include <App/Document.h>
+~include <App/DocumentObject.h>
+~include <App/DocumentObjectGroup.h>
+~include <App/Transactions.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
+~include <Base/Matrix.h>
+~include <Base/Reader.h>
+~include <Base/Writer.h>
+~include <Base/Tools.h>
 
-#include "Document.h"
-#include "DocumentPy.h"
-#include "Application.h"
-#include "Command.h"
-#include "Control.h"
-#include "FileDialog.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "Selection.h"
-#include "Thumbnail.h"
-#include "Tree.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectGroup.h"
-#include "WaitCursor.h"
+~include "Document.h"
+~include "DocumentPy.h"
+~include "Application.h"
+~include "Command.h"
+~include "Control.h"
+~include "FileDialog.h"
+~include "MainWindow.h"
+~include "MDIView.h"
+~include "Selection.h"
+~include "Thumbnail.h"
+~include "Tree.h"
+~include "View3DInventor.h"
+~include "View3DInventorViewer.h"
+~include "ViewProviderDocumentObject.h"
+~include "ViewProviderDocumentObjectGroup.h"
+~include "WaitCursor.h"
 
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
@@ -280,7 +280,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         return false;
     }
 
-    // Fix regression: https://forum.freecadweb.org/viewtopic.php?f=19&t=43629&p=371972#p371972
+    // Fix regression: https://forum.freecadweb.org/viewtopic.php?f=19&t=43629&p=371972~p371972
     // When an object is already in edit mode a subsequent call for editing is only possible
     // when resetting the currently edited object.
     if (d->_editViewProvider) {
@@ -480,7 +480,7 @@ void Document::_resetEdit(void)
         // changed into a private one,  _resetEdit(). And the exposed
         // resetEdit() above calls into Application->setEditDocument(0) which
         // will prevent recursive calling.
-#if 0
+~if 0
         // Nullify the member variable before calling finishEditing().
         // This is to avoid a possible stack overflow when a view provider wrongly
         // invokes the document's resetEdit() method.
@@ -490,7 +490,7 @@ void Document::_resetEdit(void)
         editViewProvider->finishEditing();
         if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
-#endif
+~endif
         App::GetApplication().closeActiveTransaction();
     }
     d->_editViewProviderParent = 0;
@@ -695,11 +695,11 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
         catch(Base::Exception &e){
             e.ReportException();
         }
-#ifndef FC_DEBUG
+~ifndef FC_DEBUG
         catch(...){
             FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
         }
-#endif
+~endif
     }else{
         try {
             pcProvider->reattach(const_cast<App::DocumentObject*>(&Obj));
@@ -750,9 +750,9 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     handleChildren3D(viewProvider,true);
 
-#if 0 // With this we can show child objects again if this method was called by undo
+~if 0 // With this we can show child objects again if this method was called by undo
     viewProvider->onDelete(std::vector<std::string>());
-#endif
+~endif
     if (viewProvider && viewProvider->getTypeId().isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
@@ -1857,7 +1857,7 @@ bool Document::saveCameraSettings(const char *settings) const {
         if(skipping) {
             if(c == '\n')
                 skipping = false;
-        } else if(c == '#')
+        } else if(c == '~')
             skipping = true;
         else if(!std::isspace(c))
             break;
@@ -1911,9 +1911,9 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
 
 void Document::onUpdate(void)
 {
-#ifdef FC_LOGUPDATECHAIN
+~ifdef FC_LOGUPDATECHAIN
     Base::Console().Log("Acti: Gui::Document::onUpdate()");
-#endif
+~endif
 
     std::list<Gui::BaseView*>::iterator it;
 
@@ -1928,9 +1928,9 @@ void Document::onUpdate(void)
 
 void Document::onRelabel(void)
 {
-#ifdef FC_LOGUPDATECHAIN
+~ifdef FC_LOGUPDATECHAIN
     Base::Console().Log("Acti: Gui::Document::onRelabel()");
-#endif
+~endif
 
     std::list<Gui::BaseView*>::iterator it;
 

@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <TopoDS_Compound.hxx>
-#include <boost/exception/get_error_info.hpp>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <BRep_Builder.hxx>
+~ include <TopoDS_Compound.hxx>
+~include <boost/exception/get_error_info.hpp>
+~endif
 
-#include <Base/Placement.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
+~include <Base/Placement.h>
+~include <Base/Console.h>
+~include <Base/Exception.h>
 
-#include "Product.h"
-#include "ConstraintGroup.h"
+~include "Product.h"
+~include "ConstraintGroup.h"
 
 
 using namespace Assembly;

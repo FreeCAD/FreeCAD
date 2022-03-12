@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cassert>
-# include <cstring>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~ include <cassert>
+~ include <cstring>
+~endif
 
-#include <Base/Exception.h>
-#include "Enumeration.h"
+~include <Base/Exception.h>
+~include "Enumeration.h"
 
 using namespace App;
 
@@ -54,11 +54,11 @@ Enumeration::Enumeration(const char *valStr)
     : _ownEnumArray(true), _index(0), _maxVal(0)
 {
     _EnumArray = new const char*[2];
-#if defined (_MSC_VER)
+~if defined (_MSC_VER)
      _EnumArray[0] = _strdup(valStr);
-#else
+~else
      _EnumArray[0] = strdup(valStr);
-#endif
+~endif
      _EnumArray[1] = NULL;
 }
 
@@ -150,11 +150,11 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     _EnumArray = new const char*[values.size() + 1];
     int i = 0;
     for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
-#if defined (_MSC_VER)
+~if defined (_MSC_VER)
         _EnumArray[i++] = _strdup(it->c_str());
-#else
+~else
         _EnumArray[i++] = strdup(it->c_str());
-#endif
+~endif
     }
 
     _EnumArray[i] = 0; // null termination

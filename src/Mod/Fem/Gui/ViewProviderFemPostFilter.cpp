@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "ViewProviderFemPostFilter.h"
-#include "TaskPostBoxes.h"
-#include <Mod/Fem/App/FemPostFilter.h>
-#include <Base/Console.h>
+~include "PreCompiled.h"
+~include "ViewProviderFemPostFilter.h"
+~include "TaskPostBoxes.h"
+~include <Mod/Fem/App/FemPostFilter.h>
+~include <Base/Console.h>
 
 using namespace FemGui;
 

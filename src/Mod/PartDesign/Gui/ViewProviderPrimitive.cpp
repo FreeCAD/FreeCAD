@@ -20,21 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QMenu>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <QMenu>
+~ include <QMessageBox>
+~endif
 
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
+~include <Gui/BitmapFactory.h>
+~include <Gui/Command.h>
+~include <Gui/Control.h>
+~include <Gui/TaskView/TaskDialog.h>
+~include <Mod/PartDesign/App/FeaturePrimitive.h>
 
-#include "ViewProviderPrimitive.h"
-#include "TaskPrimitiveParameters.h"
+~include "ViewProviderPrimitive.h"
+~include "TaskPrimitiveParameters.h"
 
 
 using namespace PartDesignGui;

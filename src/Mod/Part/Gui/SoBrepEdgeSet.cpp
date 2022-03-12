@@ -21,47 +21,47 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
-# ifdef FC_OS_MACOSX
-#  include <OpenGL/gl.h>
-# else
-#  include <GL/gl.h>
-# endif
-# include <float.h>
-# include <algorithm>
-# include <Python.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/SoPrimitiveVertex.h>
-# include <Inventor/actions/SoCallbackAction.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/actions/SoPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/bundles/SoMaterialBundle.h>
-# include <Inventor/bundles/SoTextureCoordinateBundle.h>
-# include <Inventor/elements/SoOverrideElement.h>
-# include <Inventor/elements/SoCoordinateElement.h>
-# include <Inventor/elements/SoGLCoordinateElement.h>
-# include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/elements/SoLineWidthElement.h>
-# include <Inventor/elements/SoPointSizeElement.h>
-# include <Inventor/errors/SoDebugError.h>
-# include <Inventor/errors/SoReadError.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/misc/SoState.h>
-# include <Inventor/elements/SoCacheElement.h>
-#endif
+~ifndef _PreComp_
+~ ifdef FC_OS_WIN32
+~  include <windows.h>
+~ endif
+~ ifdef FC_OS_MACOSX
+~  include <OpenGL/gl.h>
+~ else
+~  include <GL/gl.h>
+~ endif
+~ include <float.h>
+~ include <algorithm>
+~ include <Python.h>
+~ include <Inventor/SoPickedPoint.h>
+~ include <Inventor/SoPrimitiveVertex.h>
+~ include <Inventor/actions/SoCallbackAction.h>
+~ include <Inventor/actions/SoGetBoundingBoxAction.h>
+~ include <Inventor/actions/SoGetPrimitiveCountAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/actions/SoPickAction.h>
+~ include <Inventor/actions/SoWriteAction.h>
+~ include <Inventor/bundles/SoMaterialBundle.h>
+~ include <Inventor/bundles/SoTextureCoordinateBundle.h>
+~ include <Inventor/elements/SoOverrideElement.h>
+~ include <Inventor/elements/SoCoordinateElement.h>
+~ include <Inventor/elements/SoGLCoordinateElement.h>
+~ include <Inventor/elements/SoGLCacheContextElement.h>
+~ include <Inventor/elements/SoLineWidthElement.h>
+~ include <Inventor/elements/SoPointSizeElement.h>
+~ include <Inventor/errors/SoDebugError.h>
+~ include <Inventor/errors/SoReadError.h>
+~ include <Inventor/details/SoFaceDetail.h>
+~ include <Inventor/details/SoLineDetail.h>
+~ include <Inventor/misc/SoState.h>
+~ include <Inventor/elements/SoCacheElement.h>
+~endif
 
-#include "SoBrepEdgeSet.h"
-#include <Gui/SoFCUnifiedSelection.h>
-#include <Gui/SoFCSelectionAction.h>
+~include "SoBrepEdgeSet.h"
+~include <Gui/SoFCUnifiedSelection.h>
+~include <Gui/SoFCSelectionAction.h>
 
 using namespace PartGui;
 
@@ -149,15 +149,15 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     else
         inherited::GLRender(action);
 
-    // Workaround for #0000433
-//#if !defined(FC_OS_WIN32)
+    // Workaround for ~0000433
+//~if !defined(FC_OS_WIN32)
     if(!action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
     if(ctx && ctx->selectionIndex.size())
         renderSelection(action,ctx);
     if(action->isRenderingDelayedPaths())
         renderHighlight(action,ctx);
-//#endif
+//~endif
 }
 
 void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction * action)

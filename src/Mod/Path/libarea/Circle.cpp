@@ -27,7 +27,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==============================*/
 
 
-#include "Circle.h"
+~include "Circle.h"
 
 Circle::Circle(const Point& p0, const Point& p1, const Point& p2)
 {

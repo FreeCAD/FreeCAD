@@ -5,7 +5,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "winxppanelscheme.h"
+~include "winxppanelscheme.h"
 
 
 namespace QSint
@@ -15,31 +15,31 @@ namespace QSint
 const char* ActionPanelWinXPBlueStyle1 =
 
     "QFrame[class='panel'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #7ba2e7, stop: 1 #6375d6);"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 ~7ba2e7, stop: 1 ~6375d6);"
     "}"
 
     "QSint--ActionGroup QFrame[class='header'] {"
-        "background-color: #225aca;"
-        "border: 1px solid #225aca;"
+        "background-color: ~225aca;"
+        "border: 1px solid ~225aca;"
         "border-top-left-radius: 4px;"
         "border-top-right-radius: 4px;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header'] {"
         "text-align: left;"
-        "color: #ffffff;"
+        "color: ~ffffff;"
         "background-color: transparent;"
         "border: 1px solid transparent;"
         "font-weight: bold;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: #428eff;"
+        "color: ~428eff;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: #eff3ff;"
-        "border: 1px solid #ffffff;"
+        "background-color: ~eff3ff;"
+        "border: 1px solid ~ffffff;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'][header='true'] {"
@@ -49,16 +49,16 @@ const char* ActionPanelWinXPBlueStyle1 =
     "QSint--ActionGroup QToolButton[class='action'] {"
         "background-color: transparent;"
         "border: 1px solid transparent;"
-        "color: #215dc6;"
+        "color: ~215dc6;"
         "text-align: left;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"
+        "color: ~999999;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #428eff;"
+        "color: ~428eff;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:focus {"
@@ -66,39 +66,39 @@ const char* ActionPanelWinXPBlueStyle1 =
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
 ;
 
 const char* ActionPanelWinXPBlueStyle2 =
 
     "QFrame[class='panel'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #7ba2e7, stop: 1 #6375d6);"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 ~7ba2e7, stop: 1 ~6375d6);"
     "}"
 
     "QSint--ActionGroup QFrame[class='header'] {"
-        "border: 1px solid #ffffff;"
+        "border: 1px solid ~ffffff;"
         "border-top-left-radius: 4px;"
         "border-top-right-radius: 4px;"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #ffffff, stop: 1 #c6d3f7);"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 ~ffffff, stop: 1 ~c6d3f7);"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header'] {"
         "text-align: left;"
-        "color: #215dc6;"
+        "color: ~215dc6;"
         "background-color: transparent;"
         "border: 1px solid transparent;"
         "font-weight: bold;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: #428eff;"
+        "color: ~428eff;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: #d6dff7;"
-        "border: 1px solid #ffffff;"
+        "background-color: ~d6dff7;"
+        "border: 1px solid ~ffffff;"
     "}"
 
     "QSint--ActionGroup QFrame[class='content'][header='true'] {"
@@ -108,16 +108,16 @@ const char* ActionPanelWinXPBlueStyle2 =
     "QSint--ActionGroup QToolButton[class='action'] {"
         "background-color: transparent;"
         "border: 1px solid transparent;"
-        "color: #215dc6;"
+        "color: ~215dc6;"
         "text-align: left;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"
+        "color: ~999999;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #428eff;"
+        "color: ~428eff;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:focus {"
@@ -125,8 +125,8 @@ const char* ActionPanelWinXPBlueStyle2 =
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
+        "background-color: ~ddeeff;"
+        "color: ~006600;"
     "}"
     ;
 

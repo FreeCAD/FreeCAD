@@ -20,31 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/misc/SoState.h>
-# include <cmath>
-# include <cfloat>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/nodes/SoCamera.h>
-#endif
+~ifndef _PreComp_
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/misc/SoState.h>
+~ include <cmath>
+~ include <cfloat>
+~ include <Inventor/actions/SoGetMatrixAction.h>
+~ include <Inventor/actions/SoGLRenderAction.h>
+~ include <Inventor/elements/SoModelMatrixElement.h>
+~ include <Inventor/elements/SoProjectionMatrixElement.h>
+~ include <Inventor/elements/SoViewingMatrixElement.h>
+~ include <Inventor/elements/SoViewVolumeElement.h>
+~ include <Inventor/elements/SoViewportRegionElement.h>
+~ include <Inventor/nodes/SoCamera.h>
+~endif
 
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+~include <Gui/Application.h>
+~include <Gui/Document.h>
+~include <Gui/MainWindow.h>
+~include <Gui/View3DInventor.h>
+~include <Gui/View3DInventorViewer.h>
 
 
-#include "SoZoomTranslation.h"
+~include "SoZoomTranslation.h"
 
 // *************************************************************************
 
@@ -58,7 +58,7 @@ void SoZoomTranslation::initClass()
 {
     SO_NODE_INIT_CLASS(SoZoomTranslation, SoTranslation, "Translation");
 
-    // Enable elements for SoGetMatrixAction (#0002268)
+    // Enable elements for SoGetMatrixAction (~0002268)
     // SoCamera::initClass() enables the SoViewVolumeElement for
     // * SoGLRenderAction
     // * SoGetBoundingBoxAction

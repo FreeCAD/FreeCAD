@@ -21,31 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-# include <QDir>
-# include <QFileInfo>
-# include <QMessageBox>
-#endif
+~ifndef _PreComp_
+~ include <qobject.h>
+~ include <QDir>
+~ include <QFileInfo>
+~ include <QMessageBox>
+~endif
 
-#include "Workbench.h"
-#include <App/Application.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Control.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskWatcher.h>
+~include "Workbench.h"
+~include <App/Application.h>
+~include <Gui/ToolBarManager.h>
+~include <Gui/MenuManager.h>
+~include <Gui/MainWindow.h>
+~include <Gui/Control.h>
+~include <Gui/WaitCursor.h>
+~include <Gui/TaskView/TaskView.h>
+~include <Gui/TaskView/TaskWatcher.h>
 
-#include "TaskWatcher.h"
+~include "TaskWatcher.h"
 
 
 using namespace RobotGui;
 
-#if 0 // needed for Qt's lupdate utility
+~if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Robot");
     qApp->translate("Workbench", "Insert Robots");
     qApp->translate("Workbench", "&Robot");
@@ -53,7 +53,7 @@ using namespace RobotGui;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Trajectory tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Robot tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Insert Robot");
-#endif
+~endif
 
 /// @namespace RobotGui @class Workbench
 TYPESYSTEM_SOURCE(RobotGui::Workbench, Gui::StdWorkbench)

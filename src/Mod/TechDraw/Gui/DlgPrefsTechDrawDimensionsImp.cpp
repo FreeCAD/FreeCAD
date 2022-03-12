@@ -23,18 +23,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
+~include <Base/Parameter.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
 
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "DlgPrefsTechDrawDimensionsImp.h"
-#include "ui_DlgPrefsTechDrawDimensions.h"
+~include "DrawGuiUtil.h"
+~include "PreferencesGui.h"
+~include "DlgPrefsTechDrawDimensionsImp.h"
+~include "ui_DlgPrefsTechDrawDimensions.h"
 
 
 using namespace TechDrawGui;
@@ -119,4 +119,4 @@ int DlgPrefsTechDrawDimensionsImp::prefArrowStyle(void) const
     return PreferencesGui::dimArrowStyle();
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawDimensionsImp.cpp>
+~include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawDimensionsImp.cpp>

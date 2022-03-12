@@ -21,71 +21,71 @@
 // Author    : Edward AGAPOV (OCC)
 // Project   : SALOME
 //
-#include "NETGENPlugin_NETGEN_2D_ONLY.hxx"
+~include "NETGENPlugin_NETGEN_2D_ONLY.hxx"
 
-#include "NETGENPlugin_Mesher.hxx"
-#include "NETGENPlugin_Hypothesis_2D.hxx"
+~include "NETGENPlugin_Mesher.hxx"
+~include "NETGENPlugin_Hypothesis_2D.hxx"
 
-#include <SMDS_MeshElement.hxx>
-#include <SMDS_MeshNode.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMESH_Comment.hxx>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_MesherHelper.hxx>
-#include <SMESH_subMesh.hxx>
-#include <StdMeshers_FaceSide.hxx>
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_ViscousLayers2D.hxx>
+~include <SMDS_MeshElement.hxx>
+~include <SMDS_MeshNode.hxx>
+~include <SMESHDS_Mesh.hxx>
+~include <SMESH_Comment.hxx>
+~include <SMESH_Gen.hxx>
+~include <SMESH_Mesh.hxx>
+~include <SMESH_MesherHelper.hxx>
+~include <SMESH_subMesh.hxx>
+~include <StdMeshers_FaceSide.hxx>
+~include <StdMeshers_LengthFromEdges.hxx>
+~include <StdMeshers_MaxElementArea.hxx>
+~include <StdMeshers_QuadranglePreference.hxx>
+~include <StdMeshers_ViscousLayers2D.hxx>
 
-#include <Precision.hxx>
-#include <Standard_ErrorHandler.hxx>
-#include <Standard_Failure.hxx>
+~include <Precision.hxx>
+~include <Standard_ErrorHandler.hxx>
+~include <Standard_Failure.hxx>
 
-#include <utilities.h>
+~include <utilities.h>
 
-#include <list>
-#include <memory>
-#include <vector>
-#include <limits>
+~include <list>
+~include <memory>
+~include <vector>
+~include <limits>
 
 /*
   Netgen include files
 */
 
 namespace nglib {
-#include <nglib.h>
+~include <nglib.h>
 }
-#ifndef OCCGEOMETRY
-# define OCCGEOMETRY
-#endif
+~ifndef OCCGEOMETRY
+~ define OCCGEOMETRY
+~endif
 
 // DLL_HEADER is re-defined in netgen headers
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmacro-redefined"
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic push
+~ pragma clang diagnostic ignored "-Wmacro-redefined"
+~endif
 
-#ifdef NETGEN_PYTHON
-#undef NETGEN_PYTHON
-#endif
+~ifdef NETGEN_PYTHON
+~undef NETGEN_PYTHON
+~endif
 
-#ifndef WIN32
-#undef DLL_HEADER
-#endif
+~ifndef WIN32
+~undef DLL_HEADER
+~endif
 
-#include <occgeom.hpp>
-#include <meshing.hpp>
-//#include <meshing/meshtype.hpp>
+~include <occgeom.hpp>
+~include <meshing.hpp>
+//~include <meshing/meshtype.hpp>
 
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+~if defined(__clang__)
+~ pragma clang diagnostic pop
+~endif
 
 namespace netgen {
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
   // https://github.com/NGSolve/netgen/commit/bee097b153b43d9346819789534536cd1b773428
   int OCCGenerateMesh(OCCGeometry& geo, shared_ptr<Mesh>& mesh, MeshingParameters& mparams)
   {
@@ -98,19 +98,19 @@ namespace netgen {
     mparams.perfstepsend = perfstepsend;
     return result;
   }
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
   DLL_HEADER extern int OCCGenerateMesh(OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
-#else
+~else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
-#endif
+~endif
   DLL_HEADER extern MeshingParameters mparam;
-#if NETGEN_VERSION <= NETGEN_VERSION_STRING(6,2,1808)
+~if NETGEN_VERSION <= NETGEN_VERSION_STRING(6,2,1808)
   DLL_HEADER extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
-#endif
+~endif
 }
 
 using namespace std;
@@ -281,11 +281,11 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   ngLib._isComputeOk = false;
 
   netgen::Mesh   ngMeshNoLocSize;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   netgen::Mesh * ngMeshes[2] = { (netgen::Mesh*) ngLib._ngMesh,  & ngMeshNoLocSize };
-#else
+~else
   netgen::Mesh * ngMeshes[2] = { (netgen::Mesh*) ngLib._ngMesh.get(),  & ngMeshNoLocSize };
-#endif
+~endif
   netgen::OCCGeometry occgeoComm;
 
   // min / max sizes are set as follows:
@@ -329,29 +329,29 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       netgen::mparam.minh = aMesher.GetDefaultMinSize( aShape, netgen::mparam.maxh );
     }
     // set local size depending on curvature and NOT closeness of EDGEs
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
     // https://github.com/NGSolve/netgen/commit/073e215bb6bc97d8712990cba9cc6e9e1e4d8b2a
     netgen::mparam.closeedgefac = std::nullopt;
-#else
+~else
     netgen::occparam.resthcloseedgeenable = false;
-#endif
+~endif
     //netgen::occparam.resthcloseedgefac = 1.0 + netgen::mparam.grading;
     occgeoComm.face_maxh = netgen::mparam.maxh;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
     // https://github.com/NGSolve/netgen/commit/bee097b153b43d9346819789534536cd1b773428
     occgeoComm.Analyse(*ngMeshes[0], netgen::mparam);
-#else
+~else
     netgen::OCCSetLocalMeshSize( occgeoComm, *ngMeshes[0] );
-#endif
+~endif
     occgeoComm.emap.Clear();
     occgeoComm.vmap.Clear();
 
     // set local size according to size of existing segments
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2004)
     const double factor = netgen::mparam.closeedgefac.value();
-#else
+~else
     const double factor = netgen::occparam.resthcloseedgefac;
-#endif
+~endif
     TopTools_IndexedMapOfShape edgeMap;
     TopExp::MapShapes( aMesh.GetShapeToMesh(), TopAbs_EDGE, edgeMap );
     for ( int iE = 1; iE <= edgeMap.Extent(); ++iE )
@@ -522,29 +522,29 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       // -------------------------
       // Generate surface mesh
       // -------------------------
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
       const int startWith = MESHCONST_MESHSURFACE;
       const int endWith   = toOptimize ? MESHCONST_OPTSURFACE : MESHCONST_MESHSURFACE;
-#else
+~else
       netgen::mparam.perfstepsstart = MESHCONST_MESHEDGES;
       netgen::mparam.perfstepsend = toOptimize ? MESHCONST_OPTSURFACE : MESHCONST_MESHSURFACE;
-#endif
+~endif
       SMESH_Comment str;
       try {
         OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
         std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
+~if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
         err = netgen::OCCGenerateMesh(occgeom, mesh_ptr, netgen::mparam);
-#else
+~else
         err = netgen::OCCGenerateMesh(occgeom, mesh_ptr, netgen::mparam, startWith, endWith);
-#endif
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
+~endif
+~elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
         err = netgen::OCCGenerateMesh(occgeom, ngMesh, netgen::mparam, startWith, endWith);
-#else
+~else
         char *optstr = 0;
         err = netgen::OCCGenerateMesh(occgeom, ngMesh, startWith, endWith, optstr);
-#endif
+~endif
         if ( netgen::multithread.terminate )
           return false;
         if ( err )

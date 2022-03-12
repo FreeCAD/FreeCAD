@@ -21,16 +21,16 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "Mesh.h"
-#include "Edge.h"
-#include <Mod/Mesh/App/EdgePy.h>
-#include <Mod/Mesh/App/EdgePy.cpp>
+~include "Mesh.h"
+~include "Edge.h"
+~include <Mod/Mesh/App/EdgePy.h>
+~include <Mod/Mesh/App/EdgePy.cpp>
 
-#include <Base/Converter.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
+~include <Base/Converter.h>
+~include <Base/VectorPy.h>
+~include <Base/GeometryPyCXX.h>
 
 using namespace Mesh;
 

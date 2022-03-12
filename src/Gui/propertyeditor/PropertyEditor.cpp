@@ -21,30 +21,30 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QInputDialog>
-# include <QMenu>
-# include <QPainter>
-#endif
+~ifndef _PreComp_
+~ include <QApplication>
+~ include <QInputDialog>
+~ include <QMenu>
+~ include <QPainter>
+~endif
 
-#include <boost/algorithm/string/predicate.hpp>
+~include <boost/algorithm/string/predicate.hpp>
 
-#include <App/Application.h>
-#include <App/AutoTransaction.h>
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
+~include <App/Application.h>
+~include <App/AutoTransaction.h>
+~include <App/Document.h>
+~include <Base/Console.h>
+~include <Base/Tools.h>
 
-#include "PropertyEditor.h"
-#include "DlgAddProperty.h"
-#include "MainWindow.h"
-#include "PropertyItemDelegate.h"
-#include "PropertyModel.h"
-#include "PropertyView.h"
-#include "ViewProviderDocumentObject.h"
+~include "PropertyEditor.h"
+~include "DlgAddProperty.h"
+~include "MainWindow.h"
+~include "PropertyItemDelegate.h"
+~include "PropertyModel.h"
+~include "PropertyView.h"
+~include "ViewProviderDocumentObject.h"
 
 
 FC_LOG_LEVEL_INIT("PropertyView", true, true)
@@ -686,17 +686,17 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
 
             QAction *action;
             QString text;
-#define _ACTION_SETUP(_name) do {\
-                text = tr(#_name);\
+~define _ACTION_SETUP(_name) do {\
+                text = tr(~_name);\
                 action = menu.addAction(text);\
-                action->setData(QVariant(MA_##_name));\
+                action->setData(QVariant(MA_~~_name));\
                 action->setCheckable(true);\
                 if(propStatus & (1<<App::Property::_name))\
                     action->setChecked(true);\
             }while(0)
-#define ACTION_SETUP(_name) do {\
+~define ACTION_SETUP(_name) do {\
                 _ACTION_SETUP(_name);\
-                if(propType & App::Prop_##_name) {\
+                if(propType & App::Prop_~~_name) {\
                     action->setText(text + QString::fromLatin1(" *"));\
                     action->setChecked(true);\
                 }\
@@ -726,8 +726,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     case MA_ShowAll:
         PropertyView::setShowAll(action->isChecked());
         return;
-#define ACTION_CHECK(_name) \
-    case MA_##_name:\
+~define ACTION_CHECK(_name) \
+    case MA_~~_name:\
         for(auto prop : props) \
             prop->setStatus(App::Property::_name,action->isChecked());\
         break
@@ -798,4 +798,4 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     }
 }
 
-#include "moc_PropertyEditor.cpp"
+~include "moc_PropertyEditor.cpp"

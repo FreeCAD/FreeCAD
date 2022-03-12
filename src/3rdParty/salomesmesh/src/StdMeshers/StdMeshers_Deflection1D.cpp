@@ -24,22 +24,22 @@
 //  File   : StdMeshers_Deflection1D.cxx
 //  Module : SMESH
 //
-#include "StdMeshers_Deflection1D.hxx"
-#include "utilities.h"
+~include "StdMeshers_Deflection1D.hxx"
+~include "utilities.h"
 
-#include "SMESH_Mesh.hxx"
-#include "SMESH_Algo.hxx"
+~include "SMESH_Mesh.hxx"
+~include "SMESH_Algo.hxx"
 
-#include <BRep_Tool.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_Curve.hxx>
-#include <TopExp.hxx>
-#include <TopLoc_Location.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Pnt.hxx>
+~include <BRep_Tool.hxx>
+~include <GeomAdaptor_Curve.hxx>
+~include <Geom_Curve.hxx>
+~include <TopExp.hxx>
+~include <TopLoc_Location.hxx>
+~include <TopTools_IndexedMapOfShape.hxx>
+~include <TopoDS.hxx>
+~include <TopoDS_Edge.hxx>
+~include <gp_Lin.hxx>
+~include <gp_Pnt.hxx>
 
 using namespace std;
 

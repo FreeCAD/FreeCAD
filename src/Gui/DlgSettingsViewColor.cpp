@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+~ifndef _PreComp_
+~endif
 
-#include "DlgSettingsViewColor.h"
-#include "ui_DlgSettingsViewColor.h"
-#include "PrefWidgets.h"
+~include "DlgSettingsViewColor.h"
+~include "ui_DlgSettingsViewColor.h"
+~include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
 
@@ -102,5 +102,5 @@ void DlgSettingsViewColor::changeEvent(QEvent *e)
     }
 }
 
-#include "moc_DlgSettingsViewColor.cpp"
+~include "moc_DlgSettingsViewColor.cpp"
 

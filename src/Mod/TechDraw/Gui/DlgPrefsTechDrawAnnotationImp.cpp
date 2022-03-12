@@ -23,18 +23,18 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <App/Application.h>
+~include <App/Application.h>
 
-#include <Base/Parameter.h>
-#include <Base/Console.h>
+~include <Base/Parameter.h>
+~include <Base/Console.h>
 
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "DlgPrefsTechDrawAnnotationImp.h"
-#include "ui_DlgPrefsTechDrawAnnotation.h"
-#include <Mod/TechDraw/App/LineGroup.h>
+~include "DrawGuiUtil.h"
+~include "PreferencesGui.h"
+~include "DlgPrefsTechDrawAnnotationImp.h"
+~include "ui_DlgPrefsTechDrawAnnotation.h"
+~include <Mod/TechDraw/App/LineGroup.h>
 
 
 using namespace TechDrawGui;
@@ -163,4 +163,4 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
     ui->pcbLineGroup->setToolTip(QString::fromStdString(TooltipText.str()));
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAnnotationImp.cpp>
+~include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAnnotationImp.cpp>

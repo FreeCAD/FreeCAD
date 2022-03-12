@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <QPainter>
+~include <QPainterPath>
+~include <QStyleOptionGraphicsItem>
+~endif
 
-#include <cmath>
+~include <cmath>
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
+~include <Base/Parameter.h>
 
-#include "PreferencesGui.h"
-#include "QGICenterLine.h"
+~include "PreferencesGui.h"
+~include "QGICenterLine.h"
 
 using namespace TechDrawGui;
 

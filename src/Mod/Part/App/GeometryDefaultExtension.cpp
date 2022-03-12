@@ -21,19 +21,19 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+~include <Base/Writer.h>
+~include <Base/Reader.h>
+~include <Base/Tools.h>
+~include <Base/Exception.h>
 
-#include "GeometryDefaultExtension.h"
+~include "GeometryDefaultExtension.h"
 
-#include "GeometryStringExtensionPy.h"
-#include "GeometryIntExtensionPy.h"
-#include "GeometryBoolExtensionPy.h"
-#include "GeometryDoubleExtensionPy.h"
+~include "GeometryStringExtensionPy.h"
+~include "GeometryIntExtensionPy.h"
+~include "GeometryBoolExtensionPy.h"
+~include "GeometryDoubleExtensionPy.h"
 
 using namespace Part;
 
@@ -75,11 +75,11 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
 
     copyAttributes(cpy.get());
 
-    #if (defined(__GNUC__) && __GNUC__ < 7 ) || defined(_MSC_VER)
+    ~if (defined(__GNUC__) && __GNUC__ < 7 ) || defined(_MSC_VER)
         return std::move(cpy); // GCC 4.8 and MSC do not support automatic move constructor call if the compiler fails to elide
-    #else
+    ~else
         return cpy; // all the others do automatic move constructor if RVO optimization not possible.
-    #endif
+    ~endif
     // Advise from Scott Meyers Effective Modern c++:
     //
     // Don't std::move(cpy); RVO optimization Item 25, if the compiler fails to elide, would have to move it anyway

@@ -20,35 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <assert.h>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsSceneHoverEvent>
-#include <QEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QKeyEvent>
-#include <QTransform>
-#endif
+~include "PreCompiled.h"
+~ifndef _PreComp_
+~include <assert.h>
+~include <QGraphicsScene>
+~include <QGraphicsView>
+~include <QGraphicsSceneHoverEvent>
+~include <QEvent>
+~include <QMouseEvent>
+~include <QPainter>
+~include <QPainterPath>
+~include <QPainterPathStroker>
+~include <QStyleOptionGraphicsItem>
+~include <QKeyEvent>
+~include <QTransform>
+~endif
 
-#include <limits>
+~include <limits>
 
-#include <App/Application.h>
-#include <App/Material.h>
-#include <Base/Console.h>
+~include <App/Application.h>
+~include <App/Material.h>
+~include <Base/Console.h>
 
-#include <Mod/TechDraw/App/DrawUtil.h>
+~include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "DrawGuiUtil.h"
-#include "QGIView.h"
-#include "QGTracker.h"
+~include "Rez.h"
+~include "ZVALUE.h"
+~include "DrawGuiUtil.h"
+~include "QGIView.h"
+~include "QGTracker.h"
 
 using namespace TechDrawGui;
 
@@ -512,4 +512,4 @@ double QGTracker::getTrackerWeight()
     return result;
 }
 
-#include <Mod/TechDraw/Gui/moc_QGTracker.cpp>
+~include <Mod/TechDraw/Gui/moc_QGTracker.cpp>

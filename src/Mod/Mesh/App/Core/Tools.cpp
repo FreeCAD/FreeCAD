@@ -21,14 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+~ifndef _PreComp_
+~ include <algorithm>
+~endif
 
-#include "Tools.h"
-#include "Iterator.h"
+~include "Tools.h"
+~include "Iterator.h"
 
 
 using namespace MeshCore;

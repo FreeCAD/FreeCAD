@@ -21,9 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+~include "PreCompiled.h"
 
-#include "XMLTools.h"
+~include "XMLTools.h"
 
 using namespace Base;
 
@@ -49,17 +49,17 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
 
     //char outBuff[128];
     static XMLByte outBuff[128];
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
     unsigned int outputLength;
     unsigned int eaten = 0;
     unsigned int offset = 0;
     unsigned int inputLength = XMLString::stringLen(toTranscode);
-#else
+~else
     XMLSize_t outputLength;
     XMLSize_t eaten = 0;
     XMLSize_t offset = 0;
     XMLSize_t inputLength = XMLString::stringLen(toTranscode);
-#endif
+~endif
 
     while (inputLength)
     {
@@ -87,17 +87,17 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
 
     static XMLCh outBuff[128];
     const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode);
-#if (XERCES_VERSION_MAJOR == 2)
+~if (XERCES_VERSION_MAJOR == 2)
     unsigned int outputLength;
     unsigned int eaten = 0;
     unsigned int offset = 0;
     unsigned int inputLength = std::string(fromTranscode).size();
-#else
+~else
     XMLSize_t outputLength;
     XMLSize_t eaten = 0;
     XMLSize_t offset = 0;
     XMLSize_t inputLength = std::string(fromTranscode).size();
-#endif
+~endif
 
     unsigned char* charSizes = new unsigned char[inputLength];
     while (inputLength)
