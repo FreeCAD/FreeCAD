@@ -88,6 +88,7 @@ class PathWorkbench(Workbench):
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
         import PathCommands
+        import subprocess
 
         PathGuiInit.Startup()
 
@@ -158,7 +159,13 @@ class PathWorkbench(Workbench):
 
         if PathPreferences.advancedOCLFeaturesEnabled():
             try:
-                import ocl
+                subprocess.call(["camsim", "-v"])
+                toolcmdlist.append("Path_Camotics")
+            except FileNotFoundError:
+                pass
+
+            try:
+                import ocl  # pylint: disable=unused-variable
                 from PathScripts import PathSurfaceGui
                 from PathScripts import PathWaterlineGui
 

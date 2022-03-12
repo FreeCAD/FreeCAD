@@ -164,10 +164,6 @@ def dumpgroup(group):
             print(f"--->{j.Name}")
     print("====================")
 
-        self.assertRaises(
-            gcode_pre.PathNoActiveDocumentException,
-            gcode_pre._isImportEnvironmentReady,
-        )
 
 class TestBuildPostList(unittest.TestCase):
     """
@@ -191,6 +187,13 @@ class TestBuildPostList(unittest.TestCase):
     testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_filenaming.fcstd"
     doc = FreeCAD.open(testfile)
     job = doc.getObjectsByLabel("MainJob")[0]
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
 
     def test000(self):
 
@@ -269,8 +272,6 @@ class TestBuildPostList(unittest.TestCase):
         self.assertTrue(len(firstoplist) == 6)
         self.assertTrue(firstoutputitem[0] == "G54")
 
-        importFile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_centroid_00.ngc"
-        gcodeByToolNumberList = gcode_pre._identifygcodeByToolNumberList(importFile)
 
 class TestOutputNameSubstitution(unittest.TestCase):
 
@@ -323,8 +324,10 @@ class TestOutputNameSubstitution(unittest.TestCase):
     job = doc.getObjectsByLabel("MainJob")[0]
     macro = FreeCAD.getUserMacroDir()
 
+
     def test000(self):
         # Test basic name generation with empty string
+        FreeCAD.setActiveDocument(self.doc.Label)
         teststring = ""
         self.job.PostProcessorOutputFile = teststring
         self.job.SplitOutput = False

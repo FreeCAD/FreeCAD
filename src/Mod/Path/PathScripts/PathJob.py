@@ -674,6 +674,8 @@ class ObjectJob:
         if getattr(obj, "Operations", None):
             # obj.Path = obj.Operations.Path
             self.getCycleTime()
+            if hasattr(obj, "PathChanged"):
+                obj.PathChanged = True
 
     def getCycleTime(self):
         seconds = 0

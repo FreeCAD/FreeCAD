@@ -224,6 +224,7 @@ SET(PathTests_SRCS
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
     PathTests/test_centroid_00.ngc
+    PathTests/test_filenaming.fcstd
     PathTests/test_geomop.fcstd
     PathTests/test_holes00.fcstd
     PathTests/test_linuxcnc_00.ngc
