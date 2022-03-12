@@ -8,10 +8,8 @@
 #include "actiongroup.h"
 #include "taskheader_p.h"
 #include "taskgroup_p.h"
-#include "actionlabel.h"
-#include "actionpanelscheme.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 
 namespace QSint
