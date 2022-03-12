@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : SMESH_subMesh.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
@@ -2312,7 +2312,7 @@ EventListenerData* SMESH_subMesh::GetEventListenerData(const string& listenerNam
 
 //================================================================================
 /*!
- * \brief Notify stored event listeners on the occured event
+ * \brief Notify stored event listeners on the occurred event
  * \param event - algo_event or compute_event itself
  * \param eventType - algo_event or compute_event
  * \param hyp - hypothesis, if eventType is algo_event

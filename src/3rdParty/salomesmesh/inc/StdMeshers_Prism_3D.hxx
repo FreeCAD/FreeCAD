@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : StdMeshers_Prism_3D.hxx
 //  Module : SMESH
 //
@@ -238,12 +238,12 @@ class STDMESHERS_EXPORT StdMeshers_PrismAsBlock: public SMESH_Block
   { return myShapeIDMap.FindIndex( shape ); }
 
   /*!
-   * \brief Check curve orientation of a bootom edge
+   * \brief Check curve orientation of a bottom edge
    *  \param meshDS - mesh DS
    *  \param columnsMap - node columns map of side face
-   *  \param bottomEdge - the bootom edge
+   *  \param bottomEdge - the bottom edge
    *  \param sideFaceID - side face in-block ID
-   *  \retval bool - true if orienation coinside with in-block froward orienation
+   *  \retval bool - true if orientation coincides with in-block forward orientation
    */
   static bool IsForwardEdge(SMESHDS_Mesh*           meshDS,
                             const TParam2ColumnMap& columnsMap,
@@ -271,7 +271,7 @@ private:
     PSurface                        mySurface;
     TopoDS_Edge                     myBaseEdge;
     map< int, PSurface >            myShapeID2Surf;
-    // first and last normalized params and orientaion for each component or it-self
+    // first and last normalized params and orientation for each component or it-self
     std::vector< std::pair< double, double> > myParams; // select my columns in myParamToColumnMap
     bool                            myIsForward;
     std::vector< TSideFace* >       myComponents;

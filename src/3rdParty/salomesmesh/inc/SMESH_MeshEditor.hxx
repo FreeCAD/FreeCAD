@@ -796,7 +796,7 @@ private:
   // Nodes and elements created during last operation
   SMESH_SequenceOfElemPtr myLastCreatedNodes, myLastCreatedElems;
 
-  // Description of error/warning occured during last operation
+  // Description of error/warning occurred during last operation
   SMESH_ComputeErrorPtr   myError;
 };
 

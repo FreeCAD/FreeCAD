@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH StdMeshers_StartEndLength : implementaion of SMESH idl descriptions
+//  SMESH StdMeshers_StartEndLength : implementation of SMESH idl descriptions
 //  File   : StdMeshers_StartEndLength.cxx
 //  Module : SMESH
 //

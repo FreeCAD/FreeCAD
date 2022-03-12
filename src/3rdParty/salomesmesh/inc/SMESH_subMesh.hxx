@@ -190,7 +190,7 @@ protected:
   void setEventListener(EventListener* listener, EventListenerData* data);
 
   /*!
-   * \brief Notify stored event listeners on the occured event
+   * \brief Notify stored event listeners on the occurred event
    * \param event - algo_event or compute_event itself
    * \param eventType - algo_event or compute_event
    * \param hyp - hypothesis, if eventType is algo_event

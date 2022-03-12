@@ -38,7 +38,7 @@ namespace e57
    {
       // We are using the E57 v1.0 data format standard fieldnames.
       // The standard fieldnames are used without an extension prefix (in the default namespace).
-      // We explicitly register it for completeness (the reference implementaion would do it for us, if we didn't).
+      // We explicitly register it for completeness (the reference implementation would do it for us, if we didn't).
       imf_.extensionsAdd( "", E57_V1_0_URI );
 
       // Set per-file properties.
