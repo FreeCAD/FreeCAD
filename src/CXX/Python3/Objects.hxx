@@ -1442,8 +1442,14 @@ namespace Py
         }
 
         class PYCXX_EXPORT iterator
-        : public random_access_iterator_parent( seqref<T> )
         {
+        public:
+            using iterator_category = std::random_access_iterator_tag;
+            using value_type = seqref<T>;
+            using difference_type = int;
+            using pointer = value_type*;
+            using reference = value_type&;
+
         protected:
             friend class SeqBase<T>;
             SeqBase<T> *seq;
@@ -1595,8 +1601,14 @@ namespace Py
         }
 
         class PYCXX_EXPORT const_iterator
-        : public random_access_iterator_parent( const Object )
         {
+        public:
+            using iterator_category = std::random_access_iterator_tag;
+            using value_type = const Object;
+            using difference_type = int;
+            using pointer = value_type*;
+            using reference = value_type&;
+
         protected:
             friend class SeqBase<T>;
             const SeqBase<T> *seq;
