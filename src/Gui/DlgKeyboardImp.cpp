@@ -79,6 +79,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
     ui->setupUi(this);
 
     conn = initCommandWidgets(ui->commandTreeWidget,
+                              nullptr,
                               ui->categoryBox,
                               ui->editCommand,
                               ui->assignedTreeWidget,
@@ -129,8 +130,49 @@ void DlgCustomKeyboardImp::initCommandCompleter(QLineEdit *edit, QComboBox *comb
         });
 }
 
+void DlgCustomKeyboardImp::populateCommandList(QTreeWidget *commandTreeWidget,
+                                               QTreeWidgetItem *separatorItem,
+                                               QComboBox *combo) 
+{
+    QByteArray current;
+    if (auto item = commandTreeWidget->currentItem())
+        current = item->data(1, Qt::UserRole).toByteArray();
+
+    if (separatorItem)
+        commandTreeWidget->takeTopLevelItem(commandTreeWidget->indexOfTopLevelItem(separatorItem));
+    commandTreeWidget->clear();
+    if (separatorItem)
+        commandTreeWidget->addTopLevelItem(separatorItem);
+    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    auto group = combo->itemData(combo->currentIndex(), Qt::UserRole).toByteArray();
+    auto cmds = group == "All" ? cCmdMgr.getAllCommands()
+                                : cCmdMgr.getGroupCommands(group.constData());
+    QTreeWidgetItem *currentItem = nullptr;
+    for (const Command *cmd : cmds) {
+        QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+        item->setText(1, Action::commandMenuText(cmd));
+        item->setToolTip(1, Action::commandToolTip(cmd));
+        item->setData(1, Qt::UserRole, QByteArray(cmd->getName()));
+        item->setSizeHint(0, QSize(32, 32));
+        if (auto pixmap = cmd->getPixmap())
+            item->setIcon(0, BitmapFactory().iconFromTheme(pixmap));
+        item->setText(2, cmd->getShortcut());
+        if (auto accel = cmd->getAccel())
+            item->setText(3, QKeySequence(QString::fromLatin1(accel)).toString());
+
+        if (current == cmd->getName())
+            currentItem = item;
+    }
+    if (currentItem)
+        commandTreeWidget->setCurrentItem(currentItem);
+    commandTreeWidget->resizeColumnToContents(2);
+    commandTreeWidget->resizeColumnToContents(3);
+}
+
 boost::signals2::connection
-DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget, QComboBox *combo)
+DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget,
+                                      QTreeWidgetItem *separatorItem,
+                                      QComboBox *combo)
 {
     QStringList labels;
     labels << tr("Icon") << tr("Command") << tr("Shortcut") << tr("Default");
@@ -140,52 +182,24 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget, QComboBox 
     commandTreeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     commandTreeWidget->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
 
-    QObject::connect(combo, QOverload<int>::of(&QComboBox::activated), [=](int index) {
-        QByteArray current;
-        if (auto item = commandTreeWidget->currentItem())
-            current = item->data(1, Qt::UserRole).toByteArray();
-
-        commandTreeWidget->clear();
-        CommandManager & cCmdMgr = Application::Instance->commandManager();
-        auto group = combo->itemData(index, Qt::UserRole).toByteArray();
-        auto cmds = group == "All" ? cCmdMgr.getAllCommands()
-                                   : cCmdMgr.getGroupCommands(group.constData());
-        QTreeWidgetItem *currentItem = nullptr;
-        for (const Command *cmd : cmds) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
-            item->setText(1, Action::commandMenuText(cmd));
-            item->setToolTip(1, Action::commandToolTip(cmd));
-            item->setData(1, Qt::UserRole, QByteArray(cmd->getName()));
-            item->setSizeHint(0, QSize(32, 32));
-            if (auto pixmap = cmd->getPixmap())
-                item->setIcon(0, BitmapFactory().iconFromTheme(pixmap));
-            item->setText(2, cmd->getShortcut());
-            if (auto accel = cmd->getAccel())
-                item->setText(3, QKeySequence(QString::fromLatin1(accel)).toString());
-
-            if (current == cmd->getName())
-                currentItem = item;
-        }
-        if (currentItem)
-            commandTreeWidget->setCurrentItem(currentItem);
-        commandTreeWidget->resizeColumnToContents(2);
-        commandTreeWidget->resizeColumnToContents(3);
-    });
-
-    QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged,
-                     combo, [combo]() { combo->activated(combo->currentIndex()); });
-
     populateCommandGroups(combo);
 
-    // Using a timer to respond for command change for performance, and also
+    // Using a timer to respond to command change for performance, and also
     // because macro command may be added before proper initialization (null
     // menu text, etc.)
     QTimer *timer = new QTimer(combo);
     timer->setSingleShot(true);
-    QObject::connect(timer, &QTimer::timeout, [combo](){
+
+    QObject::connect(timer, &QTimer::timeout, [=](){
         populateCommandGroups(combo);
-        combo->activated(combo->currentIndex());
+        populateCommandList(commandTreeWidget, separatorItem, combo);
     });
+
+    QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged,
+                     [timer]() { timer->start(100); });
+
+    QObject::connect(combo, QOverload<int>::of(&QComboBox::activated),
+                     [timer]() { timer->start(100); });
 
     return Application::Instance->commandManager().signalChanged.connect([timer](){
         timer->start(100);
@@ -239,6 +253,7 @@ void DlgCustomKeyboardImp::initPriorityList(QTreeWidget *priorityList,
 
 boost::signals2::connection
 DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget *commandTreeWidget,
+                                         QTreeWidgetItem *separatorItem,
                                          QComboBox *comboGroups,
                                          QLineEdit *editCommand,
                                          QTreeWidget *priorityList,
@@ -248,7 +263,7 @@ DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget *commandTreeWidget,
                                          AccelLineEdit *currentShortcut)
 {
     initCommandCompleter(editCommand, comboGroups, commandTreeWidget);
-    auto conn = initCommandList(commandTreeWidget, comboGroups);
+    auto conn = initCommandList(commandTreeWidget, separatorItem, comboGroups);
 
     if (priorityList && buttonUp && buttonDown) {
         initPriorityList(priorityList, buttonUp, buttonDown);

@@ -61,6 +61,7 @@ public:
     /** Public helper function for handling command widgets
      *
      * @param commandTreeWidget: a tree widget listing commands
+     * @param separatorItem: optional separator item
      * @param comboGroups: a combo box widget for choosing categories of commands
      * @param editCommand: a line edit for searching command with auto complete
      * @param priroityList: a tree widget listing commands with the same shortcut in order of priority
@@ -74,6 +75,7 @@ public:
      */
     static boost::signals2::connection
         initCommandWidgets(QTreeWidget *commandTreeWidget,
+                           QTreeWidgetItem *separatorItem,
                            QComboBox *comboGroups,
                            QLineEdit *editCommand,
                            QTreeWidget *priorityList = nullptr,
@@ -89,9 +91,10 @@ protected:
      */
     //@{
     static void initCommandCompleter(QLineEdit *, QComboBox *combo, QTreeWidget *treeWidget);
-    static boost::signals2::connection initCommandList(QTreeWidget *, QComboBox *combo);
+    static boost::signals2::connection initCommandList(QTreeWidget *, QTreeWidgetItem *, QComboBox *combo);
     static void initPriorityList(QTreeWidget *, QAbstractButton *buttonUp, QAbstractButton *buttonDown);
     static void populateCommandGroups(QComboBox *);
+    static void populateCommandList(QTreeWidget *, QTreeWidgetItem *, QComboBox *);
     static void populatePriorityList(QTreeWidget *priorityList,
                                      AccelLineEdit *editor,
                                      AccelLineEdit *current);
