@@ -34,7 +34,7 @@
 
 #include "property.hpp"
 #include "clustergraph.hpp"
-#include "sheduler.hpp"
+#include "scheduler.hpp"
 #include "logging.hpp"
 #include "traits.hpp"
 #include "object.hpp"
@@ -220,7 +220,7 @@ protected:
 
 public:
     typedef ClusterGraph<edge_properties, vertex_properties, cluster_properties, objects> Cluster;
-    typedef Sheduler< BaseType > Shedule;
+    typedef Scheduler< BaseType > Schedule;
     typedef KernelType Kernel;
 
 public:
@@ -280,7 +280,7 @@ public:
 
     std::shared_ptr<Cluster> m_cluster;
     std::shared_ptr<Storage> m_storage;
-    Shedule m_sheduler;
+    Schedule m_scheduler;
     Kernel  m_kernel;
     std::vector<std::shared_ptr<System> > m_subsystems;
 

@@ -71,7 +71,7 @@ struct vertex_copier {
     Graph& graph2;
 };
 
-struct placehoder {
+struct placeholder {
     template<typename T>
     void operator()(T t) {};
 };
@@ -273,7 +273,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(std::
         put(propmapIndex, *vit.first, c);
 
     //first copy all vertices and edges, but be aware that the objects in the new graph
-    //are also copys only and point to the old graph. there is a bug in older boost version
+    //are also copies only and point to the old graph. there is a bug in older boost version
     //(<1.5 i believe) that breaks vertex_all property map for bundled properties, so we
     //have to create our own copier functors
     into->clear();
@@ -425,7 +425,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(std::shared_ptr<ClusterGraph> g) {
-    placehoder p;
+    placeholder p;
     removeCluster(getClusterVertex(g), p);
 };
 
@@ -457,7 +457,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeCluster(LocalVertex v) {
-    placehoder p;
+    placeholder p;
     removeCluster(v, p);
 };
 
@@ -717,7 +717,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeVertex(L
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeVertex(LocalVertex id) {
-    placehoder p;
+    placeholder p;
     removeVertex(getGlobalVertex(id), p);
 };
 
@@ -729,7 +729,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeVertex(G
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeVertex(GlobalVertex id) {
-    placehoder p;
+    placeholder p;
     removeVertex(id, p);
 };
 
@@ -740,9 +740,9 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeEdge(Glo
     if(!fusion::at_c<2> (res))
         return; //TODO:throw
 
-    placehoder p;
+    placeholder p;
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*fusion::at_c<1> (res)) [fusion::at_c<0> (res)]);
-    vec.erase(std::remove_if(vec.begin(), vec.end(), apply_remove_prediacte<placehoder, ClusterGraph> (p, id)), vec.end());
+    vec.erase(std::remove_if(vec.begin(), vec.end(), apply_remove_prediacte<placeholder, ClusterGraph> (p, id)), vec.end());
 
     if(vec.empty())
         boost::remove_edge(fusion::at_c<0> (res), *fusion::at_c<1> (res));
@@ -753,7 +753,7 @@ template<typename Functor>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeEdge(LocalEdge id, Functor& f) {
 
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*this) [id]);
-    std::for_each(vec.begin(), vec.end(), boost::bind<void> (boost::ref(apply_remove_prediacte<placehoder, ClusterGraph> (f, -1)), bp::_1));
+    std::for_each(vec.begin(), vec.end(), boost::bind<void> (boost::ref(apply_remove_prediacte<placeholder, ClusterGraph> (f, -1)), bp::_1));
     boost::remove_edge(id, *this);
 };
 
