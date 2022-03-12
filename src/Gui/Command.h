@@ -882,7 +882,7 @@ public:
     void updateCommands(const char* sContext, int mode);
 
     /// Return a revision number to check for addition or removal of any command
-    int getRevision() { return _revision; }
+    int getRevision() const { return _revision; }
 
     /// Signal on any addition or removal of command
     boost::signals2::signal<void ()> signalChanged;
