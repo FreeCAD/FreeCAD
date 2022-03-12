@@ -119,7 +119,7 @@ std::shared_ptr<Decoder> Decoder::DecoderFactory( unsigned bytestreamNumber, //!
          unsigned bitsPerRecord = imf->bitsNeeded( sini->minimum(), sini->maximum() );
 
          //!!! need to pick smarter channel buffer sizes, here and elsewhere
-         /// Constuct ScaledInteger dencoder with appropriate register size,
+         /// Construct ScaledInteger dencoder with appropriate register size,
          /// based on number of bits stored.
          if ( bitsPerRecord == 0 )
          {
@@ -251,7 +251,7 @@ size_t BitpackDecoder::inputProcess( const char *source, const size_t availableB
       /// Now that we have input stored in an aligned buffer, call derived class
       /// to try to eat some Note that end of filled buffer may not be at a
       /// natural boundary. The subclass may transfer this partial word in a
-      /// full word transfer, but it must be carefull to only use the defined
+      /// full word transfer, but it must be done carefully to only use the defined
       /// bits. inBuffer_ is a multiple of largest word size, so this full word
       /// transfer off the end will always be in defined memory.
 
@@ -512,11 +512,11 @@ size_t BitpackStringDecoder::inputProcessAligned( const char *inbuf, const size_
             {
                if ( *inbuf & 0x01 )
                {
-                  prefixLength_ = 8; // 8 byte prefix, length upto 2^63-1
+                  prefixLength_ = 8; // 8 byte prefix, length up to 2^63-1
                }
                else
                {
-                  prefixLength_ = 1; // 1 byte prefix, length upto 2^7-1
+                  prefixLength_ = 1; // 1 byte prefix, length up to 2^7-1
                }
             }
 

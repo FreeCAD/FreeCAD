@@ -388,7 +388,7 @@ int64_t SourceDestBufferImpl::getNextInt64( double scale, double offset )
    /// Reverse scale (undo scaling) of a user's number to get raw value to put
    /// in file.
 
-   /// Encorporating the scale is optional (requested by user when constructing
+   /// Incorporating the scale is optional (requested by user when constructing
    /// the sdbuf). If the user did not request scaling, then we get raw values
    /// from user's buffer.
    if ( !doScaling_ )
@@ -804,10 +804,10 @@ void SourceDestBufferImpl::setNextInt64( int64_t value, double scale, double off
 {
    /// don't checkImageFileOpen
 
-   /// Apply a scale and offset to numbers from file before puting in user's
+   /// Apply a scale and offset to numbers from file before putting in user's
    /// buffer.
 
-   /// Encorporating the scale is optional (requested by user when constructing
+   /// Incorporating the scale is optional (requested by user when constructing
    /// the sdbuf). If the user did not request scaling, then we send raw values
    /// to user's buffer.
    if ( !doScaling_ )

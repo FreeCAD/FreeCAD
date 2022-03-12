@@ -474,7 +474,7 @@ char *DataPacket::getBytestream( unsigned bytestreamNumber, unsigned &byteCount 
    auto bsbLength = reinterpret_cast<uint16_t *>( &payload[0] );
    auto streamBase = reinterpret_cast<char *>( &bsbLength[header.bytestreamCount] );
 
-   /// Sum size of preceeding stream buffers to get position
+   /// Sum size of preceding stream buffers to get position
    unsigned totalPreceeding = 0;
    for ( unsigned i = 0; i < bytestreamNumber; i++ )
    {

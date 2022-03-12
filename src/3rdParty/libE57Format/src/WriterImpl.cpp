@@ -907,7 +907,7 @@ namespace e57
       // E57_EXT_surface_normals
       if ( data3DHeader.pointFields.normalX || data3DHeader.pointFields.normalY || data3DHeader.pointFields.normalZ )
       {
-         // make sure we declare the extesion before using the fields with prefix
+         // make sure we declare the extension before using the fields with prefix
          ustring norExtUri;
          if ( !imf_.extensionsLookupPrefix( "nor", norExtUri ) )
          {
