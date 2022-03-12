@@ -18,30 +18,30 @@
 /* Includes                                                                                                     */
 /*----------------------------------------------------------*/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <float.h>
-#include <math.h>
-#include <ctype.h>
-#include "libmesh5.h"
+~include <stdio.h>
+~include <stdlib.h>
+~include <stdarg.h>
+~include <string.h>
+~include <float.h>
+~include <math.h>
+~include <ctype.h>
+~include "libmesh5.h"
 
 
 /*----------------------------------------------------------*/
 /* Defines                                                                                                      */
 /*----------------------------------------------------------*/
 
-#define Asc 1
-#define Bin 2
-#define MshFil 4
-#define SolFil 8
-#define MaxMsh 100
-#define InfKwd 1
-#define RegKwd 2
-#define SolKwd 3
-#define WrdSiz 4
-#define BufSiz 10000
+~define Asc 1
+~define Bin 2
+~define MshFil 4
+~define SolFil 8
+~define MaxMsh 100
+~define InfKwd 1
+~define RegKwd 2
+~define SolKwd 3
+~define WrdSiz 4
+~define BufSiz 10000
 
 
 /*----------------------------------------------------------*/
@@ -1038,7 +1038,7 @@ static int ScaKwdTab(GmfMshSct *msh)
                                                 break;
                                         }
                         }
-                        else if(str[0] == '#')
+                        else if(str[0] == '~')
                                 while(fgetc(msh->hdl) != '\n');
                 }
         }

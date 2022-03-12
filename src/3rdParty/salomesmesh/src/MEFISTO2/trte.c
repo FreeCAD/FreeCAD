@@ -38,33 +38,33 @@ typedef long int logical;
 typedef short int shortlogical;
 typedef char logical1;
 typedef char integer1;
-#ifdef INTEGER_STAR_8	/* Adjust for integer*8. */
+~ifdef INTEGER_STAR_8	/* Adjust for integer*8. */
 typedef long long longint;		/* system-dependent */
 typedef unsigned long long ulongint;	/* system-dependent */
-#define qbit_clear(a,b)	((a) & ~((ulongint)1 << (b)))
-#define qbit_set(a,b)	((a) |  ((ulongint)1 << (b)))
-#endif
+~define qbit_clear(a,b)	((a) & ~((ulongint)1 << (b)))
+~define qbit_set(a,b)	((a) |  ((ulongint)1 << (b)))
+~endif
 
-#define TRUE_ (1)
-#define FALSE_ (0)
+~define TRUE_ (1)
+~define FALSE_ (0)
 
 /* Extern is for use with -E */
-#ifndef Extern
-#define Extern extern
-#endif
+~ifndef Extern
+~define Extern extern
+~endif
 
 /* I/O stuff */
 
-#ifdef f2c_i2
+~ifdef f2c_i2
 /* for -i2 */
 typedef short flag;
 typedef short ftnlen;
 typedef short ftnint;
-#else
+~else
 typedef long int flag;
 typedef long int ftnlen;
 typedef long int ftnint;
-#endif
+~endif
 
 /*external read, write*/
 typedef struct
@@ -141,7 +141,7 @@ typedef struct
 	ftnlen	inblanklen;
 } inlist;
 
-#define VOID void
+~define VOID void
 
 union Multitype {	/* for multiple entry points */
 	integer1 g;
@@ -173,20 +173,20 @@ struct Namelist {
 	};
 typedef struct Namelist Namelist;
 
-#define abs(x) ((x) >= 0 ? (x) : -(x))
-#define dabs(x) (doublereal)abs(x)
-#define min(a,b) ((a) <= (b) ? (a) : (b))
-#define max(a,b) ((a) >= (b) ? (a) : (b))
-#define dmin(a,b) (doublereal)min(a,b)
-#define dmax(a,b) (doublereal)max(a,b)
-#define bit_test(a,b)	((a) >> (b) & 1)
-#define bit_clear(a,b)	((a) & ~((uinteger)1 << (b)))
-#define bit_set(a,b)	((a) |  ((uinteger)1 << (b)))
+~define abs(x) ((x) >= 0 ? (x) : -(x))
+~define dabs(x) (doublereal)abs(x)
+~define min(a,b) ((a) <= (b) ? (a) : (b))
+~define max(a,b) ((a) >= (b) ? (a) : (b))
+~define dmin(a,b) (doublereal)min(a,b)
+~define dmax(a,b) (doublereal)max(a,b)
+~define bit_test(a,b)	((a) >> (b) & 1)
+~define bit_clear(a,b)	((a) & ~((uinteger)1 << (b)))
+~define bit_set(a,b)	((a) |  ((uinteger)1 << (b)))
 
 /* procedure parameter types for -A and -C++ */
 
-#define F2C_proc_par_types 1
-#ifdef NIX
+~define F2C_proc_par_types 1
+~ifdef NIX
 typedef int /* Unknown procedure type */ (*U_fp)(...);
 typedef shortint (*J_fp)(...);
 typedef integer (*I_fp)(...);
@@ -198,7 +198,7 @@ typedef logical (*L_fp)(...);
 typedef shortlogical (*K_fp)(...);
 typedef /* Character */ VOID (*H_fp)(...);
 typedef /* Subroutine */ int (*S_fp)(...);
-#else
+~else
 typedef int /* Unknown procedure type */ (*U_fp)();
 typedef shortint (*J_fp)();
 typedef integer (*I_fp)();
@@ -210,7 +210,7 @@ typedef logical (*L_fp)();
 typedef shortlogical (*K_fp)();
 typedef /* Character */ VOID (*H_fp)();
 typedef /* Subroutine */ int (*S_fp)();
-#endif
+~endif
 /* E_fp is for real functions when -R is not specified */
 typedef VOID C_f;	/* complex function */
 typedef VOID H_f;	/* character function */
@@ -219,26 +219,26 @@ typedef doublereal E_f;	/* real function with -R not specified */
 
 /* undef any lower-case symbols that your C compiler predefines, e.g.: */
 
-#ifndef Skip_f2c_Undefs
-#undef cray
-#undef gcos
-#undef mc68010
-#undef mc68020
-#undef mips
-#undef pdp11
-#undef sgi
-#undef sparc
-#undef sun
-#undef sun2
-#undef sun3
-#undef sun4
-#undef u370
-#undef u3b
-#undef u3b2
-#undef u3b5
-#undef unix
-#undef vax
-#endif
+~ifndef Skip_f2c_Undefs
+~undef cray
+~undef gcos
+~undef mc68010
+~undef mc68020
+~undef mips
+~undef pdp11
+~undef sgi
+~undef sparc
+~undef sun
+~undef sun2
+~undef sun3
+~undef sun4
+~undef u370
+~undef u3b
+~undef u3b2
+~undef u3b5
+~undef unix
+~undef vax
+~endif
 
 // stop F2c.h content
 
@@ -252,8 +252,8 @@ union {
     } _2;
 } unites_;
 
-#define unites_1 (unites_._1)
-#define unites_2 (unites_._2)
+~define unites_1 (unites_._1)
+~define unites_2 (unites_._2)
 
 /* Table of constant values */
 
@@ -1208,7 +1208,7 @@ integer nosstr_(doublereal *p, doublereal *pxyd, integer *nt, integer *letree)
 /*      si letree(0,.)>0 alors */
 /*         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j */
 /*      sinon */
-/*         letree(0:3,j) :-no pxyd des 1 …a 4 points internes au triangle j */
+/*         letree(0:3,j) :-no pxyd des 1 ï¿½a 4 points internes au triangle j */
 /*                         0  si pas de point */
 /*                       ( j est alors une feuille de l'arbre ) */
 /*      letree(4,j) : no letree du sur-triangle du triangle j */
@@ -1291,7 +1291,7 @@ integer notrpt_(doublereal *p, doublereal *pxyd, integer *notrde, integer *
 /*      si letree(0,.)>0 alors */
 /*         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j */
 /*      sinon */
-/*         letree(0:3,j) :-no pxyd des 1 … 4 points internes au triangle j */
+/*         letree(0:3,j) :-no pxyd des 1 ï¿½ 4 points internes au triangle j */
 /*                         0  si pas de point */
 /*                        ( j est alors une feuille de l'arbre ) */
 /*      letree(4,j) : no letree du sur-triangle du triangle j */
@@ -1359,7 +1359,7 @@ L10:
 /*      si letree(0,.)>0 alors */
 /*         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j */
 /*      sinon */
-/*         letree(0:3,j) :-no pxyd des 1 …a 4 points internes au triangle j */
+/*         letree(0:3,j) :-no pxyd des 1 ï¿½a 4 points internes au triangle j */
 /*                         0  si pas de point */
 /*                        ( j est alors une feuille de l'arbre ) */
 /*      letree(4,j) : no letree du sur-triangle du triangle j */
@@ -2004,12 +2004,12 @@ doublereal angled_(doublereal *p1, doublereal *p2, doublereal *p3)
     static doublereal a;
     static integer i__, j;
     static doublereal s, d2;
-#define ns1 (equiv_2)
-#define ns2 (equiv_2 + 1)
-#define ns3 (equiv_2 + 2)
+~define ns1 (equiv_2)
+~define ns2 (equiv_2 + 1)
+~define ns3 (equiv_2 + 2)
     static integer nte, nbs0;
     static doublereal dmin__, dmax__, xrmin, yrmin, xrmax, yrmax;
-#define nuste (equiv_2)
+~define nuste (equiv_2)
     static doublereal aretm2;
     static integer nbsom0;
     extern /* Subroutine */ int te4ste_(integer *, integer *, doublereal *, 
@@ -2451,10 +2451,10 @@ L9999:
     return 0;
 } /* tehote_ */
 
-#undef nuste
-#undef ns3
-#undef ns2
-#undef ns1
+~undef nuste
+~undef ns3
+~undef ns2
+~undef ns1
 
 
 /* Subroutine */ int tetrte_(doublereal *comxmi, doublereal *aretmx, integer *
@@ -4150,9 +4150,9 @@ L9990:
     static integer i__, j;
     static real d0;
     static integer ns, nt;
-#define ns1 (equiv_2)
-#define ns2 (equiv_2 + 1)
-#define ns3 (equiv_2 + 2)
+~define ns1 (equiv_2)
+~define ns2 (equiv_2 + 1)
+~define ns3 (equiv_2 + 2)
     static integer nst, nste;
     extern /* Subroutine */ int te1stm_(integer *, integer *, doublereal *, 
 	    integer *, integer *, integer *, integer *, integer *, integer *, 
@@ -4166,7 +4166,7 @@ L9990:
     static integer ntqmin, nbsuns;
     static doublereal quaopt;
     static integer nbstsu;
-#define nosotr (equiv_2)
+~define nosotr (equiv_2)
     extern /* Subroutine */ int nusotr_(integer *, integer *, integer *, 
 	    integer *, integer *, integer *);
 
@@ -4399,10 +4399,10 @@ L100:
     return 0;
 } /* tesusp_ */
 
-#undef nosotr
-#undef ns3
-#undef ns2
-#undef ns1
+~undef nosotr
+~undef ns3
+~undef ns2
+~undef ns1
 
 
 /* Subroutine */ int teamqa_(integer *nutysu, doublereal *airemx, integer *
@@ -9870,12 +9870,12 @@ L40:
     static doublereal x1, y1, x2, y2, d12;
     static integer na, ns[2], nt, na0, na1, na2, ns1, ns2, nt0, ns3, ns4, nt1,
 	     na00, na01, nbt, nsp;
-#define nacf (equiv_1)
+~define nacf (equiv_1)
     static integer nbcf;
     static doublereal dmin__;
     static integer ipas, noar;
-#define nacf1 (equiv_1)
-#define nacf2 (equiv_1 + 1)
+~define nacf1 (equiv_1)
+~define nacf2 (equiv_1 + 1)
     static integer nsens, nbtrc0;
     extern /* Subroutine */ int int1sd_(integer *, integer *, integer *, 
 	    integer *, doublereal *, integer *, doublereal *, doublereal *);
@@ -10663,9 +10663,9 @@ L130:
     return 0;
 } /* tefoar_ */
 
-#undef nacf2
-#undef nacf1
-#undef nacf
+~undef nacf2
+~undef nacf1
+~undef nacf
 
 
 /* Subroutine */ int te4ste_(integer *nbsomm, integer *mxsomm, doublereal *

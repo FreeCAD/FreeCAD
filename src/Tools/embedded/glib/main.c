@@ -1,6 +1,6 @@
-#include <stdlib.h>
-#include <gtk/gtk.h>
-#include <Python.h>
+~include <stdlib.h>
+~include <gtk/gtk.h>
+~include <Python.h>
 
 static void helloWorld (GtkWidget *wid, GtkWidget *win)
 {

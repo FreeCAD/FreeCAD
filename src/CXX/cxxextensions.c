@@ -34,10 +34,10 @@
 // DAMAGE.
 //
 //-----------------------------------------------------------------------------
-#include "CXX/WrapPython.h"
+~include "CXX/WrapPython.h"
 
-#if PY_MAJOR_VERSION == 2
-#include "Python2/cxxextensions.c"
-#else
-#include "Python3/cxxextensions.c"
-#endif
+~if PY_MAJOR_VERSION == 2
+~include "Python2/cxxextensions.c"
+~else
+~include "Python3/cxxextensions.c"
+~endif

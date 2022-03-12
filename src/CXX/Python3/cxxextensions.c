@@ -35,12 +35,12 @@
 //
 //---------------------------------------------------------------------------*/
 
-#include "CXX/WrapPython.h"
+~include "CXX/WrapPython.h"
 
-#ifdef __cplusplus
+~ifdef __cplusplus
 extern "C" 
 {
-#endif
+~endif
 
 PyObject py_object_initializer = 
     {
@@ -49,6 +49,6 @@ PyObject py_object_initializer =
     NULL    // type must be init'ed by user
     };
 
-#ifdef __cplusplus
+~ifdef __cplusplus
 }
-#endif
+~endif

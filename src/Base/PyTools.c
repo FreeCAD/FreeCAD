@@ -8,15 +8,15 @@ for any purpose and without fee is hereby granted.  This software
 is provided on an as is basis, without warranties of any kind.
 */
 
-#include <FCConfig.h>
-#include "PyTools.h"
+~include <FCConfig.h>
+~include "PyTools.h"
 
-#include <stdarg.h>
-#include <string.h>
-#include <assert.h>
-#include <compile.h>
-#include <eval.h>
-#include <frameobject.h>
+~include <stdarg.h>
+~include <string.h>
+~include <assert.h>
+~include <compile.h>
+~include <eval.h>
+~include <frameobject.h>
 
 
 /*****************************************************************************
@@ -54,11 +54,11 @@ PP_Run_Method(PyObject *pobject,  const char *method,
     if (PP_DEBUG)                                    /* debug it too? */ 
         presult = PP_Debug_Function(pmeth, pargs); 
     else 
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(pmeth, pargs);   /* run interpreter */
-#else
+~else
         presult = PyObject_CallObject(pmeth, pargs);   /* run interpreter */
-#endif
+~endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);
@@ -133,11 +133,11 @@ PP_Run_Function(const char *modname, const char *funcname,          /* load from
     if (PP_DEBUG && strcmp(modname, "pdb") != 0)    /* debug this call? */
         presult = PP_Debug_Function(func, args);    /* run in pdb; incref'd */
     else
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(func, args);    /* run function; incref'd */
-#else
+~else
         presult = PyObject_CallObject(func, args);    /* run function; incref'd */
-#endif
+~endif
 
     Py_DECREF(func);
     Py_DECREF(args);                                    /* result may be None */
@@ -185,11 +185,11 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
     if (PP_DEBUG)                                   /* debug this call? */
         presult = PP_Debug_Function(object, args);  /* run in pdb; incref'd */
     else
-#if PY_VERSION_HEX < 0x03090000
+~if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(object, args);  /* run function; incref'd */
-#else
+~else
         presult = PyObject_CallObject(object, args);  /* run function; incref'd */
-#endif
+~endif
 
     Py_DECREF(args);                                    /* result may be None */
     return PP_Convert_Result(presult, resfmt, cresult); /* convert result to C*/
@@ -212,7 +212,7 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
  * the code here makes the 3 exception components more distinct;
  *****************************************************************************/
 
-#define MAX 2024
+~define MAX 2024
 /*
 FC_OS_LINUX: This is dangerous. How about PY_EXCEPT_MAX?
 */
@@ -311,11 +311,11 @@ void PP_Fetch_Error_Text()
             return;
         int line = PyFrame_GetLineNumber(frame);
         const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
-#ifdef FC_OS_WIN32
+~ifdef FC_OS_WIN32
         const char *_f = strstr(file, "\\src\\");
-#else
+~else
         const char *_f = strstr(file, "/src/");
-#endif
+~endif
         /* strcpy(PP_last_error_trace, "<unknown exception traceback>");  */
         snprintf(PP_last_error_trace,sizeof(PP_last_error_trace),"%s(%d)",(_f?_f+5:file),line);
     }
@@ -369,11 +369,11 @@ PP_Convert_Result(PyObject *presult, const char *resFormat, void *resTarget)
         if (strcmp(resFormat, "O") != 0) {     /* free object unless exported */
             if (strcmp(resFormat, "s") == 0) { /* copy string: caller owns it */
                 char **target = (char**) resTarget;
-#if defined (__GNUC__)
+~if defined (__GNUC__)
                 *target = strdup(*target);
-#else
+~else
                 *target = _strdup(*target);
-#endif
+~endif
             }
             Py_DECREF(presult);
         }
@@ -431,17 +431,17 @@ int PP_DEBUG  = 0;    /* debug embedded code with pdb? */
 
 const char *PP_Init(const char *modname) {
     Py_Initialize();                               /* init python if needed */
-//#ifdef FC_OS_LINUX /* cannot convert `const char *' to `char *' in assignment */
+//~ifdef FC_OS_LINUX /* cannot convert `const char *' to `char *' in assignment */
     if (modname!=NULL) return modname;
     { /* we assume here that the caller frees allocated memory */
-      // #0000716: strange assignment and a memory leak
+      // ~0000716: strange assignment and a memory leak
       return "__main__";
       //char* __main__=(char *)malloc(sizeof("__main__"));
       //return __main__="__main__";
     }
-//#else    
+//~else    
 //    return modname == NULL ? "__main__" : modname;  /* default to '__main__' */
-//#endif    
+//~endif    
 }
 
 
@@ -520,11 +520,11 @@ PP_Run_Command_Line(const char *prompt)
     int res;               /* interact with python, in "__main__" */
     Py_Initialize();       /* in the program's "stdio" window     */
     if (prompt != NULL)
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX)
+~if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX)
         printf("[%s <Use Ctrl-D (i.e. EOF) to exit.>]\n", prompt);
-#elif defined (FC_OS_WIN32)
+~elif defined (FC_OS_WIN32)
         printf("[%s <Use Ctrl-Z plus Return to exit.>]\n", prompt);
-#endif
+~endif
     res = PyRun_InteractiveLoop(stdin, "<stdin>");
     return res;
 }
