@@ -199,11 +199,13 @@ def fcoms(string, commentsym):
     return comment
 
 
-def splitArcs(path):
+def splitArcs(path, deflection=None):
     """filters a path object and replaces at G2/G3 moves with discrete G1
     returns a Path object"""
-    prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-    deflection = prefGrp.GetFloat("LibAreaCurveAccuarcy", 0.01)
+
+    if deflection is None:
+        prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        deflection = prefGrp.GetFloat("LibAreaCurveAccuarcy", 0.01)
 
     results = []
     if not isinstance(path, Path.Path):
