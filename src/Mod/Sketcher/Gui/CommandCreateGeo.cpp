@@ -4778,10 +4778,10 @@ public:
 
                 static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
-                // last entry is kept for tracking mouse movement
                 poleGeoIds.pop_back();
                 BSplinePoles.pop_back();
 
+                // last entry is kept, as it corresponds to the current pole, but the one corresponding to the erased pole is removed
                 sugConstr.erase(std::prev(std::prev(sugConstr.end())));
 
 
