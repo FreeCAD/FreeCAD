@@ -220,6 +220,7 @@ SET(Tools_Shape_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/boxtest.fcstd
+    PathTests/test_filenaming.fcstd
     PathTests/Drilling_1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd

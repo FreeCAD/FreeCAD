@@ -195,20 +195,25 @@ class CommandPathPost:
 
         return False
 
-    def exportObjectsWith(self, objs, job, needFilename=True):
-        PathLog.track()
+    def exportObjectsWith(self, objs, partname, job, sequence, extraargs=None):
+        PathLog.debug(f"{objs}, {partname}, {sequence}, {extraargs}")
         # check if the user has a project and has set the default post and
         # output filename
+        # extraargs can be passed in at this time
+
         postArgs = PathPreferences.defaultPostProcessorArgs()
         if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
             postArgs = job.PostProcessorArgs
         elif hasattr(job, "PostProcessor") and job.PostProcessor:
             postArgs = ""
 
+        if extraargs is not None:
+            postArgs += " {}".format(extraargs)
+
+        PathLog.debug(postArgs)
+
         postname = self.resolvePostProcessor(job)
-        filename = "-"
-        if postname and needFilename:
-            filename = self.resolveFileName(job)
+        filename = resolveFileName(job, partname, sequence)
 
         if postname and filename:
             print("post: %s(%s, %s)" % (postname, filename, postArgs))
@@ -415,7 +420,7 @@ class CommandPathPost:
                 if hasattr(o, "Proxy"):
                     if isinstance(o.Proxy, PathJob.ObjectJob):
                         targetlist.append(o.Label)
-            PathLog.debug("Possible post objects: {}".format(targetlist))
+            PathLog.debug(f"Possible post objects: {targetlist}")
             if len(targetlist) > 1:
                 jobname, result = QtGui.QInputDialog.getItem(
                     None, translate("Path", "Choose a Path Job"), None, targetlist
@@ -427,28 +432,35 @@ class CommandPathPost:
                 jobname = targetlist[0]
             job = FreeCAD.ActiveDocument.getObject(jobname)
 
-        PathLog.debug("about to postprocess job: {}".format(job.Name))
+        PathLog.debug(f"about to postprocess job: {job.Name}")
 
         postlist = self.buildPostList(job)
 
-        fail = True
-        rc = ""
-        for slist in postlist:
-            (fail, rc, filename) = self.exportObjectsWith(slist, job)
-            if fail:
-                break
+        filenames = []
 
-        self.subpart = 1
+        success = True
+        finalgcode = ""
+        for idx, section in enumerate(postlist):
+            partname = section[0]
+            sublist = section[1]
 
-        if fail:
-            FreeCAD.ActiveDocument.abortTransaction()
-        else:
+            result, gcode, name = self.exportObjectsWith(sublist, partname, job, idx)
+            filenames.append(name)
+            PathLog.debug(f"{result}, {gcode}, {name}")
+
+            if result is None:
+                success = False
+            else:
+                finalgcode += gcode
+
+        if success:
             if hasattr(job, "LastPostProcessDate"):
                 job.LastPostProcessDate = str(datetime.now())
             if hasattr(job, "LastPostProcessOutput"):
-                job.LastPostProcessOutput = filename
+                job.LastPostProcessOutput = " \n".join(filenames)
             FreeCAD.ActiveDocument.commitTransaction()
-
+        else:
+            FreeCAD.ActiveDocument.abortTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
