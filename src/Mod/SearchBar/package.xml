@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>SearchBar</name>
+  <description> A FreeCAD Mod which adds a search bar to the user inferface. The results include tools, document objects and (still to do) preferences.</description>
+  <version>1.0.1</version>
+  <date>2022-03-12</date>
+  <maintainer email="searchbar@suzanne.soy">Suzanne Soy</maintainer>
+  <license file="LICENSE">CC0</license>
+  <url type="repository" branch="main">https://github.com/SuzanneSoy/SearchBar</url>
+  <icon>Tango-System-search.svg</icon>
+  <content>
+    <preferencepack>
+      <name>SearchBar</name>
+      <version>1.0.1</version>
+      <url type="readme">https://github.com/SuzanneSoy/SearchBar</url>
+      <icon>Tango-System-search.svg</icon>
+      <subdirectory>./</subdirectory>
+    <preferencepack>
+  </content>
+</package>
