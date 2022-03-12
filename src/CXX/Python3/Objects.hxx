@@ -1606,8 +1606,8 @@ namespace Py
             using iterator_category = std::random_access_iterator_tag;
             using value_type = const Object;
             using difference_type = int;
-            using pointer = const Object*;
-            using reference = const Object&;
+            using pointer = value_type*;
+            using reference = value_type&;
 
         protected:
             friend class SeqBase<T>;
