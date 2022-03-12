@@ -146,6 +146,7 @@ class CommandAddonManager:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "first_run.ui")
             )
+            warning_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
             autocheck = pref.GetBool("AutoCheck", False)
             download_macros = pref.GetBool("DownloadMacros", False)
             proxy_string = pref.GetString("ProxyUrl", "")
@@ -258,7 +259,7 @@ class CommandAddonManager:
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "AddonManager.ui")
         )
-        self.dialog.setWindowFlag(QtCore.Qt.Tool)
+        self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         # cleanup the leftovers from previous runs
         self.macro_repo_dir = FreeCAD.getUserMacroDir(True)
@@ -1045,6 +1046,7 @@ class CommandAddonManager:
                 os.path.dirname(__file__), "dependency_resolution_dialog.ui"
             )
         )
+        self.dependency_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         for addon in missing.external_addons:
             self.dependency_dialog.listWidgetAddons.addItem(addon)

@@ -3,7 +3,7 @@
  <class>DependencyResolutionDialog</class>
  <widget class="QDialog" name="DependencyResolutionDialog">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -15,6 +15,12 @@
   </property>
   <property name="windowTitle">
    <string>Resolve Dependencies</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
