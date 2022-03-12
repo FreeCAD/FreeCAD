@@ -167,26 +167,36 @@ void ViewProviderSketch::ParameterObserver::updateRecalculateInitialSolutionWhil
 
 void ViewProviderSketch::ParameterObserver::subscribeToParameters()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->Attach(this);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrp->Attach(this);
 
-    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp2->Attach(this);
+        ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrp2->Attach(this);
 
-    ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrpv->Attach(this);
+        ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrpv->Attach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("ViewProviderSketch: Malformed parameter string: %s\n", e.what());
+    }
 }
 
 void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->Detach(this);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrp->Detach(this);
 
-    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp2->Detach(this);
+        ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrp2->Detach(this);
 
-    ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrpv->Detach(this);
+        ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrpv->Detach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("ViewProviderSketch: Malformed parameter string: %s\n", e.what());
+    }
 }
 
 void ViewProviderSketch::ParameterObserver::initParameters()
