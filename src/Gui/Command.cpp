@@ -259,7 +259,7 @@ bool Command::isViewOfType(Base::Type t) const
         return false;
 }
 
-void Command::addTo(QWidget *pcWidget)
+void Command::initAction()
 {
     if (!_pcAction) {
         _pcAction = createAction();
@@ -271,7 +271,11 @@ void Command::addTo(QWidget *pcWidget)
         setShortcut(ShortcutManager::instance()->getShortcut(getName(), getAccel()));
         testActive();
     }
+}
 
+void Command::addTo(QWidget *pcWidget)
+{
+    initAction();
     _pcAction->addTo(pcWidget);
 }
 
@@ -283,16 +287,7 @@ void Command::addToGroup(ActionGroup* group, bool checkable)
 
 void Command::addToGroup(ActionGroup* group)
 {
-    if (!_pcAction) {
-        _pcAction = createAction();
-#ifdef FC_DEBUG
-        // Accelerator conflict can now be dynamically resolved in ShortcutManager
-        //
-        // printConflictingAccelerators();
-#endif
-        setShortcut(ShortcutManager::instance()->getShortcut(getName(), getAccel()));
-        testActive();
-    }
+    initAction();
     group->addAction(_pcAction->findChild<QAction*>());
 }
 
