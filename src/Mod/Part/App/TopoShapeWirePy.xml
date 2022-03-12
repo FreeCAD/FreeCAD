@@ -35,10 +35,10 @@ A face and a tolerance can optionally be supplied to the algorithm:
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="makeHomogenousWires" Const="true">
+        <Methode Name="makeHomogeneousWires" Const="true">
         <Documentation>
             <UserDocu>Make this and the given wire homogeneous to have the same number of edges
-makeHomogenousWires(wire) -> Wire
+makeHomogeneousWires(wire) -> Wire
             </UserDocu>
         </Documentation>
     </Methode>

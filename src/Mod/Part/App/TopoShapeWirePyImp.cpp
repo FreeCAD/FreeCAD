@@ -368,7 +368,7 @@ PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds)
     }
 }
 
-PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
+PyObject* TopoShapeWirePy::makeHomogeneousWires(PyObject *args)
 {
     PyObject* wire;
     if (!PyArg_ParseTuple(args, "O!",&(Part::TopoShapeWirePy::Type),&wire))
