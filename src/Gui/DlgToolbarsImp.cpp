@@ -36,6 +36,8 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Action.h"
+#include "ToolBarManager.h"
 #include "MainWindow.h"
 #include "ToolBarManager.h"
 #include "Widgets.h"
@@ -205,9 +207,10 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                 Command* pCmd = rMgr.getCommandByName(it2.first.c_str());
                 if (pCmd) {
                     // command name
-                    auto item = new QTreeWidgetItem(toplevel);
-                    item->setText(0, qApp->translate(pCmd->className(), pCmd->getMenuText()));
-                    item->setData(0, Qt::UserRole, QByteArray(it2.first.c_str()));
+                    auto* item = new QTreeWidgetItem(toplevel);
+                    item->setText(0, Action::commandMenuText(pCmd));
+                    item->setToolTip(0, Action::commandToolTip(pCmd));
+                    item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
                     if (pCmd->getPixmap())
                         item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                     item->setSizeHint(0, QSize(32, 32));

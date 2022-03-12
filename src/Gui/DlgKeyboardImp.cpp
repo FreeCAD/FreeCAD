@@ -43,6 +43,7 @@
 #include "Window.h"
 #include "PrefWidgets.h"
 #include "ShortcutManager.h"
+#include "CommandCompleter.h"
 
 
 using namespace Gui::Dialog;
@@ -146,19 +147,14 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget, QComboBox 
 
         commandTreeWidget->clear();
         CommandManager & cCmdMgr = Application::Instance->commandManager();
-        QString group = combo->itemData(index, Qt::UserRole).toString();
-        auto cmds = group == QStringLiteral("All") ? cCmdMgr.getAllCommands()
-                                                   : cCmdMgr.getGroupCommands(group.toLatin1());
+        auto group = combo->itemData(index, Qt::UserRole).toByteArray();
+        auto cmds = group == "All" ? cCmdMgr.getAllCommands()
+                                   : cCmdMgr.getGroupCommands(group.constData());
         QTreeWidgetItem *currentItem = nullptr;
         for (const Command *cmd : cmds) {
             QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
-            if (dynamic_cast<const MacroCommand*>(cmd)) {
-                item->setText(1, QString::fromUtf8(cmd->getMenuText()));
-                item->setToolTip(1, QString::fromUtf8(cmd->getToolTipText()));
-            } else {
-                item->setText(1, qApp->translate(cmd->className(), cmd->getMenuText()));
-                item->setToolTip(1, qApp->translate(cmd->className(), cmd->getToolTipText()));
-            }
+            item->setText(1, Action::commandMenuText(cmd));
+            item->setToolTip(1, Action::commandToolTip(cmd));
             item->setData(1, Qt::UserRole, QByteArray(cmd->getName()));
             item->setSizeHint(0, QSize(32, 32));
             if (auto pixmap = cmd->getPixmap())
@@ -287,7 +283,7 @@ void DlgCustomKeyboardImp::populatePriorityList(QTreeWidget *priorityList,
             continue;
         QTreeWidgetItem* item = new QTreeWidgetItem(priorityList);
         item->setText(0, QString::fromUtf8(info.first));
-        item->setText(1, info.second->text());
+        item->setText(1, Action::cleanTitle(info.second->text()));
         item->setToolTip(0, info.second->toolTip());
         item->setIcon(0, info.second->icon());
         item->setData(0, Qt::UserRole, info.first);
@@ -374,7 +370,7 @@ void DlgCustomKeyboardImp::on_commandTreeWidget_currentItemChanged(QTreeWidgetIt
         ui->buttonReset->setEnabled((ks != ks2));
     }
 
-    ui->textLabelDescription->setText(item->toolTip(1));
+    ui->textLabelDescription->setText(Action::commandToolTip(cmd, false));
 }
 
 /** Shows all commands of this category */
