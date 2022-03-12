@@ -67,10 +67,15 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     ui->moveActionDownButton->setIcon(BitmapFactory().iconFromTheme("button_down"));
     ui->moveActionUpButton->setIcon(BitmapFactory().iconFromTheme("button_up"));
 
+    auto sepItem = new QTreeWidgetItem;
+    sepItem->setText(1, tr("<Separator>"));
+    sepItem->setData(1, Qt::UserRole, QByteArray("Separator"));
+    sepItem->setSizeHint(0, QSize(32, 32));
+
     conn = DlgCustomKeyboardImp::initCommandWidgets(ui->commandTreeWidget,
+                                                    sepItem,
                                                     ui->categoryBox,
                                                     ui->editCommand);
-
 
     // fills the combo box with all available workbenches
     QStringList workbenches = Application::Instance->workbenches();
@@ -96,7 +101,6 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     ui->toolbarTreeWidget->setHeaderLabels(labels);
     ui->toolbarTreeWidget->header()->hide();
 
-    on_categoryBox_activated(ui->categoryBox->currentIndex());
     Workbench* w = WorkbenchManager::instance()->active();
     if (w) {
         QString name = QString::fromLatin1(w->name().c_str());
@@ -148,13 +152,8 @@ void DlgCustomToolbars::hideEvent(QHideEvent * event)
     CustomizeActionPage::hideEvent(event);
 }
 
-void DlgCustomToolbars::on_categoryBox_activated(int)
+void DlgCustomToolbars::onActivateCategoryBox()
 {
-    QTreeWidgetItem* sepitem = new QTreeWidgetItem;
-    sepitem->setText(1, tr("<Separator>"));
-    sepitem->setData(1, Qt::UserRole, QByteArray("Separator"));
-    sepitem->setSizeHint(0, QSize(32, 32));
-    ui->commandTreeWidget->insertTopLevelItem(0, sepitem);
 }
 
 void DlgCustomToolbars::on_workbenchBox_activated(int index)
@@ -505,13 +504,14 @@ void DlgCustomToolbars::onModifyMacroAction(const QByteArray& macro)
                 QTreeWidgetItem* item = toplevel->child(j);
                 QByteArray command = item->data(0, Qt::UserRole).toByteArray();
                 if (command == macro) {
-                    item->setText(0, QString::fromUtf8(pCmd->getMenuText()));
+                    item->setText(0, Action::commandMenuText(pCmd));
+                    item->setToolTip(0, Action::commandToolTip(pCmd));
                     if (pCmd->getPixmap())
                         item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 }
             }
         }
-        on_categoryBox_activated(ui->categoryBox->currentIndex());
+        ui->categoryBox->activated(ui->categoryBox->currentIndex());
     }
 }
 
@@ -530,7 +530,7 @@ void DlgCustomToolbars::changeEvent(QEvent *e)
                 ui->categoryBox->setItemText(i, text);
             }
         }
-        on_categoryBox_activated(ui->categoryBox->currentIndex());
+        ui->categoryBox->activated(ui->categoryBox->currentIndex());
     }
     else if (e->type() == QEvent::StyleChange)
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
