@@ -28,6 +28,8 @@
 #include "PropertyPage.h"
 #include <memory>
 
+class QTreeWidgetItem;
+
 namespace Gui {
 namespace Dialog {
 class Ui_DlgCustomToolbars;
@@ -51,7 +53,6 @@ protected:
     ~DlgCustomToolbars() override;
 
 protected Q_SLOTS:
-    void on_categoryBox_activated(int index);
     void on_workbenchBox_activated(int index);
     void on_moveActionRightButton_clicked();
     void on_moveActionLeftButton_clicked();
@@ -74,6 +75,7 @@ protected:
     virtual void removeCustomCommand(const QString&, const QByteArray&);
     virtual void moveUpCustomCommand(const QString&, const QByteArray&);
     virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+    void onActivateCategoryBox();
 
 private:
     void importCustomToolbars(const QByteArray&);
