@@ -17,12 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_INDENT_H
-#define DCM_INDENT_H
+~ifndef DCM_INDENT_H
+~define DCM_INDENT_H
 
-#include <boost/iostreams/concepts.hpp>
-#include <boost/iostreams/operations.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
+~include <boost/iostreams/concepts.hpp>
+~include <boost/iostreams/operations.hpp>
+~include <boost/iostreams/filtering_stream.hpp>
 
 class indent_filter : public boost::iostreams::output_filter {
 public:
@@ -31,7 +31,7 @@ public:
     template<typename Sink>
     bool put(Sink& dest, int c) {
 
-        if(c == '#') {
+        if(c == '~') {
             indent++;
             return true;
         } else if(c == '$') {
@@ -60,4 +60,4 @@ private:
     int indent;
 };
 
-#endif //DCM_INDENT_H
+~endif //DCM_INDENT_H

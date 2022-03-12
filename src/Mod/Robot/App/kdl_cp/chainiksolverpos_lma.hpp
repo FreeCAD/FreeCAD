@@ -1,5 +1,5 @@
-#ifndef KDL_CHAINIKSOLVERPOS_GN_HPP
-#define KDL_CHAINIKSOLVERPOS_GN_HPP
+~ifndef KDL_CHAINIKSOLVERPOS_GN_HPP
+~define KDL_CHAINIKSOLVERPOS_GN_HPP
 /**
  \file   chainiksolverpos_lma.hpp
  \brief  computing inverse position kinematics using Levenberg-Marquardt.
@@ -31,9 +31,9 @@
  ***************************************************************************/
 
 
-#include "chainiksolver.hpp"
-#include "chain.hpp"
-#include <Eigen/Dense>
+~include "chainiksolver.hpp"
+~include "chain.hpp"
+~include <Eigen/Dense>
 
 namespace KDL
 {
@@ -244,4 +244,4 @@ private:
 
 
 
-#endif
+~endif

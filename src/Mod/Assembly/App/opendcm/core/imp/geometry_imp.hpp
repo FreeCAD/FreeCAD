@@ -18,38 +18,38 @@
 */
 
 
-#ifndef GCM_GEOMETRY_IMP_H
-#define GCM_GEOMETRY_IMP_H
+~ifndef GCM_GEOMETRY_IMP_H
+~define GCM_GEOMETRY_IMP_H
 
-#include <iostream>
+~include <iostream>
 
-#include "../geometry.hpp"
+~include "../geometry.hpp"
 
-#include <Eigen/Core>
+~include <Eigen/Core>
 
-#include <boost/type_traits.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/fold.hpp>
-#include <boost/mpl/set.hpp>
-#include <boost/mpl/less.hpp>
-#include <boost/mpl/or.hpp>
-#include <boost/mpl/not.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/plus.hpp>
-#include <boost/mpl/find.hpp>
+~include <boost/type_traits.hpp>
+~include <boost/mpl/assert.hpp>
+~include <boost/mpl/fold.hpp>
+~include <boost/mpl/set.hpp>
+~include <boost/mpl/less.hpp>
+~include <boost/mpl/or.hpp>
+~include <boost/mpl/not.hpp>
+~include <boost/mpl/bool.hpp>
+~include <boost/mpl/int.hpp>
+~include <boost/mpl/plus.hpp>
+~include <boost/mpl/find.hpp>
 
-#include <boost/fusion/include/as_vector.hpp>
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/concept_check.hpp>
-#include <boost/graph/graph_concepts.hpp>
-#include <boost/function.hpp>
+~include <boost/fusion/include/as_vector.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/concept_check.hpp>
+~include <boost/graph/graph_concepts.hpp>
+~include <boost/function.hpp>
 
-#include <boost/variant.hpp>
+~include <boost/variant.hpp>
 
-#ifdef USE_LOGGING
-#include <boost/math/special_functions.hpp>
-#endif
+~ifdef USE_LOGGING
+~include <boost/math/special_functions.hpp>
+~endif
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -63,9 +63,9 @@ Geometry<Kernel, Dim, TagList>::Geometry()
     : m_isInCluster(false), m_parameter(NULL,0,DS(0,0)),
       m_clusterFixed(false), m_init(false) {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     log.add_attribute("Tag", attrs::constant< std::string >("Geometry"));
-#endif
+~endif
 
 };
 
@@ -106,9 +106,9 @@ void Geometry<Kernel, Dim, TagList>::init() {
     //new value which is not set into parameter, so init is false
     m_init = false;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     BOOST_LOG_SEV(log, information) << "Init: "<<m_global.transpose();
-#endif
+~endif
 
 };
 
@@ -196,13 +196,13 @@ void Geometry<Kernel, Dim, TagList>::recalculate(DiffTransform& trans) {
         m_diffparam.block(i*Dim,Dim,Dim,Dim).setIdentity();
     }
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     if(!boost::math::isnormal(m_rotated.norm()) || !boost::math::isnormal(m_diffparam.norm())) {
         BOOST_LOG_SEV(log, error) << "Unnormal recalculated value detected: "<<m_rotated.transpose()<<std::endl
                        << "or unnormal recalculated diff detected: "<<std::endl<<m_diffparam<<std::endl
                        <<" with Transform: "<<std::endl<<trans;
     }
-#endif
+~endif
 };
 
 
@@ -212,17 +212,17 @@ void Geometry<Kernel, Dim, TagList>::finishCalculation() {
     if(m_isInCluster) {
         //recalculate(1.); //remove scaling to get right global value
         m_global = m_rotated;
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         BOOST_LOG_SEV(log, information) << "Finish cluster calculation";
-#endif
+~endif
     }
     //TODO:non cluster parameter scaling
     else {
         m_global = m_parameter;
         normalize();
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         BOOST_LOG_SEV(log, information) << "Finish calculation";
-#endif
+~endif
     };
 
     m_init = false;
@@ -246,10 +246,10 @@ void Geometry<Kernel, Dim, TagList>::transform(const Transform& t, VectorType& v
         vec.template segment<Dim>(i*Dim) = t.rotate(v);
     }
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     BOOST_LOG_SEV(log, manipulation) << "Transformed with cluster: "<<m_isInCluster
                    << ", init: "<<m_init<<" into: "<< vec.transpose();
-#endif
+~endif
 }
 
 template< typename Kernel, int Dim, typename TagList>
@@ -263,4 +263,4 @@ void Geometry<Kernel, Dim, TagList>::scale(Scalar value) {
 }
 }
 
-#endif // GCM_GEOMETRY_H
+~endif // GCM_GEOMETRY_H

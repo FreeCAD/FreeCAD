@@ -17,17 +17,17 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_EDGE_VERTEX_PARSER_H
-#define DCM_EDGE_VERTEX_PARSER_H
+~ifndef DCM_EDGE_VERTEX_PARSER_H
+~define DCM_EDGE_VERTEX_PARSER_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include <boost/spirit/include/qi.hpp>
-#include "opendcm/core/clustergraph.hpp"
-#include "extractor.hpp"
-#include "object_parser.hpp"
+~include <boost/spirit/include/qi.hpp>
+~include "opendcm/core/clustergraph.hpp"
+~include "extractor.hpp"
+~include "object_parser.hpp"
 
 namespace qi = boost::spirit::qi;
 namespace fusion = boost::fusion;
@@ -69,8 +69,8 @@ struct vertex_parser : qi::grammar< IIterator, fusion::vector<LocalVertex, Globa
 }
 }
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/edge_vertex_parser_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/edge_vertex_parser_imp.hpp"
+~endif
 
-#endif
+~endif

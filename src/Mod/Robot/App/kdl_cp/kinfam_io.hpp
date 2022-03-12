@@ -19,19 +19,19 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_KINFAM_IO_HPP
-#define KDL_KINFAM_IO_HPP
+~ifndef KDL_KINFAM_IO_HPP
+~define KDL_KINFAM_IO_HPP
 
-#include <iostream>
-#include <fstream>
+~include <iostream>
+~include <fstream>
 
-#include "joint.hpp"
-#include "segment.hpp"
-#include "chain.hpp"
-#include "jntarray.hpp"
-#include "jacobian.hpp"
-#include "tree.hpp"
-#include "jntspaceinertiamatrix.hpp"
+~include "joint.hpp"
+~include "segment.hpp"
+~include "chain.hpp"
+~include "jntarray.hpp"
+~include "jacobian.hpp"
+~include "tree.hpp"
+~include "jntspaceinertiamatrix.hpp"
 
 namespace KDL {
 std::ostream& operator <<(std::ostream& os, const Joint& joint);
@@ -71,5 +71,5 @@ std::istream& operator >>(std::istream& is, std::vector<T>& vec) {
 ;
     */
 }
-#endif
+~endif
 

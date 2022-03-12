@@ -19,11 +19,11 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAIN_HPP
-#define KDL_CHAIN_HPP
+~ifndef KDL_CHAIN_HPP
+~define KDL_CHAIN_HPP
 
-#include "segment.hpp"
-#include <string>
+~include "segment.hpp"
+~include <string>
 
 namespace KDL {
     /**
@@ -92,4 +92,4 @@ namespace KDL {
 
 }//end of namespace KDL
 
-#endif
+~endif

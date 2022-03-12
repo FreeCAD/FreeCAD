@@ -17,10 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_GEOMETRY_3D_H
-#define GCM_GEOMETRY_3D_H
+~ifndef GCM_GEOMETRY_3D_H
+~define GCM_GEOMETRY_3D_H
 
-#include <opendcm/core/geometry.hpp>
+~include <opendcm/core/geometry.hpp>
 
 namespace dcm {
 namespace tag {
@@ -155,4 +155,4 @@ struct geometry_traits<boost::blank> {
 
 }
 
-#endif //GCM_GEOMETRY_3D_H
+~endif //GCM_GEOMETRY_3D_H

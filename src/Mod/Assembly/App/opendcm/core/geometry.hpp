@@ -18,26 +18,26 @@
 */
 
 
-#ifndef GCM_GEOMETRY_H
-#define GCM_GEOMETRY_H
+~ifndef GCM_GEOMETRY_H
+~define GCM_GEOMETRY_H
 
-#include <iostream>
+~include <iostream>
 
-#include <Eigen/Core>
+~include <Eigen/Core>
 
-#include <boost/type_traits.hpp>
-#include <boost/mpl/assert.hpp>
-#include <boost/mpl/less.hpp>
-#include <boost/mpl/or.hpp>
-#include <boost/mpl/not.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/plus.hpp>
+~include <boost/type_traits.hpp>
+~include <boost/mpl/assert.hpp>
+~include <boost/mpl/less.hpp>
+~include <boost/mpl/or.hpp>
+~include <boost/mpl/not.hpp>
+~include <boost/mpl/int.hpp>
+~include <boost/mpl/plus.hpp>
 
-#include <boost/variant.hpp>
+~include <boost/variant.hpp>
 
-#include "traits.hpp"
-#include "logging.hpp"
-#include "transformation.hpp"
+~include "traits.hpp"
+~include "logging.hpp"
+~include "transformation.hpp"
 
 namespace mpl = boost::mpl;
 
@@ -215,10 +215,10 @@ class Geometry {
     typedef typename Kernel::template transform_type<Dim>::type		Transform;
     typedef typename Kernel::template transform_type<Dim>::diff_type	DiffTransform;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
 protected:
     dcm_logger log;
-#endif
+~endif
 
 public:
     typedef mpl::int_<Dim> Dimension;
@@ -246,7 +246,7 @@ public:
 
     //allow accessing the internal values in unittests without making them public,
     //so that access control of the internal classes is not changed and can be tested
-#ifdef TESTING
+~ifdef TESTING
     typename Kernel::Vector& toplocal() {
         return m_toplocal;
     };
@@ -278,7 +278,7 @@ public:
     bool test_isLinked() {
         return isLinked();
     };
-#endif
+~endif
 
 //protected would be the right way, however, visual studio 10 does not find a way to access them even when constraint::holder structs
 //are declared friend
@@ -346,7 +346,7 @@ public:
 } //details
 } //dcm
 
-#ifndef DCM_EXTERNAL_CORE
-#include "imp/geometry_imp.hpp"
-#endif
-#endif // GCM_GEOMETRY_H
+~ifndef DCM_EXTERNAL_CORE
+~include "imp/geometry_imp.hpp"
+~endif
+~endif // GCM_GEOMETRY_H

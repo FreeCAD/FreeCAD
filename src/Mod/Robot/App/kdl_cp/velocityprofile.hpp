@@ -42,11 +42,11 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_VELOCITYPROFILE_H
-#define KDL_VELOCITYPROFILE_H
+~ifndef KDL_VELOCITYPROFILE_H
+~define KDL_VELOCITYPROFILE_H
 
-#include "utilities/utility.h"
-#include "utilities/utility_io.h"
+~include "utilities/utility.h"
+~include "utilities/utility_io.h"
 
 
 namespace KDL {
@@ -104,4 +104,4 @@ class VelocityProfile
 }
 
 
-#endif
+~endif

@@ -17,18 +17,18 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULEPART_H
-#define DCM_MODULEPART_H
+~ifndef DCM_MODULEPART_H
+~define DCM_MODULEPART_H
 
-#define DCM_USE_MODULEPART
+~define DCM_USE_MODULEPART
 
-#ifdef _WIN32
+~ifdef _WIN32
 	//warning about excessively long decorated names, won't affect the code correctness
-	#pragma warning( disable : 4503 )
-#endif
+	~pragma warning( disable : 4503 )
+~endif
 
-#include "modulePart/geometry.hpp"
-#include "modulePart/module.hpp"
+~include "modulePart/geometry.hpp"
+~include "modulePart/module.hpp"
 
-#endif //DCM_MODULEPART_H
+~endif //DCM_MODULEPART_H
 

@@ -43,8 +43,8 @@
  *    This has no real effect on erase()s, a < test is good enough to keep consistency.
  */
 
-#ifndef INCLUDE_KDTREE_KDTREE_HPP
-#define INCLUDE_KDTREE_KDTREE_HPP
+~ifndef INCLUDE_KDTREE_KDTREE_HPP
+~define INCLUDE_KDTREE_KDTREE_HPP
 
 
 //
@@ -53,42 +53,42 @@
 //  KDTREE_VERSION % 100 is the patch level
 //  KDTREE_VERSION / 100 % 1000 is the minor version
 //  KDTREE_VERSION / 100000 is the major version
-#define KDTREE_VERSION 700
+~define KDTREE_VERSION 700
 //
 //  KDTREE_LIB_VERSION must be defined to be the same as KDTREE_VERSION
 //  but as a *string* in the form "x_y[_z]" where x is the major version
 //  number, y is the minor version number, and z is the patch level if not 0.
-#define KDTREE_LIB_VERSION "0_7_0"
+~define KDTREE_LIB_VERSION "0_7_0"
 
 
-#include <vector>
+~include <vector>
 
-#ifdef KDTREE_CHECK_PERFORMANCE_COUNTERS
-#  include <map>
-#endif
-#include <algorithm>
+~ifdef KDTREE_CHECK_PERFORMANCE_COUNTERS
+~  include <map>
+~endif
+~include <algorithm>
 
-#ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
-#  include <ostream>
-#  include <stack>
-#endif
+~ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
+~  include <ostream>
+~  include <stack>
+~endif
 
-#include <cmath>
-#include <cstddef>
-#include <cassert>
+~include <cmath>
+~include <cstddef>
+~include <cassert>
 
-#include "function.hpp"
-#include "allocator.hpp"
-#include "iterator.hpp"
-#include "node.hpp"
-#include "region.hpp"
+~include "function.hpp"
+~include "allocator.hpp"
+~include "iterator.hpp"
+~include "node.hpp"
+~include "region.hpp"
 
 namespace KDTree
 {
 
-#ifdef KDTREE_CHECK_PERFORMANCE
+~ifdef KDTREE_CHECK_PERFORMANCE
    unsigned long long num_dist_calcs = 0;
-#endif
+~endif
 
   template <size_t const __K, typename _Val,
             typename _Acc = _Bracket_accessor<_Val>,
@@ -1192,7 +1192,7 @@ namespace KDTree
       _Cmp _M_cmp;
       _Dist _M_dist;
 
-#ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
+~ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
       friend std::ostream&
       operator<<(std::ostream& o,
 		 KDTree<__K, _Val, _Acc, _Dist, _Cmp, _Alloc> const& tree)
@@ -1223,14 +1223,14 @@ namespace KDTree
 
       return o;
     }
-#endif
+~endif
 
   };
 
 
 } // namespace KDTree
 
-#endif // include guard
+~endif // include guard
 
 /* COPYRIGHT --
  *

@@ -17,16 +17,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULE_STATE_IMP_H
-#define DCM_MODULE_STATE_IMP_H
+~ifndef DCM_MODULE_STATE_IMP_H
+~define DCM_MODULE_STATE_IMP_H
 
-#include <iosfwd>
+~include <iosfwd>
 
-#include "../module.hpp"
-#include "../indent.hpp"
-#include "../generator.hpp"
-#include "../parser.hpp"
-#include "../defines.hpp"
+~include "../module.hpp"
+~include "../indent.hpp"
+~include "../generator.hpp"
+~include "../parser.hpp"
+~include "../defines.hpp"
 
 namespace qi = boost::spirit::qi;
 
@@ -63,7 +63,7 @@ void ModuleState::type<Sys>::inheriter::loadState(std::istream& stream) {
 
 }
 
-#endif //DCM_MODULE_STATE_H
+~endif //DCM_MODULE_STATE_H
 
 
 

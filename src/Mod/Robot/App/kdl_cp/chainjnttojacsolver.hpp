@@ -19,14 +19,14 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAINJNTTOJACSOLVER_HPP
-#define KDL_CHAINJNTTOJACSOLVER_HPP
+~ifndef KDL_CHAINJNTTOJACSOLVER_HPP
+~define KDL_CHAINJNTTOJACSOLVER_HPP
 
-#include "solveri.hpp"
-#include "frames.hpp"
-#include "jacobian.hpp"
-#include "jntarray.hpp"
-#include "chain.hpp"
+~include "solveri.hpp"
+~include "frames.hpp"
+~include "jacobian.hpp"
+~include "jntarray.hpp"
+~include "chain.hpp"
 
 namespace KDL
 {
@@ -71,5 +71,5 @@ namespace KDL
         unsigned int nr_of_unlocked_joints_;
     };
 }
-#endif
+~endif
 

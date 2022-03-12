@@ -4,15 +4,15 @@
  * \author Martin F. Krafft <libkdtree@pobox.madduck.net>
  */
 
-#ifndef INCLUDE_KDTREE_NODE_HPP
-#define INCLUDE_KDTREE_NODE_HPP
+~ifndef INCLUDE_KDTREE_NODE_HPP
+~define INCLUDE_KDTREE_NODE_HPP
 
-#ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
-#  include <ostream>
-#endif
+~ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
+~  include <ostream>
+~endif
 
-#include <cstddef>
-#include <cmath>
+~include <cstddef>
+~include <cmath>
 
 namespace KDTree
 {
@@ -59,7 +59,7 @@ namespace KDTree
             _Base_ptr const __RIGHT = nullptr)
         : _Node_base(__PARENT, __LEFT, __RIGHT), _M_value(__VALUE) {}
 
-#ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
+~ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
 
      template <typename Char, typename Traits>
        friend
@@ -88,7 +88,7 @@ namespace KDTree
          return out;
        }
 
-#endif
+~endif
     };
 
   template <typename _Val, typename _Acc, typename _Cmp>
@@ -346,7 +346,7 @@ namespace KDTree
 
 } // namespace KDTree
 
-#endif // include guard
+~endif // include guard
 
 /* COPYRIGHT --
  *

@@ -17,26 +17,26 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_PARSER_H
-#define DCM_PARSER_H
+~ifndef DCM_PARSER_H
+~define DCM_PARSER_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include <iosfwd>
+~include <iosfwd>
 
-#include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/support_istream_iterator.hpp>
-#include <boost/spirit/include/qi_string.hpp>
-#include <boost/spirit/include/phoenix.hpp>
+~include <boost/spirit/include/qi.hpp>
+~include <boost/spirit/include/support_istream_iterator.hpp>
+~include <boost/spirit/include/qi_string.hpp>
+~include <boost/spirit/include/phoenix.hpp>
 
-#include "opendcm/core/clustergraph.hpp"
+~include "opendcm/core/clustergraph.hpp"
 
-#include "property_parser.hpp"
-#include "object_parser.hpp"
-#include "edge_vertex_parser.hpp"
-#include "extractor.hpp"
+~include "property_parser.hpp"
+~include "object_parser.hpp"
+~include "edge_vertex_parser.hpp"
+~include "extractor.hpp"
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
@@ -83,8 +83,8 @@ struct parser : qi::grammar<IIterator, Sys(), qi::space_type> {
 
 }
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/parser_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/parser_imp.hpp"
+~endif
 
-#endif //DCM_PARSER_H
+~endif //DCM_PARSER_H

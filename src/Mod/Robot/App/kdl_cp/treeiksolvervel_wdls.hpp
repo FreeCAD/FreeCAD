@@ -5,12 +5,12 @@
  *      Author: rubensmits
  */
 
-#ifndef TREEIKSOLVERVEL_WDLS_HPP_
-#define TREEIKSOLVERVEL_WDLS_HPP_
+~ifndef TREEIKSOLVERVEL_WDLS_HPP_
+~define TREEIKSOLVERVEL_WDLS_HPP_
 
-#include "treeiksolver.hpp"
-#include "treejnttojacsolver.hpp"
-#include <Eigen/Core>
+~include "treeiksolver.hpp"
+~include "treejnttojacsolver.hpp"
+~include <Eigen/Core>
 
 namespace KDL {
 
@@ -91,4 +91,4 @@ namespace KDL {
     
 }
 
-#endif /* TREEIKSOLVERVEL_WDLS_HPP_ */
+~endif /* TREEIKSOLVERVEL_WDLS_HPP_ */

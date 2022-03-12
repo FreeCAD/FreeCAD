@@ -13,10 +13,10 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef TRAJECTORY_STATIONARY_H
-#define TRAJECTORY_STATIONARY_H
+~ifndef TRAJECTORY_STATIONARY_H
+~define TRAJECTORY_STATIONARY_H
 
-#include "trajectory.hpp"
+~include "trajectory.hpp"
 
 
 namespace KDL {
@@ -69,4 +69,4 @@ namespace KDL {
 
 }
 
-#endif
+~endif

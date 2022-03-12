@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_EDGE_PARSER_IMP_H
-#define DCM_EDGE_PARSER_IMP_H
+~ifndef DCM_EDGE_PARSER_IMP_H
+~define DCM_EDGE_PARSER_IMP_H
 
-#include "../edge_vertex_parser.hpp"
-#include "boost/phoenix/fusion/at.hpp"
+~include "../edge_vertex_parser.hpp"
+~include "boost/phoenix/fusion/at.hpp"
 
 namespace dcm {
 namespace details {
@@ -52,4 +52,4 @@ vertex_parser<Sys>::vertex_parser() : vertex_parser<Sys>::base_type(vertex) {
 }//details
 }//dcm
 
-#endif
+~endif

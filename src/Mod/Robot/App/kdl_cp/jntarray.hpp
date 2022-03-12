@@ -19,13 +19,13 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_JNTARRAY_HPP
-#define KDL_JNTARRAY_HPP
+~ifndef KDL_JNTARRAY_HPP
+~define KDL_JNTARRAY_HPP
 
-#include "frames.hpp"
-#include "jacobian.hpp"
+~include "frames.hpp"
+~include "jacobian.hpp"
 
-#include <Eigen/Core>
+~include <Eigen/Core>
 
 namespace KDL
 {
@@ -235,4 +235,4 @@ class MyTask : public RTT::TaskContext
 
 }
 
-#endif
+~endif

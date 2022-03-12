@@ -20,22 +20,22 @@
 //move the traits specializations outside of the traits definition to avoid the spirit header parsing every
 //time this module is included and just parse it in externalization mode when the generator is built
 
-#ifndef DCM_PARSER_TRAITS_IMPL_H
-#define DCM_PARSER_TRAITS_IMPL_H
+~ifndef DCM_PARSER_TRAITS_IMPL_H
+~define DCM_PARSER_TRAITS_IMPL_H
 
-#include "../traits.hpp"
-#include "../defines.hpp"
-#include "opendcm/core/kernel.hpp"
+~include "../traits.hpp"
+~include "../defines.hpp"
+~include "opendcm/core/kernel.hpp"
 
-#include <boost/mpl/bool.hpp>
+~include <boost/mpl/bool.hpp>
 
-#include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/karma.hpp>
-#include <boost/spirit/include/karma_string.hpp>
-#include <boost/spirit/include/karma_int.hpp>
-#include <boost/spirit/include/karma_bool.hpp>
-#include <boost/spirit/include/karma_rule.hpp>
-#include <boost/spirit/include/karma_auto.hpp>
+~include <boost/spirit/include/qi.hpp>
+~include <boost/spirit/include/karma.hpp>
+~include <boost/spirit/include/karma_string.hpp>
+~include <boost/spirit/include/karma_int.hpp>
+~include <boost/spirit/include/karma_bool.hpp>
+~include <boost/spirit/include/karma_rule.hpp>
+~include <boost/spirit/include/karma_auto.hpp>
 
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
@@ -182,4 +182,4 @@ struct parser_parser<details::cluster_vertex_prop, System, iterator> {
 
 } //namespace dcm
 
-#endif //DCM_PARSER_TRAITS_IMPL_H
+~endif //DCM_PARSER_TRAITS_IMPL_H

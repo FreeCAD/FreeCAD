@@ -41,14 +41,14 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_TRAJECTORY_SEGMENT_H
-#define KDL_MOTION_TRAJECTORY_SEGMENT_H
+~ifndef KDL_MOTION_TRAJECTORY_SEGMENT_H
+~define KDL_MOTION_TRAJECTORY_SEGMENT_H
 
-#include "frames.hpp"
-#include "frames_io.hpp"
-#include "trajectory.hpp"
-#include "path.hpp"
-#include "velocityprofile.hpp"
+~include "frames.hpp"
+~include "frames_io.hpp"
+~include "trajectory.hpp"
+~include "path.hpp"
+~include "velocityprofile.hpp"
 
 
 namespace KDL {
@@ -109,4 +109,4 @@ namespace KDL {
 }
 
 
-#endif
+~endif

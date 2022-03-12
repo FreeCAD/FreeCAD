@@ -14,12 +14,12 @@
  ****************************************************************************/
 
 
-#ifndef TRAJECTORY_COMPOSITE_H
-#define TRAJECTORY_COMPOSITE_H
+~ifndef TRAJECTORY_COMPOSITE_H
+~define TRAJECTORY_COMPOSITE_H
 
-#include "trajectory.hpp"
-#include "path_composite.hpp"
-#include <vector>
+~include "trajectory.hpp"
+~include "path_composite.hpp"
+~include <vector>
 
 
 
@@ -66,4 +66,4 @@ class Trajectory_Composite: public Trajectory
 
 }
 
-#endif
+~endif

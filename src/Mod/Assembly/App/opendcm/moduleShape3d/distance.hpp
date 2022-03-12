@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_DISTANCE_SHAPE3D_H
-#define GCM_DISTANCE_SHAPE3D_H
+~ifndef GCM_DISTANCE_SHAPE3D_H
+~define GCM_DISTANCE_SHAPE3D_H
 
-#include <opendcm/core/constraint.hpp>
-#include <opendcm/moduleShape3d/geometry.hpp>
-#include <math.h>
-#include <Eigen/Dense>
-#include <Eigen/Geometry>
+~include <opendcm/core/constraint.hpp>
+~include <opendcm/moduleShape3d/geometry.hpp>
+~include <math.h>
+~include <Eigen/Dense>
+~include <Eigen/Geometry>
 
 namespace dcm {
 
@@ -40,23 +40,23 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
     typename Distance::options values;
     Vector3 v01, v02, v12, cross;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     dcm_logger log;
     attrs::mutable_constant< std::string > tag;
 
     type() : tag("Distance point3D segment3D") {
         log.add_attribute("Tag", tag);
     };
-#endif
+~endif
 
     //template definition
     void calculatePseudo(typename Kernel::Vector& point, Vec& v1, typename Kernel::Vector& segment, Vec& v2) {
         Vector3 dir = (segment.template head<3>() - segment.template tail<3>()).normalized();
         Vector3 pp = segment.head(3) + (segment.head(3)-point.head(3)).norm()*dir;
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         if(!boost::math::isnormal(pp.norm()))
             BOOST_LOG_SEV(log, error) << "Unnormal pseudopoint detected";
-#endif
+~endif
         v2.push_back(pp);
     };
     void setScale(Scalar scale) {
@@ -75,10 +75,10 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         cross_v12_n = cross_n/std::pow(v12_n,3);
 
         const Scalar res = cross.norm()/v12_n - sc_value;
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
             BOOST_LOG_SEV(log, error) << "Unnormal residual detected: "<<res;
-#endif
+~endif
         return res;
     };
 
@@ -90,12 +90,12 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         const Vector3 d_point = dpoint; //eigen only acceppts vector3 for cross product
         const Vector3 d_cross = d_point.cross(v02) + v01.cross(d_point);
         const Scalar res = cross.dot(d_cross)/(cross_n*v12_n);
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
             BOOST_LOG_SEV(log, error) << "Unnormal first cluster gradient detected: "<<res
                            <<" with point: "<<point.transpose()<<", segment: "<<segment.transpose()
                            <<" and dpoint: "<<dpoint.transpose();
-#endif
+~endif
         return res;
     };
 
@@ -107,12 +107,12 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
         const Vector3 d_cross = - (dsegment.template head<3>().cross(v02) + v01.cross(dsegment.template tail<3>()));
         const Vector3 d_v12   = dsegment.template head<3>() - dsegment.template tail<3>();
         const Scalar res = cross.dot(d_cross)/(cross_n*v12_n) - v12.dot(d_v12)*cross_v12_n;
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         if(!boost::math::isfinite(res))
             BOOST_LOG_SEV(log, error) << "Unnormal second cluster gradient detected: "<<res
                            <<" with point: "<<point.transpose()<<", segment: "<<segment.transpose()
                            << "and dsegment: "<<dsegment.transpose();
-#endif
+~endif
         return res;
     };
 
@@ -135,4 +135,4 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
 
 }
 
-#endif //GCM_DISTANCE_SHAPE3D_H
+~endif //GCM_DISTANCE_SHAPE3D_H

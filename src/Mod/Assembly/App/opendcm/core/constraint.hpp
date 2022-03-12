@@ -17,30 +17,30 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_CONSTRAINT_H
-#define GCM_CONSTRAINT_H
+~ifndef GCM_CONSTRAINT_H
+~define GCM_CONSTRAINT_H
 
 
-#include<Eigen/StdVector>
+~include<Eigen/StdVector>
 
-#include <assert.h>
+~include <assert.h>
 
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/map.hpp>
-#include <boost/mpl/less.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/size.hpp>
-#include <boost/mpl/for_each.hpp>
+~include <boost/mpl/vector.hpp>
+~include <boost/mpl/map.hpp>
+~include <boost/mpl/less.hpp>
+~include <boost/mpl/if.hpp>
+~include <boost/mpl/size.hpp>
+~include <boost/mpl/for_each.hpp>
 
-#include <boost/any.hpp>
-#include <boost/fusion/include/as_vector.hpp>
+~include <boost/any.hpp>
+~include <boost/fusion/include/as_vector.hpp>
 
-#include <boost/preprocessor.hpp>
+~include <boost/preprocessor.hpp>
 
-#include "traits.hpp"
-#include "object.hpp"
-#include "equations.hpp"
-#include "geometry.hpp"
+~include "traits.hpp"
+~include "object.hpp"
+~include "equations.hpp"
+~include "geometry.hpp"
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -315,12 +315,12 @@ public:
 };//detail
 };//dcm
 
-#ifndef DCM_EXTERNAL_CORE
-#include "imp/constraint_imp.hpp"
-#include "imp/constraint_holder_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_CORE
+~include "imp/constraint_imp.hpp"
+~include "imp/constraint_holder_imp.hpp"
+~endif
 
-#endif //GCM_CONSTRAINT_H
+~endif //GCM_CONSTRAINT_H
 
 
 

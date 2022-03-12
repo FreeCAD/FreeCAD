@@ -41,14 +41,14 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATH_H
-#define KDL_MOTION_PATH_H
+~ifndef KDL_MOTION_PATH_H
+~define KDL_MOTION_PATH_H
 
-#include "frames.hpp"
+~include "frames.hpp"
 
-#include <vector>
+~include <vector>
 
-#include "frames_io.hpp"
+~include "frames_io.hpp"
 
 namespace KDL {
 
@@ -133,4 +133,4 @@ class Path
 }
 
 
-#endif
+~endif

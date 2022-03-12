@@ -1,7 +1,7 @@
-#ifndef VELOCITYPROFILE_SPLINE_H
-#define VELOCITYPROFILE_SPLINE_H
+~ifndef VELOCITYPROFILE_SPLINE_H
+~define VELOCITYPROFILE_SPLINE_H
 
-#include "velocityprofile.hpp"
+~include "velocityprofile.hpp"
 
 namespace KDL
 {
@@ -64,4 +64,4 @@ private:
     double duration_;
 };
 }
-#endif // VELOCITYPROFILE_CUBICSPLINE_H
+~endif // VELOCITYPROFILE_CUBICSPLINE_H

@@ -17,27 +17,27 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_PROPERTY_H
-#define GCM_PROPERTY_H
+~ifndef GCM_PROPERTY_H
+~define GCM_PROPERTY_H
 
-#include <boost/graph/graph_traits.hpp>
+~include <boost/graph/graph_traits.hpp>
 
-#include <boost/mpl/find.hpp>
-#include <boost/mpl/void.hpp>
-#include <boost/mpl/filter_view.hpp>
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/for_each.hpp>
-#include <boost/mpl/transform.hpp>
+~include <boost/mpl/find.hpp>
+~include <boost/mpl/void.hpp>
+~include <boost/mpl/filter_view.hpp>
+~include <boost/mpl/vector.hpp>
+~include <boost/mpl/for_each.hpp>
+~include <boost/mpl/transform.hpp>
 
-#include <boost/fusion/mpl.hpp>
-#include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/include/at.hpp>
+~include <boost/fusion/mpl.hpp>
+~include <boost/fusion/include/vector.hpp>
+~include <boost/fusion/include/at.hpp>
 
-#include <boost/type_traits/is_same.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <boost/exception/errinfo_errno.hpp>
+~include <boost/type_traits/is_same.hpp>
+~include <boost/property_map/property_map.hpp>
+~include <boost/exception/errinfo_errno.hpp>
 
-#include "defines.hpp"
+~include "defines.hpp"
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -452,9 +452,9 @@ PropertyOwner<PropertyList>::PropertyOwner() {
     details::apply_default<PropertyOwner> func(this);
     mpl::for_each<view>(func);
 
-#if defined(BOOST_MPL_CFG_NO_HAS_XXX)
+~if defined(BOOST_MPL_CFG_NO_HAS_XXX)
     throw property_error() <<  boost::errinfo_errno(301) << error_message("no default values supported");
-#endif
+~endif
 };
 
 /**
@@ -609,4 +609,4 @@ typename dcm::property_map<P, G>::reference at(const dcm::property_map<P, G>& ma
 }
 }
 
-#endif //GCM_PROPERTY_H
+~endif //GCM_PROPERTY_H

@@ -43,10 +43,10 @@
  *      Experimental
  ****************************************************************************/
 
-#ifndef KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
-#define KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
+~ifndef KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
+~define KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
 
-#include "velocityprofile.hpp"
+~include "velocityprofile.hpp"
 
 
 
@@ -133,4 +133,4 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 }
 
 
-#endif
+~endif

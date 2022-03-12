@@ -17,16 +17,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULE3D_STATE_HPP
-#define DCM_MODULE3D_STATE_HPP
+~ifndef DCM_MODULE3D_STATE_HPP
+~define DCM_MODULE3D_STATE_HPP
 
-#include <opendcm/moduleState/traits.hpp>
-#include <opendcm/core/clustergraph.hpp>
+~include <opendcm/moduleState/traits.hpp>
+~include <opendcm/core/clustergraph.hpp>
 
-#include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/karma.hpp>
+~include <boost/spirit/include/qi.hpp>
+~include <boost/spirit/include/karma.hpp>
 
-#include <ios>
+~include <ios>
 
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
@@ -189,8 +189,8 @@ struct parser_parser< typename details::getModule3D<System>::type::fix_prop, Sys
 
 }
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/state_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/state_imp.hpp"
+~endif
 
-#endif //DCM_MODULE3D_STATE_HPP
+~endif //DCM_MODULE3D_STATE_HPP

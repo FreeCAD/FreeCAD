@@ -10,25 +10,25 @@
 
 // sample.h
 
-#if !defined(BOOST_PP_IS_ITERATING)
+~if !defined(BOOST_PP_IS_ITERATING)
 
-   #ifndef BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_DETAILS_INCLUDED
-   #define BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_DETAILS_INCLUDED
+   ~ifndef BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_DETAILS_INCLUDED
+   ~define BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_DETAILS_INCLUDED
 
-      #include <boost/intrusive/detail/config_begin.hpp>
-      #include <boost/intrusive/detail/workaround.hpp>
-      #include <boost/intrusive/detail/preprocessor.hpp>
-      #include <boost/intrusive/detail/mpl.hpp>
-      #include <boost/static_assert.hpp>
-      #include <boost/move/move.hpp>
+      ~include <boost/intrusive/detail/config_begin.hpp>
+      ~include <boost/intrusive/detail/workaround.hpp>
+      ~include <boost/intrusive/detail/preprocessor.hpp>
+      ~include <boost/intrusive/detail/mpl.hpp>
+      ~include <boost/static_assert.hpp>
+      ~include <boost/move/move.hpp>
 
       //Mark that we don't support 0 arg calls due to compiler ICE in GCC 3.4/4.0/4.1 and
       //wrong SFINAE for GCC 4.2/4.3
-      #if defined(__GNUC__) && !defined(__clang__) && ((__GNUC__*100 + __GNUC_MINOR__*10) >= 340) && ((__GNUC__*100 + __GNUC_MINOR__*10) <= 430)
-      #define BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED
-      #elif defined(BOOST_INTEL) && (BOOST_INTEL < 1200 )
-      #define BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED
-      #endif
+      ~if defined(__GNUC__) && !defined(__clang__) && ((__GNUC__*100 + __GNUC_MINOR__*10) >= 340) && ((__GNUC__*100 + __GNUC_MINOR__*10) <= 430)
+      ~define BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED
+      ~elif defined(BOOST_INTEL) && (BOOST_INTEL < 1200 )
+      ~define BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED
+      ~endif
 
       namespace boost_intrusive_has_member_function_callable_with {
 
@@ -52,29 +52,29 @@
 
       }  //boost_intrusive_has_member_function_callable_with
 
-      #include <boost/intrusive/detail/config_end.hpp>
+      ~include <boost/intrusive/detail/config_end.hpp>
 
-   #endif   //BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_DETAILS_INCLUDED
+   ~endif   //BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_DETAILS_INCLUDED
 
-#else //!BOOST_PP_IS_ITERATING
+~else //!BOOST_PP_IS_ITERATING
 
-   #ifndef  BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME
-   #error "BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME not defined!"
-   #endif
+   ~ifndef  BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME
+   ~error "BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME not defined!"
+   ~endif
 
-   #ifndef  BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
-   #error "BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN not defined!"
-   #endif
+   ~ifndef  BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
+   ~error "BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN not defined!"
+   ~endif
 
-   #ifndef  BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
-   #error "BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END not defined!"
-   #endif
+   ~ifndef  BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
+   ~error "BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END not defined!"
+   ~endif
 
-   #if BOOST_PP_ITERATION_START() != 0
-   #error "BOOST_PP_ITERATION_START() must be zero (0)"
-   #endif
+   ~if BOOST_PP_ITERATION_START() != 0
+   ~error "BOOST_PP_ITERATION_START() must be zero (0)"
+   ~endif
 
-   #if BOOST_PP_ITERATION() == 0
+   ~if BOOST_PP_ITERATION() == 0
 
       BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
 
@@ -99,7 +99,7 @@
             sizeof(boost_intrusive_has_member_function_callable_with::yes_type) == sizeof(deduce((Base*)(0)));
       };
 
-      #if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
          template<typename Fun, bool HasFunc
                   BOOST_PP_ENUM_TRAILING(BOOST_PP_ITERATION_FINISH(), BOOST_INTRUSIVE_PP_TEMPLATE_PARAM_VOID_DEFAULT, _)>
@@ -114,9 +114,9 @@
          };
          //!
 
-         #if !defined(_MSC_VER) || (_MSC_VER < 1600)
+         ~if !defined(_MSC_VER) || (_MSC_VER < 1600)
 
-            #if defined(BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED)
+            ~if defined(BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED)
 
             template<typename Fun>
             struct BOOST_PP_CAT(BOOST_PP_CAT(has_member_function_callable_with_, BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME),_impl)
@@ -127,7 +127,7 @@
                static const bool value = true;
             };
 
-            #else //defined(BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED)
+            ~else //defined(BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED)
 
             //Special case for 0 args
             template< class F
@@ -163,9 +163,9 @@
                static const bool value = sizeof(Test< Fun >(0))
                                     == sizeof(boost_intrusive_has_member_function_callable_with::yes_type);
             };
-            #endif   //defined(BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED)
+            ~endif   //defined(BOOST_INTRUSIVE_DETAIL_HAS_MEMBER_FUNCTION_CALLABLE_WITH_0_ARGS_UNSUPPORTED)
 
-         #else //#if !defined(_MSC_VER) || (_MSC_VER < 1600)
+         ~else //~if !defined(_MSC_VER) || (_MSC_VER < 1600)
             template<typename Fun>
             struct BOOST_PP_CAT(BOOST_PP_CAT(has_member_function_callable_with_, BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME),_impl)
                <Fun, true BOOST_PP_ENUM_TRAILING(BOOST_PP_SUB(BOOST_PP_ITERATION_FINISH(), BOOST_PP_ITERATION()), BOOST_INTRUSIVE_PP_IDENTITY, void)>
@@ -181,9 +181,9 @@
                static const bool value = sizeof(Test<Fun>(0))
                                     == sizeof(boost_intrusive_has_member_function_callable_with::yes_type);
             };
-         #endif   //#if !defined(_MSC_VER) || (_MSC_VER < 1600)
+         ~endif   //~if !defined(_MSC_VER) || (_MSC_VER < 1600)
 
-      #else   //#if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~else   //~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
          template<typename Fun, bool HasFunc, class ...Args>
          struct BOOST_PP_CAT(BOOST_PP_CAT(has_member_function_callable_with_, BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME),_impl);
@@ -219,16 +219,16 @@
          struct BOOST_PP_CAT(BOOST_PP_CAT(has_member_function_callable_with_, BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME),_impl)
             <Fun, true>
          {
-            #ifdef BOOST_MSVC
+            ~ifdef BOOST_MSVC
                template<class U>
                static decltype( boost::move_detail::declval<Fun>().BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME()
                               , boost_intrusive_has_member_function_callable_with::yes_type())
                   Test(Fun*);
-            #else
+            ~else
                template<class U>
                static BOOST_PP_CAT(zeroarg_checker_, BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME)
                   <U> Test(BOOST_PP_CAT(zeroarg_checker_, BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME)<U>*);
-            #endif
+            ~endif
 			
 
             template <class U>
@@ -283,13 +283,13 @@
                , Args... >
          {};
 
-      #endif   //#if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~endif   //~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
       BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
 
-   #else   //BOOST_PP_ITERATION() == 0
+   ~else   //BOOST_PP_ITERATION() == 0
 
-      #if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
          BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
 
@@ -334,13 +334,13 @@
          };
 
          BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
-      #endif   //#if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~endif   //~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
-   #endif   //BOOST_PP_ITERATION() == 0
+   ~endif   //BOOST_PP_ITERATION() == 0
 
-   #if BOOST_PP_ITERATION() == BOOST_PP_ITERATION_FINISH()
+   ~if BOOST_PP_ITERATION() == BOOST_PP_ITERATION_FINISH()
 
-      #if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
          BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
 
@@ -354,12 +354,12 @@
 
          BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
 
-      #endif //#if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
+      ~endif //~if !defined(BOOST_INTRUSIVE_PERFECT_FORWARDING)
 
-      #undef BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME
-      #undef BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
-      #undef BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
+      ~undef BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME
+      ~undef BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN
+      ~undef BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END
 
-   #endif   //#if BOOST_PP_ITERATION() == BOOST_PP_ITERATION_FINISH()
+   ~endif   //~if BOOST_PP_ITERATION() == BOOST_PP_ITERATION_FINISH()
 
-#endif   //!BOOST_PP_IS_ITERATING
+~endif   //!BOOST_PP_IS_ITERATING

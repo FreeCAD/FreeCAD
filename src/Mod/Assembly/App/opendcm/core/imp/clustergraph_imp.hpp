@@ -17,17 +17,17 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CLUSTERGRAPH_IMP_HPP
-#define DCM_CLUSTERGRAPH_IMP_HPP
+~ifndef DCM_CLUSTERGRAPH_IMP_HPP
+~define DCM_CLUSTERGRAPH_IMP_HPP
 
-#include "../clustergraph.hpp"
+~include "../clustergraph.hpp"
 
-#include <boost/fusion/include/algorithm.hpp>
-#include <boost/fusion/include/at.hpp>
-#include <boost/fusion/include/at_c.hpp>
-#include <boost/fusion/include/make_vector.hpp>
+~include <boost/fusion/include/algorithm.hpp>
+~include <boost/fusion/include/at.hpp>
+~include <boost/fusion/include/at_c.hpp>
+~include <boost/fusion/include/make_vector.hpp>
 
-#include <boost_bind_bind.hpp>
+~include <boost_bind_bind.hpp>
 
 namespace bp = boost::placeholders;
 
@@ -774,11 +774,11 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::setObject(key 
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>
 template<typename Obj>
-#ifdef _MSC_VER
+~ifdef _MSC_VER
 std::pair<typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::object_iterator<Obj> >
-#else
+~else
 std::pair<typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj>, typename ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::template object_iterator<Obj> >
-#endif
+~endif
 ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::getObjects(LocalEdge k) {
 
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*this) [k]);
@@ -1224,7 +1224,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::apply_to_bundle(Glo
 } //namespace dcm
 
 
-#endif // CLUSTERGRAPH_HPP
+~endif // CLUSTERGRAPH_HPP
 
 
 

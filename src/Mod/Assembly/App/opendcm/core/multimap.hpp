@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CORE_MULTIMAP_H
-#define DCM_CORE_MULTIMAP_H
+~ifndef DCM_CORE_MULTIMAP_H
+~define DCM_CORE_MULTIMAP_H
 
-#include <Eigen/Dense>
-#include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/include/make_vector.hpp>
-#include <boost/fusion/include/at.hpp>
-#include <boost/fusion/include/at_c.hpp>
+~include <Eigen/Dense>
+~include <boost/fusion/include/vector.hpp>
+~include <boost/fusion/include/make_vector.hpp>
+~include <boost/fusion/include/at.hpp>
+~include <boost/fusion/include/at_c.hpp>
 
 namespace dcm {
 namespace details {
@@ -401,4 +401,4 @@ public:
 } // details
 } // dcm
 
-#endif // EIGEN_MAPBASE_H
+~endif // EIGEN_MAPBASE_H

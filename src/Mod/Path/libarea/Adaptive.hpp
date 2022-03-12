@@ -20,29 +20,29 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "clipper.hpp"
-#include <vector>
-#include <list>
-#include <time.h>
+~include "clipper.hpp"
+~include <vector>
+~include <list>
+~include <time.h>
 
-#ifndef ADAPTIVE_HPP
-#define ADAPTIVE_HPP
+~ifndef ADAPTIVE_HPP
+~define ADAPTIVE_HPP
 
-#ifndef __DBL_MAX__
-#define __DBL_MAX__ 1.7976931348623158e+308
-#endif
+~ifndef __DBL_MAX__
+~define __DBL_MAX__ 1.7976931348623158e+308
+~endif
 
-#ifndef __LONG_MAX__
-#define __LONG_MAX__ 2147483647
-#endif
+~ifndef __LONG_MAX__
+~define __LONG_MAX__ 2147483647
+~endif
 
-#ifndef M_PI
-#define M_PI 3.141592653589793238
-#endif
+~ifndef M_PI
+~define M_PI 3.141592653589793238
+~endif
 
-// #define DEV_MODE
+// ~define DEV_MODE
 
-#define NTOL 1.0e-7 // numeric tolerance
+~define NTOL 1.0e-7 // numeric tolerance
 
 namespace AdaptivePath
 {
@@ -99,12 +99,12 @@ class Adaptive2d
 
 	std::list<AdaptiveOutput> Execute(const DPaths &stockPaths, const DPaths &paths, std::function<bool(TPaths)> progressCallbackFn);
 
-#ifdef DEV_MODE
+~ifdef DEV_MODE
 	/*for debugging*/
 	std::function<void(double cx, double cy, double radius, int color)> DrawCircleFn;
 	std::function<void(const DPath &, int color)> DrawPathFn;
 	std::function<void()> ClearScreenFn;
-#endif
+~endif
 
   private:
 	std::list<AdaptiveOutput> results;
@@ -167,4 +167,4 @@ class Adaptive2d
 	const clock_t PROGRESS_TICKS = CLOCKS_PER_SEC / 10; // progress report interval
 };
 } // namespace AdaptivePath
-#endif
+~endif

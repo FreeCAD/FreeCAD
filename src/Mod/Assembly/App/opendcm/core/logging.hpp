@@ -17,23 +17,23 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_LOGGING_H
-#define GCM_LOGGING_H
+~ifndef GCM_LOGGING_H
+~define GCM_LOGGING_H
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
 
-#define BOOST_LOG_DYN_LINK
+~define BOOST_LOG_DYN_LINK
 
-#include <boost/log/core.hpp>
-#include <boost/log/sinks.hpp>
-#include <boost/log/expressions/formatters.hpp>
-#include <boost/log/sources/severity_logger.hpp>
-#include <boost/log/attributes.hpp>
-#include <boost/log/sources/logger.hpp>
-#include <boost/log/sources/record_ostream.hpp>
-#include <boost/log/expressions.hpp>
+~include <boost/log/core.hpp>
+~include <boost/log/sinks.hpp>
+~include <boost/log/expressions/formatters.hpp>
+~include <boost/log/sources/severity_logger.hpp>
+~include <boost/log/attributes.hpp>
+~include <boost/log/sources/logger.hpp>
+~include <boost/log/sources/record_ostream.hpp>
+~include <boost/log/expressions.hpp>
 
-#include <memory>
+~include <memory>
 
 namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
@@ -100,6 +100,6 @@ inline void stop_log(std::shared_ptr< sink_t >& sink) {
 
 }; //dcm
 
-#endif //USE_LOGGING
+~endif //USE_LOGGING
 
-#endif //GCM_LOGGING_H
+~endif //GCM_LOGGING_H

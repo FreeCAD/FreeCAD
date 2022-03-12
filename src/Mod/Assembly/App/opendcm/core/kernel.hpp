@@ -17,17 +17,17 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_KERNEL_H
-#define DCM_KERNEL_H
+~ifndef DCM_KERNEL_H
+~define DCM_KERNEL_H
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Geometry>
+~include <Eigen/Core>
+~include <Eigen/Dense>
+~include <Eigen/Geometry>
 
-#include "transformation.hpp"
-#include "logging.hpp"
-#include "defines.hpp"
-#include "property.hpp"
+~include "transformation.hpp"
+~include "logging.hpp"
+~include "defines.hpp"
+~include "property.hpp"
 
 namespace E = Eigen;
 namespace mpl= boost::mpl;
@@ -79,9 +79,9 @@ struct iterations {
 template<typename Kernel>
 struct Dogleg {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     dcm_logger log;
-#endif
+~endif
 
     typedef typename Kernel::number_type number_type;
     number_type tolg, tolx, delta, nu, g_inf, fx_inf, err, time;
@@ -227,11 +227,11 @@ private:
 
 }//dcm
 
-#ifndef DCM_EXTERNAL_CORE
-#include "imp/kernel_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_CORE
+~include "imp/kernel_imp.hpp"
+~endif
 
-#endif //GCM_KERNEL_H
+~endif //GCM_KERNEL_H
 
 
 

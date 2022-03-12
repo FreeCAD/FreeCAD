@@ -17,15 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_PARSER_TRAITS_H
-#define DCM_PARSER_TRAITS_H
+~ifndef DCM_PARSER_TRAITS_H
+~define DCM_PARSER_TRAITS_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include <boost/mpl/bool.hpp>
-#include <assert.h>
+~include <boost/mpl/bool.hpp>
+~include <assert.h>
 
 namespace dcm {
 
@@ -55,7 +55,7 @@ struct parser_parser {
 
 }
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/traits_impl.hpp"
-#endif
-#endif //DCM_PARSER_TRAITS_H
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/traits_impl.hpp"
+~endif
+~endif //DCM_PARSER_TRAITS_H

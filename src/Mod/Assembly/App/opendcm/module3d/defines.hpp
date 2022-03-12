@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_DEFINES_3D_H
-#define GCM_DEFINES_3D_H
+~ifndef GCM_DEFINES_3D_H
+~define GCM_DEFINES_3D_H
 
 namespace dcm {
 
@@ -65,4 +65,4 @@ struct m3d {}; 	//base of module3d::type to allow other modules check for it
 
 }
 
-#endif
+~endif

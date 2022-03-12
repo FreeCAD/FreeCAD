@@ -41,13 +41,13 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_PATHCOMPOSITE_H
-#define KDL_PATHCOMPOSITE_H
+~ifndef KDL_PATHCOMPOSITE_H
+~define KDL_PATHCOMPOSITE_H
 
-#include "frames.hpp"
-#include "frames_io.hpp"
-#include "path.hpp"
-#include <vector>
+~include "frames.hpp"
+~include "frames_io.hpp"
+~include "path.hpp"
+~include <vector>
 
 namespace KDL {
 
@@ -168,4 +168,4 @@ namespace KDL {
 }
 
 
-#endif
+~endif

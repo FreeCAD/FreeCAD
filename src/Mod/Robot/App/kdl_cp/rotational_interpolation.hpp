@@ -41,11 +41,11 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_ROTATIONALINTERPOLATION_H
-#define KDL_ROTATIONALINTERPOLATION_H
+~ifndef KDL_ROTATIONALINTERPOLATION_H
+~define KDL_ROTATIONALINTERPOLATION_H
 
-#include "frames.hpp"
-#include "frames_io.hpp"
+~include "frames.hpp"
+~include "frames_io.hpp"
 
 namespace KDL {
 
@@ -115,4 +115,4 @@ class RotationalInterpolation
 }
 
 
-#endif
+~endif

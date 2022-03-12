@@ -19,12 +19,12 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAIN_IKSOLVERVEL_WDLS_HPP
-#define KDL_CHAIN_IKSOLVERVEL_WDLS_HPP
+~ifndef KDL_CHAIN_IKSOLVERVEL_WDLS_HPP
+~define KDL_CHAIN_IKSOLVERVEL_WDLS_HPP
 
-#include "chainiksolver.hpp"
-#include "chainjnttojacsolver.hpp"
-#include <Eigen/Core>
+~include "chainiksolver.hpp"
+~include "chainjnttojacsolver.hpp"
+~include <Eigen/Core>
 
 namespace KDL
 {
@@ -35,7 +35,7 @@ namespace KDL
      * KDL::Chain. It uses a svd-calculation based on householders
      * rotations.
      *
-     * J# = M_q*Vb*pinv_dls(Db)*Ub'*M_x
+     * J~ = M_q*Vb*pinv_dls(Db)*Ub'*M_x
      *
      * where B = Mx*J*Mq
      *
@@ -225,5 +225,5 @@ namespace KDL
 		double sigmaMin;
     };
 }
-#endif
+~endif
 

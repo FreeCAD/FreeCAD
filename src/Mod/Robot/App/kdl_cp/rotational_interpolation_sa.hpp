@@ -41,12 +41,12 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
-#define KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
+~ifndef KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
+~define KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
 
-#include "frames.hpp"
-#include "frames_io.hpp"
-#include "rotational_interpolation.hpp"
+~include "frames.hpp"
+~include "frames_io.hpp"
+~include "rotational_interpolation.hpp"
 
 
 namespace KDL {
@@ -81,4 +81,4 @@ class RotationalInterpolation_SingleAxis: public RotationalInterpolation
 }
 
 
-#endif
+~endif

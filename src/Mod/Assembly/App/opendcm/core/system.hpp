@@ -17,28 +17,28 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_SYSTEM_H
-#define GCM_SYSTEM_H
+~ifndef GCM_SYSTEM_H
+~define GCM_SYSTEM_H
 
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/map.hpp>
-#include <boost/mpl/vector/vector0.hpp>
-#include <boost/mpl/fold.hpp>
-#include <boost/mpl/insert.hpp>
-#include <boost/mpl/placeholders.hpp>
-#include <boost/mpl/count.hpp>
-#include <boost/mpl/or.hpp>
-#include <boost/mpl/less_equal.hpp>
+~include <boost/mpl/vector.hpp>
+~include <boost/mpl/map.hpp>
+~include <boost/mpl/vector/vector0.hpp>
+~include <boost/mpl/fold.hpp>
+~include <boost/mpl/insert.hpp>
+~include <boost/mpl/placeholders.hpp>
+~include <boost/mpl/count.hpp>
+~include <boost/mpl/or.hpp>
+~include <boost/mpl/less_equal.hpp>
 
-#include <boost/function.hpp>
+~include <boost/function.hpp>
 
-#include "property.hpp"
-#include "clustergraph.hpp"
-#include "sheduler.hpp"
-#include "logging.hpp"
-#include "traits.hpp"
-#include "object.hpp"
-#include "kernel.hpp"
+~include "property.hpp"
+~include "clustergraph.hpp"
+~include "sheduler.hpp"
+~include "logging.hpp"
+~include "traits.hpp"
+~include "object.hpp"
+~include "kernel.hpp"
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -214,9 +214,9 @@ protected:
     template<typename FT1, typename FT2, typename FT3>
     friend struct Object;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     std::shared_ptr< sink_t > sink;
-#endif
+~endif
 
 public:
     typedef ClusterGraph<edge_properties, vertex_properties, cluster_properties, objects> Cluster;
@@ -284,12 +284,12 @@ public:
     Kernel  m_kernel;
     std::vector<std::shared_ptr<System> > m_subsystems;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     template<typename Expr>
     void setLoggingFilter(const Expr& ex) {
       sink->set_filter(ex);
     }
-#endif
+~endif
 };
 
 //implementations which always need to be with the definition as they can't be externalised
@@ -380,11 +380,11 @@ System<KernelType, T1, T2, T3>::option() {
 
 }
 
-#ifndef DCM_EXTERNAL_CORE
-#include "imp/system_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_CORE
+~include "imp/system_imp.hpp"
+~endif
 
-#endif //GCM_SYSTEM_H
+~endif //GCM_SYSTEM_H
 
 
 

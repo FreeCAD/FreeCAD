@@ -17,13 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_PARALLEL_H
-#define GCM_PARALLEL_H
+~ifndef GCM_PARALLEL_H
+~define GCM_PARALLEL_H
 
-#include <opendcm/core/constraint.hpp>
+~include <opendcm/core/constraint.hpp>
 
-#include "geometry.hpp"
-#include <boost/math/special_functions/fpclassify.hpp>
+~include "geometry.hpp"
+~include <boost/math/special_functions/fpclassify.hpp>
 
 using boost::math::isfinite;
 
@@ -406,4 +406,4 @@ struct Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >  : public O
 };
 }
 
-#endif
+~endif

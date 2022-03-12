@@ -1,8 +1,8 @@
-#ifndef DCM_PROPERTY_GENERATOR_IMP_H
-#define DCM_PROPERTY_GENERATOR_IMP_H
+~ifndef DCM_PROPERTY_GENERATOR_IMP_H
+~define DCM_PROPERTY_GENERATOR_IMP_H
 
-#include "../property_generator.hpp"
-#include "traits_impl.hpp"
+~include "../property_generator.hpp"
+~include "traits_impl.hpp"
 
 namespace dcm {
 
@@ -15,7 +15,7 @@ template<typename Prop, typename Gen>
 prop_grammar<Prop, Gen>::prop_grammar() : prop_grammar<Prop, Gen>::base_type(start) {
   
     Gen::init(subrule);
-    start =  karma::lit("\n<Property>") << '#' << karma::eol << subrule
+    start =  karma::lit("\n<Property>") << '~' << karma::eol << subrule
              << '$' << karma::eol << karma::lit("</Property>");
 };
 
@@ -47,4 +47,4 @@ kernel_prop_gen<Sys>::kernel_prop_gen() : prop_gen<Sys, typename Sys::Kernel::Pr
 }//details
 }//dcm
 
-#endif //DCM_PROPERTY_GENERATOR_H
+~endif //DCM_PROPERTY_GENERATOR_H

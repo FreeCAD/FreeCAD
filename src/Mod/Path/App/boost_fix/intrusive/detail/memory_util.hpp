@@ -14,17 +14,17 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef BOOST_INTRUSIVE_ALLOCATOR_MEMORY_UTIL_HPP
-#define BOOST_INTRUSIVE_ALLOCATOR_MEMORY_UTIL_HPP
+~ifndef BOOST_INTRUSIVE_ALLOCATOR_MEMORY_UTIL_HPP
+~define BOOST_INTRUSIVE_ALLOCATOR_MEMORY_UTIL_HPP
 
-#if (defined _MSC_VER) && (_MSC_VER >= 1200)
-#  pragma once
-#endif
+~if (defined _MSC_VER) && (_MSC_VER >= 1200)
+~  pragma once
+~endif
 
-#include <boost/intrusive/detail/config_begin.hpp>
-#include <boost/intrusive/detail/workaround.hpp>
-#include <boost/intrusive/detail/mpl.hpp>
-#include <boost/intrusive/detail/preprocessor.hpp>
+~include <boost/intrusive/detail/config_begin.hpp>
+~include <boost/intrusive/detail/workaround.hpp>
+~include <boost/intrusive/detail/mpl.hpp>
+~include <boost/intrusive/detail/preprocessor.hpp>
 
 namespace boost {
 namespace intrusive {
@@ -57,9 +57,9 @@ struct LowPriorityConversion
 };
 
 // Infrastructure for providing a default type for T::TNAME if absent.
-#define BOOST_INTRUSIVE_INSTANTIATE_DEFAULT_TYPE_TMPLT(TNAME)              \
+~define BOOST_INTRUSIVE_INSTANTIATE_DEFAULT_TYPE_TMPLT(TNAME)              \
    template <typename T, typename DefaultType>                             \
-   struct boost_intrusive_default_type_ ## TNAME                           \
+   struct boost_intrusive_default_type_ ~~ TNAME                           \
    {                                                                       \
       template <typename X>                                                \
       static char test(int, typename X::TNAME*);                           \
@@ -78,7 +78,7 @@ struct LowPriorityConversion
    };                                                                      \
                                                                            \
    template <typename T, typename DefaultType>                             \
-   struct boost_intrusive_eval_default_type_ ## TNAME                      \
+   struct boost_intrusive_eval_default_type_ ~~ TNAME                      \
    {                                                                       \
       template <typename X>                                                \
       static char test(int, typename X::TNAME*);                           \
@@ -101,43 +101,43 @@ struct LowPriorityConversion
    };                                                                      \
 //
 
-#define BOOST_INTRUSIVE_OBTAIN_TYPE_WITH_DEFAULT(INSTANTIATION_NS_PREFIX, T, TNAME, TIMPL)   \
+~define BOOST_INTRUSIVE_OBTAIN_TYPE_WITH_DEFAULT(INSTANTIATION_NS_PREFIX, T, TNAME, TIMPL)   \
       typename INSTANTIATION_NS_PREFIX                                                       \
-         boost_intrusive_default_type_ ## TNAME< T, TIMPL >::type                            \
+         boost_intrusive_default_type_ ~~ TNAME< T, TIMPL >::type                            \
 //
 
-#define BOOST_INTRUSIVE_OBTAIN_TYPE_WITH_EVAL_DEFAULT(INSTANTIATION_NS_PREFIX, T, TNAME, TIMPL) \
+~define BOOST_INTRUSIVE_OBTAIN_TYPE_WITH_EVAL_DEFAULT(INSTANTIATION_NS_PREFIX, T, TNAME, TIMPL) \
       typename INSTANTIATION_NS_PREFIX                                                          \
-         boost_intrusive_eval_default_type_ ## TNAME< T, TIMPL >::type                          \
+         boost_intrusive_eval_default_type_ ~~ TNAME< T, TIMPL >::type                          \
 //
 
 }}}   //namespace boost::intrusive::detail
 
-#include "has_member_function_callable_with.hpp"
+~include "has_member_function_callable_with.hpp"
 
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME pointer_to
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
-#include BOOST_PP_ITERATE()
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME pointer_to
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
+~define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
+~include BOOST_PP_ITERATE()
 
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME static_cast_from
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
-#include BOOST_PP_ITERATE()
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME static_cast_from
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
+~define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
+~include BOOST_PP_ITERATE()
 
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME const_cast_from
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
-#include BOOST_PP_ITERATE()
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME const_cast_from
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
+~define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
+~include BOOST_PP_ITERATE()
 
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME dynamic_cast_from
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
-#include BOOST_PP_ITERATE()
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME dynamic_cast_from
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace intrusive { namespace detail {
+~define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
+~define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 1, "has_member_function_callable_with.hpp"))
+~include BOOST_PP_ITERATE()
 
 namespace boost {
 namespace intrusive {
@@ -153,7 +153,7 @@ BOOST_INTRUSIVE_INSTANTIATE_DEFAULT_TYPE_TMPLT(difference_type)
 template <typename T> struct first_param
 {  typedef void type;   };
 
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+~if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 
    template <template <typename, typename...> class TemplateClass, typename T, typename... Args>
    struct first_param< TemplateClass<T, Args...> >
@@ -161,9 +161,9 @@ template <typename T> struct first_param
       typedef T type;
    };
 
-#else //C++03 compilers
+~else //C++03 compilers
 
-   #define BOOST_PP_LOCAL_MACRO(n)                                                  \
+   ~define BOOST_PP_LOCAL_MACRO(n)                                                  \
    template < template <typename                                                    \
                BOOST_PP_ENUM_TRAILING(n, BOOST_INTRUSIVE_PP_IDENTITY, typename) >   \
             class TemplateClass                                                     \
@@ -174,10 +174,10 @@ template <typename T> struct first_param
       typedef T type;                                                               \
    };                                                                               \
    //
-   #define BOOST_PP_LOCAL_LIMITS (0, BOOST_INTRUSIVE_MAX_CONSTRUCTOR_PARAMETERS)
-   #include BOOST_PP_LOCAL_ITERATE()
+   ~define BOOST_PP_LOCAL_LIMITS (0, BOOST_INTRUSIVE_MAX_CONSTRUCTOR_PARAMETERS)
+   ~include BOOST_PP_LOCAL_ITERATE()
 
-#endif   //!defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+~endif   //!defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 
 ///////////////////////////
 //struct type_rebind_mode
@@ -186,11 +186,11 @@ template <typename Ptr, typename T>
 struct type_has_rebind
 {
    template <typename X>
-   #if !defined (__SUNPRO_CC)
+   ~if !defined (__SUNPRO_CC)
    static char test(int, typename X::template rebind<T>*);
-   #else
+   ~else
    static char test(int, typename X::rebind<T>*);
-   #endif
+   ~endif
 
    template <typename X>
    static int test(boost::intrusive::detail::LowPriorityConversion<int>, void*);
@@ -202,11 +202,11 @@ template <typename Ptr, typename T>
 struct type_has_rebind_other
 {
    template <typename X>
-   #if !defined (__SUNPRO_CC)
+   ~if !defined (__SUNPRO_CC)
    static char test(int, typename X::template rebind<T>::other*);
-   #else
+   ~else
    static char test(int, typename X::rebind<T>::other*);
-   #endif
+   ~endif
 
    template <typename X>
    static int test(boost::intrusive::detail::LowPriorityConversion<int>, void*);
@@ -249,7 +249,7 @@ struct type_rebinder< Ptr, U, 1u >
 // OtherArgs>, where OtherArgs comprises zero or more type parameters.
 // Many pointers fit this form, hence many pointers will get a
 // reasonable default for rebind.
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+~if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 
 template <template <class, class...> class Ptr, typename T, class... Tn, class U>
 struct type_rebinder<Ptr<T, Tn...>, U, 0u >
@@ -264,9 +264,9 @@ struct type_rebinder<Ptr<T>, U, 0u >
    typedef Ptr<U> type;
 };
 
-#else //C++03 compilers
+~else //C++03 compilers
 
-#define BOOST_PP_LOCAL_MACRO(n)                                                  \
+~define BOOST_PP_LOCAL_MACRO(n)                                                  \
 template < template <typename                                                    \
             BOOST_PP_ENUM_TRAILING(n, BOOST_INTRUSIVE_PP_IDENTITY, typename) >   \
            class Ptr                                                             \
@@ -278,15 +278,15 @@ struct type_rebinder                                                            
    typedef Ptr<U BOOST_PP_ENUM_TRAILING_PARAMS(n, P)> type;                      \
 };                                                                               \
 //
-#define BOOST_PP_LOCAL_LIMITS (0, BOOST_INTRUSIVE_MAX_CONSTRUCTOR_PARAMETERS)
-#include BOOST_PP_LOCAL_ITERATE()
+~define BOOST_PP_LOCAL_LIMITS (0, BOOST_INTRUSIVE_MAX_CONSTRUCTOR_PARAMETERS)
+~include BOOST_PP_LOCAL_ITERATE()
 
-#endif   //!defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+~endif   //!defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 
 }  //namespace detail {
 }  //namespace intrusive {
 }  //namespace boost {
 
-#include <boost/intrusive/detail/config_end.hpp>
+~include <boost/intrusive/detail/config_end.hpp>
 
-#endif // ! defined(BOOST_INTRUSIVE_ALLOCATOR_MEMORY_UTIL_HPP)
+~endif // ! defined(BOOST_INTRUSIVE_ALLOCATOR_MEMORY_UTIL_HPP)

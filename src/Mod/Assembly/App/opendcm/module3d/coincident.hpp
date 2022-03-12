@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_COINCIDENT_HPP
-#define DCM_COINCIDENT_HPP
+~ifndef DCM_COINCIDENT_HPP
+~define DCM_COINCIDENT_HPP
 
-#include <opendcm/core/equations.hpp>
-#include "distance.hpp"
+~include <opendcm/core/equations.hpp>
+~include "distance.hpp"
 
 namespace dcm {
 
@@ -296,4 +296,4 @@ static Coincidence coincidence;
 }//dcm
 
 
-#endif //DCM_COINCIDENT_HPP
+~endif //DCM_COINCIDENT_HPP

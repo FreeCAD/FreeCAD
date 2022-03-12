@@ -73,13 +73,13 @@
 //
  *
  ****************************************************************************/
-#ifndef FRAMES_IO_H
-#define FRAMES_IO_H
+~ifndef FRAMES_IO_H
+~define FRAMES_IO_H
 
-#include "utilities/utility_io.h"
-#include "frames.hpp"
-#include "jntarray.hpp"
-#include "jacobian.hpp"
+~include "utilities/utility_io.h"
+~include "frames.hpp"
+~include "jntarray.hpp"
+~include "jacobian.hpp"
 
 namespace KDL {
 
@@ -111,4 +111,4 @@ namespace KDL {
 
 } // namespace Frame
 
-#endif
+~endif

@@ -19,10 +19,10 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLCHAINFKSOLVERPOS_RECURSIVE_HPP
-#define KDLCHAINFKSOLVERPOS_RECURSIVE_HPP
+~ifndef KDLCHAINFKSOLVERPOS_RECURSIVE_HPP
+~define KDLCHAINFKSOLVERPOS_RECURSIVE_HPP
 
-#include "chainfksolver.hpp"
+~include "chainfksolver.hpp"
 
 namespace KDL {
 
@@ -47,4 +47,4 @@ namespace KDL {
 
 }
 
-#endif
+~endif

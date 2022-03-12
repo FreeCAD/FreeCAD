@@ -17,34 +17,34 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_EQUATIONS_IMP_H
-#define DCM_EQUATIONS_IMP_H
+~ifndef DCM_EQUATIONS_IMP_H
+~define DCM_EQUATIONS_IMP_H
 
-#include <assert.h>
+~include <assert.h>
 
-#include "../equations.hpp"
+~include "../equations.hpp"
 
-#include <boost/utility/enable_if.hpp>
-#include <boost/type_traits.hpp>
-#include <boost/mpl/is_sequence.hpp>
-#include <boost/mpl/and.hpp>
-#include <boost/mpl/not.hpp>
-#include <boost/mpl/sort.hpp>
-#include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/iterator_range.hpp>
-#include <boost/fusion/include/copy.hpp>
-#include <boost/fusion/include/advance.hpp>
-#include <boost/fusion/include/back.hpp>
-#include <boost/fusion/include/iterator_range.hpp>
-#include <boost/fusion/include/nview.hpp>
-#include <boost/fusion/include/for_each.hpp>
-#include <boost/fusion/include/map.hpp>
-#include <boost/fusion/include/as_map.hpp>
-#include <boost/fusion/include/filter_view.hpp>
-#include <boost/fusion/include/size.hpp>
+~include <boost/utility/enable_if.hpp>
+~include <boost/type_traits.hpp>
+~include <boost/mpl/is_sequence.hpp>
+~include <boost/mpl/and.hpp>
+~include <boost/mpl/not.hpp>
+~include <boost/mpl/sort.hpp>
+~include <boost/fusion/include/vector.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/fusion/include/iterator_range.hpp>
+~include <boost/fusion/include/copy.hpp>
+~include <boost/fusion/include/advance.hpp>
+~include <boost/fusion/include/back.hpp>
+~include <boost/fusion/include/iterator_range.hpp>
+~include <boost/fusion/include/nview.hpp>
+~include <boost/fusion/include/for_each.hpp>
+~include <boost/fusion/include/map.hpp>
+~include <boost/fusion/include/as_map.hpp>
+~include <boost/fusion/include/filter_view.hpp>
+~include <boost/fusion/include/size.hpp>
 
-#include <boost/exception/exception.hpp>
+~include <boost/exception/exception.hpp>
 
 namespace fusion = boost::fusion;
 namespace mpl = boost::mpl;
@@ -245,6 +245,6 @@ void Angle::setDefault() {
 
 };
 
-#endif //GCM_EQUATIONS_H
+~endif //GCM_EQUATIONS_H
 
 

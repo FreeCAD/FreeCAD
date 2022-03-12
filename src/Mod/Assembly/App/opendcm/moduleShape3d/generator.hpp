@@ -17,18 +17,18 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_GENERATOR_SHAPE3D_H
-#define GCM_GENERATOR_SHAPE3D_H
+~ifndef GCM_GENERATOR_SHAPE3D_H
+~define GCM_GENERATOR_SHAPE3D_H
 
-#include <opendcm/core/defines.hpp>
-#include <opendcm/core/geometry.hpp>
-#include <opendcm/module3d/defines.hpp>
-#include "geometry.hpp"
-#include "fixed.hpp"
-#include "defines.hpp"
+~include <opendcm/core/defines.hpp>
+~include <opendcm/core/geometry.hpp>
+~include <opendcm/module3d/defines.hpp>
+~include "geometry.hpp"
+~include "fixed.hpp"
+~include "defines.hpp"
 
-#include <boost/exception/errinfo_errno.hpp>
-#include <boost_bind_bind.hpp>
+~include <boost/exception/errinfo_errno.hpp>
+~include <boost_bind_bind.hpp>
 namespace bp = boost::placeholders;
 
 namespace dcm {
@@ -239,4 +239,4 @@ struct segment3D {
 } //dcm
 
 
-#endif //GCM_GENERATOR_SHAPE3D_H
+~endif //GCM_GENERATOR_SHAPE3D_H

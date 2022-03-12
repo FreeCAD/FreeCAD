@@ -17,13 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_SOLVER_3D_H
-#define GCM_SOLVER_3D_H
+~ifndef GCM_SOLVER_3D_H
+~define GCM_SOLVER_3D_H
 
-#include "defines.hpp"
-#include "opendcm/core/sheduler.hpp"
+~include "defines.hpp"
+~include "opendcm/core/sheduler.hpp"
 
-#include <boost/graph/depth_first_search.hpp>
+~include <boost/graph/depth_first_search.hpp>
 
 namespace dcm {  
 namespace details {
@@ -45,9 +45,9 @@ struct MES  : public Sys::Kernel::MappedEquationSystem {
 
     std::shared_ptr<Cluster> m_cluster;
     
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     dcm_logger log;
-#endif
+~endif
 
     MES(std::shared_ptr<Cluster> cl, int par, int eqn);
     virtual void recalculate();
@@ -71,9 +71,9 @@ struct SystemSolver : public Job<Sys> {
 
     typedef MES<Sys> Mes;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     src::logger log;
-#endif
+~endif
     struct Rescaler {
 
         std::shared_ptr<Cluster> cluster;
@@ -118,4 +118,4 @@ struct SystemSolver : public Job<Sys> {
 }//details
 }//dcm
 
-#endif //DCM_SOLVER_3D_HPP
+~endif //DCM_SOLVER_3D_HPP

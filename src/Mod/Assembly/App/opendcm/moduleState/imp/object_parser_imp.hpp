@@ -17,12 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_OBJECT_PARSER_IMP_H
-#define DCM_OBJECT_PARSER_IMP_H
+~ifndef DCM_OBJECT_PARSER_IMP_H
+~define DCM_OBJECT_PARSER_IMP_H
 
-#include "../object_parser.hpp"
-#include "property_parser_imp.hpp"
-#include "boost/phoenix/fusion/at.hpp"
+~include "../object_parser.hpp"
+~include "property_parser_imp.hpp"
+~include "boost/phoenix/fusion/at.hpp"
 
 namespace dcm {
 namespace details {
@@ -85,4 +85,4 @@ obj_par<Sys>::obj_par(): obj_par<Sys>::base_type(obj) {
 }//DCM
 
 
-#endif
+~endif

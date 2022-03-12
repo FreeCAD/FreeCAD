@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_DOF_H
-#define GCM_DOF_H
+~ifndef GCM_DOF_H
+~define GCM_DOF_H
 
-#include <utility>
-#include <vector>
+~include <utility>
+~include <vector>
 
 namespace dcm {
 
@@ -130,4 +130,4 @@ private:
 
 }
 
-#endif //GCM_DOF_H
+~endif //GCM_DOF_H

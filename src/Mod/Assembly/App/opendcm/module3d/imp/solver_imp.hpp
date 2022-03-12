@@ -17,20 +17,20 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_SOLVER_3D_IMP_H
-#define DCM_SOLVER_3D_IMP_H
+~ifndef DCM_SOLVER_3D_IMP_H
+~define DCM_SOLVER_3D_IMP_H
 
-#include "../solver.hpp"
-#include "../defines.hpp"
+~include "../solver.hpp"
+~include "../defines.hpp"
 
-#include <boost/graph/undirected_dfs.hpp>
+~include <boost/graph/undirected_dfs.hpp>
 
-#include <opendcm/core/kernel.hpp>
+~include <opendcm/core/kernel.hpp>
 
-#ifdef DCM_EXTERNAL_CORE
-#include "opendcm/core/imp/kernel_imp.hpp"
-#include "opendcm/core/imp/clustergraph_imp.hpp"
-#endif
+~ifdef DCM_EXTERNAL_CORE
+~include "opendcm/core/imp/kernel_imp.hpp"
+~include "opendcm/core/imp/clustergraph_imp.hpp"
+~endif
 
 namespace dcm {
 namespace details {
@@ -38,9 +38,9 @@ namespace details {
 
 template<typename Sys>
 MES<Sys>::MES(std::shared_ptr<Cluster> cl, int par, int eqn) : Base(par, eqn), m_cluster(cl) {
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     log.add_attribute("Tag", attrs::constant< std::string >("MES3D"));
-#endif
+~endif
 };
 
 template<typename Sys>
@@ -79,9 +79,9 @@ void MES<Sys>::recalculate() {
 template<typename Sys>
 void MES<Sys>::removeLocalGradientZeros() {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     BOOST_LOG_SEV(log, information) << "remove local gradient zero";
-#endif
+~endif
     //let the constraints treat the local zeros
     typedef typename Cluster::template object_iterator<Constraint3D> oiter;
     typedef typename boost::graph_traits<Cluster>::edge_iterator eiter;
@@ -206,9 +206,9 @@ void SystemSolver<Sys>::Rescaler::collectPseudoPoints(
 template<typename Sys>
 SystemSolver<Sys>::SystemSolver() {
     Job<Sys>::priority = 1000;
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     log.add_attribute("Tag", attrs::constant< std::string >("SystemSolver3D"));
-#endif
+~endif
 };
 
 template<typename Sys>
@@ -268,9 +268,9 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
 
     if(params <= 0 || constraints <= 0) {
         //TODO:throw
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
         BOOST_LOG_SEV(log, error)<< "Error in system counting: params = " << params << " and constraints = "<<constraints;
-#endif
+~endif
         return;
     }
 
@@ -340,9 +340,9 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
         //if we don't have rotations we need no expensive scaling code
         if(!mes.hasAccessType(rotation)) {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
             BOOST_LOG_SEV(log, solving)<< "No rotation parameters in system, solve without scaling";
-#endif
+~endif
             DummyScaler re;
             sys.kernel().solve(mes, re);
 
@@ -368,9 +368,9 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
             bool done = false;
 
             if(!has_cycle) {
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
 		BOOST_LOG_SEV(log, solving)<< "non-cyclic system detected: solve rotation only";
-#endif
+~endif
 		//cool, lets do uncylic. first all rotational constraints with rotational parameters
 		mes.setAccess(rotation);
 
@@ -403,9 +403,9 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
 		    if(sys.kernel().isSame(mes.Residual.template lpNorm<E::Infinity>(),0.))
 			done = true;
 		    else {
-    #ifdef USE_LOGGING
+    ~ifdef USE_LOGGING
 			BOOST_LOG_SEV(log, solving)<< "Solve Translation after Rotations are not enough";
-    #endif
+    ~endif
 
 			//let's try translation only
 			try {
@@ -426,18 +426,18 @@ void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys)
 
             //not done already? try it the hard way!
             if(!done) {
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
                 BOOST_LOG_SEV(log, solving)<< "Full scale solver used";
-#endif
+~endif
                 mes.setAccess(complete);
                 mes.recalculate();
 
                 Rescaler re(cluster, mes);
                 re();
                 sys.kernel().solve(mes, re);
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
                 BOOST_LOG_SEV(log, solving)<< "Numbers of rescale: "<<re.rescales;
-#endif
+~endif
             };
         }
 
@@ -491,5 +491,5 @@ void SystemSolver<Sys>::finish(std::shared_ptr<Cluster> cluster, Sys& sys, Mes& 
 }//details
 }//dcm
 
-#endif //DCM_SOLVER_3D_HPP
+~endif //DCM_SOLVER_3D_HPP
 

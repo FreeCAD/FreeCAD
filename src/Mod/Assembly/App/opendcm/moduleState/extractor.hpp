@@ -17,12 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_EXTRACTOR_H
-#define DCM_EXTRACTOR_H
+~ifndef DCM_EXTRACTOR_H
+~define DCM_EXTRACTOR_H
 
-#include "defines.hpp"
-#include <opendcm/core/clustergraph.hpp>
-#include <boost/fusion/include/at_c.hpp>
+~include "defines.hpp"
+~include <opendcm/core/clustergraph.hpp>
+~include <boost/fusion/include/at_c.hpp>
 
 namespace fusion = boost::fusion;
 
@@ -120,7 +120,7 @@ struct Injector {
 
 }//namespace dcm
 
-#endif //DCM_GENERATOR_H
+~endif //DCM_GENERATOR_H
 
 
 

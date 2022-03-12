@@ -4,26 +4,26 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //////////////////////////////////////////////////////////////////////////////*/
-#ifndef BOOST_SPIRIT_REPOSITORY_KARMA_TRANS
-#define BOOST_SPIRIT_REPOSITORY_KARMA_TRANS
+~ifndef BOOST_SPIRIT_REPOSITORY_KARMA_TRANS
+~define BOOST_SPIRIT_REPOSITORY_KARMA_TRANS
 
 
-#if defined(_MSC_VER)
-#pragma once
-#endif
+~if defined(_MSC_VER)
+~pragma once
+~endif
 
-#include <boost/spirit/home/karma/meta_compiler.hpp>
-#include <boost/spirit/home/karma/generator.hpp>
-#include <boost/spirit/home/karma/domain.hpp>
-#include <boost/spirit/home/support/unused.hpp>
-#include <boost/spirit/home/support/info.hpp>
-#include <boost/spirit/home/support/has_semantic_action.hpp>
-#include <boost/spirit/home/support/handles_container.hpp>
-#include <boost/spirit/home/karma/detail/attributes.hpp>
+~include <boost/spirit/home/karma/meta_compiler.hpp>
+~include <boost/spirit/home/karma/generator.hpp>
+~include <boost/spirit/home/karma/domain.hpp>
+~include <boost/spirit/home/support/unused.hpp>
+~include <boost/spirit/home/support/info.hpp>
+~include <boost/spirit/home/support/has_semantic_action.hpp>
+~include <boost/spirit/home/support/handles_container.hpp>
+~include <boost/spirit/home/karma/detail/attributes.hpp>
 
-#include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/identity.hpp>
-#include <boost/type_traits/is_same.hpp>
+~include <boost/mpl/eval_if.hpp>
+~include <boost/mpl/identity.hpp>
+~include <boost/type_traits/is_same.hpp>
 
 
 namespace boost { namespace spirit { namespace repository
@@ -152,4 +152,4 @@ namespace boost { namespace spirit { namespace traits
 }}} // namespace boost::spirit::traits
 
 
-#endif
+~endif

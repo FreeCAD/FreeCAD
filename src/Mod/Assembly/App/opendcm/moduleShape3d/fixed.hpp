@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_FIXED_SHAPE3D_H
-#define GCM_FIXED_SHAPE3D_H
+~ifndef GCM_FIXED_SHAPE3D_H
+~define GCM_FIXED_SHAPE3D_H
 
 //we need constraints to identify connections between geometries in our shapes, however, if the
 //geometries are linked to each other a calculation is not necessary. Therefore a no-equation constraint
 //is needed
 
-#include <opendcm/core/equations.hpp>
+~include <opendcm/core/equations.hpp>
 
 namespace dcm {
 namespace details {
@@ -88,4 +88,4 @@ static Fixed fixed;
 }//details
 } //dcm
 
-#endif
+~endif

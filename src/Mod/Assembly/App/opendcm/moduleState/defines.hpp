@@ -17,13 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_DEFINES_STATE_H
-#define DCM_DEFINES_STATE_H
+~ifndef DCM_DEFINES_STATE_H
+~define DCM_DEFINES_STATE_H
 
-#include "opendcm/core/property.hpp"
-#include "opendcm/core/clustergraph.hpp"
-#include <boost/fusion/adapted/struct/adapt_struct.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
+~include "opendcm/core/property.hpp"
+~include "opendcm/core/clustergraph.hpp"
+~include <boost/fusion/adapted/struct/adapt_struct.hpp>
+~include <boost/fusion/include/adapt_struct.hpp>
 
 
 namespace dcm {
@@ -66,4 +66,4 @@ BOOST_FUSION_ADAPT_TPL_STRUCT(
     (std::shared_ptr<typename t1<Kernel>::template t2<M1>::template t3<M2>::template t4<M3>::type::Cluster>, m_cluster)
 )
 
-#endif
+~endif

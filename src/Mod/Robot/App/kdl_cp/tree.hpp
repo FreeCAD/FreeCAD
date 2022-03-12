@@ -19,27 +19,27 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_TREE_HPP
-#define KDL_TREE_HPP
+~ifndef KDL_TREE_HPP
+~define KDL_TREE_HPP
 
 // This file comes along with oce but not with occ.
-//#include "config.h"
+//~include "config.h"
 
-#include "segment.hpp"
-#include "chain.hpp"
+~include "segment.hpp"
+~include "chain.hpp"
 
-#include <string>
-#include <map>
+~include <string>
+~include <map>
 
-#ifdef KDL_USE_NEW_TREE_INTERFACE
-#include <memory>
-#endif //#ifdef KDL_USE_NEW_TREE_INTERFACE
+~ifdef KDL_USE_NEW_TREE_INTERFACE
+~include <memory>
+~endif //~ifdef KDL_USE_NEW_TREE_INTERFACE
 
 namespace KDL
 {
     class TreeElement;
 
-#ifdef KDL_USE_NEW_TREE_INTERFACE
+~ifdef KDL_USE_NEW_TREE_INTERFACE
     //We use smart pointers for managing tree nodes for now because
     //c++11 and unique_ptr support is not ubiquitous
     typedef std::shared_ptr<TreeElement> TreeElementPtr;
@@ -47,22 +47,22 @@ namespace KDL
     typedef std::map<std::string, TreeElementPtr> SegmentMap;
     typedef TreeElementPtr TreeElementType;
 
-#define GetTreeElementChildren(tree_element) (tree_element)->children
-#define GetTreeElementParent(tree_element) (tree_element)->parent
-#define GetTreeElementQNr(tree_element) (tree_element)->q_nr
-#define GetTreeElementSegment(tree_element) (tree_element)->segment
+~define GetTreeElementChildren(tree_element) (tree_element)->children
+~define GetTreeElementParent(tree_element) (tree_element)->parent
+~define GetTreeElementQNr(tree_element) (tree_element)->q_nr
+~define GetTreeElementSegment(tree_element) (tree_element)->segment
 
-#else //#ifdef KDL_USE_NEW_TREE_INTERFACE
+~else //~ifdef KDL_USE_NEW_TREE_INTERFACE
     //Forward declaration
     typedef std::map<std::string,TreeElement> SegmentMap;
     typedef TreeElement TreeElementType;
 
-#define GetTreeElementChildren(tree_element) (tree_element).children
-#define GetTreeElementParent(tree_element) (tree_element).parent
-#define GetTreeElementQNr(tree_element) (tree_element).q_nr
-#define GetTreeElementSegment(tree_element) (tree_element).segment
+~define GetTreeElementChildren(tree_element) (tree_element).children
+~define GetTreeElementParent(tree_element) (tree_element).parent
+~define GetTreeElementQNr(tree_element) (tree_element).q_nr
+~define GetTreeElementSegment(tree_element) (tree_element).segment
 
-#endif //#ifdef KDL_USE_NEW_TREE_INTERFACE
+~endif //~ifdef KDL_USE_NEW_TREE_INTERFACE
 
     class TreeElement
     {
@@ -75,11 +75,11 @@ namespace KDL
 
         static TreeElementType Root(const std::string& root_name)
         {
-#ifdef KDL_USE_NEW_TREE_INTERFACE
+~ifdef KDL_USE_NEW_TREE_INTERFACE
             return TreeElementType(new TreeElement(root_name));
-#else //#define KDL_USE_NEW_TREE_INTERFACE
+~else //~define KDL_USE_NEW_TREE_INTERFACE
             return TreeElementType(root_name);
-#endif
+~endif
         }
 
         Segment segment;
@@ -212,7 +212,7 @@ namespace KDL
 
     };
 }
-#endif
+~endif
 
 
 

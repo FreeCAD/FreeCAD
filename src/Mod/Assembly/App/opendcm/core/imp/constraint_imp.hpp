@@ -17,15 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CONSTRAINT_IMP_H
-#define DCM_CONSTRAINT_IMP_H
+~ifndef DCM_CONSTRAINT_IMP_H
+~define DCM_CONSTRAINT_IMP_H
 
-#include "../constraint.hpp"
+~include "../constraint.hpp"
 
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/for_each.hpp>
-#include <boost/fusion/sequence/intrinsic/size.hpp>
-#include <boost/fusion/include/size.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/fusion/include/for_each.hpp>
+~include <boost/fusion/sequence/intrinsic/size.hpp>
+~include <boost/fusion/include/size.hpp>
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -59,16 +59,16 @@ void Constraint<Sys, Dim>::initializeFirstGeometry(ConstraintVector& cv, boost::
 
     switch(first->getExactType()) {
 
-#ifdef BOOST_PP_LOCAL_ITERATE
-#define BOOST_PP_LOCAL_MACRO(n) \
+~ifdef BOOST_PP_LOCAL_ITERATE
+~define BOOST_PP_LOCAL_MACRO(n) \
       case (WhichType::value + n): \
         return initializeSecondGeometry<boost::mpl::int_<0>,\
 		typename mpl::at<geometries, typename in_range_value<geometries, WhichType::value + n>::type >::type,\
 					ConstraintVector>(cv, typename boost::mpl::less<boost::mpl::int_<WhichType::value + n>, boost::mpl::size<geometries> >::type()); \
         break;
-#define BOOST_PP_LOCAL_LIMITS (0, 10)
-#include BOOST_PP_LOCAL_ITERATE()
-#endif //BOOST_PP_LOCAL_ITERATE
+~define BOOST_PP_LOCAL_LIMITS (0, 10)
+~include BOOST_PP_LOCAL_ITERATE()
+~endif //BOOST_PP_LOCAL_ITERATE
     default:
         typedef typename mpl::int_<WhichType::value + 10> next_which_t;
         return initializeFirstGeometry<next_which_t, ConstraintVector> (cv,
@@ -90,16 +90,16 @@ void Constraint<Sys, Dim>::initializeSecondGeometry(ConstraintVector& cv, boost:
     typedef typename Sys::geometries geometries;
     switch(second->getExactType()) {
 
-#ifdef BOOST_PP_LOCAL_ITERATE
-#define BOOST_PP_LOCAL_MACRO(n) \
+~ifdef BOOST_PP_LOCAL_ITERATE
+~define BOOST_PP_LOCAL_MACRO(n) \
       case (WhichType::value + n): \
         return intitalizeFinalize<FirstType, \
 		typename mpl::at<geometries, typename in_range_value<geometries, WhichType::value + n>::type >::type,\
 				  ConstraintVector>(cv, typename boost::mpl::less<boost::mpl::int_<WhichType::value + n>, boost::mpl::size<geometries> >::type()); \
         break;
-#define BOOST_PP_LOCAL_LIMITS (0, 10)
-#include BOOST_PP_LOCAL_ITERATE()
-#endif //BOOST_PP_LOCAL_ITERATE
+~define BOOST_PP_LOCAL_LIMITS (0, 10)
+~include BOOST_PP_LOCAL_ITERATE()
+~endif //BOOST_PP_LOCAL_ITERATE
     default:
         typedef typename mpl::int_<WhichType::value + 10> next_which_t;
         return initializeSecondGeometry<next_which_t, FirstType, ConstraintVector>
@@ -202,7 +202,7 @@ std::vector<const std::type_info*> Constraint<Sys, Dim>::getConstraintTypes() {
 
 };//dcm
 
-#endif //GCM_CONSTRAINT_H
+~endif //GCM_CONSTRAINT_H
 
 
 

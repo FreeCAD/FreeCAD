@@ -17,20 +17,20 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_PROPERTY_PARSER_H
-#define DCM_PROPERTY_PARSER_H
+~ifndef DCM_PROPERTY_PARSER_H
+~define DCM_PROPERTY_PARSER_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/support_istream_iterator.hpp>
-#include <boost/spirit/include/qi_string.hpp>
-#include <boost/spirit/include/phoenix.hpp>
+~include <boost/spirit/include/qi.hpp>
+~include <boost/spirit/include/support_istream_iterator.hpp>
+~include <boost/spirit/include/qi_string.hpp>
+~include <boost/spirit/include/phoenix.hpp>
 
-#include <boost/mpl/less.hpp>
-#include <boost/mpl/int.hpp>
+~include <boost/mpl/less.hpp>
+~include <boost/mpl/int.hpp>
 
 namespace fusion = boost::fusion;
 namespace qi = boost::spirit::qi;
@@ -108,8 +108,8 @@ struct system_prop_par : public prop_par<Sys, typename Sys::OptionOwner::Propert
 } //DCM
 } //details
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/property_parser_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/property_parser_imp.hpp"
+~endif
 
-#endif
+~endif

@@ -19,28 +19,28 @@
  *
  * Aug 05, 2001
  */
-#ifndef BOOST_FDSTREAM_HPP
-#define BOOST_FDSTREAM_HPP
+~ifndef BOOST_FDSTREAM_HPP
+~define BOOST_FDSTREAM_HPP
 
-#include <istream>
-#include <ostream>
-#include <streambuf>
+~include <istream>
+~include <ostream>
+~include <streambuf>
 // for EOF:
-#include <cstdio>
+~include <cstdio>
 // for memcpy():
-#include <cstring>
+~include <cstring>
 
 
 // low-level read and write functions
-#ifdef _MSC_VER
-# include <io.h>
-#else
-# include <unistd.h>
+~ifdef _MSC_VER
+~ include <io.h>
+~else
+~ include <unistd.h>
 //extern "C" {
 //    int write (int fd, const char* buf, int num);
 //    int read (int fd, char* buf, int num);
 //}
-#endif
+~endif
 
 
 // BEGIN namespace BOOST
@@ -65,11 +65,11 @@ class fdoutbuf : public std::streambuf {
     virtual int_type overflow (int_type c) {
         if (c != EOF) {
             char z = c;
-#ifdef _MSC_VER
+~ifdef _MSC_VER
             if (_write (fd, &z, 1) != 1) {
-#else
+~else
             if (write (fd, &z, 1) != 1) {
-#endif
+~endif
                 return EOF;
             }
         }
@@ -79,11 +79,11 @@ class fdoutbuf : public std::streambuf {
     virtual
     std::streamsize xsputn (const char* s,
                             std::streamsize num) {
-#ifdef _MSC_VER
+~ifdef _MSC_VER
         return _write(fd,s,num);
-#else
+~else
         return write(fd,s,num);
-#endif
+~endif
     }
 };
 
@@ -130,9 +130,9 @@ class fdinbuf : public std::streambuf {
   protected:
     // insert new characters into the buffer
     virtual int_type underflow () {
-#ifndef _MSC_VER
+~ifndef _MSC_VER
 using std::memcpy;
-#endif
+~endif
 
         // is read position before end of buffer?
         if (gptr() < egptr()) {
@@ -157,11 +157,11 @@ using std::memcpy;
 
         // read at most bufSize new characters
         int num;
-#ifdef _MSC_VER
+~ifdef _MSC_VER
         num = _read (fd, buffer+pbSize, bufSize);
-#else
+~else
         num = read (fd, buffer+pbSize, bufSize);
-#endif
+~endif
         if (num <= 0) {
             // ERROR or EOF
             return EOF;
@@ -189,4 +189,4 @@ class fdistream : public std::istream {
 
 } // END namespace boost
 
-#endif /*BOOST_FDSTREAM_HPP*/
+~endif /*BOOST_FDSTREAM_HPP*/

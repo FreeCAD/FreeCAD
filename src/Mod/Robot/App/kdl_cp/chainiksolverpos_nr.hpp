@@ -19,11 +19,11 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLCHAINIKSOLVERPOS_NR_HPP
-#define KDLCHAINIKSOLVERPOS_NR_HPP
+~ifndef KDLCHAINIKSOLVERPOS_NR_HPP
+~define KDLCHAINIKSOLVERPOS_NR_HPP
 
-#include "chainiksolver.hpp"
-#include "chainfksolver.hpp"
+~include "chainiksolver.hpp"
+~include "chainfksolver.hpp"
 
 namespace KDL {
 
@@ -89,4 +89,4 @@ namespace KDL {
 
 }
 
-#endif
+~endif

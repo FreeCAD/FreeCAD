@@ -5,10 +5,10 @@
  * \author Sylvain Bougerel <sylvain.bougerel.devel@gmail.com>
  */
 
-#ifndef INCLUDE_KDTREE_ACCESSOR_HPP
-#define INCLUDE_KDTREE_ACCESSOR_HPP
+~ifndef INCLUDE_KDTREE_ACCESSOR_HPP
+~define INCLUDE_KDTREE_ACCESSOR_HPP
 
-#include <cstddef>
+~include <cstddef>
 
 namespace KDTree
 {
@@ -73,7 +73,7 @@ namespace KDTree
 
 } // namespace KDTree
 
-#endif // include guard
+~endif // include guard
 
 /* COPYRIGHT --
  *

@@ -41,10 +41,10 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_VELOCITYPROFILE_TRAP_H
-#define KDL_MOTION_VELOCITYPROFILE_TRAP_H
+~ifndef KDL_MOTION_VELOCITYPROFILE_TRAP_H
+~define KDL_MOTION_VELOCITYPROFILE_TRAP_H
 
-#include "velocityprofile.hpp"
+~include "velocityprofile.hpp"
 
 
 
@@ -139,4 +139,4 @@ class VelocityProfile_Trap : public VelocityProfile
 }
 
 
-#endif
+~endif
