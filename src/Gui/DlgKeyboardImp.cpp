@@ -177,11 +177,18 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget, QComboBox 
 
     populateCommandGroups(combo);
 
-    return Application::Instance->commandManager().signalChanged.connect([combo](){
-        if (combo) {
-            populateCommandGroups(combo);
-            combo->activated(combo->currentIndex());
-        }
+    // Using a timer to respond for command change for performance, and also
+    // because macro command may be added before proper initialization (null
+    // menu text, etc.)
+    QTimer *timer = new QTimer(combo);
+    timer->setSingleShot(true);
+    QObject::connect(timer, &QTimer::timeout, [combo](){
+        populateCommandGroups(combo);
+        combo->activated(combo->currentIndex());
+    });
+
+    return Application::Instance->commandManager().signalChanged.connect([timer](){
+        timer->start(100);
     });
 }
 
