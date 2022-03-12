@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULE_STATE_H
-#define DCM_MODULE_STATE_H
+~ifndef DCM_MODULE_STATE_H
+~define DCM_MODULE_STATE_H
 
-#include <iosfwd>
-#include "defines.hpp"
+~include <iosfwd>
+~include "defines.hpp"
 
 namespace dcm {
 
@@ -61,11 +61,11 @@ struct ModuleState {
 
 }
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/module_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/module_imp.hpp"
+~endif
 
-#endif //DCM_MODULE_STATE_H
+~endif //DCM_MODULE_STATE_H
 
 
 

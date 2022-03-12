@@ -17,43 +17,43 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CORE_H
-#define DCM_CORE_H
+~ifndef DCM_CORE_H
+~define DCM_CORE_H
 
-#ifdef _WIN32
+~ifdef _WIN32
 	//warning about excessively long decorated names, won't affect the code correctness
-	#pragma warning( disable : 4503 )
+	~pragma warning( disable : 4503 )
 	//warning about changed pod initialising behaviour (boost blank in variant)
-	#pragma warning( disable : 4345 )
+	~pragma warning( disable : 4345 )
 	//warning about multiple assignment operators in Equation
-	#pragma warning( disable : 4522 )
+	~pragma warning( disable : 4522 )
 
 	//disable boost concept checks, as some of them have alignment problems which bring msvc to an error
 	//(for example DFSvisitor check in boost::graph::depht_first_search)
 	//this has no runtime effect as these are only compile time checks
-	#include <boost/concept/assert.hpp>
-	#undef BOOST_CONCEPT_ASSERT
-	#define BOOST_CONCEPT_ASSERT(Model)
-	#include <boost/concept_check.hpp>
+	~include <boost/concept/assert.hpp>
+	~undef BOOST_CONCEPT_ASSERT
+	~define BOOST_CONCEPT_ASSERT(Model)
+	~include <boost/concept_check.hpp>
 
-#endif
+~endif
 
-#include "core/defines.hpp"
-#include "core/geometry.hpp"
-#include "core/kernel.hpp"
-#include "core/system.hpp"
+~include "core/defines.hpp"
+~include "core/geometry.hpp"
+~include "core/kernel.hpp"
+~include "core/system.hpp"
 
 
-#ifdef DCM_EXTERNAL_CORE
+~ifdef DCM_EXTERNAL_CORE
 
-#define DCM_EXTERNAL_CORE_INCLUDE_01 "opendcm/core/imp/system_imp.hpp"
-#define DCM_EXTERNAL_CORE_01( Sys )\
+~define DCM_EXTERNAL_CORE_INCLUDE_01 "opendcm/core/imp/system_imp.hpp"
+~define DCM_EXTERNAL_CORE_01( Sys )\
     template class dcm::System<Sys::Kernel, Sys::Module1, Sys::Module2, Sys::Module3>; \
     template struct dcm::Equation<dcm::Distance, mpl::vector2<double, dcm::SolutionSpace>, 1>; \
     template struct dcm::Equation<dcm::Orientation, dcm::Direction, 2, dcm::rotation>; \
     template struct dcm::Equation<dcm::Angle, mpl::vector2<double, dcm::SolutionSpace>, 3, dcm::rotation>; 
 
-#endif //external
+~endif //external
 
-#endif //DCM_CORE_H
+~endif //DCM_CORE_H
 

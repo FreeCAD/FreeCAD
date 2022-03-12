@@ -17,12 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_ALIGNMENT_HPP
-#define DCM_ALIGNMENT_HPP
+~ifndef DCM_ALIGNMENT_HPP
+~define DCM_ALIGNMENT_HPP
 
-#include <opendcm/core/equations.hpp>
-#include "distance.hpp"
-#include "coincident.hpp"
+~include <opendcm/core/equations.hpp>
+~include "distance.hpp"
+~include "coincident.hpp"
 
 namespace dcm {
 
@@ -130,4 +130,4 @@ static Alignment alignment;
 }//dcm
 
 
-#endif //DCM_ALIGNMENT_HPP
+~endif //DCM_ALIGNMENT_HPP

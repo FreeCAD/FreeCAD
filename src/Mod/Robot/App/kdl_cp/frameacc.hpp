@@ -26,12 +26,12 @@
  *      $Name:  $
  ****************************************************************************/
 
-#ifndef RRFRAMES_H
-#define RRFRAMES_H
+~ifndef RRFRAMES_H
+~define RRFRAMES_H
 
 
-#include "utilities/rall2d.h"
-#include "frames.hpp"
+~include "utilities/rall2d.h"
+~include "frames.hpp"
 
 
 
@@ -263,9 +263,9 @@ public:
 }
 
 
-#ifdef KDL_INLINE
-#include "frameacc.inl"
-#endif
+~ifdef KDL_INLINE
+~include "frameacc.inl"
+~endif
 
 
 
@@ -273,4 +273,4 @@ public:
 
 
 
-#endif
+~endif

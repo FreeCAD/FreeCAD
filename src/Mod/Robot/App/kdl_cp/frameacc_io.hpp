@@ -16,14 +16,14 @@
  *      $Id: rrframes_io.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
-#ifndef RRFRAMES_IO
-#define RRFRAMES_IO
+~ifndef RRFRAMES_IO
+~define RRFRAMES_IO
 
-#include "utilities/utility_io.h"
-#include "utilities/rall2d_io.h"
+~include "utilities/utility_io.h"
+~include "utilities/rall2d_io.h"
 
-#include "frames_io.hpp"
-#include "frameacc.hpp"
+~include "frames_io.hpp"
+~include "frameacc.hpp"
 
 namespace KDL {
 
@@ -55,4 +55,4 @@ inline std::ostream& operator << (std::ostream& os,const TwistAcc& r) {
 
 
 
-#endif
+~endif

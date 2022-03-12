@@ -17,49 +17,49 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CONSTRAINT_3D_IMP_H
-#define DCM_CONSTRAINT_3D_IMP_H
+~ifndef DCM_CONSTRAINT_3D_IMP_H
+~define DCM_CONSTRAINT_3D_IMP_H
 
-#include "../module.hpp"
+~include "../module.hpp"
 
-#ifdef DCM_EXTERNAL_CORE
-#include "opendcm/core/imp/constraint_imp.hpp"
-#include "opendcm/core/imp/object_imp.hpp"
-#include "opendcm/core/imp/clustergraph_imp.hpp"
-#endif
+~ifdef DCM_EXTERNAL_CORE
+~include "opendcm/core/imp/constraint_imp.hpp"
+~include "opendcm/core/imp/object_imp.hpp"
+~include "opendcm/core/imp/clustergraph_imp.hpp"
+~endif
 
-// #ifdef DCM_EXTERNAL_CORE
+// ~ifdef DCM_EXTERNAL_CORE
 // //following macros are used for externalization. As constraint->initialize is very compiler intensive,
 // //especially with module states recursive incarnation, we explicitly initiate all possible calls to this
 // //function so that it must only be compiled once, one function at a time. To get all possible equation
 // //combinations boost pp is needed.
 // 
-// #include <boost/preprocessor.hpp>
-// #include <boost/preprocessor/for.hpp>
-// #include <boost/preprocessor/comparison/less.hpp>
-// #include <boost/preprocessor/seq/size.hpp>
-// #include <boost/preprocessor/seq/enum.hpp>
-// #include <boost/preprocessor/seq/elem.hpp>
-// #include <boost/preprocessor/seq/push_front.hpp>
-// #include <boost/preprocessor/seq/remove.hpp>
+// ~include <boost/preprocessor.hpp>
+// ~include <boost/preprocessor/for.hpp>
+// ~include <boost/preprocessor/comparison/less.hpp>
+// ~include <boost/preprocessor/seq/size.hpp>
+// ~include <boost/preprocessor/seq/enum.hpp>
+// ~include <boost/preprocessor/seq/elem.hpp>
+// ~include <boost/preprocessor/seq/push_front.hpp>
+// ~include <boost/preprocessor/seq/remove.hpp>
 
 /*
 // 
-// #define SEQUENCE (dcm::Distance)(dcm::Orientation)(dcm::Angle)(dcm::Coincidence)(dcm::Alignment)
+// ~define SEQUENCE (dcm::Distance)(dcm::Orientation)(dcm::Angle)(dcm::Coincidence)(dcm::Alignment)
 // 
-// #define LEVEL_1(r, state) \
+// ~define LEVEL_1(r, state) \
 //       template void dcm::detail::Constraint<BOOST_PP_SEQ_ELEM(0,state), BOOST_PP_SEQ_ELEM(1,state)>::initialize(BOOST_PP_SEQ_ELEM(2,state)&); \
 //       
-// #define LEVEL_1_OP(r, state) \
+// ~define LEVEL_1_OP(r, state) \
 //       BOOST_PP_SEQ_REMOVE(state,2) 
 //       
-// #define LEVEL_1_PRED(r, state) \
+// ~define LEVEL_1_PRED(r, state) \
 //       BOOST_PP_LESS(2,BOOST_PP_SEQ_SIZE(state))
 //       
-// #define INITIALIZE(System, Dim) \
+// ~define INITIALIZE(System, Dim) \
 //       BOOST_PP_FOR(BOOST_PP_SEQ_PUSH_FRONT(BOOST_PP_SEQ_PUSH_FRONT(SEQUENCE, Dim), System), LEVEL_1_PRED, LEVEL_1_OP, LEVEL_1)  
 // 
-// #endif //external
+// ~endif //external
 */
 
 namespace dcm {
@@ -119,4 +119,4 @@ Module3D<Typelist, ID>::type<Sys>::Constraint3D::Constraint3D(Sys& system, Geom 
 
 } //dcm
 
-#endif //DCM_MODULE_3D_IMP_H
+~endif //DCM_MODULE_3D_IMP_H

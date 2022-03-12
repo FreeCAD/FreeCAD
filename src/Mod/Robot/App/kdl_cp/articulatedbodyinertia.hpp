@@ -19,15 +19,15 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_ARTICULATEDBODYINERTIA_HPP
-#define KDL_ARTICULATEDBODYINERTIA_HPP
+~ifndef KDL_ARTICULATEDBODYINERTIA_HPP
+~define KDL_ARTICULATEDBODYINERTIA_HPP
 
-#include "frames.hpp"
+~include "frames.hpp"
 
-#include "rotationalinertia.hpp"
-#include "rigidbodyinertia.hpp"
+~include "rotationalinertia.hpp"
+~include "rigidbodyinertia.hpp"
 
-#include <Eigen/Core>
+~include <Eigen/Core>
 
 namespace KDL {
     
@@ -122,4 +122,4 @@ namespace KDL {
     ArticulatedBodyInertia operator*(const Rotation& R,const ArticulatedBodyInertia& I);
 
 }
-#endif
+~endif

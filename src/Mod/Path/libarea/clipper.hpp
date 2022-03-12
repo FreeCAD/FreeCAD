@@ -31,32 +31,32 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef clipper_hpp
-#define clipper_hpp
+~ifndef clipper_hpp
+~define clipper_hpp
 
-#define CLIPPER_VERSION "6.2.0"
+~define CLIPPER_VERSION "6.2.0"
 
 //use_int32: When enabled 32bit ints are used instead of 64bit ints. This
 //improve performance but coordinate values are limited to the range +/- 46340
-//#define use_int32
+//~define use_int32
 
 //use_xyz: adds a Z member to IntPoint. Adds a minor cost to performance.
-//#define use_xyz
+//~define use_xyz
 
 //use_lines: Enables line clipping. Adds a very minor cost to performance.
-#define use_lines
+~define use_lines
   
 //use_deprecated: Enables temporary support for the obsolete functions
-//#define use_deprecated  
+//~define use_deprecated  
 
-#include <vector>
-#include <set>
-#include <stdexcept>
-#include <cstring>
-#include <cstdlib>
-#include <ostream>
-#include <functional>
-#include <queue>
+~include <vector>
+~include <set>
+~include <stdexcept>
+~include <cstring>
+~include <cstdlib>
+~include <ostream>
+~include <functional>
+~include <queue>
 
 namespace ClipperLib {
 
@@ -68,28 +68,28 @@ enum PolyType { ptSubject, ptClip };
 //see http://glprogramming.com/red/chapter11.html
 enum PolyFillType { pftEvenOdd, pftNonZero, pftPositive, pftNegative };
 
-#ifdef use_int32
+~ifdef use_int32
   typedef int cInt;
   static cInt const loRange = 0x7FFF;
   static cInt const hiRange = 0x7FFF;
-#else
+~else
   typedef signed long long cInt;
   static cInt const loRange = 0x3FFFFFFF;
   static cInt const hiRange = 0x3FFFFFFFFFFFFFFFLL;
   typedef signed long long long64;     //used by Int128 class
   typedef unsigned long long ulong64;
 
-#endif
+~endif
 
 struct IntPoint {
   cInt X;
   cInt Y;
-#ifdef use_xyz
+~ifdef use_xyz
   cInt Z;
   IntPoint(cInt x = 0, cInt y = 0, cInt z = 0): X(x), Y(y), Z(z) {};
-#else
+~else
   IntPoint(cInt x = 0, cInt y = 0): X(x), Y(y) {};
-#endif
+~endif
 
   friend inline bool operator== (const IntPoint& a, const IntPoint& b)
   {
@@ -121,9 +121,9 @@ struct DoublePoint
 };
 //------------------------------------------------------------------------------
 
-#ifdef use_xyz
+~ifdef use_xyz
 typedef void (*ZFillCallback)(IntPoint& e1bot, IntPoint& e1top, IntPoint& e2bot, IntPoint& e2top, IntPoint& pt);
-#endif
+~endif
 
 enum InitOptions {ioReverseSolution = 1, ioStrictlySimple = 2, ioPreserveCollinear = 4};
 enum JoinType {jtSquare, jtRound, jtMiter};
@@ -265,9 +265,9 @@ public:
   bool StrictlySimple() {return m_StrictSimple;};
   void StrictlySimple(bool value) {m_StrictSimple = value;};
   //set the callback function for z value filling on intersections (otherwise Z is 0)
-#ifdef use_xyz
+~ifdef use_xyz
   void ZFillFunction(ZFillCallback zFillFunc);
-#endif
+~endif
 protected:
   void Reset();
   virtual bool ExecuteInternal();
@@ -287,9 +287,9 @@ private:
   bool             m_ReverseOutput;
   bool             m_UsingPolyTree; 
   bool             m_StrictSimple;
-#ifdef use_xyz
+~ifdef use_xyz
   ZFillCallback   m_ZFill; //custom callback 
-#endif
+~endif
   void SetWindingCount(TEdge& edge);
   bool IsEvenOddFillType(const TEdge& edge) const;
   bool IsEvenOddAltFillType(const TEdge& edge) const;
@@ -340,9 +340,9 @@ private:
   void DoSimplePolygons();
   void FixupFirstLefts1(OutRec* OldOutRec, OutRec* NewOutRec);
   void FixupFirstLefts2(OutRec* OldOutRec, OutRec* NewOutRec);
-#ifdef use_xyz
+~ifdef use_xyz
   void SetZ(IntPoint& pt, TEdge& e1, TEdge& e2);
-#endif
+~endif
 };
 //------------------------------------------------------------------------------
 
@@ -390,6 +390,6 @@ class clipperException : public std::exception
 
 } //ClipperLib namespace
 
-#endif //clipper_hpp
+~endif //clipper_hpp
 
 

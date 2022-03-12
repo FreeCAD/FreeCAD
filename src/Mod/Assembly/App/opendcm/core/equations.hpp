@@ -17,27 +17,27 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_EQUATIONS_H
-#define DCM_EQUATIONS_H
+~ifndef DCM_EQUATIONS_H
+~define DCM_EQUATIONS_H
 
-#include <assert.h>
+~include <assert.h>
 
-#include <boost/utility/enable_if.hpp>
-#include <boost/type_traits.hpp>
-#include <boost/mpl/is_sequence.hpp>
-#include <boost/mpl/not.hpp>
-#include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/map.hpp>
-#include <boost/fusion/include/as_map.hpp>
-#include <boost/fusion/include/at_key.hpp>
-#include <boost/fusion/include/filter_view.hpp>
-#include <boost/exception/exception.hpp>
+~include <boost/utility/enable_if.hpp>
+~include <boost/type_traits.hpp>
+~include <boost/mpl/is_sequence.hpp>
+~include <boost/mpl/not.hpp>
+~include <boost/fusion/include/vector.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/fusion/include/map.hpp>
+~include <boost/fusion/include/as_map.hpp>
+~include <boost/fusion/include/at_key.hpp>
+~include <boost/fusion/include/filter_view.hpp>
+~include <boost/exception/exception.hpp>
 
 namespace fusion = boost::fusion;
 namespace mpl = boost::mpl;
 
-#include "kernel.hpp"
+~include "kernel.hpp"
 
 namespace dcm {
 
@@ -413,10 +413,10 @@ static Angle    angle;
 
 };
 
-#ifndef DCM_EXTERNAL_CORE
-#include "imp/equations_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_CORE
+~include "imp/equations_imp.hpp"
+~endif
 
-#endif //GCM_EQUATIONS_H
+~endif //GCM_EQUATIONS_H
 
 

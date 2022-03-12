@@ -4,12 +4,12 @@
  * \author Martin F. Krafft <libkdtree@pobox.madduck.net>
  */
 
-#ifndef INCLUDE_KDTREE_REGION_HPP
-#define INCLUDE_KDTREE_REGION_HPP
+~ifndef INCLUDE_KDTREE_REGION_HPP
+~define INCLUDE_KDTREE_REGION_HPP
 
-#include <cstddef>
+~include <cstddef>
 
-#include <kdtree++/node.hpp>
+~include <kdtree++/node.hpp>
 
 namespace KDTree
 {
@@ -115,7 +115,7 @@ namespace KDTree
 
 } // namespace KDTree
 
-#endif // include guard
+~endif // include guard
 
 /* COPYRIGHT --
  *

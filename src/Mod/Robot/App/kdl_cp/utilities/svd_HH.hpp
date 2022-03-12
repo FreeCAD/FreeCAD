@@ -19,12 +19,12 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_SVD_HH_HPP
-#define KDL_SVD_HH_HPP
+~ifndef KDL_SVD_HH_HPP
+~define KDL_SVD_HH_HPP
 
-#include "../jacobian.hpp"
-#include "../jntarray.hpp"
-#include <vector>
+~include "../jacobian.hpp"
+~include "../jntarray.hpp"
+~include <vector>
 
 namespace KDL
 {
@@ -41,6 +41,6 @@ namespace KDL
         JntArray tmp;
     };
 }
-#endif
+~endif
 
 

@@ -17,15 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_GENERATOR_IMP_H
-#define DCM_GENERATOR_IMP_H
+~ifndef DCM_GENERATOR_IMP_H
+~define DCM_GENERATOR_IMP_H
 
-#include "../generator.hpp"
-#include "opendcm/core/clustergraph.hpp"
-#include "../defines.hpp"
+~include "../generator.hpp"
+~include "opendcm/core/clustergraph.hpp"
+~include "../defines.hpp"
 
-#include <boost/fusion/include/std_pair.hpp>
-#include <boost/fusion/adapted/struct.hpp>
+~include <boost/fusion/include/std_pair.hpp>
+~include <boost/fusion/adapted/struct.hpp>
 
 namespace boost {
 namespace spirit {
@@ -55,19 +55,19 @@ generator<Sys>::generator() : generator<Sys>::base_type(start) {
                << "$" << karma::eol
                << karma::lit("</Cluster>");
 
-    cluster_pair %= karma::lit("<Cluster id=") << karma::int_ <<  ">#"
+    cluster_pair %= karma::lit("<Cluster id=") << karma::int_ <<  ">~"
                     << qi::attr_cast<std::shared_ptr<graph>, graph&>(cluster);
 
-    system %= system_prop << karma::lit("<Kernel>#") << kernel_prop
+    system %= system_prop << karma::lit("<Kernel>~") << kernel_prop
               << "$" << karma::eol << karma::lit("</Kernel>") << karma::eol
-	      << karma::lit("<Cluster id=0>#") << qi::attr_cast<std::shared_ptr<graph>, graph&>(cluster);
+	      << karma::lit("<Cluster id=0>~") << qi::attr_cast<std::shared_ptr<graph>, graph&>(cluster);
 
-    start %= karma::lit("<openDCM>#") << karma::eol << system << "$" << karma::eol << karma::lit("</openDCM>");
+    start %= karma::lit("<openDCM>~") << karma::eol << system << "$" << karma::eol << karma::lit("</openDCM>");
 };
 
 }//namespace dcm
 
-#endif //DCM_GENERATOR_H
+~endif //DCM_GENERATOR_H
 
 
 

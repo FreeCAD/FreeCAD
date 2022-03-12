@@ -1,13 +1,13 @@
-#ifndef DCM_OBJECT_GENERATOR_IMP_H
-#define DCM_OBJECT_GENERATOR_IMP_H
+~ifndef DCM_OBJECT_GENERATOR_IMP_H
+~define DCM_OBJECT_GENERATOR_IMP_H
 
 
-#include "traits_impl.hpp"
-#include "../object_generator.hpp"
-#include "property_generator_imp.hpp"
+~include "traits_impl.hpp"
+~include "../object_generator.hpp"
+~include "property_generator_imp.hpp"
 
-#include "boost/phoenix/fusion/at.hpp"
-#include <boost/phoenix/bind.hpp>
+~include "boost/phoenix/fusion/at.hpp"
+~include <boost/phoenix/bind.hpp>
 
 namespace karma = boost::spirit::karma;
 namespace phx = boost::phoenix;
@@ -22,7 +22,7 @@ namespace details {
 template<typename Sys, typename Object, typename Gen>
 obj_grammar<Sys, Object,Gen>::obj_grammar() : obj_grammar<Sys, Object,Gen>::base_type(start) {
     Gen::init(subrule);
-    start = karma::lit("\n<Object>") << '#' << karma::eol << subrule
+    start = karma::lit("\n<Object>") << '~' << karma::eol << subrule
             << prop[phx::bind(&obj_grammar::getProperties, karma::_val, karma::_1)]
             << '$' << karma::eol << karma::lit("</Object>");
 };
@@ -55,4 +55,4 @@ obj_gen<Sys>::obj_gen() : obj_gen<Sys>::base_type(obj) {
 } //namespace details
 }//dcm
 
-#endif //DCM_OBJECT_GENERATOR_H
+~endif //DCM_OBJECT_GENERATOR_H

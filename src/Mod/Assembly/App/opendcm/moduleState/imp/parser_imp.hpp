@@ -17,19 +17,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_PARSER_IMP_H
-#define DCM_PARSER_IMP_H
+~ifndef DCM_PARSER_IMP_H
+~define DCM_PARSER_IMP_H
 
-#include <boost/spirit/include/qi_attr_cast.hpp>
+~include <boost/spirit/include/qi_attr_cast.hpp>
 
-#include "opendcm/core/system.hpp"
+~include "opendcm/core/system.hpp"
 
-#include <boost/fusion/include/std_pair.hpp>
-#include <boost/fusion/adapted/struct/adapt_struct.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
+~include <boost/fusion/include/std_pair.hpp>
+~include <boost/fusion/adapted/struct/adapt_struct.hpp>
+~include <boost/fusion/include/adapt_struct.hpp>
 
-#include "../parser.hpp"
-#include "../defines.hpp"
+~include "../parser.hpp"
+~include "../defines.hpp"
 
 namespace boost {
 namespace spirit {
@@ -74,4 +74,4 @@ parser<Sys>::parser() : parser<Sys>::base_type(system) {
 };
 
 }
-#endif //DCM_PARSER_H
+~endif //DCM_PARSER_H

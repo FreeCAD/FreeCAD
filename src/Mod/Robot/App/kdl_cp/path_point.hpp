@@ -43,11 +43,11 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATH_POINT_H
-#define KDL_MOTION_PATH_POINT_H
+~ifndef KDL_MOTION_PATH_POINT_H
+~define KDL_MOTION_PATH_POINT_H
 
-#include "path.hpp"
-#include "rotational_interpolation.hpp"
+~include "path.hpp"
+~include "rotational_interpolation.hpp"
 
 
 namespace KDL {
@@ -86,4 +86,4 @@ class Path_Point : public Path
 }
 
 
-#endif
+~endif

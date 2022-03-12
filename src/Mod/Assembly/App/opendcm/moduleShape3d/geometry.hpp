@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_GEOMETRY_SHAPE3D_H
-#define DCM_GEOMETRY_SHAPE3D_H
+~ifndef DCM_GEOMETRY_SHAPE3D_H
+~define DCM_GEOMETRY_SHAPE3D_H
 
-#include "opendcm/core/geometry.hpp"
-#include "opendcm/module3d/geometry.hpp"
+~include "opendcm/core/geometry.hpp"
+~include "opendcm/module3d/geometry.hpp"
 
 namespace dcm {
 namespace details {
@@ -42,4 +42,4 @@ struct segment3D : details::stacked2_geometry<weight::segment, point3D, point3D>
 } //tag
 } //dcm
 
-#endif
+~endif

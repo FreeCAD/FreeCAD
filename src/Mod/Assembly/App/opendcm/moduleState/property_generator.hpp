@@ -1,19 +1,19 @@
-#ifndef DCM_PROPERTY_GENERATOR_H
-#define DCM_PROPERTY_GENERATOR_H
+~ifndef DCM_PROPERTY_GENERATOR_H
+~define DCM_PROPERTY_GENERATOR_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include <boost/fusion/include/as_vector.hpp>
-#include <boost/spirit/include/karma.hpp>
+~include <boost/fusion/include/as_vector.hpp>
+~include <boost/spirit/include/karma.hpp>
 
-#include <boost/mpl/range_c.hpp>
-#include <boost/mpl/fold.hpp>
-#include <boost/mpl/minus.hpp>
-#include <boost/mpl/less_equal.hpp>
+~include <boost/mpl/range_c.hpp>
+~include <boost/mpl/fold.hpp>
+~include <boost/mpl/minus.hpp>
+~include <boost/mpl/less_equal.hpp>
 
-#include "traits.hpp"
+~include "traits.hpp"
 
 namespace karma = boost::spirit::karma;
 namespace fusion = boost::fusion;
@@ -109,8 +109,8 @@ struct kernel_prop_gen : public prop_gen<Sys, typename Sys::Kernel::PropertySequ
 }//details
 }//dcm
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/property_generator_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/property_generator_imp.hpp"
+~endif
 
-#endif //DCM_PROPERTY_GENERATOR_H
+~endif //DCM_PROPERTY_GENERATOR_H

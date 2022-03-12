@@ -17,20 +17,20 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CLUSTERMATH_H
-#define DCM_CLUSTERMATH_H
+~ifndef DCM_CLUSTERMATH_H
+~define DCM_CLUSTERMATH_H
 
-#include <vector>
-#include <Eigen/StdVector>
-#include <boost/noncopyable.hpp>
-#include <opendcm/core/logging.hpp>
-#include <opendcm/core/kernel.hpp>
-#include "defines.hpp"
+~include <vector>
+~include <Eigen/StdVector>
+~include <boost/noncopyable.hpp>
+~include <opendcm/core/logging.hpp>
+~include <opendcm/core/kernel.hpp>
+~include "defines.hpp"
 
-#define MAXFAKTOR 1.2   //the maximal distance allowed by a point normed to the cluster size
-#define MINFAKTOR 0.8   //the minimal distance allowed by a point normed to the cluster size
-#define SKALEFAKTOR 1.  //the faktor by which the biggest size is multiplied to get the scale value
-#define NQFAKTOR 0.5    //the faktor by which the norm quaternion is multiplied with to get the RealScalar
+~define MAXFAKTOR 1.2   //the maximal distance allowed by a point normed to the cluster size
+~define MINFAKTOR 0.8   //the minimal distance allowed by a point normed to the cluster size
+~define SKALEFAKTOR 1.  //the faktor by which the biggest size is multiplied to get the scale value
+~define NQFAKTOR 0.5    //the faktor by which the norm quaternion is multiplied with to get the RealScalar
 //norm quaternion to generate the unit quaternion
 
 namespace dcm {
@@ -76,9 +76,9 @@ public:
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
     Vec m_points, m_pseudo;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     src::logger log;
-#endif
+~endif
 
 public:
     ClusterMath();
@@ -148,11 +148,11 @@ public:
 }//details
 }//dcm
 
-#ifndef DCM_EXTERNAL_3D
-#include "imp/clustermath_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_3D
+~include "imp/clustermath_imp.hpp"
+~endif
 
-#endif //GCM_CLUSTERMATH_H
+~endif //GCM_CLUSTERMATH_H
 
 
 

@@ -17,15 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_CONSTRAINT_HOLDER_IMP_H
-#define DCM_CONSTRAINT_HOLDER_IMP_H
+~ifndef DCM_CONSTRAINT_HOLDER_IMP_H
+~define DCM_CONSTRAINT_HOLDER_IMP_H
 
-#include "opendcm/core/constraint.hpp"
+~include "opendcm/core/constraint.hpp"
 
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/for_each.hpp>
-#include <boost/fusion/sequence/intrinsic/size.hpp>
-#include <boost/fusion/include/size.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/fusion/include/for_each.hpp>
+~include <boost/fusion/sequence/intrinsic/size.hpp>
+~include <boost/fusion/include/size.hpp>
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -447,7 +447,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::disable() {
 
 };//dcm
 
-#endif //GCM_CONSTRAINT_H
+~endif //GCM_CONSTRAINT_H
 
 
 

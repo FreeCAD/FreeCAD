@@ -19,9 +19,9 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_STIFFNESS_H
-#define KDL_STIFFNESS_H
-#include "frames.hpp"
+~ifndef KDL_STIFFNESS_H
+~define KDL_STIFFNESS_H
+~include "frames.hpp"
  
 
 namespace KDL {
@@ -114,7 +114,7 @@ inline void random(Stiffness& F) {
 
 
 } 
-#endif
+~endif
 
 
 

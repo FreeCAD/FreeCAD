@@ -17,15 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULE_3D_IMP_H
-#define DCM_MODULE_3D_IMP_H
+~ifndef DCM_MODULE_3D_IMP_H
+~define DCM_MODULE_3D_IMP_H
 
-#include "../module.hpp"
+~include "../module.hpp"
 
-#include <boost_bind_bind.hpp>
+~include <boost_bind_bind.hpp>
 
-#include "constraint3d_imp.hpp"
-#include "geometry3d_imp.hpp"
+~include "constraint3d_imp.hpp"
+~include "geometry3d_imp.hpp"
 namespace bp = boost::placeholders;
 
 namespace dcm {
@@ -266,4 +266,4 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::getConstraint3D(Identifier id) 
 
 } //dcm
 
-#endif //DCM_MODULE_3D_IMP_H
+~endif //DCM_MODULE_3D_IMP_H

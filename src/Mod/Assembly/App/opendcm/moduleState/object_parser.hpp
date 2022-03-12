@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_OBJECT_PARSER_H
-#define DCM_OBJECT_PARSER_H
+~ifndef DCM_OBJECT_PARSER_H
+~define DCM_OBJECT_PARSER_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include "property_parser.hpp"
+~include "property_parser.hpp"
 
 namespace dcm {
 namespace details {
@@ -77,8 +77,8 @@ typename details::sps<typename Sys::objects>::type(Sys*),
 }//details
 }//DCM
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/object_parser_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/object_parser_imp.hpp"
+~endif
 
-#endif
+~endif

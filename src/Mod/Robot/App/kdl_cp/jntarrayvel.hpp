@@ -19,12 +19,12 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_JNTARRAYVEL_HPP
-#define KDL_JNTARRAYVEL_HPP
+~ifndef KDL_JNTARRAYVEL_HPP
+~define KDL_JNTARRAYVEL_HPP
 
-#include "utilities/utility.h"
-#include "jntarray.hpp"
-#include "framevel.hpp"
+~include "utilities/utility.h"
+~include "jntarray.hpp"
+~include "framevel.hpp"
 
 namespace KDL
 {
@@ -73,4 +73,4 @@ namespace KDL
 
 }
 
-#endif
+~endif

@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_SHEDULER_H
-#define GCM_SHEDULER_H
+~ifndef GCM_SHEDULER_H
+~define GCM_SHEDULER_H
 
-#include <set>
-#include <algorithm>
+~include <set>
+~include <algorithm>
 
 namespace dcm {
 
@@ -97,4 +97,4 @@ protected:
 
 }
 
-#endif //GCM_SHEDULER_H
+~endif //GCM_SHEDULER_H

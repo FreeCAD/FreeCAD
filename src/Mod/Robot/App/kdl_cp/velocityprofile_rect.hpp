@@ -41,10 +41,10 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef MOTIONPROFILE_RECT_H
-#define MOTIONPROFILE_RECT_H
+~ifndef MOTIONPROFILE_RECT_H
+~define MOTIONPROFILE_RECT_H
 
-#include "velocityprofile.hpp"
+~include "velocityprofile.hpp"
 
 
 namespace KDL {
@@ -87,4 +87,4 @@ namespace KDL {
 }
 
 
-#endif
+~endif

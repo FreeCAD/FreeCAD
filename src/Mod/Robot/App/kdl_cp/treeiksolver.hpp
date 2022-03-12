@@ -5,13 +5,13 @@
  *      Author: rubensmits
  */
 
-#ifndef TREEIKSOLVER_HPP_
-#define TREEIKSOLVER_HPP_
+~ifndef TREEIKSOLVER_HPP_
+~define TREEIKSOLVER_HPP_
 
-#include "tree.hpp"
-#include "jntarray.hpp"
-#include "frames.hpp"
-#include <map>
+~include "tree.hpp"
+~include "jntarray.hpp"
+~include "frames.hpp"
+~include <map>
 
 namespace KDL {
 
@@ -74,4 +74,4 @@ public:
 
 }
 
-#endif /* TREEIKSOLVER_HPP_ */
+~endif /* TREEIKSOLVER_HPP_ */

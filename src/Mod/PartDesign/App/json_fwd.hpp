@@ -1,11 +1,11 @@
-#ifndef INCLUDE_NLOHMANN_JSON_FWD_HPP_
-#define INCLUDE_NLOHMANN_JSON_FWD_HPP_
+~ifndef INCLUDE_NLOHMANN_JSON_FWD_HPP_
+~define INCLUDE_NLOHMANN_JSON_FWD_HPP_
 
-#include <cstdint> // int64_t, uint64_t
-#include <map> // map
-#include <memory> // allocator
-#include <string> // string
-#include <vector> // vector
+~include <cstdint> // int64_t, uint64_t
+~include <map> // map
+~include <memory> // allocator
+~include <string> // string
+~include <vector> // vector
 
 /*
 Licensed under the MIT License <http://opensource.org/licenses/MIT>.
@@ -81,4 +81,4 @@ using ordered_json = basic_json<nlohmann::ordered_map>;
 
 }  // namespace nlohmann
 
-#endif  // INCLUDE_NLOHMANN_JSON_FWD_HPP_
+~endif  // INCLUDE_NLOHMANN_JSON_FWD_HPP_

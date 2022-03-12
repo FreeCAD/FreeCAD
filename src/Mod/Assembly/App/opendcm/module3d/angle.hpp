@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_ANGLE_HPP
-#define GCM_ANGLE_HPP
+~ifndef GCM_ANGLE_HPP
+~define GCM_ANGLE_HPP
 
-#include "geometry.hpp"
-#include <opendcm/core/equations.hpp>
+~include "geometry.hpp"
+~include <opendcm/core/equations.hpp>
 
 namespace dcm {
 
@@ -175,4 +175,4 @@ struct Angle::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public Angle::t
 
 }
 
-#endif //GCM_ANGLE_HPP
+~endif //GCM_ANGLE_HPP

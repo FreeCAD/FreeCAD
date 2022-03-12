@@ -17,29 +17,29 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULE3D_STATE_IMP_HPP
-#define DCM_MODULE3D_STATE_IMP_HPP
+~ifndef DCM_MODULE3D_STATE_IMP_HPP
+~define DCM_MODULE3D_STATE_IMP_HPP
 
-#include "../state.hpp"
+~include "../state.hpp"
 
-#include "../module.hpp"
-#include "../coincident.hpp"
-#include "../alignment.hpp"
+~include "../module.hpp"
+~include "../coincident.hpp"
+~include "../alignment.hpp"
 
-#include <boost/spirit/include/phoenix.hpp>
-#include <boost/phoenix/function/adapt_function.hpp>
-#include <boost/phoenix/bind.hpp>
-#include <boost/fusion/include/adapt_adt.hpp>
-#include <boost/phoenix/fusion/at.hpp>
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/greater.hpp>
-#include <boost/tokenizer.hpp>
+~include <boost/spirit/include/phoenix.hpp>
+~include <boost/phoenix/function/adapt_function.hpp>
+~include <boost/phoenix/bind.hpp>
+~include <boost/fusion/include/adapt_adt.hpp>
+~include <boost/phoenix/fusion/at.hpp>
+~include <boost/mpl/int.hpp>
+~include <boost/mpl/greater.hpp>
+~include <boost/tokenizer.hpp>
 
 namespace karma_ascii = boost::spirit::karma::ascii;
 namespace qi_ascii = boost::spirit::qi::ascii;
 namespace phx = boost::phoenix;
 
-#include <ios>
+~include <ios>
 
 namespace karma = boost::spirit::karma;
 namespace qi = boost::spirit::qi;
@@ -465,4 +465,4 @@ void parser_parser< typename details::getModule3D<System>::type::fix_prop, Syste
 }
 
 
-#endif //DCM_MODULE3D_STATE_HPP
+~endif //DCM_MODULE3D_STATE_HPP

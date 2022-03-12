@@ -17,30 +17,30 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULE_3D_H
-#define DCM_MODULE_3D_H
+~ifndef DCM_MODULE_3D_H
+~define DCM_MODULE_3D_H
 
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/map.hpp>
-#include <boost/mpl/if.hpp>
+~include <boost/mpl/vector.hpp>
+~include <boost/mpl/map.hpp>
+~include <boost/mpl/if.hpp>
 
-#include <memory>
-#include <boost/variant.hpp>
-#include <boost/function.hpp>
+~include <memory>
+~include <boost/variant.hpp>
+~include <boost/function.hpp>
 
-#include "opendcm/core.hpp"
-#include "opendcm/core/object.hpp"
-#include "opendcm/core/geometry.hpp"
-#include "opendcm/core/clustergraph.hpp"
-#include "opendcm/core/sheduler.hpp"
-#include "opendcm/core/traits.hpp"
-#include "geometry.hpp"
-#include "distance.hpp"
-#include "parallel.hpp"
-#include "angle.hpp"
-#include "solver.hpp"
-#include "defines.hpp"
-#include "clustermath.hpp"
+~include "opendcm/core.hpp"
+~include "opendcm/core/object.hpp"
+~include "opendcm/core/geometry.hpp"
+~include "opendcm/core/clustergraph.hpp"
+~include "opendcm/core/sheduler.hpp"
+~include "opendcm/core/traits.hpp"
+~include "geometry.hpp"
+~include "distance.hpp"
+~include "parallel.hpp"
+~include "angle.hpp"
+~include "solver.hpp"
+~include "defines.hpp"
+~include "clustermath.hpp"
 
 
 namespace mpl = boost::mpl;
@@ -111,9 +111,9 @@ struct Module3D {
             typedef typename mpl::push_front<Typelist, boost::blank>::type ExtTypeList;
             typedef typename boost::make_variant_over< ExtTypeList >::type Variant;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
             src::logger log;
-#endif
+~endif
             Variant m_geometry; //Variant holding the real geometry type
 
             //override protected event functions to emit signals
@@ -129,9 +129,9 @@ struct Module3D {
 
             typedef Geometry3D_base<Derived> Base;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
             attrs::mutable_constant< std::string > log_id;
-#endif
+~endif
         public:
             Geometry3D_id(Sys& system);
 
@@ -323,9 +323,9 @@ typename boost::add_reference<T>::type get(G geom) {
 
 }//dcm
 
-#include "imp/module_imp.hpp"
+~include "imp/module_imp.hpp"
 
-#endif //DCM_GEOMETRY3D_H
+~endif //DCM_GEOMETRY3D_H
 
 
 

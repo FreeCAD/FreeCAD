@@ -19,10 +19,10 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_ROTATIONALINERTIA_HPP
-#define KDL_ROTATIONALINERTIA_HPP
+~ifndef KDL_ROTATIONALINERTIA_HPP
+~define KDL_ROTATIONALINERTIA_HPP
 
-#include "frames.hpp"
+~include "frames.hpp"
 
 //------- class for only the Rotational Inertia --------
 
@@ -70,5 +70,5 @@ namespace KDL
 
 }
 
-#endif
+~endif
 

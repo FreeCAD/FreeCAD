@@ -17,30 +17,30 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef CLUSTERGRAPH_HPP
-#define CLUSTERGRAPH_HPP
+~ifndef CLUSTERGRAPH_HPP
+~define CLUSTERGRAPH_HPP
 
-#include <map>
+~include <map>
 
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/copy.hpp>
-#include <boost/graph/iteration_macros.hpp>
+~include <boost/graph/adjacency_list.hpp>
+~include <boost/graph/graph_traits.hpp>
+~include <boost/graph/copy.hpp>
+~include <boost/graph/iteration_macros.hpp>
 
-#include <boost/mpl/transform.hpp>
-#include <boost/mpl/find.hpp>
+~include <boost/mpl/transform.hpp>
+~include <boost/mpl/find.hpp>
 
-#include <boost/iterator/transform_iterator.hpp>
-#include <memory>
-#include <boost/enable_shared_from_this.hpp>
+~include <boost/iterator/transform_iterator.hpp>
+~include <memory>
+~include <boost/enable_shared_from_this.hpp>
 
-#include <boost/fusion/include/as_vector.hpp>
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/container/vector.hpp>
+~include <boost/fusion/include/as_vector.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/fusion/container/vector.hpp>
 
-#include "property.hpp"
+~include "property.hpp"
 
-#include <Eigen/Core>
+~include <Eigen/Core>
 
 namespace mpl = boost::mpl;
 namespace fusion = boost::fusion;
@@ -1082,11 +1082,11 @@ public:
 } //namespace dcm
 
 
-#ifndef DCM_EXTERNAL_CORE
-#include "imp/clustergraph_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_CORE
+~include "imp/clustergraph_imp.hpp"
+~endif
 
-#endif // CLUSTERGRAPH_HPP
+~endif // CLUSTERGRAPH_HPP
 
 
 

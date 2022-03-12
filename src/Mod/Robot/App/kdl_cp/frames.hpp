@@ -121,12 +121,12 @@
  *      Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
  *
  ****************************************************************************/
-#ifndef KDL_FRAMES_H
-#define KDL_FRAMES_H
+~ifndef KDL_FRAMES_H
+~define KDL_FRAMES_H
 
 
-#include "utilities/kdl-config.h"
-#include "utilities/utility.h"
+~include "utilities/kdl-config.h"
+~include "utilities/utility.h"
 
 /////////////////////////////////////////////////////////////
 
@@ -1251,18 +1251,18 @@ IMETHOD Wrench addDelta(const Wrench& a,const Wrench&da,double dt=1);
 
 } // namespace KDL
 
-#ifdef KDL_INLINE
-//    #include "vector.inl"
-//   #include "wrench.inl"
-    //#include "rotation.inl"
-    //#include "frame.inl"
-    //#include "twist.inl"
-    //#include "vector2.inl"
-    //#include "rotation2.inl"
-    //#include "frame2.inl"
-#include "frames.inl"
-#endif
+~ifdef KDL_INLINE
+//    ~include "vector.inl"
+//   ~include "wrench.inl"
+    //~include "rotation.inl"
+    //~include "frame.inl"
+    //~include "twist.inl"
+    //~include "vector2.inl"
+    //~include "rotation2.inl"
+    //~include "frame2.inl"
+~include "frames.inl"
+~endif
 
 
 
-#endif
+~endif

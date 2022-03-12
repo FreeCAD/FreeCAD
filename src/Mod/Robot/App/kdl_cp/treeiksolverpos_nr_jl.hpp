@@ -21,13 +21,13 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLTREEIKSOLVERPOS_NR_JL_HPP
-#define KDLTREEIKSOLVERPOS_NR_JL_HPP
+~ifndef KDLTREEIKSOLVERPOS_NR_JL_HPP
+~define KDLTREEIKSOLVERPOS_NR_JL_HPP
 
-#include "treeiksolver.hpp"
-#include "treefksolver.hpp"
-#include <vector>
-#include <string>
+~include "treeiksolver.hpp"
+~include "treefksolver.hpp"
+~include <vector>
+~include <string>
 
 namespace KDL {
 
@@ -81,4 +81,4 @@ private:
 
 }
 
-#endif
+~endif

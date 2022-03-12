@@ -20,17 +20,17 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_TREE_FKSOLVER_HPP
-#define KDL_TREE_FKSOLVER_HPP
+~ifndef KDL_TREE_FKSOLVER_HPP
+~define KDL_TREE_FKSOLVER_HPP
 
-#include <string>
+~include <string>
 
-#include "tree.hpp"
-//#include "framevel.hpp"
-//#include "frameacc.hpp"
-#include "jntarray.hpp"
-//#include "jntarrayvel.hpp"
-//#include "jntarrayacc.hpp"
+~include "tree.hpp"
+//~include "framevel.hpp"
+//~include "frameacc.hpp"
+~include "jntarray.hpp"
+//~include "jntarrayvel.hpp"
+//~include "jntarrayacc.hpp"
 
 namespace KDL {
 
@@ -107,4 +107,4 @@ namespace KDL {
 
 }//end of namespace KDL
 
-#endif
+~endif

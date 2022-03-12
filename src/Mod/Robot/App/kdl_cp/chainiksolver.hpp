@@ -19,17 +19,17 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAIN_IKSOLVER_HPP
-#define KDL_CHAIN_IKSOLVER_HPP
+~ifndef KDL_CHAIN_IKSOLVER_HPP
+~define KDL_CHAIN_IKSOLVER_HPP
 
-#include "chain.hpp"
-#include "frames.hpp"
-#include "framevel.hpp"
-#include "frameacc.hpp"
-#include "jntarray.hpp"
-#include "jntarrayvel.hpp"
-#include "jntarrayacc.hpp"
-#include "solveri.hpp"
+~include "chain.hpp"
+~include "frames.hpp"
+~include "framevel.hpp"
+~include "frameacc.hpp"
+~include "jntarray.hpp"
+~include "jntarrayvel.hpp"
+~include "jntarrayacc.hpp"
+~include "solveri.hpp"
 
 namespace KDL {
 
@@ -164,4 +164,4 @@ namespace KDL {
 
 }//end of namespace KDL
 
-#endif
+~endif

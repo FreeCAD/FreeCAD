@@ -26,10 +26,10 @@
  ***************************************************************************/
 
 
-#ifndef MOTIONPROFILE_DIRAC_H
-#define MOTIONPROFILE_DIRAC_H
+~ifndef MOTIONPROFILE_DIRAC_H
+~define MOTIONPROFILE_DIRAC_H
 
-#include "velocityprofile.hpp"
+~include "velocityprofile.hpp"
 
 
 namespace KDL {
@@ -68,4 +68,4 @@ namespace KDL {
 }
 
 
-#endif
+~endif

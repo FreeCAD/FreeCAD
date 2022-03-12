@@ -17,19 +17,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_MODULEHL3D_H
-#define DCM_MODULEHL3D_H
+~ifndef DCM_MODULEHL3D_H
+~define DCM_MODULEHL3D_H
 
-#define DCM_USE_MODULEHL3D
+~define DCM_USE_MODULEHL3D
 
-#ifdef _WIN32
+~ifdef _WIN32
 	//warning about excessively long decorated names, won't affect the code correctness
-	#pragma warning( disable : 4503 )
-#endif
+	~pragma warning( disable : 4503 )
+~endif
 
-#include "moduleShape3d/defines.hpp"
-#include "moduleShape3d/module.hpp"
-#include "moduleShape3d/geometry.hpp"
-#include "moduleShape3d/distance.hpp"
+~include "moduleShape3d/defines.hpp"
+~include "moduleShape3d/module.hpp"
+~include "moduleShape3d/geometry.hpp"
+~include "moduleShape3d/distance.hpp"
 
-#endif //DCM_MODULEHL3D_H
+~endif //DCM_MODULEHL3D_H

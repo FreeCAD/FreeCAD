@@ -17,21 +17,21 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_EDGE_GENERATOR_H
-#define DCM_EDGE_GENERATOR_H
+~ifndef DCM_EDGE_GENERATOR_H
+~define DCM_EDGE_GENERATOR_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include "property_generator.hpp"
-#include "object_generator.hpp"
-#include "extractor.hpp"
+~include "property_generator.hpp"
+~include "object_generator.hpp"
+~include "extractor.hpp"
 
-#include <boost/spirit/include/karma.hpp>
-#include <boost/spirit/include/phoenix.hpp>
-#include <boost/fusion/support/is_sequence.hpp>
-#include <boost/fusion/include/is_sequence.hpp>
+~include <boost/spirit/include/karma.hpp>
+~include <boost/spirit/include/phoenix.hpp>
+~include <boost/fusion/support/is_sequence.hpp>
+~include <boost/fusion/include/is_sequence.hpp>
 
 namespace karma = boost::spirit::karma;
 namespace phx = boost::phoenix;
@@ -68,8 +68,8 @@ struct vertex_generator : karma::grammar<Iterator, std::vector<typename Sys::Clu
 }//details
 }//dcm
 
-#ifndef DCM_EXTERNAL_STATE
-  #include "imp/edge_vertex_generator_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+  ~include "imp/edge_vertex_generator_imp.hpp"
+~endif
 
-#endif
+~endif

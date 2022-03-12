@@ -19,12 +19,12 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_RIGIDBODYINERTIA_HPP
-#define KDL_RIGIDBODYINERTIA_HPP
+~ifndef KDL_RIGIDBODYINERTIA_HPP
+~define KDL_RIGIDBODYINERTIA_HPP
 
-#include "frames.hpp"
+~include "frames.hpp"
 
-#include "rotationalinertia.hpp"
+~include "rotationalinertia.hpp"
 
 namespace KDL {
     
@@ -129,4 +129,4 @@ namespace KDL {
 }//namespace
 
 
-#endif
+~endif

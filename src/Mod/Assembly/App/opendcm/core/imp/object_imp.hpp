@@ -17,29 +17,29 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_OBJECT_IMP_H
-#define GCM_OBJECT_IMP_H
+~ifndef GCM_OBJECT_IMP_H
+~define GCM_OBJECT_IMP_H
 
-#include <iostream>
-#include <map>
+~include <iostream>
+~include <map>
 
-#include <boost/mpl/at.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/void.hpp>
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/transform.hpp>
-#include <boost/mpl/key_type.hpp>
-#include <boost/mpl/value_type.hpp>
+~include <boost/mpl/at.hpp>
+~include <boost/mpl/if.hpp>
+~include <boost/mpl/void.hpp>
+~include <boost/mpl/vector.hpp>
+~include <boost/mpl/transform.hpp>
+~include <boost/mpl/key_type.hpp>
+~include <boost/mpl/value_type.hpp>
 
-#include <boost/fusion/include/as_vector.hpp>
-#include <boost/fusion/include/mpl.hpp>
-#include <boost/fusion/include/at.hpp>
+~include <boost/fusion/include/as_vector.hpp>
+~include <boost/fusion/include/mpl.hpp>
+~include <boost/fusion/include/at.hpp>
 
-#include <boost/enable_shared_from_this.hpp>
+~include <boost/enable_shared_from_this.hpp>
 
-#include "../property.hpp"
+~include "../property.hpp"
 
-#define EMIT_CALL_DEC(z, n, data) \
+~define EMIT_CALL_DEC(z, n, data) \
     template<typename SigMap> \
     template < \
     typename S  \
@@ -110,6 +110,6 @@ BOOST_PP_REPEAT(5, EMIT_CALL_DEC, ~)
 
 }
 
-#endif //GCM_OBJECT_H
+~endif //GCM_OBJECT_H
 
 

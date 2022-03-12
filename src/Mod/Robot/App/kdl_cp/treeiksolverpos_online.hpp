@@ -22,13 +22,13 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLTREEIKSOLVERPOS_ONLINE_HPP
-#define KDLTREEIKSOLVERPOS_ONLINE_HPP
+~ifndef KDLTREEIKSOLVERPOS_ONLINE_HPP
+~define KDLTREEIKSOLVERPOS_ONLINE_HPP
 
-#include <vector>
-#include <string>
-#include "treeiksolver.hpp"
-#include "treefksolver.hpp"
+~include <vector>
+~include <string>
+~include "treeiksolver.hpp"
+~include "treefksolver.hpp"
 
 namespace KDL {
 
@@ -104,5 +104,5 @@ private:
 
 } // namespace
 
-#endif /* KDLTREEIKSOLVERPOS_ONLINE_HPP */
+~endif /* KDLTREEIKSOLVERPOS_ONLINE_HPP */
 

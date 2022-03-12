@@ -17,12 +17,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_DEFINES_CORE_H
-#define GCM_DEFINES_CORE_H
+~ifndef GCM_DEFINES_CORE_H
+~define GCM_DEFINES_CORE_H
 
 
-#include <boost/exception/exception.hpp>
-#include <string>
+~include <boost/exception/exception.hpp>
+~include <string>
 
 namespace dcm {
   
@@ -38,4 +38,4 @@ struct constraint_error : virtual boost::exception {};
 
 } //dcm
 
-#endif //GCM_DEFINES_CORE_H
+~endif //GCM_DEFINES_CORE_H

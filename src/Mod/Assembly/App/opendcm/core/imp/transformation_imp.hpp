@@ -18,16 +18,16 @@
 */
 
 
-#ifndef DCM_TRANSFORMATION_IMP_H
-#define DCM_TRANSFORMATION_IMP_H
+~ifndef DCM_TRANSFORMATION_IMP_H
+~define DCM_TRANSFORMATION_IMP_H
 
-#include "../transformation.hpp"
+~include "../transformation.hpp"
 
-#include <cmath>
-#include <Eigen/Core>
-#include <Eigen/Geometry>
+~include <cmath>
+~include <Eigen/Core>
+~include <Eigen/Geometry>
 
-#include <boost/mpl/if.hpp>
+~include <boost/mpl/if.hpp>
 
 namespace dcm {
 namespace detail {
@@ -320,4 +320,4 @@ std::basic_ostream<charT,traits>& operator<<(std::basic_ostream<charT,traits>& o
 
 
 
-#endif //DCM_TRANSFORMATION
+~endif //DCM_TRANSFORMATION

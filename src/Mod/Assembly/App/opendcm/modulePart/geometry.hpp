@@ -17,11 +17,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_GEOMETRY_PART_H
-#define GCM_GEOMETRY_PART_H
+~ifndef GCM_GEOMETRY_PART_H
+~define GCM_GEOMETRY_PART_H
 
-#include <opendcm/core/geometry.hpp>
-#include <opendcm/core/kernel.hpp>
+~include <opendcm/core/geometry.hpp>
+~include <opendcm/core/kernel.hpp>
 
 namespace dcm {
 namespace tag {
@@ -89,4 +89,4 @@ namespace modell {
 
 }
 
-#endif //GCM_GEOMETRY_PART_H
+~endif //GCM_GEOMETRY_PART_H

@@ -17,32 +17,32 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_GENERATOR_H
-#define DCM_GENERATOR_H
+~ifndef DCM_GENERATOR_H
+~define DCM_GENERATOR_H
 
-#ifndef BOOST_SPIRIT_USE_PHOENIX_V3
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-#endif
+~ifndef BOOST_SPIRIT_USE_PHOENIX_V3
+~define BOOST_SPIRIT_USE_PHOENIX_V3
+~endif
 
-#include "property_generator.hpp"
-#include "edge_vertex_generator.hpp"
-#include "extractor.hpp"
+~include "property_generator.hpp"
+~include "edge_vertex_generator.hpp"
+~include "extractor.hpp"
 
-#include <opendcm/core/clustergraph.hpp>
+~include <opendcm/core/clustergraph.hpp>
 
-#include "traits.hpp"
-#include "imp/traits_impl.hpp"
-#include "indent.hpp"
+~include "traits.hpp"
+~include "imp/traits_impl.hpp"
+~include "indent.hpp"
 
-#include <boost/mpl/int.hpp>
-#include <boost/mpl/for_each.hpp>
-#include <boost/fusion/container/vector/convert.hpp>
-#include <boost/fusion/include/as_vector.hpp>
-#include <boost/fusion/include/at.hpp>
-#include <boost/fusion/include/at_c.hpp>
+~include <boost/mpl/int.hpp>
+~include <boost/mpl/for_each.hpp>
+~include <boost/fusion/container/vector/convert.hpp>
+~include <boost/fusion/include/as_vector.hpp>
+~include <boost/fusion/include/at.hpp>
+~include <boost/fusion/include/at_c.hpp>
 
-#include <boost/spirit/include/karma.hpp>
-#include <boost/spirit/include/phoenix.hpp>
+~include <boost/spirit/include/karma.hpp>
+~include <boost/spirit/include/phoenix.hpp>
 
 namespace karma = boost::spirit::karma;
 namespace phx = boost::phoenix;
@@ -80,11 +80,11 @@ struct generator : karma::grammar<Iterator, Sys&()> {
 
 }//namespace dcm
 
-#ifndef DCM_EXTERNAL_STATE
-#include "imp/generator_imp.hpp"
-#endif
+~ifndef DCM_EXTERNAL_STATE
+~include "imp/generator_imp.hpp"
+~endif
 
-#endif //DCM_GENERATOR_H
+~endif //DCM_GENERATOR_H
 
 
 

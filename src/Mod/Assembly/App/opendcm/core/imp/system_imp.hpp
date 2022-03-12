@@ -17,19 +17,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_SYSTEM_IMP_H
-#define DCM_SYSTEM_IMP_H
+~ifndef DCM_SYSTEM_IMP_H
+~define DCM_SYSTEM_IMP_H
 
-#ifdef DCM_EXTERNAL_CORE
-#include "kernel_imp.hpp"
-#include "transformation_imp.hpp"
-#include "clustergraph_imp.hpp"
-#include "equations_imp.hpp"
-#endif
+~ifdef DCM_EXTERNAL_CORE
+~include "kernel_imp.hpp"
+~include "transformation_imp.hpp"
+~include "clustergraph_imp.hpp"
+~include "equations_imp.hpp"
+~endif
 
-#include "../system.hpp"
+~include "../system.hpp"
 
-#include <boost/fusion/include/for_each.hpp>
+~include <boost/fusion/include/for_each.hpp>
 
 namespace dcm {
 
@@ -62,9 +62,9 @@ struct cloner {
 template< typename KernelType, typename T1, typename T2, typename T3 >
 System<KernelType, T1, T2, T3>::System() : m_cluster(new Cluster),
     m_storage(new Storage), m_options(new OptionOwner)
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     , sink(init_log())
-#endif
+~endif
 {
     Type1::system_init(*this);
     Type2::system_init(*this);
@@ -74,9 +74,9 @@ System<KernelType, T1, T2, T3>::System() : m_cluster(new Cluster),
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
 System<KernelType, T1, T2, T3>::~System() {
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     stop_log(sink);
-#endif
+~endif
 };
 
 
@@ -112,9 +112,9 @@ std::shared_ptr<System<KernelType, T1, T2, T3> > System<KernelType, T1, T2, T3>:
     s->m_cluster->template setProperty<dcm::type_prop>(details::subcluster);
     s->m_options = m_options;
     
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     stop_log(s->sink);
-#endif
+~endif
     
     //inform modules that we have a subsystem now
     Inheriter1::system_sub(s);
@@ -163,7 +163,7 @@ System<KernelType, T1, T2, T3>* System<KernelType, T1, T2, T3>::clone() const {
 };
 
 }
-#endif //GCM_SYSTEM_H
+~endif //GCM_SYSTEM_H
 
 
 

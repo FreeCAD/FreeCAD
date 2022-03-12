@@ -20,14 +20,14 @@
  *      $Name:  $
  ****************************************************************************/
 
-#ifndef KDL_FRAMEVEL_H
-#define KDL_FRAMEVEL_H
+~ifndef KDL_FRAMEVEL_H
+~define KDL_FRAMEVEL_H
 
-#include "utilities/utility.h"
-#include "utilities/rall1d.h"
-#include "utilities/traits.h"
+~include "utilities/utility.h"
+~include "utilities/rall1d.h"
+~include "utilities/traits.h"
 
-#include "frames.hpp"
+~include "frames.hpp"
 
 
 
@@ -385,11 +385,11 @@ IMETHOD void posrandom(FrameVel& F) {
 
 } // namespace KDL
 
-#ifdef KDL_INLINE
-#include "framevel.inl"
-#endif
+~ifdef KDL_INLINE
+~include "framevel.inl"
+~endif
 
-#endif
+~endif
 
 
 

@@ -5,12 +5,12 @@
  *      Author: rubensmits
  */
 
-#ifndef TREEJNTTOJACSOLVER_HPP_
-#define TREEJNTTOJACSOLVER_HPP_
+~ifndef TREEJNTTOJACSOLVER_HPP_
+~define TREEJNTTOJACSOLVER_HPP_
 
-#include "tree.hpp"
-#include "jacobian.hpp"
-#include "jntarray.hpp"
+~include "tree.hpp"
+~include "jacobian.hpp"
+~include "jntarray.hpp"
 
 namespace KDL {
 
@@ -35,4 +35,4 @@ private:
 
 }//End of namespace
 
-#endif /* TREEJNTTOJACSOLVER_H_ */
+~endif /* TREEJNTTOJACSOLVER_H_ */

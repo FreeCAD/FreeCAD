@@ -45,7 +45,7 @@
  *     The problem is that the I/O uses virtual inheritance to write
  *     the trajectories/geometries/velocityprofiles/...
  *     Have no good solution for this, perhaps
- *          * #ifdef's
+ *          * ~ifdef's
  *          * declaring dummy ostream/istream and change implementation file .cpp
  *          * declaring some sort of VISITOR object (containing an ostream) ,
  *            the classes contain code to pass this object around along its children
@@ -54,13 +54,13 @@
  *     CONSEQUENCE : everything has to be declared public.
  ****************************************************************************/
 
-#ifndef TRAJECTORY_H
-#define TRAJECTORY_H
+~ifndef TRAJECTORY_H
+~define TRAJECTORY_H
 
-#include "frames.hpp"
-#include "frames_io.hpp"
-#include "path.hpp"
-#include "velocityprofile.hpp"
+~include "frames.hpp"
+~include "frames_io.hpp"
+~include "path.hpp"
+~include "velocityprofile.hpp"
 
 
 
@@ -108,4 +108,4 @@ namespace KDL {
 }
 
 
-#endif
+~endif

@@ -17,33 +17,33 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_MODULE_SHAPE3D_H
-#define GCM_MODULE_SHAPE3D_H
+~ifndef GCM_MODULE_SHAPE3D_H
+~define GCM_MODULE_SHAPE3D_H
 
-#include <opendcm/core.hpp>
-#include <opendcm/core/geometry.hpp>
-#include <opendcm/module3d.hpp>
+~include <opendcm/core.hpp>
+~include <opendcm/core/geometry.hpp>
+~include <opendcm/module3d.hpp>
 
-#include "defines.hpp"
-#include "geometry.hpp"
-#include "generator.hpp"
+~include "defines.hpp"
+~include "geometry.hpp"
+~include "generator.hpp"
 
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/map.hpp>
-#include <boost/type_traits.hpp>
+~include <boost/mpl/if.hpp>
+~include <boost/mpl/map.hpp>
+~include <boost/type_traits.hpp>
 
-#include <boost/fusion/include/make_vector.hpp>
+~include <boost/fusion/include/make_vector.hpp>
 
-#include <boost/preprocessor.hpp>
-#include <boost/preprocessor/repetition/repeat.hpp>
-#include <boost/preprocessor/cat.hpp>
-#include <boost/preprocessor/repetition/enum.hpp>
-#include <boost/preprocessor/repetition/enum_params.hpp>
-#include <boost/preprocessor/repetition/enum_trailing_params.hpp>
-#include <boost/preprocessor/repetition/enum_binary_params.hpp>
+~include <boost/preprocessor.hpp>
+~include <boost/preprocessor/repetition/repeat.hpp>
+~include <boost/preprocessor/cat.hpp>
+~include <boost/preprocessor/repetition/enum.hpp>
+~include <boost/preprocessor/repetition/enum_params.hpp>
+~include <boost/preprocessor/repetition/enum_trailing_params.hpp>
+~include <boost/preprocessor/repetition/enum_binary_params.hpp>
 
 
-#define APPEND_SINGLE(z, n, data) \
+~define APPEND_SINGLE(z, n, data) \
 	typedef typename Sys::Identifier Identifier; \
 	typedef typename system_traits<Sys>::template getModule<details::m3d>::type::geometry_types gtypes; \
 	typedef typename system_traits<Sys>::template getModule<details::mshape3d>::type::geometry_types stypes; \
@@ -60,7 +60,7 @@
     } \
  
 
-#define CREATE_DEF(z, n, data) \
+~define CREATE_DEF(z, n, data) \
     template < \
     typename Generator  \
     BOOST_PP_ENUM_TRAILING_PARAMS(n, typename Arg) \
@@ -69,7 +69,7 @@
                      BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
                    );
 
-#define CREATE_DEC(z, n, data) \
+~define CREATE_DEC(z, n, data) \
     template<typename TypeList, typename ID> \
     template<typename Sys> \
     template <\
@@ -308,9 +308,9 @@ struct ModuleShape3D {
 
         protected:
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
             src::logger log;
-#endif
+~endif
 
             typedef details::Geometry<typename Sys::Kernel, 3, typename Sys::geometries> Base;
             typedef Object<Sys, Derived, ShapeSig > ObjBase;
@@ -381,9 +381,9 @@ struct ModuleShape3D {
 
             typedef Shape3D_base<Derived> Base;
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
             attrs::mutable_constant< std::string > log_id;
-#endif
+~endif
         public:
             Shape3D_id(Sys& system);
 
@@ -496,9 +496,9 @@ template<typename Derived>
 ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::Shape3D_base(Sys& system)
     : Object<Sys, Derived, ShapeSig>(system) {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     log.add_attribute("Tag", attrs::constant< std::string >("Geometry3D"));
-#endif
+~endif
 };
 
 template<typename Typelist, typename ID>
@@ -508,9 +508,9 @@ template<typename T>
 ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::Shape3D_base(const T& geometry, Sys& system)
     : Object<Sys, Derived, ShapeSig>(system) {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     log.add_attribute("Tag", attrs::constant< std::string >("Geometry3D"));
-#endif
+~endif
 
     m_geometry = geometry;
     //first init, so that the geometry internal vector has the right size
@@ -700,14 +700,14 @@ template<typename Sys>
 template<typename Derived>
 ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_id<Derived>::Shape3D_id(Sys& system)
     : ModuleShape3D<Typelist, ID>::template type<Sys>::template Shape3D_base<Derived>(system)
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
 , log_id("No ID")
-#endif
+~endif
 {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     Base::log.add_attribute("ID", log_id);
-#endif
+~endif
 };
 
 template<typename Typelist, typename ID>
@@ -716,14 +716,14 @@ template<typename Derived>
 template<typename T>
 ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_id<Derived>::Shape3D_id(const T& geometry, Sys& system)
     : ModuleShape3D<Typelist, ID>::template type<Sys>::template Shape3D_base<Derived>(geometry, system)
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
 , log_id("No ID")
-#endif
+~endif
 {
 
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     Base::log.add_attribute("ID", log_id);
-#endif
+~endif
 };
 
 template<typename Typelist, typename ID>
@@ -756,12 +756,12 @@ template<typename Sys>
 template<typename Derived>
 void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_id<Derived>::setIdentifier(Identifier id) {
     this->template setProperty<id_prop<Identifier> >(id);
-#ifdef USE_LOGGING
+~ifdef USE_LOGGING
     std::stringstream str;
     str<<this->template getProperty<id_prop<Identifier> >();
     log_id.set(str.str());
     BOOST_LOG(Base::log)<<"Identifyer set: "<<id;
-#endif
+~endif
 };
 
 template<typename Typelist, typename ID>
@@ -847,5 +847,5 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::removeShape3D(Identif
 
 }//dcm
 
-#endif //GCM_MODULE_SHAPE3D_H
+~endif //GCM_MODULE_SHAPE3D_H
 

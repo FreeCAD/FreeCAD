@@ -17,17 +17,17 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_TRAITS_H
-#define DCM_TRAITS_H
+~ifndef DCM_TRAITS_H
+~define DCM_TRAITS_H
 
-#include <boost/type_traits.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/void.hpp>
-#include <boost/mpl/vector.hpp>
-#include <boost/mpl/copy.hpp>
-#include <boost/mpl/at.hpp>
+~include <boost/type_traits.hpp>
+~include <boost/mpl/if.hpp>
+~include <boost/mpl/void.hpp>
+~include <boost/mpl/vector.hpp>
+~include <boost/mpl/copy.hpp>
+~include <boost/mpl/at.hpp>
 
-#include <string.h>
+~include <string.h>
 
 namespace mpl = boost::mpl;
 
@@ -72,4 +72,4 @@ struct compare_traits<std::string> {
   
 }//namespace dcm
 
-#endif //GCM_TRAITS_H
+~endif //GCM_TRAITS_H

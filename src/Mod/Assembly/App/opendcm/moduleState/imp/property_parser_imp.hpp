@@ -17,14 +17,14 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef DCM_PROPERTY_PARSER_IMP_H
-#define DCM_PROPERTY_PARSER_IMP_H
+~ifndef DCM_PROPERTY_PARSER_IMP_H
+~define DCM_PROPERTY_PARSER_IMP_H
 
-#include "../property_parser.hpp"
-#include "traits_impl.hpp"
+~include "../property_parser.hpp"
+~include "traits_impl.hpp"
 
-#include <boost/fusion/include/back.hpp>
-#include <boost/phoenix/fusion/at.hpp>
+~include <boost/fusion/include/back.hpp>
+~include <boost/phoenix/fusion/at.hpp>
 
 
 namespace dcm {
@@ -98,4 +98,4 @@ system_prop_par<Sys>::system_prop_par() : prop_par<Sys, typename Sys::OptionOwne
 } //DCM
 } //details
 
-#endif
+~endif
