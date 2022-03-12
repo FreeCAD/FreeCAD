@@ -1503,7 +1503,7 @@ bool SMESH_MeshEditor::QuadToTri (TIDSortedElemSet &                   theElems,
 //=======================================================================
 /*!
  * \brief Split each of given quadrangles into 4 triangles.
- * \param theElems - The faces to be splitted. If empty all faces are split.
+ * \param theElems - The faces to be split. If empty all faces are split.
  */
 //=======================================================================
 
