@@ -44,6 +44,7 @@ using namespace Gui;
 TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBasedView, QWidget *parent,
                                              const std::string& pixmapname, const QString& parname)
     : TaskSketchBasedParameters(SketchBasedView, parent, pixmapname, parname)
+    , propReferenceAxis(nullptr)
     , ui(new Ui_TaskPadPocketParameters)
 {
     // we need a separate container widget to add all controls to
