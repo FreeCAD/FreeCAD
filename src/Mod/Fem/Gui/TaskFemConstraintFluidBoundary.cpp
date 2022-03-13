@@ -561,7 +561,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
 
     Q_UNUSED(pressed)
 
-    clearButtons(none);
+    clearButtons(SelectionChangeModes::none);
 
     //get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
@@ -871,8 +871,10 @@ void TaskFemConstraintFluidBoundary::changeEvent(QEvent *e)
 
 void TaskFemConstraintFluidBoundary::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != refAdd) ui->btnAdd->setChecked(false);
-    if (notThis != refRemove) ui->btnRemove->setChecked(false);
+    if (notThis != SelectionChangeModes::refAdd)
+        ui->btnAdd->setChecked(false);
+    if (notThis != SelectionChangeModes::refRemove)
+        ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

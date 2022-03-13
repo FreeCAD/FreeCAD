@@ -50,7 +50,7 @@ class TaskFemConstraintOnBoundary : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintOnBoundary(ViewProviderFemConstraint *ConstraintView, QWidget *parent = 0, const char* pixmapname = "");
+    TaskFemConstraintOnBoundary(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr, const char* pixmapname = "");
     ~TaskFemConstraintOnBoundary();
 
 protected Q_SLOTS:
@@ -60,7 +60,7 @@ protected Q_SLOTS:
     virtual void removeFromSelection() = 0;
 
 protected:
-    enum SelectionChangeModes {none, refAdd, refRemove};
+    enum class SelectionChangeModes {none, refAdd, refRemove};
     virtual void onSelectionChanged(const Gui::SelectionChanges&) override;
     virtual void clearButtons(const SelectionChangeModes notThis) = 0;
     void exitSelectionChangeMode();
