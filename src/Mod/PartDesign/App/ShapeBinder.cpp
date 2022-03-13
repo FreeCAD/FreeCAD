@@ -356,7 +356,12 @@ SubShapeBinder::SubShapeBinder()
 }
 
 SubShapeBinder::~SubShapeBinder() {
-    clearCopiedObjects();
+    try {
+        clearCopiedObjects();
+    }
+    catch (const Base::ValueError& e) {
+        e.ReportException();
+    }
 }
 
 void SubShapeBinder::setupObject() {
