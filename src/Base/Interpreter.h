@@ -42,6 +42,7 @@
 #endif
 
 #include <CXX/Extensions.hxx>
+#include <list>
 #include <string>
 #include "Exception.h"
 
@@ -240,6 +241,10 @@ public:
     /// Add an additional python path
     void addPythonPath(const char* Path);
     static void addType(PyTypeObject* Type,PyObject* Module, const char * Name);
+    /// Add a module and return a PyObject to it
+    PyObject* addModule(Py::ExtensionModuleBase*);
+    /// Clean-up registered modules
+    void cleanupModules();
     //@}
 
     /** @name Cleanup
@@ -311,6 +316,7 @@ protected:
 private:
     std::string _cDebugFileName;
     PyThreadState* _global;
+    std::list<Py::ExtensionModuleBase*> _modules;
 };
 
 

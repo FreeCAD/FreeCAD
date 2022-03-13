@@ -487,6 +487,19 @@ bool InterpreterSingleton::loadModule(const char* psModName)
     return true;
 }
 
+PyObject* InterpreterSingleton::addModule(Py::ExtensionModuleBase* mod)
+{
+    _modules.push_back(mod);
+    return mod->module().ptr();
+}
+
+void InterpreterSingleton::cleanupModules()
+{
+    for (auto it : _modules)
+        delete it;
+    _modules.clear();
+}
+
 void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const char * Name)
 {
     // NOTE: To finish the initialization of our own type objects we must
@@ -564,6 +577,7 @@ void InterpreterSingleton::finalize()
 {
     try {
         PyEval_RestoreThread(this->_global);
+        cleanupModules();
         Py_Finalize();
     }
     catch (...) {
