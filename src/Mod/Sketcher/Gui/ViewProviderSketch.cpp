@@ -979,6 +979,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     return false;
 }
 
+bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer)
+{
+    assert(isInEditMode());
+
+    Q_UNUSED(delta);
+    Q_UNUSED(cursorPos);
+    Q_UNUSED(viewer);
+
+    editCoinManager->drawConstraintIcons();
+
+    return true;
+}
+
 void ViewProviderSketch::editDoubleClicked(void)
 {
     if (preselection.isPreselectPointValid()) {
