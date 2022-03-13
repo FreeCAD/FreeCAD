@@ -2516,11 +2516,13 @@ bool StdViewZoomOut::isActive(void)
 {
     return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
 }
-class SelectionCallbackHandler {    
+
+namespace {
+class SelectionCallbackHandler {
 
 private:
     static std::unique_ptr<SelectionCallbackHandler> currentSelectionHandler;
-    QCursor* prevSelectionCursor;
+    QCursor prevSelectionCursor;
     typedef void (*FnCb)(void * userdata, SoEventCallback * node);
     FnCb fnCb;
     void* userData;
@@ -2531,7 +2533,8 @@ public:
     // Takes the viewer, a selection mode, a cursor, a function pointer to be called on success and a void pointer for user data to be passed to the given function.
     // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.    
     // If there is still a selection handler active, this call will generate a message and returns.
-    static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode, const QCursor& cursor, FnCb doFunction= NULL, void* ud=NULL)
+    static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode,
+                       const QCursor& cursor, FnCb doFunction= nullptr, void* ud=nullptr)
     {
         if (currentSelectionHandler)
         {
@@ -2544,7 +2547,7 @@ public:
         {
             currentSelectionHandler->userData = ud;
             currentSelectionHandler->fnCb = doFunction;
-            currentSelectionHandler->prevSelectionCursor = new QCursor(viewer->cursor());
+            currentSelectionHandler->prevSelectionCursor = viewer->cursor();
             viewer->setEditingCursor(cursor);
             viewer->addEventCallback(SoEvent::getClassTypeId(),
                 SelectionCallbackHandler::selectionCallback, currentSelectionHandler.get());
@@ -2552,9 +2555,11 @@ public:
             viewer->setSelectionEnabled(false);
             viewer->startSelection(selectionMode);
         }
-    };
+    }
 
-    void* getUserData() { return userData; };
+    void* getUserData() const {
+        return userData;
+    }
 
     // Implements the event handler. In the normal case the provided function is called. 
     // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
@@ -2571,11 +2576,11 @@ public:
             const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
-                              
-                if (!press) {                    
+
+                if (!press) {
                     view->abortSelection();
                     restoreState(selectionHandler, view);
-                }                
+                }
             }
         }
         else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
@@ -2586,7 +2591,8 @@ public:
 
             if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP)
             {
-                if (selectionHandler && selectionHandler->fnCb) selectionHandler->fnCb(selectionHandler->getUserData(), n);
+                if (selectionHandler && selectionHandler->fnCb)
+                    selectionHandler->fnCb(selectionHandler->getUserData(), n);
                 restoreState(selectionHandler, view);
             }
             // No other mouse events available from Coin3D to implement right mouse up abort
@@ -2595,14 +2601,18 @@ public:
 
     static void restoreState(SelectionCallbackHandler * selectionHandler, View3DInventorViewer* view)
     {
-        if(selectionHandler) selectionHandler->fnCb = NULL;
-        view->setEditingCursor(*selectionHandler->prevSelectionCursor);
-        view->removeEventCallback(SoEvent::getClassTypeId(), SelectionCallbackHandler::selectionCallback, selectionHandler);
-        view->setSelectionEnabled(selectionHandler->prevSelectionEn);
+        if (selectionHandler)
+        {
+            selectionHandler->fnCb = nullptr;
+            view->setEditingCursor(selectionHandler->prevSelectionCursor);
+            view->removeEventCallback(SoEvent::getClassTypeId(), SelectionCallbackHandler::selectionCallback, selectionHandler);
+            view->setSelectionEnabled(selectionHandler->prevSelectionEn);
+        }
         Application::Instance->commandManager().testActive();
-        currentSelectionHandler = NULL;
+        currentSelectionHandler = nullptr;
     }
 };
+}
 
 std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>();
 //===========================================================================

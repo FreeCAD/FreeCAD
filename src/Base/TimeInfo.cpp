@@ -103,6 +103,8 @@ TimeInfo TimeInfo::null()
     TimeInfo ti;
     ti.timebuffer.time = 0;
     ti.timebuffer.millitm = 0;
+    ti.timebuffer.timezone = 0;
+    ti.timebuffer.dstflag = 0;
     return ti;
 }
 

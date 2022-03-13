@@ -371,7 +371,6 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           auto parentShape = currentShapeStore.inputShape;
           for (auto itName = selObj.front().getSubNames().begin(); itName != selObj.front().getSubNames().end(); ++itName)
           {
-            std::string parentName = aPart->getNameInDocument();
             auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
 
             transform_shape_to_global_position(currentShape, aPart);

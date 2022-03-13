@@ -89,11 +89,11 @@ private:
     std::vector<TopoDS_Wire> aProjectedWireInParametricSpaceVec;
     TopoDS_Face aProjectedFace;
     TopoDS_Shape aProjectedSolid;
-    Part::Feature* partFeature;
+    Part::Feature* partFeature = nullptr;
     std::string partName;
-    bool is_selectable;
-    long transparency;
-    float exrudeValue;
+    bool is_selectable = false;
+    long transparency = 0;
+    float exrudeValue = 0.0f;
   };
 
   //from Gui::SelectionObserver

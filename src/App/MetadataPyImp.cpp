@@ -50,7 +50,7 @@ std::string MetadataPy::representation(void) const
 
 PyObject* MetadataPy::PyMake(struct _typeobject*, PyObject* args, PyObject*)  // Python wrapper
 {
-    // create a new instance of MetadataPy and the Twin object 
+    // create a new instance of MetadataPy and the Twin object
     const char* filename;
     if (!PyArg_ParseTuple(args, "s", &filename))
         return nullptr;
@@ -75,13 +75,13 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     const char* file;
     if (PyArg_ParseTuple(args, "s", &file)) {
-        App::Metadata* a = new Metadata(file);
-        *(getMetadataPtr()) = *a;
+        App::Metadata a(file);
+        *(getMetadataPtr()) = a;
         return 0;
     }
 
     // Copy constructor
-    PyErr_Clear();    
+    PyErr_Clear();
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", &(App::MetadataPy::Type), &o)) {
         App::Metadata* a = static_cast<App::MetadataPy*>(o)->getMetadataPtr();

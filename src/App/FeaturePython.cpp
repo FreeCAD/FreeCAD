@@ -48,7 +48,12 @@ FeaturePythonImp::~FeaturePythonImp()
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) py_##_name = Py::None();
 
-    FC_PY_FEATURE_PYTHON
+    try {
+        FC_PY_FEATURE_PYTHON
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
 }
 
 void FeaturePythonImp::init(PyObject *pyobj) {
