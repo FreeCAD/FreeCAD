@@ -284,7 +284,7 @@ class ObjectJob:
         # ops = FreeCAD.ActiveDocument.addObject(
         #     "Path::FeatureCompoundPython", "Operations"
         # )
-        ops = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Operations")
+        ops = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Operations")
         if ops.ViewObject:
             # ops.ViewObject.Proxy = 0
             ops.ViewObject.Visibility = True
@@ -295,14 +295,15 @@ class ObjectJob:
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
-            obj.addProperty(
-                "App::PropertyLink",
-                "SetupSheet",
-                "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "SetupSheet holding the settings for this job"
-                ),
-            )
+            if not hasattr(obj, "SetupSheet"):
+                obj.addProperty(
+                    "App::PropertyLink",
+                    "SetupSheet",
+                    "Base",
+                    QT_TRANSLATE_NOOP(
+                        "App::Property", "SetupSheet holding the settings for this job"
+                    ),
+                )
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
                 import PathScripts.PathIconViewProvider
@@ -659,7 +660,7 @@ class ObjectJob:
 
     def execute(self, obj):
         if getattr(obj, "Operations", None):
-            #obj.Path = obj.Operations.Path
+            # obj.Path = obj.Operations.Path
             self.getCycleTime()
 
     def getCycleTime(self):

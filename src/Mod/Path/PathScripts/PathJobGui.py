@@ -694,6 +694,7 @@ class TaskPanel:
 
     def accept(self, resetEdit=True):
         PathLog.track()
+        self._jobIntegrityCheck()  # Check existance of Model and Tools
         self.preCleanup()
         self.getFields()
         self.setupGlobal.accept()
@@ -1568,6 +1569,18 @@ class TaskPanel:
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)
+
+    def _jobIntegrityCheck(self):
+        """_jobIntegrityCheck() ... Check Job object for existance of Model and Tools
+        If either Model or Tools is empty, change GUI tab and open appropriate selection window."""
+        if len(self.obj.Model.Group) == 0:
+            PathLog.info(translate("Path_Job", "Please select a model for this job."))
+            self.form.setCurrentIndex(0)  # Change tab to General tab
+            self.jobModelEdit()
+        if len(self.obj.Tools.Group) == 0:
+            PathLog.info(translate("Path_Job", "Please add a tool to this job."))
+            self.form.setCurrentIndex(3)  # Change tab to Tools tab
+            self.toolControllerAdd()
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
