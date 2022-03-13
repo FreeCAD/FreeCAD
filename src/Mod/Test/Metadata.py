@@ -55,6 +55,20 @@ class TestMetadata(unittest.TestCase):
         tags = md.Tag
         self.assertEqual(len(tags), 2)
 
+    def test_copy_constructor(self):
+        filename = os.path.join(self.test_dir, "basic_metadata.xml")
+        md = FreeCAD.Metadata(filename)
+        copy_of_md = FreeCAD.Metadata(md)
+        self.assertEqual(md.Name, copy_of_md.Name)
+        self.assertEqual(md.Description, copy_of_md.Description)
+        self.assertEqual(md.Version, copy_of_md.Version)
+
+    def test_default_constructor(self):
+        try:
+            md = FreeCAD.Metadata()
+        except Exception:
+            self.fail("Metadata default constructor failed")
+
     def test_content_types(self):
         pass
 
