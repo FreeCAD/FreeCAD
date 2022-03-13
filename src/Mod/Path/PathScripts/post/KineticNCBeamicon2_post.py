@@ -26,8 +26,9 @@
 # *   2021                                                                   *
 # *                                                                          *
 # *   This postprocessor is based on the linuxcnc_post coming with FreeCAD   *
-# *   0.19 and modified to work with Kinetic-NC and the High-Z S-1000T 4 Axis*
-# *   Mill manufactured by CNC-Step (cnc-step.com).                          *
+# *   0.19 and modified to work with Kinetic-NC (cnc-step.com) and Beamicon2 *
+# *   (benezan-electronics.de) (up to 4 Axis)                                *
+# *                                                                          *
 # *                                                                          *
 # ***************************************************************************/
 
@@ -44,12 +45,13 @@ from PathScripts import PathUtils
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a High-Z S-1000T 4 Axis Mill by CNC-Step (www.cnc-step.com) using the KineticNC Control Software. This postprocessor, once placed
-in the appropriate PathScripts folder, can be used directly from inside
+real GCode suitable for the KineticNC/Beamicon2 Control Software for up to 4 Axis (3 plus rotary). 
+The CORNER_MAX Values are set for a mill with max travel of 1000mm in X, 600mm in Y and 300mm in Z direction.
+This postprocessor, once placed in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
-import KineticNC_post
-KineticNC_post.export(object,"/path/to/file.ncc","")
+import KineticNCBeamicon2_post
+KineticNCBeamicon2_post.export(object,"/path/to/file.ncc","")
 '''
 
 now = datetime.datetime.now()
@@ -83,7 +85,7 @@ UNITS = "G21"  # G21 for metric, G20 for us standard
 UNIT_SPEED_FORMAT = 'mm/min'
 UNIT_FORMAT = 'mm'
 
-MACHINE_NAME = "High-Z S-1000T"
+MACHINE_NAME = "not set"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 1000, 'y': 600, 'z': 300}
 PRECISION = 3
