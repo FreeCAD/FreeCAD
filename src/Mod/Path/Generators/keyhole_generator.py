@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2021 wayofwood <code@wayofwood.com>               *
+# *   Copyright (c) 2021 wayofwood <code@wayofwood.com>                     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -25,7 +25,7 @@ import Path
 
 __title__ = "Keyhole Path Generator"
 __author__ = "wayofwood"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Generates the toolpath for keyhole "
 
 if True:
