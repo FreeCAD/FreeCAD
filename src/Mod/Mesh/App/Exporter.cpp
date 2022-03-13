@@ -111,7 +111,8 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
                 it = meshCache.emplace(linked,
                         static_cast<Mesh::Feature*>(linked)->Mesh.getValue()).first;
                 it->second.setTransform(Base::Matrix4D());
-            } else {
+            }
+            else {
                 Base::PyGILStateLocker lock;
                 PyObject *pyobj = nullptr;
                 linked->getSubObject("", &pyobj, nullptr, false);
@@ -128,10 +129,14 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
                 Py_DECREF(pyobj);
             }
         }
-        MeshObject mesh(it->second);
-        mesh.transformGeometry(matrix);
-        if (addMesh(sobj->Label.getValue(), mesh))
-            ++count;
+
+        // Add a new mesh
+        if (it != meshCache.end()) {
+            MeshObject mesh(it->second);
+            mesh.transformGeometry(matrix);
+            if (addMesh(sobj->Label.getValue(), mesh))
+                ++count;
+        }
     }
     return count;
 }
