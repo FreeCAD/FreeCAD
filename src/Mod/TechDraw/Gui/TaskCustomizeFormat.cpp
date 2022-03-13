@@ -108,17 +108,15 @@ void TaskCustomizeFormat::changeEvent(QEvent *e)
 void TaskCustomizeFormat::setUiEdit()
 {
     setWindowTitle(tr("Customize Format"));
-    if (selectedObject->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()))
+    if (auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selectedObject))
     {
-        auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selectedObject);
         isDimension = true;
         std::string dimText = dim->FormatSpec.getStrValue();
         dimRawValue = dim->getDimValue();
         ui->leFormat->setText(Base::Tools::fromStdString(dimText));
     }
-    else
+    else if (auto balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(selectedObject))
     {
-        auto balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(selectedObject);
         isDimension = false;
         std::string balloonText = balloon->Text.getStrValue();
         ui->leFormat->setText(Base::Tools::fromStdString(balloonText));
@@ -191,9 +189,12 @@ void TaskCustomizeFormat::onSymbolClicked()
 {
     // Slot: a symbol PushButton has been clicked
     QObject* senderObj(this->sender());
-    QPushButton* pressedButton = dynamic_cast<QPushButton*>(senderObj);
-    QString pbText = pressedButton->text();
-    ui->leFormat->insert(pbText);
+    QPushButton* pressedButton = qobject_cast<QPushButton*>(senderObj);
+    if (pressedButton)
+    {
+        QString pbText = pressedButton->text();
+        ui->leFormat->insert(pbText);
+    }
 }
 
 void TaskCustomizeFormat::onFormatChanged()

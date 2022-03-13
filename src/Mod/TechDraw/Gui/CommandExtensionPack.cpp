@@ -1403,7 +1403,6 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
     if (objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        auto objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
         bool lockPosition = objFeat->LockPosition.getValue();
         lockPosition = !lockPosition;
         objFeat->LockPosition.setValue(lockPosition);
@@ -1819,8 +1818,11 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     QString qUserString = asQuantity.getUserString();
     std::string sUserString = Base::Tools::toStdString(qUserString);
 
-    xCenter = (xCenter/totalPoints)/scale;
-    yCenter = (yCenter/totalPoints)/scale;
+    if (totalPoints != 0 && scale != 0.0) {
+        xCenter = (xCenter/totalPoints)/scale;
+        yCenter = (yCenter/totalPoints)/scale;
+    }
+
     // set the attributes in the data tab's fields
     balloon->SourceView.setValue(objFeat);
     balloon->BubbleShape.setValue("Rectangle");
@@ -1871,17 +1873,20 @@ namespace TechDrawGui {
     std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
         // create a new balloon, return it's name as string
     {
+        std::string featName;
         TechDraw::DrawPage* page = objFeat->findParentPage();
         page->balloonParent = objFeat;
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
         ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
-        QGVPage* viewPage = pageVP->getGraphicsView();
-        std::string featName = viewPage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-        std::string pageName = viewPage->getDrawPage()->getNameInDocument();
-        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
-                       featName.c_str());
-        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       pageName.c_str(), featName.c_str());
+        if (pageVP) {
+            QGVPage* viewPage = pageVP->getGraphicsView();
+            featName = viewPage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+            std::string pageName = viewPage->getDrawPage()->getNameInDocument();
+            cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
+                           featName.c_str());
+            cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
+                           pageName.c_str(), featName.c_str());
+        }
         return featName;
     }
 

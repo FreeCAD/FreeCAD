@@ -105,7 +105,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixChar) {
         for (auto selected : selection) {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
                 formatSpec = prefixChar + formatSpec;
                 dim->FormatSpec.setValue(formatSpec);
@@ -190,7 +190,7 @@ void execRemovePrefixChar(Gui::Command* cmd) {
         {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
                 int pos = formatSpec.find("%.");
                 if (pos != 0)
@@ -360,7 +360,7 @@ void execIncreaseDecreaseDecimal(Gui::Command* cmd, int delta) {
         for (auto selected : selection) {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
                 std::string searchStr("%.");
                 int numFound = formatSpec.find(searchStr) + 2;
@@ -2343,7 +2343,7 @@ namespace TechDrawGui {
         for (auto selected : selection) {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string dimType = dim->Type.getValueAsString();
                 if (dimType == needDimType)
                     validDimension.push_back(dim);

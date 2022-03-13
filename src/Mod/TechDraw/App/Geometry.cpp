@@ -182,6 +182,7 @@ BaseGeom::BaseGeom() :
 {
     occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
+    tag = boost::uuids::nil_uuid();
 }
 
 BaseGeomPtr BaseGeom::copy()
