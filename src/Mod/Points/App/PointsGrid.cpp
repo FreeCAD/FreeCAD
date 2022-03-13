@@ -147,17 +147,26 @@ void PointsGrid::InitGrid ()
   {
     // Offset fGridLen/2
     //
-    _fGridLenX = (1.0f + fLengthX) / double(_ulCtGridsX);
+    unsigned long num = _ulCtGridsX;
+    if (num == 0)
+        num = 1;
+    _fGridLenX = (1.0f + fLengthX) / double(num);
     _fMinX = clBBPts.MinX - 0.5f;
   }
 
   {
-    _fGridLenY = (1.0f + fLengthY) / double(_ulCtGridsY);
+      unsigned long num = _ulCtGridsY;
+      if (num == 0)
+          num = 1;
+    _fGridLenY = (1.0f + fLengthY) / double(num);
     _fMinY = clBBPts.MinY - 0.5f;
   }
 
   {
-    _fGridLenZ = (1.0f + fLengthZ) / double(_ulCtGridsZ);
+      unsigned long num = _ulCtGridsZ;
+      if (num == 0)
+          num = 1;
+    _fGridLenZ = (1.0f + fLengthZ) / double(num);
     _fMinZ = clBBPts.MinZ - 0.5f;
   }
   }

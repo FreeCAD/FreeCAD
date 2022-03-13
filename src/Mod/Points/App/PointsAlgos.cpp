@@ -1330,15 +1330,15 @@ void E57Reader::read(const std::string& filename)
                 e57::StructureNode            prototype(cvn.prototype());
                 // create buffers for the compressed vector reader
                 const size_t buf_size = 1024;
-                double* xyz = new double[buf_size * 3];
-                double* intensity = new double[buf_size];
-                int64_t* state = new int64_t[buf_size];
-                unsigned* rgb = new unsigned[buf_size * 3];
-                int64_t* nil = new int64_t[buf_size];
+                double xyz[buf_size * 3];
+                double intensity[buf_size];
+                int64_t state[buf_size];
+                unsigned rgb[buf_size * 3];
+                int64_t nil[buf_size];
 
                 // check the channels which are needed
-                unsigned* ptr_xyz = new unsigned[3];
-                unsigned* ptr_rgb = new unsigned[3];
+                unsigned ptr_xyz[3];
+                unsigned ptr_rgb[3];
                 bool inty = false;
                 bool inv_state = false;
                 unsigned cnt_xyz = 0;
