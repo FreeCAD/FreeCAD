@@ -80,7 +80,7 @@ public:
     typedef boost::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 
     /**
-     * @brief The ExpressionInfo struct encapsulates an expression and a comment.
+     * @brief The ExpressionInfo struct encapsulates an expression.
      */
 
     struct ExpressionInfo {
@@ -94,10 +94,12 @@ public:
 
         ExpressionInfo(const ExpressionInfo & other) {
             expression = other.expression;
+            busy = other.busy;
         }
 
         ExpressionInfo & operator=(const ExpressionInfo & other) {
             expression = other.expression;
+            busy = other.busy;
             return *this;
         }
     };

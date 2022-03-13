@@ -147,10 +147,10 @@ EventFilter::eventFilter(QObject * obj, QEvent * qevent)
   case QEvent::MouseButtonPress:
   case QEvent::MouseButtonRelease:
   case QEvent::MouseButtonDblClick:
-    PRIVATE(this)->trackPointerPosition(dynamic_cast<QMouseEvent *>(qevent));
+    PRIVATE(this)->trackPointerPosition(static_cast<QMouseEvent *>(qevent));
     break;
   case QEvent::Resize:
-    PRIVATE(this)->trackWindowSize(dynamic_cast<QResizeEvent *>(qevent));
+    PRIVATE(this)->trackWindowSize(static_cast<QResizeEvent *>(qevent));
     break;
   default:
     break;

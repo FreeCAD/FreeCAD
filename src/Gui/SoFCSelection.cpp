@@ -160,35 +160,42 @@ void SoFCSelection::doAction(SoAction *action)
     if(useNewSelection.getValue() && action->getCurPathCode()!=SoAction::OFF_PATH) {
         if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
             Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
-            if(!hlaction->isHighlighted()) {
+            if (!hlaction->isHighlighted()) {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx->isHighlighted()) {
+                if (ctx && ctx->isHighlighted()) {
                     ctx->highlightIndex = -1;
                     touch();
                 }
-            }else{
+            }
+            else {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                ctx->highlightColor = hlaction->getColor();
-                if(!ctx->isHighlighted()) {
-                    ctx->highlightIndex = 0;
-                    touch();
+                if (ctx) {
+                    ctx->highlightColor = hlaction->getColor();
+                    if (!ctx->isHighlighted()) {
+                        ctx->highlightIndex = 0;
+                        touch();
+                    }
                 }
             }
             return;
-        } else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
+        }
+        else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
             Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
             if (selaction->getType() == Gui::SoSelectionElementAction::All ||
                 selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                ctx->selectionColor = selaction->getColor();
-                if(!ctx->isSelectAll()) {
-                    ctx->selectAll();
-                    this->touch();
+                if (ctx) {
+                    ctx->selectionColor = selaction->getColor();
+                    if(!ctx->isSelectAll()) {
+                        ctx->selectAll();
+                        this->touch();
+                    }
                 }
-            } else if (selaction->getType() == Gui::SoSelectionElementAction::None ||
-                       selaction->getType() == Gui::SoSelectionElementAction::Remove) {
+            }
+            else if (selaction->getType() == Gui::SoSelectionElementAction::None ||
+                     selaction->getType() == Gui::SoSelectionElementAction::Remove) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx && ctx->isSelected()) {
+                if (ctx && ctx->isSelected()) {
                     ctx->selectionIndex.clear();
                     this->touch();
                 }
@@ -965,9 +972,11 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 
     Styles mystyle = (Styles) this->style.getValue();
 
-    if(mystyle == SoFCSelection::BOX) {
-        SoFCSelectionRoot::renderBBox(
-                action,this,preselected?ctx->highlightColor:ctx->selectionColor);
+    if (mystyle == SoFCSelection::BOX) {
+        if (ctx) {
+            SoFCSelectionRoot::renderBBox(
+                    action, this, preselected ? ctx->highlightColor : ctx->selectionColor);
+        }
         this->uniqueId = oldId;
         return false;
     }
@@ -979,19 +988,19 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
     SoOverrideElement::setMaterialBindingOverride(state,this,true);
 
-    if(!preselected)
+    if (!preselected && ctx)
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
-    else
+    else if (ctx)
         SoLazyElement::setEmissive(state, &ctx->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
     if(SoLazyElement::getLightModel(state)==SoLazyElement::BASE_COLOR
             || mystyle == SoFCSelection::EMISSIVE_DIFFUSE)
     {
-        if(!preselected)
-            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
-        else
-            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&colorpacker);
+        if (!preselected && ctx)
+            SoLazyElement::setDiffuse(state, this, 1, &ctx->selectionColor,&colorpacker);
+        else if (ctx)
+            SoLazyElement::setDiffuse(state, this, 1, &ctx->highlightColor,&colorpacker);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 

@@ -2744,6 +2744,9 @@ void ViewProviderLink::updateLinks(ViewProvider *vp) {
     catch (const Base::TypeError &e) {
         e.ReportException();
     }
+    catch (const Base::ValueError &e) {
+        e.ReportException();
+    }
 }
 
 PyObject *ViewProviderLink::getPyObject() {

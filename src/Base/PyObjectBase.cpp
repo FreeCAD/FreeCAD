@@ -235,7 +235,8 @@ PyObject* createWeakRef(PyObjectBase* ptr)
     static bool init = false;
     if (!init) {
        init = true;
-       PyType_Ready(&PyBaseProxyType);
+       if (PyType_Ready(&PyBaseProxyType) < 0)
+           return nullptr;
     }
 
     PyObject* proxy = ptr->baseProxy;

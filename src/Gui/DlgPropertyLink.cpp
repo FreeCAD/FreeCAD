@@ -473,7 +473,12 @@ void DlgPropertyLink::detachObserver() {
 
     auto view = qobject_cast<Gui::PropertyView*>(parentView.data());
     if(view && savedSelections.size()) {
-        Gui::Selection().clearSelection();
+        try {
+            Gui::Selection().clearSelection();
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+        }
         for(auto &sel : savedSelections) {
             if(sel.getSubObject())
                 Gui::Selection().addSelection(sel.getDocumentName().c_str(),

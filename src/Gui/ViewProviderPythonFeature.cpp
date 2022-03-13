@@ -283,7 +283,12 @@ ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) py_##_name = Py::None();
 
-    FC_PY_VIEW_OBJECT
+    try {
+        FC_PY_VIEW_OBJECT
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
 }
 
 void ViewProviderPythonFeatureImp::init(PyObject *pyobj) {

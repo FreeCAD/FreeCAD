@@ -104,7 +104,10 @@ public:
     virtual bool reject();
     /// is called by the framework if the user press the help button 
     virtual void helpRequested();
-    
+
+private:
+    void clearForm();
+
 private:
     Py::Object dlg;
 };
