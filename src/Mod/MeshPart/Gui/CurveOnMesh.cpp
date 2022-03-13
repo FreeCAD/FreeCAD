@@ -293,7 +293,7 @@ public:
                     cutLines.push_back(polyline);
                 }
                 else {
-                    SbVec3f dir1;
+                    SbVec3f dir1(0.0f, 0.0f, 0.0f);
                     SbVec3f dir2 = pick.point - last.point;
                     dir2.normalize();
                     std::size_t num = pickedPoints.size();
