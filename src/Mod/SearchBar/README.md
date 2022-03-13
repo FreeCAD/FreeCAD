@@ -16,6 +16,9 @@ The search bar appears next to the [`What's this?`](https://wiki.freecad.org/Std
 
 ![Screenshot of the search bar, with results in its drop-down menu and extra info about the result in a separate pane](screenshot.png)
 
+![Animation showing how to initially load all workbenches using the first entry in the search bar](animAopt.gif)
+![Animation showing how to navigate the search results with the up and down keys and select code examples from the results](animB2op.gif)
+
 ### Installation
 
 #### Automatic Install
