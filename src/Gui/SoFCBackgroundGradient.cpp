@@ -20,10 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#ifdef FC_OS_MACOSX
+#include <OpenGL/gl.h>
+#else
+#include <GL/gl.h>
+#endif
+#endif
+
 #include "SoFCBackgroundGradient.h"
+
 
 using namespace Gui;
 

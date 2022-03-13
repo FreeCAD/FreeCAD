@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -40,6 +39,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "ViewProvider.h"
+
 
 using namespace Gui;
 

@@ -24,34 +24,32 @@
 #ifndef _PreComp_
 #include <assert.h>
 
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-
-#include <Inventor/SbRotation.h>
-
-#include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <math.h>
-
 #include <Base/Quantity.h>
-#include <Gui/MainWindow.h>
-#include "SoFCDB.h"
+
 #include "SoFCCSysDragger.h"
+#include "MainWindow.h"
+#include "SoFCDB.h"
+
 
 /*
    GENERAL NOTE ON COIN3D CUSTOM DRAGGERS
