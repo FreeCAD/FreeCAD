@@ -631,4 +631,6 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
                                                  std::placeholders::_3));
 }
 
-#include "moc_UiLoader.cpp"
+#if !defined (HAVE_QT_UI_TOOLS)
+# include "moc_UiLoader.cpp"
+#endif
