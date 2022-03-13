@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCDB_H
 #define GUI_SOFCDB_H
 
+#include <iosfwd>
 #include <map>
 #include <string>
-#include <iosfwd>
-#include <Inventor/SbBasic.h>
+#include <Inventor/C/basic.h>
+
 
 class SoNode;
 class SoGroup;

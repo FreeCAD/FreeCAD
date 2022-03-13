@@ -20,26 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <Inventor/VRMLnodes/SoVRMLParent.h>
 # include <Inventor/SbString.h>
+# include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/fields/SoMFNode.h>
+# include <Inventor/fields/SoSFNode.h>
 # include <Inventor/nodes/SoGroup.h>
+# include <Inventor/VRMLnodes/SoVRMLGroup.h>
+# include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+# include <Inventor/VRMLnodes/SoVRMLNormal.h>
+# include <Inventor/VRMLnodes/SoVRMLParent.h>
+# include <Inventor/VRMLnodes/SoVRMLShape.h>
 # include <QDir>
 # include <QProcess>
 # include <QTemporaryFile>
 # include <sstream>
 #endif
-
-#include <Inventor/VRMLnodes/SoVRMLGeometry.h>
-#include <Inventor/VRMLnodes/SoVRMLNormal.h>
-#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoMFNode.h>
 
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -47,35 +44,33 @@
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
-#include "SoFCColorBar.h"
-#include "SoFCColorLegend.h"
-#include "SoFCColorGradient.h"
-#include "SoFCSelection.h"
+#include "Flag.h"
+#include "GestureNavigationStyle.h"
+#include "NavigationStyle.h"
+#include "SelectionObject.h"
+#include "SoAxisCrossKit.h"
 #include "SoFCBackgroundGradient.h"
 #include "SoFCBoundingBox.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCSelectionAction.h"
+#include "SoFCColorBar.h"
+#include "SoFCColorGradient.h"
+#include "SoFCColorLegend.h"
+#include "SoFCCSysDragger.h"
 #include "SoFCInteractiveElement.h"
+#include "SoFCSelection.h"
+#include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoAxisCrossKit.h"
-#include "SoTextLabel.h"
+#include "SoMouseWheelEvent.h"
 #include "SoNavigationDragger.h"
-#include "Inventor/SoDrawingGrid.h"
-#include "Inventor/SoAutoZoomTranslation.h"
+#include "SoTextLabel.h"
+#include "View3DPy.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
-#include "SoFCCSysDragger.h"
-#include "SoMouseWheelEvent.h"
-
+#include "Inventor/SoAutoZoomTranslation.h"
+#include "Inventor/SoDrawingGrid.h"
 #include "propertyeditor/PropertyItem.h"
-#include "NavigationStyle.h"
-#include "GestureNavigationStyle.h"
-#include "Flag.h"
-#include "SelectionObject.h"
-#include "View3DPy.h"
+
 
 using namespace Gui;
 using namespace Gui::Inventor;

@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCCOLORGRADIENT_H
 #define GUI_SOFCCOLORGRADIENT_H
 
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/SbBox2f.h>
-#include "SoFCColorBar.h"
-#include <App/ColorModel.h>
 #include <vector>
+#include <Inventor/SbBox2f.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+#include "SoFCColorBar.h"
+
 
 class SoCoordinate3;
 class SoMFString;

@@ -23,6 +23,7 @@
 #ifndef GUI_SOAUTOZOOMTRANSLATION_H
 #define GUI_SOAUTOZOOMTRANSLATION_H
 
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoTransformation.h>
 
 

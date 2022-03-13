@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCCOLORBAR_H
 #define GUI_SOFCCOLORBAR_H
 
+#include <QElapsedTimer>
+#include <vector>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <QElapsedTimer>
-#include <Base/Observer.h>
+
 #include <App/ColorModel.h>
-#include <vector>
+#include <Base/Observer.h>
+
 
 class SoSwitch;
 class SoEventCallback;
