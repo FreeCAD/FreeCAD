@@ -134,10 +134,9 @@ class Tag:
         self.height = math.fabs(height)
         self.actualHeight = self.height
         self.angle = math.fabs(angle)
-        if hasattr(radius, "Value"):
-            self.radius = radius.Value
-        else:
-            self.radius = FreeCAD.Units.Quantity(radius, FreeCAD.Units.Length).Value
+        self.radius = getattr(
+            radius, "Value", FreeCAD.Units.Quantity(radius, FreeCAD.Units.Length).Value
+        )
         self.enabled = enabled
         self.isSquare = False
 
