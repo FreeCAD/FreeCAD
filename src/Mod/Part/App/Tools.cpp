@@ -663,7 +663,7 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
 // helper function to use in getNormal, here we pass the local properties
 // of the surface given by the #LProp_SLProps objects
 template <typename T>
-void getNormalBySLProp(T prop, double u, double v, Standard_Real lastU, Standard_Real lastV,
+void getNormalBySLProp(T& prop, double u, double v, Standard_Real lastU, Standard_Real lastV,
                      const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done)
 {
     if (prop.D1U().Magnitude() > tol &&

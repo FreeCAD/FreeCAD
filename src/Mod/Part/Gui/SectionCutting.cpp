@@ -247,7 +247,7 @@ void SectionCut::startCutting(bool isInitial)
         // refresh documents list
         onRefreshCutPBclicked();
 
-    App::DocumentObject* anObject;
+    App::DocumentObject* anObject = nullptr;
     std::vector<App::DocumentObjectT>::iterator it;
 
     // lambda function to delete objects

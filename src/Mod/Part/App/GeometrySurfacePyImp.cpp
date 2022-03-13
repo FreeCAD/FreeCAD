@@ -238,9 +238,6 @@ PyObject* GeometrySurfacePy::getDN(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
-
-    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::value(PyObject *args)

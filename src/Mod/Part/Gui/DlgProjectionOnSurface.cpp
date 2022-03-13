@@ -195,7 +195,12 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   }
   for (auto it : m_shapeVec)
   {
-    higlight_object(it.partFeature, it.partName, false, 0);
+    try {
+      higlight_object(it.partFeature, it.partName, false, 0);
+    }
+    catch (Standard_NoSuchObject& e) {
+      Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s", e.GetMessageString());
+    }
   }
   Gui::Selection().rmvSelectionGate();
 }

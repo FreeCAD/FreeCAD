@@ -119,6 +119,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     , ViewProvider(ViewProvider)
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
+    , completed(false)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
