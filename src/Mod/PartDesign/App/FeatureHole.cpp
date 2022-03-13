@@ -979,6 +979,12 @@ double Hole::getThreadPitch() const
 {
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
+    if (threadType < 0) {
+        throw Base::IndexError("Thread type out of range");
+    }
+    if (threadSize < 0) {
+        throw Base::IndexError("Thread size out of range");
+    }
     return threadDescription[threadType][threadSize].pitch;
 }
 
@@ -1021,7 +1027,7 @@ void Hole::updateThreadDepthParam()
     }
 }
 
-void Hole::updateDiameterParam()
+std::optional<double> Hole::determineDiameter() const
 {
     // Diameter parameter depends on Threaded, ThreadType, ThreadSize, and ThreadFit
 
@@ -1031,14 +1037,14 @@ void Hole::updateDiameterParam()
         // When restoring the feature it might be in an inconsistent state.
         // So, just silently ignore it instead of throwing an exception.
         if (isRestoring())
-            return;
+            return std::nullopt;
         throw Base::IndexError("Thread type out of range");
     }
     if (threadSize < 0) {
         // When restoring the feature it might be in an inconsistent state.
         // So, just silently ignore it instead of throwing an exception.
         if (isRestoring())
-            return;
+            return std::nullopt;
         throw Base::IndexError("Thread size out of range");
     }
     double diameter = threadDescription[threadType][threadSize].diameter;
@@ -1046,7 +1052,7 @@ void Hole::updateDiameterParam()
     double clearance = 0.0;
 
     if (threadType == 0)
-        return;
+        return std::nullopt;
 
     if (Threaded.getValue()) {
 
@@ -1058,10 +1064,10 @@ void Hole::updateDiameterParam()
         }
 
         // use normed diameters if possible
-        std::string threadType = ThreadType.getValueAsString();
-        if (threadType == "ISOMetricProfile" || threadType == "UNC"
-            || threadType == "UNF" || threadType == "UNEF") {
-            diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].CoreHole + clearance;
+        std::string threadTypeStr = ThreadType.getValueAsString();
+        if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "UNC"
+            || threadTypeStr == "UNF" || threadTypeStr == "UNEF") {
+            diameter = threadDescription[threadType][threadSize].CoreHole + clearance;
         }
         // if nothing available, we must calculate
         else {
@@ -1071,9 +1077,9 @@ void Hole::updateDiameterParam()
     }
     else { // we have a clearance hole
         bool found = false;
-        std::string threadType = ThreadType.getValueAsString();
+        std::string threadTypeStr = ThreadType.getValueAsString();
         // UTS and metric have a different clearance hole set
-        if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
+        if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "ISOMetricFineProfile") {
             int MatrixRowSizeMetric = sizeof(metricHoleDiameters) / sizeof(metricHoleDiameters[0]);
             switch (ThreadFit.getValue()) {
             case 0: /* standard fit */
@@ -1123,7 +1129,7 @@ void Hole::updateDiameterParam()
                 throw Base::IndexError("Thread fit out of range");
             }
         }
-        else if (threadType == "UNC" || threadType == "UNF" || threadType == "UNEF") {
+        else if (threadTypeStr == "UNC" || threadTypeStr == "UNF" || threadTypeStr == "UNEF") {
             std::string ThreadSizeString = ThreadSize.getValueAsString();
             int MatrixRowSizeUTS = sizeof(UTSHoleDiameters) / sizeof(UTSHoleDiameters[0]);
             switch (ThreadFit.getValue()) {
@@ -1197,7 +1203,14 @@ void Hole::updateDiameterParam()
             }
         }
     }
-    Diameter.setValue(diameter);
+
+    return std::optional<double>{diameter};
+}
+
+void Hole::updateDiameterParam()
+{
+    if (auto opt = determineDiameter())
+        Diameter.setValue(opt.value());
 }
 
 void Hole::onChanged(const App::Property* prop)
@@ -1983,13 +1996,22 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape, const TopoDS_S
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
 {
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+    if (threadType < 0) {
+        throw Base::IndexError("Thread type out of range");
+    }
+    if (threadSize < 0) {
+        throw Base::IndexError("Thread size out of range");
+    }
+
     bool leftHanded = (bool)ThreadDirection.getValue();
 
     // Nomenclature and formulae according to Figure 1 of ISO 68-1
     // this is the same for all metric and UTS threads as stated here:
     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
     // Note that in the ISO standard, Dmaj is called D, which has been followed here.
-    double D = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;  // Major diameter
+    double D = threadDescription[threadType][threadSize].diameter;  // Major diameter
     double P = getThreadPitch();
     double H = sqrt(3) / 2 * P;                                                           // Height of fundamental triangle
 
