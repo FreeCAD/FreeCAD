@@ -1493,14 +1493,17 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     bool processed = false;
+    bool offeredtoViewerEventBase = false;
 
     //handle mouse wheel zoom
     if (ev->isOfType(SoMouseWheelEvent::getClassTypeId())) {
         const SoMouseWheelEvent * const event = static_cast<const SoMouseWheelEvent *>(ev);
         processed = processWheelEvent(event);
+        viewer->processSoEventBase(ev);
+        offeredtoViewerEventBase = true;
     }
 
-    if (!processed) {
+    if (!processed && !offeredtoViewerEventBase) {
         processed = viewer->processSoEventBase(ev);
     }
 

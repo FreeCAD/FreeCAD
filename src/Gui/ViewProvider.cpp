@@ -41,6 +41,7 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 
+#include "SoMouseWheelEvent.h"
 #include "ViewProvider.h"
 #include "ActionFunction.h"
 #include "Application.h"
@@ -217,7 +218,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                     // Therefore, we shall ignore ESC while any mouse button is
                     // pressed, until this Coin bug is fixed.
                     if (!press) {
-                        // react only on key release 
+                        // react only on key release
                         // Let first selection mode terminate
                         Gui::Document* doc = Gui::Application::Instance->activeDocument();
                         Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -229,7 +230,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                                 return;
                             }
                         }
-                        
+
                         Gui::TimerFunction* func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
                         func->setFunction(boost::bind(&Document::resetEdit, doc));
@@ -256,6 +257,12 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 
             // call the virtual method
             if (self->mouseButtonPressed(button,press,ev->getPosition(),viewer))
+                node->setHandled();
+        }
+        else if (ev->getTypeId().isDerivedFrom(SoMouseWheelEvent::getClassTypeId())) {
+            const SoMouseWheelEvent * const event = (const SoMouseWheelEvent *) ev;
+
+            if (self->mouseWheelEvent(event->getDelta(), event->getPosition(), viewer))
                 node->setHandled();
         }
         // Mouse Movement handling
@@ -667,6 +674,14 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     (void)pressed;
     (void)cursorPos;
     (void)viewer;
+    return false;
+}
+
+bool ViewProvider::mouseWheelEvent(int delta, const SbVec2s &cursorPos, const View3DInventorViewer* viewer)
+{
+    (void) delta;
+    (void) cursorPos;
+    (void) viewer;
     return false;
 }
 
