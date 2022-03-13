@@ -732,7 +732,7 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand(
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

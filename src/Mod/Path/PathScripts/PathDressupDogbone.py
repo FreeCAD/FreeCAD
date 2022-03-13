@@ -1400,7 +1400,7 @@ class CommandDressupDogbone(object):
             "PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)"
             % baseObject.Name
         )
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 
