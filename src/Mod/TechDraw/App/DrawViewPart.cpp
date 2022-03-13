@@ -936,8 +936,6 @@ Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
     TopoDS_Shape shape = getSourceShape();
     gp_Ax2 cs = getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0));
     Base::Vector3d center = TechDraw::findCentroidVec(shape, cs);
-    Base::Console().Message("DVP::getCurrentCentroid - center: %s\n",
-                             DrawUtil::formatVector(center).c_str());
     return center;
 }
 

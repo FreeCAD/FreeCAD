@@ -506,6 +506,13 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS
     return edges;
 }
 
+//we don't want to paint detail hightlights on top of detail views,
+//so tell the Gui that there are no details for this view
+std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs(void) const
+{
+    std::vector<DrawViewDetail*> result;
+    return result;
+}
 
 double DrawViewDetail::getFudgeRadius()
 {
