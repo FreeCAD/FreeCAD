@@ -5010,8 +5010,11 @@ protected:
     SELECT_MODE Mode;
     MOUSE_PRESS_MODE MousePressMode;
 
+    // Stores position of the poles of the BSpline.
     std::vector<Base::Vector2d> BSplinePoles;
 
+    // suggested autoconstraints for poles.
+    // A new one must be added e.g. using addSugConstraint() before adding a new pole.
     std::vector<std::vector<AutoConstraint>> sugConstr;
 
     int ConstrMethod;
