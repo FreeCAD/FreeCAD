@@ -382,6 +382,11 @@ bool AccelLineEdit::isNone() const
  */
 void AccelLineEdit::keyPressEvent (QKeyEvent * e)
 {
+    if (isReadOnly()) {
+        QLineEdit::keyPressEvent(e);
+        return;
+    }
+
     QString txtLine = text();
 
     int key = e->key();
