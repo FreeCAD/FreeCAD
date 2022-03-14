@@ -222,9 +222,13 @@ QString Action::cleanTitle(const QString & text)
     // Deal with QAction title mnemonic
     static QRegularExpression re(QStringLiteral("&(.)"));
     title.replace(re, QStringLiteral("\\1"));
+
+    // Probably not a good idea to trim ending punctuation
+#if 0
     // Trim line ending punctuation
     static QRegularExpression rePunct(QStringLiteral("[[:punct:]]+$"));
     title.replace(rePunct, QString());
+#endif
     return title;
 }
 
