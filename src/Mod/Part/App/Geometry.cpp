@@ -1374,15 +1374,20 @@ bool GeomBSplineCurve::isPeriodic() const
     return myCurve->IsPeriodic()==Standard_True;
 }
 
+void GeomBSplineCurve::setPeriodic() const
+{
+    myCurve->SetPeriodic();
+}
+
 bool GeomBSplineCurve::isRational() const
 {
     return myCurve->IsRational()==Standard_True;
 }
 
-bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
+bool GeomBSplineCurve::join(const Handle(Geom_BoundedCurve)& other)
 {
     GeomConvert_CompCurveToBSplineCurve ccbc(this->myCurve);
-    if (!ccbc.Add(spline, Precision::Approximation()))
+    if (!ccbc.Add(other, Precision::Approximation()))
         return false;
     this->myCurve = ccbc.BSplineCurve();
     return true;
