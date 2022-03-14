@@ -940,7 +940,7 @@ std::string DrawViewDimension::formatValue(qreal value,
                          Base::Tools::toStdString(qUserStringUnits) +
                          Base::Tools::toStdString(formatSuffix);
             } else if (showUnits()){
-                if (isDim and haveTolerance()) {
+                if (isDim && haveTolerance()) {
                     //unit will be included in tolerance so don't repeat it here
                     result = Base::Tools::toStdString(formatPrefix) +
                              result +
