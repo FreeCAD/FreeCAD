@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Base/Converter.h>
+#include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 #include <Mod/Part/App/TopoShapePy.h>
@@ -637,7 +638,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace MeshPart

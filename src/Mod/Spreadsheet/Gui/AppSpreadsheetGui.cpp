@@ -36,6 +36,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/MainWindow.h>
@@ -101,7 +102,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace SpreadsheetGui

@@ -780,7 +780,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Import

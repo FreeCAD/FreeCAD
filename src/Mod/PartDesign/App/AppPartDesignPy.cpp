@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <Base/Tools.h>
 
@@ -113,7 +114,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace PartDesign

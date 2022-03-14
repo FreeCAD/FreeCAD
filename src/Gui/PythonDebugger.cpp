@@ -103,8 +103,7 @@ void PythonDebugModule::init_module(void)
     PythonDebugStdout::init_type();
     PythonDebugStderr::init_type();
     PythonDebugExcept::init_type();
-    static PythonDebugModule* mod = new PythonDebugModule();
-    Q_UNUSED(mod);
+    Base::Interpreter().addModule(new PythonDebugModule);
 }
 
 PythonDebugModule::PythonDebugModule()
@@ -130,6 +129,9 @@ PythonDebugModule::PythonDebugModule()
 
 PythonDebugModule::~PythonDebugModule()
 {
+    Py::Dict d(moduleDictionary());
+    d["StdOut"] = Py::None();
+    d["StdErr"] = Py::None();
 }
 
 Py::Object PythonDebugModule::getFunctionCallCount(const Py::Tuple &)

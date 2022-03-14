@@ -409,8 +409,7 @@ Application::Application(bool GUIenabled)
         PyResource::init_type();
 
         // PySide additions
-        PySideUicModule* pySide = new PySideUicModule();
-        PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
+        PyModule_AddObject(module, "PySideUic", Base::Interpreter().addModule(new PySideUicModule));
 
         ExpressionBindingPy::init_type();
         Base::Interpreter().addType(ExpressionBindingPy::type_object(),

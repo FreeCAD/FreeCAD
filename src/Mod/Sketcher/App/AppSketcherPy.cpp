@@ -122,7 +122,7 @@ private:
 /// @cond DOXERR
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 /// @endcond
 

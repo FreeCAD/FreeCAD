@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Base/Interpreter.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Base64.h>
@@ -176,7 +177,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 

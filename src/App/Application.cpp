@@ -315,7 +315,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Console", pConsoleModule);
 
     // Translate module
-    PyObject* pTranslateModule = (new Base::Translate)->module().ptr();
+    PyObject* pTranslateModule = Base::Interpreter().addModule(new Base::Translate);
     Py_INCREF(pTranslateModule);
     PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
