@@ -23,68 +23,34 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-
+#include <QScreen>
+#include <Inventor/SbColor.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/SoRenderManager.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
-//#include <QGuiApplication>
-
-#include <QImage>
-#include <QPixmap>
-#include <QBitmap>
-#include <QGraphicsView>
-#include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QFormLayout>
-#include <QGraphicsProxyWidget>
-#include <QScreen>
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
-#include <Gui/NavigationStyle.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCVectorizeSVGAction.h>
 
-#include <Inventor/SbBasic.h>
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SbColor.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbVec2s.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec2d.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/SoRenderManager.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
-
-#include "Rez.h"
-#include "QGVPage.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-
 #include "Grabber3d.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

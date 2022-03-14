@@ -23,14 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QAbstractItemView>
-#include <QContextMenuEvent>
-#include <QLineEdit>
-#include <QMenu>
-#include <QTextBlock>
+# include <boost/algorithm/string/predicate.hpp>
+# include <QAbstractItemView>
+# include <QContextMenuEvent>
+# include <QLineEdit>
+# include <QMenu>
+# include <QTextBlock>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>

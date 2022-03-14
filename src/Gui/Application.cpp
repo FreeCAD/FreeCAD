@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include "InventorAll.h"
+# include <boost/interprocess/sync/file_lock.hpp>
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
@@ -38,7 +37,6 @@
 # include <QWindow>
 #endif
 
-#include <boost/interprocess/sync/file_lock.hpp>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>

@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCVECTORIZEU3DACTION_H
 #define GUI_SOFCVECTORIZEU3DACTION_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
-
 #include <fstream>
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include <Inventor/annex/HardCopy/SoVectorOutput.h>
 
 
 namespace Gui {

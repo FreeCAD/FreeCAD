@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <atomic>
 # include <cctype>
+# include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/details/SoDetail.h>
@@ -43,8 +44,6 @@
 #include <QApplication>
 #include <QMenu>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>

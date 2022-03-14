@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <boost/algorithm/string/predicate.hpp>
+#ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
+#endif
 
 #include "PropertyItem.h"
 #include "PropertyModel.h"

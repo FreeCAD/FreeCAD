@@ -23,12 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
+# include <QColorDialog>
 # include <sstream>
 #endif
-
-#include <QColorDialog>
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>

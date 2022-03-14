@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCINTERACTIVEELEMENT_H
 #define GUI_SOFCINTERACTIVEELEMENT_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 #include <QtOpenGL.h>
+
 
 namespace Gui {
 /**
