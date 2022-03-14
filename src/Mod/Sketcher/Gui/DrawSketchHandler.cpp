@@ -86,6 +86,11 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSk
     vp.drawEdit(EditCurve);
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSketch &vp, const std::list<std::vector<Base::Vector2d>> &list)
+{
+    vp.drawEdit(list);
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
 {
     vp.drawEditMarkers(EditMarkers, augmentationlevel);
@@ -109,6 +114,101 @@ inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(const 
 inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const ViewProviderSketch &vp)
 {
     return vp.getPreselectCross();
+}
+
+
+/**************************** CurveConverter **********************************************/
+
+CurveConverter::CurveConverter()
+{
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Attach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("CurveConverter: Malformed parameter string: %s\n", e.what());
+    }
+
+    updateCurvedEdgeCountSegmentsParameter();
+}
+
+CurveConverter::~CurveConverter()
+{
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Detach(this);
+    }
+    catch(const Base::ValueError & e) {// ensure that if parameter strings are not well-formed, the program is not terminated when calling the noexcept destructor.
+        Base::Console().Error("CurveConverter: Malformed parameter string: %s\n", e.what());
+    }
+}
+
+std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry * geometry)
+{
+    std::vector<Base::Vector2d> vector2d;
+
+    const auto type = geometry->getTypeId();
+
+    auto emplaceasvector2d = [&vector2d](const Base::Vector3d & point) {
+        vector2d.emplace_back(point.x,point.y);
+    };
+
+    auto isconic = type.isDerivedFrom(Part::GeomConic::getClassTypeId());
+    auto isbounded = type.isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId());
+
+    if (type == Part::GeomLineSegment::getClassTypeId()) { // add a line
+        auto geo = static_cast<const Part::GeomLineSegment *>(geometry);
+
+        emplaceasvector2d(geo->getStartPoint());
+        emplaceasvector2d(geo->getEndPoint());
+    }
+    else if ( isconic || isbounded ) {
+
+        auto geo = static_cast<const Part::GeomConic *>(geometry);
+
+        double segment = (geo->getLastParameter() - geo->getFirstParameter()) / curvedEdgeCountSegments;
+
+        for (int i=0; i < curvedEdgeCountSegments; i++)
+            emplaceasvector2d(geo->value(i*segment));
+
+        // either close the curve for untrimmed conic or set the last point for bounded curves
+        emplaceasvector2d(isconic ? geo->value(0) : geo->value(geo->getLastParameter()));
+    }
+
+    return vector2d;
+}
+
+std::list<std::vector<Base::Vector2d>> CurveConverter::toVector2DList(const std::vector<Part::Geometry *> &geometries)
+{
+    std::list<std::vector<Base::Vector2d>> list;
+
+    for(const auto & geo : geometries)
+        list.push_back(toVector2D(geo));
+
+    return list;
+}
+
+void CurveConverter::updateCurvedEdgeCountSegmentsParameter()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
+
+    // value cannot be smaller than 6
+    if (stdcountsegments < 6)
+        stdcountsegments = 6;
+
+    curvedEdgeCountSegments = stdcountsegments;
+};
+
+/** Observer for parameter group. */
+void CurveConverter::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    (void) rCaller;
+
+    if(strcmp(sReason, "SegmentsPerGeometry") == 0) {
+        updateCurvedEdgeCountSegmentsParameter();
+    }
+
 }
 
 /**************************** DrawSketchHandler *******************************************/
@@ -798,6 +898,20 @@ void DrawSketchHandler::resetPositionText(void)
 void DrawSketchHandler::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, EditCurve);
+}
+
+void DrawSketchHandler::drawEdit(const std::list<std::vector<Base::Vector2d>> &list)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, list);
+}
+
+void DrawSketchHandler::drawEdit(const std::vector<Part::Geometry *> &geometries)
+{
+    static CurveConverter c;
+
+    auto list = c.toVector2DList(geometries);
+
+    drawEdit(list);
 }
 
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)

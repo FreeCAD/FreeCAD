@@ -452,6 +452,38 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
 }
 
+void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>> &list)
+{
+    int ncoords = 0;
+
+    for(const auto & v : list)
+        ncoords += v.size();
+
+    editModeScenegraphNodes.EditCurveSet->numVertices.setNum(list.size());
+    editModeScenegraphNodes.EditCurvesCoordinate->point.setNum(ncoords);
+    editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.setNum(ncoords);
+    SbVec3f *verts = editModeScenegraphNodes.EditCurvesCoordinate->point.startEditing();
+    int32_t *index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
+    SbColor *color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
+
+    int coordindex=0;
+    int indexindex=0;
+    for(const auto & v : list) {
+        for (const auto & p : v) {
+            verts[coordindex].setValue(p.x, p.y, drawingParameters.zEdit);
+            color[coordindex] = drawingParameters.CreateCurveColor;
+            coordindex++;
+        }
+        index[indexindex] = v.size();
+        indexindex++;
+    }
+
+    editModeScenegraphNodes.EditCurvesCoordinate->point.finishEditing();
+    editModeScenegraphNodes.EditCurveSet->numVertices.finishEditing();
+    editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
+
+}
+
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
     editModeScenegraphNodes.textX->string = text;

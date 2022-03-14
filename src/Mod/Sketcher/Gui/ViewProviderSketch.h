@@ -707,6 +707,7 @@ private:
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
     /// draw the edit markers
     void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
     /// set the pick style of the sketch coordinate axes

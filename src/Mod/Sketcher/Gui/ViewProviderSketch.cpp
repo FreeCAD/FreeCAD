@@ -2586,6 +2586,11 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
     editCoinManager->drawEdit(EditCurve);
 }
 
+void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>> &list)
+{
+    editCoinManager->drawEdit(list);
+}
+
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
 {
     editCoinManager->drawEditMarkers(EditMarkers, augmentationlevel);
