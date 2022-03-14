@@ -31,6 +31,40 @@ class TestMetadata(unittest.TestCase):
     def setUp(self):
         self.test_dir = os.path.join(FreeCAD.getHomePath(), "Mod", "Test", "TestData")
 
+    def test_xml_constructor(self):
+        try:
+            filename = os.path.join(self.test_dir, "basic_metadata.xml")
+            md = FreeCAD.Metadata(filename)
+        except Exception:
+            self.fail("Metadata construction from XML file failed")
+
+        try:
+            filename = os.path.join(self.test_dir, "bad_root_node.xml")
+            md = FreeCAD.Metadata(filename)
+        except Exception as e:
+            FreeCAD.Console.PrintMessage(str(e) + "\n")
+            pass
+        else:
+            self.fail("Metadata construction from XML file with bad root node did not raise an exception")
+
+        try:
+            filename = os.path.join(self.test_dir, "bad_xml.xml")
+            md = FreeCAD.Metadata(filename)
+        except Exception as e:
+            FreeCAD.Console.PrintMessage(str(e) + "\n")
+            pass
+        else:
+            self.fail("Metadata construction from invalid XML file did not raise an exception")
+
+        try:
+            filename = os.path.join(self.test_dir, "bad_version.xml")
+            md = FreeCAD.Metadata(filename)
+        except Exception as e:
+            FreeCAD.Console.PrintMessage(str(e) + "\n")
+            pass
+        else:
+            self.fail("Metadata construction from XML file with bad version did not raise an exception")
+
     def test_toplevel_tags(self):
         filename = os.path.join(self.test_dir, "basic_metadata.xml")
         md = FreeCAD.Metadata(filename)

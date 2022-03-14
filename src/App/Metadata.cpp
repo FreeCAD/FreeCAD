@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <memory>
+# include <sstream>
 #endif
 
 #include "Metadata.h"
@@ -55,6 +56,34 @@ using namespace App;
 namespace fs = boost::filesystem;
 XERCES_CPP_NAMESPACE_USE
 
+namespace MetadataInternal {
+    class XMLErrorHandler : public HandlerBase {
+        void warning(const SAXParseException& toCatch)
+        {
+            // Don't deal with warnings at all
+        }
+
+        void error(const SAXParseException& toCatch)
+        {
+            std::stringstream message;
+            message << "Error at file \"" << StrX(toCatch.getSystemId())
+                << "\", line " << toCatch.getLineNumber()
+                << ", column " << toCatch.getColumnNumber()
+                << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
+            throw Base::XMLBaseException(message.str());
+        }
+
+        void fatalError(const SAXParseException& toCatch)
+        {
+            std::stringstream message;
+            message << "Fatal error at file \"" << StrX(toCatch.getSystemId())
+                << "\", line " << toCatch.getLineNumber()
+                << ", column " << toCatch.getColumnNumber()
+                << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
+            throw Base::XMLBaseException(message.str());
+        }
+    };
+}
 
 Metadata::Metadata(const fs::path& metadataFile)
 {
@@ -65,7 +94,7 @@ Metadata::Metadata(const fs::path& metadataFile)
     _parser->setValidationScheme(XercesDOMParser::Val_Never);
     _parser->setDoNamespaces(true);
 
-    auto errHandler = std::make_unique<HandlerBase>();
+    auto errHandler = std::make_unique<MetadataInternal::XMLErrorHandler>();
     _parser->setErrorHandler(errHandler.get());
 
     _parser->parse(metadataFile.string().c_str());

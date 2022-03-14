@@ -18,6 +18,9 @@ SET(Test_SRCS
 
 SET(TestData_SRCS
     TestData/basic_metadata.xml
+    TestData/bad_root_node.xml
+    TestData/bad_xml.xml
+    TestData/bad_version.xml
 )
 
 SOURCE_GROUP("" FILES ${Test_SRCS} ${TestData_SRCS})

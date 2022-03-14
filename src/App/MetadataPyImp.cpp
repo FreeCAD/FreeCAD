@@ -29,6 +29,7 @@
 #include "MetadataPy.cpp"
 
 using namespace Base;
+XERCES_CPP_NAMESPACE_USE
 
 // Returns a string which represents the object e.g. when printed in Python
 std::string MetadataPy::representation(void) const
@@ -69,6 +70,24 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             auto md = new Metadata(filename);
             setTwinPointer(md);
             return 0;
+        }
+        catch (const Base::XMLBaseException& e) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            return -1;
+        }
+        catch (const XMLException& toCatch) {
+            char* message = XMLString::transcode(toCatch.getMessage());
+            std::string what = message;
+            XMLString::release(&message);
+            PyErr_SetString(Base::BaseExceptionFreeCADError, what.c_str());
+            return -1;
+        }
+        catch (const DOMException& toCatch) {
+            char* message = XMLString::transcode(toCatch.getMessage());
+            std::string what = message;
+            XMLString::release(&message);
+            PyErr_SetString(Base::BaseExceptionFreeCADError, what.c_str());
+            return -1;
         }
         catch (...) {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Failed to create Metadata object");
