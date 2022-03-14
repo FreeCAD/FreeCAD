@@ -408,7 +408,7 @@ void ViewProviderPage::finishRestoring()
     m_docReady = true;
     //control drawing opening on restore based on Preference
     //mantis #2967 ph2 - don't even show blank page
-    if (Preferences::keepPagesUpToDate()) {
+    if (getDrawPage()->canUpdate()) {
         static_cast<void>(showMDIViewPage());
     }
     Gui::ViewProviderDocumentObject::finishRestoring();

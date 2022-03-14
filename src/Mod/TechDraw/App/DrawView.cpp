@@ -547,24 +547,9 @@ bool DrawView::keepUpdated(void)
 //    Base::Console().Message("DV::keepUpdated() - %s\n", getNameInDocument());
     bool result = false;
 
-    bool pageUpdate = false;
-    bool force = false;
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        pageUpdate = page->KeepUpdated.getValue();
-        force = page->forceRedraw();
-    }
-
-    if (DrawPage::GlobalUpdateDrawings() &&
-        pageUpdate)  {
-        result = true;
-    } else if (!DrawPage::GlobalUpdateDrawings() &&
-                DrawPage::AllowPageOverride()    &&
-                pageUpdate) {
-        result = true;
-    }
-    if (force) {         //when do we turn this off??
-        result = true;
+        result = page->canUpdate() || page->forceRedraw();
     }
     return result;
 }
