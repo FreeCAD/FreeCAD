@@ -45,7 +45,7 @@ public:
     ~ToolBarItem();
 
     void setCommand(const std::string&);
-    std::string command() const;
+    const std::string &command() const;
 
     bool hasItems() const;
     ToolBarItem* findItem(const std::string&);

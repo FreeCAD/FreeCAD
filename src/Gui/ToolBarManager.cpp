@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QToolBar>
 # include <QToolButton>
+# include <QPointer>
 #endif
 
 #include "ToolBarManager.h"
@@ -56,7 +57,7 @@ void ToolBarItem::setCommand(const std::string& name)
     _name = name;
 }
 
-std::string ToolBarItem::command() const
+const std::string & ToolBarItem::command() const
 {
     return _name;
 }
@@ -178,6 +179,14 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     if (!toolBarItems)
         return; // empty menu bar
 
+    static QPointer<QWidget> _ActionWidget;
+    if (!_ActionWidget)
+        _ActionWidget = new QWidget(getMainWindow());
+    else {
+        for (auto action : _ActionWidget->actions())
+            _ActionWidget->removeAction(action);
+    }
+
     saveState();
     this->toolbarNames.clear();
 
@@ -222,6 +231,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
         // setup the toolbar
         setup(*it, toolbar);
+        for (auto action : toolbar->actions())
+            _ActionWidget->addAction(action);
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
