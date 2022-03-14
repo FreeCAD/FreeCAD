@@ -152,7 +152,7 @@ Qt::PenStyle QGIHighlight::getHighlightStyle()
 
 int QGIHighlight::getHoleStyle()
 {
-    return PreferencesGui::mattingStyle();
+    return TechDraw::Preferences::mattingStyle();
 }
 
 void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
