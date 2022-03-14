@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2021 wayofwood <code@wayofwood.com>               *
+# *   Copyright (c) 2021 wayofwood <code@wayofwood.com>                     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,7 +31,7 @@ PathLog.trackModule(PathLog.thisModule())
 
 class TestPathKeyHoleGenerator(PathTestUtils.PathTestBase):
     def test00(self):
-        """Test KeyHole in X-direction """
+        """Test KeyHole in X-direction."""
         # Circle in the center of the coordinate system
         sp = FreeCAD.Base.Vector(0, 0, 0)
         ep = FreeCAD.Base.Vector(10, 0, 0)
@@ -49,7 +49,7 @@ class TestPathKeyHoleGenerator(PathTestUtils.PathTestBase):
 
         command = result[1]
         self.assertTrue(command.Name == "G1")
-        print (command.Parameters["X"])
+        print(command.Parameters["X"])
         self.assertTrue(command.Parameters["X"] - 10 < 1e-06)
         self.assertTrue(command.Parameters["X"] - 10 > -1e-06)
         self.assertTrue(command.Parameters["Y"] < 1e-06)
@@ -62,7 +62,7 @@ class TestPathKeyHoleGenerator(PathTestUtils.PathTestBase):
         self.assertTrue(command.Parameters["Z"] == 0)
 
     def test10(self):
-        """Test KeyHole in Y-direction """
+        """Test KeyHole in Y-direction."""
         sp = FreeCAD.Base.Vector(0, 0, 0)
         ep = FreeCAD.Base.Vector(0, 10, 0)
 
