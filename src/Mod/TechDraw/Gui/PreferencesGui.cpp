@@ -183,17 +183,6 @@ Qt::PenStyle PreferencesGui::sectionLineStyle()
 }
 
 
-int PreferencesGui::mattingStyle()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("MattingStyle", 0);
-    return style;
-}
-
-//lightgray 	#D3D3D3 
-
 QString PreferencesGui::weldingDirectory()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";

@@ -313,8 +313,8 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     gp_Ax2 viewAxis;
 
     viewAxis = dvp->getProjectionCS(shapeCenter);
-    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
-    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //anchor displacement in R3
+    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);   //anchor coord in projection CS
+    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //actual anchor coords in R3
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
@@ -324,24 +324,38 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor
     double extrudeLength = 2.0 * toolPlaneOrigin.Length();
 
-    //make a square face as a basis for cutting prism
-    //this should be square or circle depending on PreferencesGui::mattingStyle()
-    //but that would require bridge between App/Gui
     gp_Pnt gpnt(toolPlaneOrigin.x,toolPlaneOrigin.y,toolPlaneOrigin.z);
     gp_Dir gdir(dirDetail.x,dirDetail.y,dirDetail.z);
-    gp_Pln gpln(gpnt,gdir);
-    double hideToolRadius = radius * 1.0;
-    BRepBuilderAPI_MakeFace mkFace(gpln, -hideToolRadius,hideToolRadius,-hideToolRadius,hideToolRadius);
-    TopoDS_Face aProjFace = mkFace.Face();
-    if(aProjFace.IsNull()) {
-        Base::Console().Warning("DVD::execute - %s - failed to create tool base face\n", getNameInDocument());
-        return;
-    }
 
+    double hideToolRadius = radius * 1.0;
+    TopoDS_Face aProjFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
     gp_Vec extrudeDir(extrudeVec.x,extrudeVec.y,extrudeVec.z);
-    TopoDS_Shape tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
-
+    TopoDS_Shape tool;
+    if (Preferences::mattingStyle()) {
+        //square mat
+        gp_Pln gpln(gpnt,gdir);
+        BRepBuilderAPI_MakeFace mkFace(gpln, -hideToolRadius,hideToolRadius,-hideToolRadius,hideToolRadius);
+        aProjFace = mkFace.Face();
+        if(aProjFace.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool base face\n", getNameInDocument());
+            return;
+        }
+        tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
+        if(tool.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (prism)\n", getNameInDocument());
+            return;
+        }
+    } else {
+        //circular mat
+        gp_Ax2 cs(gpnt, gdir);
+        BRepPrimAPI_MakeCylinder mkTool(cs, hideToolRadius, extrudeLength);
+        tool = mkTool.Shape();
+        if(tool.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (cylinder)\n", getNameInDocument());
+            return;
+        }
+    }
 
     BRep_Builder builder;
     TopoDS_Compound pieces;
@@ -413,33 +427,30 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDraw::findCentroid(tool,
+        //centroid of result
+        inputCenter = TechDraw::findCentroid(pieces,
                                              dirDetail);
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
     m_saveCentroid += centroid;              //center of massaged shape
 
-    Base::Vector3d stdOrg(0.0,0.0,0.0);
-    gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);  //sb same CS as base view. 
-
     TopoDS_Shape scaledShape;
     if ((solidCount > 0) ||
         (shellCount > 0)) {
-        //make a detail of the solids/shell in the base view
-        //center shape on origin
+        //align shape with detail anchor
         TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
-                                                         centroid * -1.0);
+                                                         anchorOffset3d * -1.0);
         scaledShape = TechDraw::scaleShape(centeredShape,
                                            getScale());
         if (debugDetail()) {
-            BRepTools::Write(tool, "DVDScaled.brep");            //debug
+            BRepTools::Write(scaledShape, "DVDScaled.brep");            //debug
         }
     } else {
         //no solids, no shells, do what you can with edges
         TopoDS_Shape projectedEdges = projectEdgesOntoFace(myShape, aProjFace, gdir);
         TopoDS_Shape centeredShape = TechDraw::moveShape(projectedEdges,
-                                                         centroid * -1.0);
+                                                         anchorOffset3d * -1.0);
         if (debugDetail()) {
             BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");            //debug
             BRepTools::Write(centeredShape, "DVDCenteredShape.brep");            //debug
@@ -447,6 +458,9 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
         scaledShape = TechDraw::scaleShape(centeredShape,
                                            getScale());
     }
+
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
+    gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);
 
     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
         scaledShape = TechDraw::rotateShape(scaledShape,
