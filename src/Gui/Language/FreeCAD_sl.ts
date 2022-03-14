@@ -9872,7 +9872,7 @@ Ali želite vseeno nadaljevati?</translation>
     </message>
     <message>
       <source>Special Ops</source>
-      <translation>Posebne možnosti</translation>
+      <translation>Posebna opravila</translation>
     </message>
     <message>
       <source>Axonometric</source>

@@ -6,7 +6,7 @@
     <message>
       <location filename="OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD 文件包含 2D 和 3D 形状。这个导入器不支持，所有形状都必须是同一形状。</translation>
     </message>
     <message>
       <location filename="OpenSCADUtils.py" line="622"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>加载</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>

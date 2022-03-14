@@ -3942,47 +3942,47 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="53"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="58"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="63"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="68"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="73"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="78"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
@@ -4032,27 +4032,27 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="138"/>
       <source>ISO 606 10B</source>
-      <translation type="unfinished">ISO 606 10B</translation>
+      <translation>ISO 606 10B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="143"/>
       <source>ISO 606 12B</source>
-      <translation type="unfinished">ISO 606 12B</translation>
+      <translation>ISO 606 12B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="148"/>
       <source>ISO 606 16B</source>
-      <translation type="unfinished">ISO 606 16B</translation>
+      <translation>ISO 606 16B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="153"/>
       <source>ISO 606 20B</source>
-      <translation type="unfinished">ISO 606 20B</translation>
+      <translation>ISO 606 20B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="158"/>
       <source>ISO 606 24B</source>
-      <translation type="unfinished">ISO 606 24B</translation>
+      <translation>ISO 606 24B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>

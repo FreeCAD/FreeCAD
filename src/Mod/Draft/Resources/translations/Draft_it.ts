@@ -714,6 +714,11 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <translation>L'area di questo oggetto</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma di questo oggetto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>L'oggetto base usato da questo oggetto</translation>
@@ -737,11 +742,6 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>La rotazione del motivo usata da questo oggetto</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma di questo oggetto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

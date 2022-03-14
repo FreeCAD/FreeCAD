@@ -719,6 +719,11 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <translation>Área deste objeto</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma deste objeto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>O objeto de base usado por este objeto</translation>
@@ -742,11 +747,6 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>A rotação do padrão usada por este objeto</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma deste objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

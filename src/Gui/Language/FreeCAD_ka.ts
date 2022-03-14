@@ -7242,7 +7242,7 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>ბრძალების ვე&amp;ლის გაშვება...</translation>
+      <translation>ბრძანების ვე&amp;ლის გაშვება...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
@@ -8905,7 +8905,7 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>გამოგონების მაგალითი #1</translation>
+      <translation>Inventor-ის მაგალითი #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>

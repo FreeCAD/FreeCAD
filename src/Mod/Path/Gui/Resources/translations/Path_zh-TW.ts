@@ -606,7 +606,7 @@
     <message>
       <location filename="PathSlot.py" line="112"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>當模組處於除錯模式下創建物件時顯示暫時軌跡</translation>
+      <translation>當模型處於除錯模式時顯示臨時路徑構建物件。</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="115"/>
@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation type="unfinished">Start pocketing at center or boundary</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation type="unfinished">Extra offset to apply to the operation. Direction is operation dependent.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation type="unfinished">Start pocketing at center or boundary</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1277,6 +1277,21 @@
       <translation type="unfinished">The non-planar adaptive start is also unavailable.</translation>
     </message>
     <message>
+      <location filename="PathUtilsGui.py" line="93"/>
+      <source>Choose a Path Job</source>
+      <translation type="unfinished">Choose a Path Job</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="628"/>
+      <source>Feed(H)</source>
+      <translation type="unfinished">Feed(H)</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="632"/>
+      <source>Feed(V)</source>
+      <translation type="unfinished">Feed(V)</translation>
+    </message>
+    <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
       <translation type="unfinished">Invalid Filename</translation>
@@ -1364,7 +1379,7 @@
     <message>
       <location filename="InitGui.py" line="278"/>
       <source>Don't Show This Anymore</source>
-      <translation type="unfinished">Don't Show This Anymore</translation>
+      <translation>不再顯示</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
@@ -1555,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation type="unfinished">Unsupported stock object %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation type="unfinished">Unsupported stock type %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation type="unfinished">Stock not from Base bound box!</translation>
@@ -1578,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation type="unfinished">Stock not a cylinder!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation type="unfinished">Unsupported stock object %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation type="unfinished">Unsupported stock type %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1723,16 +1738,16 @@
       <translation type="unfinished">Base Location</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation type="unfinished">Heights</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation type="unfinished">Heights</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1768,13 +1783,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathOpGui.py" line="1390"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
-      <translation type="unfinished">No suitable tool controller found.
-Aborting op creation</translation>
+      <translation>找不到適合的工具控制器。
+停止操作建立</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1394"/>
       <source>No tool controller, aborting op creation</source>
-      <translation type="unfinished">No tool controller, aborting op creation</translation>
+      <translation>沒有工具控制器，正在停止操作建立</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -4325,22 +4340,22 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="193"/>
       <source>Custom External</source>
-      <translation type="unfinished">Custom External</translation>
+      <translation>自訂外部</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="197"/>
       <source>Custom Internal</source>
-      <translation type="unfinished">Custom Internal</translation>
+      <translation>自訂內部</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="201"/>
       <source>Imperial External (2A)</source>
-      <translation type="unfinished">Imperial External (2A)</translation>
+      <translation>英制外部 (2A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="205"/>
       <source>Imperial External (3A)</source>
-      <translation type="unfinished">Imperial External (3A)</translation>
+      <translation>英制外部 (3A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="207"/>
@@ -4355,7 +4370,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="209"/>
       <source>Imperial Internal (2B)</source>
-      <translation type="unfinished">Imperial Internal (2B)</translation>
+      <translation>英制內部 (2B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="210"/>
@@ -4365,22 +4380,22 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="213"/>
       <source>Imperial Internal (3B)</source>
-      <translation type="unfinished">Imperial Internal (3B)</translation>
+      <translation>英制內部 (3B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="217"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>公制外部 (4G6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="221"/>
       <source>Metric External (6G)</source>
-      <translation type="unfinished">Metric External (6G)</translation>
+      <translation>公制外部 (6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="225"/>
       <source>Metric Internal (6H)</source>
-      <translation type="unfinished">Metric Internal (6H)</translation>
+      <translation>公制內部 (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>
@@ -5531,7 +5546,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>模板</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
@@ -7766,7 +7781,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>模板</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
@@ -8318,7 +8333,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation type="unfinished">Dogbone</translation>
+      <translation>連桿</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>

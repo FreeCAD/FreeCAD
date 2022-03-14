@@ -720,6 +720,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>Площа цього об'єкту</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Базовий об'єкт використовується цим об’єктом</translation>
@@ -743,11 +748,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма цього об'єкта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

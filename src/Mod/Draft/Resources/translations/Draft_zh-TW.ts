@@ -6,27 +6,27 @@
     <message>
       <location filename="fillet.py" line="47"/>
       <source>The start point of this line.</source>
-      <translation>此線段之起點.</translation>
+      <translation>此線段的起點。</translation>
     </message>
     <message>
       <location filename="fillet.py" line="55"/>
       <source>The end point of this line.</source>
-      <translation>此線段之終點.</translation>
+      <translation>此線段的終點。</translation>
     </message>
     <message>
       <location filename="fillet.py" line="63"/>
       <source>The length of this line.</source>
-      <translation>這個線的長度.</translation>
+      <translation>此線段的長度。</translation>
     </message>
     <message>
       <location filename="fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation>圓角的半徑</translation>
+      <translation>倒角的半徑。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="169"/>
       <source>The base object that will be duplicated</source>
-      <translation>基本物件將被複製</translation>
+      <translation>將被複製的基本物件</translation>
     </message>
     <message>
       <location filename="array.py" line="98"/>
@@ -77,80 +77,80 @@
     <message>
       <location filename="array.py" line="185"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
+      <translation>將建立極坐標或圓形陣列中元素所圍繞的軸方向</translation>
     </message>
     <message>
       <location filename="array.py" line="196"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation type="unfinished">Center point for polar and circular arrays.
-The 'Axis' passes through this point.</translation>
+      <translation>極座標與圓形陣列的中心點。
+「軸」將穿過這一點。</translation>
     </message>
     <message>
       <location filename="array.py" line="215"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>覆蓋「軸」與「中心」值的軸物件，例如基準線。
+它的位置、位置和旋轉將在建立極坐標和圓形陣列時使用。
+將此屬性留空，以便能手動設定「軸」與「中心」。</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>
       <source>Number of copies in the polar direction</source>
-      <translation type="unfinished">Number of copies in the polar direction</translation>
+      <translation>極方向的副本數</translation>
     </message>
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>「軸」方向間隔的距離與方向</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>覆蓋副本的角度</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>圓形圖層之間的距離</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>同一圓形圖層中副本之間的距離</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation type="unfinished">Number of circular layers. The 'Base' object counts as one layer.</translation>
+      <translation>圓形圖層的數量。「基礎」物件計為一層。</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>確定圓形陣列具有多少個對稱平面的參數。</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes  the circular array will have.</translation>
+      <translation>確定圓形陣列具有多少個對稱平面的參數。</translation>
     </message>
     <message>
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>陣列中的元素總數。
+此屬性是唯讀的，因為數量取決於陣列的參數。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>顯示單個陣列元素（僅適用於連結陣列）</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>此區塊的元件</translation>
     </message>
     <message>
       <location filename="hatch.py" line="46"/>
@@ -170,12 +170,12 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>倒角半徑</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>倒角尺寸</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="58"/>
@@ -185,12 +185,12 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>此矩形的水平細分</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>此矩形的垂直細分</translation>
     </message>
     <message>
       <location filename="wire.py" line="93"/>
@@ -200,32 +200,32 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>將被複製的基本物件。</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>將沿其分布副本的物件。 它必須包含「邊緣」。</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>欲複製的數量。</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>扭曲陣列的旋轉係數。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>標示尺寸文字的法線方向</translation>
     </message>
     <message>
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>尺寸物件標示測量的物件</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -236,13 +236,12 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>此物件尺寸標示正在測量的物件及其特定子元素。
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+有各種可能性：
+- 物件及其邊緣之一。
+- 物件及其兩個頂點。
+- 弧形物件及其邊緣。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -254,13 +253,12 @@ There are various possibilities:
 - An object, and two of its vertices.
 - An arc object, and its edge.
 </source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>此物件尺寸標示正在測量的物件及其特定子元素。
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.
+有各種可能性：
+- 物件及其邊緣之一。
+- 物件及其兩個頂點。
+- 弧形物件及其邊緣。
 </translation>
     </message>
     <message>
@@ -273,14 +271,11 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>一個在尺寸線上或在尺寸線的延長線上的點
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- 對於線性尺寸標示，這個屬性控制尺寸線與被測物件之間的距離。
+- 對於徑向尺寸標示，它控制顯示測量半徑或直徑的尺寸線的方向。
+- 對於角度尺寸標示，它控制顯示測量角度的尺寸弧度的半徑。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -288,10 +283,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>尺寸線的起點。
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+如果為半徑尺寸標示，則是圓弧的中心點。
+如果為直徑尺寸標示，則是圓弧上的一點。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -299,17 +294,17 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>尺寸線的終點。
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+如果是半徑或直徑標示
+它將為圓弧上的一個點。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>尺寸線的方向。
+如果仍為「(0,0,0)」，將自動計算方向。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -320,34 +315,31 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>測量值。
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+此屬性是唯讀的，因為該值是由「起點」與「終點」計算出來的。
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+如果「連結幾何」是圓弧或圓，則此「距離」為半徑或直徑，將取決於「直徑」屬性。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>測量圓弧時，決定是否顯示半徑或直徑值。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>尺寸線（圓弧）的起始角度。
+圓弧是逆時針方向繪製的。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>尺寸線（圓弧）的結束角度。
+圓弧是逆時針方向繪製的。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -355,10 +347,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>圓弧為尺寸線的中心點。
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+這通常是兩條線段或其延伸的點
+相交，從而在它們之間產生測量的“角度”。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -366,22 +358,21 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>測量值。
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+此屬性是唯讀的，因為該值是由「第一個角度」和「最後一個角度」屬性計算而來。</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>第一行基準點的位置</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>此物件顯示的文字。
+它是一個字串列表； 列表中的每個元素都將顯示在自己的行中。</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
@@ -392,8 +383,7 @@ It is a list of strings; each element in the list will be displayed in its own l
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>圓弧的結束角度（對於完整的圓，其值與起始角度相同）</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
@@ -408,12 +398,12 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>控制圓的半徑</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>如何從控制圓中繪製多邊形</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
@@ -433,14 +423,14 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>物件是此圖層的一部分</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>引導線尖端的位置。
+這個點可以設定為箭頭或其他符號。</translation>
     </message>
     <message>
       <location filename="label.py" line="79"/>
@@ -448,10 +438,9 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>物件和可選的子元素，其屬性將顯示為「文字」，具體取決於「標籤類型」。
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+如果「標籤類型」設定為「自定義」，則不會使用「目標」。</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -464,15 +453,13 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>定義引導線的點列表； 通常是三點列表。
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+第一個點為文字的位置，也就是「位置」，
+最後一點為線的尖端，即「目標點」。
+中點將根據選擇的「直線方向」與「直線距離」值和符號自動計算。
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+如果「直線方向」設定為「自定義」，則「點」屬性可以設置為任意點的列表。</translation>
     </message>
     <message>
       <location filename="label.py" line="124"/>
@@ -480,10 +467,9 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>引導線直線段的方向。
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+如果選擇「自定義」，則可以透過將自定義列表設定「點」屬性來指定引導點。</translation>
     </message>
     <message>
       <location filename="label.py" line="142"/>
@@ -492,21 +478,20 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>引導線直線段的長度。
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+這是一個定向距離； 如果為負數，則線將繪製在「文字」的左側或下方，
+否則將繪製在其右側或上方，具體取決於「直線方向」的值。</translation>
     </message>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>3D 空間中「文字」元素的位置</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>當「標籤類型」設定為「自定義」時顯示的文字</translation>
     </message>
     <message>
       <location filename="label.py" line="181"/>
@@ -543,7 +528,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="47"/>
       <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
+      <translation>文字字串</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="50"/>
@@ -612,7 +597,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>如果為封閉樣條，則建立一個面</translation>
     </message>
     <message>
       <location filename="bspline.py" line="67"/>
@@ -723,6 +708,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>此物件的面積</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>此物件的形狀</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -746,11 +736,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>此物件的形狀</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -780,7 +765,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>如果為封閉曲線，則建立一個面</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="66"/>
@@ -1013,12 +998,12 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="view_dimension.py" line="155"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>文字與尺寸線間的間距</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>將尺寸文字旋轉180度</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="174"/>
@@ -1031,8 +1016,8 @@ Leave '(0,0,0)' for automatic position</translation>
       <location filename="view_dimension.py" line="185"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>文字覆蓋。
+輸入「$dim」將其取代為尺寸長度。</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="196"/>
@@ -1066,7 +1051,7 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>將尺寸箭頭旋轉180度</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="260"/>
@@ -1090,7 +1075,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_dimension.py" line="288"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>顯示尺寸線與箭頭</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="66"/>
@@ -1253,12 +1238,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="init_draft_statusbar.py" line="270"/>
       <source>Object snapping</source>
-      <translation type="unfinished">Object snapping</translation>
+      <translation>貼齊物件</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
+      <translation>開啟/關閉視覺輔助尺寸</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="322"/>
@@ -1335,9 +1320,9 @@ beyond the dimension line</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation>Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>dxf 資料庫下載失敗。
+請手動安裝 dxf 資料庫附加元件
+從選單 工具 -&gt; 附加元件管理器</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="91"/>
@@ -1397,7 +1382,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>建立倒角</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="329"/>
@@ -1703,7 +1688,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_groups.py" line="263"/>
       <source>Autogroup</source>
-      <translation type="unfinished">Autogroup</translation>
+      <translation>自動群組</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="266"/>
@@ -1716,7 +1701,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>貝茲曲線</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="63"/>
@@ -1980,7 +1965,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>建立一個橢圓，使用 CTRL 捕捉。</translation>
     </message>
   </context>
   <context>
@@ -1993,7 +1978,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation type="unfinished">Creates a facebinder object from selected faces.</translation>
+      <translation>由所選面中建立一個面連接器物件。</translation>
     </message>
   </context>
   <context>
@@ -2014,7 +1999,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>旋轉尺寸</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="66"/>
@@ -2499,12 +2484,12 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>顯示貼齊工具列</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
+      <translation>隱藏時，將顯示貼齊工具列。</translation>
     </message>
   </context>
   <context>
@@ -2559,7 +2544,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
-      <translation type="unfinished">Show dimensions</translation>
+      <translation>顯示尺寸</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="529"/>
@@ -3235,7 +3220,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="1106"/>
       <source>Radius of Circle</source>
-      <translation>圓半徑</translation>
+      <translation>圓的半徑</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="748"/>
@@ -3276,7 +3261,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>如果選取，命令將不會完成直到你再次按這個命令按鈕</translation>
+      <translation>如果選取，指令將不會結束直到再次按下指令按鈕</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="771"/>
@@ -3286,7 +3271,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="772"/>
       <source>&amp;OCC-style offset</source>
-      <translation>&amp;OCC型式印刷</translation>
+      <translation>&amp;OCC 型式偏移量</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="782"/>
@@ -3321,7 +3306,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
+      <translation>選擇一條現有的邊按此尺寸測量</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="792"/>
@@ -4389,67 +4374,67 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>貼齊中點</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>貼齊中心</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>貼齊角度</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>貼齊相交</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>貼齊垂直方向</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>延伸貼齊</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>平行貼齊</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>特殊貼齊</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>鄰近貼齊</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>對齊頂部</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>對齊網格</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>對齊工作平面</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>捕捉尺寸</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -4544,7 +4529,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>建立連結陣列：</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
@@ -4679,7 +4664,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="gui_shapestrings.py" line="141"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>建立字串造型產生器</translation>
     </message>
     <message>
       <location filename="importDXF.py" line="146"/>
@@ -4721,7 +4706,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_ellipses.py" line="138"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>建立橢圓</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="202"/>
@@ -4731,7 +4716,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>建立直線</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="189"/>
@@ -4801,17 +4786,17 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_dimensions.py" line="309"/>
       <source>Create Dimension (radial)</source>
-      <translation type="unfinished">Create Dimension (radial)</translation>
+      <translation>建立尺寸（圓弧）</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>邊緣過短！</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
+      <translation>邊緣未相交!</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="77"/>
@@ -4941,47 +4926,47 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_snaps.py" line="338"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
+      <translation>貼齊角度（30或45度角）</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="368"/>
       <source>Arc center snap</source>
-      <translation type="unfinished">Arc center snap</translation>
+      <translation>貼齊圓弧中心</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="398"/>
       <source>Edge extension snap</source>
-      <translation type="unfinished">Edge extension snap</translation>
+      <translation>貼齊延伸邊緣</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="428"/>
       <source>Near snap</source>
-      <translation type="unfinished">Near snap</translation>
+      <translation>鄰近貼齊</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="459"/>
       <source>Orthogonal snap</source>
-      <translation type="unfinished">Orthogonal snap</translation>
+      <translation>垂直貼齊</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="489"/>
       <source>Special point snap</source>
-      <translation type="unfinished">Special point snap</translation>
+      <translation>貼齊特殊點</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="520"/>
       <source>Dimension display</source>
-      <translation type="unfinished">Dimension display</translation>
+      <translation>尺寸顯示</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="553"/>
       <source>Working plane snap</source>
-      <translation type="unfinished">Working plane snap</translation>
+      <translation>貼齊工作平面</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>顯示貼齊工具列</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="77"/>
@@ -5136,7 +5121,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>旋轉尺寸</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="75"/>
@@ -5221,7 +5206,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation type="unfinished">Create Label</translation>
+      <translation>建立標籤</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="218"/>
@@ -5401,7 +5386,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_fillets.py" line="164"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>無法建立倒角</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="194"/>
@@ -5441,7 +5426,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_groups.py" line="257"/>
       <source>Autogroup</source>
-      <translation type="unfinished">Autogroup</translation>
+      <translation>自動群組</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="305"/>
@@ -5516,22 +5501,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_arcs.py" line="318"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>建立圓形（零件）</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="336"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>建立圓形</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="370"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>建立弧線（零件）</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="390"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>建立弧線</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="467"/>
@@ -5551,7 +5536,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>建立文字</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="79"/>
@@ -5789,7 +5774,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="190"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>視窗和對話方塊要使用的字體</translation>
+      <translation>文字與尺寸使用的字體</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
@@ -5816,7 +5801,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>尺寸值顯示的小數位數</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
@@ -5832,7 +5817,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>單位覆蓋</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
@@ -5903,7 +5888,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Dimension overshoot</source>
-      <translation type="unfinished">Dimension overshoot</translation>
+      <translation>尺寸超越量</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="387"/>
@@ -5920,7 +5905,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+      <translation>於尺寸線尾端使用的箭頭或標記類型</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="400"/>
@@ -5931,7 +5916,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="407"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The color of dimension lines, arrows and texts</source>
-      <translation type="unfinished">The color of dimension lines, arrows and texts</translation>
+      <translation>尺寸線、箭頭和文字的顏色</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
@@ -6718,7 +6703,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="205"/>
       <source>The type of dimension arrows</source>
-      <translation type="unfinished">The type of dimension arrows</translation>
+      <translation>尺寸箭頭的樣式</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="209"/>
@@ -6758,7 +6743,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="257"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>視窗和對話方塊要使用的字體</translation>
+      <translation>文字與尺寸使用的字體</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="264"/>
@@ -6768,12 +6753,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
       <source>The color of texts and dimension texts</source>
-      <translation type="unfinished">The color of texts and dimension texts</translation>
+      <translation>文字與尺寸文字的顏色</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="278"/>
       <source>The size of texts and dimension texts</source>
-      <translation type="unfinished">The size of texts and dimension texts</translation>
+      <translation>文字與尺寸文字的大小</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="288"/>
@@ -6783,12 +6768,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>單位後綴是否顯示於尺寸文字上</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="308"/>
       <source>The size of dimension arrows</source>
-      <translation type="unfinished">The size of dimension arrows</translation>
+      <translation>尺寸箭頭的大小</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
@@ -6803,12 +6788,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="332"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>單位覆蓋</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="339"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
+      <translation>尺寸標示使用的單位。 留空以使用目前 FreeCAD 的單位</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="346"/>
@@ -6818,7 +6803,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="353"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>文字與尺寸線的間距</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
@@ -7123,7 +7108,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="177"/>
       <source>The default template to use when creating a new drawing sheet</source>
-      <translation>創建新圖面時使用的預設範本</translation>
+      <translation>建立新圖面時使用的預設模板</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="194"/>
@@ -7303,7 +7288,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
       <source>Dimension line overshoot</source>
-      <translation type="unfinished">Dimension line overshoot</translation>
+      <translation>尺寸線超越量</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="280"/>
@@ -7388,7 +7373,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="475"/>
       <source>Override unit</source>
-      <translation type="unfinished">Override unit</translation>
+      <translation>覆蓋單位</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
@@ -7560,9 +7545,8 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation type="unfinished">Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</translation>
+      <translation>允許 FreeCAD 下載用於 DXF 匯入和匯出的 Python 轉換器。
+您也可以通過附加元件管理器安裝「dxf_library」工作台手動執行此操作。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>

@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation>Ξεκινήστε να δημιουργείτε εσοχή στο κέντρο ή στο όριο</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>Ποσοστό της διαμέτρου του κόπτη προς υπέρθεση σε κάθε πέρασμα</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Επιπλέον μετατόπιση για την υποβολή αίτησης για τη διαδικασία. Η κατεύθυνση εξαρτάται από τη λειτουργία.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation>Ξεκινήστε να δημιουργείτε εσοχή στο κέντρο ή στο όριο</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Ποσοστό της διαμέτρου του κόπτη προς υπέρθεση σε κάθε πέρασμα</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1277,6 +1277,21 @@
       <translation type="unfinished">The non-planar adaptive start is also unavailable.</translation>
     </message>
     <message>
+      <location filename="PathUtilsGui.py" line="93"/>
+      <source>Choose a Path Job</source>
+      <translation type="unfinished">Choose a Path Job</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="628"/>
+      <source>Feed(H)</source>
+      <translation type="unfinished">Feed(H)</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="632"/>
+      <source>Feed(V)</source>
+      <translation type="unfinished">Feed(V)</translation>
+    </message>
+    <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
       <translation type="unfinished">Invalid Filename</translation>
@@ -1555,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Μη υποστηριζόμενο αντικείμενο αποθέματος %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Μη υποστηριζόμενος τύπος αποθέματος %s(%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Το απόθεμα δεν είναι από το πλαίσιο οριοθέτησης Βάσης!</translation>
@@ -1578,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Το απόθεμα δεν είναι κύλινδρος!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Μη υποστηριζόμενο αντικείμενο αποθέματος %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Μη υποστηριζόμενος τύπος αποθέματος %s(%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1723,16 +1738,16 @@
       <translation>Τοποθεσία Βάσης</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Ύψη</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Ύψη</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>

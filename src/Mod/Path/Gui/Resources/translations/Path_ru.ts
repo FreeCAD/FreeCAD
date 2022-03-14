@@ -714,16 +714,6 @@
       <translation>Выражение, используемое для StepDown (шага по глубине) новых операций.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation>Начинать обработку кармана из центра или от границ</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>Процент диаметра фрезы для шага на каждом проходе</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Направление движения инструмента по Часовой (CW) или Против часовой стрелки (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Дополнительное смещение применяется к операции. Направление зависит от операции.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation>Начинать обработку кармана из центра или от границ</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Процент диаметра фрезы для шага на каждом проходе</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1277,6 +1277,21 @@
       <translation>Non-planar адаптивный старт также недоступен.</translation>
     </message>
     <message>
+      <location filename="PathUtilsGui.py" line="93"/>
+      <source>Choose a Path Job</source>
+      <translation type="unfinished">Choose a Path Job</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="628"/>
+      <source>Feed(H)</source>
+      <translation type="unfinished">Feed(H)</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="632"/>
+      <source>Feed(V)</source>
+      <translation type="unfinished">Feed(V)</translation>
+    </message>
+    <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
       <translation type="unfinished">Invalid Filename</translation>
@@ -1364,7 +1379,7 @@
     <message>
       <location filename="InitGui.py" line="278"/>
       <source>Don't Show This Anymore</source>
-      <translation type="unfinished">Don't Show This Anymore</translation>
+      <translation>Больше не показывать</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
@@ -1555,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Неподдерживаемый объект заготовки %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Неподдерживаемый тип заготовки %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Заготовка не из базового ограничивающего объёма!</translation>
@@ -1578,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Заготовка не цилиндр!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Неподдерживаемый объект заготовки %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Неподдерживаемый тип заготовки %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1723,15 +1738,15 @@
       <translation>Базовое Расположение</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Высоты</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>ФинальнаяВысота не может быть изменена для этой операции. Если необходимо вручную установленная ФинальнаяВысота, пожалуйста, выберите другую операцию.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Высоты</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1767,13 +1782,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathOpGui.py" line="1390"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
-      <translation type="unfinished">No suitable tool controller found.
-Aborting op creation</translation>
+      <translation>Не найден подходящий контроллер инструментов.
+Прерываем команду</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1394"/>
       <source>No tool controller, aborting op creation</source>
-      <translation type="unfinished">No tool controller, aborting op creation</translation>
+      <translation>Нет контроллера инструмента, отмена создания команды</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -4324,22 +4339,22 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="193"/>
       <source>Custom External</source>
-      <translation type="unfinished">Custom External</translation>
+      <translation>Пользовательские внешние</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="197"/>
       <source>Custom Internal</source>
-      <translation type="unfinished">Custom Internal</translation>
+      <translation>Пользовательские внутренние</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="201"/>
       <source>Imperial External (2A)</source>
-      <translation type="unfinished">Imperial External (2A)</translation>
+      <translation>Имперская внешняя (2A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="205"/>
       <source>Imperial External (3A)</source>
-      <translation type="unfinished">Imperial External (3A)</translation>
+      <translation>Имперская внешняя (3A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="207"/>
@@ -4354,7 +4369,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="209"/>
       <source>Imperial Internal (2B)</source>
-      <translation type="unfinished">Imperial Internal (2B)</translation>
+      <translation>Имперская внутренняя (2B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="210"/>
@@ -4364,22 +4379,22 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="213"/>
       <source>Imperial Internal (3B)</source>
-      <translation type="unfinished">Imperial Internal (3B)</translation>
+      <translation>Имперская внутренняя (3B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="217"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>Наружная метрическая (4G6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="221"/>
       <source>Metric External (6G)</source>
-      <translation type="unfinished">Metric External (6G)</translation>
+      <translation>Наружная метрическая (6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="225"/>
       <source>Metric Internal (6H)</source>
-      <translation type="unfinished">Metric Internal (6H)</translation>
+      <translation>Внутренняя метрическая (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>

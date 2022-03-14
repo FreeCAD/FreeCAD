@@ -6,7 +6,7 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Desestali amarauna</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Desestali aurpegia</translation>
     </message>
   </context>
   <context>

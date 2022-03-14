@@ -720,6 +720,11 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på de punkter som ryms 
       <translation>Arean för detta objekt</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Formen på detta objekt</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -743,11 +748,6 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på de punkter som ryms 
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Formen på detta objekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

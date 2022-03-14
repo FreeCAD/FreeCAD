@@ -714,16 +714,6 @@
       <translation>Kifejezés az új műveletek szintmagasságára.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation>Zseb létrehozása a határvonal közepénél</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>Maró átmérő százaléka mellyel átlép minden elhaladáskor</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>A szerszámmozgás az alkatrész körül leírt iránya az óramutató járásával megegyező (CW) vagy az óramutató járásával ellentétes irányú (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Extra eltolása a művelethez. Iránya a függ a művelettől.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation>Zseb létrehozása a határvonal közepénél</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Maró átmérő százaléka mellyel átlép minden elhaladáskor</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1277,6 +1277,21 @@
       <translation>A nem síkbeli adaptív rendszerindítás szintén nem érhető el.</translation>
     </message>
     <message>
+      <location filename="PathUtilsGui.py" line="93"/>
+      <source>Choose a Path Job</source>
+      <translation>Tevékenység elérési útjának kijelölése</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="628"/>
+      <source>Feed(H)</source>
+      <translation type="unfinished">Feed(H)</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="632"/>
+      <source>Feed(V)</source>
+      <translation type="unfinished">Feed(V)</translation>
+    </message>
+    <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
       <translation>Érvénytelen fájlnév</translation>
@@ -1364,7 +1379,7 @@
     <message>
       <location filename="InitGui.py" line="278"/>
       <source>Don't Show This Anymore</source>
-      <translation type="unfinished">Don't Show This Anymore</translation>
+      <translation>Ne mutasd többet</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
@@ -1555,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nem támogatott alaptest tárgy %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nem támogatott alaptest típus %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Alaptest nem az alapértelmezetthez kötött listából!</translation>
@@ -1578,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Alaptest nem egy henger!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Nem támogatott alaptest tárgy %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Nem támogatott alaptest típus %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1723,16 +1738,16 @@
       <translation>Alap helyzet</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Magasságok</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Végleges-Mélység nem módosítható ehhez a művelethez.
 Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy másik műveletet.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Magasságok</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1768,13 +1783,13 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathOpGui.py" line="1390"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
-      <translation type="unfinished">No suitable tool controller found.
-Aborting op creation</translation>
+      <translation>Nem található megfelelő szerszámvezérlő.
+Az op-létrehozás megszakítása</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1394"/>
       <source>No tool controller, aborting op creation</source>
-      <translation type="unfinished">No tool controller, aborting op creation</translation>
+      <translation>Nincs eszközvezérlő, megszakítja az op létrehozását</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -4327,22 +4342,22 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="193"/>
       <source>Custom External</source>
-      <translation type="unfinished">Custom External</translation>
+      <translation>Egyéni külső</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="197"/>
       <source>Custom Internal</source>
-      <translation type="unfinished">Custom Internal</translation>
+      <translation>Egyéni belső</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="201"/>
       <source>Imperial External (2A)</source>
-      <translation type="unfinished">Imperial External (2A)</translation>
+      <translation>Birodalmi külső (2A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="205"/>
       <source>Imperial External (3A)</source>
-      <translation type="unfinished">Imperial External (3A)</translation>
+      <translation>Birodalmi külső (3A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="207"/>
@@ -4357,7 +4372,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="209"/>
       <source>Imperial Internal (2B)</source>
-      <translation type="unfinished">Imperial Internal (2B)</translation>
+      <translation>Birodalmi belső (2B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="210"/>
@@ -4367,22 +4382,22 @@ Aborting op creation</translation>
     <message>
       <location filename="PathThreadMilling.py" line="213"/>
       <source>Imperial Internal (3B)</source>
-      <translation type="unfinished">Imperial Internal (3B)</translation>
+      <translation>Birodalmi belső (3B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="217"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>Metrikus külső (4G6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="221"/>
       <source>Metric External (6G)</source>
-      <translation type="unfinished">Metric External (6G)</translation>
+      <translation>Metrikus külső (6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="225"/>
       <source>Metric Internal (6H)</source>
-      <translation type="unfinished">Metric Internal (6H)</translation>
+      <translation>Metrikus belső (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>

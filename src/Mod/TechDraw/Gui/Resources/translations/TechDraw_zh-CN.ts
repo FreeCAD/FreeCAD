@@ -6,22 +6,22 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>移动视图</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>移动视图到新页面</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>将其移至不同的列表</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>选择要从列表移动的视图。</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>选择页面</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>分享视图</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>查看分享</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>选择页面</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="112"/>
@@ -97,7 +97,7 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>复制视图</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>选择页面</translation>
     </message>
   </context>
   <context>

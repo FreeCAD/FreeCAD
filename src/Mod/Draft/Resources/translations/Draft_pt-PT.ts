@@ -721,6 +721,11 @@ Esta propriedade é apenas-de-leitura, já que o número depende dos pontos cont
       <translation>Área deste objeto</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma deste objeto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -744,11 +749,6 @@ Esta propriedade é apenas-de-leitura, já que o número depende dos pontos cont
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma deste objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -2956,7 +2956,7 @@ Então você pode usá-la para salvar uma posição diferente de câmara e estad
     <message>
       <location filename="InitGui.py" line="110"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Ferramentas de modificação Rascunho</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="113"/>

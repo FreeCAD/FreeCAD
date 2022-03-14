@@ -3244,7 +3244,7 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation type="unfinished">Contracted Area</translation>
+      <translation>Area uzkurtua</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -3316,17 +3316,17 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
       <source>Head loss coefficient</source>
-      <translation type="unfinished">Head loss coefficient</translation>
+      <translation>Buru hidraulikoaren galera-koefizientea</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
       <source>Gate valve closing coefficient</source>
-      <translation type="unfinished">Gate valve closing coefficient</translation>
+      <translation>Ate-balbularen ixte-koefizientea</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump Characteristic</source>
-      <translation type="unfinished">Pump Characteristic</translation>
+      <translation>Ponpa-ezaugarria</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="621"/>
@@ -3361,17 +3361,17 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss[mm]</source>
-      <translation type="unfinished">Head Loss[mm]</translation>
+      <translation>Buru hidraulikoaren galera [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
       <source>Grain diameter</source>
-      <translation type="unfinished">Grain diameter</translation>
+      <translation>Garau-diametroa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="780"/>
       <source>Cross section form factor</source>
-      <translation type="unfinished">Cross section form factor</translation>
+      <translation>Zeharkako sekzioaren forma-faktorea</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
@@ -3461,7 +3461,7 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="40"/>
       <source>Farfield / Electric infinity</source>
-      <translation type="unfinished">Farfield / Electric infinity</translation>
+      <translation>Farfield / Amaigabetasun elektrikoa</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="49"/>
@@ -3484,7 +3484,7 @@ funtzionatzen du.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="116"/>
       <source>Capacity Body: </source>
       <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation type="unfinished">Capacity Body: </translation>
+      <translation>Edukiera-gorputza: </translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
@@ -3579,12 +3579,12 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh boundary layer settings</source>
-      <translation type="unfinished">Mesh boundary layer settings</translation>
+      <translation>Saretaren muga-geruzaren ezarpenak</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="37"/>
       <source>Max Layers</source>
-      <translation type="unfinished">Max Layers</translation>
+      <translation>Gehienezko geruzak</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
@@ -3594,7 +3594,7 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="88"/>
       <source>Min/1st thickness</source>
-      <translation type="unfinished">Min/1st thickness</translation>
+      <translation>Min/1. lodiera</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
@@ -3637,12 +3637,12 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation type="unfinished">FEM Mesh by Gmsh</translation>
+      <translation>FEM amarauna Gmsh bidez</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameter</source>
-      <translation type="unfinished">FEM Mesh Parameter</translation>
+      <translation>FEM amaraunaren parametroa</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -3888,7 +3888,7 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="61"/>
       <source>Peeq</source>
-      <translation type="unfinished">Peeq</translation>
+      <translation>Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="68"/>
@@ -3908,22 +3908,22 @@ funtzionatzen du.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="89"/>
       <source>Max Principal Stress</source>
-      <translation type="unfinished">Max Principal Stress</translation>
+      <translation>Estres nagusi max.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="96"/>
       <source>Min Principal Stress</source>
-      <translation type="unfinished">Min Principal Stress</translation>
+      <translation>Estres nagusi min.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Max Shear Stress (Tresca)</source>
-      <translation type="unfinished">Max Shear Stress (Tresca)</translation>
+      <translation>ZIzailadura-esfortzu maximoa (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="110"/>
       <source>Mass Flow Rate</source>
-      <translation type="unfinished">Mass Flow Rate</translation>
+      <translation>Masaren fluxu-emaria</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
@@ -3982,11 +3982,11 @@ funtzionatzen du.</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Estres-intentsitatearen ekuazioa. Balio erabilgarriak numpy matrize-formatukoak dira. np.function kalkulua erabili daiteke balio erabilgarrietan. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -4006,7 +4006,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="67"/>
       <source>mass flow rate: MF</source>
-      <translation type="unfinished">mass flow rate: MF</translation>
+      <translation>masaren fluxu-emaria: MF</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="83"/>
@@ -4026,7 +4026,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="113"/>
       <source>min. principal stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">min. principal stress vector: s1x, s1y, s1z</translation>
+      <translation>estres-bektore nagusi min.: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="123"/>
@@ -4041,12 +4041,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="143"/>
       <source>equivalent plastic strain: Peeq</source>
-      <translation type="unfinished">equivalent plastic strain: Peeq</translation>
+      <translation>tentsio plastiko baliokidea: Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="153"/>
       <source>med. principal stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">med. principal stress vector: s2x, s2y, s2z</translation>
+      <translation>tarteko estres-bektore nagusia: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
@@ -4056,7 +4056,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="200"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation type="unfinished">strain: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>tentsioa: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="210"/>
@@ -4066,7 +4066,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="220"/>
       <source>max. principal stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">max. principal stress vector: s3x, s3y, s3z</translation>
+      <translation>estres-bektore nagusi max.: s3x, s3y, s3z</translation>
     </message>
   </context>
   <context>
@@ -4099,7 +4099,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="74"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Egiaztatu amarauna</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="81"/>
@@ -4114,7 +4114,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Sabeltzea</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="110"/>
@@ -4567,8 +4567,8 @@ p, li { white-space: pre-wrap; }
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="275"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Ertzaren norabidea edo aurpegiaren bektore normalaren
+norabidea erabiliko da norabide gisa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="300"/>
@@ -4626,7 +4626,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Prescribed Force</source>
-      <translation type="unfinished">Prescribed Force</translation>
+      <translation>Preskribatutako indarra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="38"/>
@@ -4662,8 +4662,8 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="109"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Ertzaren norabidea edo aurpegiaren bektore normalaren
+norabidea erabiliko da norabide gisa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="119"/>
@@ -4676,7 +4676,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>TaskFemConstraintHeatflux</source>
-      <translation type="unfinished">TaskFemConstraintHeatflux</translation>
+      <translation>TaskFemConstraintHeatflux</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
@@ -4707,7 +4707,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="77"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>Film-koefizientea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="84"/>
@@ -4754,7 +4754,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
-      <translation type="unfinished">Select a single face, click Add or Remove</translation>
+      <translation>Hautatu aurpegi bakar bat, sakatu 'Gehitu' edo 'Kendu'</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="29"/>
@@ -4959,12 +4959,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside Out</source>
-      <translation type="unfinished">Inside Out</translation>
+      <translation>Barrutik kanpora</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut Cells</source>
-      <translation type="unfinished">Cut Cells</translation>
+      <translation>Moztu gelaxkak</translation>
     </message>
   </context>
   <context>
@@ -5193,7 +5193,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
       <source>Clip inside out</source>
-      <translation type="unfinished">Clip inside out</translation>
+      <translation>Ebaki barrutik kanpora</translation>
     </message>
   </context>
   <context>
@@ -5314,7 +5314,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetrahedron count:</source>
-      <translation type="unfinished">Tetrahedron count:</translation>
+      <translation>Tetraedro-zenbaketa:</translation>
     </message>
   </context>
   <context>
@@ -5480,12 +5480,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Command.cpp" line="1166"/>
       <source>Error: Wrong or no or to many vtk post processing objects.</source>
-      <translation type="unfinished">Error: Wrong or no or to many vtk post processing objects.</translation>
+      <translation>Errorea: Post-prozesuko VKT objektu okerrak, edo bat ere ez, edo gehiegi.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1167"/>
       <source>The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document.</source>
-      <translation type="unfinished">The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document.</translation>
+      <translation>Iragazkia ezin izan da konfiguratu. Hautatu post-prozesuko VKT kanalizazio-objektu bat, edo ez hautatu bat ere ez eta ziurtatu post-prozesuko VTK kanalizazio-objektu bat dagoela dokumentuan.</translation>
     </message>
   </context>
 </TS>

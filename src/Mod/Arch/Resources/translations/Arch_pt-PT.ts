@@ -51,12 +51,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Se verdadeiro, apenas os sólidos serão coletados por este objeto quando referenciado a partir de outros arquivos</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Um mapa MaterialName:SolidIndexesList que relaciona nomes de materiais com índices sólidos a serem usados ao referenciar este objeto de outros arquivos</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -131,7 +131,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="557"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>Se verdadeiro, duplo clique neste objeto na árvore activa-o</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="561"/>
@@ -186,22 +186,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>A caixa de captura para objetos recém-criados expressos como [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Ativa/desativa a caixa de grupo automático</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Definir o tamanho automaticamente dos conteúdos</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Uma margem para usar quando o tamanho automático está ligado</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -986,22 +986,22 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>O nível superior 'absoluto' a que um lanço de escadas chega</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>O 'contorno esquerdo' das escadas</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>O 'contorno esquerdo' de todos os segmentos de escadas</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>O contorno de todos os lances de escadas</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="396"/>
@@ -1041,22 +1041,22 @@
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>A espessura do revestimento do pavimento</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>A espessura do revestimento do pavimento superior</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>O tipo de conexão entre a placa inferior e o início da escada</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>O tipo de conexão entre o final da escada e a placa no chão superior</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="289"/>
@@ -1156,12 +1156,12 @@
     <message>
       <location filename="ArchCurtainWall.py" line="172"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Um objeto anfitrião opcional para esta parede de cortina</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="175"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>A altura da parede da cortina, se baseada em uma borda</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="179"/>
@@ -1181,12 +1181,12 @@
     <message>
       <location filename="ArchCurtainWall.py" line="194"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>A altura do perfil de montantes verticais, se nenhum perfil for usado</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="198"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>A largura do perfil de montantes verticais, se nenhum perfil for usado</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="202"/>
@@ -1211,12 +1211,12 @@
     <message>
       <location filename="ArchCurtainWall.py" line="220"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>A altura do perfil de montantes horizontais, se nenhum perfil for usado</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="224"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>A largura do perfil de montantes horizontais, se nenhum perfil for usado</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="228"/>
@@ -1286,7 +1286,7 @@
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Fundir objetos do mesmo material</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="385"/>
@@ -1431,7 +1431,7 @@
     <message>
       <location filename="ArchSite.py" line="641"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
+      <translation>Um arquivo EPW opcional para a localização deste sítio. Consulte a documentação do Sítio para saber como obter um</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="835"/>
@@ -1496,12 +1496,12 @@
     <message>
       <location filename="ArchWall.py" line="723"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
-      <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
+      <translation>Isso substitui o atributo Largura para definir a largura de cada segmento da parede. Ignorado se o objeto Base fornecer informações de larguras, com o método getWidths(). (O primeiro valor substitui o atributo 'Largura' para o primeiro segmento da parede; se um valor for zero, primeiro valor de 'SobrescreverLargura' será seguido)</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="726"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
-      <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
+      <translation>Isso substitui o atributo Alinhar para definir Alinhar de cada segmento da parede. Ignorado se o objeto Base fornecer informações de alinhamento, com o método getAligns(). (O primeiro valor substitui o atributo 'Alinhar' para o primeiro segmento da parede; se um valor for 'Esquerda, Direita, Centro', o primeiro valor de 'SobrescreverAlinhamento' será seguido)</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="729"/>
@@ -1511,7 +1511,7 @@
     <message>
       <location filename="ArchWall.py" line="731"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
-      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
+      <translation>A área desta parede como um simples cálculo Altura * Comprimento</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="734"/>
@@ -1596,32 +1596,32 @@
     <message>
       <location filename="ArchRoof.py" line="283"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>A lista de saliências dos segmentos do telhado</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="288"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>A lista de alturas calculadas dos segmentos do telhado</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="293"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>O número de faces do objeto base usadas para construir este telhado</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>O comprimento total dos cumes e guieiros deste telhado</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="304"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>O comprimento total dos beirados deste telhado</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="310"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>Especifica se a direção do telhado deve ser invertida</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1321"/>
@@ -1631,52 +1631,52 @@
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>O comprimento calculado do caminho de extrusão</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distância de deslocamento inicial ao longo do caminho de extrusão (positivo: estender, negativo: recortar)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Distância de deslocamento inicial ao longo do caminho de extrusão (positivo: estender, negativo: recortar</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distância de deslocamento final ao longo do caminho de extrusão (positivo: estender, negativo: recortar)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Distância de deslocamento final ao longo do caminho de extrusão (positivo: estender, negativo: aparar</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Alinha automaticamente a Base da Estrutura perpendicular ao eixo da Ferramenta</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Deslocamento X entre a origem da base e o eixo da ferramenta (usado somente se BasePerpendicularAFerramenta for Verdadeiro)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Deslocamento Y entre a origem da Base e o eixo da Ferramenta (usado somente se BasePerpendicularAFerramenta for Verdadeiro)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Espelhar a base ao longo do seu eixo Y (usado somente se BasePerpendicularAFerramenta é Verdadeiro)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Rotação base em torno do eixo da Ferramenta (usado somente se BasePerpendicularAFerramenta for Verdadeiro)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="404"/>
@@ -2305,22 +2305,22 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>Você pode colocar qualquer coisa, menos Sitio e Construir objetos num Objeto de construção.
 
-Building object is not allowed to accept Site and Building objects.
+Construir objeto não é permitido aceitar Sitio e Construir objetos.
 
-Site and Building objects will be removed from the selection.
+Os objetos de Sítio e Construção serão removidos da seleção.
 
-You can change that in the preferences.</translation>
+Você pode alterar isso nas preferências.</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Não há nenhum objeto válido na seleção.
 
-Building creation aborted.</translation>
+Criação de Construção abortada.</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="253"/>
@@ -2625,7 +2625,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1507"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>Remover objetos destacados da lista acima</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1508"/>
@@ -2635,7 +2635,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>Adicionar objeto(s) selecionado(s) ao alcance deste plano de secção</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1510"/>
@@ -2825,17 +2825,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="importSHP.py" line="71"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Elevação das formas</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="72"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Escolha qual campo fornece elevações de formas:</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="113"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>Nenhuma forma encontrada neste arquivo</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="138"/>
@@ -2890,17 +2890,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Janela não baseada no esboço. Janela não alinhada ou redimensionada.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Nenhuma restrição de Largura e/ou Altura no esboço da janela. Janela não redimensionada.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Nenhuma janela encontrada. Não é possível continuar.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -2925,7 +2925,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="1173"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Essa janela não tem abertura definida</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1660"/>
@@ -3115,7 +3115,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de Estrutura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3130,7 +3130,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="94"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Ferramentas de vergalhão</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="99"/>
@@ -3145,7 +3145,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="143"/>
       <source>Arch</source>
-      <translation type="unfinished">Arch</translation>
+      <translation>Arco</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
@@ -3301,22 +3301,20 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Por favor, selecione apenas objetos de Construção ou nada de todo!
 
-Site is not allowed to accept any other object besides Building.
+O Sítio não pode aceitar qualquer outro objeto além de Construção.
 
-Other objects will be removed from the selection.
+Outros objetos serão removidos da seleção.
 
-Note: You can change that in the preferences.</translation>
+Nota: Você pode alterar isso nas preferências.</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="535"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
-
-Site creation aborted.</translation>
+      <translation>Não há nenhum objeto válido na seleção. Criação de Sítio abortada.</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="542"/>
@@ -3442,13 +3440,10 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-
-Floor object is not allowed to accept Site, Building, or Floor objects.
-
-Site, Building, and Floor objects will be removed from the selection.
-
-You can change that in the preferences.</translation>
+      <translation>Você pode colocar qualquer coisa, menos os seguintes objetos: Sítio, Edificio e Piso (andar) - num objeto Piso (andar).
+Em objetos Piso (andar) não é permitido aceitar objetos de Sítio, Edificio, ou Piso.
+Objetos de Sítio, Edifício e Piso (andar) serão removidos da seleção.
+Você pode alterar isto nas preferências.</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="154"/>
@@ -3582,12 +3577,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Criar Estruturas a partir da Seleção</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Por favor, selecione o objeto base primeiro e, em seguida, as bordas para usar como caminhos de extrusão</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="245"/>
@@ -3597,7 +3592,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Por favor, selecione pelo menos um objeto eixo</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="345"/>
@@ -3692,17 +3687,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Ferramentas de extrusão</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Selecionar Ferramenta...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Selecione o objeto ou arestas a serem usadas como Ferramenta (extrusão de ferramenta)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1247"/>
@@ -4120,7 +4115,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>Cria uma parede de cortina a partir da linha selecionada ou do esboço</translation>
     </message>
   </context>
   <context>
@@ -4128,12 +4123,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Cortar com linha</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Cortar um objeto com uma linha</translation>
     </message>
   </context>
   <context>
@@ -4146,7 +4141,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="82"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
+      <translation>Cortar um objeto com uma linha com um plano de trabalho normal</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
@@ -4182,7 +4177,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchFence.py" line="391"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>Cria um objeto de cerca a partir de uma secção, caminho e suporte selecionados</translation>
     </message>
   </context>
   <context>
@@ -4195,7 +4190,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchFloor.py" line="116"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>Cria um objeto Peça de Construção que representa um nível, incluindo os objetos selecionados</translation>
     </message>
   </context>
   <context>
@@ -4471,7 +4466,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchProfile.py" line="122"/>
       <source>Creates a profile object</source>
-      <translation type="unfinished">Creates a profile object</translation>
+      <translation>Cria um objeto de perfil</translation>
     </message>
   </context>
   <context>
@@ -4484,7 +4479,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchProject.py" line="100"/>
       <source>Creates a project entity aggregating the selected sites.</source>
-      <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
+      <translation>Cria uma entidade de projeto agregando os sítios selecionados.</translation>
     </message>
   </context>
   <context>
@@ -4505,7 +4500,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="137"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Ferramentas de vergalhão</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="142"/>
@@ -4661,12 +4656,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Sistema Estrutural</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Criar um objeto do sistema estrutural a partir de uma estrutura e eixo selecionados</translation>
     </message>
   </context>
   <context>
@@ -4674,22 +4669,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Múltiplas Estruturas</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Crie múltiplos objetos de Estrutura Arco a partir de uma base selecionada, usando cada aresta selecionada como um caminho de extrusão</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Sistema Estrutural</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Criar um objeto do sistema estrutural a partir de uma estrutura e eixo selecionados</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="270"/>
@@ -4704,7 +4699,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de Estrutura</translation>
     </message>
   </context>
   <context>
@@ -4712,7 +4707,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de Estrutura</translation>
     </message>
   </context>
   <context>
@@ -4720,12 +4715,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Múltiplas Estruturas</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Crie múltiplos objetos de Estrutura Arco a partir de uma base selecionada, usando cada aresta selecionada como um caminho de extrusão</translation>
     </message>
   </context>
   <context>
@@ -4826,7 +4821,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="115"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Ferramentas de modificação Rascunho</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="149"/>
@@ -4844,7 +4839,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de Estrutura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -4869,7 +4864,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="145"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Ferramentas de vergalhão</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="112"/>
@@ -4889,7 +4884,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="168"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Ferramentas de modificação Rascunho</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
@@ -6289,8 +6284,8 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>Cria um modelo paramétrico completo ao importar usando
+propriedades do objeto FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="450"/>
@@ -6332,7 +6327,7 @@ são colocados num 'Grupo'.
     <message>
       <location filename="../ui/preferences-dae.ui" line="41"/>
       <source>All dimensions in the file will be scaled with this factor</source>
-      <translation type="unfinished">All dimensions in the file will be scaled with this factor</translation>
+      <translation>Todas as dimensões no arquivo serão dimensionadas com este fator</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="67"/>
@@ -6343,8 +6338,8 @@ são colocados num 'Grupo'.
       <location filename="../ui/preferences-dae.ui" line="74"/>
       <source>Meshing program that should be used.
 If using Netgen, make sure that it is available.</source>
-      <translation type="unfinished">Meshing program that should be used.
-If using Netgen, make sure that it is available.</translation>
+      <translation>Programa de engrenagem que deve ser usado.
+Se estiver a usar Netgen, certifique-se de que ele está disponível.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="85"/>
@@ -6374,7 +6369,7 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
+      <translation>O valor de suavização de serrilhado a usar com os geradores incorporado (de origem) e Mefisto.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
@@ -6391,9 +6386,9 @@ If using Netgen, make sure that it is available.</translation>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation type="unfinished">Grading value to use for meshing using Netgen.
-This value describes how fast the mesh size decreases.
-The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</translation>
+      <translation>Valor de pontuação a ser usado para malha usando Netgen.
+Este valor descreve a rapidez com que o tamanho da malha diminui.
+O gradiente do tamanho da malha local h(x) está vinculado por ├h(x)├1/valor.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
@@ -6468,20 +6463,20 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
 - Standard + structural: both types of models.</source>
-      <translation type="unfinished">The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</translation>
+      <translation>O tipo de objetos que você deseja exportar:
+— Modelo Padrão: objetos sólidos.
+— Análise estrutural: modelo de arame para cálculos estruturais.
+— Padrão + estrutural: ambos os tipos de modelos.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Tipo de exportação</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Modelo padrão</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
@@ -6491,7 +6486,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Padrão + estrutural</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
@@ -6519,9 +6514,7 @@ Use this to force all objects to be exported as BREP geometry.</source>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
-are decomposed into flat facets.
-If this is checked, an additional calculation is done to join coplanar facets.</translation>
+      <translation>Formas curvas que não podem ser representadas como curvas no formato IFC são decompostas em faces planas. Se esta opção for marcada, um cálculo adicional será feito para juntar as faces complanares.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="149"/>
@@ -6533,14 +6526,14 @@ If this is checked, an additional calculation is done to join coplanar facets.</
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation type="unfinished">When exporting objects without unique ID (UID), the generated UID
-will be stored inside the FreeCAD object for reuse next time that object
-is exported. This leads to smaller differences between file versions.</translation>
+      <translation>Ao exportar objetos sem ID único (UID), o UID gerado
+será armazenado no objeto FreeCAD para reutilizar na próxima vez que o objeto
+for exportado. Isto leva a diferenças menores entre as versões do arquivo.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
-      <translation type="unfinished">Store IFC unique ID in FreeCAD objects</translation>
+      <translation>Armazenar o ID único IFC em objetos FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="183"/>
@@ -6561,7 +6554,7 @@ Nota: O serializador ainda é um recurso experimental!</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="202"/>
       <source>2D objects will be exported as IfcAnnotation</source>
-      <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
+      <translation>Objetos 2D serão exportados como IfcAnotação</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
@@ -6621,19 +6614,19 @@ como casos padrão quando as condições necessárias estiverem reunidas.</trans
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+      <translation>Detecção automática e exportar como casos padrão quando aplicável</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice is to have at least one in the file.</translation>
+      <translation>Se nenhum sítio for encontrado no documento FreeCAD, um padrão será adicionado.
+Um sítio não é obrigatório, mas uma prática comum é ter pelo menos um no arquivo.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>Adicionar sítio padrão se não for encontrado no documento</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="313"/>
@@ -6647,7 +6640,7 @@ No entanto, no FreeCAD, acreditamos que ter uma construção não deve ser obrig
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+      <translation>Adicionar construção padrão se não for encontrada no documento (não padrão)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="334"/>

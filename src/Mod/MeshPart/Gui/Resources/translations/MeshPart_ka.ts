@@ -201,7 +201,7 @@ This command only works with a 'mesh' object.</source>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>დააჭირეთ ღილაკს "დაწყება", შემდეგ აირჩიეთ წერტილები ბადეზე; როდესაც საკმარის წერტილს აირჩევთ, დააწკაპუნეთ მარჯვენა ღილაკით და აირჩიეთ "შექმნა". გაიმეორეთ ეს პროცესი მეტი სპლაინის შესაქმნელად. ოპერაციის დასასრულებლად დახურეთ დავალების პანელი.
 
-ეს ბრძანება მუშაობს მხოლოდ "ბადის" ობიექტთან და არა ჩვეულებრივ ზედაპირთან. ობიექტის ბადეში გადასაყვანად გამოიყენეთ Mesh Workbench-ის ინსტრუმენტები.</translation>
+ეს ბრძანება მუშაობს მხოლოდ "ბადის" ობიექტთან და არა ჩვეულებრივ ზედაპირთან. ობიექტის ბადეში გადასაყვანად გამოიყენეთ Mesh სამუშაო მაგიდის ინსტრუმენტები.</translation>
     </message>
     <message>
       <source>Wire</source>

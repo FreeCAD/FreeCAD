@@ -713,6 +713,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>Tämän kohteen pinta-ala</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Tämän objektin muoto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -736,11 +741,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Tämän objektin muoto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1357,7 +1357,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Nimi on jo olemassa. Korvataanko?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
@@ -4214,12 +4214,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Aktivoi tämä taso</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>Valitse tason sisältö</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="421"/>

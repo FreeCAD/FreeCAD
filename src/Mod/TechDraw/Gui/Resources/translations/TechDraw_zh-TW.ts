@@ -1521,7 +1521,7 @@
     </message>
     <message>
       <source>Create a page to insert.</source>
-      <translation>創建要插入的頁面。</translation>
+      <translation>建立要插入的頁面。</translation>
     </message>
     <message>
       <source>No Faces to hatch in this selection</source>
@@ -1979,7 +1979,7 @@ This directory will be used for the symbol selection.</translation>
     </message>
     <message>
       <source>Override automatic dimension format</source>
-      <translation type="unfinished">Override automatic dimension format</translation>
+      <translation>覆蓋自動尺寸格式</translation>
     </message>
     <message>
       <source>Shape of line end caps.
@@ -2565,7 +2565,7 @@ can override the global &apos;Update With 3D&apos; parameter</translation>
     </message>
     <message>
       <source>Allow Page Override (global policy)</source>
-      <translation type="unfinished">Allow Page Override (global policy)</translation>
+      <translation>允許頁面覆蓋（全域政策）</translation>
     </message>
     <message>
       <source>Keep drawing pages in sync with changes of 3D model in real time.

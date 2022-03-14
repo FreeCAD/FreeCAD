@@ -719,6 +719,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>Площадь объекта</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Базовый объект, используется данным объектом</translation>
@@ -742,11 +747,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Угол наклона штриховки, используемой этим объектом</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1113,22 +1113,22 @@ beyond the dimension line</source>
     <message>
       <location filename="view_layer.py" line="130"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>Толщина линий объектов этого слоя</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="142"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>Стиль рисования объектов в пределах этого слоя</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="153"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>Прозрачность объектов, содержащихся в этом слое</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="164"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>Цвет линии объектов, содержащихся в этом слое, при использовании на странице TechDraw</translation>
     </message>
     <message>
       <location filename="view_label.py" line="176"/>
@@ -1143,7 +1143,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Определяет SVG шаблон.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
@@ -2454,7 +2454,7 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_shape2dview.py" line="59"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Shape 2D view</translation>
+      <translation>2D вид</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="62"/>
@@ -3588,7 +3588,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="295"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Преобразование:</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="228"/>
@@ -3805,7 +3805,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Точки:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="131"/>
@@ -3815,7 +3815,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_arc_3points.py" line="138"/>
       <source>Placement:</source>
-      <translation type="unfinished">Placement:</translation>
+      <translation>Расположение:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
@@ -3865,7 +3865,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation type="unfinished">Map mode:</translation>
+      <translation>Режим карты:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
@@ -3890,7 +3890,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>Удалить оригинальные объекты.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="292"/>
@@ -4211,7 +4211,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Активировать этот слой</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
@@ -4704,7 +4704,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_rectangles.py" line="69"/>
       <source>Pick first point</source>
-      <translation type="unfinished">Pick first point</translation>
+      <translation>Укажите первую точку</translation>
     </message>
     <message>
       <location filename="gui_ellipses.py" line="138"/>
@@ -4714,7 +4714,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_rectangles.py" line="202"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>Укажите противоположную точку</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="167"/>
@@ -4729,7 +4729,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_splines.py" line="140"/>
       <source>Pick next point</source>
-      <translation type="unfinished">Pick next point</translation>
+      <translation>Укажите следующую точку</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="334"/>
@@ -4884,12 +4884,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_togglemodes.py" line="125"/>
       <source>Continue mode</source>
-      <translation type="unfinished">Continue mode</translation>
+      <translation>Непрерывный режим</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="159"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Toggle display mode</translation>
+      <translation>Переключить режим отображения</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="126"/>
@@ -4974,7 +4974,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
-      <translation type="unfinished">Select an object to array</translation>
+      <translation>Выберите объект для создания массива</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="101"/>
@@ -5034,7 +5034,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_scale.py" line="108"/>
       <source>Pick base point</source>
-      <translation type="unfinished">Pick base point</translation>
+      <translation>Выберите базовую точку</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="130"/>
@@ -5484,7 +5484,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_arcs.py" line="448"/>
       <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
+      <translation>Начальный угол</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="453"/>
@@ -5692,7 +5692,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Преобразование:</translation>
     </message>
   </context>
   <context>
@@ -6835,12 +6835,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="23"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>файлы шаблонов (*.pat)</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="30"/>
       <source>PAT file:</source>
-      <translation type="unfinished">PAT file:</translation>
+      <translation>PAT файл:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="37"/>
@@ -6850,7 +6850,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Pattern:</source>
-      <translation type="unfinished">Pattern:</translation>
+      <translation>Шаблон:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>

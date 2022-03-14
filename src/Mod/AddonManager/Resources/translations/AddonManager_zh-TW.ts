@@ -6,12 +6,12 @@
     <message>
       <location filename="install_to_toolbar.py" line="76"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>建立新工具列</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="219"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>使用 FreeCAD 附加元件管理器安裝的巨集</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="221"/>
@@ -22,17 +22,17 @@
     <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>版本 {version} 已於 {date} 安裝</translation>
     </message>
     <message>
       <location filename="package_details.py" line="117"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>版本 {version} 已安裝</translation>
     </message>
     <message>
       <location filename="package_details.py" line="121"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>安裝於 {date}</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="567"/>
@@ -72,42 +72,42 @@
     <message>
       <location filename="package_details.py" line="151"/>
       <source>Updated, please restart FreeCAD to use</source>
-      <translation type="unfinished">Updated, please restart FreeCAD to use</translation>
+      <translation>已更新，請重啟 FreeCAD 以使用</translation>
     </message>
     <message>
       <location filename="package_details.py" line="159"/>
       <source>Update check in progress</source>
-      <translation type="unfinished">Update check in progress</translation>
+      <translation>正在檢查更新</translation>
     </message>
     <message>
       <location filename="package_details.py" line="163"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>自動更新已停用</translation>
     </message>
     <message>
       <location filename="package_details.py" line="172"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>安裝位置</translation>
     </message>
     <message>
       <location filename="package_details.py" line="240"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>警告：此附加元件已過時</translation>
     </message>
     <message>
       <location filename="package_details.py" line="250"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
+      <translation>警告：此附加元件僅適用於 Python 2</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
       <source>Fetching README.md from package repository</source>
-      <translation type="unfinished">Fetching README.md from package repository</translation>
+      <translation>從套件儲存庫中取得 README.md</translation>
     </message>
     <message>
       <location filename="package_details.py" line="354"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>警告：此附加元件需要 FreeCAD </translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
@@ -124,27 +124,27 @@
     <message>
       <location filename="package_details.py" line="577"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>成功</translation>
     </message>
     <message>
       <location filename="package_details.py" line="600"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>更改為 git ref &apos;{}&apos; -- 請重新啟動以使用附加元件。</translation>
     </message>
     <message>
       <location filename="package_details.py" line="636"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>JavaScript 報告頁面</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>安裝</translation>
     </message>
     <message>
       <location filename="package_details.py" line="410"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>解除安裝</translation>
     </message>
     <message>
       <location filename="package_details.py" line="413"/>
@@ -154,17 +154,17 @@
     <message>
       <location filename="package_details.py" line="416"/>
       <source>Check for Update</source>
-      <translation type="unfinished">Check for Update</translation>
+      <translation>檢查更新</translation>
     </message>
     <message>
       <location filename="package_details.py" line="419"/>
       <source>Run Macro</source>
-      <translation type="unfinished">Run Macro</translation>
+      <translation>執行巨集</translation>
     </message>
     <message>
       <location filename="package_details.py" line="786"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>變更分支</translation>
     </message>
     <message>
       <location filename="package_details.py" line="867"/>
@@ -179,7 +179,7 @@
     <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>返回套件列表</translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="800"/>
@@ -191,47 +191,47 @@
     <message>
       <location filename="package_list.py" line="119"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>篩選器有效</translation>
     </message>
     <message>
       <location filename="package_list.py" line="125"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>篩選器正則表達式無效</translation>
     </message>
     <message>
       <location filename="package_list.py" line="207"/>
       <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
+      <translation>點擊查看套件 {} 詳細資料</translation>
     </message>
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>點擊查看工作台 {} 詳細資料</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>點擊查看巨集 {} 詳細資料</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>維護者</translation>
     </message>
     <message>
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>維護者：</translation>
     </message>
     <message>
       <location filename="package_list.py" line="364"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>標籤</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>已更新</translation>
     </message>
     <message>
       <location filename="package_list.py" line="382"/>
@@ -241,27 +241,27 @@
     <message>
       <location filename="package_list.py" line="404"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>已同步</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="586"/>
       <source>Update available</source>
-      <translation>有更新可用</translation>
+      <translation>有可用更新</translation>
     </message>
     <message>
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>等待重啟</translation>
     </message>
     <message>
       <location filename="package_list.py" line="498"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>停用</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>已安裝版本</translation>
     </message>
     <message>
       <location filename="package_list.py" line="180"/>
@@ -281,27 +281,27 @@
     <message>
       <location filename="package_list.py" line="376"/>
       <source>Updated</source>
-      <translation type="unfinished">Updated</translation>
+      <translation>已更新</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>未知版本</translation>
     </message>
     <message>
       <location filename="package_list.py" line="383"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>己安裝於：</translation>
     </message>
     <message>
       <location filename="package_list.py" line="394"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>可用版本</translation>
     </message>
     <message>
       <location filename="package_list.py" line="566"/>
       <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
+      <translation>顯示包含以下內容的附加元件：</translation>
     </message>
     <message>
       <location filename="package_list.py" line="569"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="package_list.py" line="578"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>偏好設定包</translation>
     </message>
     <message>
       <location filename="package_list.py" line="692"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="package_list.py" line="702"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>未安裝</translation>
     </message>
     <message>
       <location filename="package_list.py" line="582"/>
@@ -352,7 +352,7 @@
       <location filename="addonmanager_workers.py" line="115"/>
       <source>Checking network connection...
 </source>
-      <translation type="unfinished">Checking network connection...
+      <translation>檢查網路連線...
 </translation>
     </message>
     <message>
@@ -363,17 +363,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="172"/>
       <source>Workbenches list was updated.</source>
-      <translation type="unfinished">Workbenches list was updated.</translation>
+      <translation>工作台列表已更新。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="261"/>
       <source>Failed loading</source>
-      <translation type="unfinished">Failed loading</translation>
+      <translation>無法載入</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="296"/>
       <source>List of macros successfully retrieved.</source>
-      <translation type="unfinished">List of macros successfully retrieved.</translation>
+      <translation>巨集列表引用成功</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="310"/>
@@ -438,27 +438,27 @@
     <message>
       <location filename="addonmanager_workers.py" line="521"/>
       <source>This addon is already installed.</source>
-      <translation type="unfinished">This addon is already installed.</translation>
+      <translation>此附加元件已被安裝。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="533"/>
       <source>An update is available for this addon.</source>
-      <translation type="unfinished">An update is available for this addon.</translation>
+      <translation>此附加元件可以更新。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="547"/>
       <source>This addon is marked as obsolete</source>
-      <translation>這個附件己被標記為丟棄</translation>
+      <translation>此附加元件被標記為已過時</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>這通常意味著它不再被維護，並且此列表中的一些更高級的附加元件提供相同的功能。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="559"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation>這個附件元件標記只能用在Python2</translation>
+      <translation>此附加元件標記只能使用於 Python 2</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="564"/>
@@ -473,7 +473,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="646"/>
       <source>An error occurred updating macros from GitHub</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+      <translation>由 GitHub 更新巨集時出現錯誤</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -561,24 +561,9 @@
       <translation type="unfinished">Please install the missing components first.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>錯誤: 無法取得本地的郵遞區號</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -591,19 +576,34 @@
       <translation>安裝成功</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1013"/>
-      <source>Error updating module</source>
-      <translation type="unfinished">Error updating module</translation>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation type="unfinished">Retrieving macro description...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation type="unfinished">Please fix manually</translation>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation type="unfinished">Retrieving info from git</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation type="unfinished">Retrieving info from wiki</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation>更新模組時發生錯誤</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation type="unfinished">Error updating module </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation type="unfinished">Please fix manually</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -753,7 +753,7 @@
     <message>
       <location filename="AddonManager.py" line="258"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>載入附加元件資訊</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="199"/>
@@ -781,19 +781,9 @@
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>檢查更新...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation type="unfinished">The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</translation>
+      <translation>可以在此處安裝的附加元件不是 FreeCAD 的官方內容，並且未經 FreeCAD 團隊審查。 請確保你了解你安裝的內容！</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="203"/>
@@ -808,7 +798,12 @@
     <message>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>無法匯入 QtNetwork - 有關詳細資訊，請參閱報告檢視。附加元件管理器不可用。</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>檢查更新...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -838,12 +833,12 @@
     <message>
       <location filename="AddonManager.py" line="494"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
-      <translation type="unfinished">Addon successfully removed. Please restart FreeCAD</translation>
+      <translation>附加元件已成功刪除。 請重新啟動 FreeCAD</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="496"/>
       <source>Unable to remove this addon</source>
-      <translation>無法移附這個附件</translation>
+      <translation>無法移除此附加元件</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="502"/>
@@ -858,12 +853,17 @@
     <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
+      <translation>附加元件管理器：如果自動更新設定為 False，將不會檢查更新。</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>必須重啟</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -966,7 +966,7 @@
     <message>
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
-      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
+      <translation>您確定要解除安裝此附加元件嗎？</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1513"/>
@@ -976,7 +976,7 @@
     <message>
       <location filename="AddonManager.py" line="1558"/>
       <source>Successfully uninstalled {}</source>
-      <translation type="unfinished">Successfully uninstalled {}</translation>
+      <translation>已成功解除安裝 {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>
@@ -994,7 +994,7 @@
     <message>
       <location filename="AddonManager.py" line="68"/>
       <source>&amp;Addon manager</source>
-      <translation type="unfinished">&amp;Addon manager</translation>
+      <translation>附加元件管理器(&amp;A)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="69"/>
@@ -1015,7 +1015,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>附加元件管理器</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
@@ -1040,7 +1040,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="89"/>
       <source>Sets configuration options for the Addon Manager</source>
-      <translation type="unfinished">Sets configuration options for the Addon Manager</translation>
+      <translation>設定附加元件管理器的設定選項</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="92"/>
@@ -1085,7 +1085,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>關閉附加元件管理器</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -1095,7 +1095,7 @@
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>附加元件管理器選項</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>

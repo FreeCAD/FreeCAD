@@ -3774,7 +3774,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
       <source>Color used while new sketch elements are created</source>
-      <translation>創建中的新草圖圖元之色彩</translation>
+      <translation>建立新草圖元素時使用的顏色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="61"/>
@@ -4051,7 +4051,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Geometry creation "Continue Mode"</source>
-      <translation>圖元創建 "連續模式"</translation>
+      <translation>以「連續模式」建立幾何</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
@@ -4061,7 +4061,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
       <source>Constraint creation "Continue Mode"</source>
-      <translation>拘束創建於"連續模式"</translation>
+      <translation>以「連續模式」建立拘束</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="220"/>
@@ -4420,7 +4420,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="115"/>
       <source>Block</source>
-      <translation type="unfinished">Block</translation>
+      <translation>區塊</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="120"/>

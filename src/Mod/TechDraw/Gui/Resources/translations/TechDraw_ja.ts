@@ -11,17 +11,17 @@
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>ビューを新しいページに移動</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>ビューを別のページに移動</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>リストから移動するビューを選択します。</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
@@ -49,12 +49,12 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>共有ビュー</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>2ページ目にビューを共有</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>

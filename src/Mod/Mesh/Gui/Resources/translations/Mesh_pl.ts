@@ -689,7 +689,7 @@
     </message>
     <message>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <source>Trim</source>

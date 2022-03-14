@@ -1852,7 +1852,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="303"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Tulokset</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="314"/>
@@ -5451,7 +5451,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Tulokset</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>

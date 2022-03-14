@@ -6,7 +6,7 @@
     <message>
       <location filename="OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD ფაილი შეიცავს ორივე, 2D და 3D მოხაზულობებს. შემომტანს ამის მხარდაჭერა არ გააჩნია. ყველა მოხაზულობა ერთ განზომილებაში უნდა იყოს.</translation>
     </message>
     <message>
       <location filename="OpenSCADUtils.py" line="622"/>
@@ -128,7 +128,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="294"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation type="unfinished">Expand all placements downwards the FeatureTree</translation>
+      <translation>ყველა განლაგება თვისებების ხის ქვემოთ გაფართოება</translation>
     </message>
   </context>
   <context>
@@ -141,7 +141,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="113"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>შერწყმის მოცილება და ბავშვებზე მდებარეობის და შემთხვევითი ფერების გადატარება</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="315"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
+      <translation>ობიექტის ჩანაცვლება თვისებების ხეში. აირჩიეთ ძველი, ახალი და მშობელი ობიექტი</translation>
     </message>
   </context>
   <context>

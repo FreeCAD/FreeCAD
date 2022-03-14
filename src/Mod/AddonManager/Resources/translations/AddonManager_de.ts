@@ -6,12 +6,12 @@
     <message>
       <location filename="install_to_toolbar.py" line="76"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Neue Symbolleiste erstellen</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="219"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>Ein Makro, das mit dem FreeCAD Addon Manager installiert wurde</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="221"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="package_list.py" line="498"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>DEAKTIVIERT</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
@@ -475,7 +475,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="646"/>
       <source>An error occurred updating macros from GitHub</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+      <translation>Beim Aktualisieren der Makros von GitHub ist ein Fehler aufgetreten</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -563,24 +563,9 @@
       <translation>Bitte zuerst die fehlenden Komponenten installieren.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makro-Beschreibung wird abgerufen...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Informationen werden von Git abgerufen</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Fehler: Zip-Datei kann nicht gefunden werden von</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Informationen werden aus den Wiki abgerufen</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -593,19 +578,34 @@
       <translation>Installation erfolgreich</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1013"/>
-      <source>Error updating module</source>
-      <translation type="unfinished">Error updating module</translation>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makro-Beschreibung wird abgerufen...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Bitte manuell korrigieren</translation>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Informationen werden von Git abgerufen</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Informationen werden aus den Wiki abgerufen</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation>Fehler beim Aktualisieren des Moduls</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Fehler beim Aktualisieren des Moduls </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Bitte manuell korrigieren</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -787,16 +787,6 @@
       <translation>Cache wird aktualisiert...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Nach Updates suchen...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} Aktualisierung(en) anwenden</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Stellen Sie sicher, dass Sie wissen, was Sie installieren!</translation>
@@ -815,6 +805,11 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>QtNetwork konnte nicht importiert werden - siehe Berichtsansicht für Details. Der Addon Manager ist nicht verfügbar.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Nach Updates suchen...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -870,6 +865,11 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Neustart erforderlich</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} Aktualisierung(en) anwenden</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -983,7 +983,7 @@
     <message>
       <location filename="AddonManager.py" line="1558"/>
       <source>Successfully uninstalled {}</source>
-      <translation type="unfinished">Successfully uninstalled {}</translation>
+      <translation>{} erfolgreich deinstalliert</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

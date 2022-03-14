@@ -186,12 +186,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>Sortu berri diren objektuen harrapaketa-koadroa [XMin,YMin,ZMin,XMax,YMax,ZMax] gisa adierazita</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Talde automatikoen kutxa aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>

@@ -1406,7 +1406,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -3814,7 +3814,7 @@ Ta cecha jest uszkodzona i nie może być edytowana.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="79"/>
       <source>Edit loft</source>
-      <translation>Edytuj wyciągnięcie po profilach</translation>
+      <translation>Edytuj wyciągnięcie przez profile</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -4220,7 +4220,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
       <source>Counterbore/sink dia</source>
-      <translation>Pogłębiacz walcowy/zlew</translation>
+      <translation>Średnica pogłębiacza</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>

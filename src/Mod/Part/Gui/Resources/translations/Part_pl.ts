@@ -2238,7 +2238,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -2420,7 +2420,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1583"/>
       <source>Loft...</source>
-      <translation>Wyciągnięcie po profilach ...</translation>
+      <translation>Wyciągnięcie przez profile ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1584"/>
@@ -2870,7 +2870,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Fusion</source>
-      <translation>Połączenie</translation>
+      <translation>Łączenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="921"/>
@@ -2960,7 +2960,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
-      <translation>Wyciągnięcie po profilach</translation>
+      <translation>Wyciągnięcie przez profile</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="240"/>
@@ -3846,7 +3846,7 @@ wewnątrz właściwości Umiejscowienie.</translation>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
       <translation>Jeśli opcja jest zaznaczona, żadne złożone połączenie nie zostanie wykonane
-podczas odczytu pliku (wolniejsze, ale bardziej dokładne).</translation>
+podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="226"/>
@@ -5029,7 +5029,7 @@ zostanie użyty wektor normalnej płaszczyzny szkicu</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Wyciągnięcie po profilach</translation>
+      <translation>Wyciągnięcie przez profile</translation>
     </message>
   </context>
   <context>
@@ -5727,7 +5727,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Wyciągnięcie po profilach</translation>
+      <translation>Wyciągnięcie przez profile</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>

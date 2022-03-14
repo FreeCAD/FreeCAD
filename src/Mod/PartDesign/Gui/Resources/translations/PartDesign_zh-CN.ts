@@ -2001,17 +2001,17 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
       <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <translation>Cheesehead (已废弃)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
+      <translation>沉头内六角螺钉(已弃用)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
+      <translation>螺丝帽(已废弃)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="60"/>
@@ -3915,7 +3915,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>
       <source>Please select</source>
-      <translation type="unfinished">Please select</translation>
+      <translation>请选择</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="362"/>
@@ -4058,37 +4058,37 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation type="unfinished">Motorcycle 420</translation>
+      <translation>摩托车 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation type="unfinished">Motorcycle 425</translation>
+      <translation>摩托车 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation type="unfinished">Motorcycle 428</translation>
+      <translation>摩托车 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation type="unfinished">Motorcycle 520</translation>
+      <translation>摩托车 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation type="unfinished">Motorcycle 525</translation>
+      <translation>摩托车 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation type="unfinished">Motorcycle 530</translation>
+      <translation>摩托车 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation type="unfinished">Motorcycle 630</translation>
+      <translation>摩托车 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
@@ -4098,7 +4098,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 到</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
@@ -4275,7 +4275,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="87"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>模型线程</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>

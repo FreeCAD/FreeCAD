@@ -6,12 +6,12 @@
     <message>
       <location filename="install_to_toolbar.py" line="76"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Sortu tresna-barra berria</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="219"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>FreeCADen gehigarri-kudeatzailearekin instalatutako makroa</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="221"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="package_list.py" line="498"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>DESGAITUTA</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
@@ -470,12 +470,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="608"/>
       <source>An error occurred fetching macros from GitHub</source>
-      <translation>Errore bat gertatu da GitHub-etik makroak eskuratzean</translation>
+      <translation>Errorea gertatu da GitHub biltegitik makroak eskuratzean</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="646"/>
       <source>An error occurred updating macros from GitHub</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+      <translation>Errorea gertatu da GitHub biltegitik makroak eguneratzean</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -563,24 +563,9 @@
       <translation>Instalatu falta diren osagaiak.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makroen deskribapena atzitzen...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Informazioa atzitzen git biltegitik</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Errorea: Ezin izan da ZIP fitxategia aurkitu</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Informazioa atzitzen wikitik</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -593,19 +578,34 @@
       <translation>Ongi instalatu da</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1013"/>
-      <source>Error updating module</source>
-      <translation type="unfinished">Error updating module</translation>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makroen deskribapena atzitzen...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Konpondu eskuz</translation>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Informazioa atzitzen git biltegitik</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Informazioa atzitzen wikitik</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation>Errorea modulua eguneratzean</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Errorea modulua eguneratzan </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Konpondu eskuz</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -787,16 +787,6 @@
       <translation>Cachea eguneratzen...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Eguneraketak bilatzen...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Aplikatu {} eguneratze</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Hemen instalatu daitezkeen makroak ez dira FreeCADen makro ofizialak eta FreeCAD taldeak ez ditu gainbegiratzen. Ziurtatu badakizula zer ari zaren instalatzen!</translation>
@@ -815,6 +805,11 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>Ezin izan da QtNetwork inportatu -- ikusi Txosten ikuspegia xehetasunetarako. Gehigarrien kudeatzailea ez dago erabilgarri.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Eguneraketak bilatzen...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -870,6 +865,11 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Berrabiaraztea beharrezkoa da</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Aplikatu {} eguneratze</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -930,9 +930,9 @@
       <location filename="AddonManager.py" line="1280"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
+      <translation>
         <numerusform>{} guztira, Txosten ikuspegira jo zerrenda ikusteko</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
+        <numerusform>{} guztira, Txosten ikuspegira jo zerrenda ikusteko</numerusform>
       </translation>
     </message>
     <message>
@@ -983,7 +983,7 @@
     <message>
       <location filename="AddonManager.py" line="1558"/>
       <source>Successfully uninstalled {}</source>
-      <translation type="unfinished">Successfully uninstalled {}</translation>
+      <translation>{} ongi desinstalatu da</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

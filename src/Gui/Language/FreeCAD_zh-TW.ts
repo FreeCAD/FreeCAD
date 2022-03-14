@@ -529,12 +529,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>個人</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>組織</translation>
     </message>
   </context>
   <context>
@@ -1037,7 +1037,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Do you want to override it?</source>
-      <translation>請問您要替換它嗎?</translation>
+      <translation>您要覆蓋它嗎？</translation>
     </message>
   </context>
   <context>
@@ -1664,7 +1664,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation>插件...</translation>
+      <translation>附加元件...</translation>
     </message>
     <message>
       <source>Toolbar</source>
@@ -1708,7 +1708,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>檔案 '%1' 創建失敗。</translation>
+      <translation>檔案「%1」建立失敗。</translation>
     </message>
     <message>
       <source>Read-only</source>
@@ -3768,7 +3768,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
+      <translation>數字與尺寸應顯示的小數位數</translation>
     </message>
     <message>
       <source>Unit system that should be used for all parts the application</source>
@@ -6950,7 +6950,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Override colors...</source>
-      <translation type="unfinished">Override colors...</translation>
+      <translation>覆蓋顏色...</translation>
     </message>
     <message>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
@@ -7529,7 +7529,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>捐款協助 FreeCAD 開發</translation>
     </message>
   </context>
   <context>

@@ -2890,7 +2890,7 @@ Building creation aborted.</source>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Окно не по эскизу. Окно не выровнено или не изменен размер.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
@@ -4125,12 +4125,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Обрезать по линии</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Обрезать объект линией</translation>
     </message>
   </context>
   <context>

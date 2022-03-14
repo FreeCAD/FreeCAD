@@ -1031,7 +1031,7 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>Apply changes to pipeline</source>
-      <translation>Änderungen auf Leitung anwenden</translation>
+      <translation>Änderungen auf Pipeline anwenden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
@@ -1064,7 +1064,7 @@
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Select a pipeline, please.</source>
-      <translation>Bitte eine Leitung auswählen.</translation>
+      <translation>Bitte eine Pipeline auswählen.</translation>
     </message>
   </context>
   <context>
@@ -1197,12 +1197,12 @@
     <message>
       <location filename="../../Command.cpp" line="1652"/>
       <source>Post pipeline from result</source>
-      <translation>Nachbearbeitungs-Leitung aus Ergebnis</translation>
+      <translation>Nachbearbeitungs-Pipeline aus Ergebnis</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1653"/>
       <source>Creates a post processing pipeline from a result object</source>
-      <translation>Erstellt eine Nachbearbeitungs-Leitung aus einem Ergebnisobjekt</translation>
+      <translation>Erstellt eine Nachbearbeitungs-Pipeline aus einem Ergebnisobjekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
@@ -1356,7 +1356,7 @@
     <message>
       <location filename="../../Command.cpp" line="1685"/>
       <source>Create pipeline from result</source>
-      <translation>Leitung aus Ergebnis erzeugen</translation>
+      <translation>Pipeline aus Ergebnis erzeugen</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="236"/>
@@ -1567,7 +1567,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
       <source>Number of CPU's to use (Spooles only)</source>
-      <translation>Anzahl der zu verwendenden CPUs (nur für Pools)</translation>
+      <translation>Anzahl der zu verwendenden CPUs (nur für SPOOLES)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="334"/>
@@ -1582,7 +1582,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
       <source>Spooles</source>
-      <translation type="unfinished">Spooles</translation>
+      <translation>SPOOLES</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
@@ -3842,7 +3842,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="260"/>
       <source>Edit post processing object</source>
-      <translation type="unfinished">Edit post processing object</translation>
+      <translation>Nachbearbeitungsobjekt bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -5477,7 +5477,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../Command.cpp" line="1167"/>
       <source>The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document.</source>
-      <translation>Der Filter konnte nicht erstellt werden. Ein vtk-Nachbearbeitungs-Leitungsobjekt auswählen oder sicherstellen, dass sich exakt ein vtk-Nachbearbeitungs-Leitungsobjekt im Dokument befindet.</translation>
+      <translation>Der Filter konnte nicht erstellt werden. Eine vtk-Nachbearbeitungs-Pipeline auswählen oder sicherstellen, dass sich exakt eine vtk-Nachbearbeitungs-Pipeline im Dokument befindet.</translation>
     </message>
   </context>
 </TS>

@@ -716,6 +716,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>ობიექტის ფართობი</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>ობიექტის ფორმა</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული საბაზისო ობიექტი</translation>
@@ -739,11 +744,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული ნიმუშის შებრუნება</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>ობიექტის ფორმა</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -2469,7 +2469,7 @@ These projections can be used to create technical drawings with the TechDraw Wor
       <translation>ქმნის არჩეული ობიექტების 2D პროექციას XY სიბრტყეზე.
 საწყისი პროექციის მიმართულება მიმდინარე აქტიური ხედვის მიმართულების საპირისპიროა.
 თქვენ შეგიძლიათ აირჩიოთ ცალკეული ზედაპირები პროექტირებად, ან მთლიანი მყარი სხეულები და ასევე შეიტანოთ ფარული ხაზები.
-ეს პროექციები შეიძლება გამოყენებულ იქნას ტექნიკური ნახაზების შესაქმნელად TechDraw Workbench-ით.</translation>
+ეს პროექციები შეიძლება გამოყენებულ იქნას ტექნიკური ნახაზების შესაქმნელად TechDraw-ის სამუშაო მაგიდით.</translation>
     </message>
   </context>
   <context>
@@ -4203,7 +4203,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="draft_annotation.py" line="105"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation>თვიება 'ScaleMultiplier' დამატებულია</translation>
+      <translation>თვისება 'ScaleMultiplier' დამატებულია</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="130"/>

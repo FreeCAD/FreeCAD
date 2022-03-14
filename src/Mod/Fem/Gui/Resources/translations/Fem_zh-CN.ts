@@ -132,7 +132,7 @@
     <message>
       <location filename="commands.py" line="206"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>创建有限元约束连接</translation>
     </message>
   </context>
   <context>

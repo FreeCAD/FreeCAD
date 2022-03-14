@@ -2680,7 +2680,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
+      <translation>Muuta kokoa</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1519"/>
@@ -3697,7 +3697,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Valitse työkalu...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>

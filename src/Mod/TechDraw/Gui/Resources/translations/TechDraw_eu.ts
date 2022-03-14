@@ -458,9 +458,9 @@
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>Marraztu zirkuluaren erdiko gurutzea zirkuluetan
+    - Aukeratu zirkulu edo arku asko
+    - egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -471,15 +471,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt bottom view</source>
-      <translation type="unfinished">Cosmetic thread bolt bottom view</translation>
+      <translation>Haridun buloi kosmetikoaren beheko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Marraztu torloju-hari kosmetikoaren lurreko bista
+- hautatu zirkulu anitz
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -490,15 +490,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt side view</source>
-      <translation type="unfinished">Cosmetic thread bolt side view</translation>
+      <translation>Haridun buloi kosmetikoaren alboko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>MarraztuMarraztu torloju-hari kosmetikoaren alboko bista
+- hautatu bi lerro paralelo
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -509,15 +509,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole bottom view</source>
-      <translation type="unfinished">Cosmetic thread hole bottom view</translation>
+      <translation>Hari-zulo kosmetikoaren beheko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic hole thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic hole thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Marraztu zulo-hari kosmetikoaren lurreko bista
+- hautatu zirkulu anitz
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -528,15 +528,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole side view</source>
-      <translation type="unfinished">Cosmetic thread hole side view</translation>
+      <translation>Hari-zulo kosmetikoaren alboko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic thread hole side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic thread hole side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>MarraztuMarraztu zulo-hari kosmetikoaren alboko bista
+- hautatu bi lerro paralelo
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -1669,7 +1669,7 @@
     </message>
     <message>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>TechDraw zirkuluaren erdiko lerroak</translation>
     </message>
     <message>
       <source>Selection is empty</source>
@@ -1681,19 +1681,19 @@
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>
-      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+      <translation>TechDraw hari-zuloaren aldea</translation>
     </message>
     <message>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>TechDraw haridun buloiaren alboa</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>TechDraw hari-zuloaren hondoa</translation>
     </message>
     <message>
       <source>TechDraw Tread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Tread Bolt Bottom</translation>
+      <translation>TechDraw haridun buloiaren hondoa</translation>
     </message>
     <message>
       <source>Please select two straight lines</source>

@@ -6,27 +6,27 @@
     <message>
       <location filename="OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>El archivo OpenSCAD contiene formas en 2D y 3D. Esto no está permitido en este importador, todas las formas deben ser de la misma dimensionalidad.</translation>
     </message>
     <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Error, todos los cuerpos han de ser o bien 2D, o bien 3D</translation>
+      <translation>Error, todas los formas han de ser solo 2D, o bien solo 3D</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
-      <translation>Función no admitida</translation>
+      <translation>Fuinciones no soportadas</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
-      <translation>Pulse Aceptar</translation>
+      <translation>Presione Aceptar</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>
       <source>Unable to explode %s</source>
-      <translation>Incapaz de descomponer %s</translation>
+      <translation>Incapaz de deconstruir %s</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="149"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="309"/>
       <source>Please select 3 objects first</source>
-      <translation>Por favor, seleccione tres objetos primero</translation>
+      <translation>Por favor, seleccione primero tres objetos</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="364"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="369"/>
       <source>as Mesh</source>
-      <translation>como malla</translation>
+      <translation>como Malla</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="370"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="473"/>
       <source>Perform</source>
-      <translation>Realizar</translation>
+      <translation>Ejecutar</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="474"/>
@@ -89,7 +89,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="517"/>
       <source>Add OpenSCAD Element...</source>
-      <translation>Añadir elemento OpenSCAD...</translation>
+      <translation>Agregar elemento OpenSCAD...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="521"/>

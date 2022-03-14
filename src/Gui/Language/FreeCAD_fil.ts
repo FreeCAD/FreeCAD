@@ -7548,7 +7548,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Donate</source>
-      <translation type="unfinished">Donate</translation>
+      <translation>Mag-abuloy</translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>

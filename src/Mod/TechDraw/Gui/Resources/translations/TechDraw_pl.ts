@@ -1074,7 +1074,7 @@
     </message>
     <message>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <source>Copy (CTRL+C)</source>
@@ -1441,7 +1441,7 @@
     </message>
     <message>
       <source>Selection not understood.</source>
-      <translation>Zaznaczenie nie zrozumiałe.</translation>
+      <translation>Zaznaczenie niezrozumiałe.</translation>
     </message>
     <message>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>

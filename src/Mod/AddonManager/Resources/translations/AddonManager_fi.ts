@@ -6,7 +6,7 @@
     <message>
       <location filename="install_to_toolbar.py" line="76"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Luo uusi työkalupalkki</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="219"/>
@@ -563,24 +563,9 @@
       <translation>Asenna ensin puuttuvat komponentit.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Haetaan tietoja git: stä</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Virhe: Zip -tiedostoa ei voitu paikantaa</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Haetaan tietoja wikistä</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -593,19 +578,34 @@
       <translation>Asennettu onnistuneesti</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation type="unfinished">Retrieving macro description...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Haetaan tietoja git: stä</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Haetaan tietoja wikistä</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
-      <translation type="unfinished">Error updating module</translation>
+      <translation>Virhe päivittäessä moduulia</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Virhe päivittäessä moduulia </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1078"/>
       <source>Please fix manually</source>
       <translation type="unfinished">Please fix manually</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -615,7 +615,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="1403"/>
       <source>Retrieving package metadata...</source>
-      <translation type="unfinished">Retrieving package metadata...</translation>
+      <translation>Haetaan paketin metatietoja...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1405"/>
@@ -645,7 +645,7 @@
     <message>
       <location filename="addonmanager_utilities.py" line="335"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Tietovaraston URL-osoite</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="338"/>
@@ -734,17 +734,17 @@
     <message>
       <location filename="AddonManager.py" line="191"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Tarkistetaan yhteyttä</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="192"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Tarkistetaan yhteyttä GitHubiin...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="213"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Yhteys epäonnistui</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="240"/>
@@ -787,16 +787,6 @@
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Tarkistetaan päivityksiä...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Lisäosat, jotka voidaan asentaa täällä, eivät ole virallisesti osa FreeCAD: iä, eikä niitä ole tarkistettu FreeCAD tiimissä. Varmista, että tiedät mitä olet asentamassa!</translation>
@@ -815,6 +805,11 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Tarkistetaan päivityksiä...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -870,6 +865,11 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Uudelleenkäynnistys vaaditaan</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -983,7 +983,7 @@
     <message>
       <location filename="AddonManager.py" line="1558"/>
       <source>Successfully uninstalled {}</source>
-      <translation type="unfinished">Successfully uninstalled {}</translation>
+      <translation>Poistettu onnistuneesti {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>
