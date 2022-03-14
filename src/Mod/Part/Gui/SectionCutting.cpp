@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -51,6 +50,7 @@
 #include <Mod/Part/App/FeaturePartCut.h>
 #include <Mod/Part/App/FeaturePartFuse.h>
 #include <Mod/Part/App/PartFeatures.h>
+
 
 using namespace PartGui;
 
@@ -327,11 +327,12 @@ void SectionCut::startCutting(bool isInitial)
     // ObjectsListVisible contains all visible objects of the document, but we can only cut
     // those that have a solid shape
     std::vector<App::DocumentObject*> ObjectsListCut;
+    bool isLinkAssembly = false;
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
         // we need all Link objects in App::Part for example for Assembly 4
         if (it->getObject()->getTypeId() == Base::Type::fromName("App::Part")) {
             App::Part* pcPart = static_cast<App::Part*>(it->getObject());
-            bool isLinkAssembly = false;
+           
             // collect all its link objects
             auto groupObjects = pcPart->Group.getValue();
             for (auto itGO = groupObjects.begin(); itGO != groupObjects.end(); ++itGO) {
@@ -341,16 +342,6 @@ void SectionCut::startCutting(bool isInitial)
                     isLinkAssembly = true;
                 }
             }
-            if (isLinkAssembly) {
-                // we disable the sliders because for assemblies it will takes ages to do several dozen recomputes
-                QString SliderToolTip = tr("Sliders are disabled for assemblies");
-                ui->cutXHS->setEnabled(false);
-                ui->cutXHS->setToolTip(SliderToolTip);
-                ui->cutYHS->setEnabled(false);
-                ui->cutYHS->setToolTip(SliderToolTip);
-                ui->cutZHS->setEnabled(false);
-                ui->cutZHS->setToolTip(SliderToolTip);
-            }   
         }
         // get all shapes that are also Part::Features
         if (it->getObject()->getPropertyByName("Shape")
@@ -370,6 +361,17 @@ void SectionCut::startCutting(bool isInitial)
             if (linkedObject && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature")))
                 ObjectsListCut.push_back(it->getObject());
         }
+    }
+
+    if (isLinkAssembly) {
+        // we disable the sliders because for assemblies it will takes ages to do several dozen recomputes
+        QString SliderToolTip = tr("Sliders are disabled for assemblies");
+        ui->cutXHS->setEnabled(false);
+        ui->cutXHS->setToolTip(SliderToolTip);
+        ui->cutYHS->setEnabled(false);
+        ui->cutYHS->setToolTip(SliderToolTip);
+        ui->cutZHS->setEnabled(false);
+        ui->cutZHS->setToolTip(SliderToolTip);
     }
     
     // sort out objects that are part of Part::Boolean, Part::MultiCommon, Part::MultiFuse,
@@ -466,6 +468,21 @@ void SectionCut::startCutting(bool isInitial)
         pcLink->LinkedObject.setValue((*itCuts));
         // we want to get the link at the same position as the original
         pcLink->LinkTransform.setValue(true); 
+
+        // if the object is part of an App::Part container, the link needs to get the container placement
+        auto parents = (*itCuts)->getInList();
+        if (parents.size()) {
+            for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
+                if ((*itParents)->getTypeId() == Base::Type::fromName("App::Part")) {
+                    App::Part* pcPartParent = static_cast<App::Part*>((*itParents));
+                    auto placement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                                      pcPartParent->getPropertyByName("Placement"));
+                    if (placement)
+                        pcLink->Placement.setValue(placement->getValue());
+                }
+            }
+        }
+
         // add the link to the compound
         pcCompound->Links.set1Value(count, newObject);
 
