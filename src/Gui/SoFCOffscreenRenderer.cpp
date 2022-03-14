@@ -21,7 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <iomanip>
+# include <ios>
+# include <sstream>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/fields/SoSFImage.h>
@@ -31,7 +35,6 @@
 # include <QFile>
 # include <QImage>
 # include <QImageWriter>
-# include <QPainter>
 #endif
 
 #if !defined(FC_OS_MACOSX)
@@ -40,21 +43,16 @@
 # include <GL/glext.h>
 #endif
 
-//gcc
-# include <iomanip>
-# include <ios>
-# include <sstream>
+#include <QOffscreenSurface>
 
+#include <App/Application.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
-#include <App/Application.h>
 
 #include "SoFCOffscreenRenderer.h"
 #include "BitmapFactory.h"
 
-#include <QOffscreenSurface>
-#include <QOpenGLContext>
 
 using namespace Gui;
 using namespace std;

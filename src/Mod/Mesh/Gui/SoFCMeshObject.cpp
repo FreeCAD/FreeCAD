@@ -36,13 +36,20 @@
 # include <GL/gl.h>
 # include <GL/glu.h>
 # endif
+# include <Inventor/SbLine.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoCallbackAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/actions/SoPickAction.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/misc/SoState.h>
 #endif

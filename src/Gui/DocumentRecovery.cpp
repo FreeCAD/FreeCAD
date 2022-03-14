@@ -27,6 +27,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/interprocess/sync/file_lock.hpp>
 # include <QApplication>
 # include <QCloseEvent>
 # include <QDateTime>
@@ -45,8 +46,6 @@
 # include <QVector>
 # include <sstream>
 #endif
-
-#include <boost/interprocess/sync/file_lock.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>

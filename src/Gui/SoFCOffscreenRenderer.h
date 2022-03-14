@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCOFFSCREENRENDERER_H
 #define GUI_SOFCOFFSCREENRENDERER_H
 
-#include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SoOffscreenRenderer.h>
+
 #include <QImage>
 #include <QStringList>
 #include <QtOpenGL.h>
+
 
 namespace Gui {
 

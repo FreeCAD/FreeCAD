@@ -22,8 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/SbSphere.h>
 # include <Inventor/SbString.h>
+# include <Inventor/SoInteraction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/fields/SoMFNode.h>
 # include <Inventor/fields/SoSFNode.h>
 # include <Inventor/nodes/SoGroup.h>

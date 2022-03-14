@@ -83,14 +83,16 @@
 #include <tuple>
 
 // Boost
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/program_options.hpp>
-#include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
+#include <boost_signals2.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
+#include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/program_options.hpp>
+#include <boost/utility.hpp>
 
 // Python
 #include <Python.h>

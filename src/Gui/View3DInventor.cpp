@@ -45,15 +45,15 @@
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/fields/SoSFColor.h>
 # include <Inventor/fields/SoSFString.h>
+# include <Inventor/nodes/SoDirectionalLight.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
+# include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <App/Document.h>
 
 #include "View3DInventor.h"
 #include "Application.h"

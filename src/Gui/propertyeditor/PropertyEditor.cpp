@@ -24,13 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
 # include <QInputDialog>
 # include <QMenu>
 # include <QPainter>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
