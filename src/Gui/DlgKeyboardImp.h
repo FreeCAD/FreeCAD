@@ -90,7 +90,10 @@ protected:
     /** @name Internal helper function for handling command list widgets
      */
     //@{
-    static void initCommandCompleter(QLineEdit *, QComboBox *combo, QTreeWidget *treeWidget);
+    static void initCommandCompleter(QLineEdit *,
+                                     QComboBox *combo,
+                                     QTreeWidget *treeWidget,
+                                     QTreeWidgetItem *separatorItem);
     static boost::signals2::connection initCommandList(QTreeWidget *, QTreeWidgetItem *, QComboBox *combo);
     static void initPriorityList(QTreeWidget *, QAbstractButton *buttonUp, QAbstractButton *buttonDown);
     static void populateCommandGroups(QComboBox *);

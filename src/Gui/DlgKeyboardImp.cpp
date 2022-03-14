@@ -111,13 +111,16 @@ DlgCustomKeyboardImp::~DlgCustomKeyboardImp()
 {
 }
 
-void DlgCustomKeyboardImp::initCommandCompleter(QLineEdit *edit, QComboBox *combo, QTreeWidget *commandTreeWidget)
+void DlgCustomKeyboardImp::initCommandCompleter(QLineEdit *edit,
+                                                QComboBox *combo,
+                                                QTreeWidget *commandTreeWidget,
+                                                QTreeWidgetItem *separatorItem)
 {
     edit->setPlaceholderText(tr("Type to search..."));
     auto completer = new CommandCompleter(edit, edit);
 
     QObject::connect(completer, &CommandCompleter::commandActivated,
-        [combo, commandTreeWidget](const QByteArray &name) {
+        [=](const QByteArray &name) {
             CommandManager & cCmdMgr = Application::Instance->commandManager();
             Command *cmd = cCmdMgr.getCommandByName(name.constData());
             if (!cmd)
@@ -128,8 +131,9 @@ void DlgCustomKeyboardImp::initCommandCompleter(QLineEdit *edit, QComboBox *comb
             if (index < 0)
                 return;
             if (index != combo->currentIndex()) {
+                QSignalBlocker blocker(combo);
                 combo->setCurrentIndex(index);
-                combo->activated(index);
+                populateCommandList(commandTreeWidget, separatorItem, combo);
             }
             for (int i=0 ; i<commandTreeWidget->topLevelItemCount(); ++i) {
                 QTreeWidgetItem *item = commandTreeWidget->topLevelItem(i);
@@ -207,10 +211,10 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget,
     });
 
     QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged,
-                     [timer]() { timer->start(100); });
+                     timer, [timer]() { timer->start(100); });
 
     QObject::connect(combo, QOverload<int>::of(&QComboBox::activated),
-                     [timer]() { timer->start(100); });
+                     timer, [timer]() { timer->start(100); });
 
     return Application::Instance->commandManager().signalChanged.connect([timer](){
         timer->start(100);
@@ -273,7 +277,7 @@ DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget *commandTreeWidget,
                                          AccelLineEdit *editShortcut,
                                          AccelLineEdit *currentShortcut)
 {
-    initCommandCompleter(editCommand, comboGroups, commandTreeWidget);
+    initCommandCompleter(editCommand, comboGroups, commandTreeWidget, separatorItem);
     auto conn = initCommandList(commandTreeWidget, separatorItem, comboGroups);
 
     if (priorityList && buttonUp && buttonDown) {
