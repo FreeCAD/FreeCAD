@@ -1003,7 +1003,7 @@ class CommandAddonManager:
                 )
             message += "</ul>"
             QtWidgets.QMessageBox.critical(
-                None, translate("AddonsInstaller", "Missing Requirement"), message
+                self.dialog, translate("AddonsInstaller", "Missing Requirement"), message
             )
             FreeCAD.Console.PrintMessage(
                 translate(
@@ -1367,7 +1367,7 @@ class CommandAddonManager:
                     break
         self.enable_updates(len(self.packages_with_updates))
         QtWidgets.QMessageBox.information(
-            None,
+            self.dialog,
             translate("AddonsInstaller", "Update report"),
             message,
             QtWidgets.QMessageBox.Close,
@@ -1426,7 +1426,7 @@ class CommandAddonManager:
     def on_package_installed(self, repo: Addon, message: str) -> None:
         self.hide_progress_widgets()
         QtWidgets.QMessageBox.information(
-            None,
+            self.dialog,
             translate("AddonsInstaller", "Installation succeeded"),
             message,
             QtWidgets.QMessageBox.Close,
@@ -1447,7 +1447,7 @@ class CommandAddonManager:
     def on_installation_failed(self, _: Addon, message: str) -> None:
         self.hide_progress_widgets()
         QtWidgets.QMessageBox.warning(
-            None,
+            self.dialog,
             translate("AddonsInstaller", "Installation failed"),
             message,
             QtWidgets.QMessageBox.Close,
