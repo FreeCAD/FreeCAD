@@ -129,6 +129,9 @@ bool DrawProjGroupItem::showLock(void) const
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
 //    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     bool haveX = checkXDirection();
     if (!haveX) {
