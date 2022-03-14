@@ -203,37 +203,35 @@ bool ShortcutManager::checkShortcut(QObject *o, const QKeySequence &key)
     if (iter == index.end())
         return false;
 
-    auto it = iter;
-    // skip to the first not exact matched key
-    for (; it != index.end() && key == it->key.shortcut; ++it);
+    // disable and enqueue the action in order to try other alternativeslll
+    action->setEnabled(false);
+    pendingActions.emplace_back(action, key.count(), 0);
 
     // check for potential partial match, i.e. longer key sequences
     bool flush = true;
-    for (; it != index.end(); ++it) {
+    bool found = false;
+    for (auto it = iter; it != index.end(); ++it) {
         if (key.matches(it->key.shortcut) == QKeySequence::NoMatch)
             break;
-        if (it->action && it->action->isEnabled()) {
+        if (action == it->action) {
+            // There maybe more than one action with the exact same shortcut.
+            // However, we only disable and enqueue the triggered action.
+            // Because, QAction::isEnabled() does not check if the action is
+            // active under its current ShortcutContext. We would have to check
+            // its parent widgets visibility which may or may not be reliable.
+            // Instead, we rely on QEvent::Shortcut to be sure to enqueue only
+            // active shortcuts. We'll fake the current key sequence below,
+            // which will trigger all possible matches one by one.
+            pendingActions.back().priority = getPriority(it->key.name);
+            found = true;
+        }
+        else if (it->action && it->action->isEnabled()) {
             flush = false;
-            break;
+            if (found)
+                break;
         }
     }
 
-    int count = 0;
-    for (it = iter; it != index.end() && key == it->key.shortcut; ++it) {
-        if (it->action && it->action->isEnabled()) {
-            if (!flush) {
-                // temporary disable the action so that we can try potential
-                // match with further keystrokes.
-                it->action->setEnabled(false);
-            }
-            pendingActions.emplace_back(it->action, key.count(), getPriority(it->key.name));
-            ++count;
-        }
-    }
-    if (!count) {
-        // action not found in the map, shouldn't happen!
-        pendingActions.emplace_back(action, key.count(), 0);
-    }
     if (flush) {
         // We'll flush now because there is no potential match with further
         // keystrokes, so no need to wait for timer.
