@@ -49,27 +49,27 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Udostępnij widok</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Udostępnij widok z drugiej strony</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Udostępnij widok na innej stronie</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Widok do udostępnienia</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Wybierz widok z listy do udostępnienia.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="75"/>

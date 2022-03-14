@@ -32,10 +32,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QGraphicsView>
 # include <QMouseEvent>
-# include <QApplication>
-# include <QScrollBar>
 # include <qmath.h>
 #endif
 

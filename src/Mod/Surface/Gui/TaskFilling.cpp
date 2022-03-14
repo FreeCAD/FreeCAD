@@ -31,12 +31,13 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 
+#include <Base/Console.h>
+#include <App/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
-#include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/Part/Gui/ViewProvider.h>

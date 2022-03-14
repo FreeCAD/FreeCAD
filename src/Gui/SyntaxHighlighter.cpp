@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "SyntaxHighlighter.h"
-#include "TextEdit.h"
+
 
 using namespace Gui;
 

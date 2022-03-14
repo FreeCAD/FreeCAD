@@ -24,19 +24,17 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif
-
-#include <Base/Console.h>
-#include "ActiveObjectList.h"
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
+
+#include "ActiveObjectList.h"
 #include "Tree.h"
 
-FC_LOG_LEVEL_INIT("MDIView",true,true)
+
+FC_LOG_LEVEL_INIT("MDIView", true, true)
 
 using namespace Gui;
 

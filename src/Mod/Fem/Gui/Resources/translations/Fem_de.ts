@@ -283,7 +283,7 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation>Gleichung für Elektrische Kraft</translation>
+      <translation>Gleichung für elektrische Kraft</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
@@ -876,12 +876,12 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Constraint plane rotation</source>
-      <translation type="unfinished">Constraint plane rotation</translation>
+      <translation>Randbedingung planare Rotation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="684"/>
       <source>Creates a FEM constraint for plane rotation face</source>
-      <translation type="unfinished">Creates a FEM constraint for plane rotation face</translation>
+      <translation>Erzeugt eine FEM-Randbedingung für eine planare Rotationsfläche</translation>
     </message>
   </context>
   <context>
@@ -1012,7 +1012,7 @@
     <message>
       <location filename="../../Command.cpp" line="1040"/>
       <source>Node set by poly</source>
-      <translation type="unfinished">Node set by poly</translation>
+      <translation>Knoten von Poly gesetzt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1041"/>
@@ -1036,7 +1036,7 @@
     <message>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation type="unfinished">Apply changes to parameters directly and not on recompute only...</translation>
+      <translation>Parameter-Änderungen direkt anwenden und nicht nur bei Neuberechnung...</translation>
     </message>
   </context>
   <context>
@@ -1090,7 +1090,7 @@
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>Cut the data along an implicit function</source>
-      <translation type="unfinished">Cut the data along an implicit function</translation>
+      <translation>Schneiden Sie die Daten entlang einer impliziten Funktion</translation>
     </message>
   </context>
   <context>
@@ -1108,7 +1108,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>Definieren/Erstellen eines Clip-Filters, der ein Feld entlang einer Linie ausschneidet</translation>
     </message>
   </context>
   <context>
@@ -1448,12 +1448,12 @@
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>Erstelle eine Ebenenfunktion, definiert durch Ursprung und Normale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>Erstelle eine Kugelfunktion, definiert durch Mittelpunkt und Radius</translation>
     </message>
   </context>
   <context>
@@ -1547,7 +1547,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
       <source>Time incrementation control parameter</source>
-      <translation type="unfinished">Time incrementation control parameter</translation>
+      <translation>Parameter zur Zeiterhöhung</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
@@ -1567,7 +1567,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
       <source>Number of CPU's to use (Spooles only)</source>
-      <translation type="unfinished">Number of CPU's to use (Spooles only)</translation>
+      <translation>Anzahl der zu verwendenden CPUs (nur für Pools)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="334"/>
@@ -1612,7 +1612,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="479"/>
       <source>Beam, shell element 3D output format </source>
-      <translation type="unfinished">Beam, shell element 3D output format </translation>
+      <translation>Träger, Hüll-Element-Ausgabeformat </translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="491"/>
@@ -1728,10 +1728,9 @@
 Every constraint and, if there are different materials, material
 consists of two mesh groups, faces and nodes where the
 constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every constraint and, if there are different materials, material
-consists of two mesh groups, faces and nodes where the
-constraint or material is applied.</translation>
+      <translation>Netz-Gruppen werden ebenfalls exportiert.
+Jede Beschränkung und, wenn es verschiedene Materialien gibt, jedes Material
+besteht aus zwei Netzgruppen, Flächen und Knoten, auf die die Beschränkung oder das Material angewendet wird.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="63"/>
@@ -1968,7 +1967,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation type="unfinished">Card resources</translation>
+      <translation>Karten-Ressourcen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="31"/>
@@ -1978,7 +1977,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="47"/>
       <source>Use materials from Materials directory in users FreeCAD user pref directory.</source>
-      <translation type="unfinished">Use materials from Materials directory in users FreeCAD user pref directory.</translation>
+      <translation>Verwenden Sie Materialien aus dem Materialverzeichnis im FreeCAD-Benutzer-Voreinstellungs-Verzeichnis (User Pref Verzeichnis).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="63"/>
@@ -1993,7 +1992,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="132"/>
       <source>Card sorting and duplicates</source>
-      <translation type="unfinished">Card sorting and duplicates</translation>
+      <translation>Kartensortierung und Duplikate</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="140"/>
@@ -2003,7 +2002,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="156"/>
       <source>Sort by resources (opposite would be sort by cards)</source>
-      <translation type="unfinished">Sort by resources (opposite would be sort by cards)</translation>
+      <translation>Nach Ressourcen sortieren (Gegenteil wären nach Karten sortieren)</translation>
     </message>
   </context>
   <context>
@@ -2409,7 +2408,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="450"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Nur eine Art von Auswahl (Knoten, Fläche oder Kante) pro Randbedingung erlaubt!</translation>
     </message>
   </context>
   <context>
@@ -2438,7 +2437,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Nur eine Art von Auswahl (Knoten, Fläche oder Kante) pro Randbedingung erlaubt!</translation>
     </message>
   </context>
   <context>
@@ -2461,7 +2460,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="288"/>
       <source>select boundary type, faces and set value</source>
-      <translation type="unfinished">select boundary type, faces and set value</translation>
+      <translation>wähle Grenztyp, Flächen und setze den Wert</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
@@ -2526,22 +2525,22 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="580"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Nur eine flache Fläche oder Kante kann ausgewählt werden!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="594"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation type="unfinished">Only planar faces can be picked for 3D</translation>
+      <translation>Nur flache Flächen können für 3D ausgewählt werden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="600"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation type="unfinished">Only planar edges can be picked for 2D</translation>
+      <translation>Nur flache Kanten können für 2D ausgewählt werden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="605"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>Nur Flächen für 3D-Teile oder Kanten für 2D-Teile können ausgewählt werden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="738"/>
@@ -2567,7 +2566,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="773"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Nur eine Art von Auswahl (Knoten, Fläche oder Kante) pro Randbedingung erlaubt!</translation>
     </message>
   </context>
   <context>
@@ -2596,7 +2595,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Nur eine Art von Auswahl (Knoten, Fläche oder Kante) pro Randbedingung erlaubt!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
@@ -2684,7 +2683,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="133"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="186"/>
       <source>Only one face can be selected for a plane rotation constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane rotation constraint!</translation>
+      <translation>Nur eine Fläche kann für eine Einschränkung der Rotation ausgewählt werden!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="140"/>
@@ -2997,7 +2996,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/Material.ui" line="57"/>
       <source>Material card</source>
-      <translation type="unfinished">Material card</translation>
+      <translation>Materialkarte</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="64"/>
@@ -3029,7 +3028,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>use this task panel</source>
-      <translation type="unfinished">use this task panel</translation>
+      <translation>dieses Aufgaben-Tafel benutzen</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -3379,7 +3378,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif parameter</source>
-      <translation type="unfinished">Centrif parameter</translation>
+      <translation>Zentrifugal-Parameter</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
@@ -3567,7 +3566,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/FlowVelocity.ui" line="122"/>
       <source>normal to boundary</source>
-      <translation type="unfinished">normal to boundary</translation>
+      <translation>senkrecht zu Grenze</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
@@ -4216,7 +4215,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation type="unfinished">Collect adjacent nodes</translation>
+      <translation>Angrenzende Knoten sammeln</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
@@ -4514,7 +4513,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="65"/>
       <source>Subtype</source>
-      <translation type="unfinished">Subtype</translation>
+      <translation>Subtyp</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="84"/>
@@ -4560,8 +4559,8 @@ p, li { white-space: pre-wrap; }
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="275"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Die Richtung der Kante oder der Richtung des
-normalen Vektors der Fläche wird als Richtung verwendet</translation>
+      <translation>Die Richtung der Kante oder die Richtung des
+Normalenvektors der Fläche wird als Richtung verwendet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="300"/>
@@ -4576,7 +4575,7 @@ normalen Vektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="327"/>
       <source>Turbulence specification</source>
-      <translation type="unfinished">Turbulence specification</translation>
+      <translation>Turbulenz-Spezifikation</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="349"/>
@@ -4655,8 +4654,8 @@ normalen Vektors der Fläche wird als Richtung verwendet</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="109"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Die Richtung der Kante oder der Richtung des
-normalen Vektors der Fläche wird als Richtung verwendet</translation>
+      <translation>Die Richtung der Kante oder die Richtung des
+Normalenvektors der Fläche wird als Richtung verwendet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="119"/>
@@ -4828,7 +4827,7 @@ normalen Vektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="86"/>
       <source>Normal Stiffness</source>
-      <translation>Normale Steifigkeit</translation>
+      <translation>Normalsteifigkeit</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="99"/>
@@ -5473,7 +5472,7 @@ normalen Vektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../Command.cpp" line="1166"/>
       <source>Error: Wrong or no or to many vtk post processing objects.</source>
-      <translation type="unfinished">Error: Wrong or no or to many vtk post processing objects.</translation>
+      <translation>Fehler: Falsche oder keine oder zu viele vtk-Nachbearbeitungsobjekte.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1167"/>

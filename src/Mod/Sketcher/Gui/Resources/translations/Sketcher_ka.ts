@@ -76,7 +76,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control polygons for all B-splines</translation>
+      <translation>ყველა B-სპლაინის საკონტროლო მრავალკუთხედების ჩვენების ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
@@ -525,7 +525,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6462"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation type="unfinished">Create an equality constraint between two lines or between circles and arcs</translation>
+      <translation>ორ ხაზს ან წრეწირსა და რკალებს შორის თანასწორობის შეზღუდვის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="7143"/>
       <source>Constrains an element to be aligned with the internal geometry of another element</source>
-      <translation type="unfinished">Constrains an element to be aligned with the internal geometry of another element</translation>
+      <translation>ელემენტის შეზღუდვა მისი სხვა ელემენტის შიდა გეომეტრიასთან სწორებისთვის</translation>
     </message>
   </context>
   <context>
@@ -618,7 +618,7 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5487"/>
       <source>Fix automatically diameter on circle and radius on arc/pole</source>
-      <translation type="unfinished">Fix automatically diameter on circle and radius on arc/pole</translation>
+      <translation>წრეწირის დიამეტრისა და რკალის რადიუსის ავტომატური შესწორება</translation>
     </message>
   </context>
   <context>
@@ -690,7 +690,7 @@ with respect to a line or a third point</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConvertToNURB</name>
+    <name>CmdSketcherConvertToNURBS</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
@@ -1393,7 +1393,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="303"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
-      <translation type="unfinished">Select the constraints associated with the selected geometrical elements</translation>
+      <translation>მონიშნულ გეომეტრიულ ელემენტებზე მიბმული შეზღუდვების მონიშვნა</translation>
     </message>
   </context>
   <context>
@@ -1524,7 +1524,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation type="unfinished">Switches the selected constraints or the view to the other virtual space</translation>
+      <translation>მონიშნული შეზღუდვების ან ხედების სხვა ვირტუალურ სივრცეზე გადართვა</translation>
     </message>
   </context>
   <context>
@@ -1629,7 +1629,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="949"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation type="unfinished">When in edit mode, switch between section view and full view.</translation>
+      <translation>ჩასწორების რეჟიმში შეგიძლიათ კვეთისა და სრულ ხედს შორის გადართვა.</translation>
     </message>
   </context>
   <context>
@@ -1642,7 +1642,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation type="unfinished">When in edit mode, set the camera orientation perpendicular to the sketch plane.</translation>
+      <translation>ჩასწორების რეჟიმში კამერის ორიენტაციის ესკიზის სიბრტყის მართობულად დაყენება.</translation>
     </message>
   </context>
   <context>
@@ -2264,7 +2264,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>There are no modes that accept the selected set of subelements</source>
-      <translation type="unfinished">There are no modes that accept the selected set of subelements</translation>
+      <translation>არ არსებობს რეჟიმი, რომელიც მიიღებს ქვე-ელემენტების მონიშნულ ნაკრებს</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -2688,7 +2688,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2359"/>
       <location filename="../../CommandConstraints.cpp" line="2490"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation type="unfinished">Select exactly one line or one point and one line or two points from the sketch.</translation>
+      <translation>ესკიზიდან აირჩიეთ მხოლოდ ერთი ხაზი ან ერთი წერტილი და ერთი ხაზი ან ორი წერტილი.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2457"/>
@@ -2775,7 +2775,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3035"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
-      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the origin point!</translation>
+      <translation>საწყის წერტილზე ფიქსირებული X-კოორდინატის შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3093"/>
@@ -2791,7 +2791,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3283"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
-      <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the origin point!</translation>
+      <translation>საწყის წერტილზე ფიქსირებული Y-კოორდინატის შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3443"/>
@@ -2848,7 +2848,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="3707"/>
       <location filename="../../CommandConstraints.cpp" line="3744"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
-      <translation type="unfinished">Cannot add a perpendicularity constraint at an unconnected point!</translation>
+      <translation>დაუკავშირებელ წერტილზე მართობული შეზღუდვის დამატება შეუძლებელია!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3753"/>
@@ -3073,7 +3073,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="7294"/>
       <location filename="../../CommandConstraints.cpp" line="7472"/>
       <source>Currently all internal geometrical elements of the ellipse are already exposed.</source>
-      <translation type="unfinished">Currently all internal geometrical elements of the ellipse are already exposed.</translation>
+      <translation>ოვალის ყველა შიდა გეომეტრიული ელემენტი უკვე ნაჩვენებია.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7384"/>
@@ -3108,7 +3108,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7582"/>
       <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-      <translation type="unfinished">Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</translation>
+      <translation>ამჟამად შიდა გეომერია მხოლოდ ოვალისა და ოვალის რკალისთვისაა მხარდაჭერლი. ბოლო მონიშნული ელემენტი ოვალი ან ოვალის რკალი უნდა იყოს.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7643"/>
@@ -3141,7 +3141,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="503"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
       <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
-      <translation type="unfinished">At least one of the selected objects was not a B-Spline and was ignored.</translation>
+      <translation>სულ ცოტა ერთი ობიექტი არ წარმოადგენდა B-სპლაინს და იგნორირებული იყო.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="618"/>
@@ -3218,7 +3218,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1162"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
-      <translation type="unfinished">A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</translation>
+      <translation>სიმეტრიული კონსტრუქცია მოითხოვს სულ ცოტა 2 გეომეტრიულ ელემენტს, საიდანაც ერთი მაინც სიმეტრიის აშენების მიბმას წარმოადგენს.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1171"/>
@@ -3603,7 +3603,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="77"/>
       <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-      <translation type="unfinished">Makes the inter-row and inter-col spacing the same if clicked</translation>
+      <translation>მწკრივებსა და სვეტებს შორის მანძილის გატოლებისთვის დააწკაპუნეთ</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="80"/>
@@ -3707,7 +3707,7 @@ reflected on copies</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
       <source>Show section 'Advanced solver control' in task dialog</source>
-      <translation type="unfinished">Show section 'Advanced solver control' in task dialog</translation>
+      <translation>ამოცანების ფანჯარაში 'ამომხსნელის დამატებითი კონტროლი'-ის სექციის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="53"/>
@@ -4049,7 +4049,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>ესკიზის მიმდინარე ხელსაწყო აქტიური დარჩება შექმნის შემდეგაც.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
@@ -4081,7 +4081,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>თუ ჩართულია, ზომის შეზღუდვები ხილული გახდება, არსებობის შემთხვევაში.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
@@ -4119,7 +4119,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>ესკიზის გახნისას მასზე დამოკიდებული ყველა თვისების დამალვა.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -4129,7 +4129,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>ესკიზის გახსნისას გარე გეომეტრიული ბმულების წყაროების ჩვენება.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
@@ -4160,8 +4160,8 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>ჩასწორების რეჟიმში გადასვლისას კამერის ორთოგონალურ ხედზე დაყენება.
+მუშაობსმხოლოდ თუ „ჩასწორების შემდეგ კამერის მდებარეობის აღდგენა“ ჩართულია.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
@@ -4183,12 +4183,12 @@ Then objects are only visible behind the sketch plane.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
-      <translation type="unfinished">Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</translation>
+      <translation>შენიშვნა: ეს პარამეტრები წარმოადნენ ახალ ესკიზებზე გადატარებულ ნაგულისხმევ მნისვნელობებს. ეს ქცევა ცალცალკეა დამახსოვრებული ესკიზის ხედის ჩანართის თვისებებში.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>ხილვადობის ავტომატიზაციის მიმდინარე პარამატრების ღია დოკუმენტებში ყველა ესკიზზე გადატარება.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
@@ -4806,7 +4806,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="164"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
-      <translation type="unfinished">To change, drag and drop a geometry type to top or bottom</translation>
+      <translation>შესაცვლელად გეომეტრიის ტიპი აათრიეთ და დააგდეთ ზემოთ ან ქვემოთ</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.cpp" line="193"/>
@@ -5110,7 +5110,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="340"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="342"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control polygons for all B-splines</translation>
+      <translation>ყველა B-სპლაინის საკონტროლო მრავალკუთხედების ჩვენების ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
@@ -5638,7 +5638,7 @@ BFGS ამომხსნელი იყენებს Broyden–Fletcher–G
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
       <source>If selected, the Maximum iterations value is multiplied by the sketch size</source>
-      <translation type="unfinished">If selected, the Maximum iterations value is multiplied by the sketch size</translation>
+      <translation>თუ არჩეულია, იტერაციების მაქსიმალური რაოდენობის მნიშვნელობა ესკიზის ზომაზე გამრავლდება</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="153"/>
@@ -5648,7 +5648,7 @@ BFGS ამომხსნელი იყენებს Broyden–Fletcher–G
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="166"/>
       <source>Maximum iterations will be multiplied by number of parameters</source>
-      <translation type="unfinished">Maximum iterations will be multiplied by number of parameters</translation>
+      <translation>მაქსიმალური იტერაციები გამრავლდება პარამეტრების რაოდენობაზე</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="189"/>
@@ -5729,7 +5729,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="370"/>
       <source>Solving algorithm used for determination of Redundant constraints</source>
-      <translation type="unfinished">Solving algorithm used for determination of Redundant constraints</translation>
+      <translation>დამატებითი შეზღუდვების საპოვნელად გამოყენებული ამოხსნის ალგორითმი</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>

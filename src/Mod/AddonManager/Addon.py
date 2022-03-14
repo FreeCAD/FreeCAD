@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -32,13 +32,29 @@ import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
+INTERNAL_WORKBENCHES = {}
+INTERNAL_WORKBENCHES["arch"] = "Arch"
+INTERNAL_WORKBENCHES["draft"] = "Draft"
+INTERNAL_WORKBENCHES["fem"] = "FEM"
+INTERNAL_WORKBENCHES["mesh"] = "Mesh"
+INTERNAL_WORKBENCHES["openscad"] = "OpenSCAD"
+INTERNAL_WORKBENCHES["part"] = "Part"
+INTERNAL_WORKBENCHES["partdesign"] = "PartDesign"
+INTERNAL_WORKBENCHES["path"] = "Path"
+INTERNAL_WORKBENCHES["plot"] = "Plot"
+INTERNAL_WORKBENCHES["points"] = "Points"
+INTERNAL_WORKBENCHES["raytracing"] = "Raytracing"
+INTERNAL_WORKBENCHES["robot"] = "Robot"
+INTERNAL_WORKBENCHES["sketcher"] = "Sketcher"
+INTERNAL_WORKBENCHES["spreadsheet"] = "Spreadsheet"
+INTERNAL_WORKBENCHES["techdraw"] = "TechDraw"
 
-class AddonManagerRepo:
+class Addon:
     "Encapsulate information about a FreeCAD addon"
 
     from enum import IntEnum
 
-    class RepoType(IntEnum):
+    class Kind(IntEnum):
         WORKBENCH = 1
         MACRO = 2
         PACKAGE = 3
@@ -51,7 +67,7 @@ class AddonManagerRepo:
             elif self.value == 3:
                 return "Package"
 
-    class UpdateStatus(IntEnum):
+    class Status(IntEnum):
         NOT_INSTALLED = 0
         UNCHECKED = 1
         NO_UPDATE_AVAILABLE = 2
@@ -80,10 +96,10 @@ class AddonManagerRepo:
 
     class Dependencies:
         def __init__(self):
-            self.required_external_addons = dict()
-            self.blockers = dict()
-            self.replaces = dict()
-            self.unrecognized_addons: Set[str] = set()
+            self.required_external_addons = [] # A list of Addons
+            self.blockers = [] # A list of Addons
+            self.replaces = [] # A list of Addons
+            self.internal_workbenches: Set[str] = set() # Required internal workbenches
             self.python_required: Set[str] = set()
             self.python_optional: Set[str] = set()
 
@@ -91,7 +107,7 @@ class AddonManagerRepo:
         def __init__(self, msg):
             super().__init__(msg)
 
-    def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
+    def __init__(self, name: str, url: str, status: Status, branch: str):
         self.name = name.strip()
         self.display_name = self.name
         self.url = url.strip()
@@ -99,7 +115,7 @@ class AddonManagerRepo:
         self.python2 = False
         self.obsolete = False
         self.rejected = False
-        self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
+        self.repo_type = Addon.Kind.WORKBENCH
         self.description = None
         self.tags = set()  # Just a cache, loaded from Metadata
 
@@ -115,7 +131,7 @@ class AddonManagerRepo:
         # The url should never end in ".git", so strip it if it's there
         parsed_url = urlparse(self.url)
         if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + parsed_url.path[:-4]
+            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
             if parsed_url.query:
                 self.url += "?" + parsed_url.query
             if parsed_url.fragment:
@@ -155,12 +171,12 @@ class AddonManagerRepo:
     @classmethod
     def from_macro(self, macro: Macro):
         if macro.is_installed():
-            status = AddonManagerRepo.UpdateStatus.UNCHECKED
+            status = Addon.Status.UNCHECKED
         else:
-            status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-        instance = AddonManagerRepo(macro.name, macro.url, status, "master")
+            status = Addon.Status.NOT_INSTALLED
+        instance = Addon(macro.name, macro.url, status, "master")
         instance.macro = macro
-        instance.repo_type = AddonManagerRepo.RepoType.MACRO
+        instance.repo_type = Addon.Kind.MACRO
         instance.description = macro.desc
         return instance
 
@@ -170,18 +186,18 @@ class AddonManagerRepo:
 
         mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", cache_dict["name"])
         if os.path.isdir(mod_dir):
-            status = AddonManagerRepo.UpdateStatus.UNCHECKED
+            status = Addon.Status.UNCHECKED
         else:
-            status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-        instance = AddonManagerRepo(
+            status = Addon.Status.NOT_INSTALLED
+        instance = Addon(
             cache_dict["name"], cache_dict["url"], status, cache_dict["branch"]
         )
 
         for key, value in cache_dict.items():
             instance.__dict__[key] = value
 
-        instance.repo_type = AddonManagerRepo.RepoType(cache_dict["repo_type"])
-        if instance.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        instance.repo_type = Addon.Kind(cache_dict["repo_type"])
+        if instance.repo_type == Addon.Kind.PACKAGE:
             # There must be a cached metadata file, too
             cached_package_xml_file = os.path.join(
                 FreeCAD.getUserCachePath(),
@@ -232,7 +248,7 @@ class AddonManagerRepo:
     def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         self.metadata = metadata
         self.display_name = metadata.Name
-        self.repo_type = AddonManagerRepo.RepoType.PACKAGE
+        self.repo_type = Addon.Kind.PACKAGE
         self.description = metadata.Description
         for url in metadata.Urls:
             if "type" in url and url["type"] == "repository":
@@ -242,6 +258,57 @@ class AddonManagerRepo:
                 else:
                     self.branch = "master"
         self.extract_tags(self.metadata)
+        self.extract_metadata_dependencies(self.metadata)
+
+    def version_is_ok(self, metadata) -> bool:
+        dep_fc_min = metadata.FreeCADMin
+        dep_fc_max = metadata.FreeCADMax
+
+        fc_major = int(FreeCAD.Version()[0])
+        fc_minor = int(FreeCAD.Version()[1])
+
+        try:
+            if dep_fc_min and dep_fc_min != "0.0.0":
+                required_version = dep_fc_min.split(".")
+                if fc_major < int(required_version[0]):
+                    return False # Major version is too low
+                elif fc_major == int(required_version[0]):
+                    if len(required_version) > 1 and fc_minor < int(required_version[1]):
+                        return False # Same major, and minor is too low
+        except ValueError:
+            FreeCAD.Console.PrintMessage(f"Metadata file for {self.name} has invalid FreeCADMin version info\n")
+
+        try:
+            if dep_fc_max and dep_fc_max != "0.0.0":
+                required_version = dep_fc_max.split(".")
+                if fc_major > int(required_version[0]):
+                    return False # Major version is too high
+                elif fc_major == int(required_version[0]):
+                    if len(required_version) > 1 and fc_minor > int(required_version[1]):
+                        return False # Same major, and minor is too high
+        except ValueError:
+            FreeCAD.Console.PrintMessage(f"Metadata file for {self.name} has invalid FreeCADMax version info\n")
+
+        return True
+
+    def extract_metadata_dependencies(self, metadata):
+
+        # Version check: if this piece of metadata doesn't apply to this version of
+        # FreeCAD, just skip it.
+        if not self.version_is_ok(metadata):
+            return
+
+        for dep in metadata.Depend:
+            # Simple version for now: eventually support all of the version params...
+            self.requires.add(dep["package"])
+        for dep in metadata.Conflict:
+            self.blocks.add(dep["package"])
+
+        # Recurse
+        content = metadata.Content
+        for _, value in content.items():
+            for item in value:
+                self.extract_metadata_dependencies(item)
 
     def verify_url_and_branch(self, url: str, branch: str) -> None:
         """Print diagnostic information for Addon Developers if their metadata is
@@ -266,6 +333,12 @@ class AddonManagerRepo:
             )
 
     def extract_tags(self, metadata: FreeCAD.Metadata) -> None:
+
+        # Version check: if this piece of metadata doesn't apply to this version of
+        # FreeCAD, just skip it.
+        if not self.version_is_ok(metadata):
+            return
+
         for new_tag in metadata.Tag:
             self.tags.add(new_tag)
 
@@ -277,9 +350,9 @@ class AddonManagerRepo:
     def contains_workbench(self) -> bool:
         """Determine if this package contains (or is) a workbench"""
 
-        if self.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
+        if self.repo_type == Addon.Kind.WORKBENCH:
             return True
-        elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        elif self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 FreeCAD.Console.PrintWarning(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
@@ -298,9 +371,9 @@ class AddonManagerRepo:
     def contains_macro(self) -> bool:
         """Determine if this package contains (or is) a macro"""
 
-        if self.repo_type == AddonManagerRepo.RepoType.MACRO:
+        if self.repo_type == Addon.Kind.MACRO:
             return True
-        elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        elif self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 FreeCAD.Console.PrintWarning(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
@@ -314,7 +387,7 @@ class AddonManagerRepo:
     def contains_preference_pack(self) -> bool:
         """Determine if this package contains a preference pack"""
 
-        if self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        if self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
                 FreeCAD.Console.PrintWarning(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
@@ -363,18 +436,34 @@ class AddonManagerRepo:
         return self.cached_icon_filename
 
     def walk_dependency_tree(self, all_repos, deps):
-        """Compute the total dependency tree for this repo (recursive)"""
+        """Compute the total dependency tree for this repo (recursive)
+        - all_repos is a dictionary of repos, keyed on the name of the repo
+        - deps is an Addon.Dependency object encapsulating all the types of dependency
+        information that may be needed.
+        """
 
         deps.python_required |= self.python_requires
         deps.python_optional |= self.python_optional
         for dep in self.requires:
             if dep in all_repos:
-                if not dep in deps.required:
+                if not dep in deps.required_external_addons:
                     deps.required_external_addons.append(all_repos[dep])
                     all_repos[dep].walk_dependency_tree(all_repos, deps)
             else:
-                # Maybe this is an internal workbench, just store its name
-                deps.unrecognized_addons.add(dep)
+                # See if this is an internal workbench:
+                if dep.upper().endswith("WB"):
+                    real_name = dep[:-2].strip().lower()
+                elif dep.upper().endswith("WORKBENCH"):
+                    real_name = dep[:-9].strip().lower()
+                else:
+                   real_name = dep.strip().lower()
+
+                if real_name in INTERNAL_WORKBENCHES:
+                    deps.internal_workbenches.add(INTERNAL_WORKBENCHES[real_name])
+                else:
+                    # Assume it's a Python requirement of some kind:
+                    deps.python_required.add(dep)
+
         for dep in self.blocks:
             if dep in all_repos:
                 deps.blockers[dep] = all_repos[dep]

@@ -149,9 +149,12 @@ void ViewProviderLoft::highlightReferences(ViewProviderLoft::Reference mode, boo
 
 void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vector<std::string>& elements, bool on)
 {
+    if (!base)
+        return;
+
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (svp == nullptr)
+    if (!svp)
         return;
 
     std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];

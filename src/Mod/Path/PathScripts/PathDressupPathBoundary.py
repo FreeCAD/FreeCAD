@@ -123,7 +123,7 @@ class PathBoundary:
         self.inside = inside
         self.safeHeight = None
         self.clearanceHeight = None
-        self.strG1ZsafeHeight = None
+        self.strG0ZsafeHeight = None
         self.strG0ZclearanceHeight = None
 
     def boundaryCommands(self, begin, end, verticalFeed):
@@ -132,7 +132,7 @@ class PathBoundary:
             return []
         cmds = []
         if begin.z < self.safeHeight:
-            cmds.append(self.strG1ZsafeHeight)
+            cmds.append(self.strG0ZsafeHeight)
         if begin.z < self.clearanceHeight:
             cmds.append(self.strG0ZclearanceHeight)
         if end:
@@ -161,8 +161,8 @@ class PathBoundary:
         self.clearanceHeight = float(
             PathUtil.opProperty(self.baseOp, "ClearanceHeight")
         )
-        self.strG1ZsafeHeight = Path.Command(
-            "G1", {"Z": self.safeHeight, "F": tc.VertFeed.Value}
+        self.strG0ZsafeHeight = Path.Command(  # was a Feed rate with G1
+            "G0", {"Z": self.safeHeight, "F": tc.VertRapid.Value}
         )
         self.strG0ZclearanceHeight = Path.Command("G0", {"Z": self.clearanceHeight})
 

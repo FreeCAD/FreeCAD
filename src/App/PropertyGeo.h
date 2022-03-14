@@ -30,8 +30,6 @@
 #include <Base/Unit.h>
 #include <Base/Vector3D.h>
 
-#include "Property.h"
-#include "ComplexGeoData.h"
 #include "PropertyLinks.h"
 #include <FCGlobal.h>
 

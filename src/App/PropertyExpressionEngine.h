@@ -28,7 +28,7 @@
 #include <boost_signals2.hpp>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
-#include <App/Expression.h>
+#include <App/PropertyLinks.h>
 #include <set>
 
 namespace Base {
@@ -42,6 +42,7 @@ class DocumentObject;
 class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
+using ExpressionPtr = std::unique_ptr<Expression>;
 
 class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
@@ -79,7 +80,7 @@ public:
     typedef boost::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 
     /**
-     * @brief The ExpressionInfo struct encapsulates an expression and a comment.
+     * @brief The ExpressionInfo struct encapsulates an expression.
      */
 
     struct ExpressionInfo {
@@ -93,10 +94,12 @@ public:
 
         ExpressionInfo(const ExpressionInfo & other) {
             expression = other.expression;
+            busy = other.busy;
         }
 
         ExpressionInfo & operator=(const ExpressionInfo & other) {
             expression = other.expression;
+            busy = other.busy;
             return *this;
         }
     };

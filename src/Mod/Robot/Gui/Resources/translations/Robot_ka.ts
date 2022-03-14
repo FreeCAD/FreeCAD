@@ -275,7 +275,7 @@
     </message>
     <message>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+      <translation>ზღუდარის ისეთ ობიექტის შექმნა, რომელიც გადაფარავს ტრაექტორიის რაღაც ნაწილს</translation>
     </message>
   </context>
   <context>

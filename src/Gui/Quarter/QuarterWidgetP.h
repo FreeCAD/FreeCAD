@@ -34,11 +34,10 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbName.h>
-#include <QtGui/QCursor>
-#include <QtCore/QList>
-#include <QtCore/QUrl>
+#include <QList>
+#include <QUrl>
 #include <QtOpenGL.h>
+
 
 class SoNode;
 class SoCamera;

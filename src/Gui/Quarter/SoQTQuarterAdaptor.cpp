@@ -19,26 +19,29 @@
  */
 
 #include "PreCompiled.h"
-#include "SoQTQuarterAdaptor.h"
+
 #include <Base/Console.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoLocateHighlight.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/SoEventManager.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/events/SoEvents.h>
+#include <Inventor/nodes/SoLocateHighlight.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #if !defined(FC_OS_MACOSX)
 # include <GL/gl.h>
 # include <GL/glu.h>
 # include <GL/glext.h>
 #endif
+
+#include "SoQTQuarterAdaptor.h"
+
 
 static unsigned char fps2dfont[][12] = {
     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //

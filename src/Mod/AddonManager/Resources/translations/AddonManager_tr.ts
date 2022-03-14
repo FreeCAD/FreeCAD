@@ -4,6 +4,22 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation type="unfinished">Create new toolbar</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>Çalıştır</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
       <translation>Sürüm {version}, {date} tarihinde yüklendi</translation>
@@ -91,7 +107,7 @@
     <message>
       <location filename="package_details.py" line="354"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>UYARI: Bu eklenti FreeCAD gerektirir </translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
@@ -104,22 +120,22 @@
     <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>{} URL'sinden README verileri yüklenemedi</translation>
     </message>
     <message>
       <location filename="package_details.py" line="577"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Başarılı</translation>
     </message>
     <message>
       <location filename="package_details.py" line="600"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>Git ref &apos;{}&apos; olarak değiştirildi -- Addon'u kullanmak için lütfen yeniden başlatın.</translation>
     </message>
     <message>
       <location filename="package_details.py" line="636"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>Sayfa JavaScript'i bildirdi</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
@@ -149,7 +165,17 @@
     <message>
       <location filename="package_details.py" line="786"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>Branch Değiştir</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>Etkinleştir</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>Devre dışı</translation>
     </message>
     <message>
       <location filename="package_details.py" line="424"/>
@@ -159,9 +185,9 @@
     <message numerus="yes">
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+      <translation>
+        <numerusform>QtWebEngine Python bağlamaları kurulu değil -- geri dönüş README ekranı kullanılıyor. Ayrıntılar ve kurulum talimatları için Rapor Görünümü'ne bakın.</numerusform>
+        <numerusform>QtWebEngine Python bağlamaları kurulu değil -- geri dönüş README ekranı kullanılıyor. Ayrıntılar ve kurulum talimatları için Rapor Görünümü'ne bakın.</numerusform>
       </translation>
     </message>
     <message>
@@ -182,12 +208,12 @@
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>{} Çalışma Tezgahı hakkında ayrıntılar için tıklayın</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>{} makrosu ile ilgili ayrıntılar için tıklayın</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -210,11 +236,6 @@
       <translation>güncellendi</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation>Güncellendi</translation>
-    </message>
-    <message>
       <location filename="package_list.py" line="382"/>
       <source>Author</source>
       <translation>Yazar</translation>
@@ -235,6 +256,16 @@
       <translation>Yeniden başlatma askıya alınıyor</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation type="unfinished">DISABLED</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation>Kurulu sürüm</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
       <translation>Paket ayrıntıları için tıklayın</translation>
@@ -250,9 +281,9 @@
       <translation>Makro ayrıntıları için tıklayın</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>Kurulu sürüm</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation>Güncellendi</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -442,6 +473,11 @@
       <translation>Github'tan makroları getirirken bir hata meydana geldi</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Tanım alınıyor...</translation>
@@ -527,9 +563,24 @@
       <translation>Lüften önce eksik bileşenleri yükleyin.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makro tanımı getiriliyor...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Git'ten bilgi alınıyor</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Hata: Posta kodu bulunamıyor</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Wiki'den bilgi alınıyor</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -542,24 +593,9 @@
       <translation>Başarıyla Yüklendi</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makro tanımı getiriliyor...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Git'ten bilgi alınıyor</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Wiki'den bilgi alınıyor</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>Modül güncelleme hatası </translation>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation type="unfinished">Error updating module</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1078"/>
@@ -567,9 +603,14 @@
       <translation>Lütfen elle onarın</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Modül güncelleme hatası </translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
+      <translation>Hata: Şu adresten ZIP bulunamadı</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1403"/>
@@ -584,17 +625,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>{} için package.xml indirildi</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>{} için metadata.txt indirildi</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
       <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
+      <translation>{} için simge indirildi</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
@@ -629,18 +670,18 @@
     <message>
       <location filename="change_branch.py" line="101"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>TEHLİKE: Geliştirici özelliği</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="114"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Yerel değişiklikler var</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="192"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Branch</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="178"/>
@@ -652,42 +693,42 @@
       <location filename="change_branch.py" line="261"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
+      <translation>
+        <numerusform>Tür</numerusform>
+        <numerusform>Tür</numerusform>
       </translation>
     </message>
     <message>
       <location filename="change_branch.py" line="265"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Yerel ad</translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="271"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation type="unfinished">
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
+      <translation>
+        <numerusform>İzleme</numerusform>
+        <numerusform>İzleme</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
+      <translation>
+        <numerusform>Yerel güncellendi</numerusform>
+        <numerusform>Yerel güncellendi</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
+      <translation>
+        <numerusform>Uzak bağlantı güncellendi</numerusform>
+        <numerusform>Uzak bağlantı güncellendi</numerusform>
       </translation>
     </message>
     <message>
@@ -708,7 +749,7 @@
     <message>
       <location filename="AddonManager.py" line="240"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>Eksik bağımlılık</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
@@ -746,6 +787,16 @@
       <translation>Önbellek güncelleniyor...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Güncellemeler kontrol ediliyor...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} Güncellemeyi(leri) Uygula</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Yüklenebilecek eklentiler FreeCAD'in resmi bir parçası değildir ve FreeCAD takımı tarafından incelenmemektedir. Ne yüklediğinizi bildiğinizden emin olun!</translation>
@@ -763,12 +814,7 @@
     <message>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Güncellemeler kontrol ediliyor...</translation>
+      <translation>QtNetwork içe aktarılamadı - ayrıntılar için Rapor Görünümüne bakın. Eklenti Yöneticisi kullanılamıyor.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -811,6 +857,11 @@
       <translation>Makro başarıyla kaldırıldı.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Makro kaldırılamıyor.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
       <translation>Eklenti Yönetici: Güncelleme denetimi atlanıyor çünkü OtoDenetleme kullanıcı tercihi "Yanlış"</translation>
@@ -819,11 +870,6 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Yeniden başlatma gerekli</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -843,7 +889,7 @@
     <message>
       <location filename="AddonManager.py" line="915"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Listelemek için çok fazla</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="893"/>
@@ -858,22 +904,22 @@
     <message>
       <location filename="AddonManager.py" line="1061"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Python çalıştırılamıyor</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1081"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>Pip çalıştırılamıyor</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1102"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Paket kurulumu başarısız oldu</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1105"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Ayrıntılı arıza günlüğü için Rapor Görünümü'ne bakın.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
@@ -884,20 +930,15 @@
       <location filename="AddonManager.py" line="1280"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
+      <translation>
+        <numerusform>{} toplam, liste için Rapor görünümüne bakın</numerusform>
+        <numerusform>{} toplam, liste için Rapor görünümüne bakın</numerusform>
       </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
       <translation>Başarılı</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1159"/>
@@ -927,17 +968,22 @@
     <message>
       <location filename="AddonManager.py" line="1457"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Kaldırmayı onayla</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
-      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
+      <translation>Bu Eklentiyi kaldırmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Makro kaldırılamıyor.</translation>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation>&apos; eklentisinin uninstall.py komut dosyasının çalıştırılması başarısız oldu. Kaldırma işlemine devam ediliyor...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation type="unfinished">Successfully uninstalled {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

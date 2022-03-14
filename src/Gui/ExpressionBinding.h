@@ -23,11 +23,12 @@
 #ifndef EXPRESSIONBINDING_H
 #define EXPRESSIONBINDING_H
 
+#include <memory>
 #include <string>
 #include <App/ObjectIdentifier.h>
-#include <memory>
-#include <QLabel>
+#include <QPalette>
 #include <boost_signals2.hpp>
+
 
 namespace App {
 class Expression;

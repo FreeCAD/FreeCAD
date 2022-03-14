@@ -4273,7 +4273,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation>Położenie</translation>
+      <translation>Umiejscowienie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -4346,7 +4346,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
       <source>Location</source>
-      <translation>Położenie</translation>
+      <translation>Umiejscowienie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="234"/>

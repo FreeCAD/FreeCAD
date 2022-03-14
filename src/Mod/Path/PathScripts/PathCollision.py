@@ -64,7 +64,6 @@ class _ViewProviderCollisionSim:
         self.Object = vobj.Object
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         return True
 
     def getIcon(self):
@@ -74,11 +73,9 @@ class _ViewProviderCollisionSim:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def onDelete(self, feature, subelements):
-        # pylint: disable=unused-argument
         feature.Original.ViewObject.Visibility = True
         return True
 

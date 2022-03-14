@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/Part.h"
-
 // inclusion of the generated files (generated out of PartPy.xml)
 #include "PartPy.h"
 #include "PartPy.cpp"
@@ -36,11 +34,6 @@ std::string PartPy::representation(void) const
 {
     return std::string("<Part object>");
 }
-
-
-
-
-
 
 PyObject *PartPy::getCustomAttributes(const char* /*attr*/) const
 {

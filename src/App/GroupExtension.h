@@ -24,12 +24,11 @@
 #ifndef APP_GROUPEXTENSION_H
 #define APP_GROUPEXTENSION_H
 
-#include <boost_signals2.hpp>
-#include "FeaturePython.h"
-#include "DocumentObject.h"
-#include "PropertyLinks.h"
-#include "DocumentObjectExtension.h"
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectExtension.h>
+#include <App/ExtensionPython.h>
 #include <vector>
+
 
 namespace App
 {

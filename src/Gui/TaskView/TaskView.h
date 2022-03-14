@@ -26,10 +26,7 @@
 
 #define QSINT_ACTIONPANEL
 
-#include <map>
-#include <string>
 #include <vector>
-#include <boost_signals2.hpp>
 #include <QScrollArea>
 
 #if !defined (QSINT_ACTIONPANEL)
@@ -39,6 +36,7 @@
 #endif
 #include <Gui/Selection.h>
 #include "TaskWatcher.h"
+
 
 namespace App {
 class Property;

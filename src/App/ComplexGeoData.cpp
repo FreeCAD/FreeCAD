@@ -30,6 +30,9 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "ComplexGeoData.h"
+#include <Base/BoundBox.h>
+#include <Base/Placement.h>
+#include <Base/Rotation.h>
 
 
 using namespace Data;
@@ -40,12 +43,12 @@ TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass)
 TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence)
 
 
-ComplexGeoData::ComplexGeoData(void)
+ComplexGeoData::ComplexGeoData()
     :Tag(0)
 {
 }
 
-ComplexGeoData::~ComplexGeoData(void)
+ComplexGeoData::~ComplexGeoData()
 {
 }
 
@@ -56,10 +59,10 @@ Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
     std::string::size_type pos = element.find_first_of("0123456789");
     if (pos != std::string::npos) {
         index = std::atoi(element.substr(pos).c_str());
-        element = element.substr(0,pos);
+        element = element.substr(0, pos);
     }
 
-    return getSubElement(element.c_str(),index);
+    return getSubElement(element.c_str(), static_cast<unsigned long>(index));
 }
 
 void ComplexGeoData::applyTransform(const Base::Matrix4D& rclTrf)

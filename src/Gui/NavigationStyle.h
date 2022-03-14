@@ -26,18 +26,19 @@
 
 #include <Inventor/C/basic.h>
 #include <Inventor/SbBox2s.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec2s.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoEvents.h>
-#include <QCursor>
+
 #include <QEvent>
 #include <Base/BaseClass.h>
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
+
 
 // forward declarations
 class SoEvent;

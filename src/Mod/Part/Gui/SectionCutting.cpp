@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -34,6 +33,7 @@
 
 #include "SectionCutting.h"
 #include "ui_SectionCutting.h"
+#include <App/Document.h>
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Base/UnitsApi.h>
@@ -50,6 +50,7 @@
 #include <Mod/Part/App/FeaturePartCut.h>
 #include <Mod/Part/App/FeaturePartFuse.h>
 #include <Mod/Part/App/PartFeatures.h>
+
 
 using namespace PartGui;
 
@@ -103,8 +104,20 @@ SectionCut::SectionCut(QWidget* parent)
     }
 
     // if we can have existing cut boxes, take their values
-    // the flip state cannot be readout of the box position, therefore readout the position
-    // as if it was unflipped
+    // to access the flip state we must compare the bounding boxes of the cutbox and the compound
+    Base::BoundBox3d BoundCompound;
+    Base::BoundBox3d BoundCutBox;
+    if (doc->getObject(BoxXName) || doc->getObject(BoxYName) || doc->getObject(BoxZName)) {
+        if (doc->getObject(CompoundName)) {
+            auto compoundObject = doc->getObject(CompoundName);
+            Part::Compound* pcCompound = dynamic_cast<Part::Compound*>(compoundObject);
+            if (!pcCompound) {
+                Base::Console().Error("SectionCut error: compound is incorrectly named, cannot proceed\n");
+                return;
+            }
+            BoundCompound = pcCompound->Shape.getBoundingBox();
+        }
+    }
     if (doc->getObject(BoxZName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
         if (!pcBox) {
@@ -113,7 +126,17 @@ SectionCut::SectionCut(QWidget* parent)
         }
         hasBoxZ = true;
         ui->groupBoxZ->setChecked(true);
-        ui->cutZ->setValue(pcBox->Height.getValue() - fabs(pcBox->Placement.getValue().getPosition().z));
+        // if z of cutbox bounding is greater than z of compound bounding
+        // we know that the cutbox is in flipped state
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinZ > BoundCompound.MinZ){
+            ui->cutZ->setValue(pcBox->Placement.getValue().getPosition().z);
+            ui->flipZ->setChecked(true);
+        }
+        else {
+            ui->cutZ->setValue(pcBox->Height.getValue() + pcBox->Placement.getValue().getPosition().z);
+            ui->flipZ->setChecked(false);
+        }
     }
     if (doc->getObject(BoxYName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
@@ -123,7 +146,15 @@ SectionCut::SectionCut(QWidget* parent)
         }
         hasBoxY = true;
         ui->groupBoxY->setChecked(true);
-        ui->cutY->setValue(pcBox->Width.getValue() - fabs(pcBox->Placement.getValue().getPosition().y));
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinY > BoundCompound.MinY) {
+            ui->cutY->setValue(pcBox->Placement.getValue().getPosition().y);
+            ui->flipY->setChecked(true);
+        }
+        else {
+            ui->cutY->setValue(pcBox->Width.getValue() + pcBox->Placement.getValue().getPosition().y);
+            ui->flipY->setChecked(false);
+        }
     }
     if (doc->getObject(BoxXName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
@@ -133,7 +164,15 @@ SectionCut::SectionCut(QWidget* parent)
         }
         hasBoxX = true;
         ui->groupBoxX->setChecked(true);
-        ui->cutX->setValue(pcBox->Length.getValue() - fabs(pcBox->Placement.getValue().getPosition().x));
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinX > BoundCompound.MinX) {
+            ui->cutX->setValue(pcBox->Placement.getValue().getPosition().x);
+            ui->flipX->setChecked(true);
+        }
+        else {
+            ui->cutX->setValue(pcBox->Length.getValue() + pcBox->Placement.getValue().getPosition().x);
+            ui->flipX->setChecked(false);
+        }
     }
 
     // hide existing cuts to check if there are objects to be cut visible
@@ -208,7 +247,7 @@ void SectionCut::startCutting(bool isInitial)
         // refresh documents list
         onRefreshCutPBclicked();
 
-    App::DocumentObject* anObject;
+    App::DocumentObject* anObject = nullptr;
     std::vector<App::DocumentObjectT>::iterator it;
 
     // lambda function to delete objects
@@ -288,11 +327,12 @@ void SectionCut::startCutting(bool isInitial)
     // ObjectsListVisible contains all visible objects of the document, but we can only cut
     // those that have a solid shape
     std::vector<App::DocumentObject*> ObjectsListCut;
+    bool isLinkAssembly = false;
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        // we need all Link objects in App::Parts for example for Assembly 4
+        // we need all Link objects in App::Part for example for Assembly 4
         if (it->getObject()->getTypeId() == Base::Type::fromName("App::Part")) {
             App::Part* pcPart = static_cast<App::Part*>(it->getObject());
-            bool isLinkAssembly = false;
+           
             // collect all its link objects
             auto groupObjects = pcPart->Group.getValue();
             for (auto itGO = groupObjects.begin(); itGO != groupObjects.end(); ++itGO) {
@@ -302,16 +342,6 @@ void SectionCut::startCutting(bool isInitial)
                     isLinkAssembly = true;
                 }
             }
-            if (isLinkAssembly) {
-                // we disable the sliders because for assemblies it will takes ages to do several dozen recomputes
-                QString SliderToolTip = tr("Sliders are disabled for assemblies");
-                ui->cutXHS->setEnabled(false);
-                ui->cutXHS->setToolTip(SliderToolTip);
-                ui->cutYHS->setEnabled(false);
-                ui->cutYHS->setToolTip(SliderToolTip);
-                ui->cutZHS->setEnabled(false);
-                ui->cutZHS->setToolTip(SliderToolTip);
-            }   
         }
         // get all shapes that are also Part::Features
         if (it->getObject()->getPropertyByName("Shape")
@@ -324,6 +354,24 @@ void SectionCut::startCutting(bool isInitial)
                 && it->getObject()->getTypeId() != Base::Type::fromName("App::Part"))
                 ObjectsListCut.push_back(it->getObject());
         }
+        // get Links that are derived from Part objects
+        if (it->getObject()->getTypeId() == Base::Type::fromName("App::Link")) {
+            App::Link* pcLink = static_cast<App::Link*>(it->getObject());
+            auto linkedObject = doc->getObject(pcLink->LinkedObject.getObjectName());
+            if (linkedObject && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature")))
+                ObjectsListCut.push_back(it->getObject());
+        }
+    }
+
+    if (isLinkAssembly) {
+        // we disable the sliders because for assemblies it will takes ages to do several dozen recomputes
+        QString SliderToolTip = tr("Sliders are disabled for assemblies");
+        ui->cutXHS->setEnabled(false);
+        ui->cutXHS->setToolTip(SliderToolTip);
+        ui->cutYHS->setEnabled(false);
+        ui->cutYHS->setToolTip(SliderToolTip);
+        ui->cutZHS->setEnabled(false);
+        ui->cutZHS->setToolTip(SliderToolTip);
     }
     
     // sort out objects that are part of Part::Boolean, Part::MultiCommon, Part::MultiFuse,
@@ -339,7 +387,7 @@ void SectionCut::startCutting(bool isInitial)
             || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::FilletBase")) ) {
             // get possible links
             auto subObjectList = it->getObject()->getOutList();
-            // if there links, delete them
+            // if there are links, delete them
             if (!subObjectList.empty()) {
                 for (it2 = subObjectList.begin(); it2 != subObjectList.end(); ++it2) {
                     for (it3 = ObjectsListCut.begin(); it3 != ObjectsListCut.end(); ++it3) {
@@ -402,7 +450,12 @@ void SectionCut::startCutting(bool isInitial)
     int count = 0;
     for (auto itCuts = ObjectsListCut.begin(); itCuts != ObjectsListCut.end(); ++itCuts, count++) {
         // first create a link with a unique name
-        std::string newName = (*itCuts)->getNameInDocument();
+        std::string newName;
+        // since links to normal Part objects all have the document name "Link", use their label text instead
+        if ((*itCuts)->getTypeId() == Base::Type::fromName("App::Link"))
+             newName = (*itCuts)->Label.getValue();
+        else
+            newName = (*itCuts)->getNameInDocument();
         newName = newName + "_CutLink";
         
         auto newObject = doc->addObject("App::Link", newName.c_str());
@@ -415,6 +468,21 @@ void SectionCut::startCutting(bool isInitial)
         pcLink->LinkedObject.setValue((*itCuts));
         // we want to get the link at the same position as the original
         pcLink->LinkTransform.setValue(true); 
+
+        // if the object is part of an App::Part container, the link needs to get the container placement
+        auto parents = (*itCuts)->getInList();
+        if (parents.size()) {
+            for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
+                if ((*itParents)->getTypeId() == Base::Type::fromName("App::Part")) {
+                    App::Part* pcPartParent = static_cast<App::Part*>((*itParents));
+                    auto placement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                                      pcPartParent->getPropertyByName("Placement"));
+                    if (placement)
+                        pcLink->Placement.setValue(placement->getValue());
+                }
+            }
+        }
+
         // add the link to the compound
         pcCompound->Links.set1Value(count, newObject);
 
@@ -449,7 +517,7 @@ void SectionCut::startCutting(bool isInitial)
     // prepare the cut box size according to the bounding box size
     std::vector<float> BoundingBoxSize = { 0.0, 0.0, 0.0 };
     CompoundBoundingBox.getSize(BoundingBoxSize[0], BoundingBoxSize[1], BoundingBoxSize[2]);
-    // get placement of the bunding box origin
+    // get placement of the bounding box origin
     std::vector<float> BoundingBoxOrigin = { 0.0, 0.0, 0.0 };
     CompoundBoundingBox.getOrigin(BoundingBoxOrigin[0], BoundingBoxOrigin[1], BoundingBoxOrigin[2]);
 
@@ -709,12 +777,14 @@ void SectionCut::CutValueHelper(double value, QDoubleSpinBox* SpinBox, QSlider* 
     }
     // update slider position and tooltip
     // the slider value is % of the cut range
-    Slider->blockSignals(true);
-    Slider->setValue(
-        int((value - SpinBox->minimum())
-            / (SpinBox->maximum() - SpinBox->minimum()) * 100.0));
-    Slider->setToolTip(QString::number(value, 'g', Base::UnitsApi::getDecimals()));
-    Slider->blockSignals(false);
+    if (Slider->isEnabled()) {
+        Slider->blockSignals(true);
+        Slider->setValue(
+            int((value - SpinBox->minimum())
+                / (SpinBox->maximum() - SpinBox->minimum()) * 100.0));
+        Slider->setToolTip(QString::number(value, 'g', Base::UnitsApi::getDecimals()));
+        Slider->blockSignals(false);
+    }
 
     // we cannot cut to the edge because then the result is an empty shape
         // we chose purposely not to simply set the range for cutX previously
@@ -928,7 +998,7 @@ void SectionCut::onCutYvalueChanged(double val)
         CutFeatureZ->Visibility.setValue(false);
         // make SectionCutX visible
         CutObject->Visibility.setValue(true);
-        // get new bunding box
+        // get new bounding box
         auto CutBoundingBox = getViewBoundingBox();
         // refresh Z limits
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue, Refresh::notZValue,
@@ -1382,7 +1452,7 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
     bool forXRange, bool forYRange, bool forZRange)
 {
     if (!BoundingBox.isEmpty()) {
-        SbVec3f cnt = BoundingBox.getCenter();
+        SbVec3f center = BoundingBox.getCenter();
         int minDecimals = Base::UnitsApi::getDecimals();
         float lenx, leny, lenz;
         BoundingBox.getSize(lenx, leny, lenz);
@@ -1392,8 +1462,8 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
         float rangeMin; // to silence a compiler warning we use a float
         float rangeMax;
         if (forXRange) {
-            rangeMin = cnt[0] - (lenx / 2);
-            rangeMax = cnt[0] + (lenx / 2);
+            rangeMin = center[0] - (lenx / 2);
+            rangeMax = center[0] + (lenx / 2);
             ui->cutX->setRange(rangeMin, rangeMax);
             // determine the single step values
             lenx = lenx / steps;
@@ -1402,8 +1472,8 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             ui->cutX->setSingleStep(singleStep);
         }
         if (forYRange) {
-            rangeMin = cnt[1] - (leny / 2);
-            rangeMax = cnt[1] + (leny / 2);
+            rangeMin = center[1] - (leny / 2);
+            rangeMax = center[1] + (leny / 2);
             ui->cutY->setRange(rangeMin, rangeMax);
             leny = leny / steps;
             int dim = static_cast<int>(log10(leny));
@@ -1411,8 +1481,8 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             ui->cutY->setSingleStep(singleStep);
         }
         if (forZRange) {
-            rangeMin = cnt[2] - (lenz / 2);
-            rangeMax = cnt[2] + (lenz / 2);
+            rangeMin = center[2] - (lenz / 2);
+            rangeMax = center[2] + (lenz / 2);
             ui->cutZ->setRange(rangeMin, rangeMax);
             lenz = lenz / steps;
             int dim = static_cast<int>(log10(lenz));
@@ -1420,15 +1490,15 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             ui->cutZ->setSingleStep(singleStep);
         }
         if (forXValue) {
-            ui->cutX->setValue(cnt[0]);
+            ui->cutX->setValue(center[0]);
             ui->cutXHS->setValue(50);
         }
         if (forYValue) {
-            ui->cutY->setValue(cnt[1]);
+            ui->cutY->setValue(center[1]);
             ui->cutYHS->setValue(50);
         }
         if (forZValue) {
-            ui->cutZ->setValue(cnt[2]);
+            ui->cutZ->setValue(center[2]);
             ui->cutZHS->setValue(50);
         }
 

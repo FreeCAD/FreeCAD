@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -30,7 +29,6 @@
 # include <QFileInfo>
 # include <QMenu>
 # include <QPixmap>
-# include <boost_bind_bind.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoDetail.h>
 #endif
@@ -48,7 +46,7 @@
 #include "ViewProviderDocumentObjectPy.h"
 
 
-FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true)
+FC_LOG_LEVEL_INIT("ViewProviderPythonFeature", true, true)
 
 
 using namespace Gui;
@@ -285,7 +283,12 @@ ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) py_##_name = Py::None();
 
-    FC_PY_VIEW_OBJECT
+    try {
+        FC_PY_VIEW_OBJECT
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
 }
 
 void ViewProviderPythonFeatureImp::init(PyObject *pyobj) {
@@ -1418,6 +1421,27 @@ bool ViewProviderPythonFeatureImp::getLinkedViewProvider(
     return true;
 }
 
+bool ViewProviderPythonFeatureImp::editProperty(const char *name)
+{
+    _FC_PY_CALL_CHECK(editProperty,return false);
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(name));
+        Py::Object ret(Base::pyCall(py_editProperty.ptr(),args.ptr()));
+        return ret.isTrue();
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
+
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
+}
 
 // ---------------------------------------------------------
 

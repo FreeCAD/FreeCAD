@@ -24,9 +24,10 @@
 #ifndef BASE_CONVERTER_H
 #define BASE_CONVERTER_H
 
-#include "Vector3D.h"
-#include "Rotation.h"
 #include <tuple>
+#include "Rotation.h"
+#include "Vector3D.h"
+
 
 namespace Base {
 

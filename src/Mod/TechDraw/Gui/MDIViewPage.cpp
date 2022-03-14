@@ -67,6 +67,7 @@
 #include <Gui/Window.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>

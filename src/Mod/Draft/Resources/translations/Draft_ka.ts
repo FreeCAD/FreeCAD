@@ -42,7 +42,7 @@
     <message>
       <location filename="array.py" line="109"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>განსაზღვრავს, უნდა მოხდეს თუ არა ასლების შერწყმა თუ მათ შეუძლიათ, შეეხონ ერთმანეთს (უფრო ნელი)</translation>
     </message>
     <message>
       <location filename="array.py" line="122"/>
@@ -205,7 +205,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="patharray.py" line="177"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>ობიექტი, რომლს გასწვრივაც გადანაწილდება ასლები. ის აუცილებლად უნდა შეიცავდეს „წიბოებს“.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
@@ -341,8 +341,8 @@ The arc is drawn counter-clockwise.</source>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>ზომის ხაზის საბოლოო კუთხე (წრიული რკალი).
+რკალი დახატულია საათის ისრის საწინააღმდეგოდ.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -387,8 +387,8 @@ It is a list of strings; each element in the list will be displayed in its own l
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>რკალის საბოლოო კუთხე (სრული წრეწირისთვის 
+          დააყენეთ იგივე რიცხვი, რასაც საწყისი კუთხე უდრიდა)</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
@@ -669,12 +669,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>გამოკლებული წერტილების სია. წიბო, რომელიც ამ წერტილებიდან ნებისმიერს ეხება, არ დაიხატება.</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>თუ ჩართულია, დამუშავდება მხოლოდ მყარი სხეულების გეომეტრია. ეს უგულებელყოფს ბაზისური ობიექტის თვისებას "მხოლოდ საბაზისო ობიექტები"</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="127"/>
@@ -736,14 +736,14 @@ This property is read-only, as the number depends on the points contained within
       <translation>ამ ობიექტის მიერ გამოყენებული ნიმუშის მასშტაბი</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>ობიექტის ფორმა</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული ნიმუშის შებრუნება</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>ობიექტის ფორმა</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1211,7 +1211,7 @@ beyond the dimension line</source>
     <message>
       <location filename="bspline.py" line="106"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: იხურება იგივე პირველი ან ბოლო წერტილით. გეომეტრია არ განახლებულა.</translation>
     </message>
     <message>
       <location filename="view_wpproxy.py" line="102"/>
@@ -1395,7 +1395,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>წანაცვლების მიმართულება აღწერილი არაა. მის მისათითებლად თაგუნა ობიექტის რომელიმე მხარეს, საჭირო მიმართულებით გაამოძრავეთ</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="48"/>
@@ -1463,10 +1463,10 @@ from menu Tools -&gt; Addon Manager</source>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>ქმნის არჩეული ობიექტის ასლებს და ათავსებს მათ რადიალურ შაბლონში, 
+რომელიც სხვადასხვა წრიულ ფენებს ქმნის.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+ტიპის შეცვლით მასივი შეიძლება გადაიქცეს ორთოგონალურ ან პოლარულ მასივად.</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="66"/>
@@ -1795,10 +1795,10 @@ CTRL მისაბმელად, ALT მხებების შესა�
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>ქმნის არჩეული ობიექტის ასლებს და ათავსებს მათ რადიალურ შაბლონში, 
+რომელიც სხვადასხვა წრიულ ფენებს ქმნის.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+ტიპის შეცვლით მასივი შეიძლება გადაიქცეს ორთოგონალურ ან პოლარულ მასივად.</translation>
     </message>
   </context>
   <context>
@@ -1958,9 +1958,9 @@ Use TechDraw Workbench instead for generating technical drawings.</source>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>აქტიური ობიექტის ჩასწორება.
+მხარდაჭერილ ობიექტებზე და უჯრედებზე კონტექსტური 
+მენიუს გასახსნელად დააჭირეთ E-ს ან Alt+მარცხენაწკაპი.</translation>
     </message>
   </context>
   <context>
@@ -2047,9 +2047,9 @@ If other objects are selected they are ignored.</translation>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>განკურნეთ გაუმართავი Draft ობიექტები, რომლებიც შენახულია პროგრამის ადრინდელი ვერსიით.
+თუ ობიექტი მონიშნულია, განკურნება კონკრეტულად ეს ობიექტი,
+ წინააღმდეგ შემთხვევაში განკურნება აქტიური დოკუმენტის ყველა ობიექტი.</translation>
     </message>
   </context>
   <context>
@@ -2422,7 +2422,7 @@ those that are at the same level as this object, including the upper group that 
     <message>
       <location filename="gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>მონიშნავს შერჩეული ობიექტების შემცველობებს. თუ აირჩევთ არა-ჯგუფურ ობიექტებს, მოინიშნება ობიექტები, რომლებსაც ისინი ეკუთვნიან.</translation>
     </message>
   </context>
   <context>
@@ -2556,7 +2556,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
-      <translation type="unfinished">Show temporary linear dimensions when editing an object and using other snapping methods.</translation>
+      <translation>ობიექტის რედაქტირებისას ან სხვა მეთოდების გამოყენებისას დროებითი წრფივი ზომების ჩვენება.</translation>
     </message>
   </context>
   <context>
@@ -2660,7 +2660,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
-      <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
+      <translation>მიბმა წერტილიდან 45 გრადუსის ჯერადი კუთხის მიმართულებით დააყენეთ.</translation>
     </message>
   </context>
   <context>
@@ -2747,9 +2747,9 @@ It works best when choosing a point on a straight segment and not a corner verte
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>მონიშნული ობიექტების გაწელვა.
+გასაწელი წვეროების ასარჩევად მონიშნეთ ობიექტი და დახატეთ ოთხკუთხედი,
+შემდეგ კი ხაზი, გაწელვის მანძილისა და მიმართულების მისათითებლად.</translation>
     </message>
   </context>
   <context>
@@ -3231,15 +3231,15 @@ Then you can use it to save a different camera position and objects' states any 
       <location filename="DraftGui.py" line="748"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>კოორდინატები ბოლო წერტილთან ან კოორდინატების სისტემის საწყისთან მიმართებაში, 
+თუ თუ ის პირველი დასაყენებელი წერტილია</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>კოორდინატები გლობალურ კოორდინატთა სისტემასთან მიმართებაში.
+გამორთეთ სამუშაო სიბრტყის კოორდინატთა სისტემის გამოსაყენებლად</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="755"/>
@@ -3250,8 +3250,7 @@ Uncheck to use working plane coordinate system</translation>
       <location filename="DraftGui.py" line="759"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>ჩართეთ, თუ ობიექტი უნდა გამოჩნდეს შევსებულად, წინააღმდეგ შემთხვევაში ის გამოჩნდება როგორც კარკასი. მიუწვდომელია, თუ Draft-ის მორგებაში ჩართულია „ნაწილის პრიმიტივების გამოყენება“</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="761"/>
@@ -3271,7 +3270,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="771"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+      <translation>თუ ჩართულია, კლასიკური წანაცვლების მაგიერ გამოყენებული იქნება OCC ტიპის წანაცვლება</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="772"/>
@@ -3386,7 +3385,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>ტექსტური ობიექტის შესაქმნელად ან თქვენი ტექსტის ორი ცარიელი ხაზით დასასრულებლად დააწექით ამ ღილაკს</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="536"/>
@@ -3953,7 +3952,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_dimension.py" line="331"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>არასწორი შეტანა: ობიექტს 'წვეროები'-ში გასაზომად არ გააჩნია ერთი ობიექტიც კი.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="463"/>
@@ -3973,12 +3972,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_dimension.py" line="359"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: მნიშვნელობა არ შეიძლება 1-ზე მეტი იყოს; დაყენებული იქნება ობიექტში არსებულ ბოლო წვეროზე.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="456"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</translation>
+      <translation>არასწორი შემოტანა: გასაზომად 'წიბოები"-ში ობიექტს ერთი ელემენტი მაინც უნდა გააჩნდეს.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="468"/>
@@ -4807,7 +4806,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_drawing.py" line="77"/>
       <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation type="unfinished">The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</translation>
+      <translation>სამუშაო დაფა Drawing მოძველებულია 0.17 ვერსიიდან. გთხოვთ ნელნელა გადაერთოთ TechDraw სამუშაო დაფაზე.</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="68"/>
@@ -6397,8 +6396,8 @@ It must be at least 2.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
-      <translation type="unfinished">Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</translation>
+      <translation>აირჩიეთ ზედაპირი, სამუშაო სიბრტყის პროქსი ან 3 წვერო.
+ან აირჩიეთ ერთერთი ქვემოთ მოყვანილი ვარიანტი</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
@@ -6444,8 +6443,8 @@ Or choose one of the options below</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation type="unfinished">The working plane will align to the current
-view each time a command is started</translation>
+      <translation>რამდენჯერაც ბრძანება გაეშვება, სამუშაო
+სიბრტყის მიმდინარე ხედთან სწორება</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
@@ -6972,8 +6971,8 @@ This allows to point the direction and type the distance.</source>
       <location filename="../ui/preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>თუ ჩართულია, ობიექტები ნაგულისხმევად სავსეები გამოჩნდებიან.
+არადა, გამოჩნდებიან, როგორც კარკასები</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
@@ -7049,7 +7048,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="427"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation type="unfinished">This is the default color for objects being drawn while in construction mode.</translation>
+      <translation>კონსტრუქტორის რეჟიმში დამუშავებული ობიექტების ნაგულისხმევი ფერი.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
@@ -7089,7 +7088,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="111"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>ჩართეთ, თუ გნებავთ ფერის ან ხაზის სისქის ინსტრუმენტების პანელიდან ნაგულისხმევად აღება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="114"/>
@@ -7788,8 +7787,8 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
       <location filename="../ui/preferences-dxf.ui" line="587"/>
       <source>Drawing Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">Drawing Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>ნახაზის ხედები გატანილი იქნება როგორც ბლოკები.
+შეიძლება შეუძლებელი იყოს DXF R12-ზე უფრო ახალი შაბლონებისთვის.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
@@ -7819,7 +7818,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation type="unfinished">If this is checked, snapping is activated without the need to press the snap mod key</translation>
+      <translation>თუ ჩართულია, მიბმა აქტივირებული იქნება მიბმის ცვლილების ღილაკის დაჭერის გარეშეც</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="37"/>
@@ -7880,7 +7879,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="219"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation type="unfinished">If checked, the Snap toolbar will be shown whenever you use snapping</translation>
+      <translation>თუ ჩართულია, მიმაგრებისას მიმაგრების ხელსაწყოთა ზოლი ყოველთვის გამოჩნდება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="222"/>
@@ -7945,7 +7944,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="376"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation type="unfinished">Mainlines will be drawn thicker. Specify here how many squares between mainlines.</translation>
+      <translation>ძირითადი ხაზები უფრო სქელი იქნება. მიუთითეთ ძირითად ხაზებს შუა კვადრატების რაოდენობა.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="402"/>

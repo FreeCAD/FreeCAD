@@ -76,6 +76,7 @@
 # include <Inventor/elements/SoLightModelElement.h>
 # include <Inventor/elements/SoOverrideElement.h>
 
+#include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -2872,7 +2873,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     if (sphere.getRadius() == 0)
         return;
 
-    SbVec3f direction, pos;
+    SbVec3f direction, pos(0.0f, 0.0f, 0.0f);
     camrot.multVec(SbVec3f(0, 0, -1), direction);
 
     bool isOrthographic = false;

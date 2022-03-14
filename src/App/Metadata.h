@@ -27,10 +27,10 @@
 
 #include <boost/filesystem.hpp>
 
-#include <string>
-#include <vector>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
@@ -267,6 +267,12 @@ namespace App {
          * Determine whether this package satisfies the given dependency
          */
         bool satisfies(const Meta::Dependency&);
+
+        /**
+         * Determine whether the current metadata specifies support for the currently-running version of FreeCAD.
+         * Does not interrogate content items, which must be querried individually.
+         */
+        bool supportsCurrentFreeCAD() const;
 
     private:
 

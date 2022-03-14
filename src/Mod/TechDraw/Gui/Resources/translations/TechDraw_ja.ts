@@ -6,7 +6,7 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>ビューを移動</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
@@ -26,17 +26,17 @@
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>ビューの選択</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>ページから選択</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>ページを選択</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
@@ -59,7 +59,7 @@
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>別のページでビューを共有</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
@@ -74,17 +74,17 @@
     <message>
       <location filename="TaskShareView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>ビューの選択</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>ページから選択</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>ページを選択</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="112"/>
@@ -97,17 +97,17 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>ビューをコピー</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
       <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
+      <translation>ビューを2ページ目にコピー</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>ビューを2ページ目にコピー</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
@@ -117,12 +117,12 @@
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>ビューの選択</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>ページから選択</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>ページを選択</translation>
     </message>
   </context>
   <context>
@@ -452,15 +452,15 @@
     </message>
     <message>
       <source>Draw circle centerlines</source>
-      <translation type="unfinished">Draw circle centerlines</translation>
+      <translation>円の中心線を描く</translation>
     </message>
     <message>
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>円の中心線を描く
+    - 多くの円または円弧を選択
+    - このボタンをクリックしてください</translation>
     </message>
   </context>
   <context>
@@ -1673,11 +1673,11 @@
     </message>
     <message>
       <source>Selection is empty</source>
-      <translation type="unfinished">Selection is empty</translation>
+      <translation>選択されていません</translation>
     </message>
     <message>
       <source>No object selected</source>
-      <translation type="unfinished">No object selected</translation>
+      <translation>オブジェクトが選択されていません</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>

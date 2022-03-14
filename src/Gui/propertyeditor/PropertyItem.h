@@ -24,22 +24,22 @@
 #ifndef PROPERTYEDITORITEM_H
 #define PROPERTYEDITORITEM_H
 
+#include <QItemEditorFactory>
 #include <QObject>
 #include <QPointer>
-#include <QItemEditorFactory>
 #include <vector>
 
+#include <App/PropertyStandard.h>
 #include <Base/Factory.h>
-#include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
+#include <Base/Vector3D.h>
 #include <Base/UnitsApi.h>
-#include <App/DocumentObserver.h>
-#include <App/PropertyStandard.h>
-#include <Gui/Widgets.h>
 #include <Gui/ExpressionBinding.h>
 #include <Gui/MetaTypes.h>
+#include <Gui/Widgets.h>
+
 #include <FCGlobal.h>
 
 #ifdef Q_MOC_RUN
@@ -52,6 +52,7 @@ Q_DECLARE_METATYPE(Base::Rotation)
 Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
 #endif
+
 
 #define PROPERTYITEM_HEADER \
 public: \
@@ -77,6 +78,7 @@ namespace PropertyEditor {
 
 class PropertyItem;
 class PropertyModel;
+class PropertyEditorWidget;
 
 /**
  * The PropertyItemFactory provides methods for the dynamic creation of property items.
@@ -111,6 +113,11 @@ public:
     }
 };
 
+class PropertyItemAttorney {
+public:
+    static QVariant toString(PropertyItem* item, const QVariant& v);
+};
+
 class GuiExport PropertyItem : public QObject, public ExpressionBinding
 {
     Q_OBJECT
@@ -138,6 +145,8 @@ public:
     QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
     QVariant expressionEditorData(QWidget *editor) const;
+
+    PropertyEditorWidget* createPropertyEditorWidget(QWidget* parent) const;
 
     /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
        childs which like to be informed of a binding*/
@@ -204,6 +213,8 @@ protected:
     int precision;
     bool linked;
     bool expanded;
+
+    friend class PropertyItemAttorney;
 };
 
 /**
@@ -481,13 +492,13 @@ private:
     PropertyFloatItem* m_z;
 };
 
-class VectorListWidget : public QWidget
+class PropertyEditorWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    VectorListWidget (int decimals, QWidget * parent = nullptr);
-    virtual ~VectorListWidget();
+    PropertyEditorWidget (QWidget * parent = nullptr);
+    virtual ~PropertyEditorWidget();
 
     QVariant value() const;
 
@@ -495,20 +506,34 @@ public Q_SLOTS:
     void setValue(const QVariant&);
 
 protected:
-    void showValue(const QVariant& data);
+    virtual void showValue(const QVariant& data);
     void resizeEvent(QResizeEvent*);
+
+Q_SIGNALS:
+    void buttonClick();
+    void valueChanged(const QVariant &);
+
+protected:
+    QVariant variant;
+    QLineEdit *lineEdit;
+    QPushButton *button;
+};
+
+class VectorListWidget : public PropertyEditorWidget
+{
+    Q_OBJECT
+
+public:
+    VectorListWidget (int decimals, QWidget * parent = nullptr);
+
+protected:
+    virtual void showValue(const QVariant& data) override;
 
 private Q_SLOTS:
     void buttonClicked();
 
-Q_SIGNALS:
-    void valueChanged(const QVariant &);
-
 private:
     int decimals;
-    QVariant variant;
-    QLineEdit *lineEdit;
-    QPushButton *button;
 };
 
 /**

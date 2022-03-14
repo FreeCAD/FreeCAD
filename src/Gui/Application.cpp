@@ -32,18 +32,21 @@
 # include <QMessageBox>
 # include <QMessageLogContext>
 # include <QStatusBar>
+# include <QStyle>
 # include <QTextStream>
 # include <QTimer>
 # include <QWindow>
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include <Language/Translator.h>

@@ -37,19 +37,17 @@
   the QuarterWidget.
 */
 
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4267)
 #endif
 
-#include <Quarter/devices/Keyboard.h>
-
-#include <QtCore/QEvent>
-#include <QtGui/QKeyEvent>
-#include <Inventor/events/SoEvents.h>
-#include <Inventor/events/SoKeyboardEvent.h>
+#include <QEvent>
+#include <QKeyEvent>
+#include <Inventor/events/SoEvent.h>
 
 #include "KeyboardP.h"
+#include "devices/Keyboard.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 

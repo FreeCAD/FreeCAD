@@ -2948,7 +2948,7 @@ of projection.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1063"/>
       <source>Edit attachment</source>
-      <translation type="unfinished">Edit attachment</translation>
+      <translation>添付ファイルを編集</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="432"/>
@@ -5369,7 +5369,7 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip side of attachment and offset</source>
-      <translation type="unfinished">Flip side of attachment and offset</translation>
+      <translation>アタッチメントの側面の反転とオフセット</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
@@ -5434,7 +5434,7 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="750"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>AttachmentOffsetの回転が式によって束縛されているため、編集できません。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="816"/>
@@ -5468,19 +5468,19 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Skip settings page</source>
-      <translation type="unfinished">Skip settings page</translation>
+      <translation>設定をスキップ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.
-Default: false</translation>
+      <translation>この設定をスキップし、ジオメトリチェックを自動的に実行します。
+デフォルト: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Run BOP check</source>
-      <translation type="unfinished">Run BOP check</translation>
+      <translation>BOPチェック</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
@@ -5527,14 +5527,13 @@ the check geometry tool.  Default: false</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Advanced shape content</source>
-      <translation type="unfinished">Advanced shape content</translation>
+      <translation>高度なシェイプコンテンツ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。デフォルト：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>

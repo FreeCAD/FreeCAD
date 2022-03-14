@@ -19,7 +19,7 @@
 
 //  SALOME Utils : general SALOME's definitions and tools
 //  File   : Basics_DirUtils.hxx
-//  Autor  : Alexander A. BORODIN
+//  Author  : Alexander A. BORODIN
 //  Module : SALOME
 //
 #ifndef _Basics_UTILS_HXX_

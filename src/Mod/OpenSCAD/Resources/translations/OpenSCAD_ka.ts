@@ -4,6 +4,11 @@
   <context>
     <name>OpenSCAD</name>
     <message>
+      <location filename="OpenSCADUtils.py" line="710"/>
+      <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
+      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+    </message>
+    <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>შეცდომა. ყველა კონტური ან 2 ან 3განზომილებიანი უნდა იყოს. შერევა აკრძალულია</translation>
@@ -162,7 +167,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="277"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation type="unfinished">Create Feature that allows to increase the tolerance</translation>
+      <translation>ისეთი თვისების შექმნა, რომელიც უფლებას გაძლევთ გაზარდოთ დაშვება</translation>
     </message>
   </context>
   <context>
@@ -175,7 +180,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <translation>ობიექტების, როგორც პოლიხაზური ბადეების გატანა და ბულევური ოპერაციებისთვის OpenSCAD-ის გამოყენება</translation>
     </message>
   </context>
   <context>
@@ -320,7 +325,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>თუ ჩართულია, თვისებები თავიანთ შვილებს ხის ხედში გამოაჩენენ</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="93"/>

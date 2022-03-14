@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PROGRESSDIALOG_H
 #define GUI_PROGRESSDIALOG_H
 
 #include <Base/Sequencer.h>
 #include <QProgressDialog>
 #ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarProgress>
 #include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 #endif
+
 
 namespace Gui {
 

@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,7 +31,7 @@ from PySide2.QtWidgets import *
 from enum import IntEnum
 import threading
 
-from AddonManagerRepo import AddonManagerRepo
+from Addon import Addon
 
 from compact_view import Ui_CompactView
 from expanded_view import Ui_ExpandedView
@@ -56,7 +56,7 @@ class StatusFilter(IntEnum):
 class PackageList(QWidget):
     """A widget that shows a list of packages and various widgets to control the display of the list"""
 
-    itemSelected = Signal(AddonManagerRepo)
+    itemSelected = Signal(Addon)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -206,15 +206,15 @@ class PackageListItemModel(QAbstractListModel):
         row = index.row()
         if role == Qt.ToolTipRole:
             tooltip = ""
-            if self.repos[row].repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.repos[row].repo_type == Addon.Kind.PACKAGE:
                 tooltip = translate(
                     "AddonsInstaller", "Click for details about package {}"
                 ).format(self.repos[row].display_name)
-            elif self.repos[row].repo_type == AddonManagerRepo.RepoType.WORKBENCH:
+            elif self.repos[row].repo_type == Addon.Kind.WORKBENCH:
                 tooltip = translate(
                     "AddonsInstaller", "Click for details about workbench {}"
                 ).format(self.repos[row].display_name)
-            elif self.repos[row].repo_type == AddonManagerRepo.RepoType.MACRO:
+            elif self.repos[row].repo_type == Addon.Kind.MACRO:
                 tooltip = translate(
                     "AddonsInstaller", "Click for details about macro {}"
                 ).format(self.repos[row].display_name)
@@ -246,7 +246,7 @@ class PackageListItemModel(QAbstractListModel):
             )
         self.write_lock.release()
 
-    def append_item(self, repo: AddonManagerRepo) -> None:
+    def append_item(self, repo: Addon) -> None:
         if repo in self.repos:
             # Cowardly refuse to insert the same repo a second time
             return
@@ -264,9 +264,7 @@ class PackageListItemModel(QAbstractListModel):
             self.endRemoveRows()
             self.write_lock.release()
 
-    def update_item_status(
-        self, name: str, status: AddonManagerRepo.UpdateStatus
-    ) -> None:
+    def update_item_status(self, name: str, status: Addon.Status) -> None:
         for row, item in enumerate(self.repos):
             if item.name == name:
                 self.setData(
@@ -282,7 +280,7 @@ class PackageListItemModel(QAbstractListModel):
                 )
                 return
 
-    def reload_item(self, repo: AddonManagerRepo) -> None:
+    def reload_item(self, repo: Addon) -> None:
         for index, item in enumerate(self.repos):
             if item.name == repo.name:
                 self.write_lock.acquire()
@@ -414,32 +412,38 @@ class PackageListItemDelegate(QStyledItemDelegate):
 
         self.widget.adjustSize()
 
-    def get_compact_update_string(self, repo: AddonManagerRepo) -> str:
+    def get_compact_update_string(self, repo: Addon) -> str:
         """Get a single-line string listing details about the installed version and date"""
 
         result = ""
-        if repo.status() == AddonManagerRepo.UpdateStatus.UNCHECKED:
+        if repo.status() == Addon.Status.UNCHECKED:
             result = translate("AddonsInstaller", "Installed")
-        elif repo.status() == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+        elif repo.status() == Addon.Status.NO_UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Up-to-date")
-        elif repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        elif repo.status() == Addon.Status.UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Update available")
-        elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+        elif repo.status() == Addon.Status.PENDING_RESTART:
             result = translate("AddonsInstaller", "Pending restart")
-            
+
         if repo.is_disabled():
-            style = "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
-            result += f"<span {style}> [" + translate("AddonsInstaller","DISABLED") + "]</span>"
+            style = (
+                "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
+            )
+            result += (
+                f"<span {style}> ["
+                + translate("AddonsInstaller", "DISABLED")
+                + "]</span>"
+            )
 
         return result
 
-    def get_expanded_update_string(self, repo: AddonManagerRepo) -> str:
+    def get_expanded_update_string(self, repo: Addon) -> str:
         """Get a multi-line string listing details about the installed version and date"""
 
         result = ""
 
         installed_version_string = ""
-        if repo.status() != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+        if repo.status() != Addon.Status.NOT_INSTALLED:
             if repo.installed_version:
                 installed_version_string = (
                     "<br/>" + translate("AddonsInstaller", "Installed version") + ": "
@@ -468,25 +472,31 @@ class PackageListItemDelegate(QStyledItemDelegate):
             )
             available_version_string += repo.metadata.Version
 
-        if repo.status() == AddonManagerRepo.UpdateStatus.UNCHECKED:
+        if repo.status() == Addon.Status.UNCHECKED:
             result = translate("AddonsInstaller", "Installed")
             result += installed_version_string
             result += installed_date_string
-        elif repo.status() == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+        elif repo.status() == Addon.Status.NO_UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Up-to-date")
             result += installed_version_string
             result += installed_date_string
-        elif repo.status() == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        elif repo.status() == Addon.Status.UPDATE_AVAILABLE:
             result = translate("AddonsInstaller", "Update available")
             result += installed_version_string
             result += installed_date_string
             result += available_version_string
-        elif repo.status() == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+        elif repo.status() == Addon.Status.PENDING_RESTART:
             result = translate("AddonsInstaller", "Pending restart")
-            
+
         if repo.is_disabled():
-            style = "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
-            result += f"<br/><span {style}>[" + translate("AddonsInstaller","DISABLED") + "]</span>"
+            style = (
+                "style='color:" + utils.warning_color_string() + "; font-weight:bold;'"
+            )
+            result += (
+                f"<br/><span {style}>["
+                + translate("AddonsInstaller", "DISABLED")
+                + "]</span>"
+            )
 
         return result
 
@@ -554,18 +564,18 @@ class PackageListFilter(QSortFilterProxyModel):
                 return False
 
         if self.status == StatusFilter.INSTALLED:
-            if data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if data.status() == Addon.Status.NOT_INSTALLED:
                 return False
         elif self.status == StatusFilter.NOT_INSTALLED:
-            if data.status() != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if data.status() != Addon.Status.NOT_INSTALLED:
                 return False
         elif self.status == StatusFilter.UPDATE_AVAILABLE:
-            if data.status() != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+            if data.status() != Addon.Status.UPDATE_AVAILABLE:
                 return False
 
         # If it's not installed, check to see if it's Py2 only
         if (
-            data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            data.status() == Addon.Status.NOT_INSTALLED
             and self.hide_py2
             and data.python2
         ):
@@ -573,7 +583,7 @@ class PackageListFilter(QSortFilterProxyModel):
 
         # If it's not installed, check to see if it's marked obsolete
         if (
-            data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            data.status() == Addon.Status.NOT_INSTALLED
             and self.hide_obsolete
             and data.obsolete
         ):
@@ -581,7 +591,7 @@ class PackageListFilter(QSortFilterProxyModel):
 
         # If it's not installed, check to see if it's for a newer version of FreeCAD
         if (
-            data.status() == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            data.status() == Addon.Status.NOT_INSTALLED
             and self.hide_newer_freecad_required
             and data.metadata
         ):

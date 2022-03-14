@@ -7036,11 +7036,11 @@ Physical path: </source>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Произошла ошибка при попытке сохранить файл. Это может быть потому, что некоторые из родительских папок не существуют, или вы не имеете достаточных прав, или по другим причинам. Детали ошибки:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Хотите сохранить файл под другим именем?</translation>
     </message>
     <message>
       <source>Document not saved</source>
@@ -8838,7 +8838,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Определяет поведение при редактировании объекта из дерева</translation>
     </message>
   </context>
   <context>

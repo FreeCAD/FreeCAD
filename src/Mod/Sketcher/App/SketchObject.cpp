@@ -65,15 +65,16 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Expression.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/ObjectIdentifier.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
-
-#include <App/OriginFeature.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -2679,8 +2680,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             firstParam = bsp->getFirstParameter();
             lastParam = bsp->getLastParameter();
         }
-        else
-            return -1;
 
         double pointParam, point1Param, point2Param;
         if(!getIntersectionParameters(geo, point, pointParam, point1, point1Param, point2, point2Param))
@@ -3012,7 +3011,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     std::vector<Constraint *> newConstraints;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
-    double radius, startAngle, endAngle, splitAngle;
+    double radius, startAngle, endAngle, splitAngle=0.0;
     unsigned int longestPart = 0;
 
 

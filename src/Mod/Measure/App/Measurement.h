@@ -24,6 +24,7 @@
 #define MEASURE_MEASUREMENT_H
 
 #include <Base/BaseClass.h>
+#include <Base/SmartPtrPy.h>
 #include <Base/Vector3D.h>
 
 #include <App/DocumentObject.h>
@@ -84,7 +85,7 @@ public:
 protected:
   TopoDS_Shape getShape(App::DocumentObject *obj , const char *subName) const;
   MeasureType measureType;
-  Py::Object PythonObject;
+  Py::SmartPtr PythonObject;
 };
 
 

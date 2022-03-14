@@ -20,22 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QEventLoop>
 # include <QCoreApplication>
-# include <QFileInfo>
-# include <QTimer>
+# include <QEventLoop>
 #endif
 
-#include "PythonDebugger.h"
-#include "MainWindow.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
-#include "BitmapFactory.h"
-#include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
+
+#include "PythonDebugger.h"
+#include "BitmapFactory.h"
+#include "EditorView.h"
+#include "MainWindow.h"
+#include "PythonEditor.h"
+
 
 using namespace Gui;
 

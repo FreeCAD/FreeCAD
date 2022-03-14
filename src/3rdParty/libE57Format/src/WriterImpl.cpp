@@ -38,7 +38,7 @@ namespace e57
    {
       // We are using the E57 v1.0 data format standard fieldnames.
       // The standard fieldnames are used without an extension prefix (in the default namespace).
-      // We explicitly register it for completeness (the reference implementaion would do it for us, if we didn't).
+      // We explicitly register it for completeness (the reference implementation would do it for us, if we didn't).
       imf_.extensionsAdd( "", E57_V1_0_URI );
 
       // Set per-file properties.
@@ -907,7 +907,7 @@ namespace e57
       // E57_EXT_surface_normals
       if ( data3DHeader.pointFields.normalX || data3DHeader.pointFields.normalY || data3DHeader.pointFields.normalZ )
       {
-         // make sure we declare the extesion before using the fields with prefix
+         // make sure we declare the extension before using the fields with prefix
          ustring norExtUri;
          if ( !imf_.extensionsLookupPrefix( "nor", norExtUri ) )
          {
@@ -1069,7 +1069,7 @@ namespace e57
    template CompressedVectorWriter WriterImpl::SetUpData3DPointsData( int64_t dataIndex, size_t pointCount,
                                                                       const Data3DPointsData_t<double> &buffers );
 
-   // This funtion writes out the group data
+   // This function writes out the group data
    bool WriterImpl::WriteData3DGroupsData( int64_t dataIndex, int64_t groupCount, int64_t *idElementValue,
                                            int64_t *startPointIndex, int64_t *pointCount )
    {

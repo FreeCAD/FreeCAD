@@ -59,12 +59,15 @@
 #include <shellapi.h>
 #endif
 
+// null-terminated byte string
+#include <cctype>
+
 // streams
 #include <iostream>
 #include <iomanip>
 
-
 // STL
+#include <atomic>
 #include <vector>
 #include <map>
 #include <string>
@@ -89,12 +92,15 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
 
-
 // Python
 #include <Python.h>
 
+// Xerces
+#include <xercesc/util/TranscodingException.hpp>
+#include <xercesc/util/XMLString.hpp>
+
 #include "InventorAll.h"
-#include "Qt4All.h"
+#include "QtAll.h"
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

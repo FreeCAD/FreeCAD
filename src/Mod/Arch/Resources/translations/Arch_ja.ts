@@ -2890,17 +2890,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Window not based on sketch. Window not aligned or resized.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>ウィンドウスケッチの幅および/または高さの拘束がありません。ウィンドウのサイズは変更されません。</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>ウィンドウが見つかりません。続行できません。</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>

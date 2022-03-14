@@ -29,6 +29,7 @@
 #include "MetadataPy.cpp"
 
 using namespace Base;
+XERCES_CPP_NAMESPACE_USE
 
 // Returns a string which represents the object e.g. when printed in Python
 std::string MetadataPy::representation(void) const
@@ -48,48 +49,62 @@ std::string MetadataPy::representation(void) const
     return str.str();
 }
 
-PyObject* MetadataPy::PyMake(struct _typeobject*, PyObject* args, PyObject*)  // Python wrapper
+PyObject* MetadataPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
-    // create a new instance of MetadataPy and the Twin object 
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
-        return nullptr;
-    try {
-        auto md = new Metadata(filename);
-        return new MetadataPy(md);
-    }
-    catch (...) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Failed to create Metadata object");
-        return nullptr;
-    }
+    return new MetadataPy(nullptr);
 }
 
 // constructor method
 int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     if (PyArg_ParseTuple(args, "")) {
+        setTwinPointer(new Metadata());
         return 0;
     }
 
     // Main class constructor -- takes a file path, loads the metadata from it
     PyErr_Clear();
-    const char* file;
-    if (PyArg_ParseTuple(args, "s", &file)) {
-        App::Metadata* a = new Metadata(file);
-        *(getMetadataPtr()) = *a;
-        return 0;
+    const char* filename;
+    if (PyArg_ParseTuple(args, "s", &filename)) {
+        try {
+            auto md = new Metadata(filename);
+            setTwinPointer(md);
+            return 0;
+        }
+        catch (const Base::XMLBaseException& e) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            return -1;
+        }
+        catch (const XMLException& toCatch) {
+            char* message = XMLString::transcode(toCatch.getMessage());
+            std::string what = message;
+            XMLString::release(&message);
+            PyErr_SetString(Base::BaseExceptionFreeCADError, what.c_str());
+            return -1;
+        }
+        catch (const DOMException& toCatch) {
+            char* message = XMLString::transcode(toCatch.getMessage());
+            std::string what = message;
+            XMLString::release(&message);
+            PyErr_SetString(Base::BaseExceptionFreeCADError, what.c_str());
+            return -1;
+        }
+        catch (...) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Failed to create Metadata object");
+            return -1;
+        }
     }
 
     // Copy constructor
-    PyErr_Clear();    
+    PyErr_Clear();
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", &(App::MetadataPy::Type), &o)) {
         App::Metadata* a = static_cast<App::MetadataPy*>(o)->getMetadataPtr();
-        *(getMetadataPtr()) = *a;
+        setTwinPointer(new Metadata(*a));
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "path to metadata file expected");
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "metadata object or path to metadata file expected");
     return -1;
 }
 
@@ -318,8 +333,11 @@ void MetadataPy::setFreeCADMax(Py::Object args)
     getMetadataPtr()->setFreeCADMax(App::Meta::Version(version));
 }
 
-PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject*)
+PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject* p)
 {
+    if (!PyArg_ParseTuple(p, ""))
+        return nullptr;
+
     // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
     if (getMetadataPtr()->freecadmin() != App::Meta::Version())
         return Py::new_reference_to(Py::String(getMetadataPtr()->freecadmin().str()));
@@ -341,8 +359,11 @@ PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject*)
     }
 }
 
-PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
+PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject* p)
 {
+    if (!PyArg_ParseTuple(p, ""))
+        return nullptr;
+
     // Short-circuit: if the toplevel sets a version, then the lower-levels are overridden
     if (getMetadataPtr()->freecadmax() != App::Meta::Version())
         return Py::new_reference_to(Py::String(getMetadataPtr()->freecadmax().str()));
@@ -362,6 +383,15 @@ PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject*)
         Py_INCREF(Py_None);
         return Py_None;
     }
+}
+
+PyObject* MetadataPy::supportsCurrentFreeCAD(PyObject* p)
+{
+    if (!PyArg_ParseTuple(p, ""))
+        return nullptr;
+
+    bool result = getMetadataPtr()->supportsCurrentFreeCAD();
+    return Py::new_reference_to(Py::Boolean(result));
 }
 
 PyObject* MetadataPy::getCustomAttributes(const char* /*attr*/) const

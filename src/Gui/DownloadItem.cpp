@@ -20,38 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <stdio.h>
-#include <cmath>
+#include <cstdio>
+#include <iostream>
 
 #include <QAuthenticator>
 #include <QContextMenuEvent>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QFileDialog>
 #include <QFileInfo>
+#include <QKeyEvent>
 #include <QMenu>
+#include <QMetaObject>
 #include <QNetworkDiskCache>
 #include <QNetworkRequest>
 #include <QNetworkProxy>
 #include <QSettings>
-#include <QMetaObject>
-#include <QDesktopServices>
-#include <QFileDialog>
-#include <QHeaderView>
-#include <QDebug>
-#include <QKeyEvent>
 #include <QStandardPaths>
-#include <QTextDocument>
-
-#include <App/Document.h>
 
 #include "DownloadItem.h"
-#include "DownloadManager.h"
 #include "Application.h"
 #include "Document.h"
-#include "MainWindow.h"
+#include "DownloadManager.h"
 #include "FileDialog.h"
+#include "MainWindow.h"
 #include "ui_DlgAuthorization.h"
 #include "Tools.h"
+#include <App/Document.h>
+
 
 using namespace Gui::Dialog;
 

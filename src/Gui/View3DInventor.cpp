@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <string>
 # include <QAction>
 # include <QApplication>
-# include <QFileInfo>
 # include <QKeyEvent>
 # include <QEvent>
 # include <QDropEvent>
 # include <QDragEnterEvent>
-# include <QFileDialog>
 # include <QLayout>
 # include <QMdiSubWindow>
 # include <QMessageBox>
@@ -39,60 +37,39 @@
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
-# include <QPrinterInfo>
 # include <QPrintPreviewDialog>
 # include <QStackedWidget>
 # include <QTimer>
 # include <QUrl>
 # include <QWindow>
-# include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/events/SoEvent.h>
-# include <Inventor/fields/SoSFString.h>
 # include <Inventor/fields/SoSFColor.h>
+# include <Inventor/fields/SoSFString.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <QtOpenGL.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
 
-#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-
-#include <App/DocumentObject.h>
+#include <App/Document.h>
 
 #include "View3DInventor.h"
-#include "View3DInventorViewer.h"
+#include "Application.h"
 #include "Document.h"
 #include "FileDialog.h"
-#include "Application.h"
 #include "MainWindow.h"
-#include "MenuManager.h"
+#include "NavigationStyle.h"
+#include "SoFCDB.h"
+#include "SoFCSelectionAction.h"
+#include "SoFCVectorizeSVGAction.h"
+#include "View3DInventorExamples.h"
+#include "View3DInventorViewer.h"
+#include "View3DPy.h"
 #include "ViewProvider.h"
 #include "WaitCursor.h"
-#include "SoFCVectorizeSVGAction.h"
 
-// build in Inventor
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-
-#include "View3DInventorExamples.h"
-#include "ViewProviderDocumentObject.h"
-#include "SoFCSelectionAction.h"
-#include "View3DPy.h"
-#include "SoFCDB.h"
-#include "NavigationStyle.h"
-#include "PropertyView.h"
-#include "Selection.h"
-#include "SelectionObject.h"
-
-#include <locale>
 
 using namespace Gui;
 
@@ -507,6 +484,7 @@ void View3DInventor::printPdf()
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
         print(&printer);
     }

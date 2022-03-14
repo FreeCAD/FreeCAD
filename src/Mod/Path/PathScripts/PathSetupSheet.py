@@ -43,7 +43,6 @@ else:
 
 
 class Template:
-    # pylint: disable=no-init
 
     HorizRapid = "HorizRapid"
     VertRapid = "VertRapid"

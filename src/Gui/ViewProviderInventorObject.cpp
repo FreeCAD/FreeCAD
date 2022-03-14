@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -31,13 +30,12 @@
 # include <QFile>
 #endif
 
-#include "ViewProviderInventorObject.h"
-#include <Gui/SoFCSelection.h>
-#include <App/InventorObject.h>
 #include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <sstream>
+#include <App/InventorObject.h>
+
+#include "ViewProviderInventorObject.h"
+#include "SoFCSelection.h"
+
 
 using namespace Gui;
 

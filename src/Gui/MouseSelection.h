@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MOUSESELECTION_H
 #define MOUSESELECTION_H
 
 #include <bitset>
 #include <vector>
-#include <Inventor/SbLinear.h>
-#include <Inventor/SbVec2f.h>
 #include <QCursor>
 #include <Gui/GLPainter.h>
 #include <Gui/Namespace.h>
+
 
 // forwards
 class QMouseEvent;

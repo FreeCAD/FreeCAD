@@ -289,7 +289,7 @@ def handle():
     else:
         html_filename = os.path.join(resources_dir, "StartPage.html")
     js_filename = os.path.join(resources_dir, "StartPage.js")
-    css_filename = os.path.join(resources_dir, "StartPage.css")
+    css_filename = p.GetString("CSSFile",os.path.join(resources_dir, "StartPage.css"))
     with open(html_filename, 'r') as f:
         HTML = f.read()
     with open(js_filename, 'r') as f:

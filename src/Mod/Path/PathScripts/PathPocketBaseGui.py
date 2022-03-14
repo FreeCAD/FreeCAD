@@ -59,7 +59,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
           FeatureFacing  ... used for face milling operation
           FeatureOutline ... used for pocket-shape operation
         Must be overwritten by subclasses"""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def getForm(self):
         """getForm() ... returns UI, adapted to the results from pocketFeatures()"""

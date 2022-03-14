@@ -75,7 +75,7 @@ std::shared_ptr<Encoder> Encoder::EncoderFactory( unsigned bytestreamNumber,
          unsigned bitsPerRecord = imf->bitsNeeded( ini->minimum(), ini->maximum() );
 
          //!!! need to pick smarter channel buffer sizes, here and elsewhere
-         /// Constuct Integer encoder with appropriate register size, based on
+         /// Construct Integer encoder with appropriate register size, based on
          /// number of bits stored.
          if ( bitsPerRecord == 0 )
          {
@@ -123,7 +123,7 @@ std::shared_ptr<Encoder> Encoder::EncoderFactory( unsigned bytestreamNumber,
          unsigned bitsPerRecord = imf->bitsNeeded( sini->minimum(), sini->maximum() );
 
          //!!! need to pick smarter channel buffer sizes, here and elsewhere
-         /// Constuct ScaledInteger encoder with appropriate register size,
+         /// Construct ScaledInteger encoder with appropriate register size,
          /// based on number of bits stored.
          if ( bitsPerRecord == 0 )
          {

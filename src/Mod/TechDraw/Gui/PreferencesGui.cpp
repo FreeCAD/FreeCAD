@@ -211,3 +211,36 @@ QString PreferencesGui::weldingDirectory()
     return qSymbolDir;
 }
 
+
+App::Color PreferencesGui::gridColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Colors");
+    App::Color result;
+    result.setPackedValue(hGrp->GetUnsigned("gridColor", 0x000000FF));  //#000000 black
+    return result;
+}
+
+QColor PreferencesGui::gridQColor()
+{
+    return PreferencesGui::gridColor().asValue<QColor>();
+}
+
+double PreferencesGui::gridSpacing()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/General");
+    double spacing = hGrp->GetFloat("gridSpacing", 10.0);
+    return spacing;
+}
+
+bool PreferencesGui::showGrid()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/General");
+    bool show = hGrp->GetBool("showGrid", false);
+    return show;
+}

@@ -729,14 +729,14 @@ This property is read-only, as the number depends on the points contained within
       <translation>このオブジェクトで使用されるパターンスケール</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>オブジェクトの形</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>このオブジェクトで使用されるパターンの回転</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>オブジェクトの形</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1083,7 +1083,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
+      <translation>True の場合、このレイヤー内に含まれるオブジェクトはレイヤーの形状色を採用します</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
@@ -1530,7 +1530,7 @@ It creates a construction group if it doesn't exist.</source>
     <message>
       <location filename="gui_groups.py" line="365"/>
       <source>Add a new group with a given name.</source>
-      <translation type="unfinished">Add a new group with a given name.</translation>
+      <translation>指定した名前で新しいグループを追加</translation>
     </message>
   </context>
   <context>
@@ -1576,7 +1576,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>注釈スタイルの管理と作成</translation>
     </message>
   </context>
   <context>
@@ -3567,7 +3567,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="295"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>変換中:</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="228"/>
@@ -3592,19 +3592,18 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>シェイプは全て同一平面上にある必要があります。</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
-</translation>
+      <translation>選択したシェイプは平面を定義する必要があります</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>選択したシェイプは平面を定義する必要があります</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -5672,7 +5671,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>変換中:</translation>
     </message>
   </context>
   <context>

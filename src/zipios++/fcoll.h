@@ -53,7 +53,7 @@ public:
       with the specified name. To ignore the path part of the filename in search of a
       match, specify FileCollection::IGNORE as the second argument.
       @param name A string containing the name of the entry to get.
-      @param matchpath Speficy MATCH, if the path should match as well, 
+      @param matchpath specify MATCH, if the path should match as well, 
       specify IGNORE, if the path should be ignored.
       @return A ConstEntryPointer to the found entry. The returned pointer
       equals zero if no entry is found.
@@ -76,7 +76,7 @@ public:
       with it. Returns 0, if there is no entry with the specified name in the
       FileCollection.
       @param entry_name
-      @param matchpath Speficy MATCH, if the path should match as well, 
+      @param matchpath specify MATCH, if the path should match as well, 
                        specify IGNORE, if the path should be ignored.
       @return an open istream for the specified entry. The istream is 
       allocated on heap and it is the users responsibility to delete it when

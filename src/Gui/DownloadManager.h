@@ -24,11 +24,12 @@
 #ifndef GUI_DIALOG_DOWNLOADMANAGER_H
 #define GUI_DIALOG_DOWNLOADMANAGER_H
 
+#include <QAbstractListModel>
 #include <QDialog>
-#include <QUrl>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QAbstractListModel>
+#include <QUrl>
+
 
 class AutoSaver;
 class QFileIconProvider;

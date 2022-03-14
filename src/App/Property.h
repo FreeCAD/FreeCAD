@@ -77,6 +77,7 @@ public:
                             // expression on restore and touch the object on value change.
         Busy = 15, // internal use to avoid recursive signaling
         CopyOnChange = 16, // for Link to copy the linked object on change of the property with this flag
+        UserEdit = 17, // cause property editor to create button for user defined editing
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be

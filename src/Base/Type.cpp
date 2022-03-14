@@ -142,7 +142,7 @@ Type Type::badType()
 const Type Type::createType(const Type parent, const char *name, instantiationMethod method)
 {
   Type newType;
-  newType.index = Type::typedata.size();
+  newType.index = static_cast<unsigned int>(Type::typedata.size());
   TypeData * typeData = new TypeData(name, newType, parent,method);
   Type::typedata.push_back(typeData);
 
@@ -232,7 +232,7 @@ int Type::getAllDerivedFrom(const Type type, std::vector<Type> & List)
 
 int Type::getNumTypes()
 {
-  return typedata.size();
+  return static_cast<int>(typedata.size());
 }
 
 Type Type::getTypeIfDerivedFrom(const char* name , const Type parent, bool bLoadModule)

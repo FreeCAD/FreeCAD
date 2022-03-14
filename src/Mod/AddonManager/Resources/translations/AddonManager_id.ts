@@ -4,6 +4,22 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation type="unfinished">Create new toolbar</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>Jalankan</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
       <translation type="unfinished">Version {version} installed on {date}</translation>
@@ -151,6 +167,16 @@
       <translation type="unfinished">Change Branch</translation>
     </message>
     <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>Memungkinkan</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>Nonaktifkan</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
       <translation type="unfinished">Return to package list</translation>
@@ -208,11 +234,6 @@
       <translation type="unfinished">updated</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation type="unfinished">Updated</translation>
-    </message>
-    <message>
       <location filename="package_list.py" line="382"/>
       <source>Author</source>
       <translation>Penulis</translation>
@@ -233,6 +254,16 @@
       <translation type="unfinished">Pending restart</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation type="unfinished">DISABLED</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation type="unfinished">Installed version</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
       <translation type="unfinished">Click for details about package</translation>
@@ -248,9 +279,9 @@
       <translation type="unfinished">Click for details about macro</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation type="unfinished">Updated</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -440,6 +471,11 @@
       <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Mengambil deskripsi...</translation>
@@ -525,9 +561,24 @@
       <translation>Silakan instal komponen yang hilang terlebih dahulu.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation type="unfinished">Retrieving macro description...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Mengambil info dari git</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Kesalahan: Tidak dapat menemukan zip dari</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Mengambil info dari wiki</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -540,29 +591,19 @@
       <translation>Berhasil diinstal</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Mengambil info dari git</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Mengambil info dari wiki</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation type="unfinished">Error updating module</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1078"/>
       <source>Please fix manually</source>
       <translation type="unfinished">Please fix manually</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation type="unfinished">Error updating module </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -740,6 +781,16 @@
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Memeriksa pembaruan...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>AddOn yang dapat diinstal di sini bukan bagian resmi dari FreeCAD dan tidak ditinjau oleh tim FreeCAD. Pastikan Anda tahu betul AddOn yang Anda instal!</translation>
@@ -758,11 +809,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Memeriksa pembaruan...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -805,6 +851,11 @@
       <translation>Makro berhasil di hapus</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Makro tidak dapat dihapus.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
       <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
@@ -813,11 +864,6 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Mulai ulang diperlukan</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -888,11 +934,6 @@
       <translation type="unfinished">Succeeded</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
       <translation type="unfinished">All packages updates failed:</translation>
@@ -928,9 +969,14 @@
       <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Makro tidak dapat dihapus.</translation>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation type="unfinished">Successfully uninstalled {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

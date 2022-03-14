@@ -1199,7 +1199,7 @@ SET(FreeCADGui_SRCS
     MetaTypes.h
     PreCompiled.cpp
     PreCompiled.h
-    Qt4All.h
+    QtAll.h
     Control.h
     SpaceballEvent.h
     PreferencePackManager.h

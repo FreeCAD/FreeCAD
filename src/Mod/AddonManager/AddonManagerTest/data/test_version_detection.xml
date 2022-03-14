@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+	<name>Test Workbenches</name>
+	<description>A package.xml file for unit testing.</description>
+	<version>1.0.1</version>
+	<date>2022-01-07</date>
+	<maintainer email="developer@freecad.org">FreeCAD Developer</maintainer>
+	<license file="LICENSE">LGPLv2.1</license>
+	<url type="repository" branch="main">https://github.com/chennes/FreeCAD-Package</url>
+	<url type="readme">https://github.com/chennes/FreeCAD-Package/blob/main/README.md</url>
+
+	<content>
+		<macro>
+			<name>MacroA</name>
+			<tag>TagA</tag>
+			<freecadmin>0.1</freecadmin>
+			<freecadmax>0.10</freecadmax>
+		</macro>
+		<macro>
+			<name>MacroB</name>
+			<tag>TagB</tag>
+			<freecadmin>0.20</freecadmin>
+			<freecadmax>9999.98</freecadmax>
+		</macro>
+		<macro>
+			<name>MacroC</name>
+			<tag>TagC</tag>
+			<freecadmin>9999.99</freecadmin>
+			<freecadmax>99999.99</freecadmax>
+		</macro>
+	</content>
+
+</package>

@@ -20,10 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cctype>
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
@@ -33,6 +33,8 @@
 #endif
 
 #include <App/AutoTransaction.h>
+#include <App/ComplexGeoData.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
@@ -50,6 +52,7 @@
 #include "Control.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
+#include "MDIView.h"
 #include "Selection.h"
 #include "Thumbnail.h"
 #include "Tree.h"
@@ -59,7 +62,8 @@
 #include "ViewProviderDocumentObjectGroup.h"
 #include "WaitCursor.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 namespace bp = boost::placeholders;

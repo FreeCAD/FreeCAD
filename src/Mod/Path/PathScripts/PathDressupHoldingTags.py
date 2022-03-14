@@ -570,7 +570,7 @@ class MapWireToTag:
         return shell
 
     def commandsForEdges(self):
-        global failures  # pylint: disable=global-statement
+        global failures
         if self.edges:
             try:
                 shape = self.shell().common(self.tag.solid)
@@ -610,7 +610,7 @@ class MapWireToTag:
                     )
                     # rapid = None  # commented out per LGTM suggestion
                 return commands
-            except Exception as e:  # pylint: disable=broad-except
+            except Exception as e:
                 PathLog.error(
                     "Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag"
                     % (self.tag.x, self.tag.y, e.args[0])
@@ -711,7 +711,7 @@ class PathData:
             wire = Part.Wire(bottom)
             if wire.isClosed():
                 return wire
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             # if sys.version_info.major < 3:
             #    traceback.print_exc(e)
             # else:
@@ -742,7 +742,6 @@ class PathData:
     def generateTags(
         self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None
     ):
-        # pylint: disable=unused-argument
         PathLog.track(count, width, height, angle, spacing)
         # for e in self.baseWire.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
@@ -1006,7 +1005,6 @@ class ObjectTagDressup:
             ),
         )
 
-        # for pylint ...
         self.obj = obj
         self.solids = []
         self.tags = []
@@ -1280,7 +1278,7 @@ class ObjectTagDressup:
 
         try:
             self.processTags(obj)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             PathLog.error(
                 "processing tags failed clearing all tags ... '%s'" % (e.args[0])
             )
@@ -1303,7 +1301,7 @@ class ObjectTagDressup:
 
     @waiting_effects
     def processTags(self, obj):
-        global failures  # pylint: disable=global-statement
+        global failures
         failures = []
         tagID = 0
         if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:

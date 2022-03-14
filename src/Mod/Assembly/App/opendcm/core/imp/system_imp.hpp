@@ -91,7 +91,7 @@ void System<KernelType, T1, T2, T3>::clear() {
 template< typename KernelType, typename T1, typename T2, typename T3 >
 SolverInfo System<KernelType, T1, T2, T3>::solve() {
     clock_t start = clock();
-    m_sheduler.execute(*this);
+    m_scheduler.execute(*this);
     clock_t end = clock();
     
     SolverInfo info = m_kernel.getSolverInfo();

@@ -425,8 +425,8 @@ A value in the range of 0.2-10.</source>
     <message>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>მონიშნულია სხეული ბუნიკის გარეშე.
+დააყენეთ ბუნიკი, ან აირჩიეთ სხვა სხეული.</translation>
     </message>
     <message>
       <source>You have selected a shape without faces.

@@ -20,46 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
-# include <QSharedPointer>
 # include <QWhatsThis>
-# include <QDesktopServices>
-# include <QUrl>
-# include <boost_bind_bind.hpp>
 #endif
 
-#include <boost/scoped_ptr.hpp>
-
+#include <App/Document.h>
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
-#include <App/Document.h>
-#include "Action.h"
-#include "Application.h"
-#include "Document.h"
-#include "Splashscreen.h"
-#include "Command.h"
-#include "MainWindow.h"
-#include "WhatsThis.h"
-#include "DlgUndoRedo.h"
-#include "BitmapFactory.h"
-#include "View.h"
 
+#include "Action.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "DlgCustomizeImp.h"
 #include "DlgParameterImp.h"
 #include "DlgPreferencesImp.h"
-#include "DlgCustomizeImp.h"
-#include "Widgets.h"
-#include "OnlineDocumentation.h"
-#include "GuiConsole.h"
-#include "WorkbenchManager.h"
-#include "Workbench.h"
-#include "Selection.h"
 #include "DlgUnitsCalculatorImp.h"
+#include "GuiConsole.h"
+#include "MainWindow.h"
+#include "OnlineDocumentation.h"
+#include "Selection.h"
+#include "Splashscreen.h"
+#include "WhatsThis.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+
 
 using Base::Console;
 using Base::Sequencer;
@@ -700,6 +688,35 @@ void StdCmdPythonWebsite::activated(int iMsg)
     OpenURLInBrowser("https://www.python.org");
 }
 
+
+//===========================================================================
+// Std_ReportBug
+//===========================================================================
+
+DEF_STD_CMD(StdCmdReportBug)
+
+StdCmdReportBug::StdCmdReportBug()
+  :Command("Std_ReportBug")
+{
+    sGroup        = "Help";
+    sMenuText     = QT_TR_NOOP("Report a bug");
+    sToolTipText  = QT_TR_NOOP("Report a bug or suggest a feature");
+    sWhatsThis    = "Std_ReportBug";
+    sStatusTip    = QT_TR_NOOP("Report a bug or suggest a feature");
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdReportBug::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("IssuesPage", "https://github.com/FreeCAD/FreeCAD/issues");
+    hURLGrp->SetASCII("IssuesPage", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+
 //===========================================================================
 // Std_MeasurementSimple
 //===========================================================================
@@ -943,6 +960,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
     rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
+    rcCmdMgr.addCommand(new StdCmdReportBug());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());

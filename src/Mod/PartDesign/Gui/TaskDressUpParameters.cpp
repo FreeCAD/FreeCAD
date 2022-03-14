@@ -33,6 +33,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>

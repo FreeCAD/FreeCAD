@@ -74,7 +74,7 @@ This command only works with a 'mesh' object.</translation>
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>由網格和平面建立截面</translation>
     </message>
     <message>
       <source>Section</source>

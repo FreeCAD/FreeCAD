@@ -101,11 +101,10 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Erstelle ein 'Boolesche Fragments' Objekt aus zwei oder mehr ausgewählten Objekten,
-oder aus den Formen innerhalb einer Verbundobjekt.
-Dies ist eine boolesche Union, die dann an den Kreuzungen
+      <translation>Erstelle ein „Boolesches Fragment“-Objekt aus zwei oder mehr ausgewählten Objekten, oder aus den Formen innerhalb eines Verbundobjekts.
+Dies ist eine boolesche Vereinigung, die dann an den Kreuzungen
 der ursprünglichen Formen zerlegt wird.
-Ein 'Compound Filter' kann verwendet werden, um die einzelnen Scheiben zu extrahieren.</translation>
+Ein „Verbund-Filter“ kann verwendet werden, um einzelne Scheiben zu extrahieren.</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="347"/>
@@ -135,7 +134,7 @@ It will create a 'Compound Filter' for each slice.</source>
     <message>
       <location filename="SplitFeatures.py" line="529"/>
       <source>Boolean XOR</source>
-      <translation>Boolesches eXklusives ODER</translation>
+      <translation>Boolesches exklusives Oder (XOR)</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="537"/>
@@ -154,12 +153,12 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Röhre...</translation>
+      <translation>Rohr erstellen...</translation>
     </message>
     <message>
       <location filename="CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation>Erstellt eine Röhre</translation>
+      <translation>Erstellt ein Rohr</translation>
     </message>
   </context>
   <context>
@@ -167,7 +166,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation>Röhre...</translation>
+      <translation>Rohr erstellen...</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="57"/>
@@ -5897,7 +5896,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation>Röhre</translation>
+      <translation>Rohr</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>

@@ -23,15 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cfloat>
-#endif
-
 #include <boost/algorithm/string/predicate.hpp>
 
-#include "PropertyModel.h"
 #include "PropertyItem.h"
+#include "PropertyModel.h"
 #include "PropertyView.h"
+
 
 using namespace Gui;
 using namespace Gui::PropertyEditor;
@@ -336,6 +333,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
             // TODO: is it necessary to make sure the item has no pending commit?
             item->setPropertyData(jt->second);
         }
+        else
+            item->updateData();
     }
 
     // Third step, signal item insertion and movement.

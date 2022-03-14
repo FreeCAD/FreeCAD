@@ -32,13 +32,12 @@
 #include <App/Range.h>
 #include <Base/Exception.h>
 #include <Base/BaseClass.h>
-#include <Base/Quantity.h>
 
 
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Woverloaded-virtual"
-#endif
+namespace Base
+{
+class Quantity;
+}
 
 namespace App  {
 
@@ -223,9 +222,5 @@ public:
 };
 
 }
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
 
 #endif // EXPRESSION_H

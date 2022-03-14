@@ -17,13 +17,12 @@
 #ifndef IISTASKPANEL_H
 #define IISTASKPANEL_H
 
-#include <QtGui>
-#include <QtCore>
+#include <QPaintEvent>
 #include <QSpacerItem>
 #include <QWidget>
-#include <QPaintEvent>
 
 #include "iistaskpanel_global.h"
+
 
 class iisTaskPanelScheme;
 

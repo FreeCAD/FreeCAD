@@ -24,8 +24,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/GeoFeatureGroupExtension.h"
-
 // inclusion of the generated files (generated out of GeoFeatureGroupExtensionPy.xml)
 #include "GeoFeatureGroupExtensionPy.h"
 #include "GeoFeatureGroupExtensionPy.cpp"

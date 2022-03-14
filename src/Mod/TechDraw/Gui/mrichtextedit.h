@@ -52,14 +52,14 @@ class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     int getDefFontSizeNum(void);
     QFont getDefFont(void);
    
-  public slots:
+  public Q_SLOTS:
     void setText(const QString &text);
 
 Q_SIGNALS:
     void saveText(QString revText);
     void editorFinished();
 
-  protected slots:
+  protected Q_SLOTS:
     void onSave(void);
     void onExit(void);
     void setPlainText(const QString &text) { f_textedit->setPlainText(text); }

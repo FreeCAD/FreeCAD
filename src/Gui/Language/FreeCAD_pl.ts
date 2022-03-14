@@ -4509,7 +4509,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation>Skok (względem osi y):</translation>
+      <translation>Pochylenie (względem osi y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
@@ -4525,7 +4525,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation>Skok (względem osi y)</translation>
+      <translation>Pochylenie (względem osi y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>

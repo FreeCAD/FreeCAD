@@ -37,6 +37,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 
 #include <Base/Console.h>

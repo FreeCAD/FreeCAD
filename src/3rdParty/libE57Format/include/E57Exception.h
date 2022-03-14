@@ -46,7 +46,7 @@ namespace e57
       E57_ERROR_CHILD_INDEX_OUT_OF_BOUNDS = 3, //!< a numerical index identifying a child was out of bounds
       E57_ERROR_SET_TWICE = 4,                 //!< attempted to set an existing child element to a new value
       E57_ERROR_HOMOGENEOUS_VIOLATION = 5,     //!< attempted to add an E57 Element that would have made the children
-                                               //!< of a homogenous Vector have different types
+                                               //!< of a homogeneous Vector have different types
       E57_ERROR_VALUE_NOT_REPRESENTABLE = 6,   //!< a value could not be represented in the requested type
       E57_ERROR_SCALED_VALUE_NOT_REPRESENTABLE = 7, //!< after scaling the result could not be represented in the
                                                     //!< requested type

@@ -4,6 +4,22 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation type="unfinished">Create new toolbar</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>Uruchom</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
       <translation>Wersja {version} została zainstalowana: {date}</translation>
@@ -91,7 +107,7 @@
     <message>
       <location filename="package_details.py" line="354"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>OSTRZEŻENIE: Ten dodatek wymaga programu FreeCAD </translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
@@ -106,22 +122,22 @@
     <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>Nie można wczytać pliku danych README z adresu URL {}</translation>
     </message>
     <message>
       <location filename="package_details.py" line="577"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Zakończono pomyślnie</translation>
     </message>
     <message>
       <location filename="package_details.py" line="600"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>Zmieniono w Git Reference's &apos;{}&apos; - Ponowne uruchomienie jest wymagane do użycia dodatku.</translation>
     </message>
     <message>
       <location filename="package_details.py" line="636"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>Raportowany JavaScript strony</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
@@ -151,7 +167,17 @@
     <message>
       <location filename="package_details.py" line="786"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>Zmień gałąź</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>Włącz</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>Wyłącz</translation>
     </message>
     <message>
       <location filename="package_details.py" line="424"/>
@@ -161,11 +187,11 @@
     <message numerus="yes">
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+      <translation>
+        <numerusform>Nie zainstalowano powiązania QtWebEngine z Pythonem — użycie awaryjnego wyświetlania pliku README. Szczegółowe informacje i instrukcje instalacji można znaleźć w oknie Raportu widoku.</numerusform>
+        <numerusform>Nie zainstalowano powiązań QtWebEngine z Pythonem — użycie awaryjnego wyświetlania pliku README. Szczegółowe informacje i instrukcje instalacji można znaleźć w oknie Raportu widoku.</numerusform>
+        <numerusform>Nie zainstalowano powiązań QtWebEngine z Pythonem — użycie awaryjnego wyświetlania pliku README. Szczegółowe informacje i instrukcje instalacji można znaleźć w oknie Raportu widoku.</numerusform>
+        <numerusform>Nie zainstalowano powiązań QtWebEngine z Pythonem — użycie awaryjnego wyświetlania pliku README. Szczegółowe informacje i instrukcje instalacji można znaleźć w oknie Raportu widoku.</numerusform>
       </translation>
     </message>
     <message>
@@ -214,11 +240,6 @@
       <translation>zaktualizowano</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation>Zaktualizowano</translation>
-    </message>
-    <message>
       <location filename="package_list.py" line="382"/>
       <source>Author</source>
       <translation>Autor</translation>
@@ -239,6 +260,16 @@
       <translation>Oczekuje na ponowne uruchomienie</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation type="unfinished">DISABLED</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation>Zainstalowana wersja</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
       <translation>Kliknij, aby uzyskać informacje o pakiecie</translation>
@@ -254,9 +285,9 @@
       <translation>Kliknij, aby uzyskać informacje o makrodefinicji</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>Zainstalowana wersja</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation>Zaktualizowano</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -447,6 +478,11 @@
       <translation>Wystąpił błąd podczas pobierania makr z GitHub</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Pobieranie opisu...</translation>
@@ -532,9 +568,24 @@
       <translation>Proszę najpierw zainstalować brakujące komponenty.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Pobieranie opisu makrodefinicji ...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Pobieranie informacji z git</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Błąd: nie można znaleźć pliku Zip z</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Pobieranie informacji z Wiki</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -547,29 +598,19 @@
       <translation>Zainstalowano pomyślnie</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Pobieranie opisu makrodefinicji ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Pobieranie informacji z git</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Pobieranie informacji z Wiki</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>Błąd aktualizacji modułu </translation>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation type="unfinished">Error updating module</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1078"/>
       <source>Please fix manually</source>
       <translation>Proszę naprawić ręcznie</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Błąd aktualizacji modułu </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -634,18 +675,18 @@
     <message>
       <location filename="change_branch.py" line="101"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>OSTRZEŻENIE: Funkcja dewelopera</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="114"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Występują zmiany lokalne</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="192"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Gałąź</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="178"/>
@@ -657,50 +698,50 @@
       <location filename="change_branch.py" line="261"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
+      <translation>
+        <numerusform>Rodzaj</numerusform>
+        <numerusform>Rodzaje</numerusform>
+        <numerusform>Rodzaje</numerusform>
+        <numerusform>Rodzaje</numerusform>
       </translation>
     </message>
     <message>
       <location filename="change_branch.py" line="265"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Nazwa lokalna</translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="271"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation type="unfinished">
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
+      <translation>
+        <numerusform>Śledzenie</numerusform>
+        <numerusform>Śledzenie</numerusform>
+        <numerusform>Śledzenie</numerusform>
+        <numerusform>Śledzenie</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
+      <translation>
+        <numerusform>Lokalne zaktualizowane</numerusform>
+        <numerusform>Lokalne zaktualizowane</numerusform>
+        <numerusform>Lokalne zaktualizowane</numerusform>
+        <numerusform>Lokalne zaktualizowane</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
+      <translation>
+        <numerusform>Zdalna aktualizacja</numerusform>
+        <numerusform>Zdalne aktualizacje</numerusform>
+        <numerusform>Zdalne aktualizacje</numerusform>
+        <numerusform>Zdalna aktualizacja</numerusform>
       </translation>
     </message>
     <message>
@@ -759,6 +800,16 @@
       <translation>Aktualizowanie pamięci podręcznej ...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Sprawdzanie aktualizacji...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Zastosuj {} aktualizacje</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Dodatki, które mogą być zainstalowane, nie są oficjalnie częścią FreeCAD, i nie są sprawdzane przez zespół FreeCAD. Upewnij się, że wiesz, co instalujesz!</translation>
@@ -776,12 +827,7 @@
     <message>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation>Nie można zaimportować QtNetwork -- szczegóły możesz zobaczyć w Widoku rapotru. Menedżer dodatków jest niedostępny.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Sprawdzanie aktualizacji...</translation>
+      <translation>Nie można zaimportować QtNetwork — szczegóły możesz zobaczyć w Widoku raportu. Menedżer dodatków jest niedostępny.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -824,6 +870,11 @@
       <translation>Makro zostało pomyślnie usunięte.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Nie można usunąć makra.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
       <translation>Menedżer dodatków: Pomijam sprawdzania aktualizacji, ponieważ preferencja użytkownika Sprawdź automatycznie ma wartość Fałsz</translation>
@@ -832,11 +883,6 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Wymagany restart</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Zastosuj {} aktualizacje</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -910,11 +956,6 @@
       <translation>Udało się</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation>Wykonanie skryptu dodatku uninstall.py nie powiodło się. Kontynuuję odinstalowywanie ...</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
       <translation>Nie udało się zaktualizować wszystkich pakietów:</translation>
@@ -950,9 +991,14 @@
       <translation>Czy na pewno chcesz odinstalować ten dodatek?</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Nie można usunąć makra.</translation>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation>Wykonanie skryptu dodatku uninstall.py nie powiodło się. Kontynuuję odinstalowywanie ...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation type="unfinished">Successfully uninstalled {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

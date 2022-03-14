@@ -29,6 +29,8 @@
 # include <QMessageBox>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>

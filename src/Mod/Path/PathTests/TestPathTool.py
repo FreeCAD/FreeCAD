@@ -24,20 +24,20 @@ import Path
 
 from PathTests.PathTestUtils import PathTestBase
 
+
 class TestPathTool(PathTestBase):
-
     def test00(self):
-        '''Verify templateAttrs'''
+        """Verify templateAttrs"""
 
-        name = 'tool 1'
-        mat  = 'Carbide'
-        typ  = 'EndMill'
-        dia    = 1.7
-        flat   = 7.2
+        name = "tool 1"
+        mat = "Carbide"
+        typ = "EndMill"
+        dia = 1.7
+        flat = 7.2
         offset = 3.2
         corner = 4
         height = 45.3
-        angle  = 118
+        angle = 118
 
         tool = Path.Tool()
         tool.Name = name
@@ -51,20 +51,19 @@ class TestPathTool(PathTestBase):
         tool.CuttingEdgeHeight = height
 
         attrs = tool.templateAttrs()
-        self.assertEqual(attrs['name'], name)
-        self.assertEqual(attrs['diameter'], dia)
-        self.assertEqual(attrs['material'], mat)
-        self.assertEqual(attrs['tooltype'], typ)
-        self.assertEqual(attrs['lengthOffset'], offset)
-        self.assertEqual(attrs['flatRadius'], flat)
-        self.assertEqual(attrs['cornerRadius'], corner)
-        self.assertEqual(attrs['cuttingEdgeAngle'], angle)
-        self.assertEqual(attrs['cuttingEdgeHeight'], height)
+        self.assertEqual(attrs["name"], name)
+        self.assertEqual(attrs["diameter"], dia)
+        self.assertEqual(attrs["material"], mat)
+        self.assertEqual(attrs["tooltype"], typ)
+        self.assertEqual(attrs["lengthOffset"], offset)
+        self.assertEqual(attrs["flatRadius"], flat)
+        self.assertEqual(attrs["cornerRadius"], corner)
+        self.assertEqual(attrs["cuttingEdgeAngle"], angle)
+        self.assertEqual(attrs["cuttingEdgeHeight"], height)
         return tool
 
-
     def test01(self):
-        '''Verify template roundtrip'''
+        """Verify template roundtrip"""
 
         t0 = self.test00()
         t1 = Path.Tool()
@@ -81,7 +80,7 @@ class TestPathTool(PathTestBase):
         self.assertEqual(t0.CuttingEdgeHeight, t1.CuttingEdgeHeight)
 
     def test02(self):
-        '''Verify template dictionary construction'''
+        """Verify template dictionary construction"""
 
         t0 = self.test00()
         t1 = Path.Tool(t0.templateAttrs())
@@ -95,4 +94,3 @@ class TestPathTool(PathTestBase):
         self.assertEqual(t0.CornerRadius, t1.CornerRadius)
         self.assertEqual(t0.CuttingEdgeAngle, t1.CuttingEdgeAngle)
         self.assertEqual(t0.CuttingEdgeHeight, t1.CuttingEdgeHeight)
-

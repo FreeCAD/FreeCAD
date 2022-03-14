@@ -48,7 +48,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the drilling operation's page"""
 
     def initPage(self, obj):
-        # pylint: disable=attribute-defined-outside-init
         self.peckDepthSpinBox = PathGui.QuantitySpinBox(
             self.form.peckDepth, obj, "PeckDepth"
         )
@@ -90,7 +89,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return form
 
     def updateQuantitySpinBoxes(self, index=None):
-        # pylint: disable=unused-argument
         self.peckDepthSpinBox.updateSpinBox()
         self.peckRetractSpinBox.updateSpinBox()
         self.dwellTimeSpinBox.updateSpinBox()

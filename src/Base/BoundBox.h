@@ -24,11 +24,11 @@
 #ifndef BASE_BOUNDBOX_H
 #define BASE_BOUNDBOX_H
 
-#include "Vector3D.h"
-#include "Matrix.h"
-#include "ViewProj.h"
-#include "Tools2D.h"
 #include <limits>
+#include "Matrix.h"
+#include "Tools2D.h"
+#include "ViewProj.h"
+
 
 namespace Base {
 

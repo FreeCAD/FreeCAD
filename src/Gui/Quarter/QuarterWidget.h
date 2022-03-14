@@ -33,15 +33,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 
-#include <QtGui/QColor>
+#include <QColor>
 #include <QGraphicsView>
-#include <QtCore/QUrl>
+#include <QUrl>
 #include <QtOpenGL.h>
-#include <Gui/Quarter/Basic.h>
+
+#include "Basic.h"
+
 
 class QMenu;
 class SoNode;

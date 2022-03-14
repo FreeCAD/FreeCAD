@@ -2890,17 +2890,17 @@ Yapı oluşturma iptal edildi.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Pencere Eskize dayalı değil. Pencere hizalanmamış veya yeniden boyutlandırılmamış.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Pencere eskizinde Genişlik ve/veya Yükseklik kısıtlaması yok. Pencere yeniden boyutlandırılmadı.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Pencere bulunamadı. Devam edilemez.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4128,12 +4128,12 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Çizgi ile kes</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Bir nesneyi bir çizgi ile kes</translation>
     </message>
   </context>
   <context>
@@ -5989,7 +5989,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="812"/>
       <source>Panels</source>
-      <translation>Panels</translation>
+      <translation>Paneller</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="827"/>

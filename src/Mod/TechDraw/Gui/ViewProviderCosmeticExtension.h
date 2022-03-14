@@ -25,7 +25,7 @@
 #define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 
 #include <App/Extension.h>
-#include <Gui/ViewProviderExtension.h>
+#include <Gui/ViewProviderExtensionPython.h>
 
 namespace TechDrawGui
 {

@@ -28,20 +28,19 @@
 # include <QPixmapCache>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Quantity.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
 #include <App/Application.h>
-#include <App/PropertyUnits.h>
-#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
-#include "ExpressionCompleter.h"
-#include "Command.h"
+#include <App/ExpressionParser.h>
+#include <App/PropertyUnits.h>
+#include <Base/Exception.h>
+#include <Base/Quantity.h>
+#include <Base/Tools.h>
+
 #include "InputField.h"
 #include "BitmapFactory.h"
+#include "Command.h"
 #include "QuantitySpinBox_p.h"
-#include "propertyeditor/PropertyItem.h"
+
 
 using namespace Gui;
 using namespace App;

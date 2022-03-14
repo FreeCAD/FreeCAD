@@ -58,6 +58,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>
@@ -317,7 +318,7 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
     // sets the normal vector of the currently selecteed planar face as direction
     Q_UNUSED(pressed)
 
-    clearButtons(none);
+    clearButtons(SelectionChangeModes::none);
 
     auto link = getDirection(Gui::Selection().getSelectionEx());
     if (!link.first) {
@@ -408,8 +409,10 @@ void TaskFemConstraintForce::changeEvent(QEvent *e)
 
 void TaskFemConstraintForce::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != refAdd) ui->btnAdd->setChecked(false);
-    if (notThis != refRemove) ui->btnRemove->setChecked(false);
+    if (notThis != SelectionChangeModes::refAdd)
+        ui->btnAdd->setChecked(false);
+    if (notThis != SelectionChangeModes::refRemove)
+        ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

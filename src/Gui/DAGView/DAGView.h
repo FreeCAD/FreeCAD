@@ -24,7 +24,6 @@
 #define DAGVIEW_H
 
 #include <memory>
-
 #include <QGraphicsView>
 #include <boost_signals2.hpp>
 
@@ -33,6 +32,7 @@
 #include <Gui/Selection.h>
 
 #include "DAGModel.h"
+
 
 namespace Gui
 {

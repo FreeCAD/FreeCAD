@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -59,7 +58,7 @@
 #include <Base/AxisPy.h>
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
-#include <Base/Console.h>
+#include <Base/ConsoleObserver.h>
 #include <Base/CoordinateSystemPy.h>
 #include <Base/Exception.h>
 #include <Base/ExceptionFactory.h>

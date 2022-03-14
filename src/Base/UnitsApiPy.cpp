@@ -140,7 +140,7 @@ PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return nullptr;
         }
-        setSchema((UnitSystem)index);
+        setSchema(static_cast<UnitSystem>(index));
     }
     Py_Return;
 }

@@ -25,31 +25,29 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QPainter>
-# include <QMenu>
-# include <QDebug>
-# include <QDialog>
-# include <QMessageBox>
-# include <QCheckBox>
 # include <QInputDialog>
+# include <QMenu>
+# include <QPainter>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <App/Application.h>
+#include <App/AutoTransaction.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/AutoTransaction.h>
-#include "ViewProviderDocumentObject.h"
-#include "MainWindow.h"
-#include "DlgAddProperty.h"
+
 #include "PropertyEditor.h"
+#include "DlgAddProperty.h"
+#include "MainWindow.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
 #include "PropertyView.h"
+#include "ViewProviderDocumentObject.h"
 
-FC_LOG_LEVEL_INIT("PropertyView",true,true)
+
+FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
 

@@ -34,45 +34,45 @@
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>要建立的陣列類型。
+- Ortho：將副本放置於全域 X、Y、Z 軸的方向上。
+- Polar：將副本沿圓弧放置，直到指定角度，並具有由中心和軸定義的特定方向。
+- Circular：將副本放置於環繞基礎物件的同心圓層中。</translation>
     </message>
     <message>
       <location filename="array.py" line="109"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>如果副本相互接觸，是否對它們進行合併（較慢）</translation>
     </message>
     <message>
       <location filename="array.py" line="122"/>
       <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <translation>X方向的副本數</translation>
     </message>
     <message>
       <location filename="array.py" line="131"/>
       <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <translation>Y方向的副本數</translation>
     </message>
     <message>
       <location filename="array.py" line="140"/>
       <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <translation>Z方向的副本數</translation>
     </message>
     <message>
       <location filename="array.py" line="150"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>X方向區間的距離和方向</translation>
     </message>
     <message>
       <location filename="array.py" line="160"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Y方向區間的距離和方向</translation>
     </message>
     <message>
       <location filename="array.py" line="170"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Z方向區間的距離和方向</translation>
     </message>
     <message>
       <location filename="array.py" line="185"/>
@@ -743,14 +743,14 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">The pattern scale used by this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>此物件的形狀</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

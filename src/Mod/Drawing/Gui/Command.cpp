@@ -23,6 +23,7 @@
 #include <vector>
 
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include <App/PropertyGeo.h>
 
 #include <Gui/Action.h>

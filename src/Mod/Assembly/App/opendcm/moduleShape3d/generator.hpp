@@ -155,7 +155,7 @@ struct segment3D {
 
             if(base::m_shape->getGeometryType() == dcm::tag::weight::segment::value) {
 
-                //link the line geometrie to our shape
+                //link the line geometry to our shape
                 std::shared_ptr<Geometry3D> g1 = base::m_system->createGeometry3D();
                 base::append(g1);
                 g1->template linkTo<tag::segment3D>(base::m_shape,0);

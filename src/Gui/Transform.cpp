@@ -20,20 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #include <QDialogButtonBox>
 #include <QSignalMapper>
 
+#include <App/GeoFeature.h>
+#include <App/PropertyGeo.h>
+
 #include "Transform.h"
-#include "Selection.h"
-#include "ViewProvider.h"
-#include "ui_Placement.h"
 #include "Application.h"
 #include "Document.h"
+#include "Selection.h"
+#include "ui_Placement.h"
+#include "ViewProvider.h"
 #include "WaitCursor.h"
-#include <App/PropertyGeo.h>
-#include <App/GeoFeature.h>
+
 
 using namespace Gui::Dialog;
 

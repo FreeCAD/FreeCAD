@@ -2564,7 +2564,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Create primitives...</source>
-      <translation>Utwórz bryły pierwotne ...</translation>
+      <translation>Utwórz geometrie pierwotne ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
@@ -4919,7 +4919,7 @@ Jeżeli opcja nie jest zaznaczona, to jest to zależne od opcji "Kolor podświet
     <message>
       <location filename="../../Location.ui" line="14"/>
       <source>Location</source>
-      <translation>Położenie</translation>
+      <translation>Umiejscowienie</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="29"/>

@@ -25,21 +25,20 @@
 #include <assert.h>
 #include <limits>
 #include <QApplication>
+#include <QGridLayout>
 #endif
 
-#include <QGridLayout>
-#include <QFontMetrics>
-
-#include <Gui/TaskView/TaskView.h>
-#include "QuantitySpinBox.h"
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProviderDragger.h>
-#include <Gui/SoFCCSysDragger.h>
-
+#include <App/Document.h>
+#include "Document.h" // must be before TaskCSysDragger.h
 #include "TaskCSysDragger.h"
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "QuantitySpinBox.h"
+#include "SoFCCSysDragger.h"
+#include "ViewProviderDragger.h"
+#include "TaskView/TaskView.h"
+
 
 using namespace Gui;
 

@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/SbSphere.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <sstream>
@@ -35,6 +36,7 @@
 
 #include <boost/algorithm/string/replace.hpp>
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/AutoTransaction.h>
 #include <Base/Console.h>

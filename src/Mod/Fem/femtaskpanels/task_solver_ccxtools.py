@@ -52,6 +52,8 @@ class _TaskPanel:
     The TaskPanel for CalculiX ccx tools solver object
     """
 
+    PREFS_PATH = "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
+
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui"
@@ -341,7 +343,7 @@ class _TaskPanel:
 
     def editCalculixInputFile(self):
         print("editCalculixInputFile {}".format(self.fea.inp_file_name))
-        ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
         if ccx_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.fea.inp_file_name)
         else:
@@ -376,6 +378,19 @@ class _TaskPanel:
         )
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
+
+        # Set up for multi-threading. Note: same functionality as ccx_tools.py/start_ccx()
+        ccx_prefs = FreeCAD.ParamGet(self.PREFS_PATH)
+        env = QtCore.QProcessEnvironment.systemEnvironment()
+        num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", 1)
+        if num_cpu_pref > 1:
+            env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
+        else:
+            cpu_count = os.cpu_count()
+            if cpu_count != None and cpu_count > 1:
+                env.insert("OMP_NUM_THREADS", str(cpu_count))
+        self.Calculix.setProcessEnvironment(env)
+
         self.cwd = QtCore.QDir.currentPath()
         fi = QtCore.QFileInfo(self.fea.inp_file_name)
         QtCore.QDir.setCurrent(fi.path())

@@ -23,14 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
 # include <cstring>
 # include <sstream>
 #endif
 
-
 #include "Matrix.h"
 #include "Converter.h"
+
 
 using namespace Base;
 

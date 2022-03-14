@@ -23,8 +23,9 @@
 #ifndef DAGRECTITEM_H
 #define DAGRECTITEM_H
 
-#include <QGraphicsRectItem>
 #include <QBrush>
+#include <QGraphicsRectItem>
+
 
 namespace Gui
 {

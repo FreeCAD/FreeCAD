@@ -65,14 +65,14 @@ Unit::Unit(int8_t Length,
            int8_t Angle)
 {
     checkRange("unit",
-               (int32_t)Length,
-               (int32_t)Mass,
-               (int32_t)Time,
-               (int32_t)ElectricCurrent,
-               (int32_t)ThermodynamicTemperature,
-               (int32_t)AmountOfSubstance,
-               (int32_t)LuminousIntensity,
-               (int32_t)Angle);
+               Length,
+               Mass,
+               Time,
+               ElectricCurrent,
+               ThermodynamicTemperature,
+               AmountOfSubstance,
+               LuminousIntensity,
+               Angle);
 
     Sig.Length                   = Length;
     Sig.Mass                     = Mass;
@@ -122,14 +122,14 @@ Unit::Unit(const QString& expr)
 Unit Unit::pow(signed char exp) const
 {
     checkRange("pow()",
-               (int32_t)Sig.Length * (int32_t)exp,
-               (int32_t)Sig.Mass * (int32_t)exp,
-               (int32_t)Sig.Time * (int32_t)exp,
-               (int32_t)Sig.ElectricCurrent * (int32_t)exp,
-               (int32_t)Sig.ThermodynamicTemperature * (int32_t)exp,
-               (int32_t)Sig.AmountOfSubstance * (int32_t)exp,
-               (int32_t)Sig.LuminousIntensity * (int32_t)exp,
-               (int32_t)Sig.Angle * (int32_t)exp);
+               Sig.Length * exp,
+               Sig.Mass * exp,
+               Sig.Time * exp,
+               Sig.ElectricCurrent * exp,
+               Sig.ThermodynamicTemperature * exp,
+               Sig.AmountOfSubstance * exp,
+               Sig.LuminousIntensity * exp,
+               Sig.Angle * exp);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    * exp;
@@ -172,14 +172,14 @@ bool Unit::operator ==(const Unit& that) const
 Unit Unit::operator *(const Unit &right) const
 {
     checkRange("* operator",
-               (int32_t)Sig.Length + (int32_t)right.Sig.Length,
-               (int32_t)Sig.Mass + (int32_t)right.Sig.Mass,
-               (int32_t)Sig.Time + (int32_t)right.Sig.Time,
-               (int32_t)Sig.ElectricCurrent + (int32_t)right.Sig.ElectricCurrent,
-               (int32_t)Sig.ThermodynamicTemperature + (int32_t)right.Sig.ThermodynamicTemperature,
-               (int32_t)Sig.AmountOfSubstance + (int32_t)right.Sig.AmountOfSubstance,
-               (int32_t)Sig.LuminousIntensity + (int32_t)right.Sig.LuminousIntensity,
-               (int32_t)Sig.Angle + (int32_t)right.Sig.Angle);
+               Sig.Length +right.Sig.Length,
+               Sig.Mass + right.Sig.Mass,
+               Sig.Time + right.Sig.Time,
+               Sig.ElectricCurrent + right.Sig.ElectricCurrent,
+               Sig.ThermodynamicTemperature + right.Sig.ThermodynamicTemperature,
+               Sig.AmountOfSubstance + right.Sig.AmountOfSubstance,
+               Sig.LuminousIntensity + right.Sig.LuminousIntensity,
+               Sig.Angle + right.Sig.Angle);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    + right.Sig.Length;
@@ -197,14 +197,14 @@ Unit Unit::operator *(const Unit &right) const
 Unit Unit::operator /(const Unit &right) const
 {
     checkRange("/ operator",
-               (int32_t)Sig.Length - (int32_t)right.Sig.Length,
-               (int32_t)Sig.Mass - (int32_t)right.Sig.Mass,
-               (int32_t)Sig.Time - (int32_t)right.Sig.Time,
-               (int32_t)Sig.ElectricCurrent - (int32_t)right.Sig.ElectricCurrent,
-               (int32_t)Sig.ThermodynamicTemperature - (int32_t)right.Sig.ThermodynamicTemperature,
-               (int32_t)Sig.AmountOfSubstance - (int32_t)right.Sig.AmountOfSubstance,
-               (int32_t)Sig.LuminousIntensity - (int32_t)right.Sig.LuminousIntensity,
-               (int32_t)Sig.Angle - (int32_t)right.Sig.Angle);
+               Sig.Length - right.Sig.Length,
+               Sig.Mass - right.Sig.Mass,
+               Sig.Time - right.Sig.Time,
+               Sig.ElectricCurrent - right.Sig.ElectricCurrent,
+               Sig.ThermodynamicTemperature - right.Sig.ThermodynamicTemperature,
+               Sig.AmountOfSubstance - right.Sig.AmountOfSubstance,
+               Sig.LuminousIntensity - right.Sig.LuminousIntensity,
+               Sig.Angle - right.Sig.Angle);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    - right.Sig.Length;

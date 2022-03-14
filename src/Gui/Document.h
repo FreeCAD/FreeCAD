@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCUMENT_H
 #define GUI_DOCUMENT_H
-
-#include "MDIView.h"
 
 #include <list>
 #include <map>
 #include <string>
+#include <boost_signals2.hpp>
+#include <QString>
 
 #include <Base/Persistence.h>
-#include <App/Document.h>
-
-#include "Tree.h"
+#include <Gui/TreeItemMode.h>
 
 class SoNode;
 class SoPath;
@@ -43,17 +40,22 @@ class Matrix4D;
 }
 
 namespace App {
+class Document;
+class DocumentObject;
 class DocumentObjectGroup;
+class Property;
+class Transaction;
 }
 
 namespace Gui {
 
+class BaseView;
+class MDIView;
 class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
 class TransactionViewProvider;
-enum  class HighlightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping

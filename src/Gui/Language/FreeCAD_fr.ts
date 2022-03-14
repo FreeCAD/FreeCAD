@@ -2962,7 +2962,7 @@ exécutera automatiquement une récupération de fichier au démarrage.</transla
     </message>
     <message>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.

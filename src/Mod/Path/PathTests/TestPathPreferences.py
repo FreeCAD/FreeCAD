@@ -23,36 +23,45 @@
 import PathScripts.PathPreferences as PathPreferences
 import PathTests.PathTestUtils as PathTestUtils
 
-class TestPathPreferences(PathTestUtils.PathTestBase):
 
+class TestPathPreferences(PathTestUtils.PathTestBase):
     def test00(self):
-        '''There is at least one search path.'''
+        """There is at least one search path."""
 
         paths = PathPreferences.searchPaths()
         self.assertGreater(len(paths), 0)
 
     def test01(self):
-        '''PathScripts is part of the posts search path.'''
+        """PathScripts is part of the posts search path."""
         paths = PathPreferences.searchPathsPost()
-        self.assertEqual(len([p for p in paths if p.endswith('/PathScripts/')]), 1)
+        self.assertEqual(len([p for p in paths if p.endswith("/PathScripts/")]), 1)
 
     def test02(self):
-        '''PathScripts/post is part of the posts search path.'''
+        """PathScripts/post is part of the posts search path."""
         paths = PathPreferences.searchPathsPost()
-        self.assertEqual(len([p for p in paths if p.endswith('/PathScripts/post/')]), 1)
+        self.assertEqual(len([p for p in paths if p.endswith("/PathScripts/post/")]), 1)
 
     def test03(self):
-        '''Available post processors include linuxcnc, grbl and opensbp.'''
+        """Available post processors include linuxcnc, grbl and opensbp."""
         posts = PathPreferences.allAvailablePostProcessors()
-        self.assertTrue('linuxcnc' in posts)
-        self.assertTrue('grbl' in posts)
-        self.assertTrue('opensbp' in posts)
-
+        self.assertTrue("linuxcnc" in posts)
+        self.assertTrue("grbl" in posts)
+        self.assertTrue("opensbp" in posts)
 
     def test10(self):
-        '''Default paths for tools are resolved correctly'''
+        """Default paths for tools are resolved correctly"""
 
-        self.assertTrue(PathPreferences.pathDefaultToolsPath().endswith('/Path/Tools/'))
-        self.assertTrue(PathPreferences.pathDefaultToolsPath('Bit').endswith('/Path/Tools/Bit'))
-        self.assertTrue(PathPreferences.pathDefaultToolsPath('Library').endswith('/Path/Tools/Library'))
-        self.assertTrue(PathPreferences.pathDefaultToolsPath('Template').endswith('/Path/Tools/Template'))
+        self.assertTrue(PathPreferences.pathDefaultToolsPath().endswith("/Path/Tools/"))
+        self.assertTrue(
+            PathPreferences.pathDefaultToolsPath("Bit").endswith("/Path/Tools/Bit")
+        )
+        self.assertTrue(
+            PathPreferences.pathDefaultToolsPath("Library").endswith(
+                "/Path/Tools/Library"
+            )
+        )
+        self.assertTrue(
+            PathPreferences.pathDefaultToolsPath("Template").endswith(
+                "/Path/Tools/Template"
+            )
+        )

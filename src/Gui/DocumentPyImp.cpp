@@ -26,14 +26,14 @@
 # include <sstream>
 #endif
 
+#include <App/Document.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
-
-#include <App/Document.h>
+#include <Base/Stream.h>
 
 #include "Application.h"
-#include "Document.h"
 #include "MergeDocuments.h"
+#include "MDIView.h"
 #include "ViewProviderExtern.h"
 
 // inclusion of the generated files (generated out of DocumentPy.xml)

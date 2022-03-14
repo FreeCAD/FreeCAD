@@ -27,10 +27,10 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Відфільтруйте об'єкти з вибраного з'єднання за такими характеристиками, як об'єм,
-площа, довжина, або шляхом вибору конкретних елементів.
-Якщо вибрано другий об'єкт, він буде використаний як зразок, наприклад,
-для фільтрування перетину або відстані.</translation>
+      <translation>Відфільтруйте об’єкти з вибраної сполуки за такими характеристиками, як обсяг,
+площі, або довжині, або шляхом вибору конкретних елементів.
+Якщо вибрано другий об’єкт, він буде використовуватися як посилання, наприклад,
+для фільтрації перетину або відстані.</translation>
     </message>
   </context>
   <context>
@@ -44,8 +44,8 @@ for collision or distance filtering.</source>
       <location filename="_CommandExplodeCompound.py" line="62"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Розділіть комбінацію фігур на окремі об’єкти.
+Він створить «Складний фільтр» для кожної фігури.</translation>
     </message>
   </context>
   <context>
@@ -117,9 +117,9 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Виріжте вибраний об'єкт, використовуючи інші об'єкти як інструменти різання.
+Отримані частини будуть зберігатися у сполуці.
+Довідник 'Compound Filter' використовується для вилучення фрагментів.</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="379"/>

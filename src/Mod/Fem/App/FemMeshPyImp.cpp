@@ -80,8 +80,8 @@ PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj=0;
-    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C
-        return -1;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))
+        return -1;
 
     try {
         // if no mesh is given

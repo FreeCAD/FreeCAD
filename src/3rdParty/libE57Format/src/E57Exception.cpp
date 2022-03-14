@@ -35,7 +35,7 @@ namespace e57
    @brief   Object thrown by E57 API functions to communicate the conditions of an
    error.
    @details
-   The E57Exception object communicates information about errors occuring in calls
+   The E57Exception object communicates information about errors occurring in calls
    to the E57 API functions. The error information is communicated from the
    location in the E57 implementation where the error was detected to the @c catch
    statement in the code of the API user. The state of E57Exception object has one
@@ -87,7 +87,7 @@ namespace e57
    available about nodes in the tree. So if the ImageFile is closed (by calling
    ImageFile::close), the API user must be ready for many of the API functions to
    throw E57Exception(E57_ERROR_IMAGEFILE_NOT_OPEN). Secondly, regarding the
-   E57_ERROR_INTERNAL error, there is a lot of consistancy checking in the
+   E57_ERROR_INTERNAL error, there is a lot of consistency checking in the
    Reference Implementation, and there may be much more added. Even if some API
    routines do not now throw E57_ERROR_INTERNAL, they could some time in the
    future, or in different implementations. So the right to throw
@@ -311,7 +311,7 @@ namespace e57
          case E57_ERROR_HOMOGENEOUS_VIOLATION:
             return "attempted to add an E57 Element that would have made the "
                    "children of a "
-                   "homogenous Vector have different types "
+                   "homogeneous Vector have different types "
                    "(E57_ERROR_HOMOGENEOUS_VIOLATION)";
          case E57_ERROR_VALUE_NOT_REPRESENTABLE:
             return "a value could not be represented in the requested type "

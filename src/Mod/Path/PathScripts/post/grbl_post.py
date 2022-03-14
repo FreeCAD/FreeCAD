@@ -580,7 +580,7 @@ def parse(pathobj):
                 out += linenumber() + format_outstring(outstring) + "\n"
 
             # Check for comments containing machine-specific commands to pass literally to the controller
-            m = re.match(r'^\(MC_RUN_COMMAND: ([^)]+)\)$', command)
+            m = re.match(r"^\(MC_RUN_COMMAND: ([^)]+)\)$", command)
             if m:
                 raw_command = m.group(1)
                 out += linenumber() + raw_command + "\n"

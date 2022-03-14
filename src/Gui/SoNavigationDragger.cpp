@@ -26,12 +26,10 @@
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 // Include files for child dragger classes.
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
-//#include "TranslateRadialDragger.h"
 #include <Inventor/draggers/SoTranslate1Dragger.h>
 
 // Include file for our new class.
@@ -40,9 +38,6 @@
 // Include file the binaray of SoNavigationDraggerLayout.iv, the layout of the dragger.
 #include "SoNavigationDraggerLayout.h"
 
-// This file contains RotTransDragger::geomBuffer, which
-// describes the default geometry resources for this class.
-//#include "RotTransDraggerGeom.h"
 
 SO_KIT_SOURCE(RotTransDragger)
 

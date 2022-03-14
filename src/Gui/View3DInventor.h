@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEW3DINVENTOR_H
 #define GUI_VIEW3DINVENTOR_H
 
-#include "MDIView.h"
-
-#include <Base/Parameter.h>
 #include <QImage>
 #include <QtOpenGL.h>
+
+#include <Base/Parameter.h>
+
+#include "MDIView.h"
+
 
 class QPrinter;
 class QStackedWidget;

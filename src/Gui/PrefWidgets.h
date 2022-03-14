@@ -20,22 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PREFWIDGETS_H
 #define GUI_PREFWIDGETS_H
 
 #include <QCheckBox>
 #include <QComboBox>
-#include <QRadioButton>
 #include <QFontComboBox>
-#include <QFont>
+#include <QRadioButton>
 #include <QTextEdit>
+
 #include <Base/Parameter.h>
+
 #include "Widgets.h"
-#include "Window.h"
-#include "SpinBox.h"
 #include "FileDialog.h"
+#include "SpinBox.h"
 #include "QuantitySpinBox.h"
+#include "Window.h"
+
 
 namespace Gui {
 class CommandManager;

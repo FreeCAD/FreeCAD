@@ -96,7 +96,7 @@
     <message>
       <location filename="TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
+      <translation>ამ კომპიუტერში დაყენებულია ყველა სამუშაო მაგიდის დახმარების გვერდები.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="61"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation>GitHub-იდან ინფორმაციის გამოთხოვნის შეცდომა.&lt;a href="EnableDownload.py"&gt;მიეცით FreeCAD-ს ინტერნეტთან წვდომა&lt;/a&gt; და თავიდან ჩატვირთეთ საწყისი გვერდი.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>ქვემოთ მოცემულია უახლესი ცვლილებები, რომლებიც დამატებულია &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD-ის კოდში&lt;/a&gt;. ეს ცვლილებები შესაძლოა ჯერ არ აისახოს FreeCAD-ის ვერსიაში, რომელსაც ამჟამად გაქვთ გაშვებული. შეამოწმეთ &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;ხელმისაწვდომი ვარიანტები&lt;/a&gt; თუ გსურთ მიიღოთ უახლესი ბეტა ვერსია.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>აქ საჩვენებლად საქაღალდე შეგიძლიათ ხელით მიუთითოთ. ამისათვის გადადით ჩასწორება -&gt;მორგება -&gt; საწყისი -&gt; დამატებითი საქაღალდის ჩვენება</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>ბოლო პოსტები &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD-ის ფორუმზე&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="79"/>
@@ -255,7 +255,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>არასავალდებულო HTML შაბლონი, რომელიც გაშვების ნაგულისხმევი გვერდის მაგიერ იქნება ნაჩვენები.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -291,8 +291,8 @@
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>არასავალდებულო ხელით მითითებული საქაღალდე პირველი გვერდის ქვედა ნაწილში საჩვენებლად.
+ბილიკების ";;"-ით დაყოფით შეგიძლიათ რამდენიმე საქაღალდე მიუთითოთ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>თუ ეს ჩართულია და საერთო მორგების ფანჯარაში მითითებულია გვერდის სტილი, ის გამოყენებული იქნება ქვემო ფერების გადასაღებად</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>თუ ჩართულია, 'ახალი ფაილი'-ის ხატულა ნორმალურის მაგიერ გრადიენტულ ხატულის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -492,7 +492,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>თუ აპლიკაცია გაშვებულია ფაილის გახსნით, ქვემორე ორი პარამეტრის გადატარება</translation>
     </message>
   </context>
 </TS>

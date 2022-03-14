@@ -21,18 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include "OriginGroupExtension.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
 #include <App/Document.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Tools.h>
+
+#include "OriginGroupExtension.h"
+#include "GeoFeature.h"
 #include "Origin.h"
 
-#include "GeoFeature.h"
 
 FC_LOG_LEVEL_INIT("App", true, true)
 

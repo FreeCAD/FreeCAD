@@ -22,15 +22,13 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <climits>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include "Base/Exception.h"
+
 #include "Rotation.h"
 #include "Matrix.h"
-#include "Base/Exception.h"
+
 
 using namespace Base;
 
@@ -517,7 +515,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
 
 
     auto dropPriority = [&order](int index){
-        char tmp;
+        int tmp;
         if (index == 0){
             tmp = order[0];
             order[0] = order[1];
@@ -533,7 +531,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
     //pick up the strict direction
     Vector3d mainDir;
     for (int i = 0; i < 3; ++i){
-        mainDir = *(dirs[order[0]]);
+        mainDir = *(dirs[size_t(order[0])]);
         if (mainDir.Length() > tol)
             break;
         else
@@ -546,7 +544,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
     //pick up the 2nd priority direction, "hint" direction.
     Vector3d hintDir;
     for (int i = 0; i < 2; ++i){
-        hintDir = *(dirs[order[1]]);
+        hintDir = *(dirs[size_t(order[1])]);
         if ((hintDir.Cross(mainDir)).Length() > tol)
             break;
         else

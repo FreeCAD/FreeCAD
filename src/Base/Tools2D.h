@@ -176,8 +176,10 @@ public:
   // admin-interface
   inline size_t GetCtVectors () const;
   inline bool Add (const Vector2d &rclVct);
-  inline Vector2d& operator[] (size_t ulNdx) const;
-  inline Vector2d& At (size_t ulNdx) const;
+  inline const Vector2d& operator[] (size_t ulNdx) const;
+  inline const Vector2d& At (size_t ulNdx) const;
+  inline Vector2d& operator[] (size_t ulNdx);
+  inline Vector2d& At (size_t ulNdx);
   inline bool Delete (size_t ulNdx);
   inline void  DeleteAll ();
 
@@ -200,7 +202,7 @@ inline Vector2d::Vector2d()
 }
 
 inline Vector2d::Vector2d(float x, float y)
-: x(x), y(y)
+: x(double(x)), y(double(y))
 {
 }
 
@@ -410,7 +412,8 @@ inline bool Polygon2d::Delete (size_t ulNdx)
 {
   if ( ulNdx < _aclVct.size() )
   {
-    std::vector<Vector2d>::iterator it = _aclVct.begin() + ulNdx;
+    std::vector<Vector2d>::iterator it = _aclVct.begin();
+    std::advance(it, ulNdx);
     _aclVct.erase ( it );
     return true;
   }
@@ -418,15 +421,26 @@ inline bool Polygon2d::Delete (size_t ulNdx)
   return false;
 }
 
-inline Vector2d& Polygon2d::operator[] (size_t ulNdx) const
+inline const Vector2d& Polygon2d::operator[] (size_t ulNdx) const
 {
-  return (Vector2d&) _aclVct[ulNdx];
+  return _aclVct[ulNdx];
 }
 
-inline Vector2d& Polygon2d::At (size_t ulNdx) const
+inline const Vector2d& Polygon2d::At (size_t ulNdx) const
 {
-  return (Vector2d&) _aclVct[ulNdx];
+  return _aclVct.at(ulNdx);
 }
+
+inline Vector2d& Polygon2d::operator[] (size_t ulNdx)
+{
+  return _aclVct[ulNdx];
+}
+
+inline Vector2d& Polygon2d::At (size_t ulNdx)
+{
+  return _aclVct.at(ulNdx);
+}
+
 
 inline Line2d::Line2d (const Line2d &rclLine)
     : clV1 (rclLine.clV1),

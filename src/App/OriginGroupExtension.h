@@ -24,7 +24,6 @@
 #define ORIGINGROUP_H_QHTU73IF
 
 #include "GeoFeatureGroupExtension.h"
-#include "PropertyLinks.h"
 
 namespace App {
 class Origin;

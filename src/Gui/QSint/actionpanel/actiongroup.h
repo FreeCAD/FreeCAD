@@ -8,9 +8,9 @@
 #ifndef ACTIONGROUP_H
 #define ACTIONGROUP_H
 
+#include <QBoxLayout>
 #include <QTimer>
 #include <QWidget>
-#include <QBoxLayout>
 #include "qsint_global.h"
 
 

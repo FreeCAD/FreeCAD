@@ -49,27 +49,27 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Nézet megosztás</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Nézet megosztása második oldalon</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Nézet megosztása másik oldallal</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Nézet megosztáshoz</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Válassza a Nézet lehetőséget a listából való megosztáshoz.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="75"/>

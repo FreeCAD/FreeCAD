@@ -750,8 +750,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     help->setCommand("&Help");
     *help << "Std_OnlineHelp" << "Std_FreeCADWebsite" << "Std_FreeCADDonation"
           << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
-          << "Std_PythonHelp" << "Std_FreeCADForum"
-          << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";
+          << "Std_PythonHelp" << "Std_FreeCADForum" << "Std_FreeCADFAQ"
+          << "Std_ReportBug" << "Std_About" << "Std_WhatsThis";
 
     return menuBar;
 }

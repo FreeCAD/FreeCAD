@@ -21,16 +21,14 @@
 #ifndef SIM_COIN3D_SOQTQUARTERADAPTOR_H
 #define SIM_COIN3D_SOQTQUARTERADAPTOR_H
 
-#include "Gui/Quarter/QuarterWidget.h"
-#include <Inventor/SoSceneManager.h>
-#include <Inventor/SbSphere.h>
 #include <Inventor/SoType.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/lists/SoCallbackList.h>
-#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <vector>
+#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/sensors/SoTimerSensor.h>
+
+#include "QuarterWidget.h"
+
 
 class SbViewportRegion;
 class SoCamera;

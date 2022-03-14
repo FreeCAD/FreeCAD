@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -163,7 +163,7 @@ if HAVE_QTNETWORK:
             self.diskCache.setCacheDirectory(qnam_cache)
             self.QNAM.setCache(self.diskCache)
 
-            self.monitored_connections:List[int] = []
+            self.monitored_connections: List[int] = []
 
             # Set up the proxy, if necesssary:
             noProxyCheck = True
@@ -269,7 +269,9 @@ if HAVE_QTNETWORK:
             except queue.Empty:
                 pass
 
-        def __launch_request(self, index:int, request:QtNetwork.QNetworkRequest) -> None:
+        def __launch_request(
+            self, index: int, request: QtNetwork.QNetworkRequest
+        ) -> None:
             reply = self.QNAM.get(request)
             self.replies[index] = reply
 
@@ -280,7 +282,6 @@ if HAVE_QTNETWORK:
             if index in self.monitored_connections:
                 reply.readyRead.connect(self.__ready_to_read)
                 reply.downloadProgress.connect(self.__download_progress)
-
 
         def submit_unmonitored_get(self, url: str) -> int:
             """Adds this request to the queue, and returns an index that can be used by calling code
@@ -404,6 +405,7 @@ if HAVE_QTNETWORK:
                 proxy_authentication = FreeCADGui.PySideUic.loadUi(
                     os.path.join(os.path.dirname(__file__), "proxy_authentication.ui")
                 )
+                proxy_authentication.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                 # Show the right labels, etc.
                 proxy_authentication.labelProxyAddress.setText(
                     f"{reply.hostName()}:{reply.port()}"
@@ -437,7 +439,7 @@ if HAVE_QTNETWORK:
         def __follow_redirect(self, url):
             sender = self.sender()
             if sender:
-                for index,reply in self.replies.items():
+                for index, reply in self.replies.items():
                     if reply == sender:
                         current_index = index
                         break
@@ -459,11 +461,11 @@ if HAVE_QTNETWORK:
                 for error in errors:
                     print(error)
 
-        def __download_progress(self, bytesReceived:int, bytesTotal:int) -> None:
+        def __download_progress(self, bytesReceived: int, bytesTotal: int) -> None:
             sender = self.sender()
             if not sender:
                 return
-            for index,reply in self.replies.items():
+            for index, reply in self.replies.items():
                 if reply == sender:
                     self.progress_made.emit(index, bytesReceived, bytesTotal)
                     return
@@ -473,12 +475,12 @@ if HAVE_QTNETWORK:
             if not sender:
                 return
 
-            for index,reply in self.replies.items():
+            for index, reply in self.replies.items():
                 if reply == sender:
                     self.__data_incoming(index, reply)
                     return
 
-        def __data_incoming(self, index: int, reply:QtNetwork.QNetworkReply) -> None:
+        def __data_incoming(self, index: int, reply: QtNetwork.QNetworkReply) -> None:
             if not index in self.replies:
                 # We already finished this reply, this is a vestigial signal
                 return
@@ -492,28 +494,34 @@ if HAVE_QTNETWORK:
                 f.write(buffer.data())
             except Exception as e:
                 if HAVE_FREECAD:
-                    FreeCAD.Console.PrintError(f"Network Manager internal error: {str(e)}")
+                    FreeCAD.Console.PrintError(
+                        f"Network Manager internal error: {str(e)}"
+                    )
                 else:
-                    print (f"Network Manager internal error: {str(e)}")
-
+                    print(f"Network Manager internal error: {str(e)}")
 
         def __reply_finished(self) -> None:
             reply = self.sender()
             if not reply:
-                print ("Network Manager Error: __reply_finished not called by a Qt signal")
+                print(
+                    "Network Manager Error: __reply_finished not called by a Qt signal"
+                )
                 return
 
-            if reply.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
+            if (
+                reply.error()
+                == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError
+            ):
                 # Silently do nothing
                 return
 
             index = None
-            for key,value in self.replies.items():
+            for key, value in self.replies.items():
                 if reply == value:
                     index = key
                     break
             if index is None:
-                print (f"Lost net request for {reply.url()}")
+                print(f"Lost net request for {reply.url()}")
                 return
 
             response_code = reply.attribute(
@@ -522,7 +530,7 @@ if HAVE_QTNETWORK:
             self.queue.task_done()
             if reply.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
                 if index in self.monitored_connections:
-                     # Make sure to read any remaining data
+                    # Make sure to read any remaining data
                     self.__data_incoming(index, reply)
                     self.monitored_connections.remove(index)
                     f = self.file_buffers[index]

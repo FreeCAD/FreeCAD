@@ -691,7 +691,7 @@ rispetto a una linea o a un terzo punto</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConvertToNURB</name>
+    <name>CmdSketcherConvertToNURBS</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>

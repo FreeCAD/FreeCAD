@@ -257,8 +257,6 @@ def Create(base, name="DressupPathBoundary"):
 
 
 class CommandPathDressupPathBoundary:
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",

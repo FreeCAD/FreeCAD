@@ -1196,7 +1196,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	setHilite(0);
 	m_MouseDown = false;
 
-	// get the curent view
+	// get the current view
 	SbMatrix ViewRotMatrix;
 	SbRotation CurrentViewRot = m_View3DInventorViewer->getCameraOrientation();
 	CurrentViewRot.getValue(ViewRotMatrix);

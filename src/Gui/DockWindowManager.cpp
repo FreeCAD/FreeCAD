@@ -23,15 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QPointer>
-# include <QDockWidget>
 # include <QAction>
+# include <QDockWidget>
 # include <QMap>
+# include <QPointer>
 #endif
+
+#include <App/Application.h>
 
 #include "DockWindowManager.h"
 #include "MainWindow.h"
-#include <App/Application.h>
+
 
 using namespace Gui;
 

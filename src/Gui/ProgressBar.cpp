@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -29,18 +28,17 @@
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QMetaObject>
-# include <QStatusBar>
 # include <QThread>
 # include <QTime>
 # include <QTimer>
 # include <QWindow>
 #endif
 
-
 #include "ProgressBar.h"
-#include "ProgressDialog.h"
 #include "MainWindow.h"
+#include "ProgressDialog.h"
 #include "WaitCursor.h"
+
 
 using namespace Gui;
 

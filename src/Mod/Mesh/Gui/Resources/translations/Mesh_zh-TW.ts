@@ -417,11 +417,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>比例...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>縮放所選網格</translation>
     </message>
   </context>
   <context>
@@ -432,11 +432,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>由網格和平面建立截面</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>由網格和平面的截面</translation>
     </message>
   </context>
   <context>
@@ -462,11 +462,11 @@
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+      <translation>由最適合的表面建立網格分割...</translation>
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+      <translation>由最適合的表面建立網格分割</translation>
     </message>
   </context>
   <context>
@@ -492,7 +492,7 @@
     </message>
     <message>
       <source>Split by components</source>
-      <translation type="unfinished">Split by components</translation>
+      <translation>依元件分割</translation>
     </message>
     <message>
       <source>Split selected mesh into its components</source>
@@ -589,7 +589,7 @@
     <name>Command</name>
     <message>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>建立網格</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>
@@ -597,19 +597,19 @@
     </message>
     <message>
       <source>Mesh union</source>
-      <translation type="unfinished">Mesh union</translation>
+      <translation>網格合併</translation>
     </message>
     <message>
       <source>Mesh difference</source>
-      <translation type="unfinished">Mesh difference</translation>
+      <translation>網格差異</translation>
     </message>
     <message>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>網格相交</translation>
     </message>
     <message>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>匯入網格</translation>
     </message>
     <message>
       <source>Mesh VertexCurvature</source>
@@ -732,7 +732,7 @@
     </message>
     <message>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>絕對值</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -740,7 +740,7 @@
     </message>
     <message>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>絕對值 (最大值: %1)</translation>
     </message>
   </context>
   <context>
@@ -826,7 +826,7 @@
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>設定...</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -958,7 +958,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>計算設定</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -997,7 +997,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <source>Solid:</source>

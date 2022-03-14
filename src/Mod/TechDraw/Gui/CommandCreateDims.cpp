@@ -32,20 +32,22 @@
 
 #include <QGraphicsView>
 
-# include <App/DocumentObject.h>
-# include <Base/Exception.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/Type.h>
-# include <Gui/Action.h>
-# include <Gui/Application.h>
-# include <Gui/BitmapFactory.h>
-# include <Gui/Command.h>
-# include <Gui/Control.h>
-# include <Gui/Document.h>
-# include <Gui/Selection.h>
-# include <Gui/MainWindow.h>
-# include <Gui/FileDialog.h>
-# include <Gui/ViewProvider.h>
+#include <Gui/Action.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/MainWindow.h>
+#include <Gui/FileDialog.h>
+#include <Gui/ViewProvider.h>
 
 # include <Mod/Part/App/PartFeature.h>
 

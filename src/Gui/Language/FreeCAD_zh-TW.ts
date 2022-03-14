@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation type="unfinished">&lt;empty&gt;</translation>
+      <translation>&lt;空&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -1704,7 +1704,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Cannot create file</source>
-      <translation>無法創建檔案</translation>
+      <translation>無法建立檔案</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
@@ -2106,7 +2106,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>創建者(&amp;B)：</translation>
+      <translation>作者：</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
@@ -2826,7 +2826,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
-      <translation>啟動時創建新檔</translation>
+      <translation>開啟時建立新檔</translation>
     </message>
     <message>
       <source>Storage</source>
@@ -5912,11 +5912,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>French</source>
-      <translation>French 法語</translation>
+      <translation>法文</translation>
     </message>
     <message>
       <source>Italian</source>
-      <translation>Italian 義大利語</translation>
+      <translation>義大利文</translation>
     </message>
     <message>
       <source>Japanese</source>
@@ -5940,11 +5940,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Swedish</source>
-      <translation>Swedish 瑞典語</translation>
+      <translation>瑞典語</translation>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation>Afrikaans 南非語</translation>
+      <translation>南非荷蘭語</translation>
     </message>
     <message>
       <source>Norwegian</source>
@@ -5964,15 +5964,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Ukrainian</source>
-      <translation>Ukrainian烏克蘭語</translation>
+      <translation>烏克蘭語</translation>
     </message>
     <message>
       <source>Finnish</source>
-      <translation>Finnish 芬蘭語</translation>
+      <translation>芬蘭語</translation>
     </message>
     <message>
       <source>Croatian</source>
-      <translation>Croatian 克羅地亞語</translation>
+      <translation>克羅埃西亞語</translation>
     </message>
     <message>
       <source>Polish</source>
@@ -5980,27 +5980,27 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Czech</source>
-      <translation>Czech 捷克語</translation>
+      <translation>捷克語</translation>
     </message>
     <message>
       <source>Hungarian</source>
-      <translation>Hungarian 匈牙利語</translation>
+      <translation>匈牙利語</translation>
     </message>
     <message>
       <source>Romanian</source>
-      <translation>Romanian 羅馬尼亞語</translation>
+      <translation>羅馬尼亞語</translation>
     </message>
     <message>
       <source>Slovak</source>
-      <translation>Slovak 斯洛伐克語</translation>
+      <translation>斯洛伐克語</translation>
     </message>
     <message>
       <source>Turkish</source>
-      <translation>Turkish 土耳其語</translation>
+      <translation>土耳其語</translation>
     </message>
     <message>
       <source>Slovenian</source>
-      <translation>Slovenian 斯洛維尼亞語</translation>
+      <translation>斯洛維尼亞語</translation>
     </message>
     <message>
       <source>Basque</source>
@@ -6048,7 +6048,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Greek</source>
-      <translation>Greek 希臘語</translation>
+      <translation>希臘語</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
@@ -6073,11 +6073,11 @@ Do you want to specify another directory?</source>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
-      <translation>創建群組...</translation>
+      <translation>建立群組...</translation>
     </message>
     <message>
       <source>Create a group</source>
-      <translation>創建一個群組</translation>
+      <translation>建立一個群組</translation>
     </message>
     <message>
       <source>Group</source>
@@ -6852,15 +6852,15 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>建立群組連結失敗</translation>
     </message>
     <message>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>建立連結失敗</translation>
     </message>
     <message>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>無法建立相對連結</translation>
     </message>
     <message>
       <source>Unlink failed</source>
@@ -7525,7 +7525,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Donate</source>
-      <translation>贊助捐款</translation>
+      <translation>贊助</translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
@@ -7642,11 +7642,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>建立群組</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>建立用於排列物件的群組</translation>
     </message>
   </context>
   <context>
@@ -7755,7 +7755,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>建立已選物件的連結</translation>
     </message>
   </context>
   <context>
@@ -7770,7 +7770,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>建立連結群組</translation>
     </message>
   </context>
   <context>
@@ -8021,7 +8021,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>創建一個新的空白檔案</translation>
+      <translation>建立一個新的空白檔案</translation>
     </message>
     <message>
       <source>Unnamed</source>
@@ -8093,11 +8093,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create part</source>
-      <translation>新增零件</translation>
+      <translation>建立零件</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>新增可編輯部位</translation>
+      <translation>建立一個可編輯零件並啟用它</translation>
     </message>
   </context>
   <context>
@@ -8865,11 +8865,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>創建新視圖</translation>
+      <translation>建立新視圖</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation type="unfinished">Creates a new view window for the active document</translation>
+      <translation>透過啟用文件建立一個新視圖視窗</translation>
     </message>
   </context>
   <context>
@@ -9566,7 +9566,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation>建立作業中的螢幕截圖</translation>
+      <translation>建立目前視圖畫面的螢幕截圖</translation>
     </message>
   </context>
   <context>

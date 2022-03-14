@@ -11,7 +11,7 @@
     <message>
       <location filename="selection_widgets.py" line="136"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Щоб додати посилання: виберіть їх в 3D-перегляді та натисніть кнопку "Додати".</translation>
     </message>
   </context>
   <context>
@@ -72,7 +72,7 @@
     <message>
       <location filename="commands.py" line="62"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Створює контейнер для аналізу зі стандартним обчислювачем CalculiX</translation>
     </message>
   </context>
   <context>
@@ -80,12 +80,12 @@
     <message>
       <location filename="commands.py" line="85"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Відсікання площини на поверхні</translation>
     </message>
     <message>
       <location filename="commands.py" line="89"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Додати площину, що розриває на вибрану поверхню</translation>
     </message>
   </context>
   <context>
@@ -93,7 +93,7 @@
     <message>
       <location filename="commands.py" line="144"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Вилучити всі розривні площини</translation>
     </message>
   </context>
   <context>
@@ -114,12 +114,12 @@
     <message>
       <location filename="commands.py" line="185"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Обмеження джерела тепла</translation>
     </message>
     <message>
       <location filename="commands.py" line="189"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Створює джерело тепла обмеження МСЕ</translation>
     </message>
   </context>
   <context>
@@ -140,12 +140,12 @@
     <message>
       <location filename="commands.py" line="219"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Електростатичний потенціал обмеження</translation>
     </message>
     <message>
       <location filename="commands.py" line="223"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Створює електростатичний потенціал обмеження МСЕ</translation>
     </message>
   </context>
   <context>
@@ -158,7 +158,7 @@
     <message>
       <location filename="commands.py" line="240"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Створює обмежуючу швидкість потоку МСЕ</translation>
     </message>
   </context>
   <context>
@@ -192,12 +192,12 @@
     <message>
       <location filename="commands.py" line="287"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Обмеження власної ваги</translation>
     </message>
     <message>
       <location filename="commands.py" line="291"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Створює власну вагу для МСЕ обмеження МСЕ</translation>
     </message>
   </context>
   <context>
@@ -205,12 +205,12 @@
     <message>
       <location filename="commands.py" line="304"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>Обмежувальний зв’язок</translation>
     </message>
     <message>
       <location filename="commands.py" line="308"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>Створює вузол обмеження МСЕ</translation>
     </message>
   </context>
   <context>
@@ -218,12 +218,12 @@
     <message>
       <location filename="commands.py" line="321"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Розділ рідини для 1D потоку</translation>
     </message>
     <message>
       <location filename="commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>Створює розділ FEM для потоку 1D</translation>
     </message>
   </context>
   <context>
@@ -231,12 +231,12 @@
     <message>
       <location filename="commands.py" line="338"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Переріз Балки.</translation>
     </message>
     <message>
       <location filename="commands.py" line="342"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Створює переріз МСЕ для балки</translation>
     </message>
   </context>
   <context>
@@ -244,12 +244,12 @@
     <message>
       <location filename="commands.py" line="355"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Товщина  оболонки  плити </translation>
     </message>
     <message>
       <location filename="commands.py" line="359"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Створює  МСЕМ облонки товщини плити</translation>
     </message>
   </context>
   <context>
@@ -257,12 +257,12 @@
     <message>
       <location filename="commands.py" line="372"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Обертання балки</translation>
     </message>
     <message>
       <location filename="commands.py" line="376"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Створює оберт МСЕ балки</translation>
     </message>
   </context>
   <context>
@@ -275,7 +275,8 @@
     <message>
       <location filename="commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Створює рівняння МСЕ для пружності
+</translation>
     </message>
   </context>
   <context>
@@ -283,12 +284,12 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Рівняння електричної сили</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Створює рівняння МСЕ для електричних сил</translation>
     </message>
   </context>
   <context>
@@ -296,12 +297,12 @@
     <message>
       <location filename="commands.py" line="389"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Електростатичне рівняння</translation>
     </message>
     <message>
       <location filename="commands.py" line="393"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Створює рівняння МСЕ для електростатики</translation>
     </message>
   </context>
   <context>
@@ -314,7 +315,7 @@
     <message>
       <location filename="commands.py" line="427"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Створює для потоку рівняння МСЕ</translation>
     </message>
   </context>
   <context>
@@ -322,12 +323,12 @@
     <message>
       <location filename="commands.py" line="440"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Рівняння потоку</translation>
     </message>
     <message>
       <location filename="commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Створює рівняння МСЕ для потоку</translation>
     </message>
   </context>
   <context>
@@ -335,12 +336,12 @@
     <message>
       <location filename="commands.py" line="474"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Рівняння теплоти</translation>
     </message>
     <message>
       <location filename="commands.py" line="478"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Створює рівняння МСЕ для обігріву</translation>
     </message>
   </context>
   <context>
@@ -348,7 +349,7 @@
     <message>
       <location filename="commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Відкрити приклади FEM</translation>
     </message>
   </context>
   <context>
@@ -356,7 +357,7 @@
     <message>
       <location filename="commands.py" line="655"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Сітка МЕМ для сітки</translation>
     </message>
     <message>
       <location filename="commands.py" line="659"/>
@@ -374,7 +375,7 @@
     <message>
       <location filename="commands.py" line="517"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Відкрити редактор матеріалу FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -382,12 +383,12 @@
     <message>
       <location filename="commands.py" line="533"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Матеріал для рідини</translation>
     </message>
     <message>
       <location filename="commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Створює МСЕ матеріал для рідини</translation>
     </message>
   </context>
   <context>
@@ -413,7 +414,7 @@
     <message>
       <location filename="commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Створює матеріал для армованої матриці, такої як бетон</translation>
     </message>
   </context>
   <context>
@@ -421,12 +422,12 @@
     <message>
       <location filename="commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Матеріал для суцільного тіла</translation>
     </message>
     <message>
       <location filename="commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Створює МСЕ-матеріал для суцільного тіла</translation>
     </message>
   </context>
   <context>
@@ -434,7 +435,7 @@
     <message>
       <location filename="commands.py" line="702"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>Граничний шар сітки МСЕ</translation>
     </message>
     <message>
       <location filename="commands.py" line="706"/>

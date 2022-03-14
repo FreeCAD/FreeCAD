@@ -49,27 +49,27 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>ხედის გაზიარება</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>ხედის მეორე გვერდზე გაზიარება</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>ხედის სხვა გვერდზე გაზიარება</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>გასაზიარებელი ხედი</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>აირჩიეთ ხედი სიიდან გასაზიარებლად.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="75"/>
@@ -160,7 +160,7 @@
     <name>CmdQuadrants</name>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>კუთხეევში წვეროების დამატება</translation>
     </message>
   </context>
   <context>
@@ -204,7 +204,7 @@
     </message>
     <message>
       <source>Insert 3-Point Angle Dimension</source>
-      <translation type="unfinished">Insert 3-Point Angle Dimension</translation>
+      <translation>სამწერტილიანი კუთხური ზომის ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -411,7 +411,7 @@
     </message>
     <message>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
+      <translation>ხაზვის სამუშაო მაგიდიდან ობიექტის ხედის ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -644,7 +644,7 @@
     </message>
     <message>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
-      <translation type="unfinished">Insert Landmark Dimension - EXPERIMENTAL</translation>
+      <translation>მაჩვენებლის ზომის ჩასმა - ექსპერიმენტალური</translation>
     </message>
   </context>
   <context>
@@ -744,7 +744,7 @@
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>კუთხეევში წვეროების დამატება</translation>
     </message>
   </context>
   <context>
@@ -943,7 +943,7 @@
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>კუთხეევში წვეროების დამატება</translation>
     </message>
     <message>
       <source>Create Annotation</source>
@@ -1237,7 +1237,7 @@
     </message>
     <message>
       <source>No Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Shapes, Groups or Links in this selection</translation>
+      <translation>მონიშნულში არც მონახაზებია, არც ჯგუფები და არც ბმულები</translation>
     </message>
     <message>
       <source>Select at least 1 DrawViewPart object as Base.</source>
@@ -1325,7 +1325,7 @@
     </message>
     <message>
       <source>Open Drawing View before attempting export to SVG.</source>
-      <translation type="unfinished">Open Drawing View before attempting export to SVG.</translation>
+      <translation>SVG-ში გატანის წინ ხატვის ხედის გახსნა.</translation>
     </message>
     <message>
       <source>Can not export selection</source>
@@ -1365,11 +1365,11 @@
     </message>
     <message>
       <source>Need two straight edges to make an Angle Dimension</source>
-      <translation type="unfinished">Need two straight edges to make an Angle Dimension</translation>
+      <translation>კუთხის ზომის შესაქმნელად საჭიროა ორი სწორი წიბო</translation>
     </message>
     <message>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
+      <translation>3 წერტილიანი კუთხის ზომისთვის საჭროა სამი წერტილი</translation>
     </message>
     <message>
       <source>There is no 3D object in your selection</source>
@@ -1421,7 +1421,7 @@
     </message>
     <message>
       <source>No DrawViewPart objects in this selection</source>
-      <translation type="unfinished">No DrawViewPart objects in this selection</translation>
+      <translation>ამ მონიშნულში DrawViewPart ტიპის ობიექტები არაა</translation>
     </message>
     <message>
       <source>No base View in Selection.</source>
@@ -1731,8 +1731,8 @@ it has a weld symbol that would become broken.</source>
     <message>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
-      <translation type="unfinished">The page is not empty, therefore the
-following referencing objects might be lost:</translation>
+      <translation>გვერდი ცარიელი არ არის, ამიტომ
+შემდეგი ბმის ობიექტები შეიძლება დაიკარგოს:</translation>
     </message>
     <message>
       <source>The group cannot be deleted because its items have the following
@@ -1742,12 +1742,12 @@ section or detail views, or leader lines that would get broken:</source>
     <message>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation type="unfinished">The projection group is not empty, therefore
-the following referencing objects might be lost:</translation>
+      <translation>პროექციის ჯგუფი ცარიელი არაა, ამიტომ
+შემდეგი ბმის ობიექტები შეიძლება დაიკარგოს:</translation>
     </message>
     <message>
       <source>The following referencing object might break:</source>
-      <translation type="unfinished">The following referencing object might break:</translation>
+      <translation>ეს ბმები ობიექტებზე შეიძლება გაფუჭდეს:</translation>
     </message>
     <message>
       <source>You cannot delete this weld symbol because
@@ -1966,7 +1966,7 @@ This directory will be used for the symbol selection.</source>
     </message>
     <message>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
-      <translation type="unfinished">Include edges with unexpected geometry (zero length etc.) in results</translation>
+      <translation>პასუხებში მოულოდნელი გეომეტრიის წიბოების(ნულოვანი სიგრძის და ა. შ.) მითვლა</translation>
     </message>
     <message>
       <source>Allow Crazy Edges</source>
@@ -2012,7 +2012,7 @@ Only change unless you know what you are doing!</translation>
     </message>
     <message>
       <source>Line End Cap Shape</source>
-      <translation type="unfinished">Line End Cap Shape</translation>
+      <translation>ხაზის ბოლოების გარეგნული ფორმა</translation>
     </message>
     <message>
       <source>Dump intermediate results during Detail view processing</source>
@@ -2081,14 +2081,14 @@ can be a performance penalty in complex models.</source>
     <message>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Size of selection area around edges
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>წიბოს გარშემო მონიშვნის ზომა.
+თითოეული დაახლოებით 0.1 მმ სიგანისაა</translation>
     </message>
     <message>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Selection area around center marks
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>ცენტრალური ლაქის გარშემო მონიშვნის არეალი
+თითოეული ერთეული დაახლ. 0.1 მმ სიგანისაა</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2143,7 +2143,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Default appearance of cut surface in section view</source>
-      <translation type="unfinished">Default appearance of cut surface in section view</translation>
+      <translation>კვეთის ხედში ჭრილის ზედაპირის ნაგულისხევი გარეგნობა</translation>
     </message>
     <message>
       <source>Hide</source>
@@ -2330,7 +2330,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Preselection color</source>
-      <translation type="unfinished">Preselection color</translation>
+      <translation>ფერიის წინასწარი არჩევანი</translation>
     </message>
     <message>
       <source>Section Face</source>
@@ -2441,7 +2441,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Standard to be used for dimensional values</source>
-      <translation type="unfinished">Standard to be used for dimensional values</translation>
+      <translation>ზომის მნიშვნელობებისთვის გამოსაყენებელი სტანდარტი</translation>
     </message>
     <message>
       <source>ISO Oriented</source>
@@ -2457,7 +2457,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>ASME Referencing</source>
-      <translation type="unfinished">ASME Referencing</translation>
+      <translation>ASME მიბმა</translation>
     </message>
     <message>
       <source>Arrow Style</source>
@@ -2477,7 +2477,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Character used to indicate diameter dimensions</source>
-      <translation type="unfinished">Character used to indicate diameter dimensions</translation>
+      <translation>დიამეტრის ზომების მისათითებელი სიმბოლო</translation>
     </message>
     <message>
       <source>⌀</source>
@@ -2497,7 +2497,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Use system setting for number of decimals</source>
-      <translation type="unfinished">Use system setting for number of decimals</translation>
+      <translation>მეათედების რიცხვისთვის სისტემური პარამეტრის გამოყენება</translation>
     </message>
     <message>
       <source>Use Global Decimals</source>
@@ -2584,7 +2584,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Auto-distribute Secondary Views</source>
-      <translation type="unfinished">Auto-distribute Secondary Views</translation>
+      <translation>მეორადი ხედების ავტომატური განაწილება</translation>
     </message>
     <message>
       <source>Labels</source>
@@ -2618,7 +2618,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Projection Group Angle</source>
-      <translation type="unfinished">Projection Group Angle</translation>
+      <translation>პროექციის ჯგუფის კუთხე</translation>
     </message>
     <message>
       <source>Use first- or third-angle multiview projection convention</source>
@@ -2710,7 +2710,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Name of the default PAT pattern</source>
-      <translation type="unfinished">Name of the default PAT pattern</translation>
+      <translation>ნაგულისხმევი PAT შაბლონის სახელი</translation>
     </message>
     <message>
       <source>Diamond</source>
@@ -2783,11 +2783,11 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Show hidden seam lines</source>
-      <translation type="unfinished">Show hidden seam lines</translation>
+      <translation>ნაკერის დამალული ხაზების ჩვენება</translation>
     </message>
     <message>
       <source>Show hidden equal parameterization lines</source>
-      <translation type="unfinished">Show hidden equal parameterization lines</translation>
+      <translation>დამალული ტოლი პარამეტრიზაციის ხაზების ჩვენება</translation>
     </message>
     <message>
       <source>Show UV ISO Lines</source>
@@ -2830,7 +2830,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Default scale for new views</source>
-      <translation type="unfinished">Default scale for new views</translation>
+      <translation>ახალი ხედების ნაგულისხმევი მასშტაბი</translation>
     </message>
     <message>
       <source>Page</source>
@@ -2886,7 +2886,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Scale of vertex dots. Multiplier of line width.</source>
-      <translation type="unfinished">Scale of vertex dots. Multiplier of line width.</translation>
+      <translation>წვეროს წერტილების მასშტაბი. ხაზის სიგანის მამრავლი.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3523,7 +3523,7 @@ be used instead if the dimension value</source>
     </message>
     <message>
       <source>ASME Referencing</source>
-      <translation type="unfinished">ASME Referencing</translation>
+      <translation>ASME მიბმა</translation>
     </message>
   </context>
   <context>
@@ -3970,7 +3970,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Horizontal space between border of projections</source>
-      <translation type="unfinished">Horizontal space between border of projections</translation>
+      <translation>ჰორიზონტალური სივრცე პროექციების საზღვრებს შორის</translation>
     </message>
     <message>
       <source>X Spacing</source>
@@ -3982,7 +3982,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Vertical space between border of projections</source>
-      <translation type="unfinished">Vertical space between border of projections</translation>
+      <translation>ვერტიკალური სივრცე პროექციების საზღვრებს შორის</translation>
     </message>
   </context>
   <context>
@@ -4028,7 +4028,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Maximal width, if -1 then automatic width</source>
-      <translation type="unfinished">Maximal width, if -1 then automatic width</translation>
+      <translation>მაქსიმალური სიგანე. -1 ავტომატური სიგანისთვის</translation>
     </message>
     <message>
       <source>Start Rich Text Editor</source>
@@ -4159,11 +4159,11 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>TaskSectionView - bad parameters.  Can not proceed.</source>
-      <translation type="unfinished">TaskSectionView - bad parameters.  Can not proceed.</translation>
+      <translation>TaskSectionView - ცუდი პარამეტრები. გაგრძელება შეუძლებელია.</translation>
     </message>
     <message>
       <source>Nothing to apply. No section direction picked yet</source>
-      <translation type="unfinished">Nothing to apply. No section direction picked yet</translation>
+      <translation>გადასატარებელი არაფერია. კვეთის მიმართულება არჩეული არაა</translation>
     </message>
     <message>
       <source>Can not continue. Object * %1 * not found.</source>

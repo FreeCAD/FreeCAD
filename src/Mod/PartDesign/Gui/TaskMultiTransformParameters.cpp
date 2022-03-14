@@ -27,6 +27,7 @@
 # include <QAction>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 
@@ -450,6 +451,8 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     int row = ui->listTransformFeatures->currentIndex().row();
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
+
+    if (transformFeatures.empty()) return;
 
     App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);

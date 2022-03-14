@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,20 +31,19 @@
 # include <QCloseEvent>
 # include <QMdiSubWindow>
 # include <QPrinter>
-# include <QPrintDialog>
 # include <QPrinterInfo>
-# include <iostream>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
-#include "Command.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
-#include <Base/Interpreter.h>
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;

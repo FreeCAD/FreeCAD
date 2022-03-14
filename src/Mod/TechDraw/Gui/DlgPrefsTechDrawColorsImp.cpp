@@ -61,6 +61,7 @@ void DlgPrefsTechDrawColorsImp::saveSettings()
     ui->pcbVertexColor->onSave();
     ui->pcbMarkup->onSave();
     ui->pcbHighlight->onSave();
+    ui->pcb_Grid->onSave();
 }
 
 void DlgPrefsTechDrawColorsImp::loadSettings()
@@ -81,6 +82,7 @@ void DlgPrefsTechDrawColorsImp::loadSettings()
     ui->pcbVertexColor->onRestore();
     ui->pcbMarkup->onRestore();
     ui->pcbHighlight->onRestore();
+    ui->pcb_Grid->onRestore();
 }
 
 /**

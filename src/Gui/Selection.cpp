@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -31,6 +30,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
@@ -41,13 +41,16 @@
 #include <Base/UnitsApi.h>
 
 #include "Selection.h"
+#include "SelectionObject.h"
 #include "Application.h"
 #include "Document.h"
 #include "Macro.h"
 #include "MainWindow.h"
+#include "MDIView.h"
 #include "SelectionFilter.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
+
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 

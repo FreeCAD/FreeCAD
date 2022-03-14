@@ -196,13 +196,13 @@ public:
             operator()(EquationSet<T>& val) const;
         };
 
-        struct Calculater {
+        struct Calculator {
 
             geom_ptr first, second;
             Scalar scale;
             AccessType access;
 
-            Calculater(geom_ptr f, geom_ptr s, Scalar sc, AccessType a = general);
+            Calculator(geom_ptr f, geom_ptr s, Scalar sc, AccessType a = general);
 
             template< typename T >
             void operator()(T& val) const;
@@ -303,7 +303,7 @@ public:
         EquationSets m_sets;
         Objects m_objects;
     protected:
-        void for_each(EquationSets m_sets, Calculater Calculater);
+        void for_each(EquationSets m_sets, Calculator Calculator);
     };
 
     placeholder* content;

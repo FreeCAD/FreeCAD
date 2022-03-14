@@ -23,6 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <atomic>
+# include <cctype>
+# include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/details/SoDetail.h>
 # include <Inventor/draggers/SoCenterballDragger.h>
@@ -37,21 +40,18 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
 #include <QApplication>
 #include <QMenu>
 #endif
 
-#include <atomic>
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
-#include <cctype>
+
 #include <App/ComplexGeoData.h>
+#include <App/Document.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/Tools.h>
-#include <Gui/BitmapFactory.h>
 
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
@@ -69,7 +69,7 @@
 #include "ViewProviderGeometryObject.h"
 
 
-FC_LOG_LEVEL_INIT("App::Link",true,true)
+FC_LOG_LEVEL_INIT("App::Link", true, true)
 
 using namespace Gui;
 using namespace Base;
@@ -2742,6 +2742,9 @@ void ViewProviderLink::updateLinks(ViewProvider *vp) {
             ext->linkInfo->update();
     }
     catch (const Base::TypeError &e) {
+        e.ReportException();
+    }
+    catch (const Base::ValueError &e) {
         e.ReportException();
     }
 }

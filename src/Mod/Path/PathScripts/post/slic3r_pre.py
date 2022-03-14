@@ -21,16 +21,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-'''
+"""
 This is an preprocessor to read gcode files produced from slic3r.
-'''
+"""
 
 import os
 import Path
 import FreeCAD
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
@@ -93,5 +93,4 @@ def parse(inputstring):
     return output
 
 
-print (__name__ + " gcode preprocessor loaded.")
-
+print(__name__ + " gcode preprocessor loaded.")

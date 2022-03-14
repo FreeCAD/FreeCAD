@@ -8,8 +8,8 @@
 #ifndef TASKHEADER_P_H
 #define TASKHEADER_P_H
 
-#include "actionpanelscheme.h"
 #include "actionlabel.h"
+#include "actionpanelscheme.h"
 
 #include <QLabel>
 

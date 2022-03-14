@@ -8,12 +8,11 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <string>
+#include <iosfwd>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 
 //Following is required to be defined on Ubuntu with OCC 6.3.1
 #ifndef HAVE_IOSTREAM

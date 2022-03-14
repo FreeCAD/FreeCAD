@@ -23,17 +23,18 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost_bind_bind.hpp>
 #endif
-#include "MergeDocuments.h"
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
+
+#include "MergeDocuments.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;

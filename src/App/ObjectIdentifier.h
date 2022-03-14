@@ -24,17 +24,17 @@
 #ifndef APP_PATH_H
 #define APP_PATH_H
 
-#include <climits>
-#include <memory>
-#include <vector>
-#include <string>
-#include <set>
-#include <map>
 #include <bitset>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 #include <boost/any.hpp>
-#include <CXX/Objects.hxx>
 #include <FCConfig.h>
 
+namespace Py {
+class Object;
+}
 namespace App
 {
 

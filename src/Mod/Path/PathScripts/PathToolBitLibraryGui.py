@@ -221,7 +221,6 @@ class _TableView(PySide.QtGui.QTableView):
         stream = PySide.QtCore.QDataStream(data)
         srcRows = []
         while not stream.atEnd():
-            # pylint: disable=unused-variable
             row = stream.readInt32()
             srcRows.append(row)
 

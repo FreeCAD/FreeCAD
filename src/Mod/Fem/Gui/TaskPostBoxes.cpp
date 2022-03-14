@@ -71,6 +71,7 @@
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Base/Console.h>
 
+#include <App/Document.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
 #include <Base/Quantity.h>

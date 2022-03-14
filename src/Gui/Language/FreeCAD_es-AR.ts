@@ -3166,7 +3166,7 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     </message>
     <message>
       <source>Image dimensions</source>
-      <translation>Dimensión de la imagen</translation>
+      <translation>Cotas de imagen</translation>
     </message>
     <message>
       <source>Pixel</source>

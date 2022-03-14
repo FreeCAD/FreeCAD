@@ -270,7 +270,7 @@ HRESULT CFCStdExtractor::Extract(HBITMAP* phBmpThumbnail)
                 content.push_back(c);
             }
 
-            // pass the memory buffer to CxImage library to create the bitmap handle
+            // pass the memory buffer to an IStream to create the bitmap handle
             IStream* stream = CreateStreamOnResource(&(content[0]), content.size());
             if (stream) {
                 IWICBitmapSource* bmpSrc = LoadBitmapFromStream(stream);

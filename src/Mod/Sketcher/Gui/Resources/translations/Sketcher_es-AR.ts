@@ -317,7 +317,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation>Crear rectángulos</translation>
+      <translation>Crear rectángulo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
@@ -689,7 +689,7 @@ con respecto a una línea o un tercer punto</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConvertToNURB</name>
+    <name>CmdSketcherConvertToNURBS</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>

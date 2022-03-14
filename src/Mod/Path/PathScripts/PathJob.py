@@ -50,8 +50,8 @@ translate = FreeCAD.Qt.translate
 
 
 class JobTemplate:
-    # pylint: disable=no-init
     """Attribute and sub element strings for template export/import."""
+
     Description = "Desc"
     GeometryTolerance = "Tolerance"
     Job = "Job"
@@ -69,7 +69,6 @@ class JobTemplate:
 
 
 def isResourceClone(obj, propLink, resourceName):
-    # pylint: disable=unused-argument
     if hasattr(propLink, "PathResource") and (
         resourceName is None or resourceName == propLink.PathResource
     ):
@@ -282,12 +281,13 @@ class ObjectJob:
 
     def setupOperations(self, obj):
         """setupOperations(obj)... setup the Operations group for the Job object."""
-        ops = FreeCAD.ActiveDocument.addObject(
-            "Path::FeatureCompoundPython", "Operations"
-        )
+        # ops = FreeCAD.ActiveDocument.addObject(
+        #     "Path::FeatureCompoundPython", "Operations"
+        # )
+        ops = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Operations")
         if ops.ViewObject:
-            ops.ViewObject.Proxy = 0
-            ops.ViewObject.Visibility = False
+            # ops.ViewObject.Proxy = 0
+            ops.ViewObject.Visibility = True
 
         obj.Operations = ops
         obj.setEditorMode("Operations", 2)  # hide
@@ -464,7 +464,7 @@ class ObjectJob:
         if getattr(obj.Operations, "ViewObject", None):
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except Exception:  # pylint: disable=broad-except
+            except Exception:
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject(
@@ -659,7 +659,7 @@ class ObjectJob:
 
     def execute(self, obj):
         if getattr(obj, "Operations", None):
-            obj.Path = obj.Operations.Path
+            #obj.Path = obj.Operations.Path
             self.getCycleTime()
 
     def getCycleTime(self):
@@ -703,13 +703,13 @@ class ObjectJob:
                     group.insert(group.index(before), op)
                     if removeBefore:
                         group.remove(before)
-                except Exception as e:  # pylint: disable=broad-except
+                except Exception as e:
                     PathLog.error(e)
                     group.append(op)
             else:
                 group.append(op)
             self.obj.Operations.Group = group
-            op.Path.Center = self.obj.Operations.Path.Center
+            # op.Path.Center = self.obj.Operations.Path.Center
 
     def nextToolNumber(self):
         # returns the next available toolnumber in the job
@@ -849,5 +849,6 @@ def Create(name, base, templateFile=None):
     else:
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    obj.addExtension("App::GroupExtensionPython")
     obj.Proxy = ObjectJob(obj, models, templateFile)
     return obj

@@ -20,22 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QAction>
 # include <QActionGroup>
 # include <QDir>
-# include <QLayout>
 # include <QFile>
+# include <QLayout>
 # include <QTextStream>
 #endif
+
+#include <functional>
+#include <Base/Interpreter.h>
 
 #include "UiLoader.h"
 #include "PythonWrapper.h"
 #include "WidgetFactory.h"
-#include <Base/Interpreter.h>
-#include <functional>
+
 
 using namespace Gui;
 
@@ -630,4 +631,6 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
                                                  std::placeholders::_3));
 }
 
-#include "moc_UiLoader.cpp"
+#if !defined (HAVE_QT_UI_TOOLS)
+# include "moc_UiLoader.cpp"
+#endif

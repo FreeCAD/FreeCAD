@@ -26,26 +26,24 @@
 #	include <cassert>
 #endif
 
-#include <limits>
-#include <iomanip>
-
 #include <boost/algorithm/string/predicate.hpp>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <App/DocumentObjectPy.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
 #include <Base/QuantityPy.h>
 #include <Base/Console.h>
-#include <App/DocumentObjectPy.h>
-#include "ComplexGeoData.h"
-#include "Property.h"
+#include <Base/Reader.h>
+#include <CXX/Objects.hxx>
+
+#include "ObjectIdentifier.h"
 #include "Application.h"
 #include "Document.h"
-#include "DocumentObject.h"
-#include "ObjectIdentifier.h"
 #include "ExpressionParser.h"
 #include "Link.h"
+#include "Property.h"
+
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 

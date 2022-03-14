@@ -45,20 +45,22 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 #endif
+
+#include <Inventor/SbVec3d.h>
 
 #include "DlgProjectionOnSurface.h"
 #include "ui_DlgProjectionOnSurface.h"
 
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
-
-#include "Gui/MainWindow.h"
-#include "Gui/MDIView.h"
-#include "Gui/View3DInventor.h"
-#include "Gui/View3DInventorViewer.h"
-#include "Inventor/SbVec3d.h"
-#include "Gui/Application.h"
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/Application.h>
+#include <Gui/SelectionObject.h>
 
 #include "ViewProviderExt.h"
 
@@ -193,7 +195,12 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   }
   for (auto it : m_shapeVec)
   {
-    higlight_object(it.partFeature, it.partName, false, 0);
+    try {
+      higlight_object(it.partFeature, it.partName, false, 0);
+    }
+    catch (Standard_NoSuchObject& e) {
+      Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s", e.GetMessageString());
+    }
   }
   Gui::Selection().rmvSelectionGate();
 }
@@ -369,7 +376,6 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           auto parentShape = currentShapeStore.inputShape;
           for (auto itName = selObj.front().getSubNames().begin(); itName != selObj.front().getSubNames().end(); ++itName)
           {
-            std::string parentName = aPart->getNameInDocument();
             auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
 
             transform_shape_to_global_position(currentShape, aPart);

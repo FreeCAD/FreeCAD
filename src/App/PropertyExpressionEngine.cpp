@@ -28,6 +28,7 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
+#include <CXX/Objects.hxx>
 
 #include "PropertyExpressionEngine.h"
 #include "ExpressionVisitors.h"

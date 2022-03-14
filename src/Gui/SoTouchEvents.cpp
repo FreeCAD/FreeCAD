@@ -22,11 +22,14 @@
 
 #include "PreCompiled.h"
 
-#include "SoTouchEvents.h"
 #include <QApplication>
 #include <QGestureEvent>
 #include <QWidget>
+
 #include <Base/Exception.h>
+
+#include "SoTouchEvents.h"
+
 
 SO_EVENT_SOURCE(SoGestureEvent);
 

@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCKWINDOWMANAGER_H
 #define GUI_DOCKWINDOWMANAGER_H
 
-#include <QStringList>
 #include <QObject>
 #include <FCGlobal.h>
+
 
 class QDockWidget;
 class QWidget;

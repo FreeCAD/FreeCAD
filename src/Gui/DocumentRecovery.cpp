@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 // Implement FileWriter which puts files into a directory
 // write a property to file only when it has been modified
 // implement xml meta file
@@ -33,42 +32,37 @@
 # include <QDateTime>
 # include <QDebug>
 # include <QDir>
-# include <QDirIterator>
 # include <QDomDocument>
-# include <QFile>
 # include <QFileInfo>
 # include <QHeaderView>
+# include <QList>
+# include <QMap>
 # include <QMenu>
 # include <QMessageBox>
-# include <QPushButton>
+# include <QSet>
 # include <QTextStream>
 # include <QTreeWidgetItem>
-# include <QMap>
-# include <QSet>
-# include <QList>
 # include <QVector>
 # include <sstream>
 #endif
 
-#include <Base/Console.h>
+#include <boost/interprocess/sync/file_lock.hpp>
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Base/Exception.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/DlgCheckableMessageBox.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+
 #include "DocumentRecovery.h"
 #include "ui_DocumentRecovery.h"
 #include "WaitCursor.h"
 
-#include <Base/Exception.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/DlgCheckableMessageBox.h>
-#include <Gui/MainWindow.h>
-
-#include <boost/interprocess/sync/file_lock.hpp>
-
-FC_LOG_LEVEL_INIT("Gui",true,true)
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 using namespace Gui::Dialog;

@@ -32,6 +32,7 @@
 
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Exception.h>
@@ -87,6 +88,8 @@ DrawView::DrawView(void):
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
+
+    setScaleAttribute();
 }
 
 DrawView::~DrawView()
@@ -124,10 +127,9 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 void DrawView::checkScale(void)
 {
     TechDraw::DrawPage *page = findParentPage();
-    if(page &&
-       keepUpdated()) {
+    if(page) {
         if (ScaleType.isValue("Page")) {
-            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+            if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
                 Scale.purgeTouched();
             }
@@ -148,7 +150,6 @@ void DrawView::onChanged(const App::Property* prop)
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
-                       Scale.purgeTouched();
                     }
                 }
             } else if ( ScaleType.isValue("Custom") ) {
@@ -160,7 +161,6 @@ void DrawView::onChanged(const App::Property* prop)
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
                         Scale.setValue(newScale);
-                        Scale.purgeTouched();
                     }
                 }
             }
@@ -237,8 +237,34 @@ QRectF DrawView::getRect() const
 void DrawView::onDocumentRestored()
 {
     handleXYLock();
+    setScaleAttribute();
+    validateScale();
     DrawView::execute();
 }
+
+//in versions before 0.20 Scale and ScaleType were mishandled.
+//In order to not introduce unintended drawing changes in later
+//versions, ScaleType Page must be modified if view Scale does
+//not match Page Scale
+void DrawView::validateScale()
+{
+    if (ScaleType.isValue("Custom")) {
+        //nothing to do here
+        return;
+    }
+    DrawPage* page = findParentPage();
+    if (page) {
+        if (ScaleType.isValue("Page")) {
+            double pageScale = page->Scale.getValue();
+            double myScale = Scale.getValue();
+            if (!DrawUtil::fpCompare(pageScale, myScale)) {
+                ScaleType.setValue("Custom");
+                ScaleType.purgeTouched();
+            }
+        }
+    }
+}
+
 /**
  * @brief DrawView::countParentPages
  * Fixes a crash in TechDraw when user creates duplicate page without dependencies
@@ -409,10 +435,15 @@ void DrawView::setPosition(double x, double y, bool force)
     }
 }
 
-//TODO: getScale is no longer needed and could revert to Scale.getValue
 double DrawView::getScale(void) const
 {
     auto result = Scale.getValue();
+    if (ScaleType.isValue("Page")) {
+        auto page = findParentPage();
+        if (page) {
+            result = page->Scale.getValue();
+        }
+    }
     if (!(result > 0.0)) {
         result = 1.0;
         Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
@@ -536,6 +567,16 @@ bool DrawView::keepUpdated(void)
         result = true;
     }
     return result;
+}
+
+void DrawView::setScaleAttribute()
+{
+    if (ScaleType.isValue("Page") ||
+        ScaleType.isValue("Automatic")) {
+        Scale.setStatus(App::Property::ReadOnly,true);
+    } else {
+        Scale.setStatus(App::Property::ReadOnly, false);
+    }
 }
 
 int DrawView::prefScaleType(void)

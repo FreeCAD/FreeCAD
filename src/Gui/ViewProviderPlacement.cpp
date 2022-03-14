@@ -20,44 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-# include <QApplication>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 #endif
 
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/details/SoLineDetail.h>
+#include <App/DocumentObject.h>
+
 #include "ViewProviderPlacement.h"
 #include "SoFCSelection.h"
 #include "SoFCUnifiedSelection.h"
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventorViewer.h"
-#include "Inventor/SoAutoZoomTranslation.h"
-#include "SoAxisCrossKit.h"
-//#include <SoDepthBuffer.h>
 
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
 
 using namespace Gui;
 

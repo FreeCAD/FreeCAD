@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_FEATURE_H
 #define GUI_VIEWPROVIDER_FEATURE_H
 
-#include <Inventor/lists/SoPickedPointList.h>
-#include <App/PropertyStandard.h>
 #include "ViewProviderDocumentObject.h"
 
-class SoPickedPointList;
+
 class SbVec2s;
 
 namespace Gui {

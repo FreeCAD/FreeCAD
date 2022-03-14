@@ -48,10 +48,12 @@
 #include "TaskFemConstraintTemperature.h"
 #include "ui_TaskFemConstraintTemperature.h"
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
 
@@ -320,8 +322,10 @@ void TaskFemConstraintTemperature::changeEvent(QEvent *)
 
 void TaskFemConstraintTemperature::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != refAdd) ui->btnAdd->setChecked(false);
-    if (notThis != refRemove) ui->btnRemove->setChecked(false);
+    if (notThis != SelectionChangeModes::refAdd)
+        ui->btnAdd->setChecked(false);
+    if (notThis != SelectionChangeModes::refRemove)
+        ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

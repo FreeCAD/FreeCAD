@@ -3478,9 +3478,12 @@ bool Sketch::updateGeometry()
                                 // Now we update the position of the points in the solver, so that any call to solve()
                                 // calculates constraints and positions based on the actual position of the knots.
                                 auto pointindex = getPointId(*it5, PointPos::start);
-                                auto solverpoint = Points[pointindex];
-                                *(solverpoint.x) = pointcoords.x;
-                                *(solverpoint.y) = pointcoords.y;
+
+                                if(pointindex >= 0) {
+                                    auto solverpoint = Points[pointindex];
+                                    *(solverpoint.x) = pointcoords.x;
+                                    *(solverpoint.y) = pointcoords.y;
+                                }
                             }
                         }
                     }

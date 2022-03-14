@@ -31,11 +31,6 @@
 #   undef _XOPEN_SOURCE
 #endif // (re-)defined in pyconfig.h
 
-
-#include <Python.h>
-#include <CXX/Extensions.hxx>
-
-
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower
@@ -46,11 +41,11 @@
 #undef isalnum
 #endif
 
-// Std. configurations
+#include <CXX/Extensions.hxx>
+#include <list>
 #include <string>
-#include <map>
-
 #include "Exception.h"
+
 
 /** Helper macro to obtain callable from an object
  *
@@ -90,7 +85,6 @@ namespace Base {
 
     using std::string;
     using std::vector;
-
 
 
 class BaseExport PyException : public Exception
@@ -247,6 +241,10 @@ public:
     /// Add an additional python path
     void addPythonPath(const char* Path);
     static void addType(PyTypeObject* Type,PyObject* Module, const char * Name);
+    /// Add a module and return a PyObject to it
+    PyObject* addModule(Py::ExtensionModuleBase*);
+    /// Clean-up registered modules
+    void cleanupModules();
     //@}
 
     /** @name Cleanup
@@ -318,6 +316,7 @@ protected:
 private:
     std::string _cDebugFileName;
     PyThreadState* _global;
+    std::list<Py::ExtensionModuleBase*> _modules;
 };
 
 

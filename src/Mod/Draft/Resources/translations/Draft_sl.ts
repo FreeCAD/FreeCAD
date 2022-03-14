@@ -738,14 +738,14 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <translation>Merilo vzorca, ki ga uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblika tega objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Zasuk vzorca, ki ga uporablja ta predmet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblika tega objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

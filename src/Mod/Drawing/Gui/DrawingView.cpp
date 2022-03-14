@@ -54,9 +54,11 @@
 #endif
 
 #include "DrawingView.h"
+#include <Base/Parameter.h>
 #include <Base/Stream.h>
 #include <Base/gzstream.h>
 #include <Base/PyObjectBase.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>

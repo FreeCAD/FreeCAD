@@ -467,19 +467,19 @@ SolverInfo Kernel<Scalar, Nonlinear>::getSolverInfo() {
 //static comparison versions
 template<typename Scalar, template<class> class Nonlinear>
 template <typename DerivedA,typename DerivedB>
-bool Kernel<Scalar, Nonlinear>::isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precission) {
-    return ((p1-p2).squaredNorm() < precission);
+bool Kernel<Scalar, Nonlinear>::isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precision) {
+    return ((p1-p2).squaredNorm() < precision);
 }
 
 template<typename Scalar, template<class> class Nonlinear>
-bool Kernel<Scalar, Nonlinear>::isSame(number_type t1, number_type t2, number_type precission) {
-    return (std::abs(t1-t2) < precission);
+bool Kernel<Scalar, Nonlinear>::isSame(number_type t1, number_type t2, number_type precision) {
+    return (std::abs(t1-t2) < precision);
 }
 
 template<typename Scalar, template<class> class Nonlinear>
 template <typename DerivedA,typename DerivedB>
-bool Kernel<Scalar, Nonlinear>::isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precission) {
-    return ((p1+p2).squaredNorm() < precission);
+bool Kernel<Scalar, Nonlinear>::isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precision) {
+    return ((p1+p2).squaredNorm() < precision);
 }
 
 template<typename Scalar, template<class> class Nonlinear>

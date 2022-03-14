@@ -51,8 +51,8 @@ PyObject *PointsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyt
 int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj=nullptr;
-    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C
-        return -1;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))
+        return -1;
 
     // if no mesh is given
     if (!pcObj) return 0;

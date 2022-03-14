@@ -24,9 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskHelixParameters_H
 #define GUI_TASKVIEW_TaskHelixParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"

@@ -60,6 +60,8 @@ protected Q_SLOTS:
     void onXChanged();
     void onYChanged();
     void onZChanged();
+    void scaleTypeChanged(int index);
+
 
 protected:
     void changeEvent(QEvent *e);
@@ -98,6 +100,7 @@ private:
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
+    int m_saveScaleType;
 
     std::string m_dirName;
     std::string m_sectionName;

@@ -29,11 +29,13 @@ import math
 from PySide import QtGui
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 class ToolEditorDefault:
-    '''Generic Tool parameter editor for all Tools that don't have a customized edit function.
-    Let's the user enter the raw internal data. Not the best approach but this is the starting point.'''
+    """Generic Tool parameter editor for all Tools that don't have a customized edit function.
+    Let's the user enter the raw internal data. Not the best approach but this is the starting point."""
+
     def __init__(self, editor):
         self.editor = editor
         self.form = editor.form
@@ -43,38 +45,72 @@ class ToolEditorDefault:
         self.form.paramGeneric.show()
 
     def updateUI(self):
-        self.form.toolDiameter.setText(FreeCAD.Units.Quantity(self.editor.tool.Diameter, FreeCAD.Units.Length).UserString)
-        self.form.toolFlatRadius.setText(FreeCAD.Units.Quantity(self.editor.tool.FlatRadius, FreeCAD.Units.Length).UserString)
-        self.form.toolCornerRadius.setText(FreeCAD.Units.Quantity(self.editor.tool.CornerRadius, FreeCAD.Units.Length).UserString)
-        self.form.toolCuttingEdgeHeight.setText(FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
-        self.form.toolCuttingEdgeAngle.setText(FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
+        self.form.toolDiameter.setText(
+            FreeCAD.Units.Quantity(
+                self.editor.tool.Diameter, FreeCAD.Units.Length
+            ).UserString
+        )
+        self.form.toolFlatRadius.setText(
+            FreeCAD.Units.Quantity(
+                self.editor.tool.FlatRadius, FreeCAD.Units.Length
+            ).UserString
+        )
+        self.form.toolCornerRadius.setText(
+            FreeCAD.Units.Quantity(
+                self.editor.tool.CornerRadius, FreeCAD.Units.Length
+            ).UserString
+        )
+        self.form.toolCuttingEdgeHeight.setText(
+            FreeCAD.Units.Quantity(
+                self.editor.tool.CuttingEdgeHeight, FreeCAD.Units.Length
+            ).UserString
+        )
+        self.form.toolCuttingEdgeAngle.setText(
+            FreeCAD.Units.Quantity(
+                self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle
+            ).UserString
+        )
 
     def updateTool(self):
-        self.editor.tool.Diameter = FreeCAD.Units.parseQuantity(self.form.toolDiameter.text())
-        self.editor.tool.FlatRadius = FreeCAD.Units.parseQuantity(self.form.toolFlatRadius.text())
-        self.editor.tool.CornerRadius = FreeCAD.Units.parseQuantity(self.form.toolCornerRadius.text())
-        self.editor.tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(self.form.toolCuttingEdgeAngle.text())
-        self.editor.tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(self.form.toolCuttingEdgeHeight.text())
+        self.editor.tool.Diameter = FreeCAD.Units.parseQuantity(
+            self.form.toolDiameter.text()
+        )
+        self.editor.tool.FlatRadius = FreeCAD.Units.parseQuantity(
+            self.form.toolFlatRadius.text()
+        )
+        self.editor.tool.CornerRadius = FreeCAD.Units.parseQuantity(
+            self.form.toolCornerRadius.text()
+        )
+        self.editor.tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(
+            self.form.toolCuttingEdgeAngle.text()
+        )
+        self.editor.tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(
+            self.form.toolCuttingEdgeHeight.text()
+        )
+
 
 class ToolEditorImage(object):
-    '''Base implementation for all customized Tool parameter editors.
-    While not required it is simplest to subclass specific editors.'''
-    def __init__(self, editor, imageFile, hide='', disable=''):
+    """Base implementation for all customized Tool parameter editors.
+    While not required it is simplest to subclass specific editors."""
+
+    def __init__(self, editor, imageFile, hide="", disable=""):
         self.editor = editor
         self.form = editor.form
-        self.imagePath = "{}Mod/Path/Images/Tools/{}".format(FreeCAD.getHomePath(), imageFile)
+        self.imagePath = "{}Mod/Path/Images/Tools/{}".format(
+            FreeCAD.getHomePath(), imageFile
+        )
         self.image = QtGui.QPixmap(self.imagePath)
         self.hide = hide
         self.disable = disable
 
         form = editor.form
         self.widgets = {
-                'D' : (form.label_D, form.value_D),
-                'd' : (form.label_d, form.value_d),
-                'H' : (form.label_H, form.value_H),
-                'a' : (form.label_a, form.value_a),
-                'S' : (form.label_S, form.value_S)
-                }
+            "D": (form.label_D, form.value_D),
+            "d": (form.label_d, form.value_d),
+            "H": (form.label_H, form.value_H),
+            "a": (form.label_a, form.value_a),
+            "S": (form.label_S, form.value_S),
+        }
 
     def setupUI(self):
         PathLog.track()
@@ -82,7 +118,7 @@ class ToolEditorImage(object):
         self.form.paramImage.show()
 
         for key, widgets in self.widgets.items():
-            hide    = key in self.hide
+            hide = key in self.hide
             disable = key in self.disable
             for w in widgets:
                 w.setHidden(hide)
@@ -102,22 +138,22 @@ class ToolEditorImage(object):
     def updateTool(self):
         PathLog.track()
         toolDefault = Path.Tool()
-        if 'D' in self.hide:
+        if "D" in self.hide:
             self.editor.tool.Diameter = toolDefault.Diameter
         else:
             self.editor.tool.Diameter = self.quantityDiameter(False)
 
-        if 'd' in self.hide:
+        if "d" in self.hide:
             self.editor.tool.FlatRadius = toolDefault.FlatRadius
         else:
             self.editor.tool.FlatRadius = self.quantityFlatRadius(False)
 
-        if 'a' in self.hide:
+        if "a" in self.hide:
             self.editor.tool.CuttingEdgeAngle = toolDefault.CuttingEdgeAngle
         else:
             self.editor.tool.CuttingEdgeAngle = self.quantityCuttingEdgeAngle(False)
 
-        if 'H' in self.hide:
+        if "H" in self.hide:
             self.editor.tool.CuttingEdgeHeight = toolDefault.CuttingEdgeHeight
         else:
             self.editor.tool.CuttingEdgeHeight = self.quantityCuttingEdgeHeight(False)
@@ -126,48 +162,69 @@ class ToolEditorImage(object):
 
     def quantityDiameter(self, propertyToDisplay):
         if propertyToDisplay:
-            return FreeCAD.Units.Quantity(self.editor.tool.Diameter, FreeCAD.Units.Length)
+            return FreeCAD.Units.Quantity(
+                self.editor.tool.Diameter, FreeCAD.Units.Length
+            )
         return FreeCAD.Units.parseQuantity(self.form.value_D.text())
 
     def quantityFlatRadius(self, propertyToDisplay):
         if propertyToDisplay:
-            return FreeCAD.Units.Quantity(self.editor.tool.FlatRadius, FreeCAD.Units.Length) * 2
+            return (
+                FreeCAD.Units.Quantity(
+                    self.editor.tool.FlatRadius, FreeCAD.Units.Length
+                )
+                * 2
+            )
         return FreeCAD.Units.parseQuantity(self.form.value_d.text()) / 2
 
     def quantityCuttingEdgeAngle(self, propertyToDisplay):
         if propertyToDisplay:
-            return FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle)
+            return FreeCAD.Units.Quantity(
+                self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle
+            )
         return FreeCAD.Units.parseQuantity(self.form.value_a.text())
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
         if propertyToDisplay:
-            return FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeHeight, FreeCAD.Units.Length)
+            return FreeCAD.Units.Quantity(
+                self.editor.tool.CuttingEdgeHeight, FreeCAD.Units.Length
+            )
         return FreeCAD.Units.parseQuantity(self.form.value_H.text())
 
+
 class ToolEditorEndmill(ToolEditorImage):
-    '''Tool parameter editor for endmills.'''
+    """Tool parameter editor for endmills."""
+
     def __init__(self, editor):
-        super(ToolEditorEndmill, self).__init__(editor, 'endmill.svg', 'da', 'S')
+        super(ToolEditorEndmill, self).__init__(editor, "endmill.svg", "da", "S")
+
 
 class ToolEditorReamer(ToolEditorImage):
-    '''Tool parameter editor for reamers.'''
+    """Tool parameter editor for reamers."""
+
     def __init__(self, editor):
-        super(ToolEditorReamer, self).__init__(editor, 'reamer.svg', 'da', 'S')
+        super(ToolEditorReamer, self).__init__(editor, "reamer.svg", "da", "S")
+
 
 class ToolEditorDrill(ToolEditorImage):
-    '''Tool parameter editor for drills.'''
+    """Tool parameter editor for drills."""
+
     def __init__(self, editor):
-        super(ToolEditorDrill, self).__init__(editor, 'drill.svg', 'dS', '')
+        super(ToolEditorDrill, self).__init__(editor, "drill.svg", "dS", "")
 
     def quantityCuttingEdgeAngle(self, propertyToDisplay):
         if propertyToDisplay:
-            return FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle)
+            return FreeCAD.Units.Quantity(
+                self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle
+            )
         return FreeCAD.Units.parseQuantity(self.form.value_a.text())
 
+
 class ToolEditorEngrave(ToolEditorImage):
-    '''Tool parameter editor for v-bits.'''
+    """Tool parameter editor for v-bits."""
+
     def __init__(self, editor):
-        super(ToolEditorEngrave, self).__init__(editor, 'v-bit.svg', '', 'dS')
+        super(ToolEditorEngrave, self).__init__(editor, "v-bit.svg", "", "dS")
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
         PathLog.track()
@@ -175,8 +232,9 @@ class ToolEditorEngrave(ToolEditorImage):
         da = self.quantityCuttingEdgeAngle(False).Value
         return dr / math.tan(math.radians(da) / 2)
 
+
 class ToolEditor:
-    '''UI and controller for editing a Tool.
+    """UI and controller for editing a Tool.
     The controller embeds the UI to the parentWidget which has to have a layout attached to it.
     The editor maintains two Tools, self.tool and self.Tool. The former is the one being edited
     and always reflects the current state. self.Tool on the other hand is the "official" Tool
@@ -186,13 +244,14 @@ class ToolEditor:
     The editor uses instances of ToolEditorDefault and ToolEditorImage to deal with the changes
     of the actual parameters. For any ToolType not mapped in ToolTypeImage the editor uses
     an instance of ToolEditorDefault.
-    '''
+    """
 
     ToolTypeImage = {
-            'EndMill':  ToolEditorEndmill,
-            'Drill':    ToolEditorDrill,
-            'Engraver': ToolEditorEngrave,
-            'Reamer':   ToolEditorReamer, }
+        "EndMill": ToolEditorEndmill,
+        "Drill": ToolEditorDrill,
+        "Engraver": ToolEditorEngrave,
+        "Reamer": ToolEditorReamer,
+    }
 
     def __init__(self, tool, parentWidget, parent=None):
         self.Parent = parent
@@ -242,7 +301,11 @@ class ToolEditor:
         self.form.toolName.setText(self.tool.Name)
         self.form.toolType.setCurrentIndex(self.getType(self.tool.ToolType))
         self.form.toolMaterial.setCurrentIndex(self.getMaterial(self.tool.Material))
-        self.form.toolLengthOffset.setText(FreeCAD.Units.Quantity(self.tool.LengthOffset, FreeCAD.Units.Length).UserString)
+        self.form.toolLengthOffset.setText(
+            FreeCAD.Units.Quantity(
+                self.tool.LengthOffset, FreeCAD.Units.Length
+            ).UserString
+        )
 
         self.editor.updateUI()
 
@@ -257,7 +320,7 @@ class ToolEditor:
     def setupToolType(self, tt):
         PathLog.track()
         print("Tool type: %s" % (tt))
-        if 'Undefined' == tt:
+        if "Undefined" == tt:
             tt = Path.Tool.getToolTypes(Path.Tool())[0]
         if tt in self.ToolTypeImage:
             self.editor = self.ToolTypeImage[tt](self)
@@ -270,7 +333,9 @@ class ToolEditor:
         PathLog.track()
         self.tool.Name = str(self.form.toolName.text())
         self.tool.Material = self.getMaterial(self.form.toolMaterial.currentIndex())
-        self.tool.LengthOffset = FreeCAD.Units.parseQuantity(self.form.toolLengthOffset.text())
+        self.tool.LengthOffset = FreeCAD.Units.parseQuantity(
+            self.form.toolLengthOffset.text()
+        )
         self.editor.updateTool()
 
     def refresh(self):

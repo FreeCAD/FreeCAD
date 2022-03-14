@@ -51,6 +51,7 @@
 #include <App/Application.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
 using namespace FemGui;
@@ -379,8 +380,10 @@ void TaskFemConstraintHeatflux::changeEvent(QEvent *e)
 
 void TaskFemConstraintHeatflux::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != refAdd) ui->btnAdd->setChecked(false);
-    if (notThis != refRemove) ui->btnRemove->setChecked(false);
+    if (notThis != SelectionChangeModes::refAdd)
+        ui->btnAdd->setChecked(false);
+    if (notThis != SelectionChangeModes::refRemove)
+        ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

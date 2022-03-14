@@ -121,14 +121,13 @@ class UnitBasicCases(unittest.TestCase):
             q1 = FreeCAD.Units.Quantity(q1)
             q1.Format = {'Precision': 16}
             for idx, val in enumerate(schemes):
-                t = FreeCAD.Units.schemaTranslate(q1, idx)
+                [t, amountPerUnit, unit] = FreeCAD.Units.schemaTranslate(q1, idx)
                 try:
-                    q2 = FreeCAD.Units.Quantity(t[0])
+                    q2 = FreeCAD.Units.Quantity(t)
                     if math.fabs(q1.Value - q2.Value) > 0.01:
                         print (" {} : {} : {} : {} : {}".format(q1, q2, t, i, val).encode("utf-8").strip())
                 except Exception as e:
-                    s = "{}: {}".format(e, t[0])
-                    print (" ".join(str(e)).encode("utf-8").strip())
+                    print ("{} : {} : {} : {}".format(q1, i, val, e).encode("utf-8").strip())
 
     def testVoltage(self):
         q1 = FreeCAD.Units.Quantity("1e20 V")

@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/GeoFeature.h"
-
 // inclusion of the generated files (generated out of GeoFeaturePy.xml)
 #include "GeoFeaturePy.h"
 #include "GeoFeaturePy.cpp"

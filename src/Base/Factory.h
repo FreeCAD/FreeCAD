@@ -25,10 +25,9 @@
 #ifndef BASE_FACTORY_H
 #define BASE_FACTORY_H
 
-#include <typeinfo>
-#include <string>
-#include <map>
 #include <list>
+#include <map>
+#include <string>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -119,7 +118,7 @@ public:
     /// Produce an instance
     virtual void* Produce () const
     {
-        return (void*)mScript;
+        return const_cast<char*>(mScript);
     }
 
 private:

@@ -241,6 +241,7 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
     def rememberBaseVisibility(self, obj, base):
+        PathLog.track()
         if base.ViewObject:
             orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
             self.baseVisibility[base.Name] = (
@@ -253,6 +254,7 @@ class ViewProvider:
             base.ViewObject.Visibility = True
 
     def forgetBaseVisibility(self, obj, base):
+        PathLog.track()
         if self.baseVisibility.get(base.Name):
             visibility = self.baseVisibility[base.Name]
             visibility[0].ViewObject.Visibility = visibility[1]
@@ -260,6 +262,7 @@ class ViewProvider:
             del self.baseVisibility[base.Name]
 
     def setupEditVisibility(self, obj):
+        PathLog.track()
         self.baseVisibility = {}
         for base in obj.Model.Group:
             self.rememberBaseVisibility(obj, base)
@@ -270,6 +273,7 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Visibility = True
 
     def resetEditVisibility(self, obj):
+        PathLog.track()
         for base in obj.Model.Group:
             self.forgetBaseVisibility(obj, base)
         if obj.Stock and obj.Stock.ViewObject:
@@ -619,8 +623,14 @@ class TaskPanel:
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
-        self.form.toolControllerList.horizontalHeaderItem(2).setText(vUnit)
-        self.form.toolControllerList.horizontalHeaderItem(3).setText(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(2).setText(
+            translate("Path", "Feed(H)")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(3).setText(
+            translate("Path", "Feed(V)")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeader().setResizeMode(
             0, QtGui.QHeaderView.Stretch
         )
@@ -1581,6 +1591,7 @@ def Create(base, template=None):
     try:
         obj = PathJob.Create("Job", base, template)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
+        obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
         FreeCAD.ActiveDocument.commitTransaction()
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)

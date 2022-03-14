@@ -331,7 +331,7 @@
     <message>
       <location filename="ArchAxis.py" line="873"/>
       <source>The placement of this axis system</source>
-      <translation>La mise en place de ce système d'axe</translation>
+      <translation>L'emplacement de ce système d'axes</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="718"/>
@@ -686,17 +686,17 @@
     <message>
       <location filename="ArchPipe.py" line="356"/>
       <source>The curvature radius of this connector</source>
-      <translation>Le rayon de courbure de ce connecteur</translation>
+      <translation>Le rayon de courbure de ce raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="358"/>
       <source>The pipes linked by this connector</source>
-      <translation>Les tubes reliés par ce connecteur</translation>
+      <translation>Les tubes reliés par ce raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="360"/>
       <source>The type of this connector</source>
-      <translation>Le type de ce connecteur</translation>
+      <translation>Le type de ce raccord</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="150"/>
@@ -2164,7 +2164,7 @@
     <message>
       <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
-      <translation>Activer/désactiver sous-composants</translation>
+      <translation>Activer/désactiver les sous-composants</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="1629"/>
@@ -2337,7 +2337,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="ArchAxis.py" line="156"/>
       <source>Create Axis System</source>
-      <translation>Créer le système d’axe</translation>
+      <translation>Créer un système d’axes</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="161"/>
@@ -2742,7 +2742,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="ArchPipe.py" line="167"/>
       <source>Create Connector</source>
-      <translation>Créez le connecteur</translation>
+      <translation>Créer un raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="221"/>
@@ -2887,17 +2887,17 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>La fenêtre n'est pas basée sur l'esquisse. La fenêtre n'est pas alignée ni redimensionnée.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Aucune contrainte de largeur et/ou de hauteur dans l'esquisse de fenêtre. La fenêtre n'a pas été redimensionnée.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Aucune fenêtre trouvée. Impossible de continuer.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4006,12 +4006,12 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchAxis.py" line="141"/>
       <source>Axis System</source>
-      <translation>Système d’axe</translation>
+      <translation>Système d’axes</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="145"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation>Crée un système d’axe à partir d’un ensemble d’axes</translation>
+      <translation>Crée un système d’axes à partir d’un ensemble d’axes</translation>
     </message>
   </context>
   <context>
@@ -4118,12 +4118,12 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Couper avec une ligne</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Couper un objet avec une ligne</translation>
     </message>
   </context>
   <context>
@@ -4427,7 +4427,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation>Crée un connecteur entre 2 ou 3 tuyaux sélectionnés</translation>
+      <translation>Crée un raccord entre 2 ou 3 tuyaux sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -4435,12 +4435,12 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
-      <translation>Connecteur</translation>
+      <translation>Raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation>Crée un connecteur entre 2 ou 3 tuyaux sélectionnés</translation>
+      <translation>Crée un raccord entre 2 ou 3 tuyaux sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -4749,7 +4749,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchCommands.py" line="1696"/>
       <source>Toggle subcomponents</source>
-      <translation>Activer/désactiver sous-composants</translation>
+      <translation>Activer/désactiver les sous-composants</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1699"/>

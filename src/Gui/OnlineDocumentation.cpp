@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,18 +29,12 @@
 # include <QTcpSocket>
 #endif
 
-#include <sstream>
-#include <CXX/Objects.hxx>
-#include <zipios++/zipfile.h>
 #include <Base/Interpreter.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
 
-#include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "OnlineDocumentation.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 

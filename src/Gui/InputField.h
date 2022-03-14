@@ -25,16 +25,13 @@
 #define GUI_INPUTFIELD_H
 
 #include <QValidator>
-#include <App/Property.h>
-#include <App/Expression.h>
 #include <Base/Parameter.h>
-#include <Gui/MetaTypes.h>
-#include "Widgets.h"
-#include "Window.h"
-#include "SpinBox.h"
-#include "FileDialog.h"
+
 #include "ExpressionBinding.h"
 #include "ExpressionCompleter.h"
+#include "MetaTypes.h"
+#include "Widgets.h"
+
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)

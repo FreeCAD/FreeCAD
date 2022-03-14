@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_GRAPHVIZVIEW_H
 #define GUI_GRAPHVIZVIEW_H
 
 #include "MDIView.h"
-#include <boost_signals2.hpp>
 
 
 class QGraphicsScene;

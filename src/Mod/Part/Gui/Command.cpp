@@ -32,6 +32,7 @@
 # include <TopoDS_Shape.hxx>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -45,6 +46,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
@@ -2469,7 +2471,7 @@ CmdPartSectionCut::CmdPartSectionCut()
     : Command("Part_SectionCut")
 {
     sAppModule = "Part";
-    sGroup = QT_TR_NOOP("Part");
+    sGroup = "View";
     sMenuText = QT_TR_NOOP("Persistent section cut");
     sToolTipText = QT_TR_NOOP("Creates a persistent section cut of visible part objects");
     sWhatsThis = "Part_SectionCut";

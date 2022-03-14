@@ -194,7 +194,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     std::vector<hTrimCurve> hTCurve2dList;
     for (auto& bg: selEdges) {
         TopoDS_Edge e = bg->occEdge;
-        BRepBndLib::Add(e, edgeBbx);
+        BRepBndLib::AddOptimal(e, edgeBbx);
         double first = 0.0;
         double last = 0.0;
         Handle(Geom_Curve) hCurve = BRep_Tool::Curve(e, first, last);

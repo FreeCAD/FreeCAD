@@ -26,7 +26,7 @@ import unittest
 import os
 import FreeCAD
 
-from AddonManagerRepo import AddonManagerRepo
+from Addon import Addon
 
 from addonmanager_utilities import (
     recognized_git_location,
@@ -51,8 +51,8 @@ class TestUtilities(unittest.TestCase):
             "https://salsa.debian.org/science-team/freecad",
         ]
         for url in recognized_urls:
-            repo = AddonManagerRepo(
-                "Test Repo", url, AddonManagerRepo.UpdateStatus.NOT_INSTALLED, "branch"
+            repo = Addon(
+                "Test Repo", url, Addon.Status.NOT_INSTALLED, "branch"
             )
             self.assertTrue(
                 recognized_git_location(repo), f"{url} was unexpectedly not recognized"
@@ -65,8 +65,8 @@ class TestUtilities(unittest.TestCase):
             "https://github.com.malware.com/",
         ]
         for url in unrecognized_urls:
-            repo = AddonManagerRepo(
-                "Test Repo", url, AddonManagerRepo.UpdateStatus.NOT_INSTALLED, "branch"
+            repo = Addon(
+                "Test Repo", url, Addon.Status.NOT_INSTALLED, "branch"
             )
             self.assertFalse(
                 recognized_git_location(repo), f"{url} was unexpectedly recognized"
@@ -90,8 +90,8 @@ class TestUtilities(unittest.TestCase):
         for url in github_urls:
             branch = "branchname"
             expected_result = f"{url}/raw/{branch}/README.md"
-            repo = AddonManagerRepo(
-                "Test Repo", url, AddonManagerRepo.UpdateStatus.NOT_INSTALLED, branch
+            repo = Addon(
+                "Test Repo", url, Addon.Status.NOT_INSTALLED, branch
             )
             actual_result = get_readme_url(repo)
             self.assertEqual(actual_result, expected_result)
@@ -99,8 +99,8 @@ class TestUtilities(unittest.TestCase):
         for url in gitlab_urls:
             branch = "branchname"
             expected_result = f"{url}/-/raw/{branch}/README.md"
-            repo = AddonManagerRepo(
-                "Test Repo", url, AddonManagerRepo.UpdateStatus.NOT_INSTALLED, branch
+            repo = Addon(
+                "Test Repo", url, Addon.Status.NOT_INSTALLED, branch
             )
             actual_result = get_readme_url(repo)
             self.assertEqual(actual_result, expected_result)
@@ -115,7 +115,7 @@ class TestUtilities(unittest.TestCase):
         ]
         for line in good_lines:
             result = get_assigned_string_literal(line[0])
-            self.assertEquals(result, line[1])
+            self.assertEqual(result, line[1])
 
         bad_lines = [
             "my_var = __date__",

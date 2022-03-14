@@ -738,14 +738,14 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <translation>Bu nesnenin kullandığı desen ölçeği</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Bu nesnenin şekli</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Bu nesnenin kullandığı desen dönüş açısı</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Bu nesnenin şekli</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1591,7 +1591,7 @@ Bu aracı kullanmak için önce bir grup oluşturun.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Ek açıklama biçimini oluşturun ya da yönetin</translation>
     </message>
   </context>
   <context>
@@ -1646,8 +1646,8 @@ Nokta yakalamak için CTRL, sınırlamak için SHIFT.</translation>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>3 nokta seçerek dairesel bir yay oluşturur.
+Yakalamak için CTRL, kısıtlamak için SHIFT.</translation>
     </message>
   </context>
   <context>
@@ -1724,7 +1724,7 @@ Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürüle
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Bezier Eğrisi</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1735,8 +1735,8 @@ Dizi, türü değiştirilerek kutupsal veya dairesel bir diziye dönüştürüle
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>N dereceli bir Bézier eğrisi oluşturur. Ne kadar çok nokta seçerseniz, derece o kadar yüksek olur.
+Yakalamak için CTRL, kısıtlamak için SHIFT.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1751,7 +1751,7 @@ Nokta yakalamak için CTRL, sınırlamak için SHIFT.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezier araçları</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1761,7 +1761,7 @@ Nokta yakalamak için CTRL, sınırlamak için SHIFT.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Çeşitli türlerde Bezier eğrileri oluşturun.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1823,7 +1823,7 @@ Ortaya çıkan klon, üç yönünün her birinde ölçeklenebilir.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Kübik bezier eğrisi</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1835,9 +1835,9 @@ Ortaya çıkan klon, üç yönünün her birinde ölçeklenebilir.</translation>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>2. derece (kuadratik) ve 3. derece (kübik) parçalardan oluşan bir Bézier eğrisi oluşturur. Her segmenti tanımlamak için tıklayın ve sürükleyin.
+Eğri oluşturulduktan sonra her bir kontrol noktasını düzenlemek ve her düğümün özelliklerini ayarlamak için geri dönebilirsiniz.
+Nokta yakalamak için CTRL, kısıtlamak için SHIFT.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2990,7 +2990,7 @@ Ardından, ihtiyacınız olan her an farklı bir kamera konumunu ve nesnelerin d
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezier araçları</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -4247,7 +4247,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Bu nesneyi düzenlemeyi etkinleştirmek için lütfen Draft Çalışma Tezgahını yükleyin</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4262,7 +4262,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+      <translation>Girdi bir ölçek faktörüne dönüştürülemiyor</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
@@ -4272,7 +4272,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Özel ölçek ayarla</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="159"/>
@@ -4282,7 +4282,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Draft açıklama araçları tarafından kullanılan ölçeği ayarlayın</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4402,22 +4402,22 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Dik Yakala</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Uzantıyı Yakala</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Paraleli Yakala</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Özel Yakala</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>

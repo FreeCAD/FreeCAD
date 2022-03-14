@@ -59,6 +59,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 
 #ifndef _PreComp_
 # include <bitset>
+# include <stack>
 # include <boost/filesystem.hpp>
 #endif
 
@@ -91,6 +92,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
+#include <Base/Stream.h>
 
 #include "Document.h"
 #include "Application.h"
@@ -164,6 +166,8 @@ struct DocumentP
     long lastObjectId;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
+    // pointer to the python class
+    Py::Object DocumentPythonObject;
     int iTransactionMode;
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
@@ -1527,8 +1531,8 @@ Document::Document(const char *name)
     // So, we must increment only if the interpreter gets a reference.
     // Remark: We force the document Python object to own the DocumentPy instance, thus we don't
     // have to care about ref counting any more.
-    DocumentPythonObject = Py::Object(new DocumentPy(this), true);
     d = new DocumentP;
+    d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n",this);
@@ -1650,7 +1654,7 @@ Document::~Document()
     // But we must still invalidate the Python object because it doesn't need to be
     // destructed right now because the interpreter can own several references to it.
     Base::PyGILStateLocker lock;
-    Base::PyObjectBase* doc = (Base::PyObjectBase*)DocumentPythonObject.ptr();
+    Base::PyObjectBase* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.ptr());
     // Call before decrementing the reference counter, otherwise a heap error can occur
     doc->setInvalid();
 
@@ -3571,13 +3575,15 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
     FC_TIME_LOG(t,"Recompute total");
 
-    if(d->_RecomputeLog.size()) {
+    if (d->_RecomputeLog.size()) {
         d->pendingRemove.clear();
-        Base::Console().Error("Recompute failed! Please check report view.\n");
-    } else {
+        if (!testStatus(Status::IgnoreErrorOnRecompute))
+            Base::Console().Error("Recompute failed! Please check report view.\n");
+    }
+    else {
         for(auto &o : d->pendingRemove) {
             auto obj = o.getObject();
-            if(obj)
+            if (obj)
                 obj->getDocument()->removeObject(obj->getNameInDocument());
         }
     }
@@ -4649,9 +4655,9 @@ int Document::countObjectsOfType(const Base::Type& typeId) const
     return ct;
 }
 
-PyObject * Document::getPyObject(void)
+PyObject * Document::getPyObject()
 {
-    return Py::new_reference_to(DocumentPythonObject);
+    return Py::new_reference_to(d->DocumentPythonObject);
 }
 
 std::vector<App::DocumentObject*> Document::getRootObjects() const

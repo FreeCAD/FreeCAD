@@ -39,6 +39,7 @@ class SoSeparator;
 class SoSwitch;
 class QCheckBox;
 class QTextEdit;
+class QTreeView;
 
 namespace PartGui {
 

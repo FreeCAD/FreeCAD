@@ -22,20 +22,16 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+
+#include <Base/Reader.h>
+#include <Base/Tools.h>
+#include <Base/Writer.h>
 
 #include "DynamicProperty.h"
+#include "Application.h"
 #include "Property.h"
 #include "PropertyContainer.h"
-#include "Application.h"
-#include "ExtensionContainer.h"
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+
 
 FC_LOG_LEVEL_INIT("Property",true,true)
 

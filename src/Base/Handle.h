@@ -25,11 +25,10 @@
 #ifndef BASE_HANDLE_H
 #define BASE_HANDLE_H
 
-// Std. configurations
-
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
+
 
 class QAtomicInt;
 

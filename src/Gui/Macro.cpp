@@ -25,24 +25,21 @@
 
 #ifndef _PreComp_
 # include <assert.h>
-# include <stdio.h>
-# include <QApplication>
 # include <QFile>
 # include <QTextStream>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Macro.h"
-
-#include <Base/Interpreter.h>
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
+#include <Base/Interpreter.h>
 
+#include "Macro.h"
 #include "MainWindow.h"
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
+
 
 using namespace Gui;
 

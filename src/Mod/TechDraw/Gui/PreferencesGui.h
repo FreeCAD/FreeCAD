@@ -63,6 +63,11 @@ static int         mattingStyle();
 
 static QString     weldingDirectory();
 
+static bool showGrid();
+static App::Color gridColor();
+static QColor gridQColor();
+static double gridSpacing();
+
 };
 
 } //end namespace TechDrawGui

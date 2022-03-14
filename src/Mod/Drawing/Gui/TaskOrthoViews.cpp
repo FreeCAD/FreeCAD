@@ -30,6 +30,7 @@
 #include "TaskOrthoViews.h"
 #include "ui_TaskOrthoViews.h"
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>

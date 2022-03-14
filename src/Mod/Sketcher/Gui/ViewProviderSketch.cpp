@@ -30,6 +30,7 @@
 # include <Inventor/SbBox3f.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoPointDetail.h>
+# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/SbLine.h>
 # include <Inventor/SbTime.h>
@@ -62,6 +63,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
@@ -165,26 +167,36 @@ void ViewProviderSketch::ParameterObserver::updateRecalculateInitialSolutionWhil
 
 void ViewProviderSketch::ParameterObserver::subscribeToParameters()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->Attach(this);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrp->Attach(this);
 
-    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp2->Attach(this);
+        ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrp2->Attach(this);
 
-    ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrpv->Attach(this);
+        ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrpv->Attach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("ViewProviderSketch: Malformed parameter string: %s\n", e.what());
+    }
 }
 
 void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->Detach(this);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrp->Detach(this);
 
-    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp2->Detach(this);
+        ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrp2->Detach(this);
 
-    ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrpv->Detach(this);
+        ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrpv->Detach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("ViewProviderSketch: Malformed parameter string: %s\n", e.what());
+    }
 }
 
 void ViewProviderSketch::ParameterObserver::initParameters()
@@ -965,6 +977,19 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     }
 
     return false;
+}
+
+bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer)
+{
+    assert(isInEditMode());
+
+    Q_UNUSED(delta);
+    Q_UNUSED(cursorPos);
+    Q_UNUSED(viewer);
+
+    editCoinManager->drawConstraintIcons();
+
+    return true;
 }
 
 void ViewProviderSketch::editDoubleClicked(void)

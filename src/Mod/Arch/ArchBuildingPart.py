@@ -487,13 +487,20 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         "Touches all descendents where applicable"
 
-        for child in obj.Group:
+        g = []
+        if hasattr(obj,"Group"):
+            g = obj.Group
+        elif (Draft.getType(obj) in ["Wall","Structure"]):
+            g = obj.Additions
+        for child in g:
             if Draft.getType(child) in ["Wall","Structure"]:
                 if not child.Height.Value:
-                    print("Executing ",child.Label)
+                    FreeCAD.Console.PrintLog("Auto-updating Height of "+child.Name+"\n")
+                    self.touchChildren(child)
                     child.Proxy.execute(child)
             elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
+
 
     def addObject(self,obj,child):
 

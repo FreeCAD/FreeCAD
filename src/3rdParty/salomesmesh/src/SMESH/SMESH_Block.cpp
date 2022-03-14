@@ -1727,7 +1727,7 @@ bool SMESH_Block::LoadMeshBlock(const SMDS_MeshVolume*        theVolume,
 //function : LoadBlockShapes
 //purpose  : Initialize block geometry with theShell,
 //           add sub-shapes of theBlock to theShapeIDMap so that they get
-//           IDs acoording to enum TShapeID
+//           IDs according to enum TShapeID
 //=======================================================================
 
 bool SMESH_Block::LoadBlockShapes(const TopoDS_Shell&         theShell,
@@ -1743,7 +1743,7 @@ bool SMESH_Block::LoadBlockShapes(const TopoDS_Shell&         theShell,
 //=======================================================================
 //function : LoadBlockShapes
 //purpose  : add sub-shapes of theBlock to theShapeIDMap so that they get
-//           IDs acoording to enum TShapeID
+//           IDs according to enum TShapeID
 //=======================================================================
 
 bool SMESH_Block::FindBlockShapes(const TopoDS_Shell&         theShell,

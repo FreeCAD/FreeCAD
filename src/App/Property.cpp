@@ -30,6 +30,7 @@
 #include <atomic>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
+#include <CXX/Objects.hxx>
 
 #include "Property.h"
 #include "ObjectIdentifier.h"

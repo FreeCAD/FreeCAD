@@ -7,7 +7,7 @@
 
 #include "actionbox.h"
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 
 namespace QSint

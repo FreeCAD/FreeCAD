@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <FCConfig.h>
 
 #if HAVE_CONFIG_H
@@ -33,19 +32,19 @@
 
 #include <QApplication>
 #include <QIcon>
-#include <QThread>
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #elif defined(Q_WS_X11)
 #include <QX11EmbedWidget>
 #endif
 #include <thread>
+
 // FreeCAD Base header
-#include <CXX/WrapPython.h>
+#include <App/Application.h>
 #include <Base/Exception.h>
 #include <Base/Factory.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
@@ -54,6 +53,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
+
 
 static bool _isSetupWithoutGui = false;
 

@@ -22,20 +22,22 @@
 import FreeCAD
 import FreeCADGui
 from PySide2 import QtCore, QtWidgets
-import AddonManagerRepo
+import Addon
 
 import os
 
 translate = FreeCAD.Qt.translate
 
 
-def ask_to_install_toolbar_button(repo: AddonManagerRepo) -> None:
+def ask_to_install_toolbar_button(repo: Addon) -> None:
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     do_not_show_dialog = pref.GetBool("dontShowAddMacroButtonDialog", False)
-    if not do_not_show_dialog:
+    button_exists = check_for_button(repo)
+    if not do_not_show_dialog and not button_exists:
         add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
         )
+        add_toolbar_button_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         add_toolbar_button_dialog.buttonYes.clicked.connect(
             lambda: install_toolbar_button(repo)
         )
@@ -44,9 +46,22 @@ def ask_to_install_toolbar_button(repo: AddonManagerRepo) -> None:
         )
         add_toolbar_button_dialog.exec()
 
+def check_for_button(repo: Addon) -> bool:
+    command = FreeCADGui.Command.findCustomCommand(repo.macro.filename)
+    if not command:
+        return False
+    custom_toolbars = FreeCAD.ParamGet(
+        "User parameter:BaseApp/Workbench/Global/Toolbar"
+    )
+    toolbar_groups = custom_toolbars.GetGroups()
+    for group in toolbar_groups:
+        toolbar = custom_toolbars.GetGroup(group)
+        if toolbar.GetString(command, "*") != "*":
+            return True
+    return False
 
 def ask_for_toolbar(
-    repo: AddonManagerRepo, custom_toolbars
+    repo: Addon, custom_toolbars
 ) -> object:  # Returns the pref group for the new toolbar
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
 
@@ -58,6 +73,7 @@ def ask_for_toolbar(
         select_toolbar_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "select_toolbar_dialog.ui")
         )
+        select_toolbar_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         select_toolbar_dialog.comboBox.clear()
 
@@ -158,7 +174,7 @@ def check_for_toolbar(custom_toolbars, toolbar_name: str) -> bool:
         return False
 
 
-def install_toolbar_button(repo: AddonManagerRepo) -> None:
+def install_toolbar_button(repo: Addon) -> None:
     pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     custom_toolbar_name = pref.GetString(
         "CustomToolbarName", "Auto-Created Macro Toolbar"
@@ -206,7 +222,7 @@ def install_toolbar_button(repo: AddonManagerRepo) -> None:
         )
 
 
-def install_macro_to_toolbar(repo: AddonManagerRepo, toolbar: object) -> None:
+def install_macro_to_toolbar(repo: Addon, toolbar: object) -> None:
     menuText = repo.display_name
     tooltipText = f"<b>{repo.display_name}</b>"
     if repo.macro.comment:
@@ -254,7 +270,7 @@ def install_macro_to_toolbar(repo: AddonManagerRepo, toolbar: object) -> None:
     wb.reloadActive()
 
 
-def remove_custom_toolbar_button(repo: AddonManagerRepo) -> None:
+def remove_custom_toolbar_button(repo: Addon) -> None:
     """If this repo contains a macro, look through the custom commands and
     see if one is set up for this macro. If so, remove it, including any
     toolbar entries."""

@@ -124,7 +124,6 @@ class _ViewProviderFixture:
         return ":/icons/Path_Datums.svg"
 
     def onChanged(self, vobj, prop):  # optional
-        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode("LineWidth", mode)
         vobj.setEditorMode("MarkerColor", mode)

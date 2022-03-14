@@ -23,12 +23,14 @@
 #ifndef GUI_VECTORLISTEDITOR_H
 #define GUI_VECTORLISTEDITOR_H
 
-#include <QDialog>
-#include <QList>
 #include <QAbstractTableModel>
+#include <QDialog>
 #include <QItemDelegate>
+#include <QList>
+
 #include <memory>
 #include <Base/Vector3D.h>
+
 
 namespace Gui {
 

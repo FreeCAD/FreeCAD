@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -37,8 +36,6 @@
 #endif
 
 #include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <CXX/Exception.hxx>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"

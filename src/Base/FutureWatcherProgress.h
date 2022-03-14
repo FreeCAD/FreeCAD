@@ -27,6 +27,7 @@
 #include <QObject>
 #include <Base/Sequencer.h>
 
+
 namespace Base
 {
 

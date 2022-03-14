@@ -26,12 +26,14 @@
 # include <Standard_math.hxx>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/WaitCursor.h>
 
 #include "DlgPartCylinderImp.h"

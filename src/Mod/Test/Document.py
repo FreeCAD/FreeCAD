@@ -33,6 +33,17 @@ class DocumentBasicCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("CreateTest")
 
+  def testAccessByNameOrID(self):
+    obj = self.Doc.addObject("App::DocumentObject", "MyName")
+
+    with self.assertRaises(TypeError):
+      self.Doc.getObject([1])
+
+    self.assertEqual(self.Doc.getObject(obj.Name), obj)
+    self.assertEqual(self.Doc.getObject("Unknown"), None)
+    self.assertEqual(self.Doc.getObject(obj.ID), obj)
+    self.assertEqual(self.Doc.getObject(obj.ID+1), None)
+
   def testCreateDestroy(self):
     #FIXME: Causes somehow a ref count error but it's _not_ FreeCAD.getDocument()!!!
     #If we remove the whole method no error appears.

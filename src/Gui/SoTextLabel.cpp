@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -33,28 +32,26 @@
 # include <GL/gl.h>
 # endif
 # include <cfloat>
-# include <algorithm>
 # include <QFontMetrics>
 # include <QPainter>
 # include <QPen>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/misc/SoState.h>
 #endif
 
 #include <Inventor/C/basic.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+
 #if COIN_MAJOR_VERSION > 3
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #else
@@ -62,10 +59,12 @@
 #endif
 
 #include <QtOpenGL.h>
+
 #include "SoTextLabel.h"
-#include "SoFCInteractiveElement.h"
 #include "BitmapFactory.h"
+#include "SoFCInteractiveElement.h"
 #include "Tools.h"
+
 
 using namespace Gui;
 

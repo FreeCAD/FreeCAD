@@ -25,10 +25,14 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QPointer>
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <boost_signals2.hpp> 
+
+#include <App/PropertyUnits.h>
 
 namespace TechDraw{
     class DrawPage;
@@ -50,6 +54,8 @@ public:
     virtual ~ViewProviderPage();
 
     App::PropertyBool  ShowFrames;
+    App::PropertyBool  ShowGrid;
+    App::PropertyDistance GridSpacing;
 
     virtual void attach(App::DocumentObject *) override;
     virtual void setDisplayMode(const char* ModeName) override;
@@ -94,6 +100,7 @@ public:
     QGVPage *getGraphicsView() { return m_graphicsView; }
     void setGraphicsView(QGVPage* gv);
     virtual bool canDelete(App::DocumentObject* obj) const override;
+    void  setGrid(void);
 
 protected:
     bool setEdit(int ModNum) override;

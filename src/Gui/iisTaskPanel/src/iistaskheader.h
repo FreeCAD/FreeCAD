@@ -8,13 +8,13 @@
 #ifndef IISTASKHEADER_H
 #define IISTASKHEADER_H
 
-#include <QtGui>
+#include <QEvent>
 #include <QFrame>
 #include <QLabel>
-#include <QEvent>
 #include <QMouseEvent>
 
 #include "iistaskpanel_global.h"
+
 
 class iisTaskPanelScheme;
 struct iisIconLabelScheme;

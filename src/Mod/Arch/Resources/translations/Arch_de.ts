@@ -2890,17 +2890,17 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Fenster basiert auf keiner Skizze. Fenster nicht ausgerichtet oder in der Größe angepasst.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Keine Breiten- und/oder Höhenbegrenzung in Fensterskizze. Fenster wird nicht verändert.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Kein Fenster gefunden. Kann nicht fortfahren.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -4128,12 +4128,12 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Mit einer Linie beschneiden</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Beschneidet ein Objekt mit einer Linie</translation>
     </message>
   </context>
   <context>
@@ -4151,12 +4151,12 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
       <source>Cut with plane</source>
-      <translation>Schneiden in einer Ebene</translation>
+      <translation>Mit einer Ebene beschneiden</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="103"/>
       <source>Cut an object with a plane</source>
-      <translation>Schneiden eines Objekts in einer Ebene</translation>
+      <translation>Beschneidet ein Objekt mit einer Ebene</translation>
     </message>
   </context>
   <context>

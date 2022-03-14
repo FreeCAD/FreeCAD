@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QApplication>
 # include <QAction>
+# include <QApplication>
 # include <QToolBar>
 # include <QToolButton>
 #endif
 
 #include "ToolBarManager.h"
-#include "MainWindow.h"
 #include "Application.h"
 #include "Command.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 

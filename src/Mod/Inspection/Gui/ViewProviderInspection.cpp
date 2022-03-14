@@ -33,6 +33,8 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/lists/SoPickedPointList.h> 
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoButtonEvent.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>

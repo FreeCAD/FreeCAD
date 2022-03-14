@@ -8,7 +8,6 @@
 #ifndef ANDROIDPANELSCHEME_H
 #define ANDROIDPANELSCHEME_H
 
-
 #include "actionpanelscheme.h"
 
 

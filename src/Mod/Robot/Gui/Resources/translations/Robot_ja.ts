@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>新しい軌跡を作成</translation>
     </message>
   </context>
   <context>

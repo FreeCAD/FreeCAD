@@ -59,7 +59,7 @@
 		<Attribute Name="Urls" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
-					List of URLs as objects with 'location' and 'urltype' string attributes, where urltype is one of:
+					List of URLs as objects with 'location' and 'type' string attributes, where type is one of:
 					* website
 					* repository
 					* bugtracker
@@ -173,6 +173,16 @@ limited to 0.20 as the lowest known version since the metadata standard was adde
 				</UserDocu>
 			</Documentation>
 		</Methode>
+
+    <Methode Name="supportsCurrentFreeCAD">
+      <Documentation>
+        <UserDocu>supportsCurrentFreeCAD()
+Returns false if this metadata object directly indicates that it does not support the current
+version of FreeCAD, or true if it makes no indication, or specifically indicates that it does
+support the current version. Does not recurse into Content items.
+        </UserDocu>
+      </Documentation>
+    </Methode>
 
 		<Methode Name="getGenericMetadata">
 			<Documentation>

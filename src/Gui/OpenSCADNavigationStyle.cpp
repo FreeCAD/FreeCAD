@@ -23,25 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
 # include "InventorAll.h"
-# include <QAction>
-# include <QActionGroup>
 # include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QList>
-# include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 #endif
 
-#include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
-#include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
+
 
 using namespace Gui;
 

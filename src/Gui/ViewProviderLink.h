@@ -20,17 +20,16 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_LINK_H
 #define GUI_VIEWPROVIDER_LINK_H
 
-#include <boost/preprocessor/seq/for_each.hpp>
-#include <App/PropertyGeo.h>
 #include <App/Link.h>
+
 #include "SoFCUnifiedSelection.h"
-#include "ViewProviderPythonFeature.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
+#include "ViewProviderPythonFeature.h"
+
 
 class SoBase;
 class SoDragger;

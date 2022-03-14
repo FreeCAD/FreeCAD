@@ -91,9 +91,9 @@ Die 'Achse' geht durch diesen Punkt.</translation>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation>Das Achsenobjekt, das den Wert von 'Achse' und 'Zentrum' überschreibt, zum Beispiel eine Bezugslinie.
+      <translation>Das Achsenobjekt, welches den Wert von „Achse“ und „Zentrum“ überschreibt, zum Beispiel eine Bezugslinie.
 Seine Platzierung, Position und Drehung werden beim Erstellen von Polar- und Kreisanordnungen verwendet.
-Lassen Sie diese Eigenschaft leer, um 'Achse' und 'Zentrum' manuell setzen zu können.</translation>
+Lassen Sie diese Eigenschaft leer, um „Achse“ und „Zentrum“ manuell setzen zu können.</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>
@@ -447,10 +447,10 @@ Dieser Punkt kann mit einem Pfeil oder einem anderen Symbol geschmückt werden.<
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation>Objekt und optional Unterelement, dessen Eigenschaften als 'Text'
-angezeigt werden, abhängig von 'Bezeichnunstyp'.
+      <translation>Objekt und optional Unterelement, dessen Eigenschaften als „Text“
+angezeigt werden, abhängig von „Bezeichnunstyp“.
 
-'Ziel' wird nicht verwendet, wenn 'Bezeichnungstyp' auf 'Benutzerdefiniert' eingestellt ist.</translation>
+„Ziel“ wird nicht verwendet, wenn „Bezeichnungstyp“ auf „Benutzerdefiniert“ eingestellt ist.</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -518,9 +518,9 @@ The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
       <translation>Der Text, der von dieser Bezeichnung angezeigt wird.
 
 Diese Eigenschaft ist schreibgeschützt, da der endgültige Text vom 
-'Bezeichnungstyp' und dem in 'Ziel' definierten Objekt abhängt.
-Der 'Benutzerdefinierte Text' wird nur angezeigt, wenn 'Bezeichnung Typ'
-auf 'Benutzerdefiniert' gesetzt ist.</translation>
+„Bezeichnungstyp“ und dem in 'Ziel' definierten Objekt abhängt.
+Der „benutzerdefinierte Text“ wird nur angezeigt, wenn „Bezeichnung Typ“
+auf „benutzerdefiniert“ gesetzt ist.</translation>
     </message>
     <message>
       <location filename="label.py" line="216"/>
@@ -534,12 +534,11 @@ For 'Position', 'Length', and 'Area' these properties will be extracted from the
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
       <translation>Die Art der Informationen, die auf dieser Bezeichnung angezeigt werden.
 
-Wenn 'Benutzerdefiniert' ausgewählt ist, wird der Inhalt von 'Benutzerdefinierter Text' verwendet.
-Bei anderen Typen wird die Zeichenfolge automatisch aus dem unter 'Ziel' definierten Objekt berechnet.
-'Bezeichnung' und 'Material' funktionieren nur für Objekte mit diesen Eigenschaften, z. B. Arch-Objekte.
+Wenn „Benutzerdefiniert“ ausgewählt ist, wird der Inhalt von „Benutzerdefinierter Text“ verwendet.
+Bei anderen Typen wird die Zeichenfolge automatisch aus dem unter „Ziel“ definierten Objekt berechnet.
+„Bezeichnung“ und „Material“ funktionieren nur für Objekte mit diesen Eigenschaften, z. B. Arch-Objekte.
 
-Für 'Position', 'Länge' und 'Fläche' werden diese Eigenschaften aus dem Hauptobjekt in 'Ziel' extrahiert.
-oder aus dem Unterelement 'VertexN', 'EdgeN' bzw. 'FaceN', falls angegeben.</translation>
+Für „Position“, „Länge“ und „Fläche“ werden diese Eigenschaften aus dem Hauptobjekt in „Ziel“ extrahiert, oder aus dem Unterelement „VertexN“, „EdgeN“ bzw. „FaceN“, falls angegeben.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="47"/>
@@ -741,14 +740,14 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
       <translation>Maßstab des für dieses Objekt verwendeten Musters</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Die Form dieses Objekts</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Die von diesem Objekt verwendete Musterrotation</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Die Form dieses Objekts</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -763,7 +762,7 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation>Der Grad der Bezier-Funktion</translation>
+      <translation>Der Grad der Bézierfunktion</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -773,7 +772,7 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation>Ob die Bezier-Kurve geschlossen sein soll oder nicht</translation>
+      <translation>Ob die Bézierkurve geschlossen sein soll oder nicht</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
@@ -1722,25 +1721,25 @@ Die Anordnung kann in eine orthogonale oder polare Anordnung durch ändern des T
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation>Bézier-Kurve</translation>
+      <translation>Bézierkurve</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation>Bézier-Kurve</translation>
+      <translation>Bézierkurve</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Erstellt eine N-Grad Bezier Kurve. Je mehr Punkte du auswählst, desto höher ist der Grad.
+      <translation>Erstellt eine N-Grad Bézierkurve. Je mehr Punkte du auswählst, desto höher ist der Grad.
 STRG zum Einrasten, SHIFT zum Einschränken.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Erstellt eine N-Grad Bezier Kurve. Je mehr Punkte du auswählst, desto höher ist der Grad.
+      <translation>Erstellt eine N-Grad Bézierkurve. Je mehr Punkte du auswählst, desto höher ist der Grad.
 STRG zum Einrasten, SHIFT zum Einschränken.</translation>
     </message>
   </context>
@@ -1759,12 +1758,12 @@ STRG zum Einrasten, SHIFT zum Einschränken.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation>Erstelle verschiedene Arten von Bezierkurven.</translation>
+      <translation>Erstelle verschiedene Arten von Bézierkurve.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of Bezier curves.</source>
-      <translation>Erstelle verschiedene Arten von Bezierkurven.</translation>
+      <translation>Erstelle verschiedene Arten von Bézierkurve.</translation>
     </message>
   </context>
   <context>
@@ -1821,19 +1820,19 @@ Der resultierende Klon kann in jeder seiner drei Richtungen skaliert werden.</tr
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation>Kubische Bezierkurve</translation>
+      <translation>Kubische Bézierkurve</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
-      <translation>Kubische Bezierkurve</translation>
+      <translation>Kubische Bézierkurve</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Erstellt eine Bezier Kurve aus Segmenten 2. Grades (quadratisch) und 3. Grades (kubisch). Klicken und ziehen, um jedes Segment zu definieren.
+      <translation>Erstellt eine Bézierkurve aus Segmenten 2. Grades (quadratisch) und 3. Grades (kubisch). Klicken und ziehen, um jedes Segment zu definieren.
 Nachdem die Kurve erstellt wurde, kannst du zurück gehen und jeden Kontrollpunkt bearbeiten und die Eigenschaften jedes Knotens festlegen.
 STRG zum Einrasten, SHIFT zum Einschränken.</translation>
     </message>
@@ -1842,7 +1841,7 @@ STRG zum Einrasten, SHIFT zum Einschränken.</translation>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Erstellt eine Bezier Kurve aus Segmenten 2. Grades (quadratisch) und 3. Grades (kubisch). Klicken und ziehen, um jedes Segment zu definieren.
+      <translation>Erstellt eine Bézierkurve aus Segmenten 2. Grades (quadratisch) und 3. Grades (kubisch). Klicken und ziehen, um jedes Segment zu definieren.
 Nachdem die Kurve erstellt wurde, kannst du zurück gehen und jeden Kontrollpunkt bearbeiten und die Eigenschaften jedes Knotens festlegen.
 STRG zum Einrasten, SHIFT zum Einschränken.</translation>
     </message>
@@ -2086,13 +2085,10 @@ If many objects or many subelements are selected, only the first one in each cas
 will be used to provide information to the label.</source>
       <translation>Erstellt eine Bezeichnung, die optional an ein ausgewähltes Objekt oder Unterelement angehängt ist.
 
-Wähle zuerst einen Scheitelpunkt, eine Kante oder eine Fläche des Objekts, dann rufe diesen Befehl auf
-und lege die Position der Hinweislinie und des Textes fest.
-Die Bezeichnung kann Informationen über das Objekt und das ausgewählte Unterelement
-anzeigen.
+Wähle zuerst einen Scheitelpunkt, eine Kante oder eine Fläche des Objekts, dann rufe diesen Befehl auf und lege die Position der Hinweislinie und des Textes fest.
+Die Bezeichnung kann Informationen über das Objekt und das ausgewählte Unterelement anzeigen.
 
-Wenn mehrere Objekte oder Unterelemente ausgewählt sind, wird jeweils nur das erste
-verwendet, um Informationen auf der Bezeichnung anzuzeigen.</translation>
+Wenn mehrere Objekte oder Unterelemente ausgewählt sind, wird jeweils nur das erste verwendet, um Informationen auf der Bezeichnung anzuzeigen.</translation>
     </message>
   </context>
   <context>
@@ -2218,7 +2214,7 @@ First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
       <translation>Erstellt Kopien des ausgewählten Objekts entlang eines ausgewählten Pfades.
 Wähle zuerst das Objekt aus und wähle danach den Pfad.
-Der Pfad kann eine Polylinie, B-Spline, Bezierkurve oder sogar Kanten von anderen Objekten sein.</translation>
+Der Pfad kann eine Polylinie, B-Spline, Bézierkurve oder sogar Kanten von anderen Objekten sein.</translation>
     </message>
   </context>
   <context>
@@ -2250,7 +2246,7 @@ First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
       <translation>Erstellt Kopien des ausgewählten Objekts entlang eines ausgewählten Pfades und verdreht die Kopien.
 Wähle zuerst das Objekt und wähle danach den Pfad.
-Der Pfad kann eine Polylinie, B-Spline, Bezierkurve oder sogar Kanten von anderen Objekten sein.</translation>
+Der Pfad kann eine Polylinie, B-Spline, Bézierkurve oder sogar Kanten von anderen Objekten sein.</translation>
     </message>
   </context>
   <context>
@@ -5101,7 +5097,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
     <message>
       <location filename="gui_beziers.py" line="451"/>
       <source>Create BezCurve</source>
-      <translation>Erstelle Bézierkurve</translation>
+      <translation>Bézierkurve Erstellen</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="376"/>
@@ -5206,7 +5202,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
     <message>
       <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation>Bezeichnung erstellen</translation>
+      <translation>Beschriftung erstellen</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="218"/>
@@ -5476,7 +5472,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
     <message>
       <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation>Versatz von Bezierkurven wird derzeit nicht unterstützt</translation>
+      <translation>Versatz von Bézierkurven wird derzeit nicht unterstützt</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="448"/>
@@ -7150,7 +7146,7 @@ Beachten Sie, dass dies nicht vollständig unterstützt wird und viele Objekte m
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation>Aktivieren Sie diese Option, wenn Sie während eines Downgrade / Upgrade möchten, dass die Flächenbezeichnungen vom ursprünglichen Objektnamen und umgekehrt abgeleitet werden (nur splitFaces und makeShell)</translation>
+      <translation>Aktivieren Sie diese Option, wenn Sie während eines Downgrade/Upgrade möchten, dass die Flächenbezeichnungen vom ursprünglichen Objektnamen und umgekehrt abgeleitet werden (nur splitFaces und makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="349"/>

@@ -23,18 +23,18 @@
 #ifndef BASE_READER_H
 #define BASE_READER_H
 
-
-#include <string>
-#include <map>
 #include <bitset>
+#include <map>
 #include <memory>
+#include <sstream>
+#include <string>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "FileInfo.h"
-#include "Writer.h"
+
 
 namespace zipios {
 class ZipInputStream;
@@ -47,7 +47,7 @@ XERCES_CPP_NAMESPACE_END
 
 namespace Base
 {
-
+class Persistence;
 
 /** The XML reader class
  * This is an important helper class for the store and retrieval system
@@ -296,7 +296,6 @@ class BaseExport Reader : public std::istream
 {
 public:
     Reader(std::istream&, const std::string&, int version);
-    ~Reader();
     std::istream& getStream();
     std::string getFileName() const;
     int getFileVersion() const;

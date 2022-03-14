@@ -4,6 +4,22 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation type="unfinished">Create new toolbar</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>Futtatás</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
       <translation>{version} telepítve ekkor {date}</translation>
@@ -91,7 +107,7 @@
     <message>
       <location filename="package_details.py" line="354"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>FIGYELEM: Ehhez a bővítményhez FreeCAD szükséges </translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
@@ -104,22 +120,22 @@
     <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>Nem lehetett betölteni a README-adatokat a(z) {} URL-címről</translation>
     </message>
     <message>
       <location filename="package_details.py" line="577"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Kész</translation>
     </message>
     <message>
       <location filename="package_details.py" line="600"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>Módosított git hiv &apos;{}&apos; -- indítsa újra a Kiegészítők használatához.</translation>
     </message>
     <message>
       <location filename="package_details.py" line="636"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>JavaScript jelentés lap</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
@@ -149,7 +165,17 @@
     <message>
       <location filename="package_details.py" line="786"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>Ág módosítása</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>Bekapcsolás</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>Letilt</translation>
     </message>
     <message>
       <location filename="package_details.py" line="424"/>
@@ -159,9 +185,9 @@
     <message numerus="yes">
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+      <translation>
+        <numerusform>A QtWebEngine Python-kötések nincsenek telepítve - tartalék README kijelzővel. A részletekért és a telepítési útmutatókért lásd: Jelentésnézet.</numerusform>
+        <numerusform>A QtWebEngine Python-kötések nincsenek telepítve - tartalék README kijelzővel. A részletekért és a telepítési útmutatókért lásd: Jelentésnézet.</numerusform>
       </translation>
     </message>
     <message>
@@ -210,11 +236,6 @@
       <translation>frissítve</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation>Frissítve</translation>
-    </message>
-    <message>
       <location filename="package_list.py" line="382"/>
       <source>Author</source>
       <translation>Létrehozó</translation>
@@ -235,6 +256,16 @@
       <translation>Újraindításra várva</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation type="unfinished">DISABLED</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation>Telepített verzió</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
       <translation>Kattintson a csomag részleteiért</translation>
@@ -250,9 +281,9 @@
       <translation>Kattintson a makró részleteiért</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>Telepített verzió</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation>Frissítve</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -442,6 +473,11 @@
       <translation>Hiba történt makrók GitHubról történő letöltése közben</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Leírások lekérdezése...</translation>
@@ -527,9 +563,24 @@
       <translation>Kérem először telepítse a hiányzó összetevőket.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makró leírásának lekérése...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Információ beolvasása git-ből</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Hiba: Nem található a zip formátum</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Információ beolvasása wiki-ből</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -542,29 +593,19 @@
       <translation>Sikeresen telepítve</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makró leírásának lekérése...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Információ beolvasása git-ből</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Információ beolvasása wiki-ből</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>Hiba a modul frissítésekor </translation>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation type="unfinished">Error updating module</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1078"/>
       <source>Please fix manually</source>
       <translation>Kérem javítsa manuálisan</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Hiba a modul frissítésekor </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -629,18 +670,18 @@
     <message>
       <location filename="change_branch.py" line="101"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>VESZÉLY: Fejlesztői funkció</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="114"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Helyi módosítások vannak</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="192"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ág</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="178"/>
@@ -652,42 +693,42 @@
       <location filename="change_branch.py" line="261"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
+      <translation>
+        <numerusform>Fajta</numerusform>
+        <numerusform>Típus</numerusform>
       </translation>
     </message>
     <message>
       <location filename="change_branch.py" line="265"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Helyi név</translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="271"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
-      <translation type="unfinished">
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
+      <translation>
+        <numerusform>Követés</numerusform>
+        <numerusform>Monitor</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
+      <translation>
+        <numerusform>Helyi frissítve</numerusform>
+        <numerusform>Helyi verzió frissítve</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
+      <translation>
+        <numerusform>Távoli frissítve</numerusform>
+        <numerusform>Távoli verzió frissítve</numerusform>
       </translation>
     </message>
     <message>
@@ -746,6 +787,16 @@
       <translation>Gyorsítótár frissítése...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Frissítés keresése...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} frissítés(ek) alkalmazása</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Az itt telepíthető bővítmények hivatalosan nem részei a FreeCAD-nek, és azokat nem vizsgáljfelül a FreeCAD csapata. Győződjön meg róla, hogy ismeri, amit telepíteni akar!</translation>
@@ -764,11 +815,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>QtNetwork iportálhatatlan - lásd a Jelentésnézetet a részletekért. Az Addon Manager nem érhető el.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Frissítés keresése...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -811,6 +857,11 @@
       <translation>Makró sikeresen törölve.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Makró eltávolítása sikertelen.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
       <translation>Bővítménykezelő: Kihagyom a frissítések keresését, mert az Automatikus ellenőrzés felhasználói beállítás Hamis értékre van állítva</translation>
@@ -819,11 +870,6 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Újraindítás szükséges</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} frissítés(ek) alkalmazása</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -895,11 +941,6 @@
       <translation>Sikerült</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation>Kiegészítő uninstall.py forgatókönyvének végrehajtása sikertelen volt. Folytatja az eltávolítást...</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
       <translation>Összes csomag frissítése sikertelen:</translation>
@@ -935,9 +976,14 @@
       <translation>Biztosan eltávolítja ezt a Kiegészítőt?</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Makró eltávolítása sikertelen.</translation>
+      <location filename="AddonManager.py" line="1513"/>
+      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
+      <translation>Kiegészítő uninstall.py forgatókönyvének végrehajtása sikertelen volt. Folytatja az eltávolítást...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation type="unfinished">Successfully uninstalled {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

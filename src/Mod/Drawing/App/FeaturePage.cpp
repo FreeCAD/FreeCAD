@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <fstream>
+# include <iostream>
 # include <sstream>
 #endif
 
@@ -33,7 +35,6 @@
 #include <Base/FileInfo.h>
 #include <App/Application.h>
 #include <boost/regex.hpp>
-#include <iostream>
 #include <iterator>
 
 #include "FeaturePage.h"

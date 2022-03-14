@@ -4244,7 +4244,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="448"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>Uhol otočenia:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="513"/>
@@ -4259,25 +4259,25 @@ the size of the resulting STEP file.</translation>
       <location filename="../../DlgPrimitives.ui" line="553"/>
       <location filename="../../DlgPrimitives.ui" line="1439"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>Uhol v prvom smere:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="560"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Uhol v prvom smere</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="579"/>
       <location filename="../../DlgPrimitives.ui" line="1465"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>Uhol v druhom smere:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="586"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Uhol v druhom smere</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="640"/>

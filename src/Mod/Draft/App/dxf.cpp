@@ -3,6 +3,9 @@
 // This program is released under the BSD license. See the file COPYING for details.
 
 #include "dxf.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 using namespace std;
 static const double Pi = 3.14159265358979323846264338327950288419716939937511;

@@ -10,6 +10,9 @@
 #include <cmath>
 
 #include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -1772,7 +1775,13 @@ CDxfRead::~CDxfRead()
 
 double CDxfRead::mm( double value ) const
 {
-    if(m_measurement_inch)
+    //re #6461
+    //this if handles situation of malformed DXF file where
+    //MEASUREMENT specifies English units, but
+    //INSUNITS specifies millimeters or is not specified
+    //(millimeters is our default)
+    if(m_measurement_inch &&
+        (m_eUnits == eMillimeters))
     {
         value *= 25.4;
     }

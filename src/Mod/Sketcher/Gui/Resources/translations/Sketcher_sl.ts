@@ -690,7 +690,7 @@ glede na črto ali tretjo točko</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConvertToNURB</name>
+    <name>CmdSketcherConvertToNURBS</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
@@ -5620,17 +5620,17 @@ Reševalnik BFGS uporablja algoritem Broyden–Fletcher–Goldfarb–Shanno.</tr
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="114"/>
       <source>Maximum number of iterations of the default algorithm</source>
-      <translation>Največje število ponovitev privzetega algoritma</translation>
+      <translation>Največje število približevalnih ponovitev privzetega algoritma</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
       <source>Maximum iterations:</source>
-      <translation>Največ ponovitev:</translation>
+      <translation>Največ približevalnih ponovitev:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="124"/>
       <source>Maximum iterations to find convergence before solver is stopped</source>
-      <translation>Največje število ponovitev pri iskanju zbližanja preden se reševalnik ustavi</translation>
+      <translation>Največje število ponovitev pri iskanju zblížanja preden se reševalnik ustavi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
@@ -5746,12 +5746,12 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
       <source>Redundant max. iterations:</source>
-      <translation>Največje število čezmernih ponovitev:</translation>
+      <translation>Najv. približevalnih ponovitev za čezmernost:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="425"/>
       <source>Same as 'Maximum iterations', but for redundant solving</source>
-      <translation>Enako kot "Največ ponovitev", vendar za reševanje odvečnosti</translation>
+      <translation>Enako kot "Največ približevalnih ponovitev", vendar za reševanje odvečnosti</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
@@ -5831,7 +5831,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration Level</source>
-      <translation>Raven ponavljanja</translation>
+      <translation>Raven približevalnega ponavljanja</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="634"/>

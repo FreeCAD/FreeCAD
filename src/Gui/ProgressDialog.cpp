@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QElapsedTimer>
 # include <QMessageBox>
 # include <QPushButton>
-# include <QElapsedTimer>
 # include <QThread>
 # include <QTime>
 #endif
+
 #include "ProgressDialog.h"
 #include "MainWindow.h"
 

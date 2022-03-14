@@ -200,10 +200,16 @@ def InitApplications():
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
                 meta = FreeCAD.Metadata(MetadataFile)
+                if not meta.supportsCurrentFreeCAD():
+                    Msg(f'NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped\n')
+                    continue
                 content = meta.Content
                 if "workbench" in content:
                     workbenches = content["workbench"]
                     for workbench in workbenches:
+                        if not workbench.supportsCurrentFreeCAD():
+                            Msg(f'NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped\n')
+                            continue
                         subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
                         subdirectory = subdirectory.replace("/",os.path.sep)
                         subdirectory = os.path.join(Dir, subdirectory)
@@ -226,16 +232,23 @@ def InitApplications():
             if freecad_module_ispkg:
                 Log('Init: Initializing ' + freecad_module_name + '\n')
                 try:
-
-                    stopFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name, "ADDON_DISABLED")
+                    # Check for a stopfile
+                    stopFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "ADDON_DISABLED")
                     if os.path.exists(stopFile):
                         Msg(f'NOTICE: Addon "{freecad_module_name}" disabled by presence of ADDON_DISABLED stopfile\n')
                         continue
 
+                    # Make sure that package.xml (if present) does not exclude this version of FreeCAD
+                    MetadataFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "package.xml")
+                    if os.path.exists(MetadataFile):
+                        meta = FreeCAD.Metadata(MetadataFile)
+                        if not meta.supportsCurrentFreeCAD():
+                            Msg(f'NOTICE: Addon "{freecad_module_name}" does not support this version of FreeCAD, so is being skipped\n')
+                            continue
+
                     freecad_module = importlib.import_module(freecad_module_name)
                     extension_modules += [freecad_module_name]
                     if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-                        stopFile = os.path.join(freecad_module.__path__, "ADDON_DISABLED")
                         importlib.import_module(freecad_module_name + '.init')
                         Log('Init: Initializing ' + freecad_module_name + '... done\n')
                     else:

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
 # include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
@@ -35,16 +33,14 @@
 # include <QTimer>
 #endif
 
+#include <Gui/ActionFunction.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+
 #include "TaskView.h"
 #include "TaskDialog.h"
-#include "TaskAppearance.h"
 #include "TaskEditControl.h"
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Control.h>
-#include <Gui/ActionFunction.h>
-#include <Gui/MainWindow.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -52,15 +48,9 @@
 #include <Gui/QSint/actionpanel/freecadscheme.h>
 #endif
 
+
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
-
-//**************************************************************************
-//**************************************************************************
-// TaskContent
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 
 //**************************************************************************

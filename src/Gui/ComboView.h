@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_COMBOVIEW_H
 #define GUI_DOCKWND_COMBOVIEW_H
 
 #include "DockWindow.h"
-#include "Selection.h"
+
 
 class QTabWidget;
 class QTreeView;

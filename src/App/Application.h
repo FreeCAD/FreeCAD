@@ -31,13 +31,15 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
-#include <Base/PyObjectBase.h>
 
+// forward declarations
+typedef struct _object PyObject;
+typedef struct PyMethodDef PyMethodDef;
 
 namespace Base
 {
-    class ConsoleObserverStd;
-    class ConsoleObserverFile;
+class ConsoleObserverStd;
+class ConsoleObserverFile;
 }
 
 namespace App

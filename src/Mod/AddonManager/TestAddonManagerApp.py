@@ -23,7 +23,17 @@
 # ***************************************************************************
 
 # Unit test for the Addon Manager module
-from AddonManagerTest.app.test_utilities import TestUtilities as AddonManagerTestUtilities
+from AddonManagerTest.app.test_utilities import (
+    TestUtilities as AddonManagerTestUtilities,
+)
+from AddonManagerTest.app.test_addon import (
+    TestAddon as AddonManagerTestAddon,
+)
+from AddonManagerTest.app.test_macro import (
+    TestMacro as AddonManagerTestMacro,
+)
 
 # dummy usage to get flake8 and lgtm quiet
 False if AddonManagerTestUtilities.__name__ else True
+False if AddonManagerTestAddon.__name__ else True
+False if AddonManagerTestMacro.__name__ else True

@@ -169,6 +169,17 @@ int DrawSketchHandler::getHighestCurveIndex(void)
     return sketchgui->getSketchObject()->getHighestCurveIndex();
 }
 
+unsigned long DrawSketchHandler::getCrosshairColor()
+{
+    unsigned long color = 0xFFFFFFFF; // white
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
+    // from rgba to rgb
+    color = (color >> 8) & 0xFFFFFF;
+    return color;
+}
+
 void DrawSketchHandler::setCrosshairCursor(const char* svgName) {
     QString cursorName = QString::fromLatin1(svgName);
     const unsigned long defaultCrosshairColor = 0xFFFFFF;
@@ -400,12 +411,15 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     if (preSelPnt != -1)
         sketchgui->getSketchObject()->getGeoVertexIndex(preSelPnt, GeoId, PosId);
     else if (preSelCrv != -1){
-        GeoId = preSelCrv;
-        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(preSelCrv);
 
-        if(geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
-            const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
-            hitShapeDir= line->getEndPoint()-line->getStartPoint();
+        // ensure geom exists in case object was called before preselection is updated
+        if (geom) {
+            GeoId = preSelCrv;
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
+                hitShapeDir= line->getEndPoint()-line->getStartPoint();
+            }
         }
 
     }

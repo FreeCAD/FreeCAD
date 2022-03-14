@@ -22,20 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <App/OriginGroupExtension.h>
-#include <App/Origin.h>
-
-#include "Application.h"
-#include "Document.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
-
 #include "ViewProviderOriginGroup.h"
 
 

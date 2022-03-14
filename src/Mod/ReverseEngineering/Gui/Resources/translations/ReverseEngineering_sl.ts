@@ -233,7 +233,7 @@
     </message>
     <message>
       <source>Iterations</source>
-      <translation>Ponovitve</translation>
+      <translation>Približevalne ponovitve</translation>
     </message>
     <message>
       <source>Size factor</source>

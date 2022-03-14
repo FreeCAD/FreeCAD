@@ -2895,12 +2895,12 @@ Building creation aborted.</source>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>В эскизе окна нет ограничений по ширине и/или высоте. Окно не изменилось.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Окно не найдено. Невозможно продолжить.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>

@@ -48,6 +48,7 @@
 #ifdef _PreComp_
 
 // standard
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>

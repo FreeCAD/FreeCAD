@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef __Qt4All__
-#define __Qt4All__
+#ifndef __QtAll__
+#define __QtAll__
 
 // Qt Toolkit
 // QtCore

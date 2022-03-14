@@ -20,32 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QVBoxLayout>
+ #include <QCheckBox>
+# include <QLabel>
+# include <QLineEdit>
 # include <QListWidget>
 # include <QListWidgetItem>
-# include <QLineEdit>
+# include <QMenu>
 # include <QTextStream>
 # include <QToolButton>
- #include <QCheckBox>
-# include <QMenu>
-# include <QLabel>
+# include <QVBoxLayout>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
-#include "SelectionView.h"
-#include "Command.h"
-#include "Application.h"
-#include "Document.h"
-#include "ViewProvider.h"
-#include "BitmapFactory.h"
 
-FC_LOG_LEVEL_INIT("Selection",true,true,true)
+#include "SelectionView.h"
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "Document.h"
+
+
+FC_LOG_LEVEL_INIT("Selection", true, true, true)
 
 using namespace Gui;
 using namespace Gui::DockWnd;

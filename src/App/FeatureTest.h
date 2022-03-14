@@ -21,15 +21,14 @@
  ***************************************************************************/
 
 
-
 #ifndef APP_FEATURETEST_H
 #define APP_FEATURETEST_H
 
-
 #include "DocumentObject.h"
-#include "PropertyUnits.h"
 #include "PropertyGeo.h"
 #include "PropertyLinks.h"
+#include "PropertyUnits.h"
+
 
 namespace App
 {

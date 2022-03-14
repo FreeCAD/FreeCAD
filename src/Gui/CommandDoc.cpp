@@ -35,10 +35,13 @@
 #include <boost/algorithm/string/replace.hpp>
 
 #include <App/AutoTransaction.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
 #include <App/GeoFeature.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include "Action.h"

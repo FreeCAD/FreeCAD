@@ -8,13 +8,13 @@
 #ifndef IISTASKGROUP_H
 #define IISTASKGROUP_H
 
-#include <QtGui>
-#include <QWidget>
-#include <QFrame>
 #include <QBoxLayout>
+#include <QFrame>
 #include <QPaintEvent>
+#include <QWidget>
 
 #include "iistaskpanel_global.h"
+
 
 class iisTaskPanelScheme;
 struct iisIconLabelScheme;

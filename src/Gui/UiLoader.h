@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_UILOADER_H
 #define GUI_UILOADER_H
 
@@ -33,7 +32,9 @@
 #else
 #include <QObject>
 #endif
+
 #include <CXX/Extensions.hxx>
+
 
 QT_BEGIN_NAMESPACE
 class QLayout;

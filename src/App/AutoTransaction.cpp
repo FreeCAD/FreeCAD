@@ -30,7 +30,7 @@
 #include "Transactions.h"
 
 
-FC_LOG_LEVEL_INIT("App",true,true)
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
@@ -239,5 +239,4 @@ void TransactionLocker::activate(bool enable)
 bool TransactionLocker::isLocked() {
     return _TransactionLock > 0;
 }
-
 

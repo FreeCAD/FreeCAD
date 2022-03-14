@@ -170,6 +170,7 @@ void DrawProjGroupItem::autoPosition()
 void DrawProjGroupItem::onDocumentRestored()
 {
 //    Base::Console().Message("DPGI::onDocumentRestored() - %s\n", getNameInDocument());
+    DrawView::onDocumentRestored();
     App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
     if (rc) {
         delete rc;
@@ -325,7 +326,7 @@ double DrawProjGroupItem::getScale(void) const
     double result = 1.0;
     auto pgroup = getPGroup();
     if (pgroup != nullptr) {
-        result = pgroup->Scale.getValue();
+        result = pgroup->getScale();
         if (!(result > 0.0)) {
             Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
             result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!

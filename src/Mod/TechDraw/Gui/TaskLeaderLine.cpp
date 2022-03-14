@@ -32,6 +32,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include <App/Document.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>

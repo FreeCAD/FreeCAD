@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef __InventorAll__
@@ -31,6 +30,8 @@
 # include <QImage>
 #endif
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
@@ -39,11 +40,11 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
-#include <Base/Rotation.h>
 #include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
 
 #include "View3DPy.h"
+
 #include "Document.h"
 #include "NavigationStyle.h"
 #include "PythonWrapper.h"
@@ -55,9 +56,9 @@
 #include "SoMouseWheelEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "View3DViewerPy.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
+
 
 using namespace Gui;
 
@@ -1228,7 +1229,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
 Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
 {
     int cameratype=-1;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {    // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {
         char* modename;
         PyErr_Clear();
         if (!PyArg_ParseTuple(args.ptr(), "s", &modename))
@@ -1305,10 +1306,10 @@ Py::Object View3DInventorPy::dump(const Py::Tuple& args)
 Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
         throw Py::Exception();
 
-    void* ptr = 0;
+    void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", object, &ptr, 0);
     }
@@ -1320,7 +1321,7 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
 }
 
 //FIXME: Once View3DInventor inherits from PropertyContainer we can use PropertyEnumeration.
-const char* StereoTypeEnums[]= {"None","Anaglyph","QuadBuffer","InterleavedRows","InterleavedColumns",NULL};
+const char* StereoTypeEnums[]= {"Mono","Anaglyph","QuadBuffer","InterleavedRows","InterleavedColumns",nullptr};
 
 Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
 {
@@ -1369,7 +1370,9 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        int mode = (int)(getView3DIventorPtr()->getViewer()->stereoMode());
+        int mode = int(getView3DIventorPtr()->getViewer()->stereoMode());
+        if (mode < 0 || mode > 4)
+            throw Py::ValueError("Invalid stereo mode");
         return Py::String(StereoTypeEnums[mode]);
     }
     catch (const Base::Exception& e) {

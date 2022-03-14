@@ -27,6 +27,7 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>

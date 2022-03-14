@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <cstdlib>
 #endif
 
 #include "PyObjectBase.h"
 #include "Console.h"
 #include "Interpreter.h"
+
 
 #define ATTR_TRACKING
 
@@ -235,7 +235,8 @@ PyObject* createWeakRef(PyObjectBase* ptr)
     static bool init = false;
     if (!init) {
        init = true;
-       PyType_Ready(&PyBaseProxyType);
+       if (PyType_Ready(&PyBaseProxyType) < 0)
+           return nullptr;
     }
 
     PyObject* proxy = ptr->baseProxy;

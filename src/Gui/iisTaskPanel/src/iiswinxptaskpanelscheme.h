@@ -10,7 +10,6 @@
 
 #include "iistaskpanelscheme.h"
 
-#include "iistaskpanel_global.h"
 
 class IISTASKPANEL_EXPORT iisWinXPTaskPanelScheme : public iisTaskPanelScheme
 {

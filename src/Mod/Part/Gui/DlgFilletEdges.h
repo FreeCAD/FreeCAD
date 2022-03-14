@@ -30,6 +30,9 @@
 #include <QStandardItemModel>
 #include <QItemDelegate>
 
+namespace Base {
+    class Quantity;
+}
 namespace Part { 
     class FilletBase;
     class Fillet;

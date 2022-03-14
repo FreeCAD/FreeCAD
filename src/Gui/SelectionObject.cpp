@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <sstream>
@@ -28,13 +27,13 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
+#include <Gui/SelectionObjectPy.h>
 
 #include "SelectionObject.h"
 #include "Selection.h"
 #include "Application.h"
 #include "Command.h"
-#include <Gui/SelectionObjectPy.h>
+
 
 using namespace Gui;
 

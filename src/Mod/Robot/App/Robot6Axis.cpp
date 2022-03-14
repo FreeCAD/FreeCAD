@@ -137,18 +137,21 @@ void Robot6Axis::readKinematic(const char * FileName)
 {
     char buf[120];
     std::ifstream in(FileName);
-    if(!in)return;
+    if (!in)
+        return;
+
     std::vector<std::string> destination;
     AxisDefinition temp[6];
 
     // over read the header
     in.getline(buf,119,'\n');
     // read 6 Axis
-    for( int i = 0; i<6; i++){
+    for (int i = 0; i < 6; i++) {
         in.getline(buf,79,'\n');
         destination.clear();
         split(std::string(buf),',',destination);
-        if(destination.size() < 8) continue;
+        if (destination.size() < 8)
+            continue;
         // transfer the values in kinematic structure
         temp[i].a        = atof(destination[0].c_str());
         temp[i].alpha    = atof(destination[1].c_str());

@@ -6,17 +6,17 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Развернуть сетку</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Получите плоское представление сетки.</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Развернуть грани</translation>
     </message>
   </context>
   <context>
@@ -425,14 +425,14 @@ A value in the range of 0.2-10.</source>
     <message>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>Вы выбрали тело без наконечника.
+Пожалуйста, либо установите наконечник, либо выберите другую форму.</translation>
     </message>
     <message>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation type="unfinished">You have selected a shape without faces.
-Select a different shape, please.</translation>
+      <translation>Вы выбрали форму без граней.
+Выберите другую форму, пожалуйста.</translation>
     </message>
     <message>
       <source>Select a shape for meshing, first.</source>

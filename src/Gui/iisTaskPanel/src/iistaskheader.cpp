@@ -5,15 +5,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QSizePolicy>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPainter>
+#include <QSizePolicy>
 #include <QTimer>
 
 #include "iistaskheader.h"
-#include "iistaskpanelscheme.h"
 #include "iisiconlabel.h"
+#include "iistaskpanelscheme.h"
+
 
 iisTaskHeader::iisTaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent)
     : QFrame(parent),

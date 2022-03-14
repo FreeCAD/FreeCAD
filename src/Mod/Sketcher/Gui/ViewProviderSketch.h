@@ -30,6 +30,7 @@
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/App/BodyBase.h>
 #include <Base/Tools2D.h>
+#include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
@@ -521,6 +522,7 @@ public:
     virtual bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
+    virtual bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states

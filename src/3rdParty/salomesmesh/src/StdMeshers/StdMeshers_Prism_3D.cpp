@@ -3611,10 +3611,10 @@ bool StdMeshers_PrismAsBlock::GetLayersTransformation(vector<gp_Trsf> &         
 
 //================================================================================
 /*!
- * \brief Check curve orientation of a bootom edge
+ * \brief Check curve orientation of a bottom edge
   * \param meshDS - mesh DS
   * \param columnsMap - node columns map of side face
-  * \param bottomEdge - the bootom edge
+  * \param bottomEdge - the bottom edge
   * \param sideFaceID - side face in-block ID
   * \retval bool - true if orientation coinside with in-block forward orientation
  */

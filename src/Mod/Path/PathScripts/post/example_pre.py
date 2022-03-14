@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 
-'''
+"""
 This is an example preprocessor file for the Path workbench. Its aim is to
 open a gcode file, parse its contents, and create the appropriate objects
 in FreeCAD. This preprocessor will not add imported gcode to an existing
@@ -30,7 +30,7 @@ job. For a more useful preprocessor, look at the gcode_pre.py file
 
 Read the Path Workbench documentation to know how to create Path objects
 from GCode.
-'''
+"""
 
 import os
 import Path
@@ -46,7 +46,7 @@ if LEVEL == PathLog.Level.DEBUG:
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 

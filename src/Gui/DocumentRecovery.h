@@ -25,12 +25,11 @@
 #define GUI_DIALOG_DOCUMENTRECOVERY_H
 
 #include <QDialog>
-#include <QScopedPointer>
-#include <QList>
 #include <QFileInfo>
 #include <QFileInfoList>
-#include <string>
-#include <functional>
+#include <QList>
+#include <QScopedPointer>
+
 
 namespace Gui { namespace Dialog {
 

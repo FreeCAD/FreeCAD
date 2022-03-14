@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_MENUMANAGER_H
 #define GUI_MENUMANAGER_H
 
 #include <string>
-#include <QStringList>
 #include <FCGlobal.h>
+
 
 class QAction;
 class QMenu;

@@ -94,7 +94,7 @@ namespace e57
       //! @param [out] imageHeight The image height (in pixels).
       //! @param [out] imageSize This is the total number of bytes for the image blob.
       //! @param [out] imageMaskType This is E57_PNG_IMAGE_MASK if "imageMask" is defined in the projection
-      //! @return Returns true if sucessful
+      //! @return Returns true if successful
       bool GetImage2DNodeSizes( StructureNode image, Image2DType &imageType, int64_t &imageWidth, int64_t &imageHeight,
                                 int64_t &imageSize, Image2DType &imageMaskType ) const;
 

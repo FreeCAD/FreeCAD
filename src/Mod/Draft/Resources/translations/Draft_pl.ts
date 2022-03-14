@@ -742,14 +742,14 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <translation>Skala wzoru używana przez ten obiekt</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Kształt tego obiektu</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Obrót wzoru używanego przez ten obiekt</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Kształt tego obiektu</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1753,7 +1753,7 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation>Narzędzia krzywych Béziera</translation>
+      <translation>Krzywe Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -2997,7 +2997,7 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation>Narzędzia krzywych Béziera</translation>
+      <translation>Krzywe Béziera</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3878,7 +3878,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation>Tryb dołaczenia:</translation>
+      <translation>Tryb odłączenia:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>

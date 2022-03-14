@@ -75,7 +75,6 @@ class ViewProvider(object):
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def onDelete(self, vobj, arg2=None):
@@ -83,7 +82,6 @@ class ViewProvider(object):
         vobj.Object.Proxy.onDelete(vobj.Object)
 
     def getDisplayMode(self, mode):
-        # pylint: disable=unused-argument
         return "Default"
 
     def _openTaskPanel(self, vobj, deleteOnReject):
@@ -98,12 +96,10 @@ class ViewProvider(object):
         self._openTaskPanel(vobj, True)
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         self._openTaskPanel(vobj, False)
         return True
 
     def unsetEdit(self, vobj, mode):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         self.panel = None
         return

@@ -1049,12 +1049,12 @@
     <message>
       <location filename="../../Command.cpp" line="1252"/>
       <source>Region clip filter</source>
-      <translation type="unfinished">Region clip filter</translation>
+      <translation>Eskualde-ebaketako iragazkia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1253"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the cliped region</translation>
+      <translation>Definitu/sortu eskualde ebaki bat definitzeko funtzioak erabiltzen dituen ebaketa-iragazki bat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1534"/>
@@ -1085,7 +1085,7 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Function cut filter</source>
-      <translation type="unfinished">Function cut filter</translation>
+      <translation>Eskualde-mozketako iragazkia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1103,12 +1103,12 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Line clip filter</source>
-      <translation type="unfinished">Line clip filter</translation>
+      <translation>Lerro-ebaketako iragazkia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>Definitu/sortu eremu bat lerro batean zehar ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
   </context>
   <context>
@@ -1121,12 +1121,12 @@
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Data at point clip filter</source>
-      <translation type="unfinished">Data at point clip filter</translation>
+      <translation>Datuak puntuan ebakitzeko iragazkia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Define/create a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field data at point</translation>
+      <translation>Definitu/sortu eremu bateko datuak puntu baten ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
   </context>
   <context>
@@ -1167,12 +1167,12 @@
     <message>
       <location filename="../../Command.cpp" line="1358"/>
       <source>Stress linearization plot</source>
-      <translation type="unfinished">Stress linearization plot</translation>
+      <translation>Estresa linealizatzeko trazaketa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1359"/>
       <source>Define/create stress linearization plots</source>
-      <translation type="unfinished">Define/create stress linearization plots</translation>
+      <translation>Definitu/sortu estresa linealizatzeko trazaketak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1389"/>
@@ -1184,7 +1184,7 @@
       <location filename="../../Command.cpp" line="1390"/>
       <location filename="../../Command.cpp" line="1396"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation type="unfinished">Select a Clip filter which clips a STRESS field along a line, please.</translation>
+      <translation>Hautatu ESTRES eremu bat lerro batean zehar ebakitzen duen ebaketa-iragazki bat.</translation>
     </message>
   </context>
   <context>
@@ -1197,7 +1197,7 @@
     <message>
       <location filename="../../Command.cpp" line="1652"/>
       <source>Post pipeline from result</source>
-      <translation type="unfinished">Post pipeline from result</translation>
+      <translation>Argitaratu kanalizazioa emaitzatik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1653"/>
@@ -1225,12 +1225,12 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Scalar clip filter</source>
-      <translation type="unfinished">Scalar clip filter</translation>
+      <translation>Ebaketa-iragazki eskalarra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field with a scalar value</translation>
+      <translation>Definitu/sortu eremu bat balio eskalar batekin ebakitzen duen ebaketa-iragazki bat</translation>
     </message>
   </context>
   <context>
@@ -1261,27 +1261,27 @@
     <message>
       <location filename="../../Command.cpp" line="353"/>
       <source>Make FEM constraint contact on face</source>
-      <translation type="unfinished">Make FEM constraint contact on face</translation>
+      <translation>Sortu FEM murrizketa-kontaktua aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
       <source>Make FEM constraint displacement on face</source>
-      <translation type="unfinished">Make FEM constraint displacement on face</translation>
+      <translation>Sortu FEM murrizketa-desplazamendua aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Make FEM constraint fixed geometry</source>
-      <translation type="unfinished">Make FEM constraint fixed geometry</translation>
+      <translation>Sortu FEM murrizketa finkoaren geometria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Create fluid boundary condition</source>
-      <translation type="unfinished">Create fluid boundary condition</translation>
+      <translation>Sortu jariakin-mugen baldintza</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Make FEM constraint force on geometry</source>
-      <translation type="unfinished">Make FEM constraint force on geometry</translation>
+      <translation>Sortu FEM murrizketa-indarra geometrian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
@@ -1291,42 +1291,42 @@
     <message>
       <location filename="../../Command.cpp" line="611"/>
       <source>Make FEM constraint heatflux on face</source>
-      <translation type="unfinished">Make FEM constraint heatflux on face</translation>
+      <translation>Sortu FEM murrizketaren bero-fluxua aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Make FEM constraint initial temperature on body</source>
-      <translation type="unfinished">Make FEM constraint initial temperature on body</translation>
+      <translation>Sortu FEM murrizketaren hasierako tenperatura gorputzean</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="699"/>
       <source>Make FEM constraint Plane Rotation face</source>
-      <translation type="unfinished">Make FEM constraint Plane Rotation face</translation>
+      <translation>Sortu FEM murrizketaren plano-biraketaren aurpegia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="741"/>
       <source>Make FEM constraint pressure on face</source>
-      <translation type="unfinished">Make FEM constraint pressure on face</translation>
+      <translation>Sortu FEM murrizketaren presioa aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="786"/>
       <source>Make FEM constraint spring on face</source>
-      <translation type="unfinished">Make FEM constraint spring on face</translation>
+      <translation>Sortu FEM murrizketaren malgukia aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="831"/>
       <source>Make FEM constraint for pulley</source>
-      <translation type="unfinished">Make FEM constraint for pulley</translation>
+      <translation>Sortu FEM murrizketa polearako</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Make FEM constraint temperature on face</source>
-      <translation type="unfinished">Make FEM constraint temperature on face</translation>
+      <translation>Sortu FEM murrizketaren tenperatura aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="920"/>
       <source>Make FEM constraint transform on face</source>
-      <translation type="unfinished">Make FEM constraint transform on face</translation>
+      <translation>Soetu FEM murrizketaren transformazioa aurpegian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1009"/>
@@ -1449,12 +1449,12 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>Sortu plano-funtzioa, bere jatorria eta normala abiapuntutzat hartuta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>Sortu esfera-funtzioa, bere zentroa eta erradioa abiapuntutzat hartuta</translation>
     </message>
   </context>
   <context>
@@ -1503,7 +1503,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="176"/>
       <source>Split writing of  *.inp</source>
-      <translation type="unfinished">Split writing of  *.inp</translation>
+      <translation>Zatitu *.inp fitxategiaren idazketa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="192"/>
@@ -1538,7 +1538,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="253"/>
       <source>Thermomech</source>
-      <translation type="unfinished">Thermomech</translation>
+      <translation>Termomekanika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="270"/>
@@ -1548,7 +1548,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
       <source>Time incrementation control parameter</source>
-      <translation type="unfinished">Time incrementation control parameter</translation>
+      <translation>Denbora handitzeko kontrol-parametroa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
@@ -1568,7 +1568,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
       <source>Number of CPU's to use (Spooles only)</source>
-      <translation type="unfinished">Number of CPU's to use (Spooles only)</translation>
+      <translation>Erabiliko den PUZ kopurua (spoolak soilik)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="334"/>
@@ -1583,7 +1583,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
       <source>Spooles</source>
-      <translation type="unfinished">Spooles</translation>
+      <translation>Spoolak</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
@@ -1613,7 +1613,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="479"/>
       <source>Beam, shell element 3D output format </source>
-      <translation type="unfinished">Beam, shell element 3D output format </translation>
+      <translation>Habea, oskol-elementuaren 3D irteeraren formatua </translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="491"/>
@@ -1729,10 +1729,10 @@ hasierako tenperatura:</translation>
 Every constraint and, if there are different materials, material
 consists of two mesh groups, faces and nodes where the
 constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every constraint and, if there are different materials, material
-consists of two mesh groups, faces and nodes where the
-constraint or material is applied.</translation>
+      <translation>Amaraun-taldeak ere esportatzen dira.
+Murrizketa guztiak eta, material desberdinak badaude, material 
+guztiak ere, bi amaraun-taldez, aurpegiz eta nodoz osatuta daude,
+non murrizketa edo materiala aplikatzen den.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="63"/>
@@ -1848,7 +1848,7 @@ aurpegienak ez diren ertzak eta bolumenenak ez diren aurpegiak soilik.</translat
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="282"/>
       <source>Create mesh groups for analysis reference shapes (highly experimental)</source>
-      <translation type="unfinished">Create mesh groups for analysis reference shapes (highly experimental)</translation>
+      <translation>Sortu amaraun-taldeak analisien erreferentzia-formetarako (oso esperimentala)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="303"/>
@@ -1858,7 +1858,7 @@ aurpegienak ez diren ertzak eta bolumenenak ez diren aurpegiak soilik.</translat
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="314"/>
       <source>Keep results on calculation re-run</source>
-      <translation type="unfinished">Keep results on calculation re-run</translation>
+      <translation>Mantendu emaitzak kalkula berriro exekutatzean</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="330"/>
@@ -1933,16 +1933,16 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation type="unfinished">VTK result object: A FreeCAD FEM VTK result object will be imported
-(equals to the object which was exported).
+      <translation>Emaitzako VTK objektua: Emaitzako FreeCAD FEM VTK objektu bat inportatuko da
+(esportatu den objektuaren berdina da).
 
-FEM mesh object: The results in the VTK file will be omitted, only the
-mesh data will be imported and a FreeCAD FEM mesh object will be created.
+FEM amaraun-objektua: VTK fitxategiko emaitzak ez dira erabiliko, amaraunaren
+datuak soilik inportatuko dira eta FreeCAD FEM amaraun-objektua sortuko da.
 
-FreeCAD result object: The imported data will be converted into a
-FreeCAD FEM Result object. Note: this setting needs the exact result
-component names and thus it only works properly with VTK files
-exported from FreeCAD.</translation>
+Emaitzako FreeCAD objektua: Inportatutako datuak FreeCAD FEM emaitzako objektu
+bihurtuko dira. Oharra: Ezarpen honek emaitzako osagaien izen zehatzak
+behar ditu eta, beraz, FreeCADetik esportatutako VTK fitxategiekin soilik
+funtzionatzen du.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="66"/>
@@ -1985,7 +1985,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="47"/>
       <source>Use materials from Materials directory in users FreeCAD user pref directory.</source>
-      <translation type="unfinished">Use materials from Materials directory in users FreeCAD user pref directory.</translation>
+      <translation>Erabili erabiltzailearen FreeCAD erabiltzaile-hobespenen 'Materialak' direktorioko materialak.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="63"/>
@@ -2039,7 +2039,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="111"/>
       <source>Leave blank to use default Mystran binary file location</source>
-      <translation type="unfinished">Leave blank to use default Mystran binary file location</translation>
+      <translation>Utzi hutsik Mystran fitxategi bitar lehenetsiaren kokalekua erabiltzeko</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="124"/>
@@ -2082,7 +2082,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default Z88 z88r binary file</translation>
+      <translation>Utzi hutsik Z88 z88r fitxategi bitar lehenetsia erabiltzeko</translation>
     </message>
   </context>
   <context>
@@ -2343,13 +2343,13 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="110"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation type="unfinished">Only one face in object! - moved to master face</translation>
+      <translation>Aurpegi bakarra dago objektuan! - Aurpegi maisura eraman da</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="153"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="260"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
-      <translation type="unfinished">Only one master face and one slave face for a contact constraint!</translation>
+      <translation>Aurpegi nagusi bakarra eta mendeko aurpegi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="158"/>
@@ -2363,7 +2363,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="162"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="179"/>
       <source>Only one slave face for a contact constraint!</source>
-      <translation type="unfinished">Only one slave face for a contact constraint!</translation>
+      <translation>Mendeko aurpegi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="172"/>
@@ -2382,12 +2382,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="269"/>
       <source>Only one master for a contact constraint!</source>
-      <translation type="unfinished">Only one master for a contact constraint!</translation>
+      <translation>Nagusi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="285"/>
       <source>Only one master face for a contact constraint!</source>
-      <translation type="unfinished">Only one master face for a contact constraint!</translation>
+      <translation>Aurpegi nagusi bakarra kontaktu-murrizketako!</translation>
     </message>
   </context>
   <context>
@@ -2416,7 +2416,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="450"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da murrizketako!</translation>
     </message>
   </context>
   <context>
@@ -2445,7 +2445,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da murrizketako!</translation>
     </message>
   </context>
   <context>
@@ -2458,7 +2458,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="285"/>
       <source>Turbulence</source>
-      <translation type="unfinished">Turbulence</translation>
+      <translation>Turbulentzia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="286"/>
@@ -2468,7 +2468,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="288"/>
       <source>select boundary type, faces and set value</source>
-      <translation type="unfinished">select boundary type, faces and set value</translation>
+      <translation>Hautatu muga mota, aurpegiak eta ezarri balioa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
@@ -2478,7 +2478,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="455"/>
       <source>Dissipation Rate [m2/s3]</source>
-      <translation type="unfinished">Dissipation Rate [m2/s3]</translation>
+      <translation>Barreiadura-tasa [m2/s3]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="458"/>
@@ -2533,22 +2533,22 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="580"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Aurpegi edo ertz planar bakar bat hautatu daiteke!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="594"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation type="unfinished">Only planar faces can be picked for 3D</translation>
+      <translation>Aurpegi planarrak soilik aukeratu daitezke 3Drako</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="600"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation type="unfinished">Only planar edges can be picked for 2D</translation>
+      <translation>Ertz planarrak soilik aukeratu daitezke 2Drako</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="605"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>Aurpegiak soilik (3D piezetarako) edo ertzak soilik (2D piezetarako) aukeratu daitezke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="738"/>
@@ -2574,7 +2574,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="773"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da murrizketako!</translation>
     </message>
   </context>
   <context>
@@ -2603,7 +2603,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da murrizketako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
@@ -2691,7 +2691,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="133"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="186"/>
       <source>Only one face can be selected for a plane rotation constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane rotation constraint!</translation>
+      <translation>Aurpegi bakarra hautatu daiteke planoaren biraketa-murrizketa baterako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="140"/>
@@ -2846,7 +2846,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="252"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
       <source>Only one face for rectangular transform constraint!</source>
-      <translation type="unfinished">Only one face for rectangular transform constraint!</translation>
+      <translation>Aurpegi bakarra laukizuzenen transformazio-murrizketarako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
@@ -2857,7 +2857,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
       <source>Only one face for transform constraint!</source>
-      <translation type="unfinished">Only one face for transform constraint!</translation>
+      <translation>Aurpegi bakarra transformazio-murrizketarako!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="284"/>
@@ -2872,7 +2872,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</translation>
+      <translation>Aurpegi transformagarriak soilik hautatu daitezke! Aplikatu desplazamendu-murrizketa gainazalari lehenengo, gero aplikatu murrizketa gainazalari</translation>
     </message>
   </context>
   <context>
@@ -2888,7 +2888,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="427"/>
       <source>Clip region, choose implicit function</source>
-      <translation type="unfinished">Clip region, choose implicit function</translation>
+      <translation>Ebaki eskualdea, aukeratu funtzio inplizitua</translation>
     </message>
   </context>
   <context>
@@ -2896,7 +2896,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1179"/>
       <source>Function cut, choose implicit function</source>
-      <translation type="unfinished">Function cut, choose implicit function</translation>
+      <translation>Funtzio moztua, aukeratu funtzio inplizitua</translation>
     </message>
   </context>
   <context>
@@ -2904,7 +2904,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="549"/>
       <source>Data along a line options</source>
-      <translation type="unfinished">Data along a line options</translation>
+      <translation>Lerro baten luzeran dauden datuen aukerak</translation>
     </message>
   </context>
   <context>
@@ -2912,7 +2912,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="766"/>
       <source>Data at point options</source>
-      <translation type="unfinished">Data at point options</translation>
+      <translation>Puntu bateko datuek aukerak</translation>
     </message>
   </context>
   <context>
@@ -2920,7 +2920,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="347"/>
       <source>Result display options</source>
-      <translation type="unfinished">Result display options</translation>
+      <translation>Emaitza erakusteko aukerak</translation>
     </message>
   </context>
   <context>
@@ -2936,7 +2936,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="930"/>
       <source>Scalar clip options</source>
-      <translation type="unfinished">Scalar clip options</translation>
+      <translation>Ebaketa eskalarraren aukerak</translation>
     </message>
   </context>
   <context>
@@ -3126,7 +3126,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="523"/>
       <source>Vol Expansion Coeff</source>
-      <translation type="unfinished">Vol Expansion Coeff</translation>
+      <translation>Hedatze bolumetrikoaren koefizientea</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="542"/>
@@ -3171,7 +3171,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="102"/>
       <source>Reinforcement Material</source>
-      <translation type="unfinished">Reinforcement Material</translation>
+      <translation>Indartze-materiala</translation>
     </message>
   </context>
   <context>
@@ -3184,17 +3184,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation type="unfinished">Fluid Section Parameter</translation>
+      <translation>Jariakin-sekzioaren parametroa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid Section Parameter</source>
-      <translation type="unfinished">Liquid Section Parameter</translation>
+      <translation>Sekzio likidoaren parametroa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <source>Pipe Area </source>
-      <translation type="unfinished">Pipe Area </translation>
+      <translation>Hodi-area </translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -3291,7 +3291,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe Area</source>
-      <translation type="unfinished">Pipe Area</translation>
+      <translation>Hodi-area</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
@@ -3306,12 +3306,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend Radius/Pipe Diameter</source>
-      <translation type="unfinished">Bend Radius/Pipe Diameter</translation>
+      <translation>Ukondo-erradioa/Hodi-diametroa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend Angle</source>
-      <translation type="unfinished">Bend Angle</translation>
+      <translation>Ukondo-angelua</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -3376,12 +3376,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas Section Parameter</source>
-      <translation type="unfinished">Gas Section Parameter</translation>
+      <translation>Gas-sekzioaren parametroa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open Channel Section Parameter</source>
-      <translation type="unfinished">Open Channel Section Parameter</translation>
+      <translation>Ireki kanal-sekzioaren parametroa</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
@@ -3599,7 +3599,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation type="unfinished">Growth ratio</translation>
+      <translation>Hazkunde-tasa</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
@@ -3903,7 +3903,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="82"/>
       <source>von Mises Stress</source>
-      <translation type="unfinished">von Mises Stress</translation>
+      <translation>von Mises estresa</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="89"/>
@@ -3991,7 +3991,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints user defined equations</source>
-      <translation type="unfinished">Hints user defined equations</translation>
+      <translation>Erabiltzaileak definitutako ekuazioen iradokizunak</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="22"/>
@@ -4016,7 +4016,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="93"/>
       <source>von Mises stress: vM</source>
-      <translation type="unfinished">von Mises stress: vM</translation>
+      <translation>von Mises estresa: vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="103"/>
@@ -4031,12 +4031,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="123"/>
       <source>principal stresses: P1, P2, P3</source>
-      <translation type="unfinished">principal stresses: P1, P2, P3</translation>
+      <translation>estres nagusiak: P1, P2, P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="133"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation type="unfinished">reinforcement ratio: rx, ry, rz</translation>
+      <translation>indartze-erlazioa: rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="143"/>
@@ -4051,7 +4051,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>estresa: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="200"/>
@@ -4061,7 +4061,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="210"/>
       <source>Mohr Coulomb: mc</source>
-      <translation type="unfinished">Mohr Coulomb: mc</translation>
+      <translation>Mohr Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="220"/>
@@ -4094,7 +4094,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="67"/>
       <source>Thermo mechanical</source>
-      <translation type="unfinished">Thermo mechanical</translation>
+      <translation>Termomekanikoa</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="74"/>
@@ -4397,7 +4397,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="115"/>
       <source>Contact Stiffness</source>
-      <translation type="unfinished">Contact Stiffness</translation>
+      <translation>Kontaktu-zurruntasuna</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="142"/>
@@ -4835,12 +4835,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="86"/>
       <source>Normal Stiffness</source>
-      <translation type="unfinished">Normal Stiffness</translation>
+      <translation>Zurruntasun normala</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="99"/>
       <source>Tangential Stiffness</source>
-      <translation type="unfinished">Tangential Stiffness</translation>
+      <translation>Zurruntasun tangentziala</translation>
     </message>
   </context>
   <context>
@@ -4990,12 +4990,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="29"/>
       <source>Point1</source>
-      <translation type="unfinished">Point1</translation>
+      <translation>1. puntua</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="109"/>
       <source>Point2</source>
-      <translation type="unfinished">Point2</translation>
+      <translation>2. puntua</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="187"/>
@@ -5173,12 +5173,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
-      <translation type="unfinished">Clip scalar</translation>
+      <translation>Ebaki eskalarra</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
-      <translation type="unfinished">Max scalar</translation>
+      <translation>Eskalar max.</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="144"/>

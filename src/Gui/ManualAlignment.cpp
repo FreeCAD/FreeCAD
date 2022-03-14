@@ -30,36 +30,27 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QSplitter>
-# include <QStatusBar>
 # include <QTimer>
 # include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/fields/SoSFImage.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoImage.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <boost_bind_bind.hpp>
 #endif
-
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
-#include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SplitView3DInventor.h>
-#include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/WaitCursor.h>

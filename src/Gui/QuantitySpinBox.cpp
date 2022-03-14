@@ -27,34 +27,29 @@
 # include <QDebug>
 # include <QFocusEvent>
 # include <QFontMetrics>
-# include <QHBoxLayout>
-# include <QLabel>
 # include <QLineEdit>
-# include <QMouseEvent>
-# include <QPixmapCache>
 # include <QStyle>
 # include <QStyleOptionSpinBox>
-# include <QStylePainter>
 # include <QToolTip>
 #endif
 
-#include "QuantitySpinBox.h"
-#include "QuantitySpinBox_p.h"
-#include "DlgExpressionInput.h"
-#include "propertyeditor/PropertyItem.h"
-#include "BitmapFactory.h"
-#include "Tools.h"
-#include "Command.h"
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <Base/UnitsApi.h>
+#include <sstream>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/PropertyGeo.h>
-#include <sstream>
-#include <boost/math/special_functions/round.hpp>
+#include <Base/Exception.h>
+#include <Base/UnitsApi.h>
+#include <Base/Tools.h>
+
+#include "QuantitySpinBox.h"
+#include "QuantitySpinBox_p.h"
+#include "Command.h"
+#include "DlgExpressionInput.h"
+#include "Tools.h"
+
 
 using namespace Gui;
 using namespace App;

@@ -23,18 +23,24 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <stack>
+#endif
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
+#include <Base/Matrix.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
 #include "Application.h"
+#include "ComplexGeoData.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectExtension.h"
 #include "DocumentObjectGroup.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ObjectIdentifier.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyLinks.h"
 
@@ -941,6 +947,16 @@ void DocumentObject::Save (Base::Writer &writer) const
 void DocumentObject::setExpression(const ObjectIdentifier &path, std::shared_ptr<Expression> expr)
 {
     ExpressionEngine.setValue(path, expr);
+}
+
+/**
+ * @brief Clear the expression of the object identifier \a path in this document object.
+ * @param path Target object identifier
+ */
+
+void DocumentObject::clearExpression(const ObjectIdentifier & path)
+{
+    setExpression(path, std::shared_ptr<Expression>());
 }
 
 /**

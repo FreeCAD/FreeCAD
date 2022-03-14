@@ -49,27 +49,27 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Ansicht teilen</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Ansicht auf einer zweiten Seite teilen</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Ansicht mit einer weiteren Seite teilen</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Ansicht zum Teilen</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Wähle die Ansicht zum Teilen aus einer Liste.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="75"/>
@@ -426,7 +426,7 @@
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation>Speichern als Dxf Datei</translation>
+      <translation>Speichern als DXF-Datei</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -2937,7 +2937,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation>Speichern als Dxf Datei</translation>
+      <translation>Speichern als DXF-Datei</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>

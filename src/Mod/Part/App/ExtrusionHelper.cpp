@@ -406,7 +406,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
     // recursively call the function until all wires are checked
     if (numCheckWires > 1)
         checkInnerWires(isInnerWire, direction, checklist, !forInner, prisms);
-};
+}
 
 void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                                const gp_Vec& translation,
@@ -452,11 +452,9 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
         }
         catch (const Base::Exception& e) {
             throw Base::RuntimeError(e.what());
-            result = TopoDS_Wire();
         }
         if (!mkOffset.IsDone()) {
             Standard_Failure::Raise("Extrusion: Offset could not be created");
-            result = TopoDS_Wire();
         }
         if (numEdges == 1) {
             // we need to move the offset wire first back to its original position

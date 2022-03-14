@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qapplication.h>
-# include <qevent.h>
-# include <qpainter.h>
-# include <qpixmap.h>
+# include <QPixmap>
 # include <QMenu>
 # include <Inventor/SbBox.h>
 # include <Inventor/events/SoEvent.h>
@@ -36,12 +32,9 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <QtOpenGL.h>
-#include <Base/Console.h>
-
 #include "MouseSelection.h"
-#include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
