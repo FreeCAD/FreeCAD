@@ -32,6 +32,7 @@
 # include <cstring>
 #endif
 
+#include "Interpreter.h"
 #include "Console.h"
 #include "Exception.h"
 #include "frameobject.h"
@@ -871,6 +872,7 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
     }
     if (print_tag) str << '<' << tag << "> ";
     if (print_src==2) {
+        Base::PyGILStateLocker lock;
         PyFrameObject* frame = PyEval_GetFrame();
         if (frame) {
             line = PyFrame_GetLineNumber(frame);

@@ -209,6 +209,7 @@ void MenuManager::setup(MenuItem* menuItems) const
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
 
+#if 0
 #if defined(FC_OS_MACOSX) && QT_VERSION >= 0x050900
     // Unknown Qt macOS bug observed with Qt >= 5.9.4 causes random crashes when viewing reused top level menus.
     menuBar->clear();
@@ -222,6 +223,31 @@ void MenuManager::setup(MenuItem* menuItems) const
         ("User parameter:BaseApp/Preferences/MainWindow")->GetBool("ClearMenuBar",false)) {
         menuBar->clear();
     }
+#else
+    // In addition to the reason described in the above comments, there is
+    // another more subtle one that's making clearing menu bar a necessity for
+    // all platforms.
+    //
+    // By right, it should be fine for more than one command action having the
+    // same shortcut but in different workbench. It should not require manual
+    // conflict resolving in this case, as the action in an inactive workbench
+    // is expected to be inactive as well, or else user may experience
+    // seemingly random shortcut miss firing based on the order he/she
+    // switches workbenches. In fact, this may be considered as an otherwise
+    // difficult to implement feature of context aware shortcut, where a
+    // specific shortcut can activate different actions under different
+    // workbenches.
+    //
+    // This works as expected for action adding to a toolbar. As Qt will ignore
+    // actions inside an invisible toolbar.  However, Qt refuse to do the same
+    // for actions in a hidden menu action of a menu bar. This is very likely a
+    // Qt bug, as the behavior does not seem to conform to Qt's documentation
+    // of Qt::ShortcutContext.
+    //
+    // Clearing the menu bar, and recreate it every time when switching
+    // workbench with only the active actions can solve this problem.
+    menuBar->clear();
+#endif
 
     QList<MenuItem*> items = menuItems->getItems();
     QList<QAction*> actions = menuBar->actions();
