@@ -33,7 +33,7 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
-
+from PySide import QtCore
 from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
@@ -58,6 +58,11 @@ class _TaskPanel(object):
             self._part = femutils.get_part_to_mesh(self._mesh)
         self._partVisible = None
         self._meshVisible = None
+        QtCore.QObject.connect(
+            self._paramWidget.capacitanceBodyBox,
+            QtCore.SIGNAL("stateChanged(int)"),
+            self.capacitanceBodyBox_checked
+        )
 
     def open(self):
         if self._mesh is not None and self._part is not None:
@@ -112,6 +117,8 @@ class _TaskPanel(object):
             not self._obj.CapacitanceBodyEnabled)
         self._paramWidget.capacitanceBody_spinBox.setValue(
             self._obj.CapacitanceBody)
+        self._paramWidget.capacitanceBody_spinBox.setEnabled(
+            not self._paramWidget.capacitanceBodyBox.isChecked())
 
     def _applyWidgetChanges(self):
         unit = "V"
@@ -145,3 +152,7 @@ class _TaskPanel(object):
         if self._obj.CapacitanceBodyEnabled:
             self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
             self._obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()
+
+    def capacitanceBodyBox_checked(self, i):
+        self._paramWidget.capacitanceBody_spinBox.setEnabled(
+            not self._paramWidget.capacitanceBodyBox.isChecked())
