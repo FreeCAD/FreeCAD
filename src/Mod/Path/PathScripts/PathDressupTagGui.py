@@ -593,7 +593,7 @@ class CommandPathDressupTag:
             "PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)"
             % baseObject.Name
         )
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

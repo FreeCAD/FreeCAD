@@ -956,7 +956,7 @@ class CommandPathDressupRampEntry:
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
         )
         FreeCADGui.doCommand("dbo.setup(obj)")
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 
