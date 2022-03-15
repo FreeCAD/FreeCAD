@@ -177,6 +177,9 @@ public:
     SubObjectT(const DocumentObject*, const char *subname);
 
     /*! Constructor */
+    SubObjectT(const DocumentObject*);
+
+    /*! Constructor */
     SubObjectT(const char *docName, const char *objName, const char *subname);
 
     /*! Assignment operator */
@@ -185,15 +188,37 @@ public:
     /*! Assignment operator */
     SubObjectT &operator=(SubObjectT &&);
 
+    /*! Assignment operator */
+    SubObjectT &operator=(const DocumentObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const App::DocumentObject*);
+
     /*! Equality operator */
     bool operator==(const SubObjectT&) const;
 
     /// Set the subname path to the sub-object
     void setSubName(const char *subname);
 
+    /// Set the subname path to the sub-object
+    void setSubName(const std::string &subname) {
+        setSubName(subname.c_str());
+    }
+
     /// Return the subname path
     const std::string &getSubName() const;
 
+    /** Return docname#objname (label)
+     * @param docName: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getObjectFullName(const char *docName=nullptr) const;
+
+    /** Return docname#objname.subname (label)
+     * @param doc: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getSubObjectFullName(const char *docName=nullptr) const;
     /// Return the subname path without sub-element
     std::string getSubNameNoElement() const;
 
