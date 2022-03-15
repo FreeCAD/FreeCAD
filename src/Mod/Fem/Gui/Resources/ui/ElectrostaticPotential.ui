@@ -50,6 +50,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QCheckBox" name="potentialConstantBox">
+     <property name="toolTip">
+      <string>Whether the constraint defines a constant potential</string>
+     </property>
      <property name="text">
       <string>Potential Constant</string>
      </property>
@@ -60,6 +63,9 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="toolTip">
+      <string>Whether the constraint defines a farfield potential</string>
+     </property>
      <property name="text">
       <string>Farfield / Electric infinity</string>
      </property>
@@ -67,6 +73,9 @@
    </item>
    <item row="3" column="0">
     <widget class="QCheckBox" name="electricForcecalculationBox">
+     <property name="toolTip">
+      <string>Whether the constraint is for the electric force</string>
+     </property>
      <property name="text">
       <string>Calculate Electric Force</string>
      </property>
@@ -98,6 +107,9 @@
          <width>55</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Counter of the body (or face) with a capcitance</string>
        </property>
        <property name="minimum">
         <number>1</number>
