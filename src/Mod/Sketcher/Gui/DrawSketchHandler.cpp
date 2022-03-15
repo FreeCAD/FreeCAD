@@ -169,7 +169,7 @@ std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry * ge
         double segment = (geo->getLastParameter() - geo->getFirstParameter()) / curvedEdgeCountSegments;
 
         for (int i=0; i < curvedEdgeCountSegments; i++)
-            emplaceasvector2d(geo->value(i*segment));
+            emplaceasvector2d(geo->value(geo->getFirstParameter() + i * segment));
 
         // either close the curve for untrimmed conic or set the last point for bounded curves
         emplaceasvector2d(isconic ? geo->value(0) : geo->value(geo->getLastParameter()));
