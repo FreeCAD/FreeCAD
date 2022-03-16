@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SPLASHSCREEN_H
 #define GUI_SPLASHSCREEN_H
 
-#include <QSplashScreen>
 #include <QDialog>
+#include <QSplashScreen>
 #include <QTextBrowser>
-#include <Gui/MDIView.h>
+#include "MDIView.h"
 
 namespace Gui {
 

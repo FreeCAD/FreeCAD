@@ -20,39 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
-# include <QDesktopWidget>
-# include <QDesktopServices>
-# include <QDialogButtonBox>
 # include <QLocale>
 # include <QMutex>
-# include <QTextBrowser>
-# include <QProcess>
 # include <QProcessEnvironment>
 # include <QScreen>
 # include <QSysInfo>
+# include <QTextBrowser>
 # include <QTextStream>
 # include <QWaitCondition>
 # include <Inventor/C/basic.h>
 #endif
 
+#include <App/Application.h>
+#include <App/Metadata.h>
+#include <Base/Console.h>
+#include <CXX/WrapPython.h>
+
+#include <boost/filesystem.hpp>
 #include <LibraryVersions.h>
 #include <zlib.h>
-#include <boost/version.hpp>
-#include <boost/filesystem.hpp>
 
 #include "Splashscreen.h"
 #include "ui_AboutApplication.h"
-#include <Base/Console.h>
-#include <CXX/WrapPython.h>
-#include <App/Application.h>
-#include <App/Metadata.h>
-#include <Gui/MainWindow.h>
+#include "MainWindow.h"
 
 
 using namespace Gui;
