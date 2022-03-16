@@ -115,13 +115,7 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
 // returns a string which represent the object e.g. when printed in python
 std::string MeshPy::representation() const
 {
-    // Note: As the return type is 'const char*' we cannot create a temporary char array neither on the stack because the array would be freed
-    // when leaving the scope nor on the heap because we would have a memory leak.
-    // So we use a static array that is used by all instances of this class. This, however, is not a problem as long as we only
-    // use this method in _repr().
-    MeshPy::PointerType ptr = reinterpret_cast<MeshPy::PointerType>(_pcTwinPointer);
-
-    return  ptr->representation();
+    return getMeshObjectPtr()->representation();
 }
 
 PyObject *MeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -741,9 +735,9 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         for (Py::List::iterator it = list_f.begin(); it != list_f.end(); ++it) {
             Py::Tuple f(*it);
             MeshCore::MeshFacet face;
-            face._aulPoints[0] = (long)Py::Long(f.getItem(0));
-            face._aulPoints[1] = (long)Py::Long(f.getItem(1));
-            face._aulPoints[2] = (long)Py::Long(f.getItem(2));
+            face._aulPoints[0] = static_cast<long>(Py::Long(f.getItem(0)));
+            face._aulPoints[1] = static_cast<long>(Py::Long(f.getItem(1)));
+            face._aulPoints[2] = static_cast<long>(Py::Long(f.getItem(2)));
             faces.push_back(face);
         }
 
@@ -892,7 +886,7 @@ PyObject* MeshPy::getSegment(PyObject *args)
     Py::List ary;
     const std::vector<FacetIndex>& segm = getMeshObjectPtr()->getSegment(index).getIndices();
     for (std::vector<FacetIndex>::const_iterator it = segm.begin(); it != segm.end(); ++it) {
-        ary.append(Py::Long((int)*it));
+        ary.append(Py::Long(*it));
     }
 
     return Py::new_reference_to(ary);
@@ -1907,7 +1901,7 @@ PyObject*  MeshPy::getPlanarSegments(PyObject *args)
         const std::vector<FacetIndex>& segm = it->getIndices();
         Py::List ary;
         for (std::vector<FacetIndex>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
-            ary.append(Py::Long((int)*jt));
+            ary.append(Py::Long(*jt));
         }
         s.append(ary);
     }
