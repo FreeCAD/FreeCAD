@@ -570,7 +570,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // Create a map to find the corresponding replacement of the new copies to
     // the mutated object. The reason for doing so is that we are copying from
     // the original linked object and its dependency, not the mutated objects
-    // which are old copies. There could be arbitary changes in the originals
+    // which are old copies. There could be arbitrary changes in the originals
     // which may add or remove or change dependending orders, while the
     // replacement happen between the new and old copies.
 
