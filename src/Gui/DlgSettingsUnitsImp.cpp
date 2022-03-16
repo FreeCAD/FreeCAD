@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
 # include <limits>
 # include <QApplication>
 #endif
