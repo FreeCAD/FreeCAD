@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <climits>
+
 #include <zlib.h>
 
 #include "DlgSettingsDocumentImp.h"
 #include "ui_DlgSettingsDocument.h"
-#include "PrefWidgets.h"
 #include "AutoSaver.h"
+
 
 using namespace Gui::Dialog;
 

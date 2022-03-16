@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgSettingsImageImp.h"
 #include "ui_DlgSettingsImage.h"
-#include "SpinBox.h"
+
 
 using namespace Gui::Dialog;
 using namespace std;

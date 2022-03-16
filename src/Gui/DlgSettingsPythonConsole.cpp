@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "DlgSettingsPythonConsole.h"
 #include "ui_DlgSettingsPythonConsole.h"
-#include <App/Application.h>
+
 
 using namespace Gui::Dialog;
 

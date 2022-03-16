@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,16 +31,18 @@
 # include <QMessageBox>
 # include <QSettings>
 # include <QUrl>
-# include <climits>
 # include <cmath>
+# include <vector>
 #endif
+
+#include <App/Application.h>
+#include <App/Document.h>
 
 #include "DlgSettingsCacheDirectory.h"
 #include "ui_DlgSettingsCacheDirectory.h"
 #include "DocumentRecovery.h"
 #include "MainWindow.h"
-#include <App/Application.h>
-#include <App/Document.h>
+
 
 using namespace Gui::Dialog;
 
