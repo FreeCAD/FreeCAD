@@ -36,8 +36,8 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "Widgets.h"
 #include "Window.h"
+
 
 using namespace Gui::Dialog;
 

@@ -24,8 +24,8 @@
 #define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
 #include <QDialog>
-#include <Base/Unit.h>
 #include <App/ObjectIdentifier.h>
+#include <Base/Unit.h>
 #include <memory>
 
 namespace Ui {

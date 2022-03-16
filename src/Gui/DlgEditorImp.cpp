@@ -23,15 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QComboBox>
 # include <QFontDatabase>
-# include <QHeaderView>
 #endif
 
 #include "DlgEditorImp.h"
 #include "ui_DlgEditor.h"
-#include "PrefWidgets.h"
 #include "PythonEditor.h"
+
 
 using namespace Gui;
 using namespace Gui::Dialog;
