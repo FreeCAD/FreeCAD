@@ -25,15 +25,15 @@
 # include <QMessageBox>
 #endif
 
-#include "ui_DlgAddProperty.h"
-
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include "MainWindow.h"
-#include <ViewProviderDocumentObject.h>
+#include <Base/Tools.h>
+
 #include "DlgAddProperty.h"
+#include "ui_DlgAddProperty.h"
+#include "MainWindow.h"
+#include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;

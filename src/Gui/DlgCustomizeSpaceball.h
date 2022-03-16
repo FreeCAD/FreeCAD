@@ -23,10 +23,10 @@
 #ifndef GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
 #define GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
 
-#include <QTreeView>
-#include <QListView>
-#include <QComboBox>
 #include <QAbstractListModel>
+#include <QComboBox>
+#include <QListView>
+#include <QTreeView>
 #include "PropertyPage.h"
 
 #include <boost/foreach.hpp>

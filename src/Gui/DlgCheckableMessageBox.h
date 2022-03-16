@@ -30,11 +30,9 @@
 #ifndef CHECKABLEMESSAGEBOX_H
 #define CHECKABLEMESSAGEBOX_H
 
-//#include "utils_global.h"
-
+#include <QDialog>
 #include <QDialogButtonBox>
 #include <QMessageBox>
-#include <QDialog>
 
 namespace Gui {
 namespace Dialog {

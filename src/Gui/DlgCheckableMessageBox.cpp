@@ -30,18 +30,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QHeaderView>
+# include <QPushButton>
 #endif
+
+#include <App/Application.h>
 
 #include "DlgCheckableMessageBox.h"
 #include "ui_DlgCheckableMessageBox.h"
-
-#include <QPushButton>
-#include <QtCore/QDebug>
-
 #include "MainWindow.h"
-
-#include <App/Application.h>
-//#include <App/Parameter.h>
 
 
 namespace Gui {

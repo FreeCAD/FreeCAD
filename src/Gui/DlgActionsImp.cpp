@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDialogButtonBox>
@@ -32,18 +31,16 @@
 # include <QKeySequence>
 # include <QLineEdit>
 # include <QMessageBox>
-# include <QTextStream>
-# include <QVBoxLayout>
 #endif
 
 #include "DlgActionsImp.h"
 #include "ui_DlgActions.h"
 #include "Action.h"
 #include "Application.h"
-#include "Command.h"
 #include "BitmapFactory.h"
-#include "Widgets.h"
+#include "Command.h"
 #include "ui_DlgChooseIcon.h"
+
 
 using namespace Gui::Dialog;
 

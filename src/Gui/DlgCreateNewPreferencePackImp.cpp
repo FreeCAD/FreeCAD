@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <QMessageBox>
+# include <QPushButton>
 #endif
 
 #include "DlgCreateNewPreferencePackImp.h"
 #include "ui_DlgCreateNewPreferencePack.h"
 
-#include <QPushButton>
-#include <QMessageBox>
 
 using namespace Gui::Dialog;
 

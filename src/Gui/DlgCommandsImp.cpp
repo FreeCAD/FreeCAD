@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QHeaderView>
 # include <QTreeWidgetItemIterator>
@@ -32,9 +32,9 @@
 #include "DlgCommandsImp.h"
 #include "ui_DlgCommands.h"
 #include "Application.h"
-#include "Command.h"
 #include "BitmapFactory.h"
-#include "Widgets.h"
+#include "Command.h"
+
 
 using namespace Gui::Dialog;
 
