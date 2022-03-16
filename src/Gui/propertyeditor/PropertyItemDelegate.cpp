@@ -132,6 +132,14 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor)
         {
+#if 1
+            // All the attempts to ignore the focus-out event has been approved to not work
+            // reliably because there are still cases that cannot be handled.
+            // So, the best for now is to always ignore this event.
+            // See https://forum.freecadweb.org/viewtopic.php?p=579530#p579530 why this is not
+            // possible.
+            return false;
+#else
             // We event filter child QAbstractButton and QLabel of an editor,
             // which requires special focus change in order to not mess up with
             // QItemDelegate's logic.
@@ -153,6 +161,7 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
                     return false;
                 w = w->parentWidget();
             }
+#endif
         }
     }
     return QItemDelegate::eventFilter(o, ev);
