@@ -673,7 +673,20 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             std::shared_ptr<App::Expression> expression = expressions[*it].expression;
             if (expression) {
                 value = expression->getValueAsAny();
-                if (option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
+
+                // Enable value comparison for all expression bindings to reduce
+                // unnecessary touch and recompute.
+                //
+                // This optimization is necessary for some hidden reference to
+                // work because it introduce dependency loop. The repeativtive
+                // recompute can be stopped if the expression evaluates the same
+                // value.
+                //
+                // In the future, we can generalize the optimization to all
+                // property modification, i.e. do not touch unless value change
+                //
+                // if (option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore))
+                {
                     if (isAnyEqual(value, prop->getPathValue(*it)))
                         continue;
                     if (touched)
