@@ -1568,7 +1568,8 @@ void Sheet::onChanged(const App::Property *prop) {
         for(auto &range : tmp)
             rangeUpdated(range);
     }
-    
+    else
+        cells.slotChangedObject(*this, *prop);
     App::DocumentObject::onChanged(prop);
 }
 

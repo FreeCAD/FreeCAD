@@ -1291,7 +1291,14 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
     }
 }
 
-void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App::Property &prop) {
+void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App::Property &prop)
+{
+    if (&obj == getContainer()) {
+        if (&prop == this || !prop.getName() || revAliasProp.count(prop.getName()))
+            return;
+        if (stringToAddress(prop.getName(), true).isValid())
+            return;
+    }
     recomputeDependants(&obj, prop.getName());
 }
 
