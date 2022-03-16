@@ -23,6 +23,7 @@
 #ifndef GUI_SOFCSELECTIONCONTEXT_H
 #define GUI_SOFCSELECTIONCONTEXT_H
 
+#include <climits>
 #include <map>
 #include <memory>
 #include <set>
