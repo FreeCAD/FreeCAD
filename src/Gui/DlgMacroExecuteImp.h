@@ -24,9 +24,9 @@
 #ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
 #define GUI_DIALOG_DLGMACROEXECUTEIMP_H
 
-#include "Window.h"
 #include <QDialog>
 #include <memory>
+#include "Window.h"
 
 class QTreeWidgetItem;
 

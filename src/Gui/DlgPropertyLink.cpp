@@ -20,39 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
 # include <sstream>
+# include <QStyledItemDelegate>
 # include <QTreeWidgetItem>
-# include <QMessageBox>
-# include <QPushButton>
 #endif
 
-#include <QStyledItemDelegate>
-
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
-#include <App/DocumentObserver.h>
 #include <App/ObjectIdentifier.h>
 #include <App/PropertyPythonObject.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
-#include "Document.h"
-#include "View3DInventor.h"
-#include "Tree.h"
-#include "Selection.h"
-#include "PropertyView.h"
-#include "BitmapFactory.h"
 #include "DlgPropertyLink.h"
-#include "Application.h"
-#include "ViewProviderDocumentObject.h"
-#include "MetaTypes.h"
 #include "ui_DlgPropertyLink.h"
+#include "Application.h"
+#include "Document.h"
+#include "BitmapFactory.h"
+#include "PropertyView.h"
+#include "Selection.h"
+#include "Tree.h"
+#include "View3DInventor.h"
+#include "ViewProviderDocumentObject.h"
+
 
 using namespace Gui::Dialog;
 

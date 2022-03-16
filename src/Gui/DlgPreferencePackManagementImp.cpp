@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
@@ -28,11 +27,10 @@
 
 #include "DlgPreferencePackManagementImp.h"
 #include "ui_DlgPreferencePackManagement.h"
-
-#include <PreferencePackManager.h>
-#include <App/Application.h>
 #include "Application.h"
 #include "Command.h"
+#include "PreferencePackManager.h"
+
 
 using namespace Gui::Dialog;
 namespace fs = boost::filesystem;

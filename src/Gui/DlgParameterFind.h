@@ -25,7 +25,6 @@
 #define GUI_DIALOG_DLGPARAMETERFIND_H
 
 #include <QDialog>
-#include <Base/Parameter.h>
 
 class QTreeWidgetItem;
 

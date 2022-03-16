@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
+# include <QMessageBox>
 #endif
 
-#include "Macro.h"
-#include "Application.h"
-#include "MainWindow.h"
 #include "DlgMacroRecordImp.h"
 #include "ui_DlgMacroRecord.h"
+#include "Application.h"
 #include "FileDialog.h"
+#include "Macro.h"
+#include "MainWindow.h"
 
 
 using namespace Gui::Dialog;

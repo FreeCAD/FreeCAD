@@ -26,10 +26,11 @@
 
 #include <Base/Parameter.h>
 
-#include <QTreeWidgetItem>
-#include <QTreeWidget>
 #include <QDialog>
 #include <QPointer>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+
 
 namespace Gui {
 namespace Dialog {

@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QDir>
+# include <QMessageBox>
 #endif
+
+#include <App/Application.h>
 
 #include "DlgOnlineHelpImp.h"
 #include "ui_DlgOnlineHelp.h"
-#include "PrefWidgets.h"
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
 
 using namespace Gui::Dialog;
 

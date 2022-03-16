@@ -92,7 +92,6 @@
 #include <QImageWriter>
 #include <qinputdialog.h>
 #include <QItemDelegate>
-#include <QStyledItemDelegate>
 #include <QItemEditorFactory>
 #include <QKeyEvent>
 #include <qlabel.h>
@@ -135,6 +134,7 @@
 #include <qsplitter.h>
 #include <qstatusbar.h>
 #include <qstyle.h>
+#include <QStyledItemDelegate>
 #include <qstylefactory.h>
 #include <QStyleOptionButton>
 #include <QStylePainter>

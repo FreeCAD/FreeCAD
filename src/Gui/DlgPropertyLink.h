@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DLGPROPERTYLINK_H
 #define GUI_DIALOG_DLGPROPERTYLINK_H
 
 #include <QDialog>
-#include <QAbstractItemView>
-#include <QTimer>
-#include <QPushButton>
 #include <QPointer>
+#include <QPushButton>
+#include <QTimer>
+#include "Selection.h"
 
 #define FC_XLINK_VALUE_INDEX 5
 

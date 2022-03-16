@@ -25,8 +25,8 @@
 #define GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
 
 #include <QDialog>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace Gui {
 class ViewProvider;

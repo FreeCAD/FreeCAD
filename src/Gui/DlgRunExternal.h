@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DlgRunExternal_H
 #define GUI_DIALOG_DlgRunExternal_H
 
-#include <QProcess>
 #include <QDialog>
+#include <QProcess>
 
 namespace Gui {
 namespace Dialog {

@@ -20,34 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QInputDialog>
 # include <QLabel>
-# include <QHeaderView>
 # include <QMessageBox>
 # include <QComboBox>
 # include <QSignalBlocker>
 #endif
+
+#include <App/Document.h>
+#include <Base/Interpreter.h>
 
 #include "DlgMacroExecuteImp.h"
 #include "ui_DlgMacroExecute.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "MainWindow.h"
-#include "FileDialog.h"
-#include "Macro.h"
-#include "Document.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
 #include "DlgCustomizeImp.h"
 #include "DlgToolbarsImp.h"
+#include "Document.h"
+#include "EditorView.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "PythonEditor.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Interpreter.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
