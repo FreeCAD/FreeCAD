@@ -81,6 +81,7 @@
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
