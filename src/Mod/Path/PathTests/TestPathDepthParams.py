@@ -211,3 +211,43 @@ class depthTestCases(unittest.TestCase):
             "user_depths": None,
         }
         self.assertRaises(ValueError, PathUtils.depth_params, **args)
+
+    def test90(self):
+        """stepping down with single stepdown exactly equal to total depth"""
+        args = {
+            "clearance_height": 20.0,
+            "safe_height": 15.0,
+            "start_depth": 10.0,
+            "step_down": 10.0,
+            "z_finish_step": 0.0,
+            "final_depth": 0.0,
+            "user_depths": None,
+        }
+
+        expected = [0]
+
+        d = PathUtils.depth_params(**args)
+        r = [i for i in d]
+        self.assertListEqual(
+            r, expected, "Expected {}, but result of {}".format(expected, r)
+        )
+
+    def test100(self):
+        """stepping down with single stepdown roughly equal to total depth"""
+        args = {
+            "clearance_height": 20.0,
+            "safe_height": 15.0,
+            "start_depth": 10.000000001,
+            "step_down": 10.0,
+            "z_finish_step": 0.0,
+            "final_depth": 0.0,
+            "user_depths": None,
+        }
+
+        expected = [0]
+
+        d = PathUtils.depth_params(**args)
+        r = [i for i in d]
+        self.assertListEqual(
+            r, expected, "Expected {}, but result of {}".format(expected, r)
+        )
