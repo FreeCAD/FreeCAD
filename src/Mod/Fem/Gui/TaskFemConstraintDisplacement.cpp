@@ -82,47 +82,19 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
 
     this->groupLayout()->addWidget(proxy);
 
-    // Connect decimal value inputs
-    connect(ui->spinxDisplacement, SIGNAL(valueChanged(double)),  this, SLOT(x_changed(double)));
-    connect(ui->spinyDisplacement, SIGNAL(valueChanged(double)),  this, SLOT(y_changed(double)));
-    connect(ui->spinzDisplacement, SIGNAL(valueChanged(double)),  this, SLOT(z_changed(double)));
-    connect(ui->rotxv, SIGNAL(valueChanged(double)),  this, SLOT(x_rot(double)));
-    connect(ui->rotyv, SIGNAL(valueChanged(double)),  this, SLOT(y_rot(double)));
-    connect(ui->rotzv, SIGNAL(valueChanged(double)),  this, SLOT(z_rot(double)));
-    // Connect check box values displacements
-    connect(ui->dispxfix, SIGNAL(stateChanged(int)),  this, SLOT(fixx(int)));
-    connect(ui->dispxfree, SIGNAL(stateChanged(int)),  this, SLOT(freex(int)));
-    connect(ui->dispyfix, SIGNAL(stateChanged(int)),  this, SLOT(fixy(int)));
-    connect(ui->dispyfree, SIGNAL(stateChanged(int)),  this, SLOT(freey(int)));
-    connect(ui->dispzfix, SIGNAL(stateChanged(int)),  this, SLOT(fixz(int)));
-    connect(ui->dispzfree, SIGNAL(stateChanged(int)),  this, SLOT(freez(int)));
-    // Connect to check box values for rotations
-    connect(ui->rotxfix, SIGNAL(stateChanged(int)),  this, SLOT(rotfixx(int)));
-    connect(ui->rotxfree, SIGNAL(stateChanged(int)),  this, SLOT(rotfreex(int)));
-    connect(ui->rotyfix, SIGNAL(stateChanged(int)),  this, SLOT(rotfixy(int)));
-    connect(ui->rotyfree, SIGNAL(stateChanged(int)),  this, SLOT(rotfreey(int)));
-    connect(ui->rotzfix, SIGNAL(stateChanged(int)),  this, SLOT(rotfixz(int)));
-    connect(ui->rotzfree, SIGNAL(stateChanged(int)),  this, SLOT(rotfreez(int)));
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->spinxDisplacement->blockSignals(true);
-    ui->spinyDisplacement->blockSignals(true);
-    ui->spinzDisplacement->blockSignals(true);
-    ui->rotxv->blockSignals(true);
-    ui->rotyv->blockSignals(true);
-    ui->rotzv->blockSignals(true);
-    ui->dispxfix->blockSignals(true);
-    ui->dispxfree->blockSignals(true);
-    ui->dispyfix->blockSignals(true);
-    ui->dispyfree->blockSignals(true);
-    ui->dispzfix->blockSignals(true);
-    ui->dispzfree->blockSignals(true);
-    ui->rotxfix->blockSignals(true);
-    ui->rotxfree->blockSignals(true);
-    ui->rotyfix->blockSignals(true);
-    ui->rotyfree->blockSignals(true);
-    ui->rotzfix->blockSignals(true);
-    ui->rotzfree->blockSignals(true);
+    // setup ranges
+    ui->spinxDisplacement->setMinimum(-FLOAT_MAX);
+    ui->spinxDisplacement->setMaximum(FLOAT_MAX);
+    ui->spinyDisplacement->setMinimum(-FLOAT_MAX);
+    ui->spinyDisplacement->setMaximum(FLOAT_MAX);
+    ui->spinzDisplacement->setMinimum(-FLOAT_MAX);
+    ui->spinzDisplacement->setMaximum(FLOAT_MAX);
+    ui->spinxRotation->setMinimum(-FLOAT_MAX);
+    ui->spinxRotation->setMaximum(FLOAT_MAX);
+    ui->spinyRotation->setMinimum(-FLOAT_MAX);
+    ui->spinyRotation->setMaximum(FLOAT_MAX);
+    ui->spinzRotation->setMinimum(-FLOAT_MAX);
+    ui->spinzRotation->setMaximum(FLOAT_MAX);
 
     // Get the feature data
     Fem::ConstraintDisplacement* pcConstraint = static_cast<Fem::ConstraintDisplacement*>(ConstraintView->getObject());
@@ -154,9 +126,9 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     ui->spinxDisplacement->setValue(fStates[0]);
     ui->spinyDisplacement->setValue(fStates[1]);
     ui->spinzDisplacement->setValue(fStates[2]);
-    ui->rotxv->setValue(fStates[3]);
-    ui->rotyv->setValue(fStates[4]);
-    ui->rotzv->setValue(fStates[5]);
+    ui->spinxRotation->setValue(fStates[3]);
+    ui->spinyRotation->setValue(fStates[4]);
+    ui->spinzRotation->setValue(fStates[5]);
     ui->dispxfix->setChecked(bStates[0]);
     ui->dispxfree->setChecked(bStates[1]);
     ui->dispyfix->setChecked(bStates[2]);
@@ -178,25 +150,27 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
-    //Allow signals again
-    ui->spinxDisplacement->blockSignals(false);
-    ui->spinyDisplacement->blockSignals(false);
-    ui->spinzDisplacement->blockSignals(false);
-    ui->rotxv->blockSignals(false);
-    ui->rotyv->blockSignals(false);
-    ui->rotzv->blockSignals(false);
-    ui->dispxfix->blockSignals(false);
-    ui->dispxfree->blockSignals(false);
-    ui->dispyfix->blockSignals(false);
-    ui->dispyfree->blockSignals(false);
-    ui->dispzfix->blockSignals(false);
-    ui->dispzfree->blockSignals(false);
-    ui->rotxfix->blockSignals(false);
-    ui->rotxfree->blockSignals(false);
-    ui->rotyfix->blockSignals(false);
-    ui->rotyfree->blockSignals(false);
-    ui->rotzfix->blockSignals(false);
-    ui->rotzfree->blockSignals(false);
+    // Connect decimal value inputs
+    connect(ui->spinxDisplacement, SIGNAL(valueChanged(double)), this, SLOT(x_changed(double)));
+    connect(ui->spinyDisplacement, SIGNAL(valueChanged(double)), this, SLOT(y_changed(double)));
+    connect(ui->spinzDisplacement, SIGNAL(valueChanged(double)), this, SLOT(z_changed(double)));
+    connect(ui->spinxRotation, SIGNAL(valueChanged(double)), this, SLOT(x_rot(double)));
+    connect(ui->spinyRotation, SIGNAL(valueChanged(double)), this, SLOT(y_rot(double)));
+    connect(ui->spinzRotation, SIGNAL(valueChanged(double)), this, SLOT(z_rot(double)));
+    // Connect check box values displacements
+    connect(ui->dispxfix, SIGNAL(stateChanged(int)), this, SLOT(fixx(int)));
+    connect(ui->dispxfree, SIGNAL(stateChanged(int)), this, SLOT(freex(int)));
+    connect(ui->dispyfix, SIGNAL(stateChanged(int)), this, SLOT(fixy(int)));
+    connect(ui->dispyfree, SIGNAL(stateChanged(int)), this, SLOT(freey(int)));
+    connect(ui->dispzfix, SIGNAL(stateChanged(int)), this, SLOT(fixz(int)));
+    connect(ui->dispzfree, SIGNAL(stateChanged(int)), this, SLOT(freez(int)));
+    // Connect to check box values for rotations
+    connect(ui->rotxfix, SIGNAL(stateChanged(int)), this, SLOT(rotfixx(int)));
+    connect(ui->rotxfree, SIGNAL(stateChanged(int)), this, SLOT(rotfreex(int)));
+    connect(ui->rotyfix, SIGNAL(stateChanged(int)), this, SLOT(rotfixy(int)));
+    connect(ui->rotyfree, SIGNAL(stateChanged(int)), this, SLOT(rotfreey(int)));
+    connect(ui->rotzfix, SIGNAL(stateChanged(int)), this, SLOT(rotfixz(int)));
+    connect(ui->rotzfree, SIGNAL(stateChanged(int)), this, SLOT(rotfreez(int)));
 
     //Selection buttons
     connect(ui->btnAdd, SIGNAL(toggled(bool)),
@@ -345,9 +319,9 @@ void TaskFemConstraintDisplacement::rotfixx(int val){
     if (val==2)
     {
         ui->rotxfree->setChecked(false);
-        ui->rotxv->setValue(0);
+        ui->spinxRotation->setValue(0);
     }
-    else if (ui->rotxv->value()==0)
+    else if (ui->spinxRotation->value()==0)
     {
          ui->rotxfree->setChecked(true);
     }
@@ -357,9 +331,9 @@ void TaskFemConstraintDisplacement::rotfreex(int val){
     if (val==2)
     {
         ui->rotxfix->setChecked(false);
-        ui->rotxv->setValue(0);
+        ui->spinxRotation->setValue(0);
     }
-    else if (ui->rotxv->value()==0)
+    else if (ui->spinxRotation->value()==0)
     {
          ui->rotxfix->setChecked(true);
     }
@@ -369,9 +343,9 @@ void TaskFemConstraintDisplacement::rotfixy(int val){
     if (val==2)
     {
         ui->rotyfree->setChecked(false);
-        ui->rotyv->setValue(0);
+        ui->spinyRotation->setValue(0);
     }
-    else if (ui->rotyv->value()==0)
+    else if (ui->spinyRotation->value()==0)
     {
          ui->rotyfree->setChecked(true);
     }
@@ -381,9 +355,9 @@ void TaskFemConstraintDisplacement::rotfreey(int val){
     if (val==2)
     {
         ui->rotyfix->setChecked(false);
-        ui->rotyv->setValue(0);
+        ui->spinyRotation->setValue(0);
     }
-    else if (ui->rotyv->value()==0)
+    else if (ui->spinyRotation->value()==0)
     {
          ui->rotyfix->setChecked(true);
     }
@@ -393,9 +367,9 @@ void TaskFemConstraintDisplacement::rotfixz(int val){
     if (val==2)
     {
         ui->rotzfree->setChecked(false);
-        ui->rotzv->setValue(0);
+        ui->spinzRotation->setValue(0);
     }
-    else if (ui->rotzv->value()==0)
+    else if (ui->spinzRotation->value()==0)
     {
          ui->rotzfree->setChecked(true);
     }
@@ -405,9 +379,9 @@ void TaskFemConstraintDisplacement::rotfreez(int val){
     if (val==2)
     {
         ui->rotzfix->setChecked(false);
-        ui->rotzv->setValue(0);
+        ui->spinzRotation->setValue(0);
     }
-    else if (ui->rotzv->value()==0)
+    else if (ui->spinzRotation->value()==0)
     {
          ui->rotzfix->setChecked(true);
     }
@@ -535,9 +509,9 @@ const std::string TaskFemConstraintDisplacement::getReferences() const
 double TaskFemConstraintDisplacement::get_spinxDisplacement() const{return ui->spinxDisplacement->value();}
 double TaskFemConstraintDisplacement::get_spinyDisplacement() const{return ui->spinyDisplacement->value();}
 double TaskFemConstraintDisplacement::get_spinzDisplacement() const{return ui->spinzDisplacement->value();}
-double TaskFemConstraintDisplacement::get_rotxv() const{return ui->rotxv->value();}
-double TaskFemConstraintDisplacement::get_rotyv() const{return ui->rotyv->value();}
-double TaskFemConstraintDisplacement::get_rotzv() const{return ui->rotzv->value();}
+double TaskFemConstraintDisplacement::get_spinxRotation() const{return ui->spinxRotation->value();}
+double TaskFemConstraintDisplacement::get_spinyRotation() const{return ui->spinyRotation->value();}
+double TaskFemConstraintDisplacement::get_spinzRotation() const{return ui->spinzRotation->value();}
 
 bool TaskFemConstraintDisplacement::get_dispxfix() const{return ui->dispxfix->isChecked();}
 bool TaskFemConstraintDisplacement::get_dispxfree() const{return ui->dispxfree->isChecked();}
@@ -614,11 +588,11 @@ bool TaskDlgFemConstraintDisplacement::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.zDisplacement = %f",
             name.c_str(), parameterDisplacement->get_spinzDisplacement());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.xRotation = %f",
-            name.c_str(), parameterDisplacement->get_rotxv());
+            name.c_str(), parameterDisplacement->get_spinxRotation());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.yRotation = %f",
-            name.c_str(), parameterDisplacement->get_rotyv());
+            name.c_str(), parameterDisplacement->get_spinyRotation());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.zRotation = %f",
-            name.c_str(), parameterDisplacement->get_rotzv());
+            name.c_str(), parameterDisplacement->get_spinzRotation());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.xFree = %s",
             name.c_str(), parameterDisplacement->get_dispxfree() ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.xFix = %s",
