@@ -20,36 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <sstream>
-#endif
-
 #include "TaskFemConstraintOnBoundary.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
 
 
 using namespace FemGui;
@@ -57,7 +30,7 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintOnBoundary */
 
-TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint *ConstraintView, QWidget *parent, const char* pixmapname)
+TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint* ConstraintView, QWidget* parent, const char* pixmapname)
     : TaskFemConstraint(ConstraintView, parent, pixmapname)
     , selChangeMode(SelectionChangeModes::none)
 {
@@ -78,11 +51,13 @@ void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
             this->clearButtons(SelectionChangeModes::refAdd);
             selChangeMode = SelectionChangeModes::refAdd;
             ConstraintView->highlightReferences(true);
-        } else {
+        }
+        else {
             this->addToSelection();
             clearButtons(SelectionChangeModes::none);
         }
-    } else {
+    }
+    else {
         exitSelectionChangeMode();
     }
 }
@@ -96,16 +71,18 @@ void TaskFemConstraintOnBoundary::_removeFromSelection(bool checked)
             this->clearButtons(SelectionChangeModes::refRemove);
             selChangeMode = SelectionChangeModes::refRemove;
             ConstraintView->highlightReferences(true);
-        } else {
+        }
+        else {
             this->removeFromSelection();
             clearButtons(SelectionChangeModes::none);
         }
-    } else {
+    }
+    else {
         exitSelectionChangeMode();
     }
 }
 
-void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges&msg)
+void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         switch (selChangeMode) {
