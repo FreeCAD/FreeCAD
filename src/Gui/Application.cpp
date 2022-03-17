@@ -24,6 +24,8 @@
 
 #ifndef _PreComp_
 # include <boost/interprocess/sync/file_lock.hpp>
+# include <Inventor/errors/SoDebugError.h>
+# include <Inventor/errors/SoError.h>
 # include <QCloseEvent>
 # include <QDir>
 # include <QFileInfo>
