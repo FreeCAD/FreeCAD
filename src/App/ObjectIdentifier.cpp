@@ -214,7 +214,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     , subObjectName("",true)
     , documentNameSet(false)
     , documentObjectNameSet(false)
-    , localProperty(false)
+    , localProperty(true)
     , _hash(0)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());

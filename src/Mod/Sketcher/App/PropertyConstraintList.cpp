@@ -79,10 +79,17 @@ App::ObjectIdentifier PropertyConstraintList::makeArrayPath(int idx)
     return App::ObjectIdentifier(*this,idx);
 }
 
+static const boost::regex RegexIdentifier("^[A-Za-z][_A-Za-z0-9]*$");
+
 App::ObjectIdentifier PropertyConstraintList::makeSimplePath(const Constraint * c)
 {
-    return App::ObjectIdentifier(*this) << App::ObjectIdentifier::SimpleComponent(
-            App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIndentifier(c->Name)));
+    ObjectIdentifier res(*this);
+    boost::cmatch cm;
+    if (boost::regex_match(c->Name.c_str(), cm, RegexIdentifier))
+        res << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String(c->Name));
+    else
+        res << ObjectIdentifier::LabelComponent(ObjectIdentifier::String(c->Name, true));
+    return res;
 }
 
 App::ObjectIdentifier PropertyConstraintList::makePath(int idx, const Constraint * c)
@@ -578,8 +585,6 @@ const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &pa
     return boost::any(getConstraint(path)->getPresentationValue());
 }
 
-static const boost::regex re("^[A-Za-z][_A-Za-z0-9]*$");
-
 ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const
 {
     if(p.numSubComponents()!=2 || p.getPropertyComponent(0).getName()!=getName())
@@ -593,7 +598,7 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
         size_t idx = c1.getIndex();
         if (idx < _lValueList.size() && _lValueList[idx]->Name.size() > 0) {
             const std::string &name = _lValueList[idx]->Name;
-            if (boost::regex_match(name.c_str(), cm, re)) {
+            if (boost::regex_match(name.c_str(), cm, RegexIdentifier)) {
                 return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(name);
             } else {
                 return ObjectIdentifier(*this) 
@@ -612,7 +617,7 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
     }
     else if (c1.isMap() || c1.isLabel()) {
         const std::string &name = c1.getName();
-        if (boost::regex_match(name.c_str(), cm, re)) {
+        if (boost::regex_match(name.c_str(), cm, RegexIdentifier)) {
             return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(name);
         } else {
             return ObjectIdentifier(*this) 
@@ -630,7 +635,7 @@ void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) cons
         if (cstr->Name.empty())
             continue;
         // If a valid identifier (no space, etc.), add as a simple component, or else, treat as map
-        if (boost::regex_match(cstr->Name.c_str(), cm, re))
+        if (boost::regex_match(cstr->Name.c_str(), cm, RegexIdentifier))
             paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(cstr->Name));
         else
             paths.push_back(ObjectIdentifier(*this) 
