@@ -22,12 +22,19 @@
 
 #include "PreCompiled.h"
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
+#ifndef _PreComp_
 # include <QColor>
 # include <QDir>
 # include <QFileInfo>
 # include <QImage>
+
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
+# include <Inventor/draggers/SoDragger.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
+# include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
 #include <App/Application.h>

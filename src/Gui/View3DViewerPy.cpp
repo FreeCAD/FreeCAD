@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
+#ifndef _PreComp_
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include <Base/GeometryPyCXX.h>
