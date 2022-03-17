@@ -2153,12 +2153,20 @@ class DraftToolBar:
             return None
         self.update_cartesian_coords()
         if self.angleLock.isChecked():
-            FreeCADGui.Snapper.setAngle(self.angle)
+            if not self.globalMode:
+                angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
+            else:
+                angle_vec = self.angle
+            FreeCADGui.Snapper.setAngle(angle_vec)
 
     def toggleAngle(self,b):
         self.alock = self.angleLock.isChecked()
         if b:
-            FreeCADGui.Snapper.setAngle(self.angle)
+            if not self.globalMode:
+                angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
+            else:
+                angle_vec = self.angle
+            FreeCADGui.Snapper.setAngle(angle_vec)
         else:
             FreeCADGui.Snapper.setAngle()
             self.angle = None
