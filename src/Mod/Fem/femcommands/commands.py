@@ -1027,7 +1027,7 @@ class _SolverMystran(CommandManager):
 
     def __init__(self):
         super(_SolverMystran, self).__init__()
-        self.pixmap = "FEM_SolverStandard"
+        self.pixmap = "FEM_SolverMystran"
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverMystran", "Solver Mystran")
         self.accel = "S, M"
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_SolverMystran", "Creates a FEM solver Mystran")
