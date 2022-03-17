@@ -47,6 +47,7 @@
 # include <Inventor/elements/SoLightModelElement.h>
 # include <Inventor/elements/SoOverrideElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/events/SoMotion3Event.h>
