@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include "InventorAll.h"
+# include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 #endif
 
