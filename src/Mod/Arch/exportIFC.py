@@ -270,7 +270,7 @@ def export(exportList, filename, colors=None, preferences=None):
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
             annotations.append(obj)
-        elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) == "DraftText"):
+        elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
             annotations.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             if obj.Shape:
@@ -1323,7 +1323,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     s = s.encode("utf8")
                 txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
                 reps = [txt]
-            elif Draft.getType(anno) == "DraftText":
+            elif Draft.getType(anno) in ["DraftText","Text"]:
                 l = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
                 pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
                 tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
@@ -1332,6 +1332,34 @@ def export(exportList, filename, colors=None, preferences=None):
                     s = s.encode("utf8")
                 txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
                 reps = [txt]
+            elif Draft.getType(anno) in ["Dimension","LinearDimension","AngularDimension"]:
+                if FreeCAD.GuiUp:
+                    vp = anno.ViewObject.Proxy
+                    reps = []
+                    sh = Part.makePolygon([vp.p1,vp.p2,vp.p3,vp.p4])
+                    sh.scale(preferences['SCALE_FACTOR']) # to meters
+                    ehc = []
+                    curves = []
+                    for w in sh.Wires:
+                        curves.append(createCurve(ifcfile,w))
+                        for e in w.Edges:
+                            ehc.append(e.hashCode())
+                    if curves:
+                        reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+                    curves = []
+                    for e in sh.Edges:
+                        if e.hashCode not in ehc:
+                            curves.append(createCurve(ifcfile,e))
+                    if curves:
+                        reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+                    l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
+                    pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+                    tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
+                    s = ";".join(vp.string)
+                    if six.PY2:
+                        s = s.encode("utf8")
+                    txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
+                    reps.append(txt)
             else:
                 print("Unable to handle object",anno.Label)
                 continue
