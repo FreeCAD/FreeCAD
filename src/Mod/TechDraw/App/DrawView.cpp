@@ -577,6 +577,12 @@ double DrawView::prefScale(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double result = hGrp->GetFloat("DefaultViewScale", 1.0); 
+    if (ScaleType.isValue("Page")) {
+        auto page = findParentPage();
+        if (page) {
+            result = page->Scale.getValue();
+        }
+    }
     return result;
 }
 
