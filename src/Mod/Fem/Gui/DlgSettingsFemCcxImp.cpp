@@ -23,13 +23,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Application.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "ui_DlgSettingsFemCcx.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
@@ -38,6 +38,9 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp( QWidget* parent )
   , ui(new Ui_DlgSettingsFemCcxImp)
 {
     ui->setupUi(this);
+    // set ranges
+    ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
+    ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
 }
 
 DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp()
