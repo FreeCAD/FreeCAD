@@ -102,7 +102,7 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
         return -1;
     }
     catch (const std::exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError,e.what());
         return -1;
     }
     catch (const Py::Exception&) {

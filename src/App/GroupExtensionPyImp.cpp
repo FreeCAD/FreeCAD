@@ -63,22 +63,22 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add an invalid object");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
         return nullptr;
     }
     
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add an object from another document to this group");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an object from another document to this group");
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr() == this->getGroupExtensionPtr()->getExtendedObject()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add a group object to itself");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add a group object to itself");
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->hasExtension(GroupExtension::getExtensionClassTypeId())) {
         App::GroupExtension* docGrp = docObj->getDocumentObjectPtr()->getExtensionByType<GroupExtension>();
         if (docGrp->hasObject(getGroupExtensionPtr()->getExtendedObject())) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot add a group object to a child group");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add a group object to a child group");
             return nullptr;
         }
     }
@@ -175,11 +175,11 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot remove an invalid object");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot remove an object from another document from this group");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an object from another document from this group");
         return nullptr;
     }
 
@@ -263,11 +263,11 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check an invalid object");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check an object from another document with this group");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an object from another document with this group");
         return nullptr;
     }
     if (recursivePy) {

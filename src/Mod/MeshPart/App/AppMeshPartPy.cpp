@@ -160,7 +160,7 @@ private:
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
             Base::Console().Error("%s\n", str.c_str());
-            throw Py::Exception(Base::BaseExceptionFreeCADError, str);
+            throw Py::Exception(Base::PyExc_FC_GeneralError, str);
         }
         catch (const Base::Exception &e) {
             std::string str;

@@ -79,7 +79,7 @@ int AttachEnginePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (!pNewAttacher) {
             std::stringstream errMsg;
             errMsg << "Object if this type is not derived from AttachEngine: " << typeName;
-            PyErr_SetString(Base::BaseExceptionFreeCADError, errMsg.str().c_str());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, errMsg.str().c_str());
             return -1;
         }
         AttachEngine* oldAttacher = this->getAttachEnginePtr();
@@ -250,7 +250,7 @@ Py::List AttachEnginePy::getImplementedModes(void) const
         PyErr_SetString(Part::PartExceptionOCCError, e.GetMessageString());\
         return NULL;\
     } catch (Base::Exception &e) {\
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());\
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());\
         return NULL;\
     } catch (const Py::Exception &){\
         return NULL;\

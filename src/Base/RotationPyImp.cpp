@@ -187,7 +187,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
+            PyErr_SetString(Base::PyExc_FC_GeneralError,str.c_str());
             return -1;
         }
 

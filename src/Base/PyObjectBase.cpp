@@ -36,7 +36,7 @@
 
 using namespace Base;
 
-PyObject* Base::BaseExceptionFreeCADError = nullptr;
+PyObject* Base::PyExc_FC_GeneralError = nullptr;
 PyObject* Base::PyExc_FC_FreeCADAbort = nullptr;
 PyObject* Base::PyExc_FC_XMLBaseException = nullptr;
 PyObject* Base::PyExc_FC_XMLParseException = nullptr;

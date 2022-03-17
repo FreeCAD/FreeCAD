@@ -90,7 +90,7 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return -1;
         }
         catch (...) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Failed to create Metadata object");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Failed to create Metadata object");
             return -1;
         }
     }
@@ -104,7 +104,7 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "metadata object or path to metadata file expected");
+    PyErr_SetString(Base::PyExc_FC_GeneralError, "metadata object or path to metadata file expected");
     return -1;
 }
 

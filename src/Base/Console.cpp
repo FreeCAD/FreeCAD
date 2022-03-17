@@ -630,13 +630,13 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
             else if (strcmp(pstr2,"Err") == 0)
                 pObs->bErr = (Bool==0)?false:true;
             else
-                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
+                Py_Error(Base::PyExc_FC_GeneralError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
 
             Py_INCREF(Py_None);
             return Py_None;
         }
         else {
-            Py_Error(Base::BaseExceptionFreeCADError,"Unknown Console Type");
+            Py_Error(Base::PyExc_FC_GeneralError,"Unknown Console Type");
         }
 
     } PY_CATCH;

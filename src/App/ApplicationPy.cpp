@@ -332,7 +332,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
     Document* doc = GetApplication().getDocument(pDoc);
     if ( doc ) {
         if ( doc->save() == false ) {
-            PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot save document '%s'", pDoc);
+            PyErr_Format(Base::PyExc_FC_GeneralError, "Cannot save document '%s'", pDoc);
             return nullptr;
         }
     }
@@ -790,7 +790,7 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
             else if(strcmp(pstr,"Default") == 0)
                 l = FC_LOGLEVEL_DEFAULT;
             else {
-                Py_Error(Base::BaseExceptionFreeCADError,
+                Py_Error(PyExc_ValueError,
                         "Unknown Log Level (use 'Default', 'Error', 'Warning', 'Message', 'Log', 'Trace' or an integer)");
                 return nullptr;
             }

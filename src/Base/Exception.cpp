@@ -147,14 +147,14 @@ void Exception::setPyObject( PyObject * pydict)
 
 PyObject * Exception::getPyExceptionType() const
 {
-    return BaseExceptionFreeCADError;
+    return PyExc_FC_GeneralError;
 }
 
 void Exception::setPyException() const
 {
     PyObject* exc = getPyExceptionType();
     if (!exc) {
-        exc = BaseExceptionFreeCADError;
+        exc = PyExc_FC_GeneralError;
     }
 
     PyErr_SetString(exc, what());

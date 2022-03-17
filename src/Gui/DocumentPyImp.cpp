@@ -115,7 +115,7 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     if (PyArg_ParseTuple(args, "s|is", &psFeatStr,&mod,&subname)) {
         obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
         if (!obj) {
-            PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
+            PyErr_Format(Base::PyExc_FC_GeneralError, "No such object found in document: '%s'", psFeatStr);
             return nullptr;
         }
     }

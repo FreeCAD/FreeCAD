@@ -633,7 +633,7 @@ PyObject* MatrixPy::invert(PyObject * args)
         if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON)
             getMatrixPtr()->inverseGauss();
         else {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
             return nullptr;
         }
     }
@@ -654,7 +654,7 @@ PyObject* MatrixPy::inverse(PyObject * args)
             return new MatrixPy(m);
         }
         else {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
             return nullptr;
         }
     }

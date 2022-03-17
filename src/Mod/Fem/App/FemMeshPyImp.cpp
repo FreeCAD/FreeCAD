@@ -100,7 +100,7 @@ int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
     catch (const std::exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError,e.what());
         return -1;
     }
     catch (const Py::Exception&) {
@@ -124,7 +124,7 @@ PyObject* FemMeshPy::setShape(PyObject *args)
         getFemMeshPtr()->getSMesh()->ShapeToMesh(shape);
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -155,7 +155,7 @@ PyObject* FemMeshPy::addHypothesis(PyObject *args)
         return 0;
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -170,7 +170,7 @@ PyObject* FemMeshPy::setStandardHypotheses(PyObject *args)
         getFemMeshPtr()->setStandardHypotheses();
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -185,7 +185,7 @@ PyObject* FemMeshPy::compute(PyObject *args)
         getFemMeshPtr()->compute();
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -205,7 +205,7 @@ PyObject* FemMeshPy::addNode(PyObject *args)
             return Py::new_reference_to(Py::Long(node->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -221,7 +221,7 @@ PyObject* FemMeshPy::addNode(PyObject *args)
             return Py::new_reference_to(Py::Long(node->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -249,7 +249,7 @@ PyObject* FemMeshPy::addEdge(PyObject *args)
             return Py::new_reference_to(Py::Long(edge->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -331,7 +331,7 @@ PyObject* FemMeshPy::addFace(PyObject *args)
             return Py::new_reference_to(Py::Long(face->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -434,7 +434,7 @@ PyObject* FemMeshPy::addQuad(PyObject *args)
         return Py::new_reference_to(Py::Long(face->GetID()));
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
 }
@@ -460,7 +460,7 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
             return Py::new_reference_to(Py::Long(vol->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -601,7 +601,7 @@ PyObject* FemMeshPy::read(PyObject *args)
         getFemMeshPtr()->read(EncodedName.c_str());
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -619,7 +619,7 @@ PyObject* FemMeshPy::write(PyObject *args)
         getFemMeshPtr()->write(EncodedName.c_str());
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -640,7 +640,7 @@ PyObject* FemMeshPy::writeABAQUS(PyObject *args)
         getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;

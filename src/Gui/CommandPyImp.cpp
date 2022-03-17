@@ -140,7 +140,7 @@ PyObject* CommandPy::run(PyObject *args)
         Py_Return;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -158,7 +158,7 @@ PyObject* CommandPy::isActive(PyObject *args)
         PY_CATCH;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -174,7 +174,7 @@ PyObject* CommandPy::getShortcut(PyObject *args)
         return str;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -216,7 +216,7 @@ PyObject* CommandPy::setShortcut(PyObject *args)
         }
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -248,7 +248,7 @@ PyObject* CommandPy::resetShortcut(PyObject *args)
         }
 
     } else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -286,7 +286,7 @@ PyObject* CommandPy::getInfo(PyObject *args)
         return pyList;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -316,7 +316,7 @@ PyObject* CommandPy::getAction(PyObject *args)
         return Py::new_reference_to(list);
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }

@@ -1007,7 +1007,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (const Base::Exception& e) {
         std::stringstream err;
         err << psKey << ": " << e.what();
-        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
         return nullptr;
     }
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
@@ -1025,7 +1025,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (...) {
         std::stringstream err;
         err << "Unknown C++ exception raised in activateWorkbench('" << psKey << "')";
-        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
         return nullptr;
     }
 }
@@ -1240,7 +1240,7 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
     PyBuffer_Release(&content);
 
     if (icon.isNull()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Invalid icon added to application");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Invalid icon added to application");
         return nullptr;
     }
 
@@ -1357,7 +1357,7 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
     catch (...) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in Application::sAddCommand()");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Unknown C++ exception raised in Application::sAddCommand()");
         return nullptr;
     }
 
@@ -1380,7 +1380,7 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
         Py_Return;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command '%s'", pName);
         return nullptr;
     }
 }

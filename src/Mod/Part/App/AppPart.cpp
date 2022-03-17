@@ -196,8 +196,8 @@ PyMOD_INIT_FUNC(Part)
     // Python exceptions
     //
     PyObject* OCCError = 0;
-    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, PyExc_RuntimeError)) {
-        OCCError = PyErr_NewException("Part.OCCError", Base::BaseExceptionFreeCADError, NULL);
+    if (PyObject_IsSubclass(Base::PyExc_FC_GeneralError, PyExc_RuntimeError)) {
+        OCCError = PyErr_NewException("Part.OCCError", Base::PyExc_FC_GeneralError, NULL);
     }
     else {
         Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");

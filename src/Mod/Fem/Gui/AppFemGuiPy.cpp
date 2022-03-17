@@ -91,7 +91,7 @@ private:
         if (PyArg_ParseTuple(args.ptr(),"|O!",&(App::DocumentObjectPy::Type), &object)&& object) {
             App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
             if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "Active Analysis object have to be of type Fem::FemAnalysis!");
+                throw Py::Exception(Base::PyExc_FC_GeneralError, "Active Analysis object have to be of type Fem::FemAnalysis!");
             }
 
             // get the gui document of the Analysis Item
