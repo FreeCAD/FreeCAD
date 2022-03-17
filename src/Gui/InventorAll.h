@@ -114,6 +114,7 @@
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
