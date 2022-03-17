@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -47,33 +46,23 @@
 # include <gp_Lin.hxx>
 #endif
 
-#include "ui_TaskFemConstraintFluidBoundary.h"
-#include "TaskFemConstraintFluidBoundary.h"
-#include <Base/Tools.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Command.h>
-#include <Mod/Fem/App/FemConstraintFluidBoundary.h>
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemTools.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Fem/App/FemAnalysis.h>
-#include <Mod/Fem/App/FemSolverObject.h>
-#include "ActiveAnalysisObserver.h"
-
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/Fem/App/FemConstraintFluidBoundary.h>
+#include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemSolverObject.h>
+#include <Mod/Fem/App/FemTools.h>
+
+#include "TaskFemConstraintFluidBoundary.h"
+#include "ui_TaskFemConstraintFluidBoundary.h"
+#include "ActiveAnalysisObserver.h"
+
 
 using namespace FemGui;
 using namespace Gui;
@@ -146,6 +135,20 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     createDeleteAction(ui->listReferences);
     deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
+    // setup ranges
+    ui->spinBoundaryValue->setMinimum(-FLOAT_MAX);
+    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentIntensityValue->setMinimum(0.0);
+    ui->spinTurbulentIntensityValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentLengthValue->setMinimum(0.0);
+    ui->spinTurbulentLengthValue->setMaximum(FLOAT_MAX);
+    ui->spinTemperatureValue->setMinimum(-273.15);
+    ui->spinTemperatureValue->setMaximum(FLOAT_MAX);
+    ui->spinHeatFluxValue->setMinimum(0.0);
+    ui->spinHeatFluxValue->setMaximum(FLOAT_MAX);
+    ui->spinHTCoeffValue->setMinimum(0.0);
+    ui->spinHTCoeffValue->setMaximum(FLOAT_MAX);
+
     connect(ui->comboBoundaryType, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onBoundaryTypeChanged(void)));
     connect(ui->comboSubtype, SIGNAL(currentIndexChanged(int)),
@@ -189,7 +192,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
     }
     else {
-        App::Document* aDoc = pcConstraint->getDocument(); //  App::Application::GetApplication().getActiveDocument();
+        App::Document* aDoc = pcConstraint->getDocument();
         std::vector<App::DocumentObject*> fem = aDoc->getObjectsOfType(Fem::FemAnalysis::getClassTypeId());
         if (fem.size() >=1) {
             pcAnalysis = static_cast<Fem::FemAnalysis*>(fem[0]);  // get the first
@@ -225,7 +228,6 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
                 else
                     dimension =-1;  // Vertex (0D) can not make mesh, Compound type might contain any types
             }
-            //Base::Console().Message("mesh dimension deducted from Part object of FemMeshObject is \n");
         }
     }
 
