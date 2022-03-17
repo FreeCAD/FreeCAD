@@ -6,17 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>662</height>
+    <width>425</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>General</string>
   </property>
   <layout class="QGridLayout" name="gridLayout1">
-   <property name="margin">
-    <number>9</number>
-   </property>
    <property name="spacing">
     <number>6</number>
    </property>
