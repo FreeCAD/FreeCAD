@@ -42,16 +42,13 @@
 # include <sstream>
 #endif
 
+#include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
 #include "Mod/Fem/App/FemConstraintContact.h"
+#include <Mod/Part/App/PartFeature.h>
+
 #include "TaskFemConstraintContact.h"
 #include "ui_TaskFemConstraintContact.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -93,13 +90,13 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
 
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    double S = pcConstraint->Slope.getValue();
-    double F = pcConstraint->Friction.getValue();
+    double slope = pcConstraint->Slope.getValue();
+    double friction = pcConstraint->Friction.getValue();
 
     // Fill data into dialog elements
     ui->spSlope->setMinimum(1.0);
-    ui->spSlope->setValue(S);
-    ui->spFriction->setValue(F);
+    ui->spSlope->setValue(slope);
+    ui->spFriction->setValue(friction);
 
 /* */
 

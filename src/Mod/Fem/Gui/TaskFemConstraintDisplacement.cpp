@@ -45,17 +45,12 @@
 # include <sstream>
 #endif
 
-#include "Mod/Fem/App/FemConstraintDisplacement.h"
+#include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
+#include <Mod/Fem/App/FemConstraintDisplacement.h>
+
 #include "TaskFemConstraintDisplacement.h"
 #include "ui_TaskFemConstraintDisplacement.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
 
 using namespace FemGui;
