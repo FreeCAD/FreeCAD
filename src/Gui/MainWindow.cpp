@@ -692,18 +692,18 @@ void MainWindow::whatsThis()
 
 void MainWindow::showDocumentation(const QString& help)
 {
-    // temporary - allows to enable/disable the use of the Help module
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Help");
-    bool useHelpModule = hGrp->GetBool("UseHelpModule", false);
-    if (useHelpModule) {
+    if (Base::Interpreter().loadModule("Help",true)) {
         Gui::Command::addModule(Gui::Command::Gui,"Help");
         Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
     } else {
         QUrl url(help);
         if (url.scheme().isEmpty()) {
-            QString page;
-            page = QString::fromUtf8("%1.html").arg(help);
-            d->assistant->showDocumentation(page);
+            //QString page;
+            //page = QString::fromUtf8("%1.html").arg(help);
+            //d->assistant->showDocumentation(page);
+            QMessageBox::critical(getMainWindow(), tr("Help addon needed!"),
+            tr("The Help system of FreeCAD is now handled by the \"Help\" addon."
+                "Install it with menu Tools > Addons Manager"));
         }
         else {
             QDesktopServices::openUrl(url);
