@@ -368,7 +368,8 @@ void PropertyPartShape::loadFromStream(Base::Reader &reader)
         setValue(shape);
     }
     catch (const std::exception&) {
-        Base::Console().Warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+        if (!reader.eof())
+            Base::Console().Warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
     }
 }
 
