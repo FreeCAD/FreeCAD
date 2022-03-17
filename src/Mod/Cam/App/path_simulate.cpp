@@ -2108,25 +2108,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Describes output type (Robo
 
 		tmp3.clear();
 		
-		/
-        if (tool == false)  // traces the actual path
-		{
-			pnt1 = pnt2;
-			
-			pnt2.x = pnt2.x + dtmp1.X()*velo*m_del_t;
-			pnt2.y = pnt2.y + dtmp1.Y()*velo*m_del_t;
-			pnt2.z = pnt2.z + dtmp1.Z()*velo*m_del_t;
-			
-			if(i==0)
-				m_log.addSingleArrow(pnt1,pnt2,2,1,1,1);
-			else
-				m_log.addSingleArrow(pnt1,pnt2,2,1,0,0);
-		}
-		*/
-
-		//m_times_tmp.push_back(t);
-		//m_velo_tmp.push_back(velo);
-
+		
         t += m_del_t;
     }
 
