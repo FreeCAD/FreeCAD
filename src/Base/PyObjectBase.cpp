@@ -38,6 +38,15 @@ using namespace Base;
 
 PyObject* Base::BaseExceptionFreeCADError = nullptr;
 PyObject* Base::BaseExceptionFreeCADAbort = nullptr;
+PyObject* Base::PyExc_FC_XMLBaseException = nullptr;
+PyObject* Base::PyExc_FC_XMLParseException = nullptr;
+PyObject* Base::PyExc_FC_XMLAttributeError = nullptr;
+PyObject* Base::PyExc_FC_UnknownProgramOption = nullptr;
+PyObject* Base::PyExc_FC_BadFormatError = nullptr;
+PyObject* Base::PyExc_FC_BadGraphError = nullptr;
+PyObject* Base::PyExc_FC_ExpressionError = nullptr;
+PyObject* Base::PyExc_FC_ParserError = nullptr;
+PyObject* Base::PyExc_FC_CADKernelError = nullptr;
 
 typedef struct {
     PyObject_HEAD

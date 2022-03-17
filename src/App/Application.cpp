@@ -163,8 +163,19 @@ Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string,std::string> Application::mConfig;
+
+// Custom Python exception types
 BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
 BaseExport extern PyObject* Base::BaseExceptionFreeCADAbort;
+BaseExport extern PyObject* Base::PyExc_FC_XMLBaseException;
+BaseExport extern PyObject* Base::PyExc_FC_XMLParseException;
+BaseExport extern PyObject* Base::PyExc_FC_XMLAttributeError;
+BaseExport extern PyObject* Base::PyExc_FC_UnknownProgramOption;
+BaseExport extern PyObject* Base::PyExc_FC_BadFormatError;
+BaseExport extern PyObject* Base::PyExc_FC_BadGraphError;
+BaseExport extern PyObject* Base::PyExc_FC_ExpressionError;
+BaseExport extern PyObject* Base::PyExc_FC_ParserError;
+BaseExport extern PyObject* Base::PyExc_FC_CADKernelError;
 
 //**************************************************************************
 // Construction and destruction
@@ -225,7 +236,15 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     mpcPramManager["System parameter"] = _pcSysParamMngr;
     mpcPramManager["User parameter"] = _pcUserParamMngr;
 
+    setupPythonTypes();
+}
 
+Application::~Application()
+{
+}
+
+void Application::setupPythonTypes()
+{
     // setting up Python binding
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
@@ -270,13 +289,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
     }
 
-    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
-    Py_INCREF(Base::BaseExceptionFreeCADError);
-    PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
+    setupPythonException(pBaseModule);
 
-    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
-    Py_INCREF(Base::BaseExceptionFreeCADAbort);
-    PyModule_AddObject(pBaseModule, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
 
     // Python types
     Base::Interpreter().addType(&Base::VectorPy          ::Type,pBaseModule,"Vector");
@@ -343,8 +357,53 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         pBaseModule,"Vector2d");
 }
 
-Application::~Application()
+void Application::setupPythonException(PyObject* module)
 {
+    // Define cusom Python exception types
+    //
+    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
+    Py_INCREF(Base::BaseExceptionFreeCADError);
+    PyModule_AddObject(module, "FreeCADError", Base::BaseExceptionFreeCADError);
+
+    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::BaseExceptionFreeCADAbort);
+    PyModule_AddObject(module, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
+
+    Base::PyExc_FC_XMLBaseException = PyErr_NewException("Base.XMLBaseException", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_XMLBaseException);
+    PyModule_AddObject(module, "XMLBaseException", Base::PyExc_FC_XMLBaseException);
+
+    Base::PyExc_FC_XMLParseException = PyErr_NewException("Base.XMLParseException", Base::PyExc_FC_XMLBaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_XMLParseException);
+    PyModule_AddObject(module, "XMLParseException", Base::PyExc_FC_XMLParseException);
+
+    Base::PyExc_FC_XMLAttributeError = PyErr_NewException("Base.XMLAttributeError", Base::PyExc_FC_XMLBaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_XMLAttributeError);
+    PyModule_AddObject(module, "XMLAttributeError", Base::PyExc_FC_XMLAttributeError);
+
+    Base::PyExc_FC_UnknownProgramOption = PyErr_NewException("Base.UnknownProgramOption", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_UnknownProgramOption);
+    PyModule_AddObject(module, "UnknownProgramOption", Base::PyExc_FC_UnknownProgramOption);
+
+    Base::PyExc_FC_BadFormatError = PyErr_NewException("Base.BadFormatError", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_BadFormatError);
+    PyModule_AddObject(module, "BadFormatError", Base::PyExc_FC_BadFormatError);
+
+    Base::PyExc_FC_BadGraphError = PyErr_NewException("Base.BadGraphError", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_BadGraphError);
+    PyModule_AddObject(module, "BadGraphError", Base::PyExc_FC_BadGraphError);
+
+    Base::PyExc_FC_ExpressionError = PyErr_NewException("Base.ExpressionError", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_ExpressionError);
+    PyModule_AddObject(module, "ExpressionError", Base::PyExc_FC_ExpressionError);
+
+    Base::PyExc_FC_ParserError = PyErr_NewException("Base.ParserError", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_ParserError);
+    PyModule_AddObject(module, "ParserError", Base::PyExc_FC_ParserError);
+
+    Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_CADKernelError);
+    PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
 }
 
 //**************************************************************************

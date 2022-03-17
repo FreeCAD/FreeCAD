@@ -415,6 +415,15 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
  BaseExceptionFreeCADError : PyExc_RuntimeError)
 
 BaseExport extern PyObject* BaseExceptionFreeCADAbort;
+BaseExport extern PyObject* PyExc_FC_XMLBaseException;
+BaseExport extern PyObject* PyExc_FC_XMLParseException;
+BaseExport extern PyObject* PyExc_FC_XMLAttributeError;
+BaseExport extern PyObject* PyExc_FC_UnknownProgramOption;
+BaseExport extern PyObject* PyExc_FC_BadFormatError;
+BaseExport extern PyObject* PyExc_FC_BadGraphError;
+BaseExport extern PyObject* PyExc_FC_ExpressionError;
+BaseExport extern PyObject* PyExc_FC_ParserError;
+BaseExport extern PyObject* PyExc_FC_CADKernelError;
 
 /** Exception handling for python callback functions
  * Is a convenience macro to manage the exception handling of python callback

@@ -502,6 +502,8 @@ private:
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
+    static void setupPythonTypes();
+    static void setupPythonException(PyObject*);
 
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self,PyObject *args);
