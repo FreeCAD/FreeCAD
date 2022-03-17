@@ -120,7 +120,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "matrix or up to 16 floats expected");
+    PyErr_SetString(PyExc_TypeError, "matrix or up to 16 floats expected");
     return -1;
 }
 
@@ -610,7 +610,7 @@ PyObject* MatrixPy::multiply(PyObject * args)
         return new VectorPy(new Vector3d(vec));
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "either vector or matrix expected");
+    PyErr_SetString(PyExc_TypeError, "either vector or matrix expected");
     return nullptr;
 }
 

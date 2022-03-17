@@ -112,7 +112,7 @@ void PyException::raiseException() {
         PP_PyDict_Object = nullptr;
 
         std::string exceptionname;
-        if (_exceptionType == Base::BaseExceptionFreeCADAbort)
+        if (_exceptionType == Base::PyExc_FC_FreeCADAbort)
             edict.setItem("sclassname",
                     Py::String(typeid(Base::AbortException).name()));
         if (_isReported)
@@ -120,7 +120,7 @@ void PyException::raiseException() {
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
 
-    if (_exceptionType == Base::BaseExceptionFreeCADAbort) {
+    if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
         Base::AbortException e(_sErrMsg.c_str());
         e.setReported(_isReported);
         throw e;

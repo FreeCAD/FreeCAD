@@ -160,7 +160,7 @@ PyObject* PointsPy::addPoints(PyObject * args)
         }
     }
     catch (const Py::Exception&) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "either expect\n"
+        PyErr_SetString(PyExc_TypeError, "either expect\n"
             "-- [Vector,...] \n"
             "-- [(x,y,z),...]");
         return nullptr;
@@ -190,7 +190,7 @@ PyObject* PointsPy::fromSegment(PyObject * args)
         return new PointsPy(pts.release());
     }
     catch (const Py::Exception&) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a list of int");
+        PyErr_SetString(PyExc_TypeError, "expect a list of int");
         return nullptr;
     }
 }
@@ -212,7 +212,7 @@ PyObject* PointsPy::fromValid(PyObject * args)
         return new PointsPy(pts.release());
     }
     catch (const Py::Exception&) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a list of int");
+        PyErr_SetString(PyExc_TypeError, "expect a list of int");
         return nullptr;
     }
 }

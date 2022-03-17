@@ -394,7 +394,7 @@ PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args)
     } catch (const Py::Exception&) {
         return 0;
     } catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return 0;
     }
 }
@@ -411,7 +411,7 @@ PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObje
     } catch (const Py::Exception&) {
         return 0;
     } catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return 0;
     }
 }

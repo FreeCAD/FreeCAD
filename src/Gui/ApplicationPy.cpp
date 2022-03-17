@@ -1353,7 +1353,7 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         }
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     catch (...) {

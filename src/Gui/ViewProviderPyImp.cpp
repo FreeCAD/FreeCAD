@@ -85,7 +85,7 @@ PyObject*  ViewProviderPy::addProperty(PyObject *args)
     if (!prop) {
         std::stringstream str;
         str << "No property found of type '" << sType << "'" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+        throw Py::TypeError(str.str());
     }
 
     return Py::new_reference_to(this);
@@ -352,7 +352,7 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "Either set matrix or placement to set transformation");
+    PyErr_SetString(PyExc_TypeError, "Either set matrix or placement to set transformation");
     return 0;
 }
 

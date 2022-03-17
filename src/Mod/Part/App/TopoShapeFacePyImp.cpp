@@ -363,8 +363,8 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
             getTopoShapePtr()->setShape(fm->Face());
             return 0;
-        } catch (Base::Exception &e){
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        } catch (Base::Exception &e) {
+            e.setPyException();
             return -1;
         } catch (Standard_Failure& e){
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());

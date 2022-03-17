@@ -262,7 +262,7 @@ PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
 
     Base::Type type = Base::Type::fromName(sType);
     if (type.isBad()) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "'%s' is not a valid type", sType);
+        PyErr_Format(PyExc_TypeError, "'%s' is not a valid type", sType);
         return nullptr;
     }
 

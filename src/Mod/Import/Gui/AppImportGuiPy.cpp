@@ -501,7 +501,7 @@ private:
                     aReader.SetNameMode(true);
                     aReader.SetLayerMode(true);
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
-                        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot read IGES file");
+                        throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                     }
 
 #if OCC_VERSION_HEX < 0x070500
@@ -527,7 +527,7 @@ private:
                 }
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
             FC_DURATION_PLUS(d1,t);
@@ -559,7 +559,8 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -715,7 +716,8 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -785,7 +787,7 @@ private:
                         ->SetModel(new IGESData_IGESModel);
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
             static QPointer<QDialog> dlg = 0;
@@ -818,7 +820,8 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();

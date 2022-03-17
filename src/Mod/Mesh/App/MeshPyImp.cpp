@@ -98,7 +98,7 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
         }
     }
     catch (const Base::Exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
         return -1;
     }
     catch (const std::exception &e) {
@@ -643,7 +643,7 @@ PyObject*  MeshPy::addFacet(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "set 9 floats or three vectors or a facet");
+    PyErr_SetString(PyExc_TypeError, "set 9 floats or three vectors or a facet");
     return nullptr;
 }
 
@@ -690,7 +690,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                         }
                     }
                     else {
-                        PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a sequence of floats or Vector");
+                        PyErr_SetString(PyExc_TypeError, "expect a sequence of floats or Vector");
                         return nullptr;
                     }
 
@@ -746,7 +746,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "either expect\n"
+    PyErr_SetString(PyExc_TypeError, "either expect\n"
         "-- [Vector] (3 of them define a facet)\n"
         "-- ([Vector],[(int,int,int)])");
     return nullptr;
@@ -1069,7 +1069,7 @@ PyObject*  MeshPy::fixSelfIntersections(PyObject *args)
         getMeshObjectPtr()->removeSelfIntersections();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;
@@ -1083,7 +1083,7 @@ PyObject*  MeshPy::removeFoldsOnSurface(PyObject *args)
         getMeshObjectPtr()->removeFoldsOnSurface();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;
@@ -1105,7 +1105,7 @@ PyObject*  MeshPy::removeInvalidPoints(PyObject *args)
         getMeshObjectPtr()->removeInvalidPoints();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;
@@ -1129,7 +1129,7 @@ PyObject*  MeshPy::removePointsOnEdge(PyObject *args, PyObject *kwds)
         getMeshObjectPtr()->removePointsOnEdge(PyObject_IsTrue(fillBoundary) ? true : false);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;
@@ -1240,7 +1240,7 @@ PyObject*  MeshPy::fillupHoles(PyObject *args)
         getMeshObjectPtr()->fillupHoles(len, level, *tria);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
 

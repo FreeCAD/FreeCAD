@@ -234,7 +234,7 @@ private:
                 }
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
 #if 1
@@ -278,7 +278,8 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -398,7 +399,8 @@ private:
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();

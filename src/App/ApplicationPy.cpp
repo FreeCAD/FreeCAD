@@ -180,7 +180,7 @@ PyMethodDef Application::Methods[] = {
      "This only works if there is an active sequencer (or ProgressIndicator in Python).\n"
      "There is an active sequencer during document restore and recomputation. User may\n"
      "abort the operation by pressing the ESC key. Once detected, this function will\n"
-     "trigger a BaseExceptionFreeCADAbort exception."},
+     "trigger a Base.FreeCADAbort exception."},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -292,7 +292,7 @@ PyObject* Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args)
         GetApplication().setActiveDocument(pstr);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
 

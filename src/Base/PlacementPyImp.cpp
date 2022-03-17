@@ -114,7 +114,7 @@ int PlacementPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "empty parameter list, matrix or placement expected");
+    PyErr_SetString(PyExc_TypeError, "empty parameter list, matrix or placement expected");
     return -1;
 }
 

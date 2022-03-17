@@ -284,7 +284,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         return result;
     }
@@ -334,7 +335,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         if (!success) {
             return Py::None();
@@ -400,7 +402,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         if (!success) {
             return Py::None();
@@ -457,7 +460,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return dxfReturn;
@@ -535,7 +539,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return svgReturn;
@@ -1011,7 +1016,8 @@ private:
                 }
             }
             catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+                e.setPyException();
+                throw Py::Exception();
             }
             return result;
             */
@@ -1029,7 +1035,8 @@ private:
                 }
             }
             catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+                e.setPyException();
+                throw Py::Exception();
             }
             PyObject* pycomp = new TopoShapeCompoundPy(new TopoShape(comp));
             return Py::asObject(pycomp);

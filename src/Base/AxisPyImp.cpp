@@ -77,7 +77,7 @@ int AxisPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "empty parameter list, axis or base and direction expected");
+    PyErr_SetString(PyExc_TypeError, "empty parameter list, axis or base and direction expected");
     return -1;
 }
 

@@ -396,7 +396,8 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
+        throw Py::Exception();
     }
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
@@ -417,7 +418,8 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
+        throw Py::Exception();
     }
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());

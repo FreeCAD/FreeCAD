@@ -910,12 +910,13 @@ private:
                 return Py::asObject(topo.getPyObject());
             }
 
-            throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
+            throw Py::TypeError(std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
 
         } catch (Standard_Failure& e) {
             throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         } catch (Base::Exception &e){
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
     }
     Py::Object makeFilledFace(const Py::Tuple& args)

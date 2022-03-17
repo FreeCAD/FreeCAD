@@ -88,7 +88,7 @@ int AttachEnginePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "Wrong set of constructor arguments. Can be: (), ('Attacher::AttachEngine3D'), ('Attacher::AttachEnginePlane'), ('Attacher::AttachEngineLine'), ('Attacher::AttachEnginePoint'), (other_attacher_instance).");
+    PyErr_SetString(PyExc_TypeError, "Wrong set of constructor arguments. Can be: (), ('Attacher::AttachEngine3D'), ('Attacher::AttachEnginePlane'), ('Attacher::AttachEngineLine'), ('Attacher::AttachEnginePoint'), (other_attacher_instance).");
     return -1;
 
 }
@@ -108,7 +108,8 @@ Py::String AttachEnginePy::getAttacherType(void) const
     catch (Standard_Failure& e) {\
         throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());\
     } catch (Base::Exception &e) {\
-        throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());\
+        e.setPyException();\
+        throw Py::Exception();\
     }
 
 Py::String AttachEnginePy::getMode(void) const

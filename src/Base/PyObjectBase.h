@@ -414,7 +414,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 #define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
  BaseExceptionFreeCADError : PyExc_RuntimeError)
 
-BaseExport extern PyObject* BaseExceptionFreeCADAbort;
+BaseExport extern PyObject* PyExc_FC_FreeCADAbort;
 BaseExport extern PyObject* PyExc_FC_XMLBaseException;
 BaseExport extern PyObject* PyExc_FC_XMLParseException;
 BaseExport extern PyObject* PyExc_FC_XMLAttributeError;

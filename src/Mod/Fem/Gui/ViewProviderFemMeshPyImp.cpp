@@ -78,7 +78,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject *args)
         std::vector<double> values;
         int num_items = PyList_Size(node_ids_py);
         if (num_items < 0) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "PyList_Size < 0. That is not a valid list!");
+            PyErr_SetString(PyExc_ValueError, "PyList_Size < 0. That is not a valid list!");
             Py_Return;
         }
         std::vector<App::Color> node_colors(num_items);
@@ -99,7 +99,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject *args)
             node_colors[i] = calcColor(*it, min, max);
         this->getViewProviderFemMeshPtr()->setColorByNodeId(ids, node_colors);
     } else {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeByScalars");
+        PyErr_SetString(PyExc_TypeError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeByScalars");
         return 0;
     }
     Py_Return;
@@ -124,7 +124,7 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject *args)
         std::vector<Base::Vector3d> vectors;
         int num_items = PyList_Size(node_ids_py);
         if (num_items < 0) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "PyList_Size < 0. That is not a valid list!");
+            PyErr_SetString(PyExc_ValueError, "PyList_Size < 0. That is not a valid list!");
             Py_Return;
         }
         for (int i=0; i<num_items; i++){
@@ -137,7 +137,7 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject *args)
         }
         this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(ids, vectors);
     } else {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeDisplacementByVectors");
+        PyErr_SetString(PyExc_TypeError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeDisplacementByVectors");
         return 0;
     }
     Py_Return;

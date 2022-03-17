@@ -197,24 +197,24 @@ private:
         auto exText( "List of Tuples of three or two floats needed as second parameter!" );
 
         if (!PyList_Check(pcListObj))
-            throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
+            throw Py::TypeError(exText);
 
         int nSize = PyList_Size(pcListObj);
         for (int i=0; i<nSize;++i) {
             PyObject* item = PyList_GetItem(pcListObj, i);
             if (!PyTuple_Check(item))
-                throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
+                throw Py::TypeError(exText);
 
             int nTSize = PyTuple_Size(item);
             if (nTSize != 2 && nTSize != 3)
-                throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
+                throw Py::ValueError(exText);
 
             Base::Vector3f vec(0,0,0);
 
             for(int l = 0; l < nTSize;l++) {
                 PyObject* item2 = PyTuple_GetItem(item, l);
                 if (!PyFloat_Check(item2))
-                    throw Py::Exception(Base::BaseExceptionFreeCADError, exText);
+                    throw Py::TypeError(exText);
                 vec[l] = (float)PyFloat_AS_DOUBLE(item2);
             }
             poly.push_back(vec);
@@ -632,7 +632,7 @@ private:
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 
-        throw Py::Exception(Base::BaseExceptionFreeCADError,"Wrong arguments");
+        throw Py::TypeError("Wrong arguments");
     }
 };
 

@@ -181,7 +181,7 @@ const char* AbortException::what() const throw()
 
 PyObject * AbortException::getPyExceptionType() const
 {
-    return BaseExceptionFreeCADAbort;
+    return PyExc_FC_FreeCADAbort;
 }
 
 // ---------------------------------------------------------

@@ -166,7 +166,7 @@ AppExport std::map<std::string,std::string> Application::mConfig;
 
 // Custom Python exception types
 BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
-BaseExport extern PyObject* Base::BaseExceptionFreeCADAbort;
+BaseExport extern PyObject* Base::PyExc_FC_FreeCADAbort;
 BaseExport extern PyObject* Base::PyExc_FC_XMLBaseException;
 BaseExport extern PyObject* Base::PyExc_FC_XMLParseException;
 BaseExport extern PyObject* Base::PyExc_FC_XMLAttributeError;
@@ -365,9 +365,9 @@ void Application::setupPythonException(PyObject* module)
     Py_INCREF(Base::BaseExceptionFreeCADError);
     PyModule_AddObject(module, "FreeCADError", Base::BaseExceptionFreeCADError);
 
-    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
-    Py_INCREF(Base::BaseExceptionFreeCADAbort);
-    PyModule_AddObject(module, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
+    Base::PyExc_FC_FreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_FreeCADAbort);
+    PyModule_AddObject(module, "FreeCADAbort", Base::PyExc_FC_FreeCADAbort);
 
     Base::PyExc_FC_XMLBaseException = PyErr_NewException("Base.XMLBaseException", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_XMLBaseException);
