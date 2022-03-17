@@ -22,13 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Gui/Application.h"
+#include <Gui/Application.h>
+
 #include "DlgSettingsFemInOutVtkImp.h"
 #include "ui_DlgSettingsFemInOutVtk.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 

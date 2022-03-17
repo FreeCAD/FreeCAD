@@ -22,13 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgSettingsFemGmshImp.h"
 #include "ui_DlgSettingsFemGmsh.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
