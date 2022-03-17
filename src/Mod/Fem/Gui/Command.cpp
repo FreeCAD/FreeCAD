@@ -20,55 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_math.hxx>
+# include <QAction>
 # include <QApplication>
 # include <QMessageBox>
-# include <QAction>
-
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoCamera.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
-
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoEventCallback.h>
 # include <SMESH_Mesh.hxx>
 # include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObject.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/Control.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
+#include <Gui/Document.h>
 #include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/Document.h>
-#include <Gui/WaitCursor.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
-#include <Gui/Action.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/WaitCursor.h>
 
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemConstraint.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemConstraint.h>
-#include <Mod/Fem/App/FemAnalysis.h>
+
 #include "ActiveAnalysisObserver.h"
 
 #ifdef FC_USE_VTK
 #include <Mod/Fem/App/FemPostPipeline.h>
 #endif
 
-using namespace std;
 
+using namespace std;
 
 //================================================================================================
 //================================================================================================
