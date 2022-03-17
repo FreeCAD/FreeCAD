@@ -72,21 +72,21 @@ int MetadataPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (const Base::XMLBaseException& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
             return -1;
         }
         catch (const XMLException& toCatch) {
             char* message = XMLString::transcode(toCatch.getMessage());
             std::string what = message;
             XMLString::release(&message);
-            PyErr_SetString(Base::BaseExceptionFreeCADError, what.c_str());
+            PyErr_SetString(Base::PyExc_FC_XMLBaseException, what.c_str());
             return -1;
         }
         catch (const DOMException& toCatch) {
             char* message = XMLString::transcode(toCatch.getMessage());
             std::string what = message;
             XMLString::release(&message);
-            PyErr_SetString(Base::BaseExceptionFreeCADError, what.c_str());
+            PyErr_SetString(Base::PyExc_FC_XMLBaseException, what.c_str());
             return -1;
         }
         catch (...) {

@@ -369,7 +369,7 @@ void Application::setupPythonException(PyObject* module)
     Py_INCREF(Base::BaseExceptionFreeCADAbort);
     PyModule_AddObject(module, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
 
-    Base::PyExc_FC_XMLBaseException = PyErr_NewException("Base.XMLBaseException", PyExc_BaseException, nullptr);
+    Base::PyExc_FC_XMLBaseException = PyErr_NewException("Base.XMLBaseException", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_XMLBaseException);
     PyModule_AddObject(module, "XMLBaseException", Base::PyExc_FC_XMLBaseException);
 
@@ -385,23 +385,23 @@ void Application::setupPythonException(PyObject* module)
     Py_INCREF(Base::PyExc_FC_UnknownProgramOption);
     PyModule_AddObject(module, "UnknownProgramOption", Base::PyExc_FC_UnknownProgramOption);
 
-    Base::PyExc_FC_BadFormatError = PyErr_NewException("Base.BadFormatError", PyExc_BaseException, nullptr);
+    Base::PyExc_FC_BadFormatError = PyErr_NewException("Base.BadFormatError", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_BadFormatError);
     PyModule_AddObject(module, "BadFormatError", Base::PyExc_FC_BadFormatError);
 
-    Base::PyExc_FC_BadGraphError = PyErr_NewException("Base.BadGraphError", PyExc_BaseException, nullptr);
+    Base::PyExc_FC_BadGraphError = PyErr_NewException("Base.BadGraphError", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_BadGraphError);
     PyModule_AddObject(module, "BadGraphError", Base::PyExc_FC_BadGraphError);
 
-    Base::PyExc_FC_ExpressionError = PyErr_NewException("Base.ExpressionError", PyExc_BaseException, nullptr);
+    Base::PyExc_FC_ExpressionError = PyErr_NewException("Base.ExpressionError", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_ExpressionError);
     PyModule_AddObject(module, "ExpressionError", Base::PyExc_FC_ExpressionError);
 
-    Base::PyExc_FC_ParserError = PyErr_NewException("Base.ParserError", PyExc_BaseException, nullptr);
+    Base::PyExc_FC_ParserError = PyErr_NewException("Base.ParserError", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_ParserError);
     PyModule_AddObject(module, "ParserError", Base::PyExc_FC_ParserError);
 
-    Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", PyExc_BaseException, nullptr);
+    Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", PyExc_Exception, nullptr);
     Py_INCREF(Base::PyExc_FC_CADKernelError);
     PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
 }
