@@ -265,11 +265,12 @@ class CommandPathInspect:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return hasattr(FreeCADGui.Selection.getSelection()[0], "Path")
+        # if FreeCAD.ActiveDocument is not None:
+        #     for o in FreeCAD.ActiveDocument.Objects:
+        #         if o.Name[:3] == "Job":
+        #             return True
+        # return False
 
     def Activated(self):
         # check that the selection contains exactly what we want
