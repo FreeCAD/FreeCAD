@@ -26,19 +26,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <QMessageBox>
 # include <QAction>
-# include <QRegExp>
-# include <QTextStream>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
+# include <QMessageBox>
 # include <sstream>
 #endif
 

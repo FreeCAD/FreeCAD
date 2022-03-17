@@ -25,22 +25,10 @@
 
 #ifndef _PreComp_
 # include <sstream>
-
 # include <QAction>
-# include <QKeyEvent>
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
 #endif
 
 #include <App/Application.h>
