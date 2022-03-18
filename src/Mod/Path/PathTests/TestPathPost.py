@@ -324,6 +324,19 @@ class TestOutputNameSubstitution(unittest.TestCase):
     macro = FreeCAD.getUserMacroDir()
 
     def test000(self):
+        # Test basic name generation with empty string
+        teststring = ""
+        self.job.PostProcessorOutputFile = teststring
+        self.job.SplitOutput = False
+        outlist = PathPost.buildPostList(self.job)
+
+        self.assertTrue(len(outlist) == 1)
+        subpart, objs = outlist[0]
+
+        filename = PathPost.resolveFileName(self.job, subpart, 0)
+        self.assertEqual(filename, f"{self.testfilename}.nc")
+
+    def test015(self):
         # Test basic string substitution without splitting
         teststring = "~/Desktop/%j.nc"
         self.job.PostProcessorOutputFile = teststring

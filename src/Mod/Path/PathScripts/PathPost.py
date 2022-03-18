@@ -42,7 +42,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = PathLog.thisModule()
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -100,7 +100,7 @@ def resolveFileName(job, subpartname, sequencenumber):
 
     # if no extension, use something sensible
     if not ext:
-        ext = "nc"
+        ext = ".nc"
 
     # By now we should have a sanitized path, filename and extension to work with
     PathLog.track(f"path: {outputpath} name: {filename} ext: {ext}")
@@ -555,29 +555,46 @@ class CommandPathPost:
         PathLog.debug("about to postprocess job: {}".format(job.Name))
 
         postlist = buildPostList(job)
-        filename = resolveFileName(job)
+        # filename = resolveFileName(job, "allitems", 0)
+
+        filenames = []
 
         success = True
-        gcode = ""
-        if job.SplitOutput:
-            for idx, sublist in enumerate(postlist):  # name, slist in postlist:
-                result = self.exportObjectsWith(sublist[1], sublist[0], job, idx)
+        finalgcode = ""
+        for idx, section in enumerate(postlist):
+            partname = section[0]
+            sublist = section[1]
 
-                if result is None:
-                    success = False
-                else:
-                    gcode += result
+            result, gcode, name = self.exportObjectsWith(sublist, partname, job, idx)
+            filenames.append(name)
+            PathLog.track(result, gcode, name)
 
-        else:
-            finalpostlist = [item for (_, slist) in postlist for item in slist]
-            gcode = self.exportObjectsWith(finalpostlist, "allitems", job, 1)
-            success = gcode is not None
+            if result is None:
+                success = False
+            else:
+                finalgcode += gcode
 
+        # if job.SplitOutput:
+        #     for idx, sublist in enumerate(postlist):  # name, slist in postlist:
+        #         result = self.exportObjectsWith(sublist[1], sublist[0], job, idx)
+
+        #         if result is None:
+        #             success = False
+        #         else:
+        #             gcode += result
+
+        # else:
+        #     finalpostlist = [item for (_, slist) in postlist for item in slist]
+        #     gcode = self.exportObjectsWith(finalpostlist, "allitems", job, 1)
+        #     success = gcode is not None
+
+        PathLog.track(success)
         if success:
             if hasattr(job, "LastPostProcessDate"):
                 job.LastPostProcessDate = str(datetime.now())
             if hasattr(job, "LastPostProcessOutput"):
-                job.LastPostProcessOutput = filename
+                job.LastPostProcessOutput = " \n".join(filenames)
+                PathLog.track(job.LastPostProcessOutput)
             FreeCAD.ActiveDocument.commitTransaction()
         else:
             FreeCAD.ActiveDocument.abortTransaction()
