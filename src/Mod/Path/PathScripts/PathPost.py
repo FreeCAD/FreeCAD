@@ -42,7 +42,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = PathLog.thisModule()
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -476,8 +476,9 @@ class CommandPathPost:
         PathLog.track(partname, sequence)
         PathLog.track(objs)
 
-        partname = objs[0]
-        slist = objs[1]
+        # partname = objs[0]
+        # slist = objs[1]
+        PathLog.track(objs, partname)
 
         postArgs = PathPreferences.defaultPostProcessorArgs()
         if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
@@ -499,7 +500,7 @@ class CommandPathPost:
         if postname and filename:
             print("post: %s(%s, %s)" % (postname, filename, postArgs))
             processor = PostProcessor.load(postname)
-            gcode = processor.export(slist, filename, postArgs)
+            gcode = processor.export(objs, filename, postArgs)
             return (False, gcode, filename)
         else:
             return (True, "", filename)
