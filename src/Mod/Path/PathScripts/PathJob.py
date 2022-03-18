@@ -32,6 +32,7 @@ import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import json
 import time
+import Path
 
 
 # lazily loaded modules
@@ -284,7 +285,7 @@ class ObjectJob:
         # ops = FreeCAD.ActiveDocument.addObject(
         #     "Path::FeatureCompoundPython", "Operations"
         # )
-        ops = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Operations")
+        ops = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Operations")
         if ops.ViewObject:
             # ops.ViewObject.Proxy = 0
             ops.ViewObject.Visibility = True
@@ -544,6 +545,14 @@ class ObjectJob:
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
+        if True in [isinstance(t.Tool, Path.Tool) for t in obj.Tools.Group]:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "Path",
+                    "This job contains Legacy tools. Legacy tools are deprecated. They will be removed after version 0.20",
+                )
+            )
+
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
@@ -659,7 +668,7 @@ class ObjectJob:
 
     def execute(self, obj):
         if getattr(obj, "Operations", None):
-            #obj.Path = obj.Operations.Path
+            # obj.Path = obj.Operations.Path
             self.getCycleTime()
 
     def getCycleTime(self):
