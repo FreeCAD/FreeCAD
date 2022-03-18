@@ -1232,6 +1232,9 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         pairs = [["Edge6","Edge8"],["Edge5","Edge7"]]
         self.invertPairs(pairs)
+        # Also invert opening direction, so the door still opens towards
+        # the same side of the wall
+        self.invertOpening()
 
     def invertPairs(self,pairs):
 
