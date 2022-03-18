@@ -29,6 +29,7 @@
 # include <QDockWidget>
 # include <QDoubleSpinBox>
 # include <QSlider>
+# include <QToolTip>
 #endif
 
 #include <App/Document.h>
@@ -40,8 +41,10 @@
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/PrefWidgets.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderGeometryObject.h>
 #include <Mod/Part/App/FeatureCompound.h>
 #include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Part/App/FeaturePartCommon.h>
@@ -104,11 +107,28 @@ SectionCut::SectionCut(QWidget* parent)
             ObjectsListVisible.push_back(*it);
     }
 
+    // lambda function to set color and transpareny
+    auto setColorTransparency = [&](Part::Box* pcBox) {
+        App::Color cutColor;
+        long cutTransparency;
+        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(pcBox));
+        if (vpBox) {
+            cutColor = vpBox->ShapeColor.getValue();
+            cutTransparency = vpBox->Transparency.getValue();
+            ui->CutColor->setColor(cutColor.asValue<QColor>());
+            ui->CutTransparency->setValue(cutTransparency);
+            ui->CutTransparency->setToolTip(QString::number(cutTransparency) + QString::fromLatin1(" %"));
+        }
+    };
+
     // if we can have existing cut boxes, take their values
     // to access the flip state we must compare the bounding boxes of the cutbox and the compound
     Base::BoundBox3d BoundCompound;
     Base::BoundBox3d BoundCutBox;
     if (doc->getObject(BoxXName) || doc->getObject(BoxYName) || doc->getObject(BoxZName)) {
+        // automatic coloring must be disabled
+        ui->AutoCutfaceColor->setChecked(false);
         if (doc->getObject(CompoundName)) {
             auto compoundObject = doc->getObject(CompoundName);
             Part::Compound* pcCompound = dynamic_cast<Part::Compound*>(compoundObject);
@@ -138,6 +158,8 @@ SectionCut::SectionCut(QWidget* parent)
             ui->cutZ->setValue(pcBox->Height.getValue() + pcBox->Placement.getValue().getPosition().z);
             ui->flipZ->setChecked(false);
         }
+        // set color and transparency
+        setColorTransparency(pcBox);
     }
     if (doc->getObject(BoxYName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
@@ -156,6 +178,7 @@ SectionCut::SectionCut(QWidget* parent)
             ui->cutY->setValue(pcBox->Width.getValue() + pcBox->Placement.getValue().getPosition().y);
             ui->flipY->setChecked(false);
         }
+        setColorTransparency(pcBox);
     }
     if (doc->getObject(BoxXName)) {
         Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
@@ -174,6 +197,7 @@ SectionCut::SectionCut(QWidget* parent)
             ui->cutX->setValue(pcBox->Length.getValue() + pcBox->Placement.getValue().getPosition().x);
             ui->flipX->setChecked(false);
         }
+        setColorTransparency(pcBox);
     }
 
     // hide existing cuts to check if there are objects to be cut visible
@@ -214,6 +238,9 @@ SectionCut::SectionCut(QWidget* parent)
     connect(ui->flipY, &QPushButton::clicked, this, &SectionCut::onFlipYclicked);
     connect(ui->flipZ, &QPushButton::clicked, this, &SectionCut::onFlipZclicked);
     connect(ui->RefreshCutPB, &QPushButton::clicked, this, &SectionCut::onRefreshCutPBclicked);
+    connect(ui->CutColor, &QPushButton::clicked, this, &SectionCut::onCutColorclicked);
+    connect(ui->CutTransparency, &QSlider::sliderMoved, this, &SectionCut::onTransparencySliderMoved);
+    connect(ui->CutTransparency, &QSlider::valueChanged, this, &SectionCut::onTransparencyChanged);
     
     // if there is a cut, perform it
     if (hasBoxX || hasBoxY || hasBoxZ) {
@@ -450,6 +477,17 @@ void SectionCut::startCutting(bool isInitial)
         return;
     }
     Part::Compound* pcCompound = static_cast<Part::Compound*>(CutCompound);
+    // store color and transparency of first object
+    App::Color cutColor;
+    int cutTransparency;
+    bool autoColor = true;
+    bool autoTransparency = true;
+    auto vpFirstObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+        Gui::Application::Instance->getViewProvider(*ObjectsListCut.begin()));
+    if (vpFirstObject) {
+        cutColor = vpFirstObject->ShapeColor.getValue();
+        cutTransparency = vpFirstObject->Transparency.getValue();
+    }
     // fill it with all found elements with the copies of the elements
     int count = 0;
     for (auto itCuts = ObjectsListCut.begin(); itCuts != ObjectsListCut.end(); ++itCuts, count++) {
@@ -492,6 +530,18 @@ void SectionCut::startCutting(bool isInitial)
 
         // hide the objects since only the cut should later be visible
         (*itCuts)->Visibility.setValue(false);
+
+        // check if all objects have same color and transparency
+        if (ui->AutoCutfaceColor->isChecked()) {
+            auto vpObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+                Gui::Application::Instance->getViewProvider(*itCuts));
+            if (vpObject) {
+                if (cutColor != vpObject->ShapeColor.getValue())
+                    autoColor = false;
+                if (cutTransparency != vpObject->Transparency.getValue())
+                    autoTransparency = false;
+            }
+        }
     }
 
     // compute the filled compound
@@ -534,6 +584,26 @@ void SectionCut::startCutting(bool isInitial)
     hasBoxZ = false;
     hasBoxCustom = false;
 
+    // if automatic, we take this color for the cut
+    if (ui->AutoCutfaceColor->isChecked()) {
+        if (autoColor) {
+            ui->CutColor->blockSignals(true);
+            ui->CutColor->setColor(cutColor.asValue<QColor>());
+            ui->CutColor->blockSignals(false);
+        }
+        if (autoTransparency) {
+            ui->CutTransparency->blockSignals(true);
+            ui->CutTransparency->setValue(cutTransparency);
+            ui->CutTransparency->setToolTip(QString::number(cutTransparency) + QString::fromLatin1(" %"));
+            ui->CutTransparency->blockSignals(false);
+        }
+    }
+
+    // read cutface color for the cut box
+    App::Color boxColor;
+    boxColor.setValue<QColor>(ui->CutColor->color());
+    int boxTransparency = ui->CutTransparency->value();
+
     if (ui->groupBoxX->isChecked()) {
         // create a box
         auto CutBox = doc->addObject("Part::Box", BoxXName);
@@ -568,7 +638,14 @@ void SectionCut::startCutting(bool isInitial)
         BoxOriginSet.y = BoundingBoxOrigin[1] - 0.5;
         BoxOriginSet.z = BoundingBoxOrigin[2] - 0.5;
         placement.setPosition(BoxOriginSet);
+        // set box color
         pcBox->Placement.setValue(placement);
+        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(pcBox));
+        if (vpBox) {
+            vpBox->ShapeColor.setValue(boxColor);
+            vpBox->Transparency.setValue(boxTransparency);
+        }
 
         // create a cut feature
         auto CutFeature = doc->addObject("Part::Cut", CutXName);
@@ -627,6 +704,12 @@ void SectionCut::startCutting(bool isInitial)
         BoxOriginSet.z = BoundingBoxOrigin[2] - 0.5;
         placement.setPosition(BoxOriginSet);
         pcBox->Placement.setValue(placement);
+        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(pcBox));
+        if (vpBox) {
+            vpBox->ShapeColor.setValue(boxColor);
+            vpBox->Transparency.setValue(boxTransparency);
+        }
         
         auto CutFeature = doc->addObject("Part::Cut", CutYName);
         if (!CutFeature) {
@@ -682,6 +765,12 @@ void SectionCut::startCutting(bool isInitial)
             BoxOriginSet.z = CutPosZ;
         placement.setPosition(BoxOriginSet);
         pcBox->Placement.setValue(placement);
+        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(pcBox));
+        if (vpBox) {
+            vpBox->ShapeColor.setValue(boxColor);
+            vpBox->Transparency.setValue(boxTransparency);
+        }
 
         auto CutFeature = doc->addObject("Part::Cut", CutZName);
         if (!CutFeature) {
@@ -1389,6 +1478,29 @@ void SectionCut::onFlipZclicked()
         return;
     }
     pcCut->recomputeFeature(true);
+}
+
+// changes the cutface color
+void SectionCut::onCutColorclicked()
+{
+    // re-cut to change the color of all cut boxes
+    if (ui->groupBoxX->isChecked() || ui->groupBoxY->isChecked() || ui->groupBoxZ->isChecked())
+        startCutting();
+}
+
+void SectionCut::onTransparencySliderMoved(int val)
+{
+    ui->CutTransparency->setToolTip(QString::number(val) + QString::fromLatin1(" %"));
+    // highlight the tooltip
+    QToolTip::showText(QCursor::pos(), QString::number(val) + QString::fromLatin1(" %"), nullptr);
+    // re-cut to change the color of all cut boxes
+    if (ui->groupBoxX->isChecked() || ui->groupBoxY->isChecked() || ui->groupBoxZ->isChecked())
+        startCutting();
+}
+
+void SectionCut::onTransparencyChanged(int val)
+{
+    onTransparencySliderMoved(val);
 }
 
 // refreshes the list of document objects and the visible objects
