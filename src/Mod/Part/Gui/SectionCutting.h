@@ -56,6 +56,9 @@ protected Q_SLOTS:
     void onFlipYclicked();
     void onFlipZclicked();
     void onRefreshCutPBclicked();
+    void onCutColorclicked();
+    void onTransparencySliderMoved(int);
+    void onTransparencyChanged(int);
 
 public:
     void reject();
