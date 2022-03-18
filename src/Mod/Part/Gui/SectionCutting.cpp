@@ -31,8 +31,6 @@
 # include <QSlider>
 #endif
 
-#include "SectionCutting.h"
-#include "ui_SectionCutting.h"
 #include <App/Document.h>
 #include <App/Link.h>
 #include <App/Part.h>
@@ -50,6 +48,9 @@
 #include <Mod/Part/App/FeaturePartCut.h>
 #include <Mod/Part/App/FeaturePartFuse.h>
 #include <Mod/Part/App/PartFeatures.h>
+
+#include "SectionCutting.h"
+#include "ui_SectionCutting.h"
 
 
 using namespace PartGui;
@@ -206,6 +207,9 @@ SectionCut::SectionCut(QWidget* parent)
     connect(ui->cutXHS, &QSlider::sliderMoved, this, &SectionCut::onCutXHSsliderMoved);
     connect(ui->cutYHS, &QSlider::sliderMoved, this, &SectionCut::onCutYHSsliderMoved);
     connect(ui->cutZHS, &QSlider::sliderMoved, this, &SectionCut::onCutZHSsliderMoved);
+    connect(ui->cutXHS, &QSlider::valueChanged, this, &SectionCut::onCutXHSChanged);
+    connect(ui->cutYHS, &QSlider::valueChanged, this, &SectionCut::onCutYHSChanged);
+    connect(ui->cutZHS, &QSlider::valueChanged, this, &SectionCut::onCutZHSChanged);
     connect(ui->flipX, &QPushButton::clicked, this, &SectionCut::onFlipXclicked);
     connect(ui->flipY, &QPushButton::clicked, this, &SectionCut::onFlipYclicked);
     connect(ui->flipZ, &QPushButton::clicked, this, &SectionCut::onFlipZclicked);
@@ -953,6 +957,11 @@ void SectionCut::onCutXHSsliderMoved(int val)
     ui->cutX->setValue(NewCutValue);
 }
 
+void SectionCut::onCutXHSChanged(int val)
+{
+    onCutXHSsliderMoved(val);
+}
+
 void SectionCut::onCutYvalueChanged(double val)
 {
     CutValueHelper(val, ui->cutY, ui->cutYHS);
@@ -1081,6 +1090,11 @@ void SectionCut::onCutYHSsliderMoved(int val)
     ui->cutY->setValue(NewCutValue);
 }
 
+void SectionCut::onCutYHSChanged(int val)
+{
+    onCutYHSsliderMoved(val);
+}
+
 void SectionCut::onCutZvalueChanged(double val)
 {
     CutValueHelper(val, ui->cutZ, ui->cutZHS);
@@ -1190,6 +1204,11 @@ void SectionCut::onCutZHSsliderMoved(int val)
         + val / 100.0 * (ui->cutZ->maximum() - ui->cutZ->minimum());
     ui->cutZHS->setToolTip(QString::number(NewCutValue, 'g', Base::UnitsApi::getDecimals()));
     ui->cutZ->setValue(NewCutValue);
+}
+
+void SectionCut::onCutZHSChanged(int val)
+{
+    onCutZHSsliderMoved(val);
 }
 
 // helper function for the onFlip_clicked signal
