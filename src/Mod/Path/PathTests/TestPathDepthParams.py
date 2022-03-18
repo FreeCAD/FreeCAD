@@ -43,7 +43,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test10(self):
+    def test001(self):
         """Stepping from zero to a negative depth"""
 
         args = {
@@ -62,7 +62,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test20(self):
+    def test002(self):
         """Start and end are equal or start lower than finish"""
 
         args = {
@@ -89,7 +89,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test30(self):
+    def test003(self):
         """User Parameters passed in"""
         args = {
             "clearance_height": 10,
@@ -107,7 +107,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test40(self):
+    def test004(self):
         """z_finish_step passed in."""
         args = {
             "clearance_height": 10,
@@ -125,7 +125,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test50(self):
+    def test005(self):
         """stepping down with equalstep=True"""
         args = {
             "clearance_height": 10,
@@ -144,7 +144,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test60(self):
+    def test006(self):
         """stepping down with equalstep=True and a finish depth"""
         args = {
             "clearance_height": 10,
@@ -162,7 +162,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test70(self):
+    def test007(self):
         """stepping down with stepdown greater than total depth"""
         args = {
             "clearance_height": 10,
@@ -180,7 +180,7 @@ class depthTestCases(unittest.TestCase):
         r = [i for i in d]
         self.assertListEqual(r, expected)
 
-    def test80(self):
+    def test008(self):
         """Test handling of negative step-down, negative finish step, and relative size of step/finish"""
 
         # negative steps should be converted to positive values
@@ -212,7 +212,7 @@ class depthTestCases(unittest.TestCase):
         }
         self.assertRaises(ValueError, PathUtils.depth_params, **args)
 
-    def test90(self):
+    def test009(self):
         """stepping down with single stepdown exactly equal to total depth"""
         args = {
             "clearance_height": 20.0,
@@ -232,7 +232,7 @@ class depthTestCases(unittest.TestCase):
             r, expected, "Expected {}, but result of {}".format(expected, r)
         )
 
-    def test100(self):
+    def test010(self):
         """stepping down with single stepdown roughly equal to total depth"""
         args = {
             "clearance_height": 20.0,
@@ -252,7 +252,7 @@ class depthTestCases(unittest.TestCase):
             r, expected, "Expected {}, but result of {}".format(expected, r)
         )
 
-    def test110(self):
+    def test011(self):
         """two custom user depths roughly equal to final depth"""
         args = {
             "clearance_height": 20.0,
@@ -272,7 +272,7 @@ class depthTestCases(unittest.TestCase):
             r, expected, "Expected {}, but result of {}".format(expected, r)
         )
 
-    def test120(self):
+    def test012(self):
         """four custom user depths with two roughly equal included"""
         args = {
             "clearance_height": 20.0,
@@ -292,7 +292,7 @@ class depthTestCases(unittest.TestCase):
             r, expected, "Expected {}, but result of {}".format(expected, r)
         )
 
-    def test130(self):
+    def test013(self):
         """five custom user depths with three roughly equal included"""
         args = {
             "clearance_height": 20.0,
