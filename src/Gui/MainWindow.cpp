@@ -702,7 +702,7 @@ void MainWindow::showDocumentation(const QString& help)
             //page = QString::fromUtf8("%1.html").arg(help);
             //d->assistant->showDocumentation(page);
             QMessageBox::critical(getMainWindow(), tr("Help addon needed!"),
-            tr("The Help system of FreeCAD is now handled by the \"Help\" addon."
+            tr("The Help system of FreeCAD is now handled by the \"Help\" addon. "
                 "Install it with menu Tools > Addons Manager"));
         }
         else {
