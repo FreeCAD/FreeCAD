@@ -677,11 +677,10 @@ public:
     static ParameterGrp::handle getHandle();
 
     //@{
-    /** Accessor for parameter CopyOnChangeApplyToAll
-     *
-     * Stores the last user choice of whether to apply CopyOnChange setup to all link
-     * that links to the same configurable object
-     */
+    /// Accessor for parameter CopyOnChangeApplyToAll
+    ///
+    /// Stores the last user choice of whether to apply CopyOnChange setup to all link
+    /// that links to the same configurable object
     static const bool & getCopyOnChangeApplyToAll();
     static const bool & defaultCopyOnChangeApplyToAll();
     static void removeCopyOnChangeApplyToAll();
@@ -689,8 +688,8 @@ public:
     static const char *docCopyOnChangeApplyToAll();
     //@}
 
+    // Auto generated code. See class document of LinkParams.
 };
-
 } // namespace App
 //[[[end]]]
 

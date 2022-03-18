@@ -57,6 +57,8 @@ import LinkParams
 LinkParams.define()
 ]]]*/
 
+namespace {
+
 // Auto generated code. See class document of LinkParams.
 class LinkParamsP: public ParameterGrp::ObserverType {
 public:
@@ -103,6 +105,8 @@ LinkParamsP *instance() {
     static LinkParamsP *inst = new LinkParamsP;
     return inst;
 }
+
+} // Anonymous namespace
 
 // Auto generated code. See class document of LinkParams.
 ParameterGrp::handle LinkParams::getHandle() {
