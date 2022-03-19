@@ -63,7 +63,6 @@ protected:
     enum class SelectionChangeModes {none, refAdd, refRemove};
     virtual void onSelectionChanged(const Gui::SelectionChanges&) override;
     virtual void clearButtons(const SelectionChangeModes notThis) = 0;
-    void exitSelectionChangeMode();
 
 protected:
     enum SelectionChangeModes selChangeMode;
