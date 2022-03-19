@@ -16,13 +16,10 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="potentialBox">
+     <item row="0" column="0">
+      <widget class="QLabel" name="potentialLbl">
        <property name="text">
-        <string>unspecified</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Potential:</string>
        </property>
       </widget>
      </item>
@@ -39,26 +36,47 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="potentialLbl">
-       <property name="text">
-        <string>Potential:</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
-      <widget class="Gui::InputField" name="potentialTxt">
+      <widget class="Gui::QuantitySpinBox" name="potentialQSB" native="true">
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="text">
-        <string>1 V</string>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Electric potential in V</string>
+       </property>
+       <property name="keyboardTracking" stdset="0">
+        <bool>true</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">V</string>
+       </property>
+       <property name="minimum" stdset="0">
+        <double>-1000000000000000000000.000000000000000</double>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>1000000000000000000000.000000000000000</double>
        </property>
        <property name="singleStep" stdset="0">
         <double>1.000000000000000</double>
        </property>
-       <property name="unit" stdset="0">
-        <string>V</string>
+       <property name="value" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="potentialBox">
+       <property name="text">
+        <string>unspecified</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -154,42 +172,42 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
  <connections>
   <connection>
-   <sender>potentialBox</sender>
+   <sender>capacitanceBodyBox</sender>
    <signal>toggled(bool)</signal>
-   <receiver>potentialTxt</receiver>
-   <slot>setEnabled(bool)</slot>
+   <receiver>capacitanceBody_spinBox</receiver>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>230</x>
-     <y>44</y>
+     <x>262</x>
+     <y>116</y>
     </hint>
     <hint type="destinationlabel">
-     <x>230</x>
-     <y>18</y>
+     <x>323</x>
+     <y>116</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>potentialBox</sender>
    <signal>toggled(bool)</signal>
-   <receiver>potentialTxt</receiver>
+   <receiver>potentialQSB</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>230</x>
-     <y>44</y>
+     <x>301</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
-     <x>230</x>
-     <y>18</y>
+     <x>206</x>
+     <y>19</y>
     </hint>
    </hints>
   </connection>

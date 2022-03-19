@@ -58,11 +58,6 @@ class _TaskPanel(object):
             self._part = femutils.get_part_to_mesh(self._mesh)
         self._partVisible = None
         self._meshVisible = None
-        QtCore.QObject.connect(
-            self._paramWidget.capacitanceBodyBox,
-            QtCore.SIGNAL("stateChanged(int)"),
-            self.capacitanceBodyBox_checked
-        )
 
     def open(self):
         if self._mesh is not None and self._part is not None:
@@ -99,9 +94,8 @@ class _TaskPanel(object):
     def _initParamWidget(self):
         unit = "V"
         q = Units.Quantity("{} {}".format(self._obj.Potential, unit))
-
-        self._paramWidget.potentialTxt.setText(
-            q.UserString)
+        self._paramWidget.potentialQSB.setProperty(
+            'rawValue', q.Value)
         self._paramWidget.potentialBox.setChecked(
             not self._obj.PotentialEnabled)
         self._paramWidget.potentialConstantBox.setChecked(
@@ -127,9 +121,9 @@ class _TaskPanel(object):
         if self._obj.PotentialEnabled:
             # if the input widget shows not a green hook, but the user presses ok
             # we could run into a syntax error on getting the quantity
-            quantity = None
+            potential = None
             try:
-                quantity = Units.Quantity(self._paramWidget.potentialTxt.text())
+                potential = Units.Quantity(self._paramWidget.potentialQSB.text())
             except ValueError:
                 FreeCAD.Console.PrintMessage(
                     "Wrong input. OK has been triggered without a green hook "
@@ -137,8 +131,8 @@ class _TaskPanel(object):
                     "Potential has not been set.\n"
                     .format(self._paramWidget.potentialTxt.text())
                 )
-            if quantity is not None:
-                self._obj.Potential = quantity.getValueAs(unit).Value
+            if potential is not None:
+                self._obj.Potential = potential.getValueAs(unit).Value
 
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 
@@ -152,7 +146,3 @@ class _TaskPanel(object):
         if self._obj.CapacitanceBodyEnabled:
             self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
             self._obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()
-
-    def capacitanceBodyBox_checked(self, i):
-        self._paramWidget.capacitanceBody_spinBox.setEnabled(
-            not self._paramWidget.capacitanceBodyBox.isChecked())
