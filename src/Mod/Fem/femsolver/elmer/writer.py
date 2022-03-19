@@ -269,7 +269,8 @@ class Writer(object):
         permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
         if len(permittivity_objs) == 1:
             Console.PrintLog("Constand permittivity overwriting.\n")
-            self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
+            # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e9
+            self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity * 1e9)
         elif len(permittivity_objs) > 1:
             Console.PrintError(
                 "More than one permittivity constant overwriting objects ({} objs). "
@@ -440,11 +441,9 @@ class Writer(object):
         return s
 
     def _handleElectrostaticConstants(self):
-        self._constant(
-            "Permittivity Of Vacuum",
-            self._getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
-        )
-        # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
+        permittivityRaw = self._getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
+        permittivityRaw *= 1e9
+        self._constant("Permittivity Of Vacuum", permittivityRaw)
 
     def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
@@ -619,13 +618,17 @@ class Writer(object):
                 gravity = self._getConstant("Gravity", "L/T^2")
                 m = self._getBodyMaterial(name).Material
 
-                densityQuantity = Units.Quantity(m["Density"])
+                # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e9
+                densityQuantityRaw = Units.Quantity(m["Density"])
+                densityQuantity = densityQuantityRaw * 1e9
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
                     # not tested, bernd
                     # TODO: test
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e6
                     densityQuantity.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
+                    densityQuantity = densityQuantityRaw * 1e6
                 density = self._convert(densityQuantity, dimension)
 
                 force1 = gravity * obj.Gravity_x * density
