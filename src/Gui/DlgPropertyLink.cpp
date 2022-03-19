@@ -293,11 +293,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         ui->treeWidget->setColumnCount(2);
 
         // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
         ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-        ui->treeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
     }
 
     std::set<App::Document*> expandDocs;

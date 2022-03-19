@@ -220,9 +220,8 @@ void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
             QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
             viewer->setComponentCursor(custom);
         };
-#if (QT_VERSION >= 0x050000)
+
         QObject::connect(viewer, &Gui::View3DInventorViewer::devicePixelRatioChanged, setComponentCursor);
-#endif
         setComponentCursor();
         this->addToSelection = add;
     }

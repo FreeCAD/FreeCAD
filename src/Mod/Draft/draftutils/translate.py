@@ -109,9 +109,8 @@ def translate(context, text, utf8_decode=False):
     # Python 3 and Qt5
     # The text is a utf8 string, and since it is Qt5
     # the translate function doesn't use the 4th parameter
-    if six.PY3:
-        return Qtranslate(context, text, None)
-    
+    return Qtranslate(context, text, None)
+
 
 # Original code no longer used. It is listed here for reference
 # to show how the different pairings Py2/Qt4, Py3/Qt5, Py2/Qt5, Py3/Qt4

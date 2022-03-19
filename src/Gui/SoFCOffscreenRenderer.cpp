@@ -413,7 +413,6 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     //this->texFormat = GL_RGBA32F_ARB;
     this->texFormat = GL_RGB32F_ARB;
     this->cache_context = 0;
-    this->pbuffer = false;
 }
 
 /*!
@@ -535,18 +534,6 @@ GLenum
 SoQtOffscreenRenderer::internalTextureFormat() const
 {
     return PRIVATE(this)->texFormat;
-}
-
-void
-SoQtOffscreenRenderer::setPbufferEnable(SbBool enable)
-{
-    PRIVATE(this)->pbuffer = enable;
-}
-
-SbBool
-SoQtOffscreenRenderer::getPbufferEnable(void) const
-{
-    return PRIVATE(this)->pbuffer;
 }
 
 // *************************************************************************

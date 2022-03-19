@@ -121,9 +121,6 @@ public:
     void setInternalTextureFormat(GLenum internalTextureFormat);
     GLenum internalTextureFormat() const;
 
-    void setPbufferEnable(SbBool enable);
-    SbBool getPbufferEnable(void) const;
-
     SbBool render(SoNode * scene);
     SbBool render(SoPath * scene);
 
@@ -144,7 +141,6 @@ private:
     SbColor4f backgroundopaque;
     SoGLRenderAction * renderaction;
     SbBool didallocation;
-    SbBool pbuffer;
     int numSamples;
     GLenum texFormat;
     QImage glImage;

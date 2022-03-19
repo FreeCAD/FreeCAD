@@ -482,11 +482,7 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
 #endif
 
        // Zoom around centrally displayed image point
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
        int numTicks = cEvent->angleDelta().y() / 120;
-#else
-       int numTicks = cEvent->delta() / 120;
-#endif
        if (_invertZoom)
            numTicks = -numTicks;
 
