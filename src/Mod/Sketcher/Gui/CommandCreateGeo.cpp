@@ -5646,62 +5646,6 @@ bool CmdSketcherCreatePoint::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-
-// ======================================================================================
-
-DEF_STD_CMD_A(CmdSketcherCreateText)
-
-CmdSketcherCreateText::CmdSketcherCreateText()
-  : Command("Sketcher_CreateText")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Create text");
-    sToolTipText    = QT_TR_NOOP("Create text in the sketch");
-    sWhatsThis      = "Sketcher_CreateText";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateText";
-    eType           = ForEdit;
-}
-
-void CmdSketcherCreateText::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-}
-
-bool CmdSketcherCreateText::isActive(void)
-{
-    return false;
-}
-
-
-// ======================================================================================
-
-DEF_STD_CMD_A(CmdSketcherCreateDraftLine)
-
-CmdSketcherCreateDraftLine::CmdSketcherCreateDraftLine()
-  : Command("Sketcher_CreateDraftLine")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Create draft line");
-    sToolTipText    = QT_TR_NOOP("Create a draft line in the sketch");
-    sWhatsThis      = "Sketcher_CreateDraftLine";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_DraftLine";
-    eType           = ForEdit;
-}
-
-void CmdSketcherCreateDraftLine::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-}
-
-bool CmdSketcherCreateDraftLine::isActive(void)
-{
-    return false;
-}
-
 // ======================================================================================
 
 namespace SketcherGui {
