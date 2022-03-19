@@ -1478,7 +1478,7 @@ void Document::onChanged(const Property* prop)
                     this->TransientDir.setValue(new_dir);
             }
             else {
-                if (!TransDirNew.createDirectory())
+                if (!TransDirNew.createDirectories())
                     Base::Console().Warning("Failed to create '%s'\n", new_dir.c_str());
                 else
                     this->TransientDir.setValue(new_dir);
