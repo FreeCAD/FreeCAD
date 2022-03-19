@@ -39,7 +39,8 @@ TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstrai
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
 {
-    ConstraintView->highlightReferences(false);
+    if (!ConstraintView.expired())
+        ConstraintView->highlightReferences(false);
 }
 
 void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
