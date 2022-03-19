@@ -29,7 +29,6 @@
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
-# include <Python.h>
 # include <Inventor/nodes/SoComplexity.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>

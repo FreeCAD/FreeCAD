@@ -29,7 +29,6 @@
 # include <TopoDS_Shape.hxx>
 # include <TopExp_Explorer.hxx>
 # include <cfloat>
-# include <Python.h>
 # include <Inventor/system/inttypes.h>
 #endif
 

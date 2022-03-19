@@ -171,11 +171,6 @@
 # include <BOPAlgo_ListOfCheckResult.hxx>
 #endif
 
-
-// Python
-
-#include <Python.h>
-
 // Boost
 #include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>

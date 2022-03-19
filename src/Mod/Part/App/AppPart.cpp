@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <Interface_Static.hxx>
 # include <IGESControl_Controller.hxx>
 # include <STEPControl_Controller.hxx>

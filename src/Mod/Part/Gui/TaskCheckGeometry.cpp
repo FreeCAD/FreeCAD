@@ -32,7 +32,6 @@
 # include <QThread>
 # include <QTreeWidget>
 # include <QPushButton>
-# include <Python.h>
 # include <Standard_Version.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepCheck_Result.hxx>
