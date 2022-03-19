@@ -516,7 +516,10 @@ class CommandPathArray:
         }
 
     def IsActive(self):
-        selections = [sel.isDerivedFrom("Path::Feature") for sel in FreeCADGui.Selection.getSelection()]
+        selections = [
+            sel.isDerivedFrom("Path::Feature")
+            for sel in FreeCADGui.Selection.getSelection()
+        ]
         return selections and all(selections)
 
     def Activated(self):

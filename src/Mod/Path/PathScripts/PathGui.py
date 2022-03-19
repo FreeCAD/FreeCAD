@@ -106,7 +106,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     return False
 
 
-class QuantitySpinBox (QtCore.QObject):
+class QuantitySpinBox(QtCore.QObject):
     """Controller class to interface a Gui::QuantitySpinBox.
     The spin box gets bound to a given property and supports update in both directions.
     QuatitySpinBox(widget, obj, prop, onBeforeChange=None)

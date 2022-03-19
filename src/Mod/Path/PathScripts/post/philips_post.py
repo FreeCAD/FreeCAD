@@ -475,7 +475,7 @@ def export(objectslist, filename, argstring):
                                 i = c.Parameters["I"]
                                 # calculate the radius r
                                 j = c.Parameters["J"]
-                                r = math.sqrt(i ** 2 + j ** 2)
+                                r = math.sqrt(i**2 + j**2)
                                 if USE_RADIUS_IF_POSSIBLE and angleUnder180(
                                     command,
                                     lastX,

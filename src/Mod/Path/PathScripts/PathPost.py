@@ -46,6 +46,7 @@ PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 
 translate = FreeCAD.Qt.translate
 
+
 class _TempObject:
     Path = None
     Name = "Fixture"

@@ -1103,7 +1103,10 @@ class TaskPanel:
             else:
                 r = v.cross(normal)  # rotation axis
                 a = DraftVecUtils.angle(normal, v, r) * 180 / math.pi
-            PathLog.debug("oh boy: (%.2f, %.2f, %.2f) x (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f) -> %.2f" % (v.x, v.y, v.z, normal.x, normal.y, normal.z, r.x, r.y, r.z, a))
+            PathLog.debug(
+                "oh boy: (%.2f, %.2f, %.2f) x (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f) -> %.2f"
+                % (v.x, v.y, v.z, normal.x, normal.y, normal.z, r.x, r.y, r.z, a)
+            )
             Draft.rotate(sel.Object, a, axis=r)
 
         selObject = None

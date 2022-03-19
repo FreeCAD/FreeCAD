@@ -30,6 +30,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 class AdvancedPreferencesPage:
     def __init__(self, parent=None):
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/Advanced.ui")
@@ -63,9 +64,7 @@ class AdvancedPreferencesPage:
         self.form.WarningSuppressOpenCamLib.setChecked(
             PathPreferences.suppressOpenCamLibWarning()
         )
-        self.form.WarningSuppressVelocity.setChecked(
-            PathPreferences.suppressVelocity()
-        )
+        self.form.WarningSuppressVelocity.setChecked(PathPreferences.suppressVelocity())
         self.updateSelection()
 
     def updateSelection(self, state=None):
