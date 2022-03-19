@@ -20,42 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_signals2.hpp>
+# include <sstream>
 # include <boost_bind_bind.hpp>
+# include <boost_signals2.hpp>
 # include <BRep_Tool.hxx>
 # include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
 # include <gp_Pnt.hxx>
+# include <GProp_GProps.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Python.h>
 # include <QFontMetrics>
-# include <QMessageBox>
 # include <QPointer>
 # include <QSet>
-# include <sstream>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "TaskFaceColors.h"
-#include "ui_TaskFaceColors.h"
-
-#include "SoBrepFaceSet.h"
-#include "ViewProviderExt.h"
-
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -66,7 +56,12 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Mod/Part/App/PartFeature.h>
+
+#include "TaskFaceColors.h"
+#include "ui_TaskFaceColors.h"
+#include "SoBrepFaceSet.h"
+#include "ViewProviderExt.h"
+
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -80,14 +75,14 @@ namespace PartGui {
             : Gui::SelectionFilterGate(), object(obj)
         {
         }
-        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
         {
             if (pObj != this->object)
                 return false;
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);
-            return element.substr(0,4) == "Face";
+            return element.substr(0, 4) == "Face";
         }
     };
 }
@@ -176,7 +171,7 @@ public:
         try {
             TopTools_IndexedMapOfShape M;
 
-            TopExp_Explorer xp_face(shape,TopAbs_FACE);
+            TopExp_Explorer xp_face(shape, TopAbs_FACE);
             while (xp_face.More()) {
                 M.Add(xp_face.Current());
                 xp_face.Next();
@@ -186,7 +181,7 @@ public:
             for (Standard_Integer k = 1; k <= M.Extent(); k++) {
                 const TopoDS_Shape& face = M(k);
 
-                TopExp_Explorer xp_vertex(face,TopAbs_VERTEX);
+                TopExp_Explorer xp_vertex(face, TopAbs_VERTEX);
                 while (xp_vertex.More()) {
                     gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp_vertex.Current()));
                     Base::Vector3d pt2d;
@@ -194,7 +189,7 @@ public:
                     if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
 #if 0
                         // TODO
-                        if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer))
+                        if (isVisibleFace(k - 1, SbVec2f(pt2d.x, pt2d.y), viewer))
 #endif
                         {
                             std::stringstream str;
@@ -223,9 +218,9 @@ public:
         catch (...) {
         }
     }
-    static void selectionCallback(void * ud, SoEventCallback * cb)
+    static void selectionCallback(void* ud, SoEventCallback* cb)
     {
-        Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+        Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
         SoNode* root = view->getSceneGraph();
         static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
@@ -245,7 +240,7 @@ public:
         }
         else {
             for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-                polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
+                polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
         }
 
         FaceColors* self = reinterpret_cast<FaceColors*>(ud);
@@ -266,7 +261,7 @@ public:
 /* TRANSLATOR PartGui::TaskFaceColors */
 
 FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
-  : d(new Private(vp))
+    : d(new Private(vp))
 {
     Q_UNUSED(parent);
     d->ui->setupUi(this);
@@ -375,12 +370,12 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
         App::Document* doc = d->obj->getDocument();
         std::string docname = doc->getName();
         std::string objname = d->obj->getNameInDocument();
-        if (docname==msg.pDocName && objname==msg.pObjectName) {
-            int index = std::atoi(msg.pSubName+4)-1;
+        if (docname == msg.pDocName && objname == msg.pObjectName) {
+            int index = std::atoi(msg.pSubName + 4) - 1;
             d->index.insert(index);
             const App::Color& c = d->perface[index];
             QColor color;
-            color.setRgbF(c.r,c.g,c.b,c.a);
+            color.setRgbF(c.r, c.g, c.b, c.a);
             d->ui->colorButton->setColor(color);
             selection_changed = true;
         }
@@ -389,8 +384,8 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
         App::Document* doc = d->obj->getDocument();
         std::string docname = doc->getName();
         std::string objname = d->obj->getNameInDocument();
-        if (docname==msg.pDocName && objname==msg.pObjectName) {
-            int index = std::atoi(msg.pSubName+4)-1;
+        if (docname == msg.pDocName && objname == msg.pObjectName) {
+            int index = std::atoi(msg.pSubName + 4) - 1;
             d->index.remove(index);
             selection_changed = true;
         }
@@ -448,7 +443,7 @@ bool FaceColors::reject()
     return true;
 }
 
-void FaceColors::changeEvent(QEvent *e)
+void FaceColors::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
