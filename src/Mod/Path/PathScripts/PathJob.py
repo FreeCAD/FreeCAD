@@ -296,14 +296,15 @@ class ObjectJob:
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
-            obj.addProperty(
-                "App::PropertyLink",
-                "SetupSheet",
-                "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "SetupSheet holding the settings for this job"
-                ),
-            )
+            if not hasattr(obj, "SetupSheet"):
+                obj.addProperty(
+                    "App::PropertyLink",
+                    "SetupSheet",
+                    "Base",
+                    QT_TRANSLATE_NOOP(
+                        "App::Property", "SetupSheet holding the settings for this job"
+                    ),
+                )
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
                 import PathScripts.PathIconViewProvider

@@ -694,6 +694,7 @@ class TaskPanel:
 
     def accept(self, resetEdit=True):
         PathLog.track()
+        self._jobIntegrityCheck()  # Check existence of Model and Tools
         self.preCleanup()
         self.getFields()
         self.setupGlobal.accept()
@@ -1568,6 +1569,40 @@ class TaskPanel:
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)
+
+    def _jobIntegrityCheck(self):
+        """_jobIntegrityCheck() ... Check Job object for existence of Model and Tools
+        If either Model or Tools is empty, change GUI tab, issue appropriate warning,
+        and offer chance to add appropriate item."""
+
+        def _displayWarningWindow(msg):
+            """Display window with warning message and Add action button.
+            Return action state."""
+            txtHeader = translate("Path_Job", "Warning")
+            txtPleaseAddOne = translate("Path_Job", "Please add one.")
+            txtOk = translate("Path_Job", "Ok")
+            txtAdd = translate("Path_Job", "Add")
+
+            msgbox = QtGui.QMessageBox(
+                QtGui.QMessageBox.Warning, txtHeader, msg + " " + txtPleaseAddOne
+            )
+            msgbox.addButton(txtOk, QtGui.QMessageBox.AcceptRole)  # Add 'Ok' button
+            msgbox.addButton(txtAdd, QtGui.QMessageBox.ActionRole)  # Add 'Add' button
+            return msgbox.exec_()
+
+        # Check if at least on base model is present
+        if len(self.obj.Model.Group) == 0:
+            self.form.setCurrentIndex(0)  # Change tab to General tab
+            no_model_txt = translate("Path_Job", "This job has no base model.")
+            if _displayWarningWindow(no_model_txt) == 1:
+                self.jobModelEdit()
+
+        # Check if at least one tool is present
+        if len(self.obj.Tools.Group) == 0:
+            self.form.setCurrentIndex(3)  # Change tab to Tools tab
+            no_tool_txt = translate("Path_Job", "This job has no tool.")
+            if _displayWarningWindow(no_tool_txt) == 1:
+                self.toolControllerAdd()
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
