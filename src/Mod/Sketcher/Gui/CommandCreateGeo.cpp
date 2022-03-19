@@ -2993,6 +2993,7 @@ bool CmdSketcherCreateArc::isActive(void)
 
 // ======================================================================================
 
+// NOTE: Refactor together with Arc above using different construction modes
 class DrawSketchHandler3PointArc : public DrawSketchHandler
 {
 public:
@@ -6129,7 +6130,7 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 
 
 // ======================================================================================
-
+// TODO: Refactor into a single handler for circles.
 class DrawSketchHandler3PointCircle : public DrawSketchHandler
 {
 public:
