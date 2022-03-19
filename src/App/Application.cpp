@@ -2890,27 +2890,6 @@ ostream& operator<<(ostream& os, const vector<T>& v)
 
 namespace {
 
-boost::filesystem::path stringToPath(std::string str)
-{
-#if defined(FC_OS_WIN32)
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    boost::filesystem::path path(converter.from_bytes(str));
-#else
-    boost::filesystem::path path(str);
-#endif
-    return path;
-}
-
-std::string pathToString(const boost::filesystem::path& p)
-{
-#if defined(FC_OS_WIN32)
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    return converter.to_bytes(p.wstring());
-#else
-    return p.string();
-#endif
-}
-
 /*!
  * \brief getUserHome
  * Returns the user's home directory.
@@ -3020,7 +2999,7 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
         dataPath = stdHome;
     }
 
-    boost::filesystem::path appData(stringToPath(dataPath.toStdString()));
+    boost::filesystem::path appData(Base::FileInfo::stringToPath(dataPath.toStdString()));
 
     // If a custom user home path is given then don't modify it
     if (customHome.isEmpty()) {
@@ -3165,13 +3144,13 @@ void Application::ExtractUserPath()
     // User data path
     //
     boost::filesystem::path data = findPath(dataHome, customData, subdirs, true);
-    mConfig["UserAppData"] = pathToString(data) + PATHSEP;
+    mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
 
 
     // User config path
     //
     boost::filesystem::path config = findPath(configHome, customHome, subdirs, true);
-    mConfig["UserConfigPath"] = pathToString(config) + PATHSEP;
+    mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
 
 
     // User cache path
@@ -3179,14 +3158,14 @@ void Application::ExtractUserPath()
     std::vector<std::string> cachedirs = subdirs;
     cachedirs.emplace_back("Cache");
     boost::filesystem::path cache = findPath(cacheHome, customTemp, cachedirs, true);
-    mConfig["UserCachePath"] = pathToString(cache) + PATHSEP;
+    mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
 
 
     // Set application tmp. directory
     //
     std::vector<std::string> empty;
     boost::filesystem::path tmp = findPath(tempPath, customTemp, empty, true);
-    mConfig["AppTempPath"] = pathToString(tmp) + PATHSEP;
+    mConfig["AppTempPath"] = Base::FileInfo::pathToString(tmp) + PATHSEP;
 
 
     // Set the default macro directory
@@ -3194,7 +3173,7 @@ void Application::ExtractUserPath()
     std::vector<std::string> macrodirs = subdirs;
     macrodirs.emplace_back("Macro");
     boost::filesystem::path macro = findPath(dataHome, customData, macrodirs, true);
-    mConfig["UserMacroPath"] = pathToString(macro) + PATHSEP;
+    mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
