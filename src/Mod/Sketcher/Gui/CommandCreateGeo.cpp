@@ -242,6 +242,30 @@ enum class GeometryTools {
 
 /*********************** Ancillary classes for DrawSketch Hierarchy *******************************/
 
+namespace StateMachines {
+
+enum class TwoSeekEnd {
+    SeekFirst,
+    SeekSecond,
+    End // MUST be the last one
+};
+
+enum class ThreeSeekEnd {
+    SeekFirst,
+    SeekSecond,
+    SeekThird,
+    End // MUST be the last one
+};
+
+enum class TwoSeekDoEnd {
+    SeekFirst,
+    SeekSecond,
+    Do,
+    End // MUST be the last one
+};
+
+} // namespace StateMachines
+
 /** @brief A state machine to encapsulate a state
  *
  * @details
