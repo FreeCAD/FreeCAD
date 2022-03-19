@@ -21,6 +21,7 @@ openpyxl
 pandas
 pillow
 ply
+py-slvs
 pycollada
 pygit2
 pynastran
