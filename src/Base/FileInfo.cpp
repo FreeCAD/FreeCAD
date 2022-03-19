@@ -27,6 +27,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cassert>
+# include <codecvt>
 # include <cstring>
 # include <locale>
 # if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
