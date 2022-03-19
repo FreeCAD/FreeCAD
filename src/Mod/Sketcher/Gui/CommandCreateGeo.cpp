@@ -240,6 +240,71 @@ enum class GeometryTools {
     Polygon
 };
 
+/*********************** Ancillary classes for DrawSketch Hierarchy *******************************/
+
+/** @brief A state machine to encapsulate a state
+ *
+ * @details
+ *
+ * A template class for a state machine defined by template type SelectModeT,
+ * automatically initialised to the first state, encapsulating the actual state,
+ * and enabling to change the state, while generating a call to onModeChanged()
+ * after every change.
+ *
+ * the getNextMode() returns the next mode in the state machine, unless it is in
+ * End mode, in which End mode is returned.
+ *
+ * NOTE: The machine provided MUST include a last state named End.
+ */
+template <typename SelectModeT>
+class StateMachine
+{
+public:
+    StateMachine():Mode(static_cast<SelectModeT>(0)) {}
+    virtual ~StateMachine(){}
+
+protected:
+    void setState(SelectModeT mode) {
+        Mode = mode;
+        onModeChanged();
+    }
+
+    SelectModeT state() {
+        return Mode;
+    }
+
+    bool isState(SelectModeT state) { return Mode == state;}
+
+    SelectModeT getNextMode() {
+        auto modeint = static_cast<int>(state());
+
+
+        if(modeint < maxMode) {
+            auto newmode = static_cast<SelectModeT>(modeint+1);
+            return newmode;
+        }
+        else {
+            return SelectModeT::End;
+        }
+    }
+
+    void moveToNextMode() {
+        setState(getNextMode());
+    }
+
+    void reset() {
+        setState(static_cast<SelectModeT>(0));
+    }
+
+    virtual void onModeChanged() {};
+
+private:
+    SelectModeT Mode;
+    static const constexpr int maxMode = static_cast<int>(SelectModeT::End);
+
+};
+
+
 /* Sketch commands =======================================================*/
 
 class DrawSketchHandlerLine: public DrawSketchHandler
