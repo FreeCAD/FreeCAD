@@ -338,7 +338,6 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                             FreeCAD.Console.PrintLog(
                                 f"Failed loading {repo_metadata_cache_path}\n"
                             )
-                            pass
                     self.addon_repo.emit(repo)
 
 
