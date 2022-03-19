@@ -115,7 +115,6 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         } else {
             auto shape = Part::Feature::getShape(l);
             if(!shape.IsNull()) {
-    //            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
                 sourceShapes.push_back(shape);
             } else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
@@ -129,21 +128,31 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     builder.MakeCompound(comp);
     bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.IsNull() || Part::TopoShape(s).isInfinite()) {
-            continue;    // has no shape or the shape is infinite
+        if (s.ShapeType() < TopAbs_SOLID) {
+            //clean up composite shapes
+            TopoDS_Shape cleanShape = stripInfiniteShapes(s);
+            if (!cleanShape.IsNull()) {
+                builder.Add(comp, cleanShape);
+                found = true;
+            }
+        } else if (s.IsNull()) {
+            continue;    // has no shape
+        } else if (Part::TopoShape(s).isInfinite()) {
+            continue;    //shape is infinite
+        } else {
+            //a simple shape - add to compound
+            builder.Add(comp, s);
+            found = true;
         }
-        found = true;
-        BRepBuilderAPI_Copy BuilderCopy(s);
-        TopoDS_Shape shape = BuilderCopy.Shape();
-        builder.Add(comp, shape);
     }
     //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
     if (!found) {
-        Base::Console().Error("SE::getSourceShapes - source shape is empty!\n");
+        Base::Console().Error("SE::getShapes - source shape is empty!\n");
     } else {
         result = comp;
     }
+//    BRepTools::Write(result, "SEresult.brep");            //debug
     return result;
 }
 
@@ -293,6 +302,32 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
     return baseShape;
 }
 
+//inShape is a compound
+//The shapes of datum features (Axis, Plan and CS) are infinite
+//Infinite shapes can not be projected, so they need to be removed.
+TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
+{
+//    Base::Console().Message("SE::stripInfiniteShapes() - shapeType: %d\n", inShape.ShapeType());
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+
+    TopoDS_Iterator it(inShape);
+    for (; it.More(); it.Next()) {
+        TopoDS_Shape s = it.Value();
+        if (s.ShapeType() < TopAbs_SOLID) {
+            //look inside composite shapes
+            s = stripInfiniteShapes(s);
+        } else if (Part::TopoShape(s).isInfinite()) {
+            continue;
+        } else {
+            //simple shape
+        }
+        builder.Add(comp, s);
+    }
+    return comp;
+}
+
 bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
 {
     bool result = false;
@@ -322,12 +357,15 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 
 bool ShapeExtractor::isPointType(App::DocumentObject* obj)
 {
+//    Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
     bool result = false;
-    Base::Type t = obj->getTypeId();
-    if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-        result = true;
-    } else if (isDraftPoint(obj)) {
-        result = true;
+    if (obj) {
+        Base::Type t = obj->getTypeId();
+        if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
+            result = true;
+        } else if (isDraftPoint(obj)) {
+            result = true;
+        }
     }
     return result;
 }
