@@ -30,14 +30,12 @@
 #include <GC_MakeArcOfCircle.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
-#include <Python.h>
 #include <QMessageBox>
 #include <QSignalMapper>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <CXX/WrapPython.h>
 #include <Base/Interpreter.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>

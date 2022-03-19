@@ -44,7 +44,6 @@
 # include <QItemSelectionModel>
 # include <QTimer>
 # include <boost_bind_bind.hpp>
-# include <Python.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif

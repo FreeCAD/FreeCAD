@@ -26,7 +26,6 @@
 # include <QButtonGroup>
 # include <QPushButton>
 # include <sstream>
-# include <Python.h>
 # include <boost_bind_bind.hpp>
 
 # include <TopoDS_Shape.hxx>

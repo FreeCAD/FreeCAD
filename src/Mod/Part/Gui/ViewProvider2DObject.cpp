@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <cfloat>
-# include <Python.h>
 
 # include <Standard_math.hxx>
 
