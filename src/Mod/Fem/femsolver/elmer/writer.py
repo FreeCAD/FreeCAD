@@ -340,7 +340,8 @@ class Writer(object):
                         temp = self._getFromUi(obj.Temperature, "K", "O")
                         self._boundary(name, "Temperature", temp)
                     elif obj.ConstraintType == "CFlux":
-                        flux = self._getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
+                        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-6
+                        flux = self._getFromUi(obj.CFlux * 1e-6, "kg*mm^2*s^-3", "M*L^2*T^-3")
                         self._boundary(name, "Temperature Load", flux)
                 self._handled(obj)
         for obj in self._getMember("Fem::ConstraintHeatflux"):
@@ -369,7 +370,8 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
         if obj is not None:
             for name in bodies:
-                heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+                # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-6
+                heatSource = self._getFromUi(obj.HeatSource * 1e-6, "W/kg", "L^2*T^-3")
                 # according Elmer forum W/kg is correct
                 # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
                 # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
@@ -392,12 +394,14 @@ class Writer(object):
                 self._material(
                     name, "Density",
                     self._getDensity(m))
-                self._material(
-                    name, "Heat Conductivity",
-                    self._convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
-                self._material(
-                    name, "Heat Capacity",
-                    self._convert(m["SpecificHeat"], "L^2/(T^2*O)"))
+                # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                HeatConductivity = self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                HeatConductivity *= 1e-3
+                self._material(name, "Heat Conductivity", HeatConductivity)
+                # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-6
+                HeatCapacity = self._convert(m["SpecificHeat"], "L^2/(T^2*O)")
+                HeatCapacity *= 1e-6
+                self._material( name, "Heat Capacity", HeatCapacity)
 
     def _handleElectrostatic(self):
         activeIn = []
@@ -463,7 +467,8 @@ class Writer(object):
                     # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
-                            potential = self._getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
+                            # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-6
+                            potential = self._getFromUi(obj.Potential * 1e-6, "V", "M*L^2/(T^3 * I)")
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
                         self._boundary(name, "Potential Constant", True)
@@ -559,7 +564,8 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintPressure"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    pressure = self._getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e3
+                    pressure = self._getFromUi(obj.Pressure * 1e3, "MPa", "M/(L*T^2)")
                     if not obj.Reversed:
                         pressure *= -1
                     self._boundary(name, "Normal Force", pressure)
@@ -574,7 +580,8 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintForce"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    force = self._getFromUi(obj.Force, "N", "M*L*T^-2")
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                    force = self._getFromUi(obj.Force * 1e-3, "N", "M*L*T^-2")
                     self._boundary(name, "Force 1", obj.DirectionVector.x * force)
                     self._boundary(name, "Force 2", obj.DirectionVector.y * force)
                     self._boundary(name, "Force 3", obj.DirectionVector.z * force)
@@ -682,13 +689,17 @@ class Writer(object):
                     )
 
     def _getDensity(self, m):
+        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e9
         density = self._convert(m["Density"], "M/L^3")
+        density *= 1e9
         if self._getMeshDimension() == 2:
             density *= 1e3
         return density
 
     def _getYoungsModulus(self, m):
+        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e3
         youngsModulus = self._convert(m["YoungsModulus"], "M/(L*T^2)")
+        youngsModulus *= 1e3;
         if self._getMeshDimension() == 2:
             youngsModulus *= 1e3
         return youngsModulus
@@ -725,7 +736,9 @@ class Writer(object):
         return s
 
     def _handleFlowConstants(self):
+        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
         gravity = self._getConstant("Gravity", "L/T^2")
+        gravity *= 1e-3
         self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
 
     def _handleFlowMaterial(self, bodies):
@@ -747,13 +760,15 @@ class Writer(object):
                         self._getDensity(m)
                     )
                 if "ThermalConductivity" in m:
-                    self._material(
-                        name, "Heat Conductivity",
-                        self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
-                    )
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                    HeatConductivity = self._convert(m["ThermalConductivity"], "M*L/(T^3*O)")
+                    HeatConductivity *= 1e-3
+                    self._material(name, "Heat Conductivity", HeatConductivity)
                 if "KinematicViscosity" in m:
                     density = self._getDensity(m)
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-6
                     kViscosity = self._convert(m["KinematicViscosity"], "L^2/T")
+                    kViscosity *= 1e-6
                     self._material(
                         name, "Viscosity", kViscosity * density)
                 if "ThermalExpansionCoefficient" in m:
@@ -762,7 +777,9 @@ class Writer(object):
                         self._material(
                             name, "Heat expansion Coefficient", value)
                 if "ReferencePressure" in m:
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
                     pressure = self._convert(m["ReferencePressure"], "M/(L*T^2)")
+                    pressure *= 1e-3
                     self._material(name, "Reference Pressure", pressure)
                 if "SpecificHeatRatio" in m:
                     self._material(
@@ -779,13 +796,16 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 if obj.VelocityXEnabled:
-                    velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                    velocity = self._getFromUi(obj.VelocityX * 1e-3, "m/s", "L/T")
                     self._initial(name, "Velocity 1", velocity)
                 if obj.VelocityYEnabled:
-                    velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                    velocity = self._getFromUi(obj.VelocityY * 1e-3, "m/s", "L/T")
                     self._initial(name, "Velocity 2", velocity)
                 if obj.VelocityZEnabled:
-                    velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
+                    # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                    velocity = self._getFromUi(obj.VelocityZ * 1e-3, "m/s", "L/T")
                     self._initial(name, "Velocity 3", velocity)
             self._handled(obj)
 
@@ -794,13 +814,16 @@ class Writer(object):
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.VelocityXEnabled:
-                        velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
+                        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                        velocity = self._getFromUi(obj.VelocityX * 1e-3, "m/s", "L/T")
                         self._boundary(name, "Velocity 1", velocity)
                     if obj.VelocityYEnabled:
-                        velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
+                        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                        velocity = self._getFromUi(obj.VelocityY * 1e-3, "m/s", "L/T")
                         self._boundary(name, "Velocity 2", velocity)
                     if obj.VelocityZEnabled:
-                        velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
+                        # Elmer uses SI units, FC uses mm for L, not m, thus the factor 1e-3
+                        velocity = self._getFromUi(obj.VelocityZ * 1e-3, "m/s", "L/T")
                         self._boundary(name, "Velocity 3", velocity)
                     if obj.NormalToBoundary:
                         self._boundary(name, "Normal-Tangential Velocity", True)
