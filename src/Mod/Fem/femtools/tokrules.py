@@ -153,4 +153,4 @@ def p_error(p):
 
 
 import ply.yacc as yacc
-yacc.yacc()
+yacc.yacc(debug=False, write_tables=False)
