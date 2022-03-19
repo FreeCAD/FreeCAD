@@ -377,9 +377,9 @@ public:
     }
     /*!
      * \brief operator ->
-     * \return pointer to the document
+     * \return pointer to the document object
      */
-    T* operator->() {
+    T* operator->() const {
         return ptr.get<T>();
     }
     /*!

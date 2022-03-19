@@ -255,9 +255,9 @@ public:
     }
     /*!
      * \brief operator ->
-     * \return pointer to the document
+     * \return pointer to the view provider
      */
-    T* operator->() {
+    T* operator->() const {
         return ptr.get<T>();
     }
     /*!
