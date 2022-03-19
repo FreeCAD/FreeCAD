@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -65,6 +61,7 @@
 #include "ViewProviderHelix.h"
 #include "ViewProviderShapeBinder.h"
 #include "ViewProviderBase.h"
+
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
