@@ -215,6 +215,31 @@ void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElement
     }
 }
 
+/************************ List of Handlers/Commands ************************************/
+
+enum class GeometryTools {
+    Line,
+    Rectangle,
+    Oblong,
+    Polyline, // also known as LineSet
+    Arc,
+    Circle,
+    Ellipse,
+    ArcOfEllipse,
+    ArcOfHyperbola,
+    ArcOfParabola,
+    BSpline,
+    Point,
+    Fillet,
+    Trim,
+    Extend,
+    Split,
+    External,
+    CarbonCopy,
+    Slot,
+    Polygon
+};
+
 /* Sketch commands =======================================================*/
 
 class DrawSketchHandlerLine: public DrawSketchHandler
