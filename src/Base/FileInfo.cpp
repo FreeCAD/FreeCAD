@@ -28,6 +28,7 @@
 # include <algorithm>
 # include <cassert>
 # include <cstring>
+# include <locale>
 # if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <dirent.h>
 # include <unistd.h>
@@ -187,6 +188,27 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         unlink(buf.c_str());
     }
     return buf;
+#endif
+}
+
+boost::filesystem::path FileInfo::stringToPath(const std::string& str)
+{
+#if defined(FC_OS_WIN32)
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    boost::filesystem::path path(converter.from_bytes(str));
+#else
+    boost::filesystem::path path(str);
+#endif
+    return path;
+}
+
+std::string FileInfo::pathToString(const boost::filesystem::path& p)
+{
+#if defined(FC_OS_WIN32)
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.to_bytes(p.wstring());
+#else
+    return p.string();
 #endif
 }
 
@@ -510,6 +532,20 @@ bool FileInfo::createDirectory() const
 #else
 #   error "FileInfo::createDirectory() not implemented for this platform!"
 #endif
+}
+
+bool FileInfo::createDirectories() const
+{
+    try {
+        boost::filesystem::path path(stringToPath(FileName));
+        if (boost::filesystem::exists(path))
+            return true;
+        boost::filesystem::create_directories(path);
+        return true;
+    }
+    catch (const boost::filesystem::filesystem_error&) {
+        return false;
+    }
 }
 
 bool FileInfo::deleteDirectory() const
