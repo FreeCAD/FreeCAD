@@ -249,6 +249,7 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.setDatum(11,App.Units.Quantity('-20.000000 mm'))
         ActiveSketch.solve()
         self.failUnless(status == 0) # no redundants/conflicts/convergence issues
+        FreeCAD.closeDocument(self.Doc3.Name)
 
     def testThreeLinesWithCoincidences_1(self):
         sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
