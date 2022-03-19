@@ -114,9 +114,6 @@
 # include <OSD_OpenFile.hxx>
 #endif
 
-
-#include <Python.h>
-
 #endif // _PreComp_
 #endif
 

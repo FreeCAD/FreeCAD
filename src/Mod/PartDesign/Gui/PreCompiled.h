@@ -50,16 +50,12 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
-#include <iostream>
+#include <algorithm>
 #include <assert.h>
 #include <cmath>
+#include <iostream>
 #include <sstream>
-
-#include <algorithm>
 
 // Boost
 #include <boost/bind/bind.hpp>

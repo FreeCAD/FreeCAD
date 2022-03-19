@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <Base/Tools.h>
+
 
 namespace PartDesign {
 class Module : public Py::ExtensionModule<Module>
