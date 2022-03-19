@@ -192,6 +192,9 @@ protected:
     void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
     void setAxisPickStyle(bool on);
 
+    void drawPositionAtCursor(const Base::Vector2d & position);
+    void drawDirectionAtCursor(const Base::Vector2d & position, const Base::Vector2d & origin);
+
     int getPreselectPoint(void) const;
     int getPreselectCurve(void) const;
     int getPreselectCross(void) const;

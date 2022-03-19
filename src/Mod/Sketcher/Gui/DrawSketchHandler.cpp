@@ -950,6 +950,21 @@ void DrawSketchHandler::drawEdit(const std::vector<Part::Geometry *> &geometries
     drawEdit(list);
 }
 
+void DrawSketchHandler::drawPositionAtCursor(const Base::Vector2d & position)
+{
+    setPositionText(position);
+}
+
+void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d & position, const Base::Vector2d & origin)
+{
+    float length = (position - origin).Length();
+    float angle = (position - origin).GetAngle(Base::Vector2d(1.f,0.f));
+
+    SbString text;
+    text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
+    setPositionText(position, text);
+}
+
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(*sketchgui, EditMarkers, augmentationlevel);
