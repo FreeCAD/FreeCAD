@@ -6,37 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>350</width>
     <height>137</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Constraint Properties</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="potentialLbl">
-     <property name="text">
-      <string>Potential:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="Gui::InputField" name="potentialTxt">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="singleStep" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="unit" stdset="0">
-        <string>V</string>
-       </property>
-      </widget>
-     </item>
-     <item>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="3">
       <widget class="QCheckBox" name="potentialBox">
        <property name="text">
         <string>unspecified</string>
@@ -46,9 +26,45 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="potentialLbl">
+       <property name="text">
+        <string>Potential:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="Gui::InputField" name="potentialTxt">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>1 V</string>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="unit" stdset="0">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QCheckBox" name="potentialConstantBox">
      <property name="toolTip">
       <string>Whether the constraint defines a constant potential</string>
@@ -58,7 +74,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QCheckBox" name="electricInfinityBox">
      <property name="enabled">
       <bool>true</bool>
@@ -71,7 +87,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QCheckBox" name="electricForcecalculationBox">
      <property name="toolTip">
       <string>Whether the constraint is for the electric force</string>
@@ -81,16 +97,29 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="capacityBody_label">
-     <property name="text">
-      <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body: </string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="capacityBody_label">
+       <property name="text">
+        <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
       <widget class="QCheckBox" name="capacitanceBodyBox">
        <property name="text">
         <string>unspecified</string>
@@ -100,7 +129,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="3">
       <widget class="QSpinBox" name="capacitanceBody_spinBox">
        <property name="maximumSize">
         <size>
