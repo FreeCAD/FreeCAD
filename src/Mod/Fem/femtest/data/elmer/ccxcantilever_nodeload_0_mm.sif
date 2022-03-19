@@ -81,7 +81,7 @@ Boundary Condition 2
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -9000000000.0
+  Force 3 = Real -9000000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Vertex5"
 End
