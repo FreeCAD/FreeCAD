@@ -50,9 +50,6 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <list>
 #include <iostream>
@@ -64,13 +61,9 @@
 #include <string>
 #include <set>
 
-#include <Python.h>
 #ifndef FC_OS_WIN32
 # include <windows.h>
 #endif
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
 // OpenCasCade Base
 #include "OpenCascadeAll.h"

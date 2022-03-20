@@ -49,9 +49,6 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <list>
 #include <iostream>
@@ -62,9 +59,6 @@
 #include <fcntl.h>
 #include <vector>
 #include <map>
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
 // OpenCasCade =====================================================================================
 // Base
