@@ -291,7 +291,6 @@ def offsetWire(wire, base, offset, forward, Side=None):
             return Part.Wire([edge])
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
-        pass
 
     owire = orientWire(wire.makeOffset2D(offset), True)
     debugWire("makeOffset2D_%d" % len(wire.Edges), owire)
