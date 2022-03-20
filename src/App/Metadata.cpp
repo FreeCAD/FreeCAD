@@ -61,6 +61,7 @@ namespace MetadataInternal {
         void warning(const SAXParseException& toCatch)
         {
             // Don't deal with warnings at all
+            std::ignore = toCatch;
         }
 
         void error(const SAXParseException& toCatch)
