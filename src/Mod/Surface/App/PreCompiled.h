@@ -56,9 +56,6 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
-
 //opencascade
 #include "OpenCascadeAll.h"
 #include <GeomFill_NSections.hxx>

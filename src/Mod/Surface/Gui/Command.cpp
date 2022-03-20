@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <sstream>
@@ -39,7 +38,6 @@
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
-#include <Python.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 

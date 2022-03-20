@@ -21,12 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -38,6 +33,7 @@
 #include "TaskFilling.h"
 #include "TaskSections.h"
 #include "ViewProviderExtend.h"
+
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
