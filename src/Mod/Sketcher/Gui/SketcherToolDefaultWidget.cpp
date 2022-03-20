@@ -24,7 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
+# include <boost_bind_bind.hpp>
+# include <Inventor/events/SoKeyboardEvent.h>
 #endif
 
 #include "ui_SketcherToolDefaultWidget.h"
@@ -33,6 +34,8 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Exception.h>
@@ -46,6 +49,67 @@
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
+
+
+SketcherToolDefaultWidget::KeyboardManager::KeyboardManager(): keyMode(SketcherToolDefaultWidget::KeyboardManager::KeyboardEventHandlingMode::Widget) {
+    // get the active viewer, so that we can send it key events
+    auto doc = Gui::Application::Instance->activeDocument();
+
+    if (doc) {
+        auto temp = dynamic_cast<Gui::View3DInventor *>(doc->getActiveView());
+        if (temp) {
+            vpViewer = temp->getViewer();
+            keyMode = KeyboardEventHandlingMode::ViewProvider;
+        }
+    }
+
+    timer.setSingleShot(true);
+
+    QObject::connect(&timer, &QTimer::timeout, [this](){ onTimeOut();});
+}
+
+bool SketcherToolDefaultWidget::KeyboardManager::isMode(SketcherToolDefaultWidget::KeyboardManager::KeyboardEventHandlingMode mode)
+{
+    return mode == keyMode;
+}
+
+SketcherToolDefaultWidget::KeyboardManager::KeyboardEventHandlingMode SketcherToolDefaultWidget::KeyboardManager::getMode()
+{
+    return keyMode;
+}
+
+bool SketcherToolDefaultWidget::KeyboardManager::handleKeyEvent(QKeyEvent * keyEvent)
+{
+    detectKeyboardEventHandlingMode(keyEvent); // determine the handler
+
+    if(vpViewer && isMode(KeyboardEventHandlingMode::ViewProvider))
+        return QApplication::sendEvent(vpViewer, keyEvent);
+    else
+        return false; // do not intercept the event and feed it to the widget
+}
+
+void SketcherToolDefaultWidget::KeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent * keyEvent)
+{
+    Q_UNUSED(keyEvent);
+
+    if (keyEvent->key() == Qt::Key_Enter ||
+        keyEvent->key() == Qt::Key_Return ||
+        keyEvent->key() == Qt::Key_Tab ||
+        keyEvent->key() == Qt::Key_Backtab ||
+        keyEvent->key() == Qt::Key_Backspace ||
+        keyEvent->key() == Qt::Key_Delete ||
+        QRegExp(QStringLiteral("[0-9]")).exactMatch(keyEvent->text()))
+    {
+        keyMode = KeyboardEventHandlingMode::Widget;
+        timer.start(timeOut);
+    }
+
+}
+
+void SketcherToolDefaultWidget::KeyboardManager::onTimeOut()
+{
+    keyMode = KeyboardEventHandlingMode::ViewProvider;
+}
 
 SketcherToolDefaultWidget::SketcherToolDefaultWidget (QWidget *parent, ViewProviderSketch* sketchView)
   : QWidget(parent), ui(new Ui_SketcherToolDefaultWidget), sketchView(sketchView), blockParameterSlots(false)
@@ -98,6 +162,17 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
                 break;
             }
         }
+    }
+    else
+    if (event->type() == QEvent::KeyPress) {
+        /*If a key shortcut is required to work on sketcher when a tool using Tool Setting widget
+        is being used, then you have to add this key to the below section such that the spinbox
+        doesn't keep the keypress event for itself. Note if you want the event to be handled by
+        the spinbox too, you can return false.*/
+
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+
+        return keymanager.handleKeyEvent(keyEvent);
     }
 
     return false;
@@ -471,7 +546,6 @@ bool SketcherToolDefaultWidget::isCheckBoxPrefEntryEmpty(int checkboxindex)
 {
     return getCheckBox(checkboxindex)->entryName().size() == 0;
 }
-
 
 void SketcherToolDefaultWidget::changeEvent(QEvent *e)
 {

@@ -37,6 +37,7 @@ namespace Gui {
 class ViewProvider;
 class PrefQuantitySpinBox;
 class PrefCheckBox;
+class View3DInventorViewer;
 }
 
 namespace SketcherGui {
@@ -48,15 +49,49 @@ class SketcherToolDefaultWidget : public QWidget
 {
     Q_OBJECT
 
-    enum class FontStyle
-    {
+    enum class FontStyle {
         Normal,
         Bold,
         Italic,
     };
 
+    /** Class to decide which control is responsible of handling an key event
+    *using timers, type of entered event, ...
+    */
+    class KeyboardManager {
+    public:
+        KeyboardManager();
+        /// Indicates whether the widget should handle keyboard input or should signal it via boost
+        enum class KeyboardEventHandlingMode {
+            Widget,
+            ViewProvider
+        };
+
+        bool isMode(KeyboardEventHandlingMode mode);
+        KeyboardEventHandlingMode getMode();
+
+        bool handleKeyEvent(QKeyEvent * keyEvent);
+
+    private:
+        /// This function decides whether events should be send to the ViewProvider
+        /// or to the UI control of the Default widget.
+        void detectKeyboardEventHandlingMode(QKeyEvent * keyEvent);
+
+        void onTimeOut();
+
+    private:
+        /// Viewer responsible for the active document
+        Gui::View3DInventorViewer* vpViewer = nullptr;
+        KeyboardEventHandlingMode keyMode;
+
+        QTimer timer;
+
+        const int timeOut = 1000;
+    };
+
 public:
 
+    /// Parameter spinbox number/label
     enum Parameter {
       First,
       Second,
@@ -67,6 +102,7 @@ public:
       nParameters // Must Always be the last one
     };
 
+    /// Checkbox number/label
     enum Checkbox {
         FirstBox,
         SecondBox,
@@ -75,7 +111,7 @@ public:
         nCheckbox // Must Always be the last one
     };
 
-    SketcherToolDefaultWidget (QWidget *parent=0, ViewProviderSketch* sketchView=0);
+    SketcherToolDefaultWidget (QWidget *parent=nullptr, ViewProviderSketch* sketchView=nullptr);
     ~SketcherToolDefaultWidget();
 
     bool eventFilter(QObject* object, QEvent* event);
@@ -149,10 +185,13 @@ private:
     boost::signals2::signal<void (int parameterindex, double value)> signalParameterValueChanged;
     boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
 
+    /// lock to block QT slots
     bool blockParameterSlots;
 
+    /// vector using parameter as index indicating whether the value of a parameter was set by the widget
     std::vector<bool> isSet;
 
+    KeyboardManager keymanager;
 };
 
 
