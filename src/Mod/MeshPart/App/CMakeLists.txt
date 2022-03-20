@@ -62,6 +62,15 @@ set(MeshPart_Scripts
     ../Init.py
 )
 
+# Suppress -Wundefined-var-template
+if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-undefined-var-template" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    endif()
+endif()
+
 add_library(MeshPart SHARED ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
 
