@@ -117,10 +117,8 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(toggled(bool)),
-            this, SLOT(_addToSelection(bool)));
-    connect(ui->btnRemove, SIGNAL(toggled(bool)),
-            this, SLOT(_removeFromSelection(bool)));
+    buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
+    buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
     ui->if_ambienttemp->blockSignals(false);
     //ui->if_facetemp->blockSignals(false);

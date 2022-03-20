@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/Widgets.h>
 #include <Base/Quantity.h>
 
 #include "TaskFemConstraint.h"
@@ -54,9 +55,8 @@ public:
     ~TaskFemConstraintOnBoundary();
 
 protected Q_SLOTS:
-    void _addToSelection(bool checked);
+    void onButtonToggled(QAbstractButton *button, bool checked);
     virtual void addToSelection() = 0;
-    void _removeFromSelection(bool checked);
     virtual void removeFromSelection() = 0;
 
 protected:
@@ -66,6 +66,7 @@ protected:
 
 protected:
     enum SelectionChangeModes selChangeMode;
+    Gui::ButtonGroup *buttonGroup;
 };
 
 } // namespace FemGui

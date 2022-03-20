@@ -35,6 +35,12 @@ TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstrai
     , selChangeMode(SelectionChangeModes::none)
 {
     ConstraintView->highlightReferences(true);
+
+    buttonGroup = new ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+
+    connect(buttonGroup, qOverload<QAbstractButton *, bool>(&QButtonGroup::buttonToggled),
+            this, &TaskFemConstraintOnBoundary::onButtonToggled);
 }
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
@@ -42,35 +48,19 @@ TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
     if (!ConstraintView.expired())
         ConstraintView->highlightReferences(false);
 }
-
-void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
+void TaskFemConstraintOnBoundary::onButtonToggled(QAbstractButton *button, bool checked)
 {
+    auto mode = static_cast<SelectionChangeModes>(buttonGroup->id(button));
+
     Gui::Selection().clearSelection();
 
     if (checked)
     {
-        this->clearButtons(SelectionChangeModes::refAdd);
-        selChangeMode = SelectionChangeModes::refAdd;
+        selChangeMode = mode;
         ConstraintView->highlightReferences(true);
     }
     else {
-        if (selChangeMode == SelectionChangeModes::refAdd)
-            selChangeMode = SelectionChangeModes::none;
-    }
-}
-
-void TaskFemConstraintOnBoundary::_removeFromSelection(bool checked)
-{
-    Gui::Selection().clearSelection();
-
-    if (checked)
-    {
-        this->clearButtons(SelectionChangeModes::refRemove);
-        selChangeMode = SelectionChangeModes::refRemove;
-        ConstraintView->highlightReferences(true);
-    }
-    else {
-        if (selChangeMode == SelectionChangeModes::refRemove)
+        if (selChangeMode == mode)
             selChangeMode = SelectionChangeModes::none;
     }
 }
