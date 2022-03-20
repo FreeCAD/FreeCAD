@@ -8,7 +8,6 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
 )
