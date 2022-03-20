@@ -20,33 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
 #include <numeric>
+
 #include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp_Face.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
 
+#include <QtConcurrentMap>
 #include <QEventLoop>
 #include <QFuture>
 #include <QFutureWatcher>
-#include <QtConcurrentMap>
 
 #include <boost_bind_bind.hpp>
+#endif
 
+#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FutureWatcherProgress.h>
 #include <Base/Parameter.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <Mod/Mesh/App/Mesh.h>
+
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>

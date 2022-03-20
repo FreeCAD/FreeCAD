@@ -22,9 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -32,6 +29,7 @@
 
 #include "ViewProviderInspection.h"
 #include "Workbench.h"
+
 
 // use a different name to CreateCommand()
 void CreateInspectionCommands(void);

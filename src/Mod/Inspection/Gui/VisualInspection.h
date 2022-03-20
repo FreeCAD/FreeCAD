@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef INSPECTIONGUI_VISUALINSPECTION_H
 #define INSPECTIONGUI_VISUALINSPECTION_H
 
 #include <QDialog>
-#include <vector>
+
 
 class QTreeWidgetItem;
 class QPushButton;
