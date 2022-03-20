@@ -22,7 +22,9 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
 #include <Inventor/events/SoButtonEvent.h>
+#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>

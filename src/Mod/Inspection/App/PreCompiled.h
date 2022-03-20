@@ -50,6 +50,7 @@
 #include <cstdio>
 #include <cassert>
 #include <iostream>
+#include <numeric>
 
 // STL
 #include <algorithm>
@@ -63,8 +64,22 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+// boost
+#include <boost_bind_bind.hpp>
+
+// OCC
+#include <gp_Pnt.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepGProp_Face.hxx>
+#include <TopoDS.hxx>
+
+// Qt
+#include <QtConcurrentMap>
+#include <QEventLoop>
+#include <QFuture>
+#include <QFutureWatcher>
 
 #endif //_PreComp_
 
