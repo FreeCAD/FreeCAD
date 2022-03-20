@@ -11,9 +11,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -22,6 +19,7 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include "Sheet.h"
+
 
 namespace Spreadsheet {
 class Module : public Py::ExtensionModule<Module>

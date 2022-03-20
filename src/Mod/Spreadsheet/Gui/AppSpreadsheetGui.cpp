@@ -21,10 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <QIcon>
 # include <QImage>
 # include <QFileInfo>
@@ -50,6 +48,7 @@
 #include "Workbench.h"
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
+
 
 // use a different name to CreateCommand()
 void CreateSpreadsheetCommands(void);

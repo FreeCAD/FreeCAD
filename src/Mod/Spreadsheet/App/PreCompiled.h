@@ -45,9 +45,6 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
 #include <assert.h>
