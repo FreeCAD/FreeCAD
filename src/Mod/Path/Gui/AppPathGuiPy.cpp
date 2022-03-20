@@ -21,10 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
-
+#
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
@@ -46,6 +43,7 @@
 #include "ViewProviderPath.h"
 #include "DlgProcessorChooser.h"
 #include "ui_DlgProcessorChooser.h"
+
 
 namespace PathGui {
 class Module : public Py::ExtensionModule<Module>

@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -54,6 +50,7 @@
 #include "VoronoiPy.h"
 #include "VoronoiVertex.h"
 #include "VoronoiVertexPy.h"
+
 
 namespace Path {
 extern PyObject* initModule();

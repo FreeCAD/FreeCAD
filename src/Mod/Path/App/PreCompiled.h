@@ -54,9 +54,6 @@
 #include <cinttypes>
 #include <iomanip>
 
-// Python
-#include <Python.h>
-
 // Boost
 #include <boost/version.hpp>
 #include <boost/config.hpp>

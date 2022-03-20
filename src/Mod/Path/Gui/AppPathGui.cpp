@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -37,6 +33,7 @@
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
 #include "ViewProviderArea.h"
+
 
 // use a different name to CreateCommand()
 void CreatePathCommands(void);
