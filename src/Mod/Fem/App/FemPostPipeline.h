@@ -24,10 +24,10 @@
 #ifndef Fem_FemPostPipeline_H
 #define Fem_FemPostPipeline_H
 
+#include "FemResultObject.h"
 #include "FemPostObject.h"
 #include "FemPostFilter.h"
 #include "FemPostFunction.h"
-#include "FemResultObject.h"
 
 #include <vtkSmartPointer.h>
 #include <vtkDataSet.h>
