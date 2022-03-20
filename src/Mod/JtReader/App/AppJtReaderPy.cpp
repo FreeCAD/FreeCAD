@@ -21,24 +21,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-
-#include <Python.h>
-
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
-
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Elements.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
 
 #include "TestJtReader.h"
+
+
 using std::vector;
 using namespace MeshCore;
 
