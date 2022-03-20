@@ -29,7 +29,7 @@ Version:
   0.1
 """
 
-import os,sys,string,getopt
+import os,sys,getopt
 from os.path import join
 
 # Globals

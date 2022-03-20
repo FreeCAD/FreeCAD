@@ -4,7 +4,7 @@
 
 from __future__ import print_function # this allows py2 to print(str1,str2) correctly
 
-import os, errno
+import os
 
 
 def temporary_exec(text, globals, locals):

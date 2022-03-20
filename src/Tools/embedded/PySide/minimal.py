@@ -1,6 +1,6 @@
 import sys
-from PySide2 import QtCore, QtGui, QtWidgets
-import FreeCAD, FreeCADGui
+from PySide2 import QtWidgets
+import FreeCADGui
 
 class MainWindow(QtWidgets.QMainWindow):
     def showEvent(self, event):

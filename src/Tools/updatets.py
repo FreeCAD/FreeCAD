@@ -50,7 +50,7 @@ Version:
   0.4
 """
 
-import os, re, sys
+import os, sys
 
 directories = [
         {"tsname":"FreeCAD", "workingdir":"./src/Gui", "tsdir":"Language"},
