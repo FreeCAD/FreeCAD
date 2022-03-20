@@ -252,59 +252,15 @@ class depthTestCases(unittest.TestCase):
             r, expected, "Expected {}, but result of {}".format(expected, r)
         )
 
-    def test011(self):
-        """two custom user depths roughly equal to final depth"""
         args = {
             "clearance_height": 20.0,
             "safe_height": 15.0,
-            "start_depth": 9.0,
-            "step_down": 3.0,
+            "start_depth": 10.0,
+            "step_down": 9.9999999,
             "z_finish_step": 0.0,
             "final_depth": 0.0,
-            "user_depths": [0.00000001, 0.0],
+            "user_depths": None,
         }
-
-        expected = [0]
-
-        d = PathUtils.depth_params(**args)
-        r = [i for i in d]
-        self.assertListEqual(
-            r, expected, "Expected {}, but result of {}".format(expected, r)
-        )
-
-    def test012(self):
-        """four custom user depths with two roughly equal included"""
-        args = {
-            "clearance_height": 20.0,
-            "safe_height": 15.0,
-            "start_depth": 9.0,
-            "step_down": 3.0,
-            "z_finish_step": 0.0,
-            "final_depth": 0.0,
-            "user_depths": [6.0, 3.00000001, 3.0, 0.0],
-        }
-
-        expected = [6.0, 3.0, 0.0]
-
-        d = PathUtils.depth_params(**args)
-        r = [i for i in d]
-        self.assertListEqual(
-            r, expected, "Expected {}, but result of {}".format(expected, r)
-        )
-
-    def test013(self):
-        """five custom user depths with three roughly equal included"""
-        args = {
-            "clearance_height": 20.0,
-            "safe_height": 15.0,
-            "start_depth": 9.0,
-            "step_down": 3.0,
-            "z_finish_step": 0.0,
-            "final_depth": 0.0,
-            "user_depths": [6.0, 3.00000002, 3.00000001, 3.0, 0.0],
-        }
-
-        expected = [6.0, 3.0, 0.0]
 
         d = PathUtils.depth_params(**args)
         r = [i for i in d]

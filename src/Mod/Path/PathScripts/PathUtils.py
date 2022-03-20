@@ -609,11 +609,7 @@ class depth_params(object):
         self.__step_down = math.fabs(step_down)
         self.__z_finish_step = math.fabs(z_finish_step)
         self.__final_depth = final_depth
-        self.__user_depths = (
-            None
-            if user_depths is None
-            else self.__filter_roughly_equal_depths(user_depths)
-        )
+        self.__user_depths = user_depths
         self.data = self.__get_depths(equalstep=equalstep)
         self.index = 0
 
@@ -737,59 +733,13 @@ class depth_params(object):
         to be removed, so as to eliminate an effective step-down depth with the removal
         of repetitive roughly-equal values."""
 
-        depthcopy = depths.copy()  #make a copy so we don't touch original
-        depthcopy.reverse()  # reverse it low to high
-        keep = [depthcopy[0]]  # initialize keep list with first element
-        for depth in depthcopy[1:]:  # iterate the list from second element on
-            if not PathGeom.isRoughly(depth, keep[-1]):  #Compare each to the last kept item
-                keep.append(depth)  # if different, add to keep
+        depthcopy = sorted(depths)  # make a copy and sort low to high
+        keep = [depthcopy[0]]
+        for depth in depthcopy[1:]:
+            if not PathGeom.isRoughly(depth, keep[-1]):
+                keep.append(depth)
         keep.reverse()  # reverse results back high to low
         return keep
-
-        # if len(depths) == 2:
-        #     if PathGeom.isRoughly(depths[0], depths[1]):
-        #         return [depths[1]]
-        #     return depths
-
-        # # print("raw depths: {}".format(depths))
-
-        # uniqueDepths = depths
-        # lastDepth = None
-        # maxLoops = 0
-        # while maxLoops < 10:
-        #     # print("\nStart scan... uniqueDepths: {}".format(uniqueDepths))
-        #     stop = True
-        #     keep = []
-        #     # Filter out unique values from consecutive pairs
-        #     for i in range(0, len(uniqueDepths) - 1):
-        #         dep1 = uniqueDepths[i]
-        #         dep2 = uniqueDepths[i + 1]
-        #         # print("comparing: {} and {}".format(dep1, dep2))
-        #         # print("lastDepth: {}".format(lastDepth))
-
-        #         if PathGeom.isRoughly(dep1, dep2):
-        #             if PathGeom.isRoughly(lastDepth, dep2):
-        #                 keep.pop()
-        #             keep.append(dep2)
-        #             # Cycle again if a roughly-equal pair is found
-        #             stop = False
-        #         else:
-        #             if lastDepth is None:
-        #                 keep.append(dep1)
-        #             else:
-        #                 if not PathGeom.isRoughly(lastDepth, dep1):
-        #                     keep.append(dep1)
-        #             keep.append(dep2)
-
-        #         lastDepth = dep2
-        #     # Efor
-        #     uniqueDepths = keep
-        #     maxLoops += 1
-        #     if stop:
-        #         break
-
-        # # print("uniqueDepths: {}".format(uniqueDepths))
-        # return uniqueDepths
 
     def __equal_steps(self, start, stop, max_size):
         """returns a list of depths beginning with the bottom (included), ending
