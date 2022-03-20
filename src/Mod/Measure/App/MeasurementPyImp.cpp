@@ -25,13 +25,11 @@
 # include <sstream>
 #endif
 
-#include "Mod/Measure/App/Measurement.h"
-#include <Mod/Part/App/Geometry.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/GeometryPyCXX.h>
+
+#include "Measurement.h"
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "MeasurementPy.h"

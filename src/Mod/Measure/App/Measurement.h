@@ -23,12 +23,12 @@
 #ifndef MEASURE_MEASUREMENT_H
 #define MEASURE_MEASUREMENT_H
 
-#include <Base/BaseClass.h>
-#include <Base/SmartPtrPy.h>
-#include <Base/Vector3D.h>
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+
+#include <Base/BaseClass.h>
+#include <Base/Vector3D.h>
+
 
 class TopoDS_Shape;
 namespace Measure

@@ -23,11 +23,11 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Measurement.h"
 #include "MeasurementPy.h"
+
 
 namespace Measure {
 class Module : public Py::ExtensionModule<Module>
