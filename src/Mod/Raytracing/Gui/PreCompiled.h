@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
@@ -118,10 +117,6 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 
-
-// Python
-#include <Python.h>
-
 // Qt Toolkit
 #ifndef __QtAll__
 # include <Gui/QtAll.h>
@@ -131,7 +126,6 @@
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
 #endif
-
 
 #endif //_PreComp_
 

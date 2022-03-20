@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -35,6 +31,7 @@
 #include "RaySegment.h"
 #include "LuxFeature.h"
 #include "LuxProject.h"
+
 
 namespace Raytracing {
     extern PyObject* initModule();
