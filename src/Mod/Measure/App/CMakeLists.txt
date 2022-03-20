@@ -32,7 +32,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(MeasureModule_SRCS
     AppMeasure.cpp
-    AppMeasurePy.cpp
     Measurement.cpp
     Measurement.h
     PreCompiled.cpp
