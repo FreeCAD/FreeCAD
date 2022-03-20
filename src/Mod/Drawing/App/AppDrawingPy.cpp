@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -36,6 +32,7 @@
 #include <boost/regex.hpp>
 
 #include <Mod/Part/App/OCCError.h>
+
 
 using namespace std;
 using Part::TopoShapePy;

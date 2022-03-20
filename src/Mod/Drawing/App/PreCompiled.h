@@ -228,9 +228,6 @@
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 
-#include <Python.h>
-
-
 #endif // _PreComp_
 #endif
 

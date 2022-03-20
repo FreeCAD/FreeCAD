@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -33,6 +29,7 @@
 #include "Workbench.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderView.h"
+
 
 // use a different name to CreateCommand()
 void CreateDrawingCommands(void);
