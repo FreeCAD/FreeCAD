@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -57,6 +53,7 @@
 #include "FeaturePath.h"
 #include "FeaturePathCompound.h"
 #include "Area.h"
+
 
 #define PATH_CATCH catch (Standard_Failure &e)                      \
     {                                                               \
