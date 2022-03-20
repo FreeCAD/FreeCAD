@@ -350,11 +350,15 @@ void FaceColors::on_defaultButton_clicked()
 void FaceColors::on_colorButton_changed()
 {
     if (!d->index.isEmpty()) {
-        QColor c = d->ui->colorButton->color();
+        QColor color = d->ui->colorButton->color();
         for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
-            d->perface[*it].set(c.redF(), c.greenF(), c.blueF(), c.alphaF());
+            // alpha of App::Color is contrary to the one of QColor
+            d->perface[*it].set(color.redF(), color.greenF(), color.blueF(), (1.0 - color.alphaF()));
         }
         d->vp->DiffuseColor.setValues(d->perface);
+        // new color has been applied, unselect so that users can see this
+        onSelectionChanged(Gui::SelectionChanges::ClrSelection);
+        Gui::Selection().clearSelection();
     }
 }
 
@@ -373,9 +377,10 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (docname == msg.pDocName && objname == msg.pObjectName) {
             int index = std::atoi(msg.pSubName + 4) - 1;
             d->index.insert(index);
-            const App::Color& c = d->perface[index];
+            const App::Color& faceColor = d->perface[index];
             QColor color;
-            color.setRgbF(c.r, c.g, c.b, c.a);
+            // alpha of App::Color is contrary to the one of QColor
+            color.setRgbF(faceColor.r, faceColor.g, faceColor.b, (1.0 - faceColor.a));
             d->ui->colorButton->setColor(color);
             selection_changed = true;
         }
