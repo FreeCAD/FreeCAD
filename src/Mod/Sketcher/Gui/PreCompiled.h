@@ -126,9 +126,6 @@
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/SbTime.h>
 
-// Python
-#include <Python.h>
-
 
 #endif //_PreComp_
 

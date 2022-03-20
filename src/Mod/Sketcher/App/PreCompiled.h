@@ -83,7 +83,6 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 
-#include <Python.h>
 
 #elif defined(FC_OS_WIN32)
 #ifndef NOMINMAX
