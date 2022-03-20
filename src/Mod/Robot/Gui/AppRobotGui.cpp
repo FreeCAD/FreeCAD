@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -40,6 +36,7 @@
 #include "ViewProviderTrajectoryDressUp.h"
 #include "ViewProviderTrajectoryCompound.h"
 #include "Workbench.h"
+
 
 // use a different name to CreateCommand()
 void CreateRobotCommands(void);

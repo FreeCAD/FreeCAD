@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -45,6 +41,7 @@
 #include "Edge2TracObject.h"
 #include "TrajectoryCompound.h"
 #include "TrajectoryDressUpObject.h"
+
 
 namespace Robot {
 class Module : public Py::ExtensionModule<Module>

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_PRECOMPILED_H
 #define ROBOT_PRECOMPILED_H
 
@@ -49,11 +48,6 @@
 #include <vector>
 #include <set>
 #include <bitset>
-
-#include <Python.h>
-
-
-
 
 #endif // _PreComp_
 #endif
