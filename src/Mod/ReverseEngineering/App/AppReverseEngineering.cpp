@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <TColgp_Array1OfPnt.hxx>
 # include <Geom_BSplineSurface.hxx>
 #endif

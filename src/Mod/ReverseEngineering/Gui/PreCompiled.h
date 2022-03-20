@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
@@ -49,10 +48,6 @@
 
 
 #ifdef _PreComp_
-
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
 #include <assert.h>
@@ -72,7 +67,6 @@
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
-
 
 // Qt Toolkit
 #ifndef __QtAll__

@@ -78,9 +78,6 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS_Face.hxx>
 
-#include <Python.h>
-
-
 #endif
 #endif // _PreComp_
 
