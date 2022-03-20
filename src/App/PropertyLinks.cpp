@@ -4588,12 +4588,12 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
     if(obj!=owner)
         return;
     for(auto &v : _Deps) {
-        auto obj = v.first;
-        if(!obj || !obj->getNameInDocument())
+        auto key = v.first;
+        if(!key || !key->getNameInDocument())
             continue;
-        onBreakLink(obj);
-        if(!v.second && obj->getDocument()==owner->getDocument())
-            obj->_removeBackLink(owner);
+        onBreakLink(key);
+        if(!v.second && key->getDocument()==owner->getDocument())
+            key->_removeBackLink(owner);
     }
     _XLinks.clear();
     _Deps.clear();
