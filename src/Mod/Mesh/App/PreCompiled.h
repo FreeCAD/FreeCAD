@@ -77,10 +77,6 @@
 
 #include <boost/algorithm/string/replace.hpp>
 
-// Python
-#include <Python.h>
-
-
 #endif //_PreComp_
 
 #endif
