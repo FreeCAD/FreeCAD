@@ -71,9 +71,7 @@
 #include <string>
 #include <vector>
 
-// FIXME: Causes problem with boost/numeric/bindings/lapack/syev.hpp(117)
 #ifdef FC_OS_WIN32
-//# include <windows.h>
 #include <io.h>
 #endif
 

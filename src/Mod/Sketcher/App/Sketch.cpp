@@ -4176,7 +4176,7 @@ TopoShape Sketch::toShape(void) const
         }
     }
 
-    // FIXME: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
+    // Hint: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
     //
     // sort them together to wires
     while (edge_list.size() > 0) {

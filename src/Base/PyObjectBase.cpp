@@ -347,7 +347,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
     const char *attr;
     attr = PyUnicode_AsUTF8(attro);
 
-    //FIXME: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
+    //Hint: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
     //we must check then in _setattr() of all subclasses whether value is 0.
     if ( value==nullptr ) {
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);

@@ -108,7 +108,7 @@ public:
   /// recalculate the Feature
   virtual DocumentObjectExecReturn *execute(void);
   /// returns the type name of the ViewProvider
-  //FIXME: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
+  //Hint: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
   virtual const char* getViewProviderName(void) const {
     return "Gui::ViewProviderFeature";
   }

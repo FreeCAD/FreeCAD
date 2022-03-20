@@ -2137,7 +2137,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         // Compressed VRML is nothing else than a GZIP'ped VRML ascii file
         // str.close();
         //Base::ogzstream gzip(FileName, std::ios::out | std::ios::binary);
-        //FIXME: The compression level seems to be higher than with ogzstream
+        //Hint: The compression level seems to be higher than with ogzstream
         //which leads to problems to load the wrz file in debug mode, the
         //application simply crashes.
         zipios::GZIPOutputStream gzip(str);

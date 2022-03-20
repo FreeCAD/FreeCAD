@@ -1678,7 +1678,7 @@ App::DocumentObjectExecReturn* Hole::execute(void)
         if (method == "Dimension")
             length = Depth.getValue();
         else if (method == "UpToFirst") {
-            /* FIXME */
+            /* TODO */
         }
         else if (method == "ThroughAll") {
             length = getThroughAllLength();
