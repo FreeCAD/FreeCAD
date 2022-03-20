@@ -436,6 +436,7 @@ class Component(ArchIFC.IfcProduct):
             if obj.CloneOf:
                 if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) in ["Component","BuildingPart"]):
                     pl = obj.Placement
+                    ## TODO use Part.Shape() instead ?
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
                     for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
@@ -633,6 +634,7 @@ class Component(ArchIFC.IfcProduct):
 
         shapes = []
         for s in shape:
+            ## TODO use Part.Shape() instead ?
             s = s.copy()
             s.translate(v.negative())
             s.rotate(FreeCAD.Vector(0, 0, 0),
@@ -738,14 +740,16 @@ class Component(ArchIFC.IfcProduct):
                     if js:
                         add = js.cut(base)
                         if placement:
-                            add.Placement = add.Placement.multiply(placement)
+                            # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                            add.Placement = placement.multiply(add.Placement)
                         base = base.fuse(add)
-
                     elif hasattr(o,'Shape'):
                         if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
+                            ## TODO use Part.Shape() instead ?
                             s = o.Shape.copy()
                             if placement:
-                                s.Placement = s.Placement.multiply(placement)
+                                # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                                s.Placement = placement.multiply(s.Placement)
                             if base:
                                 if base.Solids:
                                     try:
@@ -781,27 +785,30 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.Proxy.getSubVolume(o)
                 elif hasattr(o,"Subvolume") and hasattr(o.Subvolume,"Shape"):
                     # Any other object with a Subvolume property
+                    ## TODO - Part.Shape() instead?
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
-                        subvolume.Placement = subvolume.Placement.multiply(o.Placement)
-
+                        # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                        subvolume.Placement = o.Placement.multiply(subvolume.Placement)
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
-                            subvolume.Placement = subvolume.Placement.multiply(placement)
+                            # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                            subvolume.Placement = placement.multiply(subvolume.Placement)
                         if len(base.Solids) > 1:
                             base = Part.makeCompound([sol.cut(subvolume) for sol in base.Solids])
                         else:
                             base = base.cut(subvolume)
-
                 elif hasattr(o,'Shape'):
                     # no subvolume, we subtract the whole shape
                     if o.Shape:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
+                                    ## TODO
                                     s = o.Shape.copy()
                                     if placement:
-                                        s.Placement = s.Placement.multiply(placement)
+                                        # see https://forum.freecadweb.org/viewtopic.php?p=579754#p579754
+                                        s.Placement = placement.multiply(s.Placement)
                                     try:
                                         if len(base.Solids) > 1:
                                             base = Part.makeCompound([sol.cut(s) for sol in base.Solids])
@@ -849,6 +856,7 @@ class Component(ArchIFC.IfcProduct):
         if points:
             shps = []
             for p in points:
+                ## TODO use Part.Shape() instead ?
                 sh = shape.copy()
                 sh.translate(p)
                 shps.append(sh)
