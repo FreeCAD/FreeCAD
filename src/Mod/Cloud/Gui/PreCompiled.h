@@ -53,9 +53,6 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
-
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif

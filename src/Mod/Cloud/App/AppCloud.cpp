@@ -20,29 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
+
 #if defined(FC_OS_WIN32)
 #include <Windows.h>
 #include <stdint.h>
 #endif
 
 #include <openssl/hmac.h>
-#include <openssl/pem.h>
 #include <openssl/md5.h>
+#include <openssl/pem.h>
 #include <openssl/sha.h>
 
 #include <curl/curl.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <App/DocumentPy.h>
-#include <App/DocumentObserverPython.h>
-
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 
@@ -50,6 +44,7 @@
 #include <CXX/Objects.hxx>
 
 #include "AppCloud.h"
+
 
 using namespace App;
 using namespace std;
