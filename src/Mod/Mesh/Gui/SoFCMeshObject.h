@@ -45,7 +45,7 @@ namespace MeshGui {
 class MeshGuiExport SoSFMeshObject : public SoSField {
     typedef SoSField inherited;
 
-    SO_SFIELD_HEADER(SoSFMeshObject, Base::Reference<const Mesh::MeshObject>, Base::Reference<const Mesh::MeshObject>);
+    SO_SFIELD_HEADER(SoSFMeshObject, Base::Reference<const Mesh::MeshObject>, Base::Reference<const Mesh::MeshObject>)
 
 public:
     static void initClass();
