@@ -1,7 +1,6 @@
 # (c) 2012 Werner Mayer LGPL
 
 import FreeCAD, FreeCADGui
-from FreeCAD import Base
 from pivy import coin
 
 class Texture:

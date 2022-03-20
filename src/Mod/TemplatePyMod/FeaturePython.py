@@ -597,7 +597,7 @@ class ViewProviderCircleSet:
 
 	def updateData(self, fp, prop):
 			if prop == "Shape":
-				edges=p = fp.getPropertyByName("Shape").Edges
+				edges = fp.getPropertyByName("Shape").Edges
 				pts=[]
 				ver=[]
 				for i in edges:
@@ -630,8 +630,8 @@ def makeCircleSet():
 
 	doc=FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("App::FeaturePython","Circles")
-	c=CircleSet(a)
-	v=ViewProviderCircleSet(a.ViewObject)
+	CircleSet(a)
+	ViewProviderCircleSet(a.ViewObject)
 	a.Shape=comp
 	doc.recompute()
 

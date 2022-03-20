@@ -180,7 +180,6 @@ def InitApplications():
                 RunInitGuiPy(Dir)
     Log("All modules with GUIs using InitGui.py are now initialized\n")
 
-    extension_modules = []
     try:
         import pkgutil
         import importlib

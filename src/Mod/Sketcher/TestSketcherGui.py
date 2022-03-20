@@ -19,7 +19,7 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, FreeCADGui, os, sys, unittest, Sketcher, SketcherGui
+#import FreeCAD, FreeCADGui, os, sys, unittest, Sketcher, SketcherGui
 
 
 #---------------------------------------------------------------------------

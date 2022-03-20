@@ -19,14 +19,11 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Sketcher
+import FreeCAD
 
 if FreeCAD.GuiUp:
-    import FreeCADGui,SketcherGui,os
-    from PySide import QtCore, QtGui
-    from PySide.QtCore import Qt
-    from PySide.QtGui import QApplication, QCursor
-    from FreeCADGui import PySideUic as uic
+    import FreeCADGui
+    from PySide import QtCore
 
     #s=os.path.dirname(__file__)
     #s=os.path.join(s,"ProfileLib")

@@ -6,7 +6,7 @@ Examples for customizing the FreeCAD application with PySide facilities.
 __author__ = "Werner Mayer <werner.wm.mayer@gmx.de>"
 
 from PySide import QtCore,QtGui
-import FreeCAD,FreeCADGui, __main__
+import FreeCADGui, __main__
 
 class MainWindow:
 	def __init__(self):

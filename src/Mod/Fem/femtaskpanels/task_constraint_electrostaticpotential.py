@@ -33,7 +33,6 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
-from PySide import QtCore
 from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
