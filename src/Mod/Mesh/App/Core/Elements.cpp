@@ -1235,26 +1235,25 @@ float MeshGeomFacet::CenterOfCircumCircle(Base::Vector3f& rclCenter) const
   Base::Vector3f v = (p2-p1);
   Base::Vector3f w = (p0-p2);
 
-  float uu =   (u * u);
-  float vv =   (v * v);
-  float ww =   (w * w);
-  float uv = - (u * v);
-  float vw = - (v * w);
-  float uw = - (w * u);
+  double uu =   (u * u);
+  double vv =   (v * v);
+  double ww =   (w * w);
+  double uv = - (u * v);
+  double vw = - (v * w);
+  double uw = - (w * u);
 
-  float w0 = static_cast<float>(2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-  float w1 = static_cast<float>(2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-  float w2 = static_cast<float>(2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
+  double w0 = (2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
+  double w1 = (2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
+  double w2 = (2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
 
   // center of the circle
-  float wx = w0 + w1 + w2;
-  rclCenter.x = (w0*p0.x + w1*p1.x + w2*p2.x)/wx;
-  rclCenter.y = (w0*p0.y + w1*p1.y + w2*p2.y)/wx;
-  rclCenter.z = (w0*p0.z + w1*p1.z + w2*p2.z)/wx;
+  double wx = w0 + w1 + w2;
+  rclCenter.x = static_cast<float>((w0*p0.x + w1*p1.x + w2*p2.x)/wx);
+  rclCenter.y = static_cast<float>((w0*p0.y + w1*p1.y + w2*p2.y)/wx);
+  rclCenter.z = static_cast<float>((w0*p0.z + w1*p1.z + w2*p2.z)/wx);
 
   // radius of the circle
   float fRadius = static_cast<float>(sqrt(uu * vv * ww) / (4 * Area()));
-
   return fRadius;
 }
 
