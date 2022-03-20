@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <Python.h>
 # include <climits>
 #if defined(__clang__)
 # pragma clang diagnostic push

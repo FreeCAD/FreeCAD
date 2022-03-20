@@ -20,39 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <Python.h>
-# include <iostream>
 # include <climits>
+# include <iostream>
+
+# include <QApplication>
+# include <QDialog>
+# include <QDialogButtonBox>
+# include <QPointer>
 # include <QString>
+# include <QStyle>
+# include <QTreeWidget>
+# include <QTreeWidgetItem>
+# include <QTextStream>
+# include <QHBoxLayout>
+# include <QVBoxLayout>
+
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wextra-semi"
 #endif
-# include <Standard_Version.hxx>
-# include <NCollection_Vector.hxx>
-# include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
-# include <STEPControl_Writer.hxx>
+
+# include <APIHeaderSection_MakeHeader.hxx>
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>
 # include <IGESControl_Controller.hxx>
@@ -60,80 +53,70 @@
 # include <IGESData_IGESModel.hxx>
 # include <IGESToBRep_Actor.hxx>
 # include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
+# include <Standard_Version.hxx>
+# include <STEPCAFControl_Reader.hxx>
+# include <STEPCAFControl_Writer.hxx>
 # include <TColStd_IndexedDataMapOfStringString.hxx>
-#if OCC_VERSION_HEX >= 0x070500
-# include <RWGltf_CafWriter.hxx>
-# include <Message_ProgressRange.hxx>
-#endif
+# include <TDataStd_Name.hxx>
+# include <TDF_ChildIterator.hxx>
+# include <TDF_Label.hxx>
+# include <TDocStd_Document.hxx>
+# include <XCAFApp_Application.hxx>
+# include <XCAFDoc_ColorTool.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
+
 #if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
 # else
 # include <TDataStd_Shape.hxx>
 # endif
+#if OCC_VERSION_HEX >= 0x070500
+# include <Message_ProgressRange.hxx>
+# include <RWGltf_CafWriter.hxx>
+#endif
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <Gui/Application.h>
+#include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/ViewProviderLink.h>
+#include <Mod/Import/App/ImportOCAF2.h>
 #include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
+#include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Import/App/ImportOCAF2.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/ProgressIndicator.h>
 
 #include <TDataStd.hxx>
 #include <TDataStd_Integer.hxx>
 #include <TDataStd_TreeNode.hxx>
-#include <TDF_ChildIDIterator.hxx>
 #include <TDF_AttributeIterator.hxx>
-#include <TDF_Data.hxx>
+#include <TDF_ChildIDIterator.hxx>
 #include <TDF_IDList.hxx>
 #include <TDF_ListIteratorOfIDList.hxx>
 #include <TDF_TagSource.hxx>
 #include <TDocStd_Owner.hxx>
 #include <TNaming_NamedShape.hxx>
 #include <TNaming_UsedShapes.hxx>
-#include <XCAFDoc.hxx>
 #include <XCAFDoc_Color.hxx>
 #include <XCAFDoc_LayerTool.hxx>
 #include <XCAFDoc_ShapeMapTool.hxx>
-#include <QApplication>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QPointer>
-#include <QStyle>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QTextStream>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/ViewProviderLink.h>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
