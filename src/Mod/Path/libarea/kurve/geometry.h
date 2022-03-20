@@ -448,7 +448,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		// operators
 		const	CLine operator~(void);// perp to left
-		const	CLine operator=(const Point& p0){p.x=p0.x; p.y=p0.y; return *this;};				// s = p;
+		const	CLine& operator=(const Point& p0){p.x=p0.x; p.y=p0.y; return *this;};				// s = p;
 
 		// methods
 		double c();																// returns c
