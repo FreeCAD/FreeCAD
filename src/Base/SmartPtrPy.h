@@ -24,6 +24,8 @@
 #ifndef PY_SMARTPTRPY_H
 #define PY_SMARTPTRPY_H
 
+#include <FCGlobal.h>
+
 // forward declarations
 typedef struct _object PyObject;
 
@@ -57,7 +59,8 @@ public:
     SmartPtr(const SmartPtr &ob);
 
     // Assignment acquires new ownership of pointer
-    SmartPtr &operator=( const Object &SmartPtr );
+    SmartPtr &operator=( const SmartPtr &rhs );
+    SmartPtr &operator=( const Object &rhs );
 
     SmartPtr &operator=(PyObject *rhsp);
 

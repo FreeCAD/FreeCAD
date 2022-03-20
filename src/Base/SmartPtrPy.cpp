@@ -67,6 +67,12 @@ namespace Py {
         Py::_XINCREF( p );
     }
 
+    SmartPtr &SmartPtr::operator=( const SmartPtr &rhs )
+    {
+        set( rhs.ptr() );
+        return *this;
+    }
+
     SmartPtr &SmartPtr::operator=( const Object &rhs )
     {
         set( rhs.ptr() );
