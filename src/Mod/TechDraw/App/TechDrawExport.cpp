@@ -41,7 +41,6 @@
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
 #include <HLRTopoBRep_OutLiner.hxx>
-//#include <BRepAPI_MakeOutLine.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_ShapeBounds.hxx>
 #include <HLRBRep_HLRToShape.hxx>
