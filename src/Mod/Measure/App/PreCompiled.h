@@ -65,7 +65,6 @@
 #include <GProp_GProps.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <BRepGProp.hxx>
-#include <Python.h>
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>
