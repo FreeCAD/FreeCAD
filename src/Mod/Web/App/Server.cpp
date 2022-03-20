@@ -20,17 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <stdexcept>
+# include <memory>
+# include <QCoreApplication>
+# include <QTcpSocket>
+#endif
 
-#include <QCoreApplication>
-#include <QTcpSocket>
-#include <stdexcept>
-#include <memory>
-
-#include "Server.h"
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+
+#include "Server.h"
+
 
 using namespace Web;
 

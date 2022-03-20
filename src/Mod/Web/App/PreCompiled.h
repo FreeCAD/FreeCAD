@@ -38,13 +38,16 @@
 // standard
 #include <cstdio>
 #include <cassert>
+#include <climits>
 #include <iostream>
+#include <stdexcept>
 
 // STL
 #include <algorithm>
 #include <iostream>
 #include <list>
 #include <map>
+#include <memory>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -52,8 +55,9 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+// Qt
+#include <QCoreApplication>
+#include <QTcpSocket>
 
 #endif //_PreComp_
 

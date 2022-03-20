@@ -20,25 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
-
 #include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/DockWindowManager.h>
+
 #include <Gui/Application.h>
-#include <Gui/Action.h>
 #include <Gui/Command.h>
+#include <Gui/MenuManager.h>
 #include <Gui/Selection.h>
-#include <Gui/ToolBoxManager.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+#include <Gui/ToolBarManager.h>
+
 
 using namespace WebGui;
 

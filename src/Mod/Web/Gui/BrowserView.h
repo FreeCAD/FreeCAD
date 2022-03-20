@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef WEBGUI_BROWSERVIEW_H
 #define WEBGUI_BROWSERVIEW_H
 
@@ -31,6 +30,7 @@
 
 #if defined(QTWEBENGINE)
 #include <QWebEngineView>
+
 namespace WebGui {
 class WebEngineUrlRequestInterceptor;
 }

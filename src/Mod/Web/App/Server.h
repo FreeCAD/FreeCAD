@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef WEB_SERVER_H
 #define WEB_SERVER_H
 
 #include <QByteArray>
-#include <QObject>
 #include <QEvent>
+#include <QObject>
 #include <QTcpSocket>
 #include <QTcpServer>
-#include <CXX/Objects.hxx>
 
 
 namespace Web {

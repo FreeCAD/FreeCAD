@@ -36,9 +36,6 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
 #include <assert.h>
@@ -59,6 +56,8 @@
 # include <windows.h>
 #endif
 
+// Qt Core
+#include <QLatin1String>
 
 // Qt Toolkit
 #ifndef __QtAll__

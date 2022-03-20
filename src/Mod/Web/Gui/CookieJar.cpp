@@ -20,20 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 #include <QTextStream>
-#include <QFile>
-#include <QTimer>
 #include <QNetworkCookie>
 #endif
 
+#include <App/Application.h>
+#include <Base/FileInfo.h>
+
 #include "CookieJar.h"
 
-#include <Base/FileInfo.h>
-#include <App/Application.h>
 
 using namespace WebGui;
 

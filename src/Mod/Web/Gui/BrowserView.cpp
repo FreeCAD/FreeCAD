@@ -20,75 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAbstractTextDocumentLayout>
 # include <QApplication>
-# include <QClipboard>
-# include <QDateTime>
-# include <QHBoxLayout>
-# include <QMessageBox>
-# include <QNetworkRequest>
-# include <QPainter>
-# include <QPrinter>
-# include <QPrintDialog>
-# include <QScrollBar>
-# include <QMouseEvent>
-# include <QStatusBar>
-# include <QTextBlock>
-# include <QTextCodec>
-# include <QTextStream>
-# include <QTimer>
-# include <QFileInfo>
 # include <QDesktopServices>
-# include <QMenu>
-# include <QDesktopWidget>
-# include <QSignalMapper>
-# include <QPointer>
-# include <QDir>
+# include <QFileInfo>
+# include <QLatin1String>
 # include <QLineEdit>
+# include <QMenu>
+# include <QMessageBox>
+# include <QMouseEvent>
+# include <QNetworkRequest>
+# include <QRegExp>
+# include <QSignalMapper>
+# include <QStatusBar>
 #endif
 
-
 #if defined(QTWEBENGINE)
-# include <QWebEnginePage>
-# include <QWebEngineView>
-# include <QWebEngineSettings>
-# include <QWebEngineProfile>
 # include <QWebEngineContextMenuData>
-# include <QWebEngineUrlRequestInterceptor>
+# include <QWebEnginePage>
+# include <QWebEngineProfile>
+# include <QWebEngineSettings>
 # include <QWebEngineUrlRequestInfo>
+# include <QWebEngineUrlRequestInterceptor>
+# include <QWebEngineView>
 #elif defined(QTWEBKIT)
 # include <QWebFrame>
-# include <QWebView>
-# include <QWebSettings>
 # include <QNetworkAccessManager>
+# include <QWebSettings>
+# include <QWebView>
 using QWebEngineView = QWebView;
 using QWebEnginePage = QWebPage;
 #endif
 
-#include <QScreen>
-
-#include <QLatin1String>
-#include <QRegExp>
-#include "BrowserView.h"
-#include "CookieJar.h"
-#include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MDIViewPy.h>
-#include <Gui/ProgressBar.h>
-#include <Gui/Command.h>
-#include <Gui/OnlineDocumentation.h>
-#include <Gui/DownloadManager.h>
-#include <Gui/TextDocumentEditorView.h>
-
+#include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <App/Document.h>
-#include <CXX/Extensions.hxx>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/DownloadManager.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MDIViewPy.h>
+#include <Gui/ProgressBar.h>
+#include <Gui/TextDocumentEditorView.h>
+
+#include "BrowserView.h"
+#include "CookieJar.h"
+
 
 using namespace WebGui;
 using namespace Gui;

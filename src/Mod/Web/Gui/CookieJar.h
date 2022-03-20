@@ -24,7 +24,9 @@
 #ifndef WEBGUI_COOKIEJAR_H
 #define WEBGUI_COOKIEJAR_H
 
+#include <QFile>
 #include <QNetworkCookieJar>
+#include <QTimer>
 
 class QNetworkCookieJar;
 
