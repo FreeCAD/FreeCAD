@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,25 +27,19 @@
 #endif
 
 #include "Workbench.h"
-#include <Gui/ToolBarManager.h>
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Application.h>
-#include <Gui/Action.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/ToolBoxManager.h>
-#include <Gui/MainWindow.h>
-#include <Gui/MDIView.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
+
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 
-#include <Mod/Start/App/StartConfiguration.h>
+#include <Gui/ToolBarManager.h>
+#include <Gui/DockWindowManager.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+
 
 using namespace StartGui;
 

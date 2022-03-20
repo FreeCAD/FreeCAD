@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef START_PRECOMPILED_H
 #define START_PRECOMPILED_H
 
@@ -37,22 +36,4 @@
 # define MeshExport
 #endif
 
-#ifdef _PreComp_
-
-// standard
-#include <iostream>
-#include <sstream>
-#include <stdio.h>
-#include <assert.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-
-#include <Python.h>
-
-
-#endif // _PreComp_
 #endif
-

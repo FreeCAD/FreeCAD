@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef STARTGUI_PRECOMPILED_H
 #define STARTGUI_PRECOMPILED_H
 
@@ -35,12 +34,7 @@
 # define StartGuiExport
 #endif
 
-
 #ifdef _PreComp_
-
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
 #include <assert.h>
@@ -61,11 +55,8 @@
 # include <windows.h>
 #endif
 
-
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+#include <QCoreApplication>
 
 #endif //_PreComp_
 
